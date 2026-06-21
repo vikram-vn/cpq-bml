@@ -20,6 +20,7 @@ const ALLOWED_FIELDS = new Set([
     'connection.debugLog',
     'rest.pullFolder',
     'lint.enable',
+    'comments.enable',
     'mcp.enable',
     'mcp.port',
     'mcp.logToTerminal',

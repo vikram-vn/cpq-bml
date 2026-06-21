@@ -283,7 +283,7 @@ export function McpTab({ active, mcp, drafts, changeDraft, updateField }) {
     );
 }
 
-export function AdvancedTab({ active, lint, connection, debug, updateField }) {
+export function AdvancedTab({ active, lint, comments, connection, debug, updateField }) {
     if (!active) return null;
 
     return (
@@ -302,7 +302,15 @@ export function AdvancedTab({ active, lint, connection, debug, updateField }) {
                     checked={lint.enable}
                     onChange={(v) => updateField('lint.enable', v)}
                 />
-                
+
+                <Switch
+                    id="commentsEnable"
+                    label="Enable BML Better Comments"
+                    description="Colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights bml-lint-disable and beautify ignore directives, and styles doc-header comment blocks"
+                    checked={comments.enable}
+                    onChange={(v) => updateField('comments.enable', v)}
+                />
+
                 <Switch
                     id="debugLog"
                     label="Log REST Details to File"

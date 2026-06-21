@@ -42,6 +42,7 @@ suite("settingsPanel state", () => {
       },
       rest: { pullFolder: "myLib" },
       lint: { enable: false },
+      comments: { enable: true },
       mcp: { enable: true, port: 12345, logToTerminal: true },
       debug: { logOutputToFile: true },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],

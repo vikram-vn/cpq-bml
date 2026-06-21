@@ -14,6 +14,7 @@ const EMPTY_STATE = {
     },
     rest: { pullFolder: 'library' },
     lint: { enable: true },
+    comments: { enable: true },
     mcp: { enable: false, port: 47821, logToTerminal: false },
     debug: { logOutputToFile: false },
     environments: [],
@@ -138,7 +139,7 @@ export default function App({ vscodeApi }) {
         vscodeApi.postMessage({ type: 'testConnection' });
     };
 
-    const { connection, rest, lint, mcp, debug } = state;
+    const { connection, rest, lint, comments, mcp, debug } = state;
 
     return (
         <div className="layout-container">
@@ -263,6 +264,7 @@ export default function App({ vscodeApi }) {
                 <AdvancedTab
                     active={activeTab === 'advanced'}
                     lint={lint}
+                    comments={comments}
                     connection={connection}
                     debug={debug}
                     updateField={updateField}

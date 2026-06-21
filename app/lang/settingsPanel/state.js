@@ -42,6 +42,9 @@ async function buildState(context, vscode) {
         lint: {
             enable: cpqConfig.get('lint.enable', true)
         },
+        comments: {
+            enable: cpqConfig.get('comments.enable', true)
+        },
         mcp: {
             enable: cpqConfig.get('mcp.enable', false),
             port: cpqConfig.get('mcp.port', 47821),
