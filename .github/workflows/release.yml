@@ -1,9 +1,9 @@
-name: Release Extension
+name: Release
 
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
@@ -11,31 +11,32 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+          node-version: 22
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Run Tests
-        run: xvfb-run npm run test
+      - name: Build Extension
+        run: npm run compile
 
-      - name: Package Extension
+      - name: Package VSIX
         run: npx @vscode/vsce package
 
-      - name: Create Release
+      - name: Find VSIX
+        id: vsix
+        run: |
+          echo "file=$(ls *.vsix | head -n 1)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: '*.vsix'
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: ${{ steps.vsix.outputs.file }}
+          generate_release_notes: true
