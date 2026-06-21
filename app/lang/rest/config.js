@@ -127,6 +127,35 @@ async function getAuthHeader(context, vscode) {
     return `Basic ${encoded}`;
 }
 
+// True if the active connection is missing siteUrl, username (for basic auth),
+// or the password/token secret it would need - i.e. any REST call would fail
+// immediately. Used both to gate the editor/title toolbar icons (so they only
+// show up once a connection is actually usable) and to decide whether the
+// settings panel should auto-open onboarding.
+async function hasMissingCredentials(context, vscode) {
+    const { siteUrl, authMethod, username } = getSettings(vscode);
+    if (!siteUrl) {
+        return true;
+    }
+    if (authMethod === 'bearer') {
+        const siteSpecificKey = getTokenSecretKey(siteUrl);
+        let token = await context.secrets.get(siteSpecificKey);
+        if (!token) {
+            token = await context.secrets.get(SECRET_TOKEN);
+        }
+        return !token;
+    }
+    if (!username) {
+        return true;
+    }
+    const siteSpecificKey = getPasswordSecretKey(siteUrl, username);
+    let password = await context.secrets.get(siteSpecificKey);
+    if (!password) {
+        password = await context.secrets.get(SECRET_PASSWORD);
+    }
+    return !password;
+}
+
 // Live connectivity + permission check against current settings/secrets -
 // no prompts, no toasts, just a structured result. `reason` lets callers
 // distinguish failures that should block (auth/permission) from ones that
@@ -270,6 +299,7 @@ module.exports = {
     getAuthHeader,
     getDebugOutputLogPath,
     getDebugPrintLogPath,
+    hasMissingCredentials,
     runTestConnection,
     ensureCredentials
 };

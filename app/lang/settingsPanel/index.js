@@ -1,6 +1,7 @@
 const { createSettingsPanel } = require("./panel");
 const { getHtml } = require("./html");
 const { handleMessage } = require("./messageHandler");
+const { hasMissingCredentials } = require("../rest/config");
 
 // Singleton panel - re-invoking the command reveals the existing one instead
 // of creating duplicates.
@@ -15,38 +16,6 @@ const BML_OPEN_AUTO_OPENED_KEY = "cpqBml.settingsPanel.bmlOpenAutoOpened";
 
 function shouldAutoOpenOnInstall(context) {
   return !context.globalState.get(FIRST_INSTALL_KEY, false);
-}
-
-async function hasMissingCredentials(context, vscode) {
-  const {
-    getSettings,
-    getPasswordSecretKey,
-    getTokenSecretKey,
-    SECRET_PASSWORD,
-    SECRET_TOKEN,
-  } = require("../rest/config");
-  const { siteUrl, authMethod, username } = getSettings(vscode);
-  if (!siteUrl) {
-    return true;
-  }
-  if (authMethod === "bearer") {
-    const siteSpecificKey = getTokenSecretKey(siteUrl);
-    let token = await context.secrets.get(siteSpecificKey);
-    if (!token) {
-      token = await context.secrets.get(SECRET_TOKEN);
-    }
-    return !token;
-  } else {
-    if (!username) {
-      return true;
-    }
-    const siteSpecificKey = getPasswordSecretKey(siteUrl, username);
-    let password = await context.secrets.get(siteSpecificKey);
-    if (!password) {
-      password = await context.secrets.get(SECRET_PASSWORD);
-    }
-    return !password;
-  }
 }
 
 function registerSettingsPanel(context) {

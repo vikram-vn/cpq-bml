@@ -17,20 +17,21 @@ const {
   resolveMetadataForFile,
 } = require("./shared");
 const metadataLib = require("../metadata");
-const { getSettings } = require("../config");
+const { hasMissingCredentials } = require("../config");
 
-// The editor/title toolbar icons are only useful once there's an actual site
-// to talk to - config.cpqBml.connection.enabled alone isn't enough to gate on
-// (it's a feature toggle that defaults to true, so on a fresh install with no
-// siteUrl set yet, every REST icon would otherwise show up and immediately
-// fail). This context key reflects whether cpqBml.connection.siteUrl is
-// actually non-empty.
-function refreshConnectionConfiguredContext(vscode) {
-  const { siteUrl } = getSettings(vscode);
+// The editor/title toolbar icons are only useful once there's a fully usable
+// connection - config.cpqBml.connection.enabled alone isn't enough to gate on
+// (it's a feature toggle that defaults to true), and neither is siteUrl alone
+// (a REST call still fails immediately without a username/password or token).
+// This context key reflects hasMissingCredentials's verdict: siteUrl, username
+// (for basic auth) or token (for bearer), and the matching secret must all be
+// present, or every icon stays hidden.
+async function refreshConnectionConfiguredContext(context, vscode) {
+  const missing = await hasMissingCredentials(context, vscode);
   vscode.commands.executeCommand(
     "setContext",
     "cpqBml.connection.configured",
-    !!siteUrl,
+    !missing,
   );
 }
 
@@ -170,12 +171,25 @@ function registerBmlRestCommands(context) {
   );
   context.subscriptions.push(statusBarItem);
 
-  refreshConnectionConfiguredContext(vscode);
+  refreshConnectionConfiguredContext(context, vscode);
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
-      if (e.affectsConfiguration("cpqBml.connection.siteUrl")) {
-        refreshConnectionConfiguredContext(vscode);
+      if (
+        e.affectsConfiguration("cpqBml.connection.siteUrl") ||
+        e.affectsConfiguration("cpqBml.connection.username") ||
+        e.affectsConfiguration("cpqBml.connection.authMethod")
+      ) {
+        refreshConnectionConfiguredContext(context, vscode);
       }
+    }),
+  );
+  // Password/token secrets aren't configuration, so a settings.json change
+  // event never fires for them - re-check on every secret write too (covers
+  // both the "Set CPQ Password"/"Set CPQ Auth Token" commands and the
+  // settings webview's write-only password/token fields).
+  context.subscriptions.push(
+    context.secrets.onDidChange(() => {
+      refreshConnectionConfiguredContext(context, vscode);
     }),
   );
 

@@ -54,6 +54,7 @@ function createFakeContext(secretValues = {}) {
             store: async (key, value) => {
                 store[key] = value;
             },
+            onDidChange: () => ({ dispose: () => {} }),
             _store: store
         },
         workspaceState: {
