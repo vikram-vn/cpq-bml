@@ -1,0 +1,473 @@
+{
+  "name": "cpq-bml",
+  "displayName": "CPQ-BML",
+  "publisher": "vikram-n",
+  "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
+  "version": "1.0.0",
+  "icon": "app/images/logo.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://example.com/cpq-bml.git"
+  },
+  "engines": {
+    "vscode": "^1.107.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.bml"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "bml",
+        "aliases": [
+          "BML",
+          "bml",
+          "BigMachines Language",
+          "BigMachines Markup Language"
+        ],
+        "extensions": [
+          ".bml"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "dark": "./app/images/bml.png",
+          "light": "./app/images/bml.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "bml",
+        "scopeName": "source.bml",
+        "path": "./app/lang/syntaxes/bml.tmLanguage.json"
+      }
+    ],
+    "snippets": [],
+    "commands": [
+      {
+        "command": "cpqBml.rest.setPassword",
+        "title": "CPQ-BML: Set CPQ Password"
+      },
+      {
+        "command": "cpqBml.rest.setAuthToken",
+        "title": "CPQ-BML: Set CPQ Auth Token"
+      },
+      {
+        "command": "cpqBml.rest.pullLibraryFunctions",
+        "title": "CPQ-BML: Pull Util Library Functions from CPQ"
+      },
+      {
+        "command": "cpqBml.rest.pullCommerceFunctions",
+        "title": "CPQ-BML: Pull Commerce Functions from CPQ"
+      },
+      {
+        "command": "cpqBml.rest.validateCurrentFile",
+        "title": "CPQ-BML: Validate Current File Against CPQ",
+        "icon": "$(check)"
+      },
+      {
+        "command": "cpqBml.rest.debugCurrentFile",
+        "title": "CPQ-BML: Debug Current Function on CPQ",
+        "icon": "$(play)"
+      },
+      {
+        "command": "cpqBml.rest.saveCurrentFile",
+        "title": "CPQ-BML: Save Current File to CPQ",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "cpqBml.rest.clearResults",
+        "title": "CPQ-BML: Clear Results Terminal",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "cpqBml.rest.createOverride",
+        "title": "CPQ-BML: Create Override",
+        "icon": "$(repo-forked)"
+      },
+      {
+        "command": "cpqBml.rest.removeOverride",
+        "title": "CPQ-BML: Remove Override",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "cpqBml.rest.deployCommerceProcess",
+        "title": "CPQ-BML: Deploy Commerce Process Setup",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "cpqBml.rest.deployCurrentFile",
+        "title": "CPQ-BML: Deploy Current Util Function to CPQ",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "cpqBml.rest.deployUtilFunctions",
+        "title": "CPQ-BML: Mass Deploy Util Library Functions"
+      },
+      {
+        "command": "cpqBml.rest.createBmlFunction",
+        "title": "CPQ-BML: Create BML Function"
+      },
+      {
+        "command": "cpqBml.rest.changeEnvironment",
+        "title": "CPQ-BML: Change Environment"
+      },
+      {
+        "command": "cpqBml.mcp.showInfo",
+        "title": "CPQ-BML: Show MCP Server Connection Info"
+      },
+      {
+        "command": "cpqBml.settings.open",
+        "title": "CPQ-BML: Open Settings",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.beautifyWorkspace",
+        "title": "CPQ-BML: Beautify / Format All BML Files in Workspace",
+        "category": "BML"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "cpqBml.rest.createOverride",
+          "when": "resourceLangId == bml && cpqBml.activeFileIsStandard && !cpqBml.activeFileIsOverridden && config.cpqBml.connection.enabled",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.rest.removeOverride",
+          "when": "resourceLangId == bml && cpqBml.activeFileIsStandard && cpqBml.activeFileIsOverridden && config.cpqBml.connection.enabled",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.rest.saveCurrentFile",
+          "when": "resourceLangId == bml && (!cpqBml.activeFileIsStandard || cpqBml.activeFileIsOverridden) && config.cpqBml.connection.enabled",
+          "group": "navigation@2"
+        },
+        {
+          "command": "cpqBml.rest.validateCurrentFile",
+          "when": "resourceLangId == bml && (!cpqBml.activeFileIsStandard || cpqBml.activeFileIsOverridden) && config.cpqBml.connection.enabled",
+          "group": "navigation@3"
+        },
+        {
+          "command": "cpqBml.rest.debugCurrentFile",
+          "when": "resourceLangId == bml && config.cpqBml.connection.enabled",
+          "group": "navigation@4"
+        },
+        {
+          "command": "cpqBml.rest.clearResults",
+          "when": "resourceLangId == bml && config.cpqBml.connection.enabled",
+          "group": "navigation@5"
+        },
+        {
+          "command": "cpqBml.rest.deployCommerceProcess",
+          "when": "resourceLangId == bml && !cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled",
+          "group": "navigation@6"
+        },
+        {
+          "command": "cpqBml.rest.deployCurrentFile",
+          "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled",
+          "group": "navigation@6"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CPQ-BML",
+      "properties": {
+        "cpqBml.connection.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Oracle CPQ REST features. If disabled, settings onboarding will be suppressed and all REST toolbar icons will be hidden from the editor title bar."
+        },
+        "cpqBml.lint.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML linting (diagnostics and quick fixes). Individual lines or whole files can still be excluded with // bml-lint-disable comments regardless of this setting."
+        },
+        "cpqBml.connection.siteUrl": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Your Oracle CPQ instance. Accepts a bare sitename, host, or full URL. Or open the custom settings dashboard: [Open Settings Webview](command:cpqBml.settings.open?%5B%22connection%22%5D)"
+        },
+        "cpqBml.connection.authMethod": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "bearer"
+          ],
+          "default": "basic",
+          "description": "Authentication method for CPQ REST calls: 'basic' (username/password) or 'bearer' (an OAuth/SAML token you already have)."
+        },
+        "cpqBml.connection.username": {
+          "type": "string",
+          "default": "",
+          "description": "Username for Basic authentication. The password/token itself is never stored here - use the 'CPQ-BML: Set CPQ Password' / 'Set CPQ Auth Token' commands, which store it securely via VS Code Secret Storage."
+        },
+        "cpqBml.connection.environments": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "Configure multiple CPQ environments to switch between them quickly. Or manage them in the custom settings dashboard: [Open Settings Webview](command:cpqBml.settings.open?%5B%22environments%22%5D),",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The custom name of the environment (e.g. dev, test, prod)."
+              },
+              "siteUrl": {
+                "type": "string",
+                "description": "The URL of the CPQ instance (e.g. sitename or sitename.bigmachines.com)."
+              },
+              "username": {
+                "type": "string",
+                "description": "The username for this environment."
+              },
+              "authMethod": {
+                "type": "string",
+                "enum": [
+                  "basic",
+                  "bearer"
+                ],
+                "default": "basic",
+                "description": "Authentication method: basic or bearer."
+              }
+            },
+            "required": [
+              "name",
+              "siteUrl"
+            ]
+          }
+        },
+        "cpqBml.connection.restVersion": {
+          "type": "string",
+          "default": "v18",
+          "description": "Oracle CPQ REST API version segment used when building request paths, e.g. v18 -> /rest/v18/bml/library/functions."
+        },
+        "cpqBml.connection.commerceProcess": {
+          "type": "string",
+          "default": "oraclecpqo",
+          "description": "Commerce Process variable name used for commerce BML REST operations."
+        },
+        "cpqBml.connection.commerceDocument": {
+          "type": "string",
+          "default": "transaction",
+          "description": "Commerce Process document variable name used by 'CPQ-BML: Pull Commerce Functions from CPQ' (e.g. 'transaction'). Change this if your commerce process functions live under a different document."
+        },
+        "cpqBml.connection.debugLog": {
+          "type": "boolean",
+          "default": false,
+          "description": "Log CPQ REST request/response details to a local 'bml_rest_api.log' file in the workspace root."
+        },
+        "cpqBml.rest.pullFolder": {
+          "type": "string",
+          "default": "library",
+          "description": "Workspace-relative folder where 'CPQ-BML: Pull Util Library Functions from CPQ' saves local .bml files and their -meta.json sidecars. Validate/Deploy/Debug also look for these next to whichever .bml file is open, and fall back to searching the live CPQ library by filename if none is found."
+        },
+        "cpqBml.mcp.enable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Start a local MCP (Model Context Protocol) server so an AI agent (e.g. Claude Code) can call CPQ-BML's pull/save/validate/debug/deploy operations directly. The server only binds to 127.0.0.1 (this machine only) and never exposes your CPQ credentials to the connecting client - only the extension itself builds the Authorization header. Run 'CPQ-BML: Show MCP Server Connection Info' for the connection URL."
+        },
+        "cpqBml.mcp.port": {
+          "type": "number",
+          "default": 47821,
+          "description": "Localhost port the MCP server listens on, when cpqBml.mcp.enable is true."
+        },
+        "cpqBml.mcp.logToTerminal": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, every MCP tool call (list/pull/save/validate/debug/deploy/create) streams its progress into a dedicated 'CPQ-BML (AI)' integrated terminal, so you can watch what an AI agent is doing to your CPQ instance in real time. Off by default; the same log is always included in each tool's result regardless of this setting."
+        },
+        "cpqBml.debug.logOutputToFile": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, saves debug output to two files in the workspace root after each BML debug run: 'bml_debug_output.log' (script return value) and 'bml_debug_print.log' (print statements). Disabled by default."
+        }
+      }
+    },
+    "configurationDefaults": {
+      "editor.tokenColorCustomizations": {
+        "[*Dark]": {
+          "textMateRules": [
+            {
+              "scope": [
+                "comment.line.double-slash.bml",
+                "comment.block.bml",
+                "comment.block.documentation.bml"
+              ],
+              "settings": {
+                "foreground": "#6A9955"
+              }
+            },
+            {
+              "scope": "string.quoted.double.bml",
+              "settings": {
+                "foreground": "#CE9178"
+              }
+            },
+            {
+              "scope": "constant.numeric.bml",
+              "settings": {
+                "foreground": "#B5CEA8"
+              }
+            },
+            {
+              "scope": [
+                "constant.language.bml",
+                "constant.other.bml",
+                "storage.type.bml",
+                "keyword.operator.logical.bml"
+              ],
+              "settings": {
+                "foreground": "#569CD6"
+              }
+            },
+            {
+              "scope": [
+                "variable.other.member.bml",
+                "variable.other.line.attribute.bml",
+                "variable.other.transaction.attribute.bml",
+                "variable.other.property.bml",
+                "variable.other.constant.bml"
+              ],
+              "settings": {
+                "foreground": "#9CDCFE"
+              }
+            },
+            {
+              "scope": [
+                "entity.name.function.bml",
+                "entity.name.function.string.bml",
+                "entity.name.function.math.bml",
+                "entity.name.function.date.bml",
+                "entity.name.function.database.bml",
+                "entity.name.function.url.bml",
+                "entity.name.function.array.bml",
+                "entity.name.function.dictionary.bml",
+                "entity.name.function.xml.bml",
+                "entity.name.function.json.bml",
+                "entity.name.function.misc.bml"
+              ],
+              "settings": {
+                "foreground": "#DCDCAA"
+              }
+            },
+            {
+              "scope": [
+                "keyword.control.conditional.bml",
+                "keyword.control.flow.bml"
+              ],
+              "settings": {
+                "foreground": "#C586C0"
+              }
+            }
+          ]
+        },
+        "[*Light]": {
+          "textMateRules": [
+            {
+              "scope": [
+                "comment.line.double-slash.bml",
+                "comment.block.bml",
+                "comment.block.documentation.bml"
+              ],
+              "settings": {
+                "foreground": "#008000"
+              }
+            },
+            {
+              "scope": "string.quoted.double.bml",
+              "settings": {
+                "foreground": "#A31515"
+              }
+            },
+            {
+              "scope": "constant.numeric.bml",
+              "settings": {
+                "foreground": "#098658"
+              }
+            },
+            {
+              "scope": [
+                "constant.language.bml",
+                "constant.other.bml",
+                "storage.type.bml",
+                "keyword.operator.logical.bml",
+                "keyword.control.conditional.bml",
+                "keyword.control.flow.bml"
+              ],
+              "settings": {
+                "foreground": "#0000FF"
+              }
+            },
+            {
+              "scope": [
+                "variable.other.member.bml",
+                "variable.other.line.attribute.bml",
+                "variable.other.transaction.attribute.bml",
+                "variable.other.property.bml",
+                "variable.other.constant.bml"
+              ],
+              "settings": {
+                "foreground": "#E50000"
+              }
+            },
+            {
+              "scope": [
+                "entity.name.function.bml",
+                "entity.name.function.string.bml",
+                "entity.name.function.math.bml",
+                "entity.name.function.date.bml",
+                "entity.name.function.database.bml",
+                "entity.name.function.url.bml",
+                "entity.name.function.array.bml",
+                "entity.name.function.dictionary.bml",
+                "entity.name.function.xml.bml",
+                "entity.name.function.json.bml",
+                "entity.name.function.misc.bml"
+              ],
+              "settings": {
+                "foreground": "#795E26"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && npm run compile:webview",
+    "compile:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic",
+    "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+    "watch:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --watch",
+    "minify": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify && npm run minify:webview",
+    "minify:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify",
+    "vscode:prepublish": "npm run minify",
+    "package": "npx @vscode/vsce package",
+    "build": "npm run package",
+    "pretest": "npm run compile",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.107.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^3.0.0",
+    "esbuild": "^0.28.1",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "zod": "^4.4.3"
+  }
+}
