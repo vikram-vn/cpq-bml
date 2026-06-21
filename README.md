@@ -158,4 +158,4 @@ Example config file:
 
 ## License
 
-MIT © 2024-2026 vikram-n
+MIT © 2026 vikram-n
