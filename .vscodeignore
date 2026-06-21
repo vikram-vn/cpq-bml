@@ -22,6 +22,9 @@ app/lang/lint/**
 app/lang/rest/**
 app/lang/cspell-loader/**
 
+#Ignore BML Better Comments extension
+app/lang/comments/**
+
 # Ignore MCP JavaScript source files
 app/lang/mcp/*.js
 app/lang/mcp/tools/*.js

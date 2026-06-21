@@ -1,0 +1,110 @@
+"use strict";
+const vscode = require('vscode');
+const { buildCommentDecorations } = require('./decorate');
+const { DEFAULT_TAGS } = require('./tags');
+const { getHoverMarkdown } = require('./hover');
+
+function isCommentsEnabled() {
+    return vscode.workspace.getConfiguration('cpqBml').get('comments.enable', true);
+}
+
+// Decoration styles are hardcoded (no settings.json exposure) - the user
+// confirmed custom-tag configurability is explicitly out of scope.
+function createDecorationTypes() {
+    const tagTypes = new Map();
+    for (const tag of DEFAULT_TAGS) {
+        tagTypes.set(tag.id, vscode.window.createTextEditorDecorationType({
+            color: tag.color,
+            fontWeight: tag.bold ? 'bold' : undefined,
+            fontStyle: tag.italic ? 'italic' : undefined,
+            textDecoration: tag.strikethrough ? 'line-through' : (tag.underline ? 'underline' : undefined)
+        }));
+    }
+    // Directives (// bml-lint-disable*, /* beautify ignore:start/end */)
+    // actually change tool behavior, so they get a visually distinct style
+    // from every tag color above.
+    const directiveType = vscode.window.createTextEditorDecorationType({
+        color: '#B180FF',
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(177, 128, 255, 0.12)'
+    });
+    const docHeaderType = vscode.window.createTextEditorDecorationType({
+        fontStyle: 'italic',
+        backgroundColor: 'rgba(100, 149, 237, 0.08)'
+    });
+    return { tagTypes, directiveType, docHeaderType };
+}
+
+function toVscodeRanges(document, offsetRanges) {
+    return offsetRanges.map(([start, end]) => new vscode.Range(document.positionAt(start), document.positionAt(end)));
+}
+
+function applyDecorations(editor, decorationTypes) {
+    if (!editor || editor.document.languageId !== 'bml') return;
+    const document = editor.document;
+    const { tags, directives, docHeaders } = buildCommentDecorations(document.getText());
+
+    for (const [tagId, type] of decorationTypes.tagTypes) {
+        editor.setDecorations(type, toVscodeRanges(document, tags.get(tagId) || []));
+    }
+    editor.setDecorations(decorationTypes.directiveType, toVscodeRanges(document, directives));
+    editor.setDecorations(decorationTypes.docHeaderType, toVscodeRanges(document, docHeaders));
+}
+
+function clearDecorations(editor, decorationTypes) {
+    if (!editor) return;
+    for (const type of decorationTypes.tagTypes.values()) editor.setDecorations(type, []);
+    editor.setDecorations(decorationTypes.directiveType, []);
+    editor.setDecorations(decorationTypes.docHeaderType, []);
+}
+
+function registerBmlComments(context) {
+    const decorationTypes = createDecorationTypes();
+    for (const type of decorationTypes.tagTypes.values()) context.subscriptions.push(type);
+    context.subscriptions.push(decorationTypes.directiveType, decorationTypes.docHeaderType);
+
+    const decorateDelay = 300;
+    let decorateTimer;
+
+    const triggerDecorate = (editor) => {
+        clearTimeout(decorateTimer);
+        decorateTimer = setTimeout(() => {
+            if (!editor) return;
+            if (!isCommentsEnabled()) {
+                clearDecorations(editor, decorationTypes);
+                return;
+            }
+            applyDecorations(editor, decorationTypes);
+        }, decorateDelay);
+    };
+
+    vscode.window.onDidChangeActiveTextEditor(triggerDecorate, null, context.subscriptions);
+    vscode.workspace.onDidChangeTextDocument((e) => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor && editor.document === e.document) triggerDecorate(editor);
+    }, null, context.subscriptions);
+
+    // Toggling cpqBml.comments.enable should take effect immediately, same as
+    // cpqBml.lint.enable does for the linter.
+    vscode.workspace.onDidChangeConfiguration((e) => {
+        if (!e.affectsConfiguration('cpqBml.comments.enable')) return;
+        if (!isCommentsEnabled()) {
+            vscode.window.visibleTextEditors.forEach((editor) => clearDecorations(editor, decorationTypes));
+            return;
+        }
+        vscode.window.visibleTextEditors.forEach(triggerDecorate);
+    }, null, context.subscriptions);
+
+    const hoverProvider = vscode.languages.registerHoverProvider('bml', {
+        provideHover(document, position) {
+            if (!isCommentsEnabled()) return null;
+            const markdown = getHoverMarkdown(document.getText(), document.offsetAt(position));
+            return markdown ? new vscode.Hover(new vscode.MarkdownString(markdown)) : null;
+        }
+    });
+    context.subscriptions.push(hoverProvider);
+
+    if (vscode.window.activeTextEditor) triggerDecorate(vscode.window.activeTextEditor);
+}
+
+module.exports = { registerBmlComments };

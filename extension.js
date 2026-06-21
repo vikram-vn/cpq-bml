@@ -3,6 +3,7 @@ const vscode = require("vscode");
 const { registerBmlIntelliSense } = require("./app/lang/intellisense");
 const { registerBeautifier } = require("./app/lang/beautify");
 const { registerBmlLinter } = require("./app/lang/lint");
+const { registerBmlComments } = require("./app/lang/comments");
 const { installCSpellConfig } = require("./app/lang/cspell-loader");
 const { registerBmlRest } = require("./app/lang/rest");
 const { registerMcp } = require("./app/lang/mcp");
@@ -43,6 +44,9 @@ function activate(context) {
 
   // Register BMLint
   registerBmlLinter(context);
+
+  // Register BML Better Comments (tag/directive/doc-header decorations + hover)
+  registerBmlComments(context);
 
   // Register BML REST (live Oracle CPQ Util Library Function integration)
   registerBmlRest(context);

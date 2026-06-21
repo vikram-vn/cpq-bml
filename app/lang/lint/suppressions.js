@@ -29,6 +29,25 @@ function offsetToLine(lineStarts, offset) {
 
 const directiveRegex = /\bbml-lint-(disable-next-line|disable-line|disable-file|disable|enable)\b([^\r\n]*)/gi;
 
+// Single-shot (non-global) sibling of directiveRegex, for callers that
+// already have one isolated comment's text and just want to know if/how it's
+// a bml-lint directive (e.g. app/lang/comments' hover/decoration logic) -
+// avoids sharing a stateful `lastIndex` global regex across modules.
+const SINGLE_DIRECTIVE_PATTERN = /\bbml-lint-(disable-next-line|disable-line|disable-file|disable|enable)\b([^\r\n]*)/i;
+
+// Returns { type, codes } for a single comment's text, or null if it's not a
+// bml-lint directive. type is one of 'disable'|'disable-line'|'disable-next-line'
+// |'disable-file'|'enable'; codes is the (possibly empty) list of diagnostic
+// codes it applies to (empty = applies to every diagnostic).
+function describeLintDirective(commentText) {
+    const m = commentText.match(SINGLE_DIRECTIVE_PATTERN);
+    if (!m) return null;
+    return {
+        type: m[1].toLowerCase(),
+        codes: m[2].trim().split(/\s+/).filter(Boolean)
+    };
+}
+
 function parseDirectives(text, commentRanges, lineStarts) {
     const directives = [];
     for (const [start, end] of commentRanges) {
@@ -119,4 +138,4 @@ function computeSuppressions(text, commentRanges) {
     };
 }
 
-module.exports = { computeSuppressions };
+module.exports = { computeSuppressions, describeLintDirective };

@@ -189,6 +189,11 @@
           "default": true,
           "description": "Enable BML linting (diagnostics and quick fixes). Individual lines or whole files can still be excluded with // bml-lint-disable comments regardless of this setting."
         },
+        "cpqBml.comments.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML Better Comments: colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights functional directive comments (// bml-lint-disable*, /* beautify ignore:start/end */) distinctly, and styles doc-header comment blocks (Function Name/Description/Inputs/Return)."
+        },
         "cpqBml.connection.siteUrl": {
           "type": "string",
           "default": "",
