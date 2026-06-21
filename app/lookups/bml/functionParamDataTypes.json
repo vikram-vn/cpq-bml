@@ -1,0 +1,154 @@
+{
+    "items": [
+        {
+            "lookupCode": 13,
+            "displayLabel": "String Dictionary"
+        },
+        {
+            "lookupCode": 9,
+            "displayLabel": "String[]"
+        },
+        {
+            "lookupCode": 19,
+            "displayLabel": "String[][] Dictionary"
+        },
+        {
+            "lookupCode": 32,
+            "displayLabel": "JsonArray"
+        },
+        {
+            "lookupCode": 33,
+            "displayLabel": "ByteArray"
+        },
+        {
+            "lookupCode": 4,
+            "displayLabel": "Float"
+        },
+        {
+            "lookupCode": 27,
+            "displayLabel": "Date[][] Dictionary"
+        },
+        {
+            "lookupCode": 34,
+            "displayLabel": "Anytype Dictionary"
+        },
+        {
+            "lookupCode": 22,
+            "displayLabel": "Boolean Dictionary"
+        },
+        {
+            "lookupCode": 10,
+            "displayLabel": "String[][]"
+        },
+        {
+            "lookupCode": 8,
+            "displayLabel": "Float[]"
+        },
+        {
+            "lookupCode": 29,
+            "displayLabel": "Boolean[][]"
+        },
+        {
+            "lookupCode": 5,
+            "displayLabel": "Date"
+        },
+        {
+            "lookupCode": 17,
+            "displayLabel": "Integer[] Dictionary"
+        },
+        {
+            "lookupCode": 30,
+            "displayLabel": "Dictionary of String Dictionaries"
+        },
+        {
+            "lookupCode": 14,
+            "displayLabel": "Integer Dictionary"
+        },
+        {
+            "lookupCode": 24,
+            "displayLabel": "Date[]"
+        },
+        {
+            "lookupCode": 21,
+            "displayLabel": "Float[][] Dictionary"
+        },
+        {
+            "lookupCode": 28,
+            "displayLabel": "Boolean[]"
+        },
+        {
+            "lookupCode": 15,
+            "displayLabel": "Float Dictionary"
+        },
+        {
+            "lookupCode": 18,
+            "displayLabel": "Float[] Dictionary"
+        },
+        {
+            "lookupCode": 16,
+            "displayLabel": "String[] Dictionary"
+        },
+        {
+            "lookupCode": 0,
+            "displayLabel": "Boolean"
+        },
+        {
+            "lookupCode": 26,
+            "displayLabel": "Date[] Dictionary"
+        },
+        {
+            "lookupCode": 2,
+            "displayLabel": "String"
+        },
+        {
+            "lookupCode": 20,
+            "displayLabel": "Integer[][] Dictionary"
+        },
+        {
+            "lookupCode": 31,
+            "displayLabel": "Json"
+        },
+        {
+            "lookupCode": 11,
+            "displayLabel": "Integer[][]"
+        },
+        {
+            "lookupCode": 36,
+            "displayLabel": "StringBuilder"
+        },
+        {
+            "lookupCode": 12,
+            "displayLabel": "Float[][]"
+        },
+        {
+            "lookupCode": 25,
+            "displayLabel": "Date[][]"
+        },
+        {
+            "lookupCode": 35,
+            "displayLabel": "Dictionary of Anytype Dictionaries"
+        },
+        {
+            "lookupCode": 6,
+            "displayLabel": "Integer"
+        },
+        {
+            "lookupCode": 23,
+            "displayLabel": "Date Dictionary"
+        },
+        {
+            "lookupCode": 7,
+            "displayLabel": "Integer[]"
+        }
+    ],
+    "links": [
+        {
+            "rel": "self",
+            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionParamDataTypes/lookupValues"
+        },
+        {
+            "rel": "parent",
+            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionParamDataTypes"
+        }
+    ]
+}

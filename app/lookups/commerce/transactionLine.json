@@ -1,0 +1,2981 @@
+{
+    "items": [
+        {
+            "name": "annualValue_l",
+            "description": "The annual contract value of the recurring charges on this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual Sales"
+        },
+        {
+            "name": "_document_number",
+            "description": "Unique doc number to be used as document identifier in a process",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Document Number"
+        },
+        {
+            "name": "cancelReason_l",
+            "description": "The reason why the customer canceled this line.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "Customer Changed Mind",
+                    "displayValue": "Customer Changed Mind"
+                },
+                {
+                    "value": "Fulfillment Delayed",
+                    "displayValue": "Fulfillment Delayed"
+                },
+                {
+                    "value": "ORA_PRICING",
+                    "displayValue": "Pricing"
+                },
+                {
+                    "value": "ORA_SUSP",
+                    "displayValue": "Suspended"
+                }
+            ],
+            "displayLabel": "Cancel Reason"
+        },
+        {
+            "name": "_parent_doc_number",
+            "description": "Used to identify the parent document number, if any, for this subdocument.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Parent Document Number"
+        },
+        {
+            "name": "_config_attributes",
+            "description": "Configurable Attribute is a composite attribute. This attribute is always read only. However Reconfigure action may be used to modify the values.",
+            "dataType": {
+                "value": 21,
+                "displayValue": "String"
+            },
+            "displayLabel": "Config Attributes"
+        },
+        {
+            "name": "_parent_line_item",
+            "description": "Used to identify the name of the parent line item, if any, for this subdocument.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Parent Line Item"
+        },
+        {
+            "name": "_config_attr_text",
+            "description": "Configurable Attribute Text format is similar Configurable Attribute. The only difference is that the values correspond to the display text of the attributes.",
+            "dataType": {
+                "value": 21,
+                "displayValue": "String"
+            },
+            "displayLabel": "Config Attribute Text"
+        },
+        {
+            "name": "_is_line_item_mandatory",
+            "description": "Used to identify if the line item is mandatory.",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Is Line Item Mandatory"
+        },
+        {
+            "name": "_config_attr_info",
+            "description": "Configurable Attribute Information is populated with variable name, attribute name, data type and menu type information.",
+            "dataType": {
+                "value": 21,
+                "displayValue": "String"
+            },
+            "displayLabel": "Config Attribute Information"
+        },
+        {
+            "name": "_is_recommended_price",
+            "description": "Used to identify if the line item has recommended price set by a rule.",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Is Price Recommended"
+        },
+        {
+            "name": "contractedPeriods_l",
+            "description": "Number of periods the customer has contracted to receive the item.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Contracted Periods"
+        },
+        {
+            "name": "_is_part_pricing_rule_price",
+            "description": "Used to identify if a line item has a part pricing rule set by a rule",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Is Price from Pricing Rule"
+        },
+        {
+            "name": "contractValue_l",
+            "description": "The total contract value of this line including all one-time and recurring charges.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Contract Value (Net Summable)"
+        },
+        {
+            "name": "_original_document_number",
+            "description": "Used to identify the document number from which the line item is copied.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Original Document Number"
+        },
+        {
+            "name": "createdBy_l",
+            "description": "The person that created the transaction line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Created By"
+        },
+        {
+            "name": "_reconfiguration_date",
+            "description": "Used to Store the Reconfiguration Date of the model. -1 for Part and non-configured Model.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Reconfiguration Date"
+        },
+        {
+            "name": "createdDate_l",
+            "description": "The date when the transaction line was created.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Created Date"
+        },
+        {
+            "name": "_last_modified_date",
+            "description": "Used to Store the last modified date of the sub-document.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Last Modified Date"
+        },
+        {
+            "name": "costAmount_l",
+            "description": "The total cost of this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Cost Amount"
+        },
+        {
+            "name": "_line_item_comment",
+            "description": "Stores the comments for the line item.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line Item Comments"
+        },
+        {
+            "name": "customDiscountAmount_l",
+            "description": "The amount by which to adjust the list price because of a custom discount.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Custom Discount Amount"
+        },
+        {
+            "name": "_line_item_spare_rule_var_name",
+            "description": "Identifier returned by Spare Rule, if the Identifier is not specified the spare rule variable name is used as the identifier",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line Item Identifier"
+        },
+        {
+            "name": "customDiscountValue_l",
+            "description": "Used to capture the numeric value associated with the discount type. This might be an override price, amount off or percentage.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Discount"
+        },
+        {
+            "name": "customDiscountType_l",
+            "description": "The type of custom discount to apply to this line.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "Percent Off",
+                    "displayValue": "Percent Off"
+                },
+                {
+                    "value": "Amount Off",
+                    "displayValue": "Amount Off"
+                },
+                {
+                    "value": "Price Override",
+                    "displayValue": "Price Override"
+                }
+            ],
+            "displayLabel": "Discount Type"
+        },
+        {
+            "name": "_part_number",
+            "description": "Part Number",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Number"
+        },
+        {
+            "name": "_part_desc",
+            "description": "Description of the part",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Description"
+        },
+        {
+            "name": "contractStartDate_l",
+            "description": "Date that the customer starts to receive the service.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Contract Start Date"
+        },
+        {
+            "name": "_part_extended_desc_1",
+            "description": "Extended description of the part",
+            "dataType": {
+                "value": 22,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Extended Description 1"
+        },
+        {
+            "name": "_part_extended_desc_2",
+            "description": "Extended description of the part",
+            "dataType": {
+                "value": 22,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Extended Description 2"
+        },
+        {
+            "name": "_part_base_price",
+            "description": "Price of the part",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Part Base Price"
+        },
+        {
+            "name": "_part_units",
+            "description": "Units of the part",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Units"
+        },
+        {
+            "name": "_part_lead_time",
+            "description": "Lead time",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Lead Time"
+        },
+        {
+            "name": "_part_supplier_company_name",
+            "description": "Name of the part supplier company",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Supplier Company Name"
+        },
+        {
+            "name": "_part_drawing_position",
+            "description": "Drawing Position",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Drawing Position"
+        },
+        {
+            "name": "_part_direct_buy",
+            "description": "Direct Buy",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Direct Buy"
+        },
+        {
+            "name": "_partner_entity_id",
+            "description": "Partner Entity Id",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Partner Entity Id"
+        },
+        {
+            "name": "itemInstanceId_l",
+            "description": "The unique, invariant, internal identifier of this instance of a product. It is used to link sales order lines to the assets they change in an asset based order and as the key stored in a sales order line association. This ID is assigned when the product instance is created in either an external federated asset repository or in CPQ when a sales order line is created.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Instance ID"
+        },
+        {
+            "name": "lastUpdatedBy_l",
+            "description": "The person that last updated this transaction line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Last Updated By"
+        },
+        {
+            "name": "lastUpdatedDate_l",
+            "description": "The date and time the transaction line was last updated.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Last Updated"
+        },
+        {
+            "name": "listAmount_l",
+            "description": "The extended list amount for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Amount (List)"
+        },
+        {
+            "name": "listPrice_l",
+            "description": "The list price of the item.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Sales Price"
+        },
+        {
+            "name": "_model_name",
+            "description": "Name of the model",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Name"
+        },
+        {
+            "name": "_model_segment_name",
+            "description": "Segment to which the model belongs",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Segment Name"
+        },
+        {
+            "name": "_model_segment_var_name",
+            "description": "Segment to which the model belongs",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Segment Variable Name"
+        },
+        {
+            "name": "_model_product_line_name",
+            "description": "Product Line to which the model belongs",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Product Line Name"
+        },
+        {
+            "name": "_model_product_line_attributes",
+            "description": "Product Line Attributes of Product Line to which the model belongs",
+            "dataType": {
+                "value": 21,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Product Line Attributes"
+        },
+        {
+            "name": "_model_base_price",
+            "description": "Base price of the model",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Model Base Price"
+        },
+        {
+            "name": "_model_attributes",
+            "description": "Placeholder for all model attributes",
+            "dataType": {
+                "value": 21,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Attributes"
+        },
+        {
+            "name": "_model_supplier_company_name",
+            "description": "Model supplier company name",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Supplier Company Name"
+        },
+        {
+            "name": "_model_bom",
+            "description": "Model BOM Link",
+            "dataType": {
+                "value": 22,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model BOM"
+        },
+        {
+            "name": "_model_variable_name",
+            "description": "Variable name of the model",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Variable Name"
+        },
+        {
+            "name": "_model_product_line_var_name",
+            "description": "Variable name of the product line that the model belongs to.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Product Line Variable Name"
+        },
+        {
+            "name": "netAmount_l",
+            "description": "The extended list amount minus any discounts for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Amount (Net)"
+        },
+        {
+            "name": "netPrice_l",
+            "description": "The price paid by the customer for the item.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual Sales"
+        },
+        {
+            "name": "pricePeriod_l",
+            "description": "The period of service purchased at this price.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "Per Month",
+                    "displayValue": "Per Month"
+                },
+                {
+                    "value": "Per Year",
+                    "displayValue": "Per Year"
+                }
+            ],
+            "displayLabel": "Period"
+        },
+        {
+            "name": "priceType_l",
+            "description": "Indicates whether the amount on this line is charged once or periodically.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "One Time",
+                    "displayValue": "One Time"
+                },
+                {
+                    "value": "Recurring",
+                    "displayValue": "Recurring"
+                },
+                {
+                    "value": "Usage",
+                    "displayValue": "Usage"
+                }
+            ],
+            "displayLabel": "Price Type"
+        },
+        {
+            "name": "requestedUnitOfMeasure_l",
+            "description": "The unit of measure of the item requested by the customer (e.g. \"Each\").",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "EA",
+                    "displayValue": "EA"
+                },
+                {
+                    "value": "TP",
+                    "displayValue": "TP"
+                },
+                {
+                    "value": "KT",
+                    "displayValue": "KT"
+                },
+                {
+                    "value": "PR",
+                    "displayValue": "PR"
+                },
+                {
+                    "value": "PC",
+                    "displayValue": "PC"
+                },
+                {
+                    "value": "PK",
+                    "displayValue": "PK"
+                },
+                {
+                    "value": "RL",
+                    "displayValue": "RL"
+                },
+                {
+                    "value": "HD",
+                    "displayValue": "HD"
+                },
+                {
+                    "value": "12",
+                    "displayValue": "12"
+                },
+                {
+                    "value": "BX",
+                    "displayValue": "BX"
+                },
+                {
+                    "value": "M2",
+                    "displayValue": "M2"
+                },
+                {
+                    "value": "M",
+                    "displayValue": "M"
+                },
+                {
+                    "value": "MT",
+                    "displayValue": "MT"
+                },
+                {
+                    "value": "FT",
+                    "displayValue": "FT"
+                },
+                {
+                    "value": "SI",
+                    "displayValue": "SI"
+                },
+                {
+                    "value": "YD",
+                    "displayValue": "YD"
+                },
+                {
+                    "value": "C",
+                    "displayValue": "C"
+                },
+                {
+                    "value": "MM",
+                    "displayValue": "MM"
+                },
+                {
+                    "value": "IN",
+                    "displayValue": "IN"
+                },
+                {
+                    "value": "CM",
+                    "displayValue": "CM"
+                },
+                {
+                    "value": "KG",
+                    "displayValue": "KG"
+                },
+                {
+                    "value": "MG",
+                    "displayValue": "MG"
+                },
+                {
+                    "value": "OZ",
+                    "displayValue": "OZ"
+                },
+                {
+                    "value": "LB",
+                    "displayValue": "LB"
+                },
+                {
+                    "value": "GL",
+                    "displayValue": "GL"
+                },
+                {
+                    "value": "GA",
+                    "displayValue": "GA"
+                },
+                {
+                    "value": "ML",
+                    "displayValue": "ML"
+                },
+                {
+                    "value": "LT",
+                    "displayValue": "LT"
+                },
+                {
+                    "value": "DR",
+                    "displayValue": "DR"
+                },
+                {
+                    "value": "PG",
+                    "displayValue": "PG"
+                },
+                {
+                    "value": "UN",
+                    "displayValue": "UN"
+                },
+                {
+                    "value": "GM",
+                    "displayValue": "GM"
+                },
+                {
+                    "value": "Ea",
+                    "displayValue": "Each"
+                },
+                {
+                    "value": "HU",
+                    "displayValue": "HU"
+                }
+            ],
+            "displayLabel": "Requested UoM"
+        },
+        {
+            "name": "status_l",
+            "description": "The status of this line.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "NEW",
+                    "displayValue": "New"
+                },
+                {
+                    "value": "PENDING_VQ",
+                    "displayValue": "Pending VQ"
+                },
+                {
+                    "value": "INCREASE",
+                    "displayValue": "Increase"
+                },
+                {
+                    "value": "DECREASE",
+                    "displayValue": "Decrease"
+                },
+                {
+                    "value": "CP_HELD",
+                    "displayValue": "CP Held"
+                },
+                {
+                    "value": "CREATED",
+                    "displayValue": "Created"
+                },
+                {
+                    "value": "QUOTED",
+                    "displayValue": "Quoted"
+                },
+                {
+                    "value": "INVOICED",
+                    "displayValue": "Invoiced"
+                },
+                {
+                    "value": "AWAIT_BILLING",
+                    "displayValue": "Awaiting Billing"
+                },
+                {
+                    "value": "BILLED",
+                    "displayValue": "Billed"
+                },
+                {
+                    "value": "ORDERED",
+                    "displayValue": "Ordered"
+                },
+                {
+                    "value": "SCHEDULED",
+                    "displayValue": "Scheduled"
+                },
+                {
+                    "value": "PICKED",
+                    "displayValue": "Picked"
+                },
+                {
+                    "value": "MANUFACTURED",
+                    "displayValue": "Manufactured"
+                },
+                {
+                    "value": "AWAIT_SHIP",
+                    "displayValue": "Awaiting Shipment"
+                },
+                {
+                    "value": "SHIPPED",
+                    "displayValue": "Shipped"
+                },
+                {
+                    "value": "DELIVERED",
+                    "displayValue": "Delivered"
+                },
+                {
+                    "value": "ACTIVATED",
+                    "displayValue": "Activated"
+                },
+                {
+                    "value": "FULFILLED",
+                    "displayValue": "Fulfilled"
+                },
+                {
+                    "value": "CANCEL_REQUESTED",
+                    "displayValue": "Cancel Requested"
+                },
+                {
+                    "value": "CANCELED",
+                    "displayValue": "Canceled"
+                },
+                {
+                    "value": "DEACTIVATED",
+                    "displayValue": "Deactivated"
+                },
+                {
+                    "value": "DELETED",
+                    "displayValue": "Deleted"
+                },
+                {
+                    "value": "CLOSED",
+                    "displayValue": "Closed"
+                },
+                {
+                    "value": "REJECTED_BY_CUSTOMER",
+                    "displayValue": "Rejected By Customer"
+                },
+                {
+                    "value": "WAITING",
+                    "displayValue": "Waiting"
+                }
+            ],
+            "displayLabel": "Status"
+        },
+        {
+            "name": "transactionID_l",
+            "description": "The parent transaction's internal ID.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Transaction Internal ID"
+        },
+        {
+            "name": "unitCost_l",
+            "description": "The unit cost of the item.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Selected Cost"
+        },
+        {
+            "name": "priceWithinPolicy_l",
+            "description": "Flag which indicates if line price is within requesting user's defined pricing limits",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Price Within Policy"
+        },
+        {
+            "name": "_price_quantity",
+            "description": "Quantity",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Annual Volume (Dampened)"
+        },
+        {
+            "name": "_price_item_price_each",
+            "description": "The starting price. For Parts it will be the base price or price book price. For models it may be the base model price or the pricing rule or attribute value prices.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Item Price"
+        },
+        {
+            "name": "_price_list_price_each",
+            "description": "Will usually be the same value as the Item Price, unless a recommended item price applies.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "List Price"
+        },
+        {
+            "name": "_pricing_rule_price_each",
+            "description": "Currenly the customer level pricing. (Not applicable for Models)",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Pricing Rule Price"
+        },
+        {
+            "name": "_price_unit_price_each",
+            "description": "Will usually be the same value as the List Price, unless a contract price applies.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Unit Price"
+        },
+        {
+            "name": "_price_configurable_price",
+            "description": "Original price as per catalog (inclusive of discount and premium)",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Configurable Price"
+        },
+        {
+            "name": "_price_component_prices",
+            "description": "Additional prices based on configuration",
+            "dataType": {
+                "value": 21,
+                "displayValue": "String"
+            },
+            "displayLabel": "Component Prices"
+        },
+        {
+            "name": "annualDiscount_l",
+            "description": "The annual discount on the recurring charges on this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual Discount"
+        },
+        {
+            "name": "contractDiscount_l",
+            "description": "The total discount of this line including all one-time and recurring charges.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Contract Discount"
+        },
+        {
+            "name": "discountAmount_l",
+            "description": "The discount amount for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Amount (Discount)"
+        },
+        {
+            "name": "itemInstanceName_l",
+            "description": "The public identifier of the instance of a product. For goods this is typically the serial #. For services it might be another identifier such as the telephone #. This does not have to be unique across all product instances (e.g. a cell phone # may be reallocated over time). It is one of the primary attributes for searching for a product instance.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Instance Name"
+        },
+        {
+            "name": "requestDate_l",
+            "description": "The date on which the user requests that fulfillment occur for this transaction line.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Request Date"
+        },
+        {
+            "name": "contractEndDate_l",
+            "description": "Date that the customer stops to receive the service.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Contract End Date"
+        },
+        {
+            "name": "fulfillmentStatus_l",
+            "description": "The status for this line supplied by the fulfillment system after the transaction is submitted as a sales order.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "ORDERED",
+                    "displayValue": "Ordered"
+                },
+                {
+                    "value": "SCHEDULED",
+                    "displayValue": "Scheduled"
+                },
+                {
+                    "value": "PICKED",
+                    "displayValue": "Picked"
+                },
+                {
+                    "value": "MANUFACTURED",
+                    "displayValue": "Manufactured"
+                },
+                {
+                    "value": "AWAIT_SHIP",
+                    "displayValue": "Awaiting Shipment"
+                },
+                {
+                    "value": "SHIPPED",
+                    "displayValue": "Shipped"
+                },
+                {
+                    "value": "DELIVERED",
+                    "displayValue": "Delivered"
+                },
+                {
+                    "value": "CANCELED",
+                    "displayValue": "Canceled"
+                },
+                {
+                    "value": "CREATED",
+                    "displayValue": "Created"
+                },
+                {
+                    "value": "INVOICED",
+                    "displayValue": "Invoiced"
+                },
+                {
+                    "value": "AWAIT_BILLING",
+                    "displayValue": "Awaiting Billing"
+                },
+                {
+                    "value": "BILLED",
+                    "displayValue": "Billed"
+                },
+                {
+                    "value": "BEING_FULFILLED",
+                    "displayValue": "Being Fulfilled"
+                },
+                {
+                    "value": "AWAIT_ASSET_CREATION",
+                    "displayValue": "Awaiting Asset Creation"
+                },
+                {
+                    "value": "FULFILLED",
+                    "displayValue": "Fulfilled"
+                },
+                {
+                    "value": "CLOSED",
+                    "displayValue": "Closed"
+                },
+                {
+                    "value": "PROCESSING",
+                    "displayValue": "Processing"
+                },
+                {
+                    "value": "PARTIALLY_FULFILLED",
+                    "displayValue": "Partially Fulfilled"
+                }
+            ],
+            "displayLabel": "Fulfillment Status"
+        },
+        {
+            "name": "_part_display_number",
+            "description": "Part Display Number",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Display Number"
+        },
+        {
+            "name": "_part_company_associations",
+            "description": "Company Associations",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Company Associations"
+        },
+        {
+            "name": "_line_bom_id",
+            "description": "The BOM item instance id.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line Item BOM ID"
+        },
+        {
+            "name": "_line_bom_parent_id",
+            "description": "The parent BOM item instance id.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Parent Line Item BOM ID"
+        },
+        {
+            "name": "_line_bom_attributes",
+            "description": "BOM attributes, stored as a JSON string.",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line Item BOM Attributes"
+        },
+        {
+            "name": "_line_bom_part_number",
+            "description": "The part number of the BOM item. Only applicable to the model line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line BOM Part Number"
+        },
+        {
+            "name": "_line_bom_item_quantity",
+            "description": "The BOM item line quantity. This is the unexploded line quantity, whereas _price_quantity stores the exploded quantity.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Line BOM Item Quantity"
+        },
+        {
+            "name": "_line_bom_level",
+            "description": "The BOM item depth (level) in the quote.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Line BOM Level"
+        },
+        {
+            "name": "_line_bom_effective_date",
+            "description": "System attribute to be stored in model line effective date to drive date effectivity in all BOM mappings.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Line BOM Effective Date"
+        },
+        {
+            "name": "_config_extra_info",
+            "description": "Configuration Extra Information.",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Config Extra Info"
+        },
+        {
+            "name": "_configuration_id",
+            "description": "Configuration id for integrations.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Configuration ID"
+        },
+        {
+            "name": "_sequence_number",
+            "description": "Sequence number for the subdocument.",
+            "dataType": {
+                "value": 23,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Sequence Number"
+        },
+        {
+            "name": "_group_sequence_number",
+            "description": "Group sequence number for the subdocument.",
+            "dataType": {
+                "value": 33,
+                "displayValue": "String"
+            },
+            "displayLabel": "Group Sequence Number"
+        },
+        {
+            "name": "annualListValue_l",
+            "description": "The extended value at list price for recurring pricing on this transaction line over the duration of the contracted periods.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual Value (List)"
+        },
+        {
+            "name": "contractListValue_l",
+            "description": "The total of all contract list value of this line, including all one-time and recurring charges.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Contract Value (List)"
+        },
+        {
+            "name": "winLossStatus_l",
+            "description": "The determining status of whether the transaction line represents a won or a lost sale. This can be used in Deal Management analysis.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "WON",
+                    "displayValue": "Won"
+                },
+                {
+                    "value": "LOST",
+                    "displayValue": "Lost"
+                },
+                {
+                    "value": "IN PROGRESS",
+                    "displayValue": "In Progress"
+                }
+            ],
+            "displayLabel": "Win/Loss Status"
+        },
+        {
+            "name": "priceScore_l",
+            "description": "The calculated price score for this transaction line, based on the line item's List and Net pricing.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Price Score"
+        },
+        {
+            "name": "unitMargin_l",
+            "description": "The margin for a single unit of this transaction line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Margin"
+        },
+        {
+            "name": "marginAmount_l",
+            "description": "The margin for all quoted units of this transaction line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual Margin $"
+        },
+        {
+            "name": "marginPercent_l",
+            "description": "The percentage of the List price for which this transaction line's margin accounts.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Annual Margin %"
+        },
+        {
+            "name": "annualCost_l",
+            "description": "The extended cost for recurring pricing on this transaction line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual COGS"
+        },
+        {
+            "name": "contractCost_l",
+            "description": "The total of all contract extended costs for this line, including one-time and recurring costs.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Contract Cost"
+        },
+        {
+            "name": "annualMargin_l",
+            "description": "The extended margin for recurring pricing on this transaction line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual Margin"
+        },
+        {
+            "name": "contractMargin_l",
+            "description": "The total of all contract extended margins for this line, including one-time and recurring values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Contract Margin"
+        },
+        {
+            "name": "_price_calculation_info",
+            "description": "JSON array of aggregated calculation information returned from advanced pricing profiles",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Calculation Information"
+        },
+        {
+            "name": "_model_is_valid",
+            "description": "Check if model is configured or unconfigured",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Is Model Valid"
+        },
+        {
+            "name": "discountPercent_l",
+            "description": "The percentage of the Contract Value (List) that is discounted off of the transaction line.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Discount %"
+        },
+        {
+            "name": "lineType_l",
+            "description": "The type of a transaction line whether it represents a model or a part.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "MODEL",
+                    "displayValue": "Model"
+                },
+                {
+                    "value": "PART",
+                    "displayValue": "Part"
+                }
+            ],
+            "displayLabel": "Line Type"
+        },
+        {
+            "name": "oRCL_ERP_OrderNumber_l",
+            "description": "The order number assigned by the external Order Management and ERP system.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Order Number"
+        },
+        {
+            "name": "priceRecurFrequency_l",
+            "description": "The periodicity or frequency of this pricing. Derived from the pricePeriod_l.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "MONTHLY",
+                    "displayValue": "Per Month"
+                },
+                {
+                    "value": "YEARLY",
+                    "displayValue": "Per Year"
+                }
+            ],
+            "displayLabel": "Price Recurrence Frequency"
+        },
+        {
+            "name": "_model_partner_entity_id",
+            "description": "Partner entity id for the model",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Partner Entity Id"
+        },
+        {
+            "name": "_model_partner_organization_id",
+            "description": "partner organization id for the model",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Partner Organization Id"
+        },
+        {
+            "name": "rootLine_l",
+            "description": "Indicates whether the line is a root line. Root lines include only root model lines and standalone part lines.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "Y",
+                    "displayValue": "Y"
+                },
+                {
+                    "value": "N",
+                    "displayValue": "N"
+                }
+            ],
+            "displayLabel": "Root Line"
+        },
+        {
+            "name": "nonRecurRevSummable_l",
+            "description": "One-time revenue net of all discounts for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Non-Recurring Revenue (Summable)"
+        },
+        {
+            "name": "recurringRevSummable_l",
+            "description": "Recurring revenue net of all discounts for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Recurring Revenue (Summable)"
+        },
+        {
+            "name": "usageRevSummable_l",
+            "description": "Usage revenue net of all discounts for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Usage Revenue (Summable)"
+        },
+        {
+            "name": "monthlyRecurRevSummable_l",
+            "description": "Monthly recurring revenues net of all discounts for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "MRR (Summable)"
+        },
+        {
+            "name": "monthlyUsageRevSummable_l",
+            "description": "Monthly usage revenues net of all discounts for this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "MUR (Summable)"
+        },
+        {
+            "name": "priceTypeRollup_l",
+            "description": "Indicates whether the amount on this line is charged once or periodically. For Root model lines, this will represent a rollup of values for all child lines.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "One Time",
+                    "displayValue": "One Time"
+                },
+                {
+                    "value": "Recurring",
+                    "displayValue": "Recurring"
+                },
+                {
+                    "value": "Usage",
+                    "displayValue": "Usage"
+                },
+                {
+                    "value": "Mixed",
+                    "displayValue": "Mixed"
+                }
+            ],
+            "displayLabel": "Price Type (Rollup)"
+        },
+        {
+            "name": "priceRecurFrequencyRollup_l",
+            "description": "The periodicity or frequency of this pricing or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "MONTHLY",
+                    "displayValue": "Per Month"
+                },
+                {
+                    "value": "YEARLY",
+                    "displayValue": "Per Year"
+                }
+            ],
+            "displayLabel": "Price Recurrence Frequency (Rollup)"
+        },
+        {
+            "name": "contractedPeriodsRollup_l",
+            "description": "Number of periods the customer has contracted to receive the item or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Contracted Periods (Rollup)"
+        },
+        {
+            "name": "listPriceRollup_l",
+            "description": "The list price of the item or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "List Price (Rollup)"
+        },
+        {
+            "name": "netPriceRollup_l",
+            "description": "The price paid by the customer for the individual item or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Net Price (Rollup)"
+        },
+        {
+            "name": "netAmountRollup_l",
+            "description": "The extended list amount minus any discounts for this line or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Net Amount (Rollup)"
+        },
+        {
+            "name": "discountPercentRollup_l",
+            "description": "The percentage of the Contract Value (List) that is discounted off of the transaction line or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Discount Percent (Rollup)"
+        },
+        {
+            "name": "nonRecurRevRollup_l",
+            "description": "One-time revenue on this line or for the root model lines, the sum of one-time revenues for all the child lines.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Non-Recurring Revenue (Rollup)"
+        },
+        {
+            "name": "recurRevRollup_l",
+            "description": "Recurring revenue on this line or for the root model lines, the sum of recurring revenues for all the child lines.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Recurring Revenue (Rollup)"
+        },
+        {
+            "name": "usageRevRollup_l",
+            "description": "Usage revenue on this line or for the root model lines, the sum of usage revenues for all the child lines.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Usage Revenue (Rollup)"
+        },
+        {
+            "name": "contractValueRollup_l",
+            "description": "Contract value on this line or for the root model lines, the sum of all contract revenues for all the child lines.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Contract Value (Net Rollup)"
+        },
+        {
+            "name": "contractListValueRollup_l",
+            "description": "Contract list value on this line or for the root model lines, the sum of all contract list values for all the child lines.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Contract Value (List Rollup)"
+        },
+        {
+            "name": "monthlyRecurRevRollup_l",
+            "description": "Monthly recurring revenue on this line or for the root model lines, the sum of monthly recurring revenues for all the child lines.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "MRR (Rollup)"
+        },
+        {
+            "name": "monthlyUsageRevRollup_l",
+            "description": "Monthly usage revenue on this line or for the root model lines, the sum of monthly usage revenues for all the child lines.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "MUR (Rollup)"
+        },
+        {
+            "name": "_config_attr_values",
+            "description": "Stores configurable attributes values in a user-friendly JSON format that are passed in from the CRM partner at the time of quote creation. These values are used as a starting point when creating quote lines from opportunity revenue lines and are not updated by subsequent reconfiguration. Usage should be limited to a small number of attributes to assure performance. Only simple configuration attribute data types are supported.",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Config Attribute Values"
+        },
+        {
+            "name": "_revenueId_l",
+            "description": "The ID of the Revenue Line Item in the associated opportunity.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Revenue ID"
+        },
+        {
+            "name": "_revenueCategory_l",
+            "description": "Identifies the category of revenue for this line (E.g. renewal vs new business).",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "NEW",
+                    "displayValue": "New"
+                },
+                {
+                    "value": "RENEW",
+                    "displayValue": "Renew"
+                },
+                {
+                    "value": "EXPANSION",
+                    "displayValue": "Expansion"
+                },
+                {
+                    "value": "MODIFICATION",
+                    "displayValue": "Modification"
+                },
+                {
+                    "value": "TERMINATION",
+                    "displayValue": "Termination"
+                }
+            ],
+            "displayLabel": "Revenue Category"
+        },
+        {
+            "name": "oRCL_ABO_ActionCode_l",
+            "description": "Indicates the changes required by the transaction line.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "ADD",
+                    "displayValue": "Add"
+                },
+                {
+                    "value": "DELETE",
+                    "displayValue": "Delete"
+                },
+                {
+                    "value": "UPDATE",
+                    "displayValue": "Update"
+                },
+                {
+                    "value": "TERMINATE",
+                    "displayValue": "Terminate"
+                },
+                {
+                    "value": "NO_UPDATE",
+                    "displayValue": "-"
+                },
+                {
+                    "value": "SUSPEND",
+                    "displayValue": "Suspend"
+                },
+                {
+                    "value": "RESUME",
+                    "displayValue": "Resume"
+                },
+                {
+                    "value": "RENEW",
+                    "displayValue": "Renew"
+                }
+            ],
+            "displayLabel": "Action Code"
+        },
+        {
+            "name": "salesChannel_l",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "ZPM_DIRECT_CHANNEL_TYPES",
+                    "displayValue": "Direct"
+                },
+                {
+                    "value": "ZPM_INDIRECT_CHANNEL_TYPES",
+                    "displayValue": "Indirect"
+                }
+            ],
+            "displayLabel": "Sales Channel"
+        },
+        {
+            "name": "subscriptionId_l",
+            "description": "The unique identifier for the subscription. Used only for  subscription billing-related transactions.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Subscription Id"
+        },
+        {
+            "name": "subscriptionLineId_l",
+            "description": "The unique identifier for the subscription line. Used only for  subscription billing-related transactions.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Subscription Line Id"
+        },
+        {
+            "name": "parentAssetKey_l",
+            "description": "The identifier for the corresponding parent asset in an external asset repository. Used only for asset-related lines.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Parent Asset Key"
+        },
+        {
+            "name": "rootAssetKey_l",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "RootAssetKey"
+        },
+        {
+            "name": "ownerResourceId_l",
+            "description": "The owner of the associated Opportunity Revenue Line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Owner Resource ID"
+        },
+        {
+            "name": "lineNumber_l",
+            "description": "Line number in a line item grid is a sequential number assigned to each row or line of the grid. This is used to sort lines on the screen and in documents.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Line Number"
+        },
+        {
+            "name": "renewDate_l",
+            "description": "Renewal date of a subscription service.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Renew Date"
+        },
+        {
+            "name": "suspendDate_l",
+            "description": "Suspension date of a subscription service",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Suspend Date"
+        },
+        {
+            "name": "resumeDate_l",
+            "description": "Resuming date of a subscription service",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Resume Date"
+        },
+        {
+            "name": "oRCL_ABO_ComponentAttributes_l",
+            "description": "A comma separated collection of key / value pair attributes that define the configuration of this asset / component plus an action code indicating whether the attribute has changed.",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Component Attributes"
+        },
+        {
+            "name": "orderDate_l",
+            "description": "The date and time the order was placed for fulfillment.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Order Date"
+        },
+        {
+            "name": "_part_default_price_type",
+            "description": "Default Price Type",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Price Type"
+        },
+        {
+            "name": "oRCL_SFA_InventoryOrgID_l",
+            "description": "The inventory organization in SFA used for sales products.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Partner Orgnanization ID"
+        },
+        {
+            "name": "oRCL_SFA_Status_l",
+            "description": "The SFA status of the transaction line. This value may differ from the transaction status for CPQ. Initially, there is no internal logic setting this value.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Opportunity Win/Loss Status (Line)"
+        },
+        {
+            "name": "oRCL_SFA_InventoryItemID_l",
+            "description": "The inventory item id of the sales product in SFA.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Inventory Item ID"
+        },
+        {
+            "name": "_part_sale_enabled",
+            "description": "Eligible to sell or order",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Eligible to Sell"
+        },
+        {
+            "name": "_part_serv_req_enabled",
+            "description": "Eligible for service",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Eligible for Service"
+        },
+        {
+            "name": "_part_css_enabled",
+            "description": "Customer Self-service enabled flag",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Enable Customer Self-Service"
+        },
+        {
+            "name": "_part_external_key1",
+            "description": "External system's key",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "External Key 1"
+        },
+        {
+            "name": "_part_external_key2",
+            "description": "External system's key",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "External Key 2"
+        },
+        {
+            "name": "_part_default_periodicity",
+            "description": "Default Price Periodicity",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part Price Period"
+        },
+        {
+            "name": "_part_default_periods",
+            "description": "Default number of price periods",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Number of Price Periods"
+        },
+        {
+            "name": "_part_default_uom",
+            "description": "Default unit of measure",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Default UOM Code"
+        },
+        {
+            "name": "_part_sales_product_type",
+            "description": "ProductTypeCode Valid values comes from a lookup. E.g Goods, Included Warranty etc.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Sales Product Type"
+        },
+        {
+            "name": "_partner_organization_id",
+            "description": "Partner Organization Id",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Partner Organization Id"
+        },
+        {
+            "name": "fulfillmentLineId_l",
+            "description": "Value that uniquely identifies the fulfillment line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Fulfillment Line Id"
+        },
+        {
+            "name": "rollupFlag_l",
+            "description": "Specifies a charge component as a rollup value or aggregate value for the element code of the charge component price.",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Rollup Flag"
+        },
+        {
+            "name": "fulfillmentOrganizationCode_l",
+            "description": "Abbreviation that identifies the organization that ships the shipment.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Fulfillment Organization Code"
+        },
+        {
+            "name": "paymentTerms_l",
+            "description": "Payment terms to apply to collect payment. Review and update the value for this attribute using the Setup and Maintenance work area, and the Manage Receivables Payment Terms task. To collect data for this attribute, use the Collect Order Reference Data task for Fusion Source.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "Net 30",
+                    "displayValue": "Net 30"
+                },
+                {
+                    "value": "Net 60",
+                    "displayValue": "Net 60"
+                }
+            ],
+            "displayLabel": "Payment Terms"
+        },
+        {
+            "name": "parentDocNumber_l",
+            "description": "Document number of the parent line item.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Parent Doc Number"
+        },
+        {
+            "name": "associatedLineId_l",
+            "description": "Document number to be associated with the subscription line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Associated Line Id"
+        },
+        {
+            "name": "associatedOrderId_l",
+            "description": "Source order Id associated with the subscription line",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Associated Order Id"
+        },
+        {
+            "name": "documentNumber_l",
+            "description": "Document number of the line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Document Number"
+        },
+        {
+            "name": "requestShipDate_l",
+            "description": "The requested ship date for the order line.",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Request Ship Date"
+        },
+        {
+            "name": "changeCode_l",
+            "description": "A single select menu to handle all the possible codes to close a subscription.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "ORA_FULL",
+                    "displayValue": "Full"
+                },
+                {
+                    "value": "ORA_PRORATE_WITHOUT_CREDIT",
+                    "displayValue": "Prorate Without Credit"
+                },
+                {
+                    "value": "ORA_PRORATE_WITH_CREDIT",
+                    "displayValue": "Prorate With Credit"
+                }
+            ],
+            "displayLabel": "Change Code"
+        },
+        {
+            "name": "changeReason_l",
+            "description": "A single select menu to handle all the possible reasons for closing a subscription.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "ORA_BREACH",
+                    "displayValue": "Breach"
+                },
+                {
+                    "value": "ORA_NON_COMPLIANCE",
+                    "displayValue": "Non Compliant"
+                },
+                {
+                    "value": "ORA_CHANGE_QUANTITY",
+                    "displayValue": "Quantity Change"
+                },
+                {
+                    "value": "ORA_DOWNGRADE",
+                    "displayValue": "Downgrade"
+                },
+                {
+                    "value": "ORA_TERM_CHANGE",
+                    "displayValue": "Term Change"
+                },
+                {
+                    "value": "ORA_UPGRADE",
+                    "displayValue": "Upgrade"
+                }
+            ],
+            "displayLabel": "Change Reason"
+        },
+        {
+            "name": "_delta_price",
+            "description": "Delta Price",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Delta Price"
+        },
+        {
+            "name": "_prior_price",
+            "description": "Prior Price",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Prior Price"
+        },
+        {
+            "name": "_rollup_delta_price",
+            "description": "Rollup Delta Price",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Rollup Delta Price"
+        },
+        {
+            "name": "_line_item_type",
+            "description": "Type attribute for line items.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line Item Type"
+        },
+        {
+            "name": "_line_display_name",
+            "description": "Display name attribute for line items.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line Display Name"
+        },
+        {
+            "name": "_line_bom_variable_name",
+            "description": "The variable name of the BOM item",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line BOM Variable Name"
+        },
+        {
+            "name": "_line_bom_name",
+            "description": "The name of the BOM item",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line BOM Name"
+        },
+        {
+            "name": "_chargeSetControl",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Charge Set Control"
+        },
+        {
+            "name": "_price_type",
+            "description": "Type of price (For example: One-time, Periodic - monthly, quarterly etc)",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Pricing Engine Price Type"
+        },
+        {
+            "name": "_price_period",
+            "description": "Period for which the price will be applicable.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Pricing Engine Price Period"
+        },
+        {
+            "name": "_price_applied_ratePlan",
+            "description": "Applied Rate Plan",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Applied Rate Plan"
+        },
+        {
+            "name": "_price_applied_ratePlan_number",
+            "description": "Applied Rate Plan Number",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Applied Rate Plan Number"
+        },
+        {
+            "name": "_is_bom_price",
+            "description": "Used to identify if the line item has BOM price. Applicable for a BOM item only",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Is BOM Price"
+        },
+        {
+            "name": "includedInBasePrice",
+            "description": "Used to identify if the line item is included in the base price. Applicable for a BOM item only.",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Included In Base Price"
+        },
+        {
+            "name": "_price_applied_ratePlan_integrationId",
+            "description": "Applied Rate Plan Integration Id",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Applied Rate Plan Integration ID"
+        },
+        {
+            "name": "_s_coverageOrderNumber",
+            "description": "Source order number of the coverage line for OM Integration.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Coverage Order Number"
+        },
+        {
+            "name": "_line_bom_model_path",
+            "description": "The model path of the BOM item; only applicable to the model line",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line BOM Model Path"
+        },
+        {
+            "name": "_s_coverageLineNumber",
+            "description": "Source line number of the coverage line for OM Integration.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Coverage Line Number"
+        },
+        {
+            "name": "_line_bom_condition_index",
+            "description": "The condition index of the BOM item",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line BOM Condition Index"
+        },
+        {
+            "name": "_line_bom_sequence_index",
+            "description": "The sequence index of the BOM item",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line BOM Sequence Index"
+        },
+        {
+            "name": "_line_bom_display_name",
+            "description": "The display name of the BOM item",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line BOM Display Name"
+        },
+        {
+            "name": "_s_partID_l",
+            "description": "Part number from the Items table.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Part ID"
+        },
+        {
+            "name": "_transactionLine_id",
+            "description": "Unique identifier for this subdocument.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Transaction Line ID"
+        },
+        {
+            "name": "_availableRatePlanSetControl",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Available Rate Plan Set Control"
+        },
+        {
+            "name": "_is_coverage",
+            "description": "Indicates whether the product is of coverage type",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Is Coverage Product"
+        },
+        {
+            "name": "_s_freezeNegotiationFlag_l",
+            "description": "Flag indicating whether price negotiation is permitted.",
+            "dataType": {
+                "value": 1,
+                "displayValue": "Boolean"
+            },
+            "displayLabel": "Freeze Negotiation Flag"
+        },
+        {
+            "name": "_price_applied_agreement_name",
+            "description": "Applied Agreement Name",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Applied Agreement Name"
+        },
+        {
+            "name": "_price_applied_agreement_number",
+            "description": "Applied Agreement Number",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Applied Agreement Number"
+        },
+        {
+            "name": "_price_applied_agreement_integrationId",
+            "description": "Applied Agreement Integration Id",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Applied Agreement Integration ID"
+        },
+        {
+            "name": "_model_sales_product_type",
+            "description": "ProductTypeCode Valid values comes from a lookup. E.g Goods, Included Warranty etc.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Model Sales Product Type"
+        },
+        {
+            "name": "_part_service_duration_type_code",
+            "description": "Service Duration Type",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Service Duration Type"
+        },
+        {
+            "name": "_s_lastPricePaid_l",
+            "description": "The most recent price at which the part/model was quoted.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Last Price Paid"
+        },
+        {
+            "name": "_s_lastPricePaidCustomerId_l",
+            "description": "The most recent price at which the part/model was quoted to the customer.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Last Price Paid (CustomerId)"
+        },
+        {
+            "name": "_s_priceScoreMarginBased_l",
+            "description": "Margin Based Method price score calculation for a line.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Price Score Margin Based"
+        },
+        {
+            "name": "_s_priceScoreListBased_l",
+            "description": "List Based Method price score calculation for line.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Price Score List Based"
+        },
+        {
+            "name": "_s_priceScoreWeighting_l",
+            "description": "Weighting attribute for price score calculation at the transaction level.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Price Score Weighting"
+        },
+        {
+            "name": "_s_priceScoreSimpleMarginNetPrice_l",
+            "description": "Price score calculation using Simple Margin Based method and Net Price as Basis attribute.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Price Score Simple Margin Based (Net Price Basis)"
+        },
+        {
+            "name": "_s_priceScoreSimpleMarginUnitCost_l",
+            "description": "Price score calculation using Simple Margin Based method and Unit Cost as Basis attribute.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Price Score Simple Margin Based (Unit Cost Basis)"
+        },
+        {
+            "name": "_s_priceScoreSimpleMarginListPrice_l",
+            "description": "Price score calculation using Simple Margin Based method and List Price as Basis attribute.",
+            "dataType": {
+                "value": 8,
+                "displayValue": "Integer"
+            },
+            "displayLabel": "Price Score Simple Margin Based (List Price Basis)"
+        },
+        {
+            "name": "_s_lineDiscountGuidanceFloor_l",
+            "description": "Lower bound of the line discount guidance.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Line Discount Guidance Floor"
+        },
+        {
+            "name": "_s_lineDiscountGuidanceCeiling_l",
+            "description": "Upper bound of the line discount guidance.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Line Discount Guidance Ceiling"
+        },
+        {
+            "name": "_s_lineDiscountGuidanceMax_l",
+            "description": "Max of the line discount guidance.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Line Discount Guidance Max"
+        },
+        {
+            "name": "aBO_Delta_Action_Code_l",
+            "description": "An action code indicating whether a transaction line attribute has changed during an ABO operation.",
+            "dataType": {
+                "value": 7,
+                "displayValue": "String"
+            },
+            "isMenuType": true,
+            "availableElements": [
+                {
+                    "value": "ADD",
+                    "displayValue": "Add"
+                },
+                {
+                    "value": "DELETE",
+                    "displayValue": "Delete"
+                },
+                {
+                    "value": "UPDATE",
+                    "displayValue": "Update"
+                },
+                {
+                    "value": "TERMINATE",
+                    "displayValue": "Terminate"
+                },
+                {
+                    "value": "NO_UPDATE",
+                    "displayValue": "-"
+                },
+                {
+                    "value": "SUSPEND",
+                    "displayValue": "Suspend"
+                },
+                {
+                    "value": "RESUME",
+                    "displayValue": "Resume"
+                },
+                {
+                    "value": "RENEW",
+                    "displayValue": "Renew"
+                }
+            ],
+            "displayLabel": "Line Delta Action Code"
+        },
+        {
+            "name": "_s_unitProratedOrderDiscount_l",
+            "description": "Prorated Order Level Discount Per Unit for the current line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Unit Prorated Order Discount"
+        },
+        {
+            "name": "_s_totalProratedOrderDiscount_l",
+            "description": "Total Prorated Order Discount accounted for the current line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Prorated Order Discount"
+        },
+        {
+            "name": "_requestedRatePlan",
+            "description": "This menu attribute is populated with the list of available rate plans.",
+            "dataType": {
+                "value": 40,
+                "displayValue": "String"
+            },
+            "displayLabel": "Requested Rate Plan"
+        },
+        {
+            "name": "_txnRef_externalLineId_l",
+            "description": "Reference Identifier for the current line from the external system, for example: Commerce Cart or Self Service Cart.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Reference External Item Id"
+        },
+        {
+            "name": "_tax_taxPrice_l",
+            "description": "Tax amount for one unit of this line.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Tax Price"
+        },
+        {
+            "name": "_tax_totalPrice_l",
+            "description": "The total price per unit of the item including taxes. If 'Is Tax Inclusive' is false, it is summation of Net Price per unit and tax per unit, otherwise it is same as Net Price per unit.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Annual Price"
+        },
+        {
+            "name": "_tax_totalAmount_l",
+            "description": "Total Price for this line including taxes.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Amount"
+        },
+        {
+            "name": "_tax_totalPriceMinusTax_l",
+            "description": "Total Price for this line excluding taxes.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Price Excluding Tax"
+        },
+        {
+            "name": "_tax_totalAmountMinusTax_l",
+            "description": "Total Price for this line including taxes.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Amount Excluding Tax"
+        },
+        {
+            "name": "_tax_calculation_info",
+            "description": "Additional Information for tax calculation.",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Tax Calculation Info"
+        },
+        {
+            "name": "_tax_taxRollup_l",
+            "description": "The tax price of the item or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Tax Price Rollup"
+        },
+        {
+            "name": "_tax_totalPriceRollup_l",
+            "description": "The total price of each item or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Price Rollup"
+        },
+        {
+            "name": "_tax_totalAmountRollup_l",
+            "description": "The total amount of the item or for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Amount Rollup"
+        },
+        {
+            "name": "_tax_totalContractPriceRollup_l",
+            "description": "The total amount for the contract duration for the root model rolled up to include all child values.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Contract Price Rollup"
+        },
+        {
+            "name": "_shipping_shippingServiceLevel_l",
+            "description": "Shipping level of service to use to deliver the shipment.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Shipping Service Level"
+        },
+        {
+            "name": "_shipping_shipCarrierName_l",
+            "description": "The name of the carrier who ships and delivers the items.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Shipping Carrier Name"
+        },
+        {
+            "name": "_shipping_shipModeOfTransport_l",
+            "description": "The mode of transport to ship and deliver the item.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Shipping Mode of Transport"
+        },
+        {
+            "name": "_shipping_shippingInstructions_l",
+            "description": "Instructions for the system on how to ship this item.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Shipping Instructions"
+        },
+        {
+            "name": "_shipping_shippingGroupId_l",
+            "description": "Identifier for the group of order lines in the order that ship together from one location to one destination, and that use the same scheduled ship date.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Shipping Group"
+        },
+        {
+            "name": "_shipping_shipToPartyId_l",
+            "description": "The Party ID for the Ship To Customer for this line. This attribute is used when a generalized Party object is used to identify customer parties.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Ship To party Id"
+        },
+        {
+            "name": "_shipping_shipToPartySiteId_l",
+            "description": "The ID for the Party Site or Address of the Ship To party for this line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Ship To Party Site Id"
+        },
+        {
+            "name": "_covered_item_uom",
+            "description": "To store the Unit of Measure attribute value of covered product in the coverage service line.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Covered Item UoM"
+        },
+        {
+            "name": "_s_orderLineId_l",
+            "description": "Order Line Id assigned by the external Order Management and ERP system",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Order Line Id"
+        },
+        {
+            "name": "_s_prevAssetKey_l",
+            "description": "Oracle Internal Attribute. References the prior asset instance from which this line was created, during an ABO operation.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Previous Asset Key"
+        },
+        {
+            "name": "_s_origAssetKey_l",
+            "description": "Oracle Internal Attribute. References the first asset instance from which this line was created during an ABO operation.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Original Asset Key"
+        },
+        {
+            "name": "_s_origRootAssetKey_l",
+            "description": "Oracle Internal Attribute. References the root asset key instance of the first asset instance from which this line was created, during an ABO operation.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Original Root Asset Key"
+        },
+        {
+            "name": "_s_fulfilledQuantity_l",
+            "description": "For Future Use. The quantity of items fulfilled by the fulfillment system after the sales order is processed.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Fulfilled Quantity"
+        },
+        {
+            "name": "_s_cancelledQuantity_l",
+            "description": "For Future Use. The quantity of items cancelled by the fulfillment system after the sales order is processed.",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Cancelled Quantity"
+        },
+        {
+            "name": "_s_coveredItemFulfillmentLineId_l",
+            "description": "For Future Use. Fulfillment Line Id of the covered item.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Covered Item Fulfillment Line Id"
+        },
+        {
+            "name": "_s_subscriptionNumber_l",
+            "description": "Subscription Number for the draft subscription line created during Create Subscription Integration.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line Subscription Number"
+        },
+        {
+            "name": "_availableRatePlans",
+            "description": "This menu attribute is populated with the list of available rate plans.",
+            "dataType": {
+                "value": 40,
+                "displayValue": "String"
+            },
+            "displayLabel": "Available Rate Plans"
+        },
+        {
+            "name": "totalShippingCost_l",
+            "description": "Total shipping cost for this line inclusive of taxes (for all quantities)",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Total Line Shipping Cost"
+        },
+        {
+            "name": "_s_newAssetKey_l",
+            "description": "Oracle Internal Attribute to store the generated new asset key when an asset instance is updated, renewed etc during an ABO operation.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "New Asset Key"
+        },
+        {
+            "name": "_part_custom_field5",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Cost"
+        },
+        {
+            "name": "_s_newRootAssetKey_l",
+            "description": "Oracle Internal Attribute used to store the generated new root asset key when an asset instance is updated, renewed etc during an ABO operation.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "New Root Asset Key"
+        },
+        {
+            "name": "_s_prevRootAssetKey_l",
+            "description": "Oracle Internal Attribute. References the prior root asset instance from which this line was created, during an ABO operation.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Previous Root Asset Key"
+        },
+        {
+            "name": "_part_custom_field1",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Product Group"
+        },
+        {
+            "name": "_s_originalFulfillmentLineId_l",
+            "description": "Original Fulfilment order line reference from external system for an asset instance.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Original Fulfillment Line Id"
+        },
+        {
+            "name": "_fusion_part_id",
+            "description": "Fusion Part Id",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Fusion Part Id"
+        },
+        {
+            "name": "_s_closedDate_l",
+            "description": "The date on which the asset associated with this quote line was closed, during an ABO operation",
+            "dataType": {
+                "value": 4,
+                "displayValue": "String (date)"
+            },
+            "displayLabel": "Closed Date"
+        },
+        {
+            "name": "_s_prevSubscriptionNumber_l",
+            "description": "The public key of the subscription created before amendment. Used only for subscription billing related transactions.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Previous Subscription Number"
+        },
+        {
+            "name": "_s_prevSubscriptionProductPuid_l",
+            "description": "The public key of the subscription product created before amendment. Used only for subscription billing related transactions.",
+            "dataType": {
+                "value": 5,
+                "displayValue": "String"
+            },
+            "displayLabel": "Previous Subscription Product Puid"
+        },
+        {
+            "name": "lineUpfrontAmount_l",
+            "description": "Amount to be collected for this line during checkout.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Line Upfront Amount"
+        },
+        {
+            "name": "lineUpfrontAmountRollup_l",
+            "description": "Amount to be collected for this root line (and its child lines) during checkout.",
+            "dataType": {
+                "value": 3,
+                "displayValue": "Numeric (currency)"
+            },
+            "displayLabel": "Upfront Amount Rollup"
+        },
+        {
+            "name": "_part_custom_field7",
+            "dataType": {
+                "value": 9,
+                "displayValue": "Float"
+            },
+            "displayLabel": "Part Lead Time(Week)"
+        },
+        {
+            "name": "_s_lineActionComment_l",
+            "description": "Captures remarks or comments provided during the execution of a line-level action on the asset or transaction.",
+            "dataType": {
+                "value": 6,
+                "displayValue": "String"
+            },
+            "displayLabel": "Line action comment"
+        },
+        {
+            "name": "_availableRatePlanSet",
+            "description": "This&#32;array&#32;set&#32;fetches&#32;the&#32;list&#32;of&#32;available&#32;Rate&#32;Plans.",
+            "dataType": {
+                "value": 39,
+                "displayValue": "Array Set"
+            },
+            "displayLabel": "Available Rate Plan Set"
+        },
+        {
+            "name": "_chargeSet",
+            "description": "&#160;",
+            "dataType": {
+                "value": 39,
+                "displayValue": "Array Set"
+            },
+            "displayLabel": "Charge Set"
+        },
+        {
+            "name": "oRCL_deltaChargeAttributes",
+            "description": "Defines&#32;attributes&#32;that&#32;stores&#32;the&#32;calculated&#32;delta&#32;information&#32;for&#32;charges&#32;when&#32;ABO&#32;actions&#32;are&#32;invoked.",
+            "dataType": {
+                "value": 39,
+                "displayValue": "Array Set"
+            },
+            "displayLabel": "Delta Charges"
+        },
+        {
+            "name": "oRCL_charges",
+            "description": "All&#32;prices&#32;including&#32;Product&#32;Price&#32;for&#32;OM&#32;Integration",
+            "dataType": {
+                "value": 39,
+                "displayValue": "Array Set"
+            },
+            "displayLabel": "Prices"
+        },
+        {
+            "name": "_productAssociationSet",
+            "description": "Defines&#32;attributes&#32;that&#32;maintain&#32;the&#32;relationship&#32;between&#32;a&#32;coverage&#32;or&#32;subscription&#32;product&#32;and&#32;the&#32;base&#32;product(s)&#32;it&#32;protects&#32;or&#32;extends.",
+            "dataType": {
+                "value": 39,
+                "displayValue": "Array Set"
+            },
+            "displayLabel": "Product Association Set"
+        }
+    ],
+    "links": [
+        {
+            "rel": "self",
+            "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transactionLine/lookupValues"
+        },
+        {
+            "rel": "parent",
+            "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transactionLine"
+        }
+    ]
+}
