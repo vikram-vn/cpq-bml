@@ -7,10 +7,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.1.1]
 
 ### Added
+- **BML Better Comments**: tagged comment highlighting (`!`, `?`, `*`, `//`, `TODO`, `FIXME`, `BUG`, `WARNING`, `IMPORTANT`, `HACK`, `XXX`, `NOTE`, `OPTIMIZE`, `IDEA`), distinct highlighting for functional directive comments (`// bml-lint-disable*`, `/* beautify ignore:start/end */`) with hover tooltips explaining exactly what each one does, and automatic detection/styling of BML doc-header comment blocks (`Function Name:`, `Description:`, `Inputs:`, `Return:`). Toggle with the new `cpqBml.features.comments` setting.
 - **Features Tab**: Added a dedicated "Features" tab to the settings panel webview to group BML Linting and BML Better Comments configurations.
 
 ### Fixed
 - **Settings Panel Crash**: Resolved a runtime crash (`TypeError: Cannot read properties of undefined (reading 'enable')`) that occurred when opening the settings webview.
+- **Production builds**: the packaged extension's JS (including the settings panel's React webview bundle) is now built with `NODE_ENV=production`, stripping React's development-only warning code from the shipped VSIX.
 
 ## [1.1.0]
 
