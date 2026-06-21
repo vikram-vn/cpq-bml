@@ -75,7 +75,7 @@ Connect code editors or standalone AI terminals (like Claude Code) directly to y
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://example.com/cpq-bml.git
+   git clone https://github.com/vikram-vn/cpq-bml.git
    cd cpq-bml
    ```
 2. **Install Dependencies:**
