@@ -22,6 +22,10 @@ app/lang/lint/**
 app/lang/rest/**
 app/lang/cspell-loader/**
 
+# Ignore MCP JavaScript source files
+app/lang/mcp/*.js
+app/lang/mcp/tools/*.js
+
 # Ignore root JavaScript source files
 extension.js
 app/lang/intellisense/*.js
