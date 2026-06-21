@@ -155,13 +155,13 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
 
 function registerBmlRestCommands(context) {
   const vscode = require("vscode");
-  const { createResultsTerminal } = require("../terminal");
+  const { getResultsTerminal } = require("../terminal");
 
   const diagnosticCollection =
     vscode.languages.createDiagnosticCollection("rest-validate");
   context.subscriptions.push(diagnosticCollection);
 
-  const resultsTerminal = createResultsTerminal(vscode, "CPQ-BML");
+  const resultsTerminal = getResultsTerminal(vscode);
   context.subscriptions.push(resultsTerminal);
 
   // Status bar item — shown only when a standard-function .bml is active

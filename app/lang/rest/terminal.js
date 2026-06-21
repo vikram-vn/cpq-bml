@@ -31,4 +31,17 @@ function createResultsTerminal(vscode, name) {
     };
 }
 
-module.exports = { createResultsTerminal };
+// Singleton accessor for the one shared "CPQ-BML" results terminal - both
+// human-triggered REST commands and MCP/AI tool calls write into this same
+// instance (gated separately for the AI side by cpqBml.mcp.logToTerminal),
+// rather than each maintaining its own terminal.
+let sharedResultsTerminal = null;
+
+function getResultsTerminal(vscode) {
+    if (!sharedResultsTerminal) {
+        sharedResultsTerminal = createResultsTerminal(vscode, 'CPQ-BML');
+    }
+    return sharedResultsTerminal;
+}
+
+module.exports = { createResultsTerminal, getResultsTerminal };
