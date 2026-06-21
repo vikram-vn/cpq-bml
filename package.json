@@ -49,14 +49,24 @@
     ],
     "themes": [
       {
-        "label": "CPQ-BML Dark",
+        "label": "BML Dark Default",
         "uiTheme": "vs-dark",
-        "path": "./themes/cpq-bml-dark-color-theme.json"
+        "path": "./themes/dark-default.json"
       },
       {
-        "label": "CPQ-BML Light",
+        "label": "BML Light Default",
         "uiTheme": "vs",
-        "path": "./themes/cpq-bml-light-color-theme.json"
+        "path": "./themes/light-default.json"
+      },
+      {
+        "label": "BML Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/dark.json"
+      },
+      {
+        "label": "BML Light",
+        "uiTheme": "vs",
+        "path": "./themes/light.json"
       }
     ],
     "snippets": [],
