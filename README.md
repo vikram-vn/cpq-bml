@@ -45,13 +45,39 @@ The extension includes a custom, language-aware linter that checks for:
     - `// bml-lint-disable-file`
 - **Quick Fixes:** Rich VS Code Code Actions support to automatically repair semicolon issues, syntax typos, deprecated function calls, and format warnings in place.
 
-### 4. Interactive Settings Dashboard
+### 4. BML Better Comments & Documentation
+
+The extension automatically formats, styles, and highlights your BML comments with distinct colors, underlines, and strike-throughs to emphasize task status, directives, and headers:
+
+- **Symbol Tags:**
+  - `// ! Alert or critical information` (Red highlighting)
+  - `// ? Question or review needed` (Blue italicized highlighting)
+  - `// * Highlighted note or key point` (Green italicized highlighting)
+  - `// // Commented-out code line` (Strikethrough line comment style)
+- **Word Tags (Case-Insensitive):**
+  - `// TODO: Task to complete` (Orange highlighting)
+  - `// FIXME: Bug to resolve` (Light red highlighting)
+  - `// BUG: Code bug or issue` (Light red bold highlighting)
+  - `// WARNING: Action warning` (Yellow bold highlighting)
+  - `// IMPORTANT: Critical warning` (Red bold highlighting)
+  - `// HACK: Temporary workaround` (Orange bold and underlined)
+  - `// XXX: Warning or code warning` (Orange bold and underlined)
+  - `// NOTE: General context note` (Teal highlighting)
+  - `// OPTIMIZE: Performance optimization` (Teal bold highlighting)
+  - `// IDEA: Design suggestion or idea` (Blue highlighting)
+- **Directives (Highlighting + Logic):**
+  - Lint suppression directives (e.g. `// bml-lint-disable-line`) and formatter ignore tags (e.g. `/* beautify ignore:start */` / `/* beautify ignore:end */`) get visually highlighted with a distinctive purple border/background.
+- **Documentation Headers:**
+  - Standardized BML function documentation headers (such as `Function Name:`, `Description:`, `Inputs:`, `Returns:`) are automatically detected and styled in italicized light blue blocks for maximum readability.
+
+### 5. Interactive Settings Dashboard
 
 - Access the custom webview setting dashboard via **`CPQ-BML: Open Settings`** (`cpqBml.settings.open`).
-- Manage multiple environment targets (e.g., Dev, Test, Stage, Prod).
+- **Features Tab:** Dedicated dashboard section to configure editor assistant features like BML Linting and BML Better Comments.
 - **Secure Credential Storage:** Connects with the VS Code Secret Storage API so passwords and token keys are saved securely on the operating system's keychain rather than plaintext config files.
+- Manage multiple environment targets (e.g., Dev, Test, Stage, Prod).
 
-### 5. Remote REST Integration & Synchronization
+### 6. Remote REST Integration & Synchronization
 
 Integrate directly with your live Oracle CPQ environment to pull and sync code:
 
@@ -61,7 +87,7 @@ Integrate directly with your live Oracle CPQ environment to pull and sync code:
 - **Deployment Control:** Save, push, and mass-deploy BML functions or commerce processes setup (`cpqBml.rest.deployCurrentFile`, `cpqBml.rest.deployUtilFunctions`, `cpqBml.rest.deployCommerceProcess`).
 - **Environment Switcher:** Cycle between configured sandboxes (`cpqBml.rest.changeEnvironment`).
 
-### 6. Model Context Protocol (MCP) Server for AI Agents
+### 7. Model Context Protocol (MCP) Server for AI Agents
 
 Connect code editors or standalone AI terminals (like Claude Code) directly to your active VS Code CPQ-BML workspace:
 
@@ -122,6 +148,7 @@ Define these properties in your User or Workspace `settings.json`:
 
 - `cpqBml.connection.enabled` (default: `true`): Enable Oracle CPQ REST integrations.
 - `cpqBml.lint.enable` (default: `true`): Enable BML linting, styling diagnostics, and code fixes.
+- `cpqBml.comments.enable` (default: `true`): Enable BML Better Comments decoration highlighting and documentation hover support.
 - `cpqBml.connection.siteUrl` (default: `""`): CPQ server instance domain name or root URL.
 - `cpqBml.connection.authMethod` (default: `"basic"`): Authentication method to use: `"basic"` (username/password) or `"bearer"` (OAuth tokens).
 - `cpqBml.connection.username` (default: `""`): Username for API access.

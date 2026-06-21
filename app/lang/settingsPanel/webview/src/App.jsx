@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
-import { Pill, Switch, IconConnection, IconEnvironments, IconOperations, IconMcp, IconAdvanced } from './Components';
-import { ConnectionTab, EnvironmentsTab, OperationsTab, McpTab, AdvancedTab } from './Tabs';
+import { Pill, Switch, IconConnection, IconEnvironments, IconOperations, IconMcp, IconAdvanced, IconFeatures } from './Components';
+import { ConnectionTab, EnvironmentsTab, OperationsTab, McpTab, AdvancedTab, FeaturesTab } from './Tabs';
 
 const EMPTY_STATE = {
     connection: {
@@ -47,7 +47,7 @@ export default function App({ vscodeApi }) {
             if (!message) return;
             if (message.type === 'state') {
                 const { type, ...rest } = message;
-                setState(rest);
+                setState(prev => ({ ...prev, ...rest }));
                 setIsSaving(false);
                 if (rest.activeTab) {
                     setActiveTab(rest.activeTab);
@@ -139,7 +139,14 @@ export default function App({ vscodeApi }) {
         vscodeApi.postMessage({ type: 'testConnection' });
     };
 
-    const { connection, rest, lint, comments, mcp, debug } = state;
+    const {
+        connection = {},
+        rest = {},
+        lint = {},
+        comments = {},
+        mcp = {},
+        debug = {}
+    } = state || {};
 
     return (
         <div className="layout-container">
@@ -171,6 +178,13 @@ export default function App({ vscodeApi }) {
                     >
                         <IconOperations />
                         Operations &amp; REST
+                    </button>
+                    <button
+                        className={`sidebar-item ${activeTab === 'features' ? 'active' : ''}`}
+                        onClick={() => { setActiveTab('features'); setError(null); }}
+                    >
+                        <IconFeatures />
+                        Features
                     </button>
                     <button
                         className={`sidebar-item ${activeTab === 'mcp' ? 'active' : ''}`}
@@ -251,6 +265,13 @@ export default function App({ vscodeApi }) {
                     drafts={drafts}
                     connection={connection}
                     changeDraft={changeDraft}
+                />
+
+                <FeaturesTab
+                    active={activeTab === 'features'}
+                    lint={lint}
+                    comments={comments}
+                    updateField={updateField}
                 />
 
                 <McpTab

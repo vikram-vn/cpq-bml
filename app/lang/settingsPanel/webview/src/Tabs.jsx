@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Pill, Switch, IconConnection, IconEnvironments, IconOperations, IconMcp, IconAdvanced } from './Components';
+import { Pill, Switch, IconConnection, IconEnvironments, IconOperations, IconMcp, IconAdvanced, IconFeatures } from './Components';
 import Environments from './Environments';
 
 const AUTH_METHODS = ['basic', 'bearer'];
 
 export function ConnectionTab({
     active,
-    connection,
+    connection = {},
     drafts,
     changeDraft,
     updateField,
@@ -167,8 +167,9 @@ export function ConnectionTab({
     );
 }
 
-export function EnvironmentsTab({ active, state, connection, vscodeApi }) {
+export function EnvironmentsTab({ active, state, connection = {}, vscodeApi }) {
     if (!active) return null;
+    const environments = state?.environments || [];
 
     return (
         <div className="tab-content active">
@@ -178,13 +179,13 @@ export function EnvironmentsTab({ active, state, connection, vscodeApi }) {
                     Environment Profiles
                 </h2>
                 <p className="card-desc">Save site profiles to quickly activate and switch between credentials.</p>
-                <Environments environments={state.environments} connection={connection} vscodeApi={vscodeApi} />
+                <Environments environments={environments} connection={connection} vscodeApi={vscodeApi} />
             </section>
         </div>
     );
 }
 
-export function OperationsTab({ active, rest, drafts, connection, changeDraft }) {
+export function OperationsTab({ active, rest = {}, drafts, connection = {}, changeDraft }) {
     if (!active) return null;
 
     return (
@@ -241,7 +242,7 @@ export function OperationsTab({ active, rest, drafts, connection, changeDraft })
     );
 }
 
-export function McpTab({ active, mcp, drafts, changeDraft, updateField }) {
+export function McpTab({ active, mcp = {}, drafts, changeDraft, updateField }) {
     if (!active) return null;
 
     return (
@@ -283,17 +284,17 @@ export function McpTab({ active, mcp, drafts, changeDraft, updateField }) {
     );
 }
 
-export function AdvancedTab({ active, lint, comments, connection, debug, updateField }) {
+export function FeaturesTab({ active, lint = {}, comments = {}, updateField }) {
     if (!active) return null;
 
     return (
         <div className="tab-content active">
             <section className="card">
                 <h2>
-                    <IconAdvanced />
-                    Diagnostics &amp; Logs
+                    <IconFeatures />
+                    Editor Features
                 </h2>
-                <p className="card-desc">Configure code validation linting options and logging outputs.</p>
+                <p className="card-desc">Configure BigMachines Language (BML) editor assistant features.</p>
 
                 <Switch
                     id="lintEnable"
@@ -310,6 +311,22 @@ export function AdvancedTab({ active, lint, comments, connection, debug, updateF
                     checked={comments.enable}
                     onChange={(v) => updateField('comments.enable', v)}
                 />
+            </section>
+        </div>
+    );
+}
+
+export function AdvancedTab({ active, connection = {}, debug = {}, updateField }) {
+    if (!active) return null;
+
+    return (
+        <div className="tab-content active">
+            <section className="card">
+                <h2>
+                    <IconAdvanced />
+                    Diagnostics &amp; Logs
+                </h2>
+                <p className="card-desc">Configure logging and tracing options for operations and debugging.</p>
 
                 <Switch
                     id="debugLog"

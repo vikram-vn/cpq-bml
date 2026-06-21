@@ -17,7 +17,10 @@ function createDecorationTypes() {
             color: tag.color,
             fontWeight: tag.bold ? 'bold' : undefined,
             fontStyle: tag.italic ? 'italic' : undefined,
-            textDecoration: tag.strikethrough ? 'line-through' : (tag.underline ? 'underline' : undefined)
+            textDecoration: tag.strikethrough ? 'line-through' : (tag.underline ? 'underline' : undefined),
+            light: {
+                color: tag.lightColor || tag.color
+            }
         }));
     }
     // Directives (// bml-lint-disable*, /* beautify ignore:start/end */)
@@ -26,11 +29,18 @@ function createDecorationTypes() {
     const directiveType = vscode.window.createTextEditorDecorationType({
         color: '#B180FF',
         fontWeight: 'bold',
-        backgroundColor: 'rgba(177, 128, 255, 0.12)'
+        backgroundColor: 'rgba(177, 128, 255, 0.12)',
+        light: {
+            color: '#7F00FF',
+            backgroundColor: 'rgba(127, 0, 255, 0.08)'
+        }
     });
     const docHeaderType = vscode.window.createTextEditorDecorationType({
         fontStyle: 'italic',
-        backgroundColor: 'rgba(100, 149, 237, 0.08)'
+        backgroundColor: 'rgba(100, 149, 237, 0.08)',
+        light: {
+            backgroundColor: 'rgba(70, 130, 180, 0.06)'
+        }
     });
     return { tagTypes, directiveType, docHeaderType };
 }
