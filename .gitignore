@@ -1,0 +1,10 @@
+node_modules
+.vscode-test/
+dist/
+*.vsix
+.env
+.cpqdevkit
+*.lock
+/bml
+package-lock.json
+app/lang/settingsPanel/webview/dist/

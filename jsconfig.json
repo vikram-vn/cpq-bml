@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"module": "Node16",
+		"target": "ES2022",
+		"checkJs": true,
+		"noUnusedLocals": true,
+		"noImplicitAny": false,
+		"strict": false,
+		"skipLibCheck": true,
+		"lib": [
+			"ES2022"
+		]
+	},
+	"include": [
+		"app/lang/beautify/bml/**/*"
+	]
+}

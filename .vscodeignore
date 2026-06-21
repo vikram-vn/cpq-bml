@@ -1,0 +1,33 @@
+node_modules/**
+.vscode/**
+.vscode-test/**
+test/**
+.gitignore
+.vscodeignore
+.yarnrc
+.cpqdevkit
+yarn.lock
+package-lock.json
+vsc-extension-quickstart.md
+**/jsconfig.json
+**/*.map
+**/eslint.config.mjs
+**/.vscode-test.*
+*.bml
+bml
+
+# Ignore raw source folders that are compiled into dist/extension.js
+app/lang/beautify/**
+app/lang/lint/**
+app/lang/rest/**
+app/lang/cspell-loader/**
+
+# Ignore root JavaScript source files
+extension.js
+app/lang/intellisense/*.js
+app/lang/settingsPanel/*.js
+app/lang/settingsPanel/webview/src/**
+
+# Exclude lookups and scripts that are only used in development
+app/lookups/**
+app/scripts/**
