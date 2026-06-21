@@ -1,4 +1,5 @@
 const config = require('../rest/config');
+const { getEnvironments } = require('../rest/commands/env');
 
 // Assembles the one JSON snapshot sent to the webview. Never includes a
 // secret's actual value - only hasPassword/hasToken booleans - so the panel
@@ -7,7 +8,7 @@ const config = require('../rest/config');
 async function buildState(context, vscode) {
     const settings = config.getSettings(vscode);
     const cpqConfig = vscode.workspace.getConfiguration('cpqBml');
-    const environments = cpqConfig.get('connection.environments', []) || [];
+    const environments = getEnvironments(vscode);
 
     const passwordKey = settings.username ? config.getPasswordSecretKey(settings.siteUrl, settings.username) : null;
     const tokenKey = settings.siteUrl ? config.getTokenSecretKey(settings.siteUrl) : null;

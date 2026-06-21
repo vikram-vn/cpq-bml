@@ -1,5 +1,6 @@
 const api = require("../api");
 const metadataLib = require("../metadata");
+const { getCommerceProcess } = require("../config");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -60,7 +61,7 @@ async function runDeployCommerceProcess(
   }
 
   if (!processVarName) {
-    processVarName = vscode.workspace.getConfiguration('cpqBml').get('connection.commerceProcess', 'oraclecpqo');
+    processVarName = getCommerceProcess(vscode);
   }
 
   writeRunHeader(resultsTerminal, "Deploy Commerce Process", processVarName);

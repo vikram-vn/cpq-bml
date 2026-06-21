@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const metadataLib = require('../metadata');
 const shared = require('./shared');
+const { getCommerceProcess, getCommerceDocument, getSettings } = require('../config');
 
 const returnTypeMap = {
     'String': 1,
@@ -50,10 +51,7 @@ async function runCreateBmlFunction(context, vscode, { transport } = {}) {
     const variableName = varName.trim();
 
     // 3. Display name
-    const suggestName = variableName
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/^./, (str) => str.toUpperCase())
-        .trim();
+    const suggestName = shared.toDisplayName(variableName);
 
     const dispName = await vscode.window.showInputBox({
         prompt: 'Enter display name for the function',
@@ -76,8 +74,8 @@ async function runCreateBmlFunction(context, vscode, { transport } = {}) {
     let commerceDocument = '';
 
     if (typeSelection.id !== 'util') {
-        commerceProcess = vscode.workspace.getConfiguration('cpqBml').get('connection.commerceProcess', 'oraclecpqo') || 'oraclecpqo';
-        commerceDocument = vscode.workspace.getConfiguration('cpqBml').get('connection.commerceDocument', 'transaction') || 'transaction';
+        commerceProcess = getCommerceProcess(vscode);
+        commerceDocument = getCommerceDocument(vscode);
     }
 
     // 8. Return type selection
@@ -119,7 +117,7 @@ async function runCreateBmlFunction(context, vscode, { transport } = {}) {
     }
 
     // 10. File paths and metadata structure
-    const pullFolder = vscode.workspace.getConfiguration('cpqBml').get('rest.pullFolder', 'library');
+    const { pullFolder } = getSettings(vscode);
     let bmlPath = '';
     let metadata = {};
 

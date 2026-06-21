@@ -3,6 +3,26 @@ const api = require('../api');
 const config = require('../config');
 const metadataLib = require('../metadata');
 
+// e.g. "calculateDiscount" -> "Calculate Discount" - used to suggest a
+// display name from a variableName when scaffolding a new function.
+function toDisplayName(input) {
+    return input
+        // Replace non-alphanumeric chars with spaces
+        .replace(/[^a-zA-Z0-9]+/g, ' ')
+        // Split camelCase
+        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+        // Split acronyms followed by normal words
+        .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+        // Separate letters and numbers
+        .replace(/([a-zA-Z])(\d)/g, '$1 $2')
+        .replace(/(\d)([a-zA-Z])/g, '$1 $2')
+        // Normalize spaces
+        .replace(/\s+/g, ' ')
+        .trim()
+        // Capitalize words
+        .replace(/\b[a-z]/g, c => c.toUpperCase());
+}
+
 function getTimestamp() {
     const now = new Date();
     const year = now.getFullYear();
@@ -151,10 +171,7 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
                 ], { placeHolder: 'Select function type to create' });
                 if (!typePick) return null;
 
-                const suggestName = variableName
-                    .replace(/([A-Z])/g, ' $1')
-                    .replace(/^./, (str) => str.toUpperCase())
-                    .trim();
+                const suggestName = toDisplayName(variableName);
 
                 const displayName = await vscode.window.showInputBox({
                     prompt: 'Enter display name for the function',
@@ -337,6 +354,7 @@ async function ensureCredentials(context, vscode) {
 }
 
 module.exports = {
+    toDisplayName,
     getTimestamp,
     writeTerminalMessage,
     writeRunHeader,
