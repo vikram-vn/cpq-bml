@@ -239,11 +239,11 @@
       "patterns": [
         {
           "name": "entity.name.function.string.bml",
-          "match": "(?i)\\b(atof|atoi|decodebase64|encodebase64|endswith|formatascurrency|getcurrencyvalue|html|isnumber|join|len|lower|replace|split|startswith|string|substring|trim|upper|format)\\b"
+          "match": "(?i)\\b(atof|atoi|decodebase64|encodebase64|endswith|find|formatascurrency|getcurrencyvalue|html|isnumber|join|len|lower|replace|split|startswith|string|substring|trim|upper|format)\\b"
         },
         {
           "name": "entity.name.function.math.bml",
-          "match": "(?i)\\b(acos|asin|atan|ceil|cos|cosh|exp|fabs|fmod|hypot|integer|ln|log|pow|round|sin|sinh|sqrt|tan|tanh|abs|min|max)\\b"
+          "match": "(?i)\\b(acos|asin|atan|ceil|cos|cosh|exp|fabs|fmod|hypot|integer|ln|log|pow|round|sin|sinh|sqrt|tan|tanh|abs)\\b"
         },
         {
           "name": "entity.name.function.date.bml",
@@ -251,7 +251,7 @@
         },
         {
           "name": "entity.name.function.database.bml",
-          "match": "(?i)\\b(bmql|getboolean|getdate|getfloat|getint|getmessage|getpartsdata|gettabledata|gettransaction|haserror|recordset|getconfigattrvalue|getconfigbom|getbom|getoldvalue)\\b"
+          "match": "(?i)\\b(bmql|getboolean|getdate|getfloat|getint|getmessage|getpartsdata|gettabledata|gettransaction|haserror|recordset)\\b"
         },
         {
           "name": "entity.name.function.url.bml",
@@ -263,7 +263,7 @@
         },
         {
           "name": "entity.name.function.dictionary.bml",
-          "match": "(?i)\\b(dict|containskey|get|keys|put|values|globaldictget|globaldictset|globaldictremove)\\b"
+          "match": "(?i)\\b(dict|containskey|get|keys|put|values)\\b"
         },
         {
           "name": "entity.name.function.xml.bml",
@@ -271,11 +271,11 @@
         },
         {
           "name": "entity.name.function.json.bml",
-          "match": "(?i)\\b(json|jsonarray|jsonarrayappend|jsonarraycopy|jsonarrayget|jsonarrayref|jsonarraysize|jsonarraytostr|jsoncopy|jsonget|jsonkeys|jsonnull|jsonpathcheck|jsonpathremove|jsonpathset|jsonpathgetsingle|jsonpathgetmultiple|jsonput|jsonremove|isjsonnull|jsontostr)\\b"
+          "match": "(?i)\\b(json|jsonarray|jsonarrayappend|jsonarraycopy|jsonarrayget|jsonarrayrefid|jsonarrayremove|jsonarraysize|jsonarraytostr|jsoncopy|jsonget|jsonkeys|jsonnull|jsonpathcheck|jsonpathremove|jsonpathset|jsonpathgetsingle|jsonpathgetmultiple|jsonput|jsonremove|isjsonnull|jsontostr)\\b"
         },
         {
           "name": "entity.name.function.misc.bml",
-          "match": "(?i)\\b(addtotransaction|sbappend|sbtostring|addpartstotransaction|applybom|calculatedeltabom|convertbomtohier|convertbomtoflat|generateuuid|generatehmacmessage|getattachmentdata|getarraystr|getreasonstatus|getuuid|importtransactiondata|isnull|logtime|print|savebom|saveconfig|throwerror|validatequoteforagreement|usersessionget|usersessionremove|usersessionset)\\b"
+          "match": "(?i)\\b(addtotransaction|sbappend|sbtostring|addpartstotransaction|applybom|calculatedeltabom|calculateconfiguration|configureabo|convertbomtohier|convertbomtoflat|generateuuid|generatehmacmessage|getattachmentdata|getarrayattrstring|getbom|getconfigattrvalue|getconfigbom|getcoveragesupportdict|getoldvalue|getreasonstatus|getsystemattrvalues|getsystemdata|getsystemmultipleattrvalues|getuuid|globaldictget|globaldictremove|globaldictset|importtransactiondata|isnull|logtime|print|savebom|saveconfigbom|setattributevalue|throwerror|validatequoteforagreement|usersessionget|usersessionremove|usersessionset)\\b"
         }
       ]
     },
