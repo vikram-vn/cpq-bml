@@ -24,13 +24,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Extension
+      - name: Compile Extension
         run: npm run compile
 
       - name: Package VSIX
         run: npx @vscode/vsce package
 
-      - name: Find VSIX
+      - name: Get VSIX Filename
         id: vsix
         run: |
           echo "file=$(ls *.vsix | head -n 1)" >> $GITHUB_OUTPUT

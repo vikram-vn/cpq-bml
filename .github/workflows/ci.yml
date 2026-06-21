@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,5 +26,5 @@ jobs:
       - name: Compile Extension
         run: npm run compile
 
-      - name: Run Tests
+      - name: Verify Package
         run: npm test
