@@ -136,42 +136,42 @@
       "editor/title": [
         {
           "command": "cpqBml.rest.createOverride",
-          "when": "resourceLangId == bml && cpqBml.activeFileIsStandard && !cpqBml.activeFileIsOverridden && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && cpqBml.activeFileIsStandard && !cpqBml.activeFileIsOverridden && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@1"
         },
         {
           "command": "cpqBml.rest.removeOverride",
-          "when": "resourceLangId == bml && cpqBml.activeFileIsStandard && cpqBml.activeFileIsOverridden && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && cpqBml.activeFileIsStandard && cpqBml.activeFileIsOverridden && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@1"
         },
         {
           "command": "cpqBml.rest.saveCurrentFile",
-          "when": "resourceLangId == bml && (!cpqBml.activeFileIsStandard || cpqBml.activeFileIsOverridden) && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && (!cpqBml.activeFileIsStandard || cpqBml.activeFileIsOverridden) && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@2"
         },
         {
           "command": "cpqBml.rest.validateCurrentFile",
-          "when": "resourceLangId == bml && (!cpqBml.activeFileIsStandard || cpqBml.activeFileIsOverridden) && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && (!cpqBml.activeFileIsStandard || cpqBml.activeFileIsOverridden) && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@3"
         },
         {
           "command": "cpqBml.rest.debugCurrentFile",
-          "when": "resourceLangId == bml && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@4"
         },
         {
           "command": "cpqBml.rest.clearResults",
-          "when": "resourceLangId == bml && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@5"
         },
         {
           "command": "cpqBml.rest.deployCommerceProcess",
-          "when": "resourceLangId == bml && !cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && !cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
         },
         {
           "command": "cpqBml.rest.deployCurrentFile",
-          "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled",
+          "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
         }
       ]

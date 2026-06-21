@@ -17,6 +17,22 @@ const {
   resolveMetadataForFile,
 } = require("./shared");
 const metadataLib = require("../metadata");
+const { getSettings } = require("../config");
+
+// The editor/title toolbar icons are only useful once there's an actual site
+// to talk to - config.cpqBml.connection.enabled alone isn't enough to gate on
+// (it's a feature toggle that defaults to true, so on a fresh install with no
+// siteUrl set yet, every REST icon would otherwise show up and immediately
+// fail). This context key reflects whether cpqBml.connection.siteUrl is
+// actually non-empty.
+function refreshConnectionConfiguredContext(vscode) {
+  const { siteUrl } = getSettings(vscode);
+  vscode.commands.executeCommand(
+    "setContext",
+    "cpqBml.connection.configured",
+    !!siteUrl,
+  );
+}
 
 // Reads the local sidecar (no network) and updates the status bar + VS Code
 // context keys so editor/title menu when-clauses reflect the active file.
@@ -154,6 +170,15 @@ function registerBmlRestCommands(context) {
   );
   context.subscriptions.push(statusBarItem);
 
+  refreshConnectionConfiguredContext(vscode);
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration((e) => {
+      if (e.affectsConfiguration("cpqBml.connection.siteUrl")) {
+        refreshConnectionConfiguredContext(vscode);
+      }
+    }),
+  );
+
   // Refresh immediately for whatever is already open, then on every change
   refreshBmlStatus(
     vscode,
@@ -238,6 +263,7 @@ function registerBmlRestCommands(context) {
 
 module.exports = {
   registerBmlRestCommands,
+  refreshConnectionConfiguredContext,
   runSetPassword,
   runSetAuthToken,
   runPullLibraryFunctions,
