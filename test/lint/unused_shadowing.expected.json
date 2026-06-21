@@ -1,0 +1,17 @@
+[
+  {
+    "line": 2,
+    "severity": "Warning",
+    "message": "Unused variable: unusedVar"
+  },
+  {
+    "line": 6,
+    "severity": "Warning",
+    "message": "Variable shadowing: 'x' shadows a variable in an outer scope"
+  },
+  {
+    "line": 11,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+  }
+]

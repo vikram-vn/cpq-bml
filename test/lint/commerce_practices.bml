@@ -1,0 +1,23 @@
+// 1. Nested loops
+list = string[]{"a", "b"};
+otherList = string[]{"c", "d"};
+for x in list {
+    for y in otherList {
+        print(y);
+    }
+}
+
+// 2. _config_attributes / _config_attr_text
+c1 = _config_attributes;
+c2 = _config_attr_text;
+
+// 3. Commerce Return Format
+ret = "1~price_line~10.0"; // triggers because of ~ but no |
+
+// Usage to prevent unused variable warnings
+print(list);
+print(otherList);
+print(c1);
+print(c2);
+print(ret);
+return "";

@@ -1,0 +1,62 @@
+[
+  {
+    "line": 2,
+    "severity": "Warning",
+    "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
+  },
+  {
+    "line": 3,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 4,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 7,
+    "severity": "Warning",
+    "message": "Deprecated constant 'NaN'. Use 'jNaN' instead for Java compatibility"
+  },
+  {
+    "line": 10,
+    "severity": "Error",
+    "message": "Security Warning: Dynamic query concatenation detected in BMQL. Use $variable syntax instead to prevent SQL injection"
+  },
+  {
+    "line": 14,
+    "severity": "Warning",
+    "message": "Design Warning: Empty block detected"
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Design Warning: Empty block detected"
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Design Warning: Empty block detected"
+  },
+  {
+    "line": 20,
+    "severity": "Warning",
+    "message": "Design Warning: Empty block detected"
+  },
+  {
+    "line": 24,
+    "severity": "Information",
+    "message": "Design Info: Magic number '999' detected. Consider defining a named constant"
+  },
+  {
+    "line": 25,
+    "severity": "Information",
+    "message": "Design Info: Magic number '25.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 20,
+    "severity": "Information",
+    "message": "Unused loop variable: 'item' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  }
+]

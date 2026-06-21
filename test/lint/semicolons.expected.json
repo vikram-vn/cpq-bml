@@ -1,0 +1,87 @@
+[
+  {
+    "line": 5,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 6,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 33,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 5,
+    "severity": "Warning",
+    "message": "Unused variable: y"
+  },
+  {
+    "line": 6,
+    "severity": "Warning",
+    "message": "Unused variable: z"
+  },
+  {
+    "line": 9,
+    "severity": "Warning",
+    "message": "Unused variable: total"
+  },
+  {
+    "line": 14,
+    "severity": "Warning",
+    "message": "Unused variable: ret"
+  },
+  {
+    "line": 33,
+    "severity": "Warning",
+    "message": "Unused variable: a"
+  },
+  {
+    "line": 5,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
+  },
+  {
+    "line": 10,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+  },
+  {
+    "line": 11,
+    "severity": "Information",
+    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Design Info: Magic number '40' detected. Consider defining a named constant"
+  },
+  {
+    "line": 2,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 21,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 24,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 29,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  }
+]

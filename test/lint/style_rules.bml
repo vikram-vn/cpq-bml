@@ -1,0 +1,43 @@
+
+// 1. Multiple statements on a single line
+x = 10; y = 20;
+
+// 2. Curly brackets alignment
+if (x == 10) { print(x); }
+else {
+    print(0); }
+
+// 3. Dictionary suffix & comment mapping check
+myDictVar = dict(string); // key/value comment is missing
+seqVar = dict(string); //Key: doc, Value: seq
+
+// 4. Array suffix check
+myArrayVar = string[]{"a"};
+
+// 5. RecordSet suffix check
+rs = bmql("select col from t");
+
+// 6. Boolean prefix check
+flag = true;
+
+// 7. General camelCase & Constants check
+TotalListPrice = 10.0;
+total_list_price = 10.0;
+item_delim = "*";
+
+// 8. Functions with single argument parenthesis
+if (not flag) {
+    print(1);
+}
+
+// 9. Print statements outside debug blocks
+print(x);
+print(y);
+print(TotalListPrice);
+print(total_list_price);
+print(item_delim);
+print(myDictVar);
+print(seqVar);
+print(myArrayVar);
+print(rs);
+return "";

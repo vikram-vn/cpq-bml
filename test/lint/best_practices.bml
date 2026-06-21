@@ -1,0 +1,55 @@
+// 1. Deprecated methods
+debug = true;
+d1 = strtodate("2026-06-20", "%Y-%m-%d");
+d2Records = gettabledata("my_table", "col", "val");
+d3Records = getpartsdata("my_part");
+
+// 2. Oracle Constants
+n1 = NaN;
+
+// 3. SQL Injection in BMQL (triggers and safe parameterized versions)
+q1Records = bmql("select id from table1 where col = " + val); // triggers
+q2Records = bmql("select id from table1 where col = $val");   // safe, no trigger
+
+// 4. Empty Blocks
+if (true) {
+}
+elif (false) {
+}
+else {
+}
+for item in listList {
+}
+
+// 5. Magic Numbers
+m1 = 999;     // triggers
+m2 = 25.5;    // triggers
+m3 = 0;       // standard, no trigger
+m4 = 1;       // standard, no trigger
+m5 = 2;       // standard, no trigger
+m6 = 10;      // standard, no trigger
+m7 = 100;     // standard, no trigger
+m8 = 0.0;     // standard, no trigger
+m9 = 1.0;     // standard, no trigger
+m10 = 2.0;    // standard, no trigger
+
+// Usage to prevent unused variable warnings
+if (debug) {
+    print(d1);
+    print(d2Records);
+    print(d3Records);
+    print(n1);
+    print(q1Records);
+    print(q2Records);
+    print(m1);
+    print(m2);
+    print(m3);
+    print(m4);
+    print(m5);
+    print(m6);
+    print(m7);
+    print(m8);
+    print(m9);
+    print(m10);
+}
+return "";

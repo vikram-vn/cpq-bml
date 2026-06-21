@@ -1,0 +1,16 @@
+// Test Case: Unused Variables and shadowing
+debug = true;
+unusedVar = "hello";
+x = 10;
+listList = string[]{"a", "b"};
+if (debug) {
+    for x in listList {
+        print(x);
+    }
+}
+
+usedVar = 20;
+if (debug) {
+    print(usedVar);
+}
+return "";

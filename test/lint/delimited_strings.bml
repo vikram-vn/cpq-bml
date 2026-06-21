@@ -1,0 +1,29 @@
+// 1. atoi/atof without isnumber check
+val1 = "10";
+num1 = atoi(val1); // triggers warning
+
+val2 = "20";
+num2 = 0;
+if (isnumber(val2)) {
+    num2 = atoi(val2); // safe, no warning
+}
+
+// 2. split array index access without sizeofarray check
+delim = ",";
+delimited_str = "a,b,c";
+
+arr1 = split(delim, delimited_str);
+valA = arr1[1]; // triggers warning
+
+arr2 = split(delim, delimited_str);
+valB = "";
+if (sizeofarray(arr2) > 2) {
+    valB = arr2[1]; // safe, no warning
+}
+
+// Usage to prevent unused variable warnings
+print(num1);
+print(num2);
+print(valA);
+print(valB);
+return "";

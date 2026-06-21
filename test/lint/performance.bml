@@ -1,0 +1,51 @@
+// 1. BMQL inside loops
+debug = true;
+listList = string[]{"a", "b"};
+for item in listList {
+    row = bmql("select id from table1");
+    // 2. String concatenation in loop
+    ret = ret + item;
+}
+
+// 3. Repeated queries & Table queries
+r1Records = bmql("select desc from table2");
+r2Records = bmql("select desc from table2"); // duplicate identical query
+
+r3Records = bmql("select col1 from table3");
+r4Records = bmql("select col2 from table3");
+r5Records = bmql("select col3 from table3"); // table3 queried 3 times (excessive queries)
+
+// 4. Nesting block depth > 3
+if (true) {
+    if (true) {
+        if (true) {
+            if (true) { // depth 4 (warning)
+                if (true) { // depth 5 (warning)
+                    nestVal = 1;
+                }
+            }
+        }
+    }
+}
+
+// 5. High cyclomatic complexity (> 15 decision points)
+// Let's add 16 decisions (if/elif/for/and/or):
+// 1(for) + 5(ifs above) + 11(ands/ors/ifs below) = 17.
+if (true AND false OR true AND false OR true AND false OR true AND false OR true AND false OR true) {
+    nestVal2 = 0;
+}
+
+// Prevent unused variables
+if (debug) {
+    print(listList);
+    print(row);
+    print(ret);
+    print(r1Records);
+    print(r2Records);
+    print(r3Records);
+    print(r4Records);
+    print(r5Records);
+    print(nestVal);
+    print(nestVal2);
+}
+return "";
