@@ -169,15 +169,18 @@ function registerTools(server, context, vscode) {
 
 let httpServer = null;
 let boundPort = null;
+let mcpServer = null;
 
 // Binds 127.0.0.1 only (never 0.0.0.0) - the only way into these tools is a
 // process running on this same machine, same trust boundary as the VS Code
 // commands they wrap. A stateless StreamableHTTPServerTransport instance
 // cannot be reused across requests (the SDK throws if you try), so a fresh
-// McpServer + transport pair is created per request - cheap, since
-// registering 10 tools is just attaching closures, no network/IO involved.
+// transport is created per request.
 async function startMcpServer(context, vscode, port) {
   if (httpServer) return { port: boundPort };
+
+  mcpServer = new McpServer({ name: "cpq-bml", version: "1.1.1" });
+  registerTools(mcpServer, context, vscode);
 
   httpServer = http.createServer((req, res) => {
     const path = (req.url || "").split("?")[0];
@@ -186,8 +189,6 @@ async function startMcpServer(context, vscode, port) {
       return;
     }
 
-    const mcpServer = new McpServer({ name: "cpq-bml", version: "1.0.0" });
-    registerTools(mcpServer, context, vscode);
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
       enableJsonResponse: true,
@@ -198,15 +199,13 @@ async function startMcpServer(context, vscode, port) {
       .then(() => transport.handleRequest(req, res))
       .catch(() => {
         if (!res.headersSent) res.writeHead(500).end();
-      })
-      .finally(() => {
-        mcpServer.close().catch(() => {});
       });
   });
 
   return new Promise((resolve, reject) => {
     httpServer.once("error", (err) => {
       httpServer = null;
+      mcpServer = null;
       reject(err);
     });
     httpServer.listen(port, "127.0.0.1", () => {
@@ -221,6 +220,10 @@ function stopMcpServer() {
     httpServer.close();
     httpServer = null;
     boundPort = null;
+  }
+  if (mcpServer) {
+    mcpServer.close().catch(() => {});
+    mcpServer = null;
   }
 }
 
