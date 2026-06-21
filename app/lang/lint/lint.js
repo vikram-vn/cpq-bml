@@ -8,6 +8,7 @@ const { checkPerformance } = require('./performance');
 const { checkBestPractices } = require('./bestPractices');
 const { checkStyle } = require('./style');
 const { checkBoundaries } = require('./boundaries');
+const { checkFunctionCalls } = require('./functions');
 const { getStringRanges } = require('./strings');
 const { computeSuppressions } = require('./suppressions');
 
@@ -76,6 +77,9 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
 
     // 10. CPQ Application Boundaries & Magic Numbers checks
     diagnostics.push(...checkBoundaries(cleanText, noStringsText, doc));
+
+    // 10b. Function calls & parameter validations
+    diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode));
 
     // 11. Apply // bml-lint-disable / -line / -next-line / -file comment directives
     const suppressions = computeSuppressions(text, commentRanges);

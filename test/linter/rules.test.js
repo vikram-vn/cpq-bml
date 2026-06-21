@@ -213,4 +213,60 @@ suite('BML Linter Test Suite - rules', () => {
         const commentText = bmlText.substring(commentRanges[0][0], commentRanges[0][1]);
         assert.strictEqual(commentText, '// real comment here');
     });
+
+    test('Linter flags built-in functions called with incorrect argument count', () => {
+        const diagnostics = lintText(`
+            x = atof("5.0"); // OK
+            y = atof("5.0", "extra"); // Error: expects 1, got 2
+            z = getdate(); // OK
+            w = getdate(true, false); // Error: expects 0 to 1, got 2
+            return "";
+        `);
+
+        const okDiag1 = diagnostics.find(d => d.message.includes("function 'atof'") && d.range.start.line === 1);
+        assert.strictEqual(okDiag1, undefined, 'atof("5.0") is correct');
+
+        const errDiag1 = diagnostics.find(d => d.message.includes("function 'atof' expects 1 argument") && d.range.start.line === 2);
+        assert.ok(errDiag1, 'Should flag atof with 2 arguments');
+
+        const errDiag2 = diagnostics.find(d => d.message.includes("function 'getdate' expects 0 to 1 argument") && d.range.start.line === 4);
+        assert.ok(errDiag2, 'Should flag getdate with 2 arguments');
+    });
+
+    test('Linter flags unknown bare function calls', () => {
+        const diagnostics = lintText(`
+            res = nonExistentFunc(1, 2);
+            return "";
+        `);
+
+        const unknownDiag = diagnostics.find(d => d.message.includes("Unknown built-in function or variable 'nonExistentFunc'"));
+        assert.ok(unknownDiag, 'Should flag unknown function nonExistentFunc');
+    });
+
+    test('Linter checks workspace utility functions and flags parameter mismatches', () => {
+        // Since workspace scans are run, it will detect local metadata files like getFileData-meta.json (if workspace is open during test)
+        // or it will report 'not found in workspace' as an Information diagnostic.
+        // Let's test both the 'not found' and the validation for getFileData.
+        const diagnostics = lintText(`
+            // getFileData expects 2 arguments
+            res1 = util.getFileData("44103915", "City"); // OK
+            res2 = util.getFileData("44103915"); // Warning: expects 2, got 1
+            res3 = util.nonExistentUtilFunction(1); // Information: not found
+            return "";
+        `);
+
+        const okDiag = diagnostics.find(d => d.message.includes("getFileData") && d.range.start.line === 2 && d.severity === require('vscode').DiagnosticSeverity.Warning);
+        assert.strictEqual(okDiag, undefined, 'getFileData with 2 arguments should be OK');
+
+        // Check if workspace is loaded/resolved in tests. If yes, it flags count mismatch:
+        const hasWorkspace = diagnostics.some(d => d.message.includes("getFileData") && d.message.includes("expects 2"));
+        if (hasWorkspace) {
+            const errDiag = diagnostics.find(d => d.message.includes("getFileData") && d.message.includes("expects 2") && d.range.start.line === 3);
+            assert.ok(errDiag, 'Should flag getFileData with 1 argument');
+        }
+
+        const notFoundDiag = diagnostics.find(d => d.message.includes("nonExistentUtilFunction") && d.message.includes("not found") && d.range.start.line === 4);
+        assert.ok(notFoundDiag, 'Should flag nonExistentUtilFunction as not found');
+        assert.strictEqual(notFoundDiag.severity, require('vscode').DiagnosticSeverity.Information);
+    });
 });

@@ -30,6 +30,7 @@ The extension includes a custom, language-aware linter that checks for:
   - **Oracle Constants:** Flags standard JS `NaN` and suggests CPQ-compatible `jNaN`.
   - **Return Verifications:** Signals compiler errors if the script is missing a `return` statement, or warns if commerce BML return strings are missing the mandatory pipe `|` delimiter.
 - **Safety & Quality Checks:**
+  - **Function Call Validation:** Validates parameter counts for standard BML built-in functions against signature metadata and flags unknown bare function calls. Also validates custom utility and commerce function calls (`util.*` and `commerce.*`) against parameters defined in their local workspace metadata.
   - **Numerical Validity:** Flags `atoi` / `atof` calls missing preceding `isnumber()` validations.
   - **Array Boundaries:** Warns if elements of a `split()` array are accessed without checking `sizeofarray()` first.
   - **Dead & Empty Code:** Identifies empty `if`, `elif`, `else`, or `for` blocks.
