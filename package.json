@@ -450,6 +450,7 @@
     "minify:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify",
     "vscode:prepublish": "npm run minify",
     "package": "npx @vscode/vsce package",
+    "publish": "npx @vscode/vsce publish",
     "build": "npm run package",
     "pretest": "npm run compile",
     "test": "vscode-test"
