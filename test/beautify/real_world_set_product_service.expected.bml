@@ -1,0 +1,229 @@
+ret = "";
+sweepstakes = false;
+instantwin = false;
+trivia = false;
+contest = false;
+collectwin = false;
+scavengerhunt = false;
+personalitytest = false;
+other = false;
+scoping = false;
+paprivate = false;
+papooledsweeps = false;
+paother = false;
+loyaltyscoping = false;
+loyaltyadvocacy = false;
+loyaltysocial = false;
+loyaltypurchasebased = false;
+loyaltyengagement = false;
+loyaltyother = false;
+distliciw = false;
+distlicsweeps = false;
+crmproduct = false;
+fulfonly = false;
+microsite = false;
+banner = false;
+facebook = false;
+twitter = false;
+webservices = false;
+mobileoptimized = false;
+sms = false;
+wap = false;
+mobileapp = false;
+email = false;
+offline = false;
+licensing = false;
+legal = false;
+fulfillment = false;
+printvar = false;
+prizing = false;
+dataanalytics = false;
+socialservices = false;
+media = false;
+crm = false;
+
+
+for line in line_process {
+
+	if (line.childselected == true) {
+		print line._part_number;
+		print line._part_custom_field19;
+
+		if (line._part_custom_field19 == "Sweepstakes") {
+			sweepstakes = true;
+		}
+		if (line._part_custom_field19 == "Instant Win") {
+			instantwin = true;
+		}
+		if (line._part_custom_field19 == "Trivia") {
+			trivia = true;
+		}
+		if (line._part_custom_field19 == "Contest") {
+			contest = true;
+		}
+		if (line._part_custom_field19 == "Collect & Win") {
+			collectwin = true;
+		}
+		if (line._part_custom_field19 == "Scavenger Hunt") {
+			scavengerhunt = true;
+		}
+		if (line._part_custom_field19 == "Personality Test") {
+			personalitytest = true;
+		}
+		if (line._part_custom_field19 == "Other") {
+			other = true;
+		}
+		if (line._part_custom_field19 == "Scoping") {
+			scoping = true;
+		}
+		if (line._part_custom_field19 == "Promo Admin Type - Private") {
+			paprivate = true;
+		}
+		if (line._part_custom_field19 == "Promo Admin Type - Pooled Sweeps") {
+			papooledsweeps = true;
+		}
+		if (line._part_custom_field19 == "Promo Admin Type - Other") {
+			paother = true;
+		}
+		if (line._part_custom_field19 == "Loyalty Scoping") {
+			loyaltyscoping = true;
+		}
+		if (line._part_custom_field19 == "Loyalty Advocacy") {
+			loyaltyadvocacy = true;
+		}
+		if (line._part_custom_field19 == "Loyalty Social") {
+			loyaltysocial = true;
+		}
+		if (line._part_custom_field19 == "Loyalty Purchase Based") {
+			loyaltypurchasebased = true;
+		}
+		if (line._part_custom_field19 == "Loyalty Engagement") {
+			loyaltyengagement = true;
+		}
+		if (line._part_custom_field19 == "Loyalty Other") {
+			loyaltyother = true;
+		}
+		if (line._part_custom_field19 == "Distribution Licensing Instant Win") {
+			distliciw = true;
+		}
+		if (line._part_custom_field19 == "Distribution Licensing Sweepstakes") {
+			distlicsweeps = true;
+		}
+		if (line._part_custom_field19 == "Fulfillment Services Only") {
+			fulfonly = true;
+		}
+		if (line._part_custom_field19 == "CRM") {
+			crmproduct = true;
+		}
+		if (line._part_custom_field15 == "Microsite") {
+			microsite = true;
+		}
+		if (line._part_custom_field15 == "Banner") {
+			banner = true;
+		}
+		if (line._part_custom_field15 == "Facebook") {
+			facebook = true;
+		}
+		if (line._part_custom_field15 == "Twitter") {
+			twitter = true;
+		}
+		if (line._part_custom_field15 == "Webservices") {
+			webservices = true;
+		}
+		if (line._part_custom_field15 == "Mobile Optimized") {
+			mobileoptimized = true;
+		}
+		if (line._part_custom_field15 == "SMS") {
+			sms = true;
+		}
+		if (line._part_custom_field15 == "WAP") {
+			wap = true;
+		}
+		if (line._part_custom_field15 == "Mobile App") {
+			mobileapp = true;
+		}
+		if (line._part_custom_field15 == "Email") {
+			email = true;
+		}
+		if (line._part_custom_field15 == "Offline") {
+			offline = true;
+		}
+		if (line._part_custom_field14 == "Licensing") {
+			licensing = true;
+		}
+		if (line._part_custom_field14 == "Legal") {
+			legal = true;
+		}
+		if (line._part_custom_field14 == "Fulfillment") {
+			fulfillment = true;
+		}
+		if (line._part_custom_field14 == "Print") {
+			printvar = true;
+		}
+		if (line._part_custom_field14 == "Prizing") {
+			prizing = true;
+		}
+		if (line._part_custom_field14 == "Data Analytics") {
+			dataanalytics = true;
+		}
+		if (line._part_custom_field14 == "Social Services") {
+			socialservices = true;
+		}
+		if (line._part_custom_field14 == "Media") {
+			media = true;
+		}
+		if (line._part_custom_field14 == "CRM") {
+			crm = true;
+		}
+	}
+}
+
+
+if (mobileoptimized == true OR sms == true OR mobileapp == true OR wap == true) {
+	ret = ret + _quote_process_document_number + "~isMobile~" + string(true) + "|";
+}
+
+ret = ret + _quote_process_document_number + "~quotedSweepstakes~" + string(sweepstakes) + "|";
+ret = ret + _quote_process_document_number + "~quotedInstantWin~" + string(instantwin) + "|";
+ret = ret + _quote_process_document_number + "~quotedTrivia~" + string(trivia) + "|";
+ret = ret + _quote_process_document_number + "~quotedContest~" + string(contest) + "|";
+ret = ret + _quote_process_document_number + "~quotedCollectWin~" + string(collectwin) + "|";
+ret = ret + _quote_process_document_number + "~quotedScavengerHunt~" + string(scavengerhunt) + "|";
+ret = ret + _quote_process_document_number + "~quotedPersonalityTest~" + string(personalitytest) + "|";
+ret = ret + _quote_process_document_number + "~quotedOther~" + string(other) + "|";
+ret = ret + _quote_process_document_number + "~quotedScoping~" + string(scoping) + "|";
+ret = ret + _quote_process_document_number + "~quotedPromoAdminTypePrivate~" + string(paprivate) + "|";
+ret = ret + _quote_process_document_number + "~quotedPromoAdminTypePooledSweeps~" + string(papooledsweeps) + "|";
+ret = ret + _quote_process_document_number + "~quotedPromoAdminTypeOther~" + string(paother) + "|";
+ret = ret + _quote_process_document_number + "~quotedLoyaltyScoping~" + string(loyaltyscoping) + "|";
+ret = ret + _quote_process_document_number + "~quotedLoyaltyAdvocacy~" + string(loyaltyadvocacy) + "|";
+ret = ret + _quote_process_document_number + "~quotedLoyaltySocial~" + string(loyaltysocial) + "|";
+ret = ret + _quote_process_document_number + "~quotedLoyaltyPurchaseBased~" + string(loyaltypurchasebased) + "|";
+ret = ret + _quote_process_document_number + "~quotedLoyaltyEngagement~" + string(loyaltyengagement) + "|";
+ret = ret + _quote_process_document_number + "~quotedLoyaltyOther~" + string(loyaltyother) + "|";
+ret = ret + _quote_process_document_number + "~quotedDistributionLicensingInstantWin~" + string(distliciw) + "|";
+ret = ret + _quote_process_document_number + "~quotedDistributionLicensingSweepstakes~" + string(distlicsweeps) + "|";
+ret = ret + _quote_process_document_number + "~quotedFulfillmentServicesOnly~" + string(fulfonly) + "|";
+ret = ret + _quote_process_document_number + "~quotedCRMProduct~" + string(crmproduct) + "|";
+ret = ret + _quote_process_document_number + "~quotedMicrosite~" + string(microsite) + "|";
+ret = ret + _quote_process_document_number + "~quotedBanner~" + string(banner) + "|";
+ret = ret + _quote_process_document_number + "~quotedFacebook~" + string(facebook) + "|";
+ret = ret + _quote_process_document_number + "~quotedTwitter~" + string(twitter) + "|";
+ret = ret + _quote_process_document_number + "~quotedWebservices~" + string(webservices) + "|";
+ret = ret + _quote_process_document_number + "~quotedMobileOptimized~" + string(mobileoptimized) + "|";
+ret = ret + _quote_process_document_number + "~quotedEmail~" + string(email) + "|";
+ret = ret + _quote_process_document_number + "~quotedSMS~" + string(sms) + "|";
+ret = ret + _quote_process_document_number + "~quotedWAP~" + string(wap) + "|";
+ret = ret + _quote_process_document_number + "~quotedMobileApp~" + string(mobileapp) + "|";
+ret = ret + _quote_process_document_number + "~quotedOffline~" + string(offline) + "|";
+ret = ret + _quote_process_document_number + "~quotedLicensing~" + string(licensing) + "|";
+ret = ret + _quote_process_document_number + "~quotedLegal~" + string(legal) + "|";
+ret = ret + _quote_process_document_number + "~quotedFulfillment~" + string(fulfillment) + "|";
+ret = ret + _quote_process_document_number + "~quotedPrint~" + string(printvar) + "|";
+ret = ret + _quote_process_document_number + "~quotedPrizing~" + string(prizing) + "|";
+ret = ret + _quote_process_document_number + "~quotedDataAnalytics~" + string(dataanalytics) + "|";
+ret = ret + _quote_process_document_number + "~quotedSocialServices~" + string(socialservices) + "|";
+ret = ret + _quote_process_document_number + "~quotedMedia~" + string(media) + "|";
+ret = ret + _quote_process_document_number + "~quotedCRM~" + string(crm) + "|";
+
+return ret;
