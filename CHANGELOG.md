@@ -9,6 +9,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 - **BML Better Comments**: tagged comment highlighting (`!`, `?`, `*`, `//`, `TODO`, `FIXME`, `BUG`, `WARNING`, `IMPORTANT`, `HACK`, `XXX`, `NOTE`, `OPTIMIZE`, `IDEA`), distinct highlighting for functional directive comments (`// bml-lint-disable*`, `/* beautify ignore:start/end */`) with hover tooltips explaining exactly what each one does, and automatic detection/styling of BML doc-header comment blocks (`Function Name:`, `Description:`, `Inputs:`, `Return:`). Toggle with the new `cpqBml.features.comments` setting.
 - **Features Tab**: Added a dedicated "Features" tab to the settings panel webview to group BML Linting and BML Better Comments configurations.
+- **CPQ-BML Dark / Light Color Themes**: two complete, original VS Code color themes (`Ctrl+K Ctrl+T` → "CPQ-BML Dark" or "CPQ-BML Light") with full-language token coverage plus BML-specific richness - built-in functions tinted by category (string/math/date/database/url/array/dictionary/xml/json/misc), CPQ attribute/member access tinted separately from plain variables.
+
+### Changed
+- **BML syntax colors are now theme-driven, not automatic**: removed the `editor.tokenColorCustomizations` forced into every user's settings via `configurationDefaults` (it auto-applied regardless of the active theme, and conflicted with BML Better Comments' own decoration colors). BML-specific syntax richness now only shows up while the new CPQ-BML Dark theme is selected.
 
 ### Fixed
 - **Settings Panel Crash**: Resolved a runtime crash (`TypeError: Cannot read properties of undefined (reading 'enable')`) that occurred when opening the settings webview.

@@ -8,7 +8,7 @@ A professional, feature-rich Visual Studio Code extension providing comprehensiv
 
 ### 1. Language Support & IntelliSense
 
-- **Syntax Highlighting:** Complete semantic colorization for BML methods, operators, keywords, control flow statements, variables, and literal structures.
+- **Syntax Highlighting:** Complete semantic colorization for BML methods, operators, keywords, control flow statements, variables, and literal structures. For the richest result, pair this with one of the bundled **CPQ-BML Dark / Light** color themes (see below).
 - **Snippets Library:** Preconfigured, context-aware code templates for common loops, conditional statements, BML system functions, and BMQL database queries.
 - **IntelliSense Autocomplete:** Signature help, parameter tooltips, and completion lists matching CPQ's language specification.
 - **Spell Checker Integration:** Built-in integration with CSpell to prevent typos in variable names and standard library function calls.
@@ -94,6 +94,15 @@ Connect code editors or standalone AI terminals (like Claude Code) directly to y
 - **Local Integration:** Enabling `cpqBml.mcp.enable` spins up a local server binding to `127.0.0.1` (on `cpqBml.mcp.port`, default `47821`).
 - **Secure Bridging:** AI agents can invoke workspace operations (listing, pulling, saving, validating, debugging, deploying, and creating functions) locally. Your CPQ credentials are kept inside the host extension process and are never shared or sent to the external client.
 - **Live Logging:** Toggle `cpqBml.mcp.logToTerminal` to stream all AI-initiated commands and REST integrations directly into a visible `CPQ-BML (AI)` terminal panel.
+
+### 8. CPQ-BML Color Themes
+
+Two complete, original VS Code color themes tuned for BML, bundled with the extension - **CPQ-BML Dark** and **CPQ-BML Light**:
+
+- **Activation:** Open the Color Theme picker (`Ctrl+K Ctrl+T` / `Cmd+K Cmd+T`) and select **CPQ-BML Dark** or **CPQ-BML Light**. Like any VS Code theme, this replaces your current theme entirely (every language, not just BML) until you switch back.
+- **BML-specific richness:** built-in function calls are tinted by category (string, math, date, database, URL, array, dictionary, XML/JSON, misc functions each get a distinct color) and CPQ attribute/member access (`line.x`, `transaction.x`, etc.) is tinted separately from plain variables.
+- **Full-language coverage:** sensible default colors for comments, strings, numbers, keywords, functions, types, and punctuation across other languages too, so non-`.bml` files stay readable while either theme is active.
+- This **replaces** the older approach of forcing BML colors onto whatever theme was already active - that auto-applying behavior no longer exists; BML-specific colors are only visible while one of these themes is selected.
 
 ---
 

@@ -47,6 +47,18 @@
         "path": "./app/lang/syntaxes/bml.tmLanguage.json"
       }
     ],
+    "themes": [
+      {
+        "label": "CPQ-BML Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/cpq-bml-dark-color-theme.json"
+      },
+      {
+        "label": "CPQ-BML Light",
+        "uiTheme": "vs",
+        "path": "./themes/cpq-bml-light-color-theme.json"
+      }
+    ],
     "snippets": [],
     "commands": [
       {
@@ -292,155 +304,6 @@
           "type": "boolean",
           "default": false,
           "description": "When enabled, saves debug output to two files in the workspace root after each BML debug run: 'bml_debug_output.log' (script return value) and 'bml_debug_print.log' (print statements). Disabled by default."
-        }
-      }
-    },
-    "configurationDefaults": {
-      "editor.tokenColorCustomizations": {
-        "[*Dark]": {
-          "textMateRules": [
-            {
-              "scope": [
-                "comment.line.double-slash.bml",
-                "comment.block.bml",
-                "comment.block.documentation.bml"
-              ],
-              "settings": {
-                "foreground": "#6A9955"
-              }
-            },
-            {
-              "scope": "string.quoted.double.bml",
-              "settings": {
-                "foreground": "#CE9178"
-              }
-            },
-            {
-              "scope": "constant.numeric.bml",
-              "settings": {
-                "foreground": "#B5CEA8"
-              }
-            },
-            {
-              "scope": [
-                "constant.language.bml",
-                "constant.other.bml",
-                "storage.type.bml",
-                "keyword.operator.logical.bml"
-              ],
-              "settings": {
-                "foreground": "#569CD6"
-              }
-            },
-            {
-              "scope": [
-                "variable.other.member.bml",
-                "variable.other.line.attribute.bml",
-                "variable.other.transaction.attribute.bml",
-                "variable.other.property.bml",
-                "variable.other.constant.bml"
-              ],
-              "settings": {
-                "foreground": "#9CDCFE"
-              }
-            },
-            {
-              "scope": [
-                "entity.name.function.bml",
-                "entity.name.function.string.bml",
-                "entity.name.function.math.bml",
-                "entity.name.function.date.bml",
-                "entity.name.function.database.bml",
-                "entity.name.function.url.bml",
-                "entity.name.function.array.bml",
-                "entity.name.function.dictionary.bml",
-                "entity.name.function.xml.bml",
-                "entity.name.function.json.bml",
-                "entity.name.function.misc.bml"
-              ],
-              "settings": {
-                "foreground": "#DCDCAA"
-              }
-            },
-            {
-              "scope": [
-                "keyword.control.conditional.bml",
-                "keyword.control.flow.bml"
-              ],
-              "settings": {
-                "foreground": "#C586C0"
-              }
-            }
-          ]
-        },
-        "[*Light]": {
-          "textMateRules": [
-            {
-              "scope": [
-                "comment.line.double-slash.bml",
-                "comment.block.bml",
-                "comment.block.documentation.bml"
-              ],
-              "settings": {
-                "foreground": "#008000"
-              }
-            },
-            {
-              "scope": "string.quoted.double.bml",
-              "settings": {
-                "foreground": "#A31515"
-              }
-            },
-            {
-              "scope": "constant.numeric.bml",
-              "settings": {
-                "foreground": "#098658"
-              }
-            },
-            {
-              "scope": [
-                "constant.language.bml",
-                "constant.other.bml",
-                "storage.type.bml",
-                "keyword.operator.logical.bml",
-                "keyword.control.conditional.bml",
-                "keyword.control.flow.bml"
-              ],
-              "settings": {
-                "foreground": "#0000FF"
-              }
-            },
-            {
-              "scope": [
-                "variable.other.member.bml",
-                "variable.other.line.attribute.bml",
-                "variable.other.transaction.attribute.bml",
-                "variable.other.property.bml",
-                "variable.other.constant.bml"
-              ],
-              "settings": {
-                "foreground": "#E50000"
-              }
-            },
-            {
-              "scope": [
-                "entity.name.function.bml",
-                "entity.name.function.string.bml",
-                "entity.name.function.math.bml",
-                "entity.name.function.date.bml",
-                "entity.name.function.database.bml",
-                "entity.name.function.url.bml",
-                "entity.name.function.array.bml",
-                "entity.name.function.dictionary.bml",
-                "entity.name.function.xml.bml",
-                "entity.name.function.json.bml",
-                "entity.name.function.misc.bml"
-              ],
-              "settings": {
-                "foreground": "#795E26"
-              }
-            }
-          ]
         }
       }
     }
