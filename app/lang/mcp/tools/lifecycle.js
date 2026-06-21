@@ -129,7 +129,7 @@ async function massDeployUtilFunctions(context, vscode, args, transport) {
 
 async function deployCommerceProcess(context, vscode, args, transport) {
     const configOverrides = {};
-    if (args && args.processVarName) configOverrides['connection.commerceProcess'] = args.processVarName;
+    if (args && args.processVarName) configOverrides['rest.commerceProcess'] = args.processVarName;
 
     const { vscodeProxy, messages } = createToolVscodeContext(vscode, { configOverrides });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));

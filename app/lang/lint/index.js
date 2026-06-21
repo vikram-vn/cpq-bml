@@ -5,7 +5,7 @@ const { registerBmlCodeActions } = require('./codeActions');
 let diagnosticCollection;
 
 function isLintEnabled() {
-    return vscode.workspace.getConfiguration('cpqBml').get('lint.enable', true);
+    return vscode.workspace.getConfiguration('cpqBml').get('features.lint', true);
 }
 
 function registerBmlLinter(context) {
@@ -30,10 +30,10 @@ function registerBmlLinter(context) {
     vscode.workspace.onDidChangeTextDocument((e) => triggerLint(e.document), null, context.subscriptions);
     vscode.workspace.onDidSaveTextDocument(triggerLint, null, context.subscriptions);
 
-    // Toggling cpqBml.lint.enable should take effect immediately rather than
+    // Toggling cpqBml.features.lint should take effect immediately rather than
     // waiting for the next edit/save of each open document.
     vscode.workspace.onDidChangeConfiguration((e) => {
-        if (!e.affectsConfiguration('cpqBml.lint.enable')) return;
+        if (!e.affectsConfiguration('cpqBml.features.lint')) return;
         if (!isLintEnabled()) {
             diagnosticCollection.clear();
             return;

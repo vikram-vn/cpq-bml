@@ -185,7 +185,7 @@ export function EnvironmentsTab({ active, state, connection = {}, vscodeApi }) {
     );
 }
 
-export function OperationsTab({ active, rest = {}, drafts, connection = {}, changeDraft }) {
+export function OperationsTab({ active, rest = {}, drafts, changeDraft }) {
     if (!active) return null;
 
     return (
@@ -193,7 +193,7 @@ export function OperationsTab({ active, rest = {}, drafts, connection = {}, chan
             <section className="card">
                 <h2>
                     <IconOperations />
-                    Operations &amp; API Configuration
+                    REST Configuration
                 </h2>
                 <p className="card-desc">Configure REST details, library folders, and process paths for operations.</p>
 
@@ -202,8 +202,8 @@ export function OperationsTab({ active, rest = {}, drafts, connection = {}, chan
                     <input
                         id="restVersion"
                         type="text"
-                        value={drafts['connection.restVersion'] !== undefined ? drafts['connection.restVersion'] : connection.restVersion}
-                        onChange={(e) => changeDraft('connection.restVersion', e.target.value)}
+                        value={drafts['rest.restVersion'] !== undefined ? drafts['rest.restVersion'] : rest.restVersion}
+                        onChange={(e) => changeDraft('rest.restVersion', e.target.value)}
                     />
                     <p className="field-hint">e.g. v18 {"->"} /rest/v18/bml/library/functions</p>
                 </div>
@@ -212,8 +212,8 @@ export function OperationsTab({ active, rest = {}, drafts, connection = {}, chan
                     <input
                         id="commerceProcess"
                         type="text"
-                        value={drafts['connection.commerceProcess'] !== undefined ? drafts['connection.commerceProcess'] : connection.commerceProcess}
-                        onChange={(e) => changeDraft('connection.commerceProcess', e.target.value)}
+                        value={drafts['rest.commerceProcess'] !== undefined ? drafts['rest.commerceProcess'] : rest.commerceProcess}
+                        onChange={(e) => changeDraft('rest.commerceProcess', e.target.value)}
                     />
                     <p className="field-hint">Oracle CPQ process variable name</p>
                 </div>
@@ -222,8 +222,8 @@ export function OperationsTab({ active, rest = {}, drafts, connection = {}, chan
                     <input
                         id="commerceDocument"
                         type="text"
-                        value={drafts['connection.commerceDocument'] !== undefined ? drafts['connection.commerceDocument'] : connection.commerceDocument}
-                        onChange={(e) => changeDraft('connection.commerceDocument', e.target.value)}
+                        value={drafts['rest.commerceDocument'] !== undefined ? drafts['rest.commerceDocument'] : rest.commerceDocument}
+                        onChange={(e) => changeDraft('rest.commerceDocument', e.target.value)}
                     />
                     <p className="field-hint">Process document variable name (e.g. transaction)</p>
                 </div>
@@ -284,7 +284,7 @@ export function McpTab({ active, mcp = {}, drafts, changeDraft, updateField }) {
     );
 }
 
-export function FeaturesTab({ active, lint = {}, comments = {}, updateField }) {
+export function FeaturesTab({ active, features = {}, updateField }) {
     if (!active) return null;
 
     return (
@@ -300,23 +300,23 @@ export function FeaturesTab({ active, lint = {}, comments = {}, updateField }) {
                     id="lintEnable"
                     label="Enable BML Linting"
                     description="Runs diagnostics and quick-fix suggestions for BigMachines Language syntax"
-                    checked={lint.enable}
-                    onChange={(v) => updateField('lint.enable', v)}
+                    checked={features.lint}
+                    onChange={(v) => updateField('features.lint', v)}
                 />
 
                 <Switch
                     id="commentsEnable"
                     label="Enable BML Better Comments"
                     description="Colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights bml-lint-disable and beautify ignore directives, and styles doc-header comment blocks"
-                    checked={comments.enable}
-                    onChange={(v) => updateField('comments.enable', v)}
+                    checked={features.comments}
+                    onChange={(v) => updateField('features.comments', v)}
                 />
             </section>
         </div>
     );
 }
 
-export function AdvancedTab({ active, connection = {}, debug = {}, updateField }) {
+export function AdvancedTab({ active, debug = {}, updateField }) {
     if (!active) return null;
 
     return (
@@ -332,8 +332,8 @@ export function AdvancedTab({ active, connection = {}, debug = {}, updateField }
                     id="debugLog"
                     label="Log REST Details to File"
                     description="Save detailed API request/response structures inside 'bml_rest_api.log' in the workspace root"
-                    checked={connection.debugLog}
-                    onChange={(v) => updateField('connection.debugLog', v)}
+                    checked={debug.logRestDetails}
+                    onChange={(v) => updateField('debug.logRestDetails', v)}
                 />
                 
                 <Switch

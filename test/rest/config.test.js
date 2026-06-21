@@ -12,7 +12,7 @@ suite("BML REST config", () => {
         "connection.siteUrl": "https://sitename.bigmachines.com/",
         "connection.authMethod": "bearer",
         "connection.username": "alice",
-        "connection.restVersion": "v20",
+        "rest.restVersion": "v20",
         "rest.pullFolder": "my-library",
       },
     });
@@ -46,40 +46,40 @@ suite("BML REST config", () => {
     assert.strictEqual(config.DEFAULT_REST_VERSION, "v18");
   });
 
-  test("getSettings reads connection.debugLog setting when configured", () => {
+  test("getSettings reads debug.logRestDetails setting when configured", () => {
     const vscode = createFakeVscode({
       config: {
-        "connection.debugLog": true,
+        "debug.logRestDetails": true,
       },
     });
     assert.strictEqual(config.getSettings(vscode).debugLog, true);
   });
 
-  test("getRestVersion reads cpqBml.connection.restVersion, defaulting to v18", () => {
+  test("getRestVersion reads cpqBml.rest.restVersion, defaulting to v18", () => {
     assert.strictEqual(config.getRestVersion(createFakeVscode({})), "v18");
     assert.strictEqual(
       config.getRestVersion(
-        createFakeVscode({ config: { "connection.restVersion": "v21" } }),
+        createFakeVscode({ config: { "rest.restVersion": "v21" } }),
       ),
       "v21",
     );
   });
 
-  test("getCommerceProcess reads cpqBml.connection.commerceProcess, defaulting to oraclecpqo", () => {
+  test("getCommerceProcess reads cpqBml.rest.commerceProcess, defaulting to oraclecpqo", () => {
     assert.strictEqual(config.getCommerceProcess(createFakeVscode({})), "oraclecpqo");
     assert.strictEqual(
       config.getCommerceProcess(
-        createFakeVscode({ config: { "connection.commerceProcess": "customProcess" } }),
+        createFakeVscode({ config: { "rest.commerceProcess": "customProcess" } }),
       ),
       "customProcess",
     );
   });
 
-  test("getCommerceDocument reads cpqBml.connection.commerceDocument, defaulting to transaction", () => {
+  test("getCommerceDocument reads cpqBml.rest.commerceDocument, defaulting to transaction", () => {
     assert.strictEqual(config.getCommerceDocument(createFakeVscode({})), "transaction");
     assert.strictEqual(
       config.getCommerceDocument(
-        createFakeVscode({ config: { "connection.commerceDocument": "lineItem" } }),
+        createFakeVscode({ config: { "rest.commerceDocument": "lineItem" } }),
       ),
       "lineItem",
     );

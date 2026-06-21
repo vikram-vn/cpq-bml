@@ -146,21 +146,30 @@ Connect code editors or standalone AI terminals (like Claude Code) directly to y
 
 Define these properties in your User or Workspace `settings.json`:
 
+### Connection & Environments (`cpqBml.connection.*`)
 - `cpqBml.connection.enabled` (default: `true`): Enable Oracle CPQ REST integrations.
-- `cpqBml.lint.enable` (default: `true`): Enable BML linting, styling diagnostics, and code fixes.
-- `cpqBml.comments.enable` (default: `true`): Enable BML Better Comments decoration highlighting and documentation hover support.
 - `cpqBml.connection.siteUrl` (default: `""`): CPQ server instance domain name or root URL.
 - `cpqBml.connection.authMethod` (default: `"basic"`): Authentication method to use: `"basic"` (username/password) or `"bearer"` (OAuth tokens).
 - `cpqBml.connection.username` (default: `""`): Username for API access.
 - `cpqBml.connection.environments` (default: `[]`): Array of sandbox environments.
-- `cpqBml.connection.restVersion` (default: `"v18"`): REST API segment path version.
-- `cpqBml.connection.commerceProcess` (default: `"oraclecpqo"`): Target commerce process key.
-- `cpqBml.connection.commerceDocument` (default: `"transaction"`): Active commerce process document name.
-- `cpqBml.connection.debugLog` (default: `false`): Stream raw API transaction summaries locally to `bml_rest_api.log`.
+
+### REST Synchronization (`cpqBml.rest.*`)
+- `cpqBml.rest.restVersion` (default: `"v18"`): REST API segment path version segment.
+- `cpqBml.rest.commerceProcess` (default: `"oraclecpqo"`): Target commerce process key.
+- `cpqBml.rest.commerceDocument` (default: `"transaction"`): Active commerce process document name.
 - `cpqBml.rest.pullFolder` (default: `"library"`): Relative folder destination path for remote fetches.
+
+### Editor Features (`cpqBml.features.*`)
+- `cpqBml.features.lint` (default: `true`): Enable BML linting, styling diagnostics, and code fixes.
+- `cpqBml.features.comments` (default: `true`): Enable BML Better Comments decoration highlighting and documentation hover support.
+
+### MCP Server (AI) (`cpqBml.mcp.*`)
 - `cpqBml.mcp.enable` (default: `false`): Toggles the local Model Context Protocol server state.
 - `cpqBml.mcp.port` (default: `47821`): Local port bound by the MCP HTTP server.
 - `cpqBml.mcp.logToTerminal` (default: `false`): Stream AI agent integrations to a dedicated terminal.
+
+### Diagnostics & Debugging (`cpqBml.debug.*`)
+- `cpqBml.debug.logRestDetails` (default: `false`): Stream raw API transaction summaries locally to `bml_rest_api.log`.
 - `cpqBml.debug.logOutputToFile` (default: `false`): Save return values and print statements from debug sessions to the workspace root.
 
 ---

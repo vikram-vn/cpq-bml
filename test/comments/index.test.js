@@ -38,17 +38,17 @@ suite('BML Better Comments - extension wiring', () => {
         assert.ok(Array.isArray(hovers) && hovers.length > 0, 'Hovering a directive comment should produce at least one hover');
     });
 
-    test('toggling cpqBml.comments.enable does not throw', async function () {
+    test('toggling cpqBml.features.comments does not throw', async function () {
         this.timeout(8000);
         const config = vscode.workspace.getConfiguration('cpqBml');
-        const original = config.get('comments.enable');
+        const original = config.get('features.comments');
         try {
-            await config.update('comments.enable', false, vscode.ConfigurationTarget.Global);
+            await config.update('features.comments', false, vscode.ConfigurationTarget.Global);
             await new Promise((resolve) => setTimeout(resolve, 400));
-            await config.update('comments.enable', true, vscode.ConfigurationTarget.Global);
+            await config.update('features.comments', true, vscode.ConfigurationTarget.Global);
             await new Promise((resolve) => setTimeout(resolve, 400));
         } finally {
-            await config.update('comments.enable', original, vscode.ConfigurationTarget.Global);
+            await config.update('features.comments', original, vscode.ConfigurationTarget.Global);
         }
     });
 });

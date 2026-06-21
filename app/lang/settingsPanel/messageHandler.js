@@ -14,16 +14,16 @@ const ALLOWED_FIELDS = new Set([
     'connection.siteUrl',
     'connection.authMethod',
     'connection.username',
-    'connection.restVersion',
-    'connection.commerceProcess',
-    'connection.commerceDocument',
-    'connection.debugLog',
+    'rest.restVersion',
+    'rest.commerceProcess',
+    'rest.commerceDocument',
     'rest.pullFolder',
-    'lint.enable',
-    'comments.enable',
+    'features.lint',
+    'features.comments',
     'mcp.enable',
     'mcp.port',
     'mcp.logToTerminal',
+    'debug.logRestDetails',
     'debug.logOutputToFile'
 ]);
 

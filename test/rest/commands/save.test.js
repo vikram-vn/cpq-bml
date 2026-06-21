@@ -58,12 +58,12 @@ suite("BML REST commands - save", () => {
         assert.ok(lines[3].includes("Saved"));
       }));
 
-    test("uses the configured cpqBml.connection.restVersion instead of the v18 default", () =>
+    test("uses the configured cpqBml.rest.restVersion instead of the v18 default", () =>
       withTempDir(async (tmpDir) => {
         const calls = [];
         const editor = makeEditorWithMetadata(tmpDir, 'return "v2";');
         const vscode = createFakeVscode({
-          config: baseVscodeConfig({ "connection.restVersion": "v21" }),
+          config: baseVscodeConfig({ "rest.restVersion": "v21" }),
           window: { activeTextEditor: editor },
         });
         const transport = async (opts) => {

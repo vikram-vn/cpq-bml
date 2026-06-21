@@ -5,7 +5,7 @@ const { DEFAULT_TAGS } = require('./tags');
 const { getHoverMarkdown } = require('./hover');
 
 function isCommentsEnabled() {
-    return vscode.workspace.getConfiguration('cpqBml').get('comments.enable', true);
+    return vscode.workspace.getConfiguration('cpqBml').get('features.comments', true);
 }
 
 // Decoration styles are hardcoded (no settings.json exposure) - the user
@@ -94,10 +94,10 @@ function registerBmlComments(context) {
         if (editor && editor.document === e.document) triggerDecorate(editor);
     }, null, context.subscriptions);
 
-    // Toggling cpqBml.comments.enable should take effect immediately, same as
-    // cpqBml.lint.enable does for the linter.
+    // Toggling cpqBml.features.comments should take effect immediately, same as
+    // cpqBml.features.lint does for the linter.
     vscode.workspace.onDidChangeConfiguration((e) => {
-        if (!e.affectsConfiguration('cpqBml.comments.enable')) return;
+        if (!e.affectsConfiguration('cpqBml.features.comments')) return;
         if (!isCommentsEnabled()) {
             vscode.window.visibleTextEditors.forEach((editor) => clearDecorations(editor, decorationTypes));
             return;

@@ -39,7 +39,7 @@ suite("BML REST api", () => {
     });
 
     test("respects a non-default configured REST version", () => {
-      const vscode = createFakeVscode({ config: baseConfig({ "connection.restVersion": "v19" }) });
+      const vscode = createFakeVscode({ config: baseConfig({ "rest.restVersion": "v19" }) });
       assert.strictEqual(
         api.functionsPath(vscode),
         "/rest/v19/bml/library/functions",
@@ -64,7 +64,7 @@ suite("BML REST api", () => {
 
     test("falls back to the configured commerceProcess when metadata has none", () => {
       const vscode = createFakeVscode({
-        config: baseConfig({ "connection.commerceProcess": "configuredProcess" }),
+        config: baseConfig({ "rest.commerceProcess": "configuredProcess" }),
       });
       assert.strictEqual(
         api.functionsPath(vscode, { commerceDocument: "transaction" }),
@@ -73,7 +73,7 @@ suite("BML REST api", () => {
     });
 
     test("falls back to oraclecpqo when neither metadata nor settings name a commerceProcess", () => {
-      const vscode = createFakeVscode({ config: baseConfig({ "connection.commerceProcess": "" }) });
+      const vscode = createFakeVscode({ config: baseConfig({ "rest.commerceProcess": "" }) });
       assert.strictEqual(
         api.functionsPath(vscode, { commerceDocument: "transaction" }),
         "/rest/v18/commerceProcessSetups/oraclecpqo/documents/transaction/bml/library/functions",
@@ -269,7 +269,7 @@ suite("BML REST api", () => {
     assert.strictEqual(sink.captured.headers.Authorization, expected);
   });
 
-  suite("debug logging (cpqBml.connection.debugLog)", () => {
+  suite("debug logging (cpqBml.debug.logRestDetails)", () => {
     let tmpDir;
 
     function withWorkspace(extraConfig) {
@@ -287,7 +287,7 @@ suite("BML REST api", () => {
     }
 
     test("writes bml_rest_api.log under the workspace root when debugLog is enabled", async () => {
-      const vscode = withWorkspace({ "connection.debugLog": true });
+      const vscode = withWorkspace({ "debug.logRestDetails": true });
       try {
         await api.validateLibraryFunction(fakeContext(), vscode, { variableName: "x" }, capturingTransport({}));
         const logPath = path.join(tmpDir, "bml_rest_api.log");
@@ -309,7 +309,7 @@ suite("BML REST api", () => {
     });
 
     test("writes no log file when debugLog is enabled but no workspace folder is open", async () => {
-      const vscode = createFakeVscode({ config: baseConfig({ "connection.debugLog": true }) });
+      const vscode = createFakeVscode({ config: baseConfig({ "debug.logRestDetails": true }) });
       // No workspaceFolders at all - should not throw despite debugLog being on.
       await assert.doesNotReject(() =>
         api.validateLibraryFunction(fakeContext(), vscode, { variableName: "x" }, capturingTransport({})),

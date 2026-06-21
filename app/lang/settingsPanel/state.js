@@ -30,20 +30,17 @@ async function buildState(context, vscode) {
             siteUrl: cpqConfig.get('connection.siteUrl', ''),
             authMethod: settings.authMethod,
             username: settings.username,
-            restVersion: settings.restVersion,
-            commerceProcess: settings.commerceProcess,
-            commerceDocument: settings.commerceDocument,
-            debugLog: settings.debugLog,
             enabled: cpqConfig.get('connection.enabled', true)
         },
         rest: {
-            pullFolder: settings.pullFolder
+            pullFolder: settings.pullFolder,
+            restVersion: settings.restVersion,
+            commerceProcess: settings.commerceProcess,
+            commerceDocument: settings.commerceDocument
         },
-        lint: {
-            enable: cpqConfig.get('lint.enable', true)
-        },
-        comments: {
-            enable: cpqConfig.get('comments.enable', true)
+        features: {
+            lint: cpqConfig.get('features.lint', true),
+            comments: cpqConfig.get('features.comments', true)
         },
         mcp: {
             enable: cpqConfig.get('mcp.enable', false),
@@ -51,7 +48,8 @@ async function buildState(context, vscode) {
             logToTerminal: cpqConfig.get('mcp.logToTerminal', false)
         },
         debug: {
-            logOutputToFile: settings.logOutputToFile
+            logOutputToFile: settings.logOutputToFile,
+            logRestDetails: settings.debugLog
         },
         environments,
         hasPassword,

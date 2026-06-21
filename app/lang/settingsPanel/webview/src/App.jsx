@@ -7,16 +7,20 @@ const EMPTY_STATE = {
         siteUrl: '',
         authMethod: 'basic',
         username: '',
+        enabled: true
+    },
+    rest: {
+        pullFolder: 'library',
         restVersion: 'v18',
         commerceProcess: 'oraclecpqo',
-        commerceDocument: 'transaction',
-        debugLog: false
+        commerceDocument: 'transaction'
     },
-    rest: { pullFolder: 'library' },
-    lint: { enable: true },
-    comments: { enable: true },
+    features: {
+        lint: true,
+        comments: true
+    },
     mcp: { enable: false, port: 47821, logToTerminal: false },
-    debug: { logOutputToFile: false },
+    debug: { logOutputToFile: false, logRestDetails: false },
     environments: [],
     hasPassword: false,
     hasToken: false
@@ -142,8 +146,7 @@ export default function App({ vscodeApi }) {
     const {
         connection = {},
         rest = {},
-        lint = {},
-        comments = {},
+        features = {},
         mcp = {},
         debug = {}
     } = state || {};
@@ -177,7 +180,7 @@ export default function App({ vscodeApi }) {
                         onClick={() => { setActiveTab('operations'); setError(null); }}
                     >
                         <IconOperations />
-                        Operations &amp; REST
+                        REST Configuration
                     </button>
                     <button
                         className={`sidebar-item ${activeTab === 'features' ? 'active' : ''}`}
@@ -269,8 +272,7 @@ export default function App({ vscodeApi }) {
 
                 <FeaturesTab
                     active={activeTab === 'features'}
-                    lint={lint}
-                    comments={comments}
+                    features={features}
                     updateField={updateField}
                 />
 
@@ -284,9 +286,6 @@ export default function App({ vscodeApi }) {
 
                 <AdvancedTab
                     active={activeTab === 'advanced'}
-                    lint={lint}
-                    comments={comments}
-                    connection={connection}
                     debug={debug}
                     updateField={updateField}
                 />

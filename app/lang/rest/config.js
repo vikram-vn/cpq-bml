@@ -34,11 +34,11 @@ function getSettings(vscode) {
         siteUrl: normalizeSiteUrl(config.get('connection.siteUrl', '')),
         authMethod: config.get('connection.authMethod', 'basic'),
         username: config.get('connection.username', ''),
-        restVersion: config.get('connection.restVersion', DEFAULT_REST_VERSION),
-        commerceProcess: config.get('connection.commerceProcess', 'oraclecpqo'),
-        commerceDocument: config.get('connection.commerceDocument', 'transaction'),
+        restVersion: config.get('rest.restVersion', DEFAULT_REST_VERSION),
+        commerceProcess: config.get('rest.commerceProcess', 'oraclecpqo'),
+        commerceDocument: config.get('rest.commerceDocument', 'transaction'),
         pullFolder: config.get('rest.pullFolder', 'library'),
-        debugLog: config.get('connection.debugLog', false),
+        debugLog: config.get('debug.logRestDetails', false),
         logOutputToFile: config.get('debug.logOutputToFile', false)
     };
 }

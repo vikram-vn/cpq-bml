@@ -1,7 +1,7 @@
 const { request } = require("./client");
 const { getBaseUrl, getRestVersion, getCommerceProcess, getAuthHeader, getSettings } = require("./config");
 
-// REST version is configurable (cpqBml.connection.restVersion, default v18),
+// REST version is configurable (cpqBml.rest.restVersion, default v18),
 // so the path has to be built per-call rather than once at module load time.
 function functionsPath(vscode, metadata) {
   const version = getRestVersion(vscode);

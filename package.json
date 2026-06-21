@@ -184,16 +184,6 @@
           "default": true,
           "description": "Enable Oracle CPQ REST features. If disabled, settings onboarding will be suppressed and all REST toolbar icons will be hidden from the editor title bar."
         },
-        "cpqBml.lint.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable BML linting (diagnostics and quick fixes). Individual lines or whole files can still be excluded with // bml-lint-disable comments regardless of this setting."
-        },
-        "cpqBml.comments.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable BML Better Comments: colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights functional directive comments (// bml-lint-disable*, /* beautify ignore:start/end */) distinctly, and styles doc-header comment blocks (Function Name/Description/Inputs/Return)."
-        },
         "cpqBml.connection.siteUrl": {
           "type": "string",
           "default": "",
@@ -248,30 +238,35 @@
             ]
           }
         },
-        "cpqBml.connection.restVersion": {
+        "cpqBml.rest.restVersion": {
           "type": "string",
           "default": "v18",
           "description": "Oracle CPQ REST API version segment used when building request paths, e.g. v18 -> /rest/v18/bml/library/functions."
         },
-        "cpqBml.connection.commerceProcess": {
+        "cpqBml.rest.commerceProcess": {
           "type": "string",
           "default": "oraclecpqo",
           "description": "Commerce Process variable name used for commerce BML REST operations."
         },
-        "cpqBml.connection.commerceDocument": {
+        "cpqBml.rest.commerceDocument": {
           "type": "string",
           "default": "transaction",
           "description": "Commerce Process document variable name used by 'CPQ-BML: Pull Commerce Functions from CPQ' (e.g. 'transaction'). Change this if your commerce process functions live under a different document."
-        },
-        "cpqBml.connection.debugLog": {
-          "type": "boolean",
-          "default": false,
-          "description": "Log CPQ REST request/response details to a local 'bml_rest_api.log' file in the workspace root."
         },
         "cpqBml.rest.pullFolder": {
           "type": "string",
           "default": "library",
           "description": "Workspace-relative folder where 'CPQ-BML: Pull Util Library Functions from CPQ' saves local .bml files and their -meta.json sidecars. Validate/Deploy/Debug also look for these next to whichever .bml file is open, and fall back to searching the live CPQ library by filename if none is found."
+        },
+        "cpqBml.features.lint": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML linting (diagnostics and quick fixes). Individual lines or whole files can still be excluded with // bml-lint-disable comments regardless of this setting."
+        },
+        "cpqBml.features.comments": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML Better Comments: colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights functional directive comments (// bml-lint-disable*, /* beautify ignore:start/end */) distinctly, and styles doc-header comment blocks (Function Name/Description/Inputs/Return)."
         },
         "cpqBml.mcp.enable": {
           "type": "boolean",
@@ -287,6 +282,11 @@
           "type": "boolean",
           "default": false,
           "description": "When enabled, every MCP tool call (list/pull/save/validate/debug/deploy/create) streams its progress into a dedicated 'CPQ-BML (AI)' integrated terminal, so you can watch what an AI agent is doing to your CPQ instance in real time. Off by default; the same log is always included in each tool's result regardless of this setting."
+        },
+        "cpqBml.debug.logRestDetails": {
+          "type": "boolean",
+          "default": false,
+          "description": "Log CPQ REST request/response details to a local 'bml_rest_api.log' file in the workspace root."
         },
         "cpqBml.debug.logOutputToFile": {
           "type": "boolean",

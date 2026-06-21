@@ -118,7 +118,7 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
 
     const { commerceProcess, commerceDocument } = settings;
     if (!commerceProcess || !commerceDocument) {
-        vscode.window.showErrorMessage('CPQ-BML: configure cpqBml.connection.commerceProcess and cpqBml.connection.commerceDocument before pulling commerce functions.');
+        vscode.window.showErrorMessage('CPQ-BML: configure cpqBml.rest.commerceProcess and cpqBml.rest.commerceDocument before pulling commerce functions.');
         return;
     }
 

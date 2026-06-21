@@ -183,7 +183,7 @@ suite("BML REST commands - pull", () => {
         const errors = [];
         let transportCalled = false;
         const vscode = createFakeVscode({
-          config: baseVscodeConfig({ "connection.commerceProcess": "", "connection.commerceDocument": "" }),
+          config: baseVscodeConfig({ "rest.commerceProcess": "", "rest.commerceDocument": "" }),
           workspaceFolders: [{ uri: { fsPath: tmpDir } }],
           window: { showErrorMessage: (msg) => errors.push(msg) },
         });
@@ -196,7 +196,7 @@ suite("BML REST commands - pull", () => {
         });
 
         assert.strictEqual(transportCalled, false);
-        assert.ok(errors[0].includes("cpqBml.connection.commerceProcess"));
+        assert.ok(errors[0].includes("cpqBml.rest.commerceProcess"));
       }));
 
     test("lists/paginates under the commerceProcess/commerceDocument settings (defaulting to oraclecpqo/transaction), and writes picked functions under <process>/<document>/libraries/<name>/", () =>
@@ -288,7 +288,7 @@ suite("BML REST commands - pull", () => {
           };
         };
         const vscode = createFakeVscode({
-          config: baseVscodeConfig({ "connection.commerceDocument": "lineItem" }),
+          config: baseVscodeConfig({ "rest.commerceDocument": "lineItem" }),
           workspaceFolders: [{ uri: { fsPath: tmpDir } }],
           window: { showQuickPick: async (items) => [items[0]] },
         });
