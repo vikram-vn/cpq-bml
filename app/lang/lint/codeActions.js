@@ -123,6 +123,18 @@ function registerBmlCodeActions(context) {
                             }
                         }
                     }
+                    else if (diag.code === 'bml-unknown-function') {
+                        const word = document.getText(diag.range);
+                        const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('./functions');
+                        const suggestion = findClosestBuiltInFunction(word, loadBuiltInFunctions(extensionPath));
+                        if (suggestion) {
+                            const action = new vscode.CodeAction(`Replace with '${suggestion}'`, vscode.CodeActionKind.QuickFix);
+                            action.edit = new vscode.WorkspaceEdit();
+                            action.edit.replace(document.uri, diag.range, suggestion);
+                            action.diagnostics = [diag];
+                            fixes.push(action);
+                        }
+                    }
                     else if (diag.code === 'bml-spelling-error') {
                         const word = document.getText(diag.range);
                         const { getSpellingSuggestions } = require('../spellCheck/spelling');

@@ -118,4 +118,22 @@ suite('BML Code Actions Quick Fix Suite', () => {
         const action = codeActions.find(a => a.title.includes('Replace getpartsdata with bmql'));
         assert.ok(action, 'Should have Quick Fix to replace getpartsdata with bmql');
     });
+
+    test('Quick Fix for unknown function "did you mean" suggestion', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'bml',
+            content: 'x = atfo("5.0");'
+        });
+
+        const collection = vscode.languages.createDiagnosticCollection('bml');
+        lintBMLCustom(doc, collection, vscode);
+
+        const diags = collection.get(doc.uri);
+        const unknownDiag = diags.find(d => d.code === 'bml-unknown-function');
+        assert.ok(unknownDiag, 'Should have an unknown-function diagnostic for atfo');
+
+        const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, unknownDiag.range);
+        const action = codeActions.find(a => a.title.includes("Replace with 'atof'"));
+        assert.ok(action, 'Should have a Quick Fix suggesting atof');
+    });
 });

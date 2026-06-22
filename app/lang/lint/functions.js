@@ -1,5 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const { parseParameterSignature, splitArgumentsList } = require('./functionSignature');
+const { levenshtein } = require('./levenshtein');
+const { inferLiteralType } = require('./typeCheck');
 
 let builtInFunctions = null;
 // Mirrors the grammar's reserved words (app/lang/syntaxes/bml.tmLanguage.json
@@ -15,33 +18,16 @@ const keywords = new Set([
 ]);
 const deprecated = new Set(['strtodate', 'gettabledata', 'getpartsdata']);
 
+// Thin backward-compatible wrapper - parseParameterSignature (functionSignature.js)
+// replaced this internally to fix two real bugs naive comma-splitting had:
+// cascading nested-optional signatures (e.g. datetostr's trailing
+// "[, String dateFormat [, String timeZone]]") under-counted required
+// parameters, and union-typed signatures (max/min/put/...) could be parsed
+// into nonsense. Kept exported under its original name in case anything
+// outside this module still imports it.
 function parseSyntax(syntax) {
-    const match = syntax.match(/\(([^)]*)\)/);
-    if (!match) return { min: 0, max: 0 };
-    const paramsText = match[1].trim();
-    if (!paramsText) return { min: 0, max: 0 };
-
-    let requiredCount = 0;
-    let totalCount = 0;
-    let inOptional = false;
-
-    const parts = paramsText.split(',');
-    for (const part of parts) {
-        const trimmed = part.trim();
-        if (!trimmed) continue;
-        
-        // Clean array brackets like String[] so they aren't mistaken for optional parameter brackets like [String param]
-        const cleanPart = trimmed.replace(/\[\s*\]/g, '');
-        
-        totalCount++;
-        if (cleanPart.includes('[') || inOptional) {
-            inOptional = true;
-        }
-        if (!inOptional) {
-            requiredCount++;
-        }
-    }
-    return { min: requiredCount, max: totalCount };
+    const { min, max } = parseParameterSignature(syntax);
+    return { min, max };
 }
 
 // bml_functions_api_usage.json is generated from app/lookups/bml/common.json
@@ -76,8 +62,8 @@ function loadBuiltInFunctions(extensionPath) {
                     const item = data[name];
                     if (item && item.fullSignature && item.fullSignature.includes('(')) {
                         const nameLower = name.toLowerCase();
-                        const { min, max } = parseSyntax(item.fullSignature);
-                        builtInFunctions.set(nameLower, { min, max, syntax: item.fullSignature, name });
+                        const { min, max, params } = parseParameterSignature(item.fullSignature);
+                        builtInFunctions.set(nameLower, { min, max, params, syntax: item.fullSignature, name });
                     }
                 });
             }
@@ -307,6 +293,48 @@ function countArguments(argsText) {
     return commas + 1;
 }
 
+// Same conservative near-match policy as systemVariables.js's
+// findClosestSystemVariable: distance <= 2 and length within 3, so an
+// unrelated short identifier (a real local variable, not a function at all)
+// never gets a spurious "did you mean" pointing at some unrelated built-in.
+function findClosestBuiltInFunction(name, builtIns) {
+    const nameLower = name.toLowerCase();
+    let best = null;
+    let bestDist = Infinity;
+    for (const [lower, info] of builtIns.entries()) {
+        if (Math.abs(lower.length - nameLower.length) > 3) continue;
+        const dist = levenshtein(nameLower, lower);
+        if (dist < bestDist) {
+            bestDist = dist;
+            best = info.name;
+        }
+    }
+    return best && bestDist <= 2 && bestDist > 0 ? best : null;
+}
+
+function normalizeType(type) {
+    if (!type) return null;
+    const match = type.match(/^([A-Za-z]+)((?:\[\])*)$/);
+    if (!match) return type.toLowerCase();
+    return `${match[1].toLowerCase()}${match[2]}`;
+}
+
+// Conservative: only ever compares an argument when inferLiteralType could
+// unambiguously tell what it is (a bare literal/typed-array/type-constructor
+// call - see typeCheck.js) - a variable or general expression returns null
+// from inferLiteralType and is always treated as compatible, since this
+// linter has no real type system to track a variable's type through. Integer
+// literals are accepted for a Float-typed parameter (numeric widening is
+// normal and not a real mistake); every other mismatch is reported.
+function argumentTypeCompatible(expectedType, actualType) {
+    if (!expectedType || !actualType) return true;
+    const expected = normalizeType(expectedType);
+    const actual = normalizeType(actualType);
+    if (expected === actual) return true;
+    if (expected === 'float' && actual === 'integer') return true;
+    return false;
+}
+
 function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath) {
     const diagnostics = [];
     const builtIns = loadBuiltInFunctions(extensionPath);
@@ -346,22 +374,22 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
 
             if (!targetFunc) {
                 // Warning/Info: function not found in workspace
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Function '${namespace}.${funcName}' not found in the workspace library.`,
-                        vscode.DiagnosticSeverity.Information
-                    )
+                const diag = new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Function '${namespace}.${funcName}' not found in the workspace library.`,
+                    vscode.DiagnosticSeverity.Information
                 );
+                diag.code = 'bml-function-not-found-workspace';
+                diagnostics.push(diag);
             } else {
                 if (argCount !== targetFunc.parameterCount) {
-                    diagnostics.push(
-                        new vscode.Diagnostic(
-                            new vscode.Range(startPos, endPos),
-                            `Function '${namespace}.${targetFunc.name}' expects ${targetFunc.parameterCount} argument(s), but got ${argCount}.`,
-                            vscode.DiagnosticSeverity.Warning
-                        )
+                    const diag = new vscode.Diagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Function '${namespace}.${targetFunc.name}' expects ${targetFunc.parameterCount} argument(s), but got ${argCount}.`,
+                        vscode.DiagnosticSeverity.Warning
                     );
+                    diag.code = 'bml-function-arg-count';
+                    diagnostics.push(diag);
                 }
             }
         } else {
@@ -379,23 +407,49 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     } else {
                         expectedMsg = `${builtIn.min} to ${builtIn.max}`;
                     }
-                    diagnostics.push(
-                        new vscode.Diagnostic(
-                            new vscode.Range(startPos, endPos),
-                            `Built-in function '${builtIn.name}' expects ${expectedMsg} argument(s), but got ${argCount}.`,
-                            vscode.DiagnosticSeverity.Warning
-                        )
+                    const diag = new vscode.Diagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Built-in function '${builtIn.name}' expects ${expectedMsg} argument(s), but got ${argCount}.`,
+                        vscode.DiagnosticSeverity.Warning
                     );
+                    diag.code = 'bml-function-arg-count';
+                    diagnostics.push(diag);
+                }
+
+                // Per-position argument type checking - only when the
+                // signature was cleanly parseable (builtIn.params is null
+                // for the dozen polymorphic/union-typed built-ins, e.g.
+                // max/min/put/get - see functionSignature.js).
+                if (builtIn.params) {
+                    const args = splitArgumentsList(argsCleanText);
+                    for (let i = 0; i < args.length && i < builtIn.params.length; i++) {
+                        const expectedType = builtIn.params[i].type;
+                        if (!expectedType) continue;
+                        const actualType = inferLiteralType(args[i]);
+                        if (!actualType) continue;
+                        if (!argumentTypeCompatible(expectedType, actualType)) {
+                            const diag = new vscode.Diagnostic(
+                                new vscode.Range(startPos, endPos),
+                                `Argument ${i + 1} to '${builtIn.name}' should be ${expectedType}, but got a ${actualType} value.`,
+                                vscode.DiagnosticSeverity.Warning
+                            );
+                            diag.code = 'bml-function-arg-type';
+                            diagnostics.push(diag);
+                        }
+                    }
                 }
             } else {
                 // Unknown bare function call
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Unknown built-in function or variable '${funcName}'.`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
+                const suggestion = findClosestBuiltInFunction(funcName, builtIns);
+                const diag = new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    suggestion
+                        ? `Unknown built-in function or variable '${funcName}' - did you mean '${suggestion}'?`
+                        : `Unknown built-in function or variable '${funcName}'.`,
+                    vscode.DiagnosticSeverity.Warning
                 );
+                diag.code = 'bml-unknown-function';
+                diagnostics.push(diag);
             }
         }
     }
@@ -403,4 +457,12 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
     return diagnostics;
 }
 
-module.exports = { checkFunctionCalls, parseSyntax, countArguments, getWorkspaceFunctionsCached, keywords, loadBuiltInFunctions };
+module.exports = {
+    checkFunctionCalls,
+    parseSyntax,
+    countArguments,
+    getWorkspaceFunctionsCached,
+    keywords,
+    loadBuiltInFunctions,
+    findClosestBuiltInFunction,
+};

@@ -8,6 +8,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Added
 
+- **Built-in function argument type checking**: flags a call argument whose literal type (string/integer/float/boolean/typed-array/constructor) doesn't match the corresponding parameter's declared type in a built-in function's signature (e.g. `atoi(5)` instead of `atoi("5")`). Conservative by design - only checks arguments whose type is unambiguous from the literal text itself (variables and general expressions are never flagged), and allows passing an Integer literal where a Float parameter is expected.
+- **"Did you mean" suggestions for unknown function calls**: an unrecognized bare function call now suggests the closest real built-in name when it's a near-exact typo (e.g. `atfo("5.0")` suggests `atof`), with a matching Quick Fix to apply it.
+
+### Fixed
+
+- **Built-in function argument-count accuracy**: rewrote the function-signature parser (`app/lang/lint/functionSignature.js`) to correctly handle Oracle's "cascading" nested-optional parameter notation (e.g. `datetostr(Date date [, String dateFormat [, String timeZone]]))`), which the previous naive comma-split parser mis-classified - sometimes under-counting required parameters (so a genuinely-missing required argument went unflagged), sometimes over-counting them. Signatures using a non-standard polymorphic "Type(or Type2, Type3)" union notation (`max`, `min`, `put`, `get`, ...) or describing a truly variadic function (`sbappend`) are now detected and excluded from count/type validation entirely, rather than being checked against a guessed (and wrong) shape.
+- Function-call diagnostics (`bml-unknown-function`, `bml-function-arg-count`, `bml-function-not-found-workspace`) now carry a `code`, so lint-suppression directives and downstream tooling can target them individually.
+
 ## [1.3.0]
 
 ### Added
