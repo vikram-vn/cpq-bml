@@ -43,5 +43,35 @@
     "line": 22,
     "severity": "Warning",
     "message": "Design Warning: Nesting depth of 5 exceeds recommended limit of 3"
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 19,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 20,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 21,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 22,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 33,
+    "severity": "Warning",
+    "message": "'AND' and 'OR' are mixed without grouping parentheses - BML evaluates 'AND' before 'OR', which may not be what you expect. Add parentheses to make the intended grouping explicit, e.g. '(a AND b) OR c'."
   }
 ]

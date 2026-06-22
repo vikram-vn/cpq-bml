@@ -10,6 +10,15 @@ const { checkStyle } = require('./style');
 const { checkBoundaries } = require('./boundaries');
 const { checkFunctionCalls } = require('./functions');
 const { checkSystemVariables } = require('./systemVariables');
+const { checkAssignmentTypeConsistency, inferLiteralType } = require('./typeCheck');
+const { checkMetadataTypeConsistency, getDeclaredParameterTypes } = require('./metadataTypes');
+const { checkConstantConditions } = require('./constantConditions');
+const { checkUnreachableCode } = require('./unreachable');
+const { checkDuplicateConditionBranches } = require('./duplicateBranches');
+const { checkMixedOperators } = require('./mixedOperators');
+const { checkLonelyIf } = require('./lonelyIf');
+const { checkUnusedExpressions } = require('./unusedExpressions');
+const { checkUseBeforeDefine } = require('./useBeforeDefine');
 const { getStringRanges } = require('./strings');
 const { computeSuppressions } = require('./suppressions');
 
@@ -81,6 +90,45 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
     // 10c. CPQ predefined system variables (_user_*, _site_*, ...): flag
     // assignment to a read-only one, and typo "did you mean" suggestions
     diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode));
+
+    // 10d. Variable type consistency: a variable reassigned to a literal of a
+    // different type than its first assignment (e.g. test = 1; ... test = "2";),
+    // seeded from the function's own declared parameter types (its -meta.json
+    // sidecar) so reassigning a parameter to a conflicting type is caught too.
+    const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
+    diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes));
+
+    // 10e. Metadata sidecar type validation: internal value/displayValue
+    // consistency against Oracle's own lookup tables, and a `return <literal>;`
+    // whose type conflicts with the function's own declared return type.
+    diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType));
+
+    // 10f. Always-true/false if/elif conditions and self-comparisons (cleanText
+    // so condition reuses getConditionRanges, which expects real string content)
+    diagnostics.push(...checkConstantConditions(cleanText, doc, vscode));
+
+    // 10g. Unreachable code after an unconditional return/break/continue/throwerror
+    diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode));
+
+    // 10h. Duplicate if/elif branch conditions within the same chain (cleanText
+    // so two branches comparing against different string literals aren't
+    // mistaken for duplicates once those literals are blanked out)
+    diagnostics.push(...checkDuplicateConditionBranches(cleanText, doc, vscode));
+
+    // 10i. AND/OR mixed without grouping parens in an if/elif condition
+    diagnostics.push(...checkMixedOperators(cleanText, doc, vscode));
+
+    // 10j. 'else' containing nothing but a single 'if' - should be 'elif'
+    diagnostics.push(...checkLonelyIf(cleanText, doc, vscode));
+
+    // 10k. A bare comparison statement with no effect (almost always a typo
+    // for '=' or a forgotten 'if')
+    diagnostics.push(...checkUnusedExpressions(cleanText, doc, vscode));
+
+    // 10l. A variable read before its own later assignment in the same file -
+    // util functions only (commerce functions have too many implicit
+    // platform bindings to check this safely; see useBeforeDefine.js)
+    diagnostics.push(...checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars));
 
     // 11. Apply // bml-lint-disable / -line / -next-line / -file comment directives
     const suppressions = computeSuppressions(text, commentRanges);
