@@ -16,6 +16,7 @@ vsc-extension-quickstart.md
 *.bml
 .github
 bml
+SKILLS.md
 
 # Ignore raw source folders that are compiled into dist/extension.js
 app/lang/beautify/**
