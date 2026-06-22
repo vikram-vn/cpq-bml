@@ -51,4 +51,21 @@ suite('BML Better Comments - extension wiring', () => {
             await config.update('features.comments', original, vscode.ConfigurationTarget.Global);
         }
     });
+
+    test('split-pane comment decorations sync does not throw', async function () {
+        this.timeout(8000);
+        const content = '// TODO: verify split pane comment sync';
+        const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+        const editor1 = await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
+        const editor2 = await vscode.window.showTextDocument(doc, vscode.ViewColumn.Two);
+        
+        const edit = new vscode.WorkspaceEdit();
+        edit.insert(doc.uri, new vscode.Position(0, doc.getText().length), '\n// FIXME: another tag');
+        await vscode.workspace.applyEdit(edit);
+        
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        
+        assert.strictEqual(editor1.document.languageId, 'bml');
+        assert.strictEqual(editor2.document.languageId, 'bml');
+    });
 });

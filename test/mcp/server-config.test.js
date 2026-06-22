@@ -1,0 +1,44 @@
+const assert = require("assert");
+const vscode = require("vscode");
+const { getMcpServerStatus, stopMcpServer } = require("../../app/lang/mcp/server");
+
+suite("MCP Server Config Reactivity Integration", () => {
+  suiteSetup(async () => {
+    const ext = vscode.extensions.getExtension("vikram-n.cpq-bml");
+    await ext.activate();
+  });
+
+  suiteTeardown(() => {
+    stopMcpServer();
+  });
+
+  test("toggling cpqBml.mcp.enable starts and stops the server", async function () {
+    this.timeout(10000);
+    const config = vscode.workspace.getConfiguration("cpqBml");
+    const originalEnable = config.get("mcp.enable");
+    const originalPort = config.get("mcp.port");
+
+    try {
+      stopMcpServer();
+      assert.strictEqual(getMcpServerStatus().running, false, "Server should be stopped initially");
+
+      await config.update("mcp.port", 48999, vscode.ConfigurationTarget.Global);
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      await config.update("mcp.enable", true, vscode.ConfigurationTarget.Global);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      const statusEnabled = getMcpServerStatus();
+      assert.strictEqual(statusEnabled.running, true, "Server should have started automatically when enabled");
+
+      await config.update("mcp.enable", false, vscode.ConfigurationTarget.Global);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const statusDisabled = getMcpServerStatus();
+      assert.strictEqual(statusDisabled.running, false, "Server should have stopped automatically when disabled");
+    } finally {
+      await config.update("mcp.enable", originalEnable, vscode.ConfigurationTarget.Global);
+      await config.update("mcp.port", originalPort, vscode.ConfigurationTarget.Global);
+    }
+  });
+});

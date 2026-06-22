@@ -54,16 +54,23 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
         assert.strictEqual(spellingErrors.length, 0, 'Should ignore URLs, technical acronyms, and SQL strings');
     });
 
-    test('Provides correct spelling suggestions', () => {
+    test('Provides correct spelling suggestions and preserves case', () => {
         const suggestions = getSpellingSuggestions('mispelled');
         assert.ok(suggestions.length > 0, 'Should return suggestions for mispelled');
         assert.ok(suggestions.includes('misspelled'), 'Suggestions should include correct word "misspelled"');
+
+        const upperSuggestions = getSpellingSuggestions('MISPELLED');
+        assert.ok(upperSuggestions.includes('MISSPELLED'), 'Suggestions should preserve uppercase');
+
+        const titleSuggestions = getSpellingSuggestions('Mispelled');
+        assert.ok(titleSuggestions.includes('Misspelled'), 'Suggestions should preserve titlecase');
     });
 
     test('splitIdentifier splits camelCase and snake_case correctly', () => {
         assert.deepStrictEqual(splitIdentifier('customerName'), ['customer', 'Name']);
         assert.deepStrictEqual(splitIdentifier('max_discount_value'), ['max', 'discount', 'value']);
         assert.deepStrictEqual(splitIdentifier('XMLDocument'), ['XML', 'Document']);
+        assert.deepStrictEqual(splitIdentifier('v1_discount_rate2'), ['v', 'discount', 'rate']);
     });
 
     test('cleanCommentText strips URLs and contraction suffixes', () => {

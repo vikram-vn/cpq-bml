@@ -314,4 +314,17 @@ suite("BML REST metadata", () => {
       { variableName: "alreadyAnObject", type: "COMMERCE" }
     ]);
   });
+
+  test("readMetadata returns null and does not throw when the sidecar file contains corrupted JSON", () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "rest-test-corrupt-"));
+    try {
+      const corruptMetaPath = path.join(tmpDir, "corrupted-meta.json");
+      fs.writeFileSync(corruptMetaPath, "{ invalid json: }", "utf8");
+
+      const result = metadata.readMetadata(corruptMetaPath);
+      assert.strictEqual(result, null, "Should return null on corrupted JSON rather than throwing");
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
 });

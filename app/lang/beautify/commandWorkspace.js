@@ -136,4 +136,4 @@ async function beautifyWorkspaceCommand() {
   );
 }
 
-module.exports = { beautifyWorkspaceCommand };
+module.exports = { beautifyWorkspaceCommand, collectBmlFiles, collectFolders, beautifyFile };
