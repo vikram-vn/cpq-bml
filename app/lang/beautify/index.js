@@ -16,7 +16,7 @@ async function beautifyText(text, document, formattingOptions) {
 
 // Register the beautifier
 function registerBeautifier(context) {
-    const selector = { language: 'bml', scheme: 'file' };
+    const selector = 'bml';
 
     // Full document formatting
     const fullDisposable = vscode.languages.registerDocumentFormattingEditProvider(selector, {

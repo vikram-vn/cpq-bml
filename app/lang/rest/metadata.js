@@ -45,7 +45,11 @@ function splitFunctionResponse(functionResponse) {
 
 function readMetadata(metaFilePath) {
     if (!fs.existsSync(metaFilePath)) return null;
-    return JSON.parse(fs.readFileSync(metaFilePath, 'utf8'));
+    try {
+        return JSON.parse(fs.readFileSync(metaFilePath, 'utf8'));
+    } catch (e) {
+        return null;
+    }
 }
 
 function writeMetadata(metaFilePath, metadata) {

@@ -62,10 +62,10 @@ function registerBmlCodeActions(context) {
                         if (compoundOps[original] !== undefined) {
                             const lineText = document.lineAt(diag.range.start.line).text;
                             const startChar = diag.range.start.character;
-                            const prefix = lineText.substring(0, startChar).trim();
-                            const varMatch = /[a-zA-Z_]\w*$/.exec(prefix);
+                            const untrimmedPrefix = lineText.substring(0, startChar);
+                            const varMatch = /[a-zA-Z_]\w*\s*$/.exec(untrimmedPrefix);
                             if (varMatch) {
-                                const varName = varMatch[0];
+                                const varName = varMatch[0].trim();
                                 const op = compoundOps[original];
                                 const replacement = `= ${varName} ${op}`;
                                 const action = new vscode.CodeAction(`Replace with ${varName} = ${varName} ${op} ...`, vscode.CodeActionKind.QuickFix);
@@ -78,13 +78,13 @@ function registerBmlCodeActions(context) {
                         else if (original === '++' || original === '--') {
                             const lineText = document.lineAt(diag.range.start.line).text;
                             const startChar = diag.range.start.character;
-                            const prefix = lineText.substring(0, startChar).trim();
-                            const varMatch = /[a-zA-Z_]\w*$/.exec(prefix);
+                            const untrimmedPrefix = lineText.substring(0, startChar);
+                            const varMatch = /[a-zA-Z_]\w*\s*$/.exec(untrimmedPrefix);
                             if (varMatch) {
-                                const varName = varMatch[0];
+                                const varName = varMatch[0].trim();
                                 const op = original === '++' ? '+' : '-';
                                 const fullReplacement = `${varName} = ${varName} ${op} 1`;
-                                const varStartChar = prefix.length - varMatch[0].length;
+                                const varStartChar = varMatch.index;
                                 const replaceRange = new vscode.Range(
                                     diag.range.start.line, varStartChar,
                                     diag.range.start.line, startChar + 2

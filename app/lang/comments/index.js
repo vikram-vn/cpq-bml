@@ -74,24 +74,38 @@ function registerBmlComments(context) {
     context.subscriptions.push(decorationTypes.directiveType, decorationTypes.docHeaderType);
 
     const decorateDelay = 300;
-    let decorateTimer;
+    const decorateTimers = new Map();
 
     const triggerDecorate = (editor) => {
-        clearTimeout(decorateTimer);
-        decorateTimer = setTimeout(() => {
-            if (!editor) return;
+        if (!editor) return;
+        const uri = editor.document.uri.toString();
+        if (decorateTimers.has(uri)) {
+            clearTimeout(decorateTimers.get(uri));
+        }
+        decorateTimers.set(uri, setTimeout(() => {
+            decorateTimers.delete(uri);
             if (!isCommentsEnabled()) {
                 clearDecorations(editor, decorationTypes);
                 return;
             }
             applyDecorations(editor, decorationTypes);
-        }, decorateDelay);
+        }, decorateDelay));
     };
+
+    context.subscriptions.push({
+        dispose: () => {
+            for (const timer of decorateTimers.values()) {
+                clearTimeout(timer);
+            }
+            decorateTimers.clear();
+        }
+    });
 
     vscode.window.onDidChangeActiveTextEditor(triggerDecorate, null, context.subscriptions);
     vscode.workspace.onDidChangeTextDocument((e) => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document === e.document) triggerDecorate(editor);
+        vscode.window.visibleTextEditors.forEach((editor) => {
+            if (editor.document === e.document) triggerDecorate(editor);
+        });
     }, null, context.subscriptions);
 
     // Toggling cpqBml.features.comments should take effect immediately, same as

@@ -166,6 +166,15 @@ async function runRemoveOverride(
   metadataLib.writeMetadata(metaPath, updatedMeta);
   metadataLib.writeBmlFile(doc.uri.fsPath, scriptText);
 
+  // Sync active editor content to avoid dirty indicator or delayed disk-reload
+  if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document === doc && typeof vscode.window.activeTextEditor.edit === 'function') {
+    await vscode.window.activeTextEditor.edit(editBuilder => {
+      const lastLine = doc.lineCount - 1;
+      const fullRange = new vscode.Range(0, 0, lastLine, doc.lineAt(lastLine).text.length);
+      editBuilder.replace(fullRange, scriptText);
+    });
+  }
+
   // Refresh status bar + context keys immediately (active editor has not changed)
   await vscode.commands.executeCommand('cpqBml.internal.refreshStatus');
 

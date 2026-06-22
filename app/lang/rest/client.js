@@ -30,6 +30,9 @@ function defaultTransport({ hostname, port, path, method, headers, body }) {
         });
       },
     );
+    req.setTimeout(30000, () => {
+      req.destroy(new Error("Request timeout after 30 seconds"));
+    });
     req.on("error", reject);
     if (body !== undefined) req.write(body);
     req.end();
@@ -95,7 +98,8 @@ async function request({
       body: body,
     };
     try {
-      fs.writeFileSync(logFilePath, `REQUEST:\n${JSON.stringify(requestInfo, null, 2)}\n\n`);
+      const timestamp = new Date().toISOString();
+      fs.appendFileSync(logFilePath, `[${timestamp}] REQUEST:\n${JSON.stringify(requestInfo, null, 2)}\n\n`);
     } catch (e) {}
   }
 
@@ -116,7 +120,8 @@ async function request({
       text: response.text,
     };
     try {
-      fs.appendFileSync(logFilePath, `RESPONSE:\n${JSON.stringify(responseInfo, null, 2)}\n\n-------------------------\n\n`);
+      const timestamp = new Date().toISOString();
+      fs.appendFileSync(logFilePath, `[${timestamp}] RESPONSE:\n${JSON.stringify(responseInfo, null, 2)}\n\n-------------------------\n\n`);
     } catch (e) {}
   }
 

@@ -196,4 +196,46 @@ suite("BML REST client", () => {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
   });
+
+  test("request() appends subsequent request logs instead of overwriting, with timestamps", async () => {
+    const fs = require("fs");
+    const os = require("os");
+    const pathLib = require("path");
+    const tmpDir = fs.mkdtempSync(pathLib.join(os.tmpdir(), "client-log-append-test-"));
+    const logFilePath = pathLib.join(tmpDir, "bml_rest_api.log");
+
+    const fakeTransport = async () => ({
+      statusCode: 200,
+      headers: { "content-type": "application/json" },
+      text: "{}",
+    });
+
+    try {
+      await request({
+        baseUrl: "https://sitename.bigmachines.com",
+        path: "/rest/v18/bml/library/functions",
+        method: "POST",
+        body: { query: "first" },
+        logFilePath,
+        transport: fakeTransport,
+      });
+
+      await request({
+        baseUrl: "https://sitename.bigmachines.com",
+        path: "/rest/v18/bml/library/functions",
+        method: "POST",
+        body: { query: "second" },
+        logFilePath,
+        transport: fakeTransport,
+      });
+
+      const logContents = fs.readFileSync(logFilePath, "utf8");
+      assert.ok(logContents.includes('"query": "first"'));
+      assert.ok(logContents.includes('"query": "second"'));
+      const matches = logContents.match(/\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] REQUEST:/g);
+      assert.strictEqual(matches.length, 2, "Expected two timestamped request entries in the log");
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
 });

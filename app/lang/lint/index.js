@@ -17,18 +17,32 @@ function registerBmlLinter(context) {
     context.subscriptions.push(diagnosticCollection);
 
     const lintDelay = 300;
-    let lintTimer;
+    const lintTimers = new Map();
 
     const triggerLint = (doc) => {
-        clearTimeout(lintTimer);
-        lintTimer = setTimeout(() => {
+        if (!doc) return;
+        const uri = doc.uri.toString();
+        if (lintTimers.has(uri)) {
+            clearTimeout(lintTimers.get(uri));
+        }
+        lintTimers.set(uri, setTimeout(() => {
+            lintTimers.delete(uri);
             if (!isLintEnabled() && !isSpellingEnabled()) {
                 diagnosticCollection.delete(doc.uri);
                 return;
             }
             lintBMLCustom(doc, diagnosticCollection, vscode);
-        }, lintDelay);
+        }, lintDelay));
     };
+
+    context.subscriptions.push({
+        dispose: () => {
+            for (const timer of lintTimers.values()) {
+                clearTimeout(timer);
+            }
+            lintTimers.clear();
+        }
+    });
 
     vscode.workspace.onDidOpenTextDocument(triggerLint, null, context.subscriptions);
     vscode.workspace.onDidChangeTextDocument((e) => triggerLint(e.document), null, context.subscriptions);

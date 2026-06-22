@@ -74,6 +74,23 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
         assert.ok(cleaned.includes('code'));
     });
 
+    test('cleanCommentText preserves string length to keep correct offsets', () => {
+        const original = "Visit http://test.com or ask Vikram's team who didn't write it's code.";
+        const cleaned = cleanCommentText(original);
+        assert.strictEqual(cleaned.length, original.length, 'Cleaned string must have exactly the same length as the original');
+    });
+
+    test('Diagnostics ranges are correct when preceding text contains URLs/contractions', () => {
+        const code = '// Check http://google.com mispelled word';
+        const diagnostics = lintText(code);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.ok(spellingErrors.length > 0, 'Should find spelling error');
+        const err = spellingErrors.find(e => e.message.includes('mispelled'));
+        assert.ok(err, 'Should find mispelled error');
+        assert.strictEqual(err.range.start.character, 27, 'Should start at the correct character index');
+        assert.strictEqual(err.range.end.character, 36, 'Should end at the correct character index');
+    });
+
     test('Respects cpqBml.features.spelling config setting', async () => {
         const config = vscode.workspace.getConfiguration('cpqBml');
         const originalSpelling = config.get('features.spelling');

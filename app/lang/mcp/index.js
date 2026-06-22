@@ -27,6 +27,25 @@ function registerMcp(context) {
     // Auto-start on activation if the user has already opted in.
     ensureStarted();
 
+    vscode.workspace.onDidChangeConfiguration(async (e) => {
+        if (!e.affectsConfiguration('cpqBml.mcp')) return;
+        const status = getMcpServerStatus();
+        const { enable, port } = getSettings();
+        
+        if (!enable) {
+            if (status.running) {
+                stopMcpServer();
+            }
+        } else {
+            if (status.running && status.port !== port) {
+                stopMcpServer();
+                await ensureStarted();
+            } else if (!status.running) {
+                await ensureStarted();
+            }
+        }
+    }, null, context.subscriptions);
+
     context.subscriptions.push(
         vscode.commands.registerCommand('cpqBml.mcp.showInfo', async () => {
             let status = getMcpServerStatus();

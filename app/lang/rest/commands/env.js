@@ -34,7 +34,7 @@ function normalizeEnvironment(env) {
 
 async function addEnvironment(vscode, env) {
     validateEnvironment(env);
-    const environments = getEnvironments(vscode);
+    const environments = [...getEnvironments(vscode)];
     environments.push(normalizeEnvironment(env));
     await setEnvironments(vscode, environments);
     return environments;
@@ -42,7 +42,7 @@ async function addEnvironment(vscode, env) {
 
 async function updateEnvironment(vscode, index, env) {
     validateEnvironment(env);
-    const environments = getEnvironments(vscode);
+    const environments = [...getEnvironments(vscode)];
     if (!(index >= 0 && index < environments.length)) {
         throw new Error('CPQ-BML: environment index out of range.');
     }
@@ -52,7 +52,7 @@ async function updateEnvironment(vscode, index, env) {
 }
 
 async function deleteEnvironment(vscode, index) {
-    const environments = getEnvironments(vscode);
+    const environments = [...getEnvironments(vscode)];
     if (!(index >= 0 && index < environments.length)) {
         throw new Error('CPQ-BML: environment index out of range.');
     }

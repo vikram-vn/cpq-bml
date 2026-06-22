@@ -134,25 +134,25 @@ function cleanCommentText(text) {
     let clean = text;
     // Remove URLs
     if (clean.includes('http://') || clean.includes('https://') || clean.includes('HTTP://') || clean.includes('HTTPS://')) {
-        clean = clean.replace(/https?:\/\/[^\s]+/gi, ' ');
+        clean = clean.replace(/https?:\/\/[^\s]+/gi, (m) => ' '.repeat(m.length));
     }
     // Remove email addresses
     if (clean.includes('@')) {
-        clean = clean.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, ' ');
+        clean = clean.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, (m) => ' '.repeat(m.length));
     }
     // Remove inline code ticks
     if (clean.includes('`')) {
-        clean = clean.replace(/`[^`]+`/g, ' ');
+        clean = clean.replace(/`[^`]+`/g, (m) => ' '.repeat(m.length));
     }
     // Clean contraction endings so root word can be checked
     if (clean.includes("'")) {
-        clean = clean.replace(/'s\b/g, '')
-                     .replace(/'t\b/g, '')
-                     .replace(/'d\b/g, '')
-                     .replace(/'ll\b/g, '')
-                     .replace(/'re\b/g, '')
-                     .replace(/'ve\b/g, '')
-                     .replace(/'m\b/g, '');
+        clean = clean.replace(/'s\b/g, '  ')
+                     .replace(/'t\b/g, '  ')
+                     .replace(/'d\b/g, '  ')
+                     .replace(/'ll\b/g, '   ')
+                     .replace(/'re\b/g, '   ')
+                     .replace(/'ve\b/g, '   ')
+                     .replace(/'m\b/g, '  ');
     }
     return clean;
 }

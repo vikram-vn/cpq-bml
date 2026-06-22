@@ -4,16 +4,21 @@ const fs = require('fs');
 const { Beautifier } = require('./bml/beautifier');
 const optionsProvider = require('./options');
 
+const IGNORED_FOLDERS = new Set(['node_modules', '.git', '.vscode-test', 'dist', 'out']);
+
 /**
  * Recursively collect all *.bml files under a directory.
  */
 async function collectBmlFiles(dir, result = []) {
   const entries = await fs.promises.readdir(dir, { withFileTypes: true });
   for (const entry of entries) {
+    const nameLower = entry.name.toLowerCase();
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      await collectBmlFiles(full, result);
-    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.bml')) {
+      if (!IGNORED_FOLDERS.has(nameLower)) {
+        await collectBmlFiles(full, result);
+      }
+    } else if (entry.isFile() && nameLower.endsWith('.bml')) {
       result.push(full);
     }
   }
@@ -26,7 +31,8 @@ async function collectBmlFiles(dir, result = []) {
 async function collectFolders(dir, result = []) {
   const entries = await fs.promises.readdir(dir, { withFileTypes: true });
   for (const entry of entries) {
-    if (entry.isDirectory()) {
+    const nameLower = entry.name.toLowerCase();
+    if (entry.isDirectory() && !IGNORED_FOLDERS.has(nameLower)) {
       const full = path.join(dir, entry.name);
       result.push(full);
       await collectFolders(full, result);
@@ -94,14 +100,21 @@ async function beautifyWorkspaceCommand() {
   }
   const targets = picks.map(p => ({ uri: { fsPath: p.uri } }));
 
-  // Gather all BML files from the selected folders.
-  const allFiles = [];
+  // Gather all BML files from the selected folders and de-duplicate them.
+  const filePaths = new Set();
+  const fileToRoot = new Map();
   for (const f of targets) {
     const root = f.uri.fsPath;
     const files = await collectBmlFiles(root);
-    allFiles.push(...files.map(file => ({ file, root })));
+    for (const file of files) {
+      if (!filePaths.has(file)) {
+        filePaths.add(file);
+        fileToRoot.set(file, root);
+      }
+    }
   }
 
+  const allFiles = Array.from(filePaths).map(file => ({ file, root: fileToRoot.get(file) }));
   const totalFiles = allFiles.length;
   let changed = 0;
   await vscode.window.withProgress(
