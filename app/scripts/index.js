@@ -13,7 +13,8 @@ const scripts = [
     { name: 'generateBmlFunctions',     module: './generateBmlFunctions'     },
     { name: 'generateBmlVariables',     module: './generateBmlVariables'     },
     { name: 'generateBmlAttributes',    module: './generateBmlAttributes'    },
-    { name: 'generateBmlUtilAttributes', module: './generateBmlUtilAttributes' }
+    { name: 'generateBmlUtilAttributes', module: './generateBmlUtilAttributes' },
+    { name: 'generateBmlDataTypes',     module: './generateBmlDataTypes'     }
 ];
 
 let failed = 0;
