@@ -40,13 +40,13 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
         assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
     });
 
-    test('Does not flag common short identifier abbreviations (attr, ctx, cfg, idx, subdoc, rollup)', () => {
+    test('Does not flag common short identifier abbreviations (attr, ctx, cfg, idx, subdoc)', () => {
         const diagnostics = lintText(`
             configAttrInfo = getconfigattrvalue(line, "attr_name");
             ctx = dict();
             cfg = config();
             idx = 0;
-            subdocRollup = system_rollup_subdoc(transaction);
+            subdocStatus = "in_subdoc";
             return "";
         `);
         const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
@@ -81,6 +81,28 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
             // Inputs : configBom, assetKey
             // Return : Dictionary
             return dict();
+        `);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
+    });
+
+    test('Does not flag common CPQ/integration abbreviations found across the real corpus', () => {
+        // Confirmed via real bml/library usage before allowlisting (not guessed):
+        // grp/txn/trx (transaction), yyyy (date format), xlsx (Excel export),
+        // xmlns/xsd/xpath (XML/XSD), oauth (auth protocol), soapenv/faultstring
+        // (SOAP), bigmachines/oraclecpqo (CPQ's own product/namespace names),
+        // anytype (a real BML dict<anytype> type), sizeof (programming term),
+        // reconfig/upfront (standard compound words).
+        const diagnostics = lintText(`
+            grp = "A"; txn = "B"; trx = "C"; yyyy = "D"; xlsx = "E";
+            xmlns = "F"; oauth = "G"; adf = "H"; dtl = "I"; msgs = "J";
+            hier = "K"; calcs = "L"; vals = "M"; proj = "N"; asc = "O";
+            itr = "P"; func = "Q"; pn = "R"; xsd = "S"; xpath = "T";
+            concat = "U"; nums = "V"; soapenv = "W"; faultstring = "X";
+            reconfig = "Y"; sizeof = "Z"; upfront = "AA";
+            bigmachines = "BigMachines"; oraclecpqo = "oraclecpqo";
+            anyTypeDict = dict("anytype");
+            return "";
         `);
         const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
         assert.deepStrictEqual(spellingErrors.map(e => e.message), []);

@@ -47,4 +47,40 @@ suite('BML Linter Test Suite - Custom Spellchecker - string literal handling', (
         const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
         assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
     });
+
+    test('Splits a camelCase enum-style string value before checking (regression)', () => {
+        // Real-corpus bug: BML string literals are routinely used as
+        // enum/state-code identifiers (e.g. bml/library/.../currentStep.bml's
+        // "waitingForInternalApproval", "orderCancelled", "cartInProgress")
+        // rather than natural-language prose. Before the fix, the whole
+        // camelCase run was checked as one unsplit token and could never
+        // match the dictionary, flagging the entire string value as
+        // "misspelled" no matter how ordinary its parts were.
+        const diagnostics = lintText(`
+            status = "waitingForInternalApproval";
+            step = "orderCancelled";
+            state = "cartInProgress";
+            return "";
+        `);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
+    });
+
+    test('A natural-language string value with spaces is unaffected by camelCase splitting', () => {
+        const diagnostics = lintText(`
+            label = "Waiting for Internal Approval";
+            return "";
+        `);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
+    });
+
+    test('Flags a genuine misspelling buried inside a camelCase string value', () => {
+        const diagnostics = lintText(`
+            status = "waitingForAprovall";
+            return "";
+        `);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.ok(spellingErrors.some(e => e.message.includes('Aprovall')), 'Should flag the misspelled "Aprovall" sub-word');
+    });
 });
