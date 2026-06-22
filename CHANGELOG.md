@@ -4,13 +4,19 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.8]
+
+### Added
+
 ## [1.3.0]
 
 ### Added
 
-- **Native BML Spell Checker**: Integrated workspace-aware spell checking for Oracle CPQ BML source files, comments, documentation blocks, identifiers, and string literals. Reduces false positives by recognizing BML keywords, built-in functions, CPQ system variables, common metadata fields, and project-specific terminology.
-- **Expanded Test Coverage**: Added comprehensive unit, integration, and regression test cases covering linting, formatting, IntelliSense, diagnostics, metadata validation, MCP workflows, REST operations, settings management, and real-world BML library scenarios.
-- Added additional edge-case and negative-path validation tests to improve extension reliability and prevent regressions in future releases.
+### Fixed
+
+- **Linting Path Resolution Issues**: Resolved several path resolution edge cases that could prevent BML linting from correctly locating workspace metadata, library resources, and supporting configuration files in certain workspace layouts.
+- **Spell Checker Path Resolution Issues**: Fixed path discovery and file resolution problems affecting the native BML spell checker, ensuring consistent dictionary loading and workspace-aware validation across multi-folder and nested workspace configurations.
+- Fixed various linting and spell-check false positives caused by missing or incorrectly resolved project resources.
 
 ### Improved
 
