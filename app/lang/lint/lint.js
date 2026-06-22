@@ -9,6 +9,7 @@ const { checkBestPractices } = require('./bestPractices');
 const { checkStyle } = require('./style');
 const { checkBoundaries } = require('./boundaries');
 const { checkFunctionCalls } = require('./functions');
+const { checkSystemVariables } = require('./systemVariables');
 const { getStringRanges } = require('./strings');
 const { computeSuppressions } = require('./suppressions');
 
@@ -76,6 +77,10 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
 
     // 10b. Function calls & parameter validations
     diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode));
+
+    // 10c. CPQ predefined system variables (_user_*, _site_*, ...): flag
+    // assignment to a read-only one, and typo "did you mean" suggestions
+    diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode));
 
     // 11. Apply // bml-lint-disable / -line / -next-line / -file comment directives
     const suppressions = computeSuppressions(text, commentRanges);

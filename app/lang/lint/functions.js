@@ -2,7 +2,17 @@ const fs = require('fs');
 const path = require('path');
 
 let builtInFunctions = null;
-const keywords = new Set(['if', 'elif', 'for', 'else', 'return', 'and', 'or', 'not', 'bmql', 'dict', 'json', 'jsonarray']);
+// Mirrors the grammar's reserved words (app/lang/syntaxes/bml.tmLanguage.json
+// "keywords"/"types" patterns) so a valid keyword or storage-type constructor
+// call (e.g. Float(value), Date(str), Record()) is never flagged as an
+// "Unknown built-in function" just because it isn't itself in common.json.
+const keywords = new Set([
+    'if', 'elif', 'else', 'for', 'in', 'break', 'continue', 'return',
+    'true', 'false', 'null', 'and', 'or', 'not',
+    'string', 'integer', 'float', 'boolean', 'date', 'json', 'jsonarray',
+    'jsonnull', 'bytearray', 'record', 'recordset', 'stringbuilder', 'dictionary', 'dict',
+    'bmql',
+]);
 const deprecated = new Set(['strtodate', 'gettabledata', 'getpartsdata']);
 
 function parseSyntax(syntax) {

@@ -9,6 +9,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 - **BML Function & Parameter Linter**: Validates parameter counts for standard BML built-in functions against signatures in `common.json`, and warns about unknown bare function calls.
 - **Custom Workspace Function Validation**: Validates custom workspace utility and commerce library calls (`util.name()` and `commerce.name()`) against parameters in their metadata files, checking counts and existence.
+- **CPQ System Variable Checks**: Using Oracle's own predefined system variable catalog (`commonVariables.json`), the linter now warns when code assigns to a read-only system variable (`_user_*`, `_site_*`, ...) - a silent no-op on the real platform - and suggests the correct name when a bare underscore-prefixed identifier is a near-exact typo of one (e.g. `_user_nam` → "did you mean `_user_name`?").
+
+### Fixed
+- **Storage-type constructor false positives**: `Float(...)`, `Boolean(...)`, `Date(...)`, `Record(...)`, and `Dictionary(...)` calls were incorrectly flagged as "Unknown built-in function" - these are valid BML storage types (per `bml.tmLanguage.json`'s grammar) with no entry of their own in `common.json`.
 
 ## [1.1.1]
 

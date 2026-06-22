@@ -269,4 +269,22 @@ suite('BML Linter Test Suite - rules', () => {
         assert.ok(notFoundDiag, 'Should flag nonExistentUtilFunction as not found');
         assert.strictEqual(notFoundDiag.severity, require('vscode').DiagnosticSeverity.Information);
     });
+
+    test('Linter does not flag storage-type constructor calls as unknown functions', () => {
+        // String/Integer/Json/etc are recognized via common.json already; Float/Boolean/
+        // Date/Record are valid BML storage types (see bml.tmLanguage.json's "types"
+        // patterns) with no common.json entry of their own, so they must be in the
+        // keywords skip-set in functions.js or they'd be misreported as unknown.
+        const diagnostics = lintText(`
+            a = Float(value);
+            b = Boolean(flag);
+            c = Date(str);
+            d = Record();
+            e = Dictionary();
+            return "";
+        `);
+
+        const unknownDiags = diagnostics.filter(d => d.message.includes('Unknown built-in function or variable'));
+        assert.deepStrictEqual(unknownDiags, [], 'Storage-type constructor calls should never be flagged as unknown');
+    });
 });
