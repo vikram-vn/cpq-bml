@@ -4,13 +4,13 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=vikram-n.cpq-bml">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/vikram-n.cpq-bml?label=Marketplace&logo=visualstudiocode&color=007acc" alt="Marketplace Version">
-  </a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=vikram-n.cpq-bml">
-    <img src="https://img.shields.io/visual-studio-marketplace/d/vikram-n.cpq-bml?label=Downloads&logo=visualstudiocode&color=brightgreen" alt="Marketplace Downloads">
+    <img src="https://img.shields.io/badge/Marketplace-VS%20Code-007acc?logo=visualstudiocode" alt="Marketplace Link">
   </a>
   <a href="https://github.com/vikram-vn/cpq-bml/releases/latest">
-    <img src="https://img.shields.io/github/v/release/vikram-vn/cpq-bml?label=Latest%20Release&logo=github&color=ff69b4" alt="Latest Release">
+    <img src="https://img.shields.io/github/v/release/vikram-vn/cpq-bml?label=Version&logo=github&color=ff69b4" alt="Latest Release">
+  </a>
+  <a href="https://github.com/vikram-vn/cpq-bml/releases">
+    <img src="https://img.shields.io/github/downloads/vikram-vn/cpq-bml/total?label=Downloads&logo=github&color=brightgreen" alt="GitHub Downloads">
   </a>
   <a href="https://github.com/vikram-vn/cpq-bml/blob/main/LICENSE.txt">
     <img src="https://img.shields.io/github/license/vikram-vn/cpq-bml?label=License&color=blue" alt="License">
