@@ -144,15 +144,5 @@
             "lookupCode": 16,
             "displayLabel": "Integer Dictionary"
         }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionReturnTypes/lookupValues"
-        },
-        {
-            "rel": "parent",
-            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionReturnTypes"
-        }
     ]
 }

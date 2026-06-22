@@ -2,22 +2,29 @@ const assert = require('assert');
 const vscode = require('vscode');
 const { activateExtension } = require('../extensionHelper');
 
-// Regression guard for the same bug class as
-// test/spellCheck/bundledExtension.test.js: functions.js's
-// loadBuiltInFunctions(), systemVariables.js's loadSystemVariables(), and
-// metadataTypes.js's loadLookupLabels() all used to resolve their
-// app/lookups/bml/*.json files relative to __dirname. That's correct when
-// required directly (every other lint test does this, bypassing esbuild),
-// but esbuild bundles them into dist/extension.js where __dirname resolves
-// to dist/ - making '../../lookups/bml/...' resolve outside the repo
-// entirely. The real installed extension therefore silently loaded empty
-// lookup tables: every built-in function call looked "unknown", and every
-// _user_*/_site_* system variable looked unrecognized.
-//
-// Only activating the real extension through its real entry point (as this
-// file does, same pattern as bundledExtension.test.js) exercises the actual
-// bundled code path - every other lint test requires app/lang/lint/*.js
-// directly and could not have caught this.
+// Regression guard for two stacked bug classes, both invisible to every
+// other lint test (they require app/lang/lint/*.js directly, bypassing
+// esbuild entirely):
+// 1. functions.js's loadBuiltInFunctions(), systemVariables.js's
+//    loadSystemVariables(), and metadataTypes.js's loadLookupLabels() all
+//    used to resolve their data files relative to __dirname. That's correct
+//    when required directly, but esbuild bundles them into
+//    dist/extension.js where __dirname resolves to dist/, resolving outside
+//    the repo entirely.
+// 2. Even after threading extensionPath through correctly, the data files
+//    themselves (app/lookups/bml/*.json) were excluded from the packaged
+//    VSIX by .vscodeignore (dev-only reference data) - so the real installed
+//    extension still silently loaded empty lookup tables. functions.js/
+//    systemVariables.js now read the already-shipped, already-generated
+//    app/lang/intellisense/bml_{functions,variables}_api_usage.json instead
+//    (same data, used for hover/completion too); metadataTypes.js's two
+//    files were moved into app/lang/intellisense/ since they have no
+//    generated equivalent.
+// Either bug alone reproduces the same symptom: every built-in function call
+// looks "unknown", and every _user_*/_site_* system variable looks
+// unrecognized. Only activating the real extension through its real entry
+// point (as this file does, same pattern as bundledExtension.test.js)
+// exercises the actual bundled-and-packaged code path.
 suite('BML Linter Test Suite - bundled lookups (functions/system variables/metadata)', () => {
     suiteSetup(async function () {
         this.timeout(15000);

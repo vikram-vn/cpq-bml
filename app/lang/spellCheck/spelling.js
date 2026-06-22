@@ -256,12 +256,19 @@ function checkWord(word, extensionPath) {
   return dict.has(wordLower);
 }
 
-function checkSpelling(text, cleanText, noStringsText, doc, vscode, extensionPath) {
+function checkSpelling(
+  text,
+  cleanText,
+  noStringsText,
+  doc,
+  vscode,
+  extensionPath,
+) {
   const diagnostics = [];
   const commentRanges = getCommentRanges(text);
   const stringRanges = getStringRanges(cleanText);
 
-  // Caches to avoid redundant splits and lookups within the same file run
+  // Caches to avoid redundant splits and intellisense within the same file run
   const wordCache = new Map();
   const identCache = new Map();
 

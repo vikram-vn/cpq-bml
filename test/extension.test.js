@@ -91,7 +91,7 @@ suite('Extension Test Suite', () => {
 		});
 
 		test('does not treat "while" as a BML control keyword', () => {
-			// BML has no while loop - app/lookups/bml has no entry for it, only
+			// BML has no while loop - common.json has no entry for it, only
 			// break/continue/return/if/elif/else/for are real statement keywords.
 			const result = bml_beautify('while=1;\nprint(while);', opts);
 			assert.strictEqual(result, 'while = 1;\nprint(while);');

@@ -44,12 +44,19 @@ function parseSyntax(syntax) {
     return { min: requiredCount, max: totalCount };
 }
 
+// bml_functions_api_usage.json is generated from app/lookups/bml/common.json
+// by app/scripts/generateBmlFunctions.js, and already ships in the VSIX (it's
+// also what app/lang/intellisense/index.js loads for hover/completion) - so
+// it's reused here directly rather than duplicating common.json itself into
+// the shipped bundle. Its fullSignature field (e.g. "String
+// substring(String str, Integer start, [Integer end])") is parseSyntax-
+// compatible the same way common.json's own syntax field was.
 // __dirname is correct when this file is required directly (plain Node, as
 // every test in this repo does) - but esbuild bundles this whole module into
 // a single dist/extension.js, and at runtime __dirname for bundled code
-// resolves to dist/, not this file's original folder, so '../../lookups/...'
-// would resolve outside the repo entirely. extensionPath (threaded down from
-// registerBmlLinter via lint.js, same convention as
+// resolves to dist/, not this file's original folder, so a __dirname-relative
+// path would resolve outside the repo entirely. extensionPath (threaded down
+// from registerBmlLinter via lint.js, same convention as
 // app/lang/intellisense/index.js's loadApiData(context) and
 // app/lang/spellCheck/spelling.js's resolveSpellCheckDir) is the anchor that
 // stays correct regardless of bundling; __dirname remains the fallback for
@@ -58,18 +65,19 @@ function loadBuiltInFunctions(extensionPath) {
     if (builtInFunctions) return builtInFunctions;
     builtInFunctions = new Map();
     try {
-        const commonJsonPath = extensionPath
-            ? path.join(extensionPath, 'app', 'lookups', 'bml', 'common.json')
-            : path.resolve(__dirname, '../../lookups/bml/common.json');
-        if (fs.existsSync(commonJsonPath)) {
-            const content = fs.readFileSync(commonJsonPath, 'utf8');
+        const apiUsagePath = extensionPath
+            ? path.join(extensionPath, 'app', 'lang', 'intellisense', 'bml_functions_api_usage.json')
+            : path.resolve(__dirname, '../intellisense/bml_functions_api_usage.json');
+        if (fs.existsSync(apiUsagePath)) {
+            const content = fs.readFileSync(apiUsagePath, 'utf8');
             const data = JSON.parse(content);
-            if (data && Array.isArray(data.items)) {
-                data.items.forEach(item => {
-                    if (item.name && item.syntax && item.syntax.includes('(')) {
-                        const nameLower = item.name.toLowerCase();
-                        const { min, max } = parseSyntax(item.syntax);
-                        builtInFunctions.set(nameLower, { min, max, syntax: item.syntax, name: item.name });
+            if (data) {
+                Object.keys(data).forEach(name => {
+                    const item = data[name];
+                    if (item && item.fullSignature && item.fullSignature.includes('(')) {
+                        const nameLower = name.toLowerCase();
+                        const { min, max } = parseSyntax(item.fullSignature);
+                        builtInFunctions.set(nameLower, { min, max, syntax: item.fullSignature, name });
                     }
                 });
             }

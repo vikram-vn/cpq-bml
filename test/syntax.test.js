@@ -127,7 +127,7 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 		});
 
 		test('"while" and "throw" are not treated as BML keywords', () => {
-			// app/lookups/bml has no entry for either - only throwerror() is real BML,
+			// common.json has no entry for either - only throwerror() is real BML,
 			// and there is no while loop. Both should fall through as plain variables.
 			assert.doesNotMatch(scopesOf('while = 1;', 'while') || '', /keyword\.control\./);
 			assert.doesNotMatch(scopesOf('throw = 1;', 'throw') || '', /keyword\.control\./);

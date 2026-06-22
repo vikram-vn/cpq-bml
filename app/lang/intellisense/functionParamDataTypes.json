@@ -140,15 +140,5 @@
             "lookupCode": 7,
             "displayLabel": "Integer[]"
         }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionParamDataTypes/lookupValues"
-        },
-        {
-            "rel": "parent",
-            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionParamDataTypes"
-        }
     ]
 }

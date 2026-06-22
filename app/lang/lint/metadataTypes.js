@@ -11,20 +11,23 @@ let paramTypeLabels = null;
 // They use *different* numbering (e.g. param Boolean = 0, return Boolean = 4),
 // so they're loaded and cached separately.
 //
+// Both files live under app/lang/intellisense/ (not app/lookups/bml/) so they
+// ship in the VSIX - .vscodeignore excludes app/lookups/** entirely (dev-only
+// reference data) but only excludes app/lang/intellisense/*.js, not its JSON.
 // __dirname is correct when this file is required directly (plain Node, as
 // every test in this repo does) - but esbuild bundles this whole module into
 // a single dist/extension.js, and at runtime __dirname for bundled code
-// resolves to dist/, not this file's original folder, so '../../lookups/...'
-// would resolve outside the repo entirely. extensionPath (threaded down from
-// registerBmlLinter via lint.js, same convention as functions.js's
+// resolves to dist/, not this file's original folder, so a __dirname-relative
+// path would resolve outside the repo entirely. extensionPath (threaded down
+// from registerBmlLinter via lint.js, same convention as functions.js's
 // loadBuiltInFunctions) is the anchor that stays correct regardless of
 // bundling; __dirname remains the fallback for the plain-Node/test context.
 function loadLookupLabels(fileName, extensionPath) {
     const map = new Map();
     try {
         const filePath = extensionPath
-            ? path.join(extensionPath, 'app', 'lookups', 'bml', fileName)
-            : path.resolve(__dirname, '../../lookups/bml', fileName);
+            ? path.join(extensionPath, 'app', 'lang', 'intellisense', fileName)
+            : path.resolve(__dirname, '../intellisense', fileName);
         if (fs.existsSync(filePath)) {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             if (data && Array.isArray(data.items)) {

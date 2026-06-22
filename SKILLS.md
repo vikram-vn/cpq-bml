@@ -295,12 +295,22 @@ createBmlFunction, changeEnvironment}`, `cpqBml.mcp.showInfo`,
 - **Don't trust a "0 results" from a new check without separately
   confirming the check itself fires on a hand-built positive case.** This
   has caught multiple silently-broken rules in this codebase already.
-- **Reference data lives under `app/lookups/bml/`** (`common.json`,
-  `commonVariables.json`, `functionCategory.json`,
-  `functionParamDataTypes.json`, `functionReturnTypes.json`, `lookups.json`,
-  `operators.json`) - Oracle's own official BML data catalog. When in doubt
-  about a function's real category, parameter types, or return type, check
-  here before guessing from the grammar or prose docs.
+- **Reference data is Oracle's own official BML data catalog.** Most of it -
+  `common.json`, `commonVariables.json`, `functionCategory.json`,
+  `lookups.json`, `operators.json` - lives under `app/lookups/bml/`
+  (dev-only; `app/lookups/**` is excluded from packaging in
+  `.vscodeignore`). `common.json`/`commonVariables.json` are generator
+  inputs - `app/scripts/generateBmlFunctions.js`/`generateBmlVariables.js`
+  read them to produce `app/lang/intellisense/bml_functions_api_usage.json`/
+  `bml_variables_api_usage.json`, which the linter (`app/lang/lint/
+  functions.js`, `systemVariables.js`) reads at runtime instead - those
+  already ship in the VSIX (also used for hover/completion), so nothing
+  needs duplicating. `functionParamDataTypes.json`/`functionReturnTypes.json`
+  have no generated equivalent, so they were moved (not copied - there is
+  only one copy) to `app/lang/intellisense/` for `app/lang/lint/
+  metadataTypes.js` to load at runtime. When in doubt about a function's
+  real category, parameter types, or return type, check this data before
+  guessing from the grammar or prose docs.
 - **The real `.bml` corpus lives under `bml/library/`** - use it as ground
   truth for "does this actually happen in real CPQ code" before assuming a
   pattern is rare or common.
