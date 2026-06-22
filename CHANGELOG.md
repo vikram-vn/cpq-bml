@@ -4,9 +4,23 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.0]
+
+### Added
+
+- **Native BML Spell Checker**: Integrated workspace-aware spell checking for Oracle CPQ BML source files, comments, documentation blocks, identifiers, and string literals. Reduces false positives by recognizing BML keywords, built-in functions, CPQ system variables, common metadata fields, and project-specific terminology.
+- **Expanded Test Coverage**: Added comprehensive unit, integration, and regression test cases covering linting, formatting, IntelliSense, diagnostics, metadata validation, MCP workflows, REST operations, settings management, and real-world BML library scenarios.
+- Added additional edge-case and negative-path validation tests to improve extension reliability and prevent regressions in future releases.
+
+### Improved
+
+- Increased overall test suite coverage across language services, diagnostics, and extension activation workflows.
+- Enhanced validation of real-world Oracle CPQ BML code patterns through broader regression testing against production-like code samples.
+
 ## [1.2.0]
 
 ### Added
+
 - **BML Function & Parameter Linter**: Validates parameter counts for standard BML built-in functions against signatures in `common.json`, and warns about unknown bare function calls.
 - **Custom Workspace Function Validation**: Validates custom workspace utility and commerce library calls (`util.name()` and `commerce.name()`) against parameters in their metadata files, checking counts and existence.
 - **CPQ System Variable Checks**: Using Oracle's own predefined system variable catalog (`commonVariables.json`), the linter now warns when code assigns to a read-only system variable (`_user_*`, `_site_*`, ...) - a silent no-op on the real platform - and suggests the correct name when a bare underscore-prefixed identifier is a near-exact typo of one (e.g. `_user_nam` → "did you mean `_user_name`?").
@@ -17,19 +31,23 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added a permanent regression-guard test that lints every real `.bml` file in `bml/library` through the actual linter entry point on every test run, confirming no rule ever throws against real-world code.
 
 ### Fixed
+
 - **Storage-type constructor false positives**: `Float(...)`, `Boolean(...)`, `Date(...)`, `Record(...)`, and `Dictionary(...)` calls were incorrectly flagged as "Unknown built-in function" - these are valid BML storage types (per `bml.tmLanguage.json`'s grammar) with no entry of their own in `common.json`.
 
 ## [1.1.1]
 
 ### Added
+
 - **BML Better Comments**: tagged comment highlighting (`!`, `?`, `*`, `//`, `TODO`, `FIXME`, `BUG`, `WARNING`, `IMPORTANT`, `HACK`, `XXX`, `NOTE`, `OPTIMIZE`, `IDEA`), distinct highlighting for functional directive comments (`// bml-lint-disable*`, `/* beautify ignore:start/end */`) with hover tooltips explaining exactly what each one does, and automatic detection/styling of BML doc-header comment blocks (`Function Name:`, `Description:`, `Inputs:`, `Return:`). Toggle with the new `cpqBml.features.comments` setting.
 - **Features Tab**: Added a dedicated "Features" tab to the settings panel webview to group BML Linting and BML Better Comments configurations.
 - **BML Color Themes**: four bundled VS Code color themes (`Ctrl+K Ctrl+T` → "BML Dark", "BML Dark Default", "BML Light", or "BML Light Default") with full-language token coverage plus a BML-specific richness layer - built-in functions tinted by category (string/math/date/database/url/array/dictionary/xml/json/misc), CPQ attribute/member access tinted separately from plain variables and from each other (line-level vs transaction-level vs generic member), and assignment/comparison/arithmetic/logical operators each given their own color.
 
 ### Changed
+
 - **BML syntax colors are now theme-driven, not automatic**: removed the `editor.tokenColorCustomizations` forced into every user's settings via `configurationDefaults` (it auto-applied regardless of the active theme, and conflicted with BML Better Comments' own decoration colors). BML-specific syntax richness now only shows up while one of the bundled BML color themes is selected.
 
 ### Fixed
+
 - **Settings Panel Crash**: Resolved a runtime crash (`TypeError: Cannot read properties of undefined (reading 'enable')`) that occurred when opening the settings webview.
 - **Production builds**: the packaged extension's JS (including the settings panel's React webview bundle) is now built with `NODE_ENV=production`, stripping React's development-only warning code from the shipped VSIX.
 - **BML built-in function categorization**: cross-checked the grammar's per-category function lists against Oracle's own CPQ BML function catalog (`app/lookups/bml/common.json`) and fixed several mismatches that caused wrong colors - `getbom`/`getconfigattrvalue`/`getconfigbom`/`getoldvalue` were tinted as "database" but are actually general-purpose (`OTHERS`); `globaldictget`/`globaldictset`/`globaldictremove` were tinted as "dictionary" but are also `OTHERS`; `min`/`max` were duplicated under "math" (shadowing their correct `ARRAY` color); fixed a `jsonarrayref` typo (real function is `jsonarrayrefid`) and added the missing `jsonarrayremove`. Also added previously-uncategorized real functions (`find`, `calculateconfiguration`, `configureabo`, `getarrayattrstring` (was misspelled `getarraystr`), `getcoveragesupportdict`, `getsystemattrvalues`, `getsystemdata`, `getsystemmultipleattrvalues`, `setattributevalue`, and fixed `saveconfig` → `saveconfigbom`).
