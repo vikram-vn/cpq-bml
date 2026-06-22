@@ -19,7 +19,12 @@ const CACHE_TTL_MS = 30000;
 
 let bmlApiData = {};
 let apiLoadTime = 0;
-let cachedCompletionItems = null;
+let cachedGlobalItems = null;
+let cachedTransactionItems = null;
+let cachedLineItems = null;
+let cachedSystemItems = null;
+let cachedCpqjsItems = null;
+let cachedAllAttributes = null;
 
 /**
  * Load and merge the BML API JSON files, tagging each entry with which file
@@ -45,7 +50,12 @@ function loadApiData(context) {
     });
 
     apiLoadTime = Date.now();
-    cachedCompletionItems = null; // data changed - rebuild the completion list lazily
+    cachedGlobalItems = null;
+    cachedTransactionItems = null;
+    cachedLineItems = null;
+    cachedSystemItems = null;
+    cachedCpqjsItems = null;
+    cachedAllAttributes = null;
     return bmlApiData;
 }
 
@@ -185,26 +195,180 @@ const CATEGORY_KIND = {
 };
 
 /**
- * Builds the completion item list once per data generation. Documentation
- * (which involves Markdown formatting per item) is deliberately left unset
- * here and filled in lazily by resolveCompletionItem, since VS Code only
- * resolves the item(s) actually visible/highlighted in the list - building
- * it eagerly for every entry on every keystroke is wasted work.
+ * Builds the categorized completion item lists once per data generation.
  */
-function buildCompletionItems() {
-    return Object.entries(bmlApiData).map(([key, info]) => {
+function buildCategorizedItems() {
+    cachedGlobalItems = [];
+    cachedTransactionItems = [];
+    cachedLineItems = [];
+    cachedSystemItems = [];
+    cachedCpqjsItems = [];
+    cachedAllAttributes = [];
+
+    // Suggest the CPQJS namespace object itself as a global item
+    const cpqjsItem = new vscode.CompletionItem('CPQJS', vscode.CompletionItemKind.Class);
+    cpqjsItem.detail = 'CPQJS API Object';
+    cpqjsItem.insertText = 'CPQJS';
+    cachedGlobalItems.push(cpqjsItem);
+
+    Object.entries(bmlApiData).forEach(([key, info]) => {
         const syntax = info.syntax || info.name;
 
-        const item = new vscode.CompletionItem(info.name, CATEGORY_KIND[info.category]);
+        // CPQJS methods
+        if (key.startsWith('cpqjs.')) {
+            const strippedName = info.name.replace(/^CPQJS\./i, '');
+            const strippedSyntax = syntax.replace(/^CPQJS\./i, '');
+            const strippedKey = key.replace(/^cpqjs\./i, '');
+
+            const item = new vscode.CompletionItem(strippedName, vscode.CompletionItemKind.Method);
+            item.detail = syntax;
+            item.insertText = new vscode.SnippetString(strippedSyntax);
+            item.filterText = strippedKey;
+            cachedCpqjsItems.push(item);
+            return;
+        }
+
+        // Attributes
+        if (info.category === 'attribute') {
+            const item = new vscode.CompletionItem(info.name, vscode.CompletionItemKind.Field);
+            item.detail = syntax;
+            item.insertText = new vscode.SnippetString(syntax);
+            item.filterText = key;
+
+            cachedAllAttributes.push(item);
+
+            if (info.scope === 'Transaction') {
+                cachedTransactionItems.push(item);
+            } else if (info.scope === 'Line Item') {
+                cachedLineItems.push(item);
+            } else if (info.scope === 'System') {
+                cachedSystemItems.push(item);
+            } else {
+                // If it is any other scope attribute (e.g. "Product Family" config attributes),
+                // it acts as a global variable in its context, so suggest it globally.
+                cachedGlobalItems.push(item);
+            }
+            return;
+        }
+
+        // General functions, variables, and snippets are global
+        const kind = CATEGORY_KIND[info.category] || vscode.CompletionItemKind.Text;
+        const item = new vscode.CompletionItem(info.name, kind);
         item.detail = syntax;
         item.insertText = new vscode.SnippetString(syntax);
         item.filterText = key;
-        return item;
+        cachedGlobalItems.push(item);
     });
 }
 
 /**
- * Register both Hover & Completion providers for BML.
+ * Walks forward from start of document to cursor to parse active function call and parameter index.
+ * Ignores brackets/commas inside strings and comments.
+ */
+function getActiveFunctionCall(document, position) {
+    const text = document.getText(new vscode.Range(new vscode.Position(0, 0), position));
+    const stack = [];
+    const KEYWORDS = new Set(['if', 'elif', 'else', 'for', 'while', 'return']);
+    let i = 0;
+    
+    while (i < text.length) {
+        const char = text[i];
+        
+        // Skip line comments
+        if (char === '/' && text[i + 1] === '/') {
+            while (i < text.length && text[i] !== '\n' && text[i] !== '\r') {
+                i++;
+            }
+            continue;
+        }
+        
+        // Skip block comments
+        if (char === '/' && text[i + 1] === '*') {
+            i += 2;
+            while (i < text.length && !(text[i] === '*' && text[i + 1] === '/')) {
+                i++;
+            }
+            i += 2;
+            continue;
+        }
+        
+        // Skip double-quoted string literals
+        if (char === '"') {
+            i++;
+            while (i < text.length && text[i] !== '"') {
+                if (text[i] === '\\') i++; // skip escaped char
+                i++;
+            }
+            i++;
+            continue;
+        }
+        
+        // Skip single-quoted string literals
+        if (char === "'") {
+            i++;
+            while (i < text.length && text[i] !== "'") {
+                if (text[i] === '\\') i++; // skip escaped char
+                i++;
+            }
+            i++;
+            continue;
+        }
+        
+        // Track function calls
+        if (char === '(') {
+            let endIdx = i;
+            let startIdx = i - 1;
+            while (startIdx >= 0 && /\s/.test(text[startIdx])) {
+                startIdx--;
+            }
+            let idEnd = startIdx + 1;
+            while (startIdx >= 0 && /[\w.]/.test(text[startIdx])) {
+                startIdx--;
+            }
+            const funcName = text.substring(startIdx + 1, idEnd).trim();
+            if (/^[a-zA-Z_]/.test(funcName) && !KEYWORDS.has(funcName.toLowerCase())) {
+                stack.push({ funcName, paramIndex: 0 });
+            } else {
+                stack.push({ funcName: '', paramIndex: 0 });
+            }
+        } else if (char === ')') {
+            if (stack.length > 0) {
+                stack.pop();
+            }
+        } else if (char === ',') {
+            if (stack.length > 0) {
+                stack[stack.length - 1].paramIndex++;
+            }
+        }
+        
+        i++;
+    }
+    
+    for (let j = stack.length - 1; j >= 0; j--) {
+        if (stack[j].funcName) {
+            return stack[j];
+        }
+    }
+    
+    return null;
+}
+
+/**
+ * Helper to parse ParameterInformation objects from signature string.
+ */
+function parseParameters(signature) {
+    const match = signature.match(/\((.*)\)/);
+    if (!match) return [];
+    const paramStr = match[1].trim();
+    if (!paramStr) return [];
+    return paramStr.split(',').map(p => {
+        const label = p.replace(/[\[\]]/g, '').trim();
+        return new vscode.ParameterInformation(label);
+    });
+}
+
+/**
+ * Register Hover, Completion, and Signature Help providers for BML.
  */
 function registerBmlIntelliSense(context) {
     loadApiData(context);
@@ -212,15 +376,38 @@ function registerBmlIntelliSense(context) {
     const completionProvider = vscode.languages.registerCompletionItemProvider(
         'bml',
         {
-            provideCompletionItems() {
+            provideCompletionItems(document, position) {
                 loadApiData(context); // reload if updated externally
-                if (!cachedCompletionItems) {
-                    cachedCompletionItems = buildCompletionItems();
+                if (!cachedGlobalItems) {
+                    buildCategorizedItems();
                 }
-                return cachedCompletionItems;
+
+                const linePrefix = document.lineAt(position).text.substring(0, position.character);
+                const objMatch = linePrefix.match(/(\b\w+)\s*\.\s*[\w_]*$/i);
+
+                if (objMatch) {
+                    const objName = objMatch[1].toLowerCase();
+                    if (objName === 'cpqjs') {
+                        return cachedCpqjsItems;
+                    } else if (objName === 'transaction' || objName === 'trans' || objName === 't') {
+                        return cachedTransactionItems;
+                    } else if (objName === 'line' || objName === 'each' || objName === 'item' || objName === 'l') {
+                        return cachedLineItems;
+                    } else {
+                        return cachedAllAttributes;
+                    }
+                }
+
+                return cachedGlobalItems;
             },
             resolveCompletionItem(item) {
-                const info = bmlApiData[item.filterText];
+                let key = item.filterText;
+                if (item.kind === vscode.CompletionItemKind.Method) {
+                    if (bmlApiData['cpqjs.' + key]) {
+                        key = 'cpqjs.' + key;
+                    }
+                }
+                const info = bmlApiData[key];
                 if (info) {
                     item.documentation = formatAsJsDoc(info);
                 }
@@ -240,7 +427,34 @@ function registerBmlIntelliSense(context) {
         }
     });
 
-    context.subscriptions.push(completionProvider, hoverProvider);
+    const signatureProvider = vscode.languages.registerSignatureHelpProvider(
+        'bml',
+        {
+            provideSignatureHelp(document, position) {
+                loadApiData(context);
+
+                const activeCall = getActiveFunctionCall(document, position);
+                if (!activeCall) return null;
+
+                const { funcName, paramIndex } = activeCall;
+                const info = bmlApiData[funcName.toLowerCase()];
+                if (!info || info.category !== 'function') return null;
+
+                const signatureHelp = new vscode.SignatureHelp();
+                const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info));
+                
+                signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax);
+                signatureHelp.signatures = [signatureInfo];
+                signatureHelp.activeSignature = 0;
+                signatureHelp.activeParameter = Math.min(paramIndex, signatureInfo.parameters.length ? signatureInfo.parameters.length - 1 : 0);
+
+                return signatureHelp;
+            }
+        },
+        '(', ','
+    );
+
+    context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
 }
 
 module.exports = { registerBmlIntelliSense };

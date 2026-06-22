@@ -115,4 +115,61 @@ suite('BML IntelliSense', () => {
 		// the real BML loop body in its example must still be fenced, not flattened to prose
 		assert.match(value, /```bml\nresult=""/);
 	});
+
+	test('completion list for transaction. only includes Transaction attributes', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = transaction.' });
+		const position = new vscode.Position(0, 16);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+		
+		assert.ok(labels.includes('createdBy_t'), 'expected createdBy_t in transaction completions');
+		assert.ok(!labels.includes('priceType_l'), 'did not expect priceType_l in transaction completions');
+		assert.ok(!labels.includes('atof'), 'did not expect atof in transaction completions');
+	});
+
+	test('completion list for line. only includes Line Item attributes', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = line.' });
+		const position = new vscode.Position(0, 9);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+		
+		assert.ok(labels.includes('priceType_l'), 'expected priceType_l in line completions');
+		assert.ok(!labels.includes('createdBy_t'), 'did not expect createdBy_t in line completions');
+		assert.ok(!labels.includes('atof'), 'did not expect atof in line completions');
+	});
+
+	test('completion list for CPQJS. includes stripped CPQJS methods', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'CPQJS.' });
+		const position = new vscode.Position(0, 6);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+		
+		assert.ok(labels.includes('actionExists'), 'expected actionExists in CPQJS completions');
+		assert.ok(!labels.includes('CPQJS.actionExists'), 'did not expect full CPQJS.actionExists in CPQJS completions');
+		assert.ok(!labels.includes('atof'), 'did not expect atof in CPQJS completions');
+	});
+
+	test('global completion list does not include attributes', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = ' });
+		const position = new vscode.Position(0, 4);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+		
+		assert.ok(labels.includes('atof'), 'expected atof in global completions');
+		assert.ok(labels.includes('_site_url'), 'expected _site_url in global completions');
+		assert.ok(!labels.includes('createdBy_t'), 'did not expect createdBy_t in global completions');
+		assert.ok(!labels.includes('priceType_l'), 'did not expect priceType_l in global completions');
+	});
+
+	test('signature help resolves active BML function and parameter highlights', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = datetostr(getdate(), ' });
+		const position = new vscode.Position(0, 24);
+		const sigHelp = await vscode.commands.executeCommand('vscode.executeSignatureHelpProvider', doc.uri, position);
+		
+		assert.ok(sigHelp, 'expected signature help to be returned');
+		assert.strictEqual(sigHelp.signatures.length, 1, 'expected 1 signature');
+		const activeSig = sigHelp.signatures[0];
+		assert.match(activeSig.label, /datetostr/i);
+		assert.strictEqual(sigHelp.activeParameter, 1, 'expected active parameter index to be 1');
+	});
 });
