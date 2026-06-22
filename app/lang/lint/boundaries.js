@@ -129,9 +129,21 @@ function checkBoundaries(cleanText, noStringsText, doc) {
         const endPos = startPos.translate(0, val.length);
 
         // Determine if there is a preceding minus sign (making it a negative literal)
-        const beforeText = noStringsText.substring(0, index).trim();
-        const precedingChar = beforeText[beforeText.length - 1];
-        const precedingMinus = precedingChar === '-' && !/[a-zA-Z0-9_)]/.test(beforeText[beforeText.length - 2]);
+        let precedingCharIdx = index - 1;
+        while (precedingCharIdx >= 0 && /\s/.test(noStringsText[precedingCharIdx])) {
+            precedingCharIdx--;
+        }
+        let precedingMinus = false;
+        if (precedingCharIdx >= 0 && noStringsText[precedingCharIdx] === '-') {
+            // Find character before the minus
+            let beforeMinusIdx = precedingCharIdx - 1;
+            while (beforeMinusIdx >= 0 && /\s/.test(noStringsText[beforeMinusIdx])) {
+                beforeMinusIdx--;
+            }
+            if (beforeMinusIdx < 0 || !/[a-zA-Z0-9_)]/.test(noStringsText[beforeMinusIdx])) {
+                precedingMinus = true;
+            }
+        }
 
         const digitsCount = val.replace(/[^0-9]/g, '').length;
 

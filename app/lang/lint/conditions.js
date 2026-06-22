@@ -53,21 +53,23 @@ function getConditionRanges(text) {
         }
 
         // Active BML code: check for if, elif, or else if followed by (
-        const sub = text.substring(i);
-        const match = /^(?:if|elif|else\s+if)\s*\(/i.exec(sub);
-        if (match) {
-            const start = i + match[0].indexOf('(');
-            let depth = 1;
-            let end = start + 1;
-            while (end < text.length && depth > 0) {
-                const c = text[end];
-                if (c === '(') depth++;
-                else if (c === ')') depth--;
-                end++;
+        if ((char === 'i' || char === 'I' || char === 'e' || char === 'E') && (i === 0 || !/[a-zA-Z0-9_]/.test(text[i - 1]))) {
+            const sub = text.substring(i, Math.min(text.length, i + 30));
+            const match = /^(?:if|elif|else\s+if)\s*\(/i.exec(sub);
+            if (match) {
+                const start = i + match[0].indexOf('(');
+                let depth = 1;
+                let end = start + 1;
+                while (end < text.length && depth > 0) {
+                    const c = text[end];
+                    if (c === '(') depth++;
+                    else if (c === ')') depth--;
+                    end++;
+                }
+                while (end < text.length && /\s/.test(text[end])) end++;
+                conditionRanges.push([start, end]);
+                i = end - 1; // skip forward
             }
-            while (end < text.length && /\s/.test(text[end])) end++;
-            conditionRanges.push([start, end]);
-            i = end - 1; // skip forward
         }
     }
 

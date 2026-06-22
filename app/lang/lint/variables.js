@@ -11,8 +11,11 @@ function getDeclaredVariables(cleanText, doc) {
         const matchIndex = match.index;
         
         // Filter out operators like <=, >=, !=, <>
-        const precedingText = cleanText.slice(0, matchIndex).trim();
-        if (precedingText.endsWith('<') || precedingText.endsWith('>') || precedingText.endsWith('!')) {
+        let idx = matchIndex - 1;
+        while (idx >= 0 && /\s/.test(cleanText[idx])) {
+            idx--;
+        }
+        if (idx >= 0 && (cleanText[idx] === '<' || cleanText[idx] === '>' || cleanText[idx] === '!')) {
             continue;
         }
 
@@ -101,12 +104,12 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
             }
 
             // Skip if preceded by '.' (property access, e.g., line.varName)
-            const precedingCharIndex = index - 1;
-            if (precedingCharIndex >= 0) {
-                const precedingText = cleanText.slice(0, index).trim();
-                if (precedingText.endsWith('.')) {
-                    continue;
-                }
+            let idx = index - 1;
+            while (idx >= 0 && /\s/.test(cleanText[idx])) {
+                idx--;
+            }
+            if (idx >= 0 && cleanText[idx] === '.') {
+                continue;
             }
 
             // Otherwise, it is a genuine usage!

@@ -17,13 +17,17 @@ const { computeSuppressions } = require('./suppressions');
 // comments (very common in this codebase - see app/lang/bml-lint's own corpus
 // notes on commented-out dead code) down to a single line, which shifts every
 // line number for the rest of the file and misattributes every diagnostic after it.
-function blank(text, start, end) {
-    let result = '';
-    for (let i = start; i < end; i++) {
-        const ch = text[i];
-        result += (ch === '\n' || ch === '\r') ? ch : ' ';
+function blankRanges(text, ranges) {
+    const chars = text.split('');
+    for (const [start, end] of ranges) {
+        for (let i = start; i < end; i++) {
+            const ch = chars[i];
+            if (ch !== '\n' && ch !== '\r') {
+                chars[i] = ' ';
+            }
+        }
     }
-    return result;
+    return chars.join('');
 }
 
 function lintBMLCustom(doc, diagnosticCollection, vscode) {
@@ -37,19 +41,11 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
     const conditionRanges = getConditionRanges(text);
 
     // 2. Remove comments
-    let cleanText = text;
-    commentRanges.sort((a, b) => b[0] - a[0]);
-    for (const [start, end] of commentRanges) {
-        cleanText = cleanText.slice(0, start) + blank(cleanText, start, end) + cleanText.slice(end);
-    }
+    const cleanText = blankRanges(text, commentRanges);
 
     // 3. Remove strings to get a code-only view (avoids matching inside string literals)
     const stringRanges = getStringRanges(cleanText);
-    let noStringsText = cleanText;
-    stringRanges.sort((a, b) => b[0] - a[0]);
-    for (const [start, end] of stringRanges) {
-        noStringsText = noStringsText.slice(0, start) + blank(noStringsText, start, end) + noStringsText.slice(end);
-    }
+    const noStringsText = blankRanges(cleanText, stringRanges);
 
     // 4. Variables & Shadowing (run on noStringsText to prevent matching variable names inside query strings)
     // Note: To check usage, we also search on noStringsText so that references inside query strings are not treated as variable usages

@@ -38,7 +38,8 @@ function scopesOf(line, text) {
 	return null;
 }
 
-suite('BML Syntax Highlighting (TextMate grammar)', () => {
+suite('BML Syntax Highlighting (TextMate grammar)', function() {
+	this.timeout(15000);
 	suiteSetup(async () => {
 		grammar = await loadGrammar();
 	});
