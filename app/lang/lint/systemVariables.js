@@ -4,14 +4,7 @@ const { levenshtein } = require("./levenshtein");
 
 let systemVariables = null; // Map<lowercaseName, canonicalName>
 
-// __dirname is correct when this file is required directly (plain Node, as
-// every test in this repo does) - but esbuild bundles this whole module into
-// a single dist/extension.js, and at runtime __dirname for bundled code
-// resolves to dist/, not this file's original folder, so a __dirname-relative
-// path would resolve outside the repo entirely. extensionPath (threaded down
-// from registerBmlLinter via lint.js, same convention as functions.js's
-// loadBuiltInFunctions) is the anchor that stays correct regardless of
-// bundling; __dirname remains the fallback for the plain-Node/test context.
+// extensionPath anchors the path correctly once bundled by esbuild, where __dirname resolves to dist/.
 function loadSystemVariables(extensionPath) {
   if (systemVariables) return systemVariables;
   systemVariables = new Map();
@@ -39,11 +32,8 @@ function loadSystemVariables(extensionPath) {
   return systemVariables;
 }
 
-// Suggests a known system variable only when name is a near-exact typo of it
-// (distance <= 2, similar length) - deliberately conservative since BML code
-// commonly uses unrelated underscore-prefixed identifiers (commerce attribute
-// names like _document_number, _chargeSet_discountAmount) that must never be
-// flagged just because they start with an underscore too.
+// Conservative: only flags a near-exact typo (distance <= 2, similar length) so
+// unrelated underscore-prefixed identifiers (e.g. _document_number) aren't flagged.
 function findClosestSystemVariable(name, extensionPath) {
   const vars = loadSystemVariables(extensionPath);
   const nameLower = name.toLowerCase();
@@ -62,10 +52,7 @@ function findClosestSystemVariable(name, extensionPath) {
   return best && bestDist <= 2 ? best : null;
 }
 
-// Flags two things using Oracle's predefined CPQ system variable list:
-// 1. Assigning to a known system variable (it's platform-provided/read-only;
-//    "assigning" to it just creates an unrelated local shadow, silently).
-// 2. A bare underscore-prefixed identifier that's a near-exact typo of one.
+// Flags assignment to a read-only system variable, and near-typos of known ones.
 function checkSystemVariables(cleanText, doc, vscode, extensionPath) {
   const diagnostics = [];
   const vars = loadSystemVariables(extensionPath);
@@ -78,8 +65,7 @@ function checkSystemVariables(cleanText, doc, vscode, extensionPath) {
     const nameLower = name.toLowerCase();
     const matchIndex = match.index;
 
-    // Skip property/attribute access (line._document_number) - only bare
-    // references are ever genuine system-variable usages.
+    // Skip property/attribute access (line._document_number).
     let idx = matchIndex - 1;
     while (idx >= 0 && /\s/.test(cleanText[idx])) idx--;
     if (idx >= 0 && cleanText[idx] === ".") continue;

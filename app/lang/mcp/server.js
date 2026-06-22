@@ -6,10 +6,7 @@ const {
 const z = require("zod");
 const tools = require("./tools");
 
-// Wraps a tool handler's plain-object result as the MCP CallToolResult shape.
-// Every handler returns {success, ...} - never anything from the request's
-// Authorization header or the response's raw headers, so credentials never
-// reach whatever AI client is calling these tools.
+// Wraps a tool handler's result as the MCP CallToolResult shape; never includes request/response headers, so credentials never reach the AI client.
 function jsonResult(data) {
   return { content: [{ type: "text", text: JSON.stringify(data) }] };
 }
@@ -171,11 +168,8 @@ let httpServer = null;
 let boundPort = null;
 let mcpServer = null;
 
-// Binds 127.0.0.1 only (never 0.0.0.0) - the only way into these tools is a
-// process running on this same machine, same trust boundary as the VS Code
-// commands they wrap. A stateless StreamableHTTPServerTransport instance
-// cannot be reused across requests (the SDK throws if you try), so a fresh
-// transport is created per request.
+// Binds 127.0.0.1 only - access is restricted to processes on this machine.
+// A fresh transport is created per request; the SDK throws if a StreamableHTTPServerTransport is reused.
 async function startMcpServer(context, vscode, port) {
   if (httpServer) return { port: boundPort };
 

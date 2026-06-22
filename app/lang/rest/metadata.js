@@ -1,31 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 
-// Pure, vscode-free helpers for the local "pull" file format:
-//   <folder>/<variableName>.bml         - just scriptText
-//   <folder>/<variableName>-meta.json   - everything else from the Get-one response
-//
-// Oracle's documented example response for "Get a Util Library Function" does
-// not show a top-level "namespace" field (only "folderName"), even though
-// "namespace" is clearly a real concept elsewhere (e.g. the deploy/debug
-// request shapes, and entries in a function's own "libraryFunctions" array).
-// To be robust to that inconsistency, namespaceOf() below falls back to
-// folderName when namespace is absent.
+// Local "pull" file format: <folder>/<variableName>.bml (scriptText) + <folder>/<variableName>-meta.json (everything else).
 
-const FUNCTIONS_API_TYPE = 'util'; // this endpoint family is the Util Library specifically
+const FUNCTIONS_API_TYPE = 'util';
 
 function bmlPathToMetaPath(bmlFilePath) {
     return bmlFilePath.replace(/\.bml$/i, '-meta.json');
 }
 
-// The library function's variableName is taken straight from the .bml
-// filename (whatever folder it's in), e.g. "someFolder/allUpdate.bml" -> "allUpdate".
-// This is how a file is matched up against the live CPQ library when there's
-// no local -meta.json sidecar yet (see commands.js's resolveMetadataForFile).
 function variableNameFromBmlPath(bmlFilePath) {
     return path.basename(bmlFilePath).replace(/\.bml$/i, '');
 }
 
+// Falls back to folderName: Oracle's docs show no top-level "namespace" field on a Get-one response, only folderName.
 function namespaceOf(metadata) {
     return metadata.namespace || '';
 }
@@ -35,9 +23,6 @@ function namespaceVariableNameFor(metadata) {
     return ns ? `${ns}.${metadata.variableName}` : metadata.variableName;
 }
 
-// Splits a Get-one API response into { scriptText, metadata }, dropping
-// server-only fields (links, referencesUrl) that aren't part of what we send
-// back on update/validate/debug.
 function splitFunctionResponse(functionResponse) {
     const { scriptText, links, referencesUrl, ...metadata } = functionResponse;
     return { scriptText: scriptText || '', metadata };
@@ -200,20 +185,7 @@ function normalizeLibraryFunctions(libraryFunctions) {
     });
 }
 
-// Builds the full function object payload expected by validate/update/debug,
-// using the locally-edited scriptText rather than whatever was last pulled.
-//
-// Util and commerce functions need different treatment here: Util's PATCH
-// schema always accepts testScript/libraryFunctions/attributes, so those are
-// always sent (defaulting absent ones to '' / [] is harmless and confirmed
-// working live). Commerce functions are stricter - Oracle's PATCH validation
-// rejects a payload that includes a field the function's own Get-one response
-// didn't have at all (confirmed live: sending "attributes": [] on a function
-// whose GET never returns an "attributes" key fails with a generic "Invalid
-// payload.", and sending "subDocAttributes": [] on a function with no
-// sub-document scope fails with "Field subDocAttributes is not editable.").
-// So for commerce, each of these optional fields is only included if it was
-// actually present locally - mirroring whatever the last Get-one/pull saw.
+// Commerce PATCH rejects fields absent from the function's own Get-one response (e.g. "attributes": [] when GET never returned "attributes" fails with "Invalid payload."), so optional fields are only included if present locally. Util's PATCH accepts them unconditionally.
 function buildFunctionPayload(metadata, scriptText) {
     const payload = {
         variableName: metadata.variableName,
@@ -249,8 +221,7 @@ function buildFunctionPayload(metadata, scriptText) {
     return payload;
 }
 
-// Same as buildFunctionPayload, but merges a value into each parameter for the
-// debug endpoint. parameterValues is a { [parameterName]: value } map.
+// Merges a value into each parameter for the debug endpoint. parameterValues is { [parameterName]: value }.
 function buildDebugPayload(metadata, scriptText, parameterValues) {
     const payload = buildFunctionPayload(metadata, scriptText);
     payload.parameters = payload.parameters.map((p) => ({

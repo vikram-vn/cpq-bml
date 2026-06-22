@@ -76,8 +76,6 @@ const positionable_operators = [
 ];
 const OPERATOR_CHARS = ["=", "<", ">", "!", "+", "-", "*", "/", "%"];
 
-// Regex helpers
-// Declare cache BEFORE asGlobal so the reference is valid at call-time.
 const global_regex_cache = new Map();
 
 function asGlobal(re) {

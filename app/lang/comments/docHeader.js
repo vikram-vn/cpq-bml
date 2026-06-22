@@ -1,9 +1,5 @@
 "use strict";
-// Recognizes the recurring (if inconsistently formatted) doc-header comment
-// convention seen throughout bml/library: a leading `// Function Name : ...`
-// run of line comments, or a `/* Name: ... Description: ... Inputs: ...
-// Return: ... */` block comment. Tolerant of "Function Name :" vs "Name:"
-// spacing/casing, and of a leading `//` or `*` continuation marker per line.
+// Tolerant of "Function Name :" vs "Name:" spacing/casing and a leading `//`/`*` marker per line.
 const HEADER_LINE_REGEX = /^[ \t]*(?:\/\/|\*)?[ \t]*(?:Function\s+Name|Name|Description|Inputs?|Returns?|Return\s+type|output)\s*:/i;
 
 function isLineCommentStart(text, start) {
@@ -14,10 +10,7 @@ function blockMatchesHeader(text, start, end) {
     return text.slice(start, end).split(/\r\n|\n|\r/).some((line) => HEADER_LINE_REGEX.test(line));
 }
 
-// commentRanges: [start,end][] from app/lang/lint/comments.js's getCommentRanges.
-// Returns [start,end][] for each detected doc-header block - a single block
-// comment range, or a run of immediately-adjacent line comments (nothing but
-// whitespace/newline between them) treated as one block.
+// Treats a run of immediately-adjacent line comments (only whitespace/newline between them) as one block.
 function findDocHeaderBlocks(text, commentRanges) {
     const sorted = [...commentRanges].sort((a, b) => a[0] - b[0]);
     const blocks = [];

@@ -1,20 +1,5 @@
 "use strict";
-/**
- * BML tokenizer.
- *
- * BML's grammar (per CPQM BML docs and app/lang/syntaxes/bml.tmLanguage.json) is a small
- * subset of what a general-purpose language tokenizer needs to support:
- *   - line comments and block comments
- *   - single/double quoted strings with backslash escapes
- *   - integers, floats (including leading-dot floats like `.345`) and hex literals
- *   - control keywords: if, elif, else, for, in, break, continue, return
- *   - logical operators: and, or, not (rendered upper-case by convention)
- *   - comparison/arithmetic operators: == <> <= >= < > = + - * / %
- *   - punctuation: ( ) [ ] { } ; , .
- *   - typed array literals/declarators: `Integer[]{1, 2, 3}`, `Integer[5]`
- *
- * Constants, patterns, and stateless helpers live in tokenizerHelpers.js.
- */
+// BML tokenizer. Constants, patterns, and stateless helpers live in tokenizerHelpers.js.
 
 const fs = require("fs");
 const path = require("path");
@@ -37,12 +22,10 @@ const {
   isDigit,
 } = require("./tokenizerHelpers");
 
-// Built-in BML function set – used for optional casing normalisation.
-// We probe two candidate locations because __dirname differs between
-// the unbundled source (app/lang/beautify/bml/) and the esbuild bundle (dist/).
+// Two candidate paths since __dirname differs between unbundled source and the esbuild bundle (dist/).
 const _builtinJsonCandidates = [
-  path.join(__dirname, "../../intellisense/bml_functions_api_usage.json"), // source context
-  path.join(__dirname, "../app/lang/intellisense/bml_functions_api_usage.json"), // bundle context
+  path.join(__dirname, "../../intellisense/bml_functions_api_usage.json"),
+  path.join(__dirname, "../app/lang/intellisense/bml_functions_api_usage.json"),
 ];
 let builtinFunctions = {};
 for (const _p of _builtinJsonCandidates) {
@@ -52,8 +35,6 @@ for (const _p of _builtinJsonCandidates) {
   } catch (_) {}
 }
 const builtinFunctionsSet = new Set(Object.keys(builtinFunctions));
-
-// ─── String helpers (need closure over per-call `input` / `options`) ──────────
 
 function makeStringReaders(input, options) {
   function unescapeString(s) {
@@ -106,24 +87,17 @@ function makeStringReaders(input, options) {
   return { readString };
 }
 
-// Tokenizer
-
-/**
- * @param {string} source_text
- * @param {object} [options]
- */
 function Tokenizer(source_text, options) {
   const input = InputScanner(source_text || "");
   options = options || {};
 
   const { readString } = makeStringReaders(input, options);
 
-  // Token-level history, used only to recognise `Type[]{` / `Type[n]{` array literals.
+  // Tracks only the last real token, used to recognise `Type[]{` / `Type[n]{` array literals.
   let last_real_token = null;
   const bracket_stack = [];
   const brace_stack = [];
 
-  // whitespace
   function consumeWhitespace() {
     let newlines = 0;
     let whitespace_before = "";
@@ -141,9 +115,7 @@ function Tokenizer(source_text, options) {
     return { newlines, whitespace_before };
   }
 
-  // array-literal detection
-  // Detects `Type[]{` / `Type[n]{` so the `{...}` body is formatted as a value
-  // list instead of a code block.
+  // Detects `Type[]{` / `Type[n]{` so the `{...}` body is formatted as a value list, not a code block.
   function is_array_literal_start() {
     return !!(
       last_real_token &&
@@ -154,7 +126,6 @@ function Tokenizer(source_text, options) {
     );
   }
 
-  // token tracking
   function finish(token, track) {
     if (track !== false) {
       if (
@@ -171,7 +142,6 @@ function Tokenizer(source_text, options) {
     return token;
   }
 
-  //  main token dispatch
   function get_next_token() {
     const ws = consumeWhitespace();
     const c = input.peek();
@@ -179,14 +149,12 @@ function Tokenizer(source_text, options) {
     if (c === null)
       return finish(Token(TOKEN.EOF, "", ws.newlines, ws.whitespace_before));
 
-    // Strings
     if (c === '"' || c === "'") {
       return finish(
         Token(TOKEN.STRING, readString(c), ws.newlines, ws.whitespace_before),
       );
     }
 
-    // Line comment
     if (c === "/" && input.peek(1) === "/") {
       return finish(
         Token(
@@ -198,7 +166,6 @@ function Tokenizer(source_text, options) {
       );
     }
 
-    // Block comment
     if (c === "/" && input.peek(1) === "*") {
       input.next();
       input.next();
@@ -218,7 +185,6 @@ function Tokenizer(source_text, options) {
       return finish(token);
     }
 
-    // Brackets / parens
     if (c === "(" || c === "[") {
       const token = Token(
         TOKEN.START_EXPR,
@@ -238,7 +204,6 @@ function Tokenizer(source_text, options) {
       return finish(token);
     }
 
-    // Braces
     if (c === "{") {
       const is_array = is_array_literal_start();
       const token = Token(
@@ -263,7 +228,6 @@ function Tokenizer(source_text, options) {
       return finish(token, false);
     }
 
-    // Punctuation
     if (c === ";") {
       input.next();
       return finish(
@@ -279,7 +243,6 @@ function Tokenizer(source_text, options) {
       return finish(Token(TOKEN.DOT, ".", ws.newlines, ws.whitespace_before));
     }
 
-    // Identifiers / keywords
     if (isIdentifierStart(c)) {
       const word = input.match(IDENTIFIER);
       const lower = word.toLowerCase();
@@ -298,9 +261,7 @@ function Tokenizer(source_text, options) {
           Token(TOKEN.RESERVED, lower, ws.newlines, ws.whitespace_before),
         );
       }
-      // Optional: normalise built-in function casing.
-      // Only rewrite ALLCAPS or alllowercase identifiers – preserve camelCase
-      // (e.g. containsKey) exactly as written.
+      // Only rewrite ALLCAPS/alllowercase identifiers; camelCase (e.g. containsKey) is left as written.
       if (
         options.correct_builtin_casing &&
         builtinFunctionsSet.has(lower) &&
@@ -315,7 +276,6 @@ function Tokenizer(source_text, options) {
       return finish(Token(TOKEN.WORD, word, ws.newlines, ws.whitespace_before));
     }
 
-    // Numbers
     if (isDigit(c) || (c === "." && isDigit(input.peek(1)))) {
       return finish(
         Token(
@@ -327,7 +287,6 @@ function Tokenizer(source_text, options) {
       );
     }
 
-    // Equality / assignment
     if (c === "=") {
       if (input.peek(1) === "=") {
         input.next();
@@ -342,7 +301,6 @@ function Tokenizer(source_text, options) {
       );
     }
 
-    // Other operators
     if (OPERATOR_CHARS.indexOf(c) !== -1 || c === "<") {
       const two = c + (input.peek(1) || "");
       if (two === "<>" || two === "<=" || two === ">=" || two === "!=") {
@@ -362,7 +320,6 @@ function Tokenizer(source_text, options) {
     return finish(Token(TOKEN.UNKNOWN, c, ws.newlines, ws.whitespace_before));
   }
 
-  // public tokenize()
   function isComment(token) {
     return token.type === TOKEN.COMMENT || token.type === TOKEN.BLOCK_COMMENT;
   }

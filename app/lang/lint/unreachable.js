@@ -1,7 +1,5 @@
-// Same stack-based block-finding approach already used by variables.js's
-// shadowing check, plus an implicit top-level "block" spanning the whole
-// file (so unreachable code after a top-level return/break/throwerror, with
-// no enclosing braces at all, is still caught).
+// Includes an implicit top-level "block" spanning the whole file, so unreachable code
+// after a top-level return/break/throwerror with no enclosing braces is still caught.
 function findBlocks(text) {
     const blocks = [{ start: 0, end: text.length }];
     const stack = [];
@@ -28,12 +26,8 @@ function findInnermostBlock(blocks, position) {
     return best;
 }
 
-// Scans forward from fromIndex for the statement-terminating ';' at bracket
-// depth 0, tracking quotes so a ';' inside a string literal is never
-// mistaken for one. Bails (-1) on hitting an enclosing close-bracket first -
-// that means the statement was never properly terminated (e.g. a missing
-// semicolon, already covered by semicolon.js), so this rule stays silent
-// rather than guess at a malformed statement's true extent.
+// Bails (-1) on hitting an enclosing close-bracket first, rather than guess at a
+// malformed statement's extent (a missing semicolon is already covered by semicolon.js).
 function findStatementSemicolon(text, fromIndex) {
     let depth = 0;
     let inSingleQuote = false;
@@ -56,10 +50,8 @@ function findStatementSemicolon(text, fromIndex) {
     return -1;
 }
 
-// ESLint's no-unreachable, adapted to BML's terminating statements: return,
-// break, continue, throwerror(...). Anything between such a statement and
-// the closing brace of its own enclosing block can never execute, since
-// control has unconditionally left that block already.
+// Flags code between a terminating statement (return/break/continue/throwerror) and
+// the closing brace of its enclosing block - control has already left unconditionally.
 function checkUnreachableCode(noStringsText, doc, vscode) {
     const diagnostics = [];
     const blocks = findBlocks(noStringsText);
@@ -71,8 +63,7 @@ function checkUnreachableCode(noStringsText, doc, vscode) {
         const kwStart = match.index;
         const kw = match[1].toLowerCase();
 
-        // Already inside a previously-reported dead zone - skip re-analysis
-        // and don't pile a second diagnostic onto already-flagged dead code.
+        // Already inside a previously-reported dead zone.
         if (reportedZones.some(([zs, ze]) => kwStart >= zs && kwStart < ze)) continue;
 
         const afterKw = kwStart + match[1].length;

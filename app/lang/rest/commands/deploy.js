@@ -17,9 +17,7 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Deploying queues an async task (the POST only returns a taskId) - poll
-// GET /rest/<version>/tasks/{taskId} until it leaves the queued/running state
-// so the command reports the real outcome instead of "queued" as "deployed".
+// Polls until the task leaves the queued/running state, so we report the real outcome instead of "queued" as "deployed".
 async function pollTaskStatus(
   context,
   vscode,
@@ -146,11 +144,7 @@ async function runDeployCommerceProcess(
   }
 }
 
-// Icon-driven individual deploy: deploys whichever single util function is
-// open in the active editor (the function must already exist in CPQ - run
-// Save first if it's new or has unsaved script changes). Commerce functions
-// use the deployCommerceProcess icon/command instead - the two are mutually
-// exclusive via the editor/title "when" clauses in package.json.
+// Deploys the util function open in the active editor; it must already exist in CPQ (Save first if new).
 async function runDeployCurrentFile(
   context,
   vscode,
@@ -218,8 +212,7 @@ async function runDeployCurrentFile(
   );
 }
 
-// Util function deploys are synchronous (the live API returns 204 directly,
-// no taskId/polling involved) - unlike deployCommerceProcess above.
+// Synchronous (204 directly), unlike deployCommerceProcess's task polling above.
 async function runDeployUtilFunctions(
   context,
   vscode,

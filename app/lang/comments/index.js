@@ -8,8 +8,6 @@ function isCommentsEnabled() {
     return vscode.workspace.getConfiguration('cpqBml').get('features.comments', true);
 }
 
-// Decoration styles are hardcoded (no settings.json exposure) - the user
-// confirmed custom-tag configurability is explicitly out of scope.
 function createDecorationTypes() {
     const tagTypes = new Map();
     for (const tag of DEFAULT_TAGS) {
@@ -23,9 +21,7 @@ function createDecorationTypes() {
             }
         }));
     }
-    // Directives (// bml-lint-disable*, /* beautify ignore:start/end */)
-    // actually change tool behavior, so they get a visually distinct style
-    // from every tag color above.
+    // Directives change tool behavior, so they get a visually distinct style from tags.
     const directiveType = vscode.window.createTextEditorDecorationType({
         color: '#B180FF',
         fontWeight: 'bold',
@@ -108,8 +104,6 @@ function registerBmlComments(context) {
         });
     }, null, context.subscriptions);
 
-    // Toggling cpqBml.features.comments should take effect immediately, same as
-    // cpqBml.features.lint does for the linter.
     vscode.workspace.onDidChangeConfiguration((e) => {
         if (!e.affectsConfiguration('cpqBml.features.comments')) return;
         if (!isCommentsEnabled()) {

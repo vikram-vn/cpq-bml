@@ -12,8 +12,6 @@ function buildPath(path, query) {
   return `${path}?${params.join("&")}`;
 }
 
-// The default transport, talking real HTTPS via Node's built-in module. Tests
-// inject a fake transport instead so no real network call is ever made.
 function defaultTransport({ hostname, port, path, method, headers, body }) {
   return new Promise((resolve, reject) => {
     const req = https.request(
@@ -39,11 +37,7 @@ function defaultTransport({ hostname, port, path, method, headers, body }) {
   });
 }
 
-// Redacts secrets before anything gets written to the on-disk debug log
-// (cpqBml.connection.debugLog): the Authorization header is the username/
-// password or bearer token in plain (or trivially reversible base64) form,
-// and a Set-Cookie can carry a live, replayable session token - neither
-// should ever land in a plaintext file.
+// Never write Authorization or Set-Cookie to the plaintext debug log — both carry live credentials.
 function redactHeadersForLog(headers) {
   if (!headers) return headers;
   const redacted = { ...headers };
@@ -52,14 +46,7 @@ function redactHeadersForLog(headers) {
   return redacted;
 }
 
-// Performs one REST call. Never throws on an HTTP-level 4xx/5xx response -
-// callers (api.js) decide what a given status code means for that endpoint
-// (e.g. a 4xx from "validate" is an expected, meaningful outcome, not an
-// exceptional one). Only rejects on a transport/network-level failure.
-//
-// Returns { statusCode, body } where body is the parsed JSON if the response
-// looks like JSON, otherwise the raw response text (which may be empty, e.g.
-// for a 204 No Content response).
+// Never throws on an HTTP 4xx/5xx response — callers decide what a status code means for their endpoint. Only rejects on a transport/network failure.
 async function request({
   baseUrl,
   path,

@@ -1,7 +1,4 @@
 "use strict";
-// Wraps the existing lint-suppression and beautify-ignore directive parsers
-// (app/lang/lint/suppressions.js, app/lang/beautify/bml/tokenizerHelpers.js)
-// so this module never re-derives either pattern.
 const { describeLintDirective } = require('../lint/suppressions');
 const { get_directives } = require('../beautify/bml/tokenizerHelpers');
 

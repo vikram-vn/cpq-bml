@@ -77,19 +77,7 @@ const extraAllowed = new Set([
   "recordset",
 ]);
 
-// __dirname is correct when this file is required directly (plain Node, as
-// every test in this repo does) - but esbuild bundles this whole module into
-// a single dist/extension.js, and at runtime __dirname for bundled code
-// resolves to dist/, not this file's original folder. bml-words.txt /
-// english-words.txt are plain data files esbuild never moves into dist/, so
-// a real installed extension would silently find neither file and fall back
-// to an almost-empty dictionary (everything not in extraAllowed gets
-// flagged, including ordinary words). context.extensionPath (threaded down
-// from registerBmlLinter/registerBmlCodeActions, same convention already
-// used by app/lang/intellisense/index.js's loadApiData) is the one anchor
-// that stays correct regardless of bundling, so it's preferred whenever
-// available; __dirname remains the fallback for the plain-Node/test context
-// where there is no bundle and no extensionPath to pass.
+// extensionPath anchors the dictionary files correctly once bundled by esbuild, where __dirname resolves to dist/.
 function resolveSpellCheckDir(extensionPath) {
   if (extensionPath) {
     return path.join(extensionPath, "app", "lang", "spellCheck");
@@ -103,7 +91,6 @@ function loadDictionaries(extensionPath) {
 
   const baseDir = resolveSpellCheckDir(extensionPath);
 
-  // 1. Load BML specific custom dictionary
   try {
     const bmlWordsPath = path.join(baseDir, "bml-words.txt");
     if (fs.existsSync(bmlWordsPath)) {
@@ -117,7 +104,6 @@ function loadDictionaries(extensionPath) {
     // Fallback silently if file loading fails
   }
 
-  // 2. Load English word list
   try {
     const englishWordsPath = path.join(baseDir, "english-words.txt");
     if (fs.existsSync(englishWordsPath)) {
@@ -134,7 +120,6 @@ function loadDictionaries(extensionPath) {
   return combinedDictionary;
 }
 
-// Levenshtein distance implementation for spellcheck suggestions
 function levenshtein(a, b) {
   const m = a.length;
   const n = b.length;
@@ -184,15 +169,11 @@ function getSpellingSuggestions(word, extensionPath) {
 }
 
 function splitIdentifier(token) {
-  // Split by non-alphabetic characters like underscores, dots, or numbers
   const parts = token.split(/[^a-zA-Z]/);
   const subWords = [];
 
   parts.forEach((part) => {
     if (!part) return;
-    // Split camelCase and consecutive uppercase acronyms
-    // e.g., customerPrice -> customer, Price
-    // e.g., XMLDocument -> XML, Document
     const camelParts = part
       .replace(/([a-z])([A-Z])/g, "$1 $2")
       .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
@@ -208,7 +189,6 @@ function splitIdentifier(token) {
 
 function cleanCommentText(text) {
   let clean = text;
-  // Remove URLs
   if (
     clean.includes("http://") ||
     clean.includes("https://") ||
@@ -217,18 +197,15 @@ function cleanCommentText(text) {
   ) {
     clean = clean.replace(/https?:\/\/[^\s]+/gi, (m) => " ".repeat(m.length));
   }
-  // Remove email addresses
   if (clean.includes("@")) {
     clean = clean.replace(
       /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
       (m) => " ".repeat(m.length),
     );
   }
-  // Remove inline code ticks
   if (clean.includes("`")) {
     clean = clean.replace(/`[^`]+`/g, (m) => " ".repeat(m.length));
   }
-  // Clean contraction endings so root word can be checked
   if (clean.includes("'")) {
     clean = clean
       .replace(/'s\b/g, "  ")
@@ -246,10 +223,8 @@ function checkWord(word, extensionPath) {
   if (word.length <= 1 || word.length > 50) return true;
   const wordLower = word.toLowerCase();
 
-  // If it's a known extra allowed word or acronym, it's correct
   if (extraAllowed.has(wordLower)) return true;
 
-  // Check if it consists only of uppercase letters (acronym)
   if (word === word.toUpperCase() && word !== word.toLowerCase()) return true;
 
   const dict = loadDictionaries(extensionPath);
@@ -268,7 +243,6 @@ function checkSpelling(
   const commentRanges = getCommentRanges(text);
   const stringRanges = getStringRanges(cleanText);
 
-  // Caches to avoid redundant splits and intellisense within the same file run
   const wordCache = new Map();
   const identCache = new Map();
 
@@ -293,13 +267,8 @@ function checkSpelling(
     diagnostics.push(diag);
   };
 
-  // 1. Check spelling in Comments. Doc-header blocks (e.g.
-  // "// Function Name : abo_getOneAssetState") are a widespread convention
-  // in real BML library code and routinely mention camelCase identifiers
-  // by name - so a comment "word" run is split the same way an identifier
-  // is (camelCase/acronym boundaries) before checking each piece, instead
-  // of checking the whole compound run as one giant "word" that can never
-  // match the dictionary.
+  // Comment words are split on camelCase/acronym boundaries like identifiers, since doc-header
+  // comments (e.g. "// Function Name : abo_getOneAssetState") routinely embed identifiers by name.
   commentRanges.forEach(([start, end]) => {
     const rawComment = text.substring(start, end);
     const cleanedComment = cleanCommentText(rawComment);
@@ -321,13 +290,11 @@ function checkSpelling(
     }
   });
 
-  // 2. Check spelling in Identifiers (Variables, Functions, etc.)
   const identRegex = /\b[a-zA-Z_][a-zA-Z0-9_]*\b/g;
   let match;
   while ((match = identRegex.exec(noStringsText)) !== null) {
     const ident = match[0];
 
-    // Skip keywords or pure numbers
     if (/^[0-9_]+$/.test(ident)) continue;
 
     let errors = identCache.get(ident);
@@ -352,18 +319,8 @@ function checkSpelling(
     });
   }
 
-  // 3. Check spelling in String Literals. BML string values are routinely
-  // used as enum/state-code-style identifiers (e.g.
-  // "waitingForInternalApproval", "orderCancelled") rather than natural-
-  // language prose, so - same as the identifier and comment checks above -
-  // each matched word run is split on camelCase/acronym boundaries before
-  // checking each piece. Without this, a value like
-  // "waitingForInternalApproval" is checked as one single, unsplit run and
-  // can never match the dictionary, no matter how ordinary its parts are.
-  // Already space-separated natural-language strings (e.g. "Waiting for
-  // Internal Approval") are unaffected - the word regex already separates
-  // those at the spaces, and splitIdentifier returns a single-word run
-  // unchanged when it has no internal camelCase boundary.
+  // String literals are split on camelCase/acronym boundaries too, since BML string values are
+  // often enum/state-code identifiers (e.g. "waitingForInternalApproval") rather than prose.
   stringRanges.forEach(([start, end]) => {
     const rawString = cleanText.substring(start, end);
     const content = rawString.slice(1, -1); // strip quotes

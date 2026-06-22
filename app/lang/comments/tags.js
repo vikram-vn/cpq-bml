@@ -1,16 +1,11 @@
 "use strict";
-// Default tag set for BML "better comments" decoration - parity with
-// aaron-bond/better-comments' built-in tags (!, ?, *, // for commented-out
-// code, TODO), plus a richer default (FIXME/HACK/XXX/NOTE) since this
-// extension intentionally doesn't expose settings.json tag customization.
 // Symbol tags match the literal character(s) right after the comment marker;
 // word tags match case-insensitively as a whole word.
 const DEFAULT_TAGS = [
     { id: '!', kind: 'symbol', color: '#FF4B4B', lightColor: '#D93838', bold: true },
     { id: '?', kind: 'symbol', color: '#3498DB', lightColor: '#2980B9', italic: true },
     { id: '*', kind: 'symbol', color: '#98C379', lightColor: '#27AE60', italic: true },
-    // Commented-out code marker (e.g. `////old code`) - line comments only,
-    // a `/* // ... */` block doesn't carry the same "disabled code" meaning.
+    // Line comments only - a `/* // ... */` block isn't "disabled code".
     { id: '//', kind: 'symbol', color: '#75715E', lightColor: '#7F8C8D', strikethrough: true, lineCommentOnly: true },
     { id: 'todo', kind: 'word', color: '#FFA500', lightColor: '#D35400', bold: true },
     { id: 'fixme', kind: 'word', color: '#FF6B6B', lightColor: '#C0392B', bold: true },
@@ -24,9 +19,6 @@ const DEFAULT_TAGS = [
     { id: 'idea', kind: 'word', color: '#3498DB', lightColor: '#2980B9' }
 ];
 
-// commentBodyText is everything after the opening comment marker (`//` or
-// `/*`), unstripped of its own leading whitespace. isLineComment distinguishes
-// `//` comments from `/* */` ones for the lineCommentOnly `//` tag.
 function matchTag(commentBodyText, isLineComment) {
     const trimmed = commentBodyText.replace(/^\s+/, '');
     for (const tag of DEFAULT_TAGS) {

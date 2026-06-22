@@ -41,7 +41,6 @@ function loadApiData(context) {
         try {
             const fileData = JSON.parse(fs.readFileSync(apiFilePath, 'utf8'));
             Object.entries(fileData).forEach(([key, val]) => {
-                // Normalize all keys to lowercase for case-insensitive lookups
                 bmlApiData[key.toLowerCase()] = { ...val, category, name: key };
             });
         } catch (err) {
@@ -76,10 +75,6 @@ function lookupApiInfo(word) {
     return undefined;
 }
 
-// The source JSON is plain text - the only non-literal markup actually present
-// is a handful of HTML character entities (&#32;, &#160;, &lt;, &gt;) left over
-// from how Oracle's docs were exported. There are no real tags (<b>, <code>,
-// <br>, etc.) anywhere in the data, so this only needs to decode entities.
 function decodeHtmlEntities(str) {
     if (!str) return '';
     return str
@@ -99,8 +94,7 @@ const CATEGORY_LABEL = {
     snippet: 'snippet'
 };
 
-// app/lookups/bml/common.json's "category" field (STRING, MATH, DIRECT_DB_ACCESS, ...) -
-// renamed to match the grammar's entity.name.function.* sub-scopes (database/misc).
+// Maps common.json's "category" field to the grammar's entity.name.function.* sub-scopes.
 const FUNCTION_CATEGORY_LABEL = {
     direct_db_access: 'database',
     others: 'misc'
@@ -120,25 +114,14 @@ function buildMetadataLine(info) {
     return parts.length ? `*${parts.join(' · ')}*` : '';
 }
 
-// Wraps function-call-looking substrings (e.g. decodebase64("YWJj"), getdate())
-// in backticks so they read as code within a markdown paragraph. Allows one
-// level of nested parens, which covers real cases like "datetostr(getdate())".
-// Requires no space before "(" - real calls in this data are written that way,
-// and it's what keeps English asides like "by default (see the next section)"
-// from getting misread as a call.
+// Requires no space before "(" so English asides like "by default (see below)" aren't misread as calls.
 const INLINE_CALL_RE = /\b[a-zA-Z_][\w.]*\([^()]*(?:\([^()]*\)[^()]*)*\)/g;
 
 function highlightInlineCode(text) {
     return text.replace(INLINE_CALL_RE, match => `\`${match}\``);
 }
 
-// app/lang/intellisense's "examples" field is a grab bag: for functions it's
-// almost always a numbered list of usage notes/caveats in prose (sometimes with
-// one literal call embedded in a sentence), not a runnable snippet - dumping
-// that into a fenced code block renders a paragraph of English in monospace
-// with no syntax highlighting. Genuine multi-line code (custom_snippets.json,
-// the CPQJS examples) never starts with a leading "1.", so that's a reliable
-// way to tell the two apart.
+// A leading "1." marks a numbered prose usage note rather than runnable code (which never starts that way).
 function isProseExample(example) {
     return /^\s*\d+\.\s/.test(example);
 }
@@ -151,8 +134,6 @@ function formatAsJsDoc(info) {
     md.isTrusted = true;
 
     const label = CATEGORY_LABEL[info.category] || 'symbol';
-    // fullSignature (e.g. "Float atof(String str)") is richer than the snippet
-    // form when available - show that, falling back to the plain syntax/name.
     const signature = info.fullSignature || info.syntax;
     if (signature) {
         md.appendCodeblock(`(${label}) ${decodeHtmlEntities(signature)}`, 'bml');
@@ -205,7 +186,6 @@ function buildCategorizedItems() {
     cachedCpqjsItems = [];
     cachedAllAttributes = [];
 
-    // Suggest the CPQJS namespace object itself as a global item
     const cpqjsItem = new vscode.CompletionItem('CPQJS', vscode.CompletionItemKind.Class);
     cpqjsItem.detail = 'CPQJS API Object';
     cpqjsItem.insertText = 'CPQJS';
@@ -214,7 +194,6 @@ function buildCategorizedItems() {
     Object.entries(bmlApiData).forEach(([key, info]) => {
         const syntax = info.syntax || info.name;
 
-        // CPQJS methods
         if (key.startsWith('cpqjs.')) {
             const strippedName = info.name.replace(/^CPQJS\./i, '');
             const strippedSyntax = syntax.replace(/^CPQJS\./i, '');
@@ -228,7 +207,6 @@ function buildCategorizedItems() {
             return;
         }
 
-        // Attributes
         if (info.category === 'attribute') {
             const item = new vscode.CompletionItem(info.name, vscode.CompletionItemKind.Field);
             item.detail = syntax;
@@ -244,14 +222,11 @@ function buildCategorizedItems() {
             } else if (info.scope === 'System') {
                 cachedSystemItems.push(item);
             } else {
-                // If it is any other scope attribute (e.g. "Product Family" config attributes),
-                // it acts as a global variable in its context, so suggest it globally.
                 cachedGlobalItems.push(item);
             }
             return;
         }
 
-        // General functions, variables, and snippets are global
         const kind = CATEGORY_KIND[info.category] || vscode.CompletionItemKind.Text;
         const item = new vscode.CompletionItem(info.name, kind);
         item.detail = syntax;
@@ -273,16 +248,14 @@ function getActiveFunctionCall(document, position) {
     
     while (i < text.length) {
         const char = text[i];
-        
-        // Skip line comments
+
         if (char === '/' && text[i + 1] === '/') {
             while (i < text.length && text[i] !== '\n' && text[i] !== '\r') {
                 i++;
             }
             continue;
         }
-        
-        // Skip block comments
+
         if (char === '/' && text[i + 1] === '*') {
             i += 2;
             while (i < text.length && !(text[i] === '*' && text[i + 1] === '/')) {
@@ -291,8 +264,7 @@ function getActiveFunctionCall(document, position) {
             i += 2;
             continue;
         }
-        
-        // Skip double-quoted string literals
+
         if (char === '"') {
             i++;
             while (i < text.length && text[i] !== '"') {
@@ -302,8 +274,7 @@ function getActiveFunctionCall(document, position) {
             i++;
             continue;
         }
-        
-        // Skip single-quoted string literals
+
         if (char === "'") {
             i++;
             while (i < text.length && text[i] !== "'") {
@@ -313,8 +284,7 @@ function getActiveFunctionCall(document, position) {
             i++;
             continue;
         }
-        
-        // Track function calls
+
         if (char === '(') {
             let endIdx = i;
             let startIdx = i - 1;

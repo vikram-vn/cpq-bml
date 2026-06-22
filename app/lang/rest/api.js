@@ -1,8 +1,6 @@
 const { request } = require("./client");
 const { getBaseUrl, getRestVersion, getCommerceProcess, getAuthHeader, getSettings } = require("./config");
 
-// REST version is configurable (cpqBml.rest.restVersion, default v18),
-// so the path has to be built per-call rather than once at module load time.
 function functionsPath(vscode, metadata) {
   const version = getRestVersion(vscode);
   if (metadata && metadata.commerceDocument) {
@@ -12,8 +10,7 @@ function functionsPath(vscode, metadata) {
   return `/rest/${version}/bml/library/functions`;
 }
 
-// transport is an optional override (see client.js's request()) used only by
-// tests to intercept the call instead of making a real HTTPS request.
+// transport lets tests intercept the call instead of making a real HTTPS request.
 async function call(context, vscode, { path, method, query, body }, transport) {
   let cleanedBody = body;
   if (body && typeof body === 'object') {
@@ -185,10 +182,7 @@ function getDependentAttributes(context, vscode, payload, transport) {
   );
 }
 
-// PATCH .../bml/library/functions/{namespace.variableName}  body: { isOverridden }
-// Used for Create Override (true) and Remove Override (false) on standard functions.
-// The path is routed via the metadata arg (commerce vs util), not the minimal body.
-// For utility libraries, it POSTs to /rest/<version>/bml/library/functions/{namespace.variableName}/actions/override or removeOverride.
+// Commerce: PATCH { isOverridden }. Util: POST to .../actions/override or removeOverride instead.
 function setOverride(context, vscode, namespaceVariableName, isOverridden, metadata, transport) {
   const isCommerce = metadata && metadata.commerceDocument;
   if (isCommerce) {
@@ -198,7 +192,7 @@ function setOverride(context, vscode, namespaceVariableName, isOverridden, metad
       {
         path: `${functionsPath(vscode, metadata)}/${namespaceVariableName}`,
         method: "PATCH",
-        // include routing fields so call() strips them and uses them only for the path
+        // call() strips commerceProcess/commerceDocument from the body, they're only used for routing.
         body: { isOverridden, commerceProcess: metadata.commerceProcess, commerceDocument: metadata.commerceDocument },
       },
       transport,
@@ -219,8 +213,7 @@ function setOverride(context, vscode, namespaceVariableName, isOverridden, metad
 }
 
 // POST /rest/<version>/commerceProcessSetups/{processVarName}/deploymentCenter/actions
-// scheduledTime must be an ISO 8601 timestamp - the "MM/DD/YYYY h:mm AM/PM"
-// format from Oracle's own docs is rejected by the live API as an invalid value.
+// scheduledTime must be ISO 8601 — the "MM/DD/YYYY h:mm AM/PM" format from Oracle's own docs is rejected live.
 function deployCommerceProcess(context, vscode, processVarName, transport) {
   const version = getRestVersion(vscode);
   return call(

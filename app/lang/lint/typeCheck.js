@@ -1,7 +1,4 @@
-// Scans forward from just after `=` to find the RHS of a single statement,
-// tracking ([{ nesting depth so a typed-array literal's `{...}` initializer
-// or a constructor call's `(...)` arguments don't get cut short. Bails out
-// (returns null) on a newline at depth 0 with no semicolon yet, rather than
+// Bails out (returns null) on a newline at depth 0 with no semicolon yet, rather than
 // guessing across what might be two separate statements.
 function getAssignmentRhsText(text, startIndex) {
     let depth = 0;
@@ -35,9 +32,7 @@ function getAssignmentRhsText(text, startIndex) {
     return null;
 }
 
-// Constructor calls whose function name IS the type they build (dict() makes
-// a Dictionary, jsonarray() makes a JsonArray, ...) - this is direct
-// construction by name, not fuzzy return-type inference from common.json.
+// Constructor calls whose function name IS the type they build.
 const TYPE_CONSTRUCTORS = {
     dict: 'Dictionary',
     json: 'Json',
@@ -48,13 +43,8 @@ const TYPE_CONSTRUCTORS = {
     recordset: 'RecordSet',
 };
 
-// Conservative literal-type inference: only returns a type when the RHS is
-// unambiguously a single literal/constructed value of that type, with
-// nothing else in the statement. Anything else (general function calls,
-// concatenation, variable references, member/attribute access) returns null
-// and is skipped - this is a regex-based linter with no real type inference,
-// and a wrong guess here would be a false positive, which is far worse than
-// missing a real bug.
+// Only returns a type when the RHS is unambiguously a single literal/constructed value;
+// anything else (calls, concatenation, variable refs) returns null rather than guess.
 function inferLiteralType(rhsText) {
     const trimmed = rhsText.trim();
 
@@ -81,19 +71,12 @@ function inferLiteralType(rhsText) {
     return null;
 }
 
-// BML variables are statically typed by their first assignment - CPQ's own
-// compiler rejects reassigning a variable to a value of a different type
-// later in the same script. Tracks the first inferable type seen per
-// variable name (file-flat, same scoping model as variables.js's shadowing
-// check) and flags any later assignment whose inferred type differs.
-//
-// declaredTypes (optional) seeds a variable's type from its function-parameter
-// declaration (see metadataTypes.js's getDeclaredParameterTypes) instead of
-// waiting for the first in-body assignment - reassigning a parameter to a
-// conflicting literal is exactly as invalid as reassigning any other variable.
+// BML variables are statically typed by their first assignment; CPQ rejects reassigning
+// to a different type later. declaredTypes optionally seeds a variable's type from its
+// function-parameter declaration instead of waiting for the first in-body assignment.
 function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes) {
     const diagnostics = [];
-    const firstTypeByVar = new Map(); // varName -> { type, line } (line === -1 means "declared as a parameter")
+    const firstTypeByVar = new Map();
 
     if (declaredTypes) {
         for (const [paramNameLower, type] of declaredTypes.entries()) {
@@ -107,8 +90,7 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes) {
         const varName = match[1];
         const matchIndex = match.index;
 
-        // Exclude comparison operators that could be mistaken for assignment
-        // from behind (<=, >=, !=) - same guard as variables.js.
+        // Exclude comparison operators that could be mistaken for assignment (<=, >=, !=).
         let before = matchIndex - 1;
         while (before >= 0 && /\s/.test(cleanText[before])) before--;
         if (before >= 0 && (cleanText[before] === '<' || cleanText[before] === '>' || cleanText[before] === '!')) {

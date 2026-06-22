@@ -4,13 +4,7 @@ const DEFAULT_DOMAIN_SUFFIX = '.bigmachines.com';
 const SECRET_PASSWORD = 'cpqBml.connection.password';
 const SECRET_TOKEN = 'cpqBml.connection.token';
 
-// Accepts any of the documented cpqBml.connection.siteUrl forms and normalizes
-// them to a single canonical "https://host" (no trailing slash) form:
-//   https://sitename.bigmachines.com/  -> https://sitename.bigmachines.com
-//   https://sitename.bigmachines.com   -> https://sitename.bigmachines.com
-//   sitename.bigmachines.com/          -> https://sitename.bigmachines.com
-//   sitename.bigmachines.com           -> https://sitename.bigmachines.com
-//   sitename                           -> https://sitename.bigmachines.com
+// Normalizes any accepted siteUrl form to canonical "https://host" (no trailing slash).
 function normalizeSiteUrl(rawSiteUrl) {
     let value = (rawSiteUrl || '').trim().replace(/\/+$/, '');
     if (!value) return '';
@@ -43,11 +37,7 @@ function getSettings(vscode) {
     };
 }
 
-// Both helpers below are gated on the same cpqBml.debug.logOutputToFile toggle
-// so the user only needs to flip one switch to get both log files.
-// Returns null when the setting is off or no workspace folder is open.
-
-// Script return value log  →  <workspace>/bml_debug_output.log
+// Returns null when cpqBml.debug.logOutputToFile is off or no workspace folder is open.
 function getDebugOutputLogPath(vscode) {
     const { logOutputToFile } = getSettings(vscode);
     if (!logOutputToFile) return null;
@@ -57,7 +47,6 @@ function getDebugOutputLogPath(vscode) {
     return pathLib.join(folders[0].uri.fsPath, 'bml_debug_output.log');
 }
 
-// Print statement log  →  <workspace>/bml_debug_print.log
 function getDebugPrintLogPath(vscode) {
     const { logOutputToFile } = getSettings(vscode);
     if (!logOutputToFile) return null;
@@ -67,9 +56,6 @@ function getDebugPrintLogPath(vscode) {
     return pathLib.join(folders[0].uri.fsPath, 'bml_debug_print.log');
 }
 
-// e.g. siteUrl "https://sitename.oracle.com" -> "https://sitename.oracle.com"
-// (the /rest/<version>/... portion is appended per-call by api.js, since
-// client.js's request() only looks at the hostname/port of this base URL.)
 function getBaseUrl(vscode) {
     return getSettings(vscode).siteUrl;
 }
@@ -127,11 +113,7 @@ async function getAuthHeader(context, vscode) {
     return `Basic ${encoded}`;
 }
 
-// True if the active connection is missing siteUrl, username (for basic auth),
-// or the password/token secret it would need - i.e. any REST call would fail
-// immediately. Used both to gate the editor/title toolbar icons (so they only
-// show up once a connection is actually usable) and to decide whether the
-// settings panel should auto-open onboarding.
+// True if any REST call would fail immediately for lack of siteUrl/username/secret.
 async function hasMissingCredentials(context, vscode) {
     const { siteUrl, authMethod, username } = getSettings(vscode);
     if (!siteUrl) {
@@ -156,12 +138,7 @@ async function hasMissingCredentials(context, vscode) {
     return !password;
 }
 
-// Live connectivity + permission check against current settings/secrets -
-// no prompts, no toasts, just a structured result. `reason` lets callers
-// distinguish failures that should block (auth/permission) from ones that
-// shouldn't (network/config) - see ensureCredentials below, which is the
-// toast-driven CLI/QuickPick flow built on top of this. The settings webview's
-// "Test Connection" button calls this directly instead.
+// No prompts/toasts — just a structured result. `reason` lets callers (ensureCredentials below) distinguish blocking failures (auth/permission) from non-blocking ones (network/config).
 async function runTestConnection(context, vscode, transport) {
     const siteUrl = getBaseUrl(vscode);
     if (!siteUrl) {
@@ -272,8 +249,7 @@ async function ensureCredentials(context, vscode) {
         return true;
     }
 
-    // Auth/permission failures block and surface a toast; network/config
-    // issues let the user proceed (same as the inline check this replaced).
+    // Only auth/permission failures block; network/config issues let the user proceed.
     const result = await runTestConnection(context, vscode);
     if (!result.ok && (result.reason === 'auth' || result.reason === 'permission')) {
         vscode.window.showErrorMessage(result.message);

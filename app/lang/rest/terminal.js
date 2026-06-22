@@ -1,8 +1,4 @@
-// A read-only "terminal" backed by VS Code's Pseudoterminal API, used to show
-// debug results in the integrated terminal panel without ever executing them
-// as shell input - unlike vscode.Terminal#sendText(), which types text into
-// the real shell process (and would try to "run" whatever a debug result
-// happens to contain).
+// Read-only Pseudoterminal — unlike Terminal#sendText(), it never executes its output as shell input.
 function createResultsTerminal(vscode, name) {
     const writeEmitter = new vscode.EventEmitter();
     const pty = {
@@ -20,8 +16,7 @@ function createResultsTerminal(vscode, name) {
         show() {
             terminal.show(true);
         },
-        // Clears the screen and scrollback (xterm.js escape sequences), since
-        // there is no dedicated "clear" call in the Pseudoterminal API itself.
+        // xterm.js escape sequences — Pseudoterminal API has no dedicated clear call.
         clear() {
             writeEmitter.fire('\x1b[2J\x1b[3J\x1b[H');
         },
@@ -31,10 +26,6 @@ function createResultsTerminal(vscode, name) {
     };
 }
 
-// Singleton accessor for the one shared "CPQ-BML" results terminal - both
-// human-triggered REST commands and MCP/AI tool calls write into this same
-// instance (gated separately for the AI side by cpqBml.mcp.logToTerminal),
-// rather than each maintaining its own terminal.
 let sharedResultsTerminal = null;
 
 function getResultsTerminal(vscode) {

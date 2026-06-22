@@ -17,12 +17,9 @@ function findMatchingBracket(text, openIndex, openChar, closeChar) {
     return -1;
 }
 
-// Walks the whole document once, recognizing if/elif/else statements and
-// their (...)condition + {...}body, and groups consecutive if -> elif* ->
-// else? sequences into "chains". Bails out of a chain (resets to none) as
-// soon as anything else appears between two branches, or if a condition/body
-// isn't a clean (...) / {...} pair - conservative by design, since this is
-// pure text scanning, not a real parser.
+// Groups consecutive if -> elif* -> else? sequences into chains. Bails out of a chain
+// as soon as anything else appears between branches, or a condition/body isn't a clean
+// (...) / {...} pair - conservative since this is text scanning, not a real parser.
 function parseConditionalChains(text) {
     const chains = [];
     let currentChain = null;
@@ -59,7 +56,7 @@ function parseConditionalChains(text) {
         const bodyEnd = findMatchingBracket(text, i, '{', '}');
         if (bodyEnd === -1) { currentChain = null; break; }
         i = bodyEnd + 1;
-        const bodyStart = bodyOpen + 1; // first index inside the body, after '{'
+        const bodyStart = bodyOpen + 1;
 
         if (kw === 'if') {
             currentChain = [{ type: 'if', conditionText, kwStart, bodyStart, bodyEnd }];
@@ -77,24 +74,15 @@ function parseConditionalChains(text) {
     return chains;
 }
 
-// ESLint's no-dupe-else-if / RuboCop's Lint/DuplicateBranch: within one
-// if/elif/elif/.../else chain, a later branch whose condition is textually
-// identical (whitespace-normalized) to an earlier one in the same chain can
-// never run - the earlier, identical condition already caught it first.
-//
-// Takes chains already parsed by parseConditionalChains(cleanText) -
-// comments blanked, strings intact - rather than chains parsed from
-// noStringsText: comparing on string-blanked text would make `x == "a"` and
-// `x == "b"` collapse to the same "normalized" condition and falsely look
-// like duplicates. findMatchingBracket already tracks quotes itself, so
-// parsing real string content is still safe against stray brackets inside a
-// literal. lint.js parses cleanText once and passes the result to both this
-// and lonelyIf.js, instead of each re-parsing the whole file independently.
+// Flags a later if/elif branch whose condition is textually identical (whitespace-
+// normalized) to an earlier one in the same chain - it can never run.
+// Chains must come from cleanText, not noStringsText: blanking strings would make
+// `x == "a"` and `x == "b"` collapse to the same condition and falsely look like duplicates.
 function checkDuplicateConditionBranches(conditionalChains, doc, vscode) {
     const diagnostics = [];
 
     for (const chain of conditionalChains) {
-        const seen = new Map(); // normalized condition -> first branch's kwStart
+        const seen = new Map();
         for (const branch of chain) {
             if (branch.type === 'else' || branch.conditionText === null) continue;
             const normalized = branch.conditionText.replace(/\s+/g, ' ').trim();

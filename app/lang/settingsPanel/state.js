@@ -1,10 +1,7 @@
 const config = require('../rest/config');
 const { getEnvironments } = require('../rest/commands/env');
 
-// Assembles the one JSON snapshot sent to the webview. Never includes a
-// secret's actual value - only hasPassword/hasToken booleans - so the panel
-// can show "set"/"not set" status without the password/token ever leaving
-// VS Code Secret Storage.
+// Only sends hasPassword/hasToken booleans - actual secret values never leave VS Code Secret Storage.
 async function buildState(context, vscode) {
     const settings = config.getSettings(vscode);
     const cpqConfig = vscode.workspace.getConfiguration('cpqBml');
@@ -24,9 +21,7 @@ async function buildState(context, vscode) {
 
     return {
         connection: {
-            // Raw (un-normalized) value, so the field shows back exactly what
-            // the user typed (e.g. "mycompany") rather than the expanded
-            // "https://mycompany.bigmachines.com" form config.js resolves it to.
+            // Raw value as typed, not config.js's normalized https:// form.
             siteUrl: cpqConfig.get('connection.siteUrl', ''),
             authMethod: settings.authMethod,
             username: settings.username,

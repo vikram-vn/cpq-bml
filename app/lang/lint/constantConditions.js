@@ -6,11 +6,8 @@ function isConstantFalse(trimmed) {
     return /^false$/i.test(trimmed);
 }
 
-// A condition of the form `x == x` / `x <> x` / `x != x`, where both sides are
-// the exact same bare identifier or simple dotted path (e.g. line.attr).
-// Deliberately excludes function calls on either side - a call's result
-// isn't guaranteed identical across two evaluations, so flagging it would be
-// a real false-positive risk rather than a safe, conservative inference.
+// Matches `x == x` / `x <> x` / `x != x` for bare identifiers/dotted paths only -
+// excludes function calls, since a call's result isn't guaranteed identical across evaluations.
 function selfCompareOperand(trimmed) {
     const m = trimmed.match(/^([a-zA-Z_][\w.]*)\s*(==|<>|!=)\s*([a-zA-Z_][\w.]*)$/);
     if (m && m[1] === m[3]) {
@@ -19,12 +16,7 @@ function selfCompareOperand(trimmed) {
     return null;
 }
 
-// ESLint's no-constant-condition + no-self-compare, adapted to BML's if/elif
-// (there's no while/ternary in BML). Takes the already-computed condition
-// ranges from lint.js (getConditionRanges ignores comments/strings
-// internally regardless of which text variant it's run against, so reusing
-// the one pass lint.js already did is equivalent to - and cheaper than -
-// re-deriving it here).
+// Flags always-true/false if/elif conditions and self-comparisons (BML has no while/ternary).
 function checkConstantConditions(text, conditionRanges, doc, vscode) {
     const diagnostics = [];
 

@@ -1,10 +1,5 @@
-// ESLint's no-mixed-operators, scoped to BML's logical AND/OR (the classic
-// precedence-confusion case - unlike arithmetic operators, where standard
-// math precedence is already well understood, AND/OR mixing is the one
-// every language's style guide warns about). Only checks the outermost
-// (depth-0) level of an if/elif condition - a sub-clause already wrapped in
-// its own parens is, by definition, unambiguous regardless of what it mixes
-// internally, so it's not re-analyzed.
+// Flags AND/OR mixed without grouping parens at the outermost (depth-0) level of a
+// condition; a sub-clause already in its own parens is unambiguous and not re-analyzed.
 function hasMixedAndOrAtTopLevel(conditionText) {
     let depth = 0;
     let inSingleQuote = false;
@@ -33,10 +28,6 @@ function hasMixedAndOrAtTopLevel(conditionText) {
     return sawAnd && sawOr;
 }
 
-// Takes the already-computed condition ranges from lint.js (see
-// constantConditions.js's identical note - getConditionRanges ignores
-// comments/strings internally, so reusing the one pass already done there
-// is equivalent to, and cheaper than, re-deriving it here).
 function checkMixedOperators(text, conditionRanges, doc, vscode) {
     const diagnostics = [];
 

@@ -5,10 +5,7 @@ const { levenshtein } = require('./levenshtein');
 const { inferLiteralType } = require('./typeCheck');
 
 let builtInFunctions = null;
-// Mirrors the grammar's reserved words (app/lang/syntaxes/bml.tmLanguage.json
-// "keywords"/"types" patterns) so a valid keyword or storage-type constructor
-// call (e.g. Float(value), Date(str), Record()) is never flagged as an
-// "Unknown built-in function" just because it isn't itself in common.json.
+// Mirrors the grammar's reserved words/storage-type constructors so they're never flagged as unknown functions.
 const keywords = new Set([
     'if', 'elif', 'else', 'for', 'in', 'break', 'continue', 'return',
     'true', 'false', 'null', 'and', 'or', 'not',
@@ -18,35 +15,12 @@ const keywords = new Set([
 ]);
 const deprecated = new Set(['strtodate', 'gettabledata', 'getpartsdata']);
 
-// Thin backward-compatible wrapper - parseParameterSignature (functionSignature.js)
-// replaced this internally to fix two real bugs naive comma-splitting had:
-// cascading nested-optional signatures (e.g. datetostr's trailing
-// "[, String dateFormat [, String timeZone]]") under-counted required
-// parameters, and union-typed signatures (max/min/put/...) could be parsed
-// into nonsense. Kept exported under its original name in case anything
-// outside this module still imports it.
 function parseSyntax(syntax) {
     const { min, max } = parseParameterSignature(syntax);
     return { min, max };
 }
 
-// bml_functions_api_usage.json is generated from app/lookups/bml/common.json
-// by app/scripts/generateBmlFunctions.js, and already ships in the VSIX (it's
-// also what app/lang/intellisense/index.js loads for hover/completion) - so
-// it's reused here directly rather than duplicating common.json itself into
-// the shipped bundle. Its fullSignature field (e.g. "String
-// substring(String str, Integer start, [Integer end])") is parseSyntax-
-// compatible the same way common.json's own syntax field was.
-// __dirname is correct when this file is required directly (plain Node, as
-// every test in this repo does) - but esbuild bundles this whole module into
-// a single dist/extension.js, and at runtime __dirname for bundled code
-// resolves to dist/, not this file's original folder, so a __dirname-relative
-// path would resolve outside the repo entirely. extensionPath (threaded down
-// from registerBmlLinter via lint.js, same convention as
-// app/lang/intellisense/index.js's loadApiData(context) and
-// app/lang/spellCheck/spelling.js's resolveSpellCheckDir) is the anchor that
-// stays correct regardless of bundling; __dirname remains the fallback for
-// the plain-Node/test context where there is no bundle and no extensionPath.
+// extensionPath anchors the path correctly once bundled by esbuild, where __dirname resolves to dist/.
 function loadBuiltInFunctions(extensionPath) {
     if (builtInFunctions) return builtInFunctions;
     builtInFunctions = new Map();
@@ -293,10 +267,6 @@ function countArguments(argsText) {
     return commas + 1;
 }
 
-// Same conservative near-match policy as systemVariables.js's
-// findClosestSystemVariable: distance <= 2 and length within 3, so an
-// unrelated short identifier (a real local variable, not a function at all)
-// never gets a spurious "did you mean" pointing at some unrelated built-in.
 function findClosestBuiltInFunction(name, builtIns) {
     const nameLower = name.toLowerCase();
     let best = null;
@@ -319,13 +289,7 @@ function normalizeType(type) {
     return `${match[1].toLowerCase()}${match[2]}`;
 }
 
-// Conservative: only ever compares an argument when inferLiteralType could
-// unambiguously tell what it is (a bare literal/typed-array/type-constructor
-// call - see typeCheck.js) - a variable or general expression returns null
-// from inferLiteralType and is always treated as compatible, since this
-// linter has no real type system to track a variable's type through. Integer
-// literals are accepted for a Float-typed parameter (numeric widening is
-// normal and not a real mistake); every other mismatch is reported.
+// Integer literals are accepted for a Float parameter (numeric widening); everything else must match.
 function argumentTypeCompatible(expectedType, actualType) {
     if (!expectedType || !actualType) return true;
     const expected = normalizeType(expectedType);
@@ -416,10 +380,6 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     diagnostics.push(diag);
                 }
 
-                // Per-position argument type checking - only when the
-                // signature was cleanly parseable (builtIn.params is null
-                // for the dozen polymorphic/union-typed built-ins, e.g.
-                // max/min/put/get - see functionSignature.js).
                 if (builtIn.params) {
                     const args = splitArgumentsList(argsCleanText);
                     for (let i = 0; i < args.length && i < builtIn.params.length; i++) {

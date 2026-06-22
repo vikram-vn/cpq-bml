@@ -1,7 +1,4 @@
-// Shared by systemVariables.js (did-you-mean for _user_*/_site_* typos) and
-// functions.js (did-you-mean for unknown built-in function calls) - both want
-// the exact same conservative near-match logic, just against different name
-// lists.
+// Shared did-you-mean logic for systemVariables.js and functions.js.
 function levenshtein(a, b) {
     const m = a.length;
     const n = b.length;

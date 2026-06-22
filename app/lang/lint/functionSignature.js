@@ -1,24 +1,10 @@
-// Parses a built-in function's fullSignature string (from
-// bml_functions_api_usage.json, e.g. "String substring(String str, Integer
-// start, [Integer end])") into a structured { min, max, params } shape that
-// checkFunctionCalls can use for both argument-count and per-position
-// argument-type validation.
-//
-// Oracle's own signature text uses two different optional-parameter
-// conventions that both have to be handled:
-//   1. Each optional parameter individually bracketed:
-//      "find(String str, String substr, [Integer start], [Integer end])"
-//   2. A cascading nested-optional tail, where the bracket opens mid-param
-//      and every later parameter (down to the matching close) is optional:
-//      "datetostr(Date date [, String dateFormat [, String timeZone]])"
-// A handful of functions (max, min, put, get, append, ...) additionally use
-// a non-standard "Type(or Type2, Type3)" polymorphic-union notation, and one
-// (put) has a literally unbalanced paren in Oracle's own doc text. Signatures
-// containing "(or" are deliberately NOT parsed - returning
-// { min: 0, max: Infinity, params: null } so the caller skips both
-// count and type enforcement for them - guessing at a union type's real
-// shape risks false positives, and silently disabling validation is far
-// safer than getting it wrong for a real BML built-in.
+// Parses a fullSignature string (e.g. "String substring(String str, Integer
+// start, [Integer end])") into { min, max, params }. Handles both
+// individually-bracketed optionals and Oracle's cascading nested-optional
+// tail ("datetostr(Date date [, String dateFormat [, String timeZone]])").
+// Signatures with a "(or" polymorphic-union type, or an unbalanced paren
+// (put's doc text), are deliberately left unparsed - { params: null } -
+// rather than guessing a wrong shape.
 
 function findOuterParamsText(signature) {
     const closeIdx = signature.lastIndexOf(')');
@@ -38,29 +24,16 @@ function findOuterParamsText(signature) {
 
 const TYPE_NAME_PATTERN = '([A-Za-z_]\\w*(?:\\s*\\[\\s*\\])*)\\s+([A-Za-z_]\\w*)';
 
-// Pulls "Type" and "name" out of a single parameter chunk, tolerating stray
-// leading/trailing optional-group bracket punctuation left over from the
-// chunk's depth-aware split (e.g. "Date date [", " String timeZone]]",
-// "[boolean includeTime]"). Returns null for a bare untyped parameter
-// (e.g. "configurationKey", "value") - these accept any type, so there is
-// nothing to validate against.
+// Returns null for a bare untyped parameter (e.g. "configurationKey") - these accept any type.
 function extractTypeAndName(chunkText) {
     const match = chunkText.match(new RegExp(TYPE_NAME_PATTERN));
     if (!match) return null;
     return { type: match[1].replace(/\s+/g, ''), name: match[2] };
 }
 
-// A handful of Oracle's variadic functions (sbappend is the only one found
-// in practice) describe "repeat this group 0+ times" using the same
-// cascading-bracket notation as a genuinely fixed-arity optional tail, but
-// without the comma that every well-formed cascade has right after the
-// param name (e.g. sbappend's "stringBuilder[String string[" vs datetostr's
-// "date [, String dateFormat ["). That missing comma means a single
-// depth-aware chunk ends up containing two complete "Type name" pairs
-// glued together - a reliable signal that this isn't really a fixed
-// positional parameter list, so it's treated the same as a "(or"
-// polymorphic union: skip validation entirely rather than enforce a wrong
-// max/type derived from a notation that doesn't fit this function's shape.
+// Some variadic functions (e.g. sbappend) describe a repeating group using a cascading bracket
+// missing the comma a well-formed optional tail has, so a single chunk ends up containing two
+// "Type name" pairs - a reliable signal to skip validation rather than enforce a wrong shape.
 function hasGluedParameterPairs(paramsText) {
     const globalMatcher = new RegExp(TYPE_NAME_PATTERN, 'g');
     return paramsText.split(',').some((chunk) => {
@@ -109,11 +82,7 @@ function parseParameterSignature(fullSignature) {
     return { min, max, params };
 }
 
-// Depth/quote-aware split of a call's argument-list text into one substring
-// per argument - same traversal rules as functions.js's countArguments
-// (parens/brackets/braces nesting, both quote styles, backslash-escapes) but
-// returning the slices themselves instead of just a count, so each one can
-// be passed to typeCheck.js's inferLiteralType for per-position checking.
+// Same traversal rules as functions.js's countArguments, but returns the argument slices themselves.
 function splitArgumentsList(argsText) {
     if (!argsText.trim()) return [];
 

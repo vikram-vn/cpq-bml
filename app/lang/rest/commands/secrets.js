@@ -1,10 +1,6 @@
 const config = require('../config');
 
-// Dual-write: the site+username (or site)-specific key plus the legacy
-// global key, so getAuthHeader's fallback lookup keeps working regardless of
-// which key it finds first. No prompt - the settings webview calls these
-// directly with a value it already has; runSetPassword/runSetAuthToken below
-// are the prompt-driven CLI/Command Palette flow built on top.
+// Dual-write: site-specific key plus the legacy global key, so getAuthHeader's fallback lookup works either way.
 async function writePassword(context, vscode, value) {
     const { siteUrl, username } = config.getSettings(vscode);
     if (siteUrl) {

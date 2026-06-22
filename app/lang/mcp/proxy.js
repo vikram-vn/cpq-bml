@@ -1,18 +1,8 @@
 const fs = require('fs');
 
-// MCP tools call into the same run*(context, vscode, ...) functions the
-// editor/title icons use, instead of re-implementing payload-building logic.
-// Those functions read vscode.window.activeTextEditor and occasionally show
-// a QuickPick/InputBox - neither of which an unattended AI caller can answer.
-// This proxy wraps the REAL vscode module (so real secrets/config/workspace
-// still apply) and overrides only the few surfaces a tool call needs to
-// control: which file is "open", and how to resolve any QuickPick that would
-// otherwise block waiting for a human.
-//
-// showInformationMessage/showErrorMessage/showWarningMessage are also
-// intercepted (but still forwarded to the real vscode, so the human sees the
-// same toast) purely to capture the final outcome text for the tool result -
-// the run* functions don't return anything themselves.
+// Wraps the real vscode module so the existing run*() command logic can be reused unattended:
+// overrides activeTextEditor and QuickPick (which would otherwise block waiting for a human),
+// and intercepts the show*Message calls to capture outcome text for the tool result.
 function createToolVscodeContext(vscode, { bmlPath, quickPickSelector, configOverrides } = {}) {
     const messages = { info: [], error: [], warning: [] };
 
@@ -102,9 +92,7 @@ function stripAnsi(text) {
     return String(text).replace(/\x1b\[[0-9;]*m/g, '');
 }
 
-// Always captures every line (so the tool result can carry a full log back
-// to the AI), and - when a real terminal is passed in - also forwards each
-// line live, so a human watching VS Code sees AI activity as it happens.
+// Captures every line for the tool result, and forwards live to realTerminal if provided.
 function createCapturingTerminal(realTerminal) {
     const lines = [];
     return {

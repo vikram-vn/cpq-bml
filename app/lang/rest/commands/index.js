@@ -19,13 +19,7 @@ const {
 const metadataLib = require("../metadata");
 const { hasMissingCredentials } = require("../config");
 
-// The editor/title toolbar icons are only useful once there's a fully usable
-// connection - config.cpqBml.connection.enabled alone isn't enough to gate on
-// (it's a feature toggle that defaults to true), and neither is siteUrl alone
-// (a REST call still fails immediately without a username/password or token).
-// This context key reflects hasMissingCredentials's verdict: siteUrl, username
-// (for basic auth) or token (for bearer), and the matching secret must all be
-// present, or every icon stays hidden.
+// Gates the editor/title toolbar icons on a fully usable connection (siteUrl + username/token + matching secret), not just the enabled toggle.
 async function refreshConnectionConfiguredContext(context, vscode) {
   const missing = await hasMissingCredentials(context, vscode);
   vscode.commands.executeCommand(
@@ -35,8 +29,6 @@ async function refreshConnectionConfiguredContext(context, vscode) {
   );
 }
 
-// Reads the local sidecar (no network) and updates the status bar + VS Code
-// context keys so editor/title menu when-clauses reflect the active file.
 function refreshBmlStatus(vscode, statusBarItem, filePath) {
   const hide = () => {
     statusBarItem.hide();
@@ -164,7 +156,6 @@ function registerBmlRestCommands(context) {
   const resultsTerminal = getResultsTerminal(vscode);
   context.subscriptions.push(resultsTerminal);
 
-  // Status bar item — shown only when a standard-function .bml is active
   const statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     100,
@@ -183,17 +174,13 @@ function registerBmlRestCommands(context) {
       }
     }),
   );
-  // Password/token secrets aren't configuration, so a settings.json change
-  // event never fires for them - re-check on every secret write too (covers
-  // both the "Set CPQ Password"/"Set CPQ Auth Token" commands and the
-  // settings webview's write-only password/token fields).
+  // Secret writes don't fire a configuration-change event, so re-check explicitly.
   context.subscriptions.push(
     context.secrets.onDidChange(() => {
       refreshConnectionConfiguredContext(context, vscode);
     }),
   );
 
-  // Refresh immediately for whatever is already open, then on every change
   refreshBmlStatus(
     vscode,
     statusBarItem,
@@ -261,9 +248,6 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.clearResults", () =>
       resultsTerminal.clear(),
     ),
-    // Internal command: re-reads the active file's sidecar and refreshes the
-    // status bar + context keys without requiring an editor switch. Called by
-    // override commands after they mutate the sidecar.
     vscode.commands.registerCommand("cpqBml.internal.refreshStatus", () => {
       refreshBmlStatus(
         vscode,

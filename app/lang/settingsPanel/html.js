@@ -6,9 +6,7 @@ function getNonce() {
     return crypto.randomBytes(16).toString('base64');
 }
 
-// Strict CSP - no inline/remote/eval. Only the nonce-tagged <script> the
-// extension itself injects, plus styles/images served from the extension's
-// own webview asset folder via webview.cspSource.
+// Strict CSP: only the nonce-tagged script and assets from webview.cspSource; no inline/remote/eval.
 function buildCsp(nonce, cspSource) {
     return [
         "default-src 'none'",

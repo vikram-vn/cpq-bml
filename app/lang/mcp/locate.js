@@ -5,11 +5,8 @@ const metadataLib = require('../rest/metadata');
 
 const AI_COPY_SUFFIX = '-AI';
 
-// Every pull command (util or commerce) writes functions under
-// <pullFolder>/.../<variableName>/<variableName>.bml - regardless of the
-// folder/commerceProcess/commerceDocument segments above it. So finding a
-// function by name alone just means walking the pull folder for a directory
-// named <variableName> containing <variableName>.bml.
+// Pulled functions always land at <pullFolder>/.../<variableName>/<variableName>.bml,
+// so finding one by name means walking the pull folder for that directory.
 function findLocalBmlPath(vscode, variableName) {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) return null;
@@ -39,22 +36,14 @@ function searchDir(dir, variableName, depthLeft) {
     return null;
 }
 
-// Given the canonical (pulled) .bml path .../groupDiscount/groupDiscount.bml,
-// returns the sibling AI working copy path .../groupDiscount-AI/groupDiscount.bml -
-// same filename, just a "-AI" suffixed folder next to the original.
 function aiCopyPathFor(canonicalBmlPath, variableName) {
     const canonicalDir = path.dirname(canonicalBmlPath);
     const aiDir = path.join(path.dirname(canonicalDir), `${variableName}${AI_COPY_SUFFIX}`);
     return path.join(aiDir, `${variableName}.bml`);
 }
 
-// MCP tools never edit the pulled (canonical) copy directly - they always
-// work against a sibling "<variableName>-AI" copy instead, so the original
-// pulled file stays untouched as a pristine baseline a human can diff
-// against. The AI copy is created once (cloning the canonical .bml and its
-// -meta.json sidecar) and left alone on every subsequent call - re-pulling
-// refreshes the canonical copy, never the AI copy, so it never clobbers
-// in-progress AI edits.
+// MCP tools edit the sibling "<variableName>-AI" copy, never the canonical pulled file,
+// so the original stays a pristine diff baseline and re-pulling never clobbers AI edits.
 function findOrCreateAiCopy(vscode, variableName) {
     const canonicalBmlPath = findLocalBmlPath(vscode, variableName);
     if (!canonicalBmlPath) return null;

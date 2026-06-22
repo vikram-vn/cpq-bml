@@ -5,10 +5,7 @@ const { buildState } = require('./state');
 
 const CPQ_SECTION = 'cpqBml';
 
-// Single source of truth for which scalar settings the webview is allowed to
-// write via the generic 'updateField' message - mirrors package.json's
-// contributes.configuration.properties (minus environments/siteUrl secrets,
-// which have their own dedicated message types below).
+// Settings the webview may write via 'updateField'; secrets have dedicated message types below.
 const ALLOWED_FIELDS = new Set([
     'connection.enabled',
     'connection.siteUrl',
@@ -28,9 +25,7 @@ const ALLOWED_FIELDS = new Set([
     'debug.logOutputToFile'
 ]);
 
-// Single switch-dispatch over every inbound message type. The webview never
-// trusts its own copy of settings/secrets state - every mutating case re-sends
-// a fresh 'state' snapshot afterward so it always reflects the real store.
+// Every mutating case re-sends a fresh 'state' snapshot so the webview never relies on stale state.
 async function handleMessage(message, context, vscode, panel) {
     try {
         await dispatch(message || {}, context, vscode, panel);

@@ -3,13 +3,9 @@ const { getHtml } = require("./html");
 const { handleMessage } = require("./messageHandler");
 const { hasMissingCredentials } = require("../rest/config");
 
-// Singleton panel - re-invoking the command reveals the existing one instead
-// of creating duplicates.
 let currentPanel = null;
 
-// globalState flag so the first-run auto-open (below) fires exactly once per
-// install on this machine, regardless of how many windows/workspaces are
-// opened afterward.
+// globalState flag ensures the first-run auto-open fires once per install, not per window.
 const FIRST_INSTALL_KEY = "cpqBml.settingsPanel.openedOnInstall";
 const AUTO_OPENED_SESSION_KEY = "cpqBml.settingsPanel.sessionAutoOpened";
 const BML_OPEN_AUTO_OPENED_KEY = "cpqBml.settingsPanel.bmlOpenAutoOpened";
@@ -48,7 +44,6 @@ function registerSettingsPanel(context) {
       return;
     }
 
-    // Only auto-open if connection features are enabled
     const enabled = vscode.workspace
       .getConfiguration("cpqBml")
       .get("connection.enabled", true);
@@ -56,8 +51,7 @@ function registerSettingsPanel(context) {
       return;
     }
 
-    // Smart activation: Only auto-open settings panel if the workspace contains at least one -meta.json file,
-    // which signals they want to use REST integration.
+    // Only auto-open if the workspace looks like a CPQ project (has a -meta.json file).
     const metaFiles = await vscode.workspace.findFiles(
       "**/*-meta.json",
       undefined,
@@ -89,7 +83,6 @@ function registerSettingsPanel(context) {
       return;
     }
 
-    // Only auto-open if connection features are enabled
     const enabled = vscode.workspace
       .getConfiguration("cpqBml")
       .get("connection.enabled", true);
@@ -103,7 +96,6 @@ function registerSettingsPanel(context) {
         document.uri.path &&
         document.uri.path.toLowerCase().endsWith(".bml"));
     if (isBml) {
-      // Check if the corresponding -meta.json file exists in the same directory level
       const metaUri = document.uri.with({
         path: document.uri.path.replace(/\.bml$/i, "-meta.json"),
       });
@@ -124,12 +116,10 @@ function registerSettingsPanel(context) {
     }
   };
 
-  // Check currently open document at activation
   if (vscode.window.activeTextEditor) {
     checkAndAutoOpenForBml(vscode.window.activeTextEditor.document);
   }
 
-  // Listen for documents being opened in the workspace
   context.subscriptions.push(
     vscode.workspace.onDidOpenTextDocument((document) => {
       checkAndAutoOpenForBml(document);
@@ -165,9 +155,7 @@ function openPanel(context, vscode, args) {
     panel.targetTab = targetTab;
   }
 
-  // If building the real HTML fails for any reason (e.g. a packaging issue
-  // where webview/index.html didn't ship), fall back to a visible error
-  // instead of leaving the panel silently blank with no way to tell why.
+  // Fall back to a visible error instead of a silently blank panel if HTML fails to build.
   try {
     panel.webview.html = getHtml(context, vscode, panel.webview);
   } catch (err) {

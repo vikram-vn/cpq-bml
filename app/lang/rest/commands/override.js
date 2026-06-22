@@ -12,8 +12,6 @@ const {
   ensureCredentials,
 } = require('./shared');
 
-// PATCH { isOverridden: true } on a standard function to create a custom editable copy.
-// On success the local sidecar is updated so Save/Validate now work.
 async function runCreateOverride(
   context,
   vscode,
@@ -72,14 +70,12 @@ async function runCreateOverride(
     return;
   }
 
-  // Write updated sidecar — the response contains isOverridden: true
   const { metadata: updatedMeta } = metadataLib.splitFunctionResponse(result.body);
   if (metadata.commerceProcess) updatedMeta.commerceProcess = metadata.commerceProcess;
   if (metadata.commerceDocument) updatedMeta.commerceDocument = metadata.commerceDocument;
   const metaPath = metadataLib.bmlPathToMetaPath(doc.uri.fsPath);
   metadataLib.writeMetadata(metaPath, updatedMeta);
 
-  // Refresh status bar + context keys immediately (active editor has not changed)
   await vscode.commands.executeCommand('cpqBml.internal.refreshStatus');
 
   resultsTerminal.writeLine(
@@ -91,8 +87,6 @@ async function runCreateOverride(
   );
 }
 
-// PATCH { isOverridden: false } to revert a standard function to its system version.
-// The local .bml and sidecar are updated from the API response (system script).
 async function runRemoveOverride(
   context,
   vscode,
@@ -158,7 +152,6 @@ async function runRemoveOverride(
     return;
   }
 
-  // Update sidecar (isOverridden: false) and revert .bml to the system script
   const { scriptText, metadata: updatedMeta } = metadataLib.splitFunctionResponse(result.body);
   if (metadata.commerceProcess) updatedMeta.commerceProcess = metadata.commerceProcess;
   if (metadata.commerceDocument) updatedMeta.commerceDocument = metadata.commerceDocument;
@@ -166,7 +159,6 @@ async function runRemoveOverride(
   metadataLib.writeMetadata(metaPath, updatedMeta);
   metadataLib.writeBmlFile(doc.uri.fsPath, scriptText);
 
-  // Sync active editor content to avoid dirty indicator or delayed disk-reload
   if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document === doc && typeof vscode.window.activeTextEditor.edit === 'function') {
     await vscode.window.activeTextEditor.edit(editBuilder => {
       const lastLine = doc.lineCount - 1;
@@ -175,7 +167,6 @@ async function runRemoveOverride(
     });
   }
 
-  // Refresh status bar + context keys immediately (active editor has not changed)
   await vscode.commands.executeCommand('cpqBml.internal.refreshStatus');
 
   resultsTerminal.writeLine(

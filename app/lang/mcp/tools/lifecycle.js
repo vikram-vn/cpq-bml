@@ -22,10 +22,7 @@ const { findOrCreateAiCopy } = require('../locate');
 const { getAiTerminal } = require('../aiTerminal');
 const { pullFunction } = require('./lookup');
 
-// Every lifecycle tool reads/writes the "<variableName>-AI" copy, never the
-// pulled (canonical) file directly - that copy is created on first access if
-// it doesn't exist yet (see findOrCreateAiCopy), so the pristine pulled
-// version always stays available as a diff baseline.
+// Operates on the "<variableName>-AI" working copy, never the pulled canonical file.
 function requireLocalFile(vscode, variableName) {
     const bmlPath = findOrCreateAiCopy(vscode, variableName);
     if (!bmlPath) {
@@ -80,11 +77,8 @@ async function deployFunction(context, vscode, args, transport) {
     return outcomeFrom(messages, getLines());
 }
 
-// debug.js caches the last transaction/parameter values per function under
-// context.workspaceState and offers a QuickPick to reuse them. Pre-seeding
-// that cache with the AI-supplied values, then auto-answering the QuickPick
-// with "run with last inputs", reuses the exact same payload-building logic
-// without needing a human to type values into an InputBox.
+// Pre-seeds debug.js's workspaceState cache with the AI-supplied inputs, then auto-answers
+// its QuickPick with "run with last inputs" to reuse the same payload-building logic.
 async function debugFunction(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
@@ -142,8 +136,6 @@ async function deployCommerceProcess(context, vscode, args, transport) {
     };
 }
 
-// Builds and POSTs a new util function directly (no interactive scaffold
-// flow), then writes it locally so Save/Validate/Debug work on it right away.
 async function createUtilFunction(context, vscode, args, transport) {
     const { variableName, name, description, returnType, parameters, scriptText } = args || {};
     if (!variableName || !name || !returnType) {
@@ -177,11 +169,7 @@ async function createUtilFunction(context, vscode, args, transport) {
         return { success: false, error: message, log: getLines() };
     }
 
-    // Pull it straight back rather than writing our own local copy: CPQ may
-    // assign canonical fields (folderName, namespace) we didn't set on the
-    // way in, and pullFunction already knows the one correct on-disk path
-    // for a function with those fields - writing locally here too would
-    // risk a second, divergent copy of the same function.
+    // Pulled back instead of written locally: CPQ assigns canonical fields (folderName, namespace) we didn't set.
     const pulled = await pullFunction(context, vscode, { variableName, type: 'util' }, transport);
     const log = getLines().concat(pulled.log || []);
     if (!pulled.success) {

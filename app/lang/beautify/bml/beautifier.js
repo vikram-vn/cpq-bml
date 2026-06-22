@@ -1,21 +1,8 @@
 'use strict';
-/**
- * BML beautifier.
- *
- * Formats a token stream produced by ./tokenizer into indented, consistently-spaced
- * BML source. Unlike a JS formatter, there is no var/object-literal/ternary/chained-method/
- * switch/do-while/while handling to worry about - statements are: assignments, function
- * calls, if/elif/else, for-in, return/break/continue, and typed array literals.
- *
- * Newlines are only ever introduced where BML's statement/block structure requires one
- * (after `;`, after `{`, before `}`, before a new control statement) or where the
- * *source* already had a line break that preserve_newlines should keep - a newline is
- * never invented in the middle of a single-line expression just because an operator or
- * a string literal happens to precede the next token, with one opt-in exception:
- * wrap_line_length (default 0/off) wraps before the next operand of a '+' chain once a
- * line exceeds the configured length - this only ever splits *forward* from where it
- * triggers, never retroactively re-splits text already printed.
- */
+// BML beautifier: formats a token stream produced by ./tokenizer into indented, consistently-spaced source.
+// Newlines are only introduced where BML's structure requires one or where the source already had a break
+// that preserve_newlines should keep - never invented mid-expression, except wrap_line_length's opt-in
+// forward-only wrapping before the next operand of a '+' chain.
 
 const { Tokenizer, TOKEN, line_starters } = require('./tokenizer');
 const { Options } = require('./options');
@@ -25,10 +12,8 @@ const { get_directives } = require('./tokenizerHelpers');
 const CONTROL_WITH_CONDITION = ['if', 'elif', 'for'];
 const HUGS_PREVIOUS_BLOCK = ['else', 'elif'];
 
-// True for a token type that can be the last thing in a statement (so seeing
-// one of these as `last`, immediately followed by something that starts a
-// new statement, means the statement is missing its `;`) - used only by the
-// opt-in enforce_semicolons transformation.
+// Used only by the opt-in enforce_semicolons transformation: true if `token`, seen as `last` and
+// immediately followed by a new statement, means the previous statement is missing its `;`.
 function endsExpressionAtStatementLevel(token) {
   if (token.type === TOKEN.WORD || token.type === TOKEN.STRING ||
     token.type === TOKEN.END_EXPR || token.type === TOKEN.ARRAY_END) {
@@ -36,18 +21,14 @@ function endsExpressionAtStatementLevel(token) {
   }
   if (token.type === TOKEN.RESERVED) {
     const lower = token.text.toLowerCase();
-    // true/false/null as a bare expression value, or a bare return/break/continue
-    // with no trailing expression (e.g. just `return` on its own line).
     return lower === 'true' || lower === 'false' || lower === 'null' ||
       lower === 'return' || lower === 'break' || lower === 'continue';
   }
   return false;
 }
 
-// True for a token that begins a new statement: an assignment/call (WORD) or
-// a control keyword (if/elif/else/for/return/break/continue) - logical words
-// (and/or/not) are RESERVED too but never start a statement, so they're
-// deliberately excluded here.
+// True for a token that begins a new statement. Logical words (and/or/not) are RESERVED too
+// but never start a statement, so they're deliberately excluded here.
 function isStatementStarter(token) {
   if (token.type === TOKEN.WORD) return true;
   if (token.type === TOKEN.RESERVED) {
@@ -66,8 +47,7 @@ function Beautifier(source_text, options) {
     const output = Output(opts);
 
     let indent_level = 0;
-    // Stack of 'block' | 'array' for matching START_BLOCK/ARRAY_START to their close,
-    // and 'paren' for ()/[] nesting (tracked only for spacing/condition context).
+    // 'block' | 'array' for matching START_BLOCK/ARRAY_START to their close; 'paren' for ()/[] nesting.
     const context_stack = [];
     let last = null; // last real (non-comment) token printed
 
@@ -111,22 +91,16 @@ function Beautifier(source_text, options) {
       if (token.type === TOKEN.START_BLOCK || token.type === TOKEN.ARRAY_START) return true;
       if (last.type === TOKEN.ARRAY_START) return false;
 
-      // A unary +/- always gets a space before it (like any other token), just not
-      // after it - the operand that follows it is handled by this same check.
+      // A unary +/- gets a space before it but not after - the operand after it is handled here too.
       if (last.type === TOKEN.OPERATOR && isUnaryAfterPrint) return false;
 
-      // Default: most adjacent tokens (words, reserved words, strings, equals, operators,
-      // commas-after) read better with a single space between them.
       return true;
     }
 
-    // Set by handleOperator right after printing a unary +/- so the operand that follows
-    // it doesn't get a leading space.
+    // Set by handleOperator right after printing a unary +/- so the operand that follows it
+    // doesn't get a leading space.
     let isUnaryAfterPrint = false;
 
-    // `token` is the token about to start the new line - its `.newlines` count (how
-    // many line breaks separated it from whatever came before in the source) is used
-    // to decide how many blank lines to preserve, up to max_preserve_newlines.
     function startNewLine(token) {
       output.ensure_newline();
       if (token) {
@@ -136,9 +110,8 @@ function Beautifier(source_text, options) {
       output.set_indent(indent_level);
     }
 
-    // Set by handleOperator right after a '+' pushes the current line past
-    // wrap_line_length, so the *next* token (the next operand in the chain)
-    // starts a fresh continuation line instead of extending this one further.
+    // Set by handleOperator right after a '+' pushes the current line past wrap_line_length, so the
+    // next operand starts a fresh continuation line instead of extending this one further.
     let forceWrapBeforeNext = false;
 
     function printText(text) {
@@ -149,10 +122,9 @@ function Beautifier(source_text, options) {
         output.append(text);
         return;
       }
-      // Indentation for a fresh line is set explicitly by whatever decided to start
-      // that line (startNewLine, or the mid-expression continuation-line branch in
-      // beginStatementLine) - falling back to set_indent here would clobber a
-      // deliberately deeper continuation indent back down to indent_level.
+      // Indentation for a fresh line is set explicitly by whoever started it (startNewLine, or the
+      // continuation-line branch in beginStatementLine) - set_indent here would clobber a deliberately
+      // deeper continuation indent.
       if (output.is_current_line_empty()) {
         output.set_indent_if_unset(indent_level);
       } else if (needsSpaceBeforeCurrent) {
@@ -175,9 +147,8 @@ function Beautifier(source_text, options) {
     }
 
     function flushComment(comment) {
-      // A comment with no newline before it followed code on the same source line
-      // (e.g. `x = 1; // why`) - keep it trailing that line instead of bumping it
-      // down, as long as something has actually been printed already.
+      // A comment with no newline before it followed code on the same source line (e.g. `x = 1; // why`)
+      // stays trailing that line rather than getting bumped down.
       const isTrailing = comment.newlines === 0 && !output.is_current_line_empty();
       if (isTrailing) {
         output.append(' ');
@@ -201,15 +172,10 @@ function Beautifier(source_text, options) {
     }
 
     function beginStatementLine(token) {
-      // Decide if `token` needs to start on a fresh line because the previous
-      // statement/block ended, vs. continuing the current line/expression.
       if (!last) return;
 
-      // Opt-in: the previous statement ended (last printed token can end an
-      // expression) with no ';' in between, and what follows starts a new
-      // statement on a new source line - inject the missing ';' before
-      // starting the new line. Takes priority over every other branch below,
-      // since once this fires the statement boundary is already settled.
+      // Opt-in: inject a missing ';' when the previous statement ended with no ';' and a new
+      // statement starts on a new source line. Takes priority over every branch below.
       if (opts.enforce_semicolons && isStatementLevel() && token.newlines > 0 &&
         endsExpressionAtStatementLevel(last) && isStatementStarter(token)) {
         output.append(';');
@@ -240,13 +206,11 @@ function Beautifier(source_text, options) {
       }
 
       if (context_stack.length === 0 && (last.type === TOKEN.END_EXPR || last.type === TOKEN.ARRAY_END)) {
-        // top-level expression statement closed without a trailing ';' seen yet - no-op,
-        // the ';' handler will start the next line.
+        // Top-level expression statement closed without a ';' seen yet; the ';' handler starts the next line.
         return;
       }
 
-      // Preserve a source line break inside an expression/condition/array list, but
-      // never invent one that wasn't there.
+      // Preserve a source line break inside an expression/condition/array list, but never invent one.
       if (opts.preserve_newlines && token.newlines > 0 && context_stack.length > 0 &&
         last.type !== TOKEN.START_EXPR && last.type !== TOKEN.START_BLOCK && last.type !== TOKEN.ARRAY_START) {
         output.ensure_newline();
@@ -324,11 +288,8 @@ function Beautifier(source_text, options) {
       }
       if (token.text !== '+' || opts.wrap_line_length <= 0) return;
 
-      // A binary '+' (string/number concatenation chain) already pushed this line
-      // past the configured limit, OR the very next operand (commonly one long
-      // string literal, e.g. building a SOAP/XML payload) would push it past on
-      // its own - either way, wrap before that next operand rather than
-      // retroactively splitting anything already printed.
+      // Wrap before the next operand (rather than retroactively splitting printed text) if this
+      // line already exceeds wrap_line_length, or the next operand alone would push it past.
       const currentLength = output.current_line_length();
       if (currentLength > opts.wrap_line_length) {
         forceWrapBeforeNext = true;
@@ -385,18 +346,13 @@ function Beautifier(source_text, options) {
       flushCommentsBefore(current);
       if (current.type === TOKEN.EOF) break;
       if (!last && current.comments_before && current.comments_before.length) {
-        // beginStatementLine() no-ops with no preceding real token, so a blank line
-        // between a leading file comment and the first statement needs handling here.
+        // beginStatementLine() no-ops with no preceding real token, so the blank line between a
+        // leading file comment and the first statement is handled here instead.
         let blanks = blankLinesBefore(current);
-        // Opt-out-able normalisation: a leading file-header /* block comment */ is
-        // always followed by a blank line before the first statement, even if the
-        // source itself didn't have one - matching the convention every library
-        // function in practice already follows.
         const leadingComments = current.comments_before;
         const lastLeadingComment = leadingComments[leadingComments.length - 1];
-        // A "beautify ignore:start/end" block is tokenized as one big BLOCK_COMMENT
-        // whose .text embeds the verbatim ignored source - it's a directive, not a
-        // documentation header, so it must never gain a synthetic blank line.
+        // A "beautify ignore:start/end" block is a directive, not a doc header, so it must never
+        // gain a synthetic blank line.
         const isIgnoreDirective = !!get_directives(lastLeadingComment.text);
         if (opts.blank_line_after_block_comment && lastLeadingComment.type === TOKEN.BLOCK_COMMENT && !isIgnoreDirective) {
           blanks = Math.max(blanks, 1);

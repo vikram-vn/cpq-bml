@@ -8,9 +8,7 @@ function isWithinAny(ranges, start, end) {
     return ranges.some(([rStart, rEnd]) => start >= rStart && end <= rEnd);
 }
 
-// Pure - takes raw document text, returns plain offset ranges (no vscode
-// dependency). index.js converts these to vscode.Range once, when actually
-// applying the decorations.
+// Returns plain offset ranges; index.js converts these to vscode.Range.
 function buildCommentDecorations(text) {
     const commentRanges = getCommentRanges(text);
     const docHeaders = findDocHeaderBlocks(text, commentRanges);

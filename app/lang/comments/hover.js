@@ -10,7 +10,6 @@ const LINT_DIRECTIVE_EXPLANATIONS = {
     'enable': 'Re-enables bml-lint diagnostics previously suppressed by a `bml-lint-disable` comment.'
 };
 
-// Pure - text is the full document text, offset is a plain character index.
 // Returns a Markdown string, or null if offset isn't inside a directive comment.
 function getHoverMarkdown(text, offset) {
     const commentRanges = getCommentRanges(text);

@@ -6,10 +6,7 @@ async function setEnvironments(vscode, environments) {
     await vscode.workspace.getConfiguration('cpqBml').update('connection.environments', environments, vscode.ConfigurationTarget.Global);
 }
 
-// Copies the 3 identifying fields of a saved environment into the active
-// cpqBml.connection.* settings. Deliberately excludes password/token -
-// environments never carry a password/token field; once active, the
-// site+username-keyed secret lookup in config.js's getAuthHeader takes over.
+// Excludes password/token deliberately — secrets are looked up separately by site+username in config.js's getAuthHeader.
 async function applyEnvironment(vscode, env) {
     const config = vscode.workspace.getConfiguration('cpqBml');
     await config.update('connection.siteUrl', env.siteUrl || '', vscode.ConfigurationTarget.Global);

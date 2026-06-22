@@ -1,11 +1,8 @@
 const vscode = require('vscode');
 
-// A lone '=' inside an if/elif condition is virtually always a typo for '==' -
-// BML has no C-style "assignment expression returns a value" idiom, so
-// `if (x = 5)` can't be an intentional assign-and-test the way it might be in
-// C. Runs on noStringsText (indices line up with conditionRanges, both
-// computed against the same length-preserving blanked text) so a literal '='
-// inside a string like `if (label == "a=b")` is never mistaken for one.
+// A lone '=' inside an if/elif condition is virtually always a typo for '==' - BML has
+// no C-style assignment-expression idiom. Runs on noStringsText so a literal '=' inside
+// a string like `if (label == "a=b")` is never mistaken for one.
 function checkAssignmentInCondition(noStringsText, conditionRanges, doc) {
     const diagnostics = [];
     // Matches a bare '=' not part of '==', '<=', '>=', '<>' or '!='.

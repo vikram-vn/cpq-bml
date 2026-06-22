@@ -63,9 +63,6 @@ async function listCommerceFunctions(context, vscode, args, transport) {
     return listAll(context, vscode, transport, { commerceProcess, commerceDocument });
 }
 
-// Fetches a function from live CPQ and writes it locally using the exact
-// same per-function folder convention as the interactive Pull commands, so
-// Save/Validate/Debug/Deploy (and the editor/title icons) see the same file.
 async function pullFunction(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
@@ -122,10 +119,6 @@ async function pullFunction(context, vscode, args, transport) {
     metadataLib.writeBmlFile(bmlPath, scriptText);
     metadataLib.writeMetadata(metaPath, metadata);
 
-    // The AI never edits this canonical copy directly - it gets its own
-    // "<variableName>-AI" sibling copy to work in, created once here (and
-    // left alone on every later pull, so re-pulling refreshes the baseline
-    // without clobbering in-progress AI edits).
     const aiPath = findOrCreateAiCopy(vscode, metadata.variableName);
 
     terminal.writeLine(`\x1b[32m${getTimestamp()} Pulled (${formatElapsed(startedAt)})\x1b[0m`);

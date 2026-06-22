@@ -3,23 +3,16 @@ const api = require('../api');
 const config = require('../config');
 const metadataLib = require('../metadata');
 
-// e.g. "calculateDiscount" -> "Calculate Discount" - used to suggest a
-// display name from a variableName when scaffolding a new function.
+// e.g. "calculateDiscount" -> "Calculate Discount"
 function toDisplayName(input) {
     return input
-        // Replace non-alphanumeric chars with spaces
         .replace(/[^a-zA-Z0-9]+/g, ' ')
-        // Split camelCase
         .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-        // Split acronyms followed by normal words
         .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-        // Separate letters and numbers
         .replace(/([a-zA-Z])(\d)/g, '$1 $2')
         .replace(/(\d)([a-zA-Z])/g, '$1 $2')
-        // Normalize spaces
         .replace(/\s+/g, ' ')
         .trim()
-        // Capitalize words
         .replace(/\b[a-z]/g, c => c.toUpperCase());
 }
 
@@ -52,23 +45,15 @@ function writeTerminalMessage(resultsTerminal, prefix, message, colorCode) {
     }
 }
 
-// One blank line plus a bold header naming both the command and the function,
-// so consecutive Save/Validate/Debug runs (on the same or different functions)
-// stay visually distinct in the terminal's scrollback instead of blurring
-// together.
 function writeRunHeader(resultsTerminal, commandLabel, variableName) {
     resultsTerminal.writeLine('');
     resultsTerminal.writeLine(`\x1b[1m\x1b[36m--- ${commandLabel}: ${variableName} ---\x1b[0m`);
 }
 
-// Printed immediately before the network call that the rest of the run is
-// waiting on, so a slow live CPQ response doesn't look like nothing is
-// happening.
 function writeRunningLine(resultsTerminal, commandLabel, variableName) {
     resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Running ${commandLabel} for "${variableName}"...\x1b[0m`);
 }
 
-// startedAt is a Date.now() timestamp captured right before the timed call(s).
 function formatElapsed(startedAt) {
     const ms = Date.now() - startedAt;
     return ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
@@ -100,11 +85,7 @@ function mergeAttributes(existing, dependent) {
     return merged;
 }
 
-// Lists the full library (paginating through every page) looking for an item
-// whose variableName matches exactly. The library function could be either
-// "util" or "commerce" type - there's no separate endpoint per type, both
-// live in the same /bml/library/functions collection, so a single listing
-// covers both.
+// Paginates the full library looking for an exact variableName match (util and commerce share the same collection).
 async function findLibraryFunctionByVariableName(context, vscode, variableName, transport, metadata) {
     let offset = 0;
     const limit = 1000;
@@ -118,14 +99,7 @@ async function findLibraryFunctionByVariableName(context, vscode, variableName, 
     }
 }
 
-// Resolves the metadata needed to validate/save/debug a .bml file:
-//   1. Look for a local <name>-meta.json sidecar next to it (fast path, no
-//      network call - this is what "Pull" creates).
-//   2. If there's none, derive the variableName from the filename and look it
-//      up on the live CPQ instance instead, across the whole library. On a
-//      match, fetch its full details and cache them locally as a sidecar so
-//      the fast path applies next time.
-// Returns the metadata object, or null if it couldn't be found either way.
+// Local <name>-meta.json sidecar first (fast path); otherwise looks up the variableName live and caches the result as a new sidecar. Returns null if neither finds it.
 async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
     const metaPath = metadataLib.bmlPathToMetaPath(bmlFilePath);
     const localMetadata = metadataLib.readMetadata(metaPath);
@@ -327,7 +301,6 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
     return metadata;
 }
 
-// Appends a debug run's script return value to bml_debug_output.log.
 // logPath comes from config.getDebugOutputLogPath(); pass null to skip.
 function appendDebugOutputToFile(logPath, variableName, returnVal) {
     if (!logPath) return;
@@ -339,7 +312,6 @@ function appendDebugOutputToFile(logPath, variableName, returnVal) {
     try { fs.appendFileSync(logPath, entry, 'utf8'); } catch (e) {}
 }
 
-// Appends a debug run's print statements to bml_debug_print.log.
 // logPath comes from config.getDebugPrintLogPath(); pass null to skip.
 function appendDebugPrintToFile(logPath, variableName, printText) {
     if (!logPath || !printText) return;

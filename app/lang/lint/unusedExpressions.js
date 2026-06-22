@@ -1,22 +1,11 @@
-// A bare "operand COMPARATOR operand" statement, with nothing else - no
-// assignment, no function call, no keyword. Operands are restricted to
-// identifiers/dotted paths/literals (the same restriction constantConditions.js
-// uses for self-compare) - deliberately excludes function calls, since
-// `isnumber(x) == true;` alone could plausibly be read as intentionally
-// discarding a call's side-effect-free result, a different (lower-confidence)
-// situation than a typo'd comparison.
+// Excludes function calls deliberately - `isnumber(x) == true;` could plausibly be
+// intentionally discarding a side-effect-free result, unlike a bare comparison.
 const BARE_COMPARISON = /^([a-zA-Z_][\w.]*|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|-?\d+(?:\.\d+)?)\s*(==|<>|!=|<=|>=|<|>)\s*([a-zA-Z_][\w.]*|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|-?\d+(?:\.\d+)?)$/;
 
 const LEADING_KEYWORD = /^(if|elif|else|for|return|break|continue)\b/i;
 
-// ESLint's no-unused-expressions, narrowly scoped to BML's highest-confidence
-// case: a standalone statement that is only a comparison, with no assignment
-// and no function call - it has no effect, and almost always means the
-// author meant '=' (an assignment) or wrapped it in 'if' and forgot to.
-//
-// Walks the whole file once, splitting into top-level (depth 0) ';'-
-// terminated statements by tracking bracket depth and quote state (a ';'
-// inside a string literal must never be mistaken for a statement end).
+// Flags a standalone comparison statement with no assignment/call - almost always a
+// typo for '=' or a forgotten 'if'.
 function checkUnusedExpressions(cleanText, doc, vscode) {
     const diagnostics = [];
     let lastEnd = 0;

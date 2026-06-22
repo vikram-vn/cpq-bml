@@ -1,26 +1,14 @@
 const vscode = require('vscode');
 
-// Two different "cleaned" views are needed here, for two different reasons:
-//  - cleanText (comments blanked, strings left intact) is used to decide what a
-//    line's code actually ends with. Real comments are already gone (so no need
-//    to re-detect "//" markers - and crucially no risk of mistaking a "//" inside
-//    a string like a URL for one), but string content is still real, so a line
-//    like `x = "hello"` still visibly ends with a quote rather than an `=` that
-//    would otherwise be misread as a continuation operator once the string is
-//    blanked to spaces and trimmed away.
-//  - noStringsText (comments AND strings blanked) is used only for paren/bracket
-//    depth tracking, since an unbalanced paren inside a string literal (e.g.
-//    `msg = "Enter your name (";`) would otherwise corrupt depth-counting for
-//    the rest of the file.
-// Both are blanked length-preserving (see lint.js's blank()), so they line up
-// index-for-index with each other and with the original document.
+// cleanText (strings intact) decides what a line's code actually ends with - e.g. `x =
+// "hello"` must still visibly end with a quote, not an `=` misread as a continuation
+// operator. noStringsText (strings also blanked) is used only for paren/bracket depth
+// tracking, so an unbalanced paren inside a string literal can't corrupt depth-counting.
 function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
     const diagnostics = [];
     const lines = cleanText.split(/\r?\n/);
     const noStringsLines = noStringsText.split(/\r?\n/);
 
-    // Line start offsets into cleanText (and therefore into the original text
-    // too, since blanking preserves length and line breaks exactly).
     const lineStarts = [];
     {
         let pos = 0;
@@ -32,19 +20,9 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
         }
     }
 
-    // Track paren/bracket depth at the end of each line (computed from the
-    // string-free view), so continuation lines inside an unfinished call/array
-    // don't get flagged.
-    // Also track whether we're inside an array/dict literal body, e.g.
-    //   returnCol = String[] {
-    //       "name",
-    //       "value"
-    //   };
-    // Individual element lines there don't end in ';' and aren't wrapped in ()/[]
-    // either, so without this they'd be wrongly flagged as missing a semicolon.
-    // A literal body is identified by its opening '{' being preceded by ']'
-    // (the array type declarator), as opposed to a control-block '{' which
-    // follows a condition's ')' or 'else'/'try' etc.
+    // Also tracks whether a line is inside an array/dict literal body (e.g.
+    // `returnCol = String[] { "name", "value" };`), identified by its opening '{' being
+    // preceded by ']' - those element lines don't end in ';' or sit inside ()/[].
     const lineParenDepths = [];
     const lineBracketDepths = [];
     const lineInLiteralBrace = [];
@@ -97,17 +75,11 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
         return false;
     };
 
-    // A continuation line that opens a multi-line boolean expression with a
-    // logical operator, e.g. "    AND b" - matched by whole word, not prefix,
-    // so identifiers that merely start with those letters (orderId, notesField,
-    // androidFlag, ...) aren't mistaken for a continuation and skipped.
+    // Matched by whole word so identifiers like orderId/androidFlag aren't mistaken for continuations.
     const startsWithContinuationOperator = (trimmed) => /^(AND|OR|NOT)\b/i.test(trimmed);
 
-    // BML has no unary '+', so a line starting with a lone '+' (not '++', which
-    // isn't valid BML anyway and is handled separately) is unambiguously a
-    // continuation of the previous line's expression, e.g.:
-    //   ret = ret + a + "|"
-    //       + b + "|";
+    // BML has no unary '+', so a line starting with a lone '+' is unambiguously a
+    // continuation of the previous line's expression.
     const nextLineContinuesWithPlus = (nextCodeLine) => /^\+(?!\+)/.test(nextCodeLine || '');
 
     const shouldSkipSemicolonCheck = (codeLine, lineIndex, nextCodeLine) => {
@@ -115,19 +87,15 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
         if (codeLine.endsWith(';') || codeLine.endsWith('{') || codeLine.endsWith('}')) return true;
         if (isLineInCondition(lineIndex)) return true;
 
-        // Skip lines ending with an operator/separator (continuation line)
         if (endsWithOperator(codeLine)) return true;
         if (nextLineContinuesWithPlus(nextCodeLine)) return true;
 
-        // Skip lines that start or end inside parentheses or brackets
         if (lineParenDepths[lineIndex] > 0 || lineBracketDepths[lineIndex] > 0) return true;
         if (lineIndex > 0 && (lineParenDepths[lineIndex - 1] > 0 || lineBracketDepths[lineIndex - 1] > 0)) return true;
 
-        // Skip element lines inside a multi-line array/dict literal body
         if (lineInLiteralBrace[lineIndex]) return true;
         if (lineIndex > 0 && lineInLiteralBrace[lineIndex - 1]) return true;
 
-        // Skip control flow statements
         const cleanedStart = codeLine.replace(/^[{}()\s]+/, '');
         const lowerCleaned = cleanedStart.toLowerCase();
         if (lowerCleaned.startsWith('if') ||
@@ -146,13 +114,11 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
         const codeLine = lines[i].trim();
         if (!codeLine) continue;
 
-        // Skip multi-line boolean expression continuations (see comment above).
         if (startsWithContinuationOperator(codeLine)) continue;
 
         const nextCodeLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
         if (shouldSkipSemicolonCheck(codeLine, i, nextCodeLine)) continue;
 
-        // Report missing semicolon
         const range = new vscode.Range(i, lines[i].length - 1, i, lines[i].length);
         const diag = new vscode.Diagnostic(range, 'Missing semicolon', vscode.DiagnosticSeverity.Error);
         diag.code = 'bml-missing-semicolon';
