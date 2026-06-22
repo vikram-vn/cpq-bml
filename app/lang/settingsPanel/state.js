@@ -40,7 +40,8 @@ async function buildState(context, vscode) {
         },
         features: {
             lint: cpqConfig.get('features.lint', true),
-            comments: cpqConfig.get('features.comments', true)
+            comments: cpqConfig.get('features.comments', true),
+            spelling: cpqConfig.get('features.spelling', true)
         },
         mcp: {
             enable: cpqConfig.get('mcp.enable', false),

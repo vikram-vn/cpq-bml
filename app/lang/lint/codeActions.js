@@ -117,6 +117,18 @@ function registerBmlCodeActions(context) {
                             }
                         }
                     }
+                    else if (diag.code === 'bml-spelling-error') {
+                        const word = document.getText(diag.range);
+                        const { getSpellingSuggestions } = require('../spellCheck/spelling');
+                        const suggestions = getSpellingSuggestions(word);
+                        suggestions.forEach(suggestion => {
+                            const action = new vscode.CodeAction(`Spelling suggestion: "${suggestion}"`, vscode.CodeActionKind.QuickFix);
+                            action.edit = new vscode.WorkspaceEdit();
+                            action.edit.replace(document.uri, diag.range, suggestion);
+                            action.diagnostics = [diag];
+                            fixes.push(action);
+                        });
+                    }
                 });
                 return fixes;
             }

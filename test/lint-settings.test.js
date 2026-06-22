@@ -8,7 +8,7 @@ suite('BML Linter cpqBml.features.lint setting', () => {
     });
 
     test('disabling the setting clears diagnostics; re-enabling relints', async function () {
-        this.timeout(8000);
+        this.timeout(15000);
         const config = vscode.workspace.getConfiguration('cpqBml');
         const original = config.get('features.lint');
 

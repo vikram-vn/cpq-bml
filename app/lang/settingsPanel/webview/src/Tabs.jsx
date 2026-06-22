@@ -311,6 +311,14 @@ export function FeaturesTab({ active, features = {}, updateField }) {
                     checked={features.comments}
                     onChange={(v) => updateField('features.comments', v)}
                 />
+
+                <Switch
+                    id="spellingEnable"
+                    label="Enable BML Spelling Checker"
+                    description="Checks spelling in comments, identifiers, and string literals using custom and English dictionaries"
+                    checked={features.spelling}
+                    onChange={(v) => updateField('features.spelling', v)}
+                />
             </section>
         </div>
     );

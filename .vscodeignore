@@ -20,7 +20,6 @@ bml
 app/lang/beautify/**
 app/lang/lint/**
 app/lang/rest/**
-app/lang/cspell-loader/**
 
 #Ignore BML Better Comments extension
 app/lang/comments/**

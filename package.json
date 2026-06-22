@@ -290,6 +290,11 @@
           "default": true,
           "description": "Enable BML Better Comments: colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights functional directive comments (// bml-lint-disable*, /* beautify ignore:start/end */) distinctly, and styles doc-header comment blocks (Function Name/Description/Inputs/Return)."
         },
+        "cpqBml.features.spelling": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML spelling checker (checks spelling in comments, identifiers, and string literals using custom and English dictionaries)."
+        },
         "cpqBml.mcp.enable": {
           "type": "boolean",
           "default": false,

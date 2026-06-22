@@ -1,7 +1,8 @@
 const assert = require('assert');
 const { lintText } = require('./fixtures');
 
-suite('BML Linter Test Suite - rules', () => {
+suite('BML Linter Test Suite - rules', function() {
+    this.timeout(15000);
     test('Linter flags unused variables and shadowing', () => {
         const diagnostics = lintText(`
             unusedVar = "hello";

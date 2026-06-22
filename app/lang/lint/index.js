@@ -8,6 +8,10 @@ function isLintEnabled() {
     return vscode.workspace.getConfiguration('cpqBml').get('features.lint', true);
 }
 
+function isSpellingEnabled() {
+    return vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true);
+}
+
 function registerBmlLinter(context) {
     diagnosticCollection = vscode.languages.createDiagnosticCollection('lint');
     context.subscriptions.push(diagnosticCollection);
@@ -18,7 +22,7 @@ function registerBmlLinter(context) {
     const triggerLint = (doc) => {
         clearTimeout(lintTimer);
         lintTimer = setTimeout(() => {
-            if (!isLintEnabled()) {
+            if (!isLintEnabled() && !isSpellingEnabled()) {
                 diagnosticCollection.delete(doc.uri);
                 return;
             }
@@ -30,11 +34,11 @@ function registerBmlLinter(context) {
     vscode.workspace.onDidChangeTextDocument((e) => triggerLint(e.document), null, context.subscriptions);
     vscode.workspace.onDidSaveTextDocument(triggerLint, null, context.subscriptions);
 
-    // Toggling cpqBml.features.lint should take effect immediately rather than
+    // Toggling cpqBml.features.lint or cpqBml.features.spelling should take effect immediately rather than
     // waiting for the next edit/save of each open document.
     vscode.workspace.onDidChangeConfiguration((e) => {
-        if (!e.affectsConfiguration('cpqBml.features.lint')) return;
-        if (!isLintEnabled()) {
+        if (!e.affectsConfiguration('cpqBml.features.lint') && !e.affectsConfiguration('cpqBml.features.spelling')) return;
+        if (!isLintEnabled() && !isSpellingEnabled()) {
             diagnosticCollection.clear();
             return;
         }

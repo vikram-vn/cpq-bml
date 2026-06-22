@@ -20,6 +20,7 @@ const ALLOWED_FIELDS = new Set([
     'rest.pullFolder',
     'features.lint',
     'features.comments',
+    'features.spelling',
     'mcp.enable',
     'mcp.port',
     'mcp.logToTerminal',

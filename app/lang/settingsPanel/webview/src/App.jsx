@@ -17,7 +17,8 @@ const EMPTY_STATE = {
     },
     features: {
         lint: true,
-        comments: true
+        comments: true,
+        spelling: true
     },
     mcp: { enable: false, port: 47821, logToTerminal: false },
     debug: { logOutputToFile: false, logRestDetails: false },

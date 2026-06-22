@@ -40,9 +40,11 @@ suite('BML Linter Test Suite - file-based fixtures', () => {
 
                 lintBMLCustom(doc, collection, vscode);
 
-                const actual = diagnostics.map(d => ({
-                    line: d.range.start.line,
-                    severity: d.severity === vscode.DiagnosticSeverity.Error ? 'Error' :
+                const actual = diagnostics
+                    .filter(d => d.code !== 'bml-spelling-error')
+                    .map(d => ({
+                        line: d.range.start.line,
+                        severity: d.severity === vscode.DiagnosticSeverity.Error ? 'Error' :
                               d.severity === vscode.DiagnosticSeverity.Warning ? 'Warning' :
                               d.severity === vscode.DiagnosticSeverity.Information ? 'Information' : 'Hint',
                     message: d.message

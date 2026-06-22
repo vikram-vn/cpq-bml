@@ -4,7 +4,6 @@ const { registerBmlIntelliSense } = require("./app/lang/intellisense");
 const { registerBeautifier } = require("./app/lang/beautify");
 const { registerBmlLinter } = require("./app/lang/lint");
 const { registerBmlComments } = require("./app/lang/comments");
-const { installCSpellConfig } = require("./app/lang/cspell-loader");
 const { registerBmlRest } = require("./app/lang/rest");
 const { registerMcp } = require("./app/lang/mcp");
 const { registerSettingsPanel } = require("./app/lang/settingsPanel");
@@ -38,9 +37,6 @@ function activate(context) {
 
   // Register IntelliSense
   registerBmlIntelliSense(context);
-
-  // Load CSpell config
-  installCSpellConfig(context);
 
   // Register BMLint
   registerBmlLinter(context);
