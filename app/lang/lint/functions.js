@@ -66,12 +66,8 @@ function getWorkspaceFunctions(vscode) {
     const folders = vscode.workspace.workspaceFolders;
     if (!folders) return functionsMap;
 
-    const pullFolder = vscode.workspace.getConfiguration('cpqBml').get('rest.pullFolder', 'library');
-
     for (const folder of folders) {
         const rootPath = folder.uri.fsPath;
-        const libraryPath = path.join(rootPath, 'bml', pullFolder);
-        if (!fs.existsSync(libraryPath)) continue;
 
         const findMetaFiles = (dir) => {
             let results = [];
@@ -82,6 +78,9 @@ function getWorkspaceFunctions(vscode) {
                 return results;
             }
             list.forEach((file) => {
+                if (file === 'node_modules' || file === '.git' || file === '.vscode-test' || file === 'dist') {
+                    return;
+                }
                 const fullPath = path.join(dir, file);
                 let stat;
                 try {
@@ -98,7 +97,7 @@ function getWorkspaceFunctions(vscode) {
             return results;
         };
 
-        const metaFiles = findMetaFiles(libraryPath);
+        const metaFiles = findMetaFiles(rootPath);
         for (const metaFile of metaFiles) {
             try {
                 const content = fs.readFileSync(metaFile, 'utf8');
@@ -127,12 +126,72 @@ function getWorkspaceFunctions(vscode) {
     return functionsMap;
 }
 
-function getWorkspaceFunctionsCached(vscode) {
-    const now = Date.now();
-    if (now - lastScannedTime > 5000) {
-        cachedWorkspaceFunctions = getWorkspaceFunctions(vscode);
-        lastScannedTime = now;
+let isInitialized = false;
+let watcher = null;
+
+function initializeCache(vscode) {
+    if (isInitialized) return;
+    isInitialized = true;
+
+    // Initial scan
+    cachedWorkspaceFunctions = getWorkspaceFunctions(vscode);
+
+    try {
+        // Watch for metadata file changes anywhere in the workspace
+        watcher = vscode.workspace.createFileSystemWatcher('**/*-meta.json');
+        
+        const handleMetaChange = (uri) => {
+            try {
+                const fsPath = uri.fsPath;
+                if (fs.existsSync(fsPath)) {
+                    const content = fs.readFileSync(fsPath, 'utf8');
+                    const meta = JSON.parse(content);
+                    if (meta && meta.variableName) {
+                        const funcName = meta.variableName;
+                        const parameterCount = meta.parameters ? meta.parameters.length : 0;
+                        
+                        let namespace = 'util';
+                        if (meta.commerceDocument || fsPath.replace(/\\/g, '/').includes('/libraries/')) {
+                            namespace = 'commerce';
+                        }
+                        
+                        cachedWorkspaceFunctions.set(`${namespace}.${funcName.toLowerCase()}`, {
+                            path: fsPath,
+                            parameterCount,
+                            name: funcName,
+                            namespace
+                        });
+                    }
+                }
+            } catch (e) {
+                // ignore parsing or read errors
+            }
+        };
+
+        const handleMetaDelete = (uri) => {
+            const fsPath = uri.fsPath;
+            for (const [key, val] of cachedWorkspaceFunctions.entries()) {
+                if (val.path === fsPath) {
+                    cachedWorkspaceFunctions.delete(key);
+                }
+            }
+        };
+
+        watcher.onDidCreate(handleMetaChange);
+        watcher.onDidChange(handleMetaChange);
+        watcher.onDidDelete(handleMetaDelete);
+
+        // Re-scan when workspace folders change
+        vscode.workspace.onDidChangeWorkspaceFolders(() => {
+            cachedWorkspaceFunctions = getWorkspaceFunctions(vscode);
+        });
+    } catch (e) {
+        // Fallback if watcher registration fails
     }
+}
+
+function getWorkspaceFunctionsCached(vscode) {
+    initializeCache(vscode);
     return cachedWorkspaceFunctions;
 }
 

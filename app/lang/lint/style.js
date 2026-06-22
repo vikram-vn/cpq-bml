@@ -6,13 +6,15 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
 
 
 
-    // 2. Multiple statements on one line check
-    // Scan noStringsText line by line to count semicolons
+    // 2. Multiple statements and Curly brackets alignment checks
+    // Scan noStringsText line by line
     const noStringsLines = noStringsText.split(/\r?\n/);
     for (let i = 0; i < noStringsLines.length; i++) {
         const line = noStringsLines[i];
-        const codeLine = line.split('//')[0];
-        const semicolonCount = (codeLine.match(/;/g) || []).length;
+        const rawCodeLine = line.split('//')[0];
+        
+        // Semicolon count check
+        const semicolonCount = (rawCodeLine.match(/;/g) || []).length;
         if (semicolonCount > 1) {
             const startPos = new vscode.Position(i, 0);
             const endPos = new vscode.Position(i, lines[i].length);
@@ -24,12 +26,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
                 )
             );
         }
-    }
 
-    // 3. Curly brackets alignment checks
-    for (let i = 0; i < noStringsLines.length; i++) {
-        const line = noStringsLines[i];
-        const codeLine = line.split('//')[0].trim();
+        const codeLine = rawCodeLine.trim();
 
         // Skip array literals (e.g. string[]{"a"} or string[5]{"a"})
         if (codeLine.includes('[]') || codeLine.match(/\w+\s*\[/)) {
