@@ -373,4 +373,4 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode) {
     return diagnostics;
 }
 
-module.exports = { checkFunctionCalls, parseSyntax, countArguments };
+module.exports = { checkFunctionCalls, parseSyntax, countArguments, getWorkspaceFunctionsCached };
