@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('./fixtures');
-const { inferLiteralType } = require('../../app/lang/lint/typeCheck');
+const { inferLiteralType, getAssignmentRhsText } = require('../../app/lang/lint/typeCheck');
 
 suite('BML Linter Test Suite - variable type consistency', () => {
     test('Flags reassigning an Integer-typed variable to a String literal', () => {
@@ -136,5 +136,35 @@ suite('BML Linter Test Suite - variable type consistency', () => {
 
         const diag = diagnostics.find(d => d.code === 'bml-type-mismatch');
         assert.strictEqual(diag, undefined);
+    });
+
+    test('getAssignmentRhsText parses single-line assignment terminated by semicolon', () => {
+        const res = getAssignmentRhsText('x = 42; y = 10;', 4);
+        assert.deepStrictEqual(res, { text: '42', endIndex: 6 });
+    });
+
+    test('getAssignmentRhsText returns null for multi-line without nesting', () => {
+        const res = getAssignmentRhsText('x = 42\ny = 10;', 4);
+        assert.strictEqual(res, null);
+    });
+
+    test('getAssignmentRhsText skips escaped characters inside strings', () => {
+        const res = getAssignmentRhsText('x = "hello \\" world;"; y = 10;', 4);
+        assert.deepStrictEqual(res, { text: '"hello \\" world;"', endIndex: 21 });
+    });
+
+    test('getAssignmentRhsText tracks nested parentheses and braces', () => {
+        const res1 = getAssignmentRhsText('x = dict("k", jsonarray(1, 2, 3)); y = 10;', 4);
+        assert.deepStrictEqual(res1, { text: 'dict("k", jsonarray(1, 2, 3))', endIndex: 33 });
+
+        const res2 = getAssignmentRhsText('x = string[][]{{"a"}, {"b"}}; y = 10;', 4);
+        assert.deepStrictEqual(res2, { text: 'string[][]{{"a"}, {"b"}}', endIndex: 28 });
+    });
+
+    test('inferLiteralType returns correct types for various constructor edge cases', () => {
+        assert.strictEqual(inferLiteralType('jsonnull()'), 'JsonNull');
+        assert.strictEqual(inferLiteralType('recordset()'), 'RecordSet');
+        // Unrecognized constructor name returns null
+        assert.strictEqual(inferLiteralType('nonexistentctor()'), null);
     });
 });

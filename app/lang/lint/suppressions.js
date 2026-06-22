@@ -122,7 +122,7 @@ function computeSuppressions(text, commentRanges) {
             dirIndex++;
         }
         perLineBlockAll[line] = curAll;
-        perLineBlockCodes[line] = curCodes.size > 0 ? curCodes : null;
+        perLineBlockCodes[line] = curCodes.size > 0 ? new Set(curCodes) : null;
     }
 
     return {

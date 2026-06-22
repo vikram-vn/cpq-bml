@@ -18,6 +18,7 @@ function registerMcp(context) {
             const result = await startMcpServer(context, vscode, port);
             return { started: true, port: result.port };
         } catch (err) {
+            console.error("MCP SERVER START ERROR:", err);
             return { started: false, reason: err && err.message ? err.message : String(err) };
         }
     };
@@ -31,6 +32,7 @@ function registerMcp(context) {
         if (!e.affectsConfiguration('cpqBml.mcp')) return;
         const status = getMcpServerStatus();
         const { enable, port } = getSettings();
+        console.log("MCP CONFIG CHANGE:", { enable, port, running: status.running });
         
         if (!enable) {
             if (status.running) {

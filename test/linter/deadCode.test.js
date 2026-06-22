@@ -182,4 +182,31 @@ suite('BML Linter Test Suite - duplicate if/elif branch conditions (no-dupe-else
         const diag = diagnostics.find(d => d.code === 'bml-duplicate-branch-condition');
         assert.strictEqual(diag, undefined, 'Two separate if statements are not the same chain');
     });
+
+    test('Flags code after throwerror', () => {
+        const diagnostics = lintText(`
+            throwerror("Something went wrong");
+            print("unreachable");
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code');
+        assert.ok(diag, 'Should flag code after throwerror');
+        assert.ok(diag.message.includes('throwerror'));
+    });
+
+    test('findStatementSemicolon utility parses statement semicolons correctly', () => {
+        const { findStatementSemicolon } = require('../../app/lang/lint/unreachable');
+        assert.strictEqual(findStatementSemicolon('x = 5; y = 6;', 5), 5);
+        assert.strictEqual(findStatementSemicolon('x =          ; y = 6;', 5), 13);
+        assert.strictEqual(findStatementSemicolon('x = func(1, 2);', 5), 14);
+        assert.strictEqual(findStatementSemicolon('x = (5', 5), -1);
+    });
+
+    test('findBlocks parses braces and handles implicit file block', () => {
+        const { findBlocks } = require('../../app/lang/lint/unreachable');
+        const text = 'if (x) { y = 1; }';
+        const blocks = findBlocks(text);
+        assert.strictEqual(blocks.length, 2); // file-level block and if-body block
+        assert.ok(blocks.some(b => b.start === 0 && b.end === text.length));
+        assert.ok(blocks.some(b => b.start === 7 && b.end === 16));
+    });
 });

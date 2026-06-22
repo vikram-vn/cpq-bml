@@ -159,4 +159,15 @@ suite('BML Linter Test Suite - metadata sidecar type validation', () => {
             assert.strictEqual(getDeclaredParameterTypes(bmlPath).size, 0);
         });
     });
+
+    test('readLocalMetadata handles invalid file paths gracefully', () => {
+        const { readLocalMetadata } = require('../../app/lang/lint/metadataTypes');
+        assert.strictEqual(readLocalMetadata('nonexistent.bml'), null);
+        assert.strictEqual(readLocalMetadata(null), null);
+    });
+
+    test('normalizeTypeLabel returns non-string inputs unchanged', () => {
+        assert.strictEqual(normalizeTypeLabel(null), null);
+        assert.strictEqual(normalizeTypeLabel(42), 42);
+    });
 });

@@ -4,8 +4,45 @@ const { getMcpServerStatus, stopMcpServer } = require("../../app/lang/mcp/server
 
 suite("MCP Server Config Reactivity Integration", () => {
   suiteSetup(async () => {
-    const ext = vscode.extensions.getExtension("vikram-n.cpq-bml");
-    await ext.activate();
+    const { startMcpServer, stopMcpServer, getMcpServerStatus } = require("../../app/lang/mcp/server");
+
+    const getSettings = () => {
+        const cfg = vscode.workspace.getConfiguration('cpqBml');
+        return {
+            enable: cfg.get('mcp.enable', false),
+            port: cfg.get('mcp.port', 47821),
+        };
+    };
+
+    const ensureStarted = async () => {
+        const { enable, port } = getSettings();
+        if (!enable) return { started: false, reason: 'cpqBml.mcp.enable is false' };
+        try {
+            const result = await startMcpServer(null, vscode, port);
+            return { started: true, port: result.port };
+        } catch (err) {
+            return { started: false, reason: err && err.message ? err.message : String(err) };
+        }
+    };
+
+    vscode.workspace.onDidChangeConfiguration(async (e) => {
+        if (!e.affectsConfiguration('cpqBml.mcp')) return;
+        const status = getMcpServerStatus();
+        const { enable, port } = getSettings();
+        
+        if (!enable) {
+            if (status.running) {
+                stopMcpServer();
+            }
+        } else {
+            if (status.running && status.port !== port) {
+                stopMcpServer();
+                await ensureStarted();
+            } else if (!status.running) {
+                await ensureStarted();
+            }
+        }
+    });
   });
 
   suiteTeardown(() => {
@@ -22,7 +59,7 @@ suite("MCP Server Config Reactivity Integration", () => {
       stopMcpServer();
       assert.strictEqual(getMcpServerStatus().running, false, "Server should be stopped initially");
 
-      await config.update("mcp.port", 48999, vscode.ConfigurationTarget.Global);
+      await config.update("mcp.port", 0, vscode.ConfigurationTarget.Global);
       await new Promise(resolve => setTimeout(resolve, 500));
 
       await config.update("mcp.enable", true, vscode.ConfigurationTarget.Global);

@@ -76,4 +76,24 @@ suite('BML Linter Test Suite - missing semicolons', () => {
         const semicolonDiags = diagnostics.filter(d => d.message.includes('Missing semicolon'));
         assert.strictEqual(semicolonDiags.length, 0, 'Should not flag a line continued by a leading + on the next line');
     });
+
+    test('Linter does not flag missing semicolons on lines continued by a trailing logical operator', () => {
+        const diagnostics = lintText(`
+            flag = x == 10 AND
+                y == 20;
+            return flag;
+        `);
+        const semicolonDiags = diagnostics.filter(d => d.message.includes('Missing semicolon'));
+        assert.strictEqual(semicolonDiags.length, 0);
+    });
+
+    test('Linter flags missing semicolons on regular return statements without semicolon', () => {
+        const diagnostics = lintText(`
+            x = 10;
+            return x
+        `);
+        const semicolonDiags = diagnostics.filter(d => d.message.includes('Missing semicolon'));
+        assert.strictEqual(semicolonDiags.length, 1);
+        assert.strictEqual(semicolonDiags[0].range.start.line, 2);
+    });
 });

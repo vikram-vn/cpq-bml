@@ -165,4 +165,37 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
         const diag = diagnostics.find(d => d.code === 'bml-use-before-define');
         assert.strictEqual(diag, undefined);
     });
+
+    test('hasMixedAndOrAtTopLevel correctly identifies mixed AND and OR', () => {
+        const { hasMixedAndOrAtTopLevel } = require('../../app/lang/lint/mixedOperators');
+        assert.strictEqual(hasMixedAndOrAtTopLevel('a AND b OR c'), true);
+        assert.strictEqual(hasMixedAndOrAtTopLevel('a AND (b OR c)'), false);
+        assert.strictEqual(hasMixedAndOrAtTopLevel('a OR (b AND c)'), false);
+        assert.strictEqual(hasMixedAndOrAtTopLevel('a AND b AND c'), false);
+        assert.strictEqual(hasMixedAndOrAtTopLevel('a OR b OR c'), false);
+        assert.strictEqual(hasMixedAndOrAtTopLevel('(a AND b) OR (c AND d)'), false);
+    });
+
+    test('isCommerceFunction correctly identifies commerce vs utility metadata', () => {
+        const { isCommerceFunction } = require('../../app/lang/lint/useBeforeDefine');
+        assert.strictEqual(isCommerceFunction({ commerceDocument: 'transaction' }), true);
+        assert.strictEqual(isCommerceFunction({ libraryFunctions: [] }), false);
+        assert.strictEqual(isCommerceFunction(null), false);
+    });
+
+    test('Does not flag an else block containing an if and then another statement', () => {
+        const diagnostics = lintText(`
+            if (x) {
+                return "a";
+            } else {
+                if (y) {
+                    return "b";
+                }
+                print("done");
+            }
+            return "c";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-lonely-if');
+        assert.strictEqual(diag, undefined);
+    });
 });

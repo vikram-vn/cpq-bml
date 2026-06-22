@@ -37,4 +37,34 @@ suite('BML Linter Test Suite - // bml-lint-disable comment directives', () => {
         const missingSemiLines = diags.filter(d => d.message.includes('Missing semicolon')).map(d => d.range.start.line);
         assert.deepStrictEqual(missingSemiLines, [1]);
     });
+
+    test('describeLintDirective returns expected output', () => {
+        const { describeLintDirective } = require('../../app/lang/lint/suppressions');
+        assert.deepStrictEqual(describeLintDirective('// bml-lint-disable-line bml-nan-fix bml-missing-semicolon'), {
+            type: 'disable-line',
+            codes: ['bml-nan-fix', 'bml-missing-semicolon']
+        });
+        assert.deepStrictEqual(describeLintDirective('// bml-lint-disable'), {
+            type: 'disable',
+            codes: []
+        });
+        assert.strictEqual(describeLintDirective('// some other comment'), null);
+    });
+
+    test('bml-lint-disable with specific code only suppresses that rule in block', () => {
+        const diags = lintText(`
+            // bml-lint-disable bml-nan-fix
+            a = NaN
+            b = 5
+            // bml-lint-enable bml-nan-fix
+            c = NaN
+        `);
+        const nanLines = diags.filter(d => d.message.includes("constant 'NaN'")).map(d => d.range.start.line);
+        assert.deepStrictEqual(nanLines, [5]); // line 2 is suppressed, line 5 is not
+
+        const semiLines = diags.filter(d => d.message.includes('Missing semicolon')).map(d => d.range.start.line);
+        // missing semicolon checks should NOT be suppressed since only bml-nan-fix was disabled
+        assert.ok(semiLines.includes(2));
+        assert.ok(semiLines.includes(3));
+    });
 });
