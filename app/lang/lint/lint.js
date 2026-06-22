@@ -14,7 +14,7 @@ const { checkAssignmentTypeConsistency, inferLiteralType } = require('./typeChec
 const { checkMetadataTypeConsistency, getDeclaredParameterTypes } = require('./metadataTypes');
 const { checkConstantConditions } = require('./constantConditions');
 const { checkUnreachableCode } = require('./unreachable');
-const { checkDuplicateConditionBranches } = require('./duplicateBranches');
+const { checkDuplicateConditionBranches, parseConditionalChains } = require('./duplicateBranches');
 const { checkMixedOperators } = require('./mixedOperators');
 const { checkLonelyIf } = require('./lonelyIf');
 const { checkUnusedExpressions } = require('./unusedExpressions');
@@ -103,23 +103,27 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
     // whose type conflicts with the function's own declared return type.
     diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType));
 
-    // 10f. Always-true/false if/elif conditions and self-comparisons (cleanText
-    // so condition reuses getConditionRanges, which expects real string content)
-    diagnostics.push(...checkConstantConditions(cleanText, doc, vscode));
+    // 10f. Always-true/false if/elif conditions and self-comparisons (reuses
+    // the conditionRanges already computed in step 1 - getConditionRanges
+    // ignores comments/strings internally regardless of which text variant
+    // it's run against, so this is equivalent to a fresh call, just cheaper)
+    diagnostics.push(...checkConstantConditions(cleanText, conditionRanges, doc, vscode));
 
     // 10g. Unreachable code after an unconditional return/break/continue/throwerror
     diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode));
 
-    // 10h. Duplicate if/elif branch conditions within the same chain (cleanText
-    // so two branches comparing against different string literals aren't
-    // mistaken for duplicates once those literals are blanked out)
-    diagnostics.push(...checkDuplicateConditionBranches(cleanText, doc, vscode));
+    // 10h/10j. Duplicate if/elif branch conditions, and an else containing
+    // nothing but a single if (should be elif) - both share one
+    // parseConditionalChains(cleanText) pass instead of each re-parsing the
+    // whole file independently (cleanText so two branches comparing against
+    // different string literals aren't mistaken for duplicates once those
+    // literals are blanked out)
+    const conditionalChains = parseConditionalChains(cleanText);
+    diagnostics.push(...checkDuplicateConditionBranches(conditionalChains, doc, vscode));
+    diagnostics.push(...checkLonelyIf(cleanText, conditionalChains, doc, vscode));
 
     // 10i. AND/OR mixed without grouping parens in an if/elif condition
-    diagnostics.push(...checkMixedOperators(cleanText, doc, vscode));
-
-    // 10j. 'else' containing nothing but a single 'if' - should be 'elif'
-    diagnostics.push(...checkLonelyIf(cleanText, doc, vscode));
+    diagnostics.push(...checkMixedOperators(cleanText, conditionRanges, doc, vscode));
 
     // 10k. A bare comparison statement with no effect (almost always a typo
     // for '=' or a forgotten 'if')

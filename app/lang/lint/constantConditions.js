@@ -1,5 +1,3 @@
-const { getConditionRanges } = require('./conditions');
-
 function isConstantTrue(trimmed) {
     return /^true$/i.test(trimmed);
 }
@@ -22,13 +20,15 @@ function selfCompareOperand(trimmed) {
 }
 
 // ESLint's no-constant-condition + no-self-compare, adapted to BML's if/elif
-// (there's no while/ternary in BML). Reuses conditions.js's existing
-// if/elif/else-if condition-range extraction rather than re-deriving it.
-function checkConstantConditions(text, doc, vscode) {
+// (there's no while/ternary in BML). Takes the already-computed condition
+// ranges from lint.js (getConditionRanges ignores comments/strings
+// internally regardless of which text variant it's run against, so reusing
+// the one pass lint.js already did is equivalent to - and cheaper than -
+// re-deriving it here).
+function checkConstantConditions(text, conditionRanges, doc, vscode) {
     const diagnostics = [];
-    const ranges = getConditionRanges(text);
 
-    for (const [start, end] of ranges) {
+    for (const [start, end] of conditionRanges) {
         const raw = text.slice(start, end).replace(/\s+$/, '');
         if (raw.length < 2 || raw[0] !== '(' || raw[raw.length - 1] !== ')') continue;
         const conditionText = raw.slice(1, -1);

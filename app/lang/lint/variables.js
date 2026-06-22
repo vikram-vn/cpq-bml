@@ -65,6 +65,26 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
         }
     }
 
+    // Usage check used to compile a fresh RegExp and rescan the whole file
+    // once PER declared variable name (O(variables x file length) - on a
+    // large file with many locals, that's the full text re-walked dozens of
+    // times). One single pass over the text instead, recording every
+    // non-property-access identifier occurrence's index by name; each
+    // variable's "is it used anywhere besides its own declarations" check
+    // below then just looks for one recorded index outside its declIndices.
+    const occurrencesByName = new Map();
+    const identRegex = /\b[a-zA-Z_]\w*\b/g;
+    let identMatch;
+    while ((identMatch = identRegex.exec(cleanText)) !== null) {
+        const idx = identMatch.index;
+        let before = idx - 1;
+        while (before >= 0 && /\s/.test(cleanText[before])) before--;
+        if (before >= 0 && cleanText[before] === '.') continue; // property access, not a bare reference
+        const name = identMatch[0];
+        if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
+        occurrencesByName.get(name).push(idx);
+    }
+
     declaredVars.forEach((decls, varName) => {
         // Sort declarations by index
         decls.sort((a, b) => a.index - b.index);
@@ -87,35 +107,12 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
             }
         });
 
-        // 2. Check for Unused Variable
-        // Find all occurrences of \bvarName\b in cleanText
-        const wordRegex = new RegExp(`\\b${varName}\\b`, 'g');
-        let match;
-        let isUsed = false;
-
-        const declIndices = decls.map(d => d.index);
-
-        while ((match = wordRegex.exec(cleanText)) !== null) {
-            const index = match.index;
-
-            // Skip if it's one of the declaration/assignment sites
-            if (declIndices.includes(index)) {
-                continue;
-            }
-
-            // Skip if preceded by '.' (property access, e.g., line.varName)
-            let idx = index - 1;
-            while (idx >= 0 && /\s/.test(cleanText[idx])) {
-                idx--;
-            }
-            if (idx >= 0 && cleanText[idx] === '.') {
-                continue;
-            }
-
-            // Otherwise, it is a genuine usage!
-            isUsed = true;
-            break;
-        }
+        // 2. Check for Unused Variable: used somewhere other than its own
+        // declaration/assignment sites (property-access occurrences were
+        // already excluded while building occurrencesByName above).
+        const declIndices = new Set(decls.map(d => d.index));
+        const occurrences = occurrencesByName.get(varName) || [];
+        const isUsed = occurrences.some(index => !declIndices.has(index));
 
         if (!isUsed) {
             // Flag the first declaration/assignment as unused

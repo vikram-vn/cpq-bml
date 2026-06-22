@@ -82,17 +82,18 @@ function parseConditionalChains(text) {
 // identical (whitespace-normalized) to an earlier one in the same chain can
 // never run - the earlier, identical condition already caught it first.
 //
-// Takes cleanText (comments blanked, strings intact) rather than
-// noStringsText - comparing on string-blanked text would make `x == "a"` and
+// Takes chains already parsed by parseConditionalChains(cleanText) -
+// comments blanked, strings intact - rather than chains parsed from
+// noStringsText: comparing on string-blanked text would make `x == "a"` and
 // `x == "b"` collapse to the same "normalized" condition and falsely look
 // like duplicates. findMatchingBracket already tracks quotes itself, so
-// running on real string content is still safe against stray brackets
-// inside a literal.
-function checkDuplicateConditionBranches(cleanText, doc, vscode) {
+// parsing real string content is still safe against stray brackets inside a
+// literal. lint.js parses cleanText once and passes the result to both this
+// and lonelyIf.js, instead of each re-parsing the whole file independently.
+function checkDuplicateConditionBranches(conditionalChains, doc, vscode) {
     const diagnostics = [];
-    const chains = parseConditionalChains(cleanText);
 
-    for (const chain of chains) {
+    for (const chain of conditionalChains) {
         const seen = new Map(); // normalized condition -> first branch's kwStart
         for (const branch of chain) {
             if (branch.type === 'else' || branch.conditionText === null) continue;

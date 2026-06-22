@@ -7,11 +7,16 @@ const { parseConditionalChains } = require('./duplicateBranches');
 // if/elif*/else? chain - with the chain consuming the body's whole start-to-
 // end span, and no other statements before/after it - should have been
 // written as 'elif' from the start.
-function checkLonelyIf(cleanText, doc, vscode) {
+// Takes the top-level chains already parsed by lint.js (one
+// parseConditionalChains(cleanText) call shared with duplicateBranches.js,
+// instead of each rule re-parsing the whole file independently) - cleanText
+// itself is still needed too, since each else-branch's body gets re-parsed
+// as its own independent text below (a different, smaller input each time,
+// not a redundant repeat of the same top-level parse).
+function checkLonelyIf(cleanText, conditionalChains, doc, vscode) {
     const diagnostics = [];
-    const chains = parseConditionalChains(cleanText);
 
-    for (const chain of chains) {
+    for (const chain of conditionalChains) {
         for (const branch of chain) {
             if (branch.type !== 'else') continue;
 

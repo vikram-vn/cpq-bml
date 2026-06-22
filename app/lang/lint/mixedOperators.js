@@ -1,5 +1,3 @@
-const { getConditionRanges } = require('./conditions');
-
 // ESLint's no-mixed-operators, scoped to BML's logical AND/OR (the classic
 // precedence-confusion case - unlike arithmetic operators, where standard
 // math precedence is already well understood, AND/OR mixing is the one
@@ -35,11 +33,14 @@ function hasMixedAndOrAtTopLevel(conditionText) {
     return sawAnd && sawOr;
 }
 
-function checkMixedOperators(text, doc, vscode) {
+// Takes the already-computed condition ranges from lint.js (see
+// constantConditions.js's identical note - getConditionRanges ignores
+// comments/strings internally, so reusing the one pass already done there
+// is equivalent to, and cheaper than, re-deriving it here).
+function checkMixedOperators(text, conditionRanges, doc, vscode) {
     const diagnostics = [];
-    const ranges = getConditionRanges(text);
 
-    for (const [start, end] of ranges) {
+    for (const [start, end] of conditionRanges) {
         const raw = text.slice(start, end).replace(/\s+$/, '');
         if (raw.length < 2 || raw[0] !== '(' || raw[raw.length - 1] !== ')') continue;
         const conditionText = raw.slice(1, -1);
