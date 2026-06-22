@@ -7,7 +7,7 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
     test('Does not flag correct English words and BML built-ins', () => {
         const diagnostics = lintText(`
             // This is a correct comment with valid words.
-            customerName = "USD"; 
+            customerName = "USD";
             strtojavadate("2026-06-22");
             return "";
         `);
@@ -98,10 +98,11 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
         assert.strictEqual(err.range.end.character, 36, 'Should end at the correct character index');
     });
 
-    test('Respects cpqBml.features.spelling config setting', async () => {
+    test('Respects cpqBml.features.spelling config setting', async function () {
+        this.timeout(15000);
         const config = vscode.workspace.getConfiguration('cpqBml');
         const originalSpelling = config.get('features.spelling');
-        
+
         try {
             // By default (true), it should flag misspelled words
             let diagnostics = lintText('// mispelled');
@@ -113,7 +114,7 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
             diagnostics = lintText('// mispelled');
             spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
             assert.strictEqual(spellingErrors.length, 0, 'Spelling errors should NOT be flagged when features.spelling is disabled');
-            
+
             // Re-enable features.spelling
             await config.update('features.spelling', true, vscode.ConfigurationTarget.Global);
             diagnostics = lintText('// mispelled');

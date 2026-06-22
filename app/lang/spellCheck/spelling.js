@@ -10,6 +10,7 @@ const extraAllowed = new Set([
     'don', 'can', 'won', 'isn', 'aren', 'wasn', 'weren', 'haven', 'hasn', 'hadn', 'doesn', 'didn', 'couldn', 'shouldn', 'wouldn', 'lets', 'whos', 'whats', 'theres', 'heres',
     'todo', 'fixme', 'bug', 'bml', 'cpq', 'bmql', 'json', 'xml', 'csv', 'api', 'url', 'http', 'https', 'db', 'sql', 'id', 'num', 'str', 'int', 'bool', 'val', 'param', 'params',
     'usr', 'sys', 'msg', 'err', 'temp', 'tmp', 'config', 'util', 'init', 'auth', 'diff', 'req', 'res', 'doc', 'env', 'uuid', 'hmac',
+    'attr', 'attrs', 'ctx', 'cfg', 'idx', 'subdoc', 'rollup',
     'atof', 'atoi', 'bmql', 'recordset', 'stringbuilder', 'bytearray', 'jsonarray', 'jsonnull', 'usersessionget', 'usersessionset',
     'usersessionremove', 'decodebase64', 'encodebase64', 'formatascurrency', 'getcurrencyvalue', 'isnumber', 'startswith',
     'endswith', 'strtodate', 'strtojavadate', 'getcurrenttimeinmillis', 'formatdate', 'getpartsdata', 'gettabledata',
@@ -201,18 +202,31 @@ function checkSpelling(text, cleanText, noStringsText, doc, vscode) {
         diagnostics.push(diag);
     };
 
-    // 1. Check spelling in Comments
+    // 1. Check spelling in Comments. Doc-header blocks (e.g.
+    // "// Function Name : abo_getOneAssetState") are a widespread convention
+    // in real BML library code and routinely mention camelCase identifiers
+    // by name - so a comment "word" run is split the same way an identifier
+    // is (camelCase/acronym boundaries) before checking each piece, instead
+    // of checking the whole compound run as one giant "word" that can never
+    // match the dictionary.
     commentRanges.forEach(([start, end]) => {
         const rawComment = text.substring(start, end);
         const cleanedComment = cleanCommentText(rawComment);
-        
+
         const wordRegex = /[a-zA-Z]+/g;
         let match;
         while ((match = wordRegex.exec(cleanedComment)) !== null) {
             const word = match[0];
-            if (!checkWordCached(word)) {
-                addSpellingDiagnostic(word, start + match.index);
-            }
+            const subWords = splitIdentifier(word);
+            let offset = 0;
+            subWords.forEach(subWord => {
+                const relIndex = word.indexOf(subWord, offset);
+                if (relIndex === -1) return;
+                offset = relIndex + subWord.length;
+                if (!checkWordCached(subWord)) {
+                    addSpellingDiagnostic(subWord, start + match.index + relIndex);
+                }
+            });
         }
     });
 
