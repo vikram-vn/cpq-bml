@@ -14,12 +14,16 @@ vsc-extension-quickstart.md
 **/eslint.config.mjs
 **/.vscode-test.*
 *.bml
+.github
 bml
 
 # Ignore raw source folders that are compiled into dist/extension.js
 app/lang/beautify/**
 app/lang/lint/**
 app/lang/rest/**
+
+# Ignore spell check JS
+app/lang/spellCheck/*.js
 
 #Ignore BML Better Comments extension
 app/lang/comments/**
