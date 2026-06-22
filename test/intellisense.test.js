@@ -1,13 +1,13 @@
 const assert = require('assert');
 const vscode = require('vscode');
+const { activateExtension } = require('./extensionHelper');
 
 suite('BML IntelliSense', () => {
 	suiteSetup(async () => {
 		// Activation isn't guaranteed just from opening a "bml" document in the test
 		// host (the extension declares no explicit activationEvents), so activate it
 		// directly to make sure the hover/completion providers are actually registered.
-		const ext = vscode.extensions.getExtension('vikram-n.cpq-bml');
-		await ext.activate();
+		await activateExtension(vscode);
 	});
 
 	test('hover resolves dotted attribute access (line.x) via the bare attribute key', async () => {

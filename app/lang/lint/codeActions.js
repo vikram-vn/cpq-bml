@@ -1,6 +1,12 @@
 const vscode = require('vscode');
 
 function registerBmlCodeActions(context) {
+    // Captured here, before provideCodeActions' own (differently-typed)
+    // 'context' parameter below shadows this outer ExtensionContext name -
+    // threaded through to getSpellingSuggestions the same way lint/index.js
+    // threads it to checkSpelling (see that file's comment for why).
+    const extensionPath = context.extensionPath;
+
     context.subscriptions.push(
         vscode.languages.registerCodeActionsProvider('bml', {
             provideCodeActions(document, range, context) {
@@ -120,7 +126,7 @@ function registerBmlCodeActions(context) {
                     else if (diag.code === 'bml-spelling-error') {
                         const word = document.getText(diag.range);
                         const { getSpellingSuggestions } = require('../spellCheck/spelling');
-                        const suggestions = getSpellingSuggestions(word);
+                        const suggestions = getSpellingSuggestions(word, extensionPath);
                         suggestions.forEach(suggestion => {
                             const action = new vscode.CodeAction(`Spelling suggestion: "${suggestion}"`, vscode.CodeActionKind.QuickFix);
                             action.edit = new vscode.WorkspaceEdit();

@@ -6,11 +6,22 @@ let systemVariables = null; // Map<lowercaseName, canonicalName>
 // app/lookups/bml/commonVariables.json is Oracle's own catalog of predefined,
 // read-only CPQ system variables (_user_*, _site_*, etc). Loaded the same way
 // functions.js loads common.json - lazy, cached, fails soft to an empty map.
-function loadSystemVariables() {
+//
+// __dirname is correct when this file is required directly (plain Node, as
+// every test in this repo does) - but esbuild bundles this whole module into
+// a single dist/extension.js, and at runtime __dirname for bundled code
+// resolves to dist/, not this file's original folder, so '../../lookups/...'
+// would resolve outside the repo entirely. extensionPath (threaded down from
+// registerBmlLinter via lint.js, same convention as functions.js's
+// loadBuiltInFunctions) is the anchor that stays correct regardless of
+// bundling; __dirname remains the fallback for the plain-Node/test context.
+function loadSystemVariables(extensionPath) {
     if (systemVariables) return systemVariables;
     systemVariables = new Map();
     try {
-        const filePath = path.resolve(__dirname, '../../lookups/bml/commonVariables.json');
+        const filePath = extensionPath
+            ? path.join(extensionPath, 'app', 'lookups', 'bml', 'commonVariables.json')
+            : path.resolve(__dirname, '../../lookups/bml/commonVariables.json');
         if (fs.existsSync(filePath)) {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             if (data && Array.isArray(data.items)) {
@@ -48,8 +59,8 @@ function levenshtein(a, b) {
 // commonly uses unrelated underscore-prefixed identifiers (commerce attribute
 // names like _document_number, _chargeSet_discountAmount) that must never be
 // flagged just because they start with an underscore too.
-function findClosestSystemVariable(name) {
-    const vars = loadSystemVariables();
+function findClosestSystemVariable(name, extensionPath) {
+    const vars = loadSystemVariables(extensionPath);
     const nameLower = name.toLowerCase();
     if (vars.has(nameLower)) return null;
 
@@ -70,9 +81,9 @@ function findClosestSystemVariable(name) {
 // 1. Assigning to a known system variable (it's platform-provided/read-only;
 //    "assigning" to it just creates an unrelated local shadow, silently).
 // 2. A bare underscore-prefixed identifier that's a near-exact typo of one.
-function checkSystemVariables(cleanText, doc, vscode) {
+function checkSystemVariables(cleanText, doc, vscode, extensionPath) {
     const diagnostics = [];
-    const vars = loadSystemVariables();
+    const vars = loadSystemVariables(extensionPath);
     if (vars.size === 0) return diagnostics;
 
     const identRegex = /\b(_[a-zA-Z][a-zA-Z0-9_]*)\b/g;
@@ -106,7 +117,7 @@ function checkSystemVariables(cleanText, doc, vscode) {
                 diagnostics.push(diag);
             }
         } else {
-            const suggestion = findClosestSystemVariable(name);
+            const suggestion = findClosestSystemVariable(name, extensionPath);
             if (suggestion) {
                 const diag = new vscode.Diagnostic(
                     range,

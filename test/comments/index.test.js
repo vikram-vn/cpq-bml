@@ -1,10 +1,10 @@
 const assert = require('assert');
 const vscode = require('vscode');
+const { activateExtension } = require('../extensionHelper');
 
 suite('BML Better Comments - extension wiring', () => {
     suiteSetup(async () => {
-        const ext = vscode.extensions.getExtension('vikram-n.cpq-bml');
-        await ext.activate();
+        await activateExtension(vscode);
     });
 
     test('activation registers comments without throwing, and decorations/hover survive a real document', async function () {

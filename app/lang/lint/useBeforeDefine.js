@@ -31,14 +31,14 @@ function readLocalMetadataForGating(bmlFilePath) {
     }
 }
 
-function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars) {
+function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath) {
     const diagnostics = [];
 
     const metadata = readLocalMetadataForGating(doc.uri && doc.uri.fsPath);
     if (isCommerceFunction(metadata)) return diagnostics;
 
-    const systemVars = loadSystemVariables();
-    const builtIns = loadBuiltInFunctions();
+    const systemVars = loadSystemVariables(extensionPath);
+    const builtIns = loadBuiltInFunctions(extensionPath);
 
     const declaredNames = new Set(); // exact-case names with at least one declaration
     const earliestDeclByName = new Map(); // exact-case name -> earliest index

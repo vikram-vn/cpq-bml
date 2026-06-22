@@ -44,11 +44,23 @@ function parseSyntax(syntax) {
     return { min: requiredCount, max: totalCount };
 }
 
-function loadBuiltInFunctions() {
+// __dirname is correct when this file is required directly (plain Node, as
+// every test in this repo does) - but esbuild bundles this whole module into
+// a single dist/extension.js, and at runtime __dirname for bundled code
+// resolves to dist/, not this file's original folder, so '../../lookups/...'
+// would resolve outside the repo entirely. extensionPath (threaded down from
+// registerBmlLinter via lint.js, same convention as
+// app/lang/intellisense/index.js's loadApiData(context) and
+// app/lang/spellCheck/spelling.js's resolveSpellCheckDir) is the anchor that
+// stays correct regardless of bundling; __dirname remains the fallback for
+// the plain-Node/test context where there is no bundle and no extensionPath.
+function loadBuiltInFunctions(extensionPath) {
     if (builtInFunctions) return builtInFunctions;
     builtInFunctions = new Map();
     try {
-        const commonJsonPath = path.resolve(__dirname, '../../lookups/bml/common.json');
+        const commonJsonPath = extensionPath
+            ? path.join(extensionPath, 'app', 'lookups', 'bml', 'common.json')
+            : path.resolve(__dirname, '../../lookups/bml/common.json');
         if (fs.existsSync(commonJsonPath)) {
             const content = fs.readFileSync(commonJsonPath, 'utf8');
             const data = JSON.parse(content);
@@ -287,9 +299,9 @@ function countArguments(argsText) {
     return commas + 1;
 }
 
-function checkFunctionCalls(cleanText, noStringsText, doc, vscode) {
+function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath) {
     const diagnostics = [];
-    const builtIns = loadBuiltInFunctions();
+    const builtIns = loadBuiltInFunctions(extensionPath);
     const wsFunctions = getWorkspaceFunctionsCached(vscode);
 
     // Matches namespaced or bare function calls: [util/commerce.]name(

@@ -10,10 +10,21 @@ let paramTypeLabels = null;
 // (parameters[].dataType.{value,displayValue}, returnType.{value,displayValue}).
 // They use *different* numbering (e.g. param Boolean = 0, return Boolean = 4),
 // so they're loaded and cached separately.
-function loadLookupLabels(fileName) {
+//
+// __dirname is correct when this file is required directly (plain Node, as
+// every test in this repo does) - but esbuild bundles this whole module into
+// a single dist/extension.js, and at runtime __dirname for bundled code
+// resolves to dist/, not this file's original folder, so '../../lookups/...'
+// would resolve outside the repo entirely. extensionPath (threaded down from
+// registerBmlLinter via lint.js, same convention as functions.js's
+// loadBuiltInFunctions) is the anchor that stays correct regardless of
+// bundling; __dirname remains the fallback for the plain-Node/test context.
+function loadLookupLabels(fileName, extensionPath) {
     const map = new Map();
     try {
-        const filePath = path.resolve(__dirname, '../../lookups/bml', fileName);
+        const filePath = extensionPath
+            ? path.join(extensionPath, 'app', 'lookups', 'bml', fileName)
+            : path.resolve(__dirname, '../../lookups/bml', fileName);
         if (fs.existsSync(filePath)) {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             if (data && Array.isArray(data.items)) {
@@ -30,13 +41,13 @@ function loadLookupLabels(fileName) {
     return map;
 }
 
-function getReturnTypeLabels() {
-    if (!returnTypeLabels) returnTypeLabels = loadLookupLabels('functionReturnTypes.json');
+function getReturnTypeLabels(extensionPath) {
+    if (!returnTypeLabels) returnTypeLabels = loadLookupLabels('functionReturnTypes.json', extensionPath);
     return returnTypeLabels;
 }
 
-function getParamTypeLabels() {
-    if (!paramTypeLabels) paramTypeLabels = loadLookupLabels('functionParamDataTypes.json');
+function getParamTypeLabels(extensionPath) {
+    if (!paramTypeLabels) paramTypeLabels = loadLookupLabels('functionParamDataTypes.json', extensionPath);
     return paramTypeLabels;
 }
 
@@ -110,14 +121,14 @@ function getAssignmentRhsTextFrom(text, startIndex) {
 // 2. Cross-check: a `return <literal>;` in the body whose inferred type
 //    conflicts with the function's own declared return type - CPQ will
 //    reject this at compile/deploy time.
-function checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType) {
+function checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath) {
     const diagnostics = [];
     if (!doc.uri) return diagnostics;
     const metadata = readLocalMetadata(doc.uri.fsPath);
     if (!metadata) return diagnostics;
 
-    const returnLabels = getReturnTypeLabels();
-    const paramLabels = getParamTypeLabels();
+    const returnLabels = getReturnTypeLabels(extensionPath);
+    const paramLabels = getParamTypeLabels(extensionPath);
     const fileStart = new vscode.Range(doc.positionAt(0), doc.positionAt(0));
 
     if (metadata.returnType && typeof metadata.returnType.value === 'number' && metadata.returnType.displayValue) {

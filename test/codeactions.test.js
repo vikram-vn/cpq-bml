@@ -1,11 +1,11 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintBMLCustom } = require('../app/lang/lint/lint');
+const { activateExtension } = require('./extensionHelper');
 
 suite('BML Code Actions Quick Fix Suite', () => {
     suiteSetup(async () => {
-        const ext = vscode.extensions.getExtension('vikram-n.cpq-bml');
-        await ext.activate();
+        await activateExtension(vscode);
     });
 
     test('Quick Fix for NaN replacement', async () => {

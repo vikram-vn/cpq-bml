@@ -16,6 +16,13 @@ function registerBmlLinter(context) {
     diagnosticCollection = vscode.languages.createDiagnosticCollection('lint');
     context.subscriptions.push(diagnosticCollection);
 
+    // Threaded down to checkSpelling so its dictionary lookup can anchor to
+    // the extension's real install root instead of __dirname, which after
+    // esbuild bundles everything into dist/extension.js no longer points at
+    // app/lang/spellCheck/ - same convention as intellisense/index.js's
+    // loadApiData(context).
+    const extensionPath = context.extensionPath;
+
     const lintDelay = 300;
     const lintTimers = new Map();
 
@@ -31,7 +38,7 @@ function registerBmlLinter(context) {
                 diagnosticCollection.delete(doc.uri);
                 return;
             }
-            lintBMLCustom(doc, diagnosticCollection, vscode);
+            lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath);
         }, lintDelay));
     };
 

@@ -77,13 +77,35 @@ const extraAllowed = new Set([
   "recordset",
 ]);
 
-function loadDictionaries() {
+// __dirname is correct when this file is required directly (plain Node, as
+// every test in this repo does) - but esbuild bundles this whole module into
+// a single dist/extension.js, and at runtime __dirname for bundled code
+// resolves to dist/, not this file's original folder. bml-words.txt /
+// english-words.txt are plain data files esbuild never moves into dist/, so
+// a real installed extension would silently find neither file and fall back
+// to an almost-empty dictionary (everything not in extraAllowed gets
+// flagged, including ordinary words). context.extensionPath (threaded down
+// from registerBmlLinter/registerBmlCodeActions, same convention already
+// used by app/lang/intellisense/index.js's loadApiData) is the one anchor
+// that stays correct regardless of bundling, so it's preferred whenever
+// available; __dirname remains the fallback for the plain-Node/test context
+// where there is no bundle and no extensionPath to pass.
+function resolveSpellCheckDir(extensionPath) {
+  if (extensionPath) {
+    return path.join(extensionPath, "app", "lang", "spellCheck");
+  }
+  return __dirname;
+}
+
+function loadDictionaries(extensionPath) {
   if (combinedDictionary) return combinedDictionary;
   combinedDictionary = new Set();
 
+  const baseDir = resolveSpellCheckDir(extensionPath);
+
   // 1. Load BML specific custom dictionary
   try {
-    const bmlWordsPath = path.resolve(__dirname, "./bml-words.txt");
+    const bmlWordsPath = path.join(baseDir, "bml-words.txt");
     if (fs.existsSync(bmlWordsPath)) {
       const content = fs.readFileSync(bmlWordsPath, "utf8");
       content.split(/\r?\n/).forEach((line) => {
@@ -97,7 +119,7 @@ function loadDictionaries() {
 
   // 2. Load English word list
   try {
-    const englishWordsPath = path.resolve(__dirname, "./english-words.txt");
+    const englishWordsPath = path.join(baseDir, "english-words.txt");
     if (fs.existsSync(englishWordsPath)) {
       const content = fs.readFileSync(englishWordsPath, "utf8");
       content.split(/\r?\n/).forEach((line) => {
@@ -130,8 +152,8 @@ function levenshtein(a, b) {
   return dp[m][n];
 }
 
-function getSpellingSuggestions(word) {
-  const dict = loadDictionaries();
+function getSpellingSuggestions(word, extensionPath) {
+  const dict = loadDictionaries(extensionPath);
   const suggestions = [];
   const wordLower = word.toLowerCase();
 
@@ -220,7 +242,7 @@ function cleanCommentText(text) {
   return clean;
 }
 
-function checkWord(word) {
+function checkWord(word, extensionPath) {
   if (word.length <= 1 || word.length > 50) return true;
   const wordLower = word.toLowerCase();
 
@@ -230,11 +252,11 @@ function checkWord(word) {
   // Check if it consists only of uppercase letters (acronym)
   if (word === word.toUpperCase() && word !== word.toLowerCase()) return true;
 
-  const dict = loadDictionaries();
+  const dict = loadDictionaries(extensionPath);
   return dict.has(wordLower);
 }
 
-function checkSpelling(text, cleanText, noStringsText, doc, vscode) {
+function checkSpelling(text, cleanText, noStringsText, doc, vscode, extensionPath) {
   const diagnostics = [];
   const commentRanges = getCommentRanges(text);
   const stringRanges = getStringRanges(cleanText);
@@ -246,7 +268,7 @@ function checkSpelling(text, cleanText, noStringsText, doc, vscode) {
   const checkWordCached = (word) => {
     const wordLower = word.toLowerCase();
     if (wordCache.has(wordLower)) return wordCache.get(wordLower);
-    const res = checkWord(word);
+    const res = checkWord(word, extensionPath);
     wordCache.set(wordLower, res);
     return res;
   };

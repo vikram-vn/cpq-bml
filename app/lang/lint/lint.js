@@ -42,7 +42,7 @@ function blankRanges(text, ranges) {
     return chars.join('');
 }
 
-function lintBMLCustom(doc, diagnosticCollection, vscode) {
+function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     if (doc.languageId !== 'bml') return;
 
     const text = doc.getText();
@@ -90,11 +90,11 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
         diagnostics.push(...checkBoundaries(cleanText, noStringsText, doc));
 
         // 10b. Function calls & parameter validations
-        diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode));
+        diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath));
 
         // 10c. CPQ predefined system variables (_user_*, _site_*, ...): flag
         // assignment to a read-only one, and typo "did you mean" suggestions
-        diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode));
+        diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));
 
         // 10d. Variable type consistency: a variable reassigned to a literal of a
         // different type than its first assignment (e.g. test = 1; ... test = "2";),
@@ -106,7 +106,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
         // 10e. Metadata sidecar type validation: internal value/displayValue
         // consistency against Oracle's own lookup tables, and a `return <literal>;`
         // whose type conflicts with the function's own declared return type.
-        diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType));
+        diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
 
         // 10f. Always-true/false if/elif conditions and self-comparisons (reuses
         // the conditionRanges already computed in step 1 - getConditionRanges
@@ -137,12 +137,12 @@ function lintBMLCustom(doc, diagnosticCollection, vscode) {
         // 10l. A variable read before its own later assignment in the same file -
         // util functions only (commerce functions have too many implicit
         // platform bindings to check this safely; see useBeforeDefine.js)
-        diagnostics.push(...checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars));
+        diagnostics.push(...checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath));
     }
 
     if (isSpellingEnabled) {
         // 10m. Custom spellchecker for BML
-        diagnostics.push(...checkSpelling(text, cleanText, noStringsText, doc, vscode));
+        diagnostics.push(...checkSpelling(text, cleanText, noStringsText, doc, vscode, extensionPath));
     }
 
     // 11. Apply // bml-lint-disable / -line / -next-line / -file comment directives

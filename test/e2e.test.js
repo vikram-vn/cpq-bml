@@ -1,10 +1,10 @@
 const assert = require('assert');
 const vscode = require('vscode');
+const { activateExtension } = require('./extensionHelper');
 
 suite('CPQ-BML End-to-End Command Registration & Flow Verification', () => {
     suiteSetup(async () => {
-        const ext = vscode.extensions.getExtension('vikram-n.cpq-bml');
-        await ext.activate();
+        await activateExtension(vscode);
     });
 
     test('All CPQ-BML extension commands are successfully registered in VS Code', async () => {

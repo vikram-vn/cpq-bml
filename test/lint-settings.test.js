@@ -1,10 +1,10 @@
 const assert = require('assert');
 const vscode = require('vscode');
+const { activateExtension } = require('./extensionHelper');
 
 suite('BML Linter cpqBml.features.lint setting', () => {
     suiteSetup(async () => {
-        const ext = vscode.extensions.getExtension('vikram-n.cpq-bml');
-        await ext.activate();
+        await activateExtension(vscode);
     });
 
     test('disabling the setting clears diagnostics; re-enabling relints', async function () {
