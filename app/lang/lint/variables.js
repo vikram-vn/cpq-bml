@@ -115,6 +115,14 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
         const isUsed = occurrences.some(index => !declIndices.has(index));
 
         if (!isUsed) {
+            const isIgnoredUnused = varName.toLowerCase() === "dummy" ||
+                                    varName.toLowerCase() === "temp" ||
+                                    varName.toLowerCase().startsWith("trigger_") ||
+                                    varName.toLowerCase() === "unused";
+            if (isIgnoredUnused) {
+                return;
+            }
+
             // Flag the first declaration/assignment as unused
             const firstDecl = decls[0];
 

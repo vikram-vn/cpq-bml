@@ -157,7 +157,8 @@ function checkBestPractices(cleanText, noStringsText, doc) {
     const lines = cleanText.split(/\r?\n/);
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        if (line.includes('~') && !line.includes('|')) {
+        const isReturnOrRet = line.trim().startsWith("return ") || line.trim().startsWith("ret =") || line.trim().startsWith("ret=");
+        if (isReturnOrRet && line.includes("~") && !line.includes("|")) {
             const startPos = new vscode.Position(i, 0);
             const endPos = new vscode.Position(i, line.length);
             diagnostics.push(

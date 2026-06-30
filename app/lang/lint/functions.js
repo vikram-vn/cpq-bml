@@ -236,6 +236,18 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
             const targetFunc = wsFunctions.get(cacheKey);
  
             if (!targetFunc) {
+                const isPlatformFunc = namespace.toLowerCase() === "util" && (
+                    funcNameLower.startsWith("abo_") ||
+                    funcNameLower.startsWith("ws") ||
+                    funcNameLower.startsWith("osc_") ||
+                    funcNameLower.startsWith("orcl_") ||
+                    funcNameLower === "getbasicauthcredentials"
+                );
+
+                if (isPlatformFunc) {
+                    continue;
+                }
+
                 // Warning/Info: function not found in workspace
                 const suggestion = findClosestWorkspaceFunction(`${namespace}.${funcName}`, wsFunctions);
                 const diag = new vscode.Diagnostic(
