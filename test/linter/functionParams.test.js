@@ -59,11 +59,13 @@ suite('BML Linter Test Suite - function signature parsing (functionSignature.js)
         assert.strictEqual(result.params[2].type, null);
     });
 
-    test('Falls back to permissive (no validation) for "(or" polymorphic union signatures', () => {
+    test('Correctly parses "(or" polymorphic union signatures into an array of types', () => {
         const result = parseParameterSignature('Integer(or Float or Date) max(Integer[](or Float[] or Date[]) arrayIdentifier)');
-        assert.strictEqual(result.params, null);
-        assert.strictEqual(result.min, 0);
-        assert.strictEqual(result.max, Infinity);
+        assert.deepStrictEqual(result.params, [
+            { type: ['Integer[]', 'Float[]', 'Date[]'], optional: false }
+        ]);
+        assert.strictEqual(result.min, 1);
+        assert.strictEqual(result.max, 1);
     });
 
     test('Falls back to permissive for a signature with an unbalanced paren (put)', () => {
@@ -216,3 +218,109 @@ suite('BML Linter Test Suite - function-call diagnostic codes', () => {
         assert.strictEqual(diag.code, 'bml-function-arg-count');
     });
 });
+
+suite('BML Linter Test Suite - workspace function parameter and spelling checks', () => {
+    setup(() => {
+        const { getWorkspaceFunctionsCached } = require('../../app/lang/lint/functions');
+        const vscode = require('vscode');
+        const wsFunctions = getWorkspaceFunctionsCached(vscode);
+        wsFunctions.clear();
+        wsFunctions.set('util.calculate_discount', {
+            name: 'calculate_discount',
+            namespace: 'util',
+            parameterCount: 2,
+            params: [
+                { name: 'price', type: 'Float' },
+                { name: 'discountPercent', type: 'Integer' }
+            ]
+        });
+        wsFunctions.set('commerce.get_price', {
+            name: 'get_price',
+            namespace: 'commerce',
+            parameterCount: 1,
+            params: [
+                { name: 'partNumber', type: 'String' }
+            ]
+        });
+    });
+
+    test('Flags correct argument count and types for workspace function', () => {
+        const diagnostics = lintText(`
+            x = util.calculate_discount(100.0, 10);
+            return "";
+        `);
+        assert.strictEqual(diagnostics.filter(d => d.code === 'bml-function-arg-count' || d.code === 'bml-function-arg-type').length, 0);
+    });
+
+    test('Flags incorrect argument count for workspace function', () => {
+        const diagnostics = lintText(`
+            x = util.calculate_discount(100.0);
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-function-arg-count');
+        assert.ok(diag);
+        assert.match(diag.message, /Function 'util.calculate_discount' expects 2 argument\(s\), but got 1\./);
+    });
+
+    test('Flags incorrect argument type for workspace function', () => {
+        const diagnostics = lintText(`
+            x = util.calculate_discount("100.0", 10);
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
+        assert.ok(diag);
+        assert.match(diag.message, /Argument 1 to 'util.calculate_discount' should be Float, but got a String value\./);
+    });
+
+    test('Suggests closest workspace function for misspelled name', () => {
+        const diagnostics = lintText(`
+            x = util.calculate_discont(100.0, 10);
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-function-not-found-workspace');
+        assert.ok(diag);
+        assert.match(diag.message, /Function 'util.calculate_discont' not found in the workspace library\. Did you mean 'util.calculate_discount'\?/);
+    });
+
+    test('Validates overloaded built-in function signature (get)', () => {
+        let diagnostics = lintText(`
+            d = dict("string");
+            x = get(d, "key");
+            return "";
+        `);
+        assert.strictEqual(diagnostics.filter(d => d.code === 'bml-function-arg-count').length, 0);
+
+        diagnostics = lintText(`
+            d = dict("string");
+            x = get(d, "key", "String");
+            return "";
+        `);
+        assert.strictEqual(diagnostics.filter(d => d.code === 'bml-function-arg-count').length, 0);
+
+        diagnostics = lintText(`
+            d = dict("string");
+            x = get(d);
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-function-arg-count');
+        assert.ok(diag);
+        assert.match(diag.message, /expects 2 or 3 argument\(s\), but got 1\./);
+    });
+
+    test('Validates union type compatibility (append)', () => {
+        let diagnostics = lintText(`
+            arr = string[];
+            x = append(arr, 123);
+            return "";
+        `);
+        assert.strictEqual(diagnostics.filter(d => d.code === 'bml-function-arg-type').length, 0);
+
+        diagnostics = lintText(`
+            arr = string[];
+            x = append(arr, "test");
+            return "";
+        `);
+        assert.strictEqual(diagnostics.filter(d => d.code === 'bml-function-arg-type').length, 0);
+    });
+});
+

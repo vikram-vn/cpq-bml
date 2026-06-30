@@ -194,4 +194,38 @@ suite("BML REST commands - changeEnvironment & site-specific secrets", () => {
     const authHeaderFallback = await config.getAuthHeader(context, vscode);
     assert.strictEqual(authHeaderFallback, "Bearer fallbacktoken");
   });
+
+  test("does not fall back to legacy global secrets when multiple environments are configured", async () => {
+    const configValues = {
+      "connection.environments": [
+        { name: "dev", siteUrl: "https://dev.bigmachines.com", username: "alice", authMethod: "basic" },
+        { name: "uat", siteUrl: "https://uat.bigmachines.com", username: "bob", authMethod: "bearer" }
+      ],
+      "connection.siteUrl": "https://dev.bigmachines.com",
+      "connection.username": "alice",
+      "connection.authMethod": "basic"
+    };
+
+    const vscode = createFakeVscode({ config: configValues });
+    const context = createFakeContext();
+
+    // Set legacy global password in secrets, but NOT site-specific password
+    await context.secrets.store(config.SECRET_PASSWORD, "globalpassword");
+
+    // Since multiple environments are configured, ensureCredentials must prompt the user instead of falling back to globalpassword
+    let promptedValue = null;
+    vscode.window.showInputBox = async (options) => {
+      promptedValue = "newpassword";
+      return promptedValue;
+    };
+
+    const ok = await config.ensureCredentials(context, vscode);
+    assert.ok(ok);
+    assert.strictEqual(promptedValue, "newpassword");
+
+    const siteSpecificKey = config.getPasswordSecretKey("https://dev.bigmachines.com", "alice");
+    const savedPassword = await context.secrets.get(siteSpecificKey);
+    assert.strictEqual(savedPassword, "newpassword");
+  });
 });
+

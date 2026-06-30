@@ -143,6 +143,51 @@ suite("BML REST metadata", () => {
     ]);
   });
 
+  test("buildDebugPayload removes commas from scalar numeric inputs but not others", () => {
+    const meta = {
+      variableName: "testFunc",
+      parameters: [
+        { name: "num1", dataType: { value: 6, displayValue: "Integer" } },
+        { name: "num2", dataType: { value: 4, displayValue: "Float" } },
+        { name: "arr", dataType: { value: 7, displayValue: "Integer[]" } },
+        { name: "str", dataType: { value: 2, displayValue: "String" } }
+      ]
+    };
+    const payload = metadata.buildDebugPayload(
+      meta,
+      "",
+      {
+        num1: "1,234",
+        num2: "78,3243.093",
+        arr: "1,234,567",
+        str: "1,234"
+      }
+    );
+
+    assert.deepStrictEqual(payload.parameters, [
+      {
+        name: "num1",
+        dataType: { value: 6, displayValue: "Integer" },
+        value: "1234",
+      },
+      {
+        name: "num2",
+        dataType: { value: 4, displayValue: "Float" },
+        value: "783243.093",
+      },
+      {
+        name: "arr",
+        dataType: { value: 7, displayValue: "Integer[]" },
+        value: "1,234,567",
+      },
+      {
+        name: "str",
+        dataType: { value: 2, displayValue: "String" },
+        value: "1,234",
+      },
+    ]);
+  });
+
   test("buildDeployItem identifies the function by namespace + type + variableName", () => {
     const { metadata: meta } = metadata.splitFunctionResponse(SAMPLE_RESPONSE);
     assert.deepStrictEqual(metadata.buildDeployItem(meta), {

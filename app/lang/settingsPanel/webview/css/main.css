@@ -259,6 +259,23 @@ select {
     overflow: hidden;
 }
 
+.env-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.env-name {
+    font-weight: 600;
+    font-size: 1.05em;
+    color: var(--vscode-foreground);
+}
+
+.env-detail {
+    font-size: 0.85em;
+    color: var(--vscode-descriptionForeground);
+}
+
 .environment-card:hover {
     border-color: var(--vscode-focusBorder);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);

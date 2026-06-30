@@ -3,6 +3,7 @@ const path = require('path');
 const { parseParameterSignature, splitArgumentsList } = require('./functionSignature');
 const { levenshtein } = require('./levenshtein');
 const { inferLiteralType } = require('./typeCheck');
+const { getWorkspaceFunctionsCached } = require('./workspaceFunctions');
 
 let builtInFunctions = null;
 // Mirrors the grammar's reserved words/storage-type constructors so they're never flagged as unknown functions.
@@ -20,7 +21,6 @@ function parseSyntax(syntax) {
     return { min, max };
 }
 
-// extensionPath anchors the path correctly once bundled by esbuild, where __dirname resolves to dist/.
 function loadBuiltInFunctions(extensionPath) {
     if (builtInFunctions) return builtInFunctions;
     builtInFunctions = new Map();
@@ -36,8 +36,19 @@ function loadBuiltInFunctions(extensionPath) {
                     const item = data[name];
                     if (item && item.fullSignature && item.fullSignature.includes('(')) {
                         const nameLower = name.toLowerCase();
-                        const { min, max, params } = parseParameterSignature(item.fullSignature);
-                        builtInFunctions.set(nameLower, { min, max, params, syntax: item.fullSignature, name });
+                        const overloads = item.fullSignature.split(/\r?\n\s*\(or\)\s*\r?\n/);
+                        const parsedOverloads = overloads.map(sig => {
+                            return parseParameterSignature(sig);
+                        });
+                        const first = parsedOverloads[0];
+                        builtInFunctions.set(nameLower, {
+                            overloads: parsedOverloads,
+                            min: first.min,
+                            max: first.max,
+                            params: first.params,
+                            syntax: item.fullSignature,
+                            name
+                        });
                     }
                 });
             }
@@ -46,143 +57,6 @@ function loadBuiltInFunctions(extensionPath) {
         // Fallback to empty map if file can't be loaded
     }
     return builtInFunctions;
-}
-
-let cachedWorkspaceFunctions = new Map();
-let lastScannedTime = 0;
-
-function getWorkspaceFunctions(vscode) {
-    const functionsMap = new Map();
-    const folders = vscode.workspace.workspaceFolders;
-    if (!folders) return functionsMap;
-
-    for (const folder of folders) {
-        const rootPath = folder.uri.fsPath;
-
-        const findMetaFiles = (dir) => {
-            let results = [];
-            let list;
-            try {
-                list = fs.readdirSync(dir);
-            } catch (err) {
-                return results;
-            }
-            list.forEach((file) => {
-                if (file === 'node_modules' || file === '.git' || file === '.vscode-test' || file === 'dist') {
-                    return;
-                }
-                const fullPath = path.join(dir, file);
-                let stat;
-                try {
-                    stat = fs.statSync(fullPath);
-                } catch (e) {
-                    return;
-                }
-                if (stat && stat.isDirectory()) {
-                    results = results.concat(findMetaFiles(fullPath));
-                } else if (file.endsWith('-meta.json')) {
-                    results.push(fullPath);
-                }
-            });
-            return results;
-        };
-
-        const metaFiles = findMetaFiles(rootPath);
-        for (const metaFile of metaFiles) {
-            try {
-                const content = fs.readFileSync(metaFile, 'utf8');
-                const meta = JSON.parse(content);
-                if (meta && meta.variableName) {
-                    const funcName = meta.variableName;
-                    const parameterCount = meta.parameters ? meta.parameters.length : 0;
-                    
-                    let namespace = 'util';
-                    if (meta.commerceDocument || metaFile.replace(/\\/g, '/').includes('/libraries/')) {
-                        namespace = 'commerce';
-                    }
-                    
-                    functionsMap.set(`${namespace}.${funcName.toLowerCase()}`, {
-                        path: metaFile,
-                        parameterCount,
-                        name: funcName,
-                        namespace
-                    });
-                }
-            } catch (e) {
-                // Ignore parsing errors for individual files
-            }
-        }
-    }
-    return functionsMap;
-}
-
-let isInitialized = false;
-let watcher = null;
-
-function initializeCache(vscode) {
-    if (isInitialized) return;
-    isInitialized = true;
-
-    // Initial scan
-    cachedWorkspaceFunctions = getWorkspaceFunctions(vscode);
-
-    try {
-        // Watch for metadata file changes anywhere in the workspace
-        watcher = vscode.workspace.createFileSystemWatcher('**/*-meta.json');
-        
-        const handleMetaChange = (uri) => {
-            try {
-                const fsPath = uri.fsPath;
-                if (fs.existsSync(fsPath)) {
-                    const content = fs.readFileSync(fsPath, 'utf8');
-                    const meta = JSON.parse(content);
-                    if (meta && meta.variableName) {
-                        const funcName = meta.variableName;
-                        const parameterCount = meta.parameters ? meta.parameters.length : 0;
-                        
-                        let namespace = 'util';
-                        if (meta.commerceDocument || fsPath.replace(/\\/g, '/').includes('/libraries/')) {
-                            namespace = 'commerce';
-                        }
-                        
-                        cachedWorkspaceFunctions.set(`${namespace}.${funcName.toLowerCase()}`, {
-                            path: fsPath,
-                            parameterCount,
-                            name: funcName,
-                            namespace
-                        });
-                    }
-                }
-            } catch (e) {
-                // ignore parsing or read errors
-            }
-        };
-
-        const handleMetaDelete = (uri) => {
-            const fsPath = uri.fsPath;
-            for (const [key, val] of cachedWorkspaceFunctions.entries()) {
-                if (val.path === fsPath) {
-                    cachedWorkspaceFunctions.delete(key);
-                }
-            }
-        };
-
-        watcher.onDidCreate(handleMetaChange);
-        watcher.onDidChange(handleMetaChange);
-        watcher.onDidDelete(handleMetaDelete);
-
-        // Re-scan when workspace folders change
-        vscode.workspace.onDidChangeWorkspaceFolders(() => {
-            cachedWorkspaceFunctions = getWorkspaceFunctions(vscode);
-        });
-    } catch (e) {
-        // Fallback if watcher registration fails
-    }
-}
-
-function getWorkspaceFunctionsCached(vscode) {
-    initializeCache(vscode);
-    return cachedWorkspaceFunctions;
 }
 
 function getArgumentsTextAndEnd(text, startIndex) {
@@ -282,6 +156,22 @@ function findClosestBuiltInFunction(name, builtIns) {
     return best && bestDist <= 2 && bestDist > 0 ? best : null;
 }
 
+function findClosestWorkspaceFunction(fullName, wsFunctions) {
+    const fullNameLower = fullName.toLowerCase();
+    let best = null;
+    let bestDist = Infinity;
+    for (const key of wsFunctions.keys()) {
+        if (Math.abs(key.length - fullNameLower.length) > 3) continue;
+        const dist = levenshtein(fullNameLower, key);
+        if (dist < bestDist) {
+            bestDist = dist;
+            const target = wsFunctions.get(key);
+            best = `${target.namespace}.${target.name}`;
+        }
+    }
+    return best && bestDist <= 2 && bestDist > 0 ? best : null;
+}
+
 function normalizeType(type) {
     if (!type) return null;
     const match = type.match(/^([A-Za-z]+)((?:\[\])*)$/);
@@ -292,10 +182,17 @@ function normalizeType(type) {
 // Integer literals are accepted for a Float parameter (numeric widening); everything else must match.
 function argumentTypeCompatible(expectedType, actualType) {
     if (!expectedType || !actualType) return true;
+    if (Array.isArray(expectedType)) {
+        return expectedType.some(exp => argumentTypeCompatible(exp, actualType));
+    }
     const expected = normalizeType(expectedType);
     const actual = normalizeType(actualType);
     if (expected === actual) return true;
     if (expected === 'float' && actual === 'integer') return true;
+    if (expected === 'numeric' && (actual === 'integer' || actual === 'float')) return true;
+    if (expected === 'array' && actual.endsWith('[]')) return true;
+    if (expected === 'dictionary' && actual === 'dict') return true;
+    if (expected === 'dict' && actual === 'dictionary') return true;
     return false;
 }
 
@@ -318,29 +215,34 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
         }
 
         const matchStart = match.index;
-        const callStartOffset = matchStart + match[0].indexOf(funcName);
+        const prefix = namespace ? `${namespace}.` : '';
+        const callLength = prefix.length + funcName.length;
+        const callStartOffset = matchStart;
         const startPos = doc.positionAt(callStartOffset);
-        const endPos = doc.positionAt(callStartOffset + funcName.length);
-
+        const endPos = doc.positionAt(callStartOffset + callLength);
+ 
         // Find matching closing parenthesis and extract arguments
         const argsStartOffset = matchStart + match[0].length;
         const argsResult = getArgumentsTextAndEnd(noStringsText, argsStartOffset);
         if (!argsResult) continue; // Unbalanced call, syntax error
-
+ 
         // Extract clean arguments text (retaining string literals for correct comma and length counting)
         const argsCleanText = cleanText.substring(argsStartOffset, argsResult.endIndex);
         const argCount = countArguments(argsCleanText);
-
+ 
         if (namespace) {
             // Namespaced call (util.foo or commerce.foo)
             const cacheKey = `${namespace.toLowerCase()}.${funcNameLower}`;
             const targetFunc = wsFunctions.get(cacheKey);
-
+ 
             if (!targetFunc) {
                 // Warning/Info: function not found in workspace
+                const suggestion = findClosestWorkspaceFunction(`${namespace}.${funcName}`, wsFunctions);
                 const diag = new vscode.Diagnostic(
                     new vscode.Range(startPos, endPos),
-                    `Function '${namespace}.${funcName}' not found in the workspace library.`,
+                    suggestion
+                        ? `Function '${namespace}.${funcName}' not found in the workspace library. Did you mean '${suggestion}'?`
+                        : `Function '${namespace}.${funcName}' not found in the workspace library.`,
                     vscode.DiagnosticSeverity.Information
                 );
                 diag.code = 'bml-function-not-found-workspace';
@@ -355,6 +257,25 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     diag.code = 'bml-function-arg-count';
                     diagnostics.push(diag);
                 }
+
+                if (targetFunc.params) {
+                    const args = splitArgumentsList(argsCleanText);
+                    for (let i = 0; i < args.length && i < targetFunc.params.length; i++) {
+                        const expectedType = targetFunc.params[i].type;
+                        if (!expectedType) continue;
+                        const actualType = inferLiteralType(args[i]);
+                        if (!actualType) continue;
+                        if (!argumentTypeCompatible(expectedType, actualType)) {
+                            const diag = new vscode.Diagnostic(
+                                new vscode.Range(startPos, endPos),
+                                `Argument ${i + 1} to '${namespace}.${targetFunc.name}' should be ${expectedType}, but got a ${actualType} value.`,
+                                vscode.DiagnosticSeverity.Warning
+                            );
+                            diag.code = 'bml-function-arg-type';
+                            diagnostics.push(diag);
+                        }
+                    }
+                }
             }
         } else {
             // Bare call
@@ -364,13 +285,12 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
 
             const builtIn = builtIns.get(funcNameLower);
             if (builtIn) {
-                if (argCount < builtIn.min || argCount > builtIn.max) {
-                    let expectedMsg = '';
-                    if (builtIn.min === builtIn.max) {
-                        expectedMsg = `${builtIn.min}`;
-                    } else {
-                        expectedMsg = `${builtIn.min} to ${builtIn.max}`;
-                    }
+                const overloads = builtIn.overloads || [{ min: builtIn.min, max: builtIn.max, params: builtIn.params }];
+                const countMatches = overloads.filter(ov => argCount >= ov.min && argCount <= ov.max);
+
+                if (countMatches.length === 0) {
+                    const expectedRanges = overloads.map(ov => ov.min === ov.max ? `${ov.min}` : `${ov.min} to ${ov.max}`);
+                    const expectedMsg = Array.from(new Set(expectedRanges)).join(' or ');
                     const diag = new vscode.Diagnostic(
                         new vscode.Range(startPos, endPos),
                         `Built-in function '${builtIn.name}' expects ${expectedMsg} argument(s), but got ${argCount}.`,
@@ -378,19 +298,44 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     );
                     diag.code = 'bml-function-arg-count';
                     diagnostics.push(diag);
-                }
-
-                if (builtIn.params) {
+                } else {
+                    const typeMatches = [];
+                    const typeErrors = [];
                     const args = splitArgumentsList(argsCleanText);
-                    for (let i = 0; i < args.length && i < builtIn.params.length; i++) {
-                        const expectedType = builtIn.params[i].type;
-                        if (!expectedType) continue;
-                        const actualType = inferLiteralType(args[i]);
-                        if (!actualType) continue;
-                        if (!argumentTypeCompatible(expectedType, actualType)) {
+
+                    for (const ov of countMatches) {
+                        if (!ov.params) {
+                            typeMatches.push(ov);
+                            continue;
+                        }
+
+                        let match = true;
+                        const errors = [];
+                        for (let i = 0; i < args.length && i < ov.params.length; i++) {
+                            const expectedType = ov.params[i].type;
+                            if (!expectedType) continue;
+                            const actualType = inferLiteralType(args[i]);
+                            if (!actualType) continue;
+                            if (!argumentTypeCompatible(expectedType, actualType)) {
+                                match = false;
+                                errors.push({ index: i, expected: expectedType, actual: actualType });
+                            }
+                        }
+                        if (match) {
+                            typeMatches.push(ov);
+                        } else {
+                            typeErrors.push({ overload: ov, errors });
+                        }
+                    }
+
+                    if (typeMatches.length === 0 && typeErrors.length > 0) {
+                        // Report type error for the first overload that matches the count
+                        const bestError = typeErrors[0];
+                        for (const err of bestError.errors) {
+                            const expectedStr = Array.isArray(err.expected) ? err.expected.join(' or ') : err.expected;
                             const diag = new vscode.Diagnostic(
                                 new vscode.Range(startPos, endPos),
-                                `Argument ${i + 1} to '${builtIn.name}' should be ${expectedType}, but got a ${actualType} value.`,
+                                `Argument ${err.index + 1} to '${builtIn.name}' should be ${expectedStr}, but got a ${err.actual} value.`,
                                 vscode.DiagnosticSeverity.Warning
                             );
                             diag.code = 'bml-function-arg-type';

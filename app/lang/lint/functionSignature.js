@@ -22,28 +22,86 @@ function findOuterParamsText(signature) {
     return null; // unbalanced - caller treats as unparseable
 }
 
-const TYPE_NAME_PATTERN = '([A-Za-z_]\\w*(?:\\s*\\[\\s*\\])*)\\s+([A-Za-z_]\\w*)';
+function parseUnionTypes(typeStr) {
+    if (!typeStr) return [];
+    const types = [];
+    const matches = typeStr.match(/[A-Za-z_]\w*(?:\[\])*/g);
+    if (matches) {
+        for (const m of matches) {
+            if (m.toLowerCase() !== 'or') {
+                types.push(m);
+            }
+        }
+    }
+    return types;
+}
 
-// Returns null for a bare untyped parameter (e.g. "configurationKey") - these accept any type.
 function extractTypeAndName(chunkText) {
-    const match = chunkText.match(new RegExp(TYPE_NAME_PATTERN));
-    if (!match) return null;
-    return { type: match[1].replace(/\s+/g, ''), name: match[2] };
+    // Replace array brackets with a placeholder to preserve them
+    let clean = chunkText.replace(/\[\s*\]/g, '__ARRAY__');
+    // Remove optional-group brackets
+    clean = clean.replace(/[\[\]]/g, '');
+    // Restore array brackets
+    clean = clean.replace(/__ARRAY__/g, '[]');
+    clean = clean.trim();
+    if (!clean) return null;
+    
+    const lastParenIdx = clean.lastIndexOf(')');
+    if (lastParenIdx !== -1 && lastParenIdx < clean.length - 1) {
+        const typePart = clean.substring(0, lastParenIdx + 1).trim();
+        const namePart = clean.substring(lastParenIdx + 1).trim();
+        return { type: typePart, name: namePart };
+    }
+    
+    const lastSpaceIdx = clean.lastIndexOf(' ');
+    if (lastSpaceIdx === -1) {
+        return { type: null, name: clean };
+    }
+    
+    const typePart = clean.substring(0, lastSpaceIdx).trim();
+    const namePart = clean.substring(lastSpaceIdx + 1).trim();
+    return { type: typePart, name: namePart };
 }
 
 // Some variadic functions (e.g. sbappend) describe a repeating group using a cascading bracket
 // missing the comma a well-formed optional tail has, so a single chunk ends up containing two
 // "Type name" pairs - a reliable signal to skip validation rather than enforce a wrong shape.
 function hasGluedParameterPairs(paramsText) {
+    const TYPE_NAME_PATTERN = '([A-Za-z_]\\w*(?:\\s*\\[\\s*\\])*)\\s+([A-Za-z_]\\w*)';
     const globalMatcher = new RegExp(TYPE_NAME_PATTERN, 'g');
     return paramsText.split(',').some((chunk) => {
         const matches = chunk.match(globalMatcher);
-        return matches && matches.length > 1;
+        if (!matches) return false;
+        const realMatches = matches.filter(m => {
+            const parts = m.trim().split(/\s+/);
+            return parts.length === 2 && 
+                   parts[0].toLowerCase() !== 'or' && 
+                   parts[1].toLowerCase() !== 'or';
+        });
+        return realMatches.length > 1;
     });
 }
 
+function splitParameters(paramsText) {
+    if (!paramsText) return [];
+    const chunks = [];
+    let start = 0;
+    let parenDepth = 0;
+    for (let i = 0; i < paramsText.length; i++) {
+        const ch = paramsText[i];
+        if (ch === '(') parenDepth++;
+        else if (ch === ')') parenDepth = Math.max(0, parenDepth - 1);
+        else if (ch === ',' && parenDepth === 0) {
+            chunks.push(paramsText.slice(start, i));
+            start = i + 1;
+        }
+    }
+    chunks.push(paramsText.slice(start));
+    return chunks;
+}
+
 function parseParameterSignature(fullSignature) {
-    if (!fullSignature || !fullSignature.includes('(') || fullSignature.includes('(or')) {
+    if (!fullSignature || !fullSignature.includes('(')) {
         return { min: 0, max: Infinity, params: null };
     }
 
@@ -58,7 +116,7 @@ function parseParameterSignature(fullSignature) {
         return { min: 0, max: Infinity, params: null };
     }
 
-    const chunks = paramsText.split(',');
+    const chunks = splitParameters(paramsText);
     const params = [];
     let depth = 0;
 
@@ -74,7 +132,16 @@ function parseParameterSignature(fullSignature) {
         const optional = depthBeforeChunk > 0 || opensOwnOptionalGroup;
 
         const typeAndName = extractTypeAndName(chunk);
-        params.push({ type: typeAndName ? typeAndName.type : null, optional });
+        let type = null;
+        if (typeAndName && typeAndName.type) {
+            const parsedTypes = parseUnionTypes(typeAndName.type);
+            if (parsedTypes.length === 1) {
+                type = parsedTypes[0];
+            } else if (parsedTypes.length > 1) {
+                type = parsedTypes;
+            }
+        }
+        params.push({ type, optional });
     }
 
     const min = params.filter((p) => !p.optional).length;

@@ -336,5 +336,115 @@ suite("BML REST commands - debug (util functions)", () => {
         assert.ok(!fs.existsSync(outputLog), "bml_debug_output.log should NOT be created when setting is off");
         assert.ok(!fs.existsSync(printLog), "bml_debug_print.log should NOT be created when setting is off");
       }));
+
+    test("formats JSON returnData as a table when showResultsAsTable is enabled", () =>
+      withTempDir(async (tmpDir) => {
+        const bmlPath = path.join(tmpDir, "concatString.bml");
+        metadataLib.writeMetadata(
+          metadataLib.bmlPathToMetaPath(bmlPath),
+          metadataLib.splitFunctionResponse(SAMPLE_FUNCTION).metadata,
+        );
+        const editor = {
+          document: {
+            languageId: "bml",
+            uri: { fsPath: bmlPath },
+            getText: () => SAMPLE_FUNCTION.scriptText,
+          },
+        };
+
+        const config = baseVscodeConfig();
+        config["debug.showResultsAsTable"] = true;
+
+        const vscode = createFakeVscode({
+          config,
+          window: {
+            activeTextEditor: editor,
+            showInputBox: async () => "value",
+          },
+        });
+
+        const lines = [];
+        const resultsTerminal = {
+          writeLine: (l) => lines.push(l),
+          show: () => {},
+        };
+
+        const transport = async () => ({
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            returnData: JSON.stringify({ name: "Devtest", status: "Active" }),
+          }),
+        });
+
+        await commands.runDebugCurrentFile(
+          makeContext(),
+          vscode,
+          resultsTerminal,
+          { transport },
+        );
+
+        // Verify table output contains the headers and keys/values
+        assert.ok(lines.some((l) => l.includes("key")), "Should contain 'key' header");
+        assert.ok(lines.some((l) => l.includes("value")), "Should contain 'value' header");
+        assert.ok(lines.some((l) => l.includes("name") && l.includes("Devtest")), "Should contain name -> Devtest row");
+        assert.ok(lines.some((l) => l.includes("status") && l.includes("Active")), "Should contain status -> Active row");
+      }));
+
+    test("publishes diagnostic error on the correct line when debug fails with a line number in the error", () =>
+      withTempDir(async (tmpDir) => {
+        const bmlPath = path.join(tmpDir, "concatString.bml");
+        metadataLib.writeMetadata(
+          metadataLib.bmlPathToMetaPath(bmlPath),
+          metadataLib.splitFunctionResponse(SAMPLE_FUNCTION).metadata,
+        );
+        const editor = {
+          document: {
+            languageId: "bml",
+            uri: { fsPath: bmlPath },
+            getText: () => SAMPLE_FUNCTION.scriptText,
+            lineCount: 10,
+            lineAt: (idx) => ({ text: "  some line of BML code" }),
+          },
+        };
+
+        const vscode = createFakeVscode({
+          config: baseVscodeConfig(),
+          window: {
+            activeTextEditor: editor,
+            showInputBox: async () => "value",
+          },
+        });
+
+        let publishedDiagnostics = null;
+        const mockDiagnosticCollection = {
+          delete: () => {},
+          set: (uri, diags) => {
+            publishedDiagnostics = diags;
+          },
+        };
+
+        const transport = async () => ({
+          statusCode: 400,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            message: "BML Runtime Error: Division by zero on line 3",
+          }),
+        });
+
+        await commands.runDebugCurrentFile(
+          makeContext(),
+          vscode,
+          mockDiagnosticCollection,
+          { writeLine: () => {}, show: () => {} },
+          { transport },
+        );
+
+        assert.ok(publishedDiagnostics, "Should have published diagnostics");
+        assert.strictEqual(publishedDiagnostics.length, 1);
+        const diag = publishedDiagnostics[0];
+        assert.strictEqual(diag.range.start.line, 2, "Line 3 is index 2");
+        assert.match(diag.message, /Division by zero on line 3/);
+      }));
   });
 });

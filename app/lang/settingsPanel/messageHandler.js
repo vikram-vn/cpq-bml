@@ -22,7 +22,8 @@ const ALLOWED_FIELDS = new Set([
     'mcp.port',
     'mcp.logToTerminal',
     'debug.logRestDetails',
-    'debug.logOutputToFile'
+    'debug.logOutputToFile',
+    'debug.showResultsAsTable'
 ]);
 
 // Every mutating case re-sends a fresh 'state' snapshot so the webview never relies on stale state.

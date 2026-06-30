@@ -45,7 +45,8 @@ async function buildState(context, vscode) {
         },
         debug: {
             logOutputToFile: settings.logOutputToFile,
-            logRestDetails: settings.debugLog
+            logRestDetails: settings.debugLog,
+            showResultsAsTable: settings.showResultsAsTable
         },
         environments,
         hasPassword,

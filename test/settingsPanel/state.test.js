@@ -45,7 +45,7 @@ suite("settingsPanel state", () => {
       },
       features: { lint: false, comments: true, spelling: false },
       mcp: { enable: true, port: 12345, logToTerminal: true },
-      debug: { logOutputToFile: true, logRestDetails: true },
+      debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],
       hasPassword: true,
       hasToken: false,

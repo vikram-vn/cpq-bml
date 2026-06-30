@@ -78,7 +78,7 @@ export default function Environments({ environments, connection, vscodeApi }) {
                             <li key={`${env.name}-${index}`} className={`environment-card ${active ? 'active' : ''}`}>
                                 <div className="env-info">
                                     <span className="env-name">{env.name}</span>
-                                    <span className="env-detail" style={{ fontSize: '0.8em', marginTop: '2px' }}>
+                                    <span className="env-detail">
                                         {env.siteUrl}
                                     </span>
                                     <div className="env-meta-tags">

@@ -26,13 +26,75 @@ function createResultsTerminal(vscode, name) {
     };
 }
 
+function getActiveEnvironmentName(vscode) {
+    try {
+        const config = vscode.workspace.getConfiguration('cpqBml');
+        const siteUrl = (config.get('connection.siteUrl', '') || '').trim();
+        if (!siteUrl) return '';
+        const username = (config.get('connection.username', '') || '').trim().toLowerCase();
+        const authMethod = config.get('connection.authMethod', 'basic');
+
+        const { normalizeSiteUrl } = require('./config');
+        const normalizedActiveSite = normalizeSiteUrl(siteUrl).toLowerCase();
+
+        const environments = config.get('connection.environments', []) || [];
+        const matchedEnv = environments.find(env => {
+            if (!env.siteUrl) return false;
+            const urlMatches = normalizeSiteUrl(env.siteUrl).toLowerCase() === normalizedActiveSite;
+            const userMatches = (env.username || '').trim().toLowerCase() === username;
+            const authMatches = (env.authMethod || 'basic') === authMethod;
+            return urlMatches && userMatches && authMatches;
+        });
+
+        return matchedEnv ? matchedEnv.name : '';
+    } catch (e) {
+        return '';
+    }
+}
+
 let sharedResultsTerminal = null;
 
 function getResultsTerminal(vscode) {
     if (!sharedResultsTerminal) {
-        sharedResultsTerminal = createResultsTerminal(vscode, 'CPQ-BML');
+        let currentTerminal = null;
+        let currentTerminalName = null;
+
+        const getActiveTerminal = () => {
+            const envName = getActiveEnvironmentName(vscode);
+            const expectedName = envName ? `BML: ${envName}` : 'CPQ-BML';
+
+            if (currentTerminal && currentTerminalName !== expectedName) {
+                currentTerminal.dispose();
+                currentTerminal = null;
+            }
+
+            if (!currentTerminal) {
+                currentTerminal = createResultsTerminal(vscode, expectedName);
+                currentTerminalName = expectedName;
+            }
+            return currentTerminal;
+        };
+
+        sharedResultsTerminal = {
+            writeLine(text) {
+                getActiveTerminal().writeLine(text);
+            },
+            show() {
+                getActiveTerminal().show();
+            },
+            clear() {
+                getActiveTerminal().clear();
+            },
+            dispose() {
+                if (currentTerminal) {
+                    currentTerminal.dispose();
+                    currentTerminal = null;
+                }
+            }
+        };
     }
     return sharedResultsTerminal;
 }
 
 module.exports = { createResultsTerminal, getResultsTerminal };
+

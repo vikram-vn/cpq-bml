@@ -221,12 +221,30 @@ function buildFunctionPayload(metadata, scriptText) {
     return payload;
 }
 
+function isScalarNumericType(dataType) {
+    if (!dataType) return false;
+    const typeStr = typeof dataType === 'string'
+        ? dataType
+        : (dataType.displayValue || dataType.displayLabel || '');
+    const normalizedType = typeStr.trim().toLowerCase();
+    return (normalizedType === 'integer' || normalizedType === 'float' || normalizedType === 'double') ||
+           ((normalizedType.startsWith('integer') || normalizedType.startsWith('float') || normalizedType.startsWith('double')) &&
+            !normalizedType.includes('[') && !normalizedType.includes('dictionary'));
+}
+
+function normalizeNumericValue(value, dataType) {
+    if (value && typeof value === 'string' && isScalarNumericType(dataType)) {
+        return value.replace(/,/g, '');
+    }
+    return value;
+}
+
 // Merges a value into each parameter for the debug endpoint. parameterValues is { [parameterName]: value }.
 function buildDebugPayload(metadata, scriptText, parameterValues) {
     const payload = buildFunctionPayload(metadata, scriptText);
     payload.parameters = payload.parameters.map((p) => ({
         ...p,
-        value: parameterValues[p.name]
+        value: normalizeNumericValue(parameterValues[p.name], p.dataType)
     }));
     return payload;
 }
@@ -266,5 +284,7 @@ module.exports = {
     buildDeployItem,
     inferCommerceFromPath,
     normalizeLibraryFunctions,
-    normalizeAttributes
+    normalizeAttributes,
+    isScalarNumericType,
+    normalizeNumericValue
 };

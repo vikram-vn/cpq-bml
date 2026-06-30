@@ -27,6 +27,7 @@ suite("BML REST config", () => {
       pullFolder: "my-library",
       debugLog: false,
       logOutputToFile: false,
+      showResultsAsTable: false,
     });
   });
 
@@ -42,6 +43,7 @@ suite("BML REST config", () => {
       pullFolder: "library",
       debugLog: false,
       logOutputToFile: false,
+      showResultsAsTable: false,
     });
     assert.strictEqual(config.DEFAULT_REST_VERSION, "v18");
   });

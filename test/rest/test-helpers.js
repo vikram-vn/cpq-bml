@@ -2,20 +2,64 @@
 // vscode/context as explicit parameters rather than require()-ing the real
 // vscode module, so they can be driven entirely with plain objects here.
 
+class Range {
+    constructor(startLine, startChar, endLine, endChar) {
+        this.start = { line: startLine, character: startChar };
+        this.end = { line: endLine, character: endChar };
+    }
+}
+
+class Position {
+    constructor(line, character) {
+        this.line = line;
+        this.character = character;
+    }
+}
+
+class Diagnostic {
+    constructor(range, message, severity) {
+        this.range = range;
+        this.message = message;
+        this.severity = severity;
+    }
+}
+
+const DiagnosticSeverity = {
+    Error: 0,
+    Warning: 1,
+    Information: 2,
+    Hint: 3
+};
+
 function createFakeVscode({ config = {}, window = {}, workspaceFolders, commands = {} } = {}) {
     return {
+        Range,
+        Position,
+        Diagnostic,
+        DiagnosticSeverity,
         ConfigurationTarget: {
             Global: 1,
             Workspace: 2,
             WorkspaceFolder: 3
         },
         workspace: {
-            getConfiguration: () => ({
+            getConfiguration: (section) => ({
                 get(key, def) {
-                    return Object.prototype.hasOwnProperty.call(config, key) ? config[key] : def;
+                    const fullKey = section ? `${section}.${key}` : key;
+                    if (Object.prototype.hasOwnProperty.call(config, fullKey)) {
+                        return config[fullKey];
+                    }
+                    if (Object.prototype.hasOwnProperty.call(config, key)) {
+                        return config[key];
+                    }
+                    return def;
                 },
                 update(key, value) {
                     config[key] = value;
+                    const fullKey = section ? `${section}.${key}` : key;
+                    if (fullKey !== key) {
+                        config[fullKey] = value;
+                    }
                 }
             }),
             workspaceFolders

@@ -33,7 +33,8 @@ function getSettings(vscode) {
         commerceDocument: config.get('rest.commerceDocument', 'transaction'),
         pullFolder: config.get('rest.pullFolder', 'library'),
         debugLog: config.get('debug.logRestDetails', false),
-        logOutputToFile: config.get('debug.logOutputToFile', false)
+        logOutputToFile: config.get('debug.logOutputToFile', false),
+        showResultsAsTable: config.get('debug.showResultsAsTable', false)
     };
 }
 
@@ -58,6 +59,10 @@ function getDebugPrintLogPath(vscode) {
 
 function getBaseUrl(vscode) {
     return getSettings(vscode).siteUrl;
+}
+
+function getShowDebugResultsAsTable(vscode) {
+    return vscode.workspace.getConfiguration('cpqBml').get('debug.showResultsAsTable', false);
 }
 
 function getRestVersion(vscode) {
@@ -85,11 +90,14 @@ function getTokenSecretKey(siteUrl) {
 
 async function getAuthHeader(context, vscode) {
     const { siteUrl, authMethod, username } = getSettings(vscode);
+    const config = vscode.workspace.getConfiguration('cpqBml');
+    const environments = config.get('connection.environments', []) || [];
+    const hasMultipleEnvs = environments.length > 1;
 
     if (authMethod === 'bearer') {
         const siteSpecificKey = getTokenSecretKey(siteUrl);
         let token = await context.secrets.get(siteSpecificKey);
-        if (!token) {
+        if (!token && !hasMultipleEnvs) {
             token = await context.secrets.get(SECRET_TOKEN);
         }
         if (!token) {
@@ -103,7 +111,7 @@ async function getAuthHeader(context, vscode) {
     }
     const siteSpecificKey = getPasswordSecretKey(siteUrl, username);
     let password = await context.secrets.get(siteSpecificKey);
-    if (!password) {
+    if (!password && !hasMultipleEnvs) {
         password = await context.secrets.get(SECRET_PASSWORD);
     }
     if (!password) {
@@ -119,10 +127,14 @@ async function hasMissingCredentials(context, vscode) {
     if (!siteUrl) {
         return true;
     }
+    const config = vscode.workspace.getConfiguration('cpqBml');
+    const environments = config.get('connection.environments', []) || [];
+    const hasMultipleEnvs = environments.length > 1;
+
     if (authMethod === 'bearer') {
         const siteSpecificKey = getTokenSecretKey(siteUrl);
         let token = await context.secrets.get(siteSpecificKey);
-        if (!token) {
+        if (!token && !hasMultipleEnvs) {
             token = await context.secrets.get(SECRET_TOKEN);
         }
         return !token;
@@ -132,7 +144,7 @@ async function hasMissingCredentials(context, vscode) {
     }
     const siteSpecificKey = getPasswordSecretKey(siteUrl, username);
     let password = await context.secrets.get(siteSpecificKey);
-    if (!password) {
+    if (!password && !hasMultipleEnvs) {
         password = await context.secrets.get(SECRET_PASSWORD);
     }
     return !password;
@@ -197,10 +209,13 @@ async function ensureCredentials(context, vscode) {
 
     const normalizedSite = normalizeSiteUrl(siteUrl);
 
+    const environments = config.get('connection.environments', []) || [];
+    const hasMultipleEnvs = environments.length > 1;
+
     if (authMethod === 'bearer') {
         const siteSpecificKey = getTokenSecretKey(normalizedSite);
         let token = await context.secrets.get(siteSpecificKey);
-        if (!token) {
+        if (!token && !hasMultipleEnvs) {
             token = await context.secrets.get(SECRET_TOKEN);
         }
         if (!token) {
@@ -229,7 +244,7 @@ async function ensureCredentials(context, vscode) {
 
         const siteSpecificKey = getPasswordSecretKey(normalizedSite, username);
         let password = await context.secrets.get(siteSpecificKey);
-        if (!password) {
+        if (!password && !hasMultipleEnvs) {
             password = await context.secrets.get(SECRET_PASSWORD);
         }
         if (!password) {
@@ -275,6 +290,7 @@ module.exports = {
     getAuthHeader,
     getDebugOutputLogPath,
     getDebugPrintLogPath,
+    getShowDebugResultsAsTable,
     hasMissingCredentials,
     runTestConnection,
     ensureCredentials

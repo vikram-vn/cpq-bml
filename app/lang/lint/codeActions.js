@@ -123,6 +123,18 @@ function registerBmlCodeActions(context) {
                             }
                         }
                     }
+                    else if (diag.code === 'bml-function-not-found-workspace') {
+                        const msg = diag.message;
+                        const match = msg.match(/Did you mean '([^']+)'\?/);
+                        if (match) {
+                            const suggestion = match[1];
+                            const action = new vscode.CodeAction(`Replace with '${suggestion}'`, vscode.CodeActionKind.QuickFix);
+                            action.edit = new vscode.WorkspaceEdit();
+                            action.edit.replace(document.uri, diag.range, suggestion);
+                            action.diagnostics = [diag];
+                            fixes.push(action);
+                        }
+                    }
                     else if (diag.code === 'bml-unknown-function') {
                         const word = document.getText(diag.range);
                         const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('./functions');

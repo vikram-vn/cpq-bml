@@ -140,6 +140,10 @@
         "title": "CPQ-BML: Change Environment"
       },
       {
+        "command": "cpqBml.rest.downloadLogFile",
+        "title": "CPQ-BML: Download Log File"
+      },
+      {
         "command": "cpqBml.mcp.showInfo",
         "title": "CPQ-BML: Show MCP Server Connection Info"
       },
@@ -319,6 +323,11 @@
           "type": "boolean",
           "default": false,
           "description": "When enabled, saves debug output to two files in the workspace root after each BML debug run: 'bml_debug_output.log' (script return value) and 'bml_debug_print.log' (print statements). Disabled by default."
+        },
+        "cpqBml.debug.showResultsAsTable": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, formats JSON or dictionary return values in BML debug output as a key-value table. Disabled by default."
         }
       }
     }

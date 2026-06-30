@@ -16,16 +16,75 @@ const {
   ensureCredentials,
 } = require("./shared");
 
+function formatAsTable(data) {
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+    return null;
+  }
+  const keys = Object.keys(data);
+  if (keys.length === 0) return null;
+
+  let maxKeyLen = 3; // "key"
+  let maxValLen = 5; // "value"
+
+  const rows = keys.map(k => {
+    const val = data[k];
+    const valStr = typeof val === 'object' && val !== null ? JSON.stringify(val) : String(val);
+    maxKeyLen = Math.max(maxKeyLen, k.length);
+    maxValLen = Math.max(maxValLen, valStr.length);
+    return { key: k, val: valStr };
+  });
+
+  const headerKey = "key".padEnd(maxKeyLen);
+  const headerVal = "value".padEnd(maxValLen);
+  const separator = "-".repeat(maxKeyLen) + "-+-" + "-".repeat(maxValLen);
+
+  const lines = [
+    `${headerKey} | ${headerVal}`,
+    separator
+  ];
+
+  for (const row of rows) {
+    lines.push(`${row.key.padEnd(maxKeyLen)} | ${row.val}`);
+  }
+
+  return lines.join('\n');
+}
+
+function parseErrorLine(message) {
+  if (!message) return null;
+  const match = message.match(/(?:on|at|near)?\s*line\s+(\d+)\b/i);
+  return match ? parseInt(match[1], 10) : null;
+}
+
 async function runDebugCurrentFile(
   context,
   vscode,
-  resultsTerminal,
-  { transport } = {},
+  diagnosticCollectionOrTerminal,
+  resultsTerminalOrOptions,
+  optionsOrUndefined,
 ) {
+  let diagnosticCollection = null;
+  let resultsTerminal = null;
+  let options = {};
+
+  if (diagnosticCollectionOrTerminal && typeof diagnosticCollectionOrTerminal.writeLine === "function") {
+    resultsTerminal = diagnosticCollectionOrTerminal;
+    options = resultsTerminalOrOptions || {};
+  } else {
+    diagnosticCollection = diagnosticCollectionOrTerminal;
+    resultsTerminal = resultsTerminalOrOptions;
+    options = optionsOrUndefined || {};
+  }
+  const { transport } = options;
+
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== "bml") {
     vscode.window.showErrorMessage("CPQ-BML: open a .bml file to debug.");
     return;
+  }
+
+  if (diagnosticCollection) {
+    diagnosticCollection.delete(editor.document.uri);
   }
 
   const hasCredentials = await ensureCredentials(context, vscode);
@@ -115,12 +174,13 @@ async function runDebugCurrentFile(
           ? cached.parameterValues[param.name]
           : "";
 
-      const value = await vscode.window.showInputBox({
+      let value = await vscode.window.showInputBox({
         prompt: `Value for parameter "${param.name}"${typeLabel ? ` (${typeLabel})` : ""}`,
         value: String(prefill !== undefined && prefill !== null ? prefill : ""),
         ignoreFocusOut: true,
       });
       if (value === undefined) return; // cancelled
+      value = metadataLib.normalizeNumericValue(value, param.dataType);
       parameterValues[param.name] = value;
     }
 
@@ -237,11 +297,54 @@ async function runDebugCurrentFile(
     vscode.window.showErrorMessage(
       `CPQ-BML: debug failed (HTTP ${statusCode}). ${message}`,
     );
+
+    const lineNum = parseErrorLine(message);
+    if (lineNum !== null && diagnosticCollection) {
+      const lineIdx = Math.max(0, lineNum - 1);
+      const lineText = doc.lineCount > lineIdx ? doc.lineAt(lineIdx).text : "";
+      const startChar = lineText.length - lineText.trimStart().length;
+      const endChar = lineText.length;
+      const range = new vscode.Range(lineIdx, startChar, lineIdx, endChar);
+      
+      const diagnostic = new vscode.Diagnostic(
+        range,
+        `BML Debug Runtime Error: ${message}`,
+        vscode.DiagnosticSeverity.Error
+      );
+      diagnostic.source = 'BML Debug';
+      diagnostic.code = 'bml-debug-runtime-error';
+      
+      diagnosticCollection.set(doc.uri, [diagnostic]);
+    }
     return;
   }
 
   const returnVal = body && body.returnData;
-  if (returnVal !== undefined && returnVal !== null && returnVal !== "") {
+  let tableOutput = null;
+
+  if (configLib.getShowDebugResultsAsTable(vscode) && returnVal !== undefined && returnVal !== null && returnVal !== "") {
+    try {
+      let parsed = null;
+      if (typeof returnVal === 'string') {
+        parsed = JSON.parse(returnVal);
+      } else if (typeof returnVal === 'object') {
+        parsed = returnVal;
+      }
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        tableOutput = formatAsTable(parsed);
+      }
+    } catch (e) {
+      // Not a valid JSON or not an object, fall back to normal output
+    }
+  }
+
+  if (tableOutput) {
+    resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
+    const tableLines = tableOutput.split('\n');
+    for (const line of tableLines) {
+      resultsTerminal.writeLine(`\x1b[32m${line}\x1b[0m`);
+    }
+  } else if (returnVal !== undefined && returnVal !== null && returnVal !== "") {
     writeTerminalMessage(
       resultsTerminal,
       "Debug output: ",

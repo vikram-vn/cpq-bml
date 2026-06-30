@@ -351,6 +351,14 @@ export function AdvancedTab({ active, debug = {}, updateField }) {
                     checked={debug.logOutputToFile}
                     onChange={(v) => updateField('debug.logOutputToFile', v)}
                 />
+                
+                <Switch
+                    id="showResultsAsTable"
+                    label="Show Debug Results as Table"
+                    description="Format JSON or dictionary return values in BML debug output as a key-value table"
+                    checked={debug.showResultsAsTable}
+                    onChange={(v) => updateField('debug.showResultsAsTable', v)}
+                />
             </section>
         </div>
     );
