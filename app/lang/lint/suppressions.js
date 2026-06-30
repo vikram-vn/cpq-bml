@@ -35,7 +35,7 @@ function describeLintDirective(commentText) {
     if (!m) return null;
     return {
         type: m[1].toLowerCase(),
-        codes: m[2].trim().split(/\s+/).filter(Boolean)
+        codes: m[2].trim().split(/[\s,]+/).filter(w => w.startsWith('bml-'))
     };
 }
 
@@ -48,7 +48,7 @@ function parseDirectives(text, commentRanges, lineStarts) {
         while ((m = directiveRegex.exec(commentText)) !== null) {
             const line = offsetToLine(lineStarts, start + m.index);
             const type = m[1].toLowerCase();
-            const codes = m[2].trim().split(/\s+/).filter(Boolean);
+            const codes = m[2].trim().split(/[\s,]+/).filter(w => w.startsWith('bml-'));
             directives.push({ line, type, codes });
         }
     }
@@ -59,6 +59,9 @@ function computeSuppressions(text, commentRanges) {
     const lineStarts = computeLineStarts(text);
     const totalLines = lineStarts.length;
     const directives = parseDirectives(text, commentRanges, lineStarts);
+
+        // Removed fallback detection (handled by regex)
+
 
     let fileDisableAll = false;
     const fileDisableCodes = new Set();

@@ -1,0 +1,29 @@
+// 1. BMQL SELECT *
+r1 = bmql("SELECT * FROM myTable");
+r2 = bmql("SELECT id, name FROM myTable"); // OK
+
+// 2. Hardcoded URLs
+url1 = "https://example.com/api/v1";
+url2 = "http://localhost:8080";
+url3 = "https://"; // OK (protocol only)
+url4 = "http://www.w3.org/2001/XMLSchema-instance"; // OK (schema namespace)
+
+// 3. Float comparisons
+f = 1.5;
+if (f == 1.5) { // Warning
+    print(url1);
+}
+if (f != 0.0) { // Warning
+    print(url2);
+}
+if (f == 1) { // OK (integer comparison)
+    print(url3);
+}
+
+// 4. Division by zero
+d1 = 10 / 0; // Error
+d2 = 10 / 0.0; // Error
+d3 = 10 / 0.5; // OK
+
+print(r1); print(r2); print(url4); print(d1); print(d2); print(d3);
+return "";

@@ -49,7 +49,7 @@ function checkBestPractices(cleanText, noStringsText, doc) {
         diagnostics.push(diag);
     }
 
-    // 3. SQL Injection in BMQL (run on cleanText since we need string literals intact)
+    // 3. SQL Injection and SELECT * in BMQL (run on cleanText since we need string literals intact)
     const bmqlRegex = /\bbmql\s*\(/gi;
     while ((match = bmqlRegex.exec(cleanText)) !== null) {
         const startIdx = match.index;
@@ -69,6 +69,7 @@ function checkBestPractices(cleanText, noStringsText, doc) {
             let inSingleQuote = false;
             let inDoubleQuote = false;
             let hasDynamicConcat = false;
+            let queryLiteralText = '';
 
             for (let j = 0; j < argsText.length; j++) {
                 const char = argsText[j];
@@ -78,18 +79,33 @@ function checkBestPractices(cleanText, noStringsText, doc) {
                     inDoubleQuote = !inDoubleQuote;
                 } else if (char === '+' && !inSingleQuote && !inDoubleQuote) {
                     hasDynamicConcat = true;
-                    break;
+                }
+
+                if (inSingleQuote || inDoubleQuote) {
+                    queryLiteralText += char;
                 }
             }
 
+            const startPos = doc.positionAt(startIdx);
+            const endPos = doc.positionAt(endIdx + 1);
+            const range = new vscode.Range(startPos, endPos);
+
             if (hasDynamicConcat) {
-                const startPos = doc.positionAt(startIdx);
-                const endPos = doc.positionAt(endIdx + 1);
                 diagnostics.push(
                     new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
+                        range,
                         'Security Warning: Dynamic query concatenation detected in BMQL. Use $variable syntax instead to prevent SQL injection',
                         vscode.DiagnosticSeverity.Error
+                    )
+                );
+            }
+
+            if (/\bselect\s+\*/i.test(queryLiteralText)) {
+                diagnostics.push(
+                    new vscode.Diagnostic(
+                        range,
+                        "Commerce Best Practice: Avoid using 'SELECT *' in BMQL. Explicitly list the required columns to optimize performance and reduce memory usage.",
+                        vscode.DiagnosticSeverity.Warning
                     )
                 );
             }
@@ -287,6 +303,112 @@ function checkBestPractices(cleanText, noStringsText, doc) {
                 vscode.DiagnosticSeverity.Error
             )
         );
+    }
+
+    // 13. Hardcoded URLs check (run on cleanText string literals)
+    const urlRegex = /"(https?:\/\/[^\s"]+)"|'(https?:\/\/[^\s']+)'/gi;
+    while ((match = urlRegex.exec(cleanText)) !== null) {
+        const url = match[1] || match[2];
+        if (url && url.length > 8 && !url.endsWith('://')) {
+            if (url.includes('w3.org') || url.includes('schema.org')) {
+                continue;
+            }
+            const startPos = doc.positionAt(match.index);
+            const endPos = doc.positionAt(match.index + match[0].length);
+            diagnostics.push(
+                new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    "Design Warning: Hardcoded URL detected. Consider using a dynamic configuration, Data Table, or System Variable to avoid environment-specific issues.",
+                    vscode.DiagnosticSeverity.Warning
+                )
+            );
+        }
+    }
+
+    // 14. Float Equality Comparison (run on noStringsText)
+    const floatCompareRegex = /\b([a-zA-Z_]\w*)\s*(==|!=|<>)\s*(\d+\.\d+)|(\d+\.\d+)\s*(==|!=|<>)\s*\b([a-zA-Z_]\w*)/g;
+    while ((match = floatCompareRegex.exec(noStringsText)) !== null) {
+        const startPos = doc.positionAt(match.index);
+        const endPos = doc.positionAt(match.index + match[0].length);
+        diagnostics.push(
+            new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold.",
+                vscode.DiagnosticSeverity.Warning
+            )
+        );
+    }
+
+    // 15. Array Element Assignment Check (run on noStringsText)
+    const arrayAssignRegex = /\b([a-zA-Z_]\w*)\s*\[[^\]]+\]\s*=(?!=)/g;
+    while ((match = arrayAssignRegex.exec(noStringsText)) !== null) {
+        const startPos = doc.positionAt(match.index);
+        const endPos = doc.positionAt(match.index + match[0].length);
+        diagnostics.push(
+            new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                "BML Syntax Error: Array element assignment (e.g. 'arr[index] = value') is not supported in BML. Use array functions like 'append()', 'insert()', or construct a new array instead.",
+                vscode.DiagnosticSeverity.Error
+            )
+        );
+    }
+
+    // 16. Loop Control Statement Check (break/continue outside of loops, run on noStringsText)
+    const braceOrKeywordRegex = /\{|\}|\bfor\b|\bbreak\b|\bcontinue\b/g;
+    const braceStack = [];
+    let lastWasFor = false;
+    let loopMatch;
+    while ((loopMatch = braceOrKeywordRegex.exec(noStringsText)) !== null) {
+        const token = loopMatch[0];
+        if (token === 'for') {
+            lastWasFor = true;
+        } else if (token === '{') {
+            braceStack.push(lastWasFor ? 'loop' : 'other');
+            lastWasFor = false;
+        } else if (token === '}') {
+            if (braceStack.length > 0) {
+                braceStack.pop();
+            }
+        } else if (token === 'break' || token === 'continue') {
+            const isInLoop = braceStack.includes('loop');
+            if (!isInLoop) {
+                const startPos = doc.positionAt(loopMatch.index);
+                const endPos = doc.positionAt(loopMatch.index + token.length);
+                diagnostics.push(
+                    new vscode.Diagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `BML Syntax Error: '${token}' statement is only allowed inside a loop body.`,
+                        vscode.DiagnosticSeverity.Error
+                    )
+                );
+            }
+            lastWasFor = false;
+        } else {
+            lastWasFor = false;
+        }
+    }
+
+    // 17. Invalid Member Access Check (run on noStringsText)
+    const invalidDotRegex = /\b([a-zA-Z_]\w*)\.([a-zA-Z_]\w*)(?:\s*\()?/g;
+    while ((match = invalidDotRegex.exec(noStringsText)) !== null) {
+        const prefix = match[1];
+        const suffix = match[2];
+        const isMethodCall = match[0].trim().endsWith("(");
+        if (prefix === "util" || prefix === "commerce") {
+            continue;
+        }
+        const isInvalidProperty = suffix === "length" || suffix === "size";
+        if (isMethodCall || isInvalidProperty) {
+            const startPos = doc.positionAt(match.index);
+            const endPos = doc.positionAt(match.index + match[0].length);
+            diagnostics.push(
+                new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `BML Syntax Error: Member access or method call ('${match[0].trim()}') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()').`,
+                    vscode.DiagnosticSeverity.Error
+                )
+            );
+        }
     }
 
     return diagnostics;

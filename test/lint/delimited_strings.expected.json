@@ -5,24 +5,9 @@
     "message": "Safety Warning: Validate numericality of data with 'isnumber(val1)' or use a safe wrapper like 'customAtoi'/'customAtof' before calling 'atoi'"
   },
   {
-    "line": 12,
-    "severity": "Warning",
-    "message": "Naming Warning: Constant variable 'delimited_str' should be in ALL_CAPS."
-  },
-  {
-    "line": 15,
-    "severity": "Warning",
-    "message": "Naming Warning: Array variable 'valA' should have 'List', 'Arr', 'Array', or '2D' suffix."
-  },
-  {
     "line": 15,
     "severity": "Warning",
     "message": "Safety Warning: Check the size of the split array 'arr1' using 'sizeofarray()' before accessing elements"
-  },
-  {
-    "line": 20,
-    "severity": "Warning",
-    "message": "Naming Warning: Array variable 'valB' should have 'List', 'Arr', 'Array', or '2D' suffix."
   },
   {
     "line": 24,

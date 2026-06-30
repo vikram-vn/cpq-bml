@@ -1,0 +1,33 @@
+// 1. Invalid logical and arithmetic operators
+if (a && b) { // Error: Use "AND"
+    print("a and b");
+}
+if (c || d) { // Error: Use "OR"
+    print("c or d");
+}
+if (!e) { // Error: Use "NOT"
+    print("not e");
+}
+x = 1;
+x++; // Error: Use x = x + 1
+y = 2;
+y--; // Error: Use y = y - 1
+z = 3;
+z += 5; // Error: += operator not supported
+
+// 2. Array assignment
+myArray = string[]{"a"};
+myArray[0] = "b"; // Error: Array element assignment
+
+// 3. Loop control statements
+break; // Error: break outside loop
+continue; // Error: continue outside loop
+
+// 4. Invalid member access
+myArray.length; // Error: Member access
+myDict = dict("string");
+myDict.size(); // Error: Method call
+myJson = json();
+myJson.get("key"); // Error: Method call
+
+return "";

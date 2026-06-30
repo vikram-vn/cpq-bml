@@ -1,0 +1,82 @@
+[
+  {
+    "line": 1,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Avoid using 'SELECT *' in BMQL. Explicitly list the required columns to optimize performance and reduce memory usage."
+  },
+  {
+    "line": 5,
+    "severity": "Warning",
+    "message": "Design Warning: Hardcoded URL detected. Consider using a dynamic configuration, Data Table, or System Variable to avoid environment-specific issues."
+  },
+  {
+    "line": 6,
+    "severity": "Warning",
+    "message": "Design Warning: Hardcoded URL detected. Consider using a dynamic configuration, Data Table, or System Variable to avoid environment-specific issues."
+  },
+  {
+    "line": 11,
+    "severity": "Information",
+    "message": "Design Info: Magic number '1.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 12,
+    "severity": "Information",
+    "message": "Design Info: Magic number '1.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 12,
+    "severity": "Warning",
+    "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
+  },
+  {
+    "line": 13,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 15,
+    "severity": "Error",
+    "message": "Use <> in BML"
+  },
+  {
+    "line": 15,
+    "severity": "Warning",
+    "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
+  },
+  {
+    "line": 16,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 19,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 23,
+    "severity": "Error",
+    "message": "Division by literal zero ('0') will throw a runtime exception"
+  },
+  {
+    "line": 24,
+    "severity": "Error",
+    "message": "Division by literal zero ('0.0') will throw a runtime exception"
+  },
+  {
+    "line": 25,
+    "severity": "Information",
+    "message": "Design Info: Magic number '0.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 27,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  }
+]

@@ -67,4 +67,72 @@ suite('BML Linter Test Suite - // bml-lint-disable comment directives', () => {
         assert.ok(semiLines.includes(2));
         assert.ok(semiLines.includes(3));
     });
+
+    test('suppression directives with trailing explanations/comments work correctly', () => {
+        const diags = lintText(`
+            // bml-lint-disable-next-line (some explanation about dividing by zero)
+            x = 10 / 0;
+            
+            y = 10 / 0; // bml-lint-disable-line (disable on current line)
+            
+            // bml-lint-disable-file (entire file disable)
+            z = 10 / 0;
+        `);
+        assert.strictEqual(diags.length, 0, 'All diagnostics should be successfully suppressed');
+    });
+
+    test('suppression edge cases: multi-line block comments, no-space, commas, and multiple codes', () => {
+        // 1. Single-line block comment with disable-next-line
+        const diags1 = lintText(`
+            /* bml-lint-disable-next-line */
+            x = 10 / 0;
+        `);
+        assert.strictEqual(diags1.length, 0, 'Should suppress next line after block comment');
+
+        // 2. No-space directive
+        const diags2 = lintText(`
+            y = 10 / 0; //bml-lint-disable-line
+        `);
+        assert.strictEqual(diags2.length, 0, 'Should suppress with no-space directive');
+
+        // 3. Multiple codes separated by space and comma
+        const diags3 = lintText(`
+            // bml-lint-disable-next-line bml-operator-fix, bml-spelling-error (with explanation)
+            z = 10 / 0;
+        `);
+        const divDiags = diags3.filter(d => d.message.includes("Division by literal zero"));
+        assert.strictEqual(divDiags.length, 1, 'Should NOT suppress division by zero because only operator and spelling were disabled');
+    });
+
+    test('suppression edge cases: mixed casing, whitespaces/tabs, same-line block comments, and code prefix filtering', () => {
+        // 1. Mixed casing
+        const diags1 = lintText(`
+            // Bml-Lint-Disable-Next-Line
+            x = 10 / 0;
+        `);
+        assert.strictEqual(diags1.length, 0, 'Should suppress with mixed-case directive');
+
+        // 2. Tabs and extra whitespaces
+        const diags2 = lintText(`
+            y = 10 / 0; // \t  bml-lint-disable-line  \t
+        `);
+        assert.strictEqual(diags2.length, 0, 'Should suppress with tabs and trailing whitespaces');
+
+        // 3. Same-line block comment
+        const diags3 = lintText(`
+            z = 10 / 0; /* bml-lint-disable-line */
+        `);
+        assert.strictEqual(diags3.length, 0, 'Should suppress with same-line block comment');
+
+        // 4. Invalid bml- prefixed code vs non-bml- prefixed explanation
+        const diags4 = lintText(`
+            a = 10 / 0; // bml-lint-disable-line bml-some-other-code
+        `);
+        assert.strictEqual(diags4.filter(d => d.message.includes("Division by literal zero")).length, 1, 'Should NOT suppress when an invalid bml- prefixed code is specified');
+
+        const diags5 = lintText(`
+            b = 10 / 0; // bml-lint-disable-line some-other-code
+        `);
+        assert.strictEqual(diags5.filter(d => d.message.includes("Division by literal zero")).length, 0, 'Should suppress when a non-bml- prefixed explanation is specified');
+    });
 });

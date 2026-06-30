@@ -310,4 +310,177 @@ suite('BML Linter Test Suite - rules', function() {
         assert.ok(longLineDiag, 'Should flag very long statement');
         assert.strictEqual(longLineDiag.severity, require('vscode').DiagnosticSeverity.Warning);
     });
+
+    test('Linter flags SELECT * in BMQL, hardcoded URLs, and float comparison', () => {
+        const diagnostics = lintText(`
+            r = bmql("SELECT * FROM myTable");
+            url = "https://example.com/api";
+            if (f == 1.5) {
+                print(url);
+            }
+        `);
+
+        assert.ok(diagnostics.find(d => d.message.includes("SELECT *")), 'Should flag SELECT *');
+        assert.ok(diagnostics.find(d => d.message.includes("Hardcoded URL")), 'Should flag hardcoded URL');
+        assert.ok(diagnostics.find(d => d.message.includes("Comparing float values")), 'Should flag float comparison');
+    });
+
+    test('Linter allows urldata, urldatabypost, and urldatabyget as non-deprecated', () => {
+        const diagnostics = lintText(`
+            res1 = urldata("http://test.com", "GET", dict("string"));
+            res2 = urldatabypost("http://test.com", "body", "headers");
+            res3 = urldatabyget("http://test.com", "headers", "error");
+            print(res1);
+            print(res2);
+            print(res3);
+            return "";
+        `);
+
+        const dep = diagnostics.filter(d => d.message.includes("Deprecated function") && (d.message.includes("urldata") || d.message.includes("urldatabypost") || d.message.includes("urldatabyget")));
+        assert.strictEqual(dep.length, 0, 'urldata functions should not be flagged as deprecated');
+    });
+
+    test('Linter flags legacy functions gettabledata and getpartsdata as deprecated', () => {
+        const diagnostics = lintText(`
+            res1 = gettabledata("my_table", "my_column", "my_value");
+            res2 = getpartsdata(string[]{"part1"});
+            print(res1);
+            print(res2);
+            return "";
+        `);
+
+        const gettabledataDiag = diagnostics.find(d => d.message.includes("gettabledata") && d.message.includes("Use 'bmql' instead"));
+        const getpartsdataDiag = diagnostics.find(d => d.message.includes("getpartsdata") && d.message.includes("Use 'bmql' instead"));
+        assert.ok(gettabledataDiag, 'Should flag gettabledata as deprecated');
+        assert.ok(getpartsdataDiag, 'Should flag getpartsdata as deprecated');
+    });
+
+    test('Linter does not flag compiler-required dummy, temp, or trigger_ variables as unused', () => {
+        const diagnostics = lintText(`
+            dummy = util.someFunc();
+            temp = util.anotherFunc();
+            trigger_save = util.wsUpdateTransactionSave();
+            unused = 123; // exact name 'unused' is ignored
+            return "";
+        `);
+
+        const unusedDiags = diagnostics.filter(d => d.message.includes("Unused variable"));
+        assert.strictEqual(unusedDiags.length, 0, 'Should not flag dummy, temp, trigger_, or unused variables as unused');
+    });
+
+    test('Linter flags actual unused variables', () => {
+        const diagnostics = lintText(`
+            realUnused = 123;
+            return "";
+        `);
+
+        const unusedDiag = diagnostics.find(d => d.message.includes("Unused variable: realUnused"));
+        assert.ok(unusedDiag, 'Should flag realUnused as unused');
+    });
+
+    test('Linter flags special character 0x1c which can corrupt CPQ deployments', () => {
+        const diagnostics = lintText(`
+            x = "\x1chelo";
+            return x;
+        `);
+
+        const corruptDiag = diagnostics.find(d => d.message.includes("corrupting special character (0x1c)"));
+        assert.ok(corruptDiag, 'Should flag the 0x1c special character');
+    });
+
+    test('Linter edge cases: SELECT * and URLs in comments/strings, float compare in comments, division by 0.0', () => {
+        const diagnostics = lintText(`
+            // SELECT * FROM myTable
+            // https://example.com/api
+            // if (f == 1.5) { }
+            // z = 10 / 0;
+            
+            s1 = "SELECT * FROM myTable";
+            s2 = "not a url";
+            s3 = "if (f == 1.5) { }";
+            s4 = "z = 10 / 0;";
+            
+            // Valid w3.org URL in code (should be ignored)
+            schema = "http://www.w3.org/2001/XMLSchema-instance";
+            
+            // Protocol only (should be ignored)
+            proto = "https://";
+            
+            // Division by 0.0 (should be flagged)
+            badDiv1 = 10 / 0.0;
+            badDiv2 = 5 / 0.00;
+
+            print(s1); print(s2); print(s3); print(s4); print(schema); print(proto);
+            print(badDiv1); print(badDiv2);
+            return "";
+        `);
+
+        // Comments and plain string literals should NOT trigger SELECT *, URL, float compare, or division by zero warnings
+        const selectStarDiag = diagnostics.find(d => d.message.includes("SELECT *"));
+        assert.strictEqual(selectStarDiag, undefined, 'Should not flag SELECT * in comments/strings');
+
+        const urlDiag = diagnostics.find(d => d.message.includes("Hardcoded URL") && !d.message.includes("schema") && !d.message.includes("proto"));
+        assert.strictEqual(urlDiag, undefined, 'Should not flag hardcoded URLs in comments/strings or w3.org/protocol-only strings');
+
+        const floatDiag = diagnostics.find(d => d.message.includes("Comparing float values"));
+        assert.strictEqual(floatDiag, undefined, 'Should not flag float comparisons in comments/strings');
+
+        // Division by 0.0 and 0.00 should be flagged
+        const divDiags = diagnostics.filter(d => d.message.includes("Division by literal zero"));
+        assert.strictEqual(divDiags.length, 2, 'Should flag division by 0.0 and 0.00');
+    });
+
+    test('Linter flags BML syntax errors: array element assignment, break/continue outside loops, invalid member access', () => {
+        const diagnostics = lintText(`
+            arr = string[]{"a"};
+            arr[0] = "b"; // Error
+            
+            for x in arr {
+                if (x == "a") {
+                    break; // OK
+                }
+            }
+            
+            break; // Error
+            continue; // Error
+
+            // Invalid member accesses
+            arr.length; // Error
+            myDict = dict("string");
+            myDict.size(); // Error
+            myJson = json();
+            myJson.get("key"); // Error
+
+            // Valid Record field access (should NOT be flagged)
+            print(line.itemInstanceId_l); // OK
+            return "";
+        `);
+
+        const arrayAssignDiag = diagnostics.find(d => d.message.includes("Array element assignment"));
+        assert.ok(arrayAssignDiag, 'Should flag array element assignment');
+        assert.strictEqual(arrayAssignDiag.severity, require('vscode').DiagnosticSeverity.Error);
+
+        const breakDiags = diagnostics.filter(d => d.message.includes("'break' statement is only allowed"));
+        assert.strictEqual(breakDiags.length, 1, 'Should flag one break statement outside loop');
+        assert.strictEqual(breakDiags[0].severity, require('vscode').DiagnosticSeverity.Error);
+
+        const continueDiags = diagnostics.filter(d => d.message.includes("'continue' statement is only allowed"));
+        assert.strictEqual(continueDiags.length, 1, 'Should flag one continue statement outside loop');
+        assert.strictEqual(continueDiags[0].severity, require('vscode').DiagnosticSeverity.Error);
+
+        const lengthDiag = diagnostics.find(d => d.message.includes("Member access or method call ('arr.length')"));
+        assert.ok(lengthDiag, 'Should flag arr.length');
+        assert.strictEqual(lengthDiag.severity, require('vscode').DiagnosticSeverity.Error);
+
+        const sizeDiag = diagnostics.find(d => d.message.includes("Member access or method call ('myDict.size(')"));
+        assert.ok(sizeDiag, 'Should flag myDict.size()');
+        assert.strictEqual(sizeDiag.severity, require('vscode').DiagnosticSeverity.Error);
+
+        const getDiag = diagnostics.find(d => d.message.includes("Member access or method call ('myJson.get(')"));
+        assert.ok(getDiag, 'Should flag myJson.get()');
+        assert.strictEqual(getDiag.severity, require('vscode').DiagnosticSeverity.Error);
+
+        const recordDiag = diagnostics.find(d => d.message.includes("line.itemInstanceId_l"));
+        assert.strictEqual(recordDiag, undefined, 'Should NOT flag valid Record field access line.itemInstanceId_l');
+    });
 });

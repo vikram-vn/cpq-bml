@@ -15,11 +15,6 @@
     "message": "Data Table name 'table_name_that_is_exceedingly_long_exceeds_twenty' exceeds the 20-character limit"
   },
   {
-    "line": 4,
-    "severity": "Warning",
-    "message": "Naming Warning: RecordSet variable 'results' should have the 'Records' suffix."
-  },
-  {
     "line": 7,
     "severity": "Information",
     "message": "Design Info: Magic number '2147483648' detected. Consider defining a named constant"

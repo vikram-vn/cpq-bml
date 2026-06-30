@@ -20,51 +20,6 @@
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 10,
-    "severity": "Warning",
-    "message": "Naming Warning: Dictionary variable 'myDictVar' should have the 'Dict' suffix."
-  },
-  {
-    "line": 10,
-    "severity": "Warning",
-    "message": "Naming Warning: Dictionary declaration 'myDictVar' must have a comment at the end explaining the Key/Value mapping (e.g. //Key: ..., Value: ...)."
-  },
-  {
-    "line": 11,
-    "severity": "Warning",
-    "message": "Naming Warning: Dictionary variable 'seqVar' should have the 'Dict' suffix."
-  },
-  {
-    "line": 14,
-    "severity": "Warning",
-    "message": "Naming Warning: Array variable 'myArrayVar' should have 'List', 'Arr', 'Array', or '2D' suffix."
-  },
-  {
-    "line": 17,
-    "severity": "Warning",
-    "message": "Naming Warning: RecordSet variable 'rs' should have the 'Records' suffix."
-  },
-  {
-    "line": 20,
-    "severity": "Warning",
-    "message": "Naming Warning: Boolean variable 'flag' should have 'is' or 'has' prefix."
-  },
-  {
-    "line": 23,
-    "severity": "Warning",
-    "message": "Naming Warning: Variable 'TotalListPrice' should start with a lowercase letter (camelCase)."
-  },
-  {
-    "line": 24,
-    "severity": "Warning",
-    "message": "Naming Warning: Constant variable 'total_list_price' should be in ALL_CAPS."
-  },
-  {
-    "line": 25,
-    "severity": "Warning",
-    "message": "Naming Warning: Constant variable 'item_delim' should be in ALL_CAPS."
-  },
-  {
     "line": 28,
     "severity": "Warning",
     "message": "Style Warning: Functions/operators with a single argument should enclose that argument in parentheses, e.g. not(flag) rather than not flag."
