@@ -7,6 +7,7 @@ const { registerBmlComments } = require("./app/lang/comments");
 const { registerBmlRest } = require("./app/lang/rest");
 const { registerMcp } = require("./app/lang/mcp");
 const { registerSettingsPanel } = require("./app/lang/settingsPanel");
+const { registerXslt } = require("./app/lang/xslt");
 const { beautifyWorkspaceCommand } = require("./app/lang/beautify/commandWorkspace");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
@@ -52,6 +53,10 @@ function activate(context) {
 
   // Register the WebView connection settings panel
   registerSettingsPanel(context);
+
+  // Register XSLT preview & formatting support
+  registerXslt(context);
+
   // Register workspace-wide BML beautify command
   const workspaceCmd = vscode.commands.registerCommand('cpqBml.beautifyWorkspace', beautifyWorkspaceCommand);
   context.subscriptions.push(workspaceCmd);

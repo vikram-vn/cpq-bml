@@ -244,6 +244,25 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
         }
     }
 
+
+
+    // 8. Very long statement check (>200 chars, excluding strings/comments)
+    for (let i = 0; i < noStringsLines.length; i++) {
+        const line = noStringsLines[i];
+        const codeOnly = line.split('//')[0].trim();
+        if (codeOnly.length > 200) {
+            const startPos = new vscode.Position(i, 0);
+            const endPos = new vscode.Position(i, lines[i].length);
+            diagnostics.push(
+                new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Style Warning: Line exceeds 200 characters of code (${codeOnly.length} chars). Consider breaking it into multiple lines.`,
+                    vscode.DiagnosticSeverity.Warning
+                )
+            );
+        }
+    }
+
     return diagnostics;
 }
 

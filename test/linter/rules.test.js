@@ -288,4 +288,26 @@ suite('BML Linter Test Suite - rules', function() {
         const unknownDiags = diagnostics.filter(d => d.message.includes('Unknown built-in function or variable'));
         assert.deepStrictEqual(unknownDiags, [], 'Storage-type constructor calls should never be flagged as unknown');
     });
+
+    test('Linter flags empty blocks and very long statements', () => {
+        const diagnostics = lintText(`
+            x = 10;
+            if (x == 10) {
+            }
+            list = string[]{};
+            y = 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1;
+        `);
+
+        const emptyBlockDiag = diagnostics.find(d => d.message.includes('Empty block detected'));
+        assert.ok(emptyBlockDiag, 'Should flag empty block');
+        assert.strictEqual(emptyBlockDiag.severity, require('vscode').DiagnosticSeverity.Warning);
+
+        // Should not flag the empty array initializer list = string[]{}
+        const arrayInitDiag = diagnostics.find(d => d.range.start.line === 4 && d.message.includes('Empty block detected'));
+        assert.strictEqual(arrayInitDiag, undefined, 'Should not flag empty array initializer');
+
+        const longLineDiag = diagnostics.find(d => d.message.includes('Line exceeds 200 characters'));
+        assert.ok(longLineDiag, 'Should flag very long statement');
+        assert.strictEqual(longLineDiag.severity, require('vscode').DiagnosticSeverity.Warning);
+    });
 });

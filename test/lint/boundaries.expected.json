@@ -90,14 +90,29 @@
     "message": "String literal length (256) exceeds 255 characters limit for standard Commerce text fields (and truncates standard part numbers)"
   },
   {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (266 chars). Consider breaking it into multiple lines."
+  },
+  {
     "line": 19,
     "severity": "Warning",
     "message": "String literal length (257) exceeds 256 characters limit for Configuration text fields"
   },
   {
+    "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (267 chars). Consider breaking it into multiple lines."
+  },
+  {
     "line": 22,
     "severity": "Warning",
     "message": "String literal length (4295) exceeds 4000 characters limit for Submit Comments or Attribute Descriptions"
+  },
+  {
+    "line": 22,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (4306 chars). Consider breaking it into multiple lines."
   },
   {
     "line": 25,

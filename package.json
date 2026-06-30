@@ -156,6 +156,16 @@
         "command": "cpqBml.beautifyWorkspace",
         "title": "CPQ-BML: Beautify / Format All BML Files in Workspace",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.xslt.preview",
+        "title": "CPQ-BML: Preview XSLT",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "cpqBml.xslt.switchFile",
+        "title": "CPQ-BML: Switch to Linked XML/XSLT File",
+        "icon": "$(arrow-swap)"
       }
     ],
     "menus": {
@@ -199,6 +209,16 @@
           "command": "cpqBml.rest.deployCurrentFile",
           "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
+        },
+        {
+          "command": "cpqBml.xslt.preview",
+          "when": "resourceLangId == xml || resourceLangId == xsl || resourceExtname == .xsl || resourceExtname == .xslt",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.xslt.switchFile",
+          "when": "resourceLangId == xml || resourceLangId == xsl || resourceExtname == .xsl || resourceExtname == .xslt",
+          "group": "navigation@2"
         }
       ]
     },

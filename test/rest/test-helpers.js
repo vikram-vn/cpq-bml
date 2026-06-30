@@ -31,7 +31,7 @@ const DiagnosticSeverity = {
     Hint: 3
 };
 
-function createFakeVscode({ config = {}, window = {}, workspaceFolders, commands = {} } = {}) {
+function createFakeVscode({ config = {}, window = {}, workspace = {}, workspaceFolders, commands = {} } = {}) {
     return {
         Range,
         Position,
@@ -42,7 +42,16 @@ function createFakeVscode({ config = {}, window = {}, workspaceFolders, commands
             Workspace: 2,
             WorkspaceFolder: 3
         },
+        ViewColumn: {
+            Active: -1,
+            Beside: -2,
+            One: 1,
+            Two: 2,
+            Three: 3
+        },
         workspace: {
+            onDidSaveTextDocument: workspace.onDidSaveTextDocument || (() => ({ dispose: () => {} })),
+            ...workspace,
             getConfiguration: (section) => ({
                 get(key, def) {
                     const fullKey = section ? `${section}.${key}` : key;
