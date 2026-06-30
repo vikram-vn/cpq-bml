@@ -4,6 +4,51 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0]
+
+### Added
+
+- **Performance linting** (`app/lang/lint/performance.js`): five new rule categories run on every save:
+  - _Nested loops_ — warns when a `for` loop is nested inside another `for` loop (negative performance impact).
+  - _BMQL inside loops_ — flags any `bmql(...)` call whose position falls inside a loop body; recommends moving the query outside.
+  - _String concatenation in loops_ — detects self-concatenation patterns for string/return accumulator variables inside loops; recommends `sbappend`/`sbtostring` (StringBuilder).
+  - _Repeated identical BMQL queries_ — normalises whitespace and lowercases query text; flags every duplicate occurrence after the first.
+  - _Excessive same-table queries_ — when the same table is queried more than twice, flags all occurrences and recommends combining queries.
+  - _Deep nesting_ — warns when brace nesting depth exceeds 3.
+  - _High cyclomatic complexity_ — counts decision keywords (`if`, `elif`, `for`, `and`, `or`); warns when the total exceeds 15 and recommends helper-function refactors.
+
+- **Extended style linting** (`app/lang/lint/style.js`): three new rule categories:
+  - _Multiple statements per line_ — warns when two or more semicolons appear on one line of code.
+  - _`not` without parentheses_ — catches `not x` (where `x` is a variable) and requires `not(x)`.
+  - _Unguarded `print()` calls_ — `print(...)` outside a `if (debug) { ... }` block is flagged as an info diagnostic.
+  - _Line length_ — lines exceeding 200 characters of non-comment code produce a warning with the actual character count.
+
+- **Extended best-practices linting** (`app/lang/lint/bestPractices.js`): nine new rule categories beyond what was previously checked:
+  - _`SELECT _`in BMQL* — warns when a BMQL query literal uses`SELECT \*`; recommends explicit column lists.
+  - _Division by literal zero_ — parses the full numeric literal to avoid false positives on `/ 0.5`; flags only genuine `/ 0` (runtime exception).
+  - _Float direct equality comparison_ — warns when a variable is compared to a float literal with `==` or `!=`; recommends a tolerance threshold.
+  - _Hardcoded URLs_ — flags `"https://..."` string literals (excluding well-known schema URIs like `w3.org`); recommends Data Tables or System Variables.
+  - _`dict()` with no type argument_ — `dict()` compiles but throws at runtime; the rule requires e.g. `dict("string")` and carries code `bml-dict-missing-type`.
+  - _Array element assignment_ — `arr[i] = value` is a BML syntax error; recommends `append()` / `insert()` instead.
+  - _`break`/`continue` outside a loop_ — tracks brace/loop structure and flags these control-flow keywords when they appear outside any loop body.
+  - _Invalid member access / method call_ — detects dot-notation on non-`util`/`commerce` identifiers (e.g. `x.length`, `x.doSomething()`); recommends BML built-in alternatives.
+  - _`_config_attributes` / `_config_attr_text` ban_ — these hidden system attributes must never be used in Commerce BML.
+
+- **Enhanced inline suppression system** (`app/lang/lint/suppressions.js`):
+  - Directives are now **fully case-insensitive** — `// Bml-Lint-Disable-Next-Line` works identically to the all-lowercase form.
+  - **Block-comment directives** — `/* bml-lint-disable-next-line */` and `/* bml-lint-disable-line */` are now recognised and processed with the correct line mapping derived from the full source offset.
+  - **No-space directives** — `//bml-lint-disable-line` (no space after `//`) is accepted.
+  - **Comma-separated code lists** — `// bml-lint-disable-next-line bml-operator-fix, bml-spelling-error` correctly parses both codes.
+  - **Targeted-code suppression** — when codes are listed, only diagnostics whose `.code` matches one of those codes are suppressed; a directive targeting a different code no longer accidentally suppresses unrelated diagnostics.
+  - Exported `describeLintDirective(commentText)` now has a dedicated non-global regex to avoid shared `lastIndex` state across callers.
+
+- **Comprehensive suppression test suite** (`test/linter/suppressions.test.js`, `test/spellCheck/suppression.test.js`): edge-case tests covering block-comment next-line, no-space directives, comma-separated code lists, mixed-case directives, same-line block comments, non-`bml-`-prefixed explanations, targeted single-code suppression, and file-wide suppression placement.
+
+### Fixed
+
+- Suppression directives placed inside `/* block comments */` that span a single line now map to the correct source line number; previously the line was computed from the start of the comment rather than the position of the directive match within it.
+- A targeted `bml-lint-disable-line bml-some-other-code` comment no longer suppresses diagnostics with a different code (regression introduced when the fallback detection loop was added).
+
 ## [1.3.8]
 
 ### Added

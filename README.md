@@ -87,24 +87,50 @@ The extension includes a custom BML-native static analyzer to capture defects, a
 
 | Linter Rule Category | Diagnostic Checks & Validations | Recommendation / Fix |
 | :--- | :--- | :--- |
-| **SQL Injection (Vulnerability)** | Flags string concatenation inside `bmql(...)` queries. | Recommends safe `$variable` placeholder syntax. |
+| **SQL Injection (Vulnerability)** | Flags string concatenation inside `bmql(...)` queries. Flags `SELECT *` usage. | Recommends safe `$variable` placeholder syntax; list explicit columns. |
 | **API Deprecations** | Flags outdated methods like `strtodate`, `gettabledata`, and `getpartsdata`. | Suggests `strtojavadate` and secure `bmql` database queries. |
-| **Oracle Constants** | Catch JS-specific `NaN` references. | Auto-suggests CPQ-compatible `jNaN`. |
+| **Oracle Constants** | Catches JS-specific `NaN` references. | Auto-suggests CPQ-compatible `jNaN`. |
 | **Return Statements** | Checks for missing return paths or invalid Commerce BML returns (missing the delimiter `\|`). | Enforces valid BML return statements and delimiter patterns. |
-| **Array Boundary Safety** | Detects access on `split()` array indices without preceding checks. | Enforces array size validations using `sizeofarray()`. |
+| **Array Boundary Safety** | Detects access on `split()` array indices without preceding `sizeofarray()` checks. | Enforces array size validation before index access. |
 | **Parsing Validations** | Flags unsafe `atoi()` and `atof()` conversions. | Suggests checking numeric status first with `isnumber()`. |
 | **Logic & Style** | Empty control flows (`if`, `elif`, `else`, `for`), magic literals (except `0`, `1`, `2`, `10`, `100`), and strict semicolon rules. | Recommends naming constants and formatting blocks correctly. |
+| **Performance** | Nested loops, BMQL queries inside loops, string concatenation inside loops, repeated/duplicate BMQL queries on the same table. | Move queries outside loops; use `StringBuilder` (`sbappend`/`sbtostring`) for string accumulation; cache repeated queries. |
+| **Design & Complexity** | Nesting depth > 3, cyclomatic complexity > 15 (counted decision points: `if`/`elif`/`for`/`and`/`or`), hardcoded URLs in string literals. | Refactor deeply nested blocks into helper functions; extract URLs into Data Tables or System Variables. |
+| **Style** | Multiple statements on one line, opening/closing brace placement, `not` without parentheses around its argument, unguarded `print()` calls, lines exceeding 200 characters of code. | Enforces one-statement-per-line, collapse brace style, `not(x)` syntax, debug-flag-guarded print, and line-length limits. |
+| **Safety** | Float direct equality comparison (`==`/`!=`) against a literal float, division by literal zero, `break`/`continue` outside a loop body, forbidden `_config_attributes`/`_config_attr_text` system variables. | Use a tolerance threshold for float comparison; guard division; remove misplaced loop control statements; use supported CPQ attributes instead. |
+| **Syntax Errors** | Array element assignment (`arr[i] = v` is unsupported in BML), invalid member access or method calls on non-object values (e.g. `x.length`, `x.doSomething()`), `dict()` called with no type argument. | Use `append()`/`insert()` for arrays; use BML built-in functions (`sizeofarray()`, `jsonget()`, etc.) instead of dot-notation; supply a type to `dict()` (e.g., `dict("string")`). |
+| **Function Calls** | Unknown bare function names (with "did you mean" typo suggestions), incorrect argument counts against Oracle's built-in signatures, mismatched argument literal types, unknown workspace `util.*` / `commerce.*` function references. | Apply Quick Fix to correct the function name; match the expected argument count and types. |
+| **Dead Code & Logic** | Always-true/always-false conditions, unreachable code after unconditional `return`/`break`/`continue`/`throwerror`, duplicate `elif` branch conditions, `AND`/`OR` mixed without grouping parentheses, lonely `else { if ... }` (use `elif`), bare comparison with no effect (likely a typo for `=`). | Remove or refactor dead branches; add explicit parentheses for operator precedence; replace `else { if }` with `elif`; use assignment `=` where intended. |
+| **Variable Checks** | Type-consistency violations (variable re-assigned with a conflicting literal type), variable read before its assignment in the same file (`no-undef`/use-before-define, util library only), assignment to read-only CPQ system variables (`_user_*`, `_site_*`), metadata sidecar type mismatches. | Ensure consistent literal types across assignments; initialize variables before use; do not write to read-only system variables. |
 
 #### Inline Suppressions
 
-You can bypass specific linter rules on a granular basis using comments:
-* `// bml-lint-disable` (entire file)
-* `// bml-lint-disable-line` (current line)
-* `// bml-lint-disable-next-line` (subsequent line)
-* `// bml-lint-disable-file` (entire file)
+You can bypass specific linter rules on a granular basis using comments. Directives are **case-insensitive** and work inside both line comments and block comments:
+
+```bml
+// bml-lint-disable-file               ← suppress everything in this file
+// bml-lint-disable                    ← start of suppressed block
+// bml-lint-enable                     ← end of suppressed block
+x = 10 / 0; // bml-lint-disable-line  ← suppress diagnostics on this line
+/* bml-lint-disable-next-line */       ← suppress all diagnostics on the next line
+// bml-lint-disable-next-line bml-operator-fix, bml-spelling-error
+x = 10 / 0;                            ← only those two codes are suppressed
+```
+
+Supported directive styles:
+
+| Directive | Scope |
+| :--- | :--- |
+| `// bml-lint-disable-file [code ...]` | Entire file, regardless of where placed |
+| `// bml-lint-disable [code ...]` | From here until matching `bml-lint-enable` |
+| `// bml-lint-enable [code ...]` | Re-enables a previous `bml-lint-disable` |
+| `// bml-lint-disable-line [code ...]` | The line the comment is on |
+| `// bml-lint-disable-next-line [code ...]` | The immediately following line |
+| `/* bml-lint-disable-line */` | Same-line block comment |
+| `/* bml-lint-disable-next-line */` | Block comment before the target line |
 
 > [!TIP]
-> Lightbulb **Quick Fixes** (`Ctrl+.` or `Cmd+.`) are available for many diagnostics, allowing you to auto-resolve semicolon styling, variable typos, formatting errors, or deprecated APIs instantly.
+> Omitting a code list suppresses **all** diagnostics; listing one or more `bml-*` codes suppresses only those specific rules. Lightbulb **Quick Fixes** (`Ctrl+.` or `Cmd+.`) are available for many diagnostics, allowing you to auto-resolve semicolon styling, variable typos, formatting errors, or deprecated APIs instantly.
 
 ---
 

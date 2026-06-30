@@ -86,12 +86,14 @@ suite('BML Linter Test Suite - // bml-lint-disable comment directives', () => {
         const diags1 = lintText(`
             /* bml-lint-disable-next-line */
             x = 10 / 0;
+            return "";
         `);
         assert.strictEqual(diags1.length, 0, 'Should suppress next line after block comment');
 
         // 2. No-space directive
         const diags2 = lintText(`
             y = 10 / 0; //bml-lint-disable-line
+            return "";
         `);
         assert.strictEqual(diags2.length, 0, 'Should suppress with no-space directive');
 
@@ -109,18 +111,21 @@ suite('BML Linter Test Suite - // bml-lint-disable comment directives', () => {
         const diags1 = lintText(`
             // Bml-Lint-Disable-Next-Line
             x = 10 / 0;
+            return "";
         `);
         assert.strictEqual(diags1.length, 0, 'Should suppress with mixed-case directive');
 
         // 2. Tabs and extra whitespaces
         const diags2 = lintText(`
             y = 10 / 0; // \t  bml-lint-disable-line  \t
+            return "";
         `);
         assert.strictEqual(diags2.length, 0, 'Should suppress with tabs and trailing whitespaces');
 
         // 3. Same-line block comment
         const diags3 = lintText(`
             z = 10 / 0; /* bml-lint-disable-line */
+            return "";
         `);
         assert.strictEqual(diags3.length, 0, 'Should suppress with same-line block comment');
 
