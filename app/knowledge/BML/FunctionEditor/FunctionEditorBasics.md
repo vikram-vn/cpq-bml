@@ -2,8 +2,9 @@
 
 ## Overview
 
-> [!NOTE]
-> This topic covers the Funtion Editor using the classic interface pages. Refer to [Util BML Library Functions List](../UtilBmlLibraryFunctionsList.md) and [Util Function Editor](BML_Editor.md) for process administration using Redwood UI pages.
+:::note
+This topic covers the Funtion Editor using the classic interface pages. Refer to [Util BML Library Functions List](../UtilBmlLibraryFunctionsList.md) and [Util Function Editor](BML_Editor.md) for process administration using Redwood UI pages.
+:::
 
 While there are notable differences between the function editors found in the Oracle CPQ application, there are some common characteristics as well.
 
@@ -44,12 +45,15 @@ The box on the left defines the position of the character based on its line and 
 
 Clicking the **Binoculars**  will open a **Search and Replace** dialog box, to find and/or replace part of the script.
 
+:::tip
 Use the toolbar above to undo/redo changes, change the font or jump to a specific line in the script.
 
 You can also click the **blue arrow** to jump to a specific line in the script.
+:::
 
-> [!NOTE]
-> Character indexes begin with 0.
+:::note
+Character indexes begin with 0.
+:::
 
 Attributes & Actions
 
@@ -71,13 +75,11 @@ The proper **Variable Name** will automatically populate.
 
 5. Click the **blue arrow** to insert the attribute value into the Script Definition Area.
 
-> [!NOTE]
-> The return type of your code will be displayed in between the section with the header tabs and the script definition area.
-> 
-> 
-> 
-> 
-> The action attribute values you select will determine the return type of your code.
+:::note
+The return type of your code will be displayed in between the section with the header tabs and the script definition area.
+
+The action attribute values you select will determine the return type of your code.
+:::
 
 Library Function(s): Function to Function Calls
 
@@ -95,12 +97,17 @@ Adding a Function to Function Call
 
 4. When finished, click one of the following buttons:
 
+:::tip
 The **Function to Function** link appears on the **Related Rules** page. When it is referenced by other Utils it will be displayed on the **Related Rules** page.
+:::
 
-> [!NOTE]
-> Recursive validation is performed during the following for Util and Commerce Library Functions: Validate, adding, applying, or updating a function.
+:::note
+Recursive validation is performed during the following for Util and Commerce Library Functions: Validate, adding, applying, or updating a function.
+:::
 
+:::warning
 Util and Commerce Library functions cannot self-reference. Recursive calling of the same Util and Commerce Library functions will fail and result in a compilation error when called at any point in the reference chain. Util and Commerce Library functions will not appear in the Import list for themselves.
+:::
 
 ## Related Topics
 

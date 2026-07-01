@@ -6,7 +6,7 @@ Math, or numeric, functions serve many purposes throughout the Oracle CPQ applic
 
 acos
 
-This function returns the arc cosine of the number or angle in the range of 0 through Ï.
+This function returns the arc cosine of the number or angle in the range of 0 through π.
 
 **Example Use Case:** Find the inverse function of the cosine of an angle.
 
@@ -22,12 +22,13 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> A float variable > 1 returns NaN.
+:::note
+A float variable > 1 returns NaN.
+:::
 
 asin
 
-The usual notation of the inverse trig function arcsine is `y = arcsine(x)`, which is also defined as `x = sin(y)`. This notation is the same for arccosine and arctangent. This function returns the arcsine of a number or angle. The range is: `-Ï/2 â¤ y â¤ Ï/2 or -90Ë â¤ y â¤ 90Ë` and the domain is `-1 â¤ x â¤ 1`.
+The usual notation of the inverse trig function arcsine is `y = arcsine(x)`, which is also defined as `x = sin(y)`. This notation is the same for arccosine and arctangent. This function returns the arcsine of a number or angle. The range is: `-π/2 ≤ y ≤ π/2 or -90˚ ≤ y ≤ 90˚` and the domain is `-1 ≤ x ≤ 1`.
 
 **Example Use Case:** Find the inverse function of the sine of an angle.
 
@@ -43,14 +44,15 @@ Parameters:
 
 Example:
 
-If you enter your float variable as (-1), which is the lowest number in the domain, it will return the lowest number in the range, which is -Ï/2.
+If you enter your float variable as (-1), which is the lowest number in the domain, it will return the lowest number in the range, which is -π/2.
 
-> [!NOTE]
-> A float variable > 1 returns NaN.
+:::note
+A float variable > 1 returns NaN.
+:::
 
 atan
 
-This function returns the arctangent of the number or angle, the range of which is: -Ï/2 â¤ y â¤ Ï/2.
+This function returns the arctangent of the number or angle, the range of which is: -π/2 ≤ y ≤ π/2.
 
 **Example Use Case:** Find the inverse function of the tangent of an angle.
 
@@ -84,8 +86,9 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> If -1.0 < x < 0, then the result is negative zero.
+:::note
+If -1.0 < x < 0, then the result is negative zero.
+:::
 
 cos
 
@@ -121,7 +124,9 @@ Parameters:
 
 Example:
 
+:::tip
 cosh x = 1/2(ex + e-x)
+:::
 
 exp
 
@@ -199,8 +204,9 @@ Example:
 
 As you can see, we have declared three variables.  The two that were required for this function to work, as well as a third variable so we can round the results of the `hypot` function. The result of this function return a rather large number.  Using the `round` function, we were able to round to the third decimal place.
 
-> [!NOTE]
-> Negative numbers can be passed as parameters to this function.
+:::note
+Negative numbers can be passed as parameters to this function.
+:::
 
 integer
 
@@ -240,6 +246,7 @@ Parameters:
 
 Example:
 
+:::tip
 If e3 = x, then ln(x) = 3.
 
 Special Rules:
@@ -249,6 +256,7 @@ ln(1.0) = )
 ln(0) or ln(-0) = infinity
 
 ln(infinity) = infinity
+:::
 
 log
 
@@ -268,17 +276,21 @@ Parameters:
 
 Example:
 
+:::tip
 If x = by, then y = logb(x)).
 
 log(0) or log(-0) is negative infinity.
 
 log(infinity) is infinity.
+:::
 
 NaN
 
+:::warning
 This function is deprecated, and no longer supported. It represented a constant for Not a Number.
 
 Use [`jNaN`](../../jNaN.md) instead.
+:::
 
 pow
 
@@ -350,7 +362,9 @@ Parameters:
 
 Example :
 
+:::tip
 sinh x = 1/2(ex - e-x)
+:::
 
 sqrt
 
@@ -402,10 +416,13 @@ Parameters:
 
 Example:
 
+:::tip
 tanh x = (ex - 1) / (e2x + 1)
+:::
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -413,6 +430,7 @@ tanh x = (ex - 1) / (e2x + 1)
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

@@ -25,40 +25,39 @@ To access the Util BML Library Functions List, navigate to: **Admin Home > Dev
 
 ## Notes
 
+:::warning
 Library functions must be created before they can be added.
+:::
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * Library functions can be created if there isn't a pre-defined function for what you are trying to accomplish.
-> 
-> * Importing a main document Commerce Library Function which imports sub-doc attributes into a BML script on the sub-doc level, will force a loop over all line items.
+:::note
+Notes:
 
-> [!NOTE]
-> **Custom Variable Name Conventions** Oracle  CPQ appends the "_c" suffix to custom variable names to provide more consistency for integrations with Oracle Sales.
-> 
-> 
-> 
-> 
-> Customers can submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)  to disable the "_c" suffix on variable names for custom Commerce entities
-> 
-> 
-> 
-> 
-> * When the "_c" is disabled, the "_c" variable name suffix will not be required for newly created custom Commerce entities.
-> 
-> * Disabling the "_c" variable name suffix for custom Commerce entities will not change existing variable names.
-> 
-> * The "_c" suffix setting will not impact existing variable names when cloning a Commerce process or migrating Commerce items. Target variable names will be the same as the variable names from the source Commerce process.
+* Library functions can be created if there isn't a pre-defined function for what you are trying to accomplish.
 
+* Importing a main document Commerce Library Function which imports sub-doc attributes into a BML script on the sub-doc level, will force a loop over all line items.
+:::
+
+:::note
+**Custom Variable Name Conventions** Oracle  CPQ appends the "_c" suffix to custom variable names to provide more consistency for integrations with Oracle Sales.
+
+Customers can submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)  to disable the "_c" suffix on variable names for custom Commerce entities
+
+* When the "_c" is disabled, the "_c" variable name suffix will not be required for newly created custom Commerce entities.
+
+* Disabling the "_c" variable name suffix for custom Commerce entities will not change existing variable names.
+
+* The "_c" suffix setting will not impact existing variable names when cloning a Commerce process or migrating Commerce items. Target variable names will be the same as the variable names from the source Commerce process.
+:::
+
+:::tip
 * Commerce Library functions can call other Commerce Library functions. Commerce Library functions can call Util Library functions.
 
 * Util Library functions can call other Util Library functions. Util Library functions cannot call Commerce Library functions.
+:::
 
+:::tip
 The **Function to Function** link appears on the **Related Rules** page. When it is referenced by other Utils it will be displayed on the **Related Rules** page.
+:::
 
 ## Related Topics
 

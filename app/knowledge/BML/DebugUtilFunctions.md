@@ -184,7 +184,9 @@ Util Library Debugger
 
 3. Click **Run** to ensure that there are no errors in the test script. The return string will be generated here.
 
+:::tip
 From here you can use the debugger like the Commerce function debugger. You can change your values in your script as often as you like to test different scenarios and values.
+:::
 
 ## Troubleshooting
 
@@ -192,10 +194,13 @@ Think through how to correct an error with invalid data passed into a BML librar
 
 ## Notes
 
+:::tip
 The same rules apply to both Util and Commerce libraries.
+:::
 
-> [!NOTE]
-> Integration details can be retrieved using BMQL, including usernames and passwords. Making requests using the Integration Password will fail in the BML debugger, since their values are masked to prevent exposure.
+:::note
+Integration details can be retrieved using BMQL, including usernames and passwords. Making requests using the Integration Password will fail in the BML debugger, since their values are masked to prevent exposure.
+:::
 
 ## Related Topics
 

@@ -2,8 +2,9 @@
 
 ## Overview
 
-> [!NOTE]
-> This topic covers the Funtion Wizard using the classic interface pages. Refer to [Util BML Library Functions List](../UtilBmlLibraryFunctionsList.md) and [Util Function Editor](BML_Editor.md) for process administration using Redwood UI pages.
+:::note
+This topic covers the Funtion Wizard using the classic interface pages. Refer to [Util BML Library Functions List](../UtilBmlLibraryFunctionsList.md) and [Util Function Editor](BML_Editor.md) for process administration using Redwood UI pages.
+:::
 
 The Function Wizard contains a list of pre-defined functions that are available for use in advanced scripting.  There are some variations in the Function Editor, depending on where you are located within the application:  Commerce, Configuration, Commerce Library, or Util Library.
 
@@ -29,8 +30,9 @@ Commerce Function Editor
 
 You may come across a BML editor in Commerce that looks like this:
 
-> [!NOTE]
-> The BML Editor is used to edit functions for a specified attribute.  Your operators are all located on a toolbar across the top. You can choose your functions from a drop-down.
+:::note
+The BML Editor is used to edit functions for a specified attribute.  Your operators are all located on a toolbar across the top. You can choose your functions from a drop-down.
+:::
 
 ## Related Topics
 

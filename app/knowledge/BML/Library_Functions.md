@@ -2,8 +2,9 @@
 
 ## Overview
 
-> [!NOTE]
-> This topic covers the Library Functions  using the classic interface pages. Refer to [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) and [Util Function Editor](FunctionEditor/BML_Editor.md) for process administration using Redwood UI pages.
+:::note
+This topic covers the Library Functions  using the classic interface pages. Refer to [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) and [Util Function Editor](FunctionEditor/BML_Editor.md) for process administration using Redwood UI pages.
+:::
 
 The BML Function Library enables the user to write efficient and reusable custom BML functions. The user can write and store BML functions in a central library and call these functions from different areas in CPQ.
 
@@ -29,7 +30,9 @@ When you click **Define Function** in Commerce, a window will appear asking you 
 
 You can select **System Variable Name**, **Variable Name for (Transaction)**, **Variable Name for (Transaction Line)**, and **Library Function(s)**.
 
-You can add Util and Commerce Library Functions by clicking the **Reselect** button within the BML Function Editor. 
+:::tip
+You can add Util and Commerce Library Functions by clicking the **Reselect** button within the BML Function Editor.
+:::
 
 Adding a Library Function
 
@@ -61,8 +64,9 @@ The **Variable Name** field populates automatically. Variable names can only con
 
 8. Select **Add Attributes** to access the sub-document and the system attributes in the **Sub-Document Attribute** and **System Attributes** sections.
 
-> [!NOTE]
-> The **Main Document**, **Sub-Document** and **System Attributes** sections are only available in the **Commerce Library Editor**.  They are not available in the **Util Library Function**.
+:::note
+The **Main Document**, **Sub-Document** and **System Attributes** sections are only available in the **Commerce Library Editor**.  They are not available in the **Util Library Function**.
+:::
 
 Adding a Util Library Function
 
@@ -92,12 +96,17 @@ Util and Commerce Library Function Editors use Function to Function calls. Funct
 
 3. Once the function is viewed using the **Preview Function**, click the **Insert into BML** blue arrow.
 
+:::tip
 The **Function to Function** link appears on the **Related Rules** page. When it is referenced by other Utils it will be displayed on the **Related Rules** page.
+:::
 
-> [!NOTE]
-> Recursive validation is performed during the following for Util and Commerce Library Functions: Validate, adding, applying, or updating a function.
+:::note
+Recursive validation is performed during the following for Util and Commerce Library Functions: Validate, adding, applying, or updating a function.
+:::
 
+:::warning
 Util and Commerce Library functions cannot self-reference. Recursive calling of the same Util and Commerce Library functions will fail and result in a compilation error when called at any point in the reference chain. Util and Commerce Library functions will not appear in the Import list for themselves.
+:::
 
 Copy BML Library Function
 
@@ -113,43 +122,41 @@ A **Copy** action button is available in Util and Commerce Libraries so that BML
 
 4. Rename the function.
 
-> [!NOTE]
-> Changes can be made to the copied function, since it is a new and independent function.
+:::note
+Changes can be made to the copied function, since it is a new and independent function.
+:::
 
 ## Notes
 
+:::warning
 Library functions must be created before they can be added.
+:::
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * Library functions can be created if there isn't a pre-defined function for what you are trying to accomplish.
-> 
-> * Importing a main document Commerce Library Function which imports sub-doc attributes into a BML script on the sub-doc level, will force a loop over all line items.
+:::note
+Notes:
 
-> [!NOTE]
-> **Custom Variable Name Conventions** Oracle  CPQ appends the "_c" suffix to custom variable names to provide more consistency for integrations with Oracle Sales.
-> 
-> 
-> 
-> 
-> Customers can submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)  to disable the "_c" suffix on variable names for custom Commerce entities
-> 
-> 
-> 
-> 
-> * When the "_c" is disabled, the "_c" variable name suffix will not be required for newly created custom Commerce entities.
-> 
-> * Disabling the "_c" variable name suffix for custom Commerce entities will not change existing variable names.
-> 
-> * The "_c" suffix setting will not impact existing variable names when cloning a Commerce process or migrating Commerce items. Target variable names will be the same as the variable names from the source Commerce process.
+* Library functions can be created if there isn't a pre-defined function for what you are trying to accomplish.
 
+* Importing a main document Commerce Library Function which imports sub-doc attributes into a BML script on the sub-doc level, will force a loop over all line items.
+:::
+
+:::note
+**Custom Variable Name Conventions** Oracle  CPQ appends the "_c" suffix to custom variable names to provide more consistency for integrations with Oracle Sales.
+
+Customers can submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)  to disable the "_c" suffix on variable names for custom Commerce entities
+
+* When the "_c" is disabled, the "_c" variable name suffix will not be required for newly created custom Commerce entities.
+
+* Disabling the "_c" variable name suffix for custom Commerce entities will not change existing variable names.
+
+* The "_c" suffix setting will not impact existing variable names when cloning a Commerce process or migrating Commerce items. Target variable names will be the same as the variable names from the source Commerce process.
+:::
+
+:::tip
 * Commerce Library functions can call other Commerce Library functions. Commerce Library functions can call Util Library functions.
 
 * Util Library functions can call other Util Library functions. Util Library functions cannot call Commerce Library functions.
+:::
 
 ## Related Topics
 

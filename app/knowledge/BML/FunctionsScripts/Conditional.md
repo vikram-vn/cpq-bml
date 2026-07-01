@@ -24,7 +24,7 @@ The `for...loop` function is meant to loop through a block of code until a speci
 
 **The basic syntax is:**
 
-```
+```bml
 for(variable) in (system_array) {
 statement(s);
 }
@@ -38,7 +38,7 @@ The variable represents the element, but you can label this however you want.  Y
 
 Now, let's use the same syntax as above:
 
-```
+```bml
 for(row element) in Table_Array{
 print row element;
 }
@@ -82,7 +82,7 @@ An `if...else` statement is essentially the same as an `if..`. statement, except
 
 **The basic syntax is:**
 
-```
+```bml
 if (condition){
 statement;
 } else {
@@ -102,7 +102,7 @@ An `if...else...if` statement is a statement with two or more conditions.
 
 Example:
 
-```
+```bml
 if(attr1 == 100){
 return true;} elif (attr1 == 200){
 return false;}
@@ -110,6 +110,7 @@ return false;}
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -117,6 +118,7 @@ return false;}
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

@@ -34,7 +34,7 @@ Example:
 Template file
  test.txt: 4
 
-```
+```bml
 This is user defined variable VAR1, value = {{VAR1}}.
 This is user defined variable VAR2, value = {{VAR2}}
 This is user defined variable VAR3, value = {{VAR3}}.
@@ -42,7 +42,7 @@ This is user defined variable VAR3, value = {{VAR3}}.
 
 BML:
 
-```
+```bml
 templateFileLocation = "$BASE_PATH$/ApplytemplateTest/test.txt";
 payload = dict("string");
 put(payload, "VAR1", "payloadVal1");
@@ -61,8 +61,9 @@ This is user defined variable VAR3, value = jsonVal3.
 
 ###### Overwriting an imported rule input variable
 
-> [!NOTE]
-> Overwrite locally has higher precedence than overwrite globally.
+:::note
+Overwrite locally has higher precedence than overwrite globally.
+:::
 
 * Overwrite Globally
 
@@ -88,7 +89,7 @@ Example of {{#each <SubDocumentVariableName>}} {{/each}}
 
 Imagine that the SubDocumentVariableName is "lineItem" and the attributes "_price_subtotal" and "_price_net_price" of the lineItem have been manually imported as rule inputs in BML scripts. To reference those attributes within the template, use the following code:
 
-```
+```xml
 {{#each lineItem}}
 <Line>
 <PriceSubTotal>{{_price_subtotal}}</PriceSubTotal>
@@ -101,7 +102,7 @@ Example of {{#if YOUR_NOT_NULL_STRING_VALUE_HERE}} {{/if}}
 
 Imagine this template:
 
-```
+```xml
 {{#if _type}}<Line><PriceSubTotal>{{_price_subtotal}}</PriceSubTotal></Line>{{/if}}
 ```
 
@@ -111,7 +112,7 @@ Imagine this template:
 
 **Example of {{#equal context compareTo}}{{else}}{{/equal}}**
 
-```
+```xml
 {{#equal price_type "RECURRING"}}<recurringprice>{{_recurringprice}}</recurringprice>{{else}}Price type is not recurring.{{/equal}}
 ```
 
@@ -147,7 +148,7 @@ This is user defined variable VAR1, value = {{VAR1}}.
 
 (BML script)
 
-```
+```bml
 templateFileLocation = "$BASE_PATH$/ApplytemplateTest/test.txt"
 payload = dict("string");
 put(payload, "VAR1", "Hello world");
@@ -223,7 +224,7 @@ Example of readxmlmultiple():
 
 (BML script)
 
-```
+```xml
 xmlPayload = "<?xml version="1.0" encoding="UTF-8"?><library><book lang=\"en\">Spring in Action</book><book lang=\"fr\">J2EE Blueprint</book></library>";
 xpaths = string[1];
 xpaths[0] = "/library/book/@lang";
@@ -240,7 +241,7 @@ return "";
 
 Output:
 
-```
+```bml
 (key) = (/library/book/@lang)
 (value) = (en)
 (value) = (fr)
@@ -310,7 +311,7 @@ Example of readxmlsingle():
 
 (BML script)
 
-```
+```xml
 xmlPayload = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><library><book lang=\"en\">Spring in Action</book></library>"; 
 xpaths = string[1];
 xpaths[0] = "/library/book[1]/@lang";
@@ -322,7 +323,7 @@ return "";
 
 Output:
 
-```
+```bml
 (key, value) = (/library/book[1]/@lang, en)
 ```
 
@@ -346,7 +347,7 @@ It returns the transformed xml message, or the error message if it failed to tra
 
 Example of transformxml():
 
-```
+```xml
 xmlcontent = "<?xml version="1.0" encoding="UTF-8"?><book><id>123456</id></book>";
 xslt = "xsl/test.xsl";
 output = transformxml(xmlcontent, xslt); output has the generated result.

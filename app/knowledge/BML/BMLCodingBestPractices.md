@@ -24,7 +24,7 @@ Structural Coding Style
 
 Example:
 
-```
+```bml
 Name                 Date                 Comments
 ------------------
 John Doe           1/1/19               Created Function
@@ -123,8 +123,9 @@ Variable names for Booleans should have the "is" or "has" prefix (answered with 
 
 4. Extremely long single-line statements, such as String concatenations, should be split across multiple lines.
 
-> [!NOTE]
-> The repetition of these naming conventions will aid a reader in determining the purpose of any variable without having to refer to additional context.
+:::note
+The repetition of these naming conventions will aid a reader in determining the purpose of any variable without having to refer to additional context.
+:::
 
 ## Related Topics
 

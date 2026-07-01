@@ -22,7 +22,7 @@ Parameters:
 
 Example:
 
-```
+```bml
 //Set data in global cache as below
 globaldictset("globalkey1","some string1",100); 
 globaldictset("globalkey2","some string2"); 
@@ -51,7 +51,7 @@ Parameters:
 
 Example:
 
-```
+```bml
 //Set data in global cache as below
 globaldictset("globalkey1","some string",100); 
 //To remove the key-value pair from global cache using a key
@@ -59,8 +59,9 @@ print globaldictremove("globalkey1");
 //Output: true
 ```
 
-> [!NOTE]
-> The method will return false when trying to remove a key that does not exist in the global cache.
+:::note
+The method will return false when trying to remove a key that does not exist in the global cache.
+:::
 
 globaldictset
 
@@ -75,11 +76,11 @@ Parameters:
 | ------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | key           | String    | If key is null or empty, a unique key is generated and added to the global dictionary. If the key provided is not present in the global dictionary, a key-value pair is added to the global dictionary.                                                                                                                                                                                                                                            |
 | value         | String    | If a key is present, the value is updated for the corresponding key.                                                                                                                                                                                                                                                                                                                                                                               |
-| minTimeToLive | Integer   | The minimum time, in minutes, the key-value pair is guaranteed in the global dictionary. The value should be greater than 0 and less than 525600 minutes (365 days). Optional. The default value is 1440 minutes. > [!NOTE] > The minimum time to live setting does not indicate the a maximum duration for the value to be available. The maximum duration is defendant on the amount of time it takes to clear the expired values for your site. |
+| minTimeToLive | Integer   | The minimum time, in minutes, the key-value pair is guaranteed in the global dictionary. The value should be greater than 0 and less than 525600 minutes (365 days). Optional. The default value is 1440 minutes. :::note The minimum time to live setting does not indicate the a maximum duration for the value to be available. The maximum duration is defendant on the amount of time it takes to clear the expired values for your site. ::: |
 
 Example:
 
-```
+```bml
 storedkey = globaldictset("key1", "value1"); //mintimeToLive will be defaulted to 1440
 print storedkey;
 //Output: key1
@@ -87,11 +88,13 @@ storedkey2 = globaldictset("", "value2", 1000); // This record will be removed b
 print storedkey2; // unique key will be generated and returned.
 ```
 
-> [!NOTE]
-> Oracle CPQ recommends not setting the same globaldict key with the same value using globaldictset parallelly with multiple user sessions.
+:::note
+Oracle CPQ recommends not setting the same globaldict key with the same value using globaldictset parallelly with multiple user sessions.
+:::
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -99,6 +102,7 @@ print storedkey2; // unique key will be generated and returned.
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

@@ -4,8 +4,9 @@
 
 The following BML functions are used to retrieve System Configuration attribute values from other configured models within the system. These BML functions are available in configuration context only and not available in commerce.
 
-> [!NOTE]
-> **Note:** These functions should only be used with System Configurations. System Configurations are BOM hierarchies that contain one or more nested child models.
+:::note
+**Note:** These functions should only be used with System Configurations. System Configurations are BOM hierarchies that contain one or more nested child models.
+:::
 
 getsystemdata
 
@@ -27,25 +28,23 @@ Response Parameters:
 
 Example:
 
-```
+```bml
 systemJson = json();
 systemJson = getsystemdata();
 ```
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * This function will not return the value of HTML attributes. This behavior is consistent with other configuration rules that do not allow the selection of HTML attributes.
-> 
-> * When not in the context of a Configuration session, an empty JSON object is returned.
-> 
-> * If System Configuration Data does not exist, an empty JSON object is returned.
-> 
-> * This function will also return an empty JSON object if a System Configuration has not yet been configured. 
-> The empty JSON object should be handled accordingly.
+:::note
+Notes:
+
+* This function will not return the value of HTML attributes. This behavior is consistent with other configuration rules that do not allow the selection of HTML attributes.
+
+* When not in the context of a Configuration session, an empty JSON object is returned.
+
+* If System Configuration Data does not exist, an empty JSON object is returned.
+
+* This function will also return an empty JSON object if a System Configuration has not yet been configured. 
+The empty JSON object should be handled accordingly.
+:::
 
 getsystemattrvalues
 
@@ -63,23 +62,21 @@ Parameters:
 
 Example
 
-```
+```bml
 modelValue = String[];
 modelValue = getsystemattrvalues("$.configAttributes.attributeVarname");
 ```
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * This function will not return the value of HTML attributes. This behavior is consistent with other configuration rules that do not allow the selection of HTML attributes.
-> 
-> * If the JSON Path does not return an array of single values, empty string array ("[]") will be returned.
-> 
-> * The function will also return empty values for any models that are yet to be configured and paths that do not return values. 
-> The empty array should be handled accordingly.
+:::note
+Notes:
+
+* This function will not return the value of HTML attributes. This behavior is consistent with other configuration rules that do not allow the selection of HTML attributes.
+
+* If the JSON Path does not return an array of single values, empty string array ("[]") will be returned.
+
+* The function will also return empty values for any models that are yet to be configured and paths that do not return values. 
+The empty array should be handled accordingly.
+:::
 
 getsystemmultipleattrvalues
 
@@ -107,7 +104,7 @@ Returns a Dictionary (key: String, value: String[]) containing attribute values 
 
 Example
 
-```
+```bml
 jsonPaths = dict("string");
 put(jsonPaths, "attributeVarname", "$.configAttributes.attributeVarname");
 put(jsonPaths, "childAttributeVarname", "$.children[*].configAttributes.childAttributeVarname");
@@ -117,20 +114,19 @@ values = String[];
 values = get(interModelValues, "attributeVarname");
 ```
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * This function will not return the value of HTML attributes. This behavior is consistent with other configuration rules that do not allow the selection of HTML attributes.
-> 
-> * If a JSON Path does not return an array of single values, that key-value pair will result in an empty array.
-> 
-> * The function will return empty arrays for models that have not been configured and paths that do not return values. The empty arrays should be handled accordingly.
+:::note
+Notes:
+
+* This function will not return the value of HTML attributes. This behavior is consistent with other configuration rules that do not allow the selection of HTML attributes.
+
+* If a JSON Path does not return an array of single values, that key-value pair will result in an empty array.
+
+* The function will return empty arrays for models that have not been configured and paths that do not return values. The empty arrays should be handled accordingly.
+:::
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -138,6 +134,7 @@ values = get(interModelValues, "attributeVarname");
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

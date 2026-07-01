@@ -96,6 +96,7 @@ As you can see, `myArray`returned a string with four null values because array f
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -103,9 +104,12 @@ As you can see, `myArray`returned a string with four null values because array f
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
+:::tip
 BML size limits have default settings. The default row size is 5000. The default column size is 50. 
 To increase the default row and column size, open a ticket on [My Oracle Support](https://support.oracle.com/).
+:::
 
 ## Related Topics
 

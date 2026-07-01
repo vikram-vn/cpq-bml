@@ -4,7 +4,7 @@
 
 Using direct variable substitution, called *dynamic variables*, makes it simpler to write BML queries that change based on user input, without having to write a unique clause in the query for every possible permutation of inputs.  As a result, scripts using this feature is much more scalable.
 
-CPQâs query language, BMQL, allows the use of dynamic variables for column names , Data table names and WHERE clauses.
+CPQ’s query language, BMQL, allows the use of dynamic variables for column names , Data table names and WHERE clauses.
 
 When a BMQL call contains dynamic variables, the data types for the variables are validated and the dynamic variables are replaced with the input values at run-time.  For more information on validation, see the section [Validation](../../Validation.md) below. Then BMQL returns a full SQL string that is executed.
 
@@ -16,26 +16,28 @@ To support dynamic variables in BMQL, an additional optional parameter, `fieldMa
 
 The BMQL method supports the following three signatures:
 
-```
+```bml
 bmql(QueryString)
 ```
 
-```
+```bml
 bmql(QueryString, contextOverride)
 ```
 
-```
+```bml
 bmql(QueryString, contextOverride, fieldMap)
 ```
 
 When using `contextOverride` to specify a certain language and `fieldMap`to use variables inside a variable WHERE clause, the syntax for the entire call is:
 
-```
+```sql
 bmql(QueryString, contextOverride, fieldMap);
 bmql("select columnName from tableName WHERE $where", lang, fields);
 ```
 
+:::tip
 For more information about these optional parameters, see [BMQL Parameters](../../BMQL_parameters.md).
+:::
 
 Dynamic Variables in the WHERE Clause
 
@@ -47,9 +49,9 @@ For example, if the `$where` variable used the declared variables `x_var` and `y
 
 **Example 1:**
 
-```
-table = âdataTableNameâ; //dataTableName is the name of an existing data table
-columns = âcolumnNameâ;
+```sql
+table = “dataTableName”; //dataTableName is the name of an existing data table
+columns = “columnName”;
 fields = dict("string");
 put(fields, "$field1", x_var);
 put(fields, "$field2", y_var);
@@ -59,7 +61,7 @@ results = bmql("SELECT $columns FROM $table WHERE $where", lang, fields);
 
 **Example 2:**
 
-```
+```sql
 pno = "part123";
 lead = integer[]{3,4,5}
 results = bmql("select part_number from _parts where part_number = $pno and lead_time in $lead");
@@ -77,7 +79,7 @@ results = bmql("select part_number from _parts where part_number = $pno and lead
 
 Using the function recordset() as an example, you can see how using variables works.
 
-```
+```sql
 results = bmql("select part_number from _parts where part_number = 'part%'");
 for result in results {
 partno = get(result, "part_number")
@@ -97,7 +99,7 @@ A customer stores data in different Data Tables for pricing in different regions
 
 ###### Before
 
-```
+```sql
 bmqlReturn = "nothing";
 table = util.passed_string1();
 if(table == "sorting_rename_1") {
@@ -128,7 +130,7 @@ return bmqlReturn;
 
 With dynamic variables, the admin can write something like this instead:
 
-```
+```sql
 bmqlReturn = "nothing";
 table = util.passed_string1();
 results = bmql("select str from $table where str = 'a'");
@@ -138,7 +140,9 @@ bmqlReturn = get(result, "str");
 return bmqlReturn;
 ```
 
+:::tip
 Using dynamic variables, the code is much simpler and much more scalable.
+:::
 
 Changing a Query Based on User Inputs Example
 
@@ -146,16 +150,16 @@ Imagine that you want to make a complicated query that will change depending upo
 
 ###### Before
 
-```
+```sql
 result = recordset();
 if (len(_bm_pline_name) <> 0 and len(_bm_pline_variable_name) <> 0) {
-result = BMQL(âSELECT str1 FROM table_100columns WHERE $whereâ,lang, fields);
+result = BMQL(“SELECT str1 FROM table_100columns WHERE $where”,lang, fields);
 } elif (len(_bm_pline_name == 0 and len(_bm_pline_variable_name) <> 0) {
-result = bmql (âSELECT str1 FROM table_100_columns WHERE str3 = $_bm_pline_variable_nameâ);
+result = bmql (“SELECT str1 FROM table_100_columns WHERE str3 = $_bm_pline_variable_name”);
 } elif (len(_bm_pline_name) <> 0 and len (_bm_pline_variable_name) == 0) {
-result = bmql(âSELECT str1 FROM table_100columns WHERE str2 = $_bm_pline_nameâ);
+result = bmql(“SELECT str1 FROM table_100columns WHERE str2 = $_bm_pline_name”);
 } else {
-result = bmql(âSELECT str1 FROM table_100columnsâ);
+result = bmql(“SELECT str1 FROM table_100columns”);
 }
 print result;
 ```
@@ -164,7 +168,7 @@ print result;
 
 Using dynamic variables, you can write something like this instead:
 
-```
+```sql
 result = recordset();
 fields = dict("string");
 fields.put(fields, "$name", _bm_pline_name);
@@ -181,7 +185,9 @@ where = where + conjunction + "str3 = $varname";
 result = BMQL("SELECT str1 FROM table_100columns $where", fields);
 ```
 
+:::tip
 The code is longer in this instance, but it is much more scalable, since you do not need a separate clause for each possible input.
+:::
 
 Grammar
 
@@ -191,19 +197,19 @@ When writing a query in BMQL that will use a dynamic variable, direct variable s
 
 * **Correct:** Direct Variable Substitution
 
-```
+```sql
 "results = bmql("SELECT $columns FROM $table WHERE $where")";
 ```
 
 * **Incorrect:** Concatenating Strings
 
-```
+```sql
 "results = bmql("SELECT value FROM " + tableName + " WHERE date = $current_date")";
 ```
 
 * **Incorrect:** Using Full Substitution
 
-```
+```bml
 "results = bmql(bmqlStringVariable)";
 ```
 
@@ -211,15 +217,15 @@ $ Notation
 
 * Without dynamic variables
 
-```
-âSELECT a FROM b WHERE c = $variable1â;
+```sql
+“SELECT a FROM b WHERE c = $variable1”;
 ```
 
 * With dynamic variables:
 
 * **Correct**
 
-```
+```sql
 fields = dict("string");
 x_var = "6.08";
 put(fields, "$field1", x_var);
@@ -229,7 +235,7 @@ results = bmql("select column from table WHERE $where", lang, fields)
 
 * **Incorrect**
 
-```
+```sql
 bmql("select columnName from TableName WHERE " + where, lang, fields);
 ```
 
@@ -251,14 +257,15 @@ The WHERE Clause as a Variable
 
 The entire WHERE clause can be a string variable.
 
-> [!NOTE]
-> If there are variables in the WHERE clause variable, you must define these variables in a string Dictionary and pass them as a third parameter.  In this case, you must also define a second parameter.
+:::note
+If there are variables in the WHERE clause variable, you must define these variables in a string Dictionary and pass them as a third parameter.  In this case, you must also define a second parameter.
+:::
 
 Making Everything Dynamic
 
 In this example, everything that can be dynamic is dynamic.
 
-```
+```sql
 bmqlReturn = "nothing";
 select = "string1,int1";
 from = "uploadXMLtable";
@@ -308,7 +315,7 @@ In a fully dynamic WHERE clause, you must put variables into the fields array. T
 
 For example:
 
-```
+```sql
 fields = dict("string");
 dict.put(fields, "$ca1", commerceAttribute1);
 where = "field1 = $ca1 AND field2 = 'someValue'";
@@ -317,8 +324,9 @@ results = bmql("SELECT col1 FROM table WHERE $where", lang, fields);
 
 Each customer is individually responsible for writing and testing their own dynamic BMQL calls to ensure that they are safeguarded from potential SQL injections.
 
-> [!NOTE]
-> BMQL does not support a parts query that retrieves more than 500 parts from a non-default price book.
+:::note
+BMQL does not support a parts query that retrieves more than 500 parts from a non-default price book.
+:::
 
 ## Related Topics
 

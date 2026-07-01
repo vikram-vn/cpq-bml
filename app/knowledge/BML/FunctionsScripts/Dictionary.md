@@ -50,7 +50,7 @@ This function supports the addition of multiple types of
 
 Sample Input:
 
-```
+```bml
 d1 = dict("anytype");
 put(d1, "key1", "value1");
 jObj = json("{\"K1\":\"V1\"}");
@@ -89,7 +89,7 @@ Use this function to retrieve an unordered String Array of all keys found within
 
 Example :
 
-```
+```bml
 d= dict("string");
 put(d, "1", "string1");
 put(d, "2", "string2");
@@ -124,14 +124,15 @@ Gets the array of the values of all the dictionary entries.
 
 The dictionaries supported are: "string", "integer", "float", "string[]", "integer[]", "float[]", "date", "date[]",
 
-> [!NOTE]
-> **Note:** Double dimensional dictionaries, boolean dictionaries, and dictionary anytype are not supported by the values function.
+:::note
+**Note:** Double dimensional dictionaries, boolean dictionaries, and dictionary anytype are not supported by the values function.
+:::
 
 **Syntax**: `values(Dictionary dictionaryIdentifier)`
 
 Example:
 
-```
+```bml
 d= dict("string");
 put(d, "key1", "string1");
 put(d, "key2", "string2");
@@ -142,9 +143,11 @@ This function will return a string array with 2 string elements.
 
 ## Notes
 
-> [!NOTE]
-> Dictionaries have better speed and performance than performing table cells.
+:::note
+Dictionaries have better speed and performance than performing table cells.
+:::
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -152,6 +155,7 @@ This function will return a string array with 2 string elements.
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

@@ -24,7 +24,9 @@ If you attempt to pass an empty string or a string with letters into either `ato
 
 Example of atof and atoi:
 
+:::warning
 An empty string will throw an exception error.
+:::
 
 atoi
 
@@ -48,10 +50,13 @@ Error messages:
 
 Example of atof and atoi:
 
-> [!NOTE]
-> You can't parse a string with a decimal point into an integer.
+:::note
+You can't parse a string with a decimal point into an integer.
+:::
 
+:::warning
 An empty string will throw an exception error.
+:::
 
 decodebase64
 
@@ -91,7 +96,7 @@ Example of encodebase64:
 
 Example of using encodebase64 for information in a URL string
 
-```
+```bml
 webSvcsUser = "WebSvcsUserHere";
 webSvcsPassword = "WebSvcsPasswordHere";
  
@@ -136,10 +141,13 @@ Example of startswith and endswith:
 
 We know that the return of `endResults`will be true because the string "I like this string", ends with the substring "string".
 
+:::tip
 An empty string will return as true.
+:::
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
 find
 
@@ -178,14 +186,17 @@ This example uses four different variations of the find function:
 
 * **result:** shows what happens if `find` is looking for a substring and contains both a start and end index.
 
+:::tip
 `Find("", "")`or `find("", "", num>0)` returns 0.
 
 `Find("str", "substring", start>length(str))` returns -1.
 
 If not specified, start is 0 and end is `length(str)`
+:::
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
 formatascurrency
 
@@ -208,7 +219,7 @@ Return Type: Boolean
 
 Example:
 
-`formatascurrency(32.15, "EUR");`will return the string "â¬32,15".
+`formatascurrency(32.15, "EUR");`will return the string "€32,15".
 
 getcurrencyvalue
 
@@ -227,7 +238,7 @@ Parameters:
 
 Example:
 
-`getcurrencyvalue("â¬32,15", "EUR");` will return the Float 32.15.
+`getcurrencyvalue("€32,15", "EUR");` will return the Float 32.15.
 
 html
 
@@ -251,7 +262,9 @@ Safe content example: `html("<test>");` will return the string "&lt;test&gt;
 
 Unsafe/XSS attack example where content is neutralized: `html("<script>/*Bad content here ... */</script>");` will return the string `&lt;script&gt;/* Bad content here... */&lt;/script&gt;`
 
+:::tip
 For more information about Cross-site Scripting (XSS), refer to [OWASP Cross-Site Scripting](https://owasp.org/www-community/attacks/xss/).
+:::
 
 join
 
@@ -278,8 +291,9 @@ Example:
 
 `strArr1 = string[]{"1", "2", "3"}; strArr2 = join(strArr1, "");` will set the value of strArr2 to "123".
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
 isnumber
 
@@ -299,10 +313,13 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> If str is an empty string, then the function returns false.
+:::note
+If str is an empty string, then the function returns false.
+:::
 
+:::warning
 If no string is passed into the function, then a compile time error is thrown.
+:::
 
 len
 
@@ -322,8 +339,9 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> If `str` is an empty string, then the function returns a 0.
+:::note
+If `str` is an empty string, then the function returns a 0.
+:::
 
 lower
 
@@ -357,10 +375,13 @@ The code will print three different examples:
 
 * Application of the `lower(str)` function to the same string.  You will notice a blank space in between the `upper(str)` and `lower(str)` functions.  *This represents the return that will occur if you use an empty string.*
 
-> [!NOTE]
-> This function is case sensitive.
+:::note
+This function is case sensitive.
+:::
 
+:::warning
 If the string is empty, then the function will return an empty string.
+:::
 
 replace
 
@@ -383,10 +404,13 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
+:::warning
 Replacing with any empty string throws an exception:  `("", "", "")`, `("abc", "", "")` or `(""abc", "", "I")`.
+:::
 
 split
 
@@ -413,8 +437,9 @@ Example:
 
 `strArray = split("a.b.c", "");` will return an array with every character split: `["a",".", "b", ".", "c"]` with a size of 5.
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
 startswith
 
@@ -437,10 +462,13 @@ Example of startswith and endswith:
 
 We know that the return of `endResults`will be true because the string "I like this string", ends with the substring "string".
 
+:::tip
 An empty string will return as true.
+:::
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
 string
 
@@ -458,10 +486,13 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
+:::warning
 The function will throw a compile time error if a string is passed in as a parameter.
+:::
 
 substring
 
@@ -499,10 +530,13 @@ Parameters:
 
 * **longStartInd:** This last example shows you what to expect if start is given an index value that is greater than the length of the string.
 
-> [!NOTE]
-> Start and End can have a negative index value.
+:::note
+Start and End can have a negative index value.
+:::
 
+:::warning
 If start is given an index value that is greater than the length of the string, an empty string will be returned.
+:::
 
 trim
 
@@ -522,10 +556,13 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
+:::warning
 If str is empty, then the function returns an empty string.
+:::
 
 upper
 
@@ -559,13 +596,17 @@ The code will print three different examples:
 
 * Application of the `lower(str)` function to the same string.  You will notice a blank space in between the `upper(str)` and `lower(str)` functions.  *This represents the return that will occur if you use an empty string.*
 
-> [!NOTE]
-> This function is case sensitive.
+:::note
+This function is case sensitive.
+:::
 
+:::warning
 If the string is empty, then the function will return an empty string.
+:::
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -573,6 +614,7 @@ If the string is empty, then the function will return an empty string.
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

@@ -8,19 +8,17 @@ addpartstotransaction
 
 The "addpartstotransaction" BML function is used to add parts to a quote automatically from within a Transaction.
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * When the "`addpartstotransaction`" function is run from an action that does not save:
->   * Custom prices and attributes will not be set for the line item.
->   * The part cannot be added as a child of a model line.
-> 
-> * "`addpartstotransaction`" is only available for Advanced Modify Before/After Formulas on Commerce actions. Attempting to run this function from other actions will generate an error.
-> 
-> * Results in the debugger may not match behavior on the sales side, most notably for custom attributes and the document number.
+:::note
+Notes:
+
+* When the "`addpartstotransaction`" function is run from an action that does not save:
+  * Custom prices and attributes will not be set for the line item.
+  * The part cannot be added as a child of a model line.
+
+* "`addpartstotransaction`" is only available for Advanced Modify Before/After Formulas on Commerce actions. Attempting to run this function from other actions will generate an error.
+
+* Results in the debugger may not match behavior on the sales side, most notably for custom attributes and the document number.
+:::
 
 Syntax:
 
@@ -28,29 +26,29 @@ addpartstotransaction(jsonArray [, priceBookVarName [, resultAttributeArray]])
 
 Parameters:
 
-| Parameter            | Data Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| -------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| jsonArray            | Array     | An array of JSON objects, used to specify part information. In the following example, "myAttribute" is an optional item that represents a custom line level attribute. Example: { "partNumber": "part1", "quantity": 1, "price": 3.50, "parentDocNumber": 2, "myAttribute": "my custom value" } > [!NOTE] > **Notes:** "`price`" and "`parentDocNumber`" are optional items. > > > > > * If "`price`" is not included, the price in the price book or catalog will be used. > > * If "`parentDocNumber`" is not included, the part will be added at the root level. |
-| priceBookVarName     | String    | An optional string value used for setting the Transaction Price Book. For sites with Price Books enabled, this string should be included to prevent failures on empty Transactions where a Price Book is not defined. Example: "_default_price_book" > [!NOTE] > **Note:** The Price Book parameter will be ignored if a transaction already has a price book defined.                                                                                                                                                                                              |
-| resultAttributeArray | String    | An optional string value for providing document attributes in the JSON result. Example: ["_part_quantity", "_document_number", "_part_number", "_price_item_price_each", "myAttribute"] Will produce a response similar to the following when adding one part: [{"_part_quantity":"1", "_document_number":"2", "_part_number":"part1", "_price_item_price_each":"3.50", "myAttribute":"my custom value"}] > [!NOTE] > Notes: Sub-document attributes with blank or null values are not returned in the Results Attribute string.                                    |
+| Parameter            | Data Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| jsonArray            | Array     | An array of JSON objects, used to specify part information. In the following example, "myAttribute" is an optional item that represents a custom line level attribute. Example: { "partNumber": "part1", "quantity": 1, "price": 3.50, "parentDocNumber": 2, "myAttribute": "my custom value" } :::note **Notes:** "`price`" and "`parentDocNumber`" are optional items. * If "`price`" is not included, the price in the price book or catalog will be used. * If "`parentDocNumber`" is not included, the part will be added at the root level. ::: |
+| priceBookVarName     | String    | An optional string value used for setting the Transaction Price Book. For sites with Price Books enabled, this string should be included to prevent failures on empty Transactions where a Price Book is not defined. Example: "_default_price_book" :::note **Note:** The Price Book parameter will be ignored if a transaction already has a price book defined. :::                                                                                                                                                                                |
+| resultAttributeArray | String    | An optional string value for providing document attributes in the JSON result. Example: ["_part_quantity", "_document_number", "_part_number", "_price_item_price_each", "myAttribute"] Will produce a response similar to the following when adding one part: [{"_part_quantity":"1", "_document_number":"2", "_part_number":"part1", "_price_item_price_each":"3.50", "myAttribute":"my custom value"}] :::note Notes: Sub-document attributes with blank or null values are not returned in the Results Attribute string. :::                      |
 
- **Note:** Parameters in the JSON body of the request (e.g. "partNumber") are case sensitive.
+:::warning
+**Note:** Parameters in the JSON body of the request (e.g. "partNumber") are case sensitive.
+:::
 
 addtotransaction
 
 The "addtotransaction" BML function is used to add Models to a Transaction using BML. This function can be used to automatically add a new Transaction Line which contains a Model which is pending configuration by the sales user.
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * The "`addtotransaction`" function can be executed in a BML function for any Commerce action.
-> 
-> * "`addtotransaction`" is only available for Advanced Modify Before/After Formulas on Commerce actions.
-> 
-> * When assigning values to Configuration attributes the following are supported: in decimals, integers, currencies, dates, booleans, and strings. Attributes which are part of an array are not supported.
+:::note
+Notes:
+
+* The "`addtotransaction`" function can be executed in a BML function for any Commerce action.
+
+* "`addtotransaction`" is only available for Advanced Modify Before/After Formulas on Commerce actions.
+
+* When assigning values to Configuration attributes the following are supported: in decimals, integers, currencies, dates, booleans, and strings. Attributes which are part of an array are not supported.
+:::
 
 Syntax:
 
@@ -68,7 +66,7 @@ Parameters:
 
 Example:
 
-```
+```bml
 configAttrs1 = json; //initial config attribute values for the first model
 jsonput(configAttrs1 , "connectivity", "WiFi/Bluetooth");
 jsonput(configAttrs1 , "storage", "128GB");
@@ -120,15 +118,13 @@ generatehmacmessage
 
 The "generateHmacMessage" BML function is used to  create Hash-based Message Authentication Codes for use in securing outbound web service calls to public web services. The "generateHmacMessage" function supports five types of hashing algorithms including: SHA-256, SHA-384, SHA-512, SHA-1, and MD5.
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * This BML function can be used with a Digital Assistant Integration.  You can use BMQL to retrieve a key value from an integration that has been enabled. Refer to [Digital Assistant Integration](../../Integrating_With_BigMachines/Integration_Center/DigitalAssistantIntegration.md).
-> 
-> * This function may be used to "sign" callouts, such as for a JSON Web Token (JWT) signature.
+:::note
+Notes:
+
+* This BML function can be used with a Digital Assistant Integration.  You can use BMQL to retrieve a key value from an integration that has been enabled. Refer to [Digital Assistant Integration](../../Integrating_With_BigMachines/Integration_Center/DigitalAssistantIntegration.md).
+
+* This function may be used to "sign" callouts, such as for a JSON Web Token (JWT) signature.
+:::
 
 Syntax:
 
@@ -140,13 +136,13 @@ Parameters:
 | --------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | message   | String    | The message to be authenticated by the cryptographic hash function. This is an optional parameter and an empty string is allowed. Null values are automatically converted to an empty string.                               |
 | key       | String    | The secret key that authenticates the message between inbound and outbound web services. This parameter is optional.                                                                                                        |
-| algorithm | String    | The designate for the secure message Authentication standard. This parameter is optional and defaults to SHA256. Valid values are: * SHA256 (Default) * SHA384 * SHA512 * SHA1 * MD5 > [!NOTE] > Values are case sensitive. |
+| algorithm | String    | The designate for the secure message Authentication standard. This parameter is optional and defaults to SHA256. Valid values are: * SHA256 (Default) * SHA384 * SHA512 * SHA1 * MD5 :::note Values are case sensitive. ::: |
 
 **Return Type:** String
 
 Example:
 
-```
+```bml
 key = "cfthsnkjsavjiCe=";
 algo = "MD5";
 hmac = generatehmacmessage(inputmessage, key, algo);
@@ -158,8 +154,9 @@ getarraystr
 
 This function returns the delimited string for array attributes with $,$ as the delimiter.
 
-> [!NOTE]
-> This function is only used for Configuration attributes.
+:::note
+This function is only used for Configuration attributes.
+:::
 
 Syntax:
 
@@ -195,7 +192,7 @@ Dict<anytype> getattachmentdata(String attachmentId [, Boolean asBytes]
 
 Example:
 
-```
+```bml
 //consider 'maindocFileAttachment' as main document attachment attribute and 'subdocFileAttachment' as sub document attachment attribute
 mainattachment = getattachmentdata(maindocFileAttachment);
 print get(mainattachment ,"filename", "string"); // Prints the file name of main attachment attribute
@@ -228,15 +225,19 @@ Parameters:
 
 **Return Type:** String
 
-> [!NOTE]
-> In case of menu attributes, the returned value is the menu item variable name.
+:::note
+In case of menu attributes, the returned value is the menu item variable name.
+:::
 
 Example:
 
-> [!NOTE]
-> In case of menu attributes, the returned value is the menu item variable name.
+:::note
+In case of menu attributes, the returned value is the menu item variable name.
+:::
 
+:::warning
 The System Attribute _config_attr_info has to be selected as a rule input.  If it is not selected and getConfigAttrVal is used, a compile error is shown to the user.
+:::
 
 getoldvalue
 
@@ -334,7 +335,7 @@ Return Type: Boolean
 
 Example:
 
-```
+```bml
 importtransactiondata(12345); // Where 12345 is the bsid
 ```
 
@@ -360,7 +361,7 @@ Example:
 
 The following script invokes the global function someGlobalFunction. The parameters are passed as a delimited string. If a valid string is not returned by someGlobalFunction, the default string is "error_in_rule"
 
-```
+```bml
 params = "";
 params = var_frequency + "~" + "model number";
 return invoke("someGlobalFunction",params,"error_in_rule");
@@ -425,20 +426,20 @@ Examples:
 
 To display "abba" in the console window in the Function Editor.
 
-```
+```bml
 print("abba")
 ```
 
 To display [1,2,3,4,5] in the console window.
 
-```
+```bml
 intArray = integer[]{1,2,3,4,5};
 print(intArray); //
 ```
 
 To display {key1=X, key2=Y} in the console window.
 
-```
+```bml
 testDict =dict("string");
 put(testDict,"key1","X");
 put(testDict,"key2","Y");
@@ -515,7 +516,9 @@ This function sets a Commerce attribute value on a Main document or Sub-document
 
 * Commerce BML Libraries (Function Category = Others)
 
+:::tip
 This function is used to set Commerce attributes only.
+:::
 
 Main Document Syntax:
 
@@ -538,22 +541,20 @@ Example:
 
 To set the value of an array set containing a text field, and a single row, named arraySet:
 
-```
+```bml
 newRow = json;
 jsonput(newRow, "textField", "example");
 jsonarrayappend(arraySet, newRow);
 setattributevalue(1, "arraySet", jsonarrayrefid(arraySet));
 ```
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * The `setattributevalue` call is supported within the BML Library only if it is referenced from an Advanced Modify or Advanced Default function.
-> 
-> * The `setattributevalue` function is not supported for Dynamic Menu attributes.
+:::note
+Notes:
+
+* The `setattributevalue` call is supported within the BML Library only if it is referenced from an Advanced Modify or Advanced Default function.
+
+* The `setattributevalue` function is not supported for Dynamic Menu attributes.
+:::
 
 stringbuilder
 
@@ -589,10 +590,11 @@ This function stops the execution of a BML script and
  the case of a system error, a generic error message displays and the actual
  error message is logged to the error log file.
 
-> [!NOTE]
-> Oracle
->  does not recommend using this function in Configuration or Commerce rules. When the rules are triggered from quote transaction screens, the
->  error does not always display to the user.
+:::note
+Oracle
+ does not recommend using this function in Configuration or Commerce rules. When the rules are triggered from quote transaction screens, the
+ error does not always display to the user.
+:::
 
 Syntax:
 
@@ -635,7 +637,7 @@ String[] validatequoteforagreement()
 
 Example:
 
-```
+```bml
 // Calling the validation function from the action of a validation rule.
 errors = validatequoteforagreement();
 for error in errors { // only for debugging purpose
@@ -646,7 +648,7 @@ return dict("dict<string>");
 
 Sample Response:
 
-```
+```bml
 ['Contract Name' cannot be empty., 'Customer Company Name' cannot be empty., Following parts have line items with overlapping date ranges: iPhone]
 ```
 
@@ -682,6 +684,7 @@ All the required agreement attributes should be explicitly mapped in case of non
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -689,6 +692,7 @@ All the required agreement attributes should be explicitly mapped in case of non
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

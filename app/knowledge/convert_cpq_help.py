@@ -88,7 +88,17 @@ class BmlDocCrawler:
             return f"`{text}`" if text else ""
 
         elif tag_name == 'pre':
-            return f"\n```\n{children_md.strip()}\n```\n"
+            code_text = children_md.strip()
+            # Detect language
+            lang = "bml"
+            if "<" in code_text and ">" in code_text and ("</" in code_text or "/>" in code_text):
+                lang = "xml"
+            elif "select " in code_text.lower() and "from " in code_text.lower():
+                lang = "sql"
+            elif "{" in code_text and "}" in code_text and (":" in code_text or '"' in code_text):
+                if code_text.strip().startswith("{") or code_text.strip().startswith("["):
+                    lang = "json"
+            return f"\n```{lang}\n{code_text}\n```\n"
 
         elif tag_name == 'a':
             text = children_md.strip()
@@ -186,8 +196,16 @@ class BmlDocCrawler:
 
         elif tag_name == 'div':
             class_list = element.get('class', [])
-            if 'Note' in class_list:
-                return f"\n\n> [!NOTE]\n> " + children_md.strip().replace('\n', '\n> ') + "\n\n"
+            admonitions = {
+                'Note': 'note',
+                'Tip': 'tip',
+                'Warning': 'warning',
+                'Caution': 'danger',
+                'Important': 'info'
+            }
+            for cls, adm_type in admonitions.items():
+                if cls in class_list:
+                    return f"\n\n:::{adm_type}\n{children_md.strip()}\n:::\n\n"
             return f"\n{children_md}\n"
 
         return children_md
@@ -214,6 +232,7 @@ class BmlDocCrawler:
             if response.status_code != 200:
                 print(f"Error: Failed to fetch {url}, status code {response.status_code}")
                 return []
+            response.encoding = 'utf-8'
         except Exception as e:
             print(f"Error fetching {url}: {e}")
             return []

@@ -28,8 +28,9 @@ urldata
 This function sends and receives data from a URL  using HTTP GET, POST, PUT, or PATCH  methods.
 The HTTP DELETE method can also be used to delete data from a URL
 
-> [!NOTE]
-> **Note:** urldata functions can be used to make internal SOAP and REST calls to Oracle CPQ web services. This is generally not recommended and declarative features should be used when possible.
+:::note
+**Note:** urldata functions can be used to make internal SOAP and REST calls to Oracle CPQ web services. This is generally not recommended and declarative features should be used when possible.
+:::
 
 Syntax:
 
@@ -60,27 +61,28 @@ The key-value pairs in the table below are an example of a simple response.
 
 Response Handling Example
 
-```
+```bml
 response = urldata(url, method, headers);
 print(get(response, "Status-Code")); // print the status code
 print(get(response, httpHeaderName)); // print the value of the header named httpHeaderName
 print(get(response, "Message-Body")); // print the message body
 ```
 
-> [!NOTE]
-> **Note:** For information about working with dictionaries, refer to the [Dictionaries](Dictionary.md)  topic.
+:::note
+**Note:** For information about working with dictionaries, refer to the [Dictionaries](Dictionary.md)  topic.
+:::
 
 **Examples using urldata:**
 
 Send a GET request without a header
 
-```
+```bml
 response=urldata("http://<hostname>/<path>","GET");
 ```
 
 Send a GET request with a header and a timeout
 
-```
+```bml
 headers=dict("string");
 put(headers, "content-type", "application/json");
 response=urldata("http://<hostname>/<path>", "GET",headers,"", 5000);
@@ -88,13 +90,13 @@ response=urldata("http://<hostname>/<path>", "GET",headers,"", 5000);
 
 Sample error message response during timeout:
 
-```
+```bml
 {Status-Code=-1, Error-Message=Read timed out}
 ```
 
 Send a PUT request with a header
 
-```
+```bml
 headers=dict("string");
 put(headers, "content-type", "application/json");
 response=urldata("http://<hostname>/<path>","PUT",headers,jsonBody);
@@ -102,7 +104,7 @@ response=urldata("http://<hostname>/<path>","PUT",headers,jsonBody);
 
 Send a DELETE  request with headers that specify Basic authentication
 
-```
+```bml
 headers=dict("string");
 encodecredential = encodebase64("<username>:<password>"); // for Authentication 
 authstring="Basic " + encodecredential;
@@ -112,18 +114,19 @@ response=urldata("http://<hostname>/<path>","DELETE",headers);
 
 Send a GET request with headers that specify Bearer authentication
 
-```
+```bml
 headers=dict("string");
 put(headers, "Authorization", "Bearer $_acess_token_dynamics365");
 response=urldata(http://<hostname>/<path>",GET, headers);
 ```
 
-> [!NOTE]
-> **Note:** This example uses a bearer token for Microsoft Dynamics 365. Please see the [OAuth Provider](../../Integrating_With_BigMachines/Integration_Center/OAuthIntegration.md) Integration topic for more information.
+:::note
+**Note:** This example uses a bearer token for Microsoft Dynamics 365. Please see the [OAuth Provider](../../Integrating_With_BigMachines/Integration_Center/OAuthIntegration.md) Integration topic for more information.
+:::
 
 Send a PATCH request using headers that specify Basic authentication
 
-```
+```bml
 headers=dict("string");
 encodecredential = encodebase64("<username>:<password>"); // for Authentication
 authstring="Basic " + encodecredential;
@@ -179,7 +182,9 @@ String urldatabypost(String url, String parameters, String defaultValue, [Intege
 | Format                       | Passes arguments as XML (generally) |
 | Transmission Synchronization | Synchronous                         |
 
+:::tip
 Best Practice is to use the File Manager to hold the data from POST.
+:::
 
 Parameters:
 
@@ -194,7 +199,7 @@ Additional parameters
 
 Oracle CPQ allows additional parameters that can be passed to `urldatabypost` to pass header values.
 
-```
+```bml
 headers = dict("string");
 put(headers, "SoapAction Key", "SoapAction Value");
 return urldatabypost("https://cpluto.oracle.com/httpreceiver", "", "", headers);
@@ -236,30 +241,31 @@ Parameters:
 
 3. Otherwise, the function returns the defaultValue.
 
-> [!NOTE]
-> A Request Soap Message should contain $_BM_ASYNC_ADDRESSING_TOKEN$ in the header.
+:::note
+A Request Soap Message should contain $_BM_ASYNC_ADDRESSING_TOKEN$ in the header.
+:::
 
 **Return Type:** String
 
 Examples of urldatabypostasync:
 
-```
+```bml
 urldatabypostasync("http://www.example.com", "a1=v1&a2=v2", "error message", "callbackActionVarName");
 ```
 
-```
+```bml
 urldatabypostasync("http://www.example.com", "a1=v1&a2=v2", "error message", "callbackActionVarName", myHeaders); //Uses custom HTTP headers
 ```
 
-```
+```bml
 urldatabypostasync("http://www.example.com", "a1=v1&a2=v2", "", "callbackActionVarName", dict("string"), true); //Uses the HTTP error code message (without custom headers)
 ```
 
-```
+```bml
 urldatabypostasync("http://www.example.com", "a1=v1&a2=v2", "", "callbackActionVarName", myHeaders, true); //Uses both custom headers and the error code message
 ```
 
-```
+```xml
 //SENDING ASYNC REQUEST- SAMPLE BML
 
 endPoint="https://endpoint.customer.com" //where call is sent
@@ -310,15 +316,13 @@ urlmultipartbypost
 
 This function supports remote approvals by sending multi-part messages with attachments.
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * This function is only intended to be used with external API calls.
-> 
-> * This function sends raw JSON. The receiving server needs to interpret the JSON into a multipart call.
+:::note
+Notes:
+
+* This function is only intended to be used with external API calls.
+
+* This function sends raw JSON. The receiving server needs to interpret the JSON into a multipart call.
+:::
 
 Syntax:
 
@@ -342,7 +346,7 @@ Sample Input:
 
 payload:
 
-```
+```xml
 {
    "processDefId": "default~CPQApproval!1.0~QuoteApprovalProcess",
    "serviceName": "QuoteApprovalProcess.service",
@@ -354,7 +358,7 @@ payload:
 
 Sample Return
 
-On success, a Dictionary representation of the http response, such as âStatus-Codeâ, âContent-Typeâ, âMessage-Bodyâ, etc., is returned.
+On success, a Dictionary representation of the http response, such as “Status-Code”, “Content-Type”, “Message-Body”, etc., is returned.
 
 ### Additional Information
 
@@ -362,12 +366,13 @@ Same Server Authentication
 
 Authorization is optional when making a web services call that is internal to CPQ. You can omit the authorization string in the header when using urldata() and urldatabypost() functions. When no authorization string is provided the current user's login credentials are used.
 
-> [!NOTE]
-> **Note:** Making self-SOAP and self-REST calls using urldata functions is not recommended. Use declarative functionality where possible.
+:::note
+**Note:** Making self-SOAP and self-REST calls using urldata functions is not recommended. Use declarative functionality where possible.
+:::
 
 Example  using urldatabypost():
 
-```
+```bml
 headers=dict("string");
 //Authorization is not required when calling an Oracle CPQ web service that is on the same site
 put(headers, "Content-Type", "application/json");
@@ -386,9 +391,13 @@ An optional timeout parameter can be set on the `urldata`, `urldatabyget`,`urlda
 
 ## Notes
 
+:::warning
 **Note:** BML functions that access remote content (e.g., urldata, urldatabyget, urldatabypost) no longer allow request key/value pairs that contain illegal characters. Any attempt to use those illegal characters will cause the request (and thus potentially the entire BML function) to fail. Administrators can find the offending KEY identified in the error log.
+:::
 
-If you are retrieving File Manager static resources/files, use the HTTP GET protocol. 
+:::tip
+If you are retrieving File Manager static resources/files, use the HTTP GET protocol.
+:::
 
 ## Related Topics
 

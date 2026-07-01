@@ -2,8 +2,9 @@
 
 ## Overview
 
-> [!NOTE]
-> This topic covers the Util Funtion Editor using the Redwood interface pages. Refer to[Library Functions,](../Library_Functions.md) [Function Editor Basics](FunctionEditorBasics.md), and [Function Wizard](FunctionWizard.md) for process administration using the classic interface pages.
+:::note
+This topic covers the Util Funtion Editor using the Redwood interface pages. Refer to[Library Functions,](../Library_Functions.md) [Function Editor Basics](FunctionEditorBasics.md), and [Function Wizard](FunctionWizard.md) for process administration using the classic interface pages.
+:::
 
 The Function Editor contains a list of pre-defined BML functions that are available for use in advanced scripting.  There are some variations in the Function Editor, depending on where you are located within the application:  Commerce, Configuration, Commerce Library, or Util Library. The Function Editor allows you to create a new function or edit an existing function. You can access the Create Util Function page or Edit Util Function page from the [Util BML Library Functions List](../UtilBmlLibraryFunctionsList.md).
 
@@ -49,8 +50,9 @@ The  code is displayed in different colors. For example:
 
 Create or Edit a  Library Function
 
-> [!NOTE]
-> To add a Commerce Library Function using the Redwood UI, refer to [Commerce Library Functions](../../Quotes/LibraryFunctions.md).
+:::note
+To add a Commerce Library Function using the Redwood UI, refer to [Commerce Library Functions](../../Quotes/LibraryFunctions.md).
+:::
 
 Complete the following steps to create a library function.
 
@@ -153,37 +155,40 @@ The [Util BML Library Functions List](../UtilBmlLibraryFunctionsList.md) page i
 
 ## NOTES:
 
+:::warning
 Library functions must be created before they can be added.
+:::
 
+:::warning
 Util and Commerce Library functions cannot self-reference. Recursive calling of the same Util and Commerce Library functions will fail and result in a compilation error when called at any point in the reference chain. Util and Commerce Library functions will not appear in the Import list for themselves.
+:::
 
-> [!NOTE]
-> Recursive validation is performed during the following for Util and Commerce Library Functions: Validate, adding, applying, or updating a function.
+:::note
+Recursive validation is performed during the following for Util and Commerce Library Functions: Validate, adding, applying, or updating a function.
+:::
 
-> [!NOTE]
-> Changes can be made to the copied function, since it is a new and independent function. This allows admins to manage versions and build new functions based on existing ones
->  Note the function name and variable name of the copied function must be different from the existing function.
+:::note
+Changes can be made to the copied function, since it is a new and independent function. This allows admins to manage versions and build new functions based on existing ones
+ Note the function name and variable name of the copied function must be different from the existing function.
+:::
 
-> [!NOTE]
-> **Custom Variable Name Conventions** Oracle  CPQ appends the "_c" suffix to custom variable names to provide more consistency for integrations with Oracle Sales.
-> 
-> 
-> 
-> 
-> Customers can submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)  to disable the "_c" suffix on variable names for custom Commerce entities
-> 
-> 
-> 
-> 
-> * When the "_c" is disabled, the "_c" variable name suffix will not be required for newly created custom Commerce entities.
-> 
-> * Disabling the "_c" variable name suffix for custom Commerce entities will not change existing variable names.
-> 
-> * The "_c" suffix setting will not impact existing variable names when cloning a Commerce process or migrating Commerce items. Target variable names will be the same as the variable names from the source Commerce process.
+:::note
+**Custom Variable Name Conventions** Oracle  CPQ appends the "_c" suffix to custom variable names to provide more consistency for integrations with Oracle Sales.
 
+Customers can submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)  to disable the "_c" suffix on variable names for custom Commerce entities
+
+* When the "_c" is disabled, the "_c" variable name suffix will not be required for newly created custom Commerce entities.
+
+* Disabling the "_c" variable name suffix for custom Commerce entities will not change existing variable names.
+
+* The "_c" suffix setting will not impact existing variable names when cloning a Commerce process or migrating Commerce items. Target variable names will be the same as the variable names from the source Commerce process.
+:::
+
+:::tip
 * Commerce Library functions can call other Commerce Library functions. Commerce Library functions can call Util Library functions.
 
 * Util Library functions can call other Util Library functions. Util Library functions cannot call Commerce Library functions.
+:::
 
 ## Related Topics
 

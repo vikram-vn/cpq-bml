@@ -40,13 +40,13 @@ The BM_PARTNER_SECURITY_TOKEN parameter represents the WSSE security Username To
 
 Example:
 
-```
+```xml
 ...<soapenv:Header><ClientName xmlns="urn:crmondemand/ws">Bigmachines</ClientName>"+BM_PARTNER_SECURITY_TOKEN+"</soapenv:Header>...
 ```
 
 Inserts the block
 
-```
+```xml
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity- secext-1.0.xsd"><wsse:UsernameToken><wsse:Username>User'sPartnerLogin</wsse:Username> <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">User'sPartnerPassword</wsse:Password></wsse:UsernameToken> </wsse:Security>
 ```
 
@@ -84,7 +84,7 @@ Approved Status. This is used in Remote Approvals in the tilde separated approva
 
 Example:
 
-```
+```bml
 returnString=returnString+ApproverName+"~"+ApproverCompany+"~"+ApproverDate+"~"+BM_REMOTE_APPROVAL_STATUS_APPROVED+ "~" + ApproverComment +"~||";
 ```
 
@@ -94,7 +94,7 @@ Custom Status. This is used in Remote Approvals in the tilde separated approval 
 
 Example:
 
-```
+```bml
 returnString=returnString+ApproverName+"~"+ApproverCompany+"~"+ApproverDate+"~"+BM_REMOTE_APPROVAL_STATUS_CUSTOM+ "~" + ApproverComment +"~||";
 ```
 
@@ -104,7 +104,7 @@ Rejected Status. This is used in Remote Approvals in the tilde separated approva
 
 Example:
 
-```
+```bml
 returnString=returnString+ApproverName+"~"+ApproverCompany+"~"+ApproverDate+"~"+BM_REMOTE_APPROVAL_STATUS_REJECTED+ "~" + ApproverComment +"~||";
 ```
 

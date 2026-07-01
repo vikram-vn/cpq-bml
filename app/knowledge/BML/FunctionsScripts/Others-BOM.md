@@ -22,7 +22,7 @@ Parameters:
 
 Sample Input
 
-```
+```bml
 // This baseBom contains sample root, sample child and sample grand child.
 
 baseBom = json("{\"children\":[{\"id\":\"BOM_ABOSampleChild\",\"parentId\":\"BOM_ABOSampleRoot\",\"quantity\":1,\"partNumber\":\"part12\",\"fields\":{\"itemInstanceName_l\":\"part12-20983113-2\",\"itemInstanceId_l\":\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\"},\"explodedQuantity\":2},{\"id\":\"BOM_ABOSampleGrandChild\",\"parentId\":\"BOM_ABOSampleChild\",\"quantity\":4,\"partNumber\":\"part14\",\"fields\":{\"itemInstanceName_l\":\"part14-20983113-3\",\"itemInstanceId_l\":\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\"},\"explodedQuantity\":8}],\"id\":\"BOM_ABOSampleRoot\",\"parentId\":null,\"quantity\":2,\"partNumber\":\"part11\",\"fields\":{\"itemInstanceName_l\":\"part11-20983113-1\",\"itemInstanceId_l\":\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\"},\"explodedQuantity\":2}");
@@ -42,19 +42,17 @@ calculateconfiguration
 
 This function applies a delta configuration set from open lines on top of the asset configuration to produce the projected configuration for all configuration attributes including attributes that are not mapped to the configurator.
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * Notice there is not a BML function to calculate the delta Configuration since this logic is conducted in code.
-> 
-> * Both the baseConfigurationKey input parameter and return value are a key to a global cache entry, whose value is an unpublished JSON structure used to store the configuration for a root asset and its content including internal fields and all configuration attributes including unmapped attributes.
-> 
-> * Notice all the entries must belong to the same root asset, otherwise the call will be ignored or throw an error. There could be more than one internal or external order but they should be in the ascending order of the requestDate, since the order in the array is the order the delta configuration item get applied.
-> 
-> * For the same reason if the asset is present it should be the first item in the array since it is the starting point. In addition, the other baseConfiguration input should be blank for this use case of passing the asset in the linesToApply array.
+:::note
+Notes:
+
+* Notice there is not a BML function to calculate the delta Configuration since this logic is conducted in code.
+
+* Both the baseConfigurationKey input parameter and return value are a key to a global cache entry, whose value is an unpublished JSON structure used to store the configuration for a root asset and its content including internal fields and all configuration attributes including unmapped attributes.
+
+* Notice all the entries must belong to the same root asset, otherwise the call will be ignored or throw an error. There could be more than one internal or external order but they should be in the ascending order of the requestDate, since the order in the array is the order the delta configuration item get applied.
+
+* For the same reason if the asset is present it should be the first item in the array since it is the starting point. In addition, the other baseConfiguration input should be blank for this use case of passing the asset in the linesToApply array.
+:::
 
 Syntax:
 
@@ -69,7 +67,7 @@ Parameters:
 
 Example:
 
-```
+```bml
 line1 = "{\"type\":\"internalOrder\",\"_bs_id\":21002021,\"_document_number\": 2}";
 line2 = "{\"type\":\"internalOrder\",\"_bs_id\":21002021,\"_document_number\": 6}";
 linesToApply = jsonArray();
@@ -85,9 +83,10 @@ calculatedeltabom
 
 This function compares the prior BOM with current BOM and then returns the difference between the two with appropriate action code for each item.
 
-> [!NOTE]
-> **Note:** Calculate Delta BOM is invoked from the abo_delta function when a user clicks Add to Transaction or Update Transaction to exit the configurator.  The comparison is mainly between prior BOM and current BOM, but if the item exists in both current and input BOMs and doesnât exist in prior BOM, it will reuse most information from input BOM, especially the asset key.
-> All of the BOMs used in the caculatedeltaBom function are all flattened BOMs for out-of-the-box ABO implementations, but this function is capable of handling hierarchical BOMs.
+:::note
+**Note:** Calculate Delta BOM is invoked from the abo_delta function when a user clicks Add to Transaction or Update Transaction to exit the configurator.  The comparison is mainly between prior BOM and current BOM, but if the item exists in both current and input BOMs and doesn’t exist in prior BOM, it will reuse most information from input BOM, especially the asset key.
+All of the BOMs used in the caculatedeltaBom function are all flattened BOMs for out-of-the-box ABO implementations, but this function is capable of handling hierarchical BOMs.
+:::
 
 Syntax:
 
@@ -104,7 +103,7 @@ Parameters:
 
 Sample Input
 
-```
+```bml
 priorBom = json(
 "{\"partNumber\":\"part11\",\"quantity\":5,\"isModel\":true,\"id\":\"BOM_ABOSampleRoot\",\"parentId\":\"\",\"fields\":{\"itemInstanceName_l\":\"part11-20983113-1\",\"itemInstanceId_l\":\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\",\"requestDate_l\":\"\"},\"explodedQuantity\":5,\"category\":\"sales\",\"currencyCode\":\"\",\"children\":[{\"partNumber\":\"part14\",\"quantity\":4,\"isModel\":false,\"id\":\"BOM_ABOSampleGrandChild\",\"parentId\":\"BOM_ABOSampleChild\",\"fields\":{\"itemInstanceId_l\":\"abo_072a975f-7ccc-4c18-9699-3d5fa073d7f9\",\"itemInstanceName_l\":\"part14-20983113-3\",\"requestDate_l\":\"\"},\"explodedQuantity\":20,\"variableName\":\"ABOSampleGrandChild\",\"sequenceIndex\":0,\"conditionIndex\":0,\"definition\":{\"Optional\":\"N\",\"ItemType\":\"Standard Item\",\"includedInBasePrice\":\"\",\"ItemId\":\"ID\",\"SequenceNum\":4},\"children\":[],\"unconfiguredBomVarname\":\"ABOSampleGrandChild\",\"unconfiguredPartNumber\":\"part14\"},{\"partNumber\":\"part12\",\"quantity\":1,\"isModel\":false,\"id\":\"BOM_ABOSampleChild\",\"parentId\":\"BOM_ABOSampleRoot\",\"fields\":{\"itemInstanceName_l\":\"part12-20983113-2\",\"itemInstanceId_l\":\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\",\"requestDate_l\":\"\"},\"explodedQuantity\":5,\"sequenceIndex\":0,\"conditionIndex\":0,\"children\":[]}]}");
 curBom = json(
@@ -121,8 +120,9 @@ This function converts a hierarchical BOM
  into a flattened BOM. A flat BOM stores all descendants as direct children,
  including children, grandchildren, etc. Flattened BOMs are easier to process.
 
-> [!NOTE]
-> The input "bomJson" is not modified and will remain in a hierarchical BOM format.
+:::note
+The input "bomJson" is not modified and will remain in a hierarchical BOM format.
+:::
 
 Syntax:
 
@@ -136,7 +136,7 @@ Parameters:
 
 Sample Input
 
-```
+```json
 {
    "partNumber": "part1",
    "quantity": 1,
@@ -171,7 +171,7 @@ Sample Input
 
 Sample Return
 
-```
+```json
 {
    "partNumber": "testbed:systemConfiguration:rootSystem",
    "quantity": 1,
@@ -220,8 +220,9 @@ This function converts a flattened BOM
  BOMs for easier processing; this function returns the processed flattened BOM
  back into a hierarchical BOM.
 
-> [!NOTE]
-> The input "bomJson" is not modified and will remain in a hierarchical BOM format.
+:::note
+The input "bomJson" is not modified and will remain in a hierarchical BOM format.
+:::
 
 Syntax:
 
@@ -235,7 +236,7 @@ Parameters:
 
 Sample Input:
 
-```
+```json
 {
   "partNumber": "part1",
   "quantity": 1,
@@ -268,7 +269,7 @@ Sample Input:
 
 Sample Return:
 
-```
+```json
 {
   "partNumber": "testbed:systemConfiguration:rootSystem",
   "quantity": 1,
@@ -343,7 +344,7 @@ Parameters:
 
 Example:
 
-```
+```bml
 bsId=18430319;
 jObj = getbom(bsId, 2);
 print jObj;
@@ -362,7 +363,7 @@ Parameters:
 
 | Parameter            | Data Type | Description                                                                                                                                                                                                                                                                                                                                                                                          |
 | -------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| configId             | Integer   | The Configuration ID for the client side integration action > [!NOTE] > This is not the same as the configuration_id system attribute. * For UI integrations, the client side integration action returns the config_id in the response JSON. * For other actions such as Terminate, Renew, Suspend, and Resume order, RESTful calls generated from the saveBomConfig BML function return the lineId. |
+| configId             | Integer   | The Configuration ID for the client side integration action :::note This is not the same as the configuration_id system attribute. ::: * For UI integrations, the client side integration action returns the config_id in the response JSON. * For other actions such as Terminate, Renew, Suspend, and Resume order, RESTful calls generated from the saveBomConfig BML function return the lineId. |
 | flattenChildProducts | Boolean   | (optional) Use this parameter to flatten child items and return all descendant BOM items as direct children of the root BOM item. The default value is false if not provided.                                                                                                                                                                                                                        |
 
 savebom
@@ -390,7 +391,7 @@ Parameters:
 
 Example:
 
-```
+```bml
 testjson = json("{\"partNumber\":\"part49\",\"quantity\":10,\"id\":\"BOM_root\",\"parentId\":\"\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"0\"},\"explodedQuantity\":10,\"category\":\"sales\",\"variableName\":\"root\",\"definition\":{\"SequenceNum\":814,\"ItemId\":\"814\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"},\"children\":[{\"partNumber\":\"part50\",\"quantity\":5,\"id\":\"BOM_text_bom\",\"parentId\":\"BOM_root\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"1\"},\"explodedQuantity\":50,\"variableName\":\"text_bom\",\"definition\":{\"SequenceNum\":815,\"ItemId\":\"815\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"}}]} ");
 bsId=18430319;
 docNum = savebom(bsId, testjson);
@@ -416,6 +417,7 @@ Parameters:
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -423,6 +425,7 @@ Parameters:
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 

@@ -8,8 +8,9 @@ append
 
 This function  will attach a new element to the end of an array and can be used with initialized and uninitialized arrays.
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `append(arrayID, newArrayElem)`
 
@@ -22,12 +23,15 @@ Parameters:
 
 **Return Type:** Integer *(denotes the new size of the array)*
 
+:::warning
 If array max size is reached and you try to append a new element, it will fail.
+:::
 
 Example:
 
-> [!NOTE]
-> If a null element is added to an array, it should be allowed to be added and the value of the element in the array should be null.
+:::note
+If a null element is added to an array, it should be allowed to be added and the value of the element in the array should be null.
+:::
 
 boolean[n]
 
@@ -37,8 +41,9 @@ Initializes a Boolean array with the specified size.
 
 * Boolean arrays are dynamic in nature and the length can be increased.
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:**`Boolean[] boolean[Integer n]`
 
@@ -104,11 +109,11 @@ Parameters:
 | content                                                          | String    | The string to be encoded.                                                                                                              |
 | charSet                                                          | String    | The character encoding. This can be any encoding supported by Java SE Runtime Environment 6, such as ASCII, ISO-8859-1, UTF-32BE, etc. |
 | Optional, the default is UTF-8 if not provided.                  |           |                                                                                                                                        |
-| > [!NOTE] > An error will be thrown if invalid charSet is given. |           |                                                                                                                                        |
+| :::note An error will be thrown if invalid charSet is given. ::: |           |                                                                                                                                        |
 
 Example:
 
-```
+```bml
 var = bytearray("Sample String","UTF-16");
 print var;
 //Output: bytearray [UTF-16]: Sample String
@@ -122,8 +127,9 @@ Initializes a Date array with the specified size.
 
 * Date Arrays are dynamic in nature and the length can be increased.
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `Date[] date[Integer n]`
 
@@ -199,8 +205,9 @@ For example:
 
 * `fltArray [4] = 2.1; //` This will automatically extend the length of fltArray to 5
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `Float[] float[Integer n]`
 
@@ -255,8 +262,9 @@ For example:
 
 * `intArray [4] = 2; //`This will automatically extend the length of intArray to 5
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `Integer[] integer[Integer n]`
 
@@ -305,8 +313,9 @@ isempty
 
 This function determines if the array is empty.
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `isempty(arrayIdentifier)`
 
@@ -326,8 +335,9 @@ max
 
 Returns the largest element of an integer or float array.
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `max(arrayIdentifier)`
 
@@ -345,8 +355,9 @@ min
 
 Returns the smallest element of an integer or float array.
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `min(arrayIdentifier)`
 
@@ -374,14 +385,15 @@ Parameters:
 
 **Return Type:** Integer[]
 
-> [!NOTE]
-> This function is case-sensitive.
+:::note
+This function is case-sensitive.
+:::
 
 Example:
 
 In the following example, the numberOfDesserts value is a configurable attribute that is setup as the array size control for an array in a configuration flow.
 
-```
+```bml
 dessertCountArr = range(numberOfDesserts);
 print dessertCountArr;
 isValidArr = boolean [];
@@ -403,8 +415,9 @@ for dessertNumber in dessertCountArr {
 return isValidArr;
 ```
 
-> [!NOTE]
-> If x is 0, then the function returns an integer[0]. For example, `intArray=range(2)` returns an integer array size of 2 where `intArray[0]=0` and `intArray[1]=1`.
+:::note
+If x is 0, then the function returns an integer[0]. For example, `intArray=range(2)` returns an integer array size of 2 where `intArray[0]=0` and `intArray[1]=1`.
+:::
 
 remove
 
@@ -421,14 +434,17 @@ Parameters:
 
 **Return Type:** Integer *(denotes the size of the new array)*
 
-> [!NOTE]
-> Only integers are allowed to be passed in for the index of the element to be removed.
+:::note
+Only integers are allowed to be passed in for the index of the element to be removed.
+:::
 
 Example:
 
 You can see the new array that is being returned once the element at `index[2]` is removed.
 
+:::warning
 If the array is empty, the function will fail.
+:::
 
 reverse
 
@@ -436,8 +452,9 @@ This function is used to reverse all elements in the array.
 
 **Syntax:** `reverse(arrayIdentifier)`
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 Parameters:
 
@@ -477,8 +494,9 @@ This function sorts array elements based on defined sort method.  You can sort i
 
 **Syntax:** `sort(arrayID, [sortOrder], [sortType])`
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 Parameters:
 
@@ -506,8 +524,9 @@ For example:
 
 * `strArray [4] = "a"; //`This will automatically extend the length of strArray to 5
 
-> [!NOTE]
-> This parameter only works with 1-D arrays.
+:::note
+This parameter only works with 1-D arrays.
+:::
 
 **Syntax:** `String[] string[Integer n]`
 
@@ -544,6 +563,7 @@ Example:
 
 ## Notes
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -551,20 +571,20 @@ Example:
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * Specifying a negative number (including NaN, which is equal to -999999) for the array size throws a runtime exception.
-> For example, arr = float[-9]; throws a RuntimeException.
-> 
-> * When you specify the array size equal to jNaN, then an array of size 0 is initialized.
-> 
-> * Contact admin for size limits.
+:::note
+Notes:
 
+* Specifying a negative number (including NaN, which is equal to -999999) for the array size throws a runtime exception.
+For example, arr = float[-9]; throws a RuntimeException.
+
+* When you specify the array size equal to jNaN, then an array of size 0 is initialized.
+
+* Contact admin for size limits.
+:::
+
+:::tip
 Tips and Considerations
 
 * For 1-D arrays, the maximum number of columns  is 1000.
@@ -573,6 +593,7 @@ Tips and Considerations
 
 * BML size limits have default settings. The default row size is 5000. The default column size is 50. 
 To increase the default row and column size, open a ticket on [My Oracle Support](https://support.oracle.com/).
+:::
 
 ## Related Topics
 

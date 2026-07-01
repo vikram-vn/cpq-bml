@@ -4,10 +4,11 @@
 
 BML  extensible language is a scripting tool that is used to capture a company's complex business logic within Oracle CPQ Configuration and Commerce. BML is based of many different programming languages.
 
-You will see syntax that is familiar in Java, Basic, Python, and C++, but they arenât exactly the same. After reading the section on BML, you should have a good understanding of what programming language is and how itâs used and structured. You should also understand the syntax of BML and have generated some very basic and functional code.
+You will see syntax that is familiar in Java, Basic, Python, and C++, but they aren’t exactly the same. After reading the section on BML, you should have a good understanding of what programming language is and how it’s used and structured. You should also understand the syntax of BML and have generated some very basic and functional code.
 
-> [!NOTE]
-> Oracle CPQ 25D introduces support for the Redwood UI Util Library Editor. Refer to [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) and [Util Function Editor](FunctionEditor/BML_Editor.md) for more information.
+:::note
+Oracle CPQ 25D introduces support for the Redwood UI Util Library Editor. Refer to [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) and [Util Function Editor](FunctionEditor/BML_Editor.md) for more information.
+:::
 
 What is a function?
 
@@ -107,12 +108,13 @@ Programming Language
 
 A programming language is an artificial language that is used to write instructions that a computer can understand. Programming languages can be broken down into two groups:
 
-**1. Compiled programming:** this is a language that must be converted into machine language, after itâs been written by the programmer, so that a computer can understand and execute the instructions. These languages require the use of special software (called a compiler) prior to being executed.
+**1. Compiled programming:** this is a language that must be converted into machine language, after it’s been written by the programmer, so that a computer can understand and execute the instructions. These languages require the use of special software (called a compiler) prior to being executed.
 
 **2. Interpretive programming:** this language do not have to be compiled. The computer understands and executes the instructions while the program is running. See examples below.
 
-> [!NOTE]
-> BML has characteristics of both languages. Itâs a Java based mark-up language, so it does need to be compiled, but that is done within the application.
+:::note
+BML has characteristics of both languages. It’s a Java based mark-up language, so it does need to be compiled, but that is done within the application.
+:::
 
 Programming Structure
 
@@ -147,21 +149,25 @@ Common Statement Elements
 | return  | This is the beginning of the return statement which is required at the end of your code. BML will not process instructions without it.                                                                          |
 | print   | This function displays all data types in the console to make debugging easier. You can give it direct inputs or have it print variables and results from other functions. It displays as purple in the Debugger |
 
-You may also see the element `return "";`. This will return an empty String if there isnât anything to return. It will only return a String (signified by double quotation marks), not an Integer, Float, Boolean, or Array.
+You may also see the element `return "";`. This will return an empty String if there isn’t anything to return. It will only return a String (signified by double quotation marks), not an Integer, Float, Boolean, or Array.
 
 Basic BML Syntax
 
 The basic structure includes statements that comprise the source code and ends with a return statement. The example below shows variables, print statements, and a return statement.
 
+:::tip
 It is considered a best practice to add spaces and comments to your code. This makes the code more readable.
+:::
 
 ## NOTES
 
-> [!NOTE]
-> The BML script compiler automatically utilizes StringBuilders during the internal processing of BML functions. This can result in a larger compiled script size. During internal processing, a BML script size limit is enforced. This may affect users attempting to update functions depending on the implementation of their site. If you want to learn more or disable the BML complier optimization enhancement, submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)
+:::note
+The BML script compiler automatically utilizes StringBuilders during the internal processing of BML functions. This can result in a larger compiled script size. During internal processing, a BML script size limit is enforced. This may affect users attempting to update functions depending on the implementation of their site. If you want to learn more or disable the BML complier optimization enhancement, submit a Service Request (SR) on [My Oracle Support](https://support.oracle.com/)
+:::
 
-> [!NOTE]
-> HTML attributes are not able to be set using a BML function.
+:::note
+HTML attributes are not able to be set using a BML function.
+:::
 
 ## Related Topics
 

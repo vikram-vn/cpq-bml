@@ -1,6 +1,6 @@
 # JSON Functions
 
-CPQâs markup language, BML, now allows administrators to create new Java Script Object Notation (JSON) data types (e.g. JSON, JSON array, and JSON null) and generate, modify, parse, extract, and query JSON data using BML JSON and JSON array manipulation functions. The addition of JSON Path expression in JSON manipulation functions allows advanced users to easily retrieve or modify a node or value in JSON data.
+CPQ’s markup language, BML, now allows administrators to create new Java Script Object Notation (JSON) data types (e.g. JSON, JSON array, and JSON null) and generate, modify, parse, extract, and query JSON data using BML JSON and JSON array manipulation functions. The addition of JSON Path expression in JSON manipulation functions allows advanced users to easily retrieve or modify a node or value in JSON data.
 
 ## Functions
 
@@ -18,7 +18,7 @@ Boolean isjsonnull(Json jsonIdentifier, String key (or JsonArray jsonArrayIdenti
 
 Example:
 
-```
+```bml
 str1 = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
 jsonObj = json(str1);
 
@@ -43,7 +43,7 @@ Json json([String jsonFormatStr])
 
 Example:
 
-```
+```bml
 jsonObj1 = json("{\"key1\":\"value1\"}");
 print jsonObj1;
 //Output: {"key1":"value1"}
@@ -63,7 +63,7 @@ JsonArray jsonarray([String jsonArrStr])
 
 Example:
 
-```
+```bml
 str = "[1,\"val1\",{\"key1\":10,\"key2\":\"val2\"}]";
 jsonArrObj1 = jsonarray(str);
 print jsonArrObj1;
@@ -84,7 +84,7 @@ Syntax:
 
 Example:
 
-```
+```bml
 jsonArrObj = jsonarray();
 
 appIntVal = jsonarrayappend(jsonArrObj,1);
@@ -109,7 +109,7 @@ JsonArray jsonarraycopy(JsonArray jsonArrayIdentifier)
 
 Example:
 
-```
+```bml
 str = "[\"string\",1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false]";
 jsonArrObj = jsonarray(str);
 
@@ -142,7 +142,7 @@ Syntax:
 
 Example:
 
-```
+```bml
 str = "[\"mystring\",10,2.9,[\"v1\",\"v2\"],true,{\"key7\":\"val7\",\"key8\":\"val8\"}]";
 jsonArrObj = jsonarray(str);
 
@@ -192,7 +192,7 @@ String jsonarrayrefid(JsonArray jsonArrayIdentifier)
 
 Example:
 
-```
+```bml
 // feeJsonArray is a JSON array
 // feeArraySet is the main doc array set variable name
 // To update feeArraySet, jsonarrayrefid is more efficient than jsonarraytostr when the JSON array is large
@@ -202,7 +202,7 @@ return "1~feeArraySet~" + jsonarrayrefid(feeJsonArray);
 
 When jsonarrayrefid is not used in the return statement of the BML, be aware that the reference ID refers to the JSON array by reference. As a result, any subsequent changes made to the JSON array are included.
 
-```
+```bml
 result = "1~feeArraySet~" + jsonarrayrefid(feeJsonArray);
 jsonarrayremove(feeJsonArray, 0);
 return result; // feeArraySet does not include the removed first row.
@@ -219,7 +219,7 @@ Integer jsonarrayremove(JsonArray jsonArrayIdentifier, Integer index)
 
 Example:
 
-```
+```bml
 str = "[1,\"2\",{\"key1\":10,\"key2\":\"val\"}]";
 jsonArrObj = jsonarray(str);
 
@@ -241,7 +241,7 @@ Integer jsonarraysize(JsonArray jsonarrayIdentifier)
 
 Example:
 
-```
+```bml
 jsonArrObj1 = jsonarray();
 
 arraySize1 = jsonarraysize(jsonArrObj1);
@@ -266,7 +266,7 @@ String jsonarraytostr(JsonArray jsonArrayIdentifier)
 
 Example:
 
-```
+```bml
 str = "[1,\"2\",{\"key1\":10,\"key2\":\"val\"}]";
 jsonArrObj = jsonarray(str);
 
@@ -285,7 +285,7 @@ Json jsoncopy(Json jsonIdentifier)
 
 Example:
 
-```
+```bml
 str = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
 jsonObj = json(str);
 
@@ -321,7 +321,7 @@ Syntax:
 
 Example:
 
-```
+```bml
 str = "{\"key1\":\"mystring\",\"key2\": 10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true,\"key6\":{\"key7\":\"val7\",\"key8\":\"val8\"}}";
 jsonObj = json(str);
 
@@ -386,7 +386,7 @@ String[] jsonkeys(Json jsonIdentifier [, Boolean ignoreNullValues])
 
 Example:
 
-```
+```bml
 str = "{\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":null}";
 jsonObj = json(str);
 
@@ -409,7 +409,7 @@ JsonNull jsonnull()
 
 Example:
 
-```
+```bml
 jnull = jsonnull();
 print jnull;
 //Output: null
@@ -431,7 +431,7 @@ Boolean jsonpathcheck(Json jsonIdentifier, String jsonPath)
 
 Example:
 
-```
+```bml
 str = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\"}]},\"expensive\":10}";
 jsonObj = json(str);
 
@@ -467,7 +467,7 @@ JsonArray jsonpathgetmultiple(Json jsonIdentifier, String jsonPath [, Boolean as
 
 Example:
 
-```
+```bml
 str = "{\"key1\":90,\"key2\":[{\"key1\":900}],\"key3\":{\"key1\":9000}}";
 jsonObj = json(str);
 
@@ -515,7 +515,7 @@ Syntax:
 
 Example:
 
-```
+```bml
 str = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\"}]},\"expensive\":10}";
 jsonObj = json(str);
 
@@ -560,17 +560,15 @@ Removes the object(s) and value(s) corresponding to a given JSON path expression
 
 * **false** is returned if a node corresponding to the given path could not be found.
 
-> [!NOTE]
-> Notes:
-> 
-> 
-> 
-> 
-> * If there are multiple JSON path nodes corresponding to the given path, all corresponding nodes are removed.
-> 
-> * An exception is thrown if the JSON path syntax is not correct.
-> 
-> * Because this function supports object references, caution is recommended while removing objects (JSON, JSON array).
+:::note
+Notes:
+
+* If there are multiple JSON path nodes corresponding to the given path, all corresponding nodes are removed.
+
+* An exception is thrown if the JSON path syntax is not correct.
+
+* Because this function supports object references, caution is recommended while removing objects (JSON, JSON array).
+:::
 
 Syntax:
 
@@ -578,7 +576,7 @@ Boolean jsonpathremove(Json jsonIdentifier, String jsonPat
 
 Example:
 
-```
+```bml
 str = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
 jsonObj = json(str);
 
@@ -613,7 +611,7 @@ String[] jsonpathset(Json jsonIdentifier, String jsonPath, <ValueType> value)
 
 Example:
 
-```
+```bml
 str = "{\"key1\":90,\"key2\":[{\"key1\":900}],\"key3\":{\"key1\":9000}}";
 jsonObj1 = json(str);
 jsonObj2 = json("{\"key1\":89}");
@@ -663,7 +661,7 @@ Syntax:
 
 Example:
 
-```
+```bml
 jsonObj = json();
 
 putStrVal = jsonput(jsonObj,"key1","mystring");
@@ -710,7 +708,7 @@ Boolean jsonremove(Json jsonIdentifier, String key)
 
 Example:
 
-```
+```bml
 str = "{\"a\":1,\"b\":\"test\"}";
 jsonObj = json(str);
 
@@ -732,7 +730,7 @@ String jsontostr(Json jsonIdentifier)
 
 Example:
 
-```
+```bml
 str = "{\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true}";
 jsonObj = json(str);
 
@@ -753,13 +751,13 @@ There are two ways to write a simple JSON path expression
 
 Generally used when keys are alphanumeric (e.g. contain only numbers and alphabets).
 
-Each dot notation signifies one level scan. For example: `$.id` represents the value corresponding to the first level âidâ key.
+Each dot notation signifies one level scan. For example: `$.id` represents the value corresponding to the first level “id” key.
 
-JSON paths have a similar use for an n-level deep scan. For example:`$.attributes.sizeâ`path starts by finding the first level âattributesâ key and then goes to the second level âsizeâ key.
+JSON paths have a similar use for an n-level deep scan. For example:`$.attributes.size`path starts by finding the first level “attributes” key and then goes to the second level “size” key.
 
-When double dots(..) are used, this represents a deep scan in the JSON structure. For example:`$..value` represents all of the values corresponding to all the âvalueâ keys at any level in the structure.
+When double dots(..) are used, this represents a deep scan in the JSON structure. For example:`$..value` represents all of the values corresponding to all the “value” keys at any level in the structure.
 
-Combine single and double dot expressions to create JSON path expressions. For example:`$..size.value`first searches for the entire document and gets all the values corresponding to âsizeâ keys at any level. Within these values, the values corresponding to the next level âvalueâ key are then retrieved.
+Combine single and double dot expressions to create JSON path expressions. For example:`$..size.value`first searches for the entire document and gets all the values corresponding to “size” keys at any level. Within these values, the values corresponding to the next level “value” key are then retrieved.
 
 Whenever an array is encountered while writing a JSON path expression, specify the index of that array. For example:`$.children[0].variableName` gets the variable name from the first child.
 
@@ -807,7 +805,7 @@ JSON Path Examples
 
 Given the following:
 
-```
+```json
 {
     "id": "7345ABCDE",
     "variableName": "BM54888-0",
@@ -880,21 +878,21 @@ Convert a JSON String into a JSON Object
 
 Given the following:
 
-```
+```bml
 jsonString="{\"asset-101\":{\"lines\":[{\"documentNumber\":\"33\",\"quantity\":\"1\",
 \"price\":8.9 },{\"documentNumber\":\"40\",\"quantity\":\"20\",\"price\":50}], \"finalDate\":null,\"finalAction\":\"UPDATE\",\"available\":true}}";
 ```
 
 Input:
 
-```
+```bml
 jobjAsset=json(jsonString);
 print jobjAsset;
 ```
 
 Output:
 
-```
+```json
 { 
    "asset-101":{ 
       "lines":[ 
@@ -922,14 +920,14 @@ JSON references can be used to retrieve and modify nested JSON or JSON array obj
 
 Given the following:
 
-```
+```bml
 jsonString="{\"asset-101\":{\"lines\":[{\"documentNumber\":\"33\",\"quantity\":\"1\",
 \"price\":8.9 },{\"documentNumber\":\"40\",\"quantity\":\"20\",\"price\":50}], \"finalDate\":null,\"finalAction\":\"UPDATE\",\"available\":true}}";
 ```
 
 ###### Get the Reference of a JSON Object with a Specific Document Number (documentNumber 40)
 
-```
+```bml
 jobjLine=jsonpathgetsingle(jobjAsset,"$..lines[?(@.documentNumber=='40')]","json");
 
 // Print the asset object to view modifications
@@ -938,7 +936,7 @@ print jobjLine;
 
 Output:
 
-```
+```json
 { 
    "documentNumber":"40",
    "quantity":"20",
@@ -948,7 +946,7 @@ Output:
 
 ###### Use a Reference to Retrieve a Price
 
-```
+```bml
 intPrice=jsonget(jobjLine,"price","integer");
 
 // Print the asset object to view modifications
@@ -957,13 +955,13 @@ print intPrice;
 
 Output:
 
-```
+```bml
 50
 ```
 
 ###### Use Reference "jobjLine" to Modify Quantity
 
-```
+```bml
 jsonput(jobjLine,"quantity","99");
 
 // Print the asset object to view modifications
@@ -976,14 +974,14 @@ Add a New JSON Object into a Lines JSON Array
 
 Given the following:
 
-```
+```bml
 jsonString="{\"asset-101\":{\"lines\":[{\"documentNumber\":\"33\",\"quantity\":\"1\",
 \"price\":8.9 },{\"documentNumber\":\"40\",\"quantity\":\"20\",\"price\":50}], \"finalDate\":null,\"finalAction\":\"UPDATE\",\"available\":true}}";
 ```
 
 Input:
 
-```
+```bml
 // Get the reference of the lines array
 jarrayLines=jsonpathgetsingle(jobjAsset,"$..lines","jsonarray");
 
@@ -1001,7 +999,7 @@ print jobjAsset;
 
 Output:
 
-```
+```json
 {"asset-101":{"lines":[{"documentNumber":"33","quantity":"1","price":8.9},{"documentNumber":"40",
 "quantity":"99","price":50},{"documentNumber":"43","quantity":"10","price":42}],"finalDate":null,
 "finalAction":"UPDATE","available":true}}
@@ -1011,14 +1009,14 @@ Add a New JSON Array into an Asset JSON Object
 
 Given the following:
 
-```
+```bml
 jsonString="{\"asset-101\":{\"lines\":[{\"documentNumber\":\"33\",\"quantity\":\"1\",
 \"price\":8.9 },{\"documentNumber\":\"40\",\"quantity\":\"20\",\"price\":50}], \"finalDate\":null,\"finalAction\":\"UPDATE\",\"available\":true}}";
 ```
 
 Input:
 
-```
+```bml
 // Add an empty JSON array object into an asset object
 jarraySize=jsonput(jobjAsset,"size",jsonarray());
 
@@ -1033,7 +1031,7 @@ print jobjAsset;
 
 Output:
 
-```
+```json
 {"asset-101":{"lines":[{"documentNumber":"33","quantity":"1","price":8.9},{"documentNumber":"40",
 "quantity":"99","price":50},{"documentNumber":"43","quantity":"10","price":42}],"finalDate":null,
 "finalAction":"UPDATE","available":true},"size":["Large","Medium","Small"]}
@@ -1045,7 +1043,7 @@ When a JSON or JSON array object is inserted using `jsonput`, `jsonarrayappend`,
 
 Refer to the following  examples:
 
-```
+```bml
 // Create a new "jobjColor" reference
 jobjColor=json("{\"color\":\"red\"}");
 
@@ -1066,7 +1064,7 @@ print jobjAsset;
 
 Output:
 
-```
+```json
 {"asset-101":{"lines":[{"documentNumber":"33","quantity":"1","price":8.9},{"documentNumber":"40",
 "quantity":"99","price":50},{"documentNumber":"43","quantity":"10","price":42}],"finalDate":null,
 "finalAction":"UPDATE","available":true},"size":["Large","Medium","Small"],"attribute":{"color":"blue"}}
@@ -1074,8 +1072,8 @@ Output:
 
 ###### jsonpathset()
 
-```
-// Set the "finalAction" value to âADDâjsonpathset(jobjAsset,"$..finalAction","ADD");
+```bml
+// Set the "finalAction" value to “ADD”jsonpathset(jobjAsset,"$..finalAction","ADD");
  
 // Set the quantity of all lines to "8"
 jsonpathset(jobjAsset,"$..lines..quantity","8");
@@ -1096,17 +1094,15 @@ jsonput(jobjAsset101,"finalDate",datetostr(getdate()));
 print jobjAsset;
 ```
 
-> [!NOTE]
-> **Note:** Alternatively the following function can be used:
-> 
-> 
-> 
-> 
-> `jsonpathset(jobjAsset101,"$.finalDate",datetostr(getdate()));`
+:::note
+**Note:** Alternatively the following function can be used:
+
+`jsonpathset(jobjAsset101,"$.finalDate",datetostr(getdate()));`
+:::
 
 Output:
 
-```
+```json
 {"asset-101":{"lines":[{"documentNumber":"33","quantity":"8","price":8.9},{"documentNumber":"40","quantity":"8",
 "price":50},{"documentNumber":"43","quantity":"8","price":42}],"finalDate":"06/28/2016 16:26:04","finalAction":"ADD",
 "available":true},"size":["Large","Medium","Small"],"attribute":{"color":"blue"},"newfield":null}
@@ -1114,7 +1110,7 @@ Output:
 
 ###### jsonpathgetsingle()
 
-```
+```bml
 // Get the second quantity
 intQty=jsonpathgetsingle(jobjAsset,"$..lines[1].quantity","integer");
 print intQty;
@@ -1122,13 +1118,13 @@ print intQty;
 
 Output
 
-```
+```bml
 8
 ```
 
 ###### jsonpathgetmultiple()
 
-```
+```bml
 // Retrieve multiple document numbers
 jarrayDoc=jsonpathgetmultiple(jobjAsset,"$..documentNumber");
 print jarrayDoc;
@@ -1136,16 +1132,17 @@ print jarrayDoc;
 
 Output:
 
-```
+```bml
 ["33","40","43"]
 ```
 
-> [!NOTE]
-> **Note:** The `jsonpathgetmultiple()` function does not return references of the nested JSON or JSON  array objects. To return these references, retrieve the path(s) and use  `jsonpathgetsingle`.
+:::note
+**Note:** The `jsonpathgetmultiple()` function does not return references of the nested JSON or JSON  array objects. To return these references, retrieve the path(s) and use  `jsonpathgetsingle`.
+:::
 
 Refer to the following example to retrieve references of all JSON objects with a price > 5
 
-```
+```bml
 // 1. Get the path
 jarrpath=jsonpathgetmultiple(jobjAsset,"$..lines[?(@.price>5)]",true);
 print jarrpath;
@@ -1153,7 +1150,7 @@ print jarrpath;
 
 Output:
 
-```
+```json
 [
 "$['asset-101']['lines'][0]",
 "$['asset-101']['lines'][1]",
@@ -1184,7 +1181,7 @@ print jobjAsset;
 
 Output:
 
-```
+```json
 {"asset-101":{"lines":[{"documentNumber":"40","quantity":"8","price":50},{"documentNumber":"43",
 "quantity":"8","price":42}],"finalDate":"06/28/2016 17:17:19","finalAction":"ADD","available":true},
 "size":["Large","Medium","Small"],"attribute":{"color":"blue"},"newfield":null}
@@ -1200,7 +1197,7 @@ Refer to the following guidelines:
 
 * JSON objects cannot have keys which are null objects.
 
-* Itâs not possible to create or add a null object key in a JSON object.
+* It’s not possible to create or add a null object key in a JSON object.
 
 * `jsonpathset()` cannot update keys which contain the character "[" (opening square bracket).
 
@@ -1210,9 +1207,9 @@ Issues for JSON Object Values
 
 Refer to the following guidelines:
 
-* The string `"null"` or `'null'` (with the quotation marks being a part of the string) canât be saved as value in a JSON object. Instead it will be saved as string `null` (i.e. without the double or single quotation marks .)
+* The string `"null"` or `'null'` (with the quotation marks being a part of the string) can’t be saved as value in a JSON object. Instead it will be saved as string `null` (i.e. without the double or single quotation marks .)
 
-* Any string, encircled by curly { } or square brackets [ ], which is also encircled by single or double quotation marks canât be saved in this form as a value within a JSON object. The value will be saved without the quotation marks. For example,`"{value1}"`, `"[value2]"`, `'{value3}'`, or `'[value4]'` is saved as`{value1}`,`[value2]`,`{value3}`, or`[value4]`.
+* Any string, encircled by curly { } or square brackets [ ], which is also encircled by single or double quotation marks can’t be saved in this form as a value within a JSON object. The value will be saved without the quotation marks. For example,`"{value1}"`, `"[value2]"`, `'{value3}'`, or `'[value4]'` is saved as`{value1}`,`[value2]`,`{value3}`, or`[value4]`.
 
 Recommendations and Workaround Examples
 
@@ -1222,7 +1219,7 @@ If a value needs to be encircled by quotation marks, it may be necessary to use 
 
 The following BML code demonstrates the behavior.
 
-```
+```bml
 j = json();
 value_string = "[value]";  //  a pair of square brackets
 jsonput(j, "key", value_string);

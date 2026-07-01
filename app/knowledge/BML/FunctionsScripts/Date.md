@@ -46,7 +46,7 @@ Parameters:
 
 **Example:**
 
-```
+```bml
 return datetostr(addmonths(getdate(), 2));
 ```
 
@@ -85,7 +85,9 @@ Example:
 | First date is before second date | -1         |
 | First date is after second date  | 1          |
 
+:::tip
 This function also considers the time for a given date. For "11/04/2009 00:02:00" and "11/04/2009 00:01:00", the function returns 1.
+:::
 
 datetostr
 
@@ -122,7 +124,7 @@ Examples :
 
 * Example 1:
 
-```
+```bml
 testDate = strtojavadate("02/03/2010 03-22-55", "MM/dd/yyyy HH-mm-ss");
 dateStr = datetostr(testDate, "yyyy-MM-dd HH:mm:ss")
 ```
@@ -133,7 +135,7 @@ dateStr = datetostr(testDate, "yyyy-MM-dd HH:mm:ss")
 
 * **Example 2:** Retrieve the data in another time zone, include the"timeZone" parameter as a string.
 
-```
+```bml
 datestr = datetostr(testDate, "yyyy-MM-dd HH:mm:ss", "GMT-6")
 ```
 
@@ -141,14 +143,15 @@ datestr = datetostr(testDate, "yyyy-MM-dd HH:mm:ss", "GMT-6")
 
 * **Example 3:**
 
-```
+```bml
 twelvehour = datetostr(testDate, "yyyy-MM-dd hh:mm:ss a", "GMT+4")
 ```
 
   * `twelvehour` will return "`2010-02-03 03:22:55 PM`"
 
-> [!NOTE]
-> The function datetostr (getdate()) will return today's date in the format MM/dd/yyyy HH:mm:ss if no format is supplied
+:::note
+The function datetostr (getdate()) will return today's date in the format MM/dd/yyyy HH:mm:ss if no format is supplied
+:::
 
 getcurrenttimeinmillis
 
@@ -193,8 +196,9 @@ Parameters:
 
 Example:
 
-> [!NOTE]
-> The inputs must be in Date format. Use the function `strtojavadata()` to change a Date from a string format to a date format.
+:::note
+The inputs must be in Date format. Use the function `strtojavadata()` to change a Date from a string format to a date format.
+:::
 
 getstrdate
 
@@ -263,9 +267,11 @@ Example:
 
 strtodate
 
+:::warning
 This function is deprecated, and no longer supported. It converted data in String format to Date format.
 
 Use [`strtojavadate()`](../../strtojavadate.md) instead.
+:::
 
 **Syntax**: `strtodate(String str, String format [, String timeZone])`
 
@@ -300,7 +306,7 @@ Examples:
 
 * Example 1: Convert to US Format
 
-```
+```bml
 strtojavadate("02/12/2010", "MM/dd/yyyy")
 ```
 
@@ -324,15 +330,19 @@ datetostr(parisdate, "dd/MM/yyyy HH:mm:ss", "America/Chicago")
 
 Returns a date object with a Paris France time zone rendered into a Chicago time zone, "01/02/2010 09:30:40"
 
+:::warning
 * The input date string should contain month, day, and year values. If these values are omitted the results may not be correct,  i.e. an invalid date.
 
 * The format strings supported are different from the ones supported by strtodate function.
+:::
 
 ## Notes
 
-> [!NOTE]
-> In Commerce, dates always need to be returned as strings.
+:::note
+In Commerce, dates always need to be returned as strings.
+:::
 
+:::warning
 * NULL and blank Integer values are treated as separate values:
   * NULL= 0
   * Blank = ""
@@ -340,6 +350,7 @@ Returns a date object with a Paris France time zone rendered into a Chicago time
 * Using NULL as an attribute value is strongly discouraged.
 
 * If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+:::
 
 ## Related Topics
 
