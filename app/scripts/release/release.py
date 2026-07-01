@@ -27,21 +27,29 @@ Run via `yarn release` (wraps this script in package.json). On each run it:
      dropped straight into a Docusaurus docs/ or blog/ folder. A
      _category_.json is created alongside it once, for Docusaurus's
      auto-generated sidebar.
+  9. Runs `yarn build` (falls back to `npm run build`), which minifies
+     extension.js/the settings webview and packages a .vsix via
+     @vscode/vsce - using the version just written to package.json. Skipped
+     entirely for --dry-run or --skip-build.
 
 Nothing is committed, tagged, or pushed automatically - the script only
-edits these files and prints the suggested git commands to run next.
+edits these files, builds the .vsix, and prints the suggested git commands
+to run next.
 
 Usage:
-    python app/scripts/release/release.py [version] [--dry-run]
+    python app/scripts/release/release.py [version] [--dry-run] [--skip-build]
 
-    version     Optional explicit version, e.g. "1.5.0". If omitted, the
-                bump type is auto-detected from commit prefixes.
-    --dry-run   Preview the changelog/version/README updates without
-                writing any files.
+    version       Optional explicit version, e.g. "1.5.0". If omitted, the
+                  bump type is auto-detected from commit prefixes.
+    --dry-run     Preview the changelog/version/README updates without
+                  writing any files or building anything.
+    --skip-build  Update the changelog/version/README/docs files but don't
+                  run the build/package step.
 """
 
 import os
 import re
+import shutil
 import subprocess
 import sys
 from datetime import date
@@ -360,9 +368,37 @@ def update_docusaurus_changelog(version, sections, breaking_items, repo_url, dry
     return page_path, page
 
 
+def run_build():
+    """Run `yarn build` (falls back to `npm run build`), streaming output live.
+
+    Raises RuntimeError on failure - callers should let the changelog/version
+    updates stand either way, since those are already written to disk by the
+    time this runs.
+    """
+    yarn = shutil.which("yarn")
+    cmd = [yarn, "build"] if yarn else None
+    if not cmd:
+        npm = shutil.which("npm")
+        if not npm:
+            print("WARNING: neither 'yarn' nor 'npm' found on PATH - skipping build step.")
+            return False
+        cmd = [npm, "run", "build"]
+
+    print(f"--- Running: {' '.join(cmd)} ---")
+    result = subprocess.run(cmd, cwd=ROOT)
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Build failed (exit code {result.returncode}). CHANGELOG.md/package.json/"
+            f"README.md were already updated - fix the issue and re-run `{' '.join(cmd)}` directly."
+        )
+    return True
+
+
 def main():
-    args = [a for a in sys.argv[1:] if a != "--dry-run"]
-    dry_run = "--dry-run" in sys.argv[1:]
+    raw_args = sys.argv[1:]
+    dry_run = "--dry-run" in raw_args
+    skip_build = "--skip-build" in raw_args
+    args = [a for a in raw_args if a not in ("--dry-run", "--skip-build")]
     explicit_version = args[0] if args else None
 
     if explicit_version and not re.match(r"^\d+\.\d+\.\d+$", explicit_version):
