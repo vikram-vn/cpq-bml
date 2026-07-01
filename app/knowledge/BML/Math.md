@@ -6,563 +6,447 @@ description: "Math Functions Functions Math, or numeric, functions serve many pu
 tags: ['BML', 'CPQ', 'Functions']
 ---
 
-# Math Functions
+## Math Functions
+Functions
+Math, or numeric, functions serve many purposes throughout the Oracle CPQ application. Many of them represent basic mathematical and trigonometric functions. 
+acos
 
-## Functions
-
-Math, or numeric, functions serve many purposes throughout the Oracle CPQ application. Many of them represent basic mathematical and trigonometric functions.
-
-
-## acos
-
-
-This function returns the arc cosine of the number or angle in the range of 0 through π.
-
-**Example Use Case:** Find the inverse function of the cosine of an angle.
-
-**Syntax:** `acos(x)`
-
+This function returns the arc cosine of the number or angle in the range of 0 through π. 
+Example Use Case: Find the inverse function of the cosine of an angle.
+ Syntax: acos(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+ Represents a given float input parameter.
+
+Return Type: Float
 Example:
 
-![acos example](images/acos__BML.png)
-
-![acos output example](images/acos__console.png)
-
-:::note
 A float variable > 1 returns NaN.
-:::
 
+asin
 
-## asin
+The usual notation of the inverse trig function arcsine is y = arcsine(x), which is also defined as x = sin(y). This notation is the same for arccosine and arctangent. This function returns the arcsine of a number or angle. The range is: -π/2 ≤ y ≤ π/2 or -90˚ ≤ y ≤ 90˚ and the domain is -1 ≤ x ≤ 1.
+Example Use Case: Find the inverse function of the sine of an angle.
 
-
-The usual notation of the inverse trig function arcsine is `y = arcsine(x)`, which is also defined as `x = sin(y)`. This notation is the same for arccosine and arctangent. This function returns the arcsine of a number or angle. The range is: `-π/2 ≤ y ≤ π/2 or -90˚ ≤ y ≤ 90˚` and the domain is `-1 ≤ x ≤ 1`.
-
-**Example Use Case:** Find the inverse function of the sine of an angle.
-
-**Syntax:** `asin(x)`
-
+ Syntax: asin(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
-Example:
+Float
+ Represents a given float input parameter.
 
+ Return Type: Float
+ Example:
 If you enter your float variable as (-1), which is the lowest number in the domain, it will return the lowest number in the range, which is -π/2.
 
-![asin example](images/asin_x_BML.png)
-
-![asin output example](images/asin_x_console.png)
-
-:::note
 A float variable > 1 returns NaN.
-:::
 
+atan
 
-## atan
+This function returns the arctangent of the number or angle, the range of which is: -π/2 ≤ y ≤ π/2. 
+Example Use Case: Find the inverse function of the tangent of an angle.
 
-
-This function returns the arctangent of the number or angle, the range of which is: -π/2 ≤ y ≤ π/2.
-
-**Example Use Case:** Find the inverse function of the tangent of an angle.
-
-**Syntax:** `atan(x)`
-
+ Syntax: atan(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+ Represents a given float input parameter.
+
+ Return Type: Float
 Example:
 
-![atan example](images/atan__BML.png)
+ceil
 
-![atan output example](images/atan__console.png)
-
-
-## ceil
-
-
-This function converts a float into the next highest whole number.
-
-**Example Use Case:** Rounding up to the next highest whole number.
-
-**Syntax:** `ceil(x)`
-
+This function converts a float into the next highest whole number. 
+Example Use Case: Rounding up to the next highest whole number.
+ Syntax: ceil(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter. 
+
+ Return Type: Float
 Example:
 
-![ceil example](images/ciel__BML.png)
-
-![ceil output example](images/ceil__console.png)
-
-:::note
 If -1.0 < x < 0, then the result is negative zero.
-:::
 
+cos
 
-## cos
-
-
-This function returns the cosine of the number/angle.
-
-**Example Use Case:** Find the ratio of the side adjacent the given angle and the hypotenuse.
-
-**Syntax:** `cos(x)`
-
+This function returns the cosine of the number/angle. 
+Example Use Case: Find the ratio of the side adjacent the given angle and the hypotenuse.
+ Syntax: cos(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example :
 
-![cos example](images/cos__BML.png)
+cosh
 
-![cos output example](images/cos__console.png)
-
-
-## cosh
-
-
-This function returns the hyperbolic cosine of a number or angle.
-
-**Syntax:** `cosh(x)`
-
+ This function returns the hyperbolic cosine of a number or angle.
+Syntax: cosh(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example:
 
-![cosh example](images/cosh__BML.png)
-
-![cosh output example](images/cosh__console.png)
-
-:::tip
 cosh x = 1/2(ex + e-x)
-:::
 
+exp
 
-## exp
-
-
-This function returns Euler's number e raised to the power of the number passed through the function, also known as the exponential function.
-
-**Example Use Case:** Find whether a quantity grows or decays at a rate proportional to its current value, such as compound interest.
-
-**Syntax:** `exp(x)`
-
+This function returns Euler's number e raised to the power of the number passed through the function, also known as the exponential function. 
+Example Use Case: Find whether a quantity grows or decays at a rate proportional to its current value, such as compound interest.
+ Syntax: exp(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example:
 
-![exp example](images/exp__BML.png)
+fabs
 
-![exp output example](images/exp__console.png)
-
-
-## fabs
-
-
-This function returns the absolute value of a number.
-
-**Example Use Case:** Finding the distance of the quantity from zero.
-
-**Syntax:** `fabs(x)`
-
+This function returns the absolute value of a number. 
+Example Use Case: Finding the distance of the quantity from zero.
+ Syntax: fabs(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example:
 
-![fabs example](images/fabs__BML.png)
-
-![fabs output example](images/fabs__console.png)
-
-
-## fmod
-
+fmod
 
 This function returns the remainder of the division operation x, y.
-
-**Syntax:** `fmod(x, y)`
-
+ Syntax: fmod(x, y)
 Parameters:
 
-| Parameter | Data Type | Description              |
-| --------- | --------- | ------------------------ |
-| x         | Float     | Represents the dividend. |
-| y         | Float     | Represents the divisor.  |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+ Represents the dividend.
+
+y
+
+Float
+ Represents the divisor.
+
+ Return Type: Float
 Example:
-
-![fmod example](images/fmod__BML.png)
-
-![fmod output example](images/fmod__console.png)
 
 If you were to use long division, the answer is 5 with a remainder of 2.  If you plus this operation into your calculator, you will see the answer is 5.6667, because the remained is being divided by the divisor.
 
+hypot
 
-## hypot
-
-
-This function returns the `sqrt(x2 + y2)` without intermediaries.
-
-**Example:** `sqrt(32 + 42) = sqrt(25) = 5.0`or`-5.0`.
-
-**Syntax:**`hypot(x, y)`
-
+This function returns the sqrt(x2 + y2) without intermediaries. 
+Example:   sqrt(32 + 42) = sqrt(25) = 5.0 or -5.0.
+ Syntax: hypot(x, y)
 Parameters:
 
-| Parameter | Data Type | Description                         |
-| --------- | --------- | ----------------------------------- |
-| x         | Float     | Represents the x in sqrt (x2 + y2). |
-| y         | Float     | Represents the y in sqrt (x2 + y2). |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+ Represents the x in sqrt (x2 + y2). 
+
+y
+
+Float
+Represents the y in sqrt (x2 + y2).
+
+ Return Type: Float
 Example:
 
-![hypot example](images/hypot__BML.png)
-
-![hypot output example](images/hypot__console.png)
-
-As you can see, we have declared three variables.  The two that were required for this function to work, as well as a third variable so we can round the results of the `hypot` function. The result of this function return a rather large number.  Using the `round` function, we were able to round to the third decimal place.
-
-:::note
+As you can see, we have declared three variables.  The two that were required for this function to work, as well as a third variable so we can round the results of the hypot function. The result of this function return a rather large number.  Using the round function, we were able to round to the third decimal place.
 Negative numbers can be passed as parameters to this function.
-:::
 
+integer
 
-## integer
-
-
-This function returns the integer portion of a float number.  For example, this function would return 14 for the number 14.3345324. **Example Use Case:** Returning an attribute as an integer, without rounding.
-
-**Syntax:** `integer(x)`
-
+This function returns the integer portion of a float number.  For example, this function would return 14 for the number 14.3345324. Example Use Case: Returning an attribute as an integer, without rounding.
+ Syntax:  integer(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Integer
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Integer
 Example:
 
-![integer example](images/integer__BML.png)
-
-![integer output example](images/integer__console.png)
-
-
-## jNaN
-
+jNaN
 
 Java Constant for Not a Number. This constant is recommended instead of NaN.
+Syntax: jNaN
 
-**Syntax:** `jNaN`
-
-
-## ln
-
+ln
 
 This function returns the natural logarithm (base e) of the number.
-
-**Syntax:** `ln(x)`
-
+ Syntax: ln(x)
 Parameters:
 
-| Parameter | Data Type | Description                         |
-| --------- | --------- | ----------------------------------- |
-| x         | Float     | Represents a given float parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float parameter.
+
+ Return Type: Float
 Example:
 
-![ln example](images/ln__BML.png)
-
-![ln output example](images/ln__console.png)
-
-:::tip
 If e3 = x, then ln(x) = 3.
-
-Special Rules:
-
+Special Rules: 
 ln(1.0) = )
-
-ln(0) or ln(-0) = infinity
-
+ln(0) or ln(-0) = infinity 
 ln(infinity) = infinity
-:::
 
-
-## log
-
+log
 
 This function returns the base-10 logarithm of the number.
-
-**Example Use Case:** If 1000 = 103, then 3 = log10(1000).  The logarithm of 1000 would be 3 because that is how many times you must multiply 10 to get 1000.
-
-**Syntax:** `log(x)`
-
+ Example Use Case: If 1000 = 103, then 3 = log10(1000).  The logarithm of 1000 would be 3 because that is how many times you must multiply 10 to get 1000.
+ Syntax: log(x)
 Parameters:
 
-| Parameter | Data Type | Description                         |
-| --------- | --------- | ----------------------------------- |
-| x         | Float     | Represents a given float parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float parameter.
+
+ Return Type: Float
 Example:
 
-![jNaN example](images/log__BML.png)
-
-![jNaN output example](images/log__console.png)
-
-:::tip
 If x = by, then y = logb(x)).
-
-log(0) or log(-0) is negative infinity.
-
+log(0) or log(-0) is negative infinity. 
 log(infinity) is infinity.
-:::
 
+NaN
 
-## NaN
-
-
-:::warning
 This function is deprecated, and no longer supported. It represented a constant for Not a Number.
+Use jNaN instead.
 
-Use [`jNaN`](./jNaN.md) instead.
-:::
+pow
 
-
-## pow
-
-
-This function returns the value of the first argument raised to the power of the second argument. **Example Use Case:** Finding the product obtained from multiplying a quantity by itself one or more times.
-
-**Syntax:** `pow(x, y)`
-
+This function returns the value of the first argument raised to the power of the second argument. Example Use Case: Finding the product obtained from multiplying a quantity by itself one or more times.
+ Syntax: pow(x, y)
 Parameters:
 
-| Parameter | Data Type | Description                                              |
-| --------- | --------- | -------------------------------------------------------- |
-| x         | Float     | Represents the value of the input float.                 |
-| y         | Float     | Represents the power to which you raise the input float. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+ Represents the value of the input float.
+
+y
+
+Float
+ Represents the power to which you raise the input float.
+
+ Return Type: Float
 Example:
 
-![pow example](images/pow__BML.png)
+round
 
-![pow output example](images/pos__console.png)
-
-
-## round
-
-
-This function returns the rounded value of a number up to a certain decimal point.
-
-**Example Use Case:** For returning float values that represent currency.  You may want to round to a certain decimal place.
-
-**Syntax:**  `round(x)`
-
+This function returns the rounded value of a number up to a certain decimal point. 
+Example Use Case: For returning float values that represent currency.  You may want to round to a certain decimal place.
+ Syntax:  round(x)
 Parameters:
 
-| Parameter | Data Type | Description                                                       |
-| --------- | --------- | ----------------------------------------------------------------- |
-| x         | Float     | Represents the given input float parameter.                       |
-| [n]       | Integer   | **Optional:** Specifies the number of decimal places to round to. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+ Represents the given input float parameter.
+
+[n]
+
+Integer
+ Optional: Specifies the number of decimal places to round to.
+
+ Return Type: Float
 Example:
 
-![round example](images/round__BML.png)
+sin
 
-![round output example](images/round__console.png)
-
-
-## sin
-
-
-This function returns the trigonometric sine of the number/angle.
-
-**Example Use Case:** Finding the ratio of the size opposite the given angle and the hypotenuse.
-
-**Syntax:** `sin(x)`
-
+This function returns the trigonometric sine of the number/angle. 
+Example Use Case: Finding the ratio of the size opposite the given angle and the hypotenuse.
+ Syntax: sin(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example:
 
-![sin example](images/sin__BML.png)
-
-![sin output example](images/sin__console.png)
-
-
-## sinh
-
+sinh
 
 This function returns the hyperbolic sine of a number or angle.
-
-**Syntax:** `sinh(x)`
-
+ Syntax: sinh(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example :
 
-![sinh example](images/sinh__BML.png)
-
-![sinh output example](images/sinh__console.png)
-
-:::tip
 sinh x = 1/2(ex - e-x)
-:::
 
-
-## sqrt
-
+sqrt
 
 This function returns the positive square root of a number.
-
-**Syntax:** `sqrt(x)`
-
+ Syntax: sqrt(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example:
 
-![sqrt example](images/sqrt__BML.png)
+tan
 
-
-## tan
-
-
-This function returns the tangent of the number/angle.
-
-**Example Use Case:** Find the ratio of the side opposite the given angel to the adjacent side.
-
-**Syntax:** `tan(x)`
-
+This function returns the tangent of the number/angle. 
+Example Use Case: Find the ratio of the side opposite the given angel to the adjacent side.
+ Syntax:  tan(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float 
 Example:
 
-![tan example](images/tan__BML.png)
-
-![tan output example](images/tan__console.png)
-
-
-## tanh
-
+tanh
 
 This function returns the hyperbolic tangent of a number or angle.
-
-**Syntax:** `tanh(x)`
-
+ Syntax:  tanh(x)
 Parameters:
 
-| Parameter | Data Type | Description                               |
-| --------- | --------- | ----------------------------------------- |
-| x         | Float     | Represents a given float input parameter. |
+Parameter
+Data Type
+Description
 
-**Return Type:** Float
+x
 
+Float
+Represents a given float input parameter.
+
+ Return Type: Float
 Example:
 
-![tanh example](images/tanh__BML.png)
-
-![tanh output example](images/tanh__console.png)
-
-:::tip
 tanh x = (ex - 1) / (e2x + 1)
-:::
 
-## Notes
+Notes
 
-:::warning
-* NULL and blank Integer values are treated as separate values:
-  * NULL= 0
-  * Blank = ""
+NULL and blank Integer values are treated as separate values:NULL= 0Blank = ""
+Using NULL as an attribute value is strongly discouraged.
+If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account. 
 
-* Using NULL as an attribute value is strongly discouraged.
+Related Topics
 
-* If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
-:::
-
-## Related Topics
-
-
-## See Also
+See Also

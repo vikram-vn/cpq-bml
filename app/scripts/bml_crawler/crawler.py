@@ -1,9 +1,17 @@
 import os
+import sys
 import re
 import urllib.parse
 import urllib3
 import requests
 from bs4 import BeautifulSoup
+
+# Ensure the parent of this package is on sys.path when run as a script
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_package_parent = os.path.abspath(os.path.join(_script_dir, ".."))
+if _package_parent not in sys.path:
+    sys.path.insert(0, _package_parent)
+
 from bml_crawler.parser import HtmlToMarkdown
 
 # Suppress insecure request warnings from urllib3
@@ -199,3 +207,24 @@ class BmlDocCrawler:
                     queue.append((link, depth + 1))
                     
         print(f"\nCrawling complete! Visited {len(self.visited)} pages under BML module.")
+
+if __name__ == '__main__':
+    import sys
+    # Add parent directory of this package to sys.path so bml_crawler imports resolve correctly
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    package_parent = os.path.abspath(os.path.join(script_dir, ".."))
+    if package_parent not in sys.path:
+        sys.path.append(package_parent)
+        
+    default_url = "https://help-cxsales.oraclecloud.com/cpq/#BML/BMLOverview.htm?TocPath=BML%257C_____0"
+    seed = sys.argv[1] if len(sys.argv) > 1 else default_url
+    
+    depth = 3
+    if len(sys.argv) > 2:
+        try:
+            depth = int(sys.argv[2])
+        except ValueError:
+            pass
+            
+    crawler = BmlDocCrawler(max_depth=depth)
+    crawler.start(seed)

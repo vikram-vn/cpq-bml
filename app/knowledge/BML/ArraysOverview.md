@@ -10,7 +10,7 @@ tags: ['BML', 'CPQ', 'Functions']
 
 ## Overview
 
-Oracle CPQ declares, initializes, populates, and manipulates arrays using BML. Refer to  [Array Functions](./Arrays.md) for details about available functions.
+Oracle CPQ declares, initializes, populates, and manipulates arrays using BML. Refer to  [Array Functions](Arrays.md) for details about available functions.
 
 An array is an ordered collection of values, referenced by a single variable name.  Think of an array as a table, with values in rows and columns.  Another way to think of arrays is in relation to an x-y axis.  If you recall, data sets are formatted as (x, y).  Data in arrays is similar:
 
@@ -134,6 +134,5 @@ To increase the default row and column size, open a ticket on [My Oracle Support
 :::
 
 ## Related Topics
-
 
 ## See Also

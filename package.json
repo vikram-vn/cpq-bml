@@ -412,6 +412,8 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "generate:intellisense": "python app/scripts/bml_intellisense/generate_intellisense.py",
+    "generate:help": "python app/scripts/bml_crawler/crawler.py",
     "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && npm run compile:webview",
     "compile:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",

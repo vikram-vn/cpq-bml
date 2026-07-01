@@ -11,37 +11,35 @@ tags: ['BML', 'CPQ', 'Editor']
 ## Overview
 
 :::note
-This topic covers the Util Funtion Editor using the Redwood interface pages. Refer to[Library Functions,](./Library_Functions.md) [Function Editor Basics](./FunctionEditorBasics.md), and [Function Wizard](./FunctionWizard.md) for process administration using the classic interface pages.
+This topic covers the Util Funtion Editor using the Redwood interface pages. Refer to[Library Functions,](Library_Functions.md) [Function Editor Basics](FunctionEditorBasics.md), and [Function Wizard](FunctionWizard.md) for process administration using the classic interface pages.
 :::
 
-The Function Editor contains a list of pre-defined BML functions that are available for use in advanced scripting.  There are some variations in the Function Editor, depending on where you are located within the application:  Commerce, Configuration, Commerce Library, or Util Library. The Function Editor allows you to create a new function or edit an existing function. You can access the Create Util Function page or Edit Util Function page from the [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md).
+The Function Editor contains a list of pre-defined BML functions that are available for use in advanced scripting.  There are some variations in the Function Editor, depending on where you are located within the application:  Commerce, Configuration, Commerce Library, or Util Library. The Function Editor allows you to create a new function or edit an existing function. You can access the Create Util Function page or Edit Util Function page from the [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md).
 
 Util and Commerce Library Function Editors use Function to Function calls. Function to Function calls allow admins to compartmentalize BML when dealing with complicated configuration or quoting scenarios. This feature will assist with the organization of BML and provides a solution to the compiled Java class size-limit issue. *Function to function calls mimic the behavior of a Modify function calling a Library function.*
 
 To access the Util Function Editor, navigate to: **Admin Home > Developer Tools & Utilities > BML Library**
 
-* To edit or view an exiting function, click on the applicable function name link in the [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md) page.
+* To edit or view an exiting function, click on the applicable function name link in the [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) page.
 
-* To create a new function, click **Create**  in the [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md) page.
+* To create a new function, click **Create**  in the [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) page.
 
-* To copy an existing function, click on the Actions ellipsis and select **Copy**for the appropriate function in the [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md) page.
+* To copy an existing function, click on the Actions ellipsis and select **Copy**for the appropriate function in the [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) page.
 
 ![image](images/utilFunction_redwood_overview.png)
 
-| Item | Description                                                                                                                                                                                                      |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | The function name.                                                                                                                                                                                               |
-| 2    | The function variable name.                                                                                                                                                                                      |
-| 3    | The category type the function script will return. For example, array, boolean, date, dictionary, math, etc. Refer to [BML Functions List](./BMLFunctionsList.md) for category function links. |
-| 4    | The description of the function.                                                                                                                                                                                 |
-| 5    | Displays a complete list of the out-of-the-box functions. Refer to [BML Functions List](./BMLFunctionsList.md) for a description of the functions.                                             |
-| 6    | Manages the function properties and runs a test the function script.                                                                                                                                             |
-| 7    | Validates the function script.                                                                                                                                                                                   |
-| 8    | The function script definition area. Refer to [Script Definition and Syntax Colors](./scriptArea.md).                                                                                                        |
-
+| Item | Description                                                                                                                                                                                  |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | The function name.                                                                                                                                                                           |
+| 2    | The function variable name.                                                                                                                                                                  |
+| 3    | The category type the function script will return. For example, array, boolean, date, dictionary, math, etc. Refer to [BML Functions List](BMLFunctionsList.md) for category function links. |
+| 4    | The description of the function.                                                                                                                                                             |
+| 5    | Displays a complete list of the out-of-the-box functions. Refer to [BML Functions List](BMLFunctionsList.md) for a description of the functions.                                             |
+| 6    | Manages the function properties and runs a test the function script.                                                                                                                         |
+| 7    | Validates the function script.                                                                                                                                                               |
+| 8    | The function script definition area. Refer to [Script Definition and Syntax Colors](scriptArea.md).                                                                                          |
 
 ## Script Definition and Syntax Colors
-
 
 BML can be typed directly into the Script Definition Area.  Save your changes after writing/editing the script.
 
@@ -62,12 +60,10 @@ The  code is displayed in different colors. For example:
 
 ## Administration
 
-
 ## Create or Edit a  Library Function
 
-
 :::note
-To add a Commerce Library Function using the Redwood UI, refer to [Commerce Library Functions](./LibraryFunctions.md).
+To add a Commerce Library Function using the Redwood UI, refer to [Commerce Library Functions](LibraryFunctions.md).
 :::
 
 Complete the following steps to create a library function.
@@ -86,9 +82,7 @@ Complete the following steps to create a library function.
 
 ![Function Editor Properties ](images/functionEditorProperties_redwood.png)
 
-
 ## Parameters
-
 
 In the function editor, you can select parameters to include within your code. To enter a parameter:
 
@@ -102,9 +96,7 @@ insert pic
 
   4. Click the **Delete** ![Trash icon](images/ico-trash.svg) icon to remove a parameter from the properties list.
 
-
 ## Attributes
-
 
 In the function editor, you can select attributes to include within your code.  These attributes are specific to the product family that you are working in.  For example, when you are in Configuration, you can select from a standard product line, model, account, user or configuration attributes.
 To enter an attribute:
@@ -117,9 +109,7 @@ To enter an attribute:
 
   4. Click the **Delete**![Trash icon](images/ico-trash.svg) icon to remove an attribute from the properties list.
 
-
 ## Library Functions
-
 
 Once a Util Library Function has been defined, it's available for use in the **Library Function(s)** tab within the Function Editor.
 
@@ -133,9 +123,7 @@ To enter a Library  function:
 
   4. Click the **Delete**![Trash icon](images/ico-trash.svg) icon to remove a library function from the properties list.
 
-
 ## Standard Functions
-
 
 Util and Commerce Library Function Editor use Function to Function calls. Function to Function calls allow admins to compartmentalize BML when dealing with complicated configuration or quoting scenarios. This feature will assist with the organization of BML and provides a solution to the compiled Java class size-limit issue. *Function to function calls mimic the behavior of a Modify function calling a Library function.*
 
@@ -175,7 +163,7 @@ The test script provides a way to test a BML Library function when array type at
 
 7. Click **Save**.
 
-The [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md) page is displayed.
+The [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) page is displayed.
 
 8. Click **Deploy** to deploy the new library function.
 
@@ -217,6 +205,5 @@ Customers can submit a Service Request (SR) on [My Oracle Support](https://suppo
 :::
 
 ## Related Topics
-
 
 ## See Also

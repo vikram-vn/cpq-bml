@@ -172,6 +172,17 @@ function formatAsJsDoc(info, context) {
         md.appendCodeblock(`(${label}) ${decodeHtmlEntities(signature)}`, 'bml');
     }
 
+    // Help link right after signature — always visible without scrolling
+    const helpFileRel = getHelpFilePath(info);
+    if (helpFileRel && context) {
+        const helpFileAbs = path.join(context.extensionPath, helpFileRel);
+        if (fs.existsSync(helpFileAbs)) {
+            const uri = vscode.Uri.file(helpFileAbs).with({ fragment: info.name.toLowerCase() });
+            const encodedArgs = encodeURIComponent(JSON.stringify([uri.toString()]));
+            md.appendMarkdown(`📖 [Read Offline Help](command:cpqBml.openHelpTopic?${encodedArgs})\n\n---\n\n`);
+        }
+    }
+
     const metadataLine = buildMetadataLine(info);
     if (metadataLine) {
         md.appendMarkdown(`${metadataLine}\n\n`);
@@ -196,16 +207,6 @@ function formatAsJsDoc(info, context) {
                 md.appendCodeblock(decoded, 'bml');
             }
         });
-    }
-
-    const helpFileRel = getHelpFilePath(info);
-    if (helpFileRel && context) {
-        const helpFileAbs = path.join(context.extensionPath, helpFileRel);
-        if (fs.existsSync(helpFileAbs)) {
-            const uri = vscode.Uri.file(helpFileAbs).with({ fragment: info.name.toLowerCase() });
-            const encodedArgs = encodeURIComponent(JSON.stringify([uri.toString()]));
-            md.appendMarkdown(`\n\n[📖 Read Offline Help](command:cpqBml.openHelpTopic?${encodedArgs})\n`);
-        }
     }
 
     return md;
