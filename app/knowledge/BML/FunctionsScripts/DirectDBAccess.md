@@ -1,16 +1,24 @@
+---
+id: DirectDBAccess
+title: "Direct DB Access Functions"
+sidebar_label: "Direct DB Access Functions"
+description: "Direct DB Access Functions Functions This group of functions allows direct access to data stored in Oracle CPQ databases. bmql This function returns a..."
+tags: ['BML', 'CPQ', 'Functions']
+---
+
 # Direct DB Access Functions
 
 ## Functions
 
 This group of functions allows direct access to data stored in Oracle CPQ databases.
 
-bmql
+![Closed](../images/transparent.gif)bmql
 
 This function returns a Record Set containing the results of the SQL query. Oracle CPQ can query system tables and user-create Data Tables from within BML, using a SQL-like syntax.
 
 For more information about this function, see [BigMachines Query Language (BMQL)](BMQL.md).
 
-getboolean
+![Closed](../images/transparent.gif)getboolean
 
 Returns the boolean value in the Record for the provided field name.
 
@@ -18,7 +26,7 @@ Returns the boolean value in the Record for the provided field name.
 
 Example:
 
-```bml
+```bml title="Example"
 rows = bmql("select intcol... ");
 for row in rows {
 val = getboolean(row, "intcol");
@@ -26,7 +34,7 @@ if(val); // can do boolean operations. Useful in if conditions
 }
 ```
 
-getdate
+![Closed](../images/transparent.gif)getdate
 
 This BMQL function returns the date value in the Record for the provided field name.
 
@@ -34,7 +42,7 @@ This BMQL function returns the date value in the Record for the provided field 
 
 Example:
 
-```bml
+```bml title="Example"
 rows = bmql("select datecol... ");
 for row in rows {
 val = getdate(row, "datecol");
@@ -42,7 +50,7 @@ isweekend(val); // can do date operations. Date functions can be applied
 }
 ```
 
-getfloat
+![Closed](../images/transparent.gif)getfloat
 
 Returns the float value in the Record for the provided field name.
 
@@ -50,7 +58,7 @@ Returns the float value in the Record for the provided field name.
 
 Example:
 
-```bml
+```bml title="Example"
 rows = bmql("select intcol... ");
 for row in rows {
 val = getfloat(row, "intcol");
@@ -58,7 +66,7 @@ val2 = val * 0.1; // can do float operations
 }
 ```
 
-getint
+![Closed](../images/transparent.gif)getint
 
 Returns the integer value in the Record for the provided field name.
 
@@ -66,7 +74,7 @@ Returns the integer value in the Record for the provided field name.
 
 Example:
 
-```bml
+```bml title="Example"
 rows = bmql("select intcol... ");
 for row in rows {
 val = getint(row, "intcol");
@@ -74,7 +82,7 @@ val2 = val + 10; // can do integer operations
 }
 ```
 
-getmessage
+![Closed](../images/transparent.gif)getmessage
 
 Returns the error message in the given Record Set if it has errors with query execution; empty otherwise.
 
@@ -86,14 +94,14 @@ Returns the error message in the given Record Set if it has errors with query ex
 
 Example:
 
-```bml
+```bml title="Example"
 rows = bmql("select col... ");
 if(haserror(rows)) {
 msg = getmessage(rows); // msg has the error message why the query failed
 }
 ```
 
-getpartsdata
+![Closed](../images/transparent.gif)getpartsdata
 
 :::warning
 This function is deprecated, and no longer supported. Use [BMQL()](BMQL.md) instead.
@@ -103,7 +111,7 @@ This function is vulnerable to SQL injection.
 
 This function returned a 2-D array of String containing parts data for valid Part Numbers passed in.
 
-gettabledata
+![Closed](../images/transparent.gif)gettabledata
 
 :::warning
 This function is deprecated, and no longer supported. Use [BMQL()](BMQL.md) instead.
@@ -113,7 +121,7 @@ This function is vulnerable to SQL injection.
 
 This function returned a 2-D array of String containing Data Table data matching the condition specified.
 
-gettransaction
+![Closed](../images/transparent.gif)gettransaction
 
 The function `gettransaction(bsId)` simplifies access to stored transaction information. It retrieves, as a string, the transaction XML for a given Transaction ID. Beginning in 21A, Oracle CPQ provides the ability to filter data when running this BML function.
 
@@ -130,7 +138,7 @@ Return Type: String
 
 Example:
 
-```bml
+```bml title="Example"
 transactionXML = gettransaction(12345); // 12345 is a transaction id (bs id)
 ```
 
@@ -168,7 +176,7 @@ If a Transaction with the given Id doesn't exist, the formula throws an exceptio
   * Approval History
 :::
 
-haserror
+![Closed](../images/transparent.gif)haserror
 
 Returns true if fetching the given Record Set failed and has errors with query execution; false otherwise.
 
@@ -176,14 +184,14 @@ Returns true if fetching the given Record Set failed and has errors with query e
 
 Example :
 
-```bml
+```bml title="Example"
 rows = bmql("select col... ");
 if(haserror(rows)) {
 ... ; // comes in here if the query execution failed
 }
 ```
 
-recordset()
+![Closed](../images/transparent.gif)recordset()
 
 Returns a new Record Set to be used for later assignments. It is a collection of dictionaries. It can also be used as a function in conjunction with BMQL.
 
@@ -193,7 +201,7 @@ Returns a new Record Set to be used for later assignments. It is a collection of
 
 Example):
 
-```bml
+```bml title="Example)"
 rs = recordset();
 if(...) {
 rs = bmql(query1);
@@ -206,7 +214,7 @@ rs = bmql(query2);
 There is no way to return a recordSet result in a Util library function.
 :::
 
-recordset and SQL Queries
+![Closed](../images/transparent.gif)recordset and SQL Queries
 
 Returns a Record Set containing the results of the SQL query.
 
@@ -216,7 +224,7 @@ RecordSet bmql(String sqlQuery [, String Dictionary contextOverride, String Dict
 
 Example:
 
-```sql
+```sql title="Example"
 results = bmql("select part_number from _parts where part_number = 'part%'");
 for result in results {
 partno = get(result, "part_number");
@@ -240,4 +248,4 @@ BMQL does not support a parts query that retrieves more than 500 parts from a no
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](../images/transparent.gif)See Also

@@ -1,10 +1,18 @@
+---
+id: URLAccess
+title: "URL Access Functions"
+sidebar_label: "URL Access Functions"
+description: "URL Access Functions Functions These functions can be used to send and receive data from external systems. makeurlparam This function is used to conve..."
+tags: ['BML', 'CPQ', 'Functions']
+---
+
 # URL Access Functions
 
 ## Functions
 
 These functions can be used to send and receive data from external systems.
 
-makeurlparam
+![Closed](../images/transparent.gif)makeurlparam
 
 This function is used to convert a series of name-value pairs into a query string, which can be appended to a URL.
 
@@ -23,7 +31,11 @@ Return Type: String
 
 Example:
 
-urldata
+![Example of makeurlparam](../images/params.png)
+
+![makeurlparam output example](../images/Result.png)
+
+![Closed](../images/transparent.gif)urldata
 
 This function sends and receives data from a URL  using HTTP GET, POST, PUT, or PATCH  methods.
 The HTTP DELETE method can also be used to delete data from a URL
@@ -59,7 +71,7 @@ The key-value pairs in the table below are an example of a simple response.
 | Content-Length | 2                |
 | Message-Body   | {}               |
 
-Response Handling Example
+![Closed](../images/transparent.gif)Response Handling Example
 
 ```bml
 response = urldata(url, method, headers);
@@ -74,13 +86,13 @@ print(get(response, "Message-Body")); // print the message body
 
 **Examples using urldata:**
 
-Send a GET request without a header
+![Closed](../images/transparent.gif)Send a GET request without a header
 
 ```bml
 response=urldata("http://<hostname>/<path>","GET");
 ```
 
-Send a GET request with a header and a timeout
+![Closed](../images/transparent.gif)Send a GET request with a header and a timeout
 
 ```bml
 headers=dict("string");
@@ -94,7 +106,7 @@ Sample error message response during timeout:
 {Status-Code=-1, Error-Message=Read timed out}
 ```
 
-Send a PUT request with a header
+![Closed](../images/transparent.gif)Send a PUT request with a header
 
 ```bml
 headers=dict("string");
@@ -102,7 +114,7 @@ put(headers, "content-type", "application/json");
 response=urldata("http://<hostname>/<path>","PUT",headers,jsonBody);
 ```
 
-Send a DELETE  request with headers that specify Basic authentication
+![Closed](../images/transparent.gif)Send a DELETE  request with headers that specify Basic authentication
 
 ```bml
 headers=dict("string");
@@ -112,7 +124,7 @@ put(headers, "Authorization", authstring); //optional if service is from the sam
 response=urldata("http://<hostname>/<path>","DELETE",headers);
 ```
 
-Send a GET request with headers that specify Bearer authentication
+![Closed](../images/transparent.gif)Send a GET request with headers that specify Bearer authentication
 
 ```bml
 headers=dict("string");
@@ -124,7 +136,7 @@ response=urldata(http://<hostname>/<path>",GET, headers);
 **Note:** This example uses a bearer token for Microsoft Dynamics 365. Please see the [OAuth Provider](../../Integrating_With_BigMachines/Integration_Center/OAuthIntegration.md) Integration topic for more information.
 :::
 
-Send a PATCH request using headers that specify Basic authentication
+![Closed](../images/transparent.gif)Send a PATCH request using headers that specify Basic authentication
 
 ```bml
 headers=dict("string");
@@ -135,7 +147,7 @@ put(headers, "content-type", "application/json");
 response=urldata("http://<hostname>/<path>","PATCH",headers,jsonBody);
 ```
 
-urldatabyget
+![Closed](../images/transparent.gif)urldatabyget
 
 This function retrieves data from a URL address by the HTTP Get Method. It is used for RESTful Web Services and is faster than the POST method.
 
@@ -163,7 +175,11 @@ Parameters:
 
 Example:
 
-urldatabypost
+![urldatabyget example](../images/urldatabypost_657x140.bmp)
+
+![urldatabyget output example](../images/urldatabypost_console.png)
+
+![Closed](../images/transparent.gif)urldatabypost
 
 This function retrieves data from a URL address by the HTTP  POST Method.
 
@@ -209,11 +225,17 @@ return urldatabypost("https://cpluto.oracle.com/httpreceiver", "", "", headers);
 
 Example of urldatabypost:
 
+![urldatabypost example](../images/urldatabypost_660x141.bmp)
+
+![urldatabypost output example](../images/urldatabypost_console.png)
+
 As the function suggests, this information is not available.
 
 Sample Request
 
-urldatabypostasync
+![urldatabypost sample request](../images/urldatabypost_samplereq.png)
+
+![Closed](../images/transparent.gif)urldatabypostasync
 
 Retrieves data asynchronously from a URL using HTTP POST to submit parameters (see the makeurlparam function for formatting).
 
@@ -249,7 +271,7 @@ A Request Soap Message should contain $_BM_ASYNC_ADDRESSING_TOKEN$ in the header
 
 Examples of urldatabypostasync:
 
-```bml
+```bml title="Examples of urldatabypostasync"
 urldatabypostasync("http://www.example.com", "a1=v1&a2=v2", "error message", "callbackActionVarName");
 ```
 
@@ -312,7 +334,7 @@ orderNumber = readxmlsingle(_system_async_payload, path);
 return "1~orderNumber~" + orderNumber;
 ```
 
-urlmultipartbypost
+![Closed](../images/transparent.gif)urlmultipartbypost
 
 This function supports remote approvals by sending multi-part messages with attachments.
 
@@ -362,7 +384,7 @@ On success, a Dictionary representation of the http response, such as “Status-
 
 ### Additional Information
 
-Same Server Authentication
+![Closed](../images/transparent.gif)Same Server Authentication
 
 Authorization is optional when making a web services call that is internal to CPQ. You can omit the authorization string in the header when using urldata() and urldatabypost() functions. When no authorization string is provided the current user's login credentials are used.
 
@@ -372,14 +394,14 @@ Authorization is optional when making a web services call that is internal to CP
 
 Example  using urldatabypost():
 
-```bml
+```bml title="Example  using urldatabypost()"
 headers=dict("string");
 //Authorization is not required when calling an Oracle CPQ web service that is on the same site
 put(headers, "Content-Type", "application/json");
 response=urldatabypost("http://<mycpqsite>.oracle.com/<Oracle CPQ endpoint>, jsonBody, "", headers);
 ```
 
-Timeout Parameter
+![Closed](../images/transparent.gif)Timeout Parameter
 
 An optional timeout parameter can be set on the `urldata`, `urldatabyget`,`urldatabypost`, `urldatabypostsync`, and `urlmulitpartbypost` functions.
 
@@ -401,4 +423,4 @@ If you are retrieving File Manager static resources/files, use the HTTP GET prot
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](../images/transparent.gif)See Also

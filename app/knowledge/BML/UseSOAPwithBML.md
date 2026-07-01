@@ -1,3 +1,11 @@
+---
+id: UseSOAPwithBML
+title: "Using SOAP with BML"
+sidebar_label: "Using SOAP with BML"
+description: "Using SOAP with BML Administration Before using SOAP as a solution, confirm there isn't another way to implement the solution with standard functional..."
+tags: ['BML', 'CPQ']
+---
+
 # Using SOAP with BML
 
 ## Administration
@@ -26,7 +34,7 @@ The holder text should be alpha-numeric and in all capital letters. The only spe
 
 1. Example of a `getTransaction`Commerce SOAP API:
 
-```xml
+```xml title="Example of a getTransaction Commerce SOAP API"
 <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soap env="http://schemas.xmlsoap.org/soap/envelope/">
 <soapenv:Header>
 <bm:userInfo xmlns:bm="urn:soap.oracle.com">
@@ -53,7 +61,7 @@ It is important that the file is well formed.
 
 1. In BML editor:  (This example gets a transaction and returns the SOAP call, which could be used in configuration).
 
-```xml
+```xml title="In BML editor"
 /*Gathers quote fields and posts them externally, returns the XML response from the external system.*/
 soapResponseXML = "";
 //Prepare xml string to be used in WS request.
@@ -105,4 +113,4 @@ For this example, the cdata isn't really needed because **Session ID** and **Tra
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

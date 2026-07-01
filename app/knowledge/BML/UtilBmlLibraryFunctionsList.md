@@ -1,3 +1,9 @@
+---
+id: UtilBmlLibraryFunctionsList
+title: Util BML Library Functions List (Redwood)
+sidebar_label: Util BML Library Functions List (Redwood)
+---
+
 # Util BML Library Functions List (Redwood)
 
 ## Overview

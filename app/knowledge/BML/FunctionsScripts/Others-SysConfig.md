@@ -1,3 +1,11 @@
+---
+id: Others-SysConfig
+title: "Other Functions"
+sidebar_label: "Other Functions"
+description: "Other Functions System Configuration Functions The following BML functions are used to retrieve System Configuration attribute values from other confi..."
+tags: ['BML', 'CPQ', 'Functions']
+---
+
 # Other Functions
 
 ## System Configuration Functions
@@ -8,7 +16,7 @@ The following BML functions are used to retrieve System Configuration attribute 
 **Note:** These functions should only be used with System Configurations. System Configurations are BOM hierarchies that contain one or more nested child models.
 :::
 
-getsystemdata
+![Closed](../images/transparent.gif)getsystemdata
 
 Returns a JSON object containing the entire representation of the System Configuration Data.
 
@@ -28,7 +36,7 @@ Response Parameters:
 
 Example:
 
-```bml
+```bml title="Example"
 systemJson = json();
 systemJson = getsystemdata();
 ```
@@ -46,7 +54,7 @@ Notes:
 The empty JSON object should be handled accordingly.
 :::
 
-getsystemattrvalues
+![Closed](../images/transparent.gif)getsystemattrvalues
 
 This function returns a string containing a single attribute's values from a System Configuration.
 
@@ -62,7 +70,7 @@ Parameters:
 
 Example
 
-```bml
+```bml title="Example"
 modelValue = String[];
 modelValue = getsystemattrvalues("$.configAttributes.attributeVarname");
 ```
@@ -78,7 +86,7 @@ Notes:
 The empty array should be handled accordingly.
 :::
 
-getsystemmultipleattrvalues
+![Closed](../images/transparent.gif)getsystemmultipleattrvalues
 
 This function returns dictionary key and value string arrays containing attribute values from a System Configuration.
 
@@ -104,7 +112,7 @@ Returns a Dictionary (key: String, value: String[]) containing attribute values 
 
 Example
 
-```bml
+```bml title="Example"
 jsonPaths = dict("string");
 put(jsonPaths, "attributeVarname", "$.configAttributes.attributeVarname");
 put(jsonPaths, "childAttributeVarname", "$.children[*].configAttributes.childAttributeVarname");
@@ -138,4 +146,4 @@ Notes:
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](../images/transparent.gif)See Also

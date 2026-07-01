@@ -1,3 +1,11 @@
+---
+id: BMLCodingBestPractices
+title: "BML Coding Best Practices"
+sidebar_label: "BML Coding Best Practices"
+description: "BML Coding Best Practices Overview The purpose of good coding style is to write code that is readable. Readable code is easier to debug, extend, and m..."
+tags: ['BML', 'CPQ']
+---
+
 # BML Coding Best Practices
 
 ## Overview
@@ -6,7 +14,7 @@ The purpose of good coding style is to write code that is readable. Readable cod
 
 ## Types of Coding Styles
 
-Structural Coding Style
+![Closed](images/transparent.gif)Structural Coding Style
 
 1. The Function Header should describe the entire script's salient properties.
 
@@ -24,7 +32,7 @@ Structural Coding Style
 
 Example:
 
-```bml
+```bml title="Example"
 Name                 Date                 Comments
 ------------------
 John Doe           1/1/19               Created Function
@@ -69,7 +77,7 @@ Jane Doe            5/1/19               Added additional managers to notificati
 
   * The only exception for the curly bracket rules should be the inner array declaration of a hard-coded 2D array
 
-Inline Coding Style
+![Closed](images/transparent.gif)Inline Coding Style
 
 1. The name and format of a BML local variable should immediately communicate its purpose, intended behavior, and usage.
 
@@ -129,4 +137,4 @@ The repetition of these naming conventions will aid a reader in determining the 
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

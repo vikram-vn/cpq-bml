@@ -1,3 +1,11 @@
+---
+id: DebugUtilFunctions
+title: "Debugging Util Functions"
+sidebar_label: "Debugging Util Functions"
+description: "Debugging Util Functions Overview BML libraries are extremely important in that they allow us to avoid duplicate code, and to easily maintain discrete..."
+tags: ['BML', 'CPQ']
+---
+
 # Debugging Util Functions
 
 ## Overview
@@ -8,7 +16,7 @@ BML libraries can take Arrays and Dictionaries as parameters. There is no UI int
 
 ## Administration
 
-Before you begin
+![Closed](images/transparent.gif)Before you begin
 
 The process to debug a BML library will generally be the same:
 
@@ -40,7 +48,7 @@ print res; // will be "This is the return string."
 
 print myDict; // will be "{key1=val1, key2=val2}"
 
-Example
+![Closed](images/transparent.gif)Example
 
 Assume that when a user clicks Save they get an error "Divide by 0". The error logs identify the problem as occurring in the Save action.
 
@@ -156,31 +164,43 @@ return result;
 
 ## Use Case
 
-Util Library Debugger
+![Closed](images/transparent.gif)Util Library Debugger
 
-1. Obtain required information for the Util Function.
+1. ![Closed](images/transparent.gif)Obtain required information for the Util Function.
 
   1. Locate the function that contains the Util Function you wish to debug. *This could be a Commerce function, such as Pricing, or a function on an action or attribute.*
 
   2. Add a print statement for the function you wish to debug.
 
+![Add a print statment](images/usecase_lib1.png)
+
   3. Click **Run** to debug the function.
 
-1. Create a test script for the Util Function.
+![Run debug function](images/usecase_lib2.png)
+
+1. ![Closed](images/transparent.gif)Create a test script for the Util Function.
 
 1. The Util Function Debugger can use a test script for debugging within the function itself. The test script creates the variables and stores the information produced in **Step 1** into the variables that will be returned in the Util Function.
 
 2. Create and initialize variables that are the same type as those passed through the Util Function. For stings, integers, of floats, the initialization can be the actual value produced in **Step 1**.
 
+![Test script](images/usecase_lib3.png)
+
 3. Populate the variables with the information obtained in Step 1. *This is mainly for dictionaries and arrays; they are populated using BMLs the standard way.*
+
+![Populate variables](images/usecase_lib4.png)
 
 4. Return the Util Function holding its parameters.
 
-1. Use the test script to generate the output.
+![Return util](images/usecase_lib5.png)
+
+1. ![Closed](images/transparent.gif)Use the test script to generate the output.
 
 1. Copy and paste the test script produced in **Step 2** into the Test Script area of the Debugger.
 
 2. Select the **Use Test Script** checkbox.
+
+![Use Test Script option](images/usecase_lib6.png)
 
 3. Click **Run** to ensure that there are no errors in the test script. The return string will be generated here.
 
@@ -204,4 +224,4 @@ Integration details can be retrieved using BMQL, including usernames and passwor
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

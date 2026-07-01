@@ -401,6 +401,7 @@
     },
     "NaN": {
         "functionCategory": "math",
+        "returnType": null,
         "fullSignature": "NaN",
         "syntax": "NaN",
         "examples": [
@@ -410,6 +411,7 @@
     },
     "jNaN": {
         "functionCategory": "math",
+        "returnType": null,
         "fullSignature": "jNaN",
         "syntax": "jNaN",
         "examples": [
@@ -659,6 +661,7 @@
     },
     "if...": {
         "functionCategory": "logical",
+        "returnType": null,
         "fullSignature": "if () {}",
         "syntax": "\nif(${1:condition}){\nstatement;\n}",
         "examples": [
@@ -668,6 +671,7 @@
     },
     "if...else": {
         "functionCategory": "logical",
+        "returnType": null,
         "fullSignature": "[else {}]",
         "syntax": "\nif(${1:condition}){\nstatement;}else{\nstatement;\n}",
         "examples": [
@@ -677,8 +681,9 @@
     },
     "if...else...if": {
         "functionCategory": "logical",
+        "returnType": null,
         "fullSignature": "[elif () {}]",
-        "syntax": "\nif(${1:condition}){\nstatement(s);\n}elif(condition){\nstatement(s);\n}else{\nstatement(s);\n}",
+        "syntax": "\nif(${1:condition}){\nstatement(s);\n}elif(${1:condition}){\nstatement(s);\n}else{\nstatement(s);\n}",
         "examples": [
             "1. Example:\nif(attr1 == 100){\n   return true;} elif (attr1 == 200){\n   return false;}"
         ],
@@ -686,6 +691,7 @@
     },
     "for...loop": {
         "functionCategory": "logical",
+        "returnType": null,
         "fullSignature": "for () in () {}",
         "syntax": "\nfor (${1:variable}) in (system_array) {\nstatement(s)\n}",
         "examples": [
@@ -695,6 +701,7 @@
     },
     "break": {
         "functionCategory": "logical",
+        "returnType": null,
         "fullSignature": "for () in () {}",
         "syntax": "break",
         "examples": [
@@ -704,6 +711,7 @@
     },
     "continue": {
         "functionCategory": "logical",
+        "returnType": null,
         "fullSignature": "for () in () {}",
         "syntax": "continue",
         "examples": [
@@ -737,7 +745,7 @@
         "fullSignature": "String urldatabyget(String url, String parameters, String defaultValue, [Integer timeout, [Dictionary headers, [Boolean enableLoopback]]])",
         "syntax": "urldatabyget(${1:url}, ${2:url_param}, ${3:default_value})",
         "examples": [
-            "1. On success, returns the response String.\n\n2. On failure, returns the defaultValue.\n\n3. Optional timeout parameter can be set on urldatabyget. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n\n4. In the event of timeout, returns the error message.\n\nExample: urldatabyget(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"error message\");\nurldatabyget(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"error message\", 5000);//uses optional timeout\nSample error message during timeout: \nERROR: I/O operation has been interrupted while attempting to connect to URL: http://www.bigmachines.com - Read timed out \n\n5. Custom HTTP headers can be applied by passing a Dictionary of Strings in the optional headers parameter.\n\nExample: myHeaders = dict(\"string\");\nput(myheaders, \"Content-Type\", \"text/xml\");\nurldatabyget(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"error message\", 5000, myHeaders);//uses optional dictionary headers \n\n6. An optional Boolean parameter can be passed in for enableLoopback, defaults to true, if you want request to same site to go out internet and come back , set to false."
+            "1. On success, returns the response String.\n\n2. On failure, returns the defaultValue.\n\n3. Optional timeout parameter can be set on urldatabyget. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n\n4. In the event of timeout, returns the error message.\n\nExample: urldatabyget(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\");\nurldatabyget(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", 5000);//uses optional timeout\nSample error message during timeout: \nERROR: I/O operation has been interrupted while attempting to connect to URL: http://www.example.com - Read timed out \n\n5. Custom HTTP headers can be applied by passing a Dictionary of Strings in the optional headers parameter.\n\nExample: myHeaders = dict(\"string\");\nput(myheaders, \"Content-Type\", \"text/xml\");\nurldatabyget(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", 5000, myHeaders);//uses optional dictionary headers \n\n6. An optional Boolean parameter can be passed in for enableLoopback, defaults to true, if you want request to same site to go out internet and come back , set to false."
         ],
         "notes": "Retrieves data from a URL using HTTP GET to submit parameters (see the makeurlparam function for formatting). Note: If invocation of service is from the same site then Authorization is optional."
     },
@@ -747,7 +755,7 @@
         "fullSignature": "String urldatabypost(String url, String parameters, String defaultValue, [Dictionary headers, [Boolean returnErrorResponse, [Integer timeout, [Boolean enableLoopback]]]])",
         "syntax": "urldatabypost(${1:url}, ${2:url_param}, ${3:default_value})",
         "examples": [
-            "1. Custom HTTP headers can be applied by passing a Dictionary of Strings in the optional headers parameter.\n\n2. On success returns the response String.\n\n3. If it fails and the optional returnErrorResponse parameter is set to true, returns a specific HTTP error code message.\n\n4. Otherwise returns the defaultValue.\n\n5. Authorization is optional if the service call is from the same site.\n\n6. Optional timeout parameter can be set on urldatabypost. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n\n7. In the event of timeout,if the optional returnErrorResponse parameter is set to true, returns the error code message.\n\nExamples:\nurldatabypost(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"error message\");\nurldatabypost(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"error message\", myHeaders); //Uses custom HTTP headers\nurldatabypost(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), true); //Uses the HTTP error code message (without custom headers)\nurldatabypost(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", myHeaders, true); //Uses both custom headers and the error code message\nurldatabypost(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), true, 5000); //Uses optional timeout with returnErrorResponse set to true \nSample error message in the event of timeout: \nERROR: Server returned HTTP response code: 408 for URL: http://www.bigmachines.com - Read timed out \nurldatabypost(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), false, 5000); //Uses optional timeout with returnErrorResponse set to false\n\n8. An optional Boolean parameter can be passed in for enableLoopback, defaults to true, if you want request to same site to go out internet and come back , set to false."
+            "1. Custom HTTP headers can be applied by passing a Dictionary of Strings in the optional headers parameter.\n\n2. On success returns the response String.\n\n3. If it fails and the optional returnErrorResponse parameter is set to true, returns a specific HTTP error code message.\n\n4. Otherwise returns the defaultValue.\n\n5. Authorization is optional if the service call is from the same site.\n\n6. Optional timeout parameter can be set on urldatabypost. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n\n7. In the event of timeout,if the optional returnErrorResponse parameter is set to true, returns the error code message.\n\nExamples:\nurldatabypost(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\");\nurldatabypost(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", myHeaders); //Uses custom HTTP headers\nurldatabypost(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), true); //Uses the HTTP error code message (without custom headers)\nurldatabypost(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", myHeaders, true); //Uses both custom headers and the error code message\nurldatabypost(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), true, 5000); //Uses optional timeout with returnErrorResponse set to true \nSample error message in the event of timeout: \nERROR: Server returned HTTP response code: 408 for URL: http://www.example.com - Read timed out \nurldatabypost(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), false, 5000); //Uses optional timeout with returnErrorResponse set to false\n\n8. An optional Boolean parameter can be passed in for enableLoopback, defaults to true, if you want request to same site to go out internet and come back , set to false."
         ],
         "notes": "Retrieves data from a URL using HTTP POST to submit parameters (see the makeurlparam function for formatting).Note: If invocation of service is from the same site then Authorization is optional."
     },
@@ -757,7 +765,7 @@
         "fullSignature": "String urldatabypostasync(String url, String parameters, String defaultValue, String callbackActionVarName, [Dictionary headers, [Boolean returnErrorResponse, [Integer timeout, [Boolean enableLoopback]]]])",
         "syntax": "urldatabypostasync(${1:url}, ${2:url_param}, ${3:default_value}, ${4:callback_action_var_name})",
         "examples": [
-            "1. Custom HTTP headers can be applied by passing a Dictionary of Strings in the optional headers parameter.\n\n2. On success, returns the response String.\n\n3. If it fails and the optional returnErrorResponse parameter is set to true, returns a specific HTTP error code message.\n\n4. Otherwise, returns the defaultValue.\n\n5. Request Soap Message should contain $_BM_ASYNC_ADDRESSING_TOKEN$ in the header.\n\n6. Optional timeout parameter can be set on urldatabypostasync. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n\n7. In the event of timeout,if the optional returnErrorResponse parameter is set to true, returns the error code message.\n\nExamples:\nurldatabypostasync(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\");\nurldatabypostasync(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\", myHeaders); //Uses custom HTTP headers\nurldatabypostasync(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", \"callbackActionVarName\", dict(\"string\"), true); //Uses the HTTP error code message (without custom headers)\nurldatabypostasync(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", \"callbackActionVarName\", myHeaders, true); //Uses both custom headers and the error code message \nurldatabypostasync(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), true, 5000); //Uses optional timeout with returnErrorResponse set to true \nSample error message in the event of timeout: \nERROR: Server returned HTTP response code: 408 for URL: http://www.bigmachines.com - Read timed out \nurldatabypostasync(\"http://www.bigmachines.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), false, 5000); //Uses optional timeout with returnErrorResponse set to false\n8. An optional Boolean parameter can be passed in for enableLoopback , if the request is to the same site, if you want the request to be split among all nodes."
+            "1. Custom HTTP headers can be applied by passing a Dictionary of Strings in the optional headers parameter.\n\n2. On success, returns the response String.\n\n3. If it fails and the optional returnErrorResponse parameter is set to true, returns a specific HTTP error code message.\n\n4. Otherwise, returns the defaultValue.\n\n5. Request Soap Message should contain $_BM_ASYNC_ADDRESSING_TOKEN$ in the header.\n\n6. Optional timeout parameter can be set on urldatabypostasync. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n\n7. In the event of timeout,if the optional returnErrorResponse parameter is set to true, returns the error code message.\n\nExamples:\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\");\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\", myHeaders); //Uses custom HTTP headers\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", \"callbackActionVarName\", dict(\"string\"), true); //Uses the HTTP error code message (without custom headers)\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", \"callbackActionVarName\", myHeaders, true); //Uses both custom headers and the error code message \nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), true, 5000); //Uses optional timeout with returnErrorResponse set to true \nSample error message in the event of timeout: \nERROR: Server returned HTTP response code: 408 for URL: http://www.example.com - Read timed out \nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), false, 5000); //Uses optional timeout with returnErrorResponse set to false\n8. An optional Boolean parameter can be passed in for enableLoopback , if the request is to the same site, if you want the request to be split among all nodes."
         ],
         "notes": "Retrieves data asynchronously from a URL using HTTP POST to submit parameters (see the makeurlparam function for formatting)."
     },
@@ -767,12 +775,13 @@
         "fullSignature": "Dictionary urlmultipartbypost(String url, String payload, [Dictionary headers, [Dictionary attachments, [Integer timeout, [Boolean enableLoopback]]]])",
         "syntax": "urlmultipartbypost(${1:url}, ${2:payload}, ${3:header}, ${4:attachments})",
         "examples": [
-            "1. On success, returns the response is Dictionary representation of Http Response.\n2. Optional timeout parameter can be set on urlmultipartbypost. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n3. In the event of timeout, returns the error response.\n\nExample: urlmultipartbypost(\"http://www.bigmachines.com\", \"{jsonBody}\",dict(\"string\"),dict(\"dict\"));\nurlmultipartbypost(\"http://www.bigmachines.com\", \"{jsonBody}\",dict(\"string\"),dict(\"dict\"),5000); //Uses the optional timeout \nSample error response in the event of timeout:\nError-Message=ERROR: I/O operation has been interrupted while attempting to connect to URL:http://www.bigmachines.com - Read timed out \n4. An optional Boolean parameter can be passed in for enableLoopback, defaults to true, if you want request to same site to go out internet and come back , set to false."
+            "1. On success, returns the response is Dictionary representation of Http Response.\n2. Optional timeout parameter can be set on urlmultipartbypost. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n3. In the event of timeout, returns the error response.\n\nExample: urlmultipartbypost(\"http://www.example.com\", \"{jsonBody}\",dict(\"string\"),dict(\"dict\"));\nurlmultipartbypost(\"http://www.example.com\", \"{jsonBody}\",dict(\"string\"),dict(\"dict\"),5000); //Uses the optional timeout \nSample error response in the event of timeout:\nError-Message=ERROR: I/O operation has been interrupted while attempting to connect to URL:http://www.example.com - Read timed out \n4. An optional Boolean parameter can be passed in for enableLoopback, defaults to true, if you want request to same site to go out internet and come back , set to false."
         ],
         "notes": "Send a multipart message with attachments for Remote Approvals."
     },
     "string[n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "String[] string[Integer n]",
         "syntax": "string[n]",
         "examples": [
@@ -782,6 +791,7 @@
     },
     "integer[n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Integer[] integer[Integer n]",
         "syntax": "integer[n]",
         "examples": [
@@ -791,6 +801,7 @@
     },
     "float[n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Float[] float[Integer n]",
         "syntax": "float[n]",
         "examples": [
@@ -800,6 +811,7 @@
     },
     "date[n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Date[] date[Integer n]",
         "syntax": "date[n]",
         "examples": [
@@ -809,6 +821,7 @@
     },
     "boolean[n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Boolean[] boolean[Integer n]",
         "syntax": "boolean[n]",
         "examples": [
@@ -818,6 +831,7 @@
     },
     "string[n][n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "String[][] string[Integer n][Integer n]",
         "syntax": "string[n][n]",
         "examples": [
@@ -827,6 +841,7 @@
     },
     "integer[n][n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Integer[][] integer[Integer n][Integer n]",
         "syntax": "integer[n][n]",
         "examples": [
@@ -836,6 +851,7 @@
     },
     "float[n][n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Float[][] float[Integer n][Integer n]",
         "syntax": "float[n][n]",
         "examples": [
@@ -845,6 +861,7 @@
     },
     "date[n][n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Date[][] date[Integer n][Integer n]",
         "syntax": "date[n][n]",
         "examples": [
@@ -854,6 +871,7 @@
     },
     "boolean[n][n]": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Boolean[][] boolean[Integer n][Integer n]",
         "syntax": "boolean[n][n]",
         "examples": [
@@ -903,6 +921,7 @@
     },
     "max": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Integer(or Float or Date) max(Integer[](or Float[] or Date[]) arrayIdentifier)",
         "syntax": "max(${1:arrayIdentifier})",
         "examples": [
@@ -912,6 +931,7 @@
     },
     "min": {
         "functionCategory": "array",
+        "returnType": null,
         "fullSignature": "Integer(or Float or Date) min(Integer[](or Float[] or Date[]) arrayIdentifier)",
         "syntax": "min(${1:arrayIdentifier})",
         "examples": [
@@ -991,6 +1011,7 @@
     },
     "put": {
         "functionCategory": "dictionary",
+        "returnType": null,
         "fullSignature": "put(Dictionary dictionaryIdentifier, String(or Integer, Float))key,  value)",
         "syntax": "put(${1:dictionaryIdentifier}, ${2:key}, ${3:value})",
         "examples": [
@@ -1000,6 +1021,7 @@
     },
     "get": {
         "functionCategory": "dictionary",
+        "returnType": null,
         "fullSignature": "get(Dictionary dictionaryIdentifier, String(or Integer, Float)key) \n (or) \n  get(Dictionary dictionaryIdentifier, String(or Integer(or Float))key, String valueType)",
         "syntax": "get(${1:dictionaryIdentifier}, ${2:key})",
         "examples": [
@@ -1009,6 +1031,7 @@
     },
     "keys": {
         "functionCategory": "dictionary",
+        "returnType": null,
         "fullSignature": "keys(Dictionary dictionaryIdentifier)",
         "syntax": "keys(${1:dictionaryIdentifier})",
         "examples": [
@@ -1018,6 +1041,7 @@
     },
     "values": {
         "functionCategory": "dictionary",
+        "returnType": null,
         "fullSignature": "values(Dictionary dictionaryIdentifier)",
         "syntax": "values(${1:dictionaryIdentifier})",
         "examples": [
@@ -1117,6 +1141,7 @@
     },
     "jsonget": {
         "functionCategory": "json",
+        "returnType": null,
         "fullSignature": "jsonget(Json jsonIdentifier, String key [, String valueType [,  defaultValue]])",
         "syntax": "jsonget(${1:jsonIdentifier}, ${2:key [}, ${3:valueType [}, ${4:defaultValue]]})",
         "examples": [
@@ -1126,6 +1151,7 @@
     },
     "jsonput": {
         "functionCategory": "json",
+        "returnType": null,
         "fullSignature": "jsonput(Json jsonIdentifier, String key,  value)",
         "syntax": "jsonput(${1:jsonIdentifier}, ${2:key}, ${3:value})",
         "examples": [
@@ -1165,6 +1191,7 @@
     },
     "jsonarrayget": {
         "functionCategory": "json",
+        "returnType": null,
         "fullSignature": "jsonarrayget(JsonArray jsonArrayIdentifier, Integer index [, String valueType])",
         "syntax": "jsonarrayget(${1:jsonArrayIdentifier}, ${2:index [}, ${3:valueType]})",
         "examples": [
@@ -1184,6 +1211,7 @@
     },
     "jsonarrayappend": {
         "functionCategory": "json",
+        "returnType": null,
         "fullSignature": "jsonarrayappend(JsonArray jsonarrayIdentifier,  value)",
         "syntax": "jsonarrayappend(${1:jsonarrayIdentifier}, ${2:value})",
         "examples": [
@@ -1213,6 +1241,7 @@
     },
     "jsonpathgetsingle": {
         "functionCategory": "json",
+        "returnType": null,
         "fullSignature": "jsonpathgetsingle(Json jsonIdentifier, String jsonPath [, String valueType [,  defaultValue]])",
         "syntax": "jsonpathgetsingle(${1:jsonIdentifier}, ${2:jsonPath[}, ${3:valueType [}, ${4:defaultValue]]})",
         "examples": [
@@ -1302,6 +1331,7 @@
     },
     "print": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "print(String(or Array(or Dictionary(or Numeric(or Date(or Boolean))))) varName)",
         "syntax": "print(${1:variableName})",
         "examples": [
@@ -1311,6 +1341,7 @@
     },
     "BM_UNCHANGED_NUM": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "$BM_UNCHANGED_NUM$",
         "syntax": "$BM_UNCHANGED_NUM$",
         "examples": [
@@ -1320,6 +1351,7 @@
     },
     "BM_UNCHANGED_STR": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "$BM_UNCHANGED_STR$",
         "syntax": "$BM_UNCHANGED_STR$",
         "examples": [
@@ -1329,6 +1361,7 @@
     },
     "BM_UNCHANGED_DATE": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "$BM_UNCHANGED_DATE$",
         "syntax": "$BM_UNCHANGED_DATE$",
         "examples": [
@@ -1358,6 +1391,7 @@
     },
     "BM_REASON_STATUS_INVALID": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REASON_STATUS_INVALID",
         "syntax": "BM_REASON_STATUS_INVALID",
         "examples": [
@@ -1367,6 +1401,7 @@
     },
     "BM_REASON_STATUS_INACTIVE": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REASON_STATUS_INACTIVE",
         "syntax": "BM_REASON_STATUS_INACTIVE",
         "examples": [
@@ -1376,6 +1411,7 @@
     },
     "BM_REASON_STATUS_PENDING": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REASON_STATUS_PENDING",
         "syntax": "BM_REASON_STATUS_PENDING",
         "examples": [
@@ -1385,6 +1421,7 @@
     },
     "BM_REASON_STATUS_APPROVED": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REASON_STATUS_APPROVED",
         "syntax": "BM_REASON_STATUS_APPROVED",
         "examples": [
@@ -1394,6 +1431,7 @@
     },
     "BM_REASON_STATUS_REJECTED": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REASON_STATUS_REJECTED",
         "syntax": "BM_REASON_STATUS_REJECTED",
         "examples": [
@@ -1403,6 +1441,7 @@
     },
     "BM_CM_RULES_MESSAGE": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_CM_RULES_MESSAGE",
         "syntax": "BM_CM_RULES_MESSAGE",
         "examples": [
@@ -1412,6 +1451,7 @@
     },
     "BM_CM_RULES_LOCATION": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_CM_RULES_LOCATION",
         "syntax": "BM_CM_RULES_LOCATION",
         "examples": [
@@ -1421,6 +1461,7 @@
     },
     "BM_CM_RULES_OPERATOR": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_CM_RULES_OPERATOR",
         "syntax": "BM_CM_RULES_OPERATOR",
         "examples": [
@@ -1430,6 +1471,7 @@
     },
     "BM_CM_RULES_VALUES": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_CM_RULES_VALUES",
         "syntax": "BM_CM_RULES_VALUES",
         "examples": [
@@ -1439,6 +1481,7 @@
     },
     "BM_PARTNER_SECURITY_TOKEN": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_PARTNER_SECURITY_TOKEN",
         "syntax": "BM_PARTNER_SECURITY_TOKEN",
         "examples": [
@@ -1448,6 +1491,7 @@
     },
     "BM_DEFAULT_SOURCE_IDENTIFIER": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_DEFAULT_SOURCE_IDENTIFIER",
         "syntax": "BM_DEFAULT_SOURCE_IDENTIFIER",
         "examples": [
@@ -1457,6 +1501,7 @@
     },
     "BM_REMOTE_APPROVAL_STATUS_APPROVED": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REMOTE_APPROVAL_STATUS_APPROVED",
         "syntax": "BM_REMOTE_APPROVAL_STATUS_APPROVED",
         "examples": [
@@ -1466,6 +1511,7 @@
     },
     "BM_REMOTE_APPROVAL_STATUS_REJECTED": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REMOTE_APPROVAL_STATUS_REJECTED",
         "syntax": "BM_REMOTE_APPROVAL_STATUS_REJECTED",
         "examples": [
@@ -1475,6 +1521,7 @@
     },
     "BM_REMOTE_APPROVAL_STATUS_CUSTOM": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_REMOTE_APPROVAL_STATUS_CUSTOM",
         "syntax": "BM_REMOTE_APPROVAL_STATUS_CUSTOM",
         "examples": [
@@ -1484,6 +1531,7 @@
     },
     "BM_SALES_ROOT_BOM_ITEM": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_SALES_ROOT_BOM_ITEM",
         "syntax": "BM_SALES_ROOT_BOM_ITEM",
         "examples": [
@@ -1493,6 +1541,7 @@
     },
     "BM_PRIOR_ROOT_BOM_ITEM": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_PRIOR_ROOT_BOM_ITEM",
         "syntax": "BM_PRIOR_ROOT_BOM_ITEM",
         "examples": [
@@ -1502,6 +1551,7 @@
     },
     "BM_PRIOR_CONFIGURATION_KEY": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_PRIOR_CONFIGURATION_KEY",
         "syntax": "BM_PRIOR_CONFIGURATION_KEY",
         "examples": [
@@ -1511,6 +1561,7 @@
     },
     "BM_CONFIGURATION_KEY": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "BM_CONFIGURATION_KEY",
         "syntax": "BM_CONFIGURATION_KEY",
         "examples": [
@@ -1520,6 +1571,7 @@
     },
     "logtime": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "logtime(String tag, Integer timeElapsed)",
         "syntax": "logtime(${1:tag}, ${2:timeElapsed})",
         "examples": [
@@ -1609,6 +1661,7 @@
     },
     "usersessionset": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "usersessionset(String key,  value)",
         "syntax": "usersessionset(${1:key}, ${2:value})",
         "examples": [
@@ -1618,6 +1671,7 @@
     },
     "usersessionget": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "usersessionget(String key [,String valueType])",
         "syntax": "usersessionget(${1:key [}, ${2:valueType]})",
         "examples": [
@@ -1657,6 +1711,7 @@
     },
     "throwerror": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "throwerror(String errorMessage[, Boolean isSystemError])",
         "syntax": "throwerror(${1:errorMessage [}, ${2:isSystemError]})",
         "examples": [
@@ -1816,6 +1871,7 @@
     },
     "importtransactiondata": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "importtransactiondata(Long bsid)",
         "syntax": "importtransactiondata()",
         "examples": [
@@ -1825,6 +1881,7 @@
     },
     "setattributevalue": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "setattributevalue([Integer documentNumber, ] String Literal variableName, String(or Float, Integer, Date, Boolean) value)",
         "syntax": "setattributevalue(${1:[documentNumber}, ${2:] stringLiteralVariableName}, ${3:value})",
         "examples": [
@@ -1844,6 +1901,7 @@
     },
     "configureabo": {
         "functionCategory": "others",
+        "returnType": null,
         "fullSignature": "configureabo(Integer bsId [, configurationKey])",
         "syntax": "configureabo(${1:bsId [}, ${2:configurationKey]})",
         "examples": [

@@ -1,3 +1,11 @@
+---
+id: Library_Functions
+title: "Library Functions"
+sidebar_label: "Library Functions"
+description: "Library Functions Overview This topic covers the Library Functions using the classic interface pages. Refer to Util BML Library Functions List and Uti..."
+tags: ['BML', 'CPQ']
+---
+
 # Library Functions
 
 ## Overview
@@ -14,27 +22,33 @@ The BML Function Library enables the user to write efficient and reusable custom
 
 ## Administration
 
-Using Library Functions in Configuration BML
+![Closed](images/transparent.gif)Using Library Functions in Configuration BML
 
 Once a Util Library Function has been defined, it's available for use in the **Library Function(s)** tab within the Function Editor.
 
 1. Click **Add Functions** to choose from a list of Util Functions. *A pop-up dialog will open.*
 
+![Function Editor](images/BMLlibfxnsConstraintRuleEditor.png)
+
 2. Click one or multiple Util Functions.
+
+![Util function checkboxes](images/BMLlibfxnsSearchfxns.png)
 
 3. Return to the Util functions area and make sure you've deployed your function(s) if desired function does not appear.
 
-Using Library Functions in Commerce BML
+![Closed](images/transparent.gif)Using Library Functions in Commerce BML
 
 When you click **Define Function** in Commerce, a window will appear asking you to select attributes.
 
 You can select **System Variable Name**, **Variable Name for (Transaction)**, **Variable Name for (Transaction Line)**, and **Library Function(s)**.
 
+![Commerce BML function Editor](images/commlibfxnsSelectAttributes.png)
+
 :::tip
 You can add Util and Commerce Library Functions by clicking the **Reselect** button within the BML Function Editor.
 :::
 
-Adding a Library Function
+![Closed](images/transparent.gif)Adding a Library Function
 
 1. Click **Add Function**.
 
@@ -44,11 +58,15 @@ Adding a Library Function
 
 4. Select the blue arrow to insert the function into the **Script Definition Area**.
 
-Adding a Commerce Library Function
+![Add Preview Function to script definition area](images/EditBMLAddLibraryFxn.png)
+
+![Closed](images/transparent.gif)Adding a Commerce Library Function
 
 1. Navigate to **Admin > Commerce and Documents > Process Definition > Process** .
 
 2. Select **Library Functions** for the appropriated document, and then click **List**.
+
+![Document List, select Library Functions](images/LibFxnsDocName.png)
 
 3. Select **Add** to create a new commerce library function.
 
@@ -60,7 +78,11 @@ The **Variable Name** field populates automatically. Variable names can only con
 
 6. Reference the parameter in the library function with the name that you specify here.
 
+![Library function Name property](images/CommerceBMLLibEditor.png)
+
 7. Select **Add Attributes** to access the main document attributes in the **Main Document Attribute** section.
+
+![Add Main Document attributes](images/AttributesCommLib.png)
 
 8. Select **Add Attributes** to access the sub-document and the system attributes in the **Sub-Document Attribute** and **System Attributes** sections.
 
@@ -68,7 +90,7 @@ The **Variable Name** field populates automatically. Variable names can only con
 The **Main Document**, **Sub-Document** and **System Attributes** sections are only available in the **Commerce Library Editor**.  They are not available in the **Util Library Function**.
 :::
 
-Adding a Util Library Function
+![Closed](images/transparent.gif)Adding a Util Library Function
 
 1. Navigate to: **Admin  > Developer Tools > BML Library**.
 
@@ -80,15 +102,21 @@ The **Variable Name** field populates automatically. Variable names can only con
 
 4. Add the necessary parameters.
 
+![Steps to add parameters](images/utilBMLlibfxn.png)
+
 5. Create your script, adding attributes as necessary.
+
+![Create script](images/utilLibFxnScript.png)
 
 6. Select **Add** to make your new library function available for use.
 
-Adding a Function to Function Calls
+![Closed](images/transparent.gif)Adding a Function to Function Calls
 
 Util and Commerce Library Function Editors use Function to Function calls. Function to Function calls allow admins to compartmentalize BML when dealing with complicated configuration or quoting scenarios. This feature will assist with the organization of BML and provides a solution to the compiled Java class size-limit issue. *Function to function calls mimic the behavior of a Modify function calling a Library function.*
 
 1. Open the **Function** drop-down.
+
+![Library Functions - Function drop-down](images/LibFxn_over.png)
 
 2. Select a Library Function to **Insert into BML**. The options are:
   * **Commerce Library functions:** Only available in Commerce Library Function Editors. Commerce Library functions may only be called by Commerce Library functions.
@@ -108,7 +136,7 @@ Recursive validation is performed during the following for Util and Commerce Lib
 Util and Commerce Library functions cannot self-reference. Recursive calling of the same Util and Commerce Library functions will fail and result in a compilation error when called at any point in the reference chain. Util and Commerce Library functions will not appear in the Import list for themselves.
 :::
 
-Copy BML Library Function
+![Closed](images/transparent.gif)Copy BML Library Function
 
 A **Copy** action button is available in Util and Commerce Libraries so that BML Library Functions can be copied and renamed.  This allows admins to manage versions and build new functions based on existing ones.
 
@@ -117,6 +145,8 @@ A **Copy** action button is available in Util and Commerce Libraries so that BML
   * **Commerce Library Functions**:Admin > Process Definition > Documents > List > Transaction Level > Library Functions > List
 
 2. Select the BML function you wish to copy by clicking its corresponding checkbox.
+
+![Select Commerce BML Library function](images/UtilLib_SelectCheckbox.png)
 
 3. Click **Copy** at the bottom of the page.
 
@@ -160,4 +190,4 @@ Customers can submit a Service Request (SR) on [My Oracle Support](https://suppo
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

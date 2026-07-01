@@ -1,10 +1,18 @@
+---
+id: Arrays
+title: "Array Functions"
+sidebar_label: "Array Functions"
+description: "Array Functions Functions The following functions initialize arrays without specifying the size. At a later time, when the values are assigned in diff..."
+tags: ['BML', 'CPQ', 'Functions']
+---
+
 # Array Functions
 
 ## Functions
 
 The following functions initialize arrays without specifying the size. At a later time, when the values are assigned in different array indexes, the system expands the array into the appropriate size automatically.
 
-append
+![Closed](../images/transparent.gif)append
 
 This function  will attach a new element to the end of an array and can be used with initialized and uninitialized arrays.
 
@@ -29,11 +37,15 @@ If array max size is reached and you try to append a new element, it will fail.
 
 Example:
 
+![append example](../images/appendBML.png)
+
+![append output example](../images/append_console.png)
+
 :::note
 If a null element is added to an array, it should be allowed to be added and the value of the element in the array should be null.
 :::
 
-boolean[n]
+![Closed](../images/transparent.gif)boolean[n]
 
 Initializes a Boolean array with the specified size.
 
@@ -62,7 +74,7 @@ Examples:
 
 * `booleanArray[4] = true; //` This will automatically extend the length of booleanArray to 5
 
-boolean[n][n]
+![Closed](../images/transparent.gif)boolean[n][n]
 
 Initializes a 2-D Boolean array with the specified size.
 
@@ -90,7 +102,7 @@ Examples:
 
 * `booleanArray [2][3] = true; //`This will automatically extend the length of booleanArray to include an extra column
 
-bytearray
+![Closed](../images/transparent.gif)bytearray
 
 This function stores a collection of binary data such as
  the contents of a file. It encodes the given string into a sequence of bytes
@@ -113,13 +125,13 @@ Parameters:
 
 Example:
 
-```bml
+```bml title="Example"
 var = bytearray("Sample String","UTF-16");
 print var;
 //Output: bytearray [UTF-16]: Sample String
 ```
 
-date[n]
+![Closed](../images/transparent.gif)date[n]
 
 Initializes a Date array with the specified size.
 
@@ -148,7 +160,7 @@ Examples:
 
 * `dateArray [4] = getdate(); //` This will automatically extend the length of dateArray to 5
 
-date[n][n]
+![Closed](../images/transparent.gif)date[n][n]
 
 Initializes a 2-D Date array with the specified size.
 
@@ -174,7 +186,7 @@ Examples:
 
 * `dateArray [2][3] = getdate(); //`This will automatically extend the length of dateArray to include an extra column.
 
-findinarray
+![Closed](../images/transparent.gif)findinarray
 
 This function is used to check whether a certain element exists in an array.  If it does, the index is returned, otherwise a -1 is returned.  `Findinarray()` can only be used with 1-D arrays.
 
@@ -191,7 +203,11 @@ This function is used to check whether a certain element exists in an array.  If
 
 Example:
 
-float[n]
+![findinarray example](../images/findinarrayBML.bmp)
+
+![findinarray output example](../images/findinarray_console.png)
+
+![Closed](../images/transparent.gif)float[n]
 
 Initializes a Float array with the specified size.
 
@@ -222,7 +238,11 @@ This parameter only works with 1-D arrays.
 
 Example:
 
-float[n][n]
+![float example](../images/floatBML.bmp)
+
+![Float Array output example](../images/2Dfloat_console.png)
+
+![Closed](../images/transparent.gif)float[n][n]
 
 Initializes a 2-D Float array with the specified size.
 
@@ -248,7 +268,11 @@ These arrays are dynamic in nature and the length can be increased.
 
 Example:
 
-integer[n]
+![float example](../images/2DfloatBML.bmp)
+
+![float output example](../images/2Dfloat_console.png)
+
+![Closed](../images/transparent.gif)integer[n]
 
 Just as you do for string arrays, in order to initialize an array of a particular size, use the function integer[n]. This function initializes an Integer array with the specified size.
 
@@ -279,9 +303,13 @@ Parameters:
 
 Example):
 
+![Interger Array example](../images/integerBML.bmp)
+
 In contrast to `string[]`, if you define an array size without initializing array fields, you will see a 0 instead of null.
 
-integer[n][n]
+![Integer Array output example](../images/1Dinteger_console.png)
+
+![Closed](../images/transparent.gif)integer[n][n]
 
 Initializes a 2-D Integer array with the specified size.
 
@@ -307,9 +335,13 @@ Parameters:
 
 Example:
 
+![integer examples](../images/2DintegerBML.bmp)
+
 Notice the multiple print statements being used in the code above. We are printing a specific element index and value index.  Since there are two elements, the element indexes are 0 and 1 respectively.  Each element has two values, so the value indexes are also 0 and 1.  The syntax used in the code will print each value in the console.
 
-isempty
+![integer output example](../images/2Dinteger_console.png)
+
+![Closed](../images/transparent.gif)isempty
 
 This function determines if the array is empty.
 
@@ -329,9 +361,11 @@ Parameters:
 
 Example:
 
+![isempty example](../images/isempty.bmp)
+
 The string array above is empty, therefore True is returned.
 
-max
+![Closed](../images/transparent.gif)max
 
 Returns the largest element of an integer or float array.
 
@@ -351,7 +385,11 @@ Parameters:
 
 Example:
 
-min
+![max example](../images/maxBML.png)
+
+![max output example](../images/maxBML_console.png)
+
+![Closed](../images/transparent.gif)min
 
 Returns the smallest element of an integer or float array.
 
@@ -371,7 +409,11 @@ Parameters:
 
 Example:
 
-range
+![max example](../images/minBML.bmp)
+
+![max output example](../images/minBML_console.png)
+
+![Closed](../images/transparent.gif)range
 
 Declares an integer array with a specified size and initializes it to its index value.
 
@@ -419,7 +461,7 @@ return isValidArr;
 If x is 0, then the function returns an integer[0]. For example, `intArray=range(2)` returns an integer array size of 2 where `intArray[0]=0` and `intArray[1]=1`.
 :::
 
-remove
+![Closed](../images/transparent.gif)remove
 
 The function removes an element from an existing array based on a given index.
 
@@ -440,13 +482,17 @@ Only integers are allowed to be passed in for the index of the element to be rem
 
 Example:
 
+![remove example](../images/removeBML.bmp)
+
+![remove output example](../images/removeBML_console.png)
+
 You can see the new array that is being returned once the element at `index[2]` is removed.
 
 :::warning
 If the array is empty, the function will fail.
 :::
 
-reverse
+![Closed](../images/transparent.gif)reverse
 
 This function is used to reverse all elements in the array.
 
@@ -466,7 +512,11 @@ Parameters:
 
 Example:
 
-sizeofarray
+![reverse example](../images/reverseBML.bmp)
+
+![reverse output example](../images/reverseBML_console.png)
+
+![Closed](../images/transparent.gif)sizeofarray
 
 This function returns the length of the array for a 1-D array and the number of rows for a 2-D array.
 
@@ -484,11 +534,19 @@ Examples:
 
 1-D Array: sizeofarray(arrayIdentifier)
 
+![sizeofarray 1-D example](../images/sizeofarray_1D.bmp)
+
+![sizeofarray 1-D output example](../images/sizeofarray_1D_console.png)
+
 2-D Array: sizeofarray(arrayIdentifier)
+
+![sizeofarray 2-D example](../images/sizeofarray_2D.bmp)
+
+![sizeofarray 2-D output example](../images/sizefoarray_2D_console.png)
 
 While there are 6 separate values in this array, there are only three elements.  Remember that `sizeOfArray`for a 2-D array will return the number of rows.
 
-sort
+![Closed](../images/transparent.gif)sort
 
 This function sorts array elements based on defined sort method.  You can sort in ascending or descending order.
 
@@ -510,7 +568,11 @@ Parameters:
 
 Example:
 
-string[n]
+![sort example](../images/sortBML_example-corrected.png)
+
+![sort output example](../images/sortBML_console.png)
+
+![Closed](../images/transparent.gif)string[n]
 
 Initializes a String array with the specified size.
 
@@ -541,7 +603,11 @@ This parameter only works with 1-D arrays.
 
 Example:
 
-string[n][n])
+![String Array example](../images/stringBMLex.bmp)
+
+![String Array output example](../images/1Dstring_console.png)
+
+![Closed](../images/transparent.gif)string[n][n])
 
 Initializes a 2-D String array with specified size.
 
@@ -560,6 +626,10 @@ Parameters:
 **Return Type:** String[][]
 
 Example:
+
+![string example](../images/2DstringBML.bmp)
+
+![string output example](../images/2Dstringconsole.png)
 
 ## Notes
 
@@ -597,4 +667,4 @@ To increase the default row and column size, open a ticket on [My Oracle Support
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](../images/transparent.gif)See Also

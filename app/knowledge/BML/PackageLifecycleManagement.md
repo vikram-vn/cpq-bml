@@ -1,3 +1,11 @@
+---
+id: PackageLifecycleManagement
+title: "Package Lifecycle Management"
+sidebar_label: "Package Lifecycle Management"
+description: "Package Lifecycle Management Overview Administrators have the ability to create packages of functionality to migrate across environments and can manag..."
+tags: ['BML', 'CPQ']
+---
+
 # Package Lifecycle Management
 
 ## Overview
@@ -10,13 +18,15 @@ Administrators have the ability to create packages of functionality to migrate a
 
 To enable the Package Lifecycle Management feature, open a Service Request (SR) on [My Oracle Support](https://support.oracle.com/).
 
-Apply a Namespace to a Util Library Function
+![Closed](images/transparent.gif)Apply a Namespace to a Util Library Function
 
 Administrators can open a Service Request (SR) on [My Oracle Support](https://support.oracle.com/) to set a site namespace. When this occurs, the namespace displays in the **Namespace** field on the **Util BML Library Function Editor: Properties and Parameters** page for imported functions. The use of a namespace prevents a naming conflict when migrating the util library function from a source to a target site.
 
+![Namespace property](images/namespaceField.png)
+
 When migrated, namespaced util library functions appear in folders based on the namespace of the site from which they were migrated.
 
-Create an Override Function
+![Closed](images/transparent.gif)Create an Override Function
 
 An override function is an editable copy of an original and namespaced util library function. Administrators can upload a namespaced util library function and view the util library function in the **Util BML Library Function Editor: Properties and Parameters** page.
 
@@ -78,4 +88,4 @@ Bulk downloads do not download namespaced util library functions.
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

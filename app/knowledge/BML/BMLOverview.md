@@ -1,3 +1,11 @@
+---
+id: BMLOverview
+title: "BML Overview"
+sidebar_label: "BML Overview"
+description: "BML Overview Overview BML extensible language is a scripting tool that is used to capture a company's complex business logic within Oracle CPQ Configu..."
+tags: ['BML', 'CPQ']
+---
+
 # BML Overview
 
 ## Overview
@@ -10,17 +18,17 @@ You will see syntax that is familiar in Java, Basic, Python, and C++, but they a
 Oracle CPQ 25D introduces support for the Redwood UI Util Library Editor. Refer to [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) and [Util Function Editor](FunctionEditor/BML_Editor.md) for more information.
 :::
 
-What is a function?
+![Closed](images/transparent.gif)What is a function?
 
 A function is usually defined as a rule that relates one variable value to another. In programming, it also represents a series of commands that perform an action or calculate a value depending upon certain parameters. Parameters are the values that the function uses. But, not all functions require parameters. For more information, see the topic [Function Editor Basics](FunctionEditor/FunctionEditorBasics.md).
 
-What is a variable?
+![Closed](images/transparent.gif)What is a variable?
 
 Variables are placeholders for the data, which a program may use or manipulate. They are given unique names so that they can be assigned values and referred to throughout the source code. In order to use a variable, you must declare it by giving it a unique name. In many programming languages, once a variable is declared, it must be initialized. However, in BML, these two steps occur simultaneously.
 
 Variables can be used for Column names, Table names, and WHERE clauses. For more information, see the topic [Dynamic BMQL Variables](FunctionsScripts/DynamicBMQLVariables.md).
 
-Shortcuts
+![Closed](images/transparent.gif)Shortcuts
 
 Select the question mark in the toolbar above the **Script Definition Area**, to see the following menu of commands:
 
@@ -38,7 +46,7 @@ Select the question mark in the toolbar above the **Script Definition Area**, to
 | CTRL + Q     | Close pop-up                   |
 | Access Key E | Toggle editor <                |
 
-Standard Syntax
+![Closed](images/transparent.gif)Standard Syntax
 
 You will see some standard syntax throughout the function editor:
 
@@ -52,7 +60,7 @@ function(param 1, param 2, param 3, [optional param])
 | start     | Integer   | This represents the index...    |
 | [end]     | Integer   | This represents the index...    |
 
-Common Operators
+![Closed](images/transparent.gif)Common Operators
 
 | Operator                 | Looks Like                                                             |
 | ------------------------ | ---------------------------------------------------------------------- |
@@ -64,7 +72,7 @@ Common Operators
 | greater than or equal to | >= number >= number string >= string                                   |
 | and not or               | <boolean> and <boolean> <boolean> not <boolean> <boolean> or <boolean> |
 
-Numeric Operators
+![Closed](images/transparent.gif)Numeric Operators
 
 Numeric operators always return a numeric data type.   Numeric inputs include: numeric literals, numeric identifiers, and numeric functions. Numeric operators can also be used whether a numeric value can be plugged in or not, such as: in other functions, relational operators, and expressions. For more information, see the topic [Numeric Functions](FunctionsScripts/Math.md).
 
@@ -84,13 +92,13 @@ sqrt(45 + 45)
 
 (3 + 4) == (4 + 3)
 
-String Operators
+![Closed](images/transparent.gif)String Operators
 
 There is one string operator that can be used to return a string as an output. The string operator for concatenation is **+** and its formation is:
 
 `<string> + <string>`
 
-Literals
+![Closed](images/transparent.gif)Literals
 
 Literals can be added to scripts when following these conventions:
 
@@ -104,19 +112,23 @@ Literals can be added to scripts when following these conventions:
 
 ## Administration
 
-Programming Language
+![Closed](images/transparent.gif)Programming Language
 
 A programming language is an artificial language that is used to write instructions that a computer can understand. Programming languages can be broken down into two groups:
 
 **1. Compiled programming:** this is a language that must be converted into machine language, after it’s been written by the programmer, so that a computer can understand and execute the instructions. These languages require the use of special software (called a compiler) prior to being executed.
 
+![Compiled programming](images/programminglanguagev1.png)
+
 **2. Interpretive programming:** this language do not have to be compiled. The computer understands and executes the instructions while the program is running. See examples below.
+
+![Interpretive programming](images/programminglanguagev2.png)
 
 :::note
 BML has characteristics of both languages. It’s a Java based mark-up language, so it does need to be compiled, but that is done within the application.
 :::
 
-Programming Structure
+![Closed](images/transparent.gif)Programming Structure
 
 BML follows the Structured computer programming model (not Object-Oriented model).  Structured programming uses blocks of code that are executed one after the other. They include control statements which dictate the flow, or when these statements are executed. Almost all structured programming, including BML, shares a similar overall structure. They include:
 
@@ -128,7 +140,7 @@ BML follows the Structured computer programming model (not Object-Oriented model
 
 * In BML (a return statement is always required)
 
-Basic Data Types
+![Closed](images/transparent.gif)Basic Data Types
 
 Almost all programming languages include the use of data types. A data type determines the values that a variable can contain and how it is executed. A data type also represents a constraint placed on the interpretation of data. There are four basic data types:
 
@@ -140,7 +152,7 @@ Almost all programming languages include the use of data types. A data type dete
 
 * **Boolean:** Returns either a True or False, based on your inputs.
 
-Common Statement Elements
+![Closed](images/transparent.gif)Common Statement Elements
 
 | Element | Description                                                                                                                                                                                                     |
 | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -151,9 +163,11 @@ Common Statement Elements
 
 You may also see the element `return "";`. This will return an empty String if there isn’t anything to return. It will only return a String (signified by double quotation marks), not an Integer, Float, Boolean, or Array.
 
-Basic BML Syntax
+![Closed](images/transparent.gif)Basic BML Syntax
 
 The basic structure includes statements that comprise the source code and ends with a return statement. The example below shows variables, print statements, and a return statement.
+
+![Basic BML syntax](images/basicBmlStringSyntax.png)
 
 :::tip
 It is considered a best practice to add spaces and comments to your code. This makes the code more readable.
@@ -171,4 +185,4 @@ HTML attributes are not able to be set using a BML function.
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

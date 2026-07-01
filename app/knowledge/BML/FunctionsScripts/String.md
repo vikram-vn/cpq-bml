@@ -1,10 +1,18 @@
+---
+id: String
+title: "String Functions"
+sidebar_label: "String Functions"
+description: "String Functions Functions String data types allow any type of text character to be returned. However, be aware that not all string functions have ret..."
+tags: ['BML', 'CPQ', 'Functions']
+---
+
 # String Functions
 
 ## Functions
 
 String data types allow any type of text character to be returned. However, be aware that not all string functions have return values of the string type.
 
-atof
+![Closed](../images/transparent.gif)atof
 
 This function converts text that represents a number into a float value.
 
@@ -22,13 +30,19 @@ Error messages:
 
 If you attempt to pass an empty string or a string with letters into either `atoi` or `atof`, you will see:
 
+![atof/atoi empty string error message](../images/atof_error1.png)
+
 Example of atof and atoi:
+
+![atof/atoi example](../images/atofBML.png)
+
+![atof/atoi output example](../images/atofBML_console.png)
 
 :::warning
 An empty string will throw an exception error.
 :::
 
-atoi
+![Closed](../images/transparent.gif)atoi
 
 This function converts text that represents a number into an integer value.
 
@@ -46,9 +60,17 @@ Error messages:
 
 * If you attempt to pass an empty string or a string with letters into either `atoi` or `atof`, you will see:
 
+![atof/atoi empty string error message](../images/atof_error1.png)
+
 * If you attempt to pass a string with a decimal point ("123.456") into `atoi`, you will see:
 
+![atof/atoi decimal error message](../images/atof_error2.png)
+
 Example of atof and atoi:
+
+![atof/atoi example](../images/atofBML.png)
+
+![atof/atoi output example](../images/atofBML_console.png)
 
 :::note
 You can't parse a string with a decimal point into an integer.
@@ -58,7 +80,7 @@ You can't parse a string with a decimal point into an integer.
 An empty string will throw an exception error.
 :::
 
-decodebase64
+![Closed](../images/transparent.gif)decodebase64
 
 Takes an encoded Base64 string and returns it as a plain text string.
 
@@ -76,7 +98,7 @@ Example:
 
 `decodebase64("YWJj");` will return the plain text format of the Base64-encoded string parameter. In this example, it is `abc`.
 
-encodebase64
+![Closed](../images/transparent.gif)encodebase64
 
 This function parses the string parameter and converts it into its Base64 equivalent, as an encoded string.
 
@@ -120,7 +142,7 @@ print webSvcResult;
 return "";
 ```
 
-endswith
+![Closed](../images/transparent.gif)endswith
 
 This function checks whether a string ends with a particular substring.
 
@@ -139,6 +161,10 @@ Parameters:
 
 Example of startswith and endswith:
 
+![startswith example](../images/starts__BML.png)
+
+![startswith output example](../images/starts__console.png)
+
 We know that the return of `endResults`will be true because the string "I like this string", ends with the substring "string".
 
 :::tip
@@ -149,7 +175,7 @@ An empty string will return as true.
 This function is case-sensitive.
 :::
 
-find
+![Closed](../images/transparent.gif)find
 
 This function returns the position of a substring within a string.
 
@@ -186,6 +212,10 @@ This example uses four different variations of the find function:
 
 * **result:** shows what happens if `find` is looking for a substring and contains both a start and end index.
 
+![find example](../images/find__BML.png)
+
+![find output example](../images/find__BML_console.png)
+
 :::tip
 `Find("", "")`or `find("", "", num>0)` returns 0.
 
@@ -198,7 +228,7 @@ If not specified, start is 0 and end is `length(str)`
 This function is case-sensitive.
 :::
 
-formatascurrency
+![Closed](../images/transparent.gif)formatascurrency
 
 Takes a number and returns it as a formatted currency string.
 
@@ -221,7 +251,7 @@ Example:
 
 `formatascurrency(32.15, "EUR");`will return the string "€32,15".
 
-getcurrencyvalue
+![Closed](../images/transparent.gif)getcurrencyvalue
 
 This function takes a formatted currency string and returns the string's numeric value. It parses the first parameter using the currency format specified by the currency code passed in the second parameter and returns the float value.
 
@@ -240,7 +270,7 @@ Example:
 
 `getcurrencyvalue("€32,15", "EUR");` will return the Float 32.15.
 
-html
+![Closed](../images/transparent.gif)html
 
 This function provides a method for HTML escaping (output encoding) of a string as safe plain text. This applies for content that originated from user input which could be vulnerable to injection attacks such as cross-site scripting (XSS).
 
@@ -266,7 +296,7 @@ Unsafe/XSS attack example where content is neutralized: `html("<script>/*Bad con
 For more information about Cross-site Scripting (XSS), refer to [OWASP Cross-Site Scripting](https://owasp.org/www-community/attacks/xss/).
 :::
 
-join
+![Closed](../images/transparent.gif)join
 
 This function concatenates a String array into a String with a specified delimiter.
 
@@ -295,7 +325,7 @@ Example:
 This function is case-sensitive.
 :::
 
-isnumber
+![Closed](../images/transparent.gif)isnumber
 
 The Boolean function `isnumber(str)`  returns true when the string is a number and false if it contains other characters.
 
@@ -313,6 +343,10 @@ Parameters:
 
 Example:
 
+![isnumber example](../images/isnumber__BML.png)
+
+![isnumber output example](../images/isnumber__console.png)
+
 :::note
 If str is an empty string, then the function returns false.
 :::
@@ -321,7 +355,7 @@ If str is an empty string, then the function returns false.
 If no string is passed into the function, then a compile time error is thrown.
 :::
 
-len
+![Closed](../images/transparent.gif)len
 
 The `len` function returns the length of a string.
 
@@ -339,11 +373,15 @@ Parameters:
 
 Example:
 
+![len example](../images/len.png)
+
+![len output example](../images/len_console.png)
+
 :::note
 If `str` is an empty string, then the function returns a 0.
 :::
 
-lower
+![Closed](../images/transparent.gif)lower
 
 This function converts all characters in the text into all lowercase letters.
 
@@ -367,6 +405,10 @@ Parameters:
 
 Example of upper & lower:
 
+![upper & lower example](../images/upper__BML.png)
+
+![upper & lower output example](../images/upper__console.png)
+
 The code will print three different examples:
 
 * Application of the `upper(str)` function to a typical output string.
@@ -383,7 +425,7 @@ This function is case sensitive.
 If the string is empty, then the function will return an empty string.
 :::
 
-replace
+![Closed](../images/transparent.gif)replace
 
 Use this function to return a copy of a string, with all occurrences of the old parameter replaced with the new parameter.  All occurrences of the old substring are replaced by new.  If the optional integer argument is given, only the first n occurrences are replaced.
 
@@ -404,6 +446,10 @@ Parameters:
 
 Example:
 
+![replace example](../images/replaceBML.png)
+
+![replace output example](../images/replace_console.png)
+
 :::note
 This function is case-sensitive.
 :::
@@ -412,7 +458,7 @@ This function is case-sensitive.
 Replacing with any empty string throws an exception:  `("", "", "")`, `("abc", "", "")` or `(""abc", "", "I")`.
 :::
 
-split
+![Closed](../images/transparent.gif)split
 
 This function splits a String at the specified separator, populates a string array, and trims all of the blank spaces from the result.
 
@@ -441,7 +487,7 @@ Example:
 This function is case-sensitive.
 :::
 
-startswith
+![Closed](../images/transparent.gif)startswith
 
 This function checks whether a string starts with a particular substring.
 
@@ -460,6 +506,10 @@ Parameters:
 
 Example of startswith and endswith:
 
+![startswith example](../images/starts__BML.png)
+
+![startswith output example](../images/starts__console.png)
+
 We know that the return of `endResults`will be true because the string "I like this string", ends with the substring "string".
 
 :::tip
@@ -470,7 +520,7 @@ An empty string will return as true.
 This function is case-sensitive.
 :::
 
-string
+![Closed](../images/transparent.gif)string
 
 Converts a float, integer or boolean value into text.
 
@@ -486,6 +536,10 @@ Parameters:
 
 Example:
 
+![string example](../images/string__BML.png)
+
+![string output example](../images/string__console.png)
+
 :::note
 This function is case-sensitive.
 :::
@@ -494,7 +548,7 @@ This function is case-sensitive.
 The function will throw a compile time error if a string is passed in as a parameter.
 :::
 
-substring
+![Closed](../images/transparent.gif)substring
 
 This function returns a part of the text from a larger text.. This function is case sensitive.
 
@@ -530,6 +584,10 @@ Parameters:
 
 * **longStartInd:** This last example shows you what to expect if start is given an index value that is greater than the length of the string.
 
+![substring example](../images/substr__BML.png)
+
+![substring output example](../images/substring__console.png)
+
 :::note
 Start and End can have a negative index value.
 :::
@@ -538,7 +596,7 @@ Start and End can have a negative index value.
 If start is given an index value that is greater than the length of the string, an empty string will be returned.
 :::
 
-trim
+![Closed](../images/transparent.gif)trim
 
 This function removes the white space from both edges of strings.
 
@@ -556,6 +614,10 @@ Parameters:
 
 Example:
 
+![trim example](../images/trim__BML.png)
+
+![trim output example](../images/trim__console.png)
+
 :::note
 This function is case-sensitive.
 :::
@@ -564,7 +626,7 @@ This function is case-sensitive.
 If str is empty, then the function returns an empty string.
 :::
 
-upper
+![Closed](../images/transparent.gif)upper
 
 This converts all characters in the text into all uppercase letters.
 
@@ -587,6 +649,10 @@ Parameters:
 **Return Type:** String
 
 Example of upper & lower:
+
+![upper & lower example](../images/upper__BML.png)
+
+![upper & lower output example](../images/upper__console.png)
 
 The code will print three different examples:
 
@@ -618,4 +684,4 @@ If the string is empty, then the function will return an empty string.
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](../images/transparent.gif)See Also

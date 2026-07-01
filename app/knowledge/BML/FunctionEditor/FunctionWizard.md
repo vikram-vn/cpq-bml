@@ -1,3 +1,9 @@
+---
+id: FunctionWizard
+title: Function Wizard
+sidebar_label: Function Wizard
+---
+
 # Function Wizard
 
 ## Overview

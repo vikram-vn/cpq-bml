@@ -1,3 +1,9 @@
+---
+id: FunctionEditorBasics
+title: Function Editor Overview
+sidebar_label: Function Editor Overview
+---
+
 # Function Editor Overview
 
 ## Overview
