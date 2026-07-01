@@ -43,7 +43,17 @@ suite("settingsPanel state", () => {
         commerceProcess: "myProcess",
         commerceDocument: "myDoc",
       },
-      features: { lint: false, comments: true, spelling: false },
+      features: {
+        lint: false,
+        comments: true,
+        spelling: false,
+        beautifier: true,
+        intellisense: true,
+        docHeader: true,
+        xslt: true,
+        metrics: true,
+        testing: true
+      },
       mcp: { enable: true, port: 12345, logToTerminal: true },
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],

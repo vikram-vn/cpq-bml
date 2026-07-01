@@ -25,6 +25,7 @@ const { checkSpelling } = require('../spellCheck/spelling');
 const { checkNullSafety } = require('./nullSafety');
 const { checkTypeCoercion } = require('./typeCoercion');
 const { checkInfiniteLoop } = require('./infiniteLoop');
+const { checkShadowedVariables } = require('./shadowedVariables');
 
 
 
@@ -92,6 +93,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));
         diagnostics.push(...checkTypeCoercion(cleanText, doc));
         diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
+        diagnostics.push(...checkShadowedVariables(noStringsText, doc));
     }
 
     if (isSpellingEnabled) {

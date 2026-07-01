@@ -80,4 +80,8 @@ function deactivate() {
     if (diagnosticCollection) diagnosticCollection.dispose();
 }
 
-module.exports = { registerBmlLinter, deactivate };
+function getDiagnosticCollection() {
+    return diagnosticCollection;
+}
+
+module.exports = { registerBmlLinter, deactivate, getDiagnosticCollection };

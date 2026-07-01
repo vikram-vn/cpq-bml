@@ -25,14 +25,17 @@
     "message": "Unused variable: a"
   },
   {
+    "line": 5,
     "severity": "Error",
     "message": "Missing semicolon"
   },
   {
+    "line": 6,
     "severity": "Error",
     "message": "Missing semicolon"
   },
   {
+    "line": 33,
     "severity": "Error",
     "message": "Missing semicolon"
   },

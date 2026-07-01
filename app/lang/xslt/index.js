@@ -359,6 +359,10 @@ async function runSwitchXsltFile(context, vscode) {
 }
 
 async function runPreviewXslt(context, vscode) {
+  if (!vscode.workspace.getConfiguration('cpqBml').get('features.xslt', true)) {
+    vscode.window.showWarningMessage('XSLT Preview is disabled in settings.');
+    return;
+  }
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
     vscode.window.showErrorMessage("No active editor found.");
@@ -499,6 +503,9 @@ function registerXslt(context) {
 
   const provider = vscode.languages.registerDocumentFormattingEditProvider(selector, {
     provideDocumentFormattingEdits(document) {
+      if (!vscode.workspace.getConfiguration('cpqBml').get('features.xslt', true)) {
+        return [];
+      }
       const text = document.getText();
       try {
         const formatted = formatXml(text);

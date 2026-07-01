@@ -10,6 +10,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Standardized all codebase filenames to use **camelCase** for consistency across core logic and tests.
 - Implemented `index.js` entry-points for all sub-feature modules (`app/lang/metrics` and `app/lang/testing`).
 - Re-architected `extension.js` imports to require from clean modular directory entrypoints.
+- Integrated central toggle controls in the settings panel WebView for all core BML extension features (Beautifier, IntelliSense, Doc Header, XSLT, Metrics, and Testing).
+- Enforced dynamic configuration checks across all extension feature modules to respect the toggled settings.
 
 ## [1.4.0]
 

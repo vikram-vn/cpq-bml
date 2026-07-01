@@ -21,6 +21,10 @@ const path = require('path');
  */
 
 async function updateSnapshot(context, vscode) {
+    if (!vscode.workspace.getConfiguration('cpqBml').get('features.testing', true)) {
+        vscode.window.showWarningMessage('BML Snapshot testing features are disabled in settings.');
+        return;
+    }
     const editor = vscode.window.activeTextEditor;
     if (!editor || !editor.document.fileName.endsWith('.bml')) {
         vscode.window.showErrorMessage('CPQ-BML: Open a .bml file to update its snapshot.');
@@ -65,6 +69,10 @@ async function updateSnapshot(context, vscode) {
 }
 
 async function compareSnapshot(context, vscode, diagnosticCollection) {
+    if (!vscode.workspace.getConfiguration('cpqBml').get('features.testing', true)) {
+        vscode.window.showWarningMessage('BML Snapshot testing features are disabled in settings.');
+        return;
+    }
     const editor = vscode.window.activeTextEditor;
     if (!editor || !editor.document.fileName.endsWith('.bml')) {
         vscode.window.showErrorMessage('CPQ-BML: Open a .bml file to compare its snapshot.');

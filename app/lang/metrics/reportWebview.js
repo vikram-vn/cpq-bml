@@ -16,6 +16,10 @@ function registerMetrics(context) {
  * Opens a WebView panel showing a sortable BML Code Metrics table.
  */
 async function openMetricsReport(context, diagnosticCollection) {
+    if (!vscode.workspace.getConfiguration('cpqBml').get('features.metrics', true)) {
+        vscode.window.showWarningMessage('BML Code Metrics is disabled in settings.');
+        return;
+    }
     const panel = vscode.window.createWebviewPanel(
         'bmlMetrics',
         'BML Code Metrics',

@@ -63,6 +63,10 @@ async function beautifyFile(filePath) {
  * VS Code command that beautifies BML files in selected workspace folder(s).
  */
 async function beautifyWorkspaceCommand() {
+  if (!vscode.workspace.getConfiguration('cpqBml').get('features.beautifier', true)) {
+    vscode.window.showWarningMessage('BML Beautifier is disabled in settings.');
+    return;
+  }
   const folders = vscode.workspace.workspaceFolders;
   if (!folders || folders.length === 0) {
     vscode.window.showWarningMessage('No workspace folder open.');

@@ -353,6 +353,9 @@ function registerBmlIntelliSense(context) {
         'bml',
         {
             provideCompletionItems(document, position) {
+                if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                    return null;
+                }
                 loadApiData(context); // reload if updated externally
                 if (!cachedGlobalItems) {
                     buildCategorizedItems();
@@ -395,6 +398,9 @@ function registerBmlIntelliSense(context) {
 
     const hoverProvider = vscode.languages.registerHoverProvider('bml', {
         provideHover(document, position) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                return null;
+            }
             const wordRange = document.getWordRangeAtPosition(position, /[\w.]+/);
             if (!wordRange) return null;
 
@@ -407,6 +413,9 @@ function registerBmlIntelliSense(context) {
         'bml',
         {
             provideSignatureHelp(document, position) {
+                if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                    return null;
+                }
                 loadApiData(context);
 
                 const activeCall = getActiveFunctionCall(document, position);
@@ -435,6 +444,9 @@ function registerBmlIntelliSense(context) {
     // ── Go to Definition ─────────────────────────────────────────────────────
     const definitionProvider = vscode.languages.registerDefinitionProvider('bml', {
         provideDefinition(document, position) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                return null;
+            }
             const call = resolveCallAtPosition(document, position);
             if (!call) return null;
             const entry = getWorkspaceIndex().get(call.qualifiedName);
@@ -449,6 +461,9 @@ function registerBmlIntelliSense(context) {
     // ── Find All References ───────────────────────────────────────────────────
     const referenceProvider = vscode.languages.registerReferenceProvider('bml', {
         async provideReferences(document, position) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                return [];
+            }
             const call = resolveCallAtPosition(document, position);
             if (!call) return [];
             const pattern = new RegExp(`\\b${call.prefix}\.${call.name}\\b`, 'g');
@@ -477,6 +492,9 @@ function registerBmlIntelliSense(context) {
     // ── Rename Symbol ─────────────────────────────────────────────────────────
     const renameProvider = vscode.languages.registerRenameProvider('bml', {
         async provideRenameEdits(document, position, newName) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                return null;
+            }
             const call = resolveCallAtPosition(document, position);
             if (!call) return null;
             const pattern = new RegExp(`\\b(${call.prefix})\.${call.name}\\b`, 'g');
@@ -501,6 +519,9 @@ function registerBmlIntelliSense(context) {
             return edit;
         },
         prepareRename(document, position) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                throw new Error('Rename is only supported when IntelliSense is enabled.');
+            }
             const call = resolveCallAtPosition(document, position);
             if (!call) throw new Error('Rename is only supported on util.* or commerce.* function calls.');
             const lineText = document.lineAt(position).text;
@@ -513,6 +534,9 @@ function registerBmlIntelliSense(context) {
     // ── Document Symbols (breadcrumb / outline) ───────────────────────────────
     const symbolProvider = vscode.languages.registerDocumentSymbolProvider('bml', {
         provideDocumentSymbols(document) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                return [];
+            }
             const symbols = [];
             const text = document.getText();
             const lines = text.split(/\r?\n/);
@@ -565,6 +589,9 @@ function registerBmlIntelliSense(context) {
     // workspace util.* / commerce.* functions.
     const workspaceHoverProvider = vscode.languages.registerHoverProvider('bml', {
         provideHover(document, position) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+                return null;
+            }
             const call = resolveCallAtPosition(document, position);
             if (!call) return null;
             const entry = getWorkspaceIndex().get(call.qualifiedName);

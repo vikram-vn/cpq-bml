@@ -343,6 +343,36 @@
           "default": true,
           "description": "Enable BML spelling checker (checks spelling in comments, identifiers, and string literals using custom and English dictionaries)."
         },
+        "cpqBml.features.beautifier": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML code formatting / beautification support."
+        },
+        "cpqBml.features.intellisense": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML autocomplete, hover, signature help, go-to-definition, find references, rename, and document symbols."
+        },
+        "cpqBml.features.docHeader": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML automatic doc-header completion (triggered by typing '///')."
+        },
+        "cpqBml.features.xslt": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable XSLT preview and formatting support."
+        },
+        "cpqBml.features.metrics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML code complexity metrics and HTML dashboard report."
+        },
+        "cpqBml.features.testing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML unit test runner and snapshot testing."
+        },
         "cpqBml.mcp.enable": {
           "type": "boolean",
           "default": false,

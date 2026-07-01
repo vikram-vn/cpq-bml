@@ -319,6 +319,54 @@ export function FeaturesTab({ active, features = {}, updateField }) {
                     checked={features.spelling}
                     onChange={(v) => updateField('features.spelling', v)}
                 />
+
+                <Switch
+                    id="beautifierEnable"
+                    label="Enable BML Beautifier"
+                    description="Formats and cleans up BigMachines Language source files or selections using standard formatting style"
+                    checked={features.beautifier}
+                    onChange={(v) => updateField('features.beautifier', v)}
+                />
+
+                <Switch
+                    id="intellisenseEnable"
+                    label="Enable BML IntelliSense"
+                    description="Enables autocomplete, hover tips, signature help, go-to-definition, find all references, rename symbol, and document outline/breadcrumbs"
+                    checked={features.intellisense}
+                    onChange={(v) => updateField('features.intellisense', v)}
+                />
+
+                <Switch
+                    id="docHeaderEnable"
+                    label="Enable Auto Doc-Header"
+                    description="Automatically generates and inserts structured BML function doc-headers when typing '///' at start of line"
+                    checked={features.docHeader}
+                    onChange={(v) => updateField('features.docHeader', v)}
+                />
+
+                <Switch
+                    id="xsltEnable"
+                    label="Enable XSLT Preview &amp; Formatting"
+                    description="Enables XSLT live preview panels, side-by-side editing, jump to source, and standard XML/XSLT document formatting"
+                    checked={features.xslt}
+                    onChange={(v) => updateField('features.xslt', v)}
+                />
+
+                <Switch
+                    id="metricsEnable"
+                    label="Enable BML Code Metrics"
+                    description="Calculates cyclomatic complexity, nesting depth, line counts, and generates workspace-wide metrics dashboard"
+                    checked={features.metrics}
+                    onChange={(v) => updateField('features.metrics', v)}
+                />
+
+                <Switch
+                    id="testingEnable"
+                    label="Enable BML Unit &amp; Snapshot Testing"
+                    description="Enables running tests from *.bmltest.json sidecars, and creating/running regression snapshot tests against remote environments"
+                    checked={features.testing}
+                    onChange={(v) => updateField('features.testing', v)}
+                />
             </section>
         </div>
     );

@@ -21,6 +21,9 @@ function registerBeautifier(context) {
     // Full document formatting
     const fullDisposable = vscode.languages.registerDocumentFormattingEditProvider(selector, {
         async provideDocumentFormattingEdits(document, options) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.beautifier', true)) {
+                return [];
+            }
             const fullRange = getFullDocumentRange(document);
             const formatted = await beautifyText(document.getText(), document, options);
             return [vscode.TextEdit.replace(fullRange, formatted)];
@@ -30,6 +33,9 @@ function registerBeautifier(context) {
     // Selected range formatting
     const rangeDisposable = vscode.languages.registerDocumentRangeFormattingEditProvider(selector, {
         async provideDocumentRangeFormattingEdits(document, range, options) {
+            if (!vscode.workspace.getConfiguration('cpqBml').get('features.beautifier', true)) {
+                return [];
+            }
             const selectedText = document.getText(range);
             const formatted = await beautifyText(selectedText, document, options);
             return [vscode.TextEdit.replace(range, formatted)];

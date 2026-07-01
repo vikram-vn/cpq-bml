@@ -22,6 +22,9 @@ function registerDocHeaderCompletion(context) {
         'bml',
         {
             provideCompletionItems(document, position) {
+                if (!vscode.workspace.getConfiguration('cpqBml').get('features.docHeader', true)) {
+                    return undefined;
+                }
                 const linePrefix = document.lineAt(position).text.substring(0, position.character);
                 if (!linePrefix.trimStart().startsWith('///')) return undefined;
 

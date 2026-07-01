@@ -40,6 +40,7 @@
     "message": "Design Warning: Nesting depth of 5 exceeds recommended limit of 3"
   },
   {
+    "line": 0,
     "severity": "Warning",
     "message": "Complexity Warning: Cyclomatic complexity is high (18). Consider refactoring into helper functions"
   },

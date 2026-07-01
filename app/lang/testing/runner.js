@@ -28,6 +28,10 @@ function getTestChannel() {
 }
 
 async function runBmlTests(context, vscode) {
+    if (!vscode.workspace.getConfiguration('cpqBml').get('features.testing', true)) {
+        vscode.window.showWarningMessage('BML Testing features are disabled in settings.');
+        return;
+    }
     const editor = vscode.window.activeTextEditor;
     if (!editor || !editor.document.fileName.endsWith('.bml')) {
         vscode.window.showErrorMessage('CPQ-BML: Open a .bml file first to run its tests.');

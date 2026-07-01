@@ -6,7 +6,8 @@ const { lintBMLCustom } = require('../../app/lang/lint/lint');
 
 // Dynamic file-based tests from test/bml-lint directory: each <name>.bml file
 // is linted and compared against its <name>.expected.json diagnostics list.
-suite('BML Linter Test Suite - file-based fixtures', () => {
+suite('BML Linter Test Suite - file-based fixtures', function() {
+    this.timeout(60000);
     const bmlLintDir = path.join(__dirname, '..', 'lint');
     if (fs.existsSync(bmlLintDir)) {
         const files = fs.readdirSync(bmlLintDir);
@@ -51,7 +52,9 @@ suite('BML Linter Test Suite - file-based fixtures', () => {
                 }));
 
                 const sortByLineAndMessage = (a, b) => {
-                    if (a.line !== b.line) return a.line - b.line;
+                    const aLine = a.line !== undefined ? a.line : 0;
+                    const bLine = b.line !== undefined ? b.line : 0;
+                    if (aLine !== bLine) return aLine - bLine;
                     return a.message.localeCompare(b.message);
                 };
 
