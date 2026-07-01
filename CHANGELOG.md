@@ -4,6 +4,13 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.2]
+
+### Added
+- Standardized all codebase filenames to use **camelCase** for consistency across core logic and tests.
+- Implemented `index.js` entry-points for all sub-feature modules (`app/lang/metrics` and `app/lang/testing`).
+- Re-architected `extension.js` imports to require from clean modular directory entrypoints.
+
 ## [1.4.0]
 
 - **Phase 1: Additional Linting Rules**:
