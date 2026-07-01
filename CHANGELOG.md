@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.6.0] - 2026-07-01
+
+### Added
+- Implement custom Markdown help viewer with admonition support and caching.
+- Implement BML language support including tokenization, linting, and intellisense features.
+
 ## [1.5.0] - 2026-07-01
 
 ### Added
