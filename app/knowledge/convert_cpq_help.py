@@ -1,33 +1,57 @@
+import os
 import sys
 import re
 import urllib.parse
+import urllib3
 import requests
 from bs4 import BeautifulSoup, NavigableString
 
-class BmlDocConverter:
-    def __init__(self, base_url="https://help-cxsales.oraclecloud.com/cpq/Content/"):
-        self.base_url = base_url
+# Suppress insecure request warnings from urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-    def resolve_url(self, url):
-        # Extract the page name from hash if present, e.g.:
-        # https://help-cxsales.oraclecloud.com/cpq/#BML/BMLOverview.htm?TocPath=BML%257C_____0
-        # -> https://help-cxsales.oraclecloud.com/cpq/Content/BML/BMLOverview.htm
+class BmlDocCrawler:
+    def __init__(self, base_url="https://help-cxsales.oraclecloud.com/cpq/Content/", max_depth=3, output_dir="app/knowledge"):
+        self.base_url = base_url
+        self.max_depth = max_depth
+        self.output_dir = output_dir
+        self.visited = set()
+
+    def normalize_url(self, url):
+        # Remove fragments and query parameters
+        parsed = urllib.parse.urlparse(url)
+        normalized = parsed._replace(fragment='', query='')
+        return urllib.parse.urlunparse(normalized)
+
+    def resolve_url(self, url, context_url=None):
+        # Resolves hash-style urls to direct Content/ urls
         parsed = urllib.parse.urlparse(url)
         if parsed.fragment:
             fragment = parsed.fragment
-            # Remove query parameters like ?TocPath=...
             if '?' in fragment:
                 fragment = fragment.split('?')[0]
-            # Strip leading slashes
             fragment = fragment.lstrip('/')
             return urllib.parse.urljoin(self.base_url, fragment)
         
-        # If there's no fragment but it contains cpq/Content/, return as is
-        if 'Content/' in url:
-            return url
+        # If relative URL, resolve against context_url
+        if not parsed.scheme and context_url:
+            resolved = urllib.parse.urljoin(context_url, url)
+            return self.normalize_url(resolved)
             
-        # Fallback/guess
-        return url
+        return self.normalize_url(url)
+
+    def get_workspace_path(self, url):
+        # Convert absolute Content URL to a workspace path mirroring the hierarchy
+        # e.g., https://help-cxsales.oraclecloud.com/cpq/Content/BML/BMLOverview.htm
+        # -> app/knowledge/BML/BMLOverview.md
+        if not url.startswith(self.base_url):
+            return None
+            
+        relative_path = url[len(self.base_url):]
+        # Remove extension
+        base_path, _ = os.path.splitext(relative_path)
+        # Create output file path
+        out_path = os.path.join(self.output_dir, base_path + ".md")
+        return os.path.abspath(out_path)
 
     def convert_to_markdown(self, element):
         if isinstance(element, NavigableString):
@@ -37,11 +61,9 @@ class BmlDocConverter:
         if not tag_name:
             return ""
 
-        # Skip script and style tags
         if tag_name in ['script', 'style']:
             return ""
 
-        # Process children
         children_md = "".join(self.convert_to_markdown(child) for child in element.children)
 
         if tag_name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
@@ -74,6 +96,13 @@ class BmlDocConverter:
             if text and href:
                 if href.startswith('javascript:'):
                     return text
+                # We update the href to point to the local .md file structure
+                resolved_url = self.resolve_url(href, self.current_url)
+                local_path = self.get_workspace_path(resolved_url)
+                if local_path:
+                    # Make link relative in markdown
+                    rel_link = os.path.relpath(local_path, os.path.dirname(self.current_output_path)).replace('\\', '/')
+                    return f"[{text}]({rel_link})"
                 return f"[{text}]({href})"
             return text
 
@@ -168,39 +197,133 @@ class BmlDocConverter:
         text = re.sub(r'\s+', ' ', text)
         return text.strip()
 
-    def fetch_and_convert(self, url):
-        target_url = self.resolve_url(url)
-        print(f"Original URL: {url}")
-        print(f"Fetching resolved direct URL: {target_url}")
+    def crawl_page(self, url, depth):
+        url = self.normalize_url(url)
+        if url in self.visited:
+            return []
+            
+        self.visited.add(url)
+        workspace_path = self.get_workspace_path(url)
+        if not workspace_path:
+            return []
+            
+        print(f"[Depth {depth}] Crawling: {url}")
         
-        response = requests.get(target_url, headers={'User-Agent': 'Mozilla/5.0'})
-        if response.status_code != 200:
-            raise Exception(f"Failed to fetch content, status code: {response.status_code}")
+        try:
+            response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, verify=False, timeout=10)
+            if response.status_code != 200:
+                print(f"Error: Failed to fetch {url}, status code {response.status_code}")
+                return []
+        except Exception as e:
+            print(f"Error fetching {url}: {e}")
+            return []
             
         soup = BeautifulSoup(response.text, 'html.parser')
-        
         main_content = soup.find('div', role='main') or soup.find(id='mc-main-content')
         if not main_content:
             main_content = soup.body if soup.body else soup
             
+        # Set dynamic context for link conversion
+        self.current_url = url
+        self.current_output_path = workspace_path
+        
         markdown = self.convert_to_markdown(main_content)
         markdown = re.sub(r'\n{3,}', '\n\n', markdown)
-        return markdown.strip()
+        
+        # Ensure output directory exists and save file
+        os.makedirs(os.path.dirname(workspace_path), exist_ok=True)
+        with open(workspace_path, 'w', encoding='utf-8') as f:
+            f.write(markdown.strip())
+        print(f"  -> Saved to: {workspace_path}")
+        
+        # Extract links for recursive crawling
+        links_to_crawl = []
+        if depth < self.max_depth:
+            for anchor in main_content.find_all('a', href=True):
+                href = anchor['href']
+                if href.startswith('javascript:') or href.startswith('#'):
+                    continue
+                resolved_url = self.resolve_url(href, url)
+                # Keep crawling restricted to CPQ Content BML-related docs
+                if resolved_url.startswith(self.base_url):
+                    # Restrict to paths like BML/ or other subpaths linked from BML pages
+                    is_bml = any(x in resolved_url for x in ['/BML/', '/FunctionsScripts/', '/FunctionEditor/', 'UtilBml'])
+                    if is_bml and resolved_url not in self.visited:
+                        links_to_crawl.append(resolved_url)
+                        
+        return links_to_crawl
+
+    def fetch_bml_toc_urls(self):
+        toc_urls = []
+        try:
+            print("Fetching help system Master TOC configuration...")
+            master_url = "https://help-cxsales.oraclecloud.com/cpq/Data/Tocs/Master.js"
+            r = requests.get(master_url, headers={'User-Agent': 'Mozilla/5.0'}, verify=False, timeout=10)
+            if r.status_code != 200:
+                print(f"Error: Failed to fetch Master.js (status code {r.status_code})")
+                return []
+                
+            # Find the number of chunks
+            match = re.search(r'numchunks\s*:\s*(\d+)', r.text)
+            num_chunks = int(match.group(1)) if match else 1
+            
+            print(f"Discovered {num_chunks} TOC chunk files. Fetching pages...")
+            for c in range(num_chunks):
+                chunk_url = f"https://help-cxsales.oraclecloud.com/cpq/Data/Tocs/Master_Chunk{c}.js"
+                chunk_r = requests.get(chunk_url, headers={'User-Agent': 'Mozilla/5.0'}, verify=False, timeout=10)
+                if chunk_r.status_code == 200:
+                    # Find all Content/BML/ paths
+                    matches = re.findall(r"['\"]/Content/BML/([^'\"]+)['\"]", chunk_r.text)
+                    for m in matches:
+                        toc_urls.append(f"https://help-cxsales.oraclecloud.com/cpq/Content/BML/{m}")
+                        
+            print(f"Successfully resolved {len(toc_urls)} BML module URLs dynamically.")
+        except Exception as e:
+            print(f"Error resolving TOC URLs dynamically: {e}")
+            
+        return toc_urls
+
+    def start(self, seed_url):
+        normalized_seed = self.normalize_url(self.resolve_url(seed_url))
+        default_seed = self.normalize_url(self.resolve_url("https://help-cxsales.oraclecloud.com/cpq/#BML/BMLOverview.htm?TocPath=BML%257C_____0"))
+        
+        if normalized_seed == default_seed:
+            print("No specific URL provided or BMLOverview requested.")
+            toc_urls = self.fetch_bml_toc_urls()
+            if toc_urls:
+                print(f"Pre-seeding queue with all {len(toc_urls)} BML module pages from TOC...")
+                queue = [(self.normalize_url(url), 1) for url in toc_urls]
+            else:
+                print("Fallback: Seed with the overview page only.")
+                start_url = self.resolve_url(seed_url)
+                queue = [(start_url, 1)]
+        else:
+            start_url = self.resolve_url(seed_url)
+            queue = [(start_url, 1)]
+        
+        while queue:
+            current_url, depth = queue.pop(0)
+            next_links = self.crawl_page(current_url, depth)
+            for link in next_links:
+                if link not in self.visited and not any(link == q[0] for q in queue):
+                    queue.append((link, depth + 1))
+                    
+        print(f"\nCrawling complete! Visited {len(self.visited)} pages under BML module.")
 
 def main():
     default_url = "https://help-cxsales.oraclecloud.com/cpq/#BML/BMLOverview.htm?TocPath=BML%257C_____0"
-    url = sys.argv[1] if len(sys.argv) > 1 else default_url
-    output_filename = sys.argv[2] if len(sys.argv) > 2 else "BMLOverview.md"
+    seed = sys.argv[1] if len(sys.argv) > 1 else default_url
     
-    converter = BmlDocConverter()
-    try:
-        md = converter.fetch_and_convert(url)
-        with open(output_filename, 'w', encoding='utf-8') as f:
-            f.write(md)
-        print(f"Success! Document converted and saved as {output_filename}")
-    except Exception as e:
-        print(f"Error occurred: {e}", file=sys.stderr)
-        sys.exit(1)
+    # Get custom depth if provided
+    depth = 3
+    if len(sys.argv) > 2:
+        try:
+            depth = int(sys.argv[2])
+        except ValueError:
+            pass
+            
+    crawler = BmlDocCrawler(max_depth=depth)
+    crawler.start(seed)
 
 if __name__ == '__main__':
     main()
