@@ -139,7 +139,7 @@ function registerTools(server, context, vscode) {
       jsonResult(await tools.deployCommerceProcess(context, vscode, args)),
   );
 
-  server.registerTool(
+    server.registerTool(
     "create_util_function",
     {
       description:
@@ -162,7 +162,50 @@ function registerTools(server, context, vscode) {
     async (args) =>
       jsonResult(await tools.createUtilFunction(context, vscode, args)),
   );
+
+  server.registerTool(
+    "explain_function",
+    {
+      description:
+        "Return offline documentation for a locally pulled BML function: doc-header, parameter list, return type, and a code preview. No CPQ connection required.",
+      inputSchema: { variableName: z.string() },
+    },
+    async (args) =>
+      jsonResult(await tools.explainFunction(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "diff_function",
+    {
+      description:
+        "Compare the local AI copy of a util function against the current remote version on CPQ. Returns a unified line diff with added/removed/unchanged counts.",
+      inputSchema: {
+        variableName: z.string(),
+        type: z.enum(["util", "commerce"]).default("util"),
+      },
+    },
+    async (args) =>
+      jsonResult(await tools.diffFunction(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "search_functions",
+    {
+      description:
+        "Full-text search across all locally pulled .bml files. Returns matching files sorted by match count.",
+      inputSchema: {
+        query: z.string().describe("The text to search for (case-insensitive)."),
+        type: z
+          .enum(["util", "commerce", "both"])
+          .default("both")
+          .describe("Restrict search to util, commerce, or both."),
+      },
+    },
+    async (args) =>
+      jsonResult(await tools.searchFunctions(context, vscode, args)),
+  );
 }
+
 
 let httpServer = null;
 let boundPort = null;

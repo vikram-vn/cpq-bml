@@ -66,13 +66,13 @@
   },
   {
     "line": 23,
-    "severity": "Warning",
-    "message": "Unreachable code: this can never execute - it comes after an unconditional 'break'."
+    "severity": "Error",
+    "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
   },
   {
     "line": 23,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
+    "severity": "Warning",
+    "message": "Unreachable code: this can never execute - it comes after an unconditional 'break'."
   },
   {
     "line": 26,
@@ -81,22 +81,22 @@
   },
   {
     "line": 28,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'size' - did you mean 'sin'?"
-  },
-  {
-    "line": 28,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('myDict.size(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
-    "line": 30,
+    "line": 28,
     "severity": "Warning",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 1."
+    "message": "Unknown built-in function or variable 'size' - did you mean 'sin'?"
   },
   {
     "line": 30,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('myJson.get(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 30,
+    "severity": "Warning",
+    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 1."
   }
 ]

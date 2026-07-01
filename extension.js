@@ -2,6 +2,7 @@ const net = require("net");
 const vscode = require("vscode");
 const { registerBmlIntelliSense } = require("./app/lang/intellisense");
 const { registerBeautifier } = require("./app/lang/beautify");
+const { registerDocHeaderCompletion } = require("./app/lang/beautify/docHeader");
 const { registerBmlLinter } = require("./app/lang/lint");
 const { registerBmlComments } = require("./app/lang/comments");
 const { registerBmlRest } = require("./app/lang/rest");
@@ -9,6 +10,9 @@ const { registerMcp } = require("./app/lang/mcp");
 const { registerSettingsPanel } = require("./app/lang/settingsPanel");
 const { registerXslt } = require("./app/lang/xslt");
 const { beautifyWorkspaceCommand } = require("./app/lang/beautify/commandWorkspace");
+const { registerMetrics } = require("./app/lang/metrics/reportWebview");
+const { registerBmlTestRunner } = require("./app/lang/testing/runner");
+const { registerBmlSnapshot } = require("./app/lang/testing/snapshot");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -36,10 +40,13 @@ function activate(context) {
   // Register Beautifier
   registerBeautifier(context);
 
-  // Register IntelliSense
+  // Register IntelliSense (completion, hover, signature help, go-to-def, references, rename, symbols)
   registerBmlIntelliSense(context);
 
-  // Register BMLint
+  // Register Auto Doc-Header completion (/// trigger)
+  registerDocHeaderCompletion(context);
+
+  // Register BMLint (real-time diagnostics)
   registerBmlLinter(context);
 
   // Register BML Better Comments (tag/directive/doc-header decorations + hover)
@@ -56,6 +63,15 @@ function activate(context) {
 
   // Register XSLT preview & formatting support
   registerXslt(context);
+
+  // Register Code Metrics report (cpqBml.metrics.openReport)
+  registerMetrics(context);
+
+  // Register BML Test Runner (cpqBml.test.runTests)
+  registerBmlTestRunner(context);
+
+  // Register BML Snapshot testing (cpqBml.test.updateSnapshot / compareSnapshot)
+  registerBmlSnapshot(context);
 
   // Register workspace-wide BML beautify command
   const workspaceCmd = vscode.commands.registerCommand('cpqBml.beautifyWorkspace', beautifyWorkspaceCommand);

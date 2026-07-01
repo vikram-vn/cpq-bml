@@ -1,6 +1,12 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
+const {
+    getWorkspaceIndex,
+    registerWorkspaceIndexWatcher,
+    resolveCallAtPosition,
+    extractDocHeader,
+} = require('./workspaceIndex');
 
 // Each source file holds a different kind of entry. Tracking that here gives
 // accurate completion icons/hover labels - "does this syntax contain '(' "
@@ -425,6 +431,159 @@ function registerBmlIntelliSense(context) {
     );
 
     context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
+
+    // ── Go to Definition ─────────────────────────────────────────────────────
+    const definitionProvider = vscode.languages.registerDefinitionProvider('bml', {
+        provideDefinition(document, position) {
+            const call = resolveCallAtPosition(document, position);
+            if (!call) return null;
+            const entry = getWorkspaceIndex().get(call.qualifiedName);
+            if (!entry) return null;
+            const uri = vscode.Uri.file(entry.filePath);
+            const loc = new vscode.Location(uri, new vscode.Position(entry.line, 0));
+            return loc;
+        }
+    });
+    context.subscriptions.push(definitionProvider);
+
+    // ── Find All References ───────────────────────────────────────────────────
+    const referenceProvider = vscode.languages.registerReferenceProvider('bml', {
+        async provideReferences(document, position) {
+            const call = resolveCallAtPosition(document, position);
+            if (!call) return [];
+            const pattern = new RegExp(`\\b${call.prefix}\.${call.name}\\b`, 'g');
+            const uris = await vscode.workspace.findFiles('**/*.bml', '**/node_modules/**');
+            const locations = [];
+            for (const uri of uris) {
+                let text;
+                try { text = fs.readFileSync(uri.fsPath, 'utf8'); } catch { continue; }
+                const lines = text.split(/\r?\n/);
+                for (let i = 0; i < lines.length; i++) {
+                    let m;
+                    pattern.lastIndex = 0;
+                    while ((m = pattern.exec(lines[i])) !== null) {
+                        locations.push(new vscode.Location(
+                            uri,
+                            new vscode.Range(i, m.index, i, m.index + m[0].length)
+                        ));
+                    }
+                }
+            }
+            return locations;
+        }
+    });
+    context.subscriptions.push(referenceProvider);
+
+    // ── Rename Symbol ─────────────────────────────────────────────────────────
+    const renameProvider = vscode.languages.registerRenameProvider('bml', {
+        async provideRenameEdits(document, position, newName) {
+            const call = resolveCallAtPosition(document, position);
+            if (!call) return null;
+            const pattern = new RegExp(`\\b(${call.prefix})\.${call.name}\\b`, 'g');
+            const uris = await vscode.workspace.findFiles('**/*.bml', '**/node_modules/**');
+            const edit = new vscode.WorkspaceEdit();
+            for (const uri of uris) {
+                let text;
+                try { text = fs.readFileSync(uri.fsPath, 'utf8'); } catch { continue; }
+                const lines = text.split(/\r?\n/);
+                for (let i = 0; i < lines.length; i++) {
+                    let m;
+                    pattern.lastIndex = 0;
+                    while ((m = pattern.exec(lines[i])) !== null) {
+                        edit.replace(
+                            uri,
+                            new vscode.Range(i, m.index, i, m.index + m[0].length),
+                            `${m[1]}.${newName}`
+                        );
+                    }
+                }
+            }
+            return edit;
+        },
+        prepareRename(document, position) {
+            const call = resolveCallAtPosition(document, position);
+            if (!call) throw new Error('Rename is only supported on util.* or commerce.* function calls.');
+            const lineText = document.lineAt(position).text;
+            const nameStart = lineText.indexOf(call.name, lineText.indexOf(call.prefix + '.'));
+            return new vscode.Range(position.line, nameStart, position.line, nameStart + call.name.length);
+        }
+    });
+    context.subscriptions.push(renameProvider);
+
+    // ── Document Symbols (breadcrumb / outline) ───────────────────────────────
+    const symbolProvider = vscode.languages.registerDocumentSymbolProvider('bml', {
+        provideDocumentSymbols(document) {
+            const symbols = [];
+            const text = document.getText();
+            const lines = text.split(/\r?\n/);
+            const blockStack = []; // stack of { symbol, depth }
+            let braceDepth = 0;
+
+            const controlRe = /^\s*(if|elif|else|for)\b(.*)?\{\s*$/i;
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const cm = controlRe.exec(line);
+                if (cm) {
+                    const keyword = cm[1];
+                    const condition = (cm[2] || '').replace(/\{\s*$/, '').trim();
+                    const label = condition ? `${keyword} (${condition.slice(0, 40)})` : keyword;
+                    const sym = new vscode.DocumentSymbol(
+                        label,
+                        '',
+                        vscode.SymbolKind.Module,
+                        new vscode.Range(i, 0, i, line.length),
+                        new vscode.Range(i, 0, i, line.length)
+                    );
+                    if (blockStack.length > 0) {
+                        blockStack[blockStack.length - 1].symbol.children.push(sym);
+                    } else {
+                        symbols.push(sym);
+                    }
+                    blockStack.push({ symbol: sym, depth: braceDepth + 1 });
+                }
+                // Track braces to know when a block closes
+                for (const ch of line) {
+                    if (ch === '{') braceDepth++;
+                    else if (ch === '}') {
+                        braceDepth--;
+                        if (blockStack.length > 0 && braceDepth < blockStack[blockStack.length - 1].depth) {
+                            const closed = blockStack.pop();
+                            closed.symbol.range = new vscode.Range(
+                                closed.symbol.range.start, new vscode.Position(i, line.length)
+                            );
+                        }
+                    }
+                }
+            }
+            return symbols;
+        }
+    });
+    context.subscriptions.push(symbolProvider);
+
+    // ── Extended hover: workspace functions ──────────────────────────────────
+    // The existing hoverProvider covers built-ins; add a second provider for
+    // workspace util.* / commerce.* functions.
+    const workspaceHoverProvider = vscode.languages.registerHoverProvider('bml', {
+        provideHover(document, position) {
+            const call = resolveCallAtPosition(document, position);
+            if (!call) return null;
+            const entry = getWorkspaceIndex().get(call.qualifiedName);
+            if (!entry) return null;
+
+            const md = new vscode.MarkdownString();
+            md.isTrusted = true;
+            const paramStr = entry.parameters.map(p => `${p.dataType} ${p.name}`).join(', ');
+            md.appendCodeblock(`(workspace function) ${call.qualifiedName}(${paramStr})`, 'bml');
+            if (entry.returnType) md.appendMarkdown(`*Returns: ${entry.returnType}*\n\n`);
+            if (entry.docHeader) md.appendMarkdown(entry.docHeader + '\n\n');
+            md.appendMarkdown(`[Go to source](${vscode.Uri.file(entry.filePath).toString()})`);
+            return new vscode.Hover(md);
+        }
+    });
+    context.subscriptions.push(workspaceHoverProvider);
+
+    // Register workspace index file-system watchers
+    registerWorkspaceIndexWatcher(context);
 }
 
 module.exports = { registerBmlIntelliSense };

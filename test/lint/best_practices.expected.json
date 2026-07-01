@@ -25,9 +25,24 @@
     "message": "Security Warning: Dynamic query concatenation detected in BMQL. Use $variable syntax instead to prevent SQL injection"
   },
   {
+    "line": 10,
+    "severity": "Warning",
+    "message": "Style Warning: String concatenation using '+' detected. BML uses '~' for string concatenation. If you intended string concat, use '~' instead of '+'."
+  },
+  {
+    "line": 14,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
     "line": 14,
     "severity": "Warning",
     "message": "Design Warning: Empty block detected"
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Condition is always false ('false') - this branch can never run."
   },
   {
     "line": 16,
@@ -45,6 +60,11 @@
     "message": "Design Warning: Empty block detected"
   },
   {
+    "line": 20,
+    "severity": "Information",
+    "message": "Unused loop variable: 'item' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
     "line": 24,
     "severity": "Information",
     "message": "Design Info: Magic number '999' detected. Consider defining a named constant"
@@ -55,18 +75,13 @@
     "message": "Design Info: Magic number '25.5' detected. Consider defining a named constant"
   },
   {
-    "line": 20,
-    "severity": "Information",
-    "message": "Unused loop variable: 'item' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+    "line": 41,
+    "severity": "Warning",
+    "message": "Safety Warning: 'q1Records' may be null (result of bmql/get/dictget). Check with isnull(q1Records) or sizeofarray(q1Records) > 0 before use."
   },
   {
-    "line": 14,
+    "line": 42,
     "severity": "Warning",
-    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
-  },
-  {
-    "line": 16,
-    "severity": "Warning",
-    "message": "Condition is always false ('false') - this branch can never run."
+    "message": "Safety Warning: 'q2Records' may be null (result of bmql/get/dictget). Check with isnull(q2Records) or sizeofarray(q2Records) > 0 before use."
   }
 ]

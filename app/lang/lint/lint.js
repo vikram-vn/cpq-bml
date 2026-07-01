@@ -22,6 +22,10 @@ const { checkUseBeforeDefine } = require('./useBeforeDefine');
 const { getStringRanges } = require('./strings');
 const { computeSuppressions } = require('./suppressions');
 const { checkSpelling } = require('../spellCheck/spelling');
+const { checkNullSafety } = require('./nullSafety');
+const { checkTypeCoercion } = require('./typeCoercion');
+const { checkInfiniteLoop } = require('./infiniteLoop');
+
 
 
 // Preserves \n/\r so line numbers (and thus diagnostic positions) stay correct.
@@ -83,6 +87,11 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkMixedOperators(cleanText, conditionRanges, doc, vscode));
         diagnostics.push(...checkUnusedExpressions(cleanText, doc, vscode));
         diagnostics.push(...checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath));
+
+        // Phase 1 new checkers
+        diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));
+        diagnostics.push(...checkTypeCoercion(cleanText, doc));
+        diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
     }
 
     if (isSpellingEnabled) {

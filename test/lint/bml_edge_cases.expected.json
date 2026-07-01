@@ -36,13 +36,13 @@
   },
   {
     "line": 15,
-    "severity": "Error",
-    "message": "Use <> in BML"
+    "severity": "Warning",
+    "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
   },
   {
     "line": 15,
-    "severity": "Warning",
-    "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
+    "severity": "Error",
+    "message": "Use <> in BML"
   },
   {
     "line": 16,
@@ -68,6 +68,16 @@
     "line": 25,
     "severity": "Information",
     "message": "Design Info: Magic number '0.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Safety Warning: 'r1' may be null (result of bmql/get/dictget). Check with isnull(r1) or sizeofarray(r1) > 0 before use."
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Safety Warning: 'r2' may be null (result of bmql/get/dictget). Check with isnull(r2) or sizeofarray(r2) > 0 before use."
   },
   {
     "line": 27,

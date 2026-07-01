@@ -166,6 +166,30 @@
         "command": "cpqBml.xslt.switchFile",
         "title": "CPQ-BML: Switch to Linked XML/XSLT File",
         "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "cpqBml.metrics.openReport",
+        "title": "CPQ-BML: Open Code Metrics Report",
+        "category": "BML",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "cpqBml.test.runTests",
+        "title": "CPQ-BML: Run BML Tests",
+        "category": "BML",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "cpqBml.test.updateSnapshot",
+        "title": "CPQ-BML: Update BML Snapshot",
+        "category": "BML",
+        "icon": "$(save)"
+      },
+      {
+        "command": "cpqBml.test.compareSnapshot",
+        "title": "CPQ-BML: Compare BML Snapshot",
+        "category": "BML",
+        "icon": "$(diff)"
       }
     ],
     "menus": {
