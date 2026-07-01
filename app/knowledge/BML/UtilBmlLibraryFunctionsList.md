@@ -1,7 +1,9 @@
 ---
 id: UtilBmlLibraryFunctionsList
-title: Util BML Library Functions List (Redwood)
-sidebar_label: Util BML Library Functions List (Redwood)
+title: "Util BML Library Functions List (Redwood)"
+sidebar_label: "Util BML Library Functions List (Redwood)"
+description: "Util BML Library Functions List (Redwood) Overview The BML Function Library enables the user to write efficient and reusable custom BML functions. The..."
+tags: ['BML', 'CPQ']
 ---
 
 # Util BML Library Functions List (Redwood)
@@ -17,6 +19,8 @@ The BML Function Library enables the user to write efficient and reusable custom
 The Util BML Library Functions List page displays a list of available BML functions, a description of the function,  folder for the BML function, date the function was last modified, date the function was last deployed, and actions available for the function.
 
 To access the Util BML Library Functions List, navigate to: **Admin Home > Developer Tools & Utilities > BML Library**
+
+![Util BML Library Functions Page](images/utilBmlLibFunctionList.png)
 
 | Item | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -67,4 +71,4 @@ The **Function to Function** link appears on the **Related Rules** page. When it
 
 ## Related Topics
 
-See Also
+![Related Topics Link Icon](images/transparent.gif)See Also
