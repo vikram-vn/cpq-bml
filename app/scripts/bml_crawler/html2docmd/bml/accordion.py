@@ -15,15 +15,25 @@ _ACCORDION_TAGS = frozenset(["p", "div", "b", "strong", "h3", "h4", "span"])
 def is_accordion_header(element) -> bool:
     """
     Return True if this element is an Oracle accordion header
-    (contains a transparent.gif <img> child).
+    (directly wraps a transparent.gif toggle <img>, e.g. <p><img></p>
+    or <p><a><img></a></p>).
+
+    The toggle icon must be a close descendant (at most one wrapper level
+    away, like the <a> link). Using a fully recursive search would also
+    match large container elements (e.g. the page's main content <div>)
+    that merely happen to contain a toggle icon somewhere deep inside —
+    which would swallow the entire subtree as a single flattened heading.
     """
     if element.name not in _ACCORDION_TAGS:
         return False
-    img = element.find("img")
-    if img is None:
-        return False
-    src = img.get("src", "")
-    return "transparent.gif" in src
+    for img in element.find_all("img"):
+        src = img.get("src", "")
+        if "transparent.gif" not in src:
+            continue
+        parent = img.parent
+        if parent is element or (parent is not None and parent.parent is element):
+            return True
+    return False
 
 
 def convert_accordion(element) -> str:

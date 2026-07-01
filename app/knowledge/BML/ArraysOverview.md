@@ -1,7 +1,7 @@
 ---
 id: ArraysOverview
-title: "Commerce UI Settings"
-sidebar_label: "Commerce UI Settings"
+title: "Using Array Functions"
+sidebar_label: "Using Array Functions"
 description: "Using Array Functions Overview Oracle CPQ declares, initializes, populates, and manipulates arrays using BML. Refer to Array Functions for details about available functions. An array is an ordered col..."
 tags: ['BML', 'CPQ', 'Functions']
 ---

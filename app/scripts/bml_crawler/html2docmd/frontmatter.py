@@ -26,10 +26,20 @@ def generate_frontmatter(soup, url: str, body_text: str, base_url: str) -> str:
         # Remove " - Oracle CPQ" suffix
         title = re.split(r"\s+-\s+Oracle", title)[0].strip()
 
+    h1 = soup.find("h1")
     if not title:
-        h1 = soup.find("h1")
         if h1:
             title = h1.get_text().strip()
+    elif h1:
+        # Oracle's <title> tag is occasionally a stale copy-paste from an
+        # unrelated page (e.g. ArraysOverview.htm's <title> says
+        # "Commerce UI Settings"). If it shares no words with the page's
+        # own <h1>, trust the on-page heading instead.
+        h1_text = h1.get_text().strip()
+        title_words = set(re.findall(r"\w+", title.lower()))
+        h1_words = set(re.findall(r"\w+", h1_text.lower()))
+        if h1_text and title_words and h1_words and not (title_words & h1_words):
+            title = h1_text
 
     # --- Doc ID from URL filename ---
     relative_path = url[len(base_url):] if url.startswith(base_url) else url
