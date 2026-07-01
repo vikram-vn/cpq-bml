@@ -409,4 +409,5 @@ module.exports = {
   getSpellingSuggestions,
   splitIdentifier,
   cleanCommentText,
+  loadDictionaries,
 };

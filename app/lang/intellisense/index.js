@@ -21,10 +21,8 @@ const API_FILES = [
     { fileName: 'custom_snippets.json', category: 'snippet' }
 ];
 
-const CACHE_TTL_MS = 30000;
-
 let bmlApiData = {};
-let apiLoadTime = 0;
+let apiDataLoaded = false;
 let cachedGlobalItems = null;
 let cachedTransactionItems = null;
 let cachedLineItems = null;
@@ -34,10 +32,13 @@ let cachedAllAttributes = null;
 
 /**
  * Load and merge the BML API JSON files, tagging each entry with which file
- * it came from. Cached to avoid reparsing on every completion/hover request.
+ * it came from. These are static bundled resources, so this only ever reads
+ * from disk once per extension-host session; registerBmlIntelliSense() wires
+ * up a file watcher to invalidate the cache if they're regenerated on disk
+ * (e.g. via `yarn generate:intellisense` while VS Code is open).
  */
 function loadApiData(context) {
-    if (Object.keys(bmlApiData).length && Date.now() - apiLoadTime < CACHE_TTL_MS) {
+    if (apiDataLoaded) {
         return bmlApiData;
     }
 
@@ -54,7 +55,7 @@ function loadApiData(context) {
         }
     });
 
-    apiLoadTime = Date.now();
+    apiDataLoaded = true;
     cachedGlobalItems = null;
     cachedTransactionItems = null;
     cachedLineItems = null;
@@ -62,6 +63,13 @@ function loadApiData(context) {
     cachedCpqjsItems = null;
     cachedAllAttributes = null;
     return bmlApiData;
+}
+
+/**
+ * Drop the cached API data so the next loadApiData() call reloads it from disk.
+ */
+function invalidateApiData() {
+    apiDataLoaded = false;
 }
 
 /**
@@ -387,6 +395,17 @@ function parseParameters(signature) {
 function registerBmlIntelliSense(context) {
     loadApiData(context);
 
+    // The API JSON files are static bundled resources; only reload them if
+    // they actually change on disk (e.g. a maintainer re-running the
+    // generator scripts), instead of re-reading/re-parsing on every request.
+    const apiFilesWatcher = vscode.workspace.createFileSystemWatcher(
+        path.join(context.extensionPath, 'app', 'lang', 'intellisense', '*.json')
+    );
+    apiFilesWatcher.onDidChange(invalidateApiData);
+    apiFilesWatcher.onDidCreate(invalidateApiData);
+    apiFilesWatcher.onDidDelete(invalidateApiData);
+    context.subscriptions.push(apiFilesWatcher);
+
     const completionProvider = vscode.languages.registerCompletionItemProvider(
         'bml',
         {
@@ -394,7 +413,7 @@ function registerBmlIntelliSense(context) {
                 if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                     return null;
                 }
-                loadApiData(context); // reload if updated externally
+                loadApiData(context); // no-op unless the watcher invalidated the cache
                 if (!cachedGlobalItems) {
                     buildCategorizedItems();
                 }

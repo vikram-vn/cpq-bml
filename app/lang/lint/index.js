@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const { lintBMLCustom } = require('./lint');
 const { registerBmlCodeActions } = require('./codeActions');
+const { loadDictionaries } = require('../spellCheck/spelling');
 
 let diagnosticCollection;
 
@@ -22,6 +23,15 @@ function registerBmlLinter(context) {
     // app/lang/spellCheck/ - same convention as intellisense/index.js's
     // loadApiData(context).
     const extensionPath = context.extensionPath;
+
+    // Prewarm the ~4.1MB spell-check dictionary in the background right after
+    // activation, so it's already parsed by the time the first lint pass
+    // needs it instead of blocking the editor on the user's first edit.
+    // loadDictionaries() itself caches after the first call either way, so
+    // this is a pure timing win with no behavior change if it's skipped.
+    if (isSpellingEnabled()) {
+        setImmediate(() => loadDictionaries(extensionPath));
+    }
 
     const lintDelay = 300;
     const lintTimers = new Map();

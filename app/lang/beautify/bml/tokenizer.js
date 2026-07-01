@@ -1,8 +1,7 @@
 "use strict";
 // BML tokenizer. Constants, patterns, and stateless helpers live in tokenizerHelpers.js.
 
-const fs = require("fs");
-const path = require("path");
+const { loadBuiltInFunctionsJson } = require("../../intellisense/apiDataLoader");
 
 const {
   NEWLINE,
@@ -22,19 +21,16 @@ const {
   isDigit,
 } = require("./tokenizerHelpers");
 
-// Two candidate paths since __dirname differs between unbundled source and the esbuild bundle (dist/).
-const _builtinJsonCandidates = [
-  path.join(__dirname, "../../intellisense/bml_functions_api_usage.json"),
-  path.join(__dirname, "../app/lang/intellisense/bml_functions_api_usage.json"),
-];
-let builtinFunctions = {};
-for (const _p of _builtinJsonCandidates) {
-  try {
-    builtinFunctions = JSON.parse(fs.readFileSync(_p, "utf8"));
-    break;
-  } catch (_) {}
+// Loaded lazily (on first tokenize call, not at module require time) and
+// shared with lint/functions.js via apiDataLoader, instead of parsing the
+// ~200KB builtin-functions JSON eagerly during activation.
+let _builtinFunctionsSet = null;
+function getBuiltinFunctionsSet() {
+  if (!_builtinFunctionsSet) {
+    _builtinFunctionsSet = new Set(Object.keys(loadBuiltInFunctionsJson()));
+  }
+  return _builtinFunctionsSet;
 }
-const builtinFunctionsSet = new Set(Object.keys(builtinFunctions));
 
 function makeStringReaders(input, options) {
   function unescapeString(s) {
@@ -264,7 +260,7 @@ function Tokenizer(source_text, options) {
       // Only rewrite ALLCAPS/alllowercase identifiers; camelCase (e.g. containsKey) is left as written.
       if (
         options.correct_builtin_casing &&
-        builtinFunctionsSet.has(lower) &&
+        getBuiltinFunctionsSet().has(lower) &&
         input.peek() === "("
       ) {
         const isMixedCase = word !== lower && word !== word.toUpperCase();

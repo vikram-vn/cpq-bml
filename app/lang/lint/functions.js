@@ -1,9 +1,8 @@
-const fs = require('fs');
-const path = require('path');
 const { parseParameterSignature, splitArgumentsList } = require('./functionSignature');
 const { levenshtein } = require('./levenshtein');
 const { inferLiteralType } = require('./typeCheck');
 const { getWorkspaceFunctionsCached } = require('./workspaceFunctions');
+const { loadBuiltInFunctionsJson } = require('../intellisense/apiDataLoader');
 
 let builtInFunctions = null;
 // Mirrors the grammar's reserved words/storage-type constructors so they're never flagged as unknown functions.
@@ -25,33 +24,27 @@ function loadBuiltInFunctions(extensionPath) {
     if (builtInFunctions) return builtInFunctions;
     builtInFunctions = new Map();
     try {
-        const apiUsagePath = extensionPath
-            ? path.join(extensionPath, 'app', 'lang', 'intellisense', 'bml_functions_api_usage.json')
-            : path.resolve(__dirname, '../intellisense/bml_functions_api_usage.json');
-        if (fs.existsSync(apiUsagePath)) {
-            const content = fs.readFileSync(apiUsagePath, 'utf8');
-            const data = JSON.parse(content);
-            if (data) {
-                Object.keys(data).forEach(name => {
-                    const item = data[name];
-                    if (item && item.fullSignature && item.fullSignature.includes('(')) {
-                        const nameLower = name.toLowerCase();
-                        const overloads = item.fullSignature.split(/\r?\n\s*\(or\)\s*\r?\n/);
-                        const parsedOverloads = overloads.map(sig => {
-                            return parseParameterSignature(sig);
-                        });
-                        const first = parsedOverloads[0];
-                        builtInFunctions.set(nameLower, {
-                            overloads: parsedOverloads,
-                            min: first.min,
-                            max: first.max,
-                            params: first.params,
-                            syntax: item.fullSignature,
-                            name
-                        });
-                    }
-                });
-            }
+        const data = loadBuiltInFunctionsJson(extensionPath);
+        if (data) {
+            Object.keys(data).forEach(name => {
+                const item = data[name];
+                if (item && item.fullSignature && item.fullSignature.includes('(')) {
+                    const nameLower = name.toLowerCase();
+                    const overloads = item.fullSignature.split(/\r?\n\s*\(or\)\s*\r?\n/);
+                    const parsedOverloads = overloads.map(sig => {
+                        return parseParameterSignature(sig);
+                    });
+                    const first = parsedOverloads[0];
+                    builtInFunctions.set(nameLower, {
+                        overloads: parsedOverloads,
+                        min: first.min,
+                        max: first.max,
+                        params: first.params,
+                        syntax: item.fullSignature,
+                        name
+                    });
+                }
+            });
         }
     } catch (e) {
         // Fallback to empty map if file can't be loaded
