@@ -28,19 +28,11 @@ Basics
 Parameters:
 
 #
-Parameter
-Data Type
-Description
 
-1
-sqlQuery
-String
-The SQL query
-
-2
-[dict]
-String, Integer, or Float
- Optional: A dictionary populated with the language context variable as a key and an overriding language as the value. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `1` | sqlQuery | String |
+| `The SQL query` | 2 | [dict] |
 
  Return Type: Record Set 
 This data type is a collection of dictionaries.  It can also be used as a function in conjunction with BMQL.

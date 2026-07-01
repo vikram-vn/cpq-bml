@@ -16,19 +16,11 @@ This function returns the date which is obtained after adding X number of days t
  Syntax: adddays(date, num_of_days)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-date
-
-Date
-Represents the given date.
-
-num_of_days
-
-Integer
- How many days you want to add to the given date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Represents the given date. |
+| `num_of_days` | Integer | How many days you want to add to the given date. |
 
  Return Type: Date
  Example: 
@@ -44,19 +36,11 @@ This function returns the date which results after adding or subtracting a numbe
 Syntax: Date addmonths (Date date, Integer num_of_months)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-date
-
-Date
-Represents the given date.
-
-num_of_months
-
-Integer
- The number of months you want to add to the given month. A positive value will add months. A negative value will subtract months from the date specified. If this value is 0, the result returns the same date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Represents the given date. |
+| `num_of_months` | Integer | The number of months you want to add to the given month. A positive value will add months. A negative value will subtract months from the date specified. If this value is 0, the result returns the same date. |
 
 Return Type: Date
 Example: return datetostr(addmonths(getdate(), 2));
@@ -75,19 +59,11 @@ Use this function to compare two dates based on date and time.
  Syntax: comparedates(Date date1, Date date2)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-date1
-
-Date
-Represents the given date.
-
-date2
-
-Date
- Represents another given date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date1` | Date | Represents the given date. |
+| `date2` | Date | Represents another given date. |
 
  Return Type: Integer
 Example:
@@ -114,24 +90,12 @@ Example Use Case: Date fields in commerce are considered string fields, so to re
  Syntax: datetostr(Date date,[String dateFormat, [String timeZone]])
  Parameters: 
 
-Parameter
-Data Type
-Description
 
-date
-
-Date
-Mandatory date parameter. 
-
-[dateFormat]
-
-String
- Optional: Returns a formatted string.
-
-[timeZone]
-
-String
- Optional: Retrieve the data in another time zone.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Mandatory date parameter. |
+| `[dateFormat]` | String | Optional: Returns a formatted string. |
+| `[timeZone]` | String | Optional: Retrieve the data in another time zone. |
 
  Return Type: String
 
@@ -199,14 +163,10 @@ This function returns the current date/time based on the base time zone you have
  Syntax: getdate([boolean includeTime])
 Parameters:
 
-Parameter
-Data Type
-Description
 
-[includeTime]
-
-Boolean
- Optional: Returns the current system date and time. If it is not included, it will be set to true by default.  If this parameter is set to false, the component is set to 00:00:00 and is not displayed to the user.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `[includeTime]` | Boolean | Optional: Returns the current system date and time. If it is not included, it will be set to true by default.  If this parameter is set to false, the component is set to 00:00:00 and is not displayed to the user. |
 
  Return Type: Date
 Example getdate:
@@ -220,19 +180,11 @@ This function calculates the number of days between two different dates. Example
  Syntax: getdiffindays(date 1, date 2)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-date 1
-
-Date
-Mandatory date parameter.
-
-date 2
-
-Date
-Mandatory date parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date 1` | Date | Mandatory date parameter. |
+| `date 2` | Date | Mandatory date parameter. |
 
  Return Type: Float
 Example:
@@ -253,14 +205,10 @@ Using this function will determine whether the date falls within a leap year.  T
  Syntax: isleap(year_num)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-year_num
-
-Integer
-Four-digit integer that represents the year in question.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `year_num` | Integer | Four-digit integer that represents the year in question. |
 
  Return Type: Boolean
 Example:
@@ -275,14 +223,10 @@ This function determines whether a date falls within a weekend (Saturday or Sund
  Syntax: isweekend(date)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-date
-
-Date
-Mandatory date parameter. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Mandatory date parameter. |
 
  Return Type: Boolean
 Example:
@@ -296,19 +240,11 @@ This function returns a date that is x days before the base date. Example Use Ca
  Syntax: minusdays(date, num_of_days)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-date
-
-Date 
-Represents the given date. 
-
-num_of_days
-
-Integer
- How many days you want to subtract from the given date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Represents the given date. |
+| `num_of_days` | Integer | How many days you want to subtract from the given date. |
 
  Return Type: Date
 Example:
@@ -326,24 +262,12 @@ This function converts a string to a date and replicates Java behavior.  Use thi
  Syntax:: strtojavadate(String str, String format, [String timeZone])
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-String format of a date.
-
-format
-
-Date Format
- Specifies the format the date will be returned in.
-
-timeZone
-
-String
- Optional: Retrieve the data in another time zone.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | String format of a date. |
+| `format` | Date Format | Specifies the format the date will be returned in. |
+| `timeZone` | String | Optional: Retrieve the data in another time zone. |
 
  Return Type: Date
 

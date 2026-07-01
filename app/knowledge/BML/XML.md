@@ -21,42 +21,15 @@ Syntax:
 String applytemplate(String templateFileLocation [, Dictionary payload [, String defaultErrorMessage [, Json jsonIdentifier]]])
 Parameters:
 
-Parameter
- Data Type
-Description
 
-templateFileLocation
-
-String
-
-The location of the template file.
-
-payload
-
-Dictionary
-
-The payload containing values for the defined tokens in
- the template.
-
-Optional. The default value is null.
-
-defaultErrorMessage
-
-String
-
-The default error message to be displayed in case any
- error is encountered. 
-
-Optional. The default value is null.
-
-jsonIdentifier
-
-Json
-
-The JSON containing values for the defined tokens in the
- template.
-
-Optional. The default value is null.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `templateFileLocation` | String | The location of the template file. |
+| `payload` | Dictionary | The payload containing values for the defined tokens in |
+| `the template.` | Optional. The default value is null. | defaultErrorMessage |
+| `String` | The default error message to be displayed in case any | error is encountered. |
+| `Optional. The default value is null.` | jsonIdentifier | Json |
+| `The JSON containing values for the defined tokens in the` | template. | Optional. The default value is null. |
 
 Example:
 Template file
@@ -157,25 +130,11 @@ readxmlmultiple
 Syntax: readxmlmultiple(String xmlPayload, String[] xpaths [, String defaultErrorMessage])
 Parameters:
 
-Parameter
-Data Type
-Description
 
-xmlPayload
-
-String
-
- 
-
-xpaths
-
-String
- 
-
-default ErrorMessage
-
-String
- Optional: What is returned if an error occurs.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `xmlPayload` | String | xpaths |
+| `String` | default ErrorMessage | String |
 
  Return Type: String
 This function will return a BMLDictionary, where the String keys are the input xpaths and String values are the XPath evaluation results for the input xpaths.
@@ -242,25 +201,11 @@ This function reads a set of single XML node content based on a set of XPath exp
 Syntax: readxmlsingle(String xmlPayload, String[] xpaths [, String defaultErrorMessage])
  Parameters:
 
-Parameter
-Data Type
-Description
 
-xmlPayload
-
-String
-
- 
-
-xpaths
-
-String
- 
-
-default ErrorMessage
-
-String
-Optional: What is returned if an error occurs.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `xmlPayload` | String | xpaths |
+| `String` | default ErrorMessage | String |
 
 Return Type: String
 This function will return a BMLDictionary, where the String keys are the input xpaths and String values are the XPath evaluation results for the input xpaths.
@@ -328,25 +273,11 @@ This function transforms an XML string with an XSLT file stored in the File Mana
 It returns the transformed xml message, or the error message if it failed to transform. The error message will be either the default error message (if it is defined) or the system-generated error message, which starts with "ERROR: ".
  Parameters: 
 
-Parameter
-Data Type
-Description
 
-xml
-
-String
-
- 
-
-xslFileLocation
-
-String
-Location of the XSL file.
-
-default ErrorMessage
-
-String
- Optional: What is returned if an error occurs.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `xml` | String | xslFileLocation |
+| `String` | Location of the XSL file. | default ErrorMessage |
 
  Return Type: String
  Example of transformxml(): 

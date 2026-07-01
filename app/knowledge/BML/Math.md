@@ -16,14 +16,10 @@ Example Use Case: Find the inverse function of the cosine of an angle.
  Syntax: acos(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
- Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
 Return Type: Float
 Example:
@@ -38,14 +34,10 @@ Example Use Case: Find the inverse function of the sine of an angle.
  Syntax: asin(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
- Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
  Example:
@@ -61,14 +53,10 @@ Example Use Case: Find the inverse function of the tangent of an angle.
  Syntax: atan(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
- Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:
@@ -80,14 +68,10 @@ Example Use Case: Rounding up to the next highest whole number.
  Syntax: ceil(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:
@@ -101,14 +85,10 @@ Example Use Case: Find the ratio of the side adjacent the given angle and the hy
  Syntax: cos(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example :
@@ -119,14 +99,10 @@ cosh
 Syntax: cosh(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:
@@ -140,14 +116,10 @@ Example Use Case: Find whether a quantity grows or decays at a rate proportional
  Syntax: exp(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:
@@ -159,14 +131,10 @@ Example Use Case: Finding the distance of the quantity from zero.
  Syntax: fabs(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:
@@ -177,19 +145,11 @@ This function returns the remainder of the division operation x, y.
  Syntax: fmod(x, y)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
- Represents the dividend.
-
-y
-
-Float
- Represents the divisor.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents the dividend. |
+| `y` | Float | Represents the divisor. |
 
  Return Type: Float
 Example:
@@ -203,19 +163,11 @@ Example:   sqrt(32 + 42) = sqrt(25) = 5.0 or -5.0.
  Syntax: hypot(x, y)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
- Represents the x in sqrt (x2 + y2). 
-
-y
-
-Float
-Represents the y in sqrt (x2 + y2).
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents the x in sqrt (x2 + y2). |
+| `y` | Float | Represents the y in sqrt (x2 + y2). |
 
  Return Type: Float
 Example:
@@ -229,14 +181,10 @@ This function returns the integer portion of a float number.  For example, this 
  Syntax:  integer(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Integer
 Example:
@@ -252,14 +200,10 @@ This function returns the natural logarithm (base e) of the number.
  Syntax: ln(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float parameter. |
 
  Return Type: Float
 Example:
@@ -277,14 +221,10 @@ This function returns the base-10 logarithm of the number.
  Syntax: log(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float parameter. |
 
  Return Type: Float
 Example:
@@ -304,19 +244,11 @@ This function returns the value of the first argument raised to the power of the
  Syntax: pow(x, y)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
- Represents the value of the input float.
-
-y
-
-Float
- Represents the power to which you raise the input float.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents the value of the input float. |
+| `y` | Float | Represents the power to which you raise the input float. |
 
  Return Type: Float
 Example:
@@ -328,19 +260,11 @@ Example Use Case: For returning float values that represent currency.  You may w
  Syntax:  round(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
- Represents the given input float parameter.
-
-[n]
-
-Integer
- Optional: Specifies the number of decimal places to round to.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents the given input float parameter. |
+| `[n]` | Integer | Optional: Specifies the number of decimal places to round to. |
 
  Return Type: Float
 Example:
@@ -352,14 +276,10 @@ Example Use Case: Finding the ratio of the size opposite the given angle and the
  Syntax: sin(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:
@@ -370,14 +290,10 @@ This function returns the hyperbolic sine of a number or angle.
  Syntax: sinh(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example :
@@ -390,14 +306,10 @@ This function returns the positive square root of a number.
  Syntax: sqrt(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:
@@ -409,14 +321,10 @@ Example Use Case: Find the ratio of the side opposite the given angel to the adj
  Syntax:  tan(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float 
 Example:
@@ -427,14 +335,10 @@ This function returns the hyperbolic tangent of a number or angle.
  Syntax:  tanh(x)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-Represents a given float input parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | Represents a given float input parameter. |
 
  Return Type: Float
 Example:

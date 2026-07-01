@@ -15,14 +15,10 @@ This function converts text that represents a number into a float value.
  Syntax: atof(str)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Given input string that is to be parsed into a float value.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that is to be parsed into a float value. |
 
  Return Type: Float
 Error messages:
@@ -38,14 +34,10 @@ This function converts text that represents a number into an integer value.
  Syntax: atoi(str) 
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Given input string that is to be parsed into an integer value.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that is to be parsed into an integer value. |
 
  Return Type: Integer
 Error messages:
@@ -65,14 +57,10 @@ Takes an encoded Base64 string and returns it as a plain text string.
  Syntax: decodebase64("str")
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-A Base64-encoded string
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | A Base64-encoded string |
 
  Return Type: String
  Example:
@@ -84,14 +72,10 @@ This function parses the string parameter and converts it into its Base64 equiva
  Syntax: encodebase64("str")
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Given input string that is to be converted into its Base64 equivalent as an encoded string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that is to be converted into its Base64 equivalent as an encoded string. |
 
  Return Type: String
  Example of encodebase64: 
@@ -125,19 +109,11 @@ This function checks whether a string ends with a particular substring.
  Syntax: endswith(str, substring)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-Represents the given input string.
-
-substring
-
-String
- Determines if the given input string ends with this substring.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `substring` | String | Determines if the given input string ends with this substring. |
 
  Return Type: Boolean
 Example of startswith and endswith:
@@ -159,29 +135,13 @@ Powerful when used with a substring function
  Syntax: find(str, substring, [start], [end])
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Represents the given input string.
-
-substring
-
-String
- Required string parameter that specifies the substring, position of which this function will return.
-
-[start]
-
-Integer
- Optional: Can be used to specify the index at which to begin the search for the substring. 
-
-[end]
-
-Integer
- Optional: Can be used to specify the index at which to end the search for the substring.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `substring` | String | Required string parameter that specifies the substring, position of which this function will return. |
+| `[start]` | Integer | Optional: Can be used to specify the index at which to begin the search for the substring. |
+| `[end]` | Integer | Optional: Can be used to specify the index at which to end the search for the substring. |
 
  Return Type: Integer
  Example: 
@@ -208,19 +168,11 @@ The second parameter can be included to format the value to a different currency
  Syntax: formatascurrency(x, [currencyCode])
 Parameters:
 
-Parameter
-Data Type
-Description
 
-x
-
-Float
-The number to be formatted as a certain currency.
-
-currencyCode
-
-String
- Optional: The desired currency.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | The number to be formatted as a certain currency. |
+| `currencyCode` | String | Optional: The desired currency. |
 
 Return Type: Boolean
 Example: 
@@ -232,21 +184,11 @@ This function takes a formatted currency string and returns the string's numeric
  Syntax: getcurrencyvalue(value, [currencyCode])
  Parameters:  
 
-Parameter
-Data Type
-Description
 
-value
-
-String
-The formatted currency string to be converted to a numeric value.
-
-[currencyCode]
-
-String
-
- Optional: The currency code to use for parsing the first parameter. 
-If omitted, this function uses the transaction's currency if used within a commerce transaction. When used elsewhere, the function uses the current user's currency preference.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `value` | String | The formatted currency string to be converted to a numeric value. |
+| `[currencyCode]` | String | Optional: The currency code to use for parsing the first parameter. |
 
  Return Type: Float or Boolean
  Example: 
@@ -259,16 +201,10 @@ Oracle CPQ recommends using html as a best practice for content written to a web
  Syntax: String html(String str)
  Parameters:  
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-
-The formatted string to be rendered as inactive plain text.
-If str is an empty string, then the function returns an empty string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | The formatted string to be rendered as inactive plain text. |
 
 Return Type: String
 Examples:
@@ -287,19 +223,11 @@ If delimiter is empty, then the function returns all the array entries concatena
  Syntax: join(String[] str_array, String delimiter)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str_array
-
-Array
-The original string array.
-
-[delimiter]
-
-String
- Optional:  Specifies where to put a space between the strings in the array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str_array` | Array | The original string array. |
+| `[delimiter]` | String | Optional:  Specifies where to put a space between the strings in the array. |
 
 Return Type: Boolean
 Example: 
@@ -313,14 +241,10 @@ Example Use Case: Check if a table cell contains a number. This check needs to b
  Syntax: isnumber(str)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
 
  Return Type:  Boolean
 Example:
@@ -335,14 +259,10 @@ The len function returns the length of a string.
  Syntax: len(str)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
 
  Return Type: Integer
 Example:
@@ -361,14 +281,10 @@ Correcting mistakes made from not following Best Practices during implementation
  Syntax: lower(str)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-Given input string that must be converted to lowercase. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that must be converted to lowercase. |
 
  Return Type: String
 Example of upper & lower:
@@ -389,29 +305,13 @@ Use this function to return a copy of a string, with all occurrences of the old 
  Syntax:replace(str, old, new, [n])
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Represents the given input string.
-
-old
-
-String
- Specifies the substring that is being replaced.
-
-new
-
-String
- Specifies the substring that is replacing the old substring.
-
-[n]
-
-Integer
- Optional: Specifies the number of occurrences of the old that must be replaced.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `old` | String | Specifies the substring that is being replaced. |
+| `new` | String | Specifies the substring that is replacing the old substring. |
+| `[n]` | Integer | Optional: Specifies the number of occurrences of the old that must be replaced. |
 
  Return Type: Copy of String with replacements made.
 Example:
@@ -430,19 +330,11 @@ If separator is empty, then every character in the string str is split.
  Syntax: String[] split(str, separator)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Represents the given input string.
-
-separator
-
-String
- Specifies where to break the string into another section. It represents a variety of separators. However, they must all be enclosed in double-quotes, including spaces.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `separator` | String | Specifies where to break the string into another section. It represents a variety of separators. However, they must all be enclosed in double-quotes, including spaces. |
 
  Return Type:  String
  Example: 
@@ -456,19 +348,11 @@ This function checks whether a string starts with a particular substring.
  Syntax: startswith(str, substring)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-Represents the given input string.
-
-substring
-
-String
-Determines if this string begins with this substring.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `substring` | String | Determines if this string begins with this substring. |
 
  Return Type: Boolean
 Example of startswith and endswith:
@@ -484,13 +368,10 @@ string
 Syntax: string(float(integer(boolean)))
 Parameters:
 
-Parameter
-Data Type
-Description
 
-Float, Integer, or Boolean 
-String
-Represents the given input that must be converted into a string.   
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `Float, Integer, or Boolean` | String | Represents the given input that must be converted into a string. |
 
  Return Type: String
 Example:
@@ -510,24 +391,12 @@ Determine which characters are at what index
  Syntax: substring(str, start, [end])
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Represents the original string you are going to parse.
-
-start
-
-Integer
- The index where you will begin parsing the string.
-
-[end]
-
-Integer
- Optional: Index where you will stop parsing.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the original string you are going to parse. |
+| `start` | Integer | The index where you will begin parsing the string. |
+| `[end]` | Integer | Optional: Index where you will stop parsing. |
 
  Return Type: String
  Example of substring: 
@@ -549,14 +418,10 @@ This function removes the white space from both edges of strings.
  Syntax:  trim(str)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
- Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
 
  Return Type: String
 Example:
@@ -576,14 +441,10 @@ Correcting mistakes made from not following Best Practices during implementation
  Syntax: upper(str)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-str
-
-String
-Given input string that must be converted to uppercase or lowercase. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that must be converted to uppercase or lowercase. |
 
  Return Type: String
 Example of upper & lower:

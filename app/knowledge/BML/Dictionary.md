@@ -16,19 +16,11 @@ This is a dictionary function that checks to see if the key is found in the dict
  Syntax: containskey(dictIdentifier, key)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-dictIdentifier
-
-Dictionary
- Identifies the dictionary being searched to find if it contains the key you have identified.
-
-key
-
-String, Integer, or Float
- Unique identifier for the value parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `dictIdentifier` | Dictionary | Identifies the dictionary being searched to find if it contains the key you have identified. |
+| `key` | String, Integer, or Float | Unique identifier for the value parameter. |
 
 Return Type: Boolean 
 Example:
@@ -40,33 +32,14 @@ This function is used to create a dictionary of a specific data type, which is s
  Syntax: dict(dictType)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-dictType
- 
-
-dictType> represents one of the
- following data types:
-
-string
-integer
-float
-date
-boolean
-
-string[]
-integer[]
-float[]
-date[]
-
-string[][]
-integer[][]
-float[][]
-date[][]
-
- Specify the data type of the dictionary.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `dictType` | dictType> represents one of the | following data types: |
+| `string` | integer | float |
+| `date` | boolean | string[] |
+| `integer[]` | float[] | date[] |
+| `string[][]` | integer[][] | float[][] |
 
  Return Type: Boolean
 dict<anytype>
@@ -77,65 +50,22 @@ This function supports the addition of multiple types of
  dict<anytype>.
 Syntax:dict(String <anytype>)
 
-Parameter
-Data Type
-Description
 
-<anytype>
- 
-
-String
- 
-
-<anytype> represents one or more combinations of the
- following data types:
-
-string
-integer
-float
-date
-boolean
-JSON
-JSON array
-byte array
-
-string[]
-integer[]
-float[]
-date[]
-string[][]
-integer[][]
-float[][]
-date[][]
-
-dict<string>
-dict<anytype>
-dict(dict<anytype>)
-
-Sample Input:d1 = dict("anytype");put(d1, "key1", "value1");jObj = json("{\"K1\":\"V1\"}");put(d1, "key2", jObj);
-Return: A dictionary to contain key-value entries of various data
- types is created and two key-value entries are inserted into the dictionary.
-
-get
-
-This function retrieves the value of the provided key from the dictionary.
-
- Syntax: get(dictIdentifier, key)
-Parameters:
-
-Parameter
-Data Type
-Description
-
-dictIdentifier
-
-Dictionary
- Identifies the dictionary you are retrieving values from.
-
-key
-
-String, Integer, or Float
- Unique identifier for the value parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `<anytype>` | String | <anytype> represents one or more combinations of the |
+| `following data types:` | string | integer |
+| `float` | date | boolean |
+| `JSON` | JSON array | byte array |
+| `string[]` | integer[] | float[] |
+| `date[]` | string[][] | integer[][] |
+| `float[][]` | date[][] | dict<string> |
+| `dict<anytype>` | dict(dict<anytype>) | Sample Input:d1 = dict("anytype");put(d1, "key1", "value1");jObj = json("{\"K1\":\"V1\"}");put(d1, "key2", jObj); |
+| `Return: A dictionary to contain key-value entries of various data` | types is created and two key-value entries are inserted into the dictionary. | get |
+| `This function retrieves the value of the provided key from the dictionary.` | Syntax: get(dictIdentifier, key) | Parameters: |
+| `Parameter` | Data Type | Description |
+| `dictIdentifier` | Dictionary | Identifies the dictionary you are retrieving values from. |
+| `key` | String, Integer, or Float | Unique identifier for the value parameter. |
 
  Return Type: The return type is based on the dictionary data type
  Example: 
@@ -155,24 +85,12 @@ Once a dictionary has been created, you can define keys and values to put into t
  Syntax: put(dictIdentifier, key, value)
 Parameters:
 
-Parameter
-Data Type
-Description
 
-dictIdentifier
-
-Dictionary
- Identifies the dictionary you are adding values to.
-
-key
-
- String, Integer, or Float
- Unique identifier for the value parameter.
-
-value
-
- String, Integer, or Float
- Data value that relates to the unique key identifier.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `dictIdentifier` | Dictionary | Identifies the dictionary you are adding values to. |
+| `key` | String, Integer, or Float | Unique identifier for the value parameter. |
+| `value` | String, Integer, or Float | Data value that relates to the unique key identifier. |
 
 Return Type: Boolean
 Example of put(): 

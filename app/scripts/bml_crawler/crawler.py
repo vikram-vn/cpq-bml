@@ -214,7 +214,7 @@ if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.abspath(__file__))
     package_parent = os.path.abspath(os.path.join(script_dir, ".."))
     if package_parent not in sys.path:
-        sys.path.append(package_parent)
+        sys.path.insert(0, package_parent)
         
     default_url = "https://help-cxsales.oraclecloud.com/cpq/#BML/BMLOverview.htm?TocPath=BML%257C_____0"
     seed = sys.argv[1] if len(sys.argv) > 1 else default_url
@@ -228,3 +228,9 @@ if __name__ == '__main__':
             
     crawler = BmlDocCrawler(max_depth=depth)
     crawler.start(seed)
+
+    # Post-process: fix image refs, promote function headers, convert param tables
+    print("\n[postprocess] Applying post-processing fixes to generated markdown...")
+    from bml_crawler.postprocess import postprocess_bml_docs
+    bml_dir = os.path.join(crawler.output_dir, "BML")
+    postprocess_bml_docs(bml_dir)
