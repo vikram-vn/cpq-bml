@@ -19,7 +19,12 @@ false is returned if a null value is not found.
 
 Syntax:
 Boolean isjsonnull(Json jsonIdentifier, String key (or JsonArray jsonArrayIdentifier, Integer index))
-Example:str1 = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
+
+**Example:**
+```bml title="Example"
+str1 = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
+```
+
 jsonObj = json(str1);
 
 valBoolean1 = isjsonnull(jsonObj,"key1");
@@ -37,7 +42,12 @@ json
 Creates a JSON object from a given JSON formatted string. An empty JSON object is created if parameters are not provided.
 Syntax:
 Json json([String jsonFormatStr])
-Example:jsonObj1 = json("{\"key1\":\"value1\"}");
+
+**Example:**
+```bml title="Example"
+jsonObj1 = json("{\"key1\":\"value1\"}");
+```
+
 print jsonObj1;
 //Output: {"key1":"value1"}
 
@@ -50,7 +60,12 @@ jsonarray
 Creates a JSON array object from a given JSON array formatted string. An empty JSON array object is created if parameters are not provided
 Syntax:
 JsonArray jsonarray([String jsonArrStr])
-Example:str = "[1,\"val1\",{\"key1\":10,\"key2\":\"val2\"}]";
+
+**Example:**
+```bml title="Example"
+str = "[1,\"val1\",{\"key1\":10,\"key2\":\"val2\"}]";
+```
+
 jsonArrObj1 = jsonarray(str);
 print jsonArrObj1;
 //Output: [1,"val1",{"key1":10,"key2":"val2"}]
@@ -64,7 +79,12 @@ jsonarrayappend
 Appends a given value to the end of a JSON array. The appended value is returned.
 Syntax:
 <ValueType> jsonarrayappend(JsonArray jsonarrayIdentifier, <ValueType> value)
-Example:jsonArrObj = jsonarray();
+
+**Example:**
+```bml title="Example"
+jsonArrObj = jsonarray();
+```
+
 
 appIntVal = jsonarrayappend(jsonArrObj,1);
 print appIntVal;
@@ -82,7 +102,12 @@ jsonarraycopy
 Creates a copy of a JSON array object. All objects in the array are copied and a similar hierarchy is created. Any changes made to the original JSON array object will not impact the copied JSON array object.
 Syntax:
 JsonArray jsonarraycopy(JsonArray jsonArrayIdentifier)
-Example:str = "[\"string\",1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false]";
+
+**Example:**
+```bml title="Example"
+str = "[\"string\",1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false]";
+```
+
 jsonArrObj = jsonarray(str);
 
 copyObj = jsonarraycopy(jsonArrObj);
@@ -108,7 +133,12 @@ the given index is not available.
 
 Syntax:
 <ValueType> jsonarrayget(JsonArray jsonArrayIdentifier, Integer index [, String valueType])
-Example:str = "[\"mystring\",10,2.9,[\"v1\",\"v2\"],true,{\"key7\":\"val7\",\"key8\":\"val8\"}]";
+
+**Example:**
+```bml title="Example"
+str = "[\"mystring\",10,2.9,[\"v1\",\"v2\"],true,{\"key7\":\"val7\",\"key8\":\"val8\"}]";
+```
+
 jsonArrObj = jsonarray(str);
 
 /* Get string (two parameters) */
@@ -151,7 +181,12 @@ jsonarrayrefid
 Returns a unique reference ID that represents the input JSON array. Can only be invoked by Commerce advanced modify, auto update or advanced default functions. This function provides a more efficient method to pass a JSON array to the BML output to update an array set.
 Syntax:
 String jsonarrayrefid(JsonArray jsonArrayIdentifier)
-Example:// feeJsonArray is a JSON array
+
+**Example:**
+```bml title="Example"
+// feeJsonArray is a JSON array
+```
+
 // feeArraySet is the main doc array set variable name
 // To update feeArraySet, jsonarrayrefid is more efficient than jsonarraytostr when the JSON array is large
 // return "1~feeArraySet~" + jsonarraytostr(feeJsonArray);
@@ -166,7 +201,12 @@ jsonarrayremove
 Removes an object specified at given index from the JSON array. The size of the array object after the object is removed is returned.An error is thrown if the given index is not available.
 Syntax:
 Integer jsonarrayremove(JsonArray jsonArrayIdentifier, Integer index)
-Example:str = "[1,\"2\",{\"key1\":10,\"key2\":\"val\"}]";
+
+**Example:**
+```bml title="Example"
+str = "[1,\"2\",{\"key1\":10,\"key2\":\"val\"}]";
+```
+
 jsonArrObj = jsonarray(str);
 
 remVal = jsonarrayremove(jsonArrObj,2);
@@ -181,7 +221,12 @@ jsonarraysize
 Returns the size of the JSON array.
 Syntax:
 Integer jsonarraysize(JsonArray jsonarrayIdentifier)
-Example:jsonArrObj1 = jsonarray();
+
+**Example:**
+```bml title="Example"
+jsonArrObj1 = jsonarray();
+```
+
 
 arraySize1 = jsonarraysize(jsonArrObj1);
 print arraySize1;
@@ -199,7 +244,12 @@ jsonarraytostr
 Converts a JSON array object into a JSON array formatted string.
 Syntax:
 String jsonarraytostr(JsonArray jsonArrayIdentifier)
-Example:str = "[1,\"2\",{\"key1\":10,\"key2\":\"val\"}]";
+
+**Example:**
+```bml title="Example"
+str = "[1,\"2\",{\"key1\":10,\"key2\":\"val\"}]";
+```
+
 jsonArrObj = jsonarray(str);
 
 valStr = jsonarraytostr(jsonArrObj);
@@ -211,7 +261,12 @@ jsoncopy
 Creates a copy of a JSON object. All child nodes of the JSON object are copied and a similar hierarchy is created. Any changes made to the original JSON object will not impact the copied JSON object.
 Syntax:
 Json jsoncopy(Json jsonIdentifier)
-Example:str = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
+
+**Example:**
+```bml title="Example"
+str = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
+```
+
 jsonObj = json(str);
 
 copyObj = jsoncopy(jsonObj);
@@ -241,7 +296,12 @@ the given key is not available AND valueType is Integer, Float, or Boolean AND d
 
 Syntax:
 <ValueType> jsonget(Json jsonIdentifier, String key [, String valueType [, <ValueType> defaultValue]])
-Example:str = "{\"key1\":\"mystring\",\"key2\": 10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true,\"key6\":{\"key7\":\"val7\",\"key8\":\"val8\"}}";
+
+**Example:**
+```bml title="Example"
+str = "{\"key1\":\"mystring\",\"key2\": 10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true,\"key6\":{\"key7\":\"val7\",\"key8\":\"val8\"}}";
+```
+
 jsonObj = json(str);
 
 /* Get string (two parameters) */
@@ -299,7 +359,12 @@ jsonkeys
 Retrieves all first-level keys from a JSON object and returns an array of strings. If the optional parameter (ignoreNullValues) is set to true, null value keys are ignored.
 Syntax:
 String[] jsonkeys(Json jsonIdentifier [, Boolean ignoreNullValues])
-Example:str = "{\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":null}";
+
+**Example:**
+```bml title="Example"
+str = "{\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":null}";
+```
+
 jsonObj = json(str);
 
 strArr1 = jsonkeys(jsonObj);
@@ -315,7 +380,12 @@ jsonnull
 Creates an instance of the JSON null object (represents null in the JSON string).
 Syntax:
 JsonNull jsonnull()
-Example:jnull = jsonnull();
+
+**Example:**
+```bml title="Example"
+jnull = jsonnull();
+```
+
 print jnull;
 //Output: null
 
@@ -330,7 +400,12 @@ true is returned if the JSON path is found.
 An error is thrown if the JSON path is invalid.
 Syntax:
 Boolean jsonpathcheck(Json jsonIdentifier, String jsonPath)
-Example:str = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\"}]},\"expensive\":10}";
+
+**Example:**
+```bml title="Example"
+str = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\"}]},\"expensive\":10}";
+```
+
 jsonObj = json(str);
 
 isCatFound = jsonpathcheck(jsonObj,"$.store.book[0].category");
@@ -359,7 +434,12 @@ true  returns a JSON array containing all nodes corresponding to the give JSON p
 
 Syntax:
 JsonArray jsonpathgetmultiple(Json jsonIdentifier, String jsonPath [, Boolean asPath])
-Example:str = "{\"key1\":90,\"key2\":[{\"key1\":900}],\"key3\":{\"key1\":9000}}";
+
+**Example:**
+```bml title="Example"
+str = "{\"key1\":90,\"key2\":[{\"key1\":900}],\"key3\":{\"key1\":9000}}";
+```
+
 jsonObj = json(str);
 
 arrayVals = jsonpathgetmultiple(jsonObj,"$..key1");
@@ -401,7 +481,12 @@ the given JSON path is not found AND valueType is Integer, Float, or Boolean AND
 
 Syntax:
 <ValueType> jsonpathgetsingle(Json jsonIdentifier, String jsonPath [, String valueType [, <ValueType> defaultValue]])
-Example:str = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\"}]},\"expensive\":10}";
+
+**Example:**
+```bml title="Example"
+str = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\"}]},\"expensive\":10}";
+```
+
 jsonObj = json(str);
 
 catArray = jsonpathgetsingle(jsonObj,"$.store.book[0]");
@@ -454,7 +539,12 @@ Because this function supports object references, caution is recommended while r
 
 Syntax:
 Boolean jsonpathremove(Json jsonIdentifier, String jsonPat
-Example:str = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
+
+**Example:**
+```bml title="Example"
+str = "{\"key1\":null,\"key2\":\"str\",\"key3\":90}";
+```
+
 jsonObj = json(str);
 
 remVal1 = jsonpathremove(jsonObj,"$..key1");
@@ -483,7 +573,12 @@ null is returned if the object at the JSON path node is null or the JSON path is
 
 Syntax:
 String[] jsonpathset(Json jsonIdentifier, String jsonPath, <ValueType> value)
-Example:str = "{\"key1\":90,\"key2\":[{\"key1\":900}],\"key3\":{\"key1\":9000}}";
+
+**Example:**
+```bml title="Example"
+str = "{\"key1\":90,\"key2\":[{\"key1\":900}],\"key3\":{\"key1\":9000}}";
+```
+
 jsonObj1 = json(str);
 jsonObj2 = json("{\"key1\":89}");
 jsonObj3 = json("{\"key2\":\"val2\"}");
@@ -526,7 +621,12 @@ jsonput
  Inserts or updates a key-value entry in a JSON object and returns the inserted/updated value. If the given key already exists in the JSON object, its corresponding value will be updated to the given value.
 Syntax:
 <ValueType> jsonput(Json jsonIdentifier, String key, <ValueType> value)
-Example:jsonObj = json();
+
+**Example:**
+```bml title="Example"
+jsonObj = json();
+```
+
 
 putStrVal = jsonput(jsonObj,"key1","mystring");
 print putStrVal;
@@ -567,7 +667,12 @@ false is returned if the given key is not found.
 
 Syntax:
 Boolean jsonremove(Json jsonIdentifier, String key)
-Example:str = "{\"a\":1,\"b\":\"test\"}";
+
+**Example:**
+```bml title="Example"
+str = "{\"a\":1,\"b\":\"test\"}";
+```
+
 jsonObj = json(str);
 
 remVal = jsonremove(jsonObj,"a");
@@ -582,7 +687,12 @@ jsontostr
 Converts a JSON object into a JSON formatted string.
 Syntax:
 String jsontostr(Json jsonIdentifier)
-Example:str = "{\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true}";
+
+**Example:**
+```bml title="Example"
+str = "{\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true}";
+```
+
 jsonObj = json(str);
 
 jsonStr = jsontostr(jsonObj);

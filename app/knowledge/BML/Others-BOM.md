@@ -14,69 +14,27 @@ Apply the delta BOM from an open order to construct the projected BOM.
 All of the BOMs used in the applybom function are all flattened BOMs for out-of-the-box ABO implementations, but this function is capable of handling hierarchical BOMs
 Syntax:
 Json applybom(Json baseBom, Json oneBomToApply [, Json setting])
-Parameters:
 
-Parameter
-Data Type
-Description
 
-baseBOM
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `baseBOM` | JSON | The BOM object from an asset, an initial order of new configuration before it is fulfilled, or the result of an earlier applybom call to apply the changes from an open order with an earlier date. |
+| `oneBomToApply` | JSON | The delta BOM loaded from and open order line from a getBom or getConfigBom call. |
+| `setting` | JSON | (Optional) The JSON setting parameter is used to define delta BOM service settings. |
+| `For more information, refer to the Oracle CPQ Asset-Based Ordering Implementation Guide >  Appendix J: Default JSON Context File.` | Sample Input// This baseBom contains sample root, sample child and sample grand child.baseBom = json("{\"children\":[{\"id\":\"BOM_ABOSampleChild\",\"parentId\":\"BOM_ABOSampleRoot\",\"quantity\":1,\"partNumber\":\"part12\",\"fields\":{\"itemInstanceName_l\":\"part12-20983113-2\",\"itemInstanceId_l\":\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\"},\"explodedQuantity\":2},{\"id\":\"BOM_ABOSampleGrandChild\",\"parentId\":\"BOM_ABOSampleChild\",\"quantity\":4,\"partNumber\":\"part14\",\"fields\":{\"itemInstanceName_l\":\"part14-20983113-3\",\"itemInstanceId_l\":\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\"},\"explodedQuantity\":8}],\"id\":\"BOM_ABOSampleRoot\",\"parentId\":null,\"quantity\":2,\"partNumber\":\"part11\",\"fields\":{\"itemInstanceName_l\":\"part11-20983113-1\",\"itemInstanceId_l\":\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\"},\"explodedQuantity\":2}");// In oneBomToApply, the grand child is deleted and quantity of root is changed to 5.oneBomToApply = json("{\"partNumber\":\"part11\",\"quantity\":5,\"isModel\":true,\"id\":\"BOM_ABOSampleRoot\",\"parentId\":\"\",\"fields\":{\"itemInstanceId_l\":\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\",\"itemInstanceName_l\":\"part11-20983113-1\",\"requestDate_l\":\"\",\"oRCL_ABO_ActionCode_l\":\"UPDATE\"},\"explodedQuantity\":5,\"category\":\"sales\",\"currencyCode\":\"\",\"children\":[{\"partNumber\":\"part14\",\"quantity\":4,\"isModel\":false,\"id\":\"BOM_ABOSampleGrandChild\",\"parentId\":\"BOM_ABOSampleChild\",\"fields\":{\"itemInstanceId_l\":\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\",\"itemInstanceName_l\":\"part14-20983113-3\",\"requestDate_l\":\"\",\"oRCL_ABO_ActionCode_l\":\"DELETE\"},\"explodedQuantity\":20,\"children\":[]},{\"partNumber\":\"part12\",\"quantity\":1,\"isModel\":false,\"id\":\"BOM_ABOSampleChild\",\"parentId\":\"BOM_ABOSampleRoot\",\"fields\":{\"itemInstanceId_l\":\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\",\"itemInstanceName_l\":\"part12-20983113-2\",\"requestDate_l\":\"\",\"oRCL_ABO_ActionCode_l\":\"UPDATE\"},\"explodedQuantity\":5,\"sequenceIndex\":0,\"conditionIndex\":0,\"children\":[]}]}");result = applybom(baseBom, oneBomToApply);// The resultant bom contains sample root, sample child. The quantity of root is updated to 5return jsontostr(result); | calculateconfiguration |
+| `This function applies a delta configuration set from open lines on top of the asset configuration to produce the projected configuration for all configuration attributes including attributes that are not mapped to the configurator.` | Notes: | Notice there is not a BML function to calculate the delta Configuration since this logic is conducted in code. |
+| `Both the baseConfigurationKey input parameter and return value are a key to a global cache entry, whose value is an unpublished JSON structure used to store the configuration for a root asset and its content including internal fields and all configuration attributes including unmapped attributes.` | Notice all the entries must belong to the same root asset, otherwise the call will be ignored or throw an error. There could be more than one internal or external order but they should be in the ascending order of the requestDate, since the order in the array is the order the delta configuration item get applied. | For the same reason if the asset is present it should be the first item in the array since it is the starting point. In addition, the other baseConfiguration input should be blank for this use case of passing the asset in the linesToApply array. |
+| `Syntax:` | calculateconfiguration(String baseConfigurationKey, JsonArray linesToApply) | Parameters: |
+| `Parameters` | Data Type | Description |
+| `baseConfigurationKey` | String | The baseBOM can come from the following items: an asset, an initial order of new configuration before it is fulfilled, or the result of an earlier applybom call to apply the changes from an open order with an earlier date. |
+| `When the configuration key is empty, it means there is not any configuration information (i.e. the configuration is blank).` | linesToApply | JSON Array |
 
-JSON
 
-The BOM object from an asset, an initial order of new configuration before it is fulfilled, or the result of an earlier applybom call to apply the changes from an open order with an earlier date.
+**Example:**
+```bml title="Example"
+line1 = "{\"type\":\"internalOrder\",\"_bs_id\":21002021,\"_document_number\": 2}";
+```
 
-oneBomToApply
-
-JSON
-
-The delta BOM loaded from and open order line from a getBom or getConfigBom call.
-
-setting
-
-JSON
-
-(Optional) The JSON setting parameter is used to define delta BOM service settings. 
-For more information, refer to the Oracle CPQ Asset-Based Ordering Implementation Guide >  Appendix J: Default JSON Context File.
-
-Sample Input// This baseBom contains sample root, sample child and sample grand child.baseBom = json("{\"children\":[{\"id\":\"BOM_ABOSampleChild\",\"parentId\":\"BOM_ABOSampleRoot\",\"quantity\":1,\"partNumber\":\"part12\",\"fields\":{\"itemInstanceName_l\":\"part12-20983113-2\",\"itemInstanceId_l\":\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\"},\"explodedQuantity\":2},{\"id\":\"BOM_ABOSampleGrandChild\",\"parentId\":\"BOM_ABOSampleChild\",\"quantity\":4,\"partNumber\":\"part14\",\"fields\":{\"itemInstanceName_l\":\"part14-20983113-3\",\"itemInstanceId_l\":\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\"},\"explodedQuantity\":8}],\"id\":\"BOM_ABOSampleRoot\",\"parentId\":null,\"quantity\":2,\"partNumber\":\"part11\",\"fields\":{\"itemInstanceName_l\":\"part11-20983113-1\",\"itemInstanceId_l\":\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\"},\"explodedQuantity\":2}");// In oneBomToApply, the grand child is deleted and quantity of root is changed to 5.oneBomToApply = json("{\"partNumber\":\"part11\",\"quantity\":5,\"isModel\":true,\"id\":\"BOM_ABOSampleRoot\",\"parentId\":\"\",\"fields\":{\"itemInstanceId_l\":\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\",\"itemInstanceName_l\":\"part11-20983113-1\",\"requestDate_l\":\"\",\"oRCL_ABO_ActionCode_l\":\"UPDATE\"},\"explodedQuantity\":5,\"category\":\"sales\",\"currencyCode\":\"\",\"children\":[{\"partNumber\":\"part14\",\"quantity\":4,\"isModel\":false,\"id\":\"BOM_ABOSampleGrandChild\",\"parentId\":\"BOM_ABOSampleChild\",\"fields\":{\"itemInstanceId_l\":\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\",\"itemInstanceName_l\":\"part14-20983113-3\",\"requestDate_l\":\"\",\"oRCL_ABO_ActionCode_l\":\"DELETE\"},\"explodedQuantity\":20,\"children\":[]},{\"partNumber\":\"part12\",\"quantity\":1,\"isModel\":false,\"id\":\"BOM_ABOSampleChild\",\"parentId\":\"BOM_ABOSampleRoot\",\"fields\":{\"itemInstanceId_l\":\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\",\"itemInstanceName_l\":\"part12-20983113-2\",\"requestDate_l\":\"\",\"oRCL_ABO_ActionCode_l\":\"UPDATE\"},\"explodedQuantity\":5,\"sequenceIndex\":0,\"conditionIndex\":0,\"children\":[]}]}");result = applybom(baseBom, oneBomToApply);// The resultant bom contains sample root, sample child. The quantity of root is updated to 5return jsontostr(result);
-
-calculateconfiguration
-
-This function applies a delta configuration set from open lines on top of the asset configuration to produce the projected configuration for all configuration attributes including attributes that are not mapped to the configurator.
-
-Notes:
-
-Notice there is not a BML function to calculate the delta Configuration since this logic is conducted in code.
-
-Both the baseConfigurationKey input parameter and return value are a key to a global cache entry, whose value is an unpublished JSON structure used to store the configuration for a root asset and its content including internal fields and all configuration attributes including unmapped attributes.
-
-Notice all the entries must belong to the same root asset, otherwise the call will be ignored or throw an error. There could be more than one internal or external order but they should be in the ascending order of the requestDate, since the order in the array is the order the delta configuration item get applied.
-
-For the same reason if the asset is present it should be the first item in the array since it is the starting point. In addition, the other baseConfiguration input should be blank for this use case of passing the asset in the linesToApply array.
-
-Syntax:
-calculateconfiguration(String baseConfigurationKey, JsonArray linesToApply)
-Parameters:
-
-Parameters
-Data Type
-Description
-
-baseConfigurationKey
-
-String
-
-The baseBOM can come from the following items: an asset, an initial order of new configuration before it is fulfilled, or the result of an earlier applybom call to apply the changes from an open order with an earlier date.
-When the configuration key is empty, it means there is not any configuration information (i.e. the configuration is blank).
-
-linesToApply
-
-JSON Array
-
-The linesToApply element can contain the following items: asset, internal order line in CPQ Commerce, or the configBomInstance for external orders (e.g. Oracle Commerce Cloud). 
-
-Example:line1 = "{\"type\":\"internalOrder\",\"_bs_id\":21002021,\"_document_number\": 2}";
 line2 = "{\"type\":\"internalOrder\",\"_bs_id\":21002021,\"_document_number\": 6}";
 linesToApply = jsonArray();
 lines = json(line1);
@@ -95,7 +53,6 @@ All of the BOMs used in the caculatedeltaBom function are all flattened BOMs for
 
 Syntax:
 Json calculatedeltabom(Json priorBom, Json currentBom, Json inputBom [, Json setting])
-Parameters:
 
 Parameter
 Data Type
@@ -140,7 +97,6 @@ This function converts a hierarchical BOM
 The input "bomJson" is not modified and will remain in a hierarchical BOM format.
 Syntax:
 Json convertbomtoflat(Json bomJson)
-Parameters:
 
 Parameters
 Data Type
@@ -231,7 +187,6 @@ This function converts a flattened BOM
 The input "bomJson" is not modified and will remain in a hierarchical BOM format.
 Syntax:
 Json convertbomtohier(Json bomJson)
-Parameters:
 
 Parameters
 Data Type
@@ -323,7 +278,6 @@ For Asset-Based Ordering,
  the getbom function retrieves the saved sales BOM from open orders.
 Syntax:
 Json getbom(Integer bsId, Integer lineNumber [, String[] lineFields [, Boolean validateBomModel [, Boolean flattenChildProducts [, Boolean isSalesBom]]]])
-Parameters:
 
 Parameter
 Data Type
@@ -387,7 +341,12 @@ This
 
 Optional, the default is true if not provided.
 
-Example:bsId=18430319;
+
+**Example:**
+```bml title="Example"
+bsId=18430319;
+```
+
 jObj = getbom(bsId, 2);
 print jObj;
 //Output : {"partNumber":"part49","quantity":10,"id":"BOM_root","parentId":"","attributes":{},"fields":{"_line_bom_level":"0"},"explodedQuantity":10,"category":"sales","variableName":"root","definition":{"SequenceNum":814,"ItemId":"814","ItemType":"Standard Item","Optional":"Y"},"children":[{"partNumber":"part50","quantity":5,"id":"BOM_text_bom","parentId":"BOM_root","attributes":{},"fields":{"_line_bom_level":"1"},"explodedQuantity":50,"variableName":"text_bom","definition":{"SequenceNum":815,"ItemId":"815","ItemType":"Standard Item","Optional":"Y"}}]}
@@ -397,7 +356,6 @@ getconfigurationbom
 Retrieves the configbom stored via the saveConfigBom API and the configBom created via an external client application Configurator UI session. The library function extracts and returns a client integration BOM instance from the Oracle CPQ configBomInstance resource using the "configId".
 Syntax:
 getconfigbom(configId [, flattenChildProducts])
-Parameters:
 
 Parameter
 Data Type
@@ -432,7 +390,6 @@ Do not invoke this function from the transaction modify action; as
  Use reconfigure for the saved BOM instance.
 Syntax:
 Integer savebom(Integer bsId, Json bomJson [,String  configurationKey])
-Parameters:
 
 Parameter
 Data Type
@@ -455,7 +412,12 @@ configurationKey
 String
 (Optional) Use this parameter of configurationKey is projected configuration returned from calculatedeltabom, right now it only helps with some bookkeeping, should either not pass value or only pass the valid projected configuration key.
 
-Example:testjson = json("{\"partNumber\":\"part49\",\"quantity\":10,\"id\":\"BOM_root\",\"parentId\":\"\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"0\"},\"explodedQuantity\":10,\"category\":\"sales\",\"variableName\":\"root\",\"definition\":{\"SequenceNum\":814,\"ItemId\":\"814\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"},\"children\":[{\"partNumber\":\"part50\",\"quantity\":5,\"id\":\"BOM_text_bom\",\"parentId\":\"BOM_root\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"1\"},\"explodedQuantity\":50,\"variableName\":\"text_bom\",\"definition\":{\"SequenceNum\":815,\"ItemId\":\"815\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"}}]} ");
+
+**Example:**
+```bml title="Example"
+testjson = json("{\"partNumber\":\"part49\",\"quantity\":10,\"id\":\"BOM_root\",\"parentId\":\"\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"0\"},\"explodedQuantity\":10,\"category\":\"sales\",\"variableName\":\"root\",\"definition\":{\"SequenceNum\":814,\"ItemId\":\"814\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"},\"children\":[{\"partNumber\":\"part50\",\"quantity\":5,\"id\":\"BOM_text_bom\",\"parentId\":\"BOM_root\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"1\"},\"explodedQuantity\":50,\"variableName\":\"text_bom\",\"definition\":{\"SequenceNum\":815,\"ItemId\":\"815\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"}}]} ");
+```
+
 bsId=18430319;
 docNum = savebom(bsId, testjson);
 print docNum;
@@ -466,7 +428,6 @@ saveconfigbom
 Saves a client integration BOM instance (I.e. configBomInstance) and returns the configId.
 Syntax:
 saveconfigbom(Json configBomJson [,Dictionary instanceAttributes [, configurationKey]])
-Parameters:
 
 Parameter
 Data Type

@@ -17,26 +17,24 @@ append
 
  This parameter only works with 1-D arrays.
 
-Syntax: append(arrayID, newArrayElem)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+append(arrayID, newArrayElem)
+```
 
-arrayIdentifier
 
-string[], integer[], float[]
-This is the given array that you are going to add an element to. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | string[], integer[], float[] | This is the given array that you are going to add an element to. |
+| `newArrayElem` | float, float[], integer, integer[], string, string[], boolean, boolean[] | This represents the new element that you are appending to the array. |
 
-newArrayElem
+> **Return Type:** `Integer (denotes the new size of the array)`
 
-float, float[], integer, integer[], string, string[], boolean, boolean[]
- This represents the new element that you are appending to the array.
-
- Return Type: Integer (denotes the new size of the array)
 If array max size is reached and you try to append a new element, it will fail.
-Example:
+
+**Example:**
+
 
 If a null element is added to an array, it should be allowed to be added and the value of the element in the array should be null.
 
@@ -50,25 +48,20 @@ Boolean arrays are dynamic in nature and the length can be increased.
 
  This parameter only works with 1-D arrays.
 
-Syntax: Boolean[] boolean[Integer n]
 
-Parameters:
+**Syntax:**
+```bml
+Boolean[] boolean[Integer n]
+```
 
-Parameter
-Data Type
-Description
 
-boolean
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `boolean` | Boolean Array | Used to declare a boolean array. |
+| `[n]` | Integer | Optional: Use number "n"  to declare an array of a specific size. |
 
-Boolean Array
-Used to declare a boolean array.
+> **Return Type:** `Boolean Array`
 
-[n]
-
-Integer
-Optional: Use number "n"  to declare an array of a specific size.
-
-Return Type: Boolean Array
 Examples:
 
 booleanArray = Boolean[2]; // This will create a boolean array of length 2
@@ -81,28 +74,16 @@ For a 2-D Boolean array, the value in each field of the array after the array de
 These arrays are dynamic in nature and the length can be increased.
 Syntax:
  Boolean[][] boolean[Integer n][Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
 
-boolean[][]
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `boolean[][]` | Boolean Array | Used to declare a 2-D Boolean array. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
 
-Boolean Array
-Used to declare a 2-D Boolean array. 
+> **Return Type:** `Boolean[][]`
 
-[n]
-
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
-
-[n]
-
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
-
-Return Type:  Boolean[][]
 Examples:
 
 booleanArray = boolean[2] [2]; // This will create a boolean array with two rows and two columns
@@ -117,7 +98,6 @@ This function stores a collection of binary data such as
  the content of a file as a byte array.
 Syntax:
 ByteArray bytearray(String content [, String charset])
-Parameters:
 
 Parameters
 Data Type
@@ -142,7 +122,12 @@ Optional, the default is UTF-8 if not provided.
 
 An error will be thrown if invalid charSet is given.
 
-Example:var = bytearray("Sample String","UTF-16");
+
+**Example:**
+```bml title="Example"
+var = bytearray("Sample String","UTF-16");
+```
+
 print var;
 //Output: bytearray [UTF-16]: Sample String
 
@@ -156,24 +141,20 @@ Date Arrays are dynamic in nature and the length can be increased.
 
  This parameter only works with 1-D arrays.
 
-Syntax: Date[] date[Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+Date[] date[Integer n]
+```
 
-date[]
 
-Date Array
-Used to declare a date array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date[]` | Date Array | Used to declare a date array. |
+| `[n]` | Integer | Optional: Use number "n"  to declare an array of a specific size. |
 
-[n]
+> **Return Type:** `Date Array`
 
-Integer
-Optional: Use number "n"  to declare an array of a specific size.
-
-Return Type:  Date Array
 Examples:
 
 dateArray = Date[2]; // This will create a date array of length 2
@@ -184,29 +165,21 @@ date[n][n]
 Initializes a 2-D Date array with the specified size.
 For a 2-D Date array, the value in each field of the array after array declaration (for example, arr = date[10][2];) is equal to null if the array fields are not initialized.
 These arrays are dynamic in nature and the length can be increased.
-Syntax: Date[][] date[Integer n][Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+Date[][] date[Integer n][Integer n]
+```
 
-date[][]
 
-Date Array
-Used to declare a 2-D Date array. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date[][]` | Date Array | Used to declare a 2-D Date array. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
 
-[n]
+> **Return Type:** `Date[][]:`
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
-
-[n]
-
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
-
-Return Type: Date[][]:
 Examples:
 
 dateArray = date[2] [2]; // This will create a date array with two rows and two columns
@@ -215,25 +188,23 @@ dateArray [2][3] = getdate(); // This will automatically extend the length of da
 findinarray
 
 This function is used to check whether a certain element exists in an array.  If it does, the index is returned, otherwise a -1 is returned.  Findinarray() can only be used with 1-D arrays.
- Syntax: findinarray(arrayID, element)
- Parameters: 
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+findinarray(arrayID, element)
+```
 
-arrayID
 
-string[], integer[], float[]
- This is the given array you are searching.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayID` | string[], integer[], float[] | This is the given array you are searching. |
+| `element` | string, integer, float | Represents the element you are looking for in the given array. |
 
-element
+> **Return Type:** `Integer (denotes the index of the element in the array)`
 
-string, integer, float
- Represents the element you are looking for in the given array.
 
- Return Type: Integer (denotes the index of the element in the array)
-Example:
+**Example:**
+
 
 float[n]
 
@@ -247,25 +218,23 @@ fltArray [4] = 2.1; // This will automatically extend the length of fltArray to 
 
  This parameter only works with 1-D arrays.
 
-Syntax: Float[] float[Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+Float[] float[Integer n]
+```
 
-float[n]
 
-Float Array
-Used to declare a float array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `float[n]` | Float Array | Used to declare a float array. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
 
-[n]
+> **Return Type:** `Float Array`
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
 
-Return Type: Float Array
-Example:
+**Example:**
+
 
 float[n][n]
 
@@ -276,30 +245,24 @@ These arrays are dynamic in nature and the length can be increased.
 fltArray = Integer[2] [2]; // This will create a float array with two rows and two columns
 fltArray [2][3] = 5; // This will automatically extend the length of fltArray to include an extra column
 
-Syntax: Float[][] float[Integer n][Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+Float[][] float[Integer n][Integer n]
+```
 
-float[][]
 
-Float Array
-Used to declare a 2-D float array. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `float[][]` | Float Array | Used to declare a 2-D float array. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
 
-[n]
+> **Return Type:** `Float[][]`
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
 
-[n]
+**Example:**
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
-
-Return Type: Float[][]
-Example:
 
 integer[n]
 
@@ -313,25 +276,22 @@ intArray [4] = 2; // This will automatically extend the length of intArray to 5
 
  This parameter only works with 1-D arrays.
 
-Syntax: Integer[] integer[Integer n]
-Parameters:
+
+**Syntax:**
+```bml
+Integer[] integer[Integer n]
+```
+
 
 #
-Parameter
-Data Type
-Description
 
-1
-integer[]
-Integer Array
-Used to declare an integer array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `1` | integer[] | Integer Array |
+| `Used to declare an integer array.` | 2 | [n] |
 
-2
-[n]
-Integer
-Optional: Use number "n" to declare an array of a specific size.
+> **Return Type:** `Integer Array`
 
-Return Type: Integer Array
 Example):
 
 In contrast to string[], if you define an array size without initializing array fields, you will see a 0 instead of null.
@@ -345,30 +305,24 @@ These arrays are dynamic in nature and the length can be increased.
 intArray = Integer[2] [2]; // This will create an integer array with two rows and two columns
 intArray [2][3] = 5; // This will automatically extend the length of intArray to include an extra column
 
-Syntax: Integer[][] integer[Integer n][Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+Integer[][] integer[Integer n][Integer n]
+```
 
-integer[][]
 
-Integer Array
-Used to declare a 2-D array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `integer[][]` | Integer Array | Used to declare a 2-D array. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
 
-[n]
+> **Return Type:** `Integer[][]`
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
 
-[n]
+**Example:**
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
-
-Return Type: Integer[][]
-Example:
 
 Notice the multiple print statements being used in the code above. We are printing a specific element index and value index.  Since there are two elements, the element indexes are 0 and 1 respectively.  Each element has two values, so the value indexes are also 0 and 1.  The syntax used in the code will print each value in the console.
 
@@ -378,20 +332,22 @@ isempty
 
  This parameter only works with 1-D arrays.
 
-Syntax: isempty(arrayIdentifier)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+isempty(arrayIdentifier)
+```
 
-arrayIdentifier
 
-string[], integer[], float[]
-This is the given array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | string[], integer[], float[] | This is the given array. |
 
- Return Type: Boolean (True if array is empty and False if it is not)
-Example:
+> **Return Type:** `Boolean (True if array is empty and False if it is not)`
+
+
+**Example:**
+
 
 The string array above is empty, therefore True is returned. 
 
@@ -401,20 +357,22 @@ Returns the largest element of an integer or float array.
 
  This parameter only works with 1-D arrays.
 
- Syntax: max(arrayIdentifier)
-Parameters: 
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+max(arrayIdentifier)
+```
 
-arrayIdentifier
 
-integer[], float[]
-This is the given array you will use to find the max value. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | integer[], float[] | This is the given array you will use to find the max value. |
 
- Return Type: Returns an Integer or Float, depending on the type of array.
-Example:
+> **Return Type:** `Returns an Integer or Float, depending on the type of array.`
+
+
+**Example:**
+
 
 min
 
@@ -422,39 +380,43 @@ Returns the smallest element of an integer or float array.
 
  This parameter only works with 1-D arrays.
 
- Syntax: min(arrayIdentifier)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+min(arrayIdentifier)
+```
 
-arrayIdentifier
 
-integer[], float[]
-This is the given array you will use to find the max value. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | integer[], float[] | This is the given array you will use to find the max value. |
 
- Return Type: Returns and Integer or Float depending on the type of array.
-Example:
+> **Return Type:** `Returns and Integer or Float depending on the type of array.`
+
+
+**Example:**
+
 
 range
 
  Declares an integer array with a specified size and initializes it to its index value.
-Syntax:  range(x)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+range(x)
+```
 
-x
 
-Integer
-Denotes the size of the integer array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Integer | Denotes the size of the integer array. |
 
- Return Type: Integer[]
+> **Return Type:** `Integer[]`
+
 This function is case-sensitive. 
-Example:
+
+**Example:**
+
 In the following example, the numberOfDesserts value is a configurable attribute that is setup as the array size control for an array in a configuration flow.dessertCountArr = range(numberOfDesserts);
 print dessertCountArr;
 isValidArr = boolean [];
@@ -479,26 +441,24 @@ If x is 0, then the function returns an integer[0]. For example, intArray=range(
 remove
 
  The function removes an element from an existing array based on a given index.
-Syntax: remove(arrayIdentifier, removePos)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+remove(arrayIdentifier, removePos)
+```
 
-arrayIdentifier
 
-string[], integer[], float[]
-This is the given array from which you will remove an element.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | string[], integer[], float[] | This is the given array from which you will remove an element. |
+| `removePos` | Integer | This represents the index of the element you will be removing. |
 
-removePos
+> **Return Type:** `Integer (denotes the size of the new array)`
 
-Integer
- This represents the index of the element you will be removing.
-
- Return Type: Integer (denotes the size of the new array)
 Only integers are allowed to be passed in for the index of the element to be removed.
-Example:
+
+**Example:**
+
 
 You can see the new array that is being returned once the element at index[2] is removed.
 If the array is empty, the function will fail.
@@ -506,40 +466,42 @@ If the array is empty, the function will fail.
 reverse
 
 This function is used to reverse all elements in the array.  
- Syntax: reverse(arrayIdentifier)
+
+**Syntax:**
+```bml
+reverse(arrayIdentifier)
+```
+
 
  This parameter only works with 1-D arrays.
 
-Parameters:
 
-Parameter
-Data Type
-Description
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | string[], integer[], float[] | This is the given array. |
 
-arrayIdentifier
+> **Return Type:** `Returns the array with all of the elements in reverse order.`
 
-string[], integer[], float[]
-This is the given array.
 
- Return Type: Returns the array with all of the elements in reverse order.
-Example:
+**Example:**
+
 
 sizeofarray
 
 This function returns the length of the array for a 1-D array and the number of rows for a 2-D array.
- Syntax: sizeofarray(arrayIdentifier)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+sizeofarray(arrayIdentifier)
+```
 
-arrayIdentifier
 
-string[], integer[], float[], string[][], integer[][], float[][], boolean[], boolean[][] 
-This represents the given array. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | string[], integer[], float[], string[][], integer[][], float[][], boolean[], boolean[][] | This represents the given array. |
 
- Return Type: Integer
+> **Return Type:** `Integer`
+
 Examples:
 1-D Array: sizeofarray(arrayIdentifier)
 
@@ -550,26 +512,21 @@ While there are 6 separate values in this array, there are only three elements. 
 sort
 
  This function sorts array elements based on defined sort method.  You can sort in ascending or descending order. 
-Syntax: sort(arrayID, [sortOrder], [sortType])
+
+**Syntax:**
+```bml
+sort(arrayID, [sortOrder], [sortType])
+```
+
 
  This parameter only works with 1-D arrays.
 
-Parameters:
 
-Parameter
-Data Type
-Description
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayID` | string[], integer[], float[] | The array you want to sort. |
+| `[sortOrder]` | String | Takes the string values "asc" (ascending) or "desc" (descending). The default is "asc". It must be a string literal. |
 
-arrayID
-
-string[], integer[], float[]
-The array you want to sort. 
-
-[sortOrder]
-
-String
-
- Takes the string values "asc" (ascending) or "desc" (descending). The default is "asc". It must be a string literal.
  Examples: 
 a = string[]{"a", "c", "b"};
 
@@ -585,21 +542,41 @@ sort(a, "desc"); -> ["c", "b", "a"]
 
  Takes the string values "text" or "numeric" they must be a string literal or date values.
 A string array with no sortType is sorted by numbers first, capitals letters next, then lower case.  Numbers are treated as strings: they are sorted by the first digit, then subsequent digits.
- Example: 
+
+**Example:**
+```bml title="Example"
+
+```
+
 a = string[]{"2", "12", "a", "A", "B", "b"};
 sort(a, "asc"); -> ["12", "2", "A", "B", "a", "b"]
 
 "text" sortType entries are not case sensitive.
- Example: 
+
+**Example:**
+```bml title="Example"
+
+```
+
 sort(a, "asc", "text"); -> ["12", "2", "a", "A", "B", "b"]
 
 "numeric" sortType arrays must only contain entries that can be parsed as numbers.
- Example: 
+
+**Example:**
+```bml title="Example"
+
+```
+
 stringArray = string[]{"1", "2", "10", "20"};
 sort(stringArray, "asc");  -> ["1", "10", "2", "20"]
 sort(stringArray, "asc", "numeric"); -> ["1", "2", "10", "20"]
 An integer array will sort with "numeric" as default.
- Example: 
+
+**Example:**
+```bml title="Example"
+
+```
+
 intArray = integer[]{1, 2, 10, 20};
 sort(intArray, "asc"); -> [1, 2, 10, 20]
 sort(intArray, "asc", "text"); -> [1, 10, 2, 20]
@@ -608,8 +585,11 @@ sort(intArray, "asc", "text"); -> [1, 10, 2, 20]
 
  
 
- Return Type: String Array, in the specified sort order
-Example:
+> **Return Type:** `String Array, in the specified sort order`
+
+
+**Example:**
+
 
 string[n]
 
@@ -623,54 +603,49 @@ strArray [4] = "a"; // This will automatically extend the length of strArray to 
 
  This parameter only works with 1-D arrays.
 
-Syntax: String[] string[Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+String[] string[Integer n]
+```
 
-string[]
 
-String Array
-Used to declare a string array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `string[]` | String Array | Used to declare a string array. |
+| `[n]` | Integer | Optional: Use number "n"  to declare an array of a specific size. |
 
-[n]
+> **Return Type:** `String Array`
 
-Integer
-Optional: Use number "n"  to declare an array of a specific size.
 
-Return Type: String Array
-Example: 
+**Example:**
+```bml title="Example"
+
+```
+
 
 string[n][n])
 
 Initializes a 2-D String array with specified size.
 For a 2-D String array, the value in each field of the array after array declaration (for example, arr=string[2][3])) is equal to null if the array fields are not initialized.
-Syntax: String[][] string[Integer n][Integer n]
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+String[][] string[Integer n][Integer n]
+```
 
-string[][]
 
-String Array
- Used to declare a 2-D string array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `string[][]` | String Array | Used to declare a 2-D string array. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
 
-[n]
+> **Return Type:** `String[][]`
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
 
-[n]
+**Example:**
 
-Integer
-Optional: Use number "n" to declare an array of a specific size. 
-
-Return Type: String[][]
-Example:
 
 Notes
 

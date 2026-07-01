@@ -17,48 +17,27 @@ This function applies a set of token key-value pairs to
  payload. 
   If a value is present in both the dictionary payload and JSON data for the
  same key, the JSON data takes precedence over the dictionary payload.
-Syntax: 
+
+**Syntax:**
+```bml
+
+```
+
 String applytemplate(String templateFileLocation [, Dictionary payload [, String defaultErrorMessage [, Json jsonIdentifier]]])
-Parameters:
 
-Parameter
- Data Type
-Description
 
-templateFileLocation
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `templateFileLocation` | String | The location of the template file. |
+| `payload` | Dictionary | The payload containing values for the defined tokens in |
+| `the template.` | Optional. The default value is null. | defaultErrorMessage |
+| `String` | The default error message to be displayed in case any | error is encountered. |
+| `Optional. The default value is null.` | jsonIdentifier | Json |
+| `The JSON containing values for the defined tokens in the` | template. | Optional. The default value is null. |
 
-String
 
-The location of the template file.
+**Example:**
 
-payload
-
-Dictionary
-
-The payload containing values for the defined tokens in
- the template.
-
-Optional. The default value is null.
-
-defaultErrorMessage
-
-String
-
-The default error message to be displayed in case any
- error is encountered. 
-
-Optional. The default value is null.
-
-jsonIdentifier
-
-Json
-
-The JSON containing values for the defined tokens in the
- template.
-
-Optional. The default value is null.
-
-Example:
 Template file
  test.txt: 4
 This is user defined variable VAR1, value = {{VAR1}}.
@@ -71,7 +50,8 @@ This is user defined variable VAR1, value = payloadVal1.
 This is user defined variable VAR2, value = jsonVal2.
 This is user defined variable VAR3, value = jsonVal3.
 
- Return Type: String that represents the result of applying a set of token key/value pairs to the template file. This set of token key/value pairs can come from either an explicitly user defined map, or implicitly imported rule input variables from System, Main Document or Sub-Document.
+> **Return Type:** `String that represents the result of applying a set of token key/value pairs to the template file. This set of token key/value pairs can come from either an explicitly user defined map, or implicitly imported rule input variables from System, Main Document or Sub-Document.`
+
 Overwriting an imported rule input variable
 Overwrite locally has higher precedence than overwrite globally.
 
@@ -154,30 +134,20 @@ This is user defined variable VAR1, value = Hello world.
 readxmlmultiple
 
  This function reads a set of multiple XML node contents based on a set of XPath expressions.
-Syntax: readxmlmultiple(String xmlPayload, String[] xpaths [, String defaultErrorMessage])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+readxmlmultiple(String xmlPayload, String[] xpaths [, String defaultErrorMessage])
+```
 
-xmlPayload
 
-String
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `xmlPayload` | String | xpaths |
+| `String` | default ErrorMessage | String |
 
- 
+> **Return Type:** `String`
 
-xpaths
-
-String
- 
-
-default ErrorMessage
-
-String
- Optional: What is returned if an error occurs.
-
- Return Type: String
 This function will return a BMLDictionary, where the String keys are the input xpaths and String values are the XPath evaluation results for the input xpaths.
 If an error occurs, the function will return a BMLDictionary that contains the error message. The key for the error message in the BMLDictionary is "BM_READXMLMULTIPLE_ERROR".
 Processing Rules
@@ -239,30 +209,20 @@ Example of readxmlmultiple():
  readxmlsingle 
 
 This function reads a set of single XML node content based on a set of XPath expressions.
-Syntax: readxmlsingle(String xmlPayload, String[] xpaths [, String defaultErrorMessage])
- Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+readxmlsingle(String xmlPayload, String[] xpaths [, String defaultErrorMessage])
+```
 
-xmlPayload
 
-String
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `xmlPayload` | String | xpaths |
+| `String` | default ErrorMessage | String |
 
- 
+> **Return Type:** `String`
 
-xpaths
-
-String
- 
-
-default ErrorMessage
-
-String
-Optional: What is returned if an error occurs.
-
-Return Type: String
 This function will return a BMLDictionary, where the String keys are the input xpaths and String values are the XPath evaluation results for the input xpaths.
 If an error occurs, the function will return a BMLDictionary that contains the error message. The key for the error message in the BMLDictionary is "BM_READXMLSINGLE_ERROR".
 Processing Rules
@@ -323,32 +283,23 @@ Output:(key, value) = (/library/book[1]/@lang, en)
 
 transformxml
 
- Syntax: transformxml(String xml, String xslFileLocation [, String defaultErrorMessage])
+
+**Syntax:**
+```bml
+transformxml(String xml, String xslFileLocation [, String defaultErrorMessage])
+```
+
 This function transforms an XML string with an XSLT file stored in the File Manager.
 It returns the transformed xml message, or the error message if it failed to transform. The error message will be either the default error message (if it is defined) or the system-generated error message, which starts with "ERROR: ".
- Parameters: 
 
-Parameter
-Data Type
-Description
 
-xml
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `xml` | String | xslFileLocation |
+| `String` | Location of the XSL file. | default ErrorMessage |
 
-String
+> **Return Type:** `String`
 
- 
-
-xslFileLocation
-
-String
-Location of the XSL file.
-
-default ErrorMessage
-
-String
- Optional: What is returned if an error occurs.
-
- Return Type: String
  Example of transformxml(): 
 xmlcontent = "<?xml version="1.0" encoding="UTF-8"?><book><id>123456</id></book>";xslt = "xsl/test.xsl";output = transformxml(xmlcontent, xslt); output has the generated result.
 

@@ -13,25 +13,26 @@ adddays
 
 This function returns the date which is obtained after adding X number of days to a particular date. Example Use Case: Often used in Commerce to set the time a quote is valid, or when it expires.
 
- Syntax: adddays(date, num_of_days)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+adddays(date, num_of_days)
+```
 
-date
 
-Date
-Represents the given date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Represents the given date. |
+| `num_of_days` | Integer | How many days you want to add to the given date. |
 
-num_of_days
+> **Return Type:** `Date`
 
-Integer
- How many days you want to add to the given date.
 
- Return Type: Date
- Example: 
+**Example:**
+```bml title="Example"
+
+```
+
 We will use multiple functions to accomplish the following:
 
 Add 60 days to the current date.
@@ -41,25 +42,26 @@ Remove the hours:minutes:seconds from the return.
 addmonths
 
 This function returns the date which results after adding or subtracting a number of months from a specified date. This function is available in BML and Commerce Library functions. Example Use Case: Often used to set the expiration date for quote, assign end dates to contracts, or assign renewal dates for subscriptions.
-Syntax: Date addmonths (Date date, Integer num_of_months)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+Date addmonths (Date date, Integer num_of_months)
+```
 
-date
 
-Date
-Represents the given date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Represents the given date. |
+| `num_of_months` | Integer | The number of months you want to add to the given month. A positive value will add months. A negative value will subtract months from the date specified. If this value is 0, the result returns the same date. |
 
-num_of_months
+> **Return Type:** `Date`
 
-Integer
- The number of months you want to add to the given month. A positive value will add months. A negative value will subtract months from the date specified. If this value is 0, the result returns the same date.
 
-Return Type: Date
-Example: return datetostr(addmonths(getdate(), 2));
+**Example:**
+```bml title="Example"
+return datetostr(addmonths(getdate(), 2));
+```
+
 This BML Date function takes into account the number of days in a month and leap year. If the date is at the end of a month, the date result will be a valid calendar day for the calendar year.
 
 January 31st + 1 month = February 28th (unless leap year then February 29th)
@@ -72,25 +74,23 @@ comparedates
 
 Use this function to compare two dates based on date and time. 
 
- Syntax: comparedates(Date date1, Date date2)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+comparedates(Date date1, Date date2)
+```
 
-date1
 
-Date
-Represents the given date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date1` | Date | Represents the given date. |
+| `date2` | Date | Represents another given date. |
 
-date2
+> **Return Type:** `Integer`
 
-Date
- Represents another given date.
 
- Return Type: Integer
-Example:
+**Example:**
+
 
 If...
 ...Returns
@@ -111,29 +111,21 @@ datetostr
 This function converts a date to a string.  It can take an optional parameter that can return a formatted string. 
 Example Use Case: Date fields in commerce are considered string fields, so to return a date to a commerce attribute you need to convert it to a string first.
 
- Syntax: datetostr(Date date,[String dateFormat, [String timeZone]])
- Parameters: 
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+datetostr(Date date,[String dateFormat, [String timeZone]])
+```
 
-date
 
-Date
-Mandatory date parameter. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Mandatory date parameter. |
+| `[dateFormat]` | String | Optional: Returns a formatted string. |
+| `[timeZone]` | String | Optional: Retrieve the data in another time zone. |
 
-[dateFormat]
+> **Return Type:** `String`
 
-String
- Optional: Returns a formatted string.
-
-[timeZone]
-
-String
- Optional: Retrieve the data in another time zone.
-
- Return Type: String
 
 Valid Date Components
 Description
@@ -189,26 +181,32 @@ The function datetostr (getdate()) will return today's date in the format MM/dd/
 getcurrenttimeinmillis
 
 This function returns the current time in milliseconds.
- Syntax: Integer getcurrenttimeinmillis()
- Return Type:  Integer
+
+**Syntax:**
+```bml
+Integer getcurrenttimeinmillis()
+```
+
+> **Return Type:** `Integer`
+
 
 getdate
 
 This function returns the current date/time based on the base time zone you have set-up in your application. The function takes a parameter and returns a date, with or without time. Example Use Case: Find the current date.
 
- Syntax: getdate([boolean includeTime])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+getdate([boolean includeTime])
+```
 
-[includeTime]
 
-Boolean
- Optional: Returns the current system date and time. If it is not included, it will be set to true by default.  If this parameter is set to false, the component is set to 00:00:00 and is not displayed to the user.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `[includeTime]` | Boolean | Optional: Returns the current system date and time. If it is not included, it will be set to true by default.  If this parameter is set to false, the component is set to 00:00:00 and is not displayed to the user. |
 
- Return Type: Date
+> **Return Type:** `Date`
+
 Example getdate:
 
 Example getdate(false):
@@ -217,53 +215,59 @@ getdiffindays
 
 This function calculates the number of days between two different dates. Example Use Case: Check to see if a quote is expired.
 
- Syntax: getdiffindays(date 1, date 2)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+getdiffindays(date 1, date 2)
+```
 
-date 1
 
-Date
-Mandatory date parameter.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date 1` | Date | Mandatory date parameter. |
+| `date 2` | Date | Mandatory date parameter. |
 
-date 2
+> **Return Type:** `Float`
 
-Date
-Mandatory date parameter.
 
- Return Type: Float
-Example:
+**Example:**
+
 
 The inputs must be in Date format. Use the function strtojavadata() to change a Date from a string format to a date format.
 
 getstrdate
 
 Returns the string representation of current date.
- Syntax: String getstrdate()
- Return Type: String
+
+**Syntax:**
+```bml
+String getstrdate()
+```
+
+> **Return Type:** `String`
+
 
 isleap
 
 Using this function will determine whether the date falls within a leap year.  The function will return true if the year provided as a parameter is a leap year. 
  Example Use Case: Can determine if the date entered by a user is a valid date; or can be used when trying to calculate the total number of days in a given year.
 
- Syntax: isleap(year_num)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+isleap(year_num)
+```
 
-year_num
 
-Integer
-Four-digit integer that represents the year in question.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `year_num` | Integer | Four-digit integer that represents the year in question. |
 
- Return Type: Boolean
-Example:
+> **Return Type:** `Boolean`
+
+
+**Example:**
+
 
 Since the year 2008 was a leap year, the function returns True.
 
@@ -272,20 +276,22 @@ isweekend
 This function determines whether a date falls within a weekend (Saturday or Sunday).   The function will return true if the date provided as a parameter is a Saturday or Sunday. 
  Example Use Case: Can determine if the date entered by a user is a valid date.
 
- Syntax: isweekend(date)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+isweekend(date)
+```
 
-date
 
-Date
-Mandatory date parameter. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Mandatory date parameter. |
 
- Return Type: Boolean
-Example:
+> **Return Type:** `Boolean`
+
+
+**Example:**
+
 
 The console will return either True or False. 
 
@@ -293,59 +299,54 @@ minusdays
 
 This function returns a date that is x days before the base date. Example Use Case: Can be used to set an expiration date of a quote.
 
- Syntax: minusdays(date, num_of_days)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+minusdays(date, num_of_days)
+```
 
-date
 
-Date 
-Represents the given date. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `date` | Date | Represents the given date. |
+| `num_of_days` | Integer | How many days you want to subtract from the given date. |
 
-num_of_days
+> **Return Type:** `Date`
 
-Integer
- How many days you want to subtract from the given date.
 
- Return Type: Date
-Example:
+**Example:**
+
 
 strtodate
 
 This function is deprecated, and no longer supported. It converted data in String format to Date format.
 Use strtojavadate() instead.
 
- Syntax: strtodate(String str, String format [, String timeZone])
+
+**Syntax:**
+```bml
+strtodate(String str, String format [, String timeZone])
+```
+
 
 strtojavadate
 
 This function converts a string to a date and replicates Java behavior.  Use this function instead of strtodate(), which is deprecated and no longer supported.
- Syntax:: strtojavadate(String str, String format, [String timeZone])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+: strtojavadate(String str, String format, [String timeZone])
+```
 
-str
 
-String
-String format of a date.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | String format of a date. |
+| `format` | Date Format | Specifies the format the date will be returned in. |
+| `timeZone` | String | Optional: Retrieve the data in another time zone. |
 
-format
+> **Return Type:** `Date`
 
-Date Format
- Specifies the format the date will be returned in.
-
-timeZone
-
-String
- Optional: Retrieve the data in another time zone.
-
- Return Type: Date
 
 Date Format
 Date Type 

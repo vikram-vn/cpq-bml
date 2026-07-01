@@ -14,8 +14,12 @@ globaldictget
 This function returns a value stored in the global
  dictionary corresponding to the given key. If the key is not found in the
  global dictionary, null is returned.
-Syntax: String globaldictget(String key [, Boolean updateTimeToLive])
-Parameters:
+
+**Syntax:**
+```bml
+String globaldictget(String key [, Boolean updateTimeToLive])
+```
+
 
 Parameters
 Data Type
@@ -39,7 +43,12 @@ If set to false, there is no change to minimum time
 Optional. The
  default value is false.
 
-Example://Set data in global cache as below
+
+**Example:**
+```bml title="Example"
+//Set data in global cache as below
+```
+
 globaldictset("globalkey1","some string1",100); 
 globaldictset("globalkey2","some string2"); 
 //To get the global cache value
@@ -55,8 +64,12 @@ globaldictremove
 This function removes a given key-value pair from the
  global dictionary. The function returns true if the key-value pair is successfully
  removed, and returns false if the key does not exist in the global dictionary.
-Syntax: Boolean globaldictremove(String key)
-Parameters:
+
+**Syntax:**
+```bml
+Boolean globaldictremove(String key)
+```
+
 
 Parameters
 Data Type
@@ -68,7 +81,12 @@ String
 
 The key corresponding to the key-value pair to be removed.
 
-Example://Set data in global cache as below
+
+**Example:**
+```bml title="Example"
+//Set data in global cache as below
+```
+
 globaldictset("globalkey1","some string",100); 
 //To remove the key-value pair from global cache using a key
 print globaldictremove("globalkey1");
@@ -80,41 +98,28 @@ globaldictset
 
 This function adds or updates the key-value pair in the
  global dictionary.
-Syntax: String globaldictset(String key, String value [, Integer minTimeToLive])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+String globaldictset(String key, String value [, Integer minTimeToLive])
+```
 
-key
 
-String
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `key` | String | If key is null or empty, a unique key is generated and added |
+| `to the global dictionary. If the key provided is not present in the global` | dictionary, a key-value pair is added to the global dictionary. | value |
+| `String` | If a key is | present, the value is updated for the |
+| `corresponding key.` | minTimeToLive | Integer |
+| `The minimum time, in minutes, the key-value` | pair is guaranteed in the global | dictionary. The value should be greater than 0 and less than 525600 minutes |
+| `(365 days).` | Optional. The default value is 1440 minutes. | The minimum time to live setting does not indicate the a maximum duration for the value to be available. The maximum duration is defendant on the amount of time it takes  to clear the expired values for your site. |
 
-If key is null or empty, a unique key is generated and added
- to the global dictionary. If the key provided is not present in the global
- dictionary, a key-value pair is added to the global dictionary.
 
-value
+**Example:**
+```bml title="Example"
+storedkey = globaldictset("key1", "value1"); //mintimeToLive will be defaulted to 1440print storedkey;//Output: key1storedkey2 = globaldictset("", "value2", 1000); // This record will be removed by the next scheduled batch that runs after 1000 minsprint storedkey2; // unique key will be generated and returned.
+```
 
-String
-
-If a key is
- present, the value is updated for the
-corresponding key.
-
-minTimeToLive
-
-Integer
-
-The minimum time, in minutes, the key-value
-  pair is guaranteed in the global
- dictionary. The value should be greater than 0 and less than 525600 minutes
- (365 days).
-Optional. The default value is 1440 minutes.
-The minimum time to live setting does not indicate the a maximum duration for the value to be available. The maximum duration is defendant on the amount of time it takes  to clear the expired values for your site.
-
-Example:storedkey = globaldictset("key1", "value1"); //mintimeToLive will be defaulted to 1440print storedkey;//Output: key1storedkey2 = globaldictset("", "value2", 1000); // This record will be removed by the next scheduled batch that runs after 1000 minsprint storedkey2; // unique key will be generated and returned.
 Oracle CPQ recommends not setting the same globaldict key with the same value using globaldictset parallelly with multiple user sessions.
 
 Notes

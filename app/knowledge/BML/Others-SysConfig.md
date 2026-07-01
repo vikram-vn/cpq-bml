@@ -59,7 +59,12 @@ Integer
 Index of the innermost containing the Configuration array where this item is found.
 Value of 0 if this item is not found in an array.
 
-Example:systemJson = json();systemJson = getsystemdata();
+
+**Example:**
+```bml title="Example"
+systemJson = json();systemJson = getsystemdata();
+```
+
 
 Notes:
 
@@ -74,7 +79,6 @@ getsystemattrvalues
 This function returns a string containing a single attribute's values from a System Configuration.
 Syntax:
 getsystemattrvalues(String jsonPath)
-Parameters:
 
 Parameter
 Data Type
@@ -100,7 +104,6 @@ getsystemmultipleattrvalues
   This function returns dictionary key and value string arrays containing attribute values from a System Configuration.
 Syntax:
 getsystemmultipleattrvalues(Dictionary<String>)
-Parameters:
 Dictionary with String keys and String values. The values are expected to be JsonPath Expressions.
 
 The key should be an identifier for the attributes identified in the associated value.

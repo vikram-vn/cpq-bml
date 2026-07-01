@@ -19,20 +19,22 @@ When the "addpartstotransaction" function is run from an action that does not sa
 "addpartstotransaction" is only available for Advanced Modify Before/After Formulas on Commerce actions. Attempting to run this function from other actions will generate an error.
 Results in the debugger may not match behavior on the sales side, most notably for custom attributes and the document number.
 
- Syntax: 
+
+**Syntax:**
+```bml
+
+```
+
 addpartstotransaction(jsonArray [, priceBookVarName [, resultAttributeArray]])
-Parameters:
 
-Parameter
-Data Type
-Description
 
-jsonArray
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `jsonArray` | Array | An array of JSON objects, used to specify part information. In the following example, "myAttribute" is an optional item that represents a custom line level attribute. |
 
-Array
 
-An array of JSON objects, used to specify part information. In the following example, "myAttribute" is an optional item that represents a custom line level attribute.
-Example:
+**Example:**
+
 {
    "partNumber": "part1",
    "quantity": 1,
@@ -51,7 +53,9 @@ priceBookVarName
 String
 
 An optional string value used for setting the Transaction Price Book. For sites with Price Books enabled, this string should be included to prevent failures on empty Transactions where a Price Book is not defined.
-Example:
+
+**Example:**
+
 "_default_price_book"
  Note: The Price Book parameter will be ignored if a transaction already has a price book defined.
 
@@ -60,7 +64,9 @@ resultAttributeArray
 String
 
 An optional string value for providing document attributes in the JSON result.
-Example:
+
+**Example:**
+
 ["_part_quantity", "_document_number", "_part_number", "_price_item_price_each", "myAttribute"]
 Will produce a response similar to the following when adding one part:
 [{"_part_quantity":"1", "_document_number":"2", "_part_number":"part1", "_price_item_price_each":"3.50", "myAttribute":"my custom value"}]
@@ -78,9 +84,13 @@ The "addtotransaction" function can be executed in a BML function for any Comme
 "addtotransaction" is only available for Advanced Modify Before/After Formulas on Commerce actions.
 When assigning values to Configuration attributes the following are supported: in decimals, integers, currencies, dates, booleans, and strings. Attributes which are part of an array are not supported.
 
- Syntax: 
+
+**Syntax:**
+```bml
+
+```
+
 addtotransaction (items, [priceBookVarName],[resultAttributeArray])
-Parameters:
 
 Parameter
 Data Type
@@ -97,7 +107,9 @@ priceBookVarName
 String
 
 A string value used for setting the Transaction Price Book. For sites with Price Books enabled, this string is required for the Transaction. If Price Books are disabled, this will default to  "_default_price_book".
-Example:
+
+**Example:**
+
 "mycustom_price_book"
 
 resultAttributeArray
@@ -105,13 +117,21 @@ resultAttributeArray
 StringArray
 
 An optional string array which contains a list sub-document attribute variable names that you want returned after the Line Item is created.
-Example:
+
+**Example:**
+
 ["_part_quantity", "_document_number", "_price_item_price_each", "myAttribute"]
 Default:
 _document_number, _part_number, _price_quantity, _price_item_price_each, _parent_doc_number
 
-Return Type: JSON Array
-Example:configAttrs1 = json; //initial config attribute values for the first modeljsonput(configAttrs1 , "connectivity", "WiFi/Bluetooth");jsonput(configAttrs1 , "storage", "128GB");jsonput(configAttrs1 , "dataplan", "100GB");modelLine1 = json; // item values for the first model to be addedjsonput(modelLine1 , "_model_variable_name", "vario5000");jsonput(modelLine1 , "_model_product_line_var_name", "tablets");jsonput(modelLine1 , "_model_segment_var_name", "varioTablets");jsonput(modelLine1 , "_price_quantity", 5);jsonput(modelLine1 , "_price_unit_price_each": 599);jsonput(modelLine1 , "_config_attr_values", configAttrs1);configAttrs2 = json; //initial config attribute values for the second modeljsonput(configAttrs2 , "connectivity", "WiFi/Bluetooth/4G LTE");jsonput(configAttrs2 , "storage", "256GB");jsonput(configAttrs2 , "dataplan", "100GB");modelLine2 = json; // item values for the second model to be addedjsonput(modelLine2 , "_model_variable_name", "vPhablet");jsonput(modelLine2 , "_model_product_line_var_name", "phablets");jsonput(modelLine2 , "_model_segment_var_name", "varioTablets");jsonput(modelLine2 , "_price_quantity", 10);jsonput(modelLine2 , "_price_unit_price_each": 849);jsonput(modelLine2 , "_config_attr_values", configAttrs2);items = jsonarray; // items to added to the transactionjsonarrayappend(items , modelLine1 );jsonarrayappend(items , modelLine2 );// list of attributes that we want returnedresultAttributeArray = jsonarray("[\"_document_number\", \"_part_quantity\",\"_price_item_price_each\"]");//adds the two models above to the transaction using the default price bookresultArray = addtotransaction(items, "_default_price_book",resultAttributeArray);print(resultArray);//prints a sample response which looks like this// [{"_document_number":"2", "_price_quantity":"5","_price_unit_price_each":"599.00"},// {"_document_number":"3", "_price_quantity":"10","_price_unit_price_each":"849.00"}]
+> **Return Type:** `JSON Array`
+
+
+**Example:**
+```bml title="Example"
+configAttrs1 = json; //initial config attribute values for the first modeljsonput(configAttrs1 , "connectivity", "WiFi/Bluetooth");jsonput(configAttrs1 , "storage", "128GB");jsonput(configAttrs1 , "dataplan", "100GB");modelLine1 = json; // item values for the first model to be addedjsonput(modelLine1 , "_model_variable_name", "vario5000");jsonput(modelLine1 , "_model_product_line_var_name", "tablets");jsonput(modelLine1 , "_model_segment_var_name", "varioTablets");jsonput(modelLine1 , "_price_quantity", 5);jsonput(modelLine1 , "_price_unit_price_each": 599);jsonput(modelLine1 , "_config_attr_values", configAttrs1);configAttrs2 = json; //initial config attribute values for the second modeljsonput(configAttrs2 , "connectivity", "WiFi/Bluetooth/4G LTE");jsonput(configAttrs2 , "storage", "256GB");jsonput(configAttrs2 , "dataplan", "100GB");modelLine2 = json; // item values for the second model to be addedjsonput(modelLine2 , "_model_variable_name", "vPhablet");jsonput(modelLine2 , "_model_product_line_var_name", "phablets");jsonput(modelLine2 , "_model_segment_var_name", "varioTablets");jsonput(modelLine2 , "_price_quantity", 10);jsonput(modelLine2 , "_price_unit_price_each": 849);jsonput(modelLine2 , "_config_attr_values", configAttrs2);items = jsonarray; // items to added to the transactionjsonarrayappend(items , modelLine1 );jsonarrayappend(items , modelLine2 );// list of attributes that we want returnedresultAttributeArray = jsonarray("[\"_document_number\", \"_part_quantity\",\"_price_item_price_each\"]");//adds the two models above to the transaction using the default price bookresultArray = addtotransaction(items, "_default_price_book",resultAttributeArray);print(resultArray);//prints a sample response which looks like this// [{"_document_number":"2", "_price_quantity":"5","_price_unit_price_each":"599.00"},// {"_document_number":"3", "_price_quantity":"10","_price_unit_price_each":"849.00"}]
+```
+
 
 generatehmacmessage
 
@@ -123,61 +143,51 @@ This BML function can be used with a Digital Assistant Integration.  You can use
 
 This function may be used to "sign" callouts, such as for a JSON Web Token (JWT) signature.
 
- Syntax: 
+
+**Syntax:**
+```bml
+
+```
+
 generatehmacmessage("message", "key", ["algorithm"]);
-Parameters:
 
-Parameter
-Data Type
-Description
 
-message
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `message` | String | The message to be authenticated by the cryptographic hash function. This is an optional parameter and an empty string is allowed. Null values are automatically converted to an empty string. |
+| `key` | String | The secret key that authenticates the message between inbound and outbound web services. This parameter is optional. |
+| `algorithm` | String | The designate for the secure message Authentication standard. This parameter is optional and defaults to SHA256. Valid values are: |
+| `SHA256 (Default)` | SHA384 | SHA512 |
+| `SHA1` | MD5 | Values are case sensitive. |
 
-String
+> **Return Type:** `String`
 
-The message to be authenticated by the cryptographic hash function. This is an optional parameter and an empty string is allowed. Null values are automatically converted to an empty string.
 
-key
+**Example:**
+```bml title="Example"
+key = "cfthsnkjsavjiCe=";algo = "MD5";hmac = generatehmacmessage(inputmessage, key, algo);print(hmac);//prints eaf3702517fef48d3f114f32a3c3394b
+```
 
-String
-
-The secret key that authenticates the message between inbound and outbound web services. This parameter is optional.
-
-algorithm
-
-String
-
-The designate for the secure message Authentication standard. This parameter is optional and defaults to SHA256. Valid values are:
-
-SHA256 (Default)
-SHA384
-SHA512
-SHA1
-MD5
-
-Values are case sensitive.
-
-Return Type: String
-Example:key = "cfthsnkjsavjiCe=";algo = "MD5";hmac = generatehmacmessage(inputmessage, key, algo);print(hmac);//prints eaf3702517fef48d3f114f32a3c3394b
 
 getarraystr
 
 This function returns the delimited string for array attributes with $,$ as the delimiter.  
 This function is only used for Configuration attributes.
- Syntax: 
+
+**Syntax:**
+```bml
+
+```
+
 getarrayattrstring(SingleArray arrayIdentifier)
- Parameters:  
 
-Parameter
-Data Type
-Description
 
-arrayIdentifier
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `arrayIdentifier` | String[] | The given input array. |
 
-String[]
-The given input array.
+> **Return Type:** `String`
 
-Return Type: String
 Example of getarraystr:
 
 getattachmentdata
@@ -190,56 +200,45 @@ This function returns the file name (filename), file
 Syntax:
 Dict<anytype> getattachmentdata(String attachmentId [, Boolean asBytes]
 
-Parameter
-Data Type
-Description
 
-attachmentId
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `attachmentId` | String | The ID of the attachment returned. This ID is returned in |
+| `the reference to the attachment attribute in BML.` | asBytes | Boolean |
+| `If true, the returned datatype will be a bytearray; If` | false, the returned datatype will be a Base64 encoded String. | Optional, the default is false if not provided. |
 
-String
 
-The ID of the attachment returned. This ID is returned in
- the reference to the attachment attribute in BML.
+**Example:**
+```bml title="Example"
+//consider 'maindocFileAttachment' as main document attachment attribute and 'subdocFileAttachment' as sub document attachment attributemainattachment = getattachmentdata(maindocFileAttachment);print get(mainattachment ,"filename", "string"); // Prints the file name of main attachment attributeprint get(mainattachment ,"filecontent", "string"); // Prints the file content of main attachment attribute as Base64 encoded Stringprint get(mainattachment ,"mimetype", "string"); // Prints the mime type of main attachment attribute//To access the file attached to sub document attachment attributefor line in lineItems { subdocattachment = getattachmentdata(line.subdocFileAttachment);}
+```
 
-asBytes
- 
-
-Boolean
- 
-
-If true, the returned datatype will be a bytearray; If
- false, the returned datatype will be a Base64 encoded String. 
-
-Optional, the default is false if not provided.
-
-Example://consider 'maindocFileAttachment' as main document attachment attribute and 'subdocFileAttachment' as sub document attachment attributemainattachment = getattachmentdata(maindocFileAttachment);print get(mainattachment ,"filename", "string"); // Prints the file name of main attachment attributeprint get(mainattachment ,"filecontent", "string"); // Prints the file content of main attachment attribute as Base64 encoded Stringprint get(mainattachment ,"mimetype", "string"); // Prints the mime type of main attachment attribute//To access the file attached to sub document attachment attributefor line in lineItems { subdocattachment = getattachmentdata(line.subdocFileAttachment);}
 
 getconfigattrvalue
 
 This function retrieves the values of configuration attributes in Commerce. 
- Syntax:  
+
+**Syntax:**
+```bml
+
+```
+
 getconfigattrvalue(configAttrVarname) 
 -OR-
 getconfigattrvalue([documentNumber], configAttrVarname)
-Parameters:
 
-Parameter
-Data Type
-Description
 
-[documentNumber]
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `[documentNumber]` | Integer | Optional: Represents the transaction number. |
+| `configAttrVarName` | String | Variable name of the configuration attribute from which you are retrieving data. |
 
-Integer
-Optional: Represents the transaction number. 
+> **Return Type:** `String`
 
-configAttrVarName
-
-String
-Variable name of the configuration attribute from which you are retrieving data. 
-
-Return Type: String
 In case of menu attributes, the returned value is the menu item variable name.
-Example:
+
+**Example:**
+
 
 In case of menu attributes, the returned value is the menu item variable name.
 The System Attribute _config_attr_info has to be selected as a rule input.  If it is not selected and getConfigAttrVal is used, a compile error is shown to the user.
@@ -247,25 +246,22 @@ The System Attribute _config_attr_info has to be selected as a rule input.  If i
 getoldvalue
 
 Retrieves an old value for given variable name containing old value and document number.
- Syntax: 
+
+**Syntax:**
+```bml
+
+```
+
 getoldvalue(variableName [, documentNumber])
-Parameters:
 
-Parameter
-Data Type
-Description
 
-variableName
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `variableName` | String | Variable name containing old value. |
+| `[documentNumber]` | Integer | Optional: Defaults to 1, which is the main document. |
 
-String
-Variable name containing old value.
+> **Return Type:** `String`
 
-[documentNumber]
-
-Integer
-Optional: Defaults to 1, which is the main document. 
-
-Return Type: String
 It will return empty string for the following cases:When it is called from debuggerIf the document with the given document number does not existIf the variable with the given variable name does not exist in the document
  Examples: 
 pre1 = getoldvalue("_quote_bill_to_address");
@@ -276,18 +272,14 @@ getreasonstatus
 This function returns the status of the reason variable name in an approval sequence. 
  Syntax:
  Integer getreasonstatus(String)
-Parameters:
 
-Parameter
-Data Type
-Description
 
-reasonVarName
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `reasonVarName` | String | This is the variable name of the reason within the approval sequence. |
 
-String
-This is the variable name of the reason within the approval sequence.
+> **Return Type:** `Integer (associated with one of the following statuses):`
 
-Return Type: Integer (associated with one of the following statuses):
 
 BM_REASON_STATUS_INVALID: No reason exists in admin reason tree with given variable name.
 BM_REASON_STATUS_INACTIVE: Reason exists in admin reason tree but the condition for the reason is not met, therefore no record for it exists in the user-side tree. 
@@ -305,17 +297,14 @@ This function generates unique IDs for assets tracked in
 Syntax:
 String[] getuuid(Integer count) 
 
-Parameter
-Data Type
-Description
 
-count
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `count` | Integer | The number of unique IDs to generate. |
 
-Integer
 
-The number of unique IDs to generate.
+**Example:**
 
-Example:
 getuuid(2); // Generates string array with 2 unique IDs.
 Output:
 [6bafc278-25fd-495f-8360-67bcfb8776b0, 65abced9-5c47-47c6-bf18-ab96fb73935f]
@@ -325,69 +314,59 @@ importtransactiondata
 Imports the transaction data. If the transaction with the given bsid doesn't exists, then it throws an exception.
  Syntax:
 importtransactiondata(Long bsid)
-Parameters:
 
-Parameter
-Data Type
-Description
 
-bsId
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `bsId` | Integer | Use this parameter to specify the Commerce Transaction ID. |
 
-Integer
+> **Return Type:** `Boolean`
 
-Use this parameter to specify the Commerce Transaction ID.
 
-Return Type: Boolean
-Example:importtransactiondata(12345); // Where 12345 is the bsid
+**Example:**
+```bml title="Example"
+importtransactiondata(12345); // Where 12345 is the bsid
+```
+
 
 invoke
 
 This function invokes global table functions.
  Syntax:
  invoke(globalTableFunction, [delimitedData, [defaultData]])
-Parameters:
 
-Parameter
-Data Type
-Description
 
-globalTableFunction
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `globalTableFunction` | Function | The table function to invoke. |
+| `[delimitedData]` | String | The parameters, passed as a delimited string. |
 
-Function
-The table function to invoke.
+> **Return Type:** `Boolean`
 
-[delimitedData]
 
-String
-The parameters, passed as a delimited string.
+**Example:**
 
-[defaultData]
-
-String
- 
-
-Return Type: Boolean
-Example:
 The following script invokes the global function someGlobalFunction. The parameters are passed as a delimited string. If a valid string is not returned by someGlobalFunction, the default string is "error_in_rule"params = "";params = var_frequency + "~" + "model number";return invoke("someGlobalFunction",params,"error_in_rule");
 
 isnull
 
 Evaluates whether a particular Object is null or not. Returns true if argument passed is null. 
- Syntax: 
+
+**Syntax:**
+```bml
+
+```
+
 isnull(String (or Date (or Array or (dict))))
-Parameters:
 
-Parameter
-Data Type
-Description
 
-obj
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `obj` | String, Date, Array, Dictionary | The Object to examine for a null state. |
 
-String, Date, Array, Dictionary
-The Object to examine for a null state.
 
-Return: Boolean
-Example:
+**Example:**
+
 
 This evaluates to false.
 If getconfigattrvalue is called for a non-existing attribute, it returns null. If the return value is passed to isnull, it will return true.
@@ -397,41 +376,29 @@ logtime
 Writes an event to the Performance Log table, which is visible by filtering on "BML" for the Event Type. This logging will only occur when executed outside of the debugger.
  Syntax:
  logtime(tag, timeElapsed)
-Parameters:
 
-Parameter
-Data Type
-Description
 
-tag
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `tag` | String | The tag to be logged. This parameter has a 128 character limit.  If more than 128 characters are passed into the function, the 129th and later characters are truncated. |
+| `timeElapsed` | Integer | The time elapsed for the event, saved in the log. |
 
-String
-The tag to be logged. This parameter has a 128 character limit.  If more than 128 characters are passed into the function, the 129th and later characters are truncated.
+> **Return Type:** `Boolean`
 
-timeElapsed
-
-Integer
-The time elapsed for the event, saved in the log.
-
-Return Type: Boolean
 
 print
 
  Prints into the console window of the Function Editor. Example Use Case:  For debugging.
  Syntax:
  print(String(or Array(or Dictionary(or Numeric(or Date(or Boolean))))) varName)
-Parameters:
 
-Parameter
-Data Type
-Description
 
-varName
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `varName` | String, Array, Dictionary, Numeric, Date, or Boolean | The item to print to the Function Editor console. |
 
-String, Array, Dictionary, Numeric, Date, or Boolean 
-The item to print to the Function Editor console.
+> **Return Type:** `Boolean`
 
-Return Type: Boolean
 Examples:
 To display "abba" in the console window in the Function Editor.print("abba") 
 To display [1,2,3,4,5] in the console window.intArray = integer[]{1,2,3,4,5};print(intArray); //
@@ -442,29 +409,17 @@ sbappend
 This function attaches a new element to the end of the string builder object. This function is related to the following BML string builder functions: "stringbuilder" and "sbtostring".
  Syntax:
 sbappend(stringBuilder, [string[, stringArray[, stringBuilder]]])
- Parameters: 
 Any combination of String, StringArray, and StringBuilder items.
 
-Parameter
-Data Type
-Description
 
-string
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `string` | String | Represents the given input string. |
+| `stringArray` | String | Represents the given input array. |
+| `stringBuilder` | String | Represents the given input stringbuilder object. |
 
-String
-Represents the given input string.
+> **Return Type:** `String`
 
-stringArray
-
-String
-Represents the given input array.
-
-stringBuilder
-
-String
-Represents the given input stringbuilder object.
-
-Return Type: String
 
 Example
 Output
@@ -488,31 +443,24 @@ onetestonetest
 sbtostring
 
  This function converts the finished stringbuilder element to a string.
- Syntax:  
+
+**Syntax:**
+```bml
+
+```
+
 sbtostring(stringBuilder)
- Parameters: 
 Any combination of String, StringArray, and StringBuilder items.
 
-Parameter
-Data Type
-Description
 
-string
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `string` | String | Represents the given input string. |
+| `stringArray` | String | Represents the given input array. |
+| `stringBuilder` | String | Represents the given input stringbuilder object. |
 
-String
-Represents the given input string.
+> **Return Type:** `String`
 
-stringArray
-
-String
-Represents the given input array.
-
-stringBuilder
-
-String
-Represents the given input stringbuilder object.
-
-Return Type: String
 
 Example
 Output
@@ -547,38 +495,19 @@ This function is used to set Commerce attributes only.
 setattributevalue(mainDocAttrVarName, value) 
  Sub-Document Syntax:  
 setattributevalue(documentNumber, subDocAttrVarName, value)
-Parameters:
 
-Parameter
-Data Type
-Description
 
-mainDocAttrVarName
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `mainDocAttrVarName` | String | The attribute variable name to set the value on the Main document. |
+| `documentNumber` | Integer | Unique document number used as an identifier for the Transaction Line Item. This is required when the BML function is used for setting a sub-document value. |
+| `This parameter can be an Integer or String "integer". For example, both "2" and 2 are valid entries.` | subDocAttrVarName | String |
+| `The attribute variable name to set the value on the Sub-document.` | value | StringFloatIntegerCurrencyDateBoolean |
+| `The value you want set for the specified attribute. The type of value must match the type of the Commerce attribute.Array sets are represented by JSON array reference IDs which are created by the jsonarrayrefid function.` | Date attributes can be either BML Date objects or Text values. | Currency and Float attributes can be both Float and Integer values. |
 
-String
-The attribute variable name to set the value on the Main document.
 
-documentNumber
+**Example:**
 
-Integer
-Unique document number used as an identifier for the Transaction Line Item. This is required when the BML function is used for setting a sub-document value.
-
-This parameter can be an Integer or String "integer". For example, both "2" and 2 are valid entries.
-
-subDocAttrVarName
-
-String
-The attribute variable name to set the value on the Sub-document.
-
-value
-
-StringFloatIntegerCurrencyDateBoolean
-
-The value you want set for the specified attribute. The type of value must match the type of the Commerce attribute.Array sets are represented by JSON array reference IDs which are created by the jsonarrayrefid function.
-Date attributes can be either BML Date objects or Text values.
-Currency and Float attributes can be both Float and Integer values.
-
-Example:
 To set the value of an array set containing a text field, and a single row, named arraySet:newRow = json;jsonput(newRow, "textField", "example");jsonarrayappend(arraySet, newRow);setattributevalue(1, "arraySet", jsonarrayrefid(arraySet));
 
 Notes: 
@@ -593,29 +522,17 @@ The BML string builder object can be used to generate large strings. In some imp
 The stringbuilder functions initializes string builder objects.
  Syntax:
 stringbuilder([string[, stringArray[, stringBuilder]]])
- Parameters: 
 Any combination of String, StringArray, and StringBuilder items.
 
-Parameter
-Data Type
-Description
 
-string
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `string` | String | Represents the given input string. |
+| `stringArray` | String | Represents the given input array. |
+| `stringBuilder` | String | Represents the given input stringbuilder object. |
 
-String
-Represents the given input string.
+> **Return Type:** `String`
 
-stringArray
-
-String
-Represents the given input array.
-
-stringBuilder
-
-String
-Represents the given input stringbuilder object.
-
-Return Type: String
 
 Example
 Output
@@ -642,26 +559,13 @@ Oracle
  error does not always display to the user.
 Syntax:
 throwerror(String errorMessage [, Boolean isSystemError])
-Parameters:
 
-Parameter
-Data Type
-Description
 
-errorMessage
-
-String
-
-The error to display to the end user.
-
-isSystemError
-
-Boolean
-
-(optional) The flag to select an error type. If false, errorMessage
- is displayed to the user. If true, a system error is thrown and errorMessage
- is printed in the error log file.
-The default value is false.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `errorMessage` | String | The error to display to the end user. |
+| `isSystemError` | Boolean | (optional) The flag to select an error type. If false, errorMessage |
+| `is displayed to the user. If true, a system error is thrown and errorMessage` | is printed in the error log file. | The default value is false. |
 
 Examples
 
@@ -703,7 +607,12 @@ The array of validation errors are returned only for debugging purposes or if th
 
 Syntax:
 String[] validatequoteforagreement()
-Example:// Calling the validation function from the action of a validation rule.
+
+**Example:**
+```bml title="Example"
+// Calling the validation function from the action of a validation rule.
+```
+
 errors = validatequoteforagreement();
 for error in errors { // only for debugging purpose
     print(error);

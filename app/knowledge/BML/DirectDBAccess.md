@@ -17,26 +17,66 @@ For more information about this function, see BigMachines Query Language (BMQL).
 getboolean
 
  Returns the boolean value in the Record for the provided field name.
- Syntax: Boolean getboolean(Record record, String fieldName)
-Example:rows = bmql("select intcol... ");for row in rows {val = getboolean(row, "intcol");if(val); // can do boolean operations. Useful in if conditions}
+
+**Syntax:**
+```bml
+Boolean getboolean(Record record, String fieldName)
+```
+
+
+**Example:**
+```bml title="Example"
+rows = bmql("select intcol... ");for row in rows {val = getboolean(row, "intcol");if(val); // can do boolean operations. Useful in if conditions}
+```
+
 
 getdate
 
  This BMQL function returns the date value in the Record for the provided field name.
- Syntax: Date getdate(Record record, String fieldName)
-Example:rows = bmql("select datecol... ");for row in rows {val = getdate(row, "datecol");isweekend(val); // can do date operations. Date functions can be applied}
+
+**Syntax:**
+```bml
+Date getdate(Record record, String fieldName)
+```
+
+
+**Example:**
+```bml title="Example"
+rows = bmql("select datecol... ");for row in rows {val = getdate(row, "datecol");isweekend(val); // can do date operations. Date functions can be applied}
+```
+
 
 getfloat
 
 Returns the float value in the Record for the provided field name.
- Syntax: Float getfloat(Record record, String fieldName)
-Example:rows = bmql("select intcol... ");for row in rows {val = getfloat(row, "intcol");val2 = val * 0.1; // can do float operations}
+
+**Syntax:**
+```bml
+Float getfloat(Record record, String fieldName)
+```
+
+
+**Example:**
+```bml title="Example"
+rows = bmql("select intcol... ");for row in rows {val = getfloat(row, "intcol");val2 = val * 0.1; // can do float operations}
+```
+
 
 getint
 
 Returns the integer value in the Record for the provided field name.
- Syntax: Integer getint(Record record, String fieldName)
-Example:rows = bmql("select intcol... ");for row in rows {val = getint(row, "intcol");val2 = val + 10; // can do integer operations}
+
+**Syntax:**
+```bml
+Integer getint(Record record, String fieldName)
+```
+
+
+**Example:**
+```bml title="Example"
+rows = bmql("select intcol... ");for row in rows {val = getint(row, "intcol");val2 = val + 10; // can do integer operations}
+```
+
 
 getmessage
 
@@ -45,8 +85,18 @@ Returns the error message in the given Record Set if it has errors with query ex
 Returns the error message if the query execution failed and the Record Set has errors.
 Returns empty string if there are no errors.
 
- Syntax: String getmessage(RecordSet recordSet)
-Example:rows = bmql("select col... ");if(haserror(rows)) {msg = getmessage(rows); // msg has the error message why the query failed}
+
+**Syntax:**
+```bml
+String getmessage(RecordSet recordSet)
+```
+
+
+**Example:**
+```bml title="Example"
+rows = bmql("select col... ");if(haserror(rows)) {msg = getmessage(rows); // msg has the error message why the query failed}
+```
+
 
 getpartsdata
 
@@ -65,8 +115,12 @@ This function returned a 2-D array of String containing Data Table data matching
 gettransaction
 
 The function gettransaction(bsId) simplifies access to stored transaction information. It retrieves, as a string, the transaction XML for a given Transaction ID. Beginning in 21A, Oracle CPQ provides the ability to filter data when running this BML function.
- Syntax: gettransaction(bsId [, filterCriteria])
- Parameters: 
+
+**Syntax:**
+```bml
+gettransaction(bsId [, filterCriteria])
+```
+
 
 Parameter
 Description
@@ -87,8 +141,14 @@ If the optional filterCriteria parameter is included, the mainDoc variableName i
 
 The filterCriteria optional parameter is supported  in Oracle CPQ 21A and later.
 
-Return Type: String
-Example:       transactionXML = gettransaction(12345); // 12345 is a transaction id (bs id)
+> **Return Type:** `String`
+
+
+**Example:**
+```bml title="Example"
+transactionXML = gettransaction(12345); // 12345 is a transaction id (bs id)
+```
+
 The transaction XML is contained in the <transaction> node. The result string looks like this:
 <?xml version="1.0" encoding="UTF-8"?><transaction><category>bm_cm_bs_data</category>...<num_transitions>5</num_transitions></transaction>
 
@@ -108,14 +168,25 @@ Approval History
 haserror
 
  Returns true if fetching the given Record Set failed and has errors with query execution; false otherwise.
- Syntax: Boolean haserror(RecordSet recordSet)
+
+**Syntax:**
+```bml
+Boolean haserror(RecordSet recordSet)
+```
+
 Example :rows = bmql("select col... ");if(haserror(rows)) {... ; // comes in here if the query execution failed}
 
 recordset()
 
 Returns a new Record Set to be used for later assignments. It is a collection of dictionaries. It can also be used as a function in conjunction with BMQL.
- Syntax: RecordSet recordset()
- Return Type: record set
+
+**Syntax:**
+```bml
+RecordSet recordset()
+```
+
+> **Return Type:** `record set`
+
 Example):rs = recordset();if(...) {rs = bmql(query1);} else {rs = bmql(query2);}
 There is no way to return a recordSet result in a Util library function.
 
@@ -124,7 +195,12 @@ recordset and SQL Queries
 Returns a Record Set containing the results of the SQL query.
  Syntax:
 RecordSet bmql(String sqlQuery [, String Dictionary contextOverride, String Dictionary fieldMap])
-Example:results = bmql("select part_number from _parts where part_number = 'part%'");for result in results {partno = get(result, "part_number");...}
+
+**Example:**
+```bml title="Example"
+results = bmql("select part_number from _parts where part_number = 'part%'");for result in results {partno = get(result, "part_number");...}
+```
+
 
 BMQL returns 'results', which contains the list of data that matched the query.
 	Use the ‘for’ loop on 'results' to go through all the rows of data returned.

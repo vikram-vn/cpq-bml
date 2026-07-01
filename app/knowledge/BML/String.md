@@ -12,19 +12,19 @@ String data types allow any type of text character to be returned. However, be a
 atof
 
 This function converts text that represents a number into a float value. 
- Syntax: atof(str)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+atof(str)
+```
 
-str
 
-String
- Given input string that is to be parsed into a float value.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that is to be parsed into a float value. |
 
- Return Type: Float
+> **Return Type:** `Float`
+
 Error messages:
 If you attempt to pass an empty string or a string with letters into either atoi or atof, you will see:
 
@@ -35,19 +35,19 @@ An empty string will throw an exception error.
 atoi
 
 This function converts text that represents a number into an integer value. 
- Syntax: atoi(str) 
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+atoi(str)
+```
 
-str
 
-String
- Given input string that is to be parsed into an integer value.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that is to be parsed into an integer value. |
 
- Return Type: Integer
+> **Return Type:** `Integer`
+
 Error messages:
 
 If you attempt to pass an empty string or a string with letters into either atoi or atof, you will see:
@@ -62,38 +62,40 @@ An empty string will throw an exception error.
 decodebase64
 
 Takes an encoded Base64 string and returns it as a plain text string.
- Syntax: decodebase64("str")
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+decodebase64("str")
+```
 
-str
 
-String
-A Base64-encoded string
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | A Base64-encoded string |
 
- Return Type: String
- Example:
+> **Return Type:** `String`
+
+
+**Example:**
+
 decodebase64("YWJj"); will return the plain text format of the Base64-encoded string parameter. In this example, it is abc.
 
 encodebase64
 
 This function parses the string parameter and converts it into its Base64 equivalent, as an encoded string.
- Syntax: encodebase64("str")
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+encodebase64("str")
+```
 
-str
 
-String
- Given input string that is to be converted into its Base64 equivalent as an encoded string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that is to be converted into its Base64 equivalent as an encoded string. |
 
- Return Type: String
+> **Return Type:** `String`
+
  Example of encodebase64: 
 encodebase64("abc"); will return the Base64 format of String "abc". In this example, it is YWJj.
  Example of using encodebase64 for information in a URL string webSvcsUser = "WebSvcsUserHere";
@@ -122,24 +124,20 @@ endswith
 
 This function checks whether a string ends with a particular substring. 
  Example Use Case: Determine if a part number starts with a certain text and if a part number contains a specific suffix.
- Syntax: endswith(str, substring)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+endswith(str, substring)
+```
 
-str
 
-String
-Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `substring` | String | Determines if the given input string ends with this substring. |
 
-substring
+> **Return Type:** `Boolean`
 
-String
- Determines if the given input string ends with this substring.
-
- Return Type: Boolean
 Example of startswith and endswith:
 
 We know that the return of endResults will be true because the string "I like this string", ends with the substring "string".
@@ -156,35 +154,28 @@ Multi-select menu checking
 Find a value or where a value exists within a string
 Powerful when used with a substring function
 
- Syntax: find(str, substring, [start], [end])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+find(str, substring, [start], [end])
+```
 
-str
 
-String
- Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `substring` | String | Required string parameter that specifies the substring, position of which this function will return. |
+| `[start]` | Integer | Optional: Can be used to specify the index at which to begin the search for the substring. |
+| `[end]` | Integer | Optional: Can be used to specify the index at which to end the search for the substring. |
 
-substring
+> **Return Type:** `Integer`
 
-String
- Required string parameter that specifies the substring, position of which this function will return.
 
-[start]
+**Example:**
+```bml title="Example"
 
-Integer
- Optional: Can be used to specify the index at which to begin the search for the substring. 
+```
 
-[end]
-
-Integer
- Optional: Can be used to specify the index at which to end the search for the substring.
-
- Return Type: Integer
- Example: 
 This example uses four different variations of the find function:
 
  emptyTest: We are trying to see what will be returned if we pass two empty strings through the find function.
@@ -205,72 +196,70 @@ Takes a number and returns it as a formatted currency string.
 This function takes the first parameter and formats that number to the transaction's currency if used within a commerce transaction or the current user's currency otherwise.
 The second parameter can be included to format the value to a different currency if desired.
 
- Syntax: formatascurrency(x, [currencyCode])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+formatascurrency(x, [currencyCode])
+```
 
-x
 
-Float
-The number to be formatted as a certain currency.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `x` | Float | The number to be formatted as a certain currency. |
+| `currencyCode` | String | Optional: The desired currency. |
 
-currencyCode
+> **Return Type:** `Boolean`
 
-String
- Optional: The desired currency.
 
-Return Type: Boolean
-Example: 
+**Example:**
+```bml title="Example"
+
+```
+
 formatascurrency(32.15, "EUR"); will return the string "€32,15".
 
 getcurrencyvalue
 
 This function takes a formatted currency string and returns the string's numeric value. It parses the first parameter using the currency format specified by the currency code passed in the second parameter and returns the float value.
- Syntax: getcurrencyvalue(value, [currencyCode])
- Parameters:  
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+getcurrencyvalue(value, [currencyCode])
+```
 
-value
 
-String
-The formatted currency string to be converted to a numeric value.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `value` | String | The formatted currency string to be converted to a numeric value. |
+| `[currencyCode]` | String | Optional: The currency code to use for parsing the first parameter. |
 
-[currencyCode]
+> **Return Type:** `Float or Boolean`
 
-String
 
- Optional: The currency code to use for parsing the first parameter. 
-If omitted, this function uses the transaction's currency if used within a commerce transaction. When used elsewhere, the function uses the current user's currency preference.
+**Example:**
+```bml title="Example"
 
- Return Type: Float or Boolean
- Example: 
+```
+
 getcurrencyvalue("€32,15", "EUR"); will return the Float 32.15.
 
 html
 
 This function provides a method for HTML escaping (output encoding) of a string as safe plain text. This applies for content that originated from user input which could be vulnerable to injection attacks such as cross-site scripting (XSS).
 Oracle CPQ recommends using html as a best practice for content written to a web page to avoid possible injection attacks since the string will be rendered as inactive plain text on the web page.
- Syntax: String html(String str)
- Parameters:  
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+String html(String str)
+```
 
-str
 
-String
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | The formatted string to be rendered as inactive plain text. |
 
-The formatted string to be rendered as inactive plain text.
-If str is an empty string, then the function returns an empty string.
+> **Return Type:** `String`
 
-Return Type: String
 Examples:
 Safe content example: html("<test>"); will return the string "&lt;test&gt;
 Unsafe/XSS attack example where content is neutralized: html("<script>/*Bad content here ... */</script>"); will return the string &lt;script&gt;/* Bad content here... */&lt;/script&gt;
@@ -284,25 +273,26 @@ If str_array is empty, then the function returns an empty string.
 If both str and delimiter are empty, then the function returns an empty string.
 If delimiter is empty, then the function returns all the array entries concatenated.
 
- Syntax: join(String[] str_array, String delimiter)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+join(String[] str_array, String delimiter)
+```
 
-str_array
 
-Array
-The original string array.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str_array` | Array | The original string array. |
+| `[delimiter]` | String | Optional:  Specifies where to put a space between the strings in the array. |
 
-[delimiter]
+> **Return Type:** `Boolean`
 
-String
- Optional:  Specifies where to put a space between the strings in the array.
 
-Return Type: Boolean
-Example: 
+**Example:**
+```bml title="Example"
+
+```
+
 strArr1 = string[]{"1", "2", "3"}; strArr2 = join(strArr1, ""); will set the value of strArr2 to "123".
 This function is case-sensitive.
 
@@ -310,20 +300,22 @@ isnumber
 
  The Boolean function isnumber(str)  returns true when the string is a number and false if it contains other characters. 
 Example Use Case: Check if a table cell contains a number. This check needs to be performed to prevent system errors when converting that value to a number.
- Syntax: isnumber(str)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+isnumber(str)
+```
 
-str
 
-String
-Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
 
- Return Type:  Boolean
-Example:
+> **Return Type:** `Boolean`
+
+
+**Example:**
+
 
 If str is an empty string, then the function returns false.
 If no string is passed into the function, then a compile time error is thrown.
@@ -332,20 +324,22 @@ len
 
 The len function returns the length of a string. 
  Example Use Case: To constrain the length of an input text field.
- Syntax: len(str)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+len(str)
+```
 
-str
 
-String
-Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
 
- Return Type: Integer
-Example:
+> **Return Type:** `Integer`
+
+
+**Example:**
+
 
 If str is an empty string, then the function returns a 0.
 
@@ -358,19 +352,19 @@ Used in table comparisons to make sure you have clean data.
 Ignore case in searches.
 Correcting mistakes made from not following Best Practices during implementation.
 
- Syntax: lower(str)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+lower(str)
+```
 
-str
 
-String
-Given input string that must be converted to lowercase. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that must be converted to lowercase. |
 
- Return Type: String
+> **Return Type:** `String`
+
 Example of upper & lower:
 
 The code will print three different examples: 
@@ -386,35 +380,25 @@ replace
 
 Use this function to return a copy of a string, with all occurrences of the old parameter replaced with the new parameter.  All occurrences of the old substring are replaced by new.  If the optional integer argument is given, only the first n occurrences are replaced.
  Example Use Case: You must replace multiple subsets of a string.
- Syntax:replace(str, old, new, [n])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+replace(str, old, new, [n])
+```
 
-str
 
-String
- Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `old` | String | Specifies the substring that is being replaced. |
+| `new` | String | Specifies the substring that is replacing the old substring. |
+| `[n]` | Integer | Optional: Specifies the number of occurrences of the old that must be replaced. |
 
-old
+> **Return Type:** `Copy of String with replacements made.`
 
-String
- Specifies the substring that is being replaced.
 
-new
+**Example:**
 
-String
- Specifies the substring that is replacing the old substring.
-
-[n]
-
-Integer
- Optional: Specifies the number of occurrences of the old that must be replaced.
-
- Return Type: Copy of String with replacements made.
-Example:
 
 This function is case-sensitive.
 Replacing with any empty string throws an exception:  ("", "", ""), ("abc", "", "") or (""abc", "", "I").
@@ -427,25 +411,26 @@ If str is empty string then function returns empty array of size 1.
 If both str and separator is empty, then function returns empty array of size 1.
 If separator is empty, then every character in the string str is split.
 
- Syntax: String[] split(str, separator)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+String[] split(str, separator)
+```
 
-str
 
-String
- Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `separator` | String | Specifies where to break the string into another section. It represents a variety of separators. However, they must all be enclosed in double-quotes, including spaces. |
 
-separator
+> **Return Type:** `String`
 
-String
- Specifies where to break the string into another section. It represents a variety of separators. However, they must all be enclosed in double-quotes, including spaces.
 
- Return Type:  String
- Example: 
+**Example:**
+```bml title="Example"
+
+```
+
 strArray = split("a.b.c", ""); will return an array with every character split: ["a",".", "b", ".", "c"] with a size of 5.
 This function is case-sensitive.
 
@@ -453,24 +438,20 @@ startswith
 
 This function checks whether a string starts with a particular substring.
  Example Use Case: Determine if a part number starts with a certain text and if a part number contains a specific suffix.
- Syntax: startswith(str, substring)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+startswith(str, substring)
+```
 
-str
 
-String
-Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
+| `substring` | String | Determines if this string begins with this substring. |
 
-substring
+> **Return Type:** `Boolean`
 
-String
-Determines if this string begins with this substring.
-
- Return Type: Boolean
 Example of startswith and endswith:
 
 We know that the return of endResults will be true because the string "I like this string", ends with the substring "string".
@@ -481,19 +462,22 @@ This function is case-sensitive.
 string
 
  Converts a float, integer or boolean value into text.
-Syntax: string(float(integer(boolean)))
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+string(float(integer(boolean)))
+```
 
-Float, Integer, or Boolean 
-String
-Represents the given input that must be converted into a string.   
 
- Return Type: String
-Example:
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `Float, Integer, or Boolean` | String | Represents the given input that must be converted into a string. |
+
+> **Return Type:** `String`
+
+
+**Example:**
+
 
 This function is case-sensitive.
 The function will throw a compile time error if a string is passed in as a parameter.
@@ -507,29 +491,21 @@ Break a large string down into similar strings
 Test characters of dynamic part numbers
 Determine which characters are at what index
 
- Syntax: substring(str, start, [end])
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+substring(str, start, [end])
+```
 
-str
 
-String
- Represents the original string you are going to parse.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the original string you are going to parse. |
+| `start` | Integer | The index where you will begin parsing the string. |
+| `[end]` | Integer | Optional: Index where you will stop parsing. |
 
-start
+> **Return Type:** `String`
 
-Integer
- The index where you will begin parsing the string.
-
-[end]
-
-Integer
- Optional: Index where you will stop parsing.
-
- Return Type: String
  Example of substring: 
 We are performing a number of actions with the substring function:
 
@@ -546,20 +522,22 @@ trim
 This function removes the white space from both edges of strings.
  Example Use Case: Compare strings with leading or trailing white space.
 
- Syntax:  trim(str)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+trim(str)
+```
 
-str
 
-String
- Represents the given input string.
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Represents the given input string. |
 
- Return Type: String
-Example:
+> **Return Type:** `String`
+
+
+**Example:**
+
 
 This function is case-sensitive.
 If str is empty, then the function returns an empty string.
@@ -573,19 +551,19 @@ Used in table comparisons to make sure you have clean data.
 Ignore case in searches.
 Correcting mistakes made from not following Best Practices during implementation.
 
- Syntax: upper(str)
-Parameters:
 
-Parameter
-Data Type
-Description
+**Syntax:**
+```bml
+upper(str)
+```
 
-str
 
-String
-Given input string that must be converted to uppercase or lowercase. 
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `str` | String | Given input string that must be converted to uppercase or lowercase. |
 
- Return Type: String
+> **Return Type:** `String`
+
 Example of upper & lower:
 
 The code will print three different examples: 

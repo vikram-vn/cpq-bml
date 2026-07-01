@@ -67,7 +67,12 @@ You will see some standard syntax throughout the function editor:
 
 function(param 1, param 2, param 3, [optional param])
 
-Example:substring(str, start, [end])
+
+**Example:**
+```bml title="Example"
+substring(str, start, [end])
+```
+
 
 Parameter
 Data Type
@@ -175,7 +180,9 @@ Division
 Modulus
 <number> % <number> 
 
-Example:
+
+**Example:**
+
 
 sqrt(45 + 45)
 (3 * 3) + (4 * 4)

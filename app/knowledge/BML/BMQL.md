@@ -24,25 +24,22 @@ When running insert, delete, update, or modify from a BML debugger, the returned
 Administration
 Basics
 
- Syntax: bmql(sqlQuery [, stringDict])
-Parameters:
+
+**Syntax:**
+```bml
+bmql(sqlQuery [, stringDict])
+```
+
 
 #
-Parameter
-Data Type
-Description
 
-1
-sqlQuery
-String
-The SQL query
+| Parameter | Data Type | Description |
+| --- | --- | --- |
+| `1` | sqlQuery | String |
+| `The SQL query` | 2 | [dict] |
 
-2
-[dict]
-String, Integer, or Float
- Optional: A dictionary populated with the language context variable as a key and an overriding language as the value. 
+> **Return Type:** `Record Set`
 
- Return Type: Record Set 
 This data type is a collection of dictionaries.  It can also be used as a function in conjunction with BMQL.
 Example of bmql():
 rs = recordset();if(...) {   rs = bmql(query1);   }else {   rs = bmql(query2);   }return rs;
@@ -88,9 +85,19 @@ ExampleFROM someUserCreatedTable
 DISTINCT
 
 Use the DISTINCT keyword in the SELECT clause to return distinct values.
- Example: SELECT [DISTINCT] custom_field1 from _partsFROM dataBaseObject;
+
+**Example:**
+```bml title="Example"
+SELECT [DISTINCT] custom_field1 from _partsFROM dataBaseObject;
+```
+
 The dataBaseObject entry is description of the database object, which is the same as a Data Table. Consult the Function Wizard to see Data Table names and associated column details.
- Example: SELECT [DISTINCT] field1[, field2, ..., fieldn];FROM dataBaseObject;[WHERE condition];[ORDER BY field1 [ASC|DESC],[ field2 [ASC|DESC], ..., fieldn [ASC|DESC]]];
+
+**Example:**
+```bml title="Example"
+SELECT [DISTINCT] field1[, field2, ..., fieldn];FROM dataBaseObject;[WHERE condition];[ORDER BY field1 [ASC|DESC],[ field2 [ASC|DESC], ..., fieldn [ASC|DESC]]];
+```
+
 
 ORDER BY
 
@@ -221,7 +228,12 @@ contextOverride
 This dictionary can be populated with the language context variable as a key and an overriding language as the value. When pulling data from the _parts Data Table, this will substitute this language in place of the user's preferred language.
 For a complete list of supported languages and their corresponding codes, see the topic Language Support.
 If the value for the requested language is blank, the site base language will be used instead. Additionally, if the requested language is not enabled or not found, the context variable will be ignored.
-Example: lang = dict("string");put(lang, "language", "de");results = bmql("select description from _parts where part_number = ‘Translations’", lang);
+
+**Example:**
+```bml title="Example"
+lang = dict("string");put(lang, "language", "de");results = bmql("select description from _parts where part_number = ‘Translations’", lang);
+```
+
 This will return the German description of the Translations part.
 This parameter is optional.
 
@@ -229,7 +241,12 @@ fieldMap
 
 The fieldMap parameter is a string dictionary.  It is used when the WHERE clause has been completely substituted with a string variable, and there are also variables within the WHERE clause.
 In this case, each variable in the dynamic WHERE clause must be passed into the fieldMap dictionary and referenced by its key in the WHERE clause.  All variables must be passed as string types, regardless of their data type in the Data Table.
-Example: lang = dict(“string”);fields = dict("string");x_var = "6.08";put(fields, "$field1", x_var);where = "float1 = $field1";results = bmql("select columnName from tableName WHERE $where", lang, fields);
+
+**Example:**
+```bml title="Example"
+lang = dict(“string”);fields = dict("string");x_var = "6.08";put(fields, "$field1", x_var);where = "float1 = $field1";results = bmql("select columnName from tableName WHERE $where", lang, fields);
+```
+
 This parameter is optional.
  If the third parameter is used, the second parameter must also be defined.
 
@@ -306,12 +323,22 @@ Conditional evaluation in a WHERE clause
 
 Use a Boolean value with AND to conditionally evaluate the predicate in the WHERE clause.
 
- Syntax: $eval AND field = value, where 'eval' is a Boolean variable in the script
+
+**Syntax:**
+```bml
+$eval AND field = value, where 'eval' is a Boolean variable in the script
+```
+
 
 When 'eval' is true, the predicate 'field = value' is used in the criteria
 When 'eval' is false, the predicate is ignored
 
-Example:e1 = true;e2 = false;rs = bmql("select... where $e1 AND f1 = v1 OR $e2 AND f2 = v2");
+
+**Example:**
+```bml title="Example"
+e1 = true;e2 = false;rs = bmql("select... where $e1 AND f1 = v1 OR $e2 AND f2 = v2");
+```
+
 
   The condition must come before the predicate.
 The WHERE clause is not supported for BMQL Transaction.
@@ -319,12 +346,22 @@ The WHERE clause is not supported for BMQL Transaction.
 Conditional Evaluation
 
 A Boolean value can be used with the AND to conditionally evaluate the predicate in the WHERE clause.
- Syntax: $eval AND field = value, where 'eval' is a Boolean variable in the script
+
+**Syntax:**
+```bml
+$eval AND field = value, where 'eval' is a Boolean variable in the script
+```
+
 
 When 'eval' is true the predicate 'field = value' is used in the criteria
 When 'eval' is false the predicate is ignored
 
- Example: e1 = true;e2 = false;rs = bmql("select... where $e1 AND f1 = v1 OR $e2 AND f2 = v2");
+
+**Example:**
+```bml title="Example"
+e1 = true;e2 = false;rs = bmql("select... where $e1 AND f1 = v1 OR $e2 AND f2 = v2");
+```
+
 
 Using Transaction Data in Configuration
 

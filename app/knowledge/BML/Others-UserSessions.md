@@ -18,7 +18,6 @@ This function retrieves a value for a given key from a user session. If
  the key is not found, null is returned.
 Syntax:
 <ValueType> usersessionget(String key [, String valueType])
-Parameters:
 
 Parameter
 
@@ -60,7 +59,6 @@ This function removes a key-value pair from the user
  removed, and returns false if the key does not exist in the user session.
 Syntax
 Boolean usersessionremove(String key)
-Parameters:
 
 Parameter
 
@@ -73,7 +71,12 @@ key
 String
 The key corresponding to the key-value pair to be removed.
 
-Example://Set data in user session as belowusersessionset("sessionkey1","value");//To remove the key/value pair using a keyprint usersessionremove("sessionkey1");//Output: true
+
+**Example:**
+```bml title="Example"
+//Set data in user session as belowusersessionset("sessionkey1","value");//To remove the key/value pair using a keyprint usersessionremove("sessionkey1");//Output: true
+```
+
 
 Note: The method would return false on trying to remove a key that does not exist in the user session.
 
@@ -82,7 +85,6 @@ usersessionset
 This function sets a key-value pair to the user session cache. The values are available as long as the user session is active. Values stored in the session cache are removed automatically when the user logs out, the session expires, or the server is restarted.
 Syntax:
 usersessionset(String key, <ValueType> value) 
-Parameters:
 
 Parameter
 
