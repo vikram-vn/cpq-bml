@@ -22,9 +22,15 @@ const mockVscode = {
         Information: 3,
         Hint: 4
     },
-    Range: function(start, end) {
-        this.start = start;
-        this.end = end;
+    Range: function(start, end, endLine, endChar) {
+        console.log('Range args:', { start, end, endLine, endChar, typeofStart: typeof start, typeofEnd: typeof end });
+        if (typeof start === 'number' && typeof end === 'number') {
+            this.start = new mockVscode.Position(start, end);
+            this.end = new mockVscode.Position(endLine, endChar);
+        } else {
+            this.start = start;
+            this.end = end;
+        }
     },
     Position: function(line, char) {
         this.line = line;

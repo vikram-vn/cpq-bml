@@ -1,45 +1,5 @@
 [
   {
-    "line": 5,
-    "severity": "Warning",
-    "message": "Unused variable: y"
-  },
-  {
-    "line": 6,
-    "severity": "Warning",
-    "message": "Unused variable: z"
-  },
-  {
-    "line": 9,
-    "severity": "Warning",
-    "message": "Unused variable: total"
-  },
-  {
-    "line": 14,
-    "severity": "Warning",
-    "message": "Unused variable: ret"
-  },
-  {
-    "line": 33,
-    "severity": "Warning",
-    "message": "Unused variable: a"
-  },
-  {
-    "line": 5,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 6,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 33,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
     "line": 2,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
@@ -50,9 +10,34 @@
     "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
   },
   {
+    "line": 5,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 5,
+    "severity": "Warning",
+    "message": "Unused variable: y"
+  },
+  {
     "line": 6,
     "severity": "Information",
     "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
+  },
+  {
+    "line": 6,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 6,
+    "severity": "Warning",
+    "message": "Unused variable: z"
+  },
+  {
+    "line": 9,
+    "severity": "Warning",
+    "message": "Unused variable: total"
   },
   {
     "line": 10,
@@ -67,7 +52,7 @@
   {
     "line": 14,
     "severity": "Warning",
-    "message": "Style Warning: String concatenation using '+' detected. BML uses '~' for string concatenation. If you intended string concat, use '~' instead of '+'."
+    "message": "Unused variable: ret"
   },
   {
     "line": 21,
@@ -88,5 +73,15 @@
     "line": 33,
     "severity": "Information",
     "message": "Design Info: Magic number '40' detected. Consider defining a named constant"
+  },
+  {
+    "line": 33,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 33,
+    "severity": "Warning",
+    "message": "Unused variable: a"
   }
 ]

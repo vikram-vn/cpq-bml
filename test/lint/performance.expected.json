@@ -1,5 +1,10 @@
 [
   {
+    "line": 0,
+    "severity": "Warning",
+    "message": "Complexity Warning: Cyclomatic complexity is high (18). Consider refactoring into helper functions"
+  },
+  {
     "line": 4,
     "severity": "Warning",
     "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
@@ -30,21 +35,6 @@
     "message": "Performance Info: Table 'table3' is queried 3 times. Consider combining queries"
   },
   {
-    "line": 21,
-    "severity": "Warning",
-    "message": "Design Warning: Nesting depth of 4 exceeds recommended limit of 3"
-  },
-  {
-    "line": 22,
-    "severity": "Warning",
-    "message": "Design Warning: Nesting depth of 5 exceeds recommended limit of 3"
-  },
-  {
-    "line": 0,
-    "severity": "Warning",
-    "message": "Complexity Warning: Cyclomatic complexity is high (18). Consider refactoring into helper functions"
-  },
-  {
     "line": 18,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
@@ -65,9 +55,19 @@
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
+    "line": 21,
+    "severity": "Warning",
+    "message": "Design Warning: Nesting depth of 4 exceeds recommended limit of 3"
+  },
+  {
     "line": 22,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 22,
+    "severity": "Warning",
+    "message": "Design Warning: Nesting depth of 5 exceeds recommended limit of 3"
   },
   {
     "line": 33,

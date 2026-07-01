@@ -25,11 +25,6 @@
     "message": "Security Warning: Dynamic query concatenation detected in BMQL. Use $variable syntax instead to prevent SQL injection"
   },
   {
-    "line": 10,
-    "severity": "Warning",
-    "message": "Style Warning: String concatenation using '+' detected. BML uses '~' for string concatenation. If you intended string concat, use '~' instead of '+'."
-  },
-  {
     "line": 14,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
