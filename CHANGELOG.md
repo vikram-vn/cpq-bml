@@ -4,7 +4,7 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.4.2]
+## [1.4.4]
 
 ### Added
 - Standardized all codebase filenames to use **camelCase** for consistency across core logic and tests.
