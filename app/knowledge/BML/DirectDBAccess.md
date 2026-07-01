@@ -12,13 +12,17 @@ tags: ['BML', 'CPQ', 'Functions']
 
 This group of functions allows direct access to data stored in Oracle CPQ databases.
 
-![Closed](images/transparent.gif)bmql
+
+## bmql
+
 
 This function returns a Record Set containing the results of the SQL query. Oracle CPQ can query system tables and user-create Data Tables from within BML, using a SQL-like syntax.
 
 For more information about this function, see [BigMachines Query Language (BMQL)](./BMQL.md).
 
-![Closed](images/transparent.gif)getboolean
+
+## getboolean
+
 
 Returns the boolean value in the Record for the provided field name.
 
@@ -34,7 +38,9 @@ if(val); // can do boolean operations. Useful in if conditions
 }
 ```
 
-![Closed](images/transparent.gif)getdate
+
+## getdate
+
 
 This BMQL function returns the date value in the Record for the provided field name.
 
@@ -50,7 +56,9 @@ isweekend(val); // can do date operations. Date functions can be applied
 }
 ```
 
-![Closed](images/transparent.gif)getfloat
+
+## getfloat
+
 
 Returns the float value in the Record for the provided field name.
 
@@ -66,7 +74,9 @@ val2 = val * 0.1; // can do float operations
 }
 ```
 
-![Closed](images/transparent.gif)getint
+
+## getint
+
 
 Returns the integer value in the Record for the provided field name.
 
@@ -82,7 +92,9 @@ val2 = val + 10; // can do integer operations
 }
 ```
 
-![Closed](images/transparent.gif)getmessage
+
+## getmessage
+
 
 Returns the error message in the given Record Set if it has errors with query execution; empty otherwise.
 
@@ -101,7 +113,9 @@ msg = getmessage(rows); // msg has the error message why the query failed
 }
 ```
 
-![Closed](images/transparent.gif)getpartsdata
+
+## getpartsdata
+
 
 :::warning
 This function is deprecated, and no longer supported. Use [BMQL()](./BMQL.md) instead.
@@ -111,7 +125,9 @@ This function is vulnerable to SQL injection.
 
 This function returned a 2-D array of String containing parts data for valid Part Numbers passed in.
 
-![Closed](images/transparent.gif)gettabledata
+
+## gettabledata
+
 
 :::warning
 This function is deprecated, and no longer supported. Use [BMQL()](./BMQL.md) instead.
@@ -121,7 +137,9 @@ This function is vulnerable to SQL injection.
 
 This function returned a 2-D array of String containing Data Table data matching the condition specified.
 
-![Closed](images/transparent.gif)gettransaction
+
+## gettransaction
+
 
 The function `gettransaction(bsId)` simplifies access to stored transaction information. It retrieves, as a string, the transaction XML for a given Transaction ID. Beginning in 21A, Oracle CPQ provides the ability to filter data when running this BML function.
 
@@ -176,7 +194,9 @@ If a Transaction with the given Id doesn't exist, the formula throws an exceptio
   * Approval History
 :::
 
-![Closed](images/transparent.gif)haserror
+
+## haserror
+
 
 Returns true if fetching the given Record Set failed and has errors with query execution; false otherwise.
 
@@ -191,7 +211,9 @@ if(haserror(rows)) {
 }
 ```
 
-![Closed](images/transparent.gif)recordset()
+
+## recordset()
+
 
 Returns a new Record Set to be used for later assignments. It is a collection of dictionaries. It can also be used as a function in conjunction with BMQL.
 
@@ -214,7 +236,9 @@ rs = bmql(query2);
 There is no way to return a recordSet result in a Util library function.
 :::
 
-![Closed](images/transparent.gif)recordset and SQL Queries
+
+## recordset and SQL Queries
+
 
 Returns a Record Set containing the results of the SQL query.
 
@@ -248,4 +272,5 @@ BMQL does not support a parts query that retrieves more than 500 parts from a no
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

@@ -135,4 +135,5 @@ To increase the default row and column size, open a ticket on [My Oracle Support
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

@@ -10,39 +10,53 @@ tags: ['BML', 'CPQ', 'Functions']
 
 ## CPQ Constants
 
-![Closed](images/transparent.gif)BM_CM_RULES_LOCATION
+
+## BM_CM_RULES_LOCATION
+
 
 Dictionary key for the rule's message location.
 
 Where the message will be displayed. Options are attribute (default) and top.
 
-![Closed](images/transparent.gif)BM_CM_RULES_MESSAGE
+
+## BM_CM_RULES_MESSAGE
+
 
 Dictionary key for the rule's message.
 
 The message to be displayed for the violated constraint.
 
-![Closed](images/transparent.gif)BM_CM_RULES_OPERATOR
+
+## BM_CM_RULES_OPERATOR
+
 
 Dictionary key for the rule's operator.
 
 Operator used to evaluate constraint, as in Simple Constraints.
 
-![Closed](images/transparent.gif)BM_CM_RULES_VALUES
+
+## BM_CM_RULES_VALUES
+
 
 Dictionary key for the rule's values.
 
 Tilde-delimited values used to evaluate constraint, as in Simple Constraints.
 
-![Closed](images/transparent.gif)BM_CONFIGURATION_KEY
+
+## BM_CONFIGURATION_KEY
+
 
 Generic key used to determine the current configuration context.
 
-![Closed](images/transparent.gif)BM_DEFAULT_SOURCE_IDENTIFIER
+
+## BM_DEFAULT_SOURCE_IDENTIFIER
+
 
 The variable name of the commerce process or external application identifier.
 
-![Closed](images/transparent.gif)BM_PARTNER_SECURITY_TOKEN
+
+## BM_PARTNER_SECURITY_TOKEN
+
 
 The BM_PARTNER_SECURITY_TOKEN parameter represents the WSSE security Username Token for SOAP, used for sending stateless SOAP with `UrlDataByPost`.
 
@@ -58,35 +72,51 @@ Inserts the block
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity- secext-1.0.xsd"><wsse:UsernameToken><wsse:Username>User'sPartnerLogin</wsse:Username> <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">User'sPartnerPassword</wsse:Password></wsse:UsernameToken> </wsse:Security>
 ```
 
-![Closed](images/transparent.gif)BM_PRIOR_CONFIGURATION_KEY
+
+## BM_PRIOR_CONFIGURATION_KEY
+
 
 Generic key used to determine prior configuration context.
 
-![Closed](images/transparent.gif)BM_PRIOR_ROOT_BOM_ITEM
+
+## BM_PRIOR_ROOT_BOM_ITEM
+
 
 Projected state of the asset calculated for a requested date.
 
-![Closed](images/transparent.gif)BM_REASON_STATUS_APPROVED
+
+## BM_REASON_STATUS_APPROVED
+
 
 Reason exists in the user-side tree and it is approved by all approvers, therefore the reason is completely approved.
 
-![Closed](images/transparent.gif)BM_REASON_STATUS_INACTIVE
+
+## BM_REASON_STATUS_INACTIVE
+
 
 Reason exists in admin reason tree but the condition for the reason is not met, therefore no record for it exists in the user-side tree.
 
-![Closed](images/transparent.gif)BM_REASON_STATUS_INVALID
+
+## BM_REASON_STATUS_INVALID
+
 
 No reason exists in admin reason tree with given variable name.
 
-![Closed](images/transparent.gif)BM_REASON_STATUS_PENDING
+
+## BM_REASON_STATUS_PENDING
+
 
 Reason exists in the user-side reason tree and there are pending approvals.
 
-![Closed](images/transparent.gif)BM_REASON_STATUS_REJECTED
+
+## BM_REASON_STATUS_REJECTED
+
 
 Reason exits in user-side tree, but has been rejected by at least one approver.
 
-![Closed](images/transparent.gif)BM_REMOTE_APPROVAL_STATUS_APPROVED
+
+## BM_REMOTE_APPROVAL_STATUS_APPROVED
+
 
 Approved Status. This is used in Remote Approvals in the tilde separated approval history to be returned in the BML in Approve/Reject action
 
@@ -96,7 +126,9 @@ Example:
 returnString=returnString+ApproverName+"~"+ApproverCompany+"~"+ApproverDate+"~"+BM_REMOTE_APPROVAL_STATUS_APPROVED+ "~" + ApproverComment +"~||";
 ```
 
-![Closed](images/transparent.gif)BM_REMOTE_APPROVAL_STATUS_CUSTOM
+
+## BM_REMOTE_APPROVAL_STATUS_CUSTOM
+
 
 Custom Status. This is used in Remote Approvals in the tilde separated approval history to be returned in the BML in Approve/Reject action. This can be used for anything other than Approved/Rejected
 
@@ -106,7 +138,9 @@ Example:
 returnString=returnString+ApproverName+"~"+ApproverCompany+"~"+ApproverDate+"~"+BM_REMOTE_APPROVAL_STATUS_CUSTOM+ "~" + ApproverComment +"~||";
 ```
 
-![Closed](images/transparent.gif)BM_REMOTE_APPROVAL_STATUS_REJECTED
+
+## BM_REMOTE_APPROVAL_STATUS_REJECTED
+
 
 Rejected Status. This is used in Remote Approvals in the tilde separated approval history to be returned in the BML in Approve/Reject action
 
@@ -116,11 +150,15 @@ Example:
 returnString=returnString+ApproverName+"~"+ApproverCompany+"~"+ApproverDate+"~"+BM_REMOTE_APPROVAL_STATUS_REJECTED+ "~" + ApproverComment +"~||";
 ```
 
-![Closed](images/transparent.gif)BM_SALES_ROOT_BOM_ITEM
+
+## BM_SALES_ROOT_BOM_ITEM
+
 
 Sales BOM used for launching configurator.
 
-![Closed](images/transparent.gif)BM_UNCHANGED_DATE
+
+## BM_UNCHANGED_DATE
+
 
 Constant for 'Leave Value Unchanged' for Date.
 
@@ -134,7 +172,9 @@ If you want to keep the value of `dateArr[0]` unchanged, specify the following:
 
 dateArr = Date [] {$BM_UNCHANGED_DATE$, getdate};
 
-![Closed](images/transparent.gif)BM_UNCHANGED_NUM
+
+## BM_UNCHANGED_NUM
+
 
 Constant for 'Leave Value Unchanged' for Number. This is used to specify an array value that should remain unchanged.
 
@@ -148,7 +188,9 @@ If you want to assign new values to `intArr[1]` and `intArr[2]` but keep `intArr
 
 intArr = Integer [] {$BM_UNCHANGED_NUM$, 21,23};
 
-![Closed](images/transparent.gif)BM_UNCHANGED_STR
+
+## BM_UNCHANGED_STR
+
 
 Constant for 'Leave Value Unchanged' for String.
 
@@ -164,4 +206,5 @@ strArr = String [] {$BM_UNCHANGED_STR$, "abc"};
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

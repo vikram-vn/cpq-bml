@@ -16,7 +16,9 @@ BML libraries can take Arrays and Dictionaries as parameters. There is no UI int
 
 ## Administration
 
-![Closed](images/transparent.gif)Before you begin
+
+## Before you begin
+
 
 The process to debug a BML library will generally be the same:
 
@@ -48,7 +50,9 @@ print res; // will be "This is the return string."
 
 print myDict; // will be "{key1=val1, key2=val2}"
 
-![Closed](images/transparent.gif)Example
+
+## Example
+
 
 Assume that when a user clicks Save they get an error "Divide by 0". The error logs identify the problem as occurring in the Save action.
 
@@ -164,7 +168,9 @@ return result;
 
 ## Use Case
 
-![Closed](images/transparent.gif)Util Library Debugger
+
+## Util Library Debugger
+
 
 1. ![Closed](images/transparent.gif)Obtain required information for the Util Function.
 
@@ -224,4 +230,5 @@ Integration details can be retrieved using BMQL, including usernames and passwor
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

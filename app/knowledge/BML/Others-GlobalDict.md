@@ -12,7 +12,9 @@ tags: ['BML', 'CPQ', 'Functions']
 
 Global dictionary functions support Asset-Based Ordering and are available for setting, getting, and removing a key-value pair from the global dictionary in BML. Available across multiple sessions, the values are removed periodically when they exceed the minimum time to live specified while setting the value. There is no guarantee the global dictionary values are available after the minimum time to live.
 
-![Closed](images/transparent.gif)globaldictget
+
+## globaldictget
+
 
 This function returns a value stored in the global
  dictionary corresponding to the given key. If the key is not found in the
@@ -43,7 +45,9 @@ print valstr1;
 //Output: some string2
 ```
 
-![Closed](images/transparent.gif)globaldictremove
+
+## globaldictremove
+
 
 This function removes a given key-value pair from the
  global dictionary. The function returns true if the key-value pair is successfully
@@ -71,7 +75,9 @@ print globaldictremove("globalkey1");
 The method will return false when trying to remove a key that does not exist in the global cache.
 :::
 
-![Closed](images/transparent.gif)globaldictset
+
+## globaldictset
+
 
 This function adds or updates the key-value pair in the
  global dictionary.
@@ -114,4 +120,5 @@ Oracle CPQ recommends not setting the same globaldict key with the same value us
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

@@ -12,7 +12,9 @@ tags: ['BML', 'CPQ', 'Functions']
 
 Math, or numeric, functions serve many purposes throughout the Oracle CPQ application. Many of them represent basic mathematical and trigonometric functions.
 
-![Closed](images/transparent.gif)acos
+
+## acos
+
 
 This function returns the arc cosine of the number or angle in the range of 0 through π.
 
@@ -38,7 +40,9 @@ Example:
 A float variable > 1 returns NaN.
 :::
 
-![Closed](images/transparent.gif)asin
+
+## asin
+
 
 The usual notation of the inverse trig function arcsine is `y = arcsine(x)`, which is also defined as `x = sin(y)`. This notation is the same for arccosine and arctangent. This function returns the arcsine of a number or angle. The range is: `-π/2 ≤ y ≤ π/2 or -90˚ ≤ y ≤ 90˚` and the domain is `-1 ≤ x ≤ 1`.
 
@@ -66,7 +70,9 @@ If you enter your float variable as (-1), which is the lowest number in the doma
 A float variable > 1 returns NaN.
 :::
 
-![Closed](images/transparent.gif)atan
+
+## atan
+
 
 This function returns the arctangent of the number or angle, the range of which is: -π/2 ≤ y ≤ π/2.
 
@@ -88,7 +94,9 @@ Example:
 
 ![atan output example](images/atan__console.png)
 
-![Closed](images/transparent.gif)ceil
+
+## ceil
+
 
 This function converts a float into the next highest whole number.
 
@@ -114,7 +122,9 @@ Example:
 If -1.0 < x < 0, then the result is negative zero.
 :::
 
-![Closed](images/transparent.gif)cos
+
+## cos
+
 
 This function returns the cosine of the number/angle.
 
@@ -136,7 +146,9 @@ Example :
 
 ![cos output example](images/cos__console.png)
 
-![Closed](images/transparent.gif)cosh
+
+## cosh
+
 
 This function returns the hyperbolic cosine of a number or angle.
 
@@ -160,7 +172,9 @@ Example:
 cosh x = 1/2(ex + e-x)
 :::
 
-![Closed](images/transparent.gif)exp
+
+## exp
+
 
 This function returns Euler's number e raised to the power of the number passed through the function, also known as the exponential function.
 
@@ -182,7 +196,9 @@ Example:
 
 ![exp output example](images/exp__console.png)
 
-![Closed](images/transparent.gif)fabs
+
+## fabs
+
 
 This function returns the absolute value of a number.
 
@@ -204,7 +220,9 @@ Example:
 
 ![fabs output example](images/fabs__console.png)
 
-![Closed](images/transparent.gif)fmod
+
+## fmod
+
 
 This function returns the remainder of the division operation x, y.
 
@@ -227,7 +245,9 @@ Example:
 
 If you were to use long division, the answer is 5 with a remainder of 2.  If you plus this operation into your calculator, you will see the answer is 5.6667, because the remained is being divided by the divisor.
 
-![Closed](images/transparent.gif)hypot
+
+## hypot
+
 
 This function returns the `sqrt(x2 + y2)` without intermediaries.
 
@@ -256,7 +276,9 @@ As you can see, we have declared three variables.  The two that were required fo
 Negative numbers can be passed as parameters to this function.
 :::
 
-![Closed](images/transparent.gif)integer
+
+## integer
+
 
 This function returns the integer portion of a float number.  For example, this function would return 14 for the number 14.3345324. **Example Use Case:** Returning an attribute as an integer, without rounding.
 
@@ -276,13 +298,17 @@ Example:
 
 ![integer output example](images/integer__console.png)
 
-![Closed](images/transparent.gif)jNaN
+
+## jNaN
+
 
 Java Constant for Not a Number. This constant is recommended instead of NaN.
 
 **Syntax:** `jNaN`
 
-![Closed](images/transparent.gif)ln
+
+## ln
+
 
 This function returns the natural logarithm (base e) of the number.
 
@@ -314,7 +340,9 @@ ln(0) or ln(-0) = infinity
 ln(infinity) = infinity
 :::
 
-![Closed](images/transparent.gif)log
+
+## log
+
 
 This function returns the base-10 logarithm of the number.
 
@@ -344,7 +372,9 @@ log(0) or log(-0) is negative infinity.
 log(infinity) is infinity.
 :::
 
-![Closed](images/transparent.gif)NaN
+
+## NaN
+
 
 :::warning
 This function is deprecated, and no longer supported. It represented a constant for Not a Number.
@@ -352,7 +382,9 @@ This function is deprecated, and no longer supported. It represented a constant 
 Use [`jNaN`](./jNaN.md) instead.
 :::
 
-![Closed](images/transparent.gif)pow
+
+## pow
+
 
 This function returns the value of the first argument raised to the power of the second argument. **Example Use Case:** Finding the product obtained from multiplying a quantity by itself one or more times.
 
@@ -373,7 +405,9 @@ Example:
 
 ![pow output example](images/pos__console.png)
 
-![Closed](images/transparent.gif)round
+
+## round
+
 
 This function returns the rounded value of a number up to a certain decimal point.
 
@@ -396,7 +430,9 @@ Example:
 
 ![round output example](images/round__console.png)
 
-![Closed](images/transparent.gif)sin
+
+## sin
+
 
 This function returns the trigonometric sine of the number/angle.
 
@@ -418,7 +454,9 @@ Example:
 
 ![sin output example](images/sin__console.png)
 
-![Closed](images/transparent.gif)sinh
+
+## sinh
+
 
 This function returns the hyperbolic sine of a number or angle.
 
@@ -442,7 +480,9 @@ Example :
 sinh x = 1/2(ex - e-x)
 :::
 
-![Closed](images/transparent.gif)sqrt
+
+## sqrt
+
 
 This function returns the positive square root of a number.
 
@@ -460,7 +500,9 @@ Example:
 
 ![sqrt example](images/sqrt__BML.png)
 
-![Closed](images/transparent.gif)tan
+
+## tan
+
 
 This function returns the tangent of the number/angle.
 
@@ -482,7 +524,9 @@ Example:
 
 ![tan output example](images/tan__console.png)
 
-![Closed](images/transparent.gif)tanh
+
+## tanh
+
 
 This function returns the hyperbolic tangent of a number or angle.
 
@@ -520,4 +564,5 @@ tanh x = (ex - 1) / (e2x + 1)
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

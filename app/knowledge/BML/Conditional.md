@@ -12,7 +12,9 @@ tags: ['BML', 'CPQ', 'Functions']
 
 Conditional functions are commands that run only when specified criteria is met. Each conditional statement requires a Boolean expression that may or may not be visible to you. To put it more plainly, a conditional function must evaluate to true or false.
 
-![Closed](images/transparent.gif)break
+
+## break
+
 
 Using this function will break a `for...loop` at the element that you define.
 
@@ -24,7 +26,9 @@ In this example, we used a 1-D string array and asked it to stop when it reached
 
 ![break output example](images/breakconsole.png)
 
-![Closed](images/transparent.gif)continue
+
+## continue
+
 
 This function calls out an element from an array and essentially skips it, but continues looping through the rest of the array. Unlike the break function, the loop continues after it skips over the element.
 
@@ -34,7 +38,9 @@ Example:
 
 ![continue output example](images/continueconsole.png)
 
-![Closed](images/transparent.gif)for...loop
+
+## for...loop
+
 
 The `for...loop` function is meant to loop through a block of code until a specific condition is met.
 
@@ -90,7 +96,9 @@ So, what we will see is that for each row, it will print that row {Row 1 will re
 
 ![Output example of for...loop in 2-D Array](images/2DforLoopConsole.png)
 
-![Closed](images/transparent.gif)if...
+
+## if...
+
 
 What this is saying in plain language is:  "If (condition) is True, then perform the statement".  If that condition is False, then no action is taken.
 
@@ -104,7 +112,9 @@ In this case, "25" is a number, so we used `atof()` to convert the string to a F
 
 ![if statement output example](images/ifStatementConsole.png)
 
-![Closed](images/transparent.gif)if...else
+
+## if...else
+
 
 An `if...else` statement is essentially the same as an `if..`. statement, except that instead of doing nothing if the condition isn't met, a different statement is run.
 
@@ -128,7 +138,9 @@ We are saying, "if the var = 25" is a number, then convert the string to a Float
 
 ![if else output example](images/ifElseStatementConsole.png)
 
-![Closed](images/transparent.gif)if...else...if
+
+## if...else...if
+
 
 An `if...else...if` statement is a statement with two or more conditions.
 
@@ -154,4 +166,5 @@ return false;}
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

@@ -14,7 +14,9 @@ The purpose of good coding style is to write code that is readable. Readable cod
 
 ## Types of Coding Styles
 
-![Closed](images/transparent.gif)Structural Coding Style
+
+## Structural Coding Style
+
 
 1. The Function Header should describe the entire script's salient properties.
 
@@ -77,7 +79,9 @@ Jane Doe            5/1/19               Added additional managers to notificati
 
   * The only exception for the curly bracket rules should be the inner array declaration of a hard-coded 2D array
 
-![Closed](images/transparent.gif)Inline Coding Style
+
+## Inline Coding Style
+
 
 1. The name and format of a BML local variable should immediately communicate its purpose, intended behavior, and usage.
 
@@ -137,4 +141,5 @@ The repetition of these naming conventions will aid a reader in determining the 
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

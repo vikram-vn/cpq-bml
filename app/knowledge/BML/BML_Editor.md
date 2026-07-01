@@ -39,7 +39,9 @@ To access the Util Function Editor, navigate to: **Admin Home > Developer Tools
 | 7    | Validates the function script.                                                                                                                                                                                   |
 | 8    | The function script definition area. Refer to [Script Definition and Syntax Colors](./scriptArea.md).                                                                                                        |
 
-![Closed](images/transparent.gif)Script Definition and Syntax Colors
+
+## Script Definition and Syntax Colors
+
 
 BML can be typed directly into the Script Definition Area.  Save your changes after writing/editing the script.
 
@@ -60,7 +62,9 @@ The  code is displayed in different colors. For example:
 
 ## Administration
 
-![Closed](images/transparent.gif)Create or Edit a  Library Function
+
+## Create or Edit a  Library Function
+
 
 :::note
 To add a Commerce Library Function using the Redwood UI, refer to [Commerce Library Functions](./LibraryFunctions.md).
@@ -82,7 +86,9 @@ Complete the following steps to create a library function.
 
 ![Function Editor Properties ](images/functionEditorProperties_redwood.png)
 
-![Closed](images/transparent.gif)Parameters
+
+## Parameters
+
 
 In the function editor, you can select parameters to include within your code. To enter a parameter:
 
@@ -96,7 +102,9 @@ insert pic
 
   4. Click the **Delete** ![Trash icon](images/ico-trash.svg) icon to remove a parameter from the properties list.
 
-![Closed](images/transparent.gif)Attributes
+
+## Attributes
+
 
 In the function editor, you can select attributes to include within your code.  These attributes are specific to the product family that you are working in.  For example, when you are in Configuration, you can select from a standard product line, model, account, user or configuration attributes.
 To enter an attribute:
@@ -109,7 +117,9 @@ To enter an attribute:
 
   4. Click the **Delete**![Trash icon](images/ico-trash.svg) icon to remove an attribute from the properties list.
 
-![Closed](images/transparent.gif)Library Functions
+
+## Library Functions
+
 
 Once a Util Library Function has been defined, it's available for use in the **Library Function(s)** tab within the Function Editor.
 
@@ -123,7 +133,9 @@ To enter a Library  function:
 
   4. Click the **Delete**![Trash icon](images/ico-trash.svg) icon to remove a library function from the properties list.
 
-![Closed](images/transparent.gif)Standard Functions
+
+## Standard Functions
+
 
 Util and Commerce Library Function Editor use Function to Function calls. Function to Function calls allow admins to compartmentalize BML when dealing with complicated configuration or quoting scenarios. This feature will assist with the organization of BML and provides a solution to the compiled Java class size-limit issue. *Function to function calls mimic the behavior of a Modify function calling a Library function.*
 
@@ -206,4 +218,5 @@ Customers can submit a Service Request (SR) on [My Oracle Support](https://suppo
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

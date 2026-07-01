@@ -16,7 +16,9 @@ User session functions support setting, removing, and getting a key-value pair f
 User session functions are not supported in a multi-node environment. Session variables set using user session functions are only available on the node the variable was set.
 :::
 
-![Closed](images/transparent.gif)usersessionget
+
+## usersessionget
+
 
 This function retrieves a value for a given key from a user session. If
  the key is not found, null is returned.
@@ -52,7 +54,9 @@ valstr2=usersessionget("sessionkey2");
 valstr=usersessionget("sessionkey1","json");
 ```
 
-![Closed](images/transparent.gif)usersessionremove
+
+## usersessionremove
+
 
 This function removes a key-value pair from the user
  session. The function returns true if the key-value pair is successfully
@@ -84,7 +88,9 @@ print usersessionremove("sessionkey1");
 **Note:** The method would return false on trying to remove a key that does not exist in the user session.
 :::
 
-![Closed](images/transparent.gif)usersessionset
+
+## usersessionset
+
 
 This function sets a key-value pair to the user session cache. The values are available as long as the user session is active. Values stored in the session cache are removed automatically when the user logs out, the session expires, or the server is restarted.
 
@@ -137,4 +143,5 @@ Notes:
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

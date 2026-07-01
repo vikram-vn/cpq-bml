@@ -12,7 +12,9 @@ CPQ’s markup language, BML, now allows administrators to create new Java Scrip
 
 ## Functions
 
-![Closed](images/transparent.gif)isjsonnull
+
+## isjsonnull
+
 
 Checks for null values in a JSON or JSON array object and returns a boolean value.
 
@@ -41,7 +43,9 @@ print valBoolean2;
 //Output: true
 ```
 
-![Closed](images/transparent.gif)json
+
+## json
+
 
 Creates a JSON object from a given JSON formatted string. An empty JSON object is created if parameters are not provided.
 
@@ -61,7 +65,9 @@ print jsonObj2;
 //Output: {}
 ```
 
-![Closed](images/transparent.gif)jsonarray
+
+## jsonarray
+
 
 Creates a JSON array object from a given JSON array formatted string. An empty JSON array object is created if parameters are not provided
 
@@ -82,7 +88,9 @@ print jsonArrObj2;
 //Output: []
 ```
 
-![Closed](images/transparent.gif)jsonarrayappend
+
+## jsonarrayappend
+
 
 Appends a given value to the end of a JSON array. The appended value is returned.
 
@@ -107,7 +115,9 @@ print jsonArrObj;
 //Output: [1,"str"]
 ```
 
-![Closed](images/transparent.gif)jsonarraycopy
+
+## jsonarraycopy
+
 
 Creates a copy of a JSON array object. All objects in the array are copied and a similar hierarchy is created. Any changes made to the original JSON array object will not impact the copied JSON array object.
 
@@ -134,7 +144,9 @@ print copyObj;
 //Output: ["string",1,2.3,{"key1":"val1"},[1,2,3],true,false]
 ```
 
-![Closed](images/transparent.gif)jsonarrayget
+
+## jsonarrayget
+
 
 Returns the value from a JSON array object at a given index. The returned value is converted to a data type equal to the valueType parameter, which is String by default.
 
@@ -190,7 +202,9 @@ print valJson;
 //Output: {"key7":"val7","key8":"val8"}
 ```
 
-![Closed](images/transparent.gif)jsonarrayrefid
+
+## jsonarrayrefid
+
 
 Returns a unique reference ID that represents the input JSON array. Can only be invoked by Commerce advanced modify, auto update or advanced default functions. This function provides a more efficient method to pass a JSON array to the BML output to update an array set.
 
@@ -216,7 +230,9 @@ jsonarrayremove(feeJsonArray, 0);
 return result; // feeArraySet does not include the removed first row.
 ```
 
-![Closed](images/transparent.gif)jsonarrayremove
+
+## jsonarrayremove
+
 
 Removes an object specified at given index from the JSON array. The size of the array object after the object is removed is returned.
 An error is thrown if the given index is not available.
@@ -239,7 +255,9 @@ print jsonArrObj;
 //Output: [1,"2"]
 ```
 
-![Closed](images/transparent.gif)jsonarraysize
+
+## jsonarraysize
+
 
 Returns the size of the JSON array.
 
@@ -264,7 +282,9 @@ print arraySize2;
 //Output: 3
 ```
 
-![Closed](images/transparent.gif)jsonarraytostr
+
+## jsonarraytostr
+
 
 Converts a JSON array object into a JSON array formatted string.
 
@@ -283,7 +303,9 @@ print valStr;
 //Output: [1,"2",{"key1":10,"key2":"val"}]
 ```
 
-![Closed](images/transparent.gif)jsoncopy
+
+## jsoncopy
+
 
 Creates a copy of a JSON object. All child nodes of the JSON object are copied and a similar hierarchy is created. Any changes made to the original JSON object will not impact the copied JSON object.
 
@@ -309,7 +331,9 @@ print copyObj;
 //Output: {"key1":null,"key2":"str","key3":90}
 ```
 
-![Closed](images/transparent.gif)jsonget
+
+## jsonget
+
 
 Returns the value from a JSON object for the given key.  The returned value is converted to a data type equal to the valueType parameter, which is String by default.
 
@@ -384,7 +408,9 @@ print defaultVal3;
 //An error is thrown because key10 is not found and the type is integer.
 ```
 
-![Closed](images/transparent.gif)jsonkeys
+
+## jsonkeys
+
 
 Retrieves all first-level keys from a JSON object and returns an array of strings. If the optional parameter (ignoreNullValues) is set to true, null value keys are ignored.
 
@@ -407,7 +433,9 @@ print strArr2;
 //Output: [key1,key2,key3,key4]
 ```
 
-![Closed](images/transparent.gif)jsonnull
+
+## jsonnull
+
 
 Creates an instance of the JSON null object (represents null in the JSON string).
 
@@ -423,7 +451,9 @@ print jnull;
 //Output: null
 ```
 
-![Closed](images/transparent.gif)jsonpathcheck
+
+## jsonpathcheck
+
 
 Checks if a JSON path is found in a JSON object and returns a boolean value.
 
@@ -459,7 +489,9 @@ jsonpathcheck(jsonObj,"...");
 //An error is thrown because the JSON path is invalid.
 ```
 
-![Closed](images/transparent.gif)jsonpathgetmultiple
+
+## jsonpathgetmultiple
+
 
 Retrieves the value(s) and path(s) from the JSON object for the given JSON path expression.
 
@@ -495,7 +527,9 @@ print pathValue;
 //$..key[1:3] All keys from index 1 (inclusive) until index 3 (exclusive)
 ```
 
-![Closed](images/transparent.gif)jsonpathgetsingle
+
+## jsonpathgetsingle
+
 
 Retrieves the value from the JSON object for the given JSON path expression.
 
@@ -560,7 +594,9 @@ print defaultVal2;
 //Output: unknown
 ```
 
-![Closed](images/transparent.gif)jsonpathremove
+
+## jsonpathremove
+
 
 Removes the object(s) and value(s) corresponding to a given JSON path expression.
 
@@ -603,7 +639,9 @@ print jsonObj;
 //Output: {"key2":"str","key3":90}
 ```
 
-![Closed](images/transparent.gif)jsonpathset
+
+## jsonpathset
+
 
 Updates all nodes corresponding to a given JSON path in a JSON object with a value and returns a string array of the nodes that were updated.
 
@@ -659,7 +697,9 @@ print jsonObj5;
 //$.key[1:3].value Updates nodes from index 1 (inclusive) until index 3 (exclusive)
 ```
 
-![Closed](images/transparent.gif)jsonput
+
+## jsonput
+
 
 Inserts or updates a key-value entry in a JSON object and returns the inserted/updated value. If the given key already exists in the JSON object, its corresponding value will be updated to the given value.
 
@@ -702,7 +742,9 @@ print jsonStr;
 //Output: {"key1":"mystring","key2":10,"key3":2.9,"key4":["v1","v2"],"key5":true,"key6":null}
 ```
 
-![Closed](images/transparent.gif)jsonremove
+
+## jsonremove
+
 
 Removes the first-level key-value entry from a JSON object for the given key and returns a boolean value.
 
@@ -728,7 +770,9 @@ print jsonObj;
 //Output: {"b":"test"}
 ```
 
-![Closed](images/transparent.gif)jsontostr
+
+## jsontostr
+
 
 Converts a JSON object into a JSON formatted string.
 
@@ -751,7 +795,9 @@ print jsonStr;
 
 A JSON Path expression is used to represent one or more nodes or values in a JSON structure and is also used for data filtering and further data insight.
 
-![Closed](images/transparent.gif)Write a Simple Path Expression
+
+## Write a Simple Path Expression
+
 
 There are two ways to write a simple JSON path expression
 
@@ -779,7 +825,9 @@ One JSON path can also represent multiple values. For example:`$..label`will rep
 
 * For example: `$.['attributes'].['size'].['label'],$.['children'][0].['quantity']`Use the following operators to write complex JSON path expressions.
 
-![Closed](images/transparent.gif)Dot Operators
+
+## Dot Operators
+
 
 | Operators               | Description                                                    |
 | ----------------------- | -------------------------------------------------------------- |
@@ -799,7 +847,9 @@ One JSON path can also represent multiple values. For example:`$..label`will rep
 
 * Filter expressions support common comparison operators `==`, `!=`, `<`, `<=`, `>`, >`=`, and the below advanced operators.
 
-![Closed](images/transparent.gif)Advanced Operators
+
+## Advanced Operators
+
 
 | Operators | Description                                                          |
 | --------- | -------------------------------------------------------------------- |
@@ -809,7 +859,9 @@ One JSON path can also represent multiple values. For example:`$..label`will rep
 | size      | Left side size is equal to right.                                    |
 | empty     | Left side is empty.                                                  |
 
-![Closed](images/transparent.gif)JSON Path Examples
+
+## JSON Path Examples
+
 
 Given the following:
 
@@ -882,7 +934,9 @@ Given the following:
 
 The following examples use  JSON to parse, extract, modify, add, or remove data using BML functions.
 
-![Closed](images/transparent.gif)Convert a JSON String into a JSON Object
+
+## Convert a JSON String into a JSON Object
+
 
 Given the following:
 
@@ -922,7 +976,9 @@ Output:
 }
 ```
 
-![Closed](images/transparent.gif)Use References to Modify JSON or JSON Array Object Values
+
+## Use References to Modify JSON or JSON Array Object Values
+
 
 JSON references can be used to retrieve and modify nested JSON or JSON array object values. The following functions return JSON or JSON array references: `jsonget()`, `jsonarrayget()`, `jsonput()`, and `jsonarrayappend()`.
 
@@ -978,7 +1034,9 @@ print jobjAsset;
 "quantity":"99","price":50}],"finalDate":null,"finalAction":"UPDATE","available ":true}}
 ```
 
-![Closed](images/transparent.gif)Add a New JSON Object into a Lines JSON Array
+
+## Add a New JSON Object into a Lines JSON Array
+
 
 Given the following:
 
@@ -1013,7 +1071,9 @@ Output:
 "finalAction":"UPDATE","available":true}}
 ```
 
-![Closed](images/transparent.gif)Add a New JSON Array into an Asset JSON Object
+
+## Add a New JSON Array into an Asset JSON Object
+
 
 Given the following:
 
@@ -1045,7 +1105,9 @@ Output:
 "finalAction":"UPDATE","available":true},"size":["Large","Medium","Small"]}
 ```
 
-![Closed](images/transparent.gif)Use References to Modify an Asset Object
+
+## Use References to Modify an Asset Object
+
 
 When a JSON or JSON array object is inserted using `jsonput`, `jsonarrayappend`, or `jsonpathset` a new reference object is created and inserted. Always use the new reference to make modifications to the object.
 
@@ -1199,7 +1261,9 @@ Output:
 
 There are known limitations related to creating or updating a JSON or a JSON array object.
 
-![Closed](images/transparent.gif)Limitations and Issues for JSON Object Keys
+
+## Limitations and Issues for JSON Object Keys
+
 
 Refer to the following guidelines:
 
@@ -1219,7 +1283,9 @@ Refer to the following guidelines:
 
 * Any string, encircled by curly { } or square brackets [ ], which is also encircled by single or double quotation marks can’t be saved in this form as a value within a JSON object. The value will be saved without the quotation marks. For example,`"{value1}"`, `"[value2]"`, `'{value3}'`, or `'[value4]'` is saved as`{value1}`,`[value2]`,`{value3}`, or`[value4]`.
 
-![Closed](images/transparent.gif)Recommendations and Workaround Examples
+
+## Recommendations and Workaround Examples
+
 
 We recommend you do not to use curly { } or square[ ] brackets in JSON keys. If a key contains an opening square bracket, you must use `jsonput()` or `json()` function for updating instead of the `jsonpathset()` function.
 
@@ -1243,4 +1309,5 @@ print "new value: " + jsonget(j, "key");  // this will show as new value:
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

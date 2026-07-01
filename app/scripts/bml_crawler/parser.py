@@ -104,6 +104,14 @@ class HtmlToMarkdown:
         if tag_name in ['script', 'style']:
             return ""
 
+        # Check for transparent.gif accordion header
+        if tag_name in ['p', 'div', 'b', 'strong', 'h3', 'h4']:
+            img = element.find('img')
+            if img and 'transparent.gif' in img.get('src', ''):
+                text = element.get_text().strip()
+                if text:
+                    return f"\n\n## {text}\n\n"
+
         children_md = "".join(self.convert(child) for child in element.children)
 
         if tag_name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:

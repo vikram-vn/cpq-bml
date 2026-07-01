@@ -34,7 +34,9 @@ When running insert, delete, update, or modify from a BML debugger, the returned
 
 ## Administration
 
-![Closed](images/transparent.gif)Basics
+
+## Basics
+
 
 **Syntax:** bmql(sqlQuery [, stringDict])
 
@@ -62,7 +64,9 @@ else {
 return rs;
 ```
 
-![Closed](images/transparent.gif)Advanced
+
+## Advanced
+
 
 bmql(sqlQuery)
 
@@ -80,7 +84,9 @@ The `sqlQuery` must be written as a String.
 
 Statement Keywords
 
-![Closed](images/transparent.gif)SELECT
+
+## SELECT
+
 
 The SELECT statement is used to specify the columns (or fields) of desired data.
 
@@ -130,7 +136,9 @@ By using SELECT *, this statement can be greatly simplified as shown in the foll
 
 ![ SELECT * statement example for joining two tables.](images/bmql_join_datatable2.png)
 
-![Closed](images/transparent.gif)FROM
+
+## FROM
+
 
 The FROM statement is used to specify the database object from which to retrieve the data
 
@@ -140,7 +148,9 @@ Example
 FROM someUserCreatedTable
 ```
 
-![Closed](images/transparent.gif)DISTINCT
+
+## DISTINCT
+
 
 Use the DISTINCT keyword in the SELECT clause to return distinct values.
 
@@ -162,7 +172,9 @@ FROM dataBaseObject;
 [ORDER BY field1 [ASC|DESC],[ field2 [ASC|DESC], ..., fieldn [ASC|DESC]]];
 ```
 
-![Closed](images/transparent.gif)ORDER BY
+
+## ORDER BY
+
 
 The ORDER BY statement is used to sort the data returned on the provided fields.
 
@@ -176,7 +188,9 @@ ORDER BY column 1 desc
 
 Live Data Table Statement Keywords
 
-![Closed](images/transparent.gif)DELETE
+
+## DELETE
+
 
 The DELETE statement is used to delete existing rows or columns into a Live Data Table. The DELETE statement is used with the FROM keyword.
 
@@ -201,7 +215,9 @@ For DELETE statements, `results` is a records set with one integer entry that in
 Executing a DELETE statement without a WHERE clause will clear all of the data in the Live Data Table.
 :::
 
-![Closed](images/transparent.gif)FROM
+
+## FROM
+
 
 The FROM keyword specifies the object to retrieve the data from. The FROM keyword is used with the DELETE statement.
 
@@ -224,7 +240,9 @@ results = bmql("delete from table1 where column1 = 'value2'");
 Executing a DELETE statement without a WHERE clause will clear all of the data in the Live Data Table.
 :::
 
-![Closed](images/transparent.gif)INSERT
+
+## INSERT
+
 
 The INSERT statement is used to add a new record into a Live Data Table. The INSERT statement is used with the INTO and VALUES keywords.
 
@@ -246,7 +264,9 @@ results = bmql("insert into table1 (column1, column2) values ('value1', 11),('va
 
 For INSERT statements, `results` is a record set with one integer entry that indicates the number of rows added. This is usually the same as the number of records in the VALUES part of the BMQL statement, but sometimes a row may fail due to duplicate natural key entries. When this occurs, a `records_error` entry is added, showing the first record that blocks the insertion as a JSON string.
 
-![Closed](images/transparent.gif)INTO
+
+## INTO
+
 
 The INTO keyword is followed by the name of the Live Data Table and then a list of columns in parentheses and without quotes. These are the columns which the values statement will populate. The INTO keyword is used with the INSERT and VALUES keywords.
 
@@ -266,7 +286,9 @@ results = bmql("insert into table1 (column1, column2) values ('value1', 11),('va
     }
 ```
 
-![Closed](images/transparent.gif)MODIFY
+
+## MODIFY
+
 
 The MODIFY statement is used to modify an existing record or create a new record in a Live Data Table. The MODIFY statement is used with the SET keyword.
 
@@ -293,7 +315,9 @@ For MODIFY statements, `results` is a record set with two integer entries, one w
 Executing a MODIFY statement without a WHERE clause will modify all of the data in the Live Data Table. The maximum number of records processed by a MODIFY statement with or without a WHERE clause is 1,000 records.
 :::
 
-![Closed](images/transparent.gif)UPDATE
+
+## UPDATE
+
 
 The UPDATE statement is used to update an existing record in a Live Data Table. The UPDATE statement is used with the SET keyword.
 
@@ -317,7 +341,9 @@ For UPDATE statements, `results`is a record set with one integer entry showing t
 Executing an UPDATE statement without a WHERE clause will update all of the data in the Live Data Table. The maximum number of records processed by a MODIFY statement with or without a WHERE clause is 1,000 records.
 :::
 
-![Closed](images/transparent.gif)SET
+
+## SET
+
 
 The SET keyword is used to change field values in the Live Data Table. The format is the name of the column followed by the "`=`" operator and then the value to be set. For example, `string1 = 'ABC-112A'`. The SET keyword is used with MODIFY or UPDATE statements.
 
@@ -342,7 +368,9 @@ results = bmql("modify table1 set colum1 = 'new_value1', column2 = 'new_value2' 
 Executing a MODIFY or UPDATE statements without a WHERE clause will modify or update all of the data in the Live Data Table.
 :::
 
-![Closed](images/transparent.gif)VALUES
+
+## VALUES
+
 
 The VALUES keyword prefixes a list of records to be inserted. Each record is bracketed by parentheses and contains a list of values to be inserted. The values must be given in the same order as the columns. String values must be in single quotes. The VALUES keyword is used with the INSERT and INTO keywords.
 
@@ -362,7 +390,9 @@ results = bmql("insert into table1 (column1, column2) values ('value1', 11),('va
     }
 ```
 
-![Closed](images/transparent.gif)Operators
+
+## Operators
+
 
 User operators to refine your queries. There are two kinds of operators:
 
@@ -373,7 +403,9 @@ User operators to refine your queries. There are two kinds of operators:
 | IS NOT NULL | This is used to find values that are not null in an array. | SELECT part_number FROM _parts WHERE part_number LIKE $var_1 **IS NOT NULL** |
 | ----------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------- |
 
-![Closed](images/transparent.gif)Wildcards
+
+## Wildcards
+
 
 The symbols **%** and **_** are used as wildcards. Wildcards can only be used in a 'LIKE' query in the condition of a BMQL query. **Example:**bmql("SELECT Part FROM sammie WHERE Type LIKE '%ot'").
 
@@ -385,7 +417,9 @@ Three functions are available to retrieve data from the result set depending on 
 
 * getFloat(float)
 
-![Closed](images/transparent.gif)Finding Available Tables
+
+## Finding Available Tables
+
 
 Within each Function Wizard, scroll down to the end of the **Behavior** section to find a link that opens a pop-up window that will show all accessible databases and Data Tables. Select the database or Data Table name to see a list of column names and whether a column can be used in the WHERE clause.
 
@@ -401,9 +435,13 @@ BMQL does not support a parts query that retrieves more than 500 parts from a no
 * For security reasons, the query cannot be built dynamically and passed into BMQL. Dynamic values can be passed in the WHERE clause of the query by preceding the variable name with a "$".
 :::
 
-![Closed](images/transparent.gif)Parameters
 
-![Closed](images/transparent.gif)contextOverride
+## Parameters
+
+
+
+## contextOverride
+
 
 This dictionary can be populated with the language context variable as a key and an overriding language as the value. When pulling data from the _parts Data Table, this will substitute this language in place of the user's preferred language.
 
@@ -423,7 +461,9 @@ This will return the German description of the Translations part.
 
 This parameter is optional.
 
-![Closed](images/transparent.gif)fieldMap
+
+## fieldMap
+
 
 The fieldMap parameter is a string dictionary.  It is used when the WHERE clause has been completely substituted with a string variable, and there are also variables within the WHERE clause.
 
@@ -446,7 +486,9 @@ This parameter is optional.
 If the third parameter is used, the second parameter must also be defined.
 :::
 
-![Closed](images/transparent.gif)JOIN Clauses
+
+## JOIN Clauses
+
 
 JOIN clauses in BMQL support the ANSI standard SQL syntax for JOIN clauses. A JOIN clause combines rows from two or more tables, based on a related column between them. BMQL supports the following JOIN types:
 
@@ -456,7 +498,9 @@ JOIN clauses in BMQL support the ANSI standard SQL syntax for JOIN clauses. A JO
 
 * RIGHT OUTER JOIN returns all records from the right table, and matched records from the left table.
 
-![Closed](images/transparent.gif)Join Two Tables
+
+## Join Two Tables
+
 
 Administrators can join tables using SELECT statements containing FROM and JOIN clauses. The JOIN clause can reference multiple columns from either table. For example: the following statement returns records from "Products" and "Orders" tables that have matched data in the "ProductId" field.
 
@@ -468,7 +512,9 @@ SELECT Order.OrderId, Products.ProductId, Products.Name, Products.UnitPrice FROM
 At least one joined column for each of the join tables must be indexed or an error occurs.
 :::
 
-![Closed](images/transparent.gif)JOIN Multiple Tables
+
+## JOIN Multiple Tables
+
 
 JOIN clauses can also be used to join multiple tables. For example: the following statement uses LEFT OUTER JOIN and INNER JOIN to return from "Products", "Orders", and "Customers" tables.
 
@@ -476,7 +522,9 @@ JOIN clauses can also be used to join multiple tables. For example: the followin
 SELECT Orders.OrderId, Products.ProductId, Products.Name, Products.CustomerFilter, Customers.Name, Orders.Price FROM Products LEFT OUTER JOIN Orders ON Products.ProductId = Orders.ProductId INNER JOIN Customer.CustomerId = Products.CustomerFilter
 ```
 
-![Closed](images/transparent.gif)Dotted Notation
+
+## Dotted Notation
+
 
 Dotted notation is used to select specific fields from different tables. If the column name is unique, just the column name can be referenced without using dotted notation. For example: the following statement references the unique "Name" column.
 
@@ -486,11 +534,15 @@ SELECT Orders.OrderId, Products.ProductId, Products.Name, Products.UnitPrice FRO
 Even though unique names can be used without dotted notation, best practice is to use dotted notation whenever two or more tables are referenced in a BMQL query.
 :::
 
-![Closed](images/transparent.gif)Enhanced ORDER BY Operation
+
+## Enhanced ORDER BY Operation
+
 
 Previously, BMQL only supported ORDER BY clauses in simple queries without dotted notation. Beginning in Release 18A,  the ORDER BY clause to supports JOIN clauses, statements with dotted notation, and statements without dotted notation that reference unique columns in BMQL.
 
-![Closed](images/transparent.gif)ORDER BY Support for JOIN Clause
+
+## ORDER BY Support for JOIN Clause
+
 
 ORDER BY clauses now support BMQL RIGHT OUTER JOIN, LEFT OUTER JOIN, and INNER JOIN. For example: the following statement sorts the returned JOIN results using the "Price" column.
 
@@ -498,7 +550,9 @@ ORDER BY clauses now support BMQL RIGHT OUTER JOIN, LEFT OUTER JOIN, and INNER J
 SELECT Orders.OrderId, Products.ProductId, Products.Name, Products.UnitPrice, Orders.Quantity, Orders.Price FROM Products INNER JOIN Orders ON Products.ProductId = Orders.ProductId ORDER BY Price
 ```
 
-![Closed](images/transparent.gif)ORDER BY with Dotted Notation
+
+## ORDER BY with Dotted Notation
+
 
 Columns can be sorted using the ORDER BY clause and dotted notation. For example: the following statement sorts the returned JOIN results in descending order using the "Products " table "ProductId" column.
 
@@ -512,7 +566,9 @@ SELECT Orders.OrderId, Products.ProductId, Products.Name, Products.UnitPrice, Or
 * An error message is generated when a column is specified in ORDER BY without dotted notation and that column name exists in more than one table being referenced in the BMQL query.
 :::
 
-![Closed](images/transparent.gif)Sort Multiple Columns
+
+## Sort Multiple Columns
+
 
 Multiple columns can be sorted using the ORDER BY clause. For example: the following statement sorts the returned JOIN results by "Orders.CustomerId", then "Orders.Date" in descending order.
 
@@ -520,7 +576,9 @@ Multiple columns can be sorted using the ORDER BY clause. For example: the follo
 SELECT Orders.OrderId, Orders.CustomerId, Products.ProductId, Products.Name, Products.UnitPrice, Orders.Quantity, Orders.Price FROM Products INNER JOIN Orders ON Products.ProductId = Orders.ProductId ORDER BY Orders.CustomerId, Orders.Date DESC
 ```
 
-![Closed](images/transparent.gif)Alias Support for SELECT and FROM Clauses
+
+## Alias Support for SELECT and FROM Clauses
+
 
 Oracle CPQ 18A provides ANSI SQL JOIN support with aliasing in SELECT and FROM clauses. SQL aliases are used to give a table or a column a temporary name. Aliases are often used to make column names more readable. Aliases only exist for the duration of the query. For example: the following statement the column names for the returned results table will be renamed as "empLastName" instead of "T1.lastname", etc.
 
@@ -528,9 +586,13 @@ Oracle CPQ 18A provides ANSI SQL JOIN support with aliasing in SELECT and FROM c
 SELECT T1.lastName as empLastName, T1.firstName as empFirstName, T2.lastName as mgrLastName, T2.firstName as mgrfirstName, FROM Employee T1 INNER JOIN Employee T2 ON T1.mgrId = T2.employeeId
 ```
 
-![Closed](images/transparent.gif)WHERE Clauses and Parameters
 
-![Closed](images/transparent.gif)Overview
+## WHERE Clauses and Parameters
+
+
+
+## Overview
+
 
 When using BMQL, your `WHERE` clauses will be your parameters.  BML variables can also be used in `WHERE` clause conditions.
 
@@ -552,7 +614,9 @@ Line item variables cannot be used directly in the query.
 Instead, assign line item variables to variables in BML and then use the BML variables in the query string.
 :::
 
-![Closed](images/transparent.gif)WHERE Condition
+
+## WHERE Condition
+
 
 The condition is the field operator. **Example:** `part_number = 'BL-5C'`.
 
@@ -594,7 +658,9 @@ The condition must come before the predicate.
 The WHERE clause is not supported for BMQL Transaction.
 :::
 
-![Closed](images/transparent.gif)Conditional Evaluation
+
+## Conditional Evaluation
+
 
 A Boolean value can be used with the AND to conditionally evaluate the predicate in the WHERE clause.
 
@@ -612,7 +678,9 @@ e2 = false;
 rs = bmql("select... where $e1 AND f1 = v1 OR $e2 AND f2 = v2");
 ```
 
-![Closed](images/transparent.gif)Using Transaction Data in Configuration
+
+## Using Transaction Data in Configuration
+
 
 You can access Commerce transaction data, from both main documents and sub-documents, in advanced functions within Configuration.
 
@@ -662,7 +730,9 @@ For all of the use cases below, we'll be using a user-created Data Table named `
 
 ![Data Table example](images/sammie_table.png)
 
-![Closed](images/transparent.gif)Sample Use Case 1: Using BMQL function
+
+## Sample Use Case 1: Using BMQL function
+
 
 In this example, let's say you'd like to run a query to return the **Price** and **Type** from the `sammie` Data Table shown above.
 
@@ -686,7 +756,9 @@ As you can see, where there were multiple sets that were the same in the first e
 
 ![BMQL 'distinct' output example](images/1_bmql2_console.png)
 
-![Closed](images/transparent.gif)Sample Use Case 2: Using the get function and the WHERE Clause
+
+## Sample Use Case 2: Using the get function and the WHERE Clause
+
 
 This example takes Sample Use Case 1 a step further by adding a `WHERE`clause to the select statement. We also add the `get()` function.
 
@@ -702,7 +774,9 @@ As you can see below, "record" acts like a dictionary and returns the columns an
 
 ![BMQL 'get' output example](images/2_bmql_console.png)
 
-![Closed](images/transparent.gif)Sample Use Case 3: Using a WHERE condition
+
+## Sample Use Case 3: Using a WHERE condition
+
 
 In this example, we are going to add a condition. So, the first screen show we'll say that if the condition is true, that the predicate will query for the part number "HS001". When adding a `WHERE` condition, the syntax is `$eval AND field = value`. In this case, we are searching for part number "HS001" when the condition is True.
 
@@ -716,17 +790,23 @@ In the console, you'll notice that when the part number is "HS001", the **Price*
 
 In the console, you'll notice that when the condition is False, the predicate (`Part = 'HS001`') is ignored and all other results are returned.
 
-![Closed](images/transparent.gif)Sample Use Case 4: Errors
+
+## Sample Use Case 4: Errors
+
 
 The user can retrieve errors or warnings using the `getMessage`function.
 
 ![getMessage example](images/4_bmql_658x141.png)
 
-![Closed](images/transparent.gif)Sample Use Case 5: Recommended Item Rule
+
+## Sample Use Case 5: Recommended Item Rule
+
 
 ![Recommended Item Rule example](images/5_img.png)
 
-![Closed](images/transparent.gif)Sample Use Case 6: Using BMQL Transaction
+
+## Sample Use Case 6: Using BMQL Transaction
+
 
 In this example, we'll show you how to return commerce transaction data back to configuration. The attribute Opportunity Name has been set with the value Toni's Pizza.
 
@@ -774,4 +854,5 @@ On reconfigure, BMQL Transaction will return all line items.
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

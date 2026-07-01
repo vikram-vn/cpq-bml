@@ -12,7 +12,9 @@ tags: ['BML', 'CPQ', 'Functions']
 
 This group of functions streamlines XML manipulations.
 
-![Closed](images/transparent.gif)applytemplate
+
+## applytemplate
+
 
 This function applies a set of token key-value pairs to
  the template file using JSON data. 
@@ -93,7 +95,9 @@ The tokens in the template file should start with "{{" and end with "}}" signs. 
 | {{formatDateString context originalFormat newFormat}} | This function is used to format context dateString from the original format to the new format. * Context: current date string * OriginalFormat: format used for current date string * NewFormat: the format the output use. * Return: dateString using the new format For more information, refer to [Java SimpleDateFormat](./IntegrationCenter.md). |
 | {{#equal context compareTo}}{{else}}{{/equal}}        | This is an equal block statement. If the context equals compareTo, then the template before the {{else}} will be rendered; otherwise the {{else}} will be rendered.                                                                                                                                                                                                                                       |
 
-![Closed](images/transparent.gif)Example of {{#each <SubDocumentVariableName>}} {{/each}}
+
+## Example of {{#each <SubDocumentVariableName>}} {{/each}}
+
 
 Imagine that the SubDocumentVariableName is "lineItem" and the attributes "_price_subtotal" and "_price_net_price" of the lineItem have been manually imported as rule inputs in BML scripts. To reference those attributes within the template, use the following code:
 
@@ -106,7 +110,9 @@ Imagine that the SubDocumentVariableName is "lineItem" and the attributes "_pric
 {{/each}}
 ```
 
-![Closed](images/transparent.gif)Example of {{#if YOUR_NOT_NULL_STRING_VALUE_HERE}} {{/if}}
+
+## Example of {{#if YOUR_NOT_NULL_STRING_VALUE_HERE}} {{/if}}
+
 
 Imagine this template:
 
@@ -118,7 +124,9 @@ Imagine this template:
 
 * If the variable "_type" contains the value "" or null, then nothing will be rendered for the template.
 
-**![Closed](images/transparent.gif)Example of {{#equal context compareTo}}{{else}}{{/equal}}**
+
+## Example of {{#equal context compareTo}}{{else}}{{/equal}}
+
 
 ```xml
 {{#equal price_type "RECURRING"}}<recurringprice>{{_recurringprice}}</recurringprice>{{else}}Price type is not recurring.{{/equal}}
@@ -148,7 +156,9 @@ Imagine this template:
 
 * Some special characters in the token value are replaced by their HTML code equivalent, e.g. "=" is replaced with "& #x3D ;". To avoid this, the token must be specified with {{{}}}.
 
-![Closed](images/transparent.gif)Example of Processing Rules for Template Files
+
+## Example of Processing Rules for Template Files
+
 
 (Template file test.txt content)
 
@@ -168,7 +178,9 @@ return output;
 
 This is user defined variable VAR1, value = Hello world.
 
-![Closed](images/transparent.gif)readxmlmultiple
+
+## readxmlmultiple
+
 
 This function reads a set of multiple XML node contents based on a set of XPath expressions.
 
@@ -228,7 +240,9 @@ Namespaces are used differently, depending on their context.
 | The input XML document contains no namespaces                                                                                                                   | No namespace prefix is needed in the input XPath.                                                                 |
 | The input XML document contains namespaces with prefixes. A namespace prefix is needed in the input XPath.                                                      | If the return is an XML fragment, the returned evaluated result will contain the namespace attribute information. |
 
-![Closed](images/transparent.gif)Example of readxmlmultiple():
+
+## Example of readxmlmultiple()
+
 
 (BML script)
 
@@ -255,7 +269,9 @@ Output:
 (value) = (fr)
 ```
 
-![Closed](images/transparent.gif)readxmlsingle
+
+## readxmlsingle
+
 
 This function reads a set of single XML node content based on a set of XPath expressions.
 
@@ -315,7 +331,9 @@ Namespaces are used differently, depending on their context.
 | The input XML document contains no namespaces                                                                                                                   | No namespace prefix is needed in the input XPath.                                                                 |
 | The input XML document contains namespaces with prefixes. A namespace prefix is needed in the input XPath.                                                      | If the return is an XML fragment, the returned evaluated result will contain the namespace attribute information. |
 
-![Closed](images/transparent.gif)Example of readxmlsingle():
+
+## Example of readxmlsingle()
+
 
 (BML script)
 
@@ -335,7 +353,9 @@ Output:
 (key, value) = (/library/book[1]/@lang, en)
 ```
 
-![Closed](images/transparent.gif)transformxml
+
+## transformxml
+
 
 **Syntax:**`transformxml(String xml, String xslFileLocation [, String defaultErrorMessage])`
 
@@ -353,7 +373,9 @@ It returns the transformed xml message, or the error message if it failed to tra
 
 **Return Type:** String
 
-![Closed](images/transparent.gif)Example of transformxml():
+
+## Example of transformxml()
+
 
 ```xml
 xmlcontent = "<?xml version="1.0" encoding="UTF-8"?><book><id>123456</id></book>";
@@ -363,4 +385,5 @@ output = transformxml(xmlcontent, xslt); output has the generated result.
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

@@ -18,7 +18,9 @@ When a BMQL call contains dynamic variables, the data types for the variables ar
 
 ## Administration
 
-![Closed](images/transparent.gif)Syntax
+
+## Syntax
+
 
 To support dynamic variables in BMQL, an additional optional parameter, `fieldMap`, is available.  There are two optional parameters: `contextOverride` and `fieldMap`.
 
@@ -47,7 +49,9 @@ bmql("select columnName from tableName WHERE $where", lang, fields);
 For more information about these optional parameters, see [BMQL Parameters](./BMQL_parameters.md).
 :::
 
-![Closed](images/transparent.gif)Dynamic Variables in the WHERE Clause
+
+## Dynamic Variables in the WHERE Clause
+
 
 If variable substitution is needed within the WHERE clause, use the method signature which passes in the values of each of the variables.
 
@@ -101,7 +105,9 @@ partno = get(result, "part_number")
 
 * Use the get function to get the specific column from each iterated row.
 
-![Closed](images/transparent.gif)Changing a Query Based on Regions Example
+
+## Changing a Query Based on Regions Example
+
 
 A customer stores data in different Data Tables for pricing in different regions.
 
@@ -152,7 +158,9 @@ return bmqlReturn;
 Using dynamic variables, the code is much simpler and much more scalable.
 :::
 
-![Closed](images/transparent.gif)Changing a Query Based on User Inputs Example
+
+## Changing a Query Based on User Inputs Example
+
 
 Imagine that you want to make a complicated query that will change depending upon user inputs.  Without dynamic variables, you are forced to write something like the following code, where you must have a clause for every possible input.
 
@@ -197,7 +205,9 @@ result = BMQL("SELECT str1 FROM table_100columns $where", fields);
 The code is longer in this instance, but it is much more scalable, since you do not need a separate clause for each possible input.
 :::
 
-![Closed](images/transparent.gif)Grammar
+
+## Grammar
+
 
 A dollar sign ($) indicates a dynamic variable.
 
@@ -221,7 +231,9 @@ When writing a query in BMQL that will use a dynamic variable, direct variable s
 "results = bmql(bmqlStringVariable)";
 ```
 
-![Closed](images/transparent.gif)$ Notation
+
+## $ Notation
+
 
 * Without dynamic variables
 
@@ -249,7 +261,9 @@ bmql("select columnName from TableName WHERE " + where, lang, fields);
 
 This code will throw a syntax error.
 
-![Closed](images/transparent.gif)Exception Handling
+
+## Exception Handling
+
 
 There are two exception handling situations.
 
@@ -261,7 +275,9 @@ This BML will validate, but will throw an error when run.
 
 This BML will not throw any errors and will work. Optional parameters are ignored if they are not needed.
 
-![Closed](images/transparent.gif)The WHERE Clause as a Variable
+
+## The WHERE Clause as a Variable
+
 
 The entire WHERE clause can be a string variable.
 
@@ -269,7 +285,9 @@ The entire WHERE clause can be a string variable.
 If there are variables in the WHERE clause variable, you must define these variables in a string Dictionary and pass them as a third parameter.  In this case, you must also define a second parameter.
 :::
 
-![Closed](images/transparent.gif)Making Everything Dynamic
+
+## Making Everything Dynamic
+
 
 In this example, everything that can be dynamic is dynamic.
 
@@ -305,7 +323,9 @@ Consult the Function Wizard to see Data Table names and associated column detail
 
 There are several issues to consider when using dynamic variables in BML queries.
 
-![Closed](images/transparent.gif)Validation
+
+## Validation
+
 
 Most of the validation in BMQL that uses dynamic variables will occur when the code is executed.  Previously, validation occurred when the code was checked or saved.
 
@@ -315,7 +335,9 @@ Therefore, when using variables for columns, Data Tables, or the entire WHERE cl
 
 String literal BMQL calls are not affected by these changes and will continue to perform a full validation when checked and saved.
 
-![Closed](images/transparent.gif)SQL Injection
+
+## SQL Injection
+
 
 Continue to follow existing best practices regarding SQL injection.  Do not allow any user-generated data to be used directly in a BMQL statement.
 
@@ -338,4 +360,5 @@ BMQL does not support a parts query that retrieves more than 500 parts from a no
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

@@ -12,7 +12,9 @@ tags: ['BML', 'CPQ', 'Functions']
 
 Date functions are often used when evaluating and calculating quotes in Commerce. As an example, they are used to set quote expiration dates. Dates are always strings in Commerce, but can be converted to dates using the functions included in this article.
 
-![Closed](images/transparent.gif)adddays
+
+## adddays
+
 
 This function returns the date which is obtained after adding X number of days to a particular date. **Example Use Case:** Often used in Commerce to set the time a quote is valid, or when it expires.
 
@@ -39,7 +41,9 @@ Example:
 
 ![adddays example](images/adddaysBML.png)
 
-![Closed](images/transparent.gif)addmonths
+
+## addmonths
+
 
 This function returns the date which results after adding or subtracting a number of months from a specified date. This function is available in BML and Commerce Library functions. **Example Use Case:** Often used to set the expiration date for quote, assign end dates to contracts, or assign renewal dates for subscriptions.
 
@@ -72,7 +76,9 @@ This BML Date function takes into account the number of days in a month and leap
 
 * Dec 15th - 3 months = September 15th
 
-![Closed](images/transparent.gif)comparedates
+
+## comparedates
+
 
 Use this function to compare two dates based on date and time.
 
@@ -99,7 +105,9 @@ Example:
 This function also considers the time for a given date. For "11/04/2009 00:02:00" and "11/04/2009 00:01:00", the function returns 1.
 :::
 
-![Closed](images/transparent.gif)datetostr
+
+## datetostr
+
 
 This function converts a date to a string.  It can take an optional parameter that can return a formatted string.
 
@@ -163,7 +171,9 @@ twelvehour = datetostr(testDate, "yyyy-MM-dd hh:mm:ss a", "GMT+4")
 The function datetostr (getdate()) will return today's date in the format MM/dd/yyyy HH:mm:ss if no format is supplied
 :::
 
-![Closed](images/transparent.gif)getcurrenttimeinmillis
+
+## getcurrenttimeinmillis
+
 
 This function returns the current time in milliseconds.
 
@@ -171,7 +181,9 @@ This function returns the current time in milliseconds.
 
 **Return Type:**  Integer
 
-![Closed](images/transparent.gif)getdate
+
+## getdate
+
 
 This function returns the current date/time based on the base time zone you have set-up in your application. The function takes a parameter and returns a date, with or without time. **Example Use Case:** Find the current date.
 
@@ -197,7 +209,9 @@ Example getdate(false):
 
 ![getdate output example](images/getdate_false_console.png)
 
-![Closed](images/transparent.gif)getdiffindays
+
+## getdiffindays
+
 
 This function calculates the number of days between two different dates. **Example Use Case:** Check to see if a quote is expired.
 
@@ -222,7 +236,9 @@ Example:
 The inputs must be in Date format. Use the function `strtojavadata()` to change a Date from a string format to a date format.
 :::
 
-![Closed](images/transparent.gif)getstrdate
+
+## getstrdate
+
 
 Returns the string representation of current date.
 
@@ -230,7 +246,9 @@ Returns the string representation of current date.
 
 **Return Type**: String
 
-![Closed](images/transparent.gif)isleap
+
+## isleap
+
 
 Using this function will determine whether the date falls within a leap year.  The function will return true if the year provided as a parameter is a leap year.
 
@@ -252,7 +270,9 @@ Example:
 
 Since the year 2008 was a leap year, the function returns True.
 
-![Closed](images/transparent.gif)isweekend
+
+## isweekend
+
 
 This function determines whether a date falls within a weekend (Saturday or Sunday).   The function will return true if the date provided as a parameter is a Saturday or Sunday.
 
@@ -274,7 +294,9 @@ Example:
 
 The console will return either True or False.
 
-![Closed](images/transparent.gif)minusdays
+
+## minusdays
+
 
 This function returns a date that is x days before the base date. **Example Use Case:** Can be used to set an expiration date of a quote.
 
@@ -293,7 +315,9 @@ Example:
 
 ![minusdays example](images/minusdays__BML.bmp)
 
-![Closed](images/transparent.gif)strtodate
+
+## strtodate
+
 
 :::warning
 This function is deprecated, and no longer supported. It converted data in String format to Date format.
@@ -303,7 +327,9 @@ Use [`strtojavadate()`](./strtojavadate.md) instead.
 
 **Syntax**: `strtodate(String str, String format [, String timeZone])`
 
-![Closed](images/transparent.gif)strtojavadate
+
+## strtojavadate
+
 
 This function converts a string to a date and replicates Java behavior.  Use this function instead of `strtodate()`, which is deprecated and no longer supported.
 
@@ -382,4 +408,5 @@ In Commerce, dates always need to be returned as strings.
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

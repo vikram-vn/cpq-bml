@@ -2,9 +2,10 @@ import os
 import sys
 import time
 
-# Add script directory to sys.path so we can import the bml_intellisense package
+# Add the parent directory of this package to sys.path so we can import from bml_intellisense package
 script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(script_dir)
+package_parent = os.path.abspath(os.path.join(script_dir, ".."))
+sys.path.append(package_parent)
 
 from bml_intellisense.functions import generate_bml_functions
 from bml_intellisense.variables import generate_bml_variables
@@ -14,8 +15,8 @@ from bml_intellisense.data_types import generate_bml_data_types
 
 def main():
     start_time = time.time()
-    # Project root is two levels up from app/scripts/generate_intellisense.py
-    root_dir = os.path.abspath(os.path.join(script_dir, "..", ".."))
+    # Project root is three levels up from app/scripts/bml_intellisense/generate_intellisense.py
+    root_dir = os.path.abspath(os.path.join(script_dir, "..", "..", ".."))
     
     failed = 0
     generators = [

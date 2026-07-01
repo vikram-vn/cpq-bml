@@ -71,4 +71,5 @@ The **Function to Function** link appears on the **Related Rules** page. When it
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

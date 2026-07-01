@@ -113,4 +113,5 @@ For this example, the cdata isn't really needed because **Session ID** and **Tra
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

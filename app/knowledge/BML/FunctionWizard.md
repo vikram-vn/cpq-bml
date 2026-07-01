@@ -16,11 +16,15 @@ This topic covers the Funtion Wizard using the classic interface pages. Refer to
 
 The Function Wizard contains a list of pre-defined functions that are available for use in advanced scripting.  There are some variations in the Function Editor, depending on where you are located within the application:  Commerce, Configuration, Commerce Library, or Util Library.
 
-![Closed](images/transparent.gif)Configuration/Util Library Function Editor
+
+## Configuration/Util Library Function Editor
+
 
 The only difference between the Configuration Function Editor and that in the Util Library is that the latter doesn't have a tab labeled Library Functions.  This is because your library functions are created in the Util Library.
 
-![Closed](images/transparent.gif)Using the Function Wizard in Configuration
+
+## Using the Function Wizard in Configuration
+
 
 1. Open the **Function Wizard** tab.
 
@@ -34,13 +38,17 @@ The only difference between the Configuration Function Editor and that in the Ut
 
 4. Review the function populated in the script definition area.
 
-![Closed](images/transparent.gif)Commerce Library Function Editor
+
+## Commerce Library Function Editor
+
 
 The commerce library function editor looks similar to the one in Configuration, however, you will notice that the Attributes section is quite different.  It allows you to select attributes for the main document, sub-document, and system attributes.
 
 ![Commerce Library Function Editor](images/CommerceLibFxnEditor.png)
 
-![Closed](images/transparent.gif)Commerce Function Editor
+
+## Commerce Function Editor
+
 
 You may come across a BML editor in Commerce that looks like this:
 
@@ -52,4 +60,5 @@ The BML Editor is used to edit functions for a specified attribute.  Your operat
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

@@ -206,4 +206,5 @@ BML functions are listed below are listed alphabetically and display the catego
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also

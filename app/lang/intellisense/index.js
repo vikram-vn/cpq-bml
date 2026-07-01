@@ -202,8 +202,8 @@ function formatAsJsDoc(info, context) {
     if (helpFileRel && context) {
         const helpFileAbs = path.join(context.extensionPath, helpFileRel);
         if (fs.existsSync(helpFileAbs)) {
-            const uri = vscode.Uri.file(helpFileAbs);
-            const encodedArgs = encodeURIComponent(JSON.stringify([uri.fsPath]));
+            const uri = vscode.Uri.file(helpFileAbs).with({ fragment: info.name.toLowerCase() });
+            const encodedArgs = encodeURIComponent(JSON.stringify([uri.toString()]));
             md.appendMarkdown(`\n\n[📖 Read Offline Help](command:cpqBml.openHelpTopic?${encodedArgs})\n`);
         }
     }
@@ -479,9 +479,9 @@ function registerBmlIntelliSense(context) {
     context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
 
     // Register command to open help topics in standard markdown preview
-    const openCommand = vscode.commands.registerCommand('cpqBml.openHelpTopic', async (filePath) => {
+    const openCommand = vscode.commands.registerCommand('cpqBml.openHelpTopic', async (uriString) => {
         try {
-            const uri = vscode.Uri.file(filePath);
+            const uri = vscode.Uri.parse(uriString);
             await vscode.commands.executeCommand('markdown.showPreview', uri);
         } catch (err) {
             vscode.window.showErrorMessage(`Failed to open help topic: ${err.message}`);

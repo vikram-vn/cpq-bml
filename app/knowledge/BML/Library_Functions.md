@@ -22,7 +22,9 @@ The BML Function Library enables the user to write efficient and reusable custom
 
 ## Administration
 
-![Closed](images/transparent.gif)Using Library Functions in Configuration BML
+
+## Using Library Functions in Configuration BML
+
 
 Once a Util Library Function has been defined, it's available for use in the **Library Function(s)** tab within the Function Editor.
 
@@ -36,7 +38,9 @@ Once a Util Library Function has been defined, it's available for use in the **L
 
 3. Return to the Util functions area and make sure you've deployed your function(s) if desired function does not appear.
 
-![Closed](images/transparent.gif)Using Library Functions in Commerce BML
+
+## Using Library Functions in Commerce BML
+
 
 When you click **Define Function** in Commerce, a window will appear asking you to select attributes.
 
@@ -48,7 +52,9 @@ You can select **System Variable Name**, **Variable Name for (Transaction)**, **
 You can add Util and Commerce Library Functions by clicking the **Reselect** button within the BML Function Editor.
 :::
 
-![Closed](images/transparent.gif)Adding a Library Function
+
+## Adding a Library Function
+
 
 1. Click **Add Function**.
 
@@ -60,7 +66,9 @@ You can add Util and Commerce Library Functions by clicking the **Reselect** but
 
 ![Add Preview Function to script definition area](images/EditBMLAddLibraryFxn.png)
 
-![Closed](images/transparent.gif)Adding a Commerce Library Function
+
+## Adding a Commerce Library Function
+
 
 1. Navigate to **Admin > Commerce and Documents > Process Definition > Process** .
 
@@ -90,7 +98,9 @@ The **Variable Name** field populates automatically. Variable names can only con
 The **Main Document**, **Sub-Document** and **System Attributes** sections are only available in the **Commerce Library Editor**.  They are not available in the **Util Library Function**.
 :::
 
-![Closed](images/transparent.gif)Adding a Util Library Function
+
+## Adding a Util Library Function
+
 
 1. Navigate to: **Admin  > Developer Tools > BML Library**.
 
@@ -110,7 +120,9 @@ The **Variable Name** field populates automatically. Variable names can only con
 
 6. Select **Add** to make your new library function available for use.
 
-![Closed](images/transparent.gif)Adding a Function to Function Calls
+
+## Adding a Function to Function Calls
+
 
 Util and Commerce Library Function Editors use Function to Function calls. Function to Function calls allow admins to compartmentalize BML when dealing with complicated configuration or quoting scenarios. This feature will assist with the organization of BML and provides a solution to the compiled Java class size-limit issue. *Function to function calls mimic the behavior of a Modify function calling a Library function.*
 
@@ -136,7 +148,9 @@ Recursive validation is performed during the following for Util and Commerce Lib
 Util and Commerce Library functions cannot self-reference. Recursive calling of the same Util and Commerce Library functions will fail and result in a compilation error when called at any point in the reference chain. Util and Commerce Library functions will not appear in the Import list for themselves.
 :::
 
-![Closed](images/transparent.gif)Copy BML Library Function
+
+## Copy BML Library Function
+
 
 A **Copy** action button is available in Util and Commerce Libraries so that BML Library Functions can be copied and renamed.  This allows admins to manage versions and build new functions based on existing ones.
 
@@ -190,4 +204,5 @@ Customers can submit a Service Request (SR) on [My Oracle Support](https://suppo
 
 ## Related Topics
 
-![Related Topics Link Icon](images/transparent.gif)See Also
+
+## See Also
