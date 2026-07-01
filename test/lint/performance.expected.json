@@ -1,10 +1,5 @@
 [
   {
-    "line": 0,
-    "severity": "Warning",
-    "message": "Complexity Warning: Cyclomatic complexity is high (18). Consider refactoring into helper functions"
-  },
-  {
     "line": 4,
     "severity": "Warning",
     "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
@@ -45,6 +40,10 @@
     "message": "Design Warning: Nesting depth of 5 exceeds recommended limit of 3"
   },
   {
+    "severity": "Warning",
+    "message": "Complexity Warning: Cyclomatic complexity is high (18). Consider refactoring into helper functions"
+  },
+  {
     "line": 18,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
@@ -73,5 +72,35 @@
     "line": 33,
     "severity": "Warning",
     "message": "'AND' and 'OR' are mixed without grouping parentheses - BML evaluates 'AND' before 'OR', which may not be what you expect. Add parentheses to make the intended grouping explicit, e.g. '(a AND b) OR c'."
+  },
+  {
+    "line": 40,
+    "severity": "Warning",
+    "message": "Safety Warning: 'row' may be null (result of bmql/get/dictget). Check with isnull(row) or sizeofarray(row) > 0 before use."
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Safety Warning: 'r1Records' may be null (result of bmql/get/dictget). Check with isnull(r1Records) or sizeofarray(r1Records) > 0 before use."
+  },
+  {
+    "line": 43,
+    "severity": "Warning",
+    "message": "Safety Warning: 'r2Records' may be null (result of bmql/get/dictget). Check with isnull(r2Records) or sizeofarray(r2Records) > 0 before use."
+  },
+  {
+    "line": 44,
+    "severity": "Warning",
+    "message": "Safety Warning: 'r3Records' may be null (result of bmql/get/dictget). Check with isnull(r3Records) or sizeofarray(r3Records) > 0 before use."
+  },
+  {
+    "line": 45,
+    "severity": "Warning",
+    "message": "Safety Warning: 'r4Records' may be null (result of bmql/get/dictget). Check with isnull(r4Records) or sizeofarray(r4Records) > 0 before use."
+  },
+  {
+    "line": 46,
+    "severity": "Warning",
+    "message": "Safety Warning: 'r5Records' may be null (result of bmql/get/dictget). Check with isnull(r5Records) or sizeofarray(r5Records) > 0 before use."
   }
 ]

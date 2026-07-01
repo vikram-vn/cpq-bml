@@ -116,6 +116,11 @@
   },
   {
     "line": 26,
+    "severity": "Warning",
+    "message": "Safety Warning: 'results' may be null (result of bmql/get/dictget). Check with isnull(results) or sizeofarray(results) > 0 before use."
+  },
+  {
+    "line": 26,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },

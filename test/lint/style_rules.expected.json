@@ -1,8 +1,23 @@
 [
   {
     "line": 2,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+  },
+  {
+    "line": 2,
     "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 5,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 5,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 5,
@@ -10,29 +25,29 @@
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 5,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+    "line": 7,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
     "line": 7,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 23,
+    "severity": "Information",
+    "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
+  },
+  {
+    "line": 24,
+    "severity": "Information",
+    "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
   },
   {
     "line": 28,
     "severity": "Warning",
     "message": "Style Warning: Functions/operators with a single argument should enclose that argument in parentheses, e.g. not(flag) rather than not flag."
-  },
-  {
-    "line": 5,
-    "severity": "Information",
-    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 7,
-    "severity": "Information",
-    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
     "line": 29,
@@ -81,22 +96,12 @@
   },
   {
     "line": 41,
+    "severity": "Warning",
+    "message": "Safety Warning: 'rs' may be null (result of bmql/get/dictget). Check with isnull(rs) or sizeofarray(rs) > 0 before use."
+  },
+  {
+    "line": 41,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 2,
-    "severity": "Information",
-    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
-  },
-  {
-    "line": 23,
-    "severity": "Information",
-    "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 24,
-    "severity": "Information",
-    "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
   }
 ]

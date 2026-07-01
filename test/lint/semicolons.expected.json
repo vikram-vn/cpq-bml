@@ -1,21 +1,6 @@
 [
   {
     "line": 5,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 6,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 33,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 5,
     "severity": "Warning",
     "message": "Unused variable: y"
   },
@@ -40,6 +25,23 @@
     "message": "Unused variable: a"
   },
   {
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 2,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
     "line": 5,
     "severity": "Information",
     "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
@@ -60,14 +62,9 @@
     "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
   },
   {
-    "line": 33,
-    "severity": "Information",
-    "message": "Design Info: Magic number '40' detected. Consider defining a named constant"
-  },
-  {
-    "line": 2,
-    "severity": "Information",
-    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+    "line": 14,
+    "severity": "Warning",
+    "message": "Style Warning: String concatenation using '+' detected. BML uses '~' for string concatenation. If you intended string concat, use '~' instead of '+'."
   },
   {
     "line": 21,
@@ -83,5 +80,10 @@
     "line": 29,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Design Info: Magic number '40' detected. Consider defining a named constant"
   }
 ]
