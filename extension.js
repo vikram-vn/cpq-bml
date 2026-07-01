@@ -10,9 +10,8 @@ const { registerMcp } = require("./app/lang/mcp");
 const { registerSettingsPanel } = require("./app/lang/settingsPanel");
 const { registerXslt } = require("./app/lang/xslt");
 const { beautifyWorkspaceCommand } = require("./app/lang/beautify/commandWorkspace");
-const { registerMetrics } = require("./app/lang/metrics/reportWebview");
-const { registerBmlTestRunner } = require("./app/lang/testing/runner");
-const { registerBmlSnapshot } = require("./app/lang/testing/snapshot");
+const { registerMetrics } = require("./app/lang/metrics");
+const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -49,7 +48,7 @@ function activate(context) {
   // Register BMLint (real-time diagnostics)
   registerBmlLinter(context);
 
-  // Register BML Better Comments (tag/directive/doc-header decorations + hover)
+  // Register BML Better Comments (tag/directive/docHeader decorations + hover)
   registerBmlComments(context);
 
   // Register BML REST (live Oracle CPQ Util Library Function integration)

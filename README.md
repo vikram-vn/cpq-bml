@@ -43,6 +43,7 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 - [⌨ Commands Reference](#-commands-reference)
 - [⚙ Configuration Settings](#-configuration-settings)
 - [🔧 Formatter Settings (.bmlbeautifyrc)](#-formatter-settings-bmlbeautifyrc)
+- [📂 Project Structure](#-project-structure)
 - [🚀 Installation & Setup](#-installation--setup)
 - [💻 Local Development](#-local-development)
 - [📄 License & Changelog](#-license--changelog)
@@ -101,7 +102,7 @@ The extension includes a custom BML-native static analyzer to capture defects, a
 | **Syntax Errors** | Array element assignment (`arr[i] = v` is unsupported in BML), invalid member access or method calls on non-object values (e.g. `x.length`, `x.doSomething()`), `dict()` called with no type argument. | Use `append()`/`insert()` for arrays; use BML built-in functions (`sizeofarray()`, `jsonget()`, etc.) instead of dot-notation; supply a type to `dict()` (e.g., `dict("string")`). |
 | **Function Calls** | Unknown bare function names (with "did you mean" typo suggestions), incorrect argument counts against Oracle's built-in signatures, mismatched argument literal types, unknown workspace `util.*` / `commerce.*` function references. | Apply Quick Fix to correct the function name; match the expected argument count and types. |
 | **Dead Code & Logic** | Always-true/always-false conditions, unreachable code after unconditional `return`/`break`/`continue`/`throwerror`, duplicate `elif` branch conditions, `AND`/`OR` mixed without grouping parentheses, lonely `else { if ... }` (use `elif`), bare comparison with no effect (likely a typo for `=`). | Remove or refactor dead branches; add explicit parentheses for operator precedence; replace `else { if }` with `elif`; use assignment `=` where intended. |
-| **Variable Checks** | Type-consistency violations (variable re-assigned with a conflicting literal type), variable read before its assignment in the same file (`no-undef`/use-before-define, util library only), assignment to read-only CPQ system variables (`_user_*`, `_site_*`), metadata sidecar type mismatches. | Ensure consistent literal types across assignments; initialize variables before use; do not write to read-only system variables. |
+| **Variable Checks** | Type-consistency violations (variable re-assigned with a conflicting literal type), variable read before its assignment in the same file (`no-undef`/useBeforeDefine, util library only), assignment to read-only CPQ system variables (`_user_*`, `_site_*`), metadata sidecar type mismatches. | Ensure consistent literal types across assignments; initialize variables before use; do not write to read-only system variables. |
 
 #### Inline Suppressions
 
@@ -317,6 +318,53 @@ Place a `.bmlbeautifyrc` configuration file in any directory to customize the BM
   "max_preserve_newlines": 1,
   "space_before_conditional": true
 }
+```
+
+---
+
+## 📂 Project Structure
+
+The project has a modular design structure with clean segregation of BML editor services, REST networking, testing utilities, and AI integration:
+
+```text
+├── app/                              # Extension Core Source Code
+│   └── lang/                         # Language Intelligence & Tooling
+│       ├── beautify/                 # Code Formatter & Beautification Engine
+│       │   ├── commandWorkspace.js   # Workspace-wide mass formatter
+│       │   ├── docHeader.js          # Auto-insert /// doc block comment completion
+│       │   └── index.js              # Formatting core config/integration
+│       ├── comments/                 # Better Comments parser (tags, directives, headers)
+│       ├── intellisense/             # IntelliSense (autocompletions, hovers, signatures)
+│       │   ├── index.js              # Go to definition, References, Rename registrations
+│       │   ├── workspaceIndex.js     # Codebase scanner indexing util.* & commerce.*
+│       │   └── custom_snippets.json  # Smart snippet database
+│       ├── lint/                     # Real-time Native Static Diagnostics
+│       │   ├── lint.js               # Central rule runner pipeline
+│       │   ├── nullSafety.js         # Checks nullable results of bmql() / get()
+│       │   ├── typeCoercion.js       # Warns when + is used instead of ~ for string concats
+│       │   └── infiniteLoop.js       # Identifies empty or non-populating loops
+│       ├── mcp/                      # Model Context Protocol AI Tool Integration
+│       │   ├── server.js             # Local MCP server implementation
+│       │   └── tools/                # Declarative AI helper tools
+│       ├── metrics/                  # Code quality analysis WebView Dashboard
+│       │   ├── complexity.js         # Cyclomatic complexity & nesting depth calculations
+│       │   ├── report.js             # Metrics accumulator logic
+│       │   └── reportWebview.js      # WebView layout rendering
+│       ├── rest/                     # Oracle CPQ REST Client Integration
+│       ├── settingsPanel/            # Extension settings GUI dashboard WebView
+│       ├── testing/                  # Safe sandboxed local execution & unit testing
+│       │   ├── runner.js             # Sidecar *.bmltest.json executor
+│       │   └── snapshot.js           # Regression snapshot comparisons
+│       └── xslt/                     # XSLT preview, formatting, & linking features
+│
+├── test/                             # Automated Test Suites
+│   ├── linter/                       # Tests for suppressions & core linter behaviors
+│   ├── mcp/                          # Tests for local MCP tool server
+│   └── rest/                         # Offline mocked testing for CPQ REST sync
+│
+├── extension.js                      # Extension Activation/Deactivation Entry-point
+├── package.json                      # VS Code Extension manifest & command declarations
+└── README.md                         # Project documentation
 ```
 
 ---

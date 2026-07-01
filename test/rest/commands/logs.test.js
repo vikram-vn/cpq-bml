@@ -2,7 +2,7 @@ const assert = require("assert");
 const path = require("path");
 const fs = require("fs");
 const { runDownloadLogFile } = require("../../../app/lang/rest/commands/logs");
-const { createFakeVscode } = require("../test-helpers");
+const { createFakeVscode } = require("../testHelpers");
 const { baseVscodeConfig, makeContext, withTempDir } = require("./fixtures");
 
 suite("BML REST commands - download logs", () => {

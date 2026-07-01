@@ -2,7 +2,7 @@ const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('./fixtures');
 
-suite('BML Linter Test Suite - mixed AND/OR operators (no-mixed-operators)', () => {
+suite('BML Linter Test Suite - mixed AND/OR operators (no-mixedOperators)', () => {
     test('Flags AND and OR mixed without grouping parens', () => {
         const diagnostics = lintText(`
             if (a AND b OR c) {
@@ -10,7 +10,7 @@ suite('BML Linter Test Suite - mixed AND/OR operators (no-mixed-operators)', () 
             }
             return "2";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-mixed-operators');
+        const diag = diagnostics.find(d => d.code === 'bml-mixedOperators');
         assert.ok(diag, 'Should flag the unguarded AND/OR mix');
         assert.strictEqual(diag.severity, vscode.DiagnosticSeverity.Warning);
     });
@@ -22,7 +22,7 @@ suite('BML Linter Test Suite - mixed AND/OR operators (no-mixed-operators)', () 
             }
             return "2";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-mixed-operators');
+        const diag = diagnostics.find(d => d.code === 'bml-mixedOperators');
         assert.strictEqual(diag, undefined);
     });
 
@@ -33,12 +33,12 @@ suite('BML Linter Test Suite - mixed AND/OR operators (no-mixed-operators)', () 
             }
             return "2";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-mixed-operators');
+        const diag = diagnostics.find(d => d.code === 'bml-mixedOperators');
         assert.strictEqual(diag, undefined);
     });
 });
 
-suite('BML Linter Test Suite - lonely if (no-lonely-if)', () => {
+suite('BML Linter Test Suite - lonely if (no-lonelyIf)', () => {
     test('Flags an else whose entire body is a single if statement', () => {
         const diagnostics = lintText(`
             if (x) {
@@ -50,7 +50,7 @@ suite('BML Linter Test Suite - lonely if (no-lonely-if)', () => {
             }
             return "c";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-lonely-if');
+        const diag = diagnostics.find(d => d.code === 'bml-lonelyIf');
         assert.ok(diag, 'Should flag the lonely if');
         assert.ok(diag.message.includes('elif'));
     });
@@ -64,7 +64,7 @@ suite('BML Linter Test Suite - lonely if (no-lonely-if)', () => {
             }
             return "c";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-lonely-if');
+        const diag = diagnostics.find(d => d.code === 'bml-lonelyIf');
         assert.strictEqual(diag, undefined);
     });
 
@@ -80,12 +80,12 @@ suite('BML Linter Test Suite - lonely if (no-lonely-if)', () => {
             }
             return "c";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-lonely-if');
+        const diag = diagnostics.find(d => d.code === 'bml-lonelyIf');
         assert.strictEqual(diag, undefined);
     });
 });
 
-suite('BML Linter Test Suite - unused expression statements (no-unused-expressions)', () => {
+suite('BML Linter Test Suite - unused expression statements (no-unusedExpressions)', () => {
     test('Flags a bare comparison statement (likely a typo for assignment)', () => {
         const diagnostics = lintText(`
             x == 5;
@@ -134,7 +134,7 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
             x = "b";
             return "2";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-use-before-define');
+        const diag = diagnostics.find(d => d.code === 'bml-useBeforeDefine');
         assert.ok(diag, 'Should flag x read before its later assignment');
     });
 
@@ -143,7 +143,7 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
             x = "a";
             return x;
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-use-before-define');
+        const diag = diagnostics.find(d => d.code === 'bml-useBeforeDefine');
         assert.strictEqual(diag, undefined);
     });
 
@@ -154,7 +154,7 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
             }
             return "";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-use-before-define');
+        const diag = diagnostics.find(d => d.code === 'bml-useBeforeDefine');
         assert.strictEqual(diag, undefined);
     });
 
@@ -162,7 +162,7 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
         const diagnostics = lintText(`
             return totallyUndeclaredThing;
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-use-before-define');
+        const diag = diagnostics.find(d => d.code === 'bml-useBeforeDefine');
         assert.strictEqual(diag, undefined);
     });
 
@@ -195,7 +195,7 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
             }
             return "c";
         `);
-        const diag = diagnostics.find(d => d.code === 'bml-lonely-if');
+        const diag = diagnostics.find(d => d.code === 'bml-lonelyIf');
         assert.strictEqual(diag, undefined);
     });
 });

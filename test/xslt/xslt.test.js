@@ -2,7 +2,7 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const { runPreviewXslt, getWebviewContent } = require("../../app/lang/xslt");
-const { createFakeVscode, createFakeContext } = require("../rest/test-helpers");
+const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
 
 suite("BML REST commands - XSLT Preview", () => {
   let tempXmlPath;

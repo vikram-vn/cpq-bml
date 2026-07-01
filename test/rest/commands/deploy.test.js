@@ -3,7 +3,7 @@ const path = require("path");
 const commands = require("../../../app/lang/rest/commands");
 const metadataLib = require("../../../app/lang/rest/metadata");
 const config = require("../../../app/lang/rest/config");
-const { createFakeVscode } = require("../test-helpers");
+const { createFakeVscode } = require("../testHelpers");
 const { SAMPLE_FUNCTION, baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("./fixtures");
 
 const COMMERCE_FUNCTION = {

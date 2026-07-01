@@ -13,7 +13,7 @@ const {
 const { inferLiteralType, checkAssignmentTypeConsistency } = require('../../app/lang/lint/typeCheck');
 
 function withTempDir(fn) {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bml-metadata-types-test-'));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bml-metadataTypes-test-'));
     try {
         return fn(tmpDir);
     } finally {

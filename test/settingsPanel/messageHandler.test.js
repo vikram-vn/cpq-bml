@@ -1,7 +1,7 @@
 const assert = require("assert");
 const { handleMessage } = require("../../app/lang/settingsPanel/messageHandler");
 const config = require("../../app/lang/rest/config");
-const { createFakeVscode, createFakeContext } = require("../rest/test-helpers");
+const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
 
 function fakePanel() {
   const posted = [];

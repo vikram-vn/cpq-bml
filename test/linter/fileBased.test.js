@@ -14,7 +14,7 @@ suite('BML Linter Test Suite - file-based fixtures', () => {
 
         for (const file of inputFiles) {
             const testName = path.basename(file, '.bml');
-            test(`BML Linter file-based test: ${testName}`, () => {
+            test(`BML Linter fileBased.test: ${testName}`, () => {
                 const inputPath = path.join(bmlLintDir, file);
                 const expectedPath = path.join(bmlLintDir, `${testName}.expected.json`);
 

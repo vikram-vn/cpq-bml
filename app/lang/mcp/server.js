@@ -167,7 +167,7 @@ function registerTools(server, context, vscode) {
     "explain_function",
     {
       description:
-        "Return offline documentation for a locally pulled BML function: doc-header, parameter list, return type, and a code preview. No CPQ connection required.",
+        "Return offline documentation for a locally pulled BML function: docHeader, parameter list, return type, and a code preview. No CPQ connection required.",
       inputSchema: { variableName: z.string() },
     },
     async (args) =>

@@ -6,7 +6,27 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.4.0]
 
-### Added
+- **Phase 1: Additional Linting Rules**:
+  - Null Safety Check (`bml-null-check-required`) warning.
+  - Type Coercion / Concatenation Mismatch (`bml-concat-type-mismatch`) warning.
+  - Infinite / Empty Loop Checker (`bml-empty-loop`) warning.
+- **Phase 2: Developer Experience LSP Navigation**:
+  - Workspace index scanner for `util.*` and `commerce.*`.
+  - Go to Definition, Find All References, Rename, and Document Outline Symbols.
+  - Extended Hover documentation with parameter lists, return types, and Javadoc-style headers.
+- **Phase 3: Code Metrics WebView Report**:
+  - Cyclomatic complexity, brace nesting depth, and non-empty line counts.
+  - Dashboard WebView panel with sortable metrics table.
+- **Phase 4: MCP AI Tools**:
+  - `explain_function`: returns offline documentation, signatures, and code previews.
+  - `diff_function`: returns unified line-by-line local vs remote diff.
+  - `search_functions`: full-text local codebase search sorted by match count.
+- **Phase 5: BML Testing Framework**:
+  - BML Test Runner (`cpqBml.test.runTests`) executing local `*.bmltest.json` test cases against CPQ sandbox.
+  - Regression Snapshot testing (`cpqBml.test.updateSnapshot` / `compareSnapshot`) flagging changes as editor diagnostics.
+- **Phase 6: Formatting & Snippets**:
+  - Auto Doc-Header completion (`///` trigger) generating comment blocks prefilled from sidecar `metadata.json`.
+  - 6 new Smart Snippets: `bmql-safe`, `bmql-loop`, `sb-concat`, `null-guard`, `split-safe`, and `try-atoi`.
 
 - **Performance linting** (`app/lang/lint/performance.js`): five new rule categories run on every save:
   - _Nested loops_ — warns when a `for` loop is nested inside another `for` loop (negative performance impact).
@@ -23,7 +43,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   - _Unguarded `print()` calls_ — `print(...)` outside a `if (debug) { ... }` block is flagged as an info diagnostic.
   - _Line length_ — lines exceeding 200 characters of non-comment code produce a warning with the actual character count.
 
-- **Extended best-practices linting** (`app/lang/lint/bestPractices.js`): nine new rule categories beyond what was previously checked:
+- **Extended bestPractices linting** (`app/lang/lint/bestPractices.js`): nine new rule categories beyond what was previously checked:
   - _`SELECT _`in BMQL* — warns when a BMQL query literal uses`SELECT \*`; recommends explicit column lists.
   - _Division by literal zero_ — parses the full numeric literal to avoid false positives on `/ 0.5`; flags only genuine `/ 0` (runtime exception).
   - _Float direct equality comparison_ — warns when a variable is compared to a float literal with `==` or `!=`; recommends a tolerance threshold.
@@ -58,7 +78,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
-- **Built-in function argument-count accuracy**: rewrote the function-signature parser (`app/lang/lint/functionSignature.js`) to correctly handle Oracle's "cascading" nested-optional parameter notation (e.g. `datetostr(Date date [, String dateFormat [, String timeZone]]))`), which the previous naive comma-split parser mis-classified - sometimes under-counting required parameters (so a genuinely-missing required argument went unflagged), sometimes over-counting them. Signatures using a non-standard polymorphic "Type(or Type2, Type3)" union notation (`max`, `min`, `put`, `get`, ...) or describing a truly variadic function (`sbappend`) are now detected and excluded from count/type validation entirely, rather than being checked against a guessed (and wrong) shape.
+- **Built-in function argument-count accuracy**: rewrote the functionSignature parser (`app/lang/lint/functionSignature.js`) to correctly handle Oracle's "cascading" nested-optional parameter notation (e.g. `datetostr(Date date [, String dateFormat [, String timeZone]]))`), which the previous naive comma-split parser mis-classified - sometimes under-counting required parameters (so a genuinely-missing required argument went unflagged), sometimes over-counting them. Signatures using a non-standard polymorphic "Type(or Type2, Type3)" union notation (`max`, `min`, `put`, `get`, ...) or describing a truly variadic function (`sbappend`) are now detected and excluded from count/type validation entirely, rather than being checked against a guessed (and wrong) shape.
 - Function-call diagnostics (`bml-unknown-function`, `bml-function-arg-count`, `bml-function-not-found-workspace`) now carry a `code`, so lint-suppression directives and downstream tooling can target them individually.
 
 ## [1.3.0]
@@ -86,7 +106,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - **Variable Type Consistency Checking**: BML variables are statically typed by their first assignment, and CPQ's compiler rejects reassigning one to a value of a different type later in the same script (e.g. `test = 1;` ... `test = "2";`). The linter now infers the type of literal assignments - primitives (String/Integer/Float/Boolean), typed arrays (`string[]{...}`, `integer[][]{...}`), and type-named constructors (`dict()`, `json()`, `jsonarray()`, `bytearray()`, `stringbuilder()`, `recordset()`) - and flags any later assignment whose literal type conflicts, as an Error. Deliberately conservative: skips anything that isn't an unambiguous literal (function calls, concatenation, variable references) rather than guess.
 - **Metadata Sidecar Type Validation**: using Oracle's `functionParamDataTypes.json`/`functionReturnTypes.json` lookup tables, the linter cross-checks a function's local `-meta.json` sidecar for internal consistency (catching a corrupted/hand-edited sidecar where `dataType.value`/`returnType.value` no longer matches its own `displayValue`) and flags a `return <literal>;` whose type conflicts with the function's own declared return type. A function's declared parameter types now also seed the variable type-consistency check above, so reassigning a parameter to a conflicting literal type is caught too.
 - **Dead-code checks inspired by ESLint/RuboCop**: always-true/always-false `if`/`elif` conditions (`if (true)`) and self-comparisons (`if (x == x)`); unreachable code after an unconditional `return`/`break`/`continue`/`throwerror(...)`; and a duplicate condition later in the same `if`/`elif` chain that can never run since an earlier, identical branch already caught it. Verified against the entire real `bml/library` corpus before shipping - and in the process, found and would now flag a genuine duplicate-branch bug already present in `oRCL_OSC_TransactionStatus.bml` (`status == "DELETED"` checked twice in one chain).
-- **More ESLint-inspired checks**: `AND`/`OR` mixed without grouping parentheses in an `if`/`elif` condition (`no-mixed-operators`); an `else` block containing nothing but a single `if` statement, which BML's dedicated `elif` keyword exists specifically to avoid (`no-lonely-if`); a bare comparison statement with no effect, almost always a typo for `=` or a forgotten `if` (`no-unused-expressions`); and - scoped to util library functions only, since commerce functions have too many implicit platform-provided bindings to check safely - a variable read before its own later assignment in the same file (`no-undef`/use-before-define). Verified against the entire real corpus, including finding a genuine pre-existing bug copy-pasted across three near-duplicate utility functions (`abo_updateAsset`/`abotester_doUpdateAsset`): `curAssetKey` is compared before it's ever assigned, despite a comment claiming it's pre-initialized.
+- **More ESLint-inspired checks**: `AND`/`OR` mixed without grouping parentheses in an `if`/`elif` condition (`no-mixedOperators`); an `else` block containing nothing but a single `if` statement, which BML's dedicated `elif` keyword exists specifically to avoid (`no-lonelyIf`); a bare comparison statement with no effect, almost always a typo for `=` or a forgotten `if` (`no-unusedExpressions`); and - scoped to util library functions only, since commerce functions have too many implicit platform-provided bindings to check safely - a variable read before its own later assignment in the same file (`no-undef`/useBeforeDefine). Verified against the entire real corpus, including finding a genuine pre-existing bug copy-pasted across three near-duplicate utility functions (`abo_updateAsset`/`abotester_doUpdateAsset`): `curAssetKey` is compared before it's ever assigned, despite a comment claiming it's pre-initialized.
 - Added a permanent regression-guard test that lints every real `.bml` file in `bml/library` through the actual linter entry point on every test run, confirming no rule ever throws against real-world code.
 
 ### Fixed
@@ -97,7 +117,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Added
 
-- **BML Better Comments**: tagged comment highlighting (`!`, `?`, `*`, `//`, `TODO`, `FIXME`, `BUG`, `WARNING`, `IMPORTANT`, `HACK`, `XXX`, `NOTE`, `OPTIMIZE`, `IDEA`), distinct highlighting for functional directive comments (`// bml-lint-disable*`, `/* beautify ignore:start/end */`) with hover tooltips explaining exactly what each one does, and automatic detection/styling of BML doc-header comment blocks (`Function Name:`, `Description:`, `Inputs:`, `Return:`). Toggle with the new `cpqBml.features.comments` setting.
+- **BML Better Comments**: tagged comment highlighting (`!`, `?`, `*`, `//`, `TODO`, `FIXME`, `BUG`, `WARNING`, `IMPORTANT`, `HACK`, `XXX`, `NOTE`, `OPTIMIZE`, `IDEA`), distinct highlighting for functional directive comments (`// bml-lint-disable*`, `/* beautify ignore:start/end */`) with hover tooltips explaining exactly what each one does, and automatic detection/styling of BML docHeader comment blocks (`Function Name:`, `Description:`, `Inputs:`, `Return:`). Toggle with the new `cpqBml.features.comments` setting.
 - **Features Tab**: Added a dedicated "Features" tab to the settings panel webview to group BML Linting and BML Better Comments configurations.
 - **BML Color Themes**: four bundled VS Code color themes (`Ctrl+K Ctrl+T` → "BML Dark", "BML Dark Default", "BML Light", or "BML Light Default") with full-language token coverage plus a BML-specific richness layer - built-in functions tinted by category (string/math/date/database/url/array/dictionary/xml/json/misc), CPQ attribute/member access tinted separately from plain variables and from each other (line-level vs transaction-level vs generic member), and assignment/comparison/arithmetic/logical operators each given their own color.
 

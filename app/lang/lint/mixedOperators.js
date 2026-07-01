@@ -44,7 +44,7 @@ function checkMixedOperators(text, conditionRanges, doc, vscode) {
                 `'AND' and 'OR' are mixed without grouping parentheses - BML evaluates 'AND' before 'OR', which may not be what you expect. Add parentheses to make the intended grouping explicit, e.g. '(a AND b) OR c'.`,
                 vscode.DiagnosticSeverity.Warning
             );
-            diag.code = 'bml-mixed-operators';
+            diag.code = 'bml-mixedOperators';
             diagnostics.push(diag);
         }
     }

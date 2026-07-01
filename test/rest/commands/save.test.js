@@ -3,7 +3,7 @@ const path = require("path");
 const commands = require("../../../app/lang/rest/commands");
 const config = require("../../../app/lang/rest/config");
 const metadataLib = require("../../../app/lang/rest/metadata");
-const { createFakeVscode, createFakeContext } = require("../test-helpers");
+const { createFakeVscode, createFakeContext } = require("../testHelpers");
 const { SAMPLE_FUNCTION, baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("./fixtures");
 
 suite("BML REST commands - save", () => {

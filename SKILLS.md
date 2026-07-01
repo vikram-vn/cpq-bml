@@ -46,7 +46,7 @@ from `extension.js`.
 | `app/lang/beautify/` | `registerBeautifier` | top-level | Document/range formatting providers; delegates to pure logic in `./bml/` |
 | `app/lang/intellisense/` | `registerBmlIntelliSense` | top-level | Completion + hover, data-driven from JSON files in this folder (`bml_*_api_usage.json`, `custom_snippets.json`) |
 | `app/lang/lint/` | `registerBmlLinter` | top-level (in `index.js`; pure rule files do not) | Diagnostics - see section 3, the largest and most actively developed module |
-| `app/lang/comments/` | `registerBmlComments` | top-level | Tag/directive/doc-header comment decorations + hover, debounced like the linter |
+| `app/lang/comments/` | `registerBmlComments` | top-level | Tag/directive/docHeader comment decorations + hover, debounced like the linter |
 | `app/lang/rest/` | `registerBmlRest` | via `./commands/index.js` | Live Oracle CPQ REST integration: pull/save/validate/debug/deploy |
 | `app/lang/mcp/` | `registerMcp` | inside the function, not top-level | MCP server so an AI agent can call the REST tools directly over localhost |
 | `app/lang/settingsPanel/` | `registerSettingsPanel` | inside the function, not top-level | WebView settings UI (React, see section 6); auto-opens on first install if workspace looks unconfigured |
@@ -122,7 +122,7 @@ that silently re-derives one of these itself.
 
 **Every diagnostic that should be individually suppressible gets a
 `diag.code` string** (e.g. `'bml-constant-condition'`,
-`'bml-use-before-define'`). `computeSuppressions` (in `suppressions.js`)
+`'bml-useBeforeDefine'`). `computeSuppressions` (in `suppressions.js`)
 makes every coded diagnostic automatically respect
 `// bml-lint-disable[-line|-next-line|-file] <code1> <code2>` comments for
 free - no rule needs to implement suppression itself, just set `diag.code`.
@@ -157,7 +157,7 @@ real CPQ library code under `bml/library/`):
 3. **If anything looks like a false positive, fix the rule, not the
    corpus.** Past examples: a duplicate-branch checker collapsed different
    string literals because it ran on `noStringsText` instead of `cleanText`
-   (32 false positives, traced and fixed); a lonely-if checker had an
+   (32 false positives, traced and fixed); a lonelyIf checker had an
    off-by-one in a slice boundary that silently made it never fire on
    anything.
 4. **If a flag turns out to be a genuine bug in real library code, that's a
@@ -206,7 +206,7 @@ real CPQ library code under `bml/library/`):
     an actual file via `await vscode.workspace.openTextDocument(path)` and
     time `lintBMLCustom` directly - VS Code's real `positionAt` is O(log n)
     via an internal offset table, not O(n).
-- **File-based fixture tests**: `test/linter/file-based.test.js` walks pairs
+- **File-based fixture tests**: `test/linter/fileBased.test.js` walks pairs
   of `test/lint/<name>.bml` + `test/lint/<name>.expected.json`
   (`[{line, severity, message}, ...]`, 0-indexed lines) and asserts the
   linter's output matches exactly. When a new rule legitimately also fires
@@ -218,7 +218,7 @@ real CPQ library code under `bml/library/`):
   fixtures but crashes on real-world syntax it didn't anticipate.
 - Other modules follow the same "real `vscode`, mocked `vscode.window`/
   `secrets`/`workspace.getConfiguration` where needed" pattern - see
-  `test/rest/test-helpers.js` for the REST module's `createFakeVscode`/
+  `test/rest/testHelpers.js` for the REST module's `createFakeVscode`/
   `createFakeContext` helpers if extending that area.
 
 ## 5. Build & packaging

@@ -19,7 +19,7 @@ let _index = null; // Map<qualifiedName, { filePath, line, parameters, returnTyp
 let _watcher = null;
 
 /**
- * Extract the doc-header block comment from the top of a BML file.
+ * Extract the docHeader block comment from the top of a BML file.
  * Looks for a * ... * block containing "Function Name:" or "Description:".
  */
 function extractDocHeader(fileText) {

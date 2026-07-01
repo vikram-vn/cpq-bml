@@ -33,7 +33,7 @@ function checkLonelyIf(cleanText, conditionalChains, doc, vscode) {
                 `This 'else' contains nothing but a single 'if' statement - use 'elif' instead, BML has it specifically for this.`,
                 vscode.DiagnosticSeverity.Warning
             );
-            diag.code = 'bml-lonely-if';
+            diag.code = 'bml-lonelyIf';
             diagnostics.push(diag);
         }
     }

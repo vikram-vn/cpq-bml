@@ -6,7 +6,7 @@ const path = require('path');
  * Auto Doc-Header Insertion
  *
  * Triggered when the user types `///` at the beginning of a line in a .bml file.
- * Inserts a fully-formed BML doc-header block comment, pre-populated from the
+ * Inserts a fully-formed BML docHeader block comment, pre-populated from the
  * file's -meta.json sidecar when available.
  *
  * Template:

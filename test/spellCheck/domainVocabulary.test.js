@@ -67,8 +67,8 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
         assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
     });
 
-    test('Does not flag a real BML "Function Name" doc-header comment block with camelCase identifiers', () => {
-        // Regression test: doc-header blocks are a widespread convention in
+    test('Does not flag a real BML "Function Name" docHeader comment block with camelCase identifiers', () => {
+        // Regression test: docHeader blocks are a widespread convention in
         // real BML library code (e.g. bml/library/ORCL_ABO/abo_getOneAssetState)
         // and routinely name camelCase functions/parameters by bare name in
         // the comment text itself. Before the fix, the comment-checking path
@@ -109,7 +109,7 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
     });
 
     test('Flags a genuine typo even when it appears inside a camelCase run in a comment', () => {
-        // The doc-header camelCase-splitting fix must not become a loophole
+        // The docHeader camelCase-splitting fix must not become a loophole
         // that hides real typos buried inside a compound identifier mention.
         const diagnostics = lintText(`
             // Description : Computes the calclateTotal for the order

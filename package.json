@@ -336,7 +336,7 @@
         "cpqBml.features.comments": {
           "type": "boolean",
           "default": true,
-          "description": "Enable BML Better Comments: colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights functional directive comments (// bml-lint-disable*, /* beautify ignore:start/end */) distinctly, and styles doc-header comment blocks (Function Name/Description/Inputs/Return)."
+          "description": "Enable BML Better Comments: colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights functional directive comments (// bml-lint-disable*, /* beautify ignore:start/end */) distinctly, and styles docHeader comment blocks (Function Name/Description/Inputs/Return)."
         },
         "cpqBml.features.spelling": {
           "type": "boolean",

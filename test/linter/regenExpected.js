@@ -2,7 +2,7 @@
  * Regenerates all test/lint/*.expected.json files with the actual current
  * linter output. Run once after adding new linting rules.
  *
- * Usage: node test/linter/regen-expected.js
+ * Usage: node test/linter/regenExpected.js
  */
 const fs = require('fs');
 const path = require('path');

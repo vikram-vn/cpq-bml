@@ -73,7 +73,7 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
             `'${name}' is read here but isn't assigned until later in this file (line ${doc.positionAt(earliest).line + 1}) - this will read an uninitialized value.`,
             vscode.DiagnosticSeverity.Warning
         );
-        diag.code = 'bml-use-before-define';
+        diag.code = 'bml-useBeforeDefine';
         diagnostics.push(diag);
     }
 

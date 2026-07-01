@@ -317,7 +317,7 @@ function checkSpelling(
     diagnostics.push(diag);
   };
 
-  // Comment words are split on camelCase/acronym boundaries like identifiers, since doc-header
+  // Comment words are split on camelCase/acronym boundaries like identifiers, since docHeader
   // comments (e.g. "// Function Name : abo_getOneAssetState") routinely embed identifiers by name.
   commentRanges.forEach(([start, end]) => {
     const rawComment = text.substring(start, end);

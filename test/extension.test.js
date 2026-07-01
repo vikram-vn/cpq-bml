@@ -22,7 +22,7 @@ suite('Extension Test Suite', () => {
 
 		for (const file of inputFiles) {
 			const testName = path.basename(file, '.bml');
-			test(`BML Beautifier file-based test: ${testName}`, () => {
+			test(`BML Beautifier fileBased.test: ${testName}`, () => {
 				const inputPath = path.join(testDir, file);
 				const expectedPath = path.join(testDir, `${testName}.expected.bml`);
 				const optionsPath = path.join(testDir, `${testName}.options.json`);

@@ -7,7 +7,7 @@ const {
   updateEnvironment,
   deleteEnvironment,
 } = require("../../../app/lang/rest/commands/env");
-const { createFakeVscode, createFakeContext } = require("../test-helpers");
+const { createFakeVscode, createFakeContext } = require("../testHelpers");
 
 suite("BML REST commands - environment CRUD (used by the settings webview)", () => {
   test("applyEnvironment copies siteUrl/username/authMethod into active settings, excluding any password/token", async () => {

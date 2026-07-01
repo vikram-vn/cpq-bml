@@ -27,7 +27,7 @@ suite('BML Better Comments - buildCommentDecorations', () => {
         assert.ok(text.slice(...tags.get('todo')[0]).includes('TODO'));
     });
 
-    test('a comment inside a doc-header block is not double-counted as a tag', () => {
+    test('a comment inside a docHeader block is not double-counted as a tag', () => {
         const text = '// Name: foo\n// TODO: this would be a weird place for a todo\nx = 1;';
         const { tags, docHeaders } = buildCommentDecorations(text);
         assert.strictEqual(docHeaders.length, 1);

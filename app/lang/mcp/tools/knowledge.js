@@ -6,7 +6,7 @@ const { findOrCreateAiCopy } = require('../locate');
  * explain_function
  *
  * Returns structured documentation for a locally pulled BML function:
- * the doc-header block comment, first 50 code lines, parameter list,
+ * the docHeader block comment, first 50 code lines, parameter list,
  * and return type sourced from the -meta.json sidecar.
  * Works fully offline — no CPQ REST call required.
  */
@@ -24,7 +24,7 @@ async function explainFunction(context, vscode, args) {
         return { success: false, error: `Cannot read file: ${e.message}` };
     }
 
-    // Extract doc-header block comment
+    // Extract docHeader block comment
     const blockMatch = text.match(/\/\*[\s\S]*?(?:Function Name:|Description:)[\s\S]*?\*\//i);
     const docHeader = blockMatch
         ? blockMatch[0].replace(/^\/\*+\s*/m, '').replace(/\s*\*+\/$/m, '').replace(/^\s*\*\s?/gm, '').trim()
