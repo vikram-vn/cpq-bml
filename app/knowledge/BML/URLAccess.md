@@ -12,7 +12,7 @@ tags: ['BML', 'CPQ', 'Functions']
 
 These functions can be used to send and receive data from external systems.
 
-![Closed](../images/transparent.gif)makeurlparam
+![Closed](images/transparent.gif)makeurlparam
 
 This function is used to convert a series of name-value pairs into a query string, which can be appended to a URL.
 
@@ -31,11 +31,11 @@ Return Type: String
 
 Example:
 
-![Example of makeurlparam](../images/params.png)
+![Example of makeurlparam](images/params.png)
 
-![makeurlparam output example](../images/Result.png)
+![makeurlparam output example](images/Result.png)
 
-![Closed](../images/transparent.gif)urldata
+![Closed](images/transparent.gif)urldata
 
 This function sends and receives data from a URL  using HTTP GET, POST, PUT, or PATCH  methods.
 The HTTP DELETE method can also be used to delete data from a URL
@@ -52,11 +52,11 @@ Parameters:
 
 | Parameter  | Data Type  | Description                                                                                                                                                                                                                              |
 | ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| url        | String     | The location of the data you are trying to access. You can add additional query string parameters to the URL as needed. Refer to the `[makeurlparam](../../makeUrlParam.md)` function for additional details on query string parameters. |
+| url        | String     | The location of the data you are trying to access. You can add additional query string parameters to the URL as needed. Refer to the `[makeurlparam](./makeUrlParam.md)` function for additional details on query string parameters. |
 | httpMethod | String     | Supported methods: GET, DELETE, PATCH, POST, or PUT                                                                                                                                                                                      |
 | headers    | Dictionary | Headers will commonly specify the content type of the body, the authentication details, and the desired media type of the response.                                                                                                      |
 | body       | String     | Optional: Include the message body for the request you wish to send. GET and DELETE requests often omit this. Common content types for the message body are JSON and XML.                                                                |
-| timeout    | Integer    | Optional: Specify a timeout value for the request. Refer to [Timeout Parameter](../../timeoutParameter.md) for more information.                                                                                                         |
+| timeout    | Integer    | Optional: Specify a timeout value for the request. Refer to [Timeout Parameter](./timeoutParameter.md) for more information.                                                                                                         |
 
 **Return Type:** Dictionary
 
@@ -71,7 +71,7 @@ The key-value pairs in the table below are an example of a simple response.
 | Content-Length | 2                |
 | Message-Body   | {}               |
 
-![Closed](../images/transparent.gif)Response Handling Example
+![Closed](images/transparent.gif)Response Handling Example
 
 ```bml
 response = urldata(url, method, headers);
@@ -81,18 +81,18 @@ print(get(response, "Message-Body")); // print the message body
 ```
 
 :::note
-**Note:** For information about working with dictionaries, refer to the [Dictionaries](Dictionary.md)  topic.
+**Note:** For information about working with dictionaries, refer to the [Dictionaries](./Dictionary.md)  topic.
 :::
 
 **Examples using urldata:**
 
-![Closed](../images/transparent.gif)Send a GET request without a header
+![Closed](images/transparent.gif)Send a GET request without a header
 
 ```bml
 response=urldata("http://<hostname>/<path>","GET");
 ```
 
-![Closed](../images/transparent.gif)Send a GET request with a header and a timeout
+![Closed](images/transparent.gif)Send a GET request with a header and a timeout
 
 ```bml
 headers=dict("string");
@@ -106,7 +106,7 @@ Sample error message response during timeout:
 {Status-Code=-1, Error-Message=Read timed out}
 ```
 
-![Closed](../images/transparent.gif)Send a PUT request with a header
+![Closed](images/transparent.gif)Send a PUT request with a header
 
 ```bml
 headers=dict("string");
@@ -114,7 +114,7 @@ put(headers, "content-type", "application/json");
 response=urldata("http://<hostname>/<path>","PUT",headers,jsonBody);
 ```
 
-![Closed](../images/transparent.gif)Send a DELETE  request with headers that specify Basic authentication
+![Closed](images/transparent.gif)Send a DELETE  request with headers that specify Basic authentication
 
 ```bml
 headers=dict("string");
@@ -124,7 +124,7 @@ put(headers, "Authorization", authstring); //optional if service is from the sam
 response=urldata("http://<hostname>/<path>","DELETE",headers);
 ```
 
-![Closed](../images/transparent.gif)Send a GET request with headers that specify Bearer authentication
+![Closed](images/transparent.gif)Send a GET request with headers that specify Bearer authentication
 
 ```bml
 headers=dict("string");
@@ -133,10 +133,10 @@ response=urldata(http://<hostname>/<path>",GET, headers);
 ```
 
 :::note
-**Note:** This example uses a bearer token for Microsoft Dynamics 365. Please see the [OAuth Provider](../../Integrating_With_BigMachines/Integration_Center/OAuthIntegration.md) Integration topic for more information.
+**Note:** This example uses a bearer token for Microsoft Dynamics 365. Please see the [OAuth Provider](./OAuthIntegration.md) Integration topic for more information.
 :::
 
-![Closed](../images/transparent.gif)Send a PATCH request using headers that specify Basic authentication
+![Closed](images/transparent.gif)Send a PATCH request using headers that specify Basic authentication
 
 ```bml
 headers=dict("string");
@@ -147,7 +147,7 @@ put(headers, "content-type", "application/json");
 response=urldata("http://<hostname>/<path>","PATCH",headers,jsonBody);
 ```
 
-![Closed](../images/transparent.gif)urldatabyget
+![Closed](images/transparent.gif)urldatabyget
 
 This function retrieves data from a URL address by the HTTP Get Method. It is used for RESTful Web Services and is faster than the POST method.
 
@@ -167,25 +167,25 @@ Parameters:
 | Parameter    | Data Type | Description                                                                                                                                                  |
 | ------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | url          | String    | The location of the data you are trying to access.                                                                                                           |
-| parameters   | String    | A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](../../makeUrlParam.md)` function for format details. |
+| parameters   | String    | A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](./makeUrlParam.md)` function for format details. |
 | defaultValue | String    | This is the default value (or error message) displayed if the data cannot be accessed.                                                                       |
-| timeout      | Integer   | Function timeout value * Refer to the [Timeout Parameter](../../timeoutParameter.md) section for more information.                                           |
+| timeout      | Integer   | Function timeout value * Refer to the [Timeout Parameter](./timeoutParameter.md) section for more information.                                           |
 
 **Return Type:** String
 
 Example:
 
-![urldatabyget example](../images/urldatabypost_657x140.bmp)
+![urldatabyget example](images/urldatabypost_657x140.bmp)
 
-![urldatabyget output example](../images/urldatabypost_console.png)
+![urldatabyget output example](images/urldatabypost_console.png)
 
-![Closed](../images/transparent.gif)urldatabypost
+![Closed](images/transparent.gif)urldatabypost
 
 This function retrieves data from a URL address by the HTTP  POST Method.
 
-* This function passes parameters separately from the URL.  It is useful when handling sensitive data and/or larger requests.  It allows for encrypted requests.  This is used for SOAP Web Services. For more information, see the topic [Using SOAP with BML](../UseSOAPwithBML.md).
+* This function passes parameters separately from the URL.  It is useful when handling sensitive data and/or larger requests.  It allows for encrypted requests.  This is used for SOAP Web Services. For more information, see the topic [Using SOAP with BML](./UseSOAPwithBML.md).
 
-* Refer to [Same Server Authentication](../../Same_Server_Authentication.md) for information on authorization for internal RESTful web services calls.
+* Refer to [Same Server Authentication](./Same_Server_Authentication.md) for information on authorization for internal RESTful web services calls.
 
 Syntax:
 
@@ -207,9 +207,9 @@ Parameters:
 | Parameter    | Data Type | Description                                                                                                                                                  |
 | ------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | url          | String    | The location of the data you are trying to access.                                                                                                           |
-| parameters   | String    | A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](../../makeUrlParam.md)` function for format details. |
+| parameters   | String    | A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](./makeUrlParam.md)` function for format details. |
 | defaultValue | String    | This is the default value (or error message) displayed if the data cannot be accessed.                                                                       |
-| timeout      | Integer   | Function timeout value * Refer to the [Timeout Parameter](../../timeoutParameter.md) section for more information.                                           |
+| timeout      | Integer   | Function timeout value * Refer to the [Timeout Parameter](./timeoutParameter.md) section for more information.                                           |
 
 Additional parameters
 
@@ -225,17 +225,17 @@ return urldatabypost("https://cpluto.oracle.com/httpreceiver", "", "", headers);
 
 Example of urldatabypost:
 
-![urldatabypost example](../images/urldatabypost_660x141.bmp)
+![urldatabypost example](images/urldatabypost_660x141.bmp)
 
-![urldatabypost output example](../images/urldatabypost_console.png)
+![urldatabypost output example](images/urldatabypost_console.png)
 
 As the function suggests, this information is not available.
 
 Sample Request
 
-![urldatabypost sample request](../images/urldatabypost_samplereq.png)
+![urldatabypost sample request](images/urldatabypost_samplereq.png)
 
-![Closed](../images/transparent.gif)urldatabypostasync
+![Closed](images/transparent.gif)urldatabypostasync
 
 Retrieves data asynchronously from a URL using HTTP POST to submit parameters (see the makeurlparam function for formatting).
 
@@ -250,12 +250,12 @@ Parameters:
 | Parameter             | Data Type  | Description                                                                                                                                                  |
 | --------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | url                   | String     | The URL location of the data you are trying to access.                                                                                                       |
-| parameters            | String     | A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](../../makeUrlParam.md)` function for format details. |
+| parameters            | String     | A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](./makeUrlParam.md)` function for format details. |
 | defaultValue          | String     | This is the default value (or error message) displayed if the data cannot be accessed.                                                                       |
 | callbackActionVarName | String     | The variable name of the CPQ action that will be invoked by the external system.                                                                             |
 | headers               | Dictionary | The message headers                                                                                                                                          |
 | returnErrorResponse   | Boolean    | **Optional:** The value response, based on the key specified in the dictionary.                                                                              |
-| timeout               | Integer    | Function timeout value * Refer to the [Timeout Parameter](../../timeoutParameter.md) section for more information.                                           |
+| timeout               | Integer    | Function timeout value * Refer to the [Timeout Parameter](./timeoutParameter.md) section for more information.                                           |
 
 1. On success, the function returns the response String.
 
@@ -334,7 +334,7 @@ orderNumber = readxmlsingle(_system_async_payload, path);
 return "1~orderNumber~" + orderNumber;
 ```
 
-![Closed](../images/transparent.gif)urlmultipartbypost
+![Closed](images/transparent.gif)urlmultipartbypost
 
 This function supports remote approvals by sending multi-part messages with attachments.
 
@@ -360,7 +360,7 @@ Parameters:
 | payload     | String     | The payload                                                                                                        |
 | headers     | Dictionary | The message header                                                                                                 |
 | attachments | Dictionary | Optional                                                                                                           |
-| timeout     | Integer    | Function timeout value * Refer to the [Timeout Parameter](../../timeoutParameter.md) section for more information. |
+| timeout     | Integer    | Function timeout value * Refer to the [Timeout Parameter](./timeoutParameter.md) section for more information. |
 
 Sample Input:
 
@@ -384,7 +384,7 @@ On success, a Dictionary representation of the http response, such as “Status-
 
 ### Additional Information
 
-![Closed](../images/transparent.gif)Same Server Authentication
+![Closed](images/transparent.gif)Same Server Authentication
 
 Authorization is optional when making a web services call that is internal to CPQ. You can omit the authorization string in the header when using urldata() and urldatabypost() functions. When no authorization string is provided the current user's login credentials are used.
 
@@ -401,7 +401,7 @@ put(headers, "Content-Type", "application/json");
 response=urldatabypost("http://<mycpqsite>.oracle.com/<Oracle CPQ endpoint>, jsonBody, "", headers);
 ```
 
-![Closed](../images/transparent.gif)Timeout Parameter
+![Closed](images/transparent.gif)Timeout Parameter
 
 An optional timeout parameter can be set on the `urldata`, `urldatabyget`,`urldatabypost`, `urldatabypostsync`, and `urlmulitpartbypost` functions.
 
@@ -423,4 +423,4 @@ If you are retrieving File Manager static resources/files, use the HTTP GET prot
 
 ## Related Topics
 
-![Related Topics Link Icon](../images/transparent.gif)See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

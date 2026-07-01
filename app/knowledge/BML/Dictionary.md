@@ -12,7 +12,7 @@ tags: ['BML', 'CPQ', 'Functions']
 
 Dictionaries are used to store key value pairs.  Their purpose is similar to that of an array or Data Table.  A dictionary key is used to look up a value. Dictionaries allow users to store and retrieve data quickly and easily.   Once you have created a dictionary, values are stored using a key.  You can attach a value with any data type to a dictionary, except another dictionary.  When you declare a dictionary, ensure to declare what data type is needed.
 
-![Closed](../images/transparent.gif)containskey
+![Closed](images/transparent.gif)containskey
 
 This is a dictionary function that checks to see if the key is found in the dictionary.
 
@@ -29,11 +29,11 @@ Parameters:
 
 Example:
 
-![containskey example](../images/containskey.bmp)
+![containskey example](images/containskey.bmp)
 
-![containskey output example](../images/containskeyReturn.png)
+![containskey output example](images/containskeyReturn.png)
 
-![Closed](../images/transparent.gif)dict
+![Closed](images/transparent.gif)dict
 
 This function is used to create a dictionary of a specific data type, which is specified by the `dictType` parameter.
 
@@ -47,7 +47,7 @@ Parameters:
 
 **Return Type:** Boolean
 
-![Closed](../images/transparent.gif)dict<anytype>
+![Closed](images/transparent.gif)dict<anytype>
 
 This function supports the addition of multiple types of
  objects in a dictionary. The dictionary get( ), put( ), and keys( ) functions
@@ -72,7 +72,7 @@ put(d1, "key2", jObj);
 **Return**: A dictionary to contain key-value entries of various data
  types is created and two key-value entries are inserted into the dictionary.
 
-![Closed](../images/transparent.gif)get
+![Closed](images/transparent.gif)get
 
 This function retrieves the value of the provided key from the dictionary.
 
@@ -91,11 +91,11 @@ Parameters:
 
 *Below, three separate keys and values have been defined and placed within the same dictionary.*
 
-![get example](../images/get.bmp)
+![get example](images/get.bmp)
 
-![get output example](../images/getReturn.png)
+![get output example](images/getReturn.png)
 
-![Closed](../images/transparent.gif)keys
+![Closed](images/transparent.gif)keys
 
 Use this function to retrieve an unordered String Array of all keys found within a Dictionary. If the Dictionary does not contain any keys, an empty array is returned.
 
@@ -116,7 +116,7 @@ return keys(d);
 
 This function will return a string array with 4 string elements.
 
-![Closed](../images/transparent.gif)put
+![Closed](images/transparent.gif)put
 
 Once a dictionary has been created, you can define keys and values to put into the dictionary.
 
@@ -134,11 +134,11 @@ Return Type: Boolean
 
 Example of put():
 
-![put example](../images/put.bmp)
+![put example](images/put.bmp)
 
-![put output example](../images/putReturn.png)
+![put output example](images/putReturn.png)
 
-![Closed](../images/transparent.gif)values
+![Closed](images/transparent.gif)values
 
 Gets the array of the values of all the dictionary entries.
 
@@ -179,4 +179,4 @@ Dictionaries have better speed and performance than performing table cells.
 
 ## Related Topics
 
-![Related Topics Link Icon](../images/transparent.gif)See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

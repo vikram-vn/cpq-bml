@@ -10,7 +10,7 @@ tags: ['BML', 'CPQ', 'Functions']
 
 ## Overview
 
-Oracle CPQ declares, initializes, populates, and manipulates arrays using BML. Refer to  [Array Functions](Arrays.md) for details about available functions.
+Oracle CPQ declares, initializes, populates, and manipulates arrays using BML. Refer to  [Array Functions](./Arrays.md) for details about available functions.
 
 An array is an ordered collection of values, referenced by a single variable name.  Think of an array as a table, with values in rows and columns.  Another way to think of arrays is in relation to an x-y axis.  If you recall, data sets are formatted as (x, y).  Data in arrays is similar:
 
@@ -38,7 +38,7 @@ There are also 2-dimensional arrays.  These arrays can be thought of as a grid o
 
 * **Example of an array attribute (user-side):** In the example below, the user had selected that three floors needed to have their elevators configured. From this one screen, you can individually configure each elevator. As you can see, each one has a different combination of door type, door trim and buttons.
 
-![Example of an array attribute (user-side)](../images/control_attribute.png)
+![Example of an array attribute (user-side)](images/control_attribute.png)
 
 * **Control Attribute:** This size of arrays are defined by the control attribute. When creating a control attribute, the attribute itself must have a Data Type of integer and you must make sure that the Array Type box is not checked. In the case below, the user wants to configure 27 floors. Number Of Floors is the control attribute.
 
@@ -90,19 +90,19 @@ Examples of how to populate 1-D and 2-D arrays using a `for...loop`.
 
 Create a 1-D array of values equal to the sum of each array element:
 
-![Populate 1-D array example](../images/1Dpop_arrays_590x215.bmp)
+![Populate 1-D array example](images/1Dpop_arrays_590x215.bmp)
 
-![Populate 1-D array output example](../images/1Dpop_arrays_console.png)
+![Populate 1-D array output example](images/1Dpop_arrays_console.png)
 
 * 2-D Arrays
 
 In this example, we are going to combine two 2-D arrays by adding together their value and placing them in a new 2-D array.  Remember that range() creates an integer array of indexes.  We will be using two here.
 
-![Populate 2-D array example](../images/2DarrayBML_589x225.bmp)
+![Populate 2-D array example](images/2DarrayBML_589x225.bmp)
 
 What we are going to do here is add together the values of the two arrays based on their indexes.  `colRange`and `rowRange`are initializing integer arrays.  So, both `colRange`and `rowRange = [0, 1, 2]`. respectively.  Next, we have to declare and initialize the 2-D array that we are going to populate.  Then, comes the `for...loop`.  The first `for...loop` will loop through the rows of indexes in `rowRange`.  The second will loop through the columns of indexes and thus will populate the new array by pulling out the column values.
 
-![Populate 2-D array output example](../images/2DarrayBML_console.png)
+![Populate 2-D array output example](images/2DarrayBML_console.png)
 
 ### Uninitialized Arrays
 
@@ -110,11 +110,11 @@ In order to show you the different ways to declare arrays, we will display two s
 
 Example of Uninitialized Arrays
 
-![Uninitialized Array example](../images/1D_uninitialized.bmp)
+![Uninitialized Array example](images/1D_uninitialized.bmp)
 
 As you can see, `myArray`returned a string with four null values because array fields were not initialized after the array was declared.
 
-![Uninitialized Array concole](../images/1D_uninitialized_console.png)
+![Uninitialized Array concole](images/1D_uninitialized_console.png)
 
 ## Notes
 
@@ -135,4 +135,4 @@ To increase the default row and column size, open a ticket on [My Oracle Support
 
 ## Related Topics
 
-![Related Topics Link Icon](../images/transparent.gif)See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

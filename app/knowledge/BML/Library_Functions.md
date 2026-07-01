@@ -11,7 +11,7 @@ tags: ['BML', 'CPQ']
 ## Overview
 
 :::note
-This topic covers the Library Functions  using the classic interface pages. Refer to [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) and [Util Function Editor](FunctionEditor/BML_Editor.md) for process administration using Redwood UI pages.
+This topic covers the Library Functions  using the classic interface pages. Refer to [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md) and [Util Function Editor](./BML_Editor.md) for process administration using Redwood UI pages.
 :::
 
 The BML Function Library enables the user to write efficient and reusable custom BML functions. The user can write and store BML functions in a central library and call these functions from different areas in CPQ.

@@ -15,18 +15,18 @@ BML  extensible language is a scripting tool that is used to capture a company's
 You will see syntax that is familiar in Java, Basic, Python, and C++, but they aren’t exactly the same. After reading the section on BML, you should have a good understanding of what programming language is and how it’s used and structured. You should also understand the syntax of BML and have generated some very basic and functional code.
 
 :::note
-Oracle CPQ 25D introduces support for the Redwood UI Util Library Editor. Refer to [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) and [Util Function Editor](FunctionEditor/BML_Editor.md) for more information.
+Oracle CPQ 25D introduces support for the Redwood UI Util Library Editor. Refer to [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md) and [Util Function Editor](./BML_Editor.md) for more information.
 :::
 
 ![Closed](images/transparent.gif)What is a function?
 
-A function is usually defined as a rule that relates one variable value to another. In programming, it also represents a series of commands that perform an action or calculate a value depending upon certain parameters. Parameters are the values that the function uses. But, not all functions require parameters. For more information, see the topic [Function Editor Basics](FunctionEditor/FunctionEditorBasics.md).
+A function is usually defined as a rule that relates one variable value to another. In programming, it also represents a series of commands that perform an action or calculate a value depending upon certain parameters. Parameters are the values that the function uses. But, not all functions require parameters. For more information, see the topic [Function Editor Basics](./FunctionEditorBasics.md).
 
 ![Closed](images/transparent.gif)What is a variable?
 
 Variables are placeholders for the data, which a program may use or manipulate. They are given unique names so that they can be assigned values and referred to throughout the source code. In order to use a variable, you must declare it by giving it a unique name. In many programming languages, once a variable is declared, it must be initialized. However, in BML, these two steps occur simultaneously.
 
-Variables can be used for Column names, Table names, and WHERE clauses. For more information, see the topic [Dynamic BMQL Variables](FunctionsScripts/DynamicBMQLVariables.md).
+Variables can be used for Column names, Table names, and WHERE clauses. For more information, see the topic [Dynamic BMQL Variables](./DynamicBMQLVariables.md).
 
 ![Closed](images/transparent.gif)Shortcuts
 
@@ -74,7 +74,7 @@ function(param 1, param 2, param 3, [optional param])
 
 ![Closed](images/transparent.gif)Numeric Operators
 
-Numeric operators always return a numeric data type.   Numeric inputs include: numeric literals, numeric identifiers, and numeric functions. Numeric operators can also be used whether a numeric value can be plugged in or not, such as: in other functions, relational operators, and expressions. For more information, see the topic [Numeric Functions](FunctionsScripts/Math.md).
+Numeric operators always return a numeric data type.   Numeric inputs include: numeric literals, numeric identifiers, and numeric functions. Numeric operators can also be used whether a numeric value can be plugged in or not, such as: in other functions, relational operators, and expressions. For more information, see the topic [Numeric Functions](./Math.md).
 
 | Numeric Operator | Meaning        | Looks Like          |
 | ---------------- | -------------- | ------------------- |

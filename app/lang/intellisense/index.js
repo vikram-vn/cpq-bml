@@ -132,10 +132,37 @@ function isProseExample(example) {
     return /^\s*\d+\.\s/.test(example);
 }
 
+function getHelpFilePath(info) {
+    if (!info) return null;
+    const category = info.functionCategory;
+    if (!category) return null;
+    
+    const categoryMap = {
+        'string': 'String.md',
+        'math': 'Math.md',
+        'date': 'Date.md',
+        'json': 'Json.md',
+        'xml': 'XML.md',
+        'dictionary': 'Dictionary.md',
+        'array': 'Arrays.md',
+        'arrays': 'Arrays.md',
+        'bmql': 'BMQL.md',
+        'url': 'URLAccess.md',
+        'others': 'Others.md',
+        'direct_db_access': 'DirectDBAccess.md'
+    };
+    
+    const fileName = categoryMap[category.toLowerCase()];
+    if (fileName) {
+        return path.join('app', 'knowledge', 'BML', fileName);
+    }
+    return null;
+}
+
 /**
  * Build a Markdown tooltip with syntax, scope/type, notes, and examples.
  */
-function formatAsJsDoc(info) {
+function formatAsJsDoc(info, context) {
     const md = new vscode.MarkdownString();
     md.isTrusted = true;
 
@@ -169,6 +196,16 @@ function formatAsJsDoc(info) {
                 md.appendCodeblock(decoded, 'bml');
             }
         });
+    }
+
+    const helpFileRel = getHelpFilePath(info);
+    if (helpFileRel && context) {
+        const helpFileAbs = path.join(context.extensionPath, helpFileRel);
+        if (fs.existsSync(helpFileAbs)) {
+            const uri = vscode.Uri.file(helpFileAbs);
+            const encodedArgs = encodeURIComponent(JSON.stringify([uri.fsPath]));
+            md.appendMarkdown(`\n\n[📖 Read Offline Help](command:cpqBml.openHelpTopic?${encodedArgs})\n`);
+        }
     }
 
     return md;
@@ -388,7 +425,7 @@ function registerBmlIntelliSense(context) {
                 }
                 const info = bmlApiData[key];
                 if (info) {
-                    item.documentation = formatAsJsDoc(info);
+                    item.documentation = formatAsJsDoc(info, context);
                 }
                 return item;
             }
@@ -405,7 +442,7 @@ function registerBmlIntelliSense(context) {
             if (!wordRange) return null;
 
             const info = lookupApiInfo(document.getText(wordRange));
-            return info ? new vscode.Hover(formatAsJsDoc(info)) : null;
+            return info ? new vscode.Hover(formatAsJsDoc(info, context)) : null;
         }
     });
 
@@ -426,7 +463,7 @@ function registerBmlIntelliSense(context) {
                 if (!info || info.category !== 'function') return null;
 
                 const signatureHelp = new vscode.SignatureHelp();
-                const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info));
+                const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info, context));
                 
                 signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax);
                 signatureHelp.signatures = [signatureInfo];
@@ -440,6 +477,17 @@ function registerBmlIntelliSense(context) {
     );
 
     context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
+
+    // Register command to open help topics in standard markdown preview
+    const openCommand = vscode.commands.registerCommand('cpqBml.openHelpTopic', async (filePath) => {
+        try {
+            const uri = vscode.Uri.file(filePath);
+            await vscode.commands.executeCommand('markdown.showPreview', uri);
+        } catch (err) {
+            vscode.window.showErrorMessage(`Failed to open help topic: ${err.message}`);
+        }
+    });
+    context.subscriptions.push(openCommand);
 
     // ── Go to Definition ─────────────────────────────────────────────────────
     const definitionProvider = vscode.languages.registerDefinitionProvider('bml', {

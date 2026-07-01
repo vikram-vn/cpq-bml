@@ -10,7 +10,7 @@ tags: ['BML', 'CPQ', 'Functions']
 
 ## BOM Mapping Functions
 
-![Closed](../images/transparent.gif)applybom
+![Closed](images/transparent.gif)applybom
 
 Apply the delta BOM from an open order to construct the projected BOM.
 
@@ -46,7 +46,7 @@ result = applybom(baseBom, oneBomToApply);
 return jsontostr(result);
 ```
 
-![Closed](../images/transparent.gif)calculateconfiguration
+![Closed](images/transparent.gif)calculateconfiguration
 
 This function applies a delta configuration set from open lines on top of the asset configuration to produce the projected configuration for all configuration attributes including attributes that are not mapped to the configurator.
 
@@ -87,7 +87,7 @@ configurationKey = calculateconfiguration("", linesToApply);
 return configurationKey;
 ```
 
-![Closed](../images/transparent.gif)calculatedeltabom
+![Closed](images/transparent.gif)calculatedeltabom
 
 This function compares the prior BOM with current BOM and then returns the difference between the two with appropriate action code for each item.
 
@@ -122,7 +122,7 @@ result = calculatedeltabom(priorBom, curBom, inputBom);
 return jsontostr(result);
 ```
 
-![Closed](../images/transparent.gif)convertbomtoflat
+![Closed](images/transparent.gif)convertbomtoflat
 
 This function converts a hierarchical BOM
  into a flattened BOM. A flat BOM stores all descendants as direct children,
@@ -221,7 +221,7 @@ Sample Return
 }
 ```
 
-![Closed](../images/transparent.gif)convertbomtohier
+![Closed](images/transparent.gif)convertbomtohier
 
 This function converts a flattened BOM
  into a hierarchical BOM. Occasionally, administrators flatten hierarchical
@@ -321,7 +321,7 @@ Sample Return:
 }
 ```
 
-![Closed](../images/transparent.gif)getbom
+![Closed](images/transparent.gif)getbom
 
 For fulfillment system
  integrations, the getbom function retrieves the saved sales BOM or
@@ -359,7 +359,7 @@ print jObj;
 //Output : {"partNumber":"part49","quantity":10,"id":"BOM_root","parentId":"","attributes":{},"fields":{"_line_bom_level":"0"},"explodedQuantity":10,"category":"sales","variableName":"root","definition":{"SequenceNum":814,"ItemId":"814","ItemType":"Standard Item","Optional":"Y"},"children":[{"partNumber":"part50","quantity":5,"id":"BOM_text_bom","parentId":"BOM_root","attributes":{},"fields":{"_line_bom_level":"1"},"explodedQuantity":50,"variableName":"text_bom","definition":{"SequenceNum":815,"ItemId":"815","ItemType":"Standard Item","Optional":"Y"}}]}
 ```
 
-![Closed](../images/transparent.gif)getconfigurationbom
+![Closed](images/transparent.gif)getconfigurationbom
 
 Retrieves the configbom stored via the saveConfigBom API and the configBom created via an external client application Configurator UI session. The library function extracts and returns a client integration BOM instance from the Oracle CPQ configBomInstance resource using the "configId".
 
@@ -374,7 +374,7 @@ Parameters:
 | configId             | Integer   | The Configuration ID for the client side integration action :::note This is not the same as the configuration_id system attribute. ::: * For UI integrations, the client side integration action returns the config_id in the response JSON. * For other actions such as Terminate, Renew, Suspend, and Resume order, RESTful calls generated from the saveBomConfig BML function return the lineId. |
 | flattenChildProducts | Boolean   | (optional) Use this parameter to flatten child items and return all descendant BOM items as direct children of the root BOM item. The default value is false if not provided.                                                                                                                                                                                                                        |
 
-![Closed](../images/transparent.gif)savebom
+![Closed](images/transparent.gif)savebom
 
 This  function saves a BOM into a transaction without
  Configuration attributes and returns the document number of the saved transaction.
@@ -407,7 +407,7 @@ print docNum;
 //Output: 5
 ```
 
-![Closed](../images/transparent.gif)saveconfigbom
+![Closed](images/transparent.gif)saveconfigbom
 
 Saves a client integration BOM instance (I.e. configBomInstance) and returns the configId.
 
@@ -437,4 +437,4 @@ Parameters:
 
 ## Related Topics
 
-![Related Topics Link Icon](../images/transparent.gif)See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

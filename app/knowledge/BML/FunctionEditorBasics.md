@@ -11,14 +11,14 @@ tags: ['BML', 'CPQ', 'Editor']
 ## Overview
 
 :::note
-This topic covers the Funtion Editor using the classic interface pages. Refer to [Util BML Library Functions List](../UtilBmlLibraryFunctionsList.md) and [Util Function Editor](BML_Editor.md) for process administration using Redwood UI pages.
+This topic covers the Funtion Editor using the classic interface pages. Refer to [Util BML Library Functions List](./UtilBmlLibraryFunctionsList.md) and [Util Function Editor](./BML_Editor.md) for process administration using Redwood UI pages.
 :::
 
 While there are notable differences between the function editors found in the Oracle CPQ application, there are some common characteristics as well.
 
-![Closed](../images/transparent.gif)Button Definitions
+![Closed](images/transparent.gif)Button Definitions
 
-![Button definitions](../images/buttons.png)
+![Button definitions](images/buttons.png)
 
 You will see the buttons at the bottom of the **Editor** pane:
 
@@ -32,11 +32,11 @@ You will see the buttons at the bottom of the **Editor** pane:
 
 * The **Back** button returns you to the previous page.
 
-![Closed](../images/transparent.gif)Syntax Colors
+![Closed](images/transparent.gif)Syntax Colors
 
 The following code is displayed in different colors:
 
-![Code sample with syntax colors](../images/syntax_color.bmp)
+![Code sample with syntax colors](images/syntax_color.bmp)
 
 | Color | Definition                                                          |
 | ----- | ------------------------------------------------------------------- |
@@ -47,19 +47,19 @@ The following code is displayed in different colors:
 | Green | Conditional Functions                                               |
 | Gray  | Comments                                                            |
 
-![Closed](../images/transparent.gif)Script Definition Area
+![Closed](images/transparent.gif)Script Definition Area
 
 BML can be typed directly into the Script Definition Area.  Save your changes after writing/editing the script. **Example:**
 
-![Script definition area](../images/script_area.png)
+![Script definition area](images/script_area.png)
 
-The bar across the bottom represents the character position in the code and the total number of characters. ![Bottom information bar](../images/position.png)
+The bar across the bottom represents the character position in the code and the total number of characters. ![Bottom information bar](images/position.png)
 
 The box on the left defines the position of the character based on its line and index.  The box to the right gives you the actual number of characters in each line.
 
-Clicking the **Binoculars** ![Top toolbar](../images/topToolbar.png) will open a **Search and Replace** dialog box, to find and/or replace part of the script.
+Clicking the **Binoculars** ![Top toolbar](images/topToolbar.png) will open a **Search and Replace** dialog box, to find and/or replace part of the script.
 
-![Search and replace dialog](../images/searchReplace.png)
+![Search and replace dialog](images/searchReplace.png)
 
 :::tip
 Use the toolbar above to undo/redo changes, change the font or jump to a specific line in the script.
@@ -71,17 +71,17 @@ You can also click the **blue arrow** to jump to a specific line in the script.
 Character indexes begin with 0.
 :::
 
-![Closed](../images/transparent.gif)Attributes & Actions
+![Closed](images/transparent.gif)Attributes & Actions
 
 In the function editor, you can select attributes to include within your code.  These attributes are specific to the product family that you are working in.  For example, when you are in Configuration, you can select from a standard product line, model, account, user or configuration attributes.
 
-![Closed](../images/transparent.gif)Adding an Attribute
+![Closed](images/transparent.gif)Adding an Attribute
 
 1. Select **Add Attributes** in the **Attributes** tab.  *This adds an editable row to the Attributes list.*
 
 2. Navigate through the drop-down attributes menu to find the desired attribute, or start typing. The attribute list will filter for you.
 
-![Steps to add an attribute](../images/EditBMLAdvActionFxn.png)
+![Steps to add an attribute](images/EditBMLAdvActionFxn.png)
 
 The proper **Variable Name** will automatically populate.
 
@@ -99,13 +99,13 @@ The return type of your code will be displayed in between the section with the h
 The action attribute values you select will determine the return type of your code.
 :::
 
-![Closed](../images/transparent.gif)Library Function(s): Function to Function Calls
+![Closed](images/transparent.gif)Library Function(s): Function to Function Calls
 
 Util and Commerce Library Function Editors use Function to Function calls. Function to Function calls allow admins to compartmentalize BML when dealing with complicated configuration or quoting scenarios. This feature will assist with the organization of BML and provides a solution to the compiled Java class size-limit issue. *Function to function calls mimic the behavior of a Modify function calling a Library function.*
 
-![Function Editor - Function to Function Calls](../images/LibFxn_over.png)
+![Function Editor - Function to Function Calls](images/LibFxn_over.png)
 
-![Closed](../images/transparent.gif)Adding a Function to Function Call
+![Closed](images/transparent.gif)Adding a Function to Function Call
 
 1. Open the **Function** drop-down.
 
@@ -117,7 +117,7 @@ Util and Commerce Library Function Editors use Function to Function calls. Funct
 
 4. When finished, click one of the following buttons:
 
-![Button settings](../images/buttons.png)
+![Button settings](images/buttons.png)
 
 :::tip
 The **Function to Function** link appears on the **Related Rules** page. When it is referenced by other Utils it will be displayed on the **Related Rules** page.
@@ -133,4 +133,4 @@ Util and Commerce Library functions cannot self-reference. Recursive calling of 
 
 ## Related Topics
 
-![Related Topics Link Icon](../images/transparent.gif)See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

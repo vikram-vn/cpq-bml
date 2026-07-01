@@ -12,7 +12,7 @@ tags: ['BML', 'CPQ', 'Functions']
 
 Once you've mastered the standard BML functions, you can move on to the other, advanced, functions. These advanced functions use Dictionaries and pull external information from external resources, using Data Tables and a couple of functions that are specific to either configuration or commerce.
 
-![Closed](../images/transparent.gif)addpartstotransaction
+![Closed](images/transparent.gif)addpartstotransaction
 
 The "addpartstotransaction" BML function is used to add parts to a quote automatically from within a Transaction.
 
@@ -44,7 +44,7 @@ Parameters:
 **Note:** Parameters in the JSON body of the request (e.g. "partNumber") are case sensitive.
 :::
 
-![Closed](../images/transparent.gif)addtotransaction
+![Closed](images/transparent.gif)addtotransaction
 
 The "addtotransaction" BML function is used to add Models to a Transaction using BML. This function can be used to automatically add a new Transaction Line which contains a Model which is pending configuration by the sales user.
 
@@ -122,14 +122,14 @@ print(resultArray);
 "_price_unit_price_each":"849.00"}]
 ```
 
-![Closed](../images/transparent.gif)generatehmacmessage
+![Closed](images/transparent.gif)generatehmacmessage
 
 The "generateHmacMessage" BML function is used to  create Hash-based Message Authentication Codes for use in securing outbound web service calls to public web services. The "generateHmacMessage" function supports five types of hashing algorithms including: SHA-256, SHA-384, SHA-512, SHA-1, and MD5.
 
 :::note
 Notes:
 
-* This BML function can be used with a Digital Assistant Integration.  You can use BMQL to retrieve a key value from an integration that has been enabled. Refer to [Digital Assistant Integration](../../Integrating_With_BigMachines/Integration_Center/DigitalAssistantIntegration.md).
+* This BML function can be used with a Digital Assistant Integration.  You can use BMQL to retrieve a key value from an integration that has been enabled. Refer to [Digital Assistant Integration](./DigitalAssistantIntegration.md).
 
 * This function may be used to "sign" callouts, such as for a JSON Web Token (JWT) signature.
 :::
@@ -158,7 +158,7 @@ print(hmac);
 //prints eaf3702517fef48d3f114f32a3c3394b
 ```
 
-![Closed](../images/transparent.gif)getarraystr
+![Closed](images/transparent.gif)getarraystr
 
 This function returns the delimited string for array attributes with $,$ as the delimiter.
 
@@ -180,10 +180,10 @@ Parameters:
 
 Example of getarraystr:
 
-![getarrayattrstring example](../images/getarraystr.bmp)
-![getarrayattrstring output example](../images/getarraystr_console.png)
+![getarrayattrstring example](images/getarraystr.bmp)
+![getarrayattrstring output example](images/getarraystr_console.png)
 
-![Closed](../images/transparent.gif)getattachmentdata
+![Closed](images/transparent.gif)getattachmentdata
 
 This function returns the file name (filename), file
  content (filecontent), and MIME type (mimetype) of a given file attachment
@@ -215,7 +215,7 @@ for line in lineItems {
 }
 ```
 
-![Closed](../images/transparent.gif)getconfigattrvalue
+![Closed](images/transparent.gif)getconfigattrvalue
 
 This function retrieves the values of configuration attributes in Commerce.
 
@@ -242,7 +242,7 @@ In case of menu attributes, the returned value is the menu item variable name.
 
 Example:
 
-![getconfigattrvalue example](../images/getconfigattrvalue__example.png)
+![getconfigattrvalue example](images/getconfigattrvalue__example.png)
 
 :::note
 In case of menu attributes, the returned value is the menu item variable name.
@@ -252,7 +252,7 @@ In case of menu attributes, the returned value is the menu item variable name.
 The System Attribute _config_attr_info has to be selected as a rule input.  If it is not selected and getConfigAttrVal is used, a compile error is shown to the user.
 :::
 
-![Closed](../images/transparent.gif)getoldvalue
+![Closed](images/transparent.gif)getoldvalue
 
 Retrieves an old value for given variable name containing old value and document number.
 
@@ -280,7 +280,7 @@ pre1 = getoldvalue("_quote_bill_to_address");
 
 pre2 = getoldvalue("_price_net_price", 2);
 
-![Closed](../images/transparent.gif)getreasonstatus
+![Closed](images/transparent.gif)getreasonstatus
 
 This function returns the status of the reason variable name in an approval sequence.
 
@@ -306,7 +306,7 @@ Parameters:
 
 * **BM_REASON_STATUS_REJECTED**: Reason exits in user-side tree, but has been rejected by at least one approver.
 
-![Closed](../images/transparent.gif)getuuid
+![Closed](images/transparent.gif)getuuid
 
 This function generates unique IDs for assets tracked in
  Asset-Based Ordering. Every asset is tracked in ABO using
@@ -330,7 +330,7 @@ Output:
 
 [6bafc278-25fd-495f-8360-67bcfb8776b0, 65abced9-5c47-47c6-bf18-ab96fb73935f]
 
-![Closed](../images/transparent.gif)importtransactiondata
+![Closed](images/transparent.gif)importtransactiondata
 
 Imports the transaction data. If the transaction with the given bsid doesn't exists, then it throws an exception.
 
@@ -352,7 +352,7 @@ Example:
 importtransactiondata(12345); // Where 12345 is the bsid
 ```
 
-![Closed](../images/transparent.gif)invoke
+![Closed](images/transparent.gif)invoke
 
 This function invokes global table functions.
 
@@ -380,7 +380,7 @@ params = var_frequency + "~" + "model number";
 return invoke("someGlobalFunction",params,"error_in_rule");
 ```
 
-![Closed](../images/transparent.gif)isnull
+![Closed](images/transparent.gif)isnull
 
 Evaluates whether a particular Object is null or not. Returns true if argument passed is null.
 
@@ -398,13 +398,13 @@ Parameters:
 
 Example:
 
-![isnull example](../images/isnull.bmp)
+![isnull example](images/isnull.bmp)
 
 This evaluates to false.
 
 If `getconfigattrvalue` is called for a non-existing attribute, it returns null. If the return value is passed to `isnull`, it will return true.
 
-![Closed](../images/transparent.gif)logtime
+![Closed](images/transparent.gif)logtime
 
 Writes an event to the Performance Log table, which is visible by filtering on "BML" for the Event Type. This logging will only occur when executed outside of the debugger.
 
@@ -421,7 +421,7 @@ Parameters:
 
 **Return Type:** Boolean
 
-![Closed](../images/transparent.gif)print
+![Closed](images/transparent.gif)print
 
 Prints into the console window of the Function Editor. **Example Use Case:**  For debugging.
 
@@ -461,9 +461,9 @@ put(testDict,"key2","Y");
 print textDict;//
 ```
 
-![Closed](../images/transparent.gif)sbappend
+![Closed](images/transparent.gif)sbappend
 
-This function attaches a new element to the end of the string builder object. This function is related to the following BML string builder functions: "`[stringbuilder](../../stringbuilder.md)`" and "`[sbtostring](../../sbtostring.md)`".
+This function attaches a new element to the end of the string builder object. This function is related to the following BML string builder functions: "`[stringbuilder](./stringbuilder.md)`" and "`[sbtostring](./sbtostring.md)`".
 
 Syntax:
 
@@ -487,7 +487,7 @@ Any combination of `String`, `StringArray`, and `StringBuilder` items.
 | When using the "sbappend" function, the first parameter (i.e. the source stringbuilder) will have its value modified before the function is completed. Refer to the following example. |                |
 | sb1 = stringbuilder("one"); sbappend(sb1, "test", sb1); print(sb1);                                                                                                                    | onetestonetest |
 
-![Closed](../images/transparent.gif)sbtostring
+![Closed](images/transparent.gif)sbtostring
 
 This function converts the finished stringbuilder element to a string.
 
@@ -511,7 +511,7 @@ Any combination of `String`, `StringArray`, and `StringBuilder` items.
 | -------------------------------------------------------------------------------------------- | ---------------------------- |
 | sb = stringbuilder("1", "~", "myVarName", "~", "MyVarNames value." ); return sbtostring(sb); | 1~myVarName~MyVarNames value |
 
-![Closed](../images/transparent.gif)setattributevalue
+![Closed](images/transparent.gif)setattributevalue
 
 This function sets a Commerce attribute value on a Main document or Sub-document. The "setattributevalue" function is supported for the following:
 
@@ -571,9 +571,9 @@ Notes:
 * The `setattributevalue` function is not supported for Dynamic Menu attributes.
 :::
 
-![Closed](../images/transparent.gif)stringbuilder
+![Closed](images/transparent.gif)stringbuilder
 
-The BML string builder object can be used to generate large strings. In some implementations, large strings were built using string concatenation, including loops or other functional blocks. This method can cause performance issues and negative impacts on system memory. The BML string builder object contains three BML functions to build large strings more efficiently: "`[stringbuilder](../../stringbuilder.md)`", "`[sbappend](../../sbappend.md)`", and "`[sbtostring](../../sbtostring.md)`".
+The BML string builder object can be used to generate large strings. In some implementations, large strings were built using string concatenation, including loops or other functional blocks. This method can cause performance issues and negative impacts on system memory. The BML string builder object contains three BML functions to build large strings more efficiently: "`[stringbuilder](./stringbuilder.md)`", "`[sbappend](./sbappend.md)`", and "`[sbtostring](./sbtostring.md)`".
 
 The `stringbuilder` functions initializes string builder objects.
 
@@ -598,7 +598,7 @@ Any combination of `String`, `StringArray`, and `StringBuilder` items.
 | sb = stringbuilder("a", "b", "c"); print(sb);                                     | abc    |
 | xyz = string[]{"x", "y", "z"}; sb = stringbuilder(xyz, "a", "b", "c"); print(sb); | xyzabc |
 
-![Closed](../images/transparent.gif)throwerror
+![Closed](images/transparent.gif)throwerror
 
 This function stops the execution of a BML script and
  displays either a business logic error or a system error to the end user. In
@@ -630,7 +630,7 @@ Examples
 | throwerror("This is a system error!!",true);                             | Message displayed to the user: "An unknown error has occurred. Please contact system administrator." |
 | The error log contains the following message: "This is a system error!!" |                                                                                                      |
 
-![Closed](../images/transparent.gif)validatequoteforagreement
+![Closed](images/transparent.gif)validatequoteforagreement
 
 This function validates that all prerequisites are satisfied prior to creation of an agreement.
 
@@ -638,7 +638,7 @@ This function validates that all prerequisites are satisfied prior to creation o
 
 * The function can be invoked from Commerce rule actions, Advanced Modify - Before Formulas and Advanced Modify - After Formulas.
 
-* Function performs the general, header, and line validations. [See validations](../../validations.md)
+* Function performs the general, header, and line validations. [See validations](./validations.md)
 
 * Functions takes no parameters and returns an array of strings which contains all the validation errors.
 
@@ -711,4 +711,4 @@ All the required agreement attributes should be explicitly mapped in case of non
 
 ## Related Topics
 
-![Related Topics Link Icon](../images/transparent.gif)See Also
+![Related Topics Link Icon](images/transparent.gif)See Also

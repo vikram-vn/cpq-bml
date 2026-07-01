@@ -190,6 +190,10 @@
         "title": "CPQ-BML: Compare BML Snapshot",
         "category": "BML",
         "icon": "$(diff)"
+      },
+      {
+        "command": "cpqBml.openHelpTopic",
+        "title": "CPQ-BML: Open BML Offline Help Topic"
       }
     ],
     "menus": {

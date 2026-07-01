@@ -49,8 +49,9 @@ class BmlDocCrawler:
             return None
             
         relative_path = url[len(self.base_url):]
-        base_path, _ = os.path.splitext(relative_path)
-        out_path = os.path.join(self.output_dir, base_path + ".md")
+        filename = os.path.basename(relative_path)
+        base_name, _ = os.path.splitext(filename)
+        out_path = os.path.join(self.output_dir, "BML", base_name + ".md")
         return os.path.abspath(out_path)
 
     def download_image(self, img_url):

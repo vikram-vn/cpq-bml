@@ -16,7 +16,7 @@ The following BML functions are used to retrieve System Configuration attribute 
 **Note:** These functions should only be used with System Configurations. System Configurations are BOM hierarchies that contain one or more nested child models.
 :::
 
-![Closed](../images/transparent.gif)getsystemdata
+![Closed](images/transparent.gif)getsystemdata
 
 Returns a JSON object containing the entire representation of the System Configuration Data.
 
@@ -54,7 +54,7 @@ Notes:
 The empty JSON object should be handled accordingly.
 :::
 
-![Closed](../images/transparent.gif)getsystemattrvalues
+![Closed](images/transparent.gif)getsystemattrvalues
 
 This function returns a string containing a single attribute's values from a System Configuration.
 
@@ -86,7 +86,7 @@ Notes:
 The empty array should be handled accordingly.
 :::
 
-![Closed](../images/transparent.gif)getsystemmultipleattrvalues
+![Closed](images/transparent.gif)getsystemmultipleattrvalues
 
 This function returns dictionary key and value string arrays containing attribute values from a System Configuration.
 
@@ -146,4 +146,4 @@ Notes:
 
 ## Related Topics
 
-![Related Topics Link Icon](../images/transparent.gif)See Also
+![Related Topics Link Icon](images/transparent.gif)See Also
