@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.4.4",
+  "version": "1.5.0",
   "icon": "app/images/logo.png",
   "license": "MIT",
   "repository": {
@@ -415,6 +415,8 @@
     "generate:intellisense": "python app/scripts/bml_intellisense/generate_intellisense.py",
     "generate:help": "python app/scripts/bml_crawler/crawler.py",
     "postprocess:help": "python app/scripts/bml_crawler/postprocess.py",
+    "release": "python app/scripts/release/release.py",
+    "docmd": "python app/scripts/docmd/transform.py",
     "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && npm run compile:webview",
     "compile:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",

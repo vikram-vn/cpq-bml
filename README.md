@@ -28,6 +28,20 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 
 ---
 
+
+<!-- RELEASE:START -->
+## 🆕 Latest Release — v1.5.0 (2026-07-01)
+
+- Add BML knowledge base documentation and crawler support for BML accordion components.
+- Implement HTML-to-Markdown conversion utilities and BML-specific document formatting modules.
+- Add post-processing script to format BML documentation into Docusaurus-compatible markdown files.
+- Add postprocessing script to normalize and format BML markdown documentation.
+- Add BML language reference documentation and implement a BML crawler script.
+- Implement BML intellisense provider and add scripts for documentation and API metadata generation.
+
+See the full [CHANGELOG.md](CHANGELOG.md) for details.
+<!-- RELEASE:END -->
+
 ## 📖 Table of Contents
 
 - [Features at a Glance](#-features-at-a-glance)
