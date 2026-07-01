@@ -20,11 +20,19 @@ append
 Syntax: append(arrayID, newArrayElem)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | string[], integer[], float[] | This is the given array that you are going to add an element to. |
-| `newArrayElem` | float, float[], integer, integer[], string, string[], boolean, boolean[] | This represents the new element that you are appending to the array. |
+arrayIdentifier
+
+string[], integer[], float[]
+This is the given array that you are going to add an element to. 
+
+newArrayElem
+
+float, float[], integer, integer[], string, string[], boolean, boolean[]
+ This represents the new element that you are appending to the array.
 
  Return Type: Integer (denotes the new size of the array)
 If array max size is reached and you try to append a new element, it will fail.
@@ -46,11 +54,19 @@ Syntax: Boolean[] boolean[Integer n]
 
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `boolean` | Boolean Array | Used to declare a boolean array. |
-| `[n]` | Integer | Optional: Use number "n"  to declare an array of a specific size. |
+boolean
+
+Boolean Array
+Used to declare a boolean array.
+
+[n]
+
+Integer
+Optional: Use number "n"  to declare an array of a specific size.
 
 Return Type: Boolean Array
 Examples:
@@ -67,12 +83,24 @@ Syntax:
  Boolean[][] boolean[Integer n][Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `boolean[][]` | Boolean Array | Used to declare a 2-D Boolean array. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+boolean[][]
+
+Boolean Array
+Used to declare a 2-D Boolean array. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
 
 Return Type:  Boolean[][]
 Examples:
@@ -131,11 +159,19 @@ Date Arrays are dynamic in nature and the length can be increased.
 Syntax: Date[] date[Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `date[]` | Date Array | Used to declare a date array. |
-| `[n]` | Integer | Optional: Use number "n"  to declare an array of a specific size. |
+date[]
+
+Date Array
+Used to declare a date array.
+
+[n]
+
+Integer
+Optional: Use number "n"  to declare an array of a specific size.
 
 Return Type:  Date Array
 Examples:
@@ -151,12 +187,24 @@ These arrays are dynamic in nature and the length can be increased.
 Syntax: Date[][] date[Integer n][Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `date[][]` | Date Array | Used to declare a 2-D Date array. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+date[][]
+
+Date Array
+Used to declare a 2-D Date array. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
 
 Return Type: Date[][]:
 Examples:
@@ -170,11 +218,19 @@ This function is used to check whether a certain element exists in an array.  If
  Syntax: findinarray(arrayID, element)
  Parameters: 
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayID` | string[], integer[], float[] | This is the given array you are searching. |
-| `element` | string, integer, float | Represents the element you are looking for in the given array. |
+arrayID
+
+string[], integer[], float[]
+ This is the given array you are searching.
+
+element
+
+string, integer, float
+ Represents the element you are looking for in the given array.
 
  Return Type: Integer (denotes the index of the element in the array)
 Example:
@@ -194,11 +250,19 @@ fltArray [4] = 2.1; // This will automatically extend the length of fltArray to 
 Syntax: Float[] float[Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `float[n]` | Float Array | Used to declare a float array. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+float[n]
+
+Float Array
+Used to declare a float array.
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
 
 Return Type: Float Array
 Example:
@@ -215,12 +279,24 @@ fltArray [2][3] = 5; // This will automatically extend the length of fltArray to
 Syntax: Float[][] float[Integer n][Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `float[][]` | Float Array | Used to declare a 2-D float array. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+float[][]
+
+Float Array
+Used to declare a 2-D float array. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
 
 Return Type: Float[][]
 Example:
@@ -241,11 +317,19 @@ Syntax: Integer[] integer[Integer n]
 Parameters:
 
 #
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `1` | integer[] | Integer Array |
-| `Used to declare an integer array.` | 2 | [n] |
+1
+integer[]
+Integer Array
+Used to declare an integer array.
+
+2
+[n]
+Integer
+Optional: Use number "n" to declare an array of a specific size.
 
 Return Type: Integer Array
 Example):
@@ -264,12 +348,24 @@ intArray [2][3] = 5; // This will automatically extend the length of intArray to
 Syntax: Integer[][] integer[Integer n][Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `integer[][]` | Integer Array | Used to declare a 2-D array. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+integer[][]
+
+Integer Array
+Used to declare a 2-D array.
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
 
 Return Type: Integer[][]
 Example:
@@ -285,10 +381,14 @@ isempty
 Syntax: isempty(arrayIdentifier)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | string[], integer[], float[] | This is the given array. |
+arrayIdentifier
+
+string[], integer[], float[]
+This is the given array.
 
  Return Type: Boolean (True if array is empty and False if it is not)
 Example:
@@ -304,10 +404,14 @@ Returns the largest element of an integer or float array.
  Syntax: max(arrayIdentifier)
 Parameters: 
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | integer[], float[] | This is the given array you will use to find the max value. |
+arrayIdentifier
+
+integer[], float[]
+This is the given array you will use to find the max value. 
 
  Return Type: Returns an Integer or Float, depending on the type of array.
 Example:
@@ -321,10 +425,14 @@ Returns the smallest element of an integer or float array.
  Syntax: min(arrayIdentifier)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | integer[], float[] | This is the given array you will use to find the max value. |
+arrayIdentifier
+
+integer[], float[]
+This is the given array you will use to find the max value. 
 
  Return Type: Returns and Integer or Float depending on the type of array.
 Example:
@@ -335,10 +443,14 @@ range
 Syntax:  range(x)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `x` | Integer | Denotes the size of the integer array. |
+x
+
+Integer
+Denotes the size of the integer array.
 
  Return Type: Integer[]
 This function is case-sensitive. 
@@ -370,11 +482,19 @@ remove
 Syntax: remove(arrayIdentifier, removePos)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | string[], integer[], float[] | This is the given array from which you will remove an element. |
-| `removePos` | Integer | This represents the index of the element you will be removing. |
+arrayIdentifier
+
+string[], integer[], float[]
+This is the given array from which you will remove an element.
+
+removePos
+
+Integer
+ This represents the index of the element you will be removing.
 
  Return Type: Integer (denotes the size of the new array)
 Only integers are allowed to be passed in for the index of the element to be removed.
@@ -392,10 +512,14 @@ This function is used to reverse all elements in the array.
 
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | string[], integer[], float[] | This is the given array. |
+arrayIdentifier
+
+string[], integer[], float[]
+This is the given array.
 
  Return Type: Returns the array with all of the elements in reverse order.
 Example:
@@ -406,10 +530,14 @@ This function returns the length of the array for a 1-D array and the number of 
  Syntax: sizeofarray(arrayIdentifier)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | string[], integer[], float[], string[][], integer[][], float[][], boolean[], boolean[][] | This represents the given array. |
+arrayIdentifier
+
+string[], integer[], float[], string[][], integer[][], float[][], boolean[], boolean[][] 
+This represents the given array. 
 
  Return Type: Integer
 Examples:
@@ -428,12 +556,20 @@ Syntax: sort(arrayID, [sortOrder], [sortType])
 
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayID` | string[], integer[], float[] | The array you want to sort. |
-| `[sortOrder]` | String | Takes the string values "asc" (ascending) or "desc" (descending). The default is "asc". It must be a string literal. |
+arrayID
 
+string[], integer[], float[]
+The array you want to sort. 
+
+[sortOrder]
+
+String
+
+ Takes the string values "asc" (ascending) or "desc" (descending). The default is "asc". It must be a string literal.
  Examples: 
 a = string[]{"a", "c", "b"};
 
@@ -490,11 +626,19 @@ strArray [4] = "a"; // This will automatically extend the length of strArray to 
 Syntax: String[] string[Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `string[]` | String Array | Used to declare a string array. |
-| `[n]` | Integer | Optional: Use number "n"  to declare an array of a specific size. |
+string[]
+
+String Array
+Used to declare a string array.
+
+[n]
+
+Integer
+Optional: Use number "n"  to declare an array of a specific size.
 
 Return Type: String Array
 Example: 
@@ -506,12 +650,24 @@ For a 2-D String array, the value in each field of the array after array declara
 Syntax: String[][] string[Integer n][Integer n]
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `string[][]` | String Array | Used to declare a 2-D string array. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
-| `[n]` | Integer | Optional: Use number "n" to declare an array of a specific size. |
+string[][]
+
+String Array
+ Used to declare a 2-D string array.
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
+
+[n]
+
+Integer
+Optional: Use number "n" to declare an array of a specific size. 
 
 Return Type: String[][]
 Example:

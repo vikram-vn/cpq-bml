@@ -23,11 +23,15 @@ Results in the debugger may not match behavior on the sales side, most notably f
 addpartstotransaction(jsonArray [, priceBookVarName [, resultAttributeArray]])
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `jsonArray` | Array | An array of JSON objects, used to specify part information. In the following example, "myAttribute" is an optional item that represents a custom line level attribute. |
+jsonArray
 
+Array
+
+An array of JSON objects, used to specify part information. In the following example, "myAttribute" is an optional item that represents a custom line level attribute.
 Example:
 {
    "partNumber": "part1",
@@ -123,14 +127,35 @@ This function may be used to "sign" callouts, such as for a JSON Web Token (JWT)
 generatehmacmessage("message", "key", ["algorithm"]);
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `message` | String | The message to be authenticated by the cryptographic hash function. This is an optional parameter and an empty string is allowed. Null values are automatically converted to an empty string. |
-| `key` | String | The secret key that authenticates the message between inbound and outbound web services. This parameter is optional. |
-| `algorithm` | String | The designate for the secure message Authentication standard. This parameter is optional and defaults to SHA256. Valid values are: |
-| `SHA256 (Default)` | SHA384 | SHA512 |
-| `SHA1` | MD5 | Values are case sensitive. |
+message
+
+String
+
+The message to be authenticated by the cryptographic hash function. This is an optional parameter and an empty string is allowed. Null values are automatically converted to an empty string.
+
+key
+
+String
+
+The secret key that authenticates the message between inbound and outbound web services. This parameter is optional.
+
+algorithm
+
+String
+
+The designate for the secure message Authentication standard. This parameter is optional and defaults to SHA256. Valid values are:
+
+SHA256 (Default)
+SHA384
+SHA512
+SHA1
+MD5
+
+Values are case sensitive.
 
 Return Type: String
 Example:key = "cfthsnkjsavjiCe=";algo = "MD5";hmac = generatehmacmessage(inputmessage, key, algo);print(hmac);//prints eaf3702517fef48d3f114f32a3c3394b
@@ -143,10 +168,14 @@ This function is only used for Configuration attributes.
 getarrayattrstring(SingleArray arrayIdentifier)
  Parameters:  
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `arrayIdentifier` | String[] | The given input array. |
+arrayIdentifier
+
+String[]
+The given input array.
 
 Return Type: String
 Example of getarraystr:
@@ -161,12 +190,27 @@ This function returns the file name (filename), file
 Syntax:
 Dict<anytype> getattachmentdata(String attachmentId [, Boolean asBytes]
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `attachmentId` | String | The ID of the attachment returned. This ID is returned in |
-| `the reference to the attachment attribute in BML.` | asBytes | Boolean |
-| `If true, the returned datatype will be a bytearray; If` | false, the returned datatype will be a Base64 encoded String. | Optional, the default is false if not provided. |
+attachmentId
+
+String
+
+The ID of the attachment returned. This ID is returned in
+ the reference to the attachment attribute in BML.
+
+asBytes
+ 
+
+Boolean
+ 
+
+If true, the returned datatype will be a bytearray; If
+ false, the returned datatype will be a Base64 encoded String. 
+
+Optional, the default is false if not provided.
 
 Example://consider 'maindocFileAttachment' as main document attachment attribute and 'subdocFileAttachment' as sub document attachment attributemainattachment = getattachmentdata(maindocFileAttachment);print get(mainattachment ,"filename", "string"); // Prints the file name of main attachment attributeprint get(mainattachment ,"filecontent", "string"); // Prints the file content of main attachment attribute as Base64 encoded Stringprint get(mainattachment ,"mimetype", "string"); // Prints the mime type of main attachment attribute//To access the file attached to sub document attachment attributefor line in lineItems { subdocattachment = getattachmentdata(line.subdocFileAttachment);}
 
@@ -179,11 +223,19 @@ getconfigattrvalue(configAttrVarname)
 getconfigattrvalue([documentNumber], configAttrVarname)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `[documentNumber]` | Integer | Optional: Represents the transaction number. |
-| `configAttrVarName` | String | Variable name of the configuration attribute from which you are retrieving data. |
+[documentNumber]
+
+Integer
+Optional: Represents the transaction number. 
+
+configAttrVarName
+
+String
+Variable name of the configuration attribute from which you are retrieving data. 
 
 Return Type: String
 In case of menu attributes, the returned value is the menu item variable name.
@@ -199,11 +251,19 @@ Retrieves an old value for given variable name containing old value and document
 getoldvalue(variableName [, documentNumber])
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `variableName` | String | Variable name containing old value. |
-| `[documentNumber]` | Integer | Optional: Defaults to 1, which is the main document. |
+variableName
+
+String
+Variable name containing old value.
+
+[documentNumber]
+
+Integer
+Optional: Defaults to 1, which is the main document. 
 
 Return Type: String
 It will return empty string for the following cases:When it is called from debuggerIf the document with the given document number does not existIf the variable with the given variable name does not exist in the document
@@ -218,10 +278,14 @@ This function returns the status of the reason variable name in an approval sequ
  Integer getreasonstatus(String)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `reasonVarName` | String | This is the variable name of the reason within the approval sequence. |
+reasonVarName
+
+String
+This is the variable name of the reason within the approval sequence.
 
 Return Type: Integer (associated with one of the following statuses):
 
@@ -241,10 +305,15 @@ This function generates unique IDs for assets tracked in
 Syntax:
 String[] getuuid(Integer count) 
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `count` | Integer | The number of unique IDs to generate. |
+count
+
+Integer
+
+The number of unique IDs to generate.
 
 Example:
 getuuid(2); // Generates string array with 2 unique IDs.
@@ -258,10 +327,15 @@ Imports the transaction data. If the transaction with the given bsid doesn't exi
 importtransactiondata(Long bsid)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `bsId` | Integer | Use this parameter to specify the Commerce Transaction ID. |
+bsId
+
+Integer
+
+Use this parameter to specify the Commerce Transaction ID.
 
 Return Type: Boolean
 Example:importtransactiondata(12345); // Where 12345 is the bsid
@@ -273,11 +347,24 @@ This function invokes global table functions.
  invoke(globalTableFunction, [delimitedData, [defaultData]])
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `globalTableFunction` | Function | The table function to invoke. |
-| `[delimitedData]` | String | The parameters, passed as a delimited string. |
+globalTableFunction
+
+Function
+The table function to invoke.
+
+[delimitedData]
+
+String
+The parameters, passed as a delimited string.
+
+[defaultData]
+
+String
+ 
 
 Return Type: Boolean
 Example:
@@ -290,11 +377,16 @@ Evaluates whether a particular Object is null or not. Returns true if argument p
 isnull(String (or Date (or Array or (dict))))
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `obj` | String, Date, Array, Dictionary | The Object to examine for a null state. |
+obj
 
+String, Date, Array, Dictionary
+The Object to examine for a null state.
+
+Return: Boolean
 Example:
 
 This evaluates to false.
@@ -307,11 +399,19 @@ Writes an event to the Performance Log table, which is visible by filtering on "
  logtime(tag, timeElapsed)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `tag` | String | The tag to be logged. This parameter has a 128 character limit.  If more than 128 characters are passed into the function, the 129th and later characters are truncated. |
-| `timeElapsed` | Integer | The time elapsed for the event, saved in the log. |
+tag
+
+String
+The tag to be logged. This parameter has a 128 character limit.  If more than 128 characters are passed into the function, the 129th and later characters are truncated.
+
+timeElapsed
+
+Integer
+The time elapsed for the event, saved in the log.
 
 Return Type: Boolean
 
@@ -322,10 +422,14 @@ print
  print(String(or Array(or Dictionary(or Numeric(or Date(or Boolean))))) varName)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `varName` | String, Array, Dictionary, Numeric, Date, or Boolean | The item to print to the Function Editor console. |
+varName
+
+String, Array, Dictionary, Numeric, Date, or Boolean 
+The item to print to the Function Editor console.
 
 Return Type: Boolean
 Examples:
@@ -341,12 +445,24 @@ sbappend(stringBuilder, [string[, stringArray[, stringBuilder]]])
  Parameters: 
 Any combination of String, StringArray, and StringBuilder items.
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `string` | String | Represents the given input string. |
-| `stringArray` | String | Represents the given input array. |
-| `stringBuilder` | String | Represents the given input stringbuilder object. |
+string
+
+String
+Represents the given input string.
+
+stringArray
+
+String
+Represents the given input array.
+
+stringBuilder
+
+String
+Represents the given input stringbuilder object.
 
 Return Type: String
 
@@ -377,12 +493,24 @@ sbtostring(stringBuilder)
  Parameters: 
 Any combination of String, StringArray, and StringBuilder items.
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `string` | String | Represents the given input string. |
-| `stringArray` | String | Represents the given input array. |
-| `stringBuilder` | String | Represents the given input stringbuilder object. |
+string
+
+String
+Represents the given input string.
+
+stringArray
+
+String
+Represents the given input array.
+
+stringBuilder
+
+String
+Represents the given input stringbuilder object.
 
 Return Type: String
 
@@ -421,14 +549,34 @@ setattributevalue(mainDocAttrVarName, value)
 setattributevalue(documentNumber, subDocAttrVarName, value)
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `mainDocAttrVarName` | String | The attribute variable name to set the value on the Main document. |
-| `documentNumber` | Integer | Unique document number used as an identifier for the Transaction Line Item. This is required when the BML function is used for setting a sub-document value. |
-| `This parameter can be an Integer or String "integer". For example, both "2" and 2 are valid entries.` | subDocAttrVarName | String |
-| `The attribute variable name to set the value on the Sub-document.` | value | StringFloatIntegerCurrencyDateBoolean |
-| `The value you want set for the specified attribute. The type of value must match the type of the Commerce attribute.Array sets are represented by JSON array reference IDs which are created by the jsonarrayrefid function.` | Date attributes can be either BML Date objects or Text values. | Currency and Float attributes can be both Float and Integer values. |
+mainDocAttrVarName
+
+String
+The attribute variable name to set the value on the Main document.
+
+documentNumber
+
+Integer
+Unique document number used as an identifier for the Transaction Line Item. This is required when the BML function is used for setting a sub-document value.
+
+This parameter can be an Integer or String "integer". For example, both "2" and 2 are valid entries.
+
+subDocAttrVarName
+
+String
+The attribute variable name to set the value on the Sub-document.
+
+value
+
+StringFloatIntegerCurrencyDateBoolean
+
+The value you want set for the specified attribute. The type of value must match the type of the Commerce attribute.Array sets are represented by JSON array reference IDs which are created by the jsonarrayrefid function.
+Date attributes can be either BML Date objects or Text values.
+Currency and Float attributes can be both Float and Integer values.
 
 Example:
 To set the value of an array set containing a text field, and a single row, named arraySet:newRow = json;jsonput(newRow, "textField", "example");jsonarrayappend(arraySet, newRow);setattributevalue(1, "arraySet", jsonarrayrefid(arraySet));
@@ -448,12 +596,24 @@ stringbuilder([string[, stringArray[, stringBuilder]]])
  Parameters: 
 Any combination of String, StringArray, and StringBuilder items.
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `string` | String | Represents the given input string. |
-| `stringArray` | String | Represents the given input array. |
-| `stringBuilder` | String | Represents the given input stringbuilder object. |
+string
+
+String
+Represents the given input string.
+
+stringArray
+
+String
+Represents the given input array.
+
+stringBuilder
+
+String
+Represents the given input stringbuilder object.
 
 Return Type: String
 
@@ -484,12 +644,24 @@ Syntax:
 throwerror(String errorMessage [, Boolean isSystemError])
 Parameters:
 
+Parameter
+Data Type
+Description
 
-| Parameter | Data Type | Description |
-| --- | --- | --- |
-| `errorMessage` | String | The error to display to the end user. |
-| `isSystemError` | Boolean | (optional) The flag to select an error type. If false, errorMessage |
-| `is displayed to the user. If true, a system error is thrown and errorMessage` | is printed in the error log file. | The default value is false. |
+errorMessage
+
+String
+
+The error to display to the end user.
+
+isSystemError
+
+Boolean
+
+(optional) The flag to select an error type. If false, errorMessage
+ is displayed to the user. If true, a system error is thrown and errorMessage
+ is printed in the error log file.
+The default value is false.
 
 Examples
 
