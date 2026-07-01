@@ -7,6 +7,7 @@ const {
     resolveCallAtPosition,
     extractDocHeader,
 } = require('./workspaceIndex');
+const { openHelpTopic } = require('./helpViewer');
 
 // Each source file holds a different kind of entry. Tracking that here gives
 // accurate completion icons/hover labels - "does this syntax contain '(' "
@@ -498,11 +499,12 @@ function registerBmlIntelliSense(context) {
 
     context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
 
-    // Register command to open help topics in standard markdown preview
-    const openCommand = vscode.commands.registerCommand('cpqBml.openHelpTopic', async (uriString) => {
+    // Register command to open help topics in the fast, admonition-aware
+    // offline help viewer (see helpViewer.js).
+    const openCommand = vscode.commands.registerCommand('cpqBml.openHelpTopic', (uriString) => {
         try {
             const uri = vscode.Uri.parse(uriString);
-            await vscode.commands.executeCommand('markdown.showPreview', uri);
+            openHelpTopic(context, uri.fsPath, uri.fragment);
         } catch (err) {
             vscode.window.showErrorMessage(`Failed to open help topic: ${err.message}`);
         }
