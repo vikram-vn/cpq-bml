@@ -2,17 +2,18 @@
 id: Math
 title: "Math Functions"
 sidebar_label: "Math Functions"
-description: "Math Functions Functions Math, or numeric, functions serve many purposes throughout the Oracle CPQ application. Many of them represent basic mathemati..."
+description: "Math Functions Functions Math, or numeric, functions serve many purposes throughout the Oracle CPQ application. Many of them represent basic mathematical and trigonometric functions. acos This functio..."
 tags: ['BML', 'CPQ', 'Functions']
 ---
 
 ## Math Functions
-Functions
-Math, or numeric, functions serve many purposes throughout the Oracle CPQ application. Many of them represent basic mathematical and trigonometric functions. 
-acos
+ Functions
+ Math, or numeric, functions serve many purposes throughout the Oracle CPQ application. Many of them represent basic mathematical and trigonometric functions.
+ acos
 
-This function returns the arc cosine of the number or angle in the range of 0 through π. 
-Example Use Case: Find the inverse function of the cosine of an angle.
+
+ This function returns the arc cosine of the number or angle in the range of 0 through π.
+ Example Use Case:  Find the inverse function of the cosine of an angle.
 
 **Syntax:**
 ```bml
@@ -30,12 +31,14 @@ acos(x)
 **Example:**
 
 
-A float variable > 1 returns NaN.
+ A float variable > 1 returns NaN.
 
-asin
 
-The usual notation of the inverse trig function arcsine is y = arcsine(x), which is also defined as x = sin(y). This notation is the same for arccosine and arctangent. This function returns the arcsine of a number or angle. The range is: -π/2 ≤ y ≤ π/2 or -90˚ ≤ y ≤ 90˚ and the domain is -1 ≤ x ≤ 1.
-Example Use Case: Find the inverse function of the sine of an angle.
+ asin
+
+
+ The usual notation of the inverse trig function arcsine is  y = arcsine(x) , which is also defined as  x = sin(y) . This notation is the same for arccosine and arctangent. This function returns the arcsine of a number or angle. The range is:  -π/2 ≤ y ≤ π/2 or -90˚ ≤ y ≤ 90˚  and the domain is  -1 ≤ x ≤ 1 .
+ Example Use Case:  Find the inverse function of the sine of an angle.
 
 
 **Syntax:**
@@ -53,14 +56,17 @@ asin(x)
 
 **Example:**
 
-If you enter your float variable as (-1), which is the lowest number in the domain, it will return the lowest number in the range, which is -π/2.
+ If you enter your float variable as (-1), which is the lowest number in the domain, it will return the lowest number in the range, which is -π/2.
 
-A float variable > 1 returns NaN.
 
-atan
+ A float variable > 1 returns NaN.
 
-This function returns the arctangent of the number or angle, the range of which is: -π/2 ≤ y ≤ π/2. 
-Example Use Case: Find the inverse function of the tangent of an angle.
+
+ atan
+
+
+ This function returns the arctangent of the number or angle, the range of which is: -π/2 ≤ y ≤ π/2.
+ Example Use Case:  Find the inverse function of the tangent of an angle.
 
 
 **Syntax:**
@@ -79,10 +85,11 @@ atan(x)
 **Example:**
 
 
-ceil
+ ceil
 
-This function converts a float into the next highest whole number. 
-Example Use Case: Rounding up to the next highest whole number.
+
+ This function converts a float into the next highest whole number.
+ Example Use Case:  Rounding up to the next highest whole number.
 
 **Syntax:**
 ```bml
@@ -100,12 +107,14 @@ ceil(x)
 **Example:**
 
 
-If -1.0 < x < 0, then the result is negative zero.
+ If -1.0 < x < 0, then the result is negative zero.
 
-cos
 
-This function returns the cosine of the number/angle. 
-Example Use Case: Find the ratio of the side adjacent the given angle and the hypotenuse.
+ cos
+
+
+ This function returns the cosine of the number/angle.
+ Example Use Case:  Find the ratio of the side adjacent the given angle and the hypotenuse.
 
 **Syntax:**
 ```bml
@@ -119,11 +128,13 @@ cos(x)
 
 > **Return Type:** `Float`
 
-Example :
+ Example :
 
-cosh
 
- This function returns the hyperbolic cosine of a number or angle.
+ cosh
+
+
+  This function returns the hyperbolic cosine of a number or angle.
 
 **Syntax:**
 ```bml
@@ -141,12 +152,14 @@ cosh(x)
 **Example:**
 
 
-cosh x = 1/2(ex + e-x)
+ cosh x = 1/2(ex + e-x)
 
-exp
 
-This function returns Euler's number e raised to the power of the number passed through the function, also known as the exponential function. 
-Example Use Case: Find whether a quantity grows or decays at a rate proportional to its current value, such as compound interest.
+ exp
+
+
+ This function returns Euler's number e raised to the power of the number passed through the function, also known as the exponential function.
+ Example Use Case:  Find whether a quantity grows or decays at a rate proportional to its current value, such as compound interest.
 
 **Syntax:**
 ```bml
@@ -164,10 +177,11 @@ exp(x)
 **Example:**
 
 
-fabs
+ fabs
 
-This function returns the absolute value of a number. 
-Example Use Case: Finding the distance of the quantity from zero.
+
+ This function returns the absolute value of a number.
+ Example Use Case:  Finding the distance of the quantity from zero.
 
 **Syntax:**
 ```bml
@@ -185,9 +199,10 @@ fabs(x)
 **Example:**
 
 
-fmod
+ fmod
 
-This function returns the remainder of the division operation x, y.
+
+ This function returns the remainder of the division operation x, y.
 
 **Syntax:**
 ```bml
@@ -206,15 +221,17 @@ fmod(x, y)
 **Example:**
 
 
-If you were to use long division, the answer is 5 with a remainder of 2.  If you plus this operation into your calculator, you will see the answer is 5.6667, because the remained is being divided by the divisor.
+ If you were to use long division, the answer is 5 with a remainder of 2.  If you plus this operation into your calculator, you will see the answer is 5.6667, because the remained is being divided by the divisor.
 
-hypot
 
-This function returns the sqrt(x2 + y2) without intermediaries. 
+ hypot
+
+
+ This function returns the  sqrt(x2 + y2)  without intermediaries.
 
 **Example:**
 ```bml title="Example"
-sqrt(32 + 42) = sqrt(25) = 5.0 or -5.0.
+sqrt(32 + 42) = sqrt(25) = 5.0  or  -5.0 .
 ```
 
 
@@ -235,12 +252,14 @@ hypot(x, y)
 **Example:**
 
 
-As you can see, we have declared three variables.  The two that were required for this function to work, as well as a third variable so we can round the results of the hypot function. The result of this function return a rather large number.  Using the round function, we were able to round to the third decimal place.
-Negative numbers can be passed as parameters to this function.
+ As you can see, we have declared three variables.  The two that were required for this function to work, as well as a third variable so we can round the results of the  hypot  function. The result of this function return a rather large number.  Using the  round  function, we were able to round to the third decimal place.
+ Negative numbers can be passed as parameters to this function.
 
-integer
 
-This function returns the integer portion of a float number.  For example, this function would return 14 for the number 14.3345324. Example Use Case: Returning an attribute as an integer, without rounding.
+ integer
+
+
+ This function returns the integer portion of a float number.  For example, this function would return 14 for the number 14.3345324.  Example Use Case:  Returning an attribute as an integer, without rounding.
 
 **Syntax:**
 ```bml
@@ -258,9 +277,10 @@ integer(x)
 **Example:**
 
 
-jNaN
+ jNaN
 
-Java Constant for Not a Number. This constant is recommended instead of NaN.
+
+ Java Constant for Not a Number. This constant is recommended instead of NaN.
 
 **Syntax:**
 ```bml
@@ -268,9 +288,10 @@ jNaN
 ```
 
 
-ln
+ ln
 
-This function returns the natural logarithm (base e) of the number.
+
+ This function returns the natural logarithm (base e) of the number.
 
 **Syntax:**
 ```bml
@@ -288,16 +309,18 @@ ln(x)
 **Example:**
 
 
-If e3 = x, then ln(x) = 3.
-Special Rules: 
-ln(1.0) = )
-ln(0) or ln(-0) = infinity 
-ln(infinity) = infinity
+ If e3 = x, then ln(x) = 3.
+ Special Rules:
+ ln(1.0) = )
+ ln(0) or ln(-0) = infinity
+ ln(infinity) = infinity
 
-log
 
-This function returns the base-10 logarithm of the number.
- Example Use Case: If 1000 = 103, then 3 = log10(1000).  The logarithm of 1000 would be 3 because that is how many times you must multiply 10 to get 1000.
+ log
+
+
+ This function returns the base-10 logarithm of the number.
+   Example Use Case:  If 1000 = 10 3 , then 3 = log10(1000).  The logarithm of 1000 would be 3 because that is how many times you must multiply 10 to get 1000.
 
 **Syntax:**
 ```bml
@@ -315,18 +338,22 @@ log(x)
 **Example:**
 
 
-If x = by, then y = logb(x)).
-log(0) or log(-0) is negative infinity. 
-log(infinity) is infinity.
+ If x = b y , then y = log b (x)).
+ log(0) or log(-0) is negative infinity.
+ log(infinity) is infinity.
 
-NaN
 
-This function is deprecated, and no longer supported. It represented a constant for Not a Number.
-Use jNaN instead.
+ NaN
 
-pow
 
-This function returns the value of the first argument raised to the power of the second argument. Example Use Case: Finding the product obtained from multiplying a quantity by itself one or more times.
+ This function is deprecated, and no longer supported. It represented a constant for Not a Number.
+ Use  jNaN  instead.
+
+
+ pow
+
+
+ This function returns the value of the first argument raised to the power of the second argument.  Example Use Case:  Finding the product obtained from multiplying a quantity by itself one or more times.
 
 **Syntax:**
 ```bml
@@ -345,10 +372,11 @@ pow(x, y)
 **Example:**
 
 
-round
+ round
 
-This function returns the rounded value of a number up to a certain decimal point. 
-Example Use Case: For returning float values that represent currency.  You may want to round to a certain decimal place.
+
+ This function returns the rounded value of a number up to a certain decimal point.
+ Example Use Case:  For returning float values that represent currency.  You may want to round to a certain decimal place.
 
 **Syntax:**
 ```bml
@@ -359,7 +387,7 @@ round(x)
 | Parameter | Data Type | Description |
 | --- | --- | --- |
 | `x` | Float | Represents the given input float parameter. |
-| `[n]` | Integer | Optional: Specifies the number of decimal places to round to. |
+| `[n]` | Integer | Optional:  Specifies the number of decimal places to round to. |
 
 > **Return Type:** `Float`
 
@@ -367,10 +395,11 @@ round(x)
 **Example:**
 
 
-sin
+ sin
 
-This function returns the trigonometric sine of the number/angle. 
-Example Use Case: Finding the ratio of the size opposite the given angle and the hypotenuse.
+
+ This function returns the trigonometric sine of the number/angle.
+ Example Use Case:  Finding the ratio of the size opposite the given angle and the hypotenuse.
 
 **Syntax:**
 ```bml
@@ -388,9 +417,10 @@ sin(x)
 **Example:**
 
 
-sinh
+ sinh
 
-This function returns the hyperbolic sine of a number or angle.
+
+ This function returns the hyperbolic sine of a number or angle.
 
 **Syntax:**
 ```bml
@@ -404,13 +434,16 @@ sinh(x)
 
 > **Return Type:** `Float`
 
-Example :
+ Example :
 
-sinh x = 1/2(ex - e-x)
 
-sqrt
+ sinh x = 1/2(ex - e-x)
 
-This function returns the positive square root of a number.
+
+ sqrt
+
+
+ This function returns the positive square root of a number.
 
 **Syntax:**
 ```bml
@@ -428,10 +461,11 @@ sqrt(x)
 **Example:**
 
 
-tan
+ tan
 
-This function returns the tangent of the number/angle. 
-Example Use Case: Find the ratio of the side opposite the given angel to the adjacent side.
+
+ This function returns the tangent of the number/angle.
+ Example Use Case:  Find the ratio of the side opposite the given angel to the adjacent side.
 
 **Syntax:**
 ```bml
@@ -449,9 +483,10 @@ tan(x)
 **Example:**
 
 
-tanh
+ tanh
 
-This function returns the hyperbolic tangent of a number or angle.
+
+ This function returns the hyperbolic tangent of a number or angle.
 
 **Syntax:**
 ```bml
@@ -469,14 +504,17 @@ tanh(x)
 **Example:**
 
 
-tanh x = (ex - 1) / (e2x + 1)
+ tanh x = (ex - 1) / (e2x + 1)
 
-Notes
 
-NULL and blank Integer values are treated as separate values:NULL= 0Blank = ""
-Using NULL as an attribute value is strongly discouraged.
-If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account. 
+ Notes
 
-Related Topics
 
-See Also
+ NULL and blank Integer values are treated as separate values: NULL= 0 Blank = ""
+ Using NULL as an attribute value is strongly discouraged.
+ If you use logic that tests for NULL values in rule conditions or BML, confirm that the logic takes this difference into account.
+
+
+ Related Topics
+
+ See Also

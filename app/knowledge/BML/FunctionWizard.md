@@ -2,38 +2,44 @@
 id: FunctionWizard
 title: "Function Wizard"
 sidebar_label: "Function Wizard"
-description: "Function Wizard Overview This topic covers the Funtion Wizard using the classic interface pages. Refer to Util BML Library Functions List and Util Fun..."
+description: "Function Wizard Overview This topic covers the Funtion Wizard using the classic interface pages. Refer to Util BML Library Functions List and Util Function Editor for process administration using Redw..."
 tags: ['BML', 'CPQ', 'Editor']
 ---
 
 ## Function Wizard
-Overview
-This topic covers the Funtion Wizard using the classic interface pages. Refer to Util BML Library Functions List and Util Function Editor for process administration using Redwood UI pages.
-The Function Wizard contains a list of pre-defined functions that are available for use in advanced scripting.  There are some variations in the Function Editor, depending on where you are located within the application:  Commerce, Configuration, Commerce Library, or Util Library.  
-Configuration/Util Library Function Editor
+ Overview
+ This topic covers the Funtion Wizard using the classic interface pages. Refer to  Util BML Library Functions List  and  Util Function Editor  for process administration using Redwood UI pages.
+ The Function Wizard contains a list of pre-defined functions that are available for use in advanced scripting.  There are some variations in the Function Editor, depending on where you are located within the application:  Commerce, Configuration, Commerce Library, or Util Library.
+ Configuration/Util Library Function Editor
 
-  The only difference between the Configuration Function Editor and that in the Util Library is that the latter doesn't have a tab labeled Library Functions.  This is because your library functions are created in the Util Library.  
+   The only difference between the Configuration Function Editor and that in the Util Library is that the latter doesn't have a tab labeled Library Functions.  This is because your library functions are created in the Util Library.
 
-Using the Function Wizard in Configuration
+ Using the Function Wizard in Configuration
 
-Open the Function Wizard tab. 
 
-Choose a Function Category and a Function name.  You will see syntax help appear just below the toolbar.
+ Open the  Function Wizard  tab.
 
-Select Insert into BML to insert the function into your Script Definition Area.
+ Choose a  Function Category  and a  Function  name.   You will see syntax help appear just below the toolbar.
 
-Review the function populated in the script definition area.
 
-Commerce Library Function Editor
+ Select  Insert into BML  to insert the function into your Script Definition Area.
 
-The commerce library function editor looks similar to the one in Configuration, however, you will notice that the Attributes section is quite different.  It allows you to select attributes for the main document, sub-document, and system attributes.
 
-Commerce Function Editor
+ Review the function populated in the script definition area.
 
-You may come across a BML editor in Commerce that looks like this:
 
-The BML Editor is used to edit functions for a specified attribute.  Your operators are all located on a toolbar across the top. You can choose your functions from a drop-down.
+ Commerce Library Function Editor
 
-Related Topics
+ The commerce library function editor looks similar to the one in Configuration, however, you will notice that the Attributes section is quite different.  It allows you to select attributes for the main document, sub-document, and system attributes.
 
-See Also
+
+ Commerce Function Editor
+
+ You may come across a BML editor in Commerce that looks like this:
+
+
+ The BML Editor is used to edit functions for a specified attribute.  Your operators are all located on a toolbar across the top. You can choose your functions from a drop-down.
+
+ Related Topics
+
+ See Also

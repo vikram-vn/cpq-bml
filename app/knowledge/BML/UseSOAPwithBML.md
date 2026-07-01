@@ -2,27 +2,30 @@
 id: UseSOAPwithBML
 title: "Using SOAP with BML"
 sidebar_label: "Using SOAP with BML"
-description: "Using SOAP with BML Administration Before using SOAP as a solution, confirm there isn't another way to implement the solution with standard functional..."
+description: "Using SOAP with BML Administration Before using SOAP as a solution, confirm there isn't another way to implement the solution with standard functionality. Determine which type of SOAP call you need. C..."
 tags: ['BML', 'CPQ']
 ---
 
 ## Using SOAP with BML
-Administration
-Before using SOAP as a solution, confirm there isn't another way to implement the solution with standard functionality.
+ Administration
+ Before using SOAP as a solution, confirm there isn't another way to implement the solution with standard functionality.
 
-Determine which type of SOAP call you need.
-Click Admin to go to the Admin Home Page.
+ Determine which type of SOAP call you need.
+ Click  Admin  to go to the Admin Home Page.
 
-Click Web Services under the Integration Platform section.
-The Web Services Test page opens.
+ Click  Web Services  under the  Integration Platform  section.
+ The  Web Services Test  page opens.
 
-Record the Receiver URL (SOAP URL)
-Generate a Sample SOAP Call and copy the sample data into a text editor
 
-Replace all dynamic data with holder text. 
-The holder text should be alpha-numeric and in all capital letters. The only special characters allowed are underscores (_). In the example below, SESSION_ID and TRANSACTION_ID are the holder text.
+ Record the Receiver URL (SOAP URL)
+ Generate a Sample SOAP Call and copy the sample data into a text editor
 
-Example of a getTransaction Commerce SOAP API:<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soap env="http://schemas.xmlsoap.org/soap/envelope/">
+
+ Replace all dynamic data with holder text.
+ The holder text should be alpha-numeric and in all capital letters. The only special characters allowed are underscores (_). In the example below, SESSION_ID and TRANSACTION_ID are the holder text.
+
+
+ Example of a  getTransaction  Commerce SOAP API: <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soap env="http://schemas.xmlsoap.org/soap/envelope/">
 <soapenv:Header>
 <bm:userInfo xmlns:bm="urn:soap.oracle.com">
 <bm:sessionId>FBA46BAE5D5DF082B4EC1B13E62DA32A</bm:sessionId></bm:userInfo>
@@ -39,10 +42,12 @@ Example of a getTransaction Commerce SOAP API:<?xml version="1.0" encoding="UTF-
 </soapenv:Body>
 </soapenv:Envelope>
 
-Save file with .xml extension to File Manager under SOAP folder, make sure that the file name is descriptive. In the example above, the file would be saved as getTransaction.xml. 
-It is important that the file is well formed.
 
-In BML editor:  (This example gets a transaction and returns the SOAP call, which could be used in configuration). /*Gathers quote fields and posts them externally, returns the XML response from the external system.*/
+ Save file with .xml extension to File Manager under SOAP folder, make sure that the file name is descriptive. In the example above, the file would be saved as getTransaction.xml.
+ It is important that the file is well formed.
+
+
+ In BML editor:  (This example gets a transaction and returns the SOAP call, which could be used in configuration).  /*Gathers quote fields and posts them externally, returns the XML response from the external system.*/
 soapResponseXML = "";
 //Prepare xml string to be used in WS request.
 //Pull dynamic content from one or more quote and/or line level commerce attributes
@@ -82,11 +87,13 @@ put(headerDict, "SOAPAction", SOAPAction);
 soapResponseXML= urldatabypost(externalURL, getTransactionFile ,"FAIL",headerdict);
 return soapResponseXML;//The code that called this function can now parse this XML string and use its content for whatever it needs.
 
-Notes
 
-CDATA tags are used when data should be ignored and not parsed. This is useful when the data contains special characters like: & and <. 
-For this example, the cdata isn't really needed because Session ID and Transaction ID should never contain special characters. Here they are used as a precaution, but when using other SOAP APIs they are necessary. <![CDATA [data goes here] ]>
+ Notes
 
-Related Topics
+ CDATA tags are used when data should be ignored and not parsed. This is useful when the data contains special characters like: & and <.
+ For this example, the  cdata  isn't really needed because  Session ID  and  Transaction ID  should never contain special characters. Here they are used as a precaution, but when using other SOAP APIs they are necessary.  <![CDATA [data goes here] ]>
 
-See Also
+
+ Related Topics
+
+ See Also

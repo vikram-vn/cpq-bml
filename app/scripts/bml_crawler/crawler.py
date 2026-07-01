@@ -12,7 +12,7 @@ _package_parent = os.path.abspath(os.path.join(_script_dir, ".."))
 if _package_parent not in sys.path:
     sys.path.insert(0, _package_parent)
 
-from bml_crawler.parser import HtmlToMarkdown
+from bml_crawler.html2docmd import HtmlToDocusaurus
 
 # Suppress insecure request warnings from urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -112,8 +112,8 @@ class BmlDocCrawler:
         if not main_content:
             main_content = soup.body if soup.body else soup
             
-        # Instantiate HTML to Markdown parser
-        parser = HtmlToMarkdown(
+        # Instantiate HTML to Docusaurus Markdown converter
+        parser = HtmlToDocusaurus(
             base_url=self.base_url,
             output_dir=self.output_dir,
             current_url=url,
@@ -121,16 +121,16 @@ class BmlDocCrawler:
             download_image_callback=self.download_image
         )
         
-        # Convert content to Markdown
+        # Convert content to Docusaurus Markdown
         markdown = parser.convert(main_content)
-        markdown = re.sub(r'\n{3,}', '\n\n', markdown)
+        markdown = HtmlToDocusaurus.cleanup(markdown)
         
         # Get raw body text for description generation
         body_text = main_content.get_text()
         
         # Generate Docusaurus frontmatter
         frontmatter = parser.generate_frontmatter(soup, url, body_text)
-        full_markdown = frontmatter + markdown.strip()
+        full_markdown = frontmatter + markdown
         
         # Ensure output directory exists and save file
         os.makedirs(os.path.dirname(workspace_path), exist_ok=True)
