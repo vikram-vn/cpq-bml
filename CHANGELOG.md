@@ -4,6 +4,19 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.8.0] - 2026-07-02
+
+### Added
+- Release v1.7.0 with comprehensive BML linting framework, diagnostic tools, and automated build scripts.
+- Add comprehensive BML linting engine and unreachable code detection diagnostics.
+- Implement settings panel UI and core linting logic for CPQ integration.
+- Implement BML best-practice linting for function constraints and literal misuses.
+- Add Markdown documentation transformer and BML crawler scripts.
+- Reorganize BML documentation scripts into a sub-directory and add web crawler utilities.
+- Add bml_crawler and bml_intellisense scripts with html-to-markdown conversion tools and linting rules.
+- Implement comprehensive BML linting framework with style, performance, and best practice rules.
+- Add release automation script to manage versioning, changelogs, and build packaging.
+
 ## [1.7.0] - 2026-07-02
 
 ### Added
@@ -178,15 +191,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - **Settings Panel Crash**: Resolved a runtime crash (`TypeError: Cannot read properties of undefined (reading 'enable')`) that occurred when opening the settings webview.
 - **Production builds**: the packaged extension's JS (including the settings panel's React webview bundle) is now built with `NODE_ENV=production`, stripping React's development-only warning code from the shipped VSIX.
 - **BML built-in function categorization**: cross-checked the grammar's per-category function lists against Oracle's own CPQ BML function catalog (`app/lookups/bml/common.json`) and fixed several mismatches that caused wrong colors - `getbom`/`getconfigattrvalue`/`getconfigbom`/`getoldvalue` were tinted as "database" but are actually general-purpose (`OTHERS`); `globaldictget`/`globaldictset`/`globaldictremove` were tinted as "dictionary" but are also `OTHERS`; `min`/`max` were duplicated under "math" (shadowing their correct `ARRAY` color); fixed a `jsonarrayref` typo (real function is `jsonarrayrefid`) and added the missing `jsonarrayremove`. Also added previously-uncategorized real functions (`find`, `calculateconfiguration`, `configureabo`, `getarrayattrstring` (was misspelled `getarraystr`), `getcoveragesupportdict`, `getsystemattrvalues`, `getsystemdata`, `getsystemmultipleattrvalues`, `setattributevalue`, and fixed `saveconfig` → `saveconfigbom`).
-
-## [1.1.0]
-
-### Added
-
-- Initial release: syntax highlighting, IntelliSense, snippets, and BML-aware formatting for `.bml` files.
-- **BML REST**: live integration with Oracle CPQ — pull, validate, save, debug, and deploy Util Library Functions and Commerce Process Functions directly from VS Code, including individual and mass deploy, standard-function overrides, and multi-environment switching.
-- **MCP Server**: an in-process Model Context Protocol server so AI agents (Claude Code or any MCP-compatible client) can drive BML REST directly — pull, edit, validate, debug, and deploy functions — without the agent ever seeing your CPQ credentials.
-- MCP tools now always edit a `<variableName>-AI` working copy rather than the pulled file itself, so the original stays available as a diff baseline and a re-pull can never clobber in-progress AI edits.
-- Every MCP tool call (list, pull, save, validate, debug, deploy, mass deploy, deploy commerce process, create) now always returns a full progress/outcome log in its result. Set the new `cpqBml.mcp.logToTerminal` setting (off by default) to also stream that log live into a dedicated "CPQ-BML (AI)" integrated terminal.
-- Human-triggered Pull (util and commerce) now logs to the "CPQ-BML" terminal too, matching Save/Validate/Debug/Deploy - previously it only showed toast notifications, with no terminal record of what was fetched or why a fetch failed.
-- **CPQ-BML: Open Settings**: a single WebView form for everything previously spread across Settings UI + several commands - site URL, username, password/token (write-only, never displayed back), multiple environments (add/edit/activate/delete), REST API version, commerce process/document, pull folder, and every MCP/lint/debug toggle - plus a one-click Test Connection check. Opens automatically once, the first time the extension activates after install.

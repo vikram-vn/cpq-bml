@@ -134,6 +134,75 @@ suite('BML Linter Test Suite - unreachable code (no-unreachable)', () => {
         const diag = diagnostics.find(d => d.code === 'bml-unreachable-code');
         assert.strictEqual(diag, undefined);
     });
+
+    test('Flags code after an exhaustive if/else where both branches return', () => {
+        const diagnostics = lintText(`
+            if (x) {
+                return "a";
+            } else {
+                return "b";
+            }
+            log("dead - every branch already returned");
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code');
+        assert.ok(diag, 'Should flag code after an exhaustive if/else chain');
+        assert.ok(diag.message.includes('if/elif/else chain'));
+    });
+
+    test('Flags code after an exhaustive if/elif/else chain with mixed terminators', () => {
+        const diagnostics = lintText(`
+            for item in list {
+                if (x) {
+                    break;
+                } elif (y) {
+                    continue;
+                } else {
+                    break;
+                }
+                log("dead - every branch of the chain terminates the loop");
+            }
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code');
+        assert.ok(diag, 'Should flag code after a chain where every branch breaks/continues');
+    });
+
+    test('Does not flag code after if/elif with no final else', () => {
+        const diagnostics = lintText(`
+            if (x) {
+                return "a";
+            } elif (y) {
+                return "b";
+            }
+            log("reachable - x and y might both be false");
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code');
+        assert.strictEqual(diag, undefined, 'A chain without a catch-all else is not exhaustive');
+    });
+
+    test('Does not flag code after if/else where one branch does not terminate', () => {
+        const diagnostics = lintText(`
+            if (x) {
+                return "a";
+            } else {
+                log("no return here");
+            }
+            log("reachable - the else branch falls through to here");
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code');
+        assert.strictEqual(diag, undefined, 'Not exhaustive - the else branch does not terminate');
+    });
+
+    test('Does not double-report an exhaustive chain that already ends its enclosing block', () => {
+        const diagnostics = lintText(`
+            if (x) {
+                return "a";
+            } else {
+                return "b";
+            }
+        `);
+        const diags = diagnostics.filter(d => d.code === 'bml-unreachable-code');
+        assert.strictEqual(diags.length, 0, 'Nothing follows the chain, so there is nothing to flag');
+    });
 });
 
 suite('BML Linter Test Suite - duplicate if/elif branch conditions (no-dupe-else-if)', () => {

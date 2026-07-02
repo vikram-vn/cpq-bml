@@ -29,18 +29,6 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 ---
 
 
-<!-- RELEASE:START -->
-## 🆕 Latest Release — v1.7.0 (2026-07-02)
-
-- Add comprehensive BML linting engine and unreachable code detection diagnostics.
-- Implement settings panel UI and core linting logic for CPQ integration.
-- Implement BML best-practice linting for function constraints and literal misuses.
-- Add Markdown documentation transformer and BML crawler scripts.
-- Reorganize BML documentation scripts into a sub-directory and add web crawler utilities.
-- Add bml_crawler and bml_intellisense scripts with html-to-markdown conversion tools and linting rules.
-
-See the full [CHANGELOG.md](CHANGELOG.md) for details.
-<!-- RELEASE:END -->
 
 ## 📖 Table of Contents
 
@@ -68,7 +56,8 @@ See the full [CHANGELOG.md](CHANGELOG.md) for details.
 
 * 🎨 **BML Color Themes:** Four tailored editor themes offering deep semantic token coloring.
 * 💡 **IntelliSense:** Context-aware auto-completion, signature help, and parameter tooltips.
-* 🔍 **Linter & Diagnostics:** Real-time analysis for security (SQL Injection), deprecated APIs, and logical errors.
+* 🔍 **Linter & Diagnostics:** 70+ real-time checks for security (SQL injection, hardcoded secrets), guaranteed compile/runtime failures verified against Oracle's own BML docs, deprecated APIs, and logical errors.
+* 📖 **Offline Help Viewer:** Docusaurus-style rendered documentation (with `:::note`/`:::warning` callouts) opens instantly from any hover tooltip - no internet connection required.
 * 🛠 **Workspace-Wide Formatting:** Recursively beautify directories or targeted folders.
 * ☁ **REST Integration:** Synchronize, compile, validate, debug, and deploy BML functions directly on remote CPQ instances.
 * 🤖 **AI-Agent Connectivity (MCP):** Build or debug via AI using the secure local Model Context Protocol (MCP) server.
@@ -83,6 +72,7 @@ See the full [CHANGELOG.md](CHANGELOG.md) for details.
 * **Rich Syntax Highlighting:** Full grammar support for BML methods, control flow statements (`if`, `elif`, `else`, `for`), database queries (`bmql`), operators, and literals.
 * **Snippets Library:** Instant, context-aware code skeletons for looping constructs, common string operations, JSON manipulations, and system functions.
 * **Autocomplete & Tooltips:** Signatures, return types, and parameter checklists populate as you type, matching Oracle CPQ specifications.
+* **Offline Help Viewer:** Every hover tooltip for a built-in function includes a **📖 Read Offline Help** link that opens a fast, self-contained documentation panel - no internet connection needed. It renders Docusaurus-style `:::note`/`:::tip`/`:::warning` callouts as proper colored boxes (not raw markdown text), theme-matched to your editor, and reuses a single panel across opens so repeated lookups are instant rather than re-launching a preview each time.
 * **Spell Checker Integration:** Preconfigured with `cspell.json` definitions to automatically support CPQ-specific functions (`strtojavadate`, `jsonarrayrefid`, `bmql`, etc.) without triggering spelling errors.
 
 ---
@@ -102,20 +92,23 @@ The extension includes a custom BML-native static analyzer to capture defects, a
 
 | Linter Rule Category | Diagnostic Checks & Validations | Recommendation / Fix |
 | :--- | :--- | :--- |
-| **SQL Injection (Vulnerability)** | Flags string concatenation inside `bmql(...)` queries. Flags `SELECT *` usage. | Recommends safe `$variable` placeholder syntax; list explicit columns. |
+| **BMQL Safety** | String concatenation inside `bmql(...)` queries (SQL injection risk). `SELECT *` usage. `UPDATE`/`MODIFY`/`DELETE` with no `WHERE` clause (silently mutates or clears the whole table). `SELECT ... DISTINCT`/`ORDER BY` with no `WHERE` (result set silently capped/truncated at 1,000 records). Plain `SELECT` with no `WHERE` (unbounded result set). | Use safe `$variable` placeholder syntax; list explicit columns; add a `WHERE` clause unless clearing/scanning the whole table is intentional. |
 | **API Deprecations** | Flags outdated methods like `strtodate`, `gettabledata`, and `getpartsdata`. | Suggests `strtojavadate` and secure `bmql` database queries. |
 | **Oracle Constants** | Catches JS-specific `NaN` references. | Auto-suggests CPQ-compatible `jNaN`. |
 | **Return Statements** | Checks for missing return paths or invalid Commerce BML returns (missing the delimiter `\|`). | Enforces valid BML return statements and delimiter patterns. |
 | **Array Boundary Safety** | Detects access on `split()` array indices without preceding `sizeofarray()` checks. | Enforces array size validation before index access. |
-| **Parsing Validations** | Flags unsafe `atoi()` and `atof()` conversions. | Suggests checking numeric status first with `isnumber()`. |
+| **Parsing Validations** | Flags unsafe `atoi()` and `atof()` conversions on variables. | Suggests checking numeric status first with `isnumber()`. |
+| **Guaranteed Compile/Runtime Failures** | Patterns verified against Oracle's own BML documentation to *always* fail, regardless of data: `atoi("")`/`atof("")` (always throws), `isnumber()` with no argument (compile error - `isnumber("")` is fine), `replace(str, "", new)` (empty search pattern always throws), `string("literal")` (compile error - `string()` casts Float/Integer/Boolean only), negative literal array sizes like `float[-9]` (runtime exception), a Util/Commerce Library function calling itself by name (recursive self-reference always fails to compile). | Each has a one-line, deterministic fix - these only fire on literal arguments, never on variables whose runtime value can't be known statically, so they're zero-false-positive by construction. |
+| **Documented Function Limits** | `logtime()` tag argument over 128 characters (silently truncated). `globaldictset()` `minTimeToLive` outside the documented `0 < n < 525600` range. `jsonput()` given the literal string `"null"` or a `{...}`/`[...]`-wrapped value (both are silently stripped of their quotes instead of saved as written). `values()` called on a `boolean`, `anytype`, or double-dimensional dictionary (unsupported). | Adjust the literal argument to stay within the documented behavior for that function. |
+| **Security & Secrets** | Hardcoded URLs in string literals. Hardcoded credentials - a variable named like `password`/`apiKey`/`secret`/`token` assigned a non-trivial string literal directly (common placeholder values and function-sourced values are excluded to avoid noise). | Extract URLs into Data Tables or System Variables; store secrets in a System Variable or secure configuration instead of literal source code. |
 | **Logic & Style** | Empty control flows (`if`, `elif`, `else`, `for`), magic literals (except `0`, `1`, `2`, `10`, `100`), and strict semicolon rules. | Recommends naming constants and formatting blocks correctly. |
 | **Performance** | Nested loops, BMQL queries inside loops, string concatenation inside loops, repeated/duplicate BMQL queries on the same table. | Move queries outside loops; use `StringBuilder` (`sbappend`/`sbtostring`) for string accumulation; cache repeated queries. |
-| **Design & Complexity** | Nesting depth > 3, cyclomatic complexity > 15 (counted decision points: `if`/`elif`/`for`/`and`/`or`), hardcoded URLs in string literals. | Refactor deeply nested blocks into helper functions; extract URLs into Data Tables or System Variables. |
-| **Style** | Multiple statements on one line, opening/closing brace placement, `not` without parentheses around its argument, unguarded `print()` calls, lines exceeding 200 characters of code. | Enforces one-statement-per-line, collapse brace style, `not(x)` syntax, debug-flag-guarded print, and line-length limits. |
+| **Design & Complexity** | Nesting depth > 3, cyclomatic complexity > 15 (counted decision points: `if`/`elif`/`for`/`and`/`or`). | Refactor deeply nested blocks into helper functions. |
+| **Style** | Multiple statements on one line, opening/closing brace placement, `not` without parentheses around its argument, unguarded `print()` calls, lines exceeding 200 characters of code (BMQL query lines are exempt - a query string can't be wrapped across lines). | Enforces one-statement-per-line, collapse brace style, `not(x)` syntax, debug-flag-guarded print, and line-length limits. |
 | **Safety** | Float direct equality comparison (`==`/`!=`) against a literal float, division by literal zero, `break`/`continue` outside a loop body, forbidden `_config_attributes`/`_config_attr_text` system variables. | Use a tolerance threshold for float comparison; guard division; remove misplaced loop control statements; use supported CPQ attributes instead. |
 | **Syntax Errors** | Array element assignment (`arr[i] = v` is unsupported in BML), invalid member access or method calls on non-object values (e.g. `x.length`, `x.doSomething()`), `dict()` called with no type argument. | Use `append()`/`insert()` for arrays; use BML built-in functions (`sizeofarray()`, `jsonget()`, etc.) instead of dot-notation; supply a type to `dict()` (e.g., `dict("string")`). |
-| **Function Calls** | Unknown bare function names (with "did you mean" typo suggestions), incorrect argument counts against Oracle's built-in signatures, mismatched argument literal types, unknown workspace `util.*` / `commerce.*` function references. | Apply Quick Fix to correct the function name; match the expected argument count and types. |
-| **Dead Code & Logic** | Always-true/always-false conditions, unreachable code after unconditional `return`/`break`/`continue`/`throwerror`, duplicate `elif` branch conditions, `AND`/`OR` mixed without grouping parentheses, lonely `else { if ... }` (use `elif`), bare comparison with no effect (likely a typo for `=`). | Remove or refactor dead branches; add explicit parentheses for operator precedence; replace `else { if }` with `elif`; use assignment `=` where intended. |
+| **Function Calls** | Unknown bare function names (with "did you mean" typo suggestions), incorrect argument counts against Oracle's built-in signatures, mismatched argument literal types, unknown workspace `util.*` / `commerce.*` function references - including functions grouped under a util library folder (`util.<Folder>.<name>(...)`). | Apply Quick Fix to correct the function name; match the expected argument count and types. |
+| **Dead Code & Logic** | Always-true/always-false conditions, unreachable code after an unconditional `return`/`break`/`continue`/`throwerror` *or* after an `if`/`elif`/`else` chain where every branch already terminates, duplicate `elif` branch conditions, `AND`/`OR` mixed without grouping parentheses, lonely `else { if ... }` (use `elif`), bare comparison with no effect (likely a typo for `=`). Unreachable code and unused variables render **faded out** in the editor (VS Code's standard "unnecessary code" styling) instead of just underlined. | Remove or refactor dead branches; add explicit parentheses for operator precedence; replace `else { if }` with `elif`; use assignment `=` where intended. |
 | **Variable Checks** | Type-consistency violations (variable re-assigned with a conflicting literal type), variable read before its assignment in the same file (`no-undef`/useBeforeDefine, util library only), assignment to read-only CPQ system variables (`_user_*`, `_site_*`), metadata sidecar type mismatches. | Ensure consistent literal types across assignments; initialize variables before use; do not write to read-only system variables. |
 
 #### Inline Suppressions
@@ -283,6 +276,7 @@ Use the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) to trigger these action
 | `cpqBml.rest.removeOverride` | `CPQ-BML: Remove Override` | Discards active local override file | `$(discard)` |
 | `cpqBml.rest.clearResults` | `CPQ-BML: Clear Results Terminal` | Wipes outputs in log panel | `$(clear-all)` |
 | `cpqBml.mcp.showInfo` | `CPQ-BML: Show MCP Server Connection Info` | Prints local MCP access endpoint URL | - |
+| `cpqBml.openHelpTopic` | `CPQ-BML: Open BML Offline Help Topic` | Opens the fast offline documentation viewer (normally launched from a hover tooltip's **Read Offline Help** link) | - |
 
 ---
 
@@ -351,12 +345,13 @@ The project has a modular design structure with clean segregation of BML editor 
 │       ├── intellisense/             # IntelliSense (autocompletions, hovers, signatures)
 │       │   ├── index.js              # Go to definition, References, Rename registrations
 │       │   ├── workspaceIndex.js     # Codebase scanner indexing util.* & commerce.*
+│       │   ├── helpViewer.js         # Fast offline docs webview (Docusaurus-style ::: admonitions)
 │       │   └── custom_snippets.json  # Smart snippet database
 │       ├── lint/                     # Real-time Native Static Diagnostics
 │       │   ├── lint.js               # Central rule runner pipeline
 │       │   ├── nullSafety.js         # Checks nullable results of bmql() / get()
-│       │   ├── typeCoercion.js       # Warns when + is used instead of ~ for string concats
-│       │   └── infiniteLoop.js       # Identifies empty or non-populating loops
+│       │   ├── infiniteLoop.js       # Identifies empty or non-populating loops
+│       │   └── best-practices/       # BMQL safety, security, doc-verified guaranteed failures, etc.
 │       ├── mcp/                      # Model Context Protocol AI Tool Integration
 │       │   ├── server.js             # Local MCP server implementation
 │       │   └── tools/                # Declarative AI helper tools

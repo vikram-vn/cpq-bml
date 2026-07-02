@@ -18,16 +18,7 @@ Run via `yarn release` (wraps this script in package.json). On each run it:
   6. Updates the "version" field in package.json.
   7. Replaces the marked "Latest Release" section in README.md with a short
      summary of the new version's highlights (also plain GitHub Markdown).
-  8. Writes a Docusaurus-flavored versioned release page to
-     app/knowledge/Changelog/<version>.md: full frontmatter (id, title,
-     sidebar_label, description, tags, slug), an MDX ":::tip Highlights"
-     callout, a ":::danger Breaking Changes" callout when applicable, and
-     the same sections as headings. This mirrors the frontmatter style
-     already used by the BML doc crawler's html2docmd output, so it can be
-     dropped straight into a Docusaurus docs/ or blog/ folder. A
-     _category_.json is created alongside it once, for Docusaurus's
-     auto-generated sidebar.
-  9. Runs `yarn build` (falls back to `npm run build`), which minifies
+  8. Runs `yarn build` (falls back to `npm run build`), which minifies
      extension.js/the settings webview and packages a .vsix via
      @vscode/vsce - using the version just written to package.json. Skipped
      entirely for --dry-run or --skip-build.
@@ -58,7 +49,6 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PACKAGE_JSON = os.path.join(ROOT, "package.json")
 CHANGELOG = os.path.join(ROOT, "CHANGELOG.md")
 README = os.path.join(ROOT, "README.md")
-DOCS_CHANGELOG_DIR = os.path.join(ROOT, "app", "knowledge", "Changelog")
 
 RECORD_SEP = "\x1e"
 FIELD_SEP = "\x1f"
@@ -170,14 +160,6 @@ def _format_bullet(scope, desc):
     return f"**{scope}:** {desc}" if scope else desc
 
 
-def pick_highlights(sections, limit=6):
-    highlights = []
-    for name in _SECTION_ORDER:
-        highlights.extend(sections[name])
-    highlights = highlights[:limit]
-    return highlights or ["Internal maintenance and housekeeping updates."]
-
-
 def bump_version(current, bump_type):
     major, minor, patch = (int(part) for part in current.split("."))
     if bump_type == "major":
@@ -185,6 +167,9 @@ def bump_version(current, bump_type):
     if bump_type == "minor":
         return f"{major}.{minor + 1}.0"
     return f"{major}.{minor}.{patch + 1}"
+
+
+
 
 
 def build_changelog_entry(version, sections):
@@ -216,6 +201,12 @@ def update_changelog(new_entry, dry_run):
     else:
         updated = content.rstrip() + "\n\n" + new_entry
 
+    # Keep only up to 10 releases
+    matches = list(re.finditer(r"^## \[", updated, re.MULTILINE))
+    if len(matches) > 10:
+        truncate_at = matches[10].start()
+        updated = updated[:truncate_at].rstrip() + "\n"
+
     if not dry_run:
         with open(CHANGELOG, "w", encoding="utf-8", newline="\n") as f:
             f.write(updated)
@@ -228,49 +219,6 @@ def update_package_json(content, current_version, new_version, dry_run):
         raise RuntimeError("Failed to update version field in package.json")
     if not dry_run:
         with open(PACKAGE_JSON, "w", encoding="utf-8", newline="\n") as f:
-            f.write(updated)
-    return updated
-
-
-_README_START = "<!-- RELEASE:START -->"
-_README_END = "<!-- RELEASE:END -->"
-
-
-def build_readme_section(version, sections):
-    highlights = pick_highlights(sections)
-
-    lines = [
-        _README_START,
-        f"## 🆕 Latest Release — v{version} ({date.today().isoformat()})",
-        "",
-    ]
-    lines.extend(f"- {item}" for item in highlights)
-    lines.append("")
-    lines.append("See the full [CHANGELOG.md](CHANGELOG.md) for details.")
-    lines.append(_README_END)
-    return "\n".join(lines)
-
-
-def update_readme(version, sections, dry_run):
-    with open(README, encoding="utf-8") as f:
-        content = f.read()
-
-    section = build_readme_section(version, sections)
-
-    if _README_START in content and _README_END in content:
-        pattern = re.compile(re.escape(_README_START) + r".*?" + re.escape(_README_END), re.DOTALL)
-        updated = pattern.sub(section, content, count=1)
-    else:
-        # First run: insert right after the badge block (before the first "---").
-        hr_match = re.search(r"^---\s*$", content, re.MULTILINE)
-        if hr_match:
-            insert_at = hr_match.end()
-            updated = content[:insert_at] + "\n\n" + section + "\n" + content[insert_at:]
-        else:
-            updated = content.rstrip() + "\n\n" + section + "\n"
-
-    if not dry_run:
-        with open(README, "w", encoding="utf-8", newline="\n") as f:
             f.write(updated)
     return updated
 
@@ -289,83 +237,7 @@ def _esc_yaml(s):
     return s.replace("\\", "\\\\").replace('"', '\\"')
 
 
-_CATEGORY_JSON = """{
-  "label": "Changelog",
-  "position": 99,
-  "link": {
-    "type": "generated-index",
-    "description": "Release notes for every published version of CPQ-BML."
-  }
-}
-"""
 
-
-def build_docusaurus_changelog_page(version, sections, breaking_items, repo_url):
-    today = date.today().isoformat()
-    highlights = pick_highlights(sections)
-    plain_highlights = [re.sub(r"\*\*(.+?)\*\*", r"\1", h) for h in highlights]
-    description = " ".join(plain_highlights)[:200].rstrip()
-
-    tags = ["Changelog", "Release"]
-    if breaking_items:
-        tags.append("Breaking")
-
-    lines = [
-        "---",
-        f"id: v{version}",
-        f'title: "v{version}"',
-        f'sidebar_label: "v{version} ({today})"',
-        f'description: "{_esc_yaml(description)}"',
-        f"tags: {tags}",
-        f"slug: /changelog/{version}",
-        "---",
-        "",
-        f"# v{version} <small>— {today}</small>",
-        "",
-        ":::tip Highlights",
-    ]
-    lines.extend(f"- {item}" for item in highlights)
-    lines.append(":::")
-    lines.append("")
-
-    if breaking_items:
-        lines.append(":::danger Breaking Changes")
-        lines.extend(f"- {item}" for item in breaking_items)
-        lines.append(":::")
-        lines.append("")
-
-    for name in _SECTION_ORDER:
-        items = sections[name]
-        if not items:
-            continue
-        lines.append(f"## {name}")
-        lines.append("")
-        lines.extend(f"- {item}" for item in items)
-        lines.append("")
-
-    lines.append("---")
-    lines.append("")
-    if repo_url:
-        lines.append(f"Full commit-level detail: see [CHANGELOG.md]({repo_url}/blob/main/CHANGELOG.md).")
-    else:
-        lines.append("Full commit-level detail: see [CHANGELOG.md](../../../CHANGELOG.md).")
-
-    return "\n".join(lines).rstrip() + "\n"
-
-
-def update_docusaurus_changelog(version, sections, breaking_items, repo_url, dry_run):
-    page_path = os.path.join(DOCS_CHANGELOG_DIR, f"{version}.md")
-    category_path = os.path.join(DOCS_CHANGELOG_DIR, "_category_.json")
-    page = build_docusaurus_changelog_page(version, sections, breaking_items, repo_url)
-
-    if not dry_run:
-        os.makedirs(DOCS_CHANGELOG_DIR, exist_ok=True)
-        if not os.path.exists(category_path):
-            with open(category_path, "w", encoding="utf-8", newline="\n") as f:
-                f.write(_CATEGORY_JSON)
-        with open(page_path, "w", encoding="utf-8", newline="\n") as f:
-            f.write(page)
-    return page_path, page
 
 
 def run_build():
@@ -388,8 +260,8 @@ def run_build():
     result = subprocess.run(cmd, cwd=ROOT)
     if result.returncode != 0:
         raise RuntimeError(
-            f"Build failed (exit code {result.returncode}). CHANGELOG.md/package.json/"
-            f"README.md were already updated - fix the issue and re-run `{' '.join(cmd)}` directly."
+            f"Build failed (exit code {result.returncode}). changes.md/package.json "
+            f"were already updated - fix the issue and re-run `{' '.join(cmd)}` directly."
         )
     return True
 
@@ -425,24 +297,17 @@ def main():
     print()
 
     entry = build_changelog_entry(new_version, sections)
+    changelog_content = update_changelog(entry, dry_run)
     print("--- CHANGELOG.md entry -------------------------------------")
     print(entry)
 
-    docs_page = build_docusaurus_changelog_page(new_version, sections, breaking_items, repo_url)
-    docs_page_path = os.path.join(DOCS_CHANGELOG_DIR, f"{new_version}.md")
-    print(f"--- app/knowledge/Changelog/{new_version}.md ------------------------")
-    print(docs_page)
-
-    update_changelog(entry, dry_run)
     update_package_json(package_json_content, current_version, new_version, dry_run)
-    update_readme(new_version, sections, dry_run)
-    update_docusaurus_changelog(new_version, sections, breaking_items, repo_url, dry_run)
 
     if dry_run:
         print("(dry run - no files were written)")
         return
 
-    print(f"Updated CHANGELOG.md, package.json, README.md, and {os.path.relpath(docs_page_path, ROOT)} for v{new_version}.")
+    print(f"Updated CHANGELOG.md and package.json for v{new_version}.")
     print()
 
     built = False
@@ -457,7 +322,7 @@ def main():
         name_match = re.search(r'"name":\s*"([^"]+)"', package_json_content)
         pkg_name = name_match.group(1) if name_match else "extension"
         print(f"  # {pkg_name}-{new_version}.vsix has been built in {ROOT}")
-    print(f'  git add CHANGELOG.md package.json README.md app/knowledge/Changelog')
+    print(f'  git add CHANGELOG.md package.json')
     print(f'  git commit -m "chore: release v{new_version}"')
     print(f'  git tag v{new_version}')
     print(f'  git push origin main --tags')
