@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.10.0] - 2026-07-02
+
+### Added
+- Add sharp dependency to devDependencies.
+- Add comprehensive BML documentation and supporting image assets.
+
 ## [1.9.0] - 2026-07-02
 
 ### Added
@@ -162,20 +168,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Increased overall test suite coverage across language services, diagnostics, and extension activation workflows.
 - Enhanced validation of real-world Oracle CPQ BML code patterns through broader regression testing against production-like code samples.
-
-## [1.2.0]
-
-### Added
-
-- **BML Function & Parameter Linter**: Validates parameter counts for standard BML built-in functions against signatures in `common.json`, and warns about unknown bare function calls.
-- **Custom Workspace Function Validation**: Validates custom workspace utility and commerce library calls (`util.name()` and `commerce.name()`) against parameters in their metadata files, checking counts and existence.
-- **CPQ System Variable Checks**: Using Oracle's own predefined system variable catalog (`commonVariables.json`), the linter now warns when code assigns to a read-only system variable (`_user_*`, `_site_*`, ...) - a silent no-op on the real platform - and suggests the correct name when a bare underscore-prefixed identifier is a near-exact typo of one (e.g. `_user_nam` → "did you mean `_user_name`?").
-- **Variable Type Consistency Checking**: BML variables are statically typed by their first assignment, and CPQ's compiler rejects reassigning one to a value of a different type later in the same script (e.g. `test = 1;` ... `test = "2";`). The linter now infers the type of literal assignments - primitives (String/Integer/Float/Boolean), typed arrays (`string[]{...}`, `integer[][]{...}`), and type-named constructors (`dict()`, `json()`, `jsonarray()`, `bytearray()`, `stringbuilder()`, `recordset()`) - and flags any later assignment whose literal type conflicts, as an Error. Deliberately conservative: skips anything that isn't an unambiguous literal (function calls, concatenation, variable references) rather than guess.
-- **Metadata Sidecar Type Validation**: using Oracle's `functionParamDataTypes.json`/`functionReturnTypes.json` lookup tables, the linter cross-checks a function's local `-meta.json` sidecar for internal consistency (catching a corrupted/hand-edited sidecar where `dataType.value`/`returnType.value` no longer matches its own `displayValue`) and flags a `return <literal>;` whose type conflicts with the function's own declared return type. A function's declared parameter types now also seed the variable type-consistency check above, so reassigning a parameter to a conflicting literal type is caught too.
-- **Dead-code checks inspired by ESLint/RuboCop**: always-true/always-false `if`/`elif` conditions (`if (true)`) and self-comparisons (`if (x == x)`); unreachable code after an unconditional `return`/`break`/`continue`/`throwerror(...)`; and a duplicate condition later in the same `if`/`elif` chain that can never run since an earlier, identical branch already caught it. Verified against the entire real `bml/library` corpus before shipping - and in the process, found and would now flag a genuine duplicate-branch bug already present in `oRCL_OSC_TransactionStatus.bml` (`status == "DELETED"` checked twice in one chain).
-- **More ESLint-inspired checks**: `AND`/`OR` mixed without grouping parentheses in an `if`/`elif` condition (`no-mixedOperators`); an `else` block containing nothing but a single `if` statement, which BML's dedicated `elif` keyword exists specifically to avoid (`no-lonelyIf`); a bare comparison statement with no effect, almost always a typo for `=` or a forgotten `if` (`no-unusedExpressions`); and - scoped to util library functions only, since commerce functions have too many implicit platform-provided bindings to check safely - a variable read before its own later assignment in the same file (`no-undef`/useBeforeDefine). Verified against the entire real corpus, including finding a genuine pre-existing bug copy-pasted across three near-duplicate utility functions (`abo_updateAsset`/`abotester_doUpdateAsset`): `curAssetKey` is compared before it's ever assigned, despite a comment claiming it's pre-initialized.
-- Added a permanent regression-guard test that lints every real `.bml` file in `bml/library` through the actual linter entry point on every test run, confirming no rule ever throws against real-world code.
-
-### Fixed
-
-- **Storage-type constructor false positives**: `Float(...)`, `Boolean(...)`, `Date(...)`, `Record(...)`, and `Dictionary(...)` calls were incorrectly flagged as "Unknown built-in function" - these are valid BML storage types (per `bml.tmLanguage.json`'s grammar) with no entry of their own in `common.json`.
