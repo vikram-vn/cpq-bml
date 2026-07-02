@@ -153,6 +153,133 @@ function checkFunctionConstraints(cleanText, noStringsText, doc) {
         }
     }
 
+    // atof(str) / atoi(str) - empty string literal throws a runtime exception
+    const atoiAtofRegex = /\b(atoi|atof)\s*\(/g;
+    while ((match = atoiAtofRegex.exec(cleanText)) !== null) {
+        const funcName = match[1];
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        if (closeParenIndex === -1) continue;
+        const args = splitTopLevelArgs(cleanText.slice(openParenIndex + 1, closeParenIndex));
+        if (args.length >= 1) {
+            const arg = args[0].trim();
+            if (arg === '""' || arg === "''") {
+                const startPos = doc.positionAt(match.index);
+                const endPos = doc.positionAt(closeParenIndex + 1);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Error: '${funcName}()' throws a runtime exception when passed an empty string.`,
+                    vscode.DiagnosticSeverity.Error,
+                    'bml-atoi-atof-empty-string'
+                ));
+            } else if (funcName === 'atoi') {
+                // Check if the argument is a string literal containing a decimal point (e.g. "123.45")
+                const literalMatch = /^("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')$/.exec(arg);
+                if (literalMatch) {
+                    const inner = literalMatch[1].slice(1, -1);
+                    if (inner.includes('.')) {
+                        const startPos = doc.positionAt(match.index);
+                        const endPos = doc.positionAt(closeParenIndex + 1);
+                        diagnostics.push(makeDiagnostic(
+                            new vscode.Range(startPos, endPos),
+                            `Error: 'atoi()' throws a runtime exception when passed a string representing a decimal number ('${inner}').`,
+                            vscode.DiagnosticSeverity.Error,
+                            'bml-atoi-decimal-string'
+                        ));
+                    }
+                }
+            }
+        }
+    }
+
+    // replace(str, searchStr, replaceStr) - empty searchStr throws a runtime exception
+    const replaceRegex = /\breplace\s*\(/g;
+    while ((match = replaceRegex.exec(cleanText)) !== null) {
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        if (closeParenIndex === -1) continue;
+        const args = splitTopLevelArgs(cleanText.slice(openParenIndex + 1, closeParenIndex));
+        if (args.length >= 2) {
+            const searchStr = args[1].trim();
+            if (searchStr === '""' || searchStr === "''") {
+                const startPos = doc.positionAt(match.index);
+                const endPos = doc.positionAt(closeParenIndex + 1);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Error: 'replace()' throws a runtime exception when searching for an empty string.`,
+                    vscode.DiagnosticSeverity.Error,
+                    'bml-replace-empty-search-string'
+                ));
+            }
+        }
+    }
+
+    // dict(dictType) - check if literal type is valid
+    const allowedDictTypes = new Set([
+        'string', 'integer', 'float', 'date', 'boolean',
+        'string[]', 'integer[]', 'float[]', 'date[]',
+        'string[][]', 'integer[][]', 'float[][]', 'date[][]',
+        'anytype'
+    ]);
+    const dictRegex = /\bdict\s*\(\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')\s*\)/g;
+    while ((match = dictRegex.exec(cleanText)) !== null) {
+        const typeArg = match[1].slice(1, -1).toLowerCase();
+        if (!allowedDictTypes.has(typeArg)) {
+            const startPos = doc.positionAt(match.index);
+            const endPos = doc.positionAt(match.index + match[0].length);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                `Error: 'dict()' type '${typeArg}' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'.`,
+                vscode.DiagnosticSeverity.Error,
+                'bml-dict-invalid-type'
+            ));
+        }
+    }
+
+    // acos(x) / asin(x) - check domain [-1, 1]
+    const mathDomainRegex = /\b(acos|asin)\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)/g;
+    while ((match = mathDomainRegex.exec(cleanText)) !== null) {
+        const funcName = match[1];
+        const val = parseFloat(match[2]);
+        if (val > 1.0 || val < -1.0) {
+            const startPos = doc.positionAt(match.index);
+            const endPos = doc.positionAt(match.index + match[0].length);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                `Warning: '${funcName}()' argument is outside the valid domain [-1, 1] - passing '${match[2]}' will return NaN.`,
+                vscode.DiagnosticSeverity.Warning,
+                'bml-math-domain-error'
+            ));
+        }
+    }
+
+    // urldata(url, method) - check HTTP methods (GET, DELETE, PATCH, POST, PUT)
+    const allowedHttpMethods = new Set(['GET', 'DELETE', 'PATCH', 'POST', 'PUT']);
+    const urldataRegex = /\burldata\s*\(/g;
+    while ((match = urldataRegex.exec(cleanText)) !== null) {
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        if (closeParenIndex === -1) continue;
+        const args = splitTopLevelArgs(cleanText.slice(openParenIndex + 1, closeParenIndex));
+        if (args.length >= 2) {
+            const methodArg = args[1].trim();
+            const literalMatch = /^("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')$/.exec(methodArg);
+            if (literalMatch) {
+                const method = literalMatch[1].slice(1, -1);
+                if (!allowedHttpMethods.has(method)) {
+                    const startPos = doc.positionAt(match.index);
+                    const endPos = doc.positionAt(closeParenIndex + 1);
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Error: 'urldata()' HTTP method '${method}' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT.`,
+                        vscode.DiagnosticSeverity.Error,
+                        'bml-urldata-invalid-method'
+                    ));
+                }
+            }
+        }
+    }
+
     return diagnostics;
 }
 

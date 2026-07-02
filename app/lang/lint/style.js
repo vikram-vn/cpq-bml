@@ -9,8 +9,7 @@ function makeDiagnostic(range, message, severity, code) {
 function checkStyle(cleanText, noStringsText, doc, declaredVars) {
     const diagnostics = [];
     const lines = doc.getText().split(/\r?\n/);
-
-
+    const cleanLines = cleanText.split(/\r?\n/);
 
     // 2. Multiple statements and Curly brackets alignment checks
     // Scan noStringsText line by line
@@ -32,6 +31,22 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
             ));
         }
 
+        // Trailing comma check: e.g. put(fancyStepDict, "waitingForSignature", );
+        const cleanRawLine = cleanLines[i].split('//')[0];
+        const lineWithoutStrings = cleanRawLine.replace(/"(?:[^"\\]|\\.)*"/g, '"x"');
+        const trailingCommaMatch = lineWithoutStrings.match(/,\s*([)\]])/);
+        if (trailingCommaMatch) {
+            const char = trailingCommaMatch[1];
+            const startPos = new vscode.Position(i, 0);
+            const endPos = new vscode.Position(i, lines[i].length);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                `Syntax Error: Trailing comma before closing '${char}' is not allowed.`,
+                vscode.DiagnosticSeverity.Error,
+                'bml-trailing-comma-error'
+            ));
+        }
+
         const codeLine = rawCodeLine.trim();
 
         // Skip array literals (e.g. string[]{"a"} or string[5]{"a"})
@@ -44,7 +59,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
             const idx = codeLine.indexOf('{');
             const afterBrace = codeLine.substring(idx + 1).trim();
             if (afterBrace.length > 0 && !afterBrace.startsWith('}')) {
-                const startPos = new vscode.Position(i, lines[i].indexOf('{'));
+                const startPos = new vscode.Position(i, 0);
                 const endPos = new vscode.Position(i, lines[i].length);
                 diagnostics.push(makeDiagnostic(
                     new vscode.Range(startPos, endPos),
@@ -66,9 +81,19 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
             // like else, so a chain of '} elif (...) {' is the *recommended* shape,
             // not a violation - real CPQ library code almost always writes it this way.
             const isElseOrElif = /^(else|elif)\b/i.test(afterBrace);
+            
+            // Allow expressions or initializers like '};', '},', '})', etc.
+            const isExpressionOrInitializer = /^[);,]/.test(afterBrace);
 
-            if ((beforeBrace.length > 0 && !beforeBrace.endsWith('{')) || (afterBrace.length > 0 && !isElseOrElif)) {
-                const startPos = new vscode.Position(i, lines[i].indexOf('}'));
+            let isViolation = false;
+            if (!isExpressionOrInitializer) {
+                if ((beforeBrace.length > 0 && !beforeBrace.endsWith('{')) || (afterBrace.length > 0 && !isElseOrElif)) {
+                    isViolation = true;
+                }
+            }
+
+            if (isViolation) {
+                const startPos = new vscode.Position(i, 0);
                 const endPos = new vscode.Position(i, lines[i].length);
                 diagnostics.push(makeDiagnostic(
                     new vscode.Range(startPos, endPos),

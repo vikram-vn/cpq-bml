@@ -96,4 +96,17 @@ suite('BML Linter Test Suite - missing semicolons', () => {
         assert.strictEqual(semicolonDiags.length, 1);
         assert.strictEqual(semicolonDiags[0].range.start.line, 2);
     });
+
+    test('Linter flags missing semicolons on closing curly braces of literal block assignments and highlights full line', () => {
+        const diagnostics = lintText(`
+            listOfSteps = String[] {"start_step",
+                "pending_process",
+                "cartInProgress"}
+        `);
+        const semicolonDiags = diagnostics.filter(d => d.message.includes('Missing semicolon'));
+        assert.strictEqual(semicolonDiags.length, 1);
+        const diag = semicolonDiags[0];
+        assert.strictEqual(diag.range.start.line, 3);
+        assert.strictEqual(diag.range.start.character, 0, 'Should start at column 0 to highlight the full line');
+    });
 });

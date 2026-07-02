@@ -127,6 +127,30 @@ suite('BML Linter Test Suite - rules', function() {
         assert.strictEqual(braceDiag, undefined, 'Should not flag "} elif (...) {" as a brace style violation');
     });
 
+    test('Linter does not flag closing brace followed by semicolon or comma (data initializers) as style warning', () => {
+        const diagnostics = lintText(`
+            listOfSteps = String[] {"start_step",
+                "pending_process",
+                "cartInProgress"};
+            return "";
+        `);
+
+        const braceDiag = diagnostics.find(d => d.message.includes('Curly brackets should always close'));
+        assert.strictEqual(braceDiag, undefined, 'Should not flag data initializer closing brace as a style violation');
+    });
+
+    test('Linter flags trailing commas in function calls or brackets as Syntax Errors and highlights full line', () => {
+        const diagnostics = lintText(`
+            put(fancyStepDict, "waitingForSignature", );
+            return "";
+        `);
+
+        const errorDiag = diagnostics.find(d => d.code === 'bml-trailing-comma-error');
+        assert.ok(errorDiag, 'Should flag trailing comma in function call');
+        assert.strictEqual(errorDiag.severity, require('vscode').DiagnosticSeverity.Error);
+        assert.strictEqual(errorDiag.range.start.character, 0, 'Should highlight the full line starting from 0');
+    });
+
     test('Linter softens an unused for-loop variable to an informational notice, distinct from a forgotten assignment', () => {
         const diagnostics = lintText(`
             count = 0;

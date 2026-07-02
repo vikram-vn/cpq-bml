@@ -26,6 +26,8 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
     const lineParenDepths = [];
     const lineBracketDepths = [];
     const lineInLiteralBrace = [];
+    const lineBraceDepths = [];
+    const lineClosesLiteralBrace = [];
     let parenDepth = 0;
     let bracketDepth = 0;
     const braceStack = [];
@@ -41,12 +43,16 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
                 while (j >= 0 && /\s/.test(line[j])) j--;
                 braceStack.push(j >= 0 && line[j] === ']');
             } else if (line[i] === '}') {
-                braceStack.pop();
+                const popped = braceStack.pop();
+                if (popped === true) {
+                    lineClosesLiteralBrace[lineIndex] = true;
+                }
             }
         }
         lineParenDepths[lineIndex] = parenDepth;
         lineBracketDepths[lineIndex] = bracketDepth;
         lineInLiteralBrace[lineIndex] = braceStack.length > 0 && braceStack[braceStack.length - 1] === true;
+        lineBraceDepths[lineIndex] = braceStack.length;
     }
 
     const isLineInCondition = (lineIndex) => {
@@ -84,7 +90,19 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
 
     const shouldSkipSemicolonCheck = (codeLine, lineIndex, nextCodeLine) => {
         if (!codeLine) return true;
-        if (codeLine.endsWith(';') || codeLine.endsWith('{') || codeLine.endsWith('}')) return true;
+        if (codeLine.endsWith(';') || codeLine.endsWith('{')) return true;
+
+        if (codeLine.endsWith('}')) {
+            // Skip check unless it closes a literal array/dict brace
+            if (!lineClosesLiteralBrace[lineIndex]) {
+                return true;
+            }
+            // If it's a nested block/literal closing, skip
+            if (lineBraceDepths[lineIndex] > 0 || lineParenDepths[lineIndex] > 0 || lineBracketDepths[lineIndex] > 0) {
+                return true;
+            }
+        }
+
         if (isLineInCondition(lineIndex)) return true;
 
         if (endsWithOperator(codeLine)) return true;
@@ -94,7 +112,7 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
         if (lineIndex > 0 && (lineParenDepths[lineIndex - 1] > 0 || lineBracketDepths[lineIndex - 1] > 0)) return true;
 
         if (lineInLiteralBrace[lineIndex]) return true;
-        if (lineIndex > 0 && lineInLiteralBrace[lineIndex - 1]) return true;
+        if (lineIndex > 0 && lineInLiteralBrace[lineIndex - 1] && !lineClosesLiteralBrace[lineIndex]) return true;
 
         const cleanedStart = codeLine.replace(/^[{}()\s]+/, '');
         const lowerCleaned = cleanedStart.toLowerCase();
@@ -119,7 +137,7 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
         const nextCodeLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
         if (shouldSkipSemicolonCheck(codeLine, i, nextCodeLine)) continue;
 
-        const range = new vscode.Range(i, lines[i].length - 1, i, lines[i].length);
+        const range = new vscode.Range(i, 0, i, lines[i].length);
         const diag = new vscode.Diagnostic(range, 'Missing semicolon', vscode.DiagnosticSeverity.Error);
         diag.code = 'bml-missing-semicolon';
         diagnostics.push(diag);
