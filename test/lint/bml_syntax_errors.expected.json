@@ -96,7 +96,7 @@
   },
   {
     "line": 30,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 1."
   }
 ]

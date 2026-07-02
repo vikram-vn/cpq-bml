@@ -97,6 +97,12 @@ function countArguments(argsText) {
         return 0;
     }
 
+    // Strip a trailing top-level comma so that `find(x,)` counts as 1 arg, not 2.
+    // This lets the arg-count diagnostic still fire alongside bml-trailing-comma-error.
+    const stripped = argsText.trimEnd();
+    const lastChar = stripped[stripped.length - 1];
+    const effectiveArgs = lastChar === ',' ? stripped.slice(0, -1) : stripped;
+
     let commas = 0;
     let parenDepth = 0;
     let bracketDepth = 0;
@@ -104,11 +110,11 @@ function countArguments(argsText) {
     let inSingleQuote = false;
     let inDoubleQuote = false;
 
-    for (let i = 0; i < argsText.length; i++) {
-        const char = argsText[i];
+    for (let i = 0; i < effectiveArgs.length; i++) {
+        const char = effectiveArgs[i];
 
         if (char === '\\') {
-            if (i + 1 < argsText.length) i++;
+            if (i + 1 < effectiveArgs.length) i++;
             continue;
         }
 
@@ -182,8 +188,12 @@ function argumentTypeCompatible(expectedType, actualType) {
     const actual = normalizeType(actualType);
     if (expected === actual) return true;
     if (expected === 'float' && actual === 'integer') return true;
-    if (expected === 'numeric' && (actual === 'integer' || actual === 'float')) return true;
+    if (expected === 'long' && actual === 'integer') return true;
+    if (expected === 'float' && actual === 'long') return true;
+    if (expected === 'numeric' && (actual === 'integer' || actual === 'float' || actual === 'long')) return true;
     if (expected === 'array' && actual.endsWith('[]')) return true;
+    if (expected === 'singlearray' && actual.endsWith('[]') && !actual.endsWith('[][]')) return true;
+    if (expected === 'doublearray' && actual.endsWith('[][]')) return true;
     if (expected === 'dictionary' && actual === 'dict') return true;
     if (expected === 'dict' && actual === 'dictionary') return true;
     return false;
@@ -267,7 +277,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     const diag = new vscode.Diagnostic(
                         new vscode.Range(startPos, endPos),
                         `Function '${displayNamespace}.${targetFunc.name}' expects ${targetFunc.parameterCount} argument(s), but got ${argCount}.`,
-                        vscode.DiagnosticSeverity.Warning
+                        vscode.DiagnosticSeverity.Error
                     );
                     diag.code = 'bml-function-arg-count';
                     diagnostics.push(diag);
@@ -309,7 +319,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     const diag = new vscode.Diagnostic(
                         new vscode.Range(startPos, endPos),
                         `Built-in function '${builtIn.name}' expects ${expectedMsg} argument(s), but got ${argCount}.`,
-                        vscode.DiagnosticSeverity.Warning
+                        vscode.DiagnosticSeverity.Error
                     );
                     diag.code = 'bml-function-arg-count';
                     diagnostics.push(diag);

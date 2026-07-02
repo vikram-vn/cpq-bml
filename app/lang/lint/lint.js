@@ -46,6 +46,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     if (doc.languageId !== 'bml') return;
 
     const text = doc.getText();
+    const lines = text.split(/\r?\n/);
     const diagnostics = [];
     const isLintEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.lint', true);
     const isSpellingEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true);
@@ -92,6 +93,24 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));
         diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
         diagnostics.push(...checkShadowedVariables(noStringsText, doc));
+
+        // File length limit: flag files over 500 lines.
+        // Long files are hard to review and maintain; split into smaller BML functions.
+        const totalLines = lines.length;
+        const FILE_LINE_LIMIT = 500;
+        if (totalLines > FILE_LINE_LIMIT) {
+            const limitLine = FILE_LINE_LIMIT; // 0-indexed: line 500 is the 501st line
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(
+                    new vscode.Position(limitLine, 0),
+                    new vscode.Position(limitLine, lines[limitLine] ? lines[limitLine].length : 0)
+                ),
+                `File is too long: ${totalLines} lines. BML files must not exceed ${FILE_LINE_LIMIT} lines. Split into smaller functions.`,
+                vscode.DiagnosticSeverity.Error
+            );
+            diag.code = 'bml-file-too-long';
+            diagnostics.push(diag);
+        }
     }
 
     if (isSpellingEnabled) {
@@ -99,6 +118,22 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     }
 
     const suppressions = computeSuppressions(text, commentRanges);
+
+    // Expand every Error-severity diagnostic to highlight the full line.
+    // This mirrors the established behaviour of bml-trailing-comma-error and means
+    // every fatal issue is immediately visible without requiring per-rule changes.
+    // originalRange is preserved so code-action providers can still target the precise token.
+    for (const d of diagnostics) {
+        if (d.severity === vscode.DiagnosticSeverity.Error) {
+            const line = d.range.start.line;
+            const lineLength = lines[line] ? lines[line].length : 0;
+            d.originalRange = d.range;  // save narrow range for code actions
+            d.range = new vscode.Range(
+                new vscode.Position(line, 0),
+                new vscode.Position(line, lineLength)
+            );
+        }
+    }
 
     const visibleDiagnostics = diagnostics.filter(
         (d) => !suppressions.isSuppressed(d.range.start.line, d.code)
