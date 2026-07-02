@@ -49,7 +49,7 @@ You will see the buttons at the bottom of the **Editor** pane:
 The following code is displayed in different colors:
 
 
-![Code sample with syntax colors](images/syntax_color.bmp)
+![Code sample with syntax colors](images/syntax_color.png)
 
 
 | Color | Definition                                                          |

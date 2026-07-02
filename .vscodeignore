@@ -1,6 +1,7 @@
 node_modules/**
 .vscode/**
 .vscode-test/**
+.claude/**
 test/**
 .gitignore
 .vscodeignore
@@ -25,6 +26,10 @@ app/lang/rest/**
 
 # Ignore spell check JS
 app/lang/spellCheck/*.js
+
+# english-words.txt ships brotli-compressed (english-words.txt.br, decompressed at
+# runtime by spelling.js); the plain .txt is kept only for dev/regeneration.
+app/lang/spellCheck/english-words.txt
 
 #Ignore BML Better Comments extension
 app/lang/comments/**

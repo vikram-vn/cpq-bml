@@ -16,3 +16,4 @@ dist/
 /bml
 package-lock.json
 app/lang/settingsPanel/webview/dist/
+app/lang/spellCheck/english-words.txt.br

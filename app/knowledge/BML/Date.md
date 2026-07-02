@@ -374,7 +374,7 @@ This function determines whether a date falls within a weekend (Saturday or Sund
 **Example:**
 
 
-![isweekend example](images/isweekendBML.bmp)
+![isweekend example](images/isweekendBML.png)
 
 
 The console will return either True or False.
@@ -404,7 +404,7 @@ This function returns a date that is x days before the base date. **Example Use 
 **Example:**
 
 
-![minusdays example](images/minusdays__BML.bmp)
+![minusdays example](images/minusdays__BML.png)
 
 
 ---

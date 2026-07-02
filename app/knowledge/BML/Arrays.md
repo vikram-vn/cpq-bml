@@ -282,7 +282,7 @@ This function is used to check whether a certain element exists in an array.  If
 **Example:**
 
 
-![findinarray example](images/findinarrayBML.bmp)
+![findinarray example](images/findinarrayBML.png)
 
 
 ![findinarray output example](images/findinarray_console.png)
@@ -334,7 +334,7 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![float example](images/floatBML.bmp)
+![float example](images/floatBML.png)
 
 
 ![Float Array output example](images/2Dfloat_console.png)
@@ -379,7 +379,7 @@ These arrays are dynamic in nature and the length can be increased.
 **Example:**
 
 
-![float example](images/2DfloatBML.bmp)
+![float example](images/2DfloatBML.png)
 
 
 ![float output example](images/2Dfloat_console.png)
@@ -428,7 +428,7 @@ This parameter only works with 1-D arrays.
 Example):
 
 
-![Interger Array example](images/integerBML.bmp)
+![Interger Array example](images/integerBML.png)
 
 
 In contrast to `string[]`, if you define an array size without initializing array fields, you will see a 0 instead of null.
@@ -473,7 +473,7 @@ These arrays are dynamic in nature and the length can be increased.
 **Example:**
 
 
-![integer examples](images/2DintegerBML.bmp)
+![integer examples](images/2DintegerBML.png)
 
 
 Notice the multiple print statements being used in the code above. We are printing a specific element index and value index.  Since there are two elements, the element indexes are 0 and 1 respectively.  Each element has two values, so the value indexes are also 0 and 1.  The syntax used in the code will print each value in the console.
@@ -510,7 +510,7 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![isempty example](images/isempty.bmp)
+![isempty example](images/isempty.png)
 
 
 The string array above is empty, therefore True is returned.
@@ -578,7 +578,7 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![max example](images/minBML.bmp)
+![max example](images/minBML.png)
 
 
 ![max output example](images/minBML_console.png)
@@ -672,7 +672,7 @@ Only integers are allowed to be passed in for the index of the element to be rem
 **Example:**
 
 
-![remove example](images/removeBML.bmp)
+![remove example](images/removeBML.png)
 
 
 ![remove output example](images/removeBML_console.png)
@@ -714,7 +714,7 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![reverse example](images/reverseBML.bmp)
+![reverse example](images/reverseBML.png)
 
 
 ![reverse output example](images/reverseBML_console.png)
@@ -746,7 +746,7 @@ Examples:
 1-D Array: sizeofarray(arrayIdentifier)
 
 
-![sizeofarray 1-D example](images/sizeofarray_1D.bmp)
+![sizeofarray 1-D example](images/sizeofarray_1D.png)
 
 
 ![sizeofarray 1-D output example](images/sizeofarray_1D_console.png)
@@ -755,7 +755,7 @@ Examples:
 2-D Array: sizeofarray(arrayIdentifier)
 
 
-![sizeofarray 2-D example](images/sizeofarray_2D.bmp)
+![sizeofarray 2-D example](images/sizeofarray_2D.png)
 
 
 ![sizeofarray 2-D output example](images/sizefoarray_2D_console.png)
@@ -846,7 +846,7 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![String Array example](images/stringBMLex.bmp)
+![String Array example](images/stringBMLex.png)
 
 
 ![String Array output example](images/1Dstring_console.png)
@@ -880,7 +880,7 @@ For a 2-D String array, the value in each field of the array after array declara
 **Example:**
 
 
-![string example](images/2DstringBML.bmp)
+![string example](images/2DstringBML.png)
 
 
 ![string output example](images/2Dstringconsole.png)

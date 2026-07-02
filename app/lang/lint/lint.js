@@ -93,24 +93,6 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));
         diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
         diagnostics.push(...checkShadowedVariables(noStringsText, doc));
-
-        // File length limit: flag files over 500 lines.
-        // Long files are hard to review and maintain; split into smaller BML functions.
-        const totalLines = lines.length;
-        const FILE_LINE_LIMIT = 500;
-        if (totalLines > FILE_LINE_LIMIT) {
-            const limitLine = FILE_LINE_LIMIT; // 0-indexed: line 500 is the 501st line
-            const diag = new vscode.Diagnostic(
-                new vscode.Range(
-                    new vscode.Position(limitLine, 0),
-                    new vscode.Position(limitLine, lines[limitLine] ? lines[limitLine].length : 0)
-                ),
-                `File is too long: ${totalLines} lines. BML files must not exceed ${FILE_LINE_LIMIT} lines. Split into smaller functions.`,
-                vscode.DiagnosticSeverity.Error
-            );
-            diag.code = 'bml-file-too-long';
-            diagnostics.push(diag);
-        }
     }
 
     if (isSpellingEnabled) {

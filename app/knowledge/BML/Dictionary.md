@@ -36,7 +36,7 @@ This is a dictionary function that checks to see if the key is found in the dict
 **Example:**
 
 
-![containskey example](images/containskey.bmp)
+![containskey example](images/containskey.png)
 
 
 ![containskey output example](images/containskeyReturn.png)
@@ -121,7 +121,7 @@ This function retrieves the value of the provided key from the dictionary.
 *Below, three separate keys and values have been defined and placed within the same dictionary.*
 
 
-![get example](images/get.bmp)
+![get example](images/get.png)
 
 
 ![get output example](images/getReturn.png)
@@ -183,7 +183,7 @@ Once a dictionary has been created, you can define keys and values to put into t
 Example of put():
 
 
-![put example](images/put.bmp)
+![put example](images/put.png)
 
 
 ![put output example](images/putReturn.png)

@@ -119,7 +119,7 @@ Examples of how to populate 1-D and 2-D arrays using a `for...loop`.
 Create a 1-D array of values equal to the sum of each array element:
 
 
-![Populate 1-D array example](images/1Dpop_arrays_590x215.bmp)
+![Populate 1-D array example](images/1Dpop_arrays_590x215.png)
 
 
 ![Populate 1-D array output example](images/1Dpop_arrays_console.png)
@@ -130,7 +130,7 @@ Create a 1-D array of values equal to the sum of each array element:
 In this example, we are going to combine two 2-D arrays by adding together their value and placing them in a new 2-D array.  Remember that range() creates an integer array of indexes.  We will be using two here.
 
 
-![Populate 2-D array example](images/2DarrayBML_589x225.bmp)
+![Populate 2-D array example](images/2DarrayBML_589x225.png)
 
 
 What we are going to do here is add together the values of the two arrays based on their indexes.  `colRange`and `rowRange`are initializing integer arrays.  So, both `colRange`and `rowRange = [0, 1, 2]`. respectively.  Next, we have to declare and initialize the 2-D array that we are going to populate.  Then, comes the `for...loop`.  The first `for...loop` will loop through the rows of indexes in `rowRange`.  The second will loop through the columns of indexes and thus will populate the new array by pulling out the column values.
@@ -148,7 +148,7 @@ In order to show you the different ways to declare arrays, we will display two s
 Example of Uninitialized Arrays
 
 
-![Uninitialized Array example](images/1D_uninitialized.bmp)
+![Uninitialized Array example](images/1D_uninitialized.png)
 
 
 As you can see, `myArray`returned a string with four null values because array fields were not initialized after the array was declared.

@@ -100,7 +100,7 @@ The `sqlQuery` must be written as a String.
 :::
 
 
-![bmql SELECT example](images/bmqlSyntaxRecordSetBasics.bmp)
+![bmql SELECT example](images/bmqlSyntaxRecordSetBasics.png)
 
 
 ---
@@ -1065,7 +1065,7 @@ In this example, we'll show you how to return commerce transaction data back to 
 This was set through a recommendation rule using BMQL Transaction. Notice the use of `commerce.quote_process` after the `FROM` statement.  This is the variable name of the quote document from where you're querying data.  You can also use the variable name of the sub-document (for example, `line_process`).
 
 
-![commerce.quote_process FROM statement example](images/commerceQuote_process.bmp)
+![commerce.quote_process FROM statement example](images/commerceQuote_process.png)
 
 
 :::note

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const { getCommentRanges } = require("../lint/comments");
 const { getStringRanges } = require("../lint/strings");
 
@@ -135,6 +136,20 @@ function resolveSpellCheckDir(extensionPath) {
   return __dirname;
 }
 
+// english-words.txt ships brotli-compressed (.br) to keep the packaged extension small;
+// falls back to the plain .txt file for local dev/tests that never ran the compress step.
+function readWordListFile(baseDir, fileName) {
+  const brPath = path.join(baseDir, `${fileName}.br`);
+  if (fs.existsSync(brPath)) {
+    return zlib.brotliDecompressSync(fs.readFileSync(brPath)).toString("utf8");
+  }
+  const plainPath = path.join(baseDir, fileName);
+  if (fs.existsSync(plainPath)) {
+    return fs.readFileSync(plainPath, "utf8");
+  }
+  return null;
+}
+
 function loadDictionaries(extensionPath) {
   if (combinedDictionary) return combinedDictionary;
   combinedDictionary = new Set();
@@ -142,9 +157,8 @@ function loadDictionaries(extensionPath) {
   const baseDir = resolveSpellCheckDir(extensionPath);
 
   try {
-    const bmlWordsPath = path.join(baseDir, "bml-words.txt");
-    if (fs.existsSync(bmlWordsPath)) {
-      const content = fs.readFileSync(bmlWordsPath, "utf8");
+    const content = readWordListFile(baseDir, "bml-words.txt");
+    if (content) {
       content.split(/\r?\n/).forEach((line) => {
         const w = line.trim().toLowerCase();
         if (w) combinedDictionary.add(w);
@@ -155,9 +169,8 @@ function loadDictionaries(extensionPath) {
   }
 
   try {
-    const englishWordsPath = path.join(baseDir, "english-words.txt");
-    if (fs.existsSync(englishWordsPath)) {
-      const content = fs.readFileSync(englishWordsPath, "utf8");
+    const content = readWordListFile(baseDir, "english-words.txt");
+    if (content) {
       content.split(/\r?\n/).forEach((line) => {
         const w = line.trim().toLowerCase();
         if (w) combinedDictionary.add(w);

@@ -218,7 +218,7 @@ getarrayattrstring(SingleArray arrayIdentifier)
 Example of getarraystr:
 
 
-![getarrayattrstring example](images/getarraystr.bmp)
+![getarrayattrstring example](images/getarraystr.png)
 ![getarrayattrstring output example](images/getarraystr_console.png)
 
 
@@ -517,7 +517,7 @@ isnull(String (or Date (or Array or (dict))))
 **Example:**
 
 
-![isnull example](images/isnull.bmp)
+![isnull example](images/isnull.png)
 
 
 This evaluates to false.

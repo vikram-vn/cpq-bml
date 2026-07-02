@@ -236,7 +236,7 @@ String urldatabyget(String url, String parameters, String defaultValue,[Integer 
 **Example:**
 
 
-![urldatabyget example](images/urldatabypost_657x140.bmp)
+![urldatabyget example](images/urldatabypost_657x140.png)
 
 
 ![urldatabyget output example](images/urldatabypost_console.png)
@@ -302,7 +302,7 @@ return urldatabypost("https://cpluto.oracle.com/httpreceiver", "", "", headers);
 Example of urldatabypost:
 
 
-![urldatabypost example](images/urldatabypost_660x141.bmp)
+![urldatabypost example](images/urldatabypost_660x141.png)
 
 
 ![urldatabypost output example](images/urldatabypost_console.png)
