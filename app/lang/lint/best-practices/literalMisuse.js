@@ -1,4 +1,4 @@
-const { vscode, makeDiagnostic } = require('./shared');
+const { vscode, makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('./shared');
 
 /**
  * Calls that are guaranteed to throw or fail to compile regardless of
@@ -18,49 +18,6 @@ const { vscode, makeDiagnostic } = require('./shared');
  */
 
 const EMPTY_STRING_LITERAL = /^(?:""|'')$/;
-
-function splitTopLevelArgs(argsText) {
-    const args = [];
-    let depth = 0;
-    let inSingle = false;
-    let inDouble = false;
-    let current = '';
-    for (let i = 0; i < argsText.length; i++) {
-        const ch = argsText[i];
-        if (ch === '\\' && i + 1 < argsText.length) {
-            current += ch + argsText[i + 1];
-            i++;
-            continue;
-        }
-        if (ch === "'" && !inDouble) inSingle = !inSingle;
-        else if (ch === '"' && !inSingle) inDouble = !inDouble;
-
-        if (!inSingle && !inDouble) {
-            if (ch === '(' || ch === '[' || ch === '{') depth++;
-            else if (ch === ')' || ch === ']' || ch === '}') depth--;
-            else if (ch === ',' && depth === 0) {
-                args.push(current);
-                current = '';
-                continue;
-            }
-        }
-        current += ch;
-    }
-    if (current.trim() !== '' || args.length > 0) args.push(current);
-    return args.map((a) => a.trim());
-}
-
-function findMatchingParenEnd(text, openParenIndex) {
-    let depth = 1;
-    for (let i = openParenIndex + 1; i < text.length; i++) {
-        if (text[i] === '(') depth++;
-        else if (text[i] === ')') {
-            depth--;
-            if (depth === 0) return i;
-        }
-    }
-    return -1;
-}
 
 function checkLiteralMisuse(cleanText, noStringsText, doc) {
     const diagnostics = [];
