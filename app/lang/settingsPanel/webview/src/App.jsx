@@ -1,6 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
-import { Pill, Switch, IconConnection, IconEnvironments, IconOperations, IconMcp, IconAdvanced, IconFeatures } from './Components';
-import { ConnectionTab, EnvironmentsTab, OperationsTab, McpTab, AdvancedTab, FeaturesTab } from './Tabs';
+import Pill from './components/Pill';
+import {
+    IconConnection,
+    IconEnvironments,
+    IconOperations,
+    IconMcp,
+    IconAdvanced,
+    IconFeatures
+} from './components/Icons';
+import ConnectionTab from './tabs/ConnectionTab';
+import EnvironmentsTab from './tabs/EnvironmentsTab';
+import OperationsTab from './tabs/OperationsTab';
+import FeaturesTab from './tabs/FeaturesTab';
+import McpTab from './tabs/McpTab';
+import AdvancedTab from './tabs/AdvancedTab';
 
 const EMPTY_STATE = {
     connection: {
