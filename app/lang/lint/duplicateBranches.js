@@ -69,6 +69,19 @@ function parseConditionalChains(text) {
         } else {
             currentChain = null;
         }
+
+        // Recursively find nested chains inside the branch body
+        const bodyText = text.slice(bodyStart, bodyEnd);
+        const subChains = parseConditionalChains(bodyText);
+        for (const subChain of subChains) {
+            const adjustedChain = subChain.map(branch => ({
+                ...branch,
+                kwStart: branch.kwStart + bodyStart,
+                bodyStart: branch.bodyStart + bodyStart,
+                bodyEnd: branch.bodyEnd + bodyStart
+            }));
+            chains.push(adjustedChain);
+        }
     }
 
     return chains;

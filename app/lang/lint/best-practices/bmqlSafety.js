@@ -61,7 +61,7 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
                 ));
             }
 
-            if (/\bselect\s+\*/i.test(queryLiteralText)) {
+            if (/(?<!\$)\bselect\s+\*/i.test(queryLiteralText)) {
                 diagnostics.push(makeDiagnostic(
                     range,
                     "Commerce Best Practice: Avoid using 'SELECT *' in BMQL. Explicitly list the required columns to optimize performance and reduce memory usage.",
@@ -79,9 +79,9 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
             //    mentioned for DELETE - it clears everything, unbounded).
             // Both are explicitly called out as warning-level risks, not just
             // a style nit.
-            const hasWhere = /\bwhere\b/i.test(queryLiteralText);
-            const mutationMatch = /\b(update|modify)\b/i.exec(queryLiteralText);
-            const deleteMatch = /\bdelete\b/i.test(queryLiteralText);
+            const hasWhere = /(?<!\$)\bwhere\b/i.test(queryLiteralText);
+            const mutationMatch = /(?<!\$)\b(update|modify)\b/i.exec(queryLiteralText);
+            const deleteMatch = /(?<!\$)\bdelete\b/i.test(queryLiteralText);
             if (mutationMatch && !hasWhere) {
                 diagnostics.push(makeDiagnostic(
                     range,
@@ -96,8 +96,8 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
                     vscode.DiagnosticSeverity.Warning,
                     'bml-bmql-unbounded-delete'
                 ));
-            } else if (/\bselect\b/i.test(queryLiteralText) && !hasWhere) {
-                const usesDistinctOrOrderBy = /\bdistinct\b|\border\s+by\b/i.test(queryLiteralText);
+            } else if (/(?<!\$)\bselect\b/i.test(queryLiteralText) && !hasWhere) {
+                const usesDistinctOrOrderBy = /(?<!\$)\bdistinct\b|(?<!\$)\border\s+by\b/i.test(queryLiteralText);
                 if (usesDistinctOrOrderBy) {
                     // A SELECT using DISTINCT or ORDER BY is *also* capped at
                     // 1,000 records per the docs - unlike a plain SELECT, so a

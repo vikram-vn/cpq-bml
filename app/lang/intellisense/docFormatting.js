@@ -59,18 +59,18 @@ function getHelpFilePath(info) {
     if (!category) return null;
 
     const categoryMap = {
-        'string': 'String.md',
-        'math': 'Math.md',
-        'date': 'Date.md',
-        'json': 'Json.md',
-        'xml': 'XML.md',
-        'dictionary': 'Dictionary.md',
-        'array': 'Arrays.md',
-        'arrays': 'Arrays.md',
-        'bmql': 'BMQL.md',
-        'url': 'URLAccess.md',
-        'others': 'Others.md',
-        'direct_db_access': 'DirectDBAccess.md'
+        'string': 'string/string.md',
+        'math': 'math/math.md',
+        'date': 'date/date.md',
+        'json': 'json/json.md',
+        'xml': 'xml/xml.md',
+        'dictionary': 'dictionary/dictionary.md',
+        'array': 'array/arrays.md',
+        'arrays': 'array/arrays.md',
+        'bmql': 'bmql/bmql.md',
+        'url': 'url-access/urlAccess.md',
+        'others': 'others/others.md',
+        'direct_db_access': 'direct-db-access/directDbAccess.md'
     };
 
     const fileName = categoryMap[category.toLowerCase()];

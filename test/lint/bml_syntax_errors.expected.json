@@ -85,18 +85,8 @@
     "message": "BML Syntax Error: Member access or method call ('myDict.size(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
-    "line": 28,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'size' - did you mean 'sin'?"
-  },
-  {
     "line": 30,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('myJson.get(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 30,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 1."
   }
 ]

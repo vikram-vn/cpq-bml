@@ -87,11 +87,14 @@ function splitParameters(paramsText) {
     const chunks = [];
     let start = 0;
     let parenDepth = 0;
+    let braceDepth = 0;
     for (let i = 0; i < paramsText.length; i++) {
         const ch = paramsText[i];
         if (ch === '(') parenDepth++;
         else if (ch === ')') parenDepth = Math.max(0, parenDepth - 1);
-        else if (ch === ',' && parenDepth === 0) {
+        else if (ch === '{') braceDepth++;
+        else if (ch === '}') braceDepth = Math.max(0, braceDepth - 1);
+        else if (ch === ',' && parenDepth === 0 && braceDepth === 0) {
             chunks.push(paramsText.slice(start, i));
             start = i + 1;
         }

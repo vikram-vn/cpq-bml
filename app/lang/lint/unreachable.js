@@ -1,3 +1,5 @@
+const { isConstantTrue, isConstantFalse, selfCompareOperand } = require('./constantConditions');
+
 // Includes an implicit top-level "block" spanning the whole file, so unreachable code
 // after a top-level return/break/throwerror with no enclosing braces is still caught.
 function findBlocks(text) {
@@ -73,35 +75,72 @@ function reportDeadZone(vscode, doc, diagnostics, deadStart, deadEnd, reasonText
 // nested if/elif/else instead of a direct terminator is conservatively
 // treated as "does not terminate" rather than recursing, to avoid false
 // positives from a text-based (non-parsing) analysis.
-function bodyEndsWithTerminator(bodyText) {
-    const trimmed = bodyText.replace(/\s+$/, '');
-    if (!trimmed) return false;
+const { parseConditionalChains } = require('./duplicateBranches');
 
-    let depth = 0;
+function getLastTopLevelStatement(text) {
+    let start = 0;
+    let parenDepth = 0;
+    let bracketDepth = 0;
+    let braceDepth = 0;
     let inSingleQuote = false;
     let inDoubleQuote = false;
-    const topLevelSemicolons = [];
-    for (let i = 0; i < trimmed.length; i++) {
-        const ch = trimmed[i];
-        if (ch === '\\') { i++; continue; }
-        if (ch === "'" && !inDoubleQuote) inSingleQuote = !inSingleQuote;
-        else if (ch === '"' && !inSingleQuote) inDoubleQuote = !inDoubleQuote;
-        if (inSingleQuote || inDoubleQuote) continue;
-        if (ch === '(' || ch === '[' || ch === '{') depth++;
-        else if (ch === ')' || ch === ']' || ch === '}') depth = Math.max(0, depth - 1);
-        else if (ch === ';' && depth === 0) topLevelSemicolons.push(i);
+    const statements = [];
+
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (char === '\\') {
+            if (i + 1 < text.length) i++;
+            continue;
+        }
+
+        if (char === "'" && !inDoubleQuote) inSingleQuote = !inSingleQuote;
+        else if (char === '"' && !inSingleQuote) inDoubleQuote = !inDoubleQuote;
+
+        if (!inSingleQuote && !inDoubleQuote) {
+            if (char === '(') parenDepth++;
+            else if (char === ')') parenDepth = Math.max(0, parenDepth - 1);
+            else if (char === '[') bracketDepth++;
+            else if (char === ']') bracketDepth = Math.max(0, bracketDepth - 1);
+            else if (char === '{') braceDepth++;
+            else if (char === '}') braceDepth = Math.max(0, braceDepth - 1);
+            else if (char === ';' && parenDepth === 0 && bracketDepth === 0 && braceDepth === 0) {
+                statements.push({ text: text.substring(start, i).trim(), start, end: i });
+                start = i + 1;
+            }
+        }
     }
-    if (topLevelSemicolons.length === 0) return false;
 
-    const lastSemi = topLevelSemicolons[topLevelSemicolons.length - 1];
-    // The body must actually end at its last top-level ';' - if there's a
-    // nested block (e.g. another if/else) after it, this isn't a simple
-    // "last statement is a terminator" case.
-    if (lastSemi !== trimmed.length - 1) return false;
+    const trailing = text.substring(start).trim();
+    if (trailing) {
+        statements.push({ text: trailing, start, end: text.length });
+    }
 
-    const prevSemi = topLevelSemicolons.length >= 2 ? topLevelSemicolons[topLevelSemicolons.length - 2] : -1;
-    const lastStatement = trimmed.slice(prevSemi + 1, lastSemi).trim();
-    return /^(return\b|break$|continue$|throwerror\s*\()/i.test(lastStatement);
+    return statements.length > 0 ? statements[statements.length - 1] : null;
+}
+
+function statementTerminates(stmtText, fullBodyText) {
+    const clean = stmtText.trim().replace(/;+$/, '');
+    if (/^(return\b|break$|continue$|throwerror\s*\()/i.test(clean)) {
+        return true;
+    }
+    
+    // Check if statement is a nested block or conditional chain that terminates.
+    // To be conservative and safe, if the statement ends with a closing brace `}`,
+    // we see if we can resolve its block.
+    if (clean.endsWith('}')) {
+        const openBrace = fullBodyText.lastIndexOf('{');
+        if (openBrace !== -1) {
+            const innerText = fullBodyText.substring(openBrace + 1, fullBodyText.length - 1);
+            return bodyEndsWithTerminator(innerText);
+        }
+    }
+    return false;
+}
+
+function bodyEndsWithTerminator(bodyText) {
+    const lastStmt = getLastTopLevelStatement(bodyText);
+    if (!lastStmt) return false;
+    return statementTerminates(lastStmt.text, bodyText);
 }
 
 // Flags code between a terminating statement (return/break/continue/throwerror) and
@@ -174,6 +213,56 @@ function checkUnreachableCode(noStringsText, doc, vscode, conditionalChains) {
 
             reportDeadZone(vscode, doc, diagnostics, deadStart, block.end, 'an if/elif/else chain where every branch already returns, breaks, continues, or throws');
             reportedZones.push([deadStart, block.end]);
+        }
+    }
+
+    // Check for unreachable blocks/branches due to constant conditions
+    if (conditionalChains) {
+        for (const chain of conditionalChains) {
+            let foundAlwaysTrue = false;
+            for (let idx = 0; idx < chain.length; idx++) {
+                const branch = chain[idx];
+                
+                // If a previous branch in this chain was always true, this branch and all subsequent ones are unreachable
+                if (foundAlwaysTrue) {
+                    const firstNonSpace = noStringsText.slice(branch.bodyStart, branch.bodyEnd).search(/\S/);
+                    if (firstNonSpace !== -1) {
+                        const deadStart = branch.bodyStart + firstNonSpace;
+                        if (!reportedZones.some(([zs, ze]) => deadStart >= zs && deadStart < ze)) {
+                            reportDeadZone(vscode, doc, diagnostics, deadStart, branch.bodyEnd, 'a previous always-true condition in the chain');
+                            reportedZones.push([deadStart, branch.bodyEnd]);
+                        }
+                    }
+                    continue;
+                }
+
+                if (branch.conditionText) {
+                    const trimmed = branch.conditionText.trim();
+                    const isFalse = isConstantFalse(trimmed) || 
+                        (() => {
+                            const sc = selfCompareOperand(trimmed);
+                            return sc && (sc.operator === '!=' || sc.operator === '<>');
+                        })();
+                    const isTrue = isConstantTrue(trimmed) ||
+                        (() => {
+                            const sc = selfCompareOperand(trimmed);
+                            return sc && sc.operator === '==';
+                        })();
+
+                    if (isFalse) {
+                        const firstNonSpace = noStringsText.slice(branch.bodyStart, branch.bodyEnd).search(/\S/);
+                        if (firstNonSpace !== -1) {
+                            const deadStart = branch.bodyStart + firstNonSpace;
+                            if (!reportedZones.some(([zs, ze]) => deadStart >= zs && deadStart < ze)) {
+                                reportDeadZone(vscode, doc, diagnostics, deadStart, branch.bodyEnd, 'an always-false condition');
+                                reportedZones.push([deadStart, branch.bodyEnd]);
+                            }
+                        }
+                    } else if (isTrue) {
+                        foundAlwaysTrue = true;
+                    }
+                }
+            }
         }
     }
 

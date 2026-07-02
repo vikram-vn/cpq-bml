@@ -1,7 +1,7 @@
 [
   {
     "line": 2,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Unused variable: unusedVar"
   },
   {

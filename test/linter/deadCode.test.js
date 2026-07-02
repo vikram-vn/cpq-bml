@@ -278,4 +278,51 @@ suite('BML Linter Test Suite - duplicate if/elif branch conditions (no-dupe-else
         assert.ok(blocks.some(b => b.start === 0 && b.end === text.length));
         assert.ok(blocks.some(b => b.start === 7 && b.end === 16));
     });
+
+    test('Flags unreachable block inside if (false)', () => {
+        const diagnostics = lintText(`
+            if (false) {
+                x = 5;
+            }
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code' && d.message.includes('always-false'));
+        assert.ok(diag, 'Should flag code block inside if (false)');
+    });
+
+    test('Flags unreachable block inside elif (false)', () => {
+        const diagnostics = lintText(`
+            if (x == 1) {
+                return "a";
+            } elif (false) {
+                return "b";
+            }
+            return "c";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code' && d.message.includes('always-false'));
+        assert.ok(diag, 'Should flag code block inside elif (false)');
+    });
+
+    test('Flags unreachable block inside if (x != x)', () => {
+        const diagnostics = lintText(`
+            if (x != x) {
+                y = 1;
+            }
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code' && d.message.includes('always-false'));
+        assert.ok(diag, 'Should flag code block inside if (x != x)');
+    });
+
+    test('Flags sibling branches following if (true) as unreachable', () => {
+        const diagnostics = lintText(`
+            if (true) {
+                return "a";
+            } else {
+                return "b";
+            }
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unreachable-code' && d.message.includes('always-true'));
+        assert.ok(diag, 'Should flag else branch following if (true)');
+    });
 });

@@ -216,6 +216,16 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
         const funcName = match[3];
         const funcNameLower = funcName.toLowerCase();
 
+        if (!namespace) {
+            let idx = match.index - 1;
+            while (idx >= 0 && /\s/.test(noStringsText[idx])) {
+                idx--;
+            }
+            if (idx >= 0 && noStringsText[idx] === '.') {
+                continue; // Skip member method calls that aren't util or commerce
+            }
+        }
+
         if (!namespace && keywords.has(funcNameLower)) {
             continue; // Skip keywords like if, for, return, dict etc
         }

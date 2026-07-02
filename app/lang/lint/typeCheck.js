@@ -74,6 +74,82 @@ function inferLiteralType(rhsText) {
 // BML variables are statically typed by their first assignment; CPQ rejects reassigning
 // to a different type later. declaredTypes optionally seeds a variable's type from its
 // function-parameter declaration instead of waiting for the first in-body assignment.
+function getLeftOperandType(text, index, varTypes) {
+    let i = index - 1;
+    while (i >= 0 && /\s/.test(text[i])) {
+        i--;
+    }
+    if (i < 0) return null;
+
+    if (text[i] === '"' || text[i] === "'") {
+        const quote = text[i];
+        let j = i - 1;
+        while (j >= 0) {
+            if (text[j] === quote && (j === 0 || text[j-1] !== '\\')) {
+                return 'String';
+            }
+            j--;
+        }
+        return 'String';
+    }
+
+    let start = i;
+    while (start >= 0 && /[a-zA-Z0-9_.]/.test(text[start])) {
+        start--;
+    }
+    const token = text.slice(start + 1, i + 1);
+    if (/^\d+\.\d+$/.test(token)) return 'Float';
+    if (/^\d+$/.test(token)) return 'Integer';
+    if (/^(?:true|false)$/i.test(token)) return 'Boolean';
+    if (token === 'null') return 'Null';
+
+    if (/^[a-zA-Z_]\w*$/.test(token)) {
+        const typeInfo = varTypes.get(token);
+        if (typeInfo) return typeInfo.type;
+        const paramType = varTypes.get(token.toLowerCase());
+        if (paramType) return paramType.type;
+    }
+    return null;
+}
+
+function getRightOperandType(text, index, varTypes) {
+    let i = index + 1;
+    while (i < text.length && /\s/.test(text[i])) {
+        i++;
+    }
+    if (i >= text.length) return null;
+
+    if (text[i] === '"' || text[i] === "'") {
+        const quote = text[i];
+        let j = i + 1;
+        while (j < text.length) {
+            if (text[j] === quote && text[j-1] !== '\\') {
+                return 'String';
+            }
+            j++;
+        }
+        return 'String';
+    }
+
+    let end = i;
+    while (end < text.length && /[a-zA-Z0-9_.]/.test(text[end])) {
+        end++;
+    }
+    const token = text.slice(i, end);
+    if (/^\d+\.\d+$/.test(token)) return 'Float';
+    if (/^\d+$/.test(token)) return 'Integer';
+    if (/^(?:true|false)$/i.test(token)) return 'Boolean';
+    if (token === 'null') return 'Null';
+
+    if (/^[a-zA-Z_]\w*$/.test(token)) {
+        const typeInfo = varTypes.get(token);
+        if (typeInfo) return typeInfo.type;
+        const paramType = varTypes.get(token.toLowerCase());
+        if (paramType) return paramType.type;
+    }
+    return null;
+}
+
 function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes) {
     const diagnostics = [];
     const firstTypeByVar = new Map();
@@ -86,11 +162,12 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes) {
 
     const assignRegex = /\b([a-zA-Z_]\w*)\s*=(?!=)/g;
     let match;
+    
+    // First pass: collect variable types
     while ((match = assignRegex.exec(cleanText)) !== null) {
         const varName = match[1];
         const matchIndex = match.index;
 
-        // Exclude comparison operators that could be mistaken for assignment (<=, >=, !=).
         let before = matchIndex - 1;
         while (before >= 0 && /\s/.test(cleanText[before])) before--;
         if (before >= 0 && (cleanText[before] === '<' || cleanText[before] === '>' || cleanText[before] === '!')) {
@@ -105,13 +182,33 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes) {
         if (!inferredType) continue;
 
         const lookupKey = declaredTypes && declaredTypes.has(varName.toLowerCase()) ? varName.toLowerCase() : varName;
-        const prior = firstTypeByVar.get(lookupKey);
-        if (!prior) {
+        if (!firstTypeByVar.has(lookupKey) && !firstTypeByVar.has(varName)) {
             firstTypeByVar.set(varName, { type: inferredType, line: doc.positionAt(matchIndex).line });
+        }
+    }
+
+    // Second pass: validate assignments
+    assignRegex.lastIndex = 0;
+    while ((match = assignRegex.exec(cleanText)) !== null) {
+        const varName = match[1];
+        const matchIndex = match.index;
+
+        let before = matchIndex - 1;
+        while (before >= 0 && /\s/.test(cleanText[before])) before--;
+        if (before >= 0 && (cleanText[before] === '<' || cleanText[before] === '>' || cleanText[before] === '!')) {
             continue;
         }
 
-        if (prior.type !== inferredType) {
+        const rhsStart = matchIndex + match[0].length;
+        const rhs = getAssignmentRhsText(cleanText, rhsStart);
+        if (!rhs) continue;
+
+        const inferredType = inferLiteralType(rhs.text);
+        if (!inferredType) continue;
+
+        const lookupKey = declaredTypes && declaredTypes.has(varName.toLowerCase()) ? varName.toLowerCase() : varName;
+        const prior = firstTypeByVar.get(lookupKey) || firstTypeByVar.get(varName);
+        if (prior && prior.line !== doc.positionAt(matchIndex).line && prior.type !== inferredType) {
             const startPos = doc.positionAt(matchIndex);
             const endPos = startPos.translate(0, varName.length);
             const range = new vscode.Range(startPos, endPos);
@@ -125,6 +222,68 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes) {
             );
             diag.code = 'bml-type-mismatch';
             diagnostics.push(diag);
+        }
+    }
+
+    // Binary expressions type checking
+    const { getStringRanges } = require('./strings');
+    const stringRanges = getStringRanges(cleanText);
+    const isInsideString = (index) => {
+        return stringRanges.some(([start, end]) => index >= start && index < end);
+    };
+
+    const binaryOpRegex = /([+\-*/])/g;
+    while ((match = binaryOpRegex.exec(cleanText)) !== null) {
+        const op = match[1];
+        const opIndex = match.index;
+
+        if (isInsideString(opIndex)) continue;
+
+        const nextChar = cleanText[opIndex + 1];
+        const prevChar = cleanText[opIndex - 1];
+        if (op === '+' && (nextChar === '+' || prevChar === '+')) continue;
+        if (op === '-' && (nextChar === '-' || prevChar === '-')) continue;
+        if (nextChar === '=') continue; // +=, -=, *=, /=
+
+        const leftType = getLeftOperandType(cleanText, opIndex, firstTypeByVar);
+        const rightType = getRightOperandType(cleanText, opIndex, firstTypeByVar);
+
+        if (!leftType || !rightType) continue;
+
+        const isNumeric = (type) => ['Integer', 'Float', 'Long', 'Double'].includes(type);
+
+        if (op === '+') {
+            const isLeftString = leftType === 'String';
+            const isRightString = rightType === 'String';
+            const isLeftNumeric = isNumeric(leftType);
+            const isRightNumeric = isNumeric(rightType);
+
+            if ((isLeftString && isRightNumeric) || (isLeftNumeric && isRightString)) {
+                const startPos = doc.positionAt(opIndex);
+                const endPos = doc.positionAt(opIndex + 1);
+                const diag = new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Type mismatch: Cannot combine 'String' and '${isLeftString ? rightType : leftType}' using '+'. Convert ${isLeftString ? 'the number' : 'the other operand'} to String using 'string()' or vice versa.`,
+                    vscode.DiagnosticSeverity.Error
+                );
+                diag.code = 'bml-binary-type-mismatch';
+                diagnostics.push(diag);
+            }
+        } else {
+            const isLeftString = leftType === 'String';
+            const isRightString = rightType === 'String';
+
+            if (isLeftString || isRightString) {
+                const startPos = doc.positionAt(opIndex);
+                const endPos = doc.positionAt(opIndex + 1);
+                const diag = new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Type mismatch: Operator '${op}' is not supported for 'String' values.`,
+                    vscode.DiagnosticSeverity.Error
+                );
+                diag.code = 'bml-binary-type-mismatch';
+                diagnostics.push(diag);
+            }
         }
     }
 

@@ -136,7 +136,7 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
                 const diag = new vscode.Diagnostic(
                     firstDecl.range,
                     `Unused variable: ${varName}`,
-                    vscode.DiagnosticSeverity.Warning
+                    vscode.DiagnosticSeverity.Hint
                 );
                 diag.code = 'bml-unused-variable';
                 diag.tags = [vscode.DiagnosticTag.Unnecessary];

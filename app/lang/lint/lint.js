@@ -19,7 +19,7 @@ const { checkMixedOperators } = require('./mixedOperators');
 const { checkLonelyIf } = require('./lonelyIf');
 const { checkUnusedExpressions } = require('./unusedExpressions');
 const { checkUseBeforeDefine } = require('./useBeforeDefine');
-const { getStringRanges } = require('./strings');
+const { getStringRanges, checkUnclosedStrings } = require('./strings');
 const { computeSuppressions } = require('./suppressions');
 const { checkSpelling } = require('../spellCheck/spelling');
 const { checkNullSafety } = require('./nullSafety');
@@ -91,6 +91,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
 
         // Phase 1 new checkers
         diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));
+        diagnostics.push(...checkUnclosedStrings(cleanText, doc, vscode));
         diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
         diagnostics.push(...checkShadowedVariables(noStringsText, doc));
     }

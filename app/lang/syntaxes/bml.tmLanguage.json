@@ -337,7 +337,7 @@
         },
         {
           "name": "variable.other.line.attribute.bml",
-          "match": "\\b(line\\.[a-zA-Z0-9_]+(?:_[cl]))\\b",
+          "match": "\\b(line\\.[a-zA-Z0-9_]+(?:_[ctl]))\\b",
           "comment": "Matches line item attributes (suffixes _c or _l)"
         },
         {
