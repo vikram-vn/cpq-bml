@@ -16,7 +16,7 @@ suite('BML Linter Test Suite - rules', function() {
         const unusedDiag = diagnostics.find(d => d.message.includes('Unused variable: unusedVar'));
         assert.ok(unusedDiag, 'Should flag unusedVar as unused');
 
-        const shadowDiag = diagnostics.find(d => d.message.includes('shadows a variable in an outer scope'));
+        const shadowDiag = diagnostics.find(d => d.code === 'bml-shadowed-variable');
         assert.ok(shadowDiag, 'Should flag shadowing of variable x');
     });
 

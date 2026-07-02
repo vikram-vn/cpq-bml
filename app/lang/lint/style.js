@@ -1,5 +1,11 @@
 const vscode = require('vscode');
 
+function makeDiagnostic(range, message, severity, code) {
+    const diag = new vscode.Diagnostic(range, message, severity);
+    diag.code = code;
+    return diag;
+}
+
 function checkStyle(cleanText, noStringsText, doc, declaredVars) {
     const diagnostics = [];
     const lines = doc.getText().split(/\r?\n/);
@@ -18,13 +24,12 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
         if (semicolonCount > 1) {
             const startPos = new vscode.Position(i, 0);
             const endPos = new vscode.Position(i, lines[i].length);
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    new vscode.Range(startPos, endPos),
-                    'Style Warning: There should never be more than one statement on a single line.',
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                'Style Warning: There should never be more than one statement on a single line.',
+                vscode.DiagnosticSeverity.Warning,
+                'bml-multiple-statements-per-line'
+            ));
         }
 
         const codeLine = rawCodeLine.trim();
@@ -41,13 +46,12 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
             if (afterBrace.length > 0 && !afterBrace.startsWith('}')) {
                 const startPos = new vscode.Position(i, lines[i].indexOf('{'));
                 const endPos = new vscode.Position(i, lines[i].length);
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        'Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them.',
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    'Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them.',
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-brace-style-open'
+                ));
             }
         }
 
@@ -66,13 +70,12 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
             if ((beforeBrace.length > 0 && !beforeBrace.endsWith('{')) || (afterBrace.length > 0 && !isElseOrElif)) {
                 const startPos = new vscode.Position(i, lines[i].indexOf('}'));
                 const endPos = new vscode.Position(i, lines[i].length);
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        'Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line.',
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    'Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line.',
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-brace-style-close'
+                ));
             }
         }
     }
@@ -86,13 +89,12 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
     while ((match = singleArgRegex.exec(noStringsText)) !== null) {
         const startPos = doc.positionAt(match.index);
         const endPos = startPos.translate(0, match[0].length);
-        diagnostics.push(
-            new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
-                `Style Warning: Functions/operators with a single argument should enclose that argument in parentheses, e.g. not(${match[2]}) rather than not ${match[2]}.`,
-                vscode.DiagnosticSeverity.Warning
-            )
-        );
+        diagnostics.push(makeDiagnostic(
+            new vscode.Range(startPos, endPos),
+            `Style Warning: Functions/operators with a single argument should enclose that argument in parentheses, e.g. not(${match[2]}) rather than not ${match[2]}.`,
+            vscode.DiagnosticSeverity.Warning,
+            'bml-not-without-parens'
+        ));
     }
 
     // 6. Print statements inside debug block check
@@ -120,13 +122,12 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
             if (!isDebugControlled) {
                 const startPos = new vscode.Position(i, lines[i].indexOf('print'));
                 const endPos = startPos.translate(0, 5);
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        'Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... }).',
-                        vscode.DiagnosticSeverity.Information
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    'Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... }).',
+                    vscode.DiagnosticSeverity.Information,
+                    'bml-unguarded-print'
+                ));
             }
         }
     }
@@ -134,19 +135,23 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
 
 
     // 8. Very long statement check (>200 chars, excluding strings/comments)
+    // A bmql(...) call's query string has to stay on one line - BML has no
+    // line-continuation syntax that keeps a string literal intact across
+    // lines - so a long BMQL query legitimately can't be wrapped and is
+    // exempt from this check.
+    const bmqlLineRe = /\bbmql\s*\(/i;
     for (let i = 0; i < noStringsLines.length; i++) {
         const line = noStringsLines[i];
         const codeOnly = line.split('//')[0].trim();
-        if (codeOnly.length > 200) {
+        if (codeOnly.length > 200 && !bmqlLineRe.test(lines[i])) {
             const startPos = new vscode.Position(i, 0);
             const endPos = new vscode.Position(i, lines[i].length);
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    new vscode.Range(startPos, endPos),
-                    `Style Warning: Line exceeds 200 characters of code (${codeOnly.length} chars). Consider breaking it into multiple lines.`,
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                `Style Warning: Line exceeds 200 characters of code (${codeOnly.length} chars). Consider breaking it into multiple lines.`,
+                vscode.DiagnosticSeverity.Warning,
+                'bml-line-too-long'
+            ));
         }
     }
 

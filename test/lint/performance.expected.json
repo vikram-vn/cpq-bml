@@ -6,6 +6,11 @@
   },
   {
     "line": 4,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 4,
     "severity": "Warning",
     "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
   },
@@ -15,9 +20,24 @@
     "message": "Performance Warning: String concatenation inside loop for 'ret'. Use StringBuilder (sbappend/sbtostring) instead"
   },
   {
+    "line": 10,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 11,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
     "line": 11,
     "severity": "Information",
     "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 13,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
   },
   {
     "line": 13,
@@ -27,7 +47,17 @@
   {
     "line": 14,
     "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 14,
+    "severity": "Information",
     "message": "Performance Info: Table 'table3' is queried 3 times. Consider combining queries"
+  },
+  {
+    "line": 15,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
   },
   {
     "line": 15,
@@ -73,35 +103,5 @@
     "line": 33,
     "severity": "Warning",
     "message": "'AND' and 'OR' are mixed without grouping parentheses - BML evaluates 'AND' before 'OR', which may not be what you expect. Add parentheses to make the intended grouping explicit, e.g. '(a AND b) OR c'."
-  },
-  {
-    "line": 40,
-    "severity": "Warning",
-    "message": "Safety Warning: 'row' may be null (result of bmql/get/dictget). Check with isnull(row) or sizeofarray(row) > 0 before use."
-  },
-  {
-    "line": 42,
-    "severity": "Warning",
-    "message": "Safety Warning: 'r1Records' may be null (result of bmql/get/dictget). Check with isnull(r1Records) or sizeofarray(r1Records) > 0 before use."
-  },
-  {
-    "line": 43,
-    "severity": "Warning",
-    "message": "Safety Warning: 'r2Records' may be null (result of bmql/get/dictget). Check with isnull(r2Records) or sizeofarray(r2Records) > 0 before use."
-  },
-  {
-    "line": 44,
-    "severity": "Warning",
-    "message": "Safety Warning: 'r3Records' may be null (result of bmql/get/dictget). Check with isnull(r3Records) or sizeofarray(r3Records) > 0 before use."
-  },
-  {
-    "line": 45,
-    "severity": "Warning",
-    "message": "Safety Warning: 'r4Records' may be null (result of bmql/get/dictget). Check with isnull(r4Records) or sizeofarray(r4Records) > 0 before use."
-  },
-  {
-    "line": 46,
-    "severity": "Warning",
-    "message": "Safety Warning: 'r5Records' may be null (result of bmql/get/dictget). Check with isnull(r5Records) or sizeofarray(r5Records) > 0 before use."
   }
 ]

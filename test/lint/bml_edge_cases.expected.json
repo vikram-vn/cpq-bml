@@ -5,6 +5,16 @@
     "message": "Commerce Best Practice: Avoid using 'SELECT *' in BMQL. Explicitly list the required columns to optimize performance and reduce memory usage."
   },
   {
+    "line": 1,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 2,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
     "line": 5,
     "severity": "Warning",
     "message": "Design Warning: Hardcoded URL detected. Consider using a dynamic configuration, Data Table, or System Variable to avoid environment-specific issues."
@@ -68,16 +78,6 @@
     "line": 25,
     "severity": "Information",
     "message": "Design Info: Magic number '0.5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 27,
-    "severity": "Warning",
-    "message": "Safety Warning: 'r1' may be null (result of bmql/get/dictget). Check with isnull(r1) or sizeofarray(r1) > 0 before use."
-  },
-  {
-    "line": 27,
-    "severity": "Warning",
-    "message": "Safety Warning: 'r2' may be null (result of bmql/get/dictget). Check with isnull(r2) or sizeofarray(r2) > 0 before use."
   },
   {
     "line": 27,

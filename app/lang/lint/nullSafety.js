@@ -9,7 +9,16 @@ const vscode = require('vscode');
  * Guard patterns recognised (anywhere before the first unguarded use):
  *   isnull(var)
  *   sizeofarray(var)  [> 0 or similar]
+ *   len(var) == 0 / > 0 / etc.
  *   var == ""  /  var <> ""
+ *
+ * A use that simply passes the variable straight through as a function-call
+ * argument (e.g. append(arr, var), someFunc(a, var)) is NOT flagged: a survey
+ * of real CPQ library code found this is the overwhelming majority (~84%) of
+ * otherwise-unguarded uses, and it's clearly this codebase's normal, accepted
+ * style - BML function calls generally don't throw on a null/empty argument.
+ * Uses inside an expression (concatenation, comparisons, etc.) are still
+ * flagged.
  *
  * Code: bml-null-check-required  Severity: Warning
  */
@@ -28,12 +37,16 @@ function checkNullSafety(cleanText, noStringsText, doc) {
     if (nullableVars.size === 0) return diagnostics;
 
     for (const varName of nullableVars) {
-        // Build per-variable guard regex
+        // Build per-variable guard regex. Real CPQ library code guards
+        // bmql/get/dictget results with len(x) comparisons just as often as
+        // isnull()/sizeofarray() - e.g. `if (len(error) > 0)` or
+        // `if (len(fusionUsername) == 0 OR ...)` - so that idiom counts too.
         const guardPattern = new RegExp(
             `\\bisnull\\s*\\(\\s*${varName}\\s*\\)` +
             `|\\bsizeofarray\\s*\\(\\s*${varName}\\s*\\)` +
-            `|\\b${varName}\\s*(?:==|<>|!=)\\s*["']{0,2}\\s*["']{0,2}` +
-            `|["']{0,2}\\s*["']{0,2}\\s*(?:==|<>|!=)\\s*\\b${varName}\\b`,
+            `|\\blen\\s*\\(\\s*${varName}\\s*\\)\\s*(?:==|<>|!=|>|>=)\\s*0\\b` +
+            `|\\b${varName}\\s*(?:==|<>|!=)\\s*["']{2}` +
+            `|["']{2}\\s*(?:==|<>|!=)\\s*\\b${varName}\\b`,
             'i'
         );
 
@@ -43,7 +56,7 @@ function checkNullSafety(cleanText, noStringsText, doc) {
 
         // Patterns that indicate the current match is PART OF a guard expression
         const insideGuardRe = new RegExp(
-            `(?:isnull|sizeofarray)\\s*\\([^)]*\\b${varName}\\b[^)]*\\)`,
+            `(?:isnull|sizeofarray|len)\\s*\\([^)]*\\b${varName}\\b[^)]*\\)`,
             'i'
         );
 
@@ -69,6 +82,12 @@ function checkNullSafety(cleanText, noStringsText, doc) {
             const contextStart = Math.max(0, useIndex - 4000);
             const context = noStringsText.slice(contextStart, useIndex);
             if (guardPattern.test(context)) continue;
+
+            // Skip a bare pass-through as a call argument, e.g. append(arr, varName)
+            // or someFunc(a, varName) - see doc comment above.
+            const argBefore = noStringsText.slice(Math.max(0, useIndex - 20), useIndex).trimEnd();
+            const argAfter = noStringsText.slice(useIndex + varName.length, useIndex + varName.length + 20).trimStart();
+            if (/[(,]$/.test(argBefore) && /^[,)]/.test(argAfter)) continue;
 
             // Unguarded use found
             const startPos = doc.positionAt(useIndex);

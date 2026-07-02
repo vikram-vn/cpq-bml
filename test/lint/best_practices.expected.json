@@ -68,15 +68,5 @@
     "line": 25,
     "severity": "Information",
     "message": "Design Info: Magic number '25.5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 41,
-    "severity": "Warning",
-    "message": "Safety Warning: 'q1Records' may be null (result of bmql/get/dictget). Check with isnull(q1Records) or sizeofarray(q1Records) > 0 before use."
-  },
-  {
-    "line": 42,
-    "severity": "Warning",
-    "message": "Safety Warning: 'q2Records' may be null (result of bmql/get/dictget). Check with isnull(q2Records) or sizeofarray(q2Records) > 0 before use."
   }
 ]

@@ -15,6 +15,11 @@
     "message": "Data Table name 'table_name_that_is_exceedingly_long_exceeds_twenty' exceeds the 20-character limit"
   },
   {
+    "line": 4,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
     "line": 7,
     "severity": "Information",
     "message": "Design Info: Magic number '2147483648' detected. Consider defining a named constant"
@@ -113,11 +118,6 @@
     "line": 25,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 26,
-    "severity": "Warning",
-    "message": "Safety Warning: 'results' may be null (result of bmql/get/dictget). Check with isnull(results) or sizeofarray(results) > 0 before use."
   },
   {
     "line": 26,

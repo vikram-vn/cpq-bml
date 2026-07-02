@@ -10,11 +10,6 @@
     "message": "Design Warning: Loop variable 'x' shadows an outer variable with the same name. Consider renaming the loop variable to avoid confusion."
   },
   {
-    "line": 6,
-    "severity": "Warning",
-    "message": "Variable shadowing: 'x' shadows a variable in an outer scope"
-  },
-  {
     "line": 11,
     "severity": "Information",
     "message": "Design Info: Magic number '20' detected. Consider defining a named constant"

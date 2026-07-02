@@ -444,7 +444,19 @@ def main():
 
     print(f"Updated CHANGELOG.md, package.json, README.md, and {os.path.relpath(docs_page_path, ROOT)} for v{new_version}.")
     print()
+
+    built = False
+    if skip_build:
+        print("Skipping build (--skip-build).")
+    else:
+        built = run_build()
+
+    print()
     print("Next steps:")
+    if built:
+        name_match = re.search(r'"name":\s*"([^"]+)"', package_json_content)
+        pkg_name = name_match.group(1) if name_match else "extension"
+        print(f"  # {pkg_name}-{new_version}.vsix has been built in {ROOT}")
     print(f'  git add CHANGELOG.md package.json README.md app/knowledge/Changelog')
     print(f'  git commit -m "chore: release v{new_version}"')
     print(f'  git tag v{new_version}')

@@ -1,5 +1,11 @@
 const vscode = require('vscode');
 
+function makeDiagnostic(range, message, severity, code) {
+    const diag = new vscode.Diagnostic(range, message, severity);
+    diag.code = code;
+    return diag;
+}
+
 function checkPerformance(cleanText, noStringsText, doc) {
     const diagnostics = [];
 
@@ -33,13 +39,12 @@ function checkPerformance(cleanText, noStringsText, doc) {
         if (isNested) {
             const startPos = doc.positionAt(l1.startIndex);
             const endPos = startPos.translate(0, 3); // length of 'for'
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    new vscode.Range(startPos, endPos),
-                    'Commerce Best Practice: Nested loop detected. Avoid nested loops to prevent negative performance impact',
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                'Commerce Best Practice: Nested loop detected. Avoid nested loops to prevent negative performance impact',
+                vscode.DiagnosticSeverity.Warning,
+                'bml-nested-loop'
+            ));
         }
     });
 
@@ -51,13 +56,12 @@ function checkPerformance(cleanText, noStringsText, doc) {
         if (inLoop) {
             const startPos = doc.positionAt(index);
             const endPos = startPos.translate(0, 4); // length of 'bmql'
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    new vscode.Range(startPos, endPos),
-                    'Performance Warning: BMQL query inside loop. Move query outside the loop for better performance',
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                'Performance Warning: BMQL query inside loop. Move query outside the loop for better performance',
+                vscode.DiagnosticSeverity.Warning,
+                'bml-bmql-in-loop'
+            ));
         }
     }
 
@@ -84,13 +88,12 @@ function checkPerformance(cleanText, noStringsText, doc) {
                 const absoluteIndex = loop.start + matchIndex;
                 const startPos = doc.positionAt(absoluteIndex);
                 const endPos = doc.positionAt(absoluteIndex + innerMatch[0].length);
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Performance Warning: String concatenation inside loop for '${varName}'. Use StringBuilder (sbappend/sbtostring) instead`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Performance Warning: String concatenation inside loop for '${varName}'. Use StringBuilder (sbappend/sbtostring) instead`,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-string-concat-in-loop'
+                ));
             }
         }
     });
@@ -127,13 +130,12 @@ function checkPerformance(cleanText, noStringsText, doc) {
     queryCounts.forEach((ranges, query) => {
         if (ranges.length > 1) {
             for (let i = 1; i < ranges.length; i++) {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        ranges[i],
-                        'Performance Info: Repeated identical BMQL query. Consider caching the results',
-                        vscode.DiagnosticSeverity.Information
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    ranges[i],
+                    'Performance Info: Repeated identical BMQL query. Consider caching the results',
+                    vscode.DiagnosticSeverity.Information,
+                    'bml-repeated-bmql-query'
+                ));
             }
         }
     });
@@ -142,13 +144,12 @@ function checkPerformance(cleanText, noStringsText, doc) {
     tableCounts.forEach((ranges, tableName) => {
         if (ranges.length > 2) {
             ranges.forEach(range => {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        range,
-                        `Performance Info: Table '${tableName}' is queried ${ranges.length} times. Consider combining queries`,
-                        vscode.DiagnosticSeverity.Information
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    range,
+                    `Performance Info: Table '${tableName}' is queried ${ranges.length} times. Consider combining queries`,
+                    vscode.DiagnosticSeverity.Information,
+                    'bml-excessive-table-queries'
+                ));
             });
         }
     });
@@ -161,13 +162,12 @@ function checkPerformance(cleanText, noStringsText, doc) {
             if (currentDepth > 3) {
                 const startPos = doc.positionAt(i);
                 const endPos = startPos.translate(0, 1);
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Design Warning: Nesting depth of ${currentDepth} exceeds recommended limit of 3`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Design Warning: Nesting depth of ${currentDepth} exceeds recommended limit of 3`,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-deep-nesting'
+                ));
             }
         } else if (noStringsText[i] === '}') {
             currentDepth--;
@@ -183,13 +183,12 @@ function checkPerformance(cleanText, noStringsText, doc) {
 
     if (decisionCount > 15) {
         const range = new vscode.Range(0, 0, 0, 1);
-        diagnostics.push(
-            new vscode.Diagnostic(
-                range,
-                `Complexity Warning: Cyclomatic complexity is high (${decisionCount}). Consider refactoring into helper functions`,
-                vscode.DiagnosticSeverity.Warning
-            )
-        );
+        diagnostics.push(makeDiagnostic(
+            range,
+            `Complexity Warning: Cyclomatic complexity is high (${decisionCount}). Consider refactoring into helper functions`,
+            vscode.DiagnosticSeverity.Warning,
+            'bml-high-complexity'
+        ));
     }
 
     return diagnostics;

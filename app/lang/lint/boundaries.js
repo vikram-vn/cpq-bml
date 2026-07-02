@@ -1,6 +1,12 @@
 const vscode = require('vscode');
 const { getStringRanges } = require('./strings');
 
+function makeDiagnostic(range, message, severity, code) {
+    const diag = new vscode.Diagnostic(range, message, severity);
+    diag.code = code;
+    return diag;
+}
+
 function checkBoundaries(cleanText, noStringsText, doc) {
     const diagnostics = [];
 
@@ -21,26 +27,24 @@ function checkBoundaries(cleanText, noStringsText, doc) {
             message = `Script contains invalid control character (0x${code.toString(16).padStart(2, '0')}) which can corrupt the Commerce Process when the script is deployed`;
         }
 
-        diagnostics.push(
-            new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
-                message,
-                vscode.DiagnosticSeverity.Error
-            )
-        );
+        diagnostics.push(makeDiagnostic(
+            new vscode.Range(startPos, endPos),
+            message,
+            vscode.DiagnosticSeverity.Error,
+            'bml-invalid-control-char'
+        ));
     }
 
     // 2. Script Length Limit (64kb try-block limit)
     // Warning if BML script length exceeds 64KB (65536 characters)
     if (cleanText.length > 65536) {
         const range = new vscode.Range(0, 0, 0, 1);
-        diagnostics.push(
-            new vscode.Diagnostic(
-                range,
-                `BML script size (${cleanText.length} characters) exceeds the 64KB limit on generated Java try block`,
-                vscode.DiagnosticSeverity.Warning
-            )
-        );
+        diagnostics.push(makeDiagnostic(
+            range,
+            `BML script size (${cleanText.length} characters) exceeds the 64KB limit on generated Java try block`,
+            vscode.DiagnosticSeverity.Warning,
+            'bml-script-size-limit'
+        ));
     }
 
     // 3. BMQL Schema Limits (Table & Column Name Lengths)
@@ -59,13 +63,12 @@ function checkBoundaries(cleanText, noStringsText, doc) {
                 const tableIndexInQuery = tableMatch.index + tableMatch[0].indexOf(tableName);
                 const startPos = doc.positionAt(queryOffset + tableIndexInQuery);
                 const endPos = startPos.translate(0, tableName.length);
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Data Table name '${tableName}' exceeds the 20-character limit`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Data Table name '${tableName}' exceeds the 20-character limit`,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-bmql-table-name-length'
+                ));
             }
         }
 
@@ -96,13 +99,12 @@ function checkBoundaries(cleanText, noStringsText, doc) {
                             const colIndexInColSegment = rawCol.indexOf(colName);
                             const startPos = doc.positionAt(queryOffset + currentOffset + colIndexInColSegment);
                             const endPos = startPos.translate(0, colName.length);
-                            diagnostics.push(
-                                new vscode.Diagnostic(
-                                    new vscode.Range(startPos, endPos),
-                                    `Data Table Column name '${colName}' exceeds the 20-character limit`,
-                                    vscode.DiagnosticSeverity.Warning
-                                )
-                            );
+                            diagnostics.push(makeDiagnostic(
+                                new vscode.Range(startPos, endPos),
+                                `Data Table Column name '${colName}' exceeds the 20-character limit`,
+                                vscode.DiagnosticSeverity.Warning,
+                                'bml-bmql-column-name-length'
+                            ));
                         }
                     }
                 }
@@ -153,37 +155,34 @@ function checkBoundaries(cleanText, noStringsText, doc) {
             
             // Limit 16 digits
             if (digitsCount > 16) {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Float/Currency literal has ${digitsCount} digits, which exceeds the 16-digit precision limit and will be rounded`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Float/Currency literal has ${digitsCount} digits, which exceeds the 16-digit precision limit and will be rounded`,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-float-precision-limit'
+                ));
             }
 
             // Decimal places check: 6 decimal places limit
             const parts = val.split('.');
             const decimals = parts[1].split(/[eE]/)[0];
             if (decimals.length > 6) {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Float literal has ${decimals.length} decimal places, which exceeds the 6 decimal places limit for Data Table columns`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Float literal has ${decimals.length} decimal places, which exceeds the 6 decimal places limit for Data Table columns`,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-float-decimal-limit'
+                ));
             }
 
             // Currency value limit: 90 trillion
             if (Math.abs(valNum) > 90000000000000) {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Currency limit check: Value exceeds the 90 trillion (90,000,000,000,000) limit for Currency attributes`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Currency limit check: Value exceeds the 90 trillion (90,000,000,000,000) limit for Currency attributes`,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-currency-limit'
+                ));
             }
         } else {
             // Integer literal
@@ -192,45 +191,41 @@ function checkBoundaries(cleanText, noStringsText, doc) {
 
             // Integer range: -2,147,483,648 to 2,147,483,647
             if (valNum < -2147483648 || valNum > 2147483647) {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Integer literal '${valNum}' is out of range (-2,147,483,648 to 2,147,483,647)`,
-                        vscode.DiagnosticSeverity.Error
-                    )
-                );
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Integer literal '${valNum}' is out of range (-2,147,483,648 to 2,147,483,647)`,
+                    vscode.DiagnosticSeverity.Error,
+                    'bml-integer-range'
+                ));
             } else {
                 // Limit for Integer Data Table column: 999,999,999
                 if (Math.abs(valNum) > 999999999) {
-                    diagnostics.push(
-                        new vscode.Diagnostic(
-                            new vscode.Range(startPos, endPos),
-                            `Integer value exceeds the maximum value of 999,999,999 for a Data Table integer column`,
-                            vscode.DiagnosticSeverity.Warning
-                        )
-                    );
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Integer value exceeds the maximum value of 999,999,999 for a Data Table integer column`,
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-integer-datatable-limit'
+                    ));
                 }
 
                 // Currency value limit: 90 trillion (could also be written as integer)
                 if (Math.abs(valNum) > 90000000000000) {
-                    diagnostics.push(
-                        new vscode.Diagnostic(
-                            new vscode.Range(startPos, endPos),
-                            `Currency limit check: Value exceeds the 90 trillion (90,000,000,000,000) limit for Currency attributes`,
-                            vscode.DiagnosticSeverity.Warning
-                        )
-                    );
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Currency limit check: Value exceeds the 90 trillion (90,000,000,000,000) limit for Currency attributes`,
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-currency-limit'
+                    ));
                 }
 
                 // Check 16-digit float precision warning if integer has >16 digits
                 if (digitsCount > 16) {
-                    diagnostics.push(
-                        new vscode.Diagnostic(
-                            new vscode.Range(startPos, endPos),
-                            `Float/Currency literal has ${digitsCount} digits, which exceeds the 16-digit precision limit and will be rounded`,
-                            vscode.DiagnosticSeverity.Warning
-                        )
-                    );
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Float/Currency literal has ${digitsCount} digits, which exceeds the 16-digit precision limit and will be rounded`,
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-float-precision-limit'
+                    ));
                 }
             }
         }
@@ -247,37 +242,33 @@ function checkBoundaries(cleanText, noStringsText, doc) {
         const range = new vscode.Range(startPos, endPos);
 
         if (len > 20000000) {
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    range,
-                    `String literal length (${len}) exceeds 20,000,000 characters limit for json() conversion`,
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                range,
+                `String literal length (${len}) exceeds 20,000,000 characters limit for json() conversion`,
+                vscode.DiagnosticSeverity.Warning,
+                'bml-string-length-limit'
+            ));
         } else if (len > 4000) {
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    range,
-                    `String literal length (${len}) exceeds 4000 characters limit for Submit Comments or Attribute Descriptions`,
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                range,
+                `String literal length (${len}) exceeds 4000 characters limit for Submit Comments or Attribute Descriptions`,
+                vscode.DiagnosticSeverity.Warning,
+                'bml-string-length-limit'
+            ));
         } else if (len > 256) {
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    range,
-                    `String literal length (${len}) exceeds 256 characters limit for Configuration text fields`,
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                range,
+                `String literal length (${len}) exceeds 256 characters limit for Configuration text fields`,
+                vscode.DiagnosticSeverity.Warning,
+                'bml-string-length-limit'
+            ));
         } else if (len > 255) {
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    range,
-                    `String literal length (${len}) exceeds 255 characters limit for standard Commerce text fields (and truncates standard part numbers)`,
-                    vscode.DiagnosticSeverity.Warning
-                )
-            );
+            diagnostics.push(makeDiagnostic(
+                range,
+                `String literal length (${len}) exceeds 255 characters limit for standard Commerce text fields (and truncates standard part numbers)`,
+                vscode.DiagnosticSeverity.Warning,
+                'bml-string-length-limit'
+            ));
         }
     }
 

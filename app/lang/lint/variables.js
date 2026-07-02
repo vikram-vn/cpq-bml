@@ -89,25 +89,11 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
         // Sort declarations by index
         decls.sort((a, b) => a.index - b.index);
 
-        // 1. Check for Shadowing
-        decls.forEach(decl => {
-            if (decl.isLoopVar) {
-                // If there is any declaration of the same variable name *before* this loop variable
-                // that is outside the loop block, it's shadowing.
-                const shadowed = decls.find(other => other.index < decl.index && !other.isLoopVar);
-                if (shadowed) {
-                    diagnostics.push(
-                        new vscode.Diagnostic(
-                            decl.range,
-                            `Variable shadowing: '${varName}' shadows a variable in an outer scope`,
-                            vscode.DiagnosticSeverity.Warning
-                        )
-                    );
-                }
-            }
-        });
+        // Shadowing is handled by shadowedVariables.js (bml-shadowed-variable) -
+        // this used to duplicate that exact check, flagging every shadowed loop
+        // variable twice.
 
-        // 2. Check for Unused Variable: used somewhere other than its own
+        // Check for Unused Variable: used somewhere other than its own
         // declaration/assignment sites (property-access occurrences were
         // already excluded while building occurrencesByName above).
         const declIndices = new Set(decls.map(d => d.index));
@@ -143,13 +129,13 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
                 diag.code = 'bml-unused-loop-var';
                 diagnostics.push(diag);
             } else {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        firstDecl.range,
-                        `Unused variable: ${varName}`,
-                        vscode.DiagnosticSeverity.Warning
-                    )
+                const diag = new vscode.Diagnostic(
+                    firstDecl.range,
+                    `Unused variable: ${varName}`,
+                    vscode.DiagnosticSeverity.Warning
                 );
+                diag.code = 'bml-unused-variable';
+                diagnostics.push(diag);
             }
         }
     });

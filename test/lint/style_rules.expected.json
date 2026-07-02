@@ -35,6 +35,11 @@
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
+    "line": 17,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
     "line": 23,
     "severity": "Information",
     "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
@@ -93,11 +98,6 @@
     "line": 40,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 41,
-    "severity": "Warning",
-    "message": "Safety Warning: 'rs' may be null (result of bmql/get/dictget). Check with isnull(rs) or sizeofarray(rs) > 0 before use."
   },
   {
     "line": 41,

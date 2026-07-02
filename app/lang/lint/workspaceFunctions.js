@@ -5,6 +5,50 @@ let cachedWorkspaceFunctions = new Map();
 let isInitialized = false;
 let watcher = null;
 
+/**
+ * Build the wsFunctions cache key + entry for a single -meta.json.
+ *
+ * A meta's folderName groups related util library functions together
+ * (Oracle CPQ "Util Library Folders" / platform namespaces like ORCL_ABO);
+ * calls into a grouped function use three-part syntax:
+ * util.<FolderName>.<functionName>(...). folderName is always present
+ * (defaulting to "util"/"commerce" for ungrouped functions), so it's only
+ * treated as a namespace segment when it names an actual folder - otherwise
+ * this collapses back to the plain two-part util.<name>/commerce.<name> key.
+ */
+function buildFunctionEntry(meta, metaFilePath) {
+    if (!meta || !meta.variableName) return null;
+    const funcName = meta.variableName;
+    const parameterCount = meta.parameters ? meta.parameters.length : 0;
+
+    let namespace = 'util';
+    if (meta.commerceDocument || metaFilePath.replace(/\\/g, '/').includes('/libraries/')) {
+        namespace = 'commerce';
+    }
+
+    const folder = (meta.folderName || '').trim().toLowerCase();
+    const namespaceSegment = (folder && folder !== 'util' && folder !== 'commerce') ? folder : null;
+    const fullNamespace = namespaceSegment ? `${namespace}.${namespaceSegment}` : namespace;
+
+    const params = (meta.parameters || []).map(p => {
+        const typeStr = typeof p.dataType === 'string'
+            ? p.dataType
+            : (p.dataType ? (p.dataType.displayValue || p.dataType.displayLabel || '') : '');
+        return { name: p.name, type: typeStr };
+    });
+
+    return {
+        key: `${fullNamespace}.${funcName.toLowerCase()}`,
+        entry: {
+            path: metaFilePath,
+            parameterCount,
+            params,
+            name: funcName,
+            namespace: fullNamespace,
+        },
+    };
+}
+
 function getWorkspaceFunctions(vscode) {
     const functionsMap = new Map();
     const folders = vscode.workspace.workspaceFolders;
@@ -46,32 +90,9 @@ function getWorkspaceFunctions(vscode) {
             try {
                 const content = fs.readFileSync(metaFile, 'utf8');
                 const meta = JSON.parse(content);
-                if (meta && meta.variableName) {
-                    const funcName = meta.variableName;
-                    const parameterCount = meta.parameters ? meta.parameters.length : 0;
-                    
-                    let namespace = 'util';
-                    if (meta.commerceDocument || metaFile.replace(/\\/g, '/').includes('/libraries/')) {
-                        namespace = 'commerce';
-                    }
-                    
-                    const params = (meta.parameters || []).map(p => {
-                        const typeStr = typeof p.dataType === 'string'
-                            ? p.dataType
-                            : (p.dataType ? (p.dataType.displayValue || p.dataType.displayLabel || '') : '');
-                        return {
-                            name: p.name,
-                            type: typeStr
-                        };
-                    });
-
-                    functionsMap.set(`${namespace}.${funcName.toLowerCase()}`, {
-                        path: metaFile,
-                        parameterCount,
-                        params,
-                        name: funcName,
-                        namespace
-                    });
+                const built = buildFunctionEntry(meta, metaFile);
+                if (built) {
+                    functionsMap.set(built.key, built.entry);
                 }
             } catch (e) {
                 // Ignore parsing errors for individual files
@@ -96,32 +117,9 @@ function initializeCache(vscode) {
                 if (fs.existsSync(fsPath)) {
                     const content = fs.readFileSync(fsPath, 'utf8');
                     const meta = JSON.parse(content);
-                    if (meta && meta.variableName) {
-                        const funcName = meta.variableName;
-                        const parameterCount = meta.parameters ? meta.parameters.length : 0;
-                        
-                        let namespace = 'util';
-                        if (meta.commerceDocument || fsPath.replace(/\\/g, '/').includes('/libraries/')) {
-                            namespace = 'commerce';
-                        }
-                        
-                        const params = (meta.parameters || []).map(p => {
-                            const typeStr = typeof p.dataType === 'string'
-                                ? p.dataType
-                                : (p.dataType ? (p.dataType.displayValue || p.dataType.displayLabel || '') : '');
-                            return {
-                                name: p.name,
-                                type: typeStr
-                            };
-                        });
-
-                        cachedWorkspaceFunctions.set(`${namespace}.${funcName.toLowerCase()}`, {
-                            path: fsPath,
-                            parameterCount,
-                            params,
-                            name: funcName,
-                            namespace
-                        });
+                    const built = buildFunctionEntry(meta, fsPath);
+                    if (built) {
+                        cachedWorkspaceFunctions.set(built.key, built.entry);
                     }
                 }
             } catch (e) {

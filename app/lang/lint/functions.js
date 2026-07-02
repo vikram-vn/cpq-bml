@@ -194,41 +194,51 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
     const builtIns = loadBuiltInFunctions(extensionPath);
     const wsFunctions = getWorkspaceFunctionsCached(vscode);
 
-    // Matches namespaced or bare function calls: [util/commerce.]name(
-    const funcCallRegex = /\b(?:(util|commerce)\.)?([a-zA-Z_]\w*)\s*\(/g;
+    // Matches namespaced or bare function calls: [util/commerce.[folder.]]name(
+    // The middle "folder" segment covers Oracle CPQ's util library folders/
+    // platform namespaces, e.g. util._ORCL_ABO.abo_initializeContext(...).
+    const funcCallRegex = /\b(?:(util|commerce)\.(?:([a-zA-Z_]\w*)\.)?)?([a-zA-Z_]\w*)\s*\(/g;
     let match;
 
     while ((match = funcCallRegex.exec(noStringsText)) !== null) {
         const namespace = match[1];
-        const funcName = match[2];
+        const midSegment = match[2];
+        const funcName = match[3];
         const funcNameLower = funcName.toLowerCase();
-        
+
         if (!namespace && keywords.has(funcNameLower)) {
             continue; // Skip keywords like if, for, return, dict etc
         }
 
         const matchStart = match.index;
-        const prefix = namespace ? `${namespace}.` : '';
+        const prefix = namespace ? `${namespace}.${midSegment ? `${midSegment}.` : ''}` : '';
+        const displayNamespace = midSegment ? `${namespace}.${midSegment}` : namespace;
         const callLength = prefix.length + funcName.length;
         const callStartOffset = matchStart;
         const startPos = doc.positionAt(callStartOffset);
         const endPos = doc.positionAt(callStartOffset + callLength);
- 
+
         // Find matching closing parenthesis and extract arguments
         const argsStartOffset = matchStart + match[0].length;
         const argsResult = getArgumentsTextAndEnd(noStringsText, argsStartOffset);
         if (!argsResult) continue; // Unbalanced call, syntax error
- 
+
         // Extract clean arguments text (retaining string literals for correct comma and length counting)
         const argsCleanText = cleanText.substring(argsStartOffset, argsResult.endIndex);
         const argCount = countArguments(argsCleanText);
- 
+
         if (namespace) {
-            // Namespaced call (util.foo or commerce.foo)
-            const cacheKey = `${namespace.toLowerCase()}.${funcNameLower}`;
+            // Namespaced call (util.foo, commerce.foo, or util.folder.foo)
+            const cacheKey = midSegment
+                ? `${namespace.toLowerCase()}.${midSegment.toLowerCase()}.${funcNameLower}`
+                : `${namespace.toLowerCase()}.${funcNameLower}`;
             const targetFunc = wsFunctions.get(cacheKey);
- 
+
             if (!targetFunc) {
+                // Oracle-provided platform utilities (ABO, web services, OSC, etc.)
+                // are called this way but never appear in a pulled workspace -
+                // recognized by name prefix regardless of which namespace/folder
+                // segment precedes them.
                 const isPlatformFunc = namespace.toLowerCase() === "util" && (
                     funcNameLower.startsWith("abo_") ||
                     funcNameLower.startsWith("ws") ||
@@ -242,12 +252,12 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                 }
 
                 // Warning/Info: function not found in workspace
-                const suggestion = findClosestWorkspaceFunction(`${namespace}.${funcName}`, wsFunctions);
+                const suggestion = findClosestWorkspaceFunction(`${displayNamespace}.${funcName}`, wsFunctions);
                 const diag = new vscode.Diagnostic(
                     new vscode.Range(startPos, endPos),
                     suggestion
-                        ? `Function '${namespace}.${funcName}' not found in the workspace library. Did you mean '${suggestion}'?`
-                        : `Function '${namespace}.${funcName}' not found in the workspace library.`,
+                        ? `Function '${displayNamespace}.${funcName}' not found in the workspace library. Did you mean '${suggestion}'?`
+                        : `Function '${displayNamespace}.${funcName}' not found in the workspace library.`,
                     vscode.DiagnosticSeverity.Information
                 );
                 diag.code = 'bml-function-not-found-workspace';
@@ -256,7 +266,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                 if (argCount !== targetFunc.parameterCount) {
                     const diag = new vscode.Diagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Function '${namespace}.${targetFunc.name}' expects ${targetFunc.parameterCount} argument(s), but got ${argCount}.`,
+                        `Function '${displayNamespace}.${targetFunc.name}' expects ${targetFunc.parameterCount} argument(s), but got ${argCount}.`,
                         vscode.DiagnosticSeverity.Warning
                     );
                     diag.code = 'bml-function-arg-count';
@@ -273,7 +283,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                         if (!argumentTypeCompatible(expectedType, actualType)) {
                             const diag = new vscode.Diagnostic(
                                 new vscode.Range(startPos, endPos),
-                                `Argument ${i + 1} to '${namespace}.${targetFunc.name}' should be ${expectedType}, but got a ${actualType} value.`,
+                                `Argument ${i + 1} to '${displayNamespace}.${targetFunc.name}' should be ${expectedType}, but got a ${actualType} value.`,
                                 vscode.DiagnosticSeverity.Warning
                             );
                             diag.code = 'bml-function-arg-type';
