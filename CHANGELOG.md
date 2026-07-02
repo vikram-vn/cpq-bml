@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.11.0] - 2026-07-02
+
+### Added
+- Implement BML static analysis engine with comprehensive documentation and linting test suite.
+
 ## [1.10.0] - 2026-07-02
 
 ### Added
@@ -153,18 +158,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - **Built-in function argument-count accuracy**: rewrote the functionSignature parser (`app/lang/lint/functionSignature.js`) to correctly handle Oracle's "cascading" nested-optional parameter notation (e.g. `datetostr(Date date [, String dateFormat [, String timeZone]]))`), which the previous naive comma-split parser mis-classified - sometimes under-counting required parameters (so a genuinely-missing required argument went unflagged), sometimes over-counting them. Signatures using a non-standard polymorphic "Type(or Type2, Type3)" union notation (`max`, `min`, `put`, `get`, ...) or describing a truly variadic function (`sbappend`) are now detected and excluded from count/type validation entirely, rather than being checked against a guessed (and wrong) shape.
 - Function-call diagnostics (`bml-unknown-function`, `bml-function-arg-count`, `bml-function-not-found-workspace`) now carry a `code`, so lint-suppression directives and downstream tooling can target them individually.
-
-## [1.3.0]
-
-### Added
-
-### Fixed
-
-- **Linting Path Resolution Issues**: Resolved several path resolution edge cases that could prevent BML linting from correctly locating workspace metadata, library resources, and supporting configuration files in certain workspace layouts.
-- **Spell Checker Path Resolution Issues**: Fixed path discovery and file resolution problems affecting the native BML spell checker, ensuring consistent dictionary loading and workspace-aware validation across multi-folder and nested workspace configurations.
-- Fixed various linting and spell-check false positives caused by missing or incorrectly resolved project resources.
-
-### Improved
-
-- Increased overall test suite coverage across language services, diagnostics, and extension activation workflows.
-- Enhanced validation of real-world Oracle CPQ BML code patterns through broader regression testing against production-like code samples.

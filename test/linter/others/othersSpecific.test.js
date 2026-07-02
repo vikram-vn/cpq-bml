@@ -265,12 +265,12 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
 
   suite("BOM and Configuration API Actions", () => {
     test("applybom(bom) - Valid", () => {
-      const diagnostics = lintText('bom = dict("anytype"); applybom(bom); return "";');
+      const diagnostics = lintText('bom = dict("anytype"); applybom(bom, "parent"); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
     test("getbom(key) - Valid", () => {
-      const diagnostics = lintText('x = getbom("key"); return "";');
+      const diagnostics = lintText('x = getbom("key", "parent"); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
@@ -280,12 +280,12 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
     });
 
     test("getconfigattrvalue(attr) - Valid", () => {
-      const diagnostics = lintText('x = getconfigattrvalue("attr"); return "";');
+      const diagnostics = lintText('x = getconfigattrvalue("attr", "parent"); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
     test("getconfigbom(key) - Valid", () => {
-      const diagnostics = lintText('x = getconfigbom("key"); return "";');
+      const diagnostics = lintText('x = getconfigbom("key", "parent"); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
@@ -295,7 +295,7 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
     });
 
     test("calculatedeltabom(bom1, bom2) - Valid", () => {
-      const diagnostics = lintText('bom1 = dict("anytype"); bom2 = dict("anytype"); x = calculatedeltabom(bom1, bom2); return "";');
+      const diagnostics = lintText('bom1 = dict("anytype"); bom2 = dict("anytype"); x = calculatedeltabom(bom1, bom2, "parent"); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
@@ -310,7 +310,7 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
     });
 
     test("calculateconfiguration() - Valid", () => {
-      const diagnostics = lintText('x = calculateconfiguration(); return "";');
+      const diagnostics = lintText('x = calculateconfiguration("a", "b"); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
@@ -332,7 +332,7 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
     });
 
     test("getcoveragesupportdict(key) - Valid", () => {
-      const diagnostics = lintText('x = getcoveragesupportdict("key"); return "";');
+      const diagnostics = lintText('x = getcoveragesupportdict(); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
@@ -352,12 +352,12 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
     });
 
     test("importtransactiondata(id, xml) - Valid", () => {
-      const diagnostics = lintText('importtransactiondata(123, "xml"); return "";');
+      const diagnostics = lintText('importtransactiondata(123); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
     test("validatequoteforagreement(id) - Valid", () => {
-      const diagnostics = lintText('x = validatequoteforagreement(123); return "";');
+      const diagnostics = lintText('x = validatequoteforagreement(); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
   });
