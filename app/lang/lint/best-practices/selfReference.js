@@ -12,20 +12,47 @@ const { vscode, makeDiagnostic } = require('./shared');
  *
  * Code: bml-self-reference
  */
+// This check runs on every debounced keystroke, so avoid hitting disk every
+// time - a function's own -meta.json sidecar essentially never changes
+// mid-edit. Cache by file path, keyed on the sidecar's mtime (a cheap
+// fs.statSync) so a real change (e.g. re-pulling metadata) still invalidates
+// the cache without needing a file watcher wired through this deeply-nested
+// check.
+const ownNameCache = new Map(); // bmlFilePath -> { metaMtimeMs, ownName }
+
 function readOwnFunctionName(bmlFilePath) {
     if (!bmlFilePath) return null;
+    const metaPath = bmlFilePath.replace(/\.bml$/i, '-meta.json');
+
+    let metaMtimeMs = null;
     try {
-        const metaPath = bmlFilePath.replace(/\.bml$/i, '-meta.json');
-        if (fs.existsSync(metaPath)) {
-            const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-            if (meta && meta.variableName) return meta.variableName;
-        }
+        metaMtimeMs = fs.statSync(metaPath).mtimeMs;
     } catch (e) {
-        // fall through to filename-based inference
+        // no sidecar yet - fall through to filename-based inference below
     }
-    // Every function pulled into the workspace names its .bml file after its
-    // own variableName - fall back to that when there's no sidecar yet.
-    return path.basename(bmlFilePath, '.bml');
+
+    const cached = ownNameCache.get(bmlFilePath);
+    if (cached && cached.metaMtimeMs === metaMtimeMs) {
+        return cached.ownName;
+    }
+
+    let ownName = null;
+    if (metaMtimeMs !== null) {
+        try {
+            const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+            if (meta && meta.variableName) ownName = meta.variableName;
+        } catch (e) {
+            // fall through to filename-based inference
+        }
+    }
+    if (!ownName) {
+        // Every function pulled into the workspace names its .bml file after
+        // its own variableName - fall back to that when there's no sidecar yet.
+        ownName = path.basename(bmlFilePath, '.bml');
+    }
+
+    ownNameCache.set(bmlFilePath, { metaMtimeMs, ownName });
+    return ownName;
 }
 
 function checkSelfReference(cleanText, noStringsText, doc) {

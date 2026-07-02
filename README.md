@@ -30,10 +30,14 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 
 
 <!-- RELEASE:START -->
-## 🆕 Latest Release — v1.6.0 (2026-07-01)
+## 🆕 Latest Release — v1.7.0 (2026-07-02)
 
-- Implement custom Markdown help viewer with admonition support and caching.
-- Implement BML language support including tokenization, linting, and intellisense features.
+- Add comprehensive BML linting engine and unreachable code detection diagnostics.
+- Implement settings panel UI and core linting logic for CPQ integration.
+- Implement BML best-practice linting for function constraints and literal misuses.
+- Add Markdown documentation transformer and BML crawler scripts.
+- Reorganize BML documentation scripts into a sub-directory and add web crawler utilities.
+- Add bml_crawler and bml_intellisense scripts with html-to-markdown conversion tools and linting rules.
 
 See the full [CHANGELOG.md](CHANGELOG.md) for details.
 <!-- RELEASE:END -->

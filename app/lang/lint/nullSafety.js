@@ -36,6 +36,23 @@ function checkNullSafety(cleanText, noStringsText, doc) {
 
     if (nullableVars.size === 0) return diagnostics;
 
+    // Used to compile a fresh \bvarName\b RegExp and rescan the whole file
+    // once PER nullable variable (O(vars x file length) - on a large file
+    // with many bmql/get/dictget assignments, that's the full text re-walked
+    // many times). One single pass instead, recording every identifier
+    // occurrence's index by name; each variable below then just iterates its
+    // own precomputed occurrence list. Mirrors the same optimization already
+    // applied to variables.js's usage check.
+    const occurrencesByName = new Map();
+    const identRegex = /\b[a-zA-Z_]\w*\b/g;
+    let identMatch;
+    while ((identMatch = identRegex.exec(noStringsText)) !== null) {
+        const name = identMatch[0];
+        if (!nullableVars.has(name)) continue; // only tracking names we'll actually look up below
+        if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
+        occurrencesByName.get(name).push(identMatch.index);
+    }
+
     for (const varName of nullableVars) {
         // Build per-variable guard regex. Real CPQ library code guards
         // bmql/get/dictget results with len(x) comparisons just as often as
@@ -50,20 +67,15 @@ function checkNullSafety(cleanText, noStringsText, doc) {
             'i'
         );
 
-        // Regex to find any use of varName that is NOT on the LHS of an assignment
-        // and NOT inside a guard expression itself.
-        const useRegex = new RegExp(`\\b${varName}\\b`, 'g');
-
         // Patterns that indicate the current match is PART OF a guard expression
         const insideGuardRe = new RegExp(
             `(?:isnull|sizeofarray|len)\\s*\\([^)]*\\b${varName}\\b[^)]*\\)`,
             'i'
         );
 
+        const occurrences = occurrencesByName.get(varName) || [];
         let foundUnguarded = false;
-        while ((m = useRegex.exec(noStringsText)) !== null) {
-            const useIndex = m.index;
-
+        for (const useIndex of occurrences) {
             // Skip the actual assignment (followed by = and the nullable source call)
             const tail = noStringsText.slice(useIndex, useIndex + varName.length + 30);
             if (/^\w+\s*=\s*(?:bmql|get|dictget|jsonget)\s*\(/.test(tail)) continue;
