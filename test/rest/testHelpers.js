@@ -2,6 +2,8 @@
 // vscode/context as explicit parameters rather than require()-ing the real
 // vscode module, so they can be driven entirely with plain objects here.
 
+const path = require('path');
+
 class Range {
     constructor(startLine, startChar, endLine, endChar) {
         this.start = { line: startLine, character: startChar };
@@ -95,13 +97,20 @@ function createFakeContext(secretValues = {}) {
     const store = { ...secretValues };
     const workspaceStore = {};
     const globalStore = {};
+    const projectRoot = path.resolve(__dirname, '..', '..');
     let extensionUri;
     try {
         const vscode = require('vscode');
-        extensionUri = vscode.Uri.file(__dirname);
-    } catch (e) {}
+        extensionUri = vscode.Uri.file(projectRoot);
+    } catch (e) {
+        extensionUri = {
+            fsPath: projectRoot,
+            toString: () => 'file://' + projectRoot.replace(/\\/g, '/')
+        };
+    }
     return {
         extensionUri,
+        extensionPath: projectRoot,
         secrets: {
             get: async (key) => store[key],
             store: async (key, value) => {

@@ -127,9 +127,12 @@ function checkFunctionConstraints(cleanText, noStringsText, doc) {
 
     // dict("boolean") / dict("anytype") / dict("...[][]") declarations later
     // passed to values() - not supported by the values() function.
+    // Must scan cleanText (comments blanked, strings intact), not noStringsText -
+    // the latter blanks the quotes *and* the type-string content too, so
+    // dict("boolean") would otherwise be indistinguishable from dict().
     const unsupportedDictVars = new Set();
     const dictDeclRegex = /\b([a-zA-Z_]\w*)\s*=\s*dict\s*\(\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')\s*\)/g;
-    while ((match = dictDeclRegex.exec(noStringsText)) !== null) {
+    while ((match = dictDeclRegex.exec(cleanText)) !== null) {
         const typeArg = match[2].slice(1, -1).toLowerCase();
         const isTwoDimensional = /\[\]\[\]$/.test(typeArg);
         if (typeArg === 'boolean' || typeArg === 'anytype' || isTwoDimensional) {

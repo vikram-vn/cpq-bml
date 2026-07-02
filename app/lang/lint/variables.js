@@ -127,6 +127,10 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
                     vscode.DiagnosticSeverity.Information
                 );
                 diag.code = 'bml-unused-loop-var';
+                // Renders the variable faded out instead of underlined, matching
+                // how VS Code shows unused locals in other languages - dulled
+                // text reads as "safe to ignore/remove" rather than "fix this".
+                diag.tags = [vscode.DiagnosticTag.Unnecessary];
                 diagnostics.push(diag);
             } else {
                 const diag = new vscode.Diagnostic(
@@ -135,6 +139,7 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
                     vscode.DiagnosticSeverity.Warning
                 );
                 diag.code = 'bml-unused-variable';
+                diag.tags = [vscode.DiagnosticTag.Unnecessary];
                 diagnostics.push(diag);
             }
         }

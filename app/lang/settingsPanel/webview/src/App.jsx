@@ -1,50 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import Pill from './components/Pill';
-import {
-    IconConnection,
-    IconEnvironments,
-    IconOperations,
-    IconMcp,
-    IconAdvanced,
-    IconFeatures
-} from './components/Icons';
+import Sidebar from './components/Sidebar';
 import ConnectionTab from './tabs/ConnectionTab';
 import EnvironmentsTab from './tabs/EnvironmentsTab';
 import OperationsTab from './tabs/OperationsTab';
 import FeaturesTab from './tabs/FeaturesTab';
 import McpTab from './tabs/McpTab';
 import AdvancedTab from './tabs/AdvancedTab';
-
-const EMPTY_STATE = {
-    connection: {
-        siteUrl: '',
-        authMethod: 'basic',
-        username: '',
-        enabled: true
-    },
-    rest: {
-        pullFolder: 'library',
-        restVersion: 'v18',
-        commerceProcess: 'oraclecpqo',
-        commerceDocument: 'transaction'
-    },
-    features: {
-        lint: true,
-        comments: true,
-        spelling: true,
-        beautifier: true,
-        intellisense: true,
-        docHeader: true,
-        xslt: true,
-        metrics: true,
-        testing: true
-    },
-    mcp: { enable: false, port: 47821, logToTerminal: false },
-    debug: { logOutputToFile: false, logRestDetails: false },
-    environments: [],
-    hasPassword: false,
-    hasToken: false
-};
+import { EMPTY_STATE } from './constants';
 
 export default function App({ vscodeApi }) {
     const [state, setState] = useState(EMPTY_STATE);
@@ -173,78 +136,13 @@ export default function App({ vscodeApi }) {
 
     return (
         <div className="layout-container">
-            {/* Sidebar Navigation */}
-            <aside className="sidebar">
-                <div className="sidebar-header">
-                    <h1>CPQ-BML</h1>
-                    <p>Connection Settings Dashboard</p>
-                </div>
-
-                <nav className="sidebar-nav">
-                    <button
-                        className={`sidebar-item ${activeTab === 'connection' ? 'active' : ''}`}
-                        onClick={() => { setActiveTab('connection'); setError(null); }}
-                    >
-                        <IconConnection />
-                        Connection
-                    </button>
-                    <button
-                        className={`sidebar-item ${activeTab === 'environments' ? 'active' : ''}`}
-                        onClick={() => { setActiveTab('environments'); setError(null); }}
-                    >
-                        <IconEnvironments />
-                        Environments
-                    </button>
-                    <button
-                        className={`sidebar-item ${activeTab === 'operations' ? 'active' : ''}`}
-                        onClick={() => { setActiveTab('operations'); setError(null); }}
-                    >
-                        <IconOperations />
-                        REST Configuration
-                    </button>
-                    <button
-                        className={`sidebar-item ${activeTab === 'features' ? 'active' : ''}`}
-                        onClick={() => { setActiveTab('features'); setError(null); }}
-                    >
-                        <IconFeatures />
-                        Features
-                    </button>
-                    <button
-                        className={`sidebar-item ${activeTab === 'mcp' ? 'active' : ''}`}
-                        onClick={() => { setActiveTab('mcp'); setError(null); }}
-                    >
-                        <IconMcp />
-                        MCP Server (AI)
-                    </button>
-                    <button
-                        className={`sidebar-item ${activeTab === 'advanced' ? 'active' : ''}`}
-                        onClick={() => { setActiveTab('advanced'); setError(null); }}
-                    >
-                        <IconAdvanced />
-                        Diagnostics &amp; Logs
-                    </button>
-                </nav>
-
-                <div className="sidebar-footer">
-                    <div className="row between" style={{ fontSize: '0.78em', color: 'var(--vscode-descriptionForeground)', paddingBottom: '10px' }}>
-                        <span>Status</span>
-                        <div className="row" style={{ gap: '6px' }}>
-                            <span style={{
-                                width: '6px',
-                                height: '6px',
-                                borderRadius: '50%',
-                                backgroundColor: isSaving ? 'var(--vscode-textLink-foreground)' : 'var(--vscode-terminal-ansiGreen, #6dd17a)',
-                                boxShadow: isSaving ? 'none' : '0 0 6px var(--vscode-terminal-ansiGreen, #6dd17a)',
-                                display: 'inline-block'
-                            }} />
-                            <span>{isSaving ? 'Syncing...' : 'Saved'}</span>
-                        </div>
-                    </div>
-                    <button className="link" style={{ fontSize: '0.8em', width: '100%', textAlign: 'left', display: 'block', paddingTop: '8px', borderTop: '1px solid var(--vscode-widget-border, var(--vscode-panel-border))' }} onClick={() => vscodeApi.postMessage({ type: 'openNativeSettings' })}>
-                        Open settings.json
-                    </button>
-                </div>
-            </aside>
+            <Sidebar 
+                activeTab={activeTab} 
+                setActiveTab={setActiveTab} 
+                setError={setError} 
+                isSaving={isSaving} 
+                vscodeApi={vscodeApi} 
+            />
 
             <main className="content-area">
                 {error && (

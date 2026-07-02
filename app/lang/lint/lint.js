@@ -77,10 +77,10 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
         diagnostics.push(...checkConstantConditions(cleanText, conditionRanges, doc, vscode));
-        diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode));
 
-        // Shared parse so duplicateBranches and lonelyIf don't each re-parse the whole file.
+        // Shared parse so duplicateBranches, lonelyIf, and unreachable don't each re-parse the whole file.
         const conditionalChains = parseConditionalChains(cleanText);
+        diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode, conditionalChains));
         diagnostics.push(...checkDuplicateConditionBranches(conditionalChains, doc, vscode));
         diagnostics.push(...checkLonelyIf(cleanText, conditionalChains, doc, vscode));
 
