@@ -413,10 +413,10 @@
   "scripts": {
     "lint": "eslint .",
     "generate:intellisense": "python scripts/bml_intellisense/generate_intellisense.py",
-    "generate:help": "python scripts/bml_crawler/crawler.py",
-    "postprocess:help": "python scripts/bml_crawler/postprocess.py",
+    "generate:help": "python scripts/docs/bml_crawler/crawler.py",
+    "postprocess:help": "python scripts/docs/bml_crawler/postprocess.py",
     "release": "python scripts/release/release.py",
-    "docmd": "python scripts/docmd/transform.py",
+    "docmd": "python scripts/docs/docmd/transform.py",
     "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && npm run compile:webview",
     "compile:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",

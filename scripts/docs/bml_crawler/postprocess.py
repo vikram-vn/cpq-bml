@@ -217,7 +217,7 @@ if __name__ == "__main__":
     _package_parent = os.path.abspath(os.path.join(_script_dir, ".."))
     if _package_parent not in sys.path:
         sys.path.insert(0, _package_parent)
-    _bml_dir = os.path.abspath(os.path.join(_script_dir, "..", "..", "app", "knowledge", "BML"))
+    _bml_dir = os.path.abspath(os.path.join(_script_dir, "..", "..", "..", "app", "knowledge", "BML"))
     if not os.path.isdir(_bml_dir):
         print(f"ERROR: BML docs directory not found: {_bml_dir}")
         sys.exit(1)

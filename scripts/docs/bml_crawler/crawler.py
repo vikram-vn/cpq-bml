@@ -26,9 +26,9 @@ class BmlDocCrawler:
         if output_dir:
             self.output_dir = output_dir
         else:
-            # Resolve to app/knowledge/ relative to this file's folder (scripts/bml_crawler/)
+            # Resolve to app/knowledge/ relative to this file's folder (scripts/docs/bml_crawler/)
             script_dir = os.path.dirname(os.path.abspath(__file__))
-            self.output_dir = os.path.abspath(os.path.join(script_dir, "..", "..", "app", "knowledge"))
+            self.output_dir = os.path.abspath(os.path.join(script_dir, "..", "..", "..", "app", "knowledge"))
             
         self.images_dir = os.path.join(self.output_dir, "BML", "images")
 

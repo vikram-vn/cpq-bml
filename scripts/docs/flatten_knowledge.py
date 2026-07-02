@@ -32,7 +32,8 @@ def rewrite_content(content):
     return new_content
 
 def main():
-    root_dir = r"c:\Users\Vikram-N\Downloads\cpq-bml"
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.abspath(os.path.join(script_dir, "..", ".."))
     bml_dir = os.path.join(root_dir, "app", "knowledge", "BML")
     
     # 1. Traverse all .md files recursively
