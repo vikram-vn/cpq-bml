@@ -1,7 +1,7 @@
 """
 transform.py - General-purpose Markdown -> Docusaurus-quality Markdown transformer.
 
-Unlike app/scripts/bml_crawler/html2docmd (which converts *HTML* pages into
+Unlike scripts/bml_crawler/html2docmd (which converts *HTML* pages into
 Markdown for the Oracle BML crawler), this tool takes *Markdown that already
 exists* anywhere in the repo and upgrades it in place:
 
@@ -23,7 +23,7 @@ exists* anywhere in the repo and upgrades it in place:
      whitespace, ensures a single trailing newline.
 
 Usage:
-    python app/scripts/docmd/transform.py <file-or-dir> [<file-or-dir> ...] [options]
+    python scripts/docmd/transform.py <file-or-dir> [<file-or-dir> ...] [options]
 
     --in-place        Overwrite the source file(s).
     --out DIR         Write transformed output into DIR instead (mirrors

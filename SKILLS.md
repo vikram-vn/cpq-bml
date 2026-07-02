@@ -301,10 +301,10 @@ createBmlFunction, changeEnvironment}`, `cpqBml.mcp.showInfo`,
   `functionReturnTypes.json`, `lookups.json`, `operators.json`) - dev-only,
   `app/lookups/**` is excluded from packaging in `.vscodeignore`. **Nothing
   under `app/lang/` ever reads `app/lookups/` directly at runtime** - it is
-  read only by the generator scripts under `app/scripts/`
-  (`generateBmlFunctions.js`, `generateBmlVariables.js`,
-  `generateBmlAttributes.js`, `generateBmlUtilAttributes.js`,
-  `generateBmlDataTypes.js`, run together via `node app/scripts/index.js`),
+  read only by the generator scripts under `scripts/`
+  (`functions.py`, `variables.py`, `attributes.py`,
+  `util_attributes.py`, `data_types.py`, run together via
+  `python scripts/bml_intellisense/generate_intellisense.py`),
   which transform it into `app/lang/intellisense/*.json` - those already
   ship in the VSIX (`.vscodeignore` only excludes `app/lang/intellisense/
   *.js`, not its JSON) and are what both the intellisense hover/completion

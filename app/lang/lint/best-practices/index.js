@@ -5,6 +5,8 @@ const { checkCommercePractices } = require('./commercePractices');
 const { checkDataSafety } = require('./dataSafety');
 const { checkSecurity } = require('./security');
 const { checkSyntaxRules } = require('./syntaxRules');
+const { checkSelfReference } = require('./selfReference');
+const { checkLiteralMisuse } = require('./literalMisuse');
 
 /**
  * Runs every best-practice sub-check and combines their diagnostics.
@@ -20,6 +22,8 @@ function checkBestPractices(cleanText, noStringsText, doc) {
         ...checkDataSafety(cleanText, noStringsText, doc),
         ...checkSecurity(cleanText, noStringsText, doc),
         ...checkSyntaxRules(cleanText, noStringsText, doc),
+        ...checkSelfReference(cleanText, noStringsText, doc),
+        ...checkLiteralMisuse(cleanText, noStringsText, doc),
     ];
 }
 

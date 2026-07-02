@@ -37,7 +37,7 @@ edits these files, builds the .vsix, and prints the suggested git commands
 to run next.
 
 Usage:
-    python app/scripts/release/release.py [version] [--dry-run] [--skip-build]
+    python scripts/release/release.py [version] [--dry-run] [--skip-build]
 
     version       Optional explicit version, e.g. "1.5.0". If omitted, the
                   bump type is auto-detected from commit prefixes.
@@ -54,7 +54,7 @@ import subprocess
 import sys
 from datetime import date
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PACKAGE_JSON = os.path.join(ROOT, "package.json")
 CHANGELOG = os.path.join(ROOT, "CHANGELOG.md")
 README = os.path.join(ROOT, "README.md")

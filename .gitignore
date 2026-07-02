@@ -1,4 +1,12 @@
 node_modules
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+scratch/
 .vscode-test/
 dist/
 *.vsix

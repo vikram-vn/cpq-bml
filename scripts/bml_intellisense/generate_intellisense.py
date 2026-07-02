@@ -15,8 +15,8 @@ from bml_intellisense.data_types import generate_bml_data_types
 
 def main():
     start_time = time.time()
-    # Project root is three levels up from app/scripts/bml_intellisense/generate_intellisense.py
-    root_dir = os.path.abspath(os.path.join(script_dir, "..", "..", ".."))
+    # Project root is two levels up from scripts/bml_intellisense/generate_intellisense.py
+    root_dir = os.path.abspath(os.path.join(script_dir, "..", ".."))
     
     failed = 0
     generators = [
