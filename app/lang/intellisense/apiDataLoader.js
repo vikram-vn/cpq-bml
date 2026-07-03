@@ -7,6 +7,17 @@ const zlib = require("zlib");
 const _cache = Object.create(null);
 
 /**
+ * Drops all cached parsed JSON so the next loadJson() call re-reads from disk.
+ * Used by index.js's file watcher after `yarn generate:intellisense` rewrites
+ * these files while the extension host is running.
+ */
+function invalidateCache() {
+    for (const key of Object.keys(_cache)) {
+        delete _cache[key];
+    }
+}
+
+/**
  * Loads a brotli-compressed intellisense JSON file (.json.br), falling back
  * to the uncompressed .json when the .br is absent (e.g. unit-test runs that
  * skip the build step). Results are cached by filename for the lifetime of
@@ -96,6 +107,7 @@ function loadFunctionReturnTypesJson(extPath) {
 
 module.exports = {
     loadJson,
+    invalidateCache,
     loadBuiltInFunctionsJson,
     loadBuiltInAttributesJson,
     loadCpqJsApiJson,

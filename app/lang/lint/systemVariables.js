@@ -1,30 +1,17 @@
-const fs = require("fs");
-const path = require("path");
 const { levenshtein } = require("./levenshtein");
+const { loadJson } = require("../intellisense/apiDataLoader");
 
 let systemVariables = null; // Map<lowercaseName, canonicalName>
 
-// extensionPath anchors the path correctly once bundled by esbuild, where __dirname resolves to dist/.
 function loadSystemVariables(extensionPath) {
   if (systemVariables) return systemVariables;
   systemVariables = new Map();
   try {
-    const filePath = extensionPath
-      ? path.join(
-          extensionPath,
-          "app",
-          "lang",
-          "intellisense",
-          "bml_variables_api_usage.json",
-        )
-      : path.resolve(__dirname, "../intellisense/bml_variables_api_usage.json");
-    if (fs.existsSync(filePath)) {
-      const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-      if (data) {
-        Object.keys(data).forEach((lookupCode) => {
-          systemVariables.set(lookupCode.toLowerCase(), lookupCode);
-        });
-      }
+    const data = loadJson("bml_variables_api_usage", extensionPath);
+    if (data) {
+      Object.keys(data).forEach((lookupCode) => {
+        systemVariables.set(lookupCode.toLowerCase(), lookupCode);
+      });
     }
   } catch (e) {
     // Fallback to empty map if the file can't be loaded

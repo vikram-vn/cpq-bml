@@ -10,18 +10,19 @@ const {
 const { openHelpTopic } = require('./helpViewer');
 const { formatAsJsDoc } = require('./docFormatting');
 const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
+const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
 
 // Each source file holds a different kind of entry. Tracking that here gives
 // accurate completion icons/hover labels - "does this syntax contain '(' "
 // is not reliable: custom_snippets.json bodies contain calls like print(...)
 // even though the entry itself is a snippet, not a function.
 const API_FILES = [
-    { fileName: 'bml_attributes_api_usage.json', category: 'attribute' },
-    { fileName: 'bml_util_attributes_api_usage.json', category: 'attribute' },
-    { fileName: 'bml_variables_api_usage.json', category: 'variable' },
-    { fileName: 'bml_functions_api_usage.json', category: 'function' },
-    { fileName: 'bml_cpq_js_api_usage.json', category: 'function' },
-    { fileName: 'custom_snippets.json', category: 'snippet' }
+    { baseName: 'bml_attributes_api_usage', category: 'attribute' },
+    { baseName: 'bml_util_attributes_api_usage', category: 'attribute' },
+    { baseName: 'bml_variables_api_usage', category: 'variable' },
+    { baseName: 'bml_functions_api_usage', category: 'function' },
+    { baseName: 'bml_cpq_js_api_usage', category: 'function' },
+    { baseName: 'custom_snippets', category: 'snippet' }
 ];
 
 let bmlApiData = {};
@@ -46,15 +47,14 @@ function loadApiData(context) {
     }
 
     bmlApiData = {};
-    API_FILES.forEach(({ fileName, category }) => {
-        const apiFilePath = path.join(context.extensionPath, 'app', 'lang', 'intellisense', fileName);
+    API_FILES.forEach(({ baseName, category }) => {
         try {
-            const fileData = JSON.parse(fs.readFileSync(apiFilePath, 'utf8'));
+            const fileData = loadJson(baseName, context.extensionPath);
             Object.entries(fileData).forEach(([key, val]) => {
                 bmlApiData[key.toLowerCase()] = { ...val, category, name: key };
             });
         } catch (err) {
-            console.error(`Failed to load ${fileName}:`, err.message);
+            console.error(`Failed to load ${baseName}.json:`, err.message);
         }
     });
 
@@ -73,6 +73,7 @@ function loadApiData(context) {
  */
 function invalidateApiData() {
     apiDataLoaded = false;
+    invalidateJsonCache();
 }
 
 /**
@@ -168,9 +169,11 @@ function registerBmlIntelliSense(context) {
 
     // The API JSON files are static bundled resources; only reload them if
     // they actually change on disk (e.g. a maintainer re-running the
-    // generator scripts), instead of re-reading/re-parsing on every request.
+    // generator scripts, or `npm run compile` regenerating the .json.br
+    // files loadJson() prefers), instead of re-reading/re-parsing on every
+    // request.
     const apiFilesWatcher = vscode.workspace.createFileSystemWatcher(
-        path.join(context.extensionPath, 'app', 'lang', 'intellisense', '*.json')
+        path.join(context.extensionPath, 'app', 'lang', 'intellisense', '*.json*')
     );
     apiFilesWatcher.onDidChange(invalidateApiData);
     apiFilesWatcher.onDidCreate(invalidateApiData);

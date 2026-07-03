@@ -108,6 +108,51 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
         assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
     });
 
+    test('Does not flag CPQ attribute abbreviations found in app/lookups (css, uom, esig, pline, puid)', () => {
+        // Regression test: found by cross-referencing every identifier in
+        // app/lookups/**/*.json (901 unique names: BML system/commerce variables
+        // and configuration attributes) against the combined dictionary via
+        // spelling.js's real splitIdentifier/checkWord logic. e.g. "uom" comes
+        // from _covered_item_uom/_part_default_uom, "esig"/"esignature" from the
+        // eSignature attribute set, "pline" from _bm_pline_name, "puid" from
+        // _s_prevSubscriptionProductPuid_l, "css" from _part_css_enabled.
+        const diagnostics = lintText(`
+            partCssEnabled = _part_css_enabled;
+            itemUom = _covered_item_uom;
+            esigDate = _transaction_eSignatureAttributeSet_esig_date_modified;
+            eSigEnabled = _transaction_s_isEsignatureEnabled_t;
+            plineName = _bm_pline_name;
+            productPuid = _s_prevSubscriptionProductPuid_l;
+            return "";
+        `);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
+    });
+
+    test('Does not flag built-in BML function names called in their canonical all-lowercase form', () => {
+        // Regression test: these are real function names from
+        // app/lang/intellisense/bml_functions_api_usage.json. Called in
+        // all-lowercase (BML's canonical call form), splitIdentifier finds no
+        // camelCase/underscore boundaries, so the whole compound name must be
+        // an exact dictionary entry - it was missing from bml-words.txt.
+        const diagnostics = lintText(`
+            a = calculateconfiguration();
+            b = configureabo();
+            c = getarrayattrstring();
+            d = getcoveragesupportdict();
+            e = getsystemattrvalues();
+            f = getsystemdata();
+            g = getsystemmultipleattrvalues();
+            h = jsonarrayrefid();
+            i = jsonarrayremove();
+            j = saveconfigbom();
+            k = setattributevalue();
+            return "";
+        `);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
+    });
+
     test('Flags a genuine typo even when it appears inside a camelCase run in a comment', () => {
         // The docHeader camelCase-splitting fix must not become a loophole
         // that hides real typos buried inside a compound identifier mention.

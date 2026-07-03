@@ -1,25 +1,19 @@
 const fs = require('fs');
-const path = require('path');
+const { loadJson } = require('../intellisense/apiDataLoader');
 
 let returnTypeLabels = null;
 let paramTypeLabels = null;
 
 // Param and return type codes use different numbering (e.g. param Boolean = 0,
 // return Boolean = 4), so they're loaded and cached separately.
-// extensionPath anchors the path correctly once bundled by esbuild, where __dirname resolves to dist/.
-function loadLookupLabels(fileName, extensionPath) {
+function loadLookupLabels(baseName, extensionPath) {
     const map = new Map();
     try {
-        const filePath = extensionPath
-            ? path.join(extensionPath, 'app', 'lang', 'intellisense', fileName)
-            : path.resolve(__dirname, '../intellisense', fileName);
-        if (fs.existsSync(filePath)) {
-            const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-            if (data) {
-                Object.keys(data).forEach((lookupCode) => {
-                    map.set(Number(lookupCode), data[lookupCode]);
-                });
-            }
+        const data = loadJson(baseName, extensionPath);
+        if (data) {
+            Object.keys(data).forEach((lookupCode) => {
+                map.set(Number(lookupCode), data[lookupCode]);
+            });
         }
     } catch (e) {
         // fail soft to an empty map
@@ -28,12 +22,12 @@ function loadLookupLabels(fileName, extensionPath) {
 }
 
 function getReturnTypeLabels(extensionPath) {
-    if (!returnTypeLabels) returnTypeLabels = loadLookupLabels('functionReturnTypes.json', extensionPath);
+    if (!returnTypeLabels) returnTypeLabels = loadLookupLabels('functionReturnTypes', extensionPath);
     return returnTypeLabels;
 }
 
 function getParamTypeLabels(extensionPath) {
-    if (!paramTypeLabels) paramTypeLabels = loadLookupLabels('functionParamDataTypes.json', extensionPath);
+    if (!paramTypeLabels) paramTypeLabels = loadLookupLabels('functionParamDataTypes', extensionPath);
     return paramTypeLabels;
 }
 
