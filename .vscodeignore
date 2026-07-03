@@ -11,6 +11,7 @@ yarn.lock
 package-lock.json
 vsc-extension-quickstart.md
 **/jsconfig.json
+jsconfig.json
 **/*.map
 **/eslint.config.mjs
 **/.vscode-test.*
@@ -18,32 +19,39 @@ vsc-extension-quickstart.md
 .github
 bml
 SKILLS.md
+requirements.txt
+scratch/**
+
+# Ignore root JavaScript source file (bundled into dist/extension.js)
+extension.js
 
 # Ignore raw source folders that are compiled into dist/extension.js
 app/lang/beautify/**
 app/lang/lint/**
 app/lang/rest/**
-
-# Ignore spell check JS
-app/lang/spellCheck/*.js
-
-# english-words.txt ships brotli-compressed (english-words.txt.br, decompressed at
-# runtime by spelling.js); the plain .txt is kept only for dev/regeneration.
-app/lang/spellCheck/english-words.txt
-
-#Ignore BML Better Comments extension
 app/lang/comments/**
-
-# Ignore MCP JavaScript source files
 app/lang/mcp/*.js
 app/lang/mcp/tools/*.js
-
-# Ignore root JavaScript source files
-extension.js
 app/lang/intellisense/*.js
 app/lang/settingsPanel/*.js
 app/lang/settingsPanel/webview/src/**
+app/lang/xslt/**
+app/lang/metrics/**
+app/lang/testing/**
+
+# Ignore spell check JS source and uncompressed dictionary
+# (runtime loads english-words.txt.br instead)
+app/lang/spellCheck/*.js
+app/lang/spellCheck/english-words.txt
+
+# Intellisense JSON: ship only the brotli-compressed .json.br variants
+# (apiDataLoader.js decompresses at runtime via Node's built-in zlib)
+app/lang/intellisense/*.json
 
 # Exclude lookups and scripts that are only used in development
 app/lookups/**
 scripts/**
+
+# Knowledge markdown: ship only the brotli-compressed .md.br variants
+# (helpViewer.js decompresses at runtime via Node's built-in zlib)
+app/knowledge/**/*.md

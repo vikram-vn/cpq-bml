@@ -32,8 +32,6 @@ function registerMcp(context) {
         if (!e.affectsConfiguration('cpqBml.mcp')) return;
         const status = getMcpServerStatus();
         const { enable, port } = getSettings();
-        console.log("MCP CONFIG CHANGE:", { enable, port, running: status.running });
-        
         if (!enable) {
             if (status.running) {
                 stopMcpServer();

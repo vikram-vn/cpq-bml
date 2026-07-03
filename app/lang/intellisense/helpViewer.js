@@ -15,6 +15,7 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const MarkdownIt = require("markdown-it");
 const container = require("markdown-it-container");
 const { getNonce, buildCsp } = require("../settingsPanel/html");
@@ -104,14 +105,27 @@ function extractTitle(markdownBody, fallback) {
 }
 
 function renderFile(filePath, webview) {
-    const stat = fs.statSync(filePath);
-    const cached = renderCache.get(filePath);
-    if (cached && cached.mtimeMs === stat.mtimeMs) {
-        return cached;
+    // Prefer a brotli-compressed sibling (.md.br) shipped in the .vsix;
+    // fall back to the raw .md present in dev/test environments.
+    const brPath = `${filePath}.br`;
+    const hasBr  = fs.existsSync(brPath);
+
+    if (!hasBr) {
+        // Dev path: use mtime to invalidate the render cache on file saves.
+        const stat = fs.statSync(filePath);
+        const cached = renderCache.get(filePath);
+        if (cached && cached.mtimeMs === stat.mtimeMs) return cached;
+    } else {
+        // Package path: .md.br is an immutable build artifact — cache forever.
+        const cached = renderCache.get(filePath);
+        if (cached) return cached;
     }
 
-    const raw = fs.readFileSync(filePath, "utf8");
-    const body = raw.replace(FRONTMATTER_RE, "");
+    const raw = hasBr
+        ? zlib.brotliDecompressSync(fs.readFileSync(brPath)).toString("utf8")
+        : fs.readFileSync(filePath, "utf8");
+
+    const body  = raw.replace(FRONTMATTER_RE, "");
     const title = extractTitle(body, path.basename(filePath, ".md"));
 
     const resolveImageUri = (src) => {
@@ -127,7 +141,8 @@ function renderFile(filePath, webview) {
     const renderer = getMarkdownRenderer();
     const html = renderer.render(body, { usedSlugs: new Map(), resolveImageUri });
 
-    const result = { mtimeMs: stat.mtimeMs, html, title };
+    const mtimeMs = hasBr ? undefined : fs.statSync(filePath).mtimeMs;
+    const result  = { mtimeMs, html, title };
     renderCache.set(filePath, result);
     return result;
 }

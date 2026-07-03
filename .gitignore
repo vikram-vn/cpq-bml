@@ -17,3 +17,5 @@ dist/
 package-lock.json
 app/lang/settingsPanel/webview/dist/
 app/lang/spellCheck/english-words.txt.br
+app/lang/intellisense/*.json.br
+app/knowledge/**/*.md.br

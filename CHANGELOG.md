@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.12.0] - 2026-07-03
+
+### Added
+- Implement BML spellchecker with custom user dictionary and diagnostic support.
+- Implement modular BML language linting architecture and comprehensive validation tests.
+
 ## [1.11.0] - 2026-07-02
 
 ### Added
@@ -146,15 +152,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Suppression directives placed inside `/* block comments */` that span a single line now map to the correct source line number; previously the line was computed from the start of the comment rather than the position of the directive match within it.
 - A targeted `bml-lint-disable-line bml-some-other-code` comment no longer suppresses diagnostics with a different code (regression introduced when the fallback detection loop was added).
-
-## [1.3.8]
-
-### Added
-
-- **Built-in function argument type checking**: flags a call argument whose literal type (string/integer/float/boolean/typed-array/constructor) doesn't match the corresponding parameter's declared type in a built-in function's signature (e.g. `atoi(5)` instead of `atoi("5")`). Conservative by design - only checks arguments whose type is unambiguous from the literal text itself (variables and general expressions are never flagged), and allows passing an Integer literal where a Float parameter is expected.
-- **"Did you mean" suggestions for unknown function calls**: an unrecognized bare function call now suggests the closest real built-in name when it's a near-exact typo (e.g. `atfo("5.0")` suggests `atof`), with a matching Quick Fix to apply it.
-
-### Fixed
-
-- **Built-in function argument-count accuracy**: rewrote the functionSignature parser (`app/lang/lint/functionSignature.js`) to correctly handle Oracle's "cascading" nested-optional parameter notation (e.g. `datetostr(Date date [, String dateFormat [, String timeZone]]))`), which the previous naive comma-split parser mis-classified - sometimes under-counting required parameters (so a genuinely-missing required argument went unflagged), sometimes over-counting them. Signatures using a non-standard polymorphic "Type(or Type2, Type3)" union notation (`max`, `min`, `put`, `get`, ...) or describing a truly variadic function (`sbappend`) are now detected and excluded from count/type validation entirely, rather than being checked against a guessed (and wrong) shape.
-- Function-call diagnostics (`bml-unknown-function`, `bml-function-arg-count`, `bml-function-not-found-workspace`) now carry a `code`, so lint-suppression directives and downstream tooling can target them individually.

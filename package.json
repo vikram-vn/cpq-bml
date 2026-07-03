@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "icon": "app/images/logo.png",
   "license": "MIT",
   "repository": {
@@ -38,6 +38,19 @@
           "dark": "./app/images/bml.png",
           "light": "./app/images/bml.png"
         }
+      },
+      {
+        "id": "xsl",
+        "aliases": [
+          "XSLT",
+          "xsl",
+          "xslt"
+        ],
+        "extensions": [
+          ".xsl",
+          ".xslt"
+        ],
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
@@ -45,6 +58,11 @@
         "language": "bml",
         "scopeName": "source.bml",
         "path": "./app/lang/syntaxes/bml.tmLanguage.json"
+      },
+      {
+        "language": "xsl",
+        "scopeName": "source.xsl",
+        "path": "./app/lang/syntaxes/xslt.tmLanguage.json"
       }
     ],
     "themes": [
@@ -419,23 +437,13 @@
     }
   },
   "scripts": {
-    "lint": "eslint .",
-    "generate:intellisense": "python scripts/bml_intellisense/generate_intellisense.py",
-    "generate:help": "python scripts/docs/bml_crawler/crawler.py",
-    "postprocess:help": "python scripts/docs/bml_crawler/postprocess.py",
-    "release": "python scripts/release/release.py && npx @vscode/vsce package",
-    "docmd": "python scripts/docs/docmd/transform.py",
-    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && npm run compile:webview && npm run compress:dictionary",
-    "compile:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic",
-    "compress:dictionary": "node scripts/build/compressDictionary.js",
+    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
-    "watch:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --watch",
-    "minify": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && npm run minify:webview && npm run compress:dictionary",
-    "minify:webview": "esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\"",
-    "vscode:prepublish": "npm run minify",
+    "vscode:prepublish": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py",
     "package": "npx @vscode/vsce package",
     "publish": "npx @vscode/vsce publish",
     "build": "npm run package",
+    "release": "python scripts/release/release.py",
     "pretest": "npm run compile",
     "test": "vscode-test"
   },
@@ -446,7 +454,6 @@
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^3.0.0",
     "esbuild": "^0.28.1",
-    "sharp": "^0.35.3",
     "vscode-oniguruma": "^2.0.1",
     "vscode-textmate": "^9.3.2"
   },
