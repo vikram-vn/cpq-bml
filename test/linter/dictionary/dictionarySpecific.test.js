@@ -63,4 +63,50 @@ suite("BML Linter Test Suite - Dictionary specific tests", () => {
       assert.strictEqual(err, undefined);
     });
   });
+
+  suite("Other Dictionary functions - dict, containskey, get, keys, values", () => {
+    test("dict(type) - correct 1 argument → no error", () => {
+      const diagnostics = lintText('x = dict("string"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("dict() - missing argument → bml-dict-missing-type", () => {
+      const diagnostics = lintText('x = dict(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-dict-missing-type");
+      assert.ok(err);
+    });
+
+    test("dict(type) - invalid type argument → bml-dict-invalid-type", () => {
+      const diagnostics = lintText('x = dict("invalid_type"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-dict-invalid-type");
+      assert.ok(err);
+    });
+
+    test("containskey(dict, key) - correct 2 arguments → no error", () => {
+      const diagnostics = lintText('d = dict("string"); x = containskey(d, "key"); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("containskey(dict, key) - type mismatch for dict (expected Dictionary) → Warning", () => {
+      const diagnostics = lintText('x = containskey("not_a_dict", "key"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+
+    test("get(dict, key) - correct 2 arguments → no error", () => {
+      const diagnostics = lintText('d = dict("string"); x = get(d, "key"); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("get(dict, key, type) - correct 3 arguments → no error", () => {
+      const diagnostics = lintText('d = dict("string"); x = get(d, "key", "string"); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("keys(dict) / values(dict) - correct 1 argument → no error", () => {
+      const diagnostics = lintText('d = dict("string"); k = keys(d); v = values(d); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+  });
 });

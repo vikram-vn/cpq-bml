@@ -260,4 +260,154 @@ suite("BML Linter Test Suite - Array specific tests", () => {
       assert.strictEqual(err, undefined);
     });
   });
+
+  suite("isempty() - requires exactly 1 argument (array)", () => {
+    test("isempty() - zero args → Error", () => {
+      const diagnostics = lintText('x = isempty(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("isempty(arr) - correct 1 arg → no error", () => {
+      const diagnostics = lintText('arr = string[]{"a"}; x = isempty(arr); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("isempty(arr, extra) - 2 args → Error", () => {
+      const diagnostics = lintText('arr = string[]{"a"}; x = isempty(arr, "extra"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("isempty(not_an_array) - type mismatch → Warning", () => {
+      const diagnostics = lintText('x = isempty("string"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+  });
+
+  suite("max() / min() - require exactly 1 array argument", () => {
+    test("max() - zero args → Error", () => {
+      const diagnostics = lintText('x = max(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("max(arr) - correct 1 arg → no error", () => {
+      const diagnostics = lintText('arr = integer[]{1, 2}; x = max(arr); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("max(not_an_array) - type mismatch → Warning", () => {
+      const diagnostics = lintText('x = max("string"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+  });
+
+  suite("range() - requires exactly 1 Integer argument", () => {
+    test("range() - zero args → Error", () => {
+      const diagnostics = lintText('x = range(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("range(5) - correct 1 arg → no error", () => {
+      const diagnostics = lintText('x = range(5); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("range('abc') - type mismatch → Warning", () => {
+      const diagnostics = lintText('x = range("abc"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+  });
+
+  suite("reverse() - requires exactly 1 array argument", () => {
+    test("reverse() - zero args → Error", () => {
+      const diagnostics = lintText('x = reverse(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("reverse(arr) - correct 1 arg → no error", () => {
+      const diagnostics = lintText('arr = string[]{"a"}; x = reverse(arr); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("reverse('abc') - type mismatch → Warning", () => {
+      const diagnostics = lintText('x = reverse("abc"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+  });
+
+  suite("sort() - requires 1 to 3 arguments (array[, order[, type]])", () => {
+    test("sort() - zero args → Error", () => {
+      const diagnostics = lintText('x = sort(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("sort(arr) - 1 arg → no error", () => {
+      const diagnostics = lintText('arr = string[]{"a"}; x = sort(arr); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("sort(arr, 'asc') - 2 args → no error", () => {
+      const diagnostics = lintText('arr = string[]{"a"}; x = sort(arr, "asc"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("sort(arr, 'asc', 'string') - 3 args → no error", () => {
+      const diagnostics = lintText('arr = string[]{"a"}; x = sort(arr, "asc", "string"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("sort(arr, 'asc', 'string', extra) - 4 args → Error", () => {
+      const diagnostics = lintText('arr = string[]{"a"}; x = sort(arr, "asc", "string", "extra"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+  });
+
+  suite("bytearray() - requires 1 or 2 arguments (content[, charset])", () => {
+    test("bytearray(content) - 1 arg → no error", () => {
+      const diagnostics = lintText('x = bytearray("content"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("bytearray(content, charset) - 2 args → no error", () => {
+      const diagnostics = lintText('x = bytearray("content", "UTF-8"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+    });
+
+    test("bytearray() - 0 args → Error", () => {
+      const diagnostics = lintText('x = bytearray(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("bytearray(c, cs, extra) - 3 args → Error", () => {
+      const diagnostics = lintText('x = bytearray("c", "cs", "extra"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err);
+    });
+
+    test("bytearray(123) - type mismatch → Warning", () => {
+      const diagnostics = lintText('x = bytearray(123); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+  });
 });

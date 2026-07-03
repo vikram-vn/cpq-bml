@@ -128,4 +128,72 @@ suite("BML Linter Test Suite - BMQL specific tests", () => {
             assert.ok(diag, 'Should flag SELECT Name $Where FROM data_table as unbounded select');
         });
     });
+
+    suite("Direct DB Access Functions - gettabledata, getpartsdata, etc.", () => {
+        test("gettabledata() - triggers deprecation warning → bml-gettabledata-fix", () => {
+            const diagnostics = lintText('x = gettabledata("my_table", string[1]); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-gettabledata-fix");
+            assert.ok(err);
+        });
+
+        test("getpartsdata() - triggers deprecation warning → bml-getpartsdata-fix", () => {
+            const diagnostics = lintText('x = getpartsdata(string[1], string[1], "USD"); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-getpartsdata-fix");
+            assert.ok(err);
+        });
+
+        test("haserror() / getmessage() - require exactly 1 argument", () => {
+            const diagnostics = lintText('x = haserror(); y = getmessage(); return "";');
+            const errs = diagnostics.filter((d) => d.code === "bml-function-arg-count");
+            assert.strictEqual(errs.length, 2);
+        });
+
+        test("getint(record, field) - correct 2 arguments → no error", () => {
+            const diagnostics = lintText('rec = record(); x = getint(rec, "field"); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+            assert.strictEqual(err, undefined);
+        });
+
+        test("getint(record, field) - type mismatch for fieldName (expected String) → Warning", () => {
+            const diagnostics = lintText('rec = record(); x = getint(rec, 123); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+            assert.ok(err);
+        });
+
+        test("recordset() - zero arguments → no error", () => {
+            const diagnostics = lintText('x = recordset(); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+            assert.strictEqual(err, undefined);
+        });
+
+        test("recordset(123) - 1 argument → Error", () => {
+            const diagnostics = lintText('x = recordset(123); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+            assert.ok(err);
+        });
+
+        test("bmql() - zero arguments → Error", () => {
+            const diagnostics = lintText('x = bmql(); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+            assert.ok(err);
+        });
+
+        test("bmql(q, c, f, extra) - 4 arguments → Error", () => {
+            const diagnostics = lintText('x = bmql("q", dict("string"), dict("string"), "extra"); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+            assert.ok(err);
+        });
+
+        test("bmql(123) - type mismatch → Warning", () => {
+            const diagnostics = lintText('x = bmql(123); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+            assert.ok(err);
+        });
+
+        test("gettransaction() - valid 1 to 3 arguments → no error", () => {
+            const diagnostics = lintText('x = gettransaction(12345); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+            assert.strictEqual(err, undefined);
+        });
+    });
 });

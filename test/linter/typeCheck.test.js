@@ -167,4 +167,61 @@ suite('BML Linter Test Suite - variable type consistency', () => {
         // Unrecognized constructor name returns null
         assert.strictEqual(inferLiteralType('nonexistentctor()'), null);
     });
+
+    suite('Generalized Binary and Comparison Type Checking', () => {
+        test('Flags combining Boolean and String with +', () => {
+            const diagnostics = lintText(`
+                x = true + "1";
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag Boolean + String');
+        });
+
+        test('Flags combining Integer and Boolean with +', () => {
+            const diagnostics = lintText(`
+                x = 1 + true;
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag Integer + Boolean');
+        });
+
+        test('Flags comparison of String and Integer with ==', () => {
+            const diagnostics = lintText(`
+                x = "hello" == 123;
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag String == Integer');
+        });
+
+        test('Flags comparison of String and Integer with <', () => {
+            const diagnostics = lintText(`
+                x = "hello" < 123;
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag String < Integer');
+        });
+
+        test('Does not flag comparison with null', () => {
+            const diagnostics = lintText(`
+                x = "hello" == null;
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.strictEqual(diag, undefined, 'Should not flag String == null');
+        });
+
+        test('Does not flag standard string and numeric comparison operations', () => {
+            const diagnostics = lintText(`
+                x = 10 <= 20;
+                y = "a" >= "b";
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.strictEqual(diag, undefined, 'Should not flag valid comparisons');
+        });
+    });
 });

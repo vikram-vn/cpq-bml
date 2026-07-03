@@ -95,4 +95,61 @@ suite("BML Linter Test Suite - JSON specific tests", () => {
             assert.ok(diagnostics2.find(d => d.code === 'bml-function-arg-type'));
         });
     });
+
+    suite("Other JSON functions - json, jsonkeys, jsonpathset, etc.", () => {
+        test("json() / jsonarray() - correct 0 or 1 argument → no error", () => {
+            const diagnostics1 = lintText('x = json(); y = jsonarray(); return "";');
+            const diagnostics2 = lintText('x = json("{}"); y = jsonarray("[]"); return "";');
+            assert.strictEqual(diagnostics1.find((d) => d.code === "bml-function-arg-count"), undefined);
+            assert.strictEqual(diagnostics2.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+
+        test("json(invalid) - too many arguments or type mismatch", () => {
+            const dCount = lintText('x = json("a", "b"); return "";');
+            const dType = lintText('x = json(123); return "";');
+            assert.ok(dCount.find((d) => d.code === "bml-function-arg-count"));
+            assert.ok(dType.find((d) => d.code === "bml-function-arg-type"));
+        });
+
+        test("jsonarray(invalid) - too many arguments or type mismatch", () => {
+            const dCount = lintText('x = jsonarray("a", "b"); return "";');
+            const dType = lintText('x = jsonarray(123); return "";');
+            assert.ok(dCount.find((d) => d.code === "bml-function-arg-count"));
+            assert.ok(dType.find((d) => d.code === "bml-function-arg-type"));
+        });
+
+        test("jsonnull(invalid) - arguments passed", () => {
+            const diagnostics = lintText('x = jsonnull(1); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+            assert.ok(err);
+        });
+
+        test("jsonkeys(obj) - correct 1 or 2 arguments → no error", () => {
+            const diagnostics1 = lintText('obj = json(); x = jsonkeys(obj); return "";');
+            const diagnostics2 = lintText('obj = json(); x = jsonkeys(obj, true); return "";');
+            assert.strictEqual(diagnostics1.find((d) => d.code === "bml-function-arg-count"), undefined);
+            assert.strictEqual(diagnostics2.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+
+        test("jsonkeys(obj) - type mismatch for 1st arg (expected Json) → Warning", () => {
+            const diagnostics = lintText('x = jsonkeys("not_json"); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+            assert.ok(err);
+        });
+
+        test("jsonpathgetsingle(obj, path) - correct 2 to 4 arguments → no error", () => {
+            const diagnostics = lintText('obj = json(); x = jsonpathgetsingle(obj, "$.path", "string", "def"); return "";');
+            assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+
+        test("jsonpathset(obj, path, val) - correct 3 arguments → no error", () => {
+            const diagnostics = lintText('obj = json(); x = jsonpathset(obj, "$.path", "val"); return "";');
+            assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+
+        test("jsonpathcheck(obj, path) - correct 2 arguments → no error", () => {
+            const diagnostics = lintText('obj = json(); x = jsonpathcheck(obj, "$.path"); return "";');
+            assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+    });
 });

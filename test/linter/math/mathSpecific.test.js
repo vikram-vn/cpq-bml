@@ -87,4 +87,74 @@ suite("BML Linter Test Suite - Math specific tests", () => {
             assert.ok(diagnostics2.find(d => d.code === 'bml-function-arg-type'));
         });
     });
+
+    suite("Other Math functions - ceil, atan, exp, fmod, integer, sin, cos, tan", () => {
+        test("ceil() / exp() - correct 1 argument → no error", () => {
+            const diagnostics = lintText('x = ceil(1.5); y = exp(2.0); return "";');
+            assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+
+        test("ceil() / exp() - too many arguments → Error", () => {
+            const diagnostics1 = lintText('x = ceil(1.5, 2.5); return "";');
+            const diagnostics2 = lintText('y = exp(2.0, 3.0); return "";');
+            assert.ok(diagnostics1.find((d) => d.code === "bml-function-arg-count"));
+            assert.ok(diagnostics2.find((d) => d.code === "bml-function-arg-count"));
+        });
+
+        test("ceil() - type mismatch (expected Float) → Warning", () => {
+            const diagnostics = lintText('x = ceil("1.5"); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+            assert.ok(err);
+        });
+
+        test("fmod(x, y) - correct 2 arguments → no error", () => {
+            const diagnostics = lintText('x = fmod(5.5, 2.0); return "";');
+            assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+
+        test("fmod(x, y) - type mismatch → Warning", () => {
+            const diagnostics = lintText('x = fmod(5.5, "not_float"); return "";');
+            const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+            assert.ok(err);
+        });
+
+        test("integer(x) - correct 1 argument → no error", () => {
+            const diagnostics = lintText('x = integer(5.5); return "";');
+            assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+
+        test("integer(invalid) - too many arguments or type mismatch", () => {
+            const dCount = lintText('x = integer(5.5, 2.5); return "";');
+            const dType = lintText('x = integer("5.5"); return "";');
+            assert.ok(dCount.find((d) => d.code === "bml-function-arg-count"));
+            assert.ok(dType.find((d) => d.code === "bml-function-arg-type"));
+        });
+
+        test("float() cast - overloads check", () => {
+            const dOk1 = lintText('x = float(123); return "";');
+            const dOk2 = lintText('x = float("123.45"); return "";');
+            const dCount = lintText('x = float(123, 456); return "";');
+            const dType = lintText('x = float(true); return "";');
+
+            assert.strictEqual(dOk1.find((d) => d.code === "bml-function-arg-count"), undefined);
+            assert.strictEqual(dOk2.find((d) => d.code === "bml-function-arg-count"), undefined);
+            assert.ok(dCount.find((d) => d.code === "bml-function-arg-count"));
+            assert.ok(dType.find((d) => d.code === "bml-function-arg-type"));
+        });
+
+        test("boolean() cast - overloads check", () => {
+            const dOk = lintText('x = boolean("true"); return "";');
+            const dCount = lintText('x = boolean("true", "false"); return "";');
+            const dType = lintText('x = boolean(123); return "";');
+
+            assert.strictEqual(dOk.find((d) => d.code === "bml-function-arg-count"), undefined);
+            assert.ok(dCount.find((d) => d.code === "bml-function-arg-count"));
+            assert.ok(dType.find((d) => d.code === "bml-function-arg-type"));
+        });
+
+        test("sin/cos/tan - correct 1 argument → no error", () => {
+            const diagnostics = lintText('x = sin(0.5); y = cos(0.5); z = tan(0.5); return "";');
+            assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+        });
+    });
 });

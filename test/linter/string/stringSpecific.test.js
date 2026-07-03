@@ -268,4 +268,67 @@ suite("BML Linter Test Suite - String specific tests", () => {
       assert.strictEqual(err, undefined);
     });
   });
+
+  suite("Other String functions - len, lower, upper, startswith, endswith, join, split, string, trim", () => {
+    test("len() / lower() / upper() / trim() - correct 1 argument → no error", () => {
+      const diagnostics = lintText('s = "hello"; a = len(s); b = lower(s); c = upper(s); d = trim(s); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("len() - type mismatch (expected String) → Warning", () => {
+      const diagnostics = lintText('x = len(123); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+
+    test("startswith() / endswith() - correct 2 arguments → no error", () => {
+      const diagnostics = lintText('x = startswith("hello", "he"); y = endswith("world", "ld"); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("join() - correct 2 arguments → no error", () => {
+      const diagnostics = lintText('arr = string[]{"a", "b"}; x = join(arr, ","); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("join() - type mismatch for array (expected String[]) → Warning", () => {
+      const diagnostics = lintText('x = join("not_an_array", ","); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+
+    test("split() - correct 2 arguments → no error", () => {
+      const diagnostics = lintText('x = split("a,b,c", ","); return "";');
+      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("string() - correct 1 argument with Float/Integer/Boolean → no error", () => {
+      const diagnostics1 = lintText('x = string(123); return "";');
+      const diagnostics2 = lintText('x = string(true); return "";');
+      assert.strictEqual(diagnostics1.find((d) => d.code === "bml-function-arg-count"), undefined);
+      assert.strictEqual(diagnostics2.find((d) => d.code === "bml-function-arg-count"), undefined);
+    });
+
+    test("string(invalid) - too many arguments, string cast of string, or type mismatch", () => {
+      const dCount = lintText('x = string(1, 2); return "";');
+      const dCastString = lintText('x = string("hello"); return "";');
+      const dType = lintText('x = string(getdate()); return "";');
+
+      assert.ok(dCount.find((d) => d.code === "bml-function-arg-count"));
+      assert.ok(dCastString.find((d) => d.code === "bml-string-cast-of-string"));
+      assert.ok(dType.find((d) => d.code === "bml-function-arg-type"));
+    });
+
+    test("isnumber(invalid) - no arguments", () => {
+      const diagnostics = lintText('x = isnumber(); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-isnumber-no-args");
+      assert.ok(err);
+    });
+
+    test("html() - type mismatch when integer is passed → Warning", () => {
+      const diagnostics = lintText('x = html(123); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.ok(err);
+    });
+  });
 });

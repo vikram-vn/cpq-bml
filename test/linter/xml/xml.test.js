@@ -175,5 +175,33 @@ suite("BML Linter Test Suite - XML specific tests", () => {
             const diag = diagnostics.find(d => d.code === 'bml-function-arg-count');
             assert.ok(diag);
         });
+
+        test("18. applytemplate() - type check 4th argument (expected Json) → Warning", () => {
+            const diagnostics = lintText(`
+                payload = dict("string");
+                val = applytemplate("path", payload, "error", "not_json_type");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(diag);
+        });
+
+        test("19. readxmlsingle() - type check 2nd argument (expected String[]) → Warning", () => {
+            const diagnostics = lintText(`
+                val = readxmlsingle("<root/>", "not_a_string_array");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(diag);
+        });
+
+        test("20. readxmlmultiple() - type check 2nd argument (expected String[]) → Warning", () => {
+            const diagnostics = lintText(`
+                val = readxmlmultiple("<root/>", "not_a_string_array");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(diag);
+        });
     });
 });

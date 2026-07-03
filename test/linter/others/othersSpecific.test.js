@@ -166,12 +166,12 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
 
     test("globaldictset() - ttl <= 0 flags time-to-live range warning", () => {
       const diagnostics = lintText('globaldictset("k", "v", 0); return "";');
-      assert.ok(diagnostics.find(d => d.code === 'bml-globaldictset-invalid-ttl'));
+      assert.ok(diagnostics.find(d => d.code === 'bml-globaldict-ttl-out-of-range'));
     });
 
     test("globaldictset() - ttl > 525600 flags time-to-live range warning", () => {
       const diagnostics = lintText('globaldictset("k", "v", 525601); return "";');
-      assert.ok(diagnostics.find(d => d.code === 'bml-globaldictset-invalid-ttl'));
+      assert.ok(diagnostics.find(d => d.code === 'bml-globaldict-ttl-out-of-range'));
     });
 
     test("globaldictget(key) - Valid", () => {
@@ -191,9 +191,16 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
-    test("stringbuilder('initial') - Too many args → Error", () => {
-      const diagnostics = lintText('sb = stringbuilder("hello"); return "";');
-      assert.ok(diagnostics.find(d => d.code === 'bml-function-arg-count'));
+    test("stringbuilder(invalid) - too many arguments or type mismatch", () => {
+      const dCount = lintText('sb = stringbuilder("a", "b", "c", "d"); return "";');
+      const dType1 = lintText('sb = stringbuilder(123); return "";');
+      const dType2 = lintText('sb = stringbuilder("a", 123); return "";');
+      const dType3 = lintText('sb = stringbuilder("a", "b", 123); return "";');
+
+      assert.ok(dCount.find((d) => d.code === "bml-function-arg-count"));
+      assert.ok(dType1.find((d) => d.code === "bml-function-arg-type"));
+      assert.ok(dType2.find((d) => d.code === "bml-function-arg-type"));
+      assert.ok(dType3.find((d) => d.code === "bml-function-arg-type"));
     });
 
     test("sbtostring(sb) - Valid", () => {
@@ -203,8 +210,8 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
   });
 
   suite("System Data & Attribute Value Retrieval Functions", () => {
-    test("getsystemdata(attr) - Valid", () => {
-      const diagnostics = lintText('x = getsystemdata("session_id"); return "";');
+    test("getsystemdata() - Valid", () => {
+      const diagnostics = lintText('x = getsystemdata(); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
@@ -249,11 +256,11 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
 
     test("logtime(tag, msg) - Tag > 128 characters flags warning", () => {
       const diagnostics = lintText('logtime("very_long_tag_that_exceeds_the_128_characters_limit_very_long_tag_that_exceeds_the_128_characters_limit_very_long_tag_that_exceeds_the_128", "msg"); return "";');
-      assert.ok(diagnostics.find(d => d.code === 'bml-logtime-invalid-tag'));
+      assert.ok(diagnostics.find(d => d.code === 'bml-logtime-tag-too-long'));
     });
 
     test("getuuid() - Valid", () => {
-      const diagnostics = lintText('u = getuuid(); return "";');
+      const diagnostics = lintText('u = getuuid(true); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 
@@ -358,6 +365,34 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
 
     test("validatequoteforagreement(id) - Valid", () => {
       const diagnostics = lintText('x = validatequoteforagreement(); return "";');
+      assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
+    });
+  });
+
+  suite("Others Category Constants and StringBuilder Overloads", () => {
+    test("System recognized constants should not flag unknown warnings", () => {
+      const diagnostics1 = lintText('x = BM_UNCHANGED_NUM; return "";');
+      const diagnostics2 = lintText('y = BM_REASON_STATUS_APPROVED; return "";');
+      const diagnostics3 = lintText('z = BM_SALES_ROOT_BOM_ITEM; return "";');
+      assert.strictEqual(diagnostics1.find(d => d.code === 'bml-unknown-function' || d.code === 'bml-use-before-define'), undefined);
+      assert.strictEqual(diagnostics2.find(d => d.code === 'bml-unknown-function' || d.code === 'bml-use-before-define'), undefined);
+      assert.strictEqual(diagnostics3.find(d => d.code === 'bml-unknown-function' || d.code === 'bml-use-before-define'), undefined);
+    });
+
+    test("stringbuilder(str) and stringbuilder(arr) - valid overloads → no error", () => {
+      const diagnostics1 = lintText('sb = stringbuilder("hello"); return "";');
+      const diagnostics2 = lintText('arr = string[]{"a"}; sb = stringbuilder(arr); return "";');
+      assert.strictEqual(diagnostics1.find(d => d.code === 'bml-function-arg-count'), undefined);
+      assert.strictEqual(diagnostics2.find(d => d.code === 'bml-function-arg-count'), undefined);
+    });
+
+    test("usersessionget(key, type) - valid 2 arguments → no error", () => {
+      const diagnostics = lintText('x = usersessionget("myKey", "string"); return "";');
+      assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
+    });
+
+    test("globaldictset(key, val, ttl, isolate) - valid 4 arguments → no error", () => {
+      const diagnostics = lintText('x = globaldictset("myKey", "myVal", 60, true); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
   });

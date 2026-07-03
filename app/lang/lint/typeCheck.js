@@ -43,6 +43,94 @@ const TYPE_CONSTRUCTORS = {
     recordset: 'RecordSet',
 };
 
+const FUNCTION_RETURN_TYPES = {
+    getdate: 'Date',
+    adddays: 'Date',
+    addmonths: 'Date',
+    minusdays: 'Date',
+    strtodate: 'Date',
+    strtojavadate: 'Date',
+    date: 'Date',
+    
+    trim: 'String',
+    upper: 'String',
+    lower: 'String',
+    substring: 'String',
+    replace: 'String',
+    join: 'String',
+    html: 'String',
+    encodebase64: 'String',
+    decodebase64: 'String',
+    datetostr: 'String',
+    getstrdate: 'String',
+    getmessage: 'String',
+    gettransaction: 'String',
+    getoldvalue: 'String',
+    globaldictget: 'String',
+    urldatabyget: 'String',
+    urldatabypost: 'String',
+    urldatabypostasync: 'String',
+    transformxml: 'String',
+    applytemplate: 'String',
+    sbtostring: 'String',
+    string: 'String',
+    
+    len: 'Integer',
+    find: 'Integer',
+    atoi: 'Integer',
+    append: 'Integer',
+    findinarray: 'Integer',
+    remove: 'Integer',
+    sizeofarray: 'Integer',
+    comparedates: 'Integer',
+    getcurrenttimeinmillis: 'Integer',
+    getreasonstatus: 'Integer',
+    savebom: 'Integer',
+    saveconfigbom: 'Integer',
+    jsonarrayremove: 'Integer',
+    integer: 'Integer',
+    
+    atof: 'Float',
+    acos: 'Float',
+    asin: 'Float',
+    atan: 'Float',
+    ceil: 'Float',
+    cos: 'Float',
+    cosh: 'Float',
+    exp: 'Float',
+    fabs: 'Float',
+    fmod: 'Float',
+    hypot: 'Float',
+    ln: 'Float',
+    log: 'Float',
+    pow: 'Float',
+    sin: 'Float',
+    sinh: 'Float',
+    sqrt: 'Float',
+    tan: 'Float',
+    tanh: 'Float',
+    round: 'Float',
+    getcurrencyvalue: 'Float',
+    float: 'Float',
+    
+    endswith: 'Boolean',
+    isnumber: 'Boolean',
+    startswith: 'Boolean',
+    isempty: 'Boolean',
+    containskey: 'Boolean',
+    jsonremove: 'Boolean',
+    isjsonnull: 'Boolean',
+    jsonpathcheck: 'Boolean',
+    jsonpathremove: 'Boolean',
+    isnull: 'Boolean',
+    haserror: 'Boolean',
+    isleap: 'Boolean',
+    isweekend: 'Boolean',
+    usersessionremove: 'Boolean',
+    globaldictremove: 'Boolean',
+    boolean: 'Boolean',
+};
+
 // Only returns a type when the RHS is unambiguously a single literal/constructed value;
 // anything else (calls, concatenation, variable refs) returns null rather than guess.
 function inferLiteralType(rhsText) {
@@ -66,6 +154,21 @@ function inferLiteralType(rhsText) {
     if (ctorMatch) {
         const ctorType = TYPE_CONSTRUCTORS[ctorMatch[1].toLowerCase()];
         if (ctorType) return ctorType;
+    }
+
+    return null;
+}
+
+function inferExpressionType(rhsText) {
+    const literalType = inferLiteralType(rhsText);
+    if (literalType) return literalType;
+
+    const trimmed = rhsText.trim();
+    const ctorMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(([^()]*)\)$/);
+    if (ctorMatch) {
+        const nameLower = ctorMatch[1].toLowerCase();
+        const returnType = FUNCTION_RETURN_TYPES[nameLower];
+        if (returnType) return returnType;
     }
 
     return null;
@@ -232,62 +335,102 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes) {
         return stringRanges.some(([start, end]) => index >= start && index < end);
     };
 
-    const binaryOpRegex = /([+\-*/])/g;
+    const binaryOpRegex = /(==|!=|<>|<=|>=|\+=|-=|\*=|\/=|[-+*/<>])/g;
     while ((match = binaryOpRegex.exec(cleanText)) !== null) {
         const op = match[1];
         const opIndex = match.index;
 
         if (isInsideString(opIndex)) continue;
 
-        const nextChar = cleanText[opIndex + 1];
+        const nextChar = cleanText[opIndex + op.length];
         const prevChar = cleanText[opIndex - 1];
         if (op === '+' && (nextChar === '+' || prevChar === '+')) continue;
         if (op === '-' && (nextChar === '-' || prevChar === '-')) continue;
-        if (nextChar === '=') continue; // +=, -=, *=, /=
 
         const leftType = getLeftOperandType(cleanText, opIndex, firstTypeByVar);
-        const rightType = getRightOperandType(cleanText, opIndex, firstTypeByVar);
+        const rightType = getRightOperandType(cleanText, opIndex + op.length - 1, firstTypeByVar);
 
         if (!leftType || !rightType) continue;
 
         const isNumeric = (type) => ['Integer', 'Float', 'Long', 'Double'].includes(type);
+        const isNullType = (type) => ['Null', 'JsonNull'].includes(type);
 
-        if (op === '+') {
+        let mismatch = false;
+        let msg = '';
+
+        if (op === '+' || op === '+=') {
             const isLeftString = leftType === 'String';
             const isRightString = rightType === 'String';
             const isLeftNumeric = isNumeric(leftType);
             const isRightNumeric = isNumeric(rightType);
 
-            if ((isLeftString && isRightNumeric) || (isLeftNumeric && isRightString)) {
-                const startPos = doc.positionAt(opIndex);
-                const endPos = doc.positionAt(opIndex + 1);
-                const diag = new vscode.Diagnostic(
-                    new vscode.Range(startPos, endPos),
-                    `Type mismatch: Cannot combine 'String' and '${isLeftString ? rightType : leftType}' using '+'. Convert ${isLeftString ? 'the number' : 'the other operand'} to String using 'string()' or vice versa.`,
-                    vscode.DiagnosticSeverity.Error
-                );
-                diag.code = 'bml-binary-type-mismatch';
-                diagnostics.push(diag);
+            if (isLeftString && isRightString) {
+                // valid string concatenation
+            } else if (isLeftNumeric && isRightNumeric) {
+                // valid numeric addition
+            } else {
+                mismatch = true;
+                if ((isLeftString && isRightNumeric) || (isLeftNumeric && isRightString)) {
+                    msg = `Type mismatch: Cannot combine 'String' and '${isLeftString ? rightType : leftType}' using '${op}'. Convert ${isLeftString ? 'the number' : 'the other operand'} to String using 'string()' or vice versa.`;
+                } else {
+                    msg = `Type mismatch: Operator '${op}' cannot be applied to '${leftType}' and '${rightType}'.`;
+                }
             }
-        } else {
+        } else if (op === '-' || op === '*' || op === '/' || op === '-=' || op === '*=' || op === '/=') {
+            if (!isNumeric(leftType) || !isNumeric(rightType)) {
+                mismatch = true;
+                msg = `Type mismatch: Operator '${op}' cannot be applied to '${leftType}' and '${rightType}'. Both operands must be numeric.`;
+            }
+        } else if (op === '==' || op === '!=' || op === '<>') {
+            if (!isNullType(leftType) && !isNullType(rightType)) {
+                const isLeftString = leftType === 'String';
+                const isRightString = rightType === 'String';
+                const isLeftNumeric = isNumeric(leftType);
+                const isRightNumeric = isNumeric(rightType);
+                const isLeftBool = leftType === 'Boolean';
+                const isRightBool = rightType === 'Boolean';
+
+                if (isLeftString && isRightString) {
+                    // valid
+                } else if (isLeftNumeric && isRightNumeric) {
+                    // valid
+                } else if (isLeftBool && isRightBool) {
+                    // valid
+                } else {
+                    mismatch = true;
+                    msg = `Type mismatch: Cannot compare '${leftType}' and '${rightType}' using '${op}'.`;
+                }
+            }
+        } else if (op === '<' || op === '>' || op === '<=' || op === '>=') {
             const isLeftString = leftType === 'String';
             const isRightString = rightType === 'String';
+            const isLeftNumeric = isNumeric(leftType);
+            const isRightNumeric = isNumeric(rightType);
 
-            if (isLeftString || isRightString) {
-                const startPos = doc.positionAt(opIndex);
-                const endPos = doc.positionAt(opIndex + 1);
-                const diag = new vscode.Diagnostic(
-                    new vscode.Range(startPos, endPos),
-                    `Type mismatch: Operator '${op}' is not supported for 'String' values.`,
-                    vscode.DiagnosticSeverity.Error
-                );
-                diag.code = 'bml-binary-type-mismatch';
-                diagnostics.push(diag);
+            if (isLeftString && isRightString) {
+                // valid string comparison
+            } else if (isLeftNumeric && isRightNumeric) {
+                // valid numeric comparison
+            } else {
+                mismatch = true;
+                msg = `Type mismatch: Cannot compare '${leftType}' and '${rightType}' using '${op}'. both operands must be both numeric or both string.`;
             }
+        }
+
+        if (mismatch) {
+            const startPos = doc.positionAt(opIndex);
+            const endPos = doc.positionAt(opIndex + op.length);
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                msg,
+                vscode.DiagnosticSeverity.Error
+            );
+            diag.code = 'bml-binary-type-mismatch';
+            diagnostics.push(diag);
         }
     }
 
     return diagnostics;
 }
 
-module.exports = { inferLiteralType, checkAssignmentTypeConsistency, getAssignmentRhsText };
+module.exports = { inferLiteralType, inferExpressionType, checkAssignmentTypeConsistency, getAssignmentRhsText };

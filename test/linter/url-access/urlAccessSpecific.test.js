@@ -437,5 +437,54 @@ suite("BML Linter Test Suite - URL Access specific tests", () => {
             const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
             assert.ok(diag);
         });
+
+        test("57. urldata(url, method, headers, parameters, timeout) - parameter type validation → Warning on invalid param/timeout types", () => {
+            const diagnostics1 = lintText(`
+                headers = dict("string");
+                r = urldata("url", "GET", headers, 123, 5000);
+                return "";
+            `);
+            const diagnostics2 = lintText(`
+                headers = dict("string");
+                r = urldata("url", "GET", headers, "param=1", "not_int");
+                return "";
+            `);
+            assert.ok(diagnostics1.find(d => d.code === 'bml-function-arg-type'));
+            assert.ok(diagnostics2.find(d => d.code === 'bml-function-arg-type'));
+        });
+
+        test("58. urldatabypost(url, parameters, default, headers, returnErrorResponse, timeout, enableLoopback) - type validations → Warning", () => {
+            const diagnostics1 = lintText(`
+                headers = dict("string");
+                r = urldatabypost("url", "params", "def", headers, "not_bool", 5000, true);
+                return "";
+            `);
+            const diagnostics2 = lintText(`
+                headers = dict("string");
+                r = urldatabypost("url", "params", "def", headers, true, 5000, "not_bool");
+                return "";
+            `);
+            assert.ok(diagnostics1.find(d => d.code === 'bml-function-arg-type'));
+            assert.ok(diagnostics2.find(d => d.code === 'bml-function-arg-type'));
+        });
+
+        test("59. urldatabypostasync() - callbackActionVarName type check → Warning on non-String callback name", () => {
+            const diagnostics = lintText(`
+                headers = dict("string");
+                r = urldatabypostasync("url", "params", "def", 123, headers);
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(diag);
+        });
+
+        test("60. urlmultipartbypost() - attachments type check → Warning on non-Dictionary attachments", () => {
+            const diagnostics = lintText(`
+                r = urlmultipartbypost("url", "payload", dict("string"), "not_dictionary");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(diag);
+        });
     });
 });

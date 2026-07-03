@@ -1,4 +1,3 @@
-const { checkDeprecatedApi } = require('./deprecatedApi');
 const { checkBmqlSafety } = require('./bmqlSafety');
 const { checkCodeQuality } = require('./codeQuality');
 const { checkCommercePractices } = require('./commercePractices');
@@ -6,8 +5,17 @@ const { checkDataSafety } = require('./dataSafety');
 const { checkSecurity } = require('./security');
 const { checkSyntaxRules } = require('./syntaxRules');
 const { checkSelfReference } = require('./selfReference');
-const { checkLiteralMisuse } = require('./literalMisuse');
-const { checkFunctionConstraints } = require('./functionConstraints');
+
+const { checkArray } = require('../array/array');
+const { checkBmql } = require('../bmql/bmql');
+const { checkDate } = require('../date/date');
+const { checkDictionary } = require('../dictionary/dictionary');
+const { checkJson } = require('../json/json');
+const { checkMath } = require('../math/math');
+const { checkOthers } = require('../others/others');
+const { checkString } = require('../string/string');
+const { checkUrlAccess } = require('../url-access/urlAccess');
+const { checkXml } = require('../xml/xml');
 
 /**
  * Runs every best-practice sub-check and combines their diagnostics.
@@ -16,7 +24,17 @@ const { checkFunctionConstraints } = require('./functionConstraints');
  */
 function checkBestPractices(cleanText, noStringsText, doc) {
     return [
-        ...checkDeprecatedApi(cleanText, noStringsText, doc),
+        ...checkArray(cleanText, noStringsText, doc),
+        ...checkBmql(cleanText, noStringsText, doc),
+        ...checkDate(cleanText, noStringsText, doc),
+        ...checkDictionary(cleanText, noStringsText, doc),
+        ...checkJson(cleanText, noStringsText, doc),
+        ...checkMath(cleanText, noStringsText, doc),
+        ...checkOthers(cleanText, noStringsText, doc),
+        ...checkString(cleanText, noStringsText, doc),
+        ...checkUrlAccess(cleanText, noStringsText, doc),
+        ...checkXml(cleanText, noStringsText, doc),
+
         ...checkBmqlSafety(cleanText, noStringsText, doc),
         ...checkCodeQuality(cleanText, noStringsText, doc),
         ...checkCommercePractices(cleanText, noStringsText, doc),
@@ -24,8 +42,6 @@ function checkBestPractices(cleanText, noStringsText, doc) {
         ...checkSecurity(cleanText, noStringsText, doc),
         ...checkSyntaxRules(cleanText, noStringsText, doc),
         ...checkSelfReference(cleanText, noStringsText, doc),
-        ...checkLiteralMisuse(cleanText, noStringsText, doc),
-        ...checkFunctionConstraints(cleanText, noStringsText, doc),
     ];
 }
 
