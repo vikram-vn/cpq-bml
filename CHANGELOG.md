@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.16.0] - 2026-07-03
+
+### Added
+- Add documentation formatting utility and ensure offline help links resolve against both raw and compressed files.
+
 ## [1.15.0] - 2026-07-03
 
 ### Added
@@ -76,26 +81,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Implement custom Markdown help viewer with admonition support and caching.
 - Implement BML language support including tokenization, linting, and intellisense features.
-
-## [1.5.0] - 2026-07-01
-
-### Added
-
-- Add BML knowledge base documentation and crawler support for BML accordion components.
-- Implement HTML-to-Markdown conversion utilities and BML-specific document formatting modules.
-- Add post-processing script to format BML documentation into Docusaurus-compatible markdown files.
-- Add postprocessing script to normalize and format BML markdown documentation.
-- Add BML language reference documentation and implement a BML crawler script.
-- Implement BML intellisense provider and add scripts for documentation and API metadata generation.
-- Add BML knowledge base documentation and initialize intellisense generation scripts.
-- Add BML knowledge base documentation and crawler utility scripts.
-- Add comprehensive BML documentation, image assets, and automated intellisense generation scripts.
-- Add BML function documentation and conversion script for CPQ knowledge base.
-- Add comprehensive BML documentation and import script for CPQ knowledge base.
-- Add linter test cases and utility for regenerating expected linting results.
-- Implement BML linter and add automated test expectation generation.
-
-### Documentation
-
-- Add BML function library documentation and associated instructional images.
-- Initialize knowledge base for Oracle CPQ BML functions and editor documentation.
