@@ -1,0 +1,21 @@
+// Operators precedence and math validation tests
+valBool1 = true;
+valBool2 = false;
+if (valBool1 AND valBool2 OR valBool1) {
+    print("mixed precedence");
+}
+if (valBool1 AND NOT valBool2) {
+    print("valid precedence");
+}
+sMath = "sku" - 5;
+rOp1 = 100 != 200;
+rOp2 = 50 >= 25;
+rOp3 = 10 <= 20;
+rOp4 = 5 <> 6;
+// Bitwise operators checks (syntax errors)
+rBitwise1 = 5 & 3;
+rBitwise2 = 5 | 3;
+rBitwise3 = 5 ^ 3;
+// Modulo operator warning
+rModulo = 10 % 3;
+return "";

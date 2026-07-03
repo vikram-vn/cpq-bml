@@ -1,0 +1,7 @@
+// Commerce specific lookups
+commRs = bmql("select id from commerce_process");
+// Transaction line attributes properties references
+linePriceVal = 25.50;
+lineQtyVal = 10;
+totalLineVal = linePriceVal * lineQtyVal;
+return "";

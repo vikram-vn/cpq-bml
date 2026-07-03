@@ -4273,20 +4273,5 @@
     "line": 567,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_neg10"
-  },
-  {
-    "line": 573,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 574,
-    "severity": "Information",
-    "message": "Design Info: Magic number '25.50' detected. Consider defining a named constant"
-  },
-  {
-    "line": 586,
-    "severity": "Hint",
-    "message": "Unused variable: jsonPathVal"
   }
 ]

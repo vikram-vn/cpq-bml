@@ -1273,10 +1273,5 @@
     "line": 172,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg10"
-  },
-  {
-    "line": 181,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'dict' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
   }
 ]

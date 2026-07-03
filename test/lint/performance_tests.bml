@@ -1,0 +1,12 @@
+// Performance test constraints
+for loopIdx in range(5) {
+    resRs = bmql("select id from parts");
+    strConcat = "Part: " + string(loopIdx);
+}
+// Heavy nested loop lookups performance violations
+for i in range(3) {
+    for j in range(3) {
+        nestedRs = bmql("select id from catalog");
+    }
+}
+return "";

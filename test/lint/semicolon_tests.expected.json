@@ -1,5 +1,10 @@
 [
   {
+    "line": 1,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
     "line": 2,
     "severity": "Information",
     "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
@@ -10,29 +15,29 @@
     "message": "Unused variable: y"
   },
   {
-    "line": 5,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 5,
-    "severity": "Hint",
-    "message": "Unused variable: a"
-  },
-  {
-    "line": 6,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 6,
-    "severity": "Hint",
-    "message": "Unused variable: b"
-  },
-  {
-    "line": 8,
+    "line": 4,
     "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 4,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 4,
+    "severity": "Hint",
+    "message": "Unused variable: z"
+  },
+  {
+    "line": 7,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 8,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
   },
   {
     "line": 8,
@@ -40,13 +45,28 @@
     "message": "Missing semicolon"
   },
   {
-    "line": 8,
-    "severity": "Hint",
-    "message": "Unused variable: c"
+    "line": 10,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
   },
   {
     "line": 10,
     "severity": "Error",
     "message": "Missing semicolon"
+  },
+  {
+    "line": 10,
+    "severity": "Warning",
+    "message": "Unreachable code: this can never execute - it comes after a previous always-true condition in the chain."
+  },
+  {
+    "line": 12,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 12,
+    "severity": "Warning",
+    "message": "Unreachable code: this can never execute - it comes after an if/elif/else chain where every branch already returns, breaks, continues, or throws."
   }
 ]

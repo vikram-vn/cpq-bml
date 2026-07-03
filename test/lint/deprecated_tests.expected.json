@@ -5,42 +5,42 @@
     "message": "Unused variable: nanJava"
   },
   {
-    "line": 5,
+    "line": 3,
     "severity": "Warning",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
-    "line": 5,
+    "line": 3,
     "severity": "Hint",
     "message": "Unused variable: dOld"
   },
   {
-    "line": 6,
+    "line": 4,
     "severity": "Error",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
-    "line": 6,
+    "line": 4,
     "severity": "Hint",
     "message": "Unused variable: rOldTable"
   },
   {
-    "line": 7,
+    "line": 5,
     "severity": "Error",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
-    "line": 7,
+    "line": 5,
     "severity": "Hint",
     "message": "Unused variable: rOldParts"
   },
   {
-    "line": 10,
+    "line": 6,
     "severity": "Warning",
     "message": "Deprecated constant 'NaN'. Use 'jNaN' instead for Java compatibility"
   },
   {
-    "line": 10,
+    "line": 6,
     "severity": "Hint",
     "message": "Unused variable: nanOld"
   }

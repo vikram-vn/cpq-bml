@@ -1,0 +1,19 @@
+// Best practices testing
+val1 = 100;
+if (val1 == 100) {
+    print("Redundant");
+} else {
+    print("Redundant");
+}
+if (true) {
+    if (false) {
+        print("lonely if");
+    }
+}
+// Redundant self assignments
+selfAssignVar = 42;
+selfAssignVar = selfAssignVar;
+// Empty block validations
+if (true) {
+}
+return "";

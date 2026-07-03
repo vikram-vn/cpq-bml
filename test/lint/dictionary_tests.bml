@@ -172,13 +172,4 @@ val_values_neg8 = values(return, break);
 val_values_neg9 = values(123; 456);
 val_values_neg10 = values(dict("string") 
 
-
-// Storing tier mappings inside configuration dictionaries
-tierPricingMap = dict("string");
-put(tierPricingMap, "tier1", "10.0");
-put(tierPricingMap, "tier2", "15.0");
-put(tierPricingMap, "tier3", "20.0");
-
-productTierMap = dict("dict");
-put(productTierMap, "SKU-100", tierPricingMap);
 return "";

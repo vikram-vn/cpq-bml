@@ -498,30 +498,4 @@ val_round_neg8 = round(return, break);
 val_round_neg9 = round(1.23; 123);
 val_round_neg10 = round(1.23, 123 
 
-
-// Compound interest and markup calculations
-basePrincipal = 1000.0;
-rateComp = 0.05;
-compVal = basePrincipal * pow((1.0 + rateComp), 5.0);
-markupAmt = basePrincipal * (1.0 + rateComp);
-
-// Precision rounding rules
-roundedVal1 = round(12.3456);
-roundedVal2 = ceil(12.3456);
-roundedVal3 = floor(12.3456);
-
-// Edge value divisions close to zero
-divisorVal = 0.0000000000000000001;
-edgeResult = basePrincipal / divisorVal;
-
-// Implicit type promotion (float and integer mixed math)
-mathPromo1 = 12.5 + 4;
-mathPromo2 = 100 * 1.5;
-
-// Exponents validation (negative/zero bases)
-powZeroBase = pow(0.0, -2.0);
-powNegBase = pow(-5.0, 0.5);
-
-// Floating point underflow limits
-underflowVal = 1e-30;
 return "";

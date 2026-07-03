@@ -2,11 +2,31 @@
   {
     "line": 1,
     "severity": "Hint",
-    "message": "Unused variable: sCorrupt"
+    "message": "Unused variable: sCorrupt1"
   },
   {
-    "line": 3,
+    "line": 2,
+    "severity": "Hint",
+    "message": "Unused variable: sCorrupt2"
+  },
+  {
+    "line": 4,
     "severity": "Hint",
     "message": "Unused variable: nLen"
+  },
+  {
+    "line": 6,
+    "severity": "Hint",
+    "message": "Unused variable: nullIntegerVal"
+  },
+  {
+    "line": 7,
+    "severity": "Hint",
+    "message": "Unused variable: nullFloatVal"
+  },
+  {
+    "line": 10,
+    "severity": "Hint",
+    "message": "Unused variable: nullElementAccess"
   }
 ]

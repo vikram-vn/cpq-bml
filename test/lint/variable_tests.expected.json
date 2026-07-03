@@ -1,66 +1,21 @@
 [
   {
     "line": 1,
-    "severity": "Information",
-    "message": "Design Info: Magic number '100.0' detected. Consider defining a named constant"
+    "severity": "Warning",
+    "message": "'declaredLate' is read here but isn't assigned until later in this file (line 3) - this will read an uninitialized value."
   },
   {
-    "line": 2,
+    "line": 1,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 5,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 5,
-    "severity": "Hint",
-    "message": "Unused variable: unusedRootPrice"
-  },
-  {
-    "line": 6,
-    "severity": "Information",
-    "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 6,
-    "severity": "Hint",
-    "message": "Unused variable: unusedDiscountVal"
-  },
-  {
-    "line": 7,
-    "severity": "Information",
-    "message": "Design Info: Magic number '50.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 8,
-    "severity": "Hint",
-    "message": "Unused variable: unusedIfVariable"
-  },
-  {
-    "line": 12,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 13,
+    "line": 4,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 15,
-    "severity": "Information",
-    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 19,
-    "severity": "Warning",
-    "message": "'declaredLate' is read here but isn't assigned until later in this file (line 21) - this will read an uninitialized value."
-  },
-  {
-    "line": 19,
+    "line": 7,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   }

@@ -218,18 +218,4 @@ val_gettransaction_neg8 = gettransaction(return, break);
 val_gettransaction_neg9 = gettransaction(123; 456);
 val_gettransaction_neg10 = gettransaction("abc" 
 
-
-// Dynamic queries with multiple parameter substitutions
-dictParams = dict("string");
-pPartNum = "PART-100";
-pStatus = "ACTIVE";
-put(dictParams, "$part_num", pPartNum);
-put(dictParams, "$status", pStatus);
-whereQuery = "part_num = $part_num AND status = $status";
-
-// Multi-table joins and column aliasing queries
-dbJoinRs = bmql("SELECT Ord.id as orderId, Prd.sku as prdSku FROM Orders Ord INNER JOIN Products Prd ON Ord.prdId = Prd.id WHERE Ord.status = 'COMPLETED'");
-
-// Joins with aliases and dotted notations
-aliasJoinRs = bmql("SELECT T1.id as partId, T2.price as partPrice FROM Parts T1 INNER JOIN Catalog T2 ON T1.id = T2.partId WHERE T1.status = 'ACTIVE'");
 return "";

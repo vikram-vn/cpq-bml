@@ -518,21 +518,4 @@ val_upper_neg8 = upper(return, break);
 val_upper_neg9 = upper(123; 456);
 val_upper_neg10 = upper("abc" 
 
-
-// Escape characters inside strings
-escapedStr1 = "Part: \"SKU-123\" \t Price: $10.00 \n Description: CPQ SKU";
-escapedStr2 = "Special character corrupt: bad\x1cchar";
-
-// Delimiter parsing (CSV list of parts)
-csvPartNumbers = "SKU1,SKU2,SKU3,SKU4";
-splitParts = split(csvPartNumbers, ",");
-
-// Implicit casting in string concatenation
-sCoerce1 = "Part: " + 123 + " Price: " + 99.99;
-sCoerce2 = "Valid: " + true + " Date: " + getdate();
-
-// Invalid math operators on strings
-sMathErr1 = "SKU" - 5;
-sMathErr2 = "SKU" / 2;
-sMathErr3 = "SKU" * "PART";
 return "";

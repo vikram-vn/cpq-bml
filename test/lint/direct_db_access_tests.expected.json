@@ -17,7 +17,7 @@
   {
     "line": 6,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 6,
@@ -602,7 +602,7 @@
   {
     "line": 70,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 70,
@@ -622,7 +622,7 @@
   {
     "line": 71,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 72,
@@ -642,7 +642,7 @@
   {
     "line": 73,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 73,
@@ -667,7 +667,7 @@
   {
     "line": 74,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 74,
@@ -697,7 +697,7 @@
   {
     "line": 75,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 75,
@@ -732,7 +732,7 @@
   {
     "line": 76,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 76,
@@ -757,7 +757,7 @@
   {
     "line": 78,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 80,
@@ -772,7 +772,7 @@
   {
     "line": 80,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 80,
@@ -792,7 +792,7 @@
   {
     "line": 81,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 81,
@@ -812,7 +812,7 @@
   {
     "line": 82,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 82,
@@ -847,7 +847,7 @@
   {
     "line": 84,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 84,
@@ -877,7 +877,7 @@
   {
     "line": 86,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 86,
@@ -907,7 +907,7 @@
   {
     "line": 87,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 87,
@@ -937,7 +937,7 @@
   {
     "line": 89,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 90,
@@ -987,7 +987,7 @@
   {
     "line": 92,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 92,
@@ -1007,7 +1007,7 @@
   {
     "line": 94,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 94,
@@ -1027,7 +1027,7 @@
   {
     "line": 95,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 96,
@@ -1047,7 +1047,7 @@
   {
     "line": 97,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 97,
@@ -1072,7 +1072,7 @@
   {
     "line": 98,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 98,
@@ -1102,7 +1102,7 @@
   {
     "line": 99,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 99,
@@ -1137,7 +1137,7 @@
   {
     "line": 100,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 100,
@@ -1162,7 +1162,7 @@
   {
     "line": 102,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 104,
@@ -1177,7 +1177,7 @@
   {
     "line": 104,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 104,
@@ -1197,7 +1197,7 @@
   {
     "line": 105,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 105,
@@ -1217,7 +1217,7 @@
   {
     "line": 106,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 106,
@@ -1252,7 +1252,7 @@
   {
     "line": 108,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 108,
@@ -1282,7 +1282,7 @@
   {
     "line": 110,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 110,
@@ -1312,7 +1312,7 @@
   {
     "line": 111,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 111,
@@ -1342,7 +1342,7 @@
   {
     "line": 113,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 114,
@@ -1392,7 +1392,7 @@
   {
     "line": 116,
     "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+    "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
     "line": 116,
@@ -2363,25 +2363,5 @@
     "line": 218,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg10"
-  },
-  {
-    "line": 227,
-    "severity": "Hint",
-    "message": "Unused variable: whereQuery"
-  },
-  {
-    "line": 230,
-    "severity": "Hint",
-    "message": "Unused variable: dbJoinRs"
-  },
-  {
-    "line": 233,
-    "severity": "Information",
-    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
-  },
-  {
-    "line": 233,
-    "severity": "Hint",
-    "message": "Unused variable: aliasJoinRs"
   }
 ]

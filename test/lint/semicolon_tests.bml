@@ -1,11 +1,13 @@
-// Semicolon rules check
-x = 10;
+// Semicolon tests
+x = 10
 y = 20;
-
-// Invalid: Missing semicolons
-a = 1
-b = 2
 if (x > 0) {
-    c = 3
+    z = 5
+}
+// Semicolon missing on return/break/continue statements
+if (true) {
+    break
+} else {
+    continue
 }
 return ""

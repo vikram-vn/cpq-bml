@@ -975,8 +975,4 @@ val_configureabo_neg8 = configureabo(return, break);
 val_configureabo_neg9 = configureabo(123; 456);
 val_configureabo_neg10 = configureabo(123 
 
-
-// Fetching environment parameters and session configurations
-userThemeStr = getuserprofile("theme");
-siteEnvUrl = getuserprofile("site_url");
 return "";

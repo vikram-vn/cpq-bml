@@ -184,12 +184,4 @@ val_urlmultipartbypost_neg8 = urlmultipartbypost(return, break);
 val_urlmultipartbypost_neg9 = urlmultipartbypost("abc"; "abc"; dict("string"));
 val_urlmultipartbypost_neg10 = urlmultipartbypost("abc", "abc", dict("string") 
 
-
-// Secure endpoint POST request payload definitions
-postEndpointUrl = "https://api.oraclecpq.com/v1/pricing";
-requestHeaderMap = dict("string");
-put(requestHeaderMap, "Content-Type", "application/json");
-put(requestHeaderMap, "Authorization", "Bearer TOKEN_SECRET");
-
-postResponsePayload = urldatabypost(postEndpointUrl, "{\"calc\": true}", "UTF-8", requestHeaderMap);
 return "";

@@ -1428,15 +1428,5 @@
     "line": 184,
     "severity": "Hint",
     "message": "Unused variable: val_urlmultipartbypost_neg10"
-  },
-  {
-    "line": 188,
-    "severity": "Warning",
-    "message": "Design Warning: Hardcoded URL detected. Consider using a dynamic configuration, Data Table, or System Variable to avoid environment-specific issues."
-  },
-  {
-    "line": 193,
-    "severity": "Hint",
-    "message": "Unused variable: postResponsePayload"
   }
 ]

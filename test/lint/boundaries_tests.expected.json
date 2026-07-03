@@ -1,0 +1,92 @@
+[
+  {
+    "line": 1,
+    "severity": "Information",
+    "message": "Design Info: Magic number '2147483648' detected. Consider defining a named constant"
+  },
+  {
+    "line": 1,
+    "severity": "Error",
+    "message": "Integer literal '2147483648' is out of range (-2,147,483,648 to 2,147,483,647)"
+  },
+  {
+    "line": 1,
+    "severity": "Hint",
+    "message": "Unused variable: largeInt"
+  },
+  {
+    "line": 2,
+    "severity": "Information",
+    "message": "Design Info: Magic number '35' detected. Consider defining a named constant"
+  },
+  {
+    "line": 2,
+    "severity": "Hint",
+    "message": "Unused variable: underflowFloat"
+  },
+  {
+    "line": 3,
+    "severity": "Information",
+    "message": "Design Info: Magic number '1.23456789012345678' detected. Consider defining a named constant"
+  },
+  {
+    "line": 3,
+    "severity": "Warning",
+    "message": "Float literal has 17 decimal places, which exceeds the 6 decimal places limit for Data Table columns"
+  },
+  {
+    "line": 3,
+    "severity": "Warning",
+    "message": "Float/Currency literal has 18 digits, which exceeds the 16-digit precision limit and will be rounded"
+  },
+  {
+    "line": 3,
+    "severity": "Hint",
+    "message": "Unused variable: precisionFloat"
+  },
+  {
+    "line": 4,
+    "severity": "Warning",
+    "message": "String literal length (256) exceeds 255 characters limit for standard Commerce text fields (and truncates standard part numbers)"
+  },
+  {
+    "line": 4,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (273 chars). Consider breaking it into multiple lines."
+  },
+  {
+    "line": 4,
+    "severity": "Hint",
+    "message": "Unused variable: stringLimit"
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5001' detected. Consider defining a named constant"
+  },
+  {
+    "line": 6,
+    "severity": "Hint",
+    "message": "Unused variable: largeRowArr"
+  },
+  {
+    "line": 7,
+    "severity": "Information",
+    "message": "Design Info: Magic number '51' detected. Consider defining a named constant"
+  },
+  {
+    "line": 7,
+    "severity": "Hint",
+    "message": "Unused variable: largeColArr"
+  },
+  {
+    "line": 9,
+    "severity": "Information",
+    "message": "Design Info: Magic number '309' detected. Consider defining a named constant"
+  },
+  {
+    "line": 9,
+    "severity": "Hint",
+    "message": "Unused variable: largeDouble"
+  }
+]

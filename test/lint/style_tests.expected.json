@@ -1,82 +1,47 @@
 [
   {
     "line": 1,
-    "severity": "Information",
-    "message": "Design Info: Magic number '100.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 2,
-    "severity": "Information",
-    "message": "Design Info: Magic number '0.0825' detected. Consider defining a named constant"
-  },
-  {
-    "line": 2,
-    "severity": "Hint",
-    "message": "Unused variable: TAX_RATE"
-  },
-  {
-    "line": 3,
-    "severity": "Hint",
-    "message": "Unused variable: itemsList"
-  },
-  {
-    "line": 4,
-    "severity": "Hint",
-    "message": "Unused variable: configsDict"
-  },
-  {
-    "line": 5,
-    "severity": "Information",
-    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
-  },
-  {
-    "line": 5,
-    "severity": "Hint",
-    "message": "Unused variable: partRecords"
-  },
-  {
-    "line": 11,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 11,
-    "severity": "Information",
-    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 11,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
-  },
-  {
-    "line": 14,
     "severity": "Hint",
     "message": "Unused variable: bad_variable_name"
   },
   {
-    "line": 15,
+    "line": 2,
     "severity": "Information",
     "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
   },
   {
-    "line": 15,
+    "line": 2,
     "severity": "Hint",
     "message": "Unused variable: constant_bad"
   },
   {
-    "line": 16,
+    "line": 3,
     "severity": "Hint",
     "message": "Unused variable: my_dict"
   },
   {
-    "line": 17,
+    "line": 4,
     "severity": "Hint",
     "message": "Unused variable: orderList"
   },
   {
-    "line": 18,
+    "line": 5,
     "severity": "Hint",
     "message": "Unused variable: productRecords"
+  },
+  {
+    "line": 7,
+    "severity": "Hint",
+    "message": "Unused variable: wrongDictName"
+  },
+  {
+    "line": 8,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 8,
+    "severity": "Hint",
+    "message": "Unused variable: wrongRecordsName"
   }
 ]

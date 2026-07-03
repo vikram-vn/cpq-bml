@@ -1,13 +1,8 @@
 // Deprecated BML methods and constants
 dJava = strtojavadate("2026-07-03", "%Y-%m-%d");
 nanJava = jNaN;
-
-// Invalid: Deprecated functions calls
 dOld = strtodate("2026-07-03", "%Y-%m-%d");
 rOldTable = gettabledata("parts_catalog", "col", "val");
 rOldParts = getpartsdata("part_num");
-
-// Invalid: Deprecated float constant
 nanOld = NaN;
-
 return string(dJava);

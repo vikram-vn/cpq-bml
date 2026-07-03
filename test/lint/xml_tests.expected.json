@@ -883,40 +883,5 @@
     "line": 112,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_neg10"
-  },
-  {
-    "line": 117,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'xml' - did you mean 'html'?"
-  },
-  {
-    "line": 118,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'xmlnodes'."
-  },
-  {
-    "line": 118,
-    "severity": "Hint",
-    "message": "Unused variable: partsNodesXml"
-  },
-  {
-    "line": 121,
-    "severity": "Warning",
-    "message": "Design Warning: Hardcoded URL detected. Consider using a dynamic configuration, Data Table, or System Variable to avoid environment-specific issues."
-  },
-  {
-    "line": 121,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'xml' - did you mean 'html'?"
-  },
-  {
-    "line": 122,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'xmlnodes'."
-  },
-  {
-    "line": 122,
-    "severity": "Hint",
-    "message": "Unused variable: nodeWithNs"
   }
 ]

@@ -2,7 +2,7 @@
   {
     "line": 0,
     "severity": "Warning",
-    "message": "Complexity Warning: Cyclomatic complexity is high (24). Consider refactoring into helper functions"
+    "message": "Complexity Warning: Cyclomatic complexity is high (22). Consider refactoring into helper functions"
   },
   {
     "line": 5,
@@ -83,6 +83,11 @@
     "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 17,
+    "severity": "Information",
+    "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
   },
   {
     "line": 17,
@@ -2703,65 +2708,5 @@
     "line": 286,
     "severity": "Hint",
     "message": "Unused variable: val_sort_neg10"
-  },
-  {
-    "line": 291,
-    "severity": "Hint",
-    "message": "Unused variable: arrLenBefore"
-  },
-  {
-    "line": 292,
-    "severity": "Hint",
-    "message": "Unused variable: arrSizeNew"
-  },
-  {
-    "line": 295,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 295,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 296,
-    "severity": "Information",
-    "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 297,
-    "severity": "Information",
-    "message": "Design Info: Magic number '15.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 298,
-    "severity": "Information",
-    "message": "Design Info: Magic number '20.0' detected. Consider defining a named constant"
-  },
-  {
-    "line": 302,
-    "severity": "Hint",
-    "message": "Unused variable: isEmptyArrVal"
-  },
-  {
-    "line": 305,
-    "severity": "Information",
-    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
-  },
-  {
-    "line": 305,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
-  },
-  {
-    "line": 306,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 308,
-    "severity": "Hint",
-    "message": "Unused variable: prevVal"
   }
 ]

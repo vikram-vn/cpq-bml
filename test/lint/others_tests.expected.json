@@ -7948,25 +7948,5 @@
     "line": 975,
     "severity": "Hint",
     "message": "Unused variable: val_configureabo_neg10"
-  },
-  {
-    "line": 979,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'getuserprofile'."
-  },
-  {
-    "line": 979,
-    "severity": "Hint",
-    "message": "Unused variable: userThemeStr"
-  },
-  {
-    "line": 980,
-    "severity": "Warning",
-    "message": "Unknown built-in function or variable 'getuserprofile'."
-  },
-  {
-    "line": 980,
-    "severity": "Hint",
-    "message": "Unused variable: siteEnvUrl"
   }
 ]

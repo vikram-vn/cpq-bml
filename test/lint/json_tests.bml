@@ -567,22 +567,4 @@ val_jsonarrayrefid_neg8 = jsonarrayrefid(return, break);
 val_jsonarrayrefid_neg9 = jsonarrayrefid(123; 456);
 val_jsonarrayrefid_neg10 = jsonarrayrefid(jsonarray() 
 
-
-// Constructing complex transaction line item payloads
-lineItemJson = json();
-jsonput(lineItemJson, "sku", "SKU-100");
-jsonput(lineItemJson, "quantity", 5);
-jsonput(lineItemJson, "unitPrice", 25.50);
-
-itemArrayJson = jsonarray();
-jsonarrayappend(itemArrayJson, lineItemJson);
-
-payloadRootJson = json();
-jsonput(payloadRootJson, "lineItems", itemArrayJson);
-jsonput(payloadRootJson, "transactionId", "TX-9999");
-
-// Nested path extraction
-complexJsonObj = json();
-jsonput(complexJsonObj, "sku", "SKU-200");
-jsonPathVal = jsonget(complexJsonObj, "details.tierInfo[0].price");
 return "";

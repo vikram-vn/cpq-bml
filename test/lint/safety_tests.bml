@@ -1,5 +1,12 @@
-// Safety checks in CPQ
-sCorrupt = "bad\x1cchar";
+// Safety checks in BML
+sCorrupt1 = "bad\x1cchar_1";
+sCorrupt2 = "bad\x1cchar_2";
 nVal = null;
 nLen = len(nVal);
+// Null assignments to numbers
+nullIntegerVal = null;
+nullFloatVal = null;
+// Null array index access
+nullArray = string[];
+nullElementAccess = nullArray[0];
 return "";

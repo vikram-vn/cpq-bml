@@ -1,0 +1,11 @@
+// Boundaries checks
+largeInt = 2147483648;
+underflowFloat = 1e-35;
+precisionFloat = 1.23456789012345678;
+stringLimit = "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+// Array boundaries overflows (>5000 rows / >50 cols)
+largeRowArr = float[5001];
+largeColArr = float[10][51];
+// Double precision bounds overflow
+largeDouble = 1.7976931348623157e+309;
+return "";

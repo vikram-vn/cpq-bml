@@ -2,7 +2,7 @@
   {
     "line": 0,
     "severity": "Warning",
-    "message": "Complexity Warning: Cyclomatic complexity is high (27). Consider refactoring into helper functions"
+    "message": "Complexity Warning: Cyclomatic complexity is high (26). Consider refactoring into helper functions"
   },
   {
     "line": 5,
@@ -2728,100 +2728,5 @@
     "line": 334,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_neg10"
-  },
-  {
-    "line": 339,
-    "severity": "Hint",
-    "message": "Unused variable: dateFeb29"
-  },
-  {
-    "line": 340,
-    "severity": "Hint",
-    "message": "Unused variable: dateMarch1"
-  },
-  {
-    "line": 342,
-    "severity": "Hint",
-    "message": "Unused variable: dateNonLeapMarch1"
-  },
-  {
-    "line": 345,
-    "severity": "Hint",
-    "message": "Unused variable: parsedDate1"
-  },
-  {
-    "line": 346,
-    "severity": "Hint",
-    "message": "Unused variable: parsedDate2"
-  },
-  {
-    "line": 347,
-    "severity": "Hint",
-    "message": "Unused variable: parsedDate3"
-  },
-  {
-    "line": 350,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
-  },
-  {
-    "line": 350,
-    "severity": "Hint",
-    "message": "Unused variable: backwardsDate"
-  },
-  {
-    "line": 351,
-    "severity": "Information",
-    "message": "Design Info: Magic number '12' detected. Consider defining a named constant"
-  },
-  {
-    "line": 351,
-    "severity": "Hint",
-    "message": "Unused variable: backwardsMonth"
-  },
-  {
-    "line": 352,
-    "severity": "Hint",
-    "message": "Unused variable: zeroDaysAdded"
-  },
-  {
-    "line": 353,
-    "severity": "Hint",
-    "message": "Unused variable: zeroMonthsAdded"
-  },
-  {
-    "line": 357,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
-  },
-  {
-    "line": 358,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
-  },
-  {
-    "line": 359,
-    "severity": "Information",
-    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 363,
-    "severity": "Hint",
-    "message": "Unused variable: dstDate1"
-  },
-  {
-    "line": 364,
-    "severity": "Hint",
-    "message": "Unused variable: dstDate2"
-  },
-  {
-    "line": 367,
-    "severity": "Hint",
-    "message": "Unused variable: epochStart"
-  },
-  {
-    "line": 368,
-    "severity": "Hint",
-    "message": "Unused variable: epochOld"
   }
 ]

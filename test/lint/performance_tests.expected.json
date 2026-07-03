@@ -1,0 +1,67 @@
+[
+  {
+    "line": 1,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 2,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 2,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
+  },
+  {
+    "line": 2,
+    "severity": "Hint",
+    "message": "Unused variable: resRs"
+  },
+  {
+    "line": 3,
+    "severity": "Hint",
+    "message": "Unused variable: strConcat"
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Unused loop variable: 'i' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 7,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Nested loop detected. Avoid nested loops to prevent negative performance impact"
+  },
+  {
+    "line": 7,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 7,
+    "severity": "Information",
+    "message": "Unused loop variable: 'j' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 8,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 8,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
+  },
+  {
+    "line": 8,
+    "severity": "Hint",
+    "message": "Unused variable: nestedRs"
+  }
+]

@@ -1,23 +1,9 @@
-// Local variables and scopes
-listPrice = 100.0;
-print(listPrice);
-
-// Invalid: Unused variables
-unusedRootPrice = 200.0;
-unusedDiscountVal = 10.0;
-if (listPrice > 50.0) {
-    unusedIfVariable = "unused";
-}
-
-// Invalid: Variable shadowing (inner variable redeclaration)
-shadowedVar = 5;
-if (true) {
-    shadowedVar = 10;
-    print(shadowedVar);
-}
-
-// Invalid: Use before define
+// Variable usage scopes
 print(declaredLate);
 declaredLate = "declared now";
-
+// Variables defined inside blocks and accessed outside
+if (true) {
+    blockScopeVar = "scoped";
+}
+print(blockScopeVar);
 return "";

@@ -1,0 +1,22 @@
+[
+  {
+    "line": 1,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 1,
+    "severity": "Hint",
+    "message": "Unused variable: commRs"
+  },
+  {
+    "line": 3,
+    "severity": "Information",
+    "message": "Design Info: Magic number '25.50' detected. Consider defining a named constant"
+  },
+  {
+    "line": 5,
+    "severity": "Hint",
+    "message": "Unused variable: totalLineVal"
+  }
+]

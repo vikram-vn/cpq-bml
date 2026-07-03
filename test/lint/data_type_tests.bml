@@ -1,0 +1,9 @@
+// Data type validations
+valInt = 100;
+valStr = "SKU";
+valInt = valStr;
+// Mismatched allocations
+mismatchRs = bmql("select id from parts");
+mismatchJson = json();
+mismatchRs = mismatchJson;
+return "";

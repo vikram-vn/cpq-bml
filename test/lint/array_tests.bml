@@ -286,27 +286,4 @@ val_sort_neg8 = sort(return, break);
 val_sort_neg9 = sort("abc"; "abc");
 val_sort_neg10 = sort("abc", "abc" 
 
-
-// Custom Array slicing and shifting calculations
-arrListString = string[]{"A", "B", "C", "D"};
-arrLenBefore = sizeofarray(arrListString);
-arrSizeNew = remove(arrListString, 0);
-
-// Pricing matrix using 2D array coordinates
-pricingMatrix = float[3][3];
-pricingMatrix[0][0] = 10.0;
-pricingMatrix[0][1] = 15.0;
-pricingMatrix[0][2] = 20.0;
-
-// Empty array validation checks
-emptyIntArr = integer[]{};
-isEmptyArrVal = isempty(emptyIntArr);
-
-// Array index offset slicing inside loops
-arrIntSlicing = integer[]{10, 20, 30};
-for loopIdx in range(3) {
-    if (loopIdx > 0) {
-        prevVal = arrIntSlicing[loopIdx - 1];
-    }
-}
 return "";

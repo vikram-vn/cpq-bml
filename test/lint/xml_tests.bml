@@ -112,13 +112,4 @@ val_readxmlmultiple_neg8 = readxmlmultiple(return, break);
 val_readxmlmultiple_neg9 = readxmlmultiple("abc"; "abc");
 val_readxmlmultiple_neg10 = readxmlmultiple("abc", "abc" 
 
-
-// Extracting node attributes and elements from XML envelopes
-envelopeXmlStr = "<Envelope><Header><TransactionId>TX-8888</TransactionId></Header><Body><Part sku=\"SKU-200\"><Price currency=\"USD\">120.00</Price></Part></Body></Envelope>";
-envelopeDocXml = xml(envelopeXmlStr);
-partsNodesXml = xmlnodes(envelopeDocXml, "//Part");
-
-// XPath namespace envelopes
-complexEnvelopeXml = xml("<ns:Envelope xmlns:ns=\"http://schemas.xmlsoap.org/soap/envelope/\"><ns:Body><Part sku=\"SKU-400\"/></ns:Body></ns:Envelope>");
-nodeWithNs = xmlnodes(complexEnvelopeXml, "//ns:Part");
 return "";

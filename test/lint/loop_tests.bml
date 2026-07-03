@@ -1,4 +1,4 @@
-// Iterative calculations
+// Iterative calculations and loop controls
 tierArray = integer[]{1, 2, 3};
 
 // Valid loops
@@ -28,5 +28,4 @@ if (sizeofarray(tierArray) > 0) {
     break;
     continue;
 }
-
 return "";

@@ -1,0 +1,12 @@
+// Unused variables and shadowing tests
+unusedVar = 500;
+shadowedVar = 5;
+if (true) {
+    shadowedVar = 10;
+    print(shadowedVar);
+}
+// Loop shadowing declarations
+for shadowedVar in range(3) {
+    print(shadowedVar);
+}
+return "";

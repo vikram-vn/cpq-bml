@@ -1,0 +1,17 @@
+[
+  {
+    "line": 1,
+    "severity": "Hint",
+    "message": "Unused variable: valInt"
+  },
+  {
+    "line": 5,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 5,
+    "severity": "Hint",
+    "message": "Unused variable: mismatchRs"
+  }
+]

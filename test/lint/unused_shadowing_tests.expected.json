@@ -1,0 +1,42 @@
+[
+  {
+    "line": 1,
+    "severity": "Information",
+    "message": "Design Info: Magic number '500' detected. Consider defining a named constant"
+  },
+  {
+    "line": 1,
+    "severity": "Hint",
+    "message": "Unused variable: unusedVar"
+  },
+  {
+    "line": 2,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 3,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 5,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 8,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 8,
+    "severity": "Warning",
+    "message": "Design Warning: Loop variable 'shadowedVar' shadows an outer variable with the same name. Consider renaming the loop variable to avoid confusion."
+  },
+  {
+    "line": 9,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  }
+]
