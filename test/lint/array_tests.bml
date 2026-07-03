@@ -1,0 +1,312 @@
+// ==========================================
+// BML Category: ARRAY - Senior QA Regression Suite
+// ==========================================
+
+// Common environment instances
+sb = stringbuilder();
+rs = bmql("select id from parts");
+myDict = dict("string");
+myJson = json();
+myJsonArr = jsonarray();
+myDate = getdate();
+
+val_bytearray_pos1 = bytearray("abc");
+var_bytearray_arg_0 = "abc";
+val_bytearray_pos2 = bytearray(var_bytearray_arg_0);
+val_bytearray_pos3 = BYTEARRAY("abc");
+if (true) { val_bytearray_pos4 = bytearray("abc"); }
+for loopIdx in range(1) { val_bytearray_pos5 = bytearray("abc"); }
+val_bytearray_pos6 = bytearray(string(123));
+val_bytearray_pos7 = bytearray(   
+  	  "abc" 	
+  );
+val_bytearray_pos8 = bytearray(/* comment */ "abc");
+val_bytearray_pos9 = bytearray("");
+val_bytearray_pos10 = bytearray("abc");
+val_bytearray_neg1 = bytearray();
+val_bytearray_neg2 = bytearray("abc", "excess_parameter_value");
+val_bytearray_neg3 = bytearray(123);
+val_bytearray_neg4 = bytearray("abc",);
+val_bytearray_neg5 = invalid_ns.bytearray("abc");
+val_bytearray_neg6 = bytearray(, );
+bytearray("abc") = "override_val";
+val_bytearray_neg8 = bytearray(return, break);
+val_bytearray_neg9 = bytearray(123; 456);
+val_bytearray_neg10 = bytearray("abc" 
+
+val_append_pos1 = append("abc", "abc", "abc");
+var_append_arg_0 = "abc";
+var_append_arg_1 = "abc";
+var_append_arg_2 = "abc";
+val_append_pos2 = append(var_append_arg_0, var_append_arg_1, var_append_arg_2);
+val_append_pos3 = APPEND("abc", "abc", "abc");
+if (true) { val_append_pos4 = append("abc", "abc", "abc"); }
+for loopIdx in range(1) { val_append_pos5 = append("abc", "abc", "abc"); }
+val_append_pos6 = append(string(123), string(123), string(123));
+val_append_pos7 = append(   
+  	  "abc", 	
+  "abc", 	
+  "abc" 	
+  );
+val_append_pos8 = append(/* comment */ "abc", /* next */ "abc", /* next */ "abc");
+val_append_pos9 = append("", "", "");
+val_append_pos10 = append("abc", "abc", "abc");
+val_append_neg1 = append("abc", "abc");
+val_append_neg2 = append("abc", "abc", "abc", "excess_parameter_value");
+val_append_neg3 = append(123, 123, 123);
+val_append_neg4 = append("abc", "abc", "abc",);
+val_append_neg5 = invalid_ns.append("abc", "abc", "abc");
+val_append_neg6 = append("abc", , "abc");
+append("abc", "abc", "abc") = "override_val";
+val_append_neg8 = append(return, break);
+val_append_neg9 = append("abc"; "abc"; "abc");
+val_append_neg10 = append("abc", "abc", "abc" 
+
+val_findinarray_pos1 = findinarray("abc", "abc", "abc");
+var_findinarray_arg_0 = "abc";
+var_findinarray_arg_1 = "abc";
+var_findinarray_arg_2 = "abc";
+val_findinarray_pos2 = findinarray(var_findinarray_arg_0, var_findinarray_arg_1, var_findinarray_arg_2);
+val_findinarray_pos3 = FINDINARRAY("abc", "abc", "abc");
+if (true) { val_findinarray_pos4 = findinarray("abc", "abc", "abc"); }
+for loopIdx in range(1) { val_findinarray_pos5 = findinarray("abc", "abc", "abc"); }
+val_findinarray_pos6 = findinarray(string(123), string(123), string(123));
+val_findinarray_pos7 = findinarray(   
+  	  "abc", 	
+  "abc", 	
+  "abc" 	
+  );
+val_findinarray_pos8 = findinarray(/* comment */ "abc", /* next */ "abc", /* next */ "abc");
+val_findinarray_pos9 = findinarray("", "", "");
+val_findinarray_pos10 = findinarray("abc", "abc", "abc");
+val_findinarray_neg1 = findinarray("abc", "abc");
+val_findinarray_neg2 = findinarray("abc", "abc", "abc", "excess_parameter_value");
+val_findinarray_neg3 = findinarray(123, 123, 123);
+val_findinarray_neg4 = findinarray("abc", "abc", "abc",);
+val_findinarray_neg5 = invalid_ns.findinarray("abc", "abc", "abc");
+val_findinarray_neg6 = findinarray("abc", , "abc");
+findinarray("abc", "abc", "abc") = "override_val";
+val_findinarray_neg8 = findinarray(return, break);
+val_findinarray_neg9 = findinarray("abc"; "abc"; "abc");
+val_findinarray_neg10 = findinarray("abc", "abc", "abc" 
+
+val_isempty_pos1 = isempty("abc");
+var_isempty_arg_0 = "abc";
+val_isempty_pos2 = isempty(var_isempty_arg_0);
+val_isempty_pos3 = ISEMPTY("abc");
+if (true) { val_isempty_pos4 = isempty("abc"); }
+for loopIdx in range(1) { val_isempty_pos5 = isempty("abc"); }
+val_isempty_pos6 = isempty(string(123));
+val_isempty_pos7 = isempty(   
+  	  "abc" 	
+  );
+val_isempty_pos8 = isempty(/* comment */ "abc");
+val_isempty_pos9 = isempty("");
+val_isempty_pos10 = isempty("abc");
+val_isempty_neg1 = isempty();
+val_isempty_neg2 = isempty("abc", "excess_parameter_value");
+val_isempty_neg3 = isempty(123);
+val_isempty_neg4 = isempty("abc",);
+val_isempty_neg5 = invalid_ns.isempty("abc");
+val_isempty_neg6 = isempty(, );
+isempty("abc") = "override_val";
+val_isempty_neg8 = isempty(return, break);
+val_isempty_neg9 = isempty(123; 456);
+val_isempty_neg10 = isempty("abc" 
+
+val_max_pos1 = max("abc");
+var_max_arg_0 = "abc";
+val_max_pos2 = max(var_max_arg_0);
+val_max_pos3 = MAX("abc");
+if (true) { val_max_pos4 = max("abc"); }
+for loopIdx in range(1) { val_max_pos5 = max("abc"); }
+val_max_pos6 = max(string(123));
+val_max_pos7 = max(   
+  	  "abc" 	
+  );
+val_max_pos8 = max(/* comment */ "abc");
+val_max_pos9 = max("");
+val_max_pos10 = max("abc");
+val_max_neg1 = max();
+val_max_neg2 = max("abc", "excess_parameter_value");
+val_max_neg3 = max(123);
+val_max_neg4 = max("abc",);
+val_max_neg5 = invalid_ns.max("abc");
+val_max_neg6 = max(, );
+max("abc") = "override_val";
+val_max_neg8 = max(return, break);
+val_max_neg9 = max(123; 456);
+val_max_neg10 = max("abc" 
+
+val_min_pos1 = min("abc");
+var_min_arg_0 = "abc";
+val_min_pos2 = min(var_min_arg_0);
+val_min_pos3 = MIN("abc");
+if (true) { val_min_pos4 = min("abc"); }
+for loopIdx in range(1) { val_min_pos5 = min("abc"); }
+val_min_pos6 = min(string(123));
+val_min_pos7 = min(   
+  	  "abc" 	
+  );
+val_min_pos8 = min(/* comment */ "abc");
+val_min_pos9 = min("");
+val_min_pos10 = min("abc");
+val_min_neg1 = min();
+val_min_neg2 = min("abc", "excess_parameter_value");
+val_min_neg3 = min(123);
+val_min_neg4 = min("abc",);
+val_min_neg5 = invalid_ns.min("abc");
+val_min_neg6 = min(, );
+min("abc") = "override_val";
+val_min_neg8 = min(return, break);
+val_min_neg9 = min(123; 456);
+val_min_neg10 = min("abc" 
+
+val_range_pos1 = range(123);
+var_range_arg_0 = 123;
+val_range_pos2 = range(var_range_arg_0);
+val_range_pos3 = RANGE(123);
+if (true) { val_range_pos4 = range(123); }
+for loopIdx in range(1) { val_range_pos5 = range(123); }
+val_range_pos6 = range(atoi("12"));
+val_range_pos7 = range(   
+  	  123 	
+  );
+val_range_pos8 = range(/* comment */ 123);
+val_range_pos9 = range(2147483647);
+val_range_pos10 = range(123);
+val_range_neg1 = range();
+val_range_neg2 = range(123, "excess_parameter_value");
+val_range_neg3 = range("not_an_int");
+val_range_neg4 = range(123,);
+val_range_neg5 = invalid_ns.range(123);
+val_range_neg6 = range(, );
+range(123) = "override_val";
+val_range_neg8 = range(return, break);
+val_range_neg9 = range(123; 456);
+val_range_neg10 = range(123 
+
+val_remove_pos1 = remove("abc", 123);
+var_remove_arg_0 = "abc";
+var_remove_arg_1 = 123;
+val_remove_pos2 = remove(var_remove_arg_0, var_remove_arg_1);
+val_remove_pos3 = REMOVE("abc", 123);
+if (true) { val_remove_pos4 = remove("abc", 123); }
+for loopIdx in range(1) { val_remove_pos5 = remove("abc", 123); }
+val_remove_pos6 = remove(string(123), atoi("12"));
+val_remove_pos7 = remove(   
+  	  "abc", 	
+  123 	
+  );
+val_remove_pos8 = remove(/* comment */ "abc", /* next */ 123);
+val_remove_pos9 = remove("", 2147483647);
+val_remove_pos10 = remove("abc", 123);
+val_remove_neg1 = remove("abc");
+val_remove_neg2 = remove("abc", 123, "excess_parameter_value");
+val_remove_neg3 = remove(123, "not_an_int");
+val_remove_neg4 = remove("abc", 123,);
+val_remove_neg5 = invalid_ns.remove("abc", 123);
+val_remove_neg6 = remove("abc", , );
+remove("abc", 123) = "override_val";
+val_remove_neg8 = remove(return, break);
+val_remove_neg9 = remove("abc"; 123);
+val_remove_neg10 = remove("abc", 123 
+
+val_reverse_pos1 = reverse("abc");
+var_reverse_arg_0 = "abc";
+val_reverse_pos2 = reverse(var_reverse_arg_0);
+val_reverse_pos3 = REVERSE("abc");
+if (true) { val_reverse_pos4 = reverse("abc"); }
+for loopIdx in range(1) { val_reverse_pos5 = reverse("abc"); }
+val_reverse_pos6 = reverse(string(123));
+val_reverse_pos7 = reverse(   
+  	  "abc" 	
+  );
+val_reverse_pos8 = reverse(/* comment */ "abc");
+val_reverse_pos9 = reverse("");
+val_reverse_pos10 = reverse("abc");
+val_reverse_neg1 = reverse();
+val_reverse_neg2 = reverse("abc", "excess_parameter_value");
+val_reverse_neg3 = reverse(123);
+val_reverse_neg4 = reverse("abc",);
+val_reverse_neg5 = invalid_ns.reverse("abc");
+val_reverse_neg6 = reverse(, );
+reverse("abc") = "override_val";
+val_reverse_neg8 = reverse(return, break);
+val_reverse_neg9 = reverse(123; 456);
+val_reverse_neg10 = reverse("abc" 
+
+val_sizeofarray_pos1 = sizeofarray("abc");
+var_sizeofarray_arg_0 = "abc";
+val_sizeofarray_pos2 = sizeofarray(var_sizeofarray_arg_0);
+val_sizeofarray_pos3 = SIZEOFARRAY("abc");
+if (true) { val_sizeofarray_pos4 = sizeofarray("abc"); }
+for loopIdx in range(1) { val_sizeofarray_pos5 = sizeofarray("abc"); }
+val_sizeofarray_pos6 = sizeofarray(string(123));
+val_sizeofarray_pos7 = sizeofarray(   
+  	  "abc" 	
+  );
+val_sizeofarray_pos8 = sizeofarray(/* comment */ "abc");
+val_sizeofarray_pos9 = sizeofarray("");
+val_sizeofarray_pos10 = sizeofarray("abc");
+val_sizeofarray_neg1 = sizeofarray();
+val_sizeofarray_neg2 = sizeofarray("abc", "excess_parameter_value");
+val_sizeofarray_neg3 = sizeofarray(123);
+val_sizeofarray_neg4 = sizeofarray("abc",);
+val_sizeofarray_neg5 = invalid_ns.sizeofarray("abc");
+val_sizeofarray_neg6 = sizeofarray(, );
+sizeofarray("abc") = "override_val";
+val_sizeofarray_neg8 = sizeofarray(return, break);
+val_sizeofarray_neg9 = sizeofarray(123; 456);
+val_sizeofarray_neg10 = sizeofarray("abc" 
+
+val_sort_pos1 = sort("abc", "abc");
+var_sort_arg_0 = "abc";
+var_sort_arg_1 = "abc";
+val_sort_pos2 = sort(var_sort_arg_0, var_sort_arg_1);
+val_sort_pos3 = SORT("abc", "abc");
+if (true) { val_sort_pos4 = sort("abc", "abc"); }
+for loopIdx in range(1) { val_sort_pos5 = sort("abc", "abc"); }
+val_sort_pos6 = sort(string(123), string(123));
+val_sort_pos7 = sort(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_sort_pos8 = sort(/* comment */ "abc", /* next */ "abc");
+val_sort_pos9 = sort("", "");
+val_sort_pos10 = sort("abc", "abc");
+val_sort_neg1 = sort("abc");
+val_sort_neg2 = sort("abc", "abc", "excess_parameter_value");
+val_sort_neg3 = sort(123, 123);
+val_sort_neg4 = sort("abc", "abc",);
+val_sort_neg5 = invalid_ns.sort("abc", "abc");
+val_sort_neg6 = sort("abc", , );
+sort("abc", "abc") = "override_val";
+val_sort_neg8 = sort(return, break);
+val_sort_neg9 = sort("abc"; "abc");
+val_sort_neg10 = sort("abc", "abc" 
+
+
+// Custom Array slicing and shifting calculations
+arrListString = string[]{"A", "B", "C", "D"};
+arrLenBefore = sizeofarray(arrListString);
+arrSizeNew = remove(arrListString, 0);
+
+// Pricing matrix using 2D array coordinates
+pricingMatrix = float[3][3];
+pricingMatrix[0][0] = 10.0;
+pricingMatrix[0][1] = 15.0;
+pricingMatrix[0][2] = 20.0;
+
+// Empty array validation checks
+emptyIntArr = integer[]{};
+isEmptyArrVal = isempty(emptyIntArr);
+
+// Array index offset slicing inside loops
+arrIntSlicing = integer[]{10, 20, 30};
+for loopIdx in range(3) {
+    if (loopIdx > 0) {
+        prevVal = arrIntSlicing[loopIdx - 1];
+    }
+}
+return "";

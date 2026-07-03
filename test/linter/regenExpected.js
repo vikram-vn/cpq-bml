@@ -22,6 +22,10 @@ const mockVscode = {
         Information: 3,
         Hint: 4
     },
+    DiagnosticTag: {
+        Unnecessary: 1,
+        Deprecated: 2
+    },
     Range: function(start, end, endLine, endChar) {
         console.log('Range args:', { start, end, endLine, endChar, typeofStart: typeof start, typeofEnd: typeof end });
         if (typeof start === 'number' && typeof end === 'number') {

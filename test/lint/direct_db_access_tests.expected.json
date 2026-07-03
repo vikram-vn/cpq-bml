@@ -1,0 +1,2387 @@
+[
+  {
+    "line": 0,
+    "severity": "Warning",
+    "message": "Complexity Warning: Cyclomatic complexity is high (16). Consider refactoring into helper functions"
+  },
+  {
+    "line": 5,
+    "severity": "Hint",
+    "message": "Unused variable: sb"
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 6,
+    "severity": "Hint",
+    "message": "Unused variable: rs"
+  },
+  {
+    "line": 7,
+    "severity": "Hint",
+    "message": "Unused variable: myDict"
+  },
+  {
+    "line": 8,
+    "severity": "Hint",
+    "message": "Unused variable: myJson"
+  },
+  {
+    "line": 9,
+    "severity": "Hint",
+    "message": "Unused variable: myJsonArr"
+  },
+  {
+    "line": 10,
+    "severity": "Hint",
+    "message": "Unused variable: myDate"
+  },
+  {
+    "line": 12,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 12,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos1"
+  },
+  {
+    "line": 16,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 16,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos2"
+  },
+  {
+    "line": 17,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos3"
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 18,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 18,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos4"
+  },
+  {
+    "line": 19,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 19,
+    "severity": "Information",
+    "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 19,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos5"
+  },
+  {
+    "line": 20,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 20,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 20,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 20,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 20,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos6"
+  },
+  {
+    "line": 21,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 21,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos7"
+  },
+  {
+    "line": 26,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 26,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos8"
+  },
+  {
+    "line": 27,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 27,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos9"
+  },
+  {
+    "line": 28,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 28,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_pos10"
+  },
+  {
+    "line": 29,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 29,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg1"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 30,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg2"
+  },
+  {
+    "line": 31,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 31,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 31,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 31,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 31,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg3"
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 32,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg4"
+  },
+  {
+    "line": 33,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.gettabledata(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 33,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 33,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg5"
+  },
+  {
+    "line": 34,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 34,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg6"
+  },
+  {
+    "line": 35,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 36,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 36,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 36,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg8"
+  },
+  {
+    "line": 37,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 37,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 37,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg9"
+  },
+  {
+    "line": 38,
+    "severity": "Error",
+    "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 38,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettabledata_neg10"
+  },
+  {
+    "line": 40,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 40,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos1"
+  },
+  {
+    "line": 45,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 45,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos2"
+  },
+  {
+    "line": 46,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos3"
+  },
+  {
+    "line": 47,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 47,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 47,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 47,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 47,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos4"
+  },
+  {
+    "line": 48,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 48,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 48,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 48,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos5"
+  },
+  {
+    "line": 49,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 49,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 49,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 49,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 49,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 49,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos6"
+  },
+  {
+    "line": 50,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 50,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos7"
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 56,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos8"
+  },
+  {
+    "line": 57,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 57,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos9"
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 58,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_pos10"
+  },
+  {
+    "line": 59,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 59,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg1"
+  },
+  {
+    "line": 60,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 60,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg2"
+  },
+  {
+    "line": 61,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 61,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 61,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 61,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 61,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 61,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg3"
+  },
+  {
+    "line": 62,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 62,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 62,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg4"
+  },
+  {
+    "line": 63,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.getpartsdata(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 63,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 63,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg5"
+  },
+  {
+    "line": 64,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 64,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg6"
+  },
+  {
+    "line": 65,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 66,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 66,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 66,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg8"
+  },
+  {
+    "line": 67,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 67,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg9"
+  },
+  {
+    "line": 68,
+    "severity": "Error",
+    "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 68,
+    "severity": "Hint",
+    "message": "Unused variable: val_getpartsdata_neg10"
+  },
+  {
+    "line": 70,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 70,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 70,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 70,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos1"
+  },
+  {
+    "line": 71,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 71,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 71,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 72,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos2"
+  },
+  {
+    "line": 73,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 73,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 73,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 73,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos3"
+  },
+  {
+    "line": 74,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 74,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 74,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 74,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 74,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 74,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 74,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos4"
+  },
+  {
+    "line": 75,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 75,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 75,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 75,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos5"
+  },
+  {
+    "line": 76,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 76,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 76,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 76,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos6"
+  },
+  {
+    "line": 77,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos7"
+  },
+  {
+    "line": 78,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 78,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 78,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 80,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 80,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 80,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 80,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos8"
+  },
+  {
+    "line": 81,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 81,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 81,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 81,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos9"
+  },
+  {
+    "line": 82,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 82,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 82,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 82,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_pos10"
+  },
+  {
+    "line": 83,
+    "severity": "Error",
+    "message": "Built-in function 'haserror' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 83,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg1"
+  },
+  {
+    "line": 84,
+    "severity": "Error",
+    "message": "Built-in function 'haserror' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 84,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 84,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 84,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 84,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg2"
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "Argument 1 to 'haserror' should be RecordSet, but got a String value."
+  },
+  {
+    "line": 85,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg3"
+  },
+  {
+    "line": 86,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 86,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 86,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 86,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 86,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg4"
+  },
+  {
+    "line": 87,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.haserror(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 87,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 87,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 87,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 87,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg5"
+  },
+  {
+    "line": 88,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 88,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg6"
+  },
+  {
+    "line": 89,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 89,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 89,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 90,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 90,
+    "severity": "Error",
+    "message": "Built-in function 'haserror' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 90,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg8"
+  },
+  {
+    "line": 91,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 91,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 91,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 91,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg9"
+  },
+  {
+    "line": 92,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 92,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 92,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 92,
+    "severity": "Hint",
+    "message": "Unused variable: val_haserror_neg10"
+  },
+  {
+    "line": 94,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 94,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 94,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 94,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos1"
+  },
+  {
+    "line": 95,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 95,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 95,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 96,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos2"
+  },
+  {
+    "line": 97,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 97,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 97,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 97,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos3"
+  },
+  {
+    "line": 98,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 98,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 98,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 98,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 98,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 98,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 98,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos4"
+  },
+  {
+    "line": 99,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 99,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 99,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 99,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos5"
+  },
+  {
+    "line": 100,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 100,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 100,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 100,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos6"
+  },
+  {
+    "line": 101,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos7"
+  },
+  {
+    "line": 102,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 102,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 102,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 104,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 104,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 104,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 104,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos8"
+  },
+  {
+    "line": 105,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 105,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 105,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 105,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos9"
+  },
+  {
+    "line": 106,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 106,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 106,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 106,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_pos10"
+  },
+  {
+    "line": 107,
+    "severity": "Error",
+    "message": "Built-in function 'getmessage' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 107,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg1"
+  },
+  {
+    "line": 108,
+    "severity": "Error",
+    "message": "Built-in function 'getmessage' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 108,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 108,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 108,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 108,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg2"
+  },
+  {
+    "line": 109,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getmessage' should be RecordSet, but got a String value."
+  },
+  {
+    "line": 109,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg3"
+  },
+  {
+    "line": 110,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 110,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 110,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 110,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 110,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg4"
+  },
+  {
+    "line": 111,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.getmessage(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 111,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 111,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 111,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 111,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg5"
+  },
+  {
+    "line": 112,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 112,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg6"
+  },
+  {
+    "line": 113,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 113,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 113,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 114,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 114,
+    "severity": "Error",
+    "message": "Built-in function 'getmessage' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 114,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg8"
+  },
+  {
+    "line": 115,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 115,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 115,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 115,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg9"
+  },
+  {
+    "line": 116,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 116,
+    "severity": "Information",
+    "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 116,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 116,
+    "severity": "Hint",
+    "message": "Unused variable: val_getmessage_neg10"
+  },
+  {
+    "line": 118,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 118,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos1"
+  },
+  {
+    "line": 121,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos2"
+  },
+  {
+    "line": 122,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 122,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos3"
+  },
+  {
+    "line": 123,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 123,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 123,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 123,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 123,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos4"
+  },
+  {
+    "line": 124,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 124,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 124,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 124,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos5"
+  },
+  {
+    "line": 125,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 125,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 125,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos6"
+  },
+  {
+    "line": 126,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 126,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos7"
+  },
+  {
+    "line": 130,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 130,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos8"
+  },
+  {
+    "line": 131,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 131,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos9"
+  },
+  {
+    "line": 132,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 132,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_pos10"
+  },
+  {
+    "line": 133,
+    "severity": "Error",
+    "message": "Built-in function 'getint' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 133,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg1"
+  },
+  {
+    "line": 134,
+    "severity": "Error",
+    "message": "Built-in function 'getint' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 134,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg2"
+  },
+  {
+    "line": 135,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a Integer value."
+  },
+  {
+    "line": 135,
+    "severity": "Warning",
+    "message": "Argument 2 to 'getint' should be String, but got a Integer value."
+  },
+  {
+    "line": 135,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 135,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 135,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg3"
+  },
+  {
+    "line": 136,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 136,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 136,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg4"
+  },
+  {
+    "line": 137,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.getint(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 137,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg5"
+  },
+  {
+    "line": 138,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 138,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 138,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg6"
+  },
+  {
+    "line": 139,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 140,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 140,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg8"
+  },
+  {
+    "line": 141,
+    "severity": "Error",
+    "message": "Built-in function 'getint' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 141,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 141,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg9"
+  },
+  {
+    "line": 142,
+    "severity": "Hint",
+    "message": "Unused variable: val_getint_neg10"
+  },
+  {
+    "line": 144,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 144,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos1"
+  },
+  {
+    "line": 147,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos2"
+  },
+  {
+    "line": 148,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 148,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos3"
+  },
+  {
+    "line": 149,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 149,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 149,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 149,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 149,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos4"
+  },
+  {
+    "line": 150,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 150,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 150,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 150,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos5"
+  },
+  {
+    "line": 151,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 151,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 151,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos6"
+  },
+  {
+    "line": 152,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 152,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos7"
+  },
+  {
+    "line": 156,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 156,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos8"
+  },
+  {
+    "line": 157,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 157,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos9"
+  },
+  {
+    "line": 158,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 158,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_pos10"
+  },
+  {
+    "line": 159,
+    "severity": "Error",
+    "message": "Built-in function 'getfloat' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 159,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg1"
+  },
+  {
+    "line": 160,
+    "severity": "Error",
+    "message": "Built-in function 'getfloat' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 160,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg2"
+  },
+  {
+    "line": 161,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a Integer value."
+  },
+  {
+    "line": 161,
+    "severity": "Warning",
+    "message": "Argument 2 to 'getfloat' should be String, but got a Integer value."
+  },
+  {
+    "line": 161,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 161,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 161,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg3"
+  },
+  {
+    "line": 162,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 162,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 162,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg4"
+  },
+  {
+    "line": 163,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.getfloat(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 163,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg5"
+  },
+  {
+    "line": 164,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 164,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 164,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg6"
+  },
+  {
+    "line": 165,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 166,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 166,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg8"
+  },
+  {
+    "line": 167,
+    "severity": "Error",
+    "message": "Built-in function 'getfloat' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 167,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 167,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg9"
+  },
+  {
+    "line": 168,
+    "severity": "Hint",
+    "message": "Unused variable: val_getfloat_neg10"
+  },
+  {
+    "line": 170,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 170,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos1"
+  },
+  {
+    "line": 173,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos2"
+  },
+  {
+    "line": 174,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 174,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos3"
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 175,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos4"
+  },
+  {
+    "line": 176,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 176,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 176,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 176,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos5"
+  },
+  {
+    "line": 177,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 177,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 177,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos6"
+  },
+  {
+    "line": 178,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 178,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos7"
+  },
+  {
+    "line": 182,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 182,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos8"
+  },
+  {
+    "line": 183,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 183,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos9"
+  },
+  {
+    "line": 184,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 184,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_pos10"
+  },
+  {
+    "line": 185,
+    "severity": "Error",
+    "message": "Built-in function 'getboolean' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 185,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg1"
+  },
+  {
+    "line": 186,
+    "severity": "Error",
+    "message": "Built-in function 'getboolean' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 186,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg2"
+  },
+  {
+    "line": 187,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a Integer value."
+  },
+  {
+    "line": 187,
+    "severity": "Warning",
+    "message": "Argument 2 to 'getboolean' should be String, but got a Integer value."
+  },
+  {
+    "line": 187,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 187,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 187,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg3"
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 188,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 188,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg4"
+  },
+  {
+    "line": 189,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.getboolean(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 189,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg5"
+  },
+  {
+    "line": 190,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 190,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 190,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg6"
+  },
+  {
+    "line": 191,
+    "severity": "Warning",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 192,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 192,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg8"
+  },
+  {
+    "line": 193,
+    "severity": "Error",
+    "message": "Built-in function 'getboolean' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 193,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg9"
+  },
+  {
+    "line": 194,
+    "severity": "Hint",
+    "message": "Unused variable: val_getboolean_neg10"
+  },
+  {
+    "line": 196,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 196,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos1"
+  },
+  {
+    "line": 198,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos2"
+  },
+  {
+    "line": 199,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 199,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos3"
+  },
+  {
+    "line": 200,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 200,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 200,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 200,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 200,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos4"
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 201,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos5"
+  },
+  {
+    "line": 202,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 202,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos6"
+  },
+  {
+    "line": 203,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 203,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos7"
+  },
+  {
+    "line": 206,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 206,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos8"
+  },
+  {
+    "line": 207,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 207,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos9"
+  },
+  {
+    "line": 208,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 208,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_pos10"
+  },
+  {
+    "line": 209,
+    "severity": "Error",
+    "message": "Built-in function 'gettransaction' expects 1 to 3 argument(s), but got 0."
+  },
+  {
+    "line": 209,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg1"
+  },
+  {
+    "line": 210,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 210,
+    "severity": "Warning",
+    "message": "Argument 2 to 'gettransaction' should be Json, but got a String value."
+  },
+  {
+    "line": 210,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg2"
+  },
+  {
+    "line": 211,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 211,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg3"
+  },
+  {
+    "line": 212,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 212,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 212,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg4"
+  },
+  {
+    "line": 213,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.gettransaction(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 213,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg5"
+  },
+  {
+    "line": 214,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 214,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg6"
+  },
+  {
+    "line": 215,
+    "severity": "Warning",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 216,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 216,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg8"
+  },
+  {
+    "line": 217,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 217,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 217,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 217,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg9"
+  },
+  {
+    "line": 218,
+    "severity": "Hint",
+    "message": "Unused variable: val_gettransaction_neg10"
+  },
+  {
+    "line": 227,
+    "severity": "Hint",
+    "message": "Unused variable: whereQuery"
+  },
+  {
+    "line": 230,
+    "severity": "Hint",
+    "message": "Unused variable: dbJoinRs"
+  },
+  {
+    "line": 233,
+    "severity": "Information",
+    "message": "Performance Info: Table 'parts' is queried 32 times. Consider combining queries"
+  },
+  {
+    "line": 233,
+    "severity": "Hint",
+    "message": "Unused variable: aliasJoinRs"
+  }
+]

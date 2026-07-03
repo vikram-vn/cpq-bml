@@ -1,0 +1,97 @@
+[
+  {
+    "line": 1,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 5,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 9,
+    "severity": "Error",
+    "message": "Built-in function 'range' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 9,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 9,
+    "severity": "Information",
+    "message": "Unused loop variable: 'i' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 10,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 12,
+    "severity": "Error",
+    "message": "Built-in function 'range' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 13,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 15,
+    "severity": "Error",
+    "message": "Built-in function 'range' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 16,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 18,
+    "severity": "Error",
+    "message": "Built-in function 'range' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 18,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 18,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 19,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 23,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 24,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 24,
+    "severity": "Warning",
+    "message": "Unreachable code: this can never execute - it comes after an unconditional 'break'."
+  },
+  {
+    "line": 27,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 28,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
+  }
+]

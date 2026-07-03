@@ -1,0 +1,11 @@
+// Semicolon rules check
+x = 10;
+y = 20;
+
+// Invalid: Missing semicolons
+a = 1
+b = 2
+if (x > 0) {
+    c = 3
+}
+return ""

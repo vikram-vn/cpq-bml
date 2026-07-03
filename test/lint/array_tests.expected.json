@@ -1,0 +1,2767 @@
+[
+  {
+    "line": 0,
+    "severity": "Warning",
+    "message": "Complexity Warning: Cyclomatic complexity is high (24). Consider refactoring into helper functions"
+  },
+  {
+    "line": 5,
+    "severity": "Hint",
+    "message": "Unused variable: sb"
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 6,
+    "severity": "Hint",
+    "message": "Unused variable: rs"
+  },
+  {
+    "line": 7,
+    "severity": "Hint",
+    "message": "Unused variable: myDict"
+  },
+  {
+    "line": 8,
+    "severity": "Hint",
+    "message": "Unused variable: myJson"
+  },
+  {
+    "line": 9,
+    "severity": "Hint",
+    "message": "Unused variable: myJsonArr"
+  },
+  {
+    "line": 10,
+    "severity": "Hint",
+    "message": "Unused variable: myDate"
+  },
+  {
+    "line": 12,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos1"
+  },
+  {
+    "line": 14,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos2"
+  },
+  {
+    "line": 15,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos3"
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 16,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos4"
+  },
+  {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 17,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos5"
+  },
+  {
+    "line": 18,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 18,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos6"
+  },
+  {
+    "line": 19,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos7"
+  },
+  {
+    "line": 22,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos8"
+  },
+  {
+    "line": 23,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos9"
+  },
+  {
+    "line": 24,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_pos10"
+  },
+  {
+    "line": 25,
+    "severity": "Error",
+    "message": "Error: 'bytearray()' expects 1 or 2 arguments, but got 0."
+  },
+  {
+    "line": 25,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg1"
+  },
+  {
+    "line": 26,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg2"
+  },
+  {
+    "line": 27,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 27,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg3"
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Warning: Argument 1 to 'bytearray' should be String, but got Integer."
+  },
+  {
+    "line": 28,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 28,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg4"
+  },
+  {
+    "line": 29,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.bytearray(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 29,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg5"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 30,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg6"
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 32,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg8"
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 33,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 33,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg9"
+  },
+  {
+    "line": 34,
+    "severity": "Hint",
+    "message": "Unused variable: val_bytearray_neg10"
+  },
+  {
+    "line": 36,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 36,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos1"
+  },
+  {
+    "line": 40,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 40,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos2"
+  },
+  {
+    "line": 41,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 41,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos3"
+  },
+  {
+    "line": 42,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 42,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos4"
+  },
+  {
+    "line": 43,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 43,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 43,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 43,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos5"
+  },
+  {
+    "line": 44,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 44,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 44,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 44,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 44,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos6"
+  },
+  {
+    "line": 45,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 45,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos7"
+  },
+  {
+    "line": 50,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 50,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos8"
+  },
+  {
+    "line": 51,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 51,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos9"
+  },
+  {
+    "line": 52,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 52,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_pos10"
+  },
+  {
+    "line": 53,
+    "severity": "Warning",
+    "message": "Argument 1 to 'append' should be Array, but got a String value."
+  },
+  {
+    "line": 53,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg1"
+  },
+  {
+    "line": 54,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 4."
+  },
+  {
+    "line": 54,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg2"
+  },
+  {
+    "line": 55,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 55,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 55,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 55,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 55,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg3"
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 56,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg4"
+  },
+  {
+    "line": 57,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.append(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 57,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg5"
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 58,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg6"
+  },
+  {
+    "line": 59,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 60,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 60,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg8"
+  },
+  {
+    "line": 61,
+    "severity": "Error",
+    "message": "Built-in function 'append' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 61,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 61,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg9"
+  },
+  {
+    "line": 62,
+    "severity": "Hint",
+    "message": "Unused variable: val_append_neg10"
+  },
+  {
+    "line": 64,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 64,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos1"
+  },
+  {
+    "line": 68,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 68,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos2"
+  },
+  {
+    "line": 69,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 69,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos3"
+  },
+  {
+    "line": 70,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 70,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 70,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 70,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 70,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos4"
+  },
+  {
+    "line": 71,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 71,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 71,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 71,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos5"
+  },
+  {
+    "line": 72,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 72,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 72,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 72,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 72,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos6"
+  },
+  {
+    "line": 73,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 73,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos7"
+  },
+  {
+    "line": 78,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 78,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos8"
+  },
+  {
+    "line": 79,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 79,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos9"
+  },
+  {
+    "line": 80,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 80,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_pos10"
+  },
+  {
+    "line": 81,
+    "severity": "Warning",
+    "message": "Argument 1 to 'findinarray' should be Array, but got a String value."
+  },
+  {
+    "line": 81,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg1"
+  },
+  {
+    "line": 82,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 4."
+  },
+  {
+    "line": 82,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg2"
+  },
+  {
+    "line": 83,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 83,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 83,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 83,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 83,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg3"
+  },
+  {
+    "line": 84,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 84,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 84,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg4"
+  },
+  {
+    "line": 85,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.findinarray(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 85,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg5"
+  },
+  {
+    "line": 86,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 86,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg6"
+  },
+  {
+    "line": 87,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 88,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 88,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg8"
+  },
+  {
+    "line": 89,
+    "severity": "Error",
+    "message": "Built-in function 'findinarray' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 89,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 89,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg9"
+  },
+  {
+    "line": 90,
+    "severity": "Hint",
+    "message": "Unused variable: val_findinarray_neg10"
+  },
+  {
+    "line": 92,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 92,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos1"
+  },
+  {
+    "line": 94,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos2"
+  },
+  {
+    "line": 95,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 95,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos3"
+  },
+  {
+    "line": 96,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 96,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 96,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 96,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 96,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos4"
+  },
+  {
+    "line": 97,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 97,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 97,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 97,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos5"
+  },
+  {
+    "line": 98,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 98,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos6"
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 99,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos7"
+  },
+  {
+    "line": 102,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 102,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos8"
+  },
+  {
+    "line": 103,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 103,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos9"
+  },
+  {
+    "line": 104,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 104,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_pos10"
+  },
+  {
+    "line": 105,
+    "severity": "Error",
+    "message": "Built-in function 'isempty' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 105,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg1"
+  },
+  {
+    "line": 106,
+    "severity": "Error",
+    "message": "Built-in function 'isempty' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 106,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg2"
+  },
+  {
+    "line": 107,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a Integer value."
+  },
+  {
+    "line": 107,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 107,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg3"
+  },
+  {
+    "line": 108,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 108,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 108,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg4"
+  },
+  {
+    "line": 109,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.isempty(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 109,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg5"
+  },
+  {
+    "line": 110,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 110,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg6"
+  },
+  {
+    "line": 111,
+    "severity": "Warning",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 112,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 112,
+    "severity": "Error",
+    "message": "Built-in function 'isempty' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 112,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg8"
+  },
+  {
+    "line": 113,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 113,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 113,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 113,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg9"
+  },
+  {
+    "line": 114,
+    "severity": "Hint",
+    "message": "Unused variable: val_isempty_neg10"
+  },
+  {
+    "line": 116,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 116,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos1"
+  },
+  {
+    "line": 118,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos2"
+  },
+  {
+    "line": 119,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 119,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos3"
+  },
+  {
+    "line": 120,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 120,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 120,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 120,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 120,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos4"
+  },
+  {
+    "line": 121,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 121,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 121,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 121,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos5"
+  },
+  {
+    "line": 122,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 122,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos6"
+  },
+  {
+    "line": 123,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 123,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos7"
+  },
+  {
+    "line": 126,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 126,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos8"
+  },
+  {
+    "line": 127,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 127,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos9"
+  },
+  {
+    "line": 128,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 128,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_pos10"
+  },
+  {
+    "line": 129,
+    "severity": "Error",
+    "message": "Built-in function 'max' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 129,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg1"
+  },
+  {
+    "line": 130,
+    "severity": "Error",
+    "message": "Built-in function 'max' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 130,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg2"
+  },
+  {
+    "line": 131,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a Integer value."
+  },
+  {
+    "line": 131,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 131,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg3"
+  },
+  {
+    "line": 132,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 132,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 132,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg4"
+  },
+  {
+    "line": 133,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.max(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 133,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg5"
+  },
+  {
+    "line": 134,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 134,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg6"
+  },
+  {
+    "line": 135,
+    "severity": "Warning",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 136,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 136,
+    "severity": "Error",
+    "message": "Built-in function 'max' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 136,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg8"
+  },
+  {
+    "line": 137,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 137,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 137,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 137,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg9"
+  },
+  {
+    "line": 138,
+    "severity": "Hint",
+    "message": "Unused variable: val_max_neg10"
+  },
+  {
+    "line": 140,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 140,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos1"
+  },
+  {
+    "line": 142,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos2"
+  },
+  {
+    "line": 143,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 143,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos3"
+  },
+  {
+    "line": 144,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 144,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 144,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 144,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 144,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos4"
+  },
+  {
+    "line": 145,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 145,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 145,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 145,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos5"
+  },
+  {
+    "line": 146,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 146,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos6"
+  },
+  {
+    "line": 147,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 147,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos7"
+  },
+  {
+    "line": 150,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 150,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos8"
+  },
+  {
+    "line": 151,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 151,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos9"
+  },
+  {
+    "line": 152,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 152,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_pos10"
+  },
+  {
+    "line": 153,
+    "severity": "Error",
+    "message": "Built-in function 'min' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 153,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg1"
+  },
+  {
+    "line": 154,
+    "severity": "Error",
+    "message": "Built-in function 'min' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 154,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg2"
+  },
+  {
+    "line": 155,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a Integer value."
+  },
+  {
+    "line": 155,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 155,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg3"
+  },
+  {
+    "line": 156,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 156,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 156,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg4"
+  },
+  {
+    "line": 157,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.min(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 157,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg5"
+  },
+  {
+    "line": 158,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 158,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg6"
+  },
+  {
+    "line": 159,
+    "severity": "Warning",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 160,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 160,
+    "severity": "Error",
+    "message": "Built-in function 'min' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 160,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg8"
+  },
+  {
+    "line": 161,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 161,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 161,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 161,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg9"
+  },
+  {
+    "line": 162,
+    "severity": "Hint",
+    "message": "Unused variable: val_min_neg10"
+  },
+  {
+    "line": 164,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 164,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos1"
+  },
+  {
+    "line": 165,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 166,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos2"
+  },
+  {
+    "line": 167,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 167,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos3"
+  },
+  {
+    "line": 168,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 168,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 168,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 168,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 168,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos4"
+  },
+  {
+    "line": 169,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 169,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 169,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 169,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos5"
+  },
+  {
+    "line": 170,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos6"
+  },
+  {
+    "line": 171,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos7"
+  },
+  {
+    "line": 172,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 174,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 174,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos8"
+  },
+  {
+    "line": 175,
+    "severity": "Information",
+    "message": "Design Info: Magic number '2147483647' detected. Consider defining a named constant"
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Integer value exceeds the maximum value of 999,999,999 for a Data Table integer column"
+  },
+  {
+    "line": 175,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos9"
+  },
+  {
+    "line": 176,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 176,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_pos10"
+  },
+  {
+    "line": 177,
+    "severity": "Error",
+    "message": "Built-in function 'range' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 177,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg1"
+  },
+  {
+    "line": 178,
+    "severity": "Error",
+    "message": "Built-in function 'range' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 178,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 178,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg2"
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "Argument 1 to 'range' should be Integer, but got a String value."
+  },
+  {
+    "line": 179,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg3"
+  },
+  {
+    "line": 180,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 180,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 180,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg4"
+  },
+  {
+    "line": 181,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.range(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 181,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 181,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg5"
+  },
+  {
+    "line": 182,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 182,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg6"
+  },
+  {
+    "line": 183,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 184,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 184,
+    "severity": "Error",
+    "message": "Built-in function 'range' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 184,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg8"
+  },
+  {
+    "line": 185,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 185,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 185,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 185,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg9"
+  },
+  {
+    "line": 186,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 186,
+    "severity": "Hint",
+    "message": "Unused variable: val_range_neg10"
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 188,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 188,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos1"
+  },
+  {
+    "line": 190,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 191,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos2"
+  },
+  {
+    "line": 192,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 192,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 192,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos3"
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 193,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 193,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos4"
+  },
+  {
+    "line": 194,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 194,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 194,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 194,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 194,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos5"
+  },
+  {
+    "line": 195,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 195,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos6"
+  },
+  {
+    "line": 196,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 196,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos7"
+  },
+  {
+    "line": 198,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 200,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 200,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 200,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos8"
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 201,
+    "severity": "Information",
+    "message": "Design Info: Magic number '2147483647' detected. Consider defining a named constant"
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Integer value exceeds the maximum value of 999,999,999 for a Data Table integer column"
+  },
+  {
+    "line": 201,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos9"
+  },
+  {
+    "line": 202,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 202,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 202,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_pos10"
+  },
+  {
+    "line": 203,
+    "severity": "Error",
+    "message": "Built-in function 'remove' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 203,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg1"
+  },
+  {
+    "line": 204,
+    "severity": "Error",
+    "message": "Built-in function 'remove' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 204,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 204,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg2"
+  },
+  {
+    "line": 205,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a Integer value."
+  },
+  {
+    "line": 205,
+    "severity": "Warning",
+    "message": "Argument 2 to 'remove' should be Integer, but got a String value."
+  },
+  {
+    "line": 205,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 205,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg3"
+  },
+  {
+    "line": 206,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 206,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 206,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 206,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg4"
+  },
+  {
+    "line": 207,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.remove(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 207,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 207,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg5"
+  },
+  {
+    "line": 208,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 208,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 208,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg6"
+  },
+  {
+    "line": 209,
+    "severity": "Warning",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 209,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 210,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 210,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg8"
+  },
+  {
+    "line": 211,
+    "severity": "Error",
+    "message": "Built-in function 'remove' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 211,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 211,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 211,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg9"
+  },
+  {
+    "line": 212,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 212,
+    "severity": "Hint",
+    "message": "Unused variable: val_remove_neg10"
+  },
+  {
+    "line": 214,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 214,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos1"
+  },
+  {
+    "line": 216,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos2"
+  },
+  {
+    "line": 217,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 217,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos3"
+  },
+  {
+    "line": 218,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 218,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 218,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 218,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 218,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos4"
+  },
+  {
+    "line": 219,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 219,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 219,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 219,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos5"
+  },
+  {
+    "line": 220,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 220,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos6"
+  },
+  {
+    "line": 221,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 221,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos7"
+  },
+  {
+    "line": 224,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 224,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos8"
+  },
+  {
+    "line": 225,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 225,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos9"
+  },
+  {
+    "line": 226,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 226,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_pos10"
+  },
+  {
+    "line": 227,
+    "severity": "Error",
+    "message": "Built-in function 'reverse' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 227,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg1"
+  },
+  {
+    "line": 228,
+    "severity": "Error",
+    "message": "Built-in function 'reverse' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 228,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg2"
+  },
+  {
+    "line": 229,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a Integer value."
+  },
+  {
+    "line": 229,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 229,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg3"
+  },
+  {
+    "line": 230,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 230,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 230,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg4"
+  },
+  {
+    "line": 231,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.reverse(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 231,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg5"
+  },
+  {
+    "line": 232,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 232,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg6"
+  },
+  {
+    "line": 233,
+    "severity": "Warning",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 234,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 234,
+    "severity": "Error",
+    "message": "Built-in function 'reverse' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 234,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg8"
+  },
+  {
+    "line": 235,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 235,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 235,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 235,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg9"
+  },
+  {
+    "line": 236,
+    "severity": "Hint",
+    "message": "Unused variable: val_reverse_neg10"
+  },
+  {
+    "line": 238,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 238,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos1"
+  },
+  {
+    "line": 240,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos2"
+  },
+  {
+    "line": 241,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 241,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos3"
+  },
+  {
+    "line": 242,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 242,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 242,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 242,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 242,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos4"
+  },
+  {
+    "line": 243,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 243,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 243,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 243,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos5"
+  },
+  {
+    "line": 244,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 244,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos6"
+  },
+  {
+    "line": 245,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 245,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos7"
+  },
+  {
+    "line": 248,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 248,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos8"
+  },
+  {
+    "line": 249,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 249,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos9"
+  },
+  {
+    "line": 250,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 250,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_pos10"
+  },
+  {
+    "line": 251,
+    "severity": "Error",
+    "message": "Built-in function 'sizeofarray' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 251,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg1"
+  },
+  {
+    "line": 252,
+    "severity": "Error",
+    "message": "Built-in function 'sizeofarray' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 252,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg2"
+  },
+  {
+    "line": 253,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a Integer value."
+  },
+  {
+    "line": 253,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 253,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg3"
+  },
+  {
+    "line": 254,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 254,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 254,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg4"
+  },
+  {
+    "line": 255,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.sizeofarray(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 255,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg5"
+  },
+  {
+    "line": 256,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 256,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg6"
+  },
+  {
+    "line": 257,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 258,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 258,
+    "severity": "Error",
+    "message": "Built-in function 'sizeofarray' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 258,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg8"
+  },
+  {
+    "line": 259,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 259,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 259,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 259,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg9"
+  },
+  {
+    "line": 260,
+    "severity": "Hint",
+    "message": "Unused variable: val_sizeofarray_neg10"
+  },
+  {
+    "line": 262,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 262,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos1"
+  },
+  {
+    "line": 265,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos2"
+  },
+  {
+    "line": 266,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 266,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos3"
+  },
+  {
+    "line": 267,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 267,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 267,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 267,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 267,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos4"
+  },
+  {
+    "line": 268,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 268,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 268,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 268,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos5"
+  },
+  {
+    "line": 269,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 269,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 269,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos6"
+  },
+  {
+    "line": 270,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 270,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos7"
+  },
+  {
+    "line": 274,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 274,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos8"
+  },
+  {
+    "line": 275,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 275,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos9"
+  },
+  {
+    "line": 276,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 276,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_pos10"
+  },
+  {
+    "line": 277,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 277,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg1"
+  },
+  {
+    "line": 278,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 278,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg2"
+  },
+  {
+    "line": 279,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a Integer value."
+  },
+  {
+    "line": 279,
+    "severity": "Warning",
+    "message": "Argument 2 to 'sort' should be String, but got a Integer value."
+  },
+  {
+    "line": 279,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 279,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 279,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg3"
+  },
+  {
+    "line": 280,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 280,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 280,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg4"
+  },
+  {
+    "line": 281,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.sort(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 281,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg5"
+  },
+  {
+    "line": 282,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 282,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 282,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg6"
+  },
+  {
+    "line": 283,
+    "severity": "Warning",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 284,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 284,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg8"
+  },
+  {
+    "line": 285,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 285,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg9"
+  },
+  {
+    "line": 286,
+    "severity": "Hint",
+    "message": "Unused variable: val_sort_neg10"
+  },
+  {
+    "line": 291,
+    "severity": "Hint",
+    "message": "Unused variable: arrLenBefore"
+  },
+  {
+    "line": 292,
+    "severity": "Hint",
+    "message": "Unused variable: arrSizeNew"
+  },
+  {
+    "line": 295,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 295,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 296,
+    "severity": "Information",
+    "message": "Design Info: Magic number '10.0' detected. Consider defining a named constant"
+  },
+  {
+    "line": 297,
+    "severity": "Information",
+    "message": "Design Info: Magic number '15.0' detected. Consider defining a named constant"
+  },
+  {
+    "line": 298,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20.0' detected. Consider defining a named constant"
+  },
+  {
+    "line": 302,
+    "severity": "Hint",
+    "message": "Unused variable: isEmptyArrVal"
+  },
+  {
+    "line": 305,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+  },
+  {
+    "line": 305,
+    "severity": "Information",
+    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
+  },
+  {
+    "line": 306,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 308,
+    "severity": "Hint",
+    "message": "Unused variable: prevVal"
+  }
+]

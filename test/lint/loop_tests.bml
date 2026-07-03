@@ -1,0 +1,32 @@
+// Iterative calculations
+tierArray = integer[]{1, 2, 3};
+
+// Valid loops
+for tier in tierArray {
+    print(tier);
+}
+
+// Invalid: Infinite loops due to step direction mismatch
+for i in range(0, -5) {
+    print("infinite negative step");
+}
+for i in range(10, 0, 2) {
+    print("infinite positive step");
+}
+for i in range(0, 10, -1) {
+    print("infinite negative step");
+}
+for i in range(5, 5, 0) {
+    print("infinite zero step");
+}
+
+// Invalid: Break and continue statements placed outside loops
+break;
+continue;
+
+if (sizeofarray(tierArray) > 0) {
+    break;
+    continue;
+}
+
+return "";

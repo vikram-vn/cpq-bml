@@ -1,0 +1,124 @@
+// ==========================================
+// BML Category: XML - Senior QA Regression Suite
+// ==========================================
+
+// Common environment instances
+sb = stringbuilder();
+rs = bmql("select id from parts");
+myDict = dict("string");
+myJson = json();
+myJsonArr = jsonarray();
+myDate = getdate();
+
+val_applytemplate_pos1 = applytemplate("abc");
+var_applytemplate_arg_0 = "abc";
+val_applytemplate_pos2 = applytemplate(var_applytemplate_arg_0);
+val_applytemplate_pos3 = APPLYTEMPLATE("abc");
+if (true) { val_applytemplate_pos4 = applytemplate("abc"); }
+for loopIdx in range(1) { val_applytemplate_pos5 = applytemplate("abc"); }
+val_applytemplate_pos6 = applytemplate(string(123));
+val_applytemplate_pos7 = applytemplate(   
+  	  "abc" 	
+  );
+val_applytemplate_pos8 = applytemplate(/* comment */ "abc");
+val_applytemplate_pos9 = applytemplate("");
+val_applytemplate_pos10 = applytemplate("abc");
+val_applytemplate_neg1 = applytemplate();
+val_applytemplate_neg2 = applytemplate("abc", "excess_parameter_value");
+val_applytemplate_neg3 = applytemplate(123);
+val_applytemplate_neg4 = applytemplate("abc",);
+val_applytemplate_neg5 = invalid_ns.applytemplate("abc");
+val_applytemplate_neg6 = applytemplate(, );
+applytemplate("abc") = "override_val";
+val_applytemplate_neg8 = applytemplate(return, break);
+val_applytemplate_neg9 = applytemplate(123; 456);
+val_applytemplate_neg10 = applytemplate("abc" 
+
+val_transformxml_pos1 = transformxml("abc", "abc");
+var_transformxml_arg_0 = "abc";
+var_transformxml_arg_1 = "abc";
+val_transformxml_pos2 = transformxml(var_transformxml_arg_0, var_transformxml_arg_1);
+val_transformxml_pos3 = TRANSFORMXML("abc", "abc");
+if (true) { val_transformxml_pos4 = transformxml("abc", "abc"); }
+for loopIdx in range(1) { val_transformxml_pos5 = transformxml("abc", "abc"); }
+val_transformxml_pos6 = transformxml(string(123), string(123));
+val_transformxml_pos7 = transformxml(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_transformxml_pos8 = transformxml(/* comment */ "abc", /* next */ "abc");
+val_transformxml_pos9 = transformxml("", "");
+val_transformxml_pos10 = transformxml("abc", "abc");
+val_transformxml_neg1 = transformxml("abc");
+val_transformxml_neg2 = transformxml("abc", "abc", "excess_parameter_value");
+val_transformxml_neg3 = transformxml(123, 123);
+val_transformxml_neg4 = transformxml("abc", "abc",);
+val_transformxml_neg5 = invalid_ns.transformxml("abc", "abc");
+val_transformxml_neg6 = transformxml("abc", , );
+transformxml("abc", "abc") = "override_val";
+val_transformxml_neg8 = transformxml(return, break);
+val_transformxml_neg9 = transformxml("abc"; "abc");
+val_transformxml_neg10 = transformxml("abc", "abc" 
+
+val_readxmlsingle_pos1 = readxmlsingle("abc", "abc");
+var_readxmlsingle_arg_0 = "abc";
+var_readxmlsingle_arg_1 = "abc";
+val_readxmlsingle_pos2 = readxmlsingle(var_readxmlsingle_arg_0, var_readxmlsingle_arg_1);
+val_readxmlsingle_pos3 = READXMLSINGLE("abc", "abc");
+if (true) { val_readxmlsingle_pos4 = readxmlsingle("abc", "abc"); }
+for loopIdx in range(1) { val_readxmlsingle_pos5 = readxmlsingle("abc", "abc"); }
+val_readxmlsingle_pos6 = readxmlsingle(string(123), string(123));
+val_readxmlsingle_pos7 = readxmlsingle(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_readxmlsingle_pos8 = readxmlsingle(/* comment */ "abc", /* next */ "abc");
+val_readxmlsingle_pos9 = readxmlsingle("", "");
+val_readxmlsingle_pos10 = readxmlsingle("abc", "abc");
+val_readxmlsingle_neg1 = readxmlsingle("abc");
+val_readxmlsingle_neg2 = readxmlsingle("abc", "abc", "excess_parameter_value");
+val_readxmlsingle_neg3 = readxmlsingle(123, 123);
+val_readxmlsingle_neg4 = readxmlsingle("abc", "abc",);
+val_readxmlsingle_neg5 = invalid_ns.readxmlsingle("abc", "abc");
+val_readxmlsingle_neg6 = readxmlsingle("abc", , );
+readxmlsingle("abc", "abc") = "override_val";
+val_readxmlsingle_neg8 = readxmlsingle(return, break);
+val_readxmlsingle_neg9 = readxmlsingle("abc"; "abc");
+val_readxmlsingle_neg10 = readxmlsingle("abc", "abc" 
+
+val_readxmlmultiple_pos1 = readxmlmultiple("abc", "abc");
+var_readxmlmultiple_arg_0 = "abc";
+var_readxmlmultiple_arg_1 = "abc";
+val_readxmlmultiple_pos2 = readxmlmultiple(var_readxmlmultiple_arg_0, var_readxmlmultiple_arg_1);
+val_readxmlmultiple_pos3 = READXMLMULTIPLE("abc", "abc");
+if (true) { val_readxmlmultiple_pos4 = readxmlmultiple("abc", "abc"); }
+for loopIdx in range(1) { val_readxmlmultiple_pos5 = readxmlmultiple("abc", "abc"); }
+val_readxmlmultiple_pos6 = readxmlmultiple(string(123), string(123));
+val_readxmlmultiple_pos7 = readxmlmultiple(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_readxmlmultiple_pos8 = readxmlmultiple(/* comment */ "abc", /* next */ "abc");
+val_readxmlmultiple_pos9 = readxmlmultiple("", "");
+val_readxmlmultiple_pos10 = readxmlmultiple("abc", "abc");
+val_readxmlmultiple_neg1 = readxmlmultiple("abc");
+val_readxmlmultiple_neg2 = readxmlmultiple("abc", "abc", "excess_parameter_value");
+val_readxmlmultiple_neg3 = readxmlmultiple(123, 123);
+val_readxmlmultiple_neg4 = readxmlmultiple("abc", "abc",);
+val_readxmlmultiple_neg5 = invalid_ns.readxmlmultiple("abc", "abc");
+val_readxmlmultiple_neg6 = readxmlmultiple("abc", , );
+readxmlmultiple("abc", "abc") = "override_val";
+val_readxmlmultiple_neg8 = readxmlmultiple(return, break);
+val_readxmlmultiple_neg9 = readxmlmultiple("abc"; "abc");
+val_readxmlmultiple_neg10 = readxmlmultiple("abc", "abc" 
+
+
+// Extracting node attributes and elements from XML envelopes
+envelopeXmlStr = "<Envelope><Header><TransactionId>TX-8888</TransactionId></Header><Body><Part sku=\"SKU-200\"><Price currency=\"USD\">120.00</Price></Part></Body></Envelope>";
+envelopeDocXml = xml(envelopeXmlStr);
+partsNodesXml = xmlnodes(envelopeDocXml, "//Part");
+
+// XPath namespace envelopes
+complexEnvelopeXml = xml("<ns:Envelope xmlns:ns=\"http://schemas.xmlsoap.org/soap/envelope/\"><ns:Body><Part sku=\"SKU-400\"/></ns:Body></ns:Envelope>");
+nodeWithNs = xmlnodes(complexEnvelopeXml, "//ns:Part");
+return "";

@@ -1,0 +1,922 @@
+[
+  {
+    "line": 5,
+    "severity": "Hint",
+    "message": "Unused variable: sb"
+  },
+  {
+    "line": 6,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 6,
+    "severity": "Hint",
+    "message": "Unused variable: rs"
+  },
+  {
+    "line": 7,
+    "severity": "Hint",
+    "message": "Unused variable: myDict"
+  },
+  {
+    "line": 8,
+    "severity": "Hint",
+    "message": "Unused variable: myJson"
+  },
+  {
+    "line": 9,
+    "severity": "Hint",
+    "message": "Unused variable: myJsonArr"
+  },
+  {
+    "line": 10,
+    "severity": "Hint",
+    "message": "Unused variable: myDate"
+  },
+  {
+    "line": 12,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos1"
+  },
+  {
+    "line": 14,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos2"
+  },
+  {
+    "line": 15,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos3"
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 16,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos4"
+  },
+  {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 17,
+    "severity": "Information",
+    "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 17,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos5"
+  },
+  {
+    "line": 18,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 18,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos6"
+  },
+  {
+    "line": 19,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos7"
+  },
+  {
+    "line": 22,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos8"
+  },
+  {
+    "line": 23,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos9"
+  },
+  {
+    "line": 24,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_pos10"
+  },
+  {
+    "line": 25,
+    "severity": "Error",
+    "message": "Built-in function 'applytemplate' expects 1 to 4 argument(s), but got 0."
+  },
+  {
+    "line": 25,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg1"
+  },
+  {
+    "line": 26,
+    "severity": "Warning",
+    "message": "Argument 2 to 'applytemplate' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 26,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg2"
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Argument 1 to 'applytemplate' should be String, but got a Integer value."
+  },
+  {
+    "line": 27,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 27,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg3"
+  },
+  {
+    "line": 28,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 28,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg4"
+  },
+  {
+    "line": 29,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.applytemplate(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 29,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg5"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 30,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg6"
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 32,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg8"
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
+  },
+  {
+    "line": 33,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 33,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg9"
+  },
+  {
+    "line": 34,
+    "severity": "Hint",
+    "message": "Unused variable: val_applytemplate_neg10"
+  },
+  {
+    "line": 36,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos1"
+  },
+  {
+    "line": 39,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos2"
+  },
+  {
+    "line": 40,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos3"
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 41,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos4"
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 42,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos5"
+  },
+  {
+    "line": 43,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 43,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 43,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos6"
+  },
+  {
+    "line": 44,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos7"
+  },
+  {
+    "line": 48,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos8"
+  },
+  {
+    "line": 49,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos9"
+  },
+  {
+    "line": 50,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_pos10"
+  },
+  {
+    "line": 51,
+    "severity": "Error",
+    "message": "Built-in function 'transformxml' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 51,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg1"
+  },
+  {
+    "line": 52,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg2"
+  },
+  {
+    "line": 53,
+    "severity": "Warning",
+    "message": "Argument 1 to 'transformxml' should be String, but got a Integer value."
+  },
+  {
+    "line": 53,
+    "severity": "Warning",
+    "message": "Argument 2 to 'transformxml' should be String, but got a Integer value."
+  },
+  {
+    "line": 53,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 53,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 53,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg3"
+  },
+  {
+    "line": 54,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 54,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg4"
+  },
+  {
+    "line": 55,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.transformxml(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 55,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg5"
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 56,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg6"
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 58,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg8"
+  },
+  {
+    "line": 59,
+    "severity": "Error",
+    "message": "Built-in function 'transformxml' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 59,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 59,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg9"
+  },
+  {
+    "line": 60,
+    "severity": "Hint",
+    "message": "Unused variable: val_transformxml_neg10"
+  },
+  {
+    "line": 62,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 62,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos1"
+  },
+  {
+    "line": 65,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos2"
+  },
+  {
+    "line": 66,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 66,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos3"
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 67,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos4"
+  },
+  {
+    "line": 68,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 68,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 68,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 68,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos5"
+  },
+  {
+    "line": 69,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 69,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 69,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos6"
+  },
+  {
+    "line": 70,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 70,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos7"
+  },
+  {
+    "line": 74,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 74,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos8"
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 75,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos9"
+  },
+  {
+    "line": 76,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 76,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_pos10"
+  },
+  {
+    "line": 77,
+    "severity": "Error",
+    "message": "Built-in function 'readxmlsingle' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 77,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg1"
+  },
+  {
+    "line": 78,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 78,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg2"
+  },
+  {
+    "line": 79,
+    "severity": "Warning",
+    "message": "Argument 1 to 'readxmlsingle' should be String, but got a Integer value."
+  },
+  {
+    "line": 79,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a Integer value."
+  },
+  {
+    "line": 79,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 79,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 79,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg3"
+  },
+  {
+    "line": 80,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 80,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 80,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg4"
+  },
+  {
+    "line": 81,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.readxmlsingle(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 81,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg5"
+  },
+  {
+    "line": 82,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 82,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg6"
+  },
+  {
+    "line": 83,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 84,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 84,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg8"
+  },
+  {
+    "line": 85,
+    "severity": "Error",
+    "message": "Built-in function 'readxmlsingle' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 85,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg9"
+  },
+  {
+    "line": 86,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlsingle_neg10"
+  },
+  {
+    "line": 88,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 88,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos1"
+  },
+  {
+    "line": 91,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos2"
+  },
+  {
+    "line": 92,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 92,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos3"
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 93,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos4"
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 94,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos5"
+  },
+  {
+    "line": 95,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 95,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 95,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos6"
+  },
+  {
+    "line": 96,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 96,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos7"
+  },
+  {
+    "line": 100,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 100,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos8"
+  },
+  {
+    "line": 101,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 101,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos9"
+  },
+  {
+    "line": 102,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 102,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_pos10"
+  },
+  {
+    "line": 103,
+    "severity": "Error",
+    "message": "Built-in function 'readxmlmultiple' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 103,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg1"
+  },
+  {
+    "line": 104,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 104,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg2"
+  },
+  {
+    "line": 105,
+    "severity": "Warning",
+    "message": "Argument 1 to 'readxmlmultiple' should be String, but got a Integer value."
+  },
+  {
+    "line": 105,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a Integer value."
+  },
+  {
+    "line": 105,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 105,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 105,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg3"
+  },
+  {
+    "line": 106,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 106,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 106,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg4"
+  },
+  {
+    "line": 107,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.readxmlmultiple(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 107,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg5"
+  },
+  {
+    "line": 108,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 108,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg6"
+  },
+  {
+    "line": 109,
+    "severity": "Warning",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 110,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 110,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg8"
+  },
+  {
+    "line": 111,
+    "severity": "Error",
+    "message": "Built-in function 'readxmlmultiple' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 111,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 111,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg9"
+  },
+  {
+    "line": 112,
+    "severity": "Hint",
+    "message": "Unused variable: val_readxmlmultiple_neg10"
+  },
+  {
+    "line": 117,
+    "severity": "Warning",
+    "message": "Unknown built-in function or variable 'xml' - did you mean 'html'?"
+  },
+  {
+    "line": 118,
+    "severity": "Warning",
+    "message": "Unknown built-in function or variable 'xmlnodes'."
+  },
+  {
+    "line": 118,
+    "severity": "Hint",
+    "message": "Unused variable: partsNodesXml"
+  },
+  {
+    "line": 121,
+    "severity": "Warning",
+    "message": "Design Warning: Hardcoded URL detected. Consider using a dynamic configuration, Data Table, or System Variable to avoid environment-specific issues."
+  },
+  {
+    "line": 121,
+    "severity": "Warning",
+    "message": "Unknown built-in function or variable 'xml' - did you mean 'html'?"
+  },
+  {
+    "line": 122,
+    "severity": "Warning",
+    "message": "Unknown built-in function or variable 'xmlnodes'."
+  },
+  {
+    "line": 122,
+    "severity": "Hint",
+    "message": "Unused variable: nodeWithNs"
+  }
+]

@@ -1,0 +1,5 @@
+// Safety checks in CPQ
+sCorrupt = "bad\x1cchar";
+nVal = null;
+nLen = len(nVal);
+return "";

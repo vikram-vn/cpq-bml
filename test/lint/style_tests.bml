@@ -1,0 +1,21 @@
+// Style conventions check
+netPrice = 100.0;
+TAX_RATE = 0.0825;
+itemsList = string[]{"A"};
+configsDict = dict("string");
+partRecords = bmql("select id from parts");
+
+// Invalid: Line length > 200 characters limit
+// aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+// Invalid: Multiple statements separated by semicolons on a single line
+a = 1; b = 2; c = 3; print(a+b+c);
+
+// Invalid: Variable naming convention checks (non camelCase / missing suffixes)
+bad_variable_name = 10;
+constant_bad = 20;
+my_dict = dict("string");
+orderList = string[]{"A"};
+productRecords = string[]{"a"};
+
+return string(netPrice);

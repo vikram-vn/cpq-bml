@@ -1,0 +1,12 @@
+[
+  {
+    "line": 1,
+    "severity": "Hint",
+    "message": "Unused variable: sCorrupt"
+  },
+  {
+    "line": 3,
+    "severity": "Hint",
+    "message": "Unused variable: nLen"
+  }
+]

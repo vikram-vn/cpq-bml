@@ -1,0 +1,52 @@
+[
+  {
+    "line": 2,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+  },
+  {
+    "line": 2,
+    "severity": "Hint",
+    "message": "Unused variable: y"
+  },
+  {
+    "line": 5,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 5,
+    "severity": "Hint",
+    "message": "Unused variable: a"
+  },
+  {
+    "line": 6,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 6,
+    "severity": "Hint",
+    "message": "Unused variable: b"
+  },
+  {
+    "line": 8,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 8,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 8,
+    "severity": "Hint",
+    "message": "Unused variable: c"
+  },
+  {
+    "line": 10,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  }
+]
