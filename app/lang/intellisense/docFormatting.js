@@ -97,7 +97,8 @@ function formatAsJsDoc(info, context) {
     const helpFileRel = getHelpFilePath(info);
     if (helpFileRel && context) {
         const helpFileAbs = path.join(context.extensionPath, helpFileRel);
-        if (fs.existsSync(helpFileAbs)) {
+        // .md.br ships in the packaged .vsix (raw .md is dev/test-only, excluded by .vscodeignore).
+        if (fs.existsSync(helpFileAbs) || fs.existsSync(`${helpFileAbs}.br`)) {
             const uri = vscode.Uri.file(helpFileAbs).with({ fragment: info.name.toLowerCase() });
             const encodedArgs = encodeURIComponent(JSON.stringify([uri.toString()]));
             md.appendMarkdown(`📖 [Read Offline Help](command:cpqBml.openHelpTopic?${encodedArgs})\n\n---\n\n`);
