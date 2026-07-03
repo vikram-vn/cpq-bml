@@ -57,34 +57,34 @@
       {
         "language": "bml",
         "scopeName": "source.bml",
-        "path": "./app/lang/syntaxes/bml.tmLanguage.json"
+        "path": "./app/lang/syntaxes/bml.tmLanguage.min.json"
       },
       {
         "language": "xsl",
         "scopeName": "source.xsl",
-        "path": "./app/lang/syntaxes/xslt.tmLanguage.json"
+        "path": "./app/lang/syntaxes/xslt.tmLanguage.min.json"
       }
     ],
     "themes": [
       {
         "label": "BML Dark Default",
         "uiTheme": "vs-dark",
-        "path": "./themes/dark-default.json"
+        "path": "./themes/dark-default.min.json"
       },
       {
         "label": "BML Light Default",
         "uiTheme": "vs",
-        "path": "./themes/light-default.json"
+        "path": "./themes/light-default.min.json"
       },
       {
         "label": "BML Dark",
         "uiTheme": "vs-dark",
-        "path": "./themes/dark.json"
+        "path": "./themes/dark.min.json"
       },
       {
         "label": "BML Light",
         "uiTheme": "vs",
-        "path": "./themes/light.json"
+        "path": "./themes/light.min.json"
       }
     ],
     "snippets": [],
@@ -437,9 +437,9 @@
     }
   },
   "scripts": {
-    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py",
+    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
-    "vscode:prepublish": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py",
+    "vscode:prepublish": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py",
     "package": "npx @vscode/vsce package",
     "publish": "npx @vscode/vsce publish",
     "build": "npm run package",

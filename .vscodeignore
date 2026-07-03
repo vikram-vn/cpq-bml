@@ -39,9 +39,10 @@ app/lang/xslt/**
 app/lang/metrics/**
 app/lang/testing/**
 
-# Ignore spell check JS source and uncompressed dictionary
-# (runtime loads english-words.txt.br instead)
+# Ignore spell check JS source and uncompressed dictionaries
+# (runtime loads bml-words.txt.br/english-words.txt.br instead)
 app/lang/spellCheck/*.js
+app/lang/spellCheck/bml-words.txt
 app/lang/spellCheck/english-words.txt
 
 # Intellisense JSON: ship only the brotli-compressed .json.br variants
@@ -55,3 +56,18 @@ scripts/**
 # Knowledge markdown: ship only the brotli-compressed .md.br variants
 # (helpViewer.js decompresses at runtime via Node's built-in zlib)
 app/knowledge/**/*.md
+
+# Settings webview CSS: ship only the minified .min.css variants
+# (html.js references the .min.css files directly)
+app/lang/settingsPanel/webview/css/main.css
+app/lang/settingsPanel/webview/css/layout.css
+app/lang/settingsPanel/webview/css/components.css
+
+# Themes/grammars: ship only the minified .min.json variants
+# (package.json's contributes.themes/grammars paths point at these directly)
+themes/dark-default.json
+themes/dark.json
+themes/light-default.json
+themes/light.json
+app/lang/syntaxes/bml.tmLanguage.json
+app/lang/syntaxes/xslt.tmLanguage.json

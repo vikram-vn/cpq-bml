@@ -19,9 +19,9 @@ function buildCsp(nonce, cspSource) {
 function getHtml(context, vscode, webview) {
     const webviewRoot = vscode.Uri.joinPath(context.extensionUri, 'app', 'lang', 'settingsPanel', 'webview');
     const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'dist', 'main.js'));
-    const layoutStyleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'layout.css'));
-    const componentsStyleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'components.css'));
-    const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'main.css'));
+    const layoutStyleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'layout.min.css'));
+    const componentsStyleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'components.min.css'));
+    const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'main.min.css'));
 
     const templatePath = path.join(context.extensionPath, 'app', 'lang', 'settingsPanel', 'webview', 'index.html');
     const template = fs.readFileSync(templatePath, 'utf8');

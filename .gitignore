@@ -16,6 +16,10 @@ dist/
 /bml
 package-lock.json
 app/lang/settingsPanel/webview/dist/
+app/lang/spellCheck/bml-words.txt.br
 app/lang/spellCheck/english-words.txt.br
 app/lang/intellisense/*.json.br
 app/knowledge/**/*.md.br
+app/lang/settingsPanel/webview/css/*.min.css
+themes/*.min.json
+app/lang/syntaxes/*.min.json

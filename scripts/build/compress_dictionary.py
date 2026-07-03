@@ -1,26 +1,34 @@
-"""Brotli-compresses the English spell-check dictionary for packaging.
+"""Brotli-compresses the spell-check dictionaries for packaging.
 
-english-words.txt is the readable, editable source (kept in git); this
-generates english-words.txt.br (gitignored, ~5x smaller) that spelling.js
-loads at runtime. Re-run automatically by `npm run compile`/`vscode:prepublish`
-so the packaged extension never ships the uncompressed word list.
+bml-words.txt and english-words.txt are the readable, editable sources kept
+in git; this generates .br siblings (gitignored, several times smaller) that
+spelling.js loads at runtime. Re-run automatically by `npm run compile`/
+`vscode:prepublish` so the packaged extension never ships the uncompressed
+word lists.
 """
 import os
 
 import brotli
 
-ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
-SRC_PATH = os.path.join(ROOT, "app", "lang", "spellCheck", "english-words.txt")
-OUT_PATH = SRC_PATH + ".br"
+SPELLCHECK_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "app", "lang", "spellCheck")
+
+FILES_TO_COMPRESS = [
+    "bml-words.txt",
+    "english-words.txt",
+]
 
 
 def main():
-    with open(SRC_PATH, "rb") as f:
-        data = f.read()
-    compressed = brotli.compress(data, quality=11)
-    with open(OUT_PATH, "wb") as f:
-        f.write(compressed)
-    print(f"compressed english-words.txt: {len(data)} -> {len(compressed)} bytes")
+    for file_name in FILES_TO_COMPRESS:
+        src_path = os.path.join(SPELLCHECK_DIR, file_name)
+        out_path = src_path + ".br"
+
+        with open(src_path, "rb") as f:
+            data = f.read()
+        compressed = brotli.compress(data, quality=11)
+        with open(out_path, "wb") as f:
+            f.write(compressed)
+        print(f"compressed {file_name}: {len(data)} -> {len(compressed)} bytes")
 
 
 if __name__ == "__main__":
