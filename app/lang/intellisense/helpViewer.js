@@ -232,7 +232,8 @@ ${scrollScript}
  * Markdown file, scrolling to `fragment` (a heading slug) if provided.
  */
 function openHelpTopic(context, filePath, fragment) {
-    if (!fs.existsSync(filePath)) {
+    // .md.br ships in the packaged .vsix (raw .md is dev/test-only, excluded by .vscodeignore).
+    if (!fs.existsSync(filePath) && !fs.existsSync(`${filePath}.br`)) {
         vscode.window.showErrorMessage(`Help topic not found: ${filePath}`);
         return;
     }

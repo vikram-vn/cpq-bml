@@ -56,4 +56,13 @@ suite('docFormatting - offline help link', () => {
             assert.doesNotMatch(md.value, /Read Offline Help/);
         });
     });
+
+    test('DEBUG real repo atoi', () => {
+        const repoRoot = path.join(__dirname, '..');
+        const info = { category: 'function', name: 'atoi', syntax: 'atoi(str)', functionCategory: 'string' };
+        const md = formatAsJsDoc(info, { extensionPath: repoRoot });
+        console.log('=== ATOI MARKDOWN ===');
+        console.log(md.value);
+        console.log('=== END ===');
+    });
 });

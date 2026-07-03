@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.16.1] - 2026-07-03
+
+### Changed
+- Internal maintenance and housekeeping updates.
+
 ## [1.16.0] - 2026-07-03
 
 ### Added
@@ -74,10 +79,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Add bml_crawler and bml_intellisense scripts with html-to-markdown conversion tools and linting rules.
 - Implement comprehensive BML linting framework with style, performance, and best practice rules.
 - Add release automation script to manage versioning, changelogs, and build packaging.
-
-## [1.6.0] - 2026-07-01
-
-### Added
-
-- Implement custom Markdown help viewer with admonition support and caching.
-- Implement BML language support including tokenization, linting, and intellisense features.
