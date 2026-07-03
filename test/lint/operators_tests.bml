@@ -1,21 +1,99 @@
-// Operators precedence and math validation tests
+// ==========================================
+// BML Category: OPERATORS - Senior QA Regression Suite
+// ==========================================
+
+// 1. Valid logical operators
 valBool1 = true;
 valBool2 = false;
+
+if (valBool1 AND valBool2) {
+    print("AND");
+}
+if (valBool1 OR valBool2) {
+    print("OR");
+}
+if (NOT valBool1) {
+    print("NOT");
+}
+
+// 2. Mixed logic operators warnings (bml-mixedOperators)
 if (valBool1 AND valBool2 OR valBool1) {
-    print("mixed precedence");
+    print("mixed precedence 1");
 }
-if (valBool1 AND NOT valBool2) {
-    print("valid precedence");
+if (valBool1 OR valBool2 AND valBool1) {
+    print("mixed precedence 2");
 }
-sMath = "sku" - 5;
-rOp1 = 100 != 200;
-rOp2 = 50 >= 25;
-rOp3 = 10 <= 20;
-rOp4 = 5 <> 6;
-// Bitwise operators checks (syntax errors)
-rBitwise1 = 5 & 3;
-rBitwise2 = 5 | 3;
-rBitwise3 = 5 ^ 3;
-// Modulo operator warning
-rModulo = 10 % 3;
+
+// 3. Valid explicitly grouped logic operators (no warnings)
+if ((valBool1 AND valBool2) OR valBool1) {
+    print("grouped precedence 1");
+}
+if (valBool1 AND (valBool2 OR valBool1)) {
+    print("grouped precedence 2");
+}
+
+// 4. Invalid Javascript/C-style logical operators (bml-operator-fix error)
+if (valBool1 && valBool2) {
+    print("&& operator");
+}
+if (valBool1 || valBool2) {
+    print("|| operator");
+}
+if (!valBool1) {
+    print("! operator");
+}
+
+// 5. Invalid relational spacing and operators (bml-operator-fix error)
+if (valBool1 === valBool2) {
+    print("=== operator");
+}
+if (valBool1 !== valBool2) {
+    print("!== operator");
+}
+if (100 != 200) {
+    print("!= operator");
+}
+if (100 < = 200) {
+    print("< = operator");
+}
+if (100 > = 200) {
+    print("> = operator");
+}
+
+// 6. Valid relational operators (no errors)
+if (100 == 200) {
+    print("== operator");
+}
+if (100 <> 200) {
+    print("<> operator");
+}
+if (100 <= 200) {
+    print("<= operator");
+}
+if (100 >= 200) {
+    print(">= operator");
+}
+
+// 7. Invalid increment / decrement operators (bml-operator-fix error)
+incVar = 10;
+incVar++;
+incVar--;
+++incVar;
+--incVar;
+
+// 8. Invalid compound assignment operators (bml-operator-fix error)
+incVar += 5;
+incVar -= 5;
+incVar *= 5;
+incVar /= 5;
+incVar %= 5;
+
+// 9. Invalid bitwise operators (bml-operator-fix error)
+bitwiseRes1 = 5 & 3;
+bitwiseRes2 = 5 | 3;
+bitwiseRes3 = 5 ^ 3;
+
+// 10. Valid modulo operator (supported in BML)
+moduloRes = 10 % 3;
+
 return "";

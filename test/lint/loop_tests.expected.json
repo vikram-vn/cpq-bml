@@ -1,97 +1,247 @@
 [
   {
-    "line": 1,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+    "line": 0,
+    "severity": "Warning",
+    "message": "Complexity Warning: Cyclomatic complexity is high (21). Consider refactoring into helper functions"
   },
   {
-    "line": 5,
+    "line": 7,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 9,
-    "severity": "Error",
-    "message": "Built-in function 'range' expects 1 argument(s), but got 2."
-  },
-  {
-    "line": 9,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 9,
-    "severity": "Information",
-    "message": "Unused loop variable: 'i' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
   },
   {
     "line": 10,
     "severity": "Information",
-    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
   },
   {
-    "line": 12,
-    "severity": "Error",
-    "message": "Built-in function 'range' expects 1 argument(s), but got 3."
-  },
-  {
-    "line": 13,
+    "line": 11,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 15,
-    "severity": "Error",
-    "message": "Built-in function 'range' expects 1 argument(s), but got 3."
+    "line": 16,
+    "severity": "Warning",
+    "message": "Logic Warning: Loop iterates over 'emptyStringArray' which was initialized as an empty array and never populated. The loop body will never execute."
   },
   {
     "line": 16,
     "severity": "Information",
+    "message": "Unused loop variable: 'unusedStr' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 17,
+    "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 18,
+    "line": 21,
+    "severity": "Warning",
+    "message": "Logic Warning: Loop iterates over 'emptyIntArray' which was initialized as an empty array and never populated. The loop body will never execute."
+  },
+  {
+    "line": 21,
+    "severity": "Information",
+    "message": "Unused loop variable: 'unusedInt' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 22,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 26,
+    "severity": "Warning",
+    "message": "Logic Warning: Loop iterates over 'emptyFloatArray' which was initialized as an empty array and never populated. The loop body will never execute."
+  },
+  {
+    "line": 26,
+    "severity": "Information",
+    "message": "Unused loop variable: 'unusedFloat' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 27,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 31,
+    "severity": "Warning",
+    "message": "Logic Warning: Loop iterates over 'emptyBoolArray' which was initialized as an empty array and never populated. The loop body will never execute."
+  },
+  {
+    "line": 31,
+    "severity": "Information",
+    "message": "Unused loop variable: 'unusedBool' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 32,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 36,
+    "severity": "Warning",
+    "message": "Logic Warning: Loop iterates over 'emptyDateArray' which was initialized as an empty array and never populated. The loop body will never execute."
+  },
+  {
+    "line": 36,
+    "severity": "Information",
+    "message": "Unused loop variable: 'unusedDate' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 37,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 42,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Design Warning: Loop variable 'shadowVar' shadows an outer variable with the same name. Consider renaming the loop variable to avoid confusion."
+  },
+  {
+    "line": 43,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 47,
     "severity": "Error",
     "message": "Built-in function 'range' expects 1 argument(s), but got 3."
   },
   {
-    "line": 18,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 18,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 19,
+    "line": 48,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 23,
+    "line": 52,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
   },
   {
-    "line": 24,
+    "line": 53,
     "severity": "Error",
     "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
   },
   {
-    "line": 24,
+    "line": 53,
     "severity": "Warning",
     "message": "Unreachable code: this can never execute - it comes after an unconditional 'break'."
   },
   {
-    "line": 27,
+    "line": 55,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 56,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
   },
   {
-    "line": 28,
+    "line": 57,
     "severity": "Error",
     "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 62,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 71,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 71,
+    "severity": "Information",
+    "message": "Unused loop variable: 'pIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 73,
+    "severity": "Information",
+    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 73,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
+  },
+  {
+    "line": 74,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 77,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Nested loop detected. Avoid nested loops to prevent negative performance impact"
+  },
+  {
+    "line": 78,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 84,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 84,
+    "severity": "Information",
+    "message": "Unused loop variable: 'concatIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "Performance Warning: String concatenation inside loop for 'accumulatedStr'. Use StringBuilder (sbappend/sbtostring) instead"
+  },
+  {
+    "line": 87,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 90,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 91,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 92,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Design Warning: Nesting depth of 4 exceeds recommended limit of 3"
+  },
+  {
+    "line": 94,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 101,
+    "severity": "Information",
+    "message": "Unused loop variable: 'unusedLoopVar' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 102,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   }
 ]

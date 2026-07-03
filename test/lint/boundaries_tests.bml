@@ -1,11 +1,44 @@
-// Boundaries checks
-largeInt = 2147483648;
-underflowFloat = 1e-35;
-precisionFloat = 1.23456789012345678;
-stringLimit = "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
-// Array boundaries overflows (>5000 rows / >50 cols)
-largeRowArr = float[5001];
-largeColArr = float[10][51];
-// Double precision bounds overflow
-largeDouble = 1.7976931348623157e+309;
+// ==========================================
+// BML Category: BOUNDARIES & LIMITS - Senior QA Regression Suite
+// ==========================================
+
+// 1. Valid Boundary Literals (no errors/warnings)
+validInt = 999999999;
+validFloat = 123456.123456;
+validStr = "standard length string";
+
+// 2. Invalid/Corrupting Control Characters (bml-invalid-control-char)
+// Under code or comments, FS control character 0x1c is banned
+// \x1c below:
+badChar = "bad\x1cchar";
+
+// 3. BMQL Schema Table & Column Name Lengths (>20 characters warning)
+// bml-bmql-table-name-length
+rs1 = bmql("select col_a from very_long_table_name_exceeding_twenty_chars");
+// bml-bmql-column-name-length
+rs2 = bmql("select very_long_column_name_exceeding_twenty_chars from parts");
+
+// 4. Floating Point Precision & Decimals
+// Float precision > 16 digits (bml-float-precision-limit)
+precisionFlt = 1.234567890123456789;
+
+// Float decimal places > 6 (bml-float-decimal-limit)
+decimalFlt = 0.1234567;
+
+// Currency limit check > 90 Trillion (bml-currency-limit)
+currencyFlt = 95000000000000.50;
+currencyInt = 95000000000000;
+
+// 5. Integer Bounds
+// Out of range 32-bit Integer limit (bml-integer-range)
+intOverflow = 2147483648;
+intUnderflow = -2147483649;
+
+// Data table integer column limit > 999,999,999 (bml-integer-datatable-limit)
+dtColOverflow = 1000000000;
+
+// 6. String Literal Length Limits (bml-string-length-limit)
+// Length 256: Config text fields threshold warning
+strLimit256 = "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
 return "";

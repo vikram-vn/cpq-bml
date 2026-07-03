@@ -1,32 +1,167 @@
 [
   {
-    "line": 1,
-    "severity": "Hint",
-    "message": "Unused variable: sCorrupt1"
+    "line": 8,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 2,
-    "severity": "Hint",
-    "message": "Unused variable: sCorrupt2"
+    "line": 13,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 4,
-    "severity": "Hint",
-    "message": "Unused variable: nLen"
+    "line": 14,
+    "severity": "Warning",
+    "message": "Safety Warning: 'rsUnsafe' may be null (result of bmql/get/dictget). Check with isnull(rsUnsafe) or sizeofarray(rsUnsafe) > 0 before use."
   },
   {
-    "line": 6,
+    "line": 14,
     "severity": "Hint",
-    "message": "Unused variable: nullIntegerVal"
+    "message": "Unused variable: exprResult"
   },
   {
-    "line": 7,
+    "line": 20,
     "severity": "Hint",
-    "message": "Unused variable: nullFloatVal"
+    "message": "Unused variable: valIntSafe"
   },
   {
-    "line": 10,
+    "line": 25,
+    "severity": "Warning",
+    "message": "Safety Warning: Validate numericality of data with 'isnumber(sNumUnsafe)' or use a safe wrapper like 'customAtoi'/'customAtof' before calling 'atoi'"
+  },
+  {
+    "line": 25,
     "severity": "Hint",
-    "message": "Unused variable: nullElementAccess"
+    "message": "Unused variable: valIntUnsafe"
+  },
+  {
+    "line": 26,
+    "severity": "Warning",
+    "message": "Safety Warning: Validate numericality of data with 'isnumber(sNumUnsafe)' or use a safe wrapper like 'customAtoi'/'customAtof' before calling 'atof'"
+  },
+  {
+    "line": 26,
+    "severity": "Hint",
+    "message": "Unused variable: valFltUnsafe"
+  },
+  {
+    "line": 32,
+    "severity": "Hint",
+    "message": "Unused variable: p1"
+  },
+  {
+    "line": 37,
+    "severity": "Warning",
+    "message": "Safety Warning: Check the size of the split array 'partsListUnsafe' using 'sizeofarray()' before accessing elements"
+  },
+  {
+    "line": 37,
+    "severity": "Hint",
+    "message": "Unused variable: p2"
+  },
+  {
+    "line": 41,
+    "severity": "Hint",
+    "message": "Unused variable: dictOK"
+  },
+  {
+    "line": 43,
+    "severity": "Error",
+    "message": "'dict()' requires a type argument (e.g. dict(\"string\"), dict(\"integer[]\"), dict(\"anytype\")) - calling it with none will throw at runtime"
+  },
+  {
+    "line": 43,
+    "severity": "Error",
+    "message": "'dict()' requires a type argument (e.g. dict(\"string\"), dict(\"integer[]\"), dict(\"anytype\")) - calling it with none will throw at runtime"
+  },
+  {
+    "line": 43,
+    "severity": "Hint",
+    "message": "Unused variable: dictErr"
+  },
+  {
+    "line": 46,
+    "severity": "Error",
+    "message": "Division by literal zero ('0') will throw a runtime exception"
+  },
+  {
+    "line": 46,
+    "severity": "Hint",
+    "message": "Unused variable: zeroDiv1"
+  },
+  {
+    "line": 47,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 47,
+    "severity": "Error",
+    "message": "Division by literal zero ('0.0') will throw a runtime exception"
+  },
+  {
+    "line": 47,
+    "severity": "Hint",
+    "message": "Unused variable: zeroDiv2"
+  },
+  {
+    "line": 50,
+    "severity": "Information",
+    "message": "Design Info: Magic number '10.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 51,
+    "severity": "Information",
+    "message": "Design Info: Magic number '10.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 51,
+    "severity": "Warning",
+    "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
+  },
+  {
+    "line": 52,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 54,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 54,
+    "severity": "Warning",
+    "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
+  },
+  {
+    "line": 54,
+    "severity": "Error",
+    "message": "Use <> in BML"
+  },
+  {
+    "line": 55,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 57,
+    "severity": "Information",
+    "message": "Design Info: Magic number '30.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
+  },
+  {
+    "line": 58,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 62,
+    "severity": "Hint",
+    "message": "Unused variable: corruptData"
   }
 ]

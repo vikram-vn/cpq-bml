@@ -1,19 +1,60 @@
-// Best practices testing
-val1 = 100;
-if (val1 == 100) {
-    print("Redundant");
-} else {
-    print("Redundant");
+// ==========================================
+// BML Category: BEST PRACTICES - Senior QA Regression Suite
+// ==========================================
+
+// 1. Valid Practices (no diagnostics expected)
+validVar = 10;
+if (validVar == 10 AND validVar > 5) {
+    print("standard code");
 }
-if (true) {
-    if (false) {
-        print("lonely if");
+
+// 2. Lonely If Warning (bml-lonelyIf)
+if (validVar > 0) {
+    if (validVar < 20) {
+        print("lonely nested if");
     }
 }
-// Redundant self assignments
-selfAssignVar = 42;
-selfAssignVar = selfAssignVar;
-// Empty block validations
+
+// 3. Constant Condition Warning (bml-constantCondition)
 if (true) {
+    print("always true");
 }
+if (false) {
+    print("always false");
+}
+
+// 4. Duplicate Branches Warning (bml-duplicateBranches)
+if (validVar == 10) {
+    print("redundant duplicate branch");
+} else {
+    print("redundant duplicate branch");
+}
+
+// 5. Empty Blocks Warning (bml-empty-block)
+if (validVar == 5) {
+} else {
+}
+
+// 6. Magic Numbers Info (bml-magic-number)
+magicVal1 = 42;
+magicVal2 = 123.45;
+
+// Exempt numbers (0, 1, 2, 10, 100) - no warnings
+exemptVal1 = 0;
+exemptVal2 = 1;
+exemptVal3 = 2;
+exemptVal4 = 10;
+exemptVal5 = 100;
+
+// 7. Banned Array Element Assignment Error (bml-array-element-assignment)
+myArr = integer[]{1, 2, 3};
+myArr[0] = 10;
+
+// 8. Banned Member Access or Method Call Error (bml-invalid-member-access)
+myDict = dict("string");
+dictLen = myDict.length;
+dictSize = myDict.size();
+
+// 9. Unreachable Code Warning (bml-unreachable)
 return "";
+unreachableVar = 999;

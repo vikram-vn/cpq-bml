@@ -1,22 +1,52 @@
 [
   {
-    "line": 1,
-    "severity": "Information",
-    "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+    "line": 8,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 1,
+    "line": 14,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Never use '_config_attributes' in Commerce BML"
+  },
+  {
+    "line": 14,
     "severity": "Hint",
-    "message": "Unused variable: commRs"
+    "message": "Unused variable: badAttr1"
   },
   {
-    "line": 3,
-    "severity": "Information",
-    "message": "Design Info: Magic number '25.50' detected. Consider defining a named constant"
+    "line": 15,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Never use '_config_attr_text' in Commerce BML"
   },
   {
-    "line": 5,
+    "line": 15,
     "severity": "Hint",
-    "message": "Unused variable: totalLineVal"
+    "message": "Unused variable: badAttr2"
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Never use '_CONFIG_ATTRIBUTES' in Commerce BML"
+  },
+  {
+    "line": 16,
+    "severity": "Hint",
+    "message": "Unused variable: badAttr3"
+  },
+  {
+    "line": 20,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Return information must be formatted as '[docNo]~variableName~variableValue|' (missing '|' delimiter)"
+  },
+  {
+    "line": 21,
+    "severity": "Hint",
+    "message": "Unused variable: retErr"
+  },
+  {
+    "line": 24,
+    "severity": "Warning",
+    "message": "Commerce Best Practice: Return information must be formatted as '[docNo]~variableName~variableValue|' (missing '|' delimiter)"
   }
 ]

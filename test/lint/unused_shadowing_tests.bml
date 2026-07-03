@@ -1,12 +1,29 @@
-// Unused variables and shadowing tests
-unusedVar = 500;
-shadowedVar = 5;
-if (true) {
-    shadowedVar = 10;
-    print(shadowedVar);
+// ==========================================
+// BML Category: UNUSED & SHADOWING & USE BEFORE DEFINE - Senior QA Regression Suite
+// ==========================================
+
+// 1. Unused Variable Warnings (bml-unused-variable)
+unusedLocal = 123;
+
+// Ignored/exempt unused variables (no warnings expected)
+dummy = "ignored";
+temp = "ignored";
+trigger_event = "ignored";
+unused = "ignored";
+
+// 2. Unused Loop Variable (bml-unused-loop-var)
+for unusedLoopVar in range(3) {
+    print("loop variable is not used");
 }
-// Loop shadowing declarations
+
+// 3. Loop Shadowing warning (bml-shadowed-variable)
+shadowedVar = 10;
 for shadowedVar in range(3) {
     print(shadowedVar);
 }
+
+// 4. Use Before Define Warning (bml-useBeforeDefine)
+print(declaredLateVar);
+declaredLateVar = "defined here";
+
 return "";

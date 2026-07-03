@@ -1,12 +1,78 @@
-// Performance test constraints
-for loopIdx in range(5) {
-    resRs = bmql("select id from parts");
-    strConcat = "Part: " + string(loopIdx);
+// ==========================================
+// BML Category: PERFORMANCE - Senior QA Regression Suite
+// ==========================================
+
+// 1. Valid Performance Practices
+sb = stringbuilder();
+for validIdx in range(3) {
+    sbappend(sb, "valid string builder");
 }
-// Heavy nested loop lookups performance violations
-for i in range(3) {
-    for j in range(3) {
-        nestedRs = bmql("select id from catalog");
+validResult = sbtostring(sb);
+
+// Cache BMQL outside loop
+cachedRs = bmql("select id from parts where status = 'active'");
+for cachedIdx in range(3) {
+    print(cachedRs);
+}
+
+// 2. BMQL inside Loop Warning (bml-bmql-in-loop)
+for loopIdx in range(2) {
+    loopRs = bmql("select name from catalog");
+}
+
+// 3. Nested Loop Warning (bml-nested-loop)
+for outerIdx in range(2) {
+    for innerIdx in range(2) {
+        print(innerIdx);
     }
 }
+
+// 4. String Concatenation in Loop Warning (bml-string-concat-in-loop)
+concatStr = "";
+for concatIdx in range(3) {
+    concatStr = concatStr + "suffix";
+}
+
+// 5. Repeated Identical BMQL Query Info (bml-repeated-bmql-query)
+rs1 = bmql("select cost from pricing where tier = 1");
+rs2 = bmql("select cost from pricing where tier = 1");
+
+// 6. Excessive Table Queries Info (bml-excessive-table-queries)
+qParts1 = bmql("select part_num from parts where type = 'A'");
+qParts2 = bmql("select price from parts where type = 'B'");
+qParts3 = bmql("select description from parts where type = 'C'");
+
+// 7. Deep Nesting Warning (bml-deep-nesting at depth > 3)
+if (true) {
+    if (true) {
+        if (true) {
+            if (true) {
+                print("exceeds depth threshold");
+            }
+        }
+    }
+}
+
+// 8. Cyclomatic Complexity Warning (bml-high-complexity > 15 decision points)
+c1 = true;
+c2 = true;
+c3 = true;
+c4 = true;
+c5 = true;
+c6 = true;
+c7 = true;
+c8 = true;
+c9 = true;
+c10 = true;
+c11 = true;
+c12 = true;
+c13 = true;
+c14 = true;
+c15 = true;
+c16 = true;
+
+if (c1 and c2 or c3 and c4 or c5 and c6 or c7 and c8 or c9 and c10 or c11 and c12 or c13 and c14 or c15 and c16) {
+    print("high complexity");
+}
+
 return "";

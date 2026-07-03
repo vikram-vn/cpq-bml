@@ -1,142 +1,322 @@
 [
   {
-    "line": 3,
+    "line": 0,
+    "severity": "Warning",
+    "message": "Complexity Warning: Cyclomatic complexity is high (29). Consider refactoring into helper functions"
+  },
+  {
+    "line": 9,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 12,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 15,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 19,
     "severity": "Warning",
     "message": "'AND' and 'OR' are mixed without grouping parentheses - BML evaluates 'AND' before 'OR', which may not be what you expect. Add parentheses to make the intended grouping explicit, e.g. '(a AND b) OR c'."
   },
   {
-    "line": 4,
+    "line": 20,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 7,
+    "line": 22,
+    "severity": "Warning",
+    "message": "'AND' and 'OR' are mixed without grouping parentheses - BML evaluates 'AND' before 'OR', which may not be what you expect. Add parentheses to make the intended grouping explicit, e.g. '(a AND b) OR c'."
+  },
+  {
+    "line": 23,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 9,
+    "line": 28,
     "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 9,
+    "line": 31,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 35,
     "severity": "Error",
-    "message": "Type mismatch: Operator '-' cannot be applied to 'String' and 'Integer'. Both operands must be numeric."
+    "message": "Use \"AND\" in BML"
   },
   {
-    "line": 9,
-    "severity": "Hint",
-    "message": "Unused variable: sMath"
-  },
-  {
-    "line": 10,
+    "line": 36,
     "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 10,
-    "severity": "Hint",
-    "message": "Unused variable: rOp1"
+    "line": 38,
+    "severity": "Error",
+    "message": "Use \"OR\" in BML"
   },
   {
-    "line": 10,
+    "line": 39,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 41,
+    "severity": "Error",
+    "message": "Use \"NOT\" in BML"
+  },
+  {
+    "line": 42,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 46,
+    "severity": "Error",
+    "message": "Use == in BML"
+  },
+  {
+    "line": 47,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 49,
     "severity": "Error",
     "message": "Use <> in BML"
   },
   {
-    "line": 11,
+    "line": 50,
     "severity": "Information",
-    "message": "Design Info: Magic number '25' detected. Consider defining a named constant"
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 11,
+    "line": 52,
     "severity": "Information",
-    "message": "Design Info: Magic number '50' detected. Consider defining a named constant"
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
   },
   {
-    "line": 11,
-    "severity": "Hint",
-    "message": "Unused variable: rOp2"
+    "line": 52,
+    "severity": "Error",
+    "message": "Use <> in BML"
   },
   {
-    "line": 12,
+    "line": 53,
     "severity": "Information",
-    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 12,
-    "severity": "Hint",
-    "message": "Unused variable: rOp3"
+    "line": 55,
+    "severity": "Error",
+    "message": "Assignment '=' inside a condition - did you mean '==' for comparison?"
   },
   {
-    "line": 13,
+    "line": 55,
+    "severity": "Information",
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
+  },
+  {
+    "line": 55,
+    "severity": "Error",
+    "message": "Use <= in BML"
+  },
+  {
+    "line": 56,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Assignment '=' inside a condition - did you mean '==' for comparison?"
+  },
+  {
+    "line": 58,
+    "severity": "Information",
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Use >= in BML"
+  },
+  {
+    "line": 59,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 63,
+    "severity": "Information",
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
+  },
+  {
+    "line": 64,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 66,
+    "severity": "Information",
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
+  },
+  {
+    "line": 67,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 69,
+    "severity": "Information",
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
+  },
+  {
+    "line": 70,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 72,
+    "severity": "Information",
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
+  },
+  {
+    "line": 73,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 78,
+    "severity": "Error",
+    "message": "Use var = var + 1 in BML"
+  },
+  {
+    "line": 79,
+    "severity": "Error",
+    "message": "Use var = var - 1 in BML"
+  },
+  {
+    "line": 80,
+    "severity": "Error",
+    "message": "Use var = var + 1 in BML"
+  },
+  {
+    "line": 81,
+    "severity": "Error",
+    "message": "Use var = var - 1 in BML"
+  },
+  {
+    "line": 84,
+    "severity": "Error",
+    "message": "+= operator not supported in BML"
+  },
+  {
+    "line": 84,
     "severity": "Information",
     "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
   },
   {
-    "line": 13,
-    "severity": "Information",
-    "message": "Design Info: Magic number '6' detected. Consider defining a named constant"
+    "line": 85,
+    "severity": "Error",
+    "message": "-= operator not supported in BML"
   },
   {
-    "line": 13,
-    "severity": "Hint",
-    "message": "Unused variable: rOp4"
-  },
-  {
-    "line": 15,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 15,
+    "line": 85,
     "severity": "Information",
     "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
   },
   {
-    "line": 15,
-    "severity": "Hint",
-    "message": "Unused variable: rBitwise1"
+    "line": 86,
+    "severity": "Error",
+    "message": "*= operator not supported in BML"
   },
   {
-    "line": 16,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 16,
+    "line": 86,
     "severity": "Information",
     "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
   },
   {
-    "line": 16,
-    "severity": "Hint",
-    "message": "Unused variable: rBitwise2"
+    "line": 87,
+    "severity": "Error",
+    "message": "/= operator not supported in BML"
   },
   {
-    "line": 17,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 17,
+    "line": 87,
     "severity": "Information",
     "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
   },
   {
-    "line": 17,
-    "severity": "Hint",
-    "message": "Unused variable: rBitwise3"
+    "line": 88,
+    "severity": "Error",
+    "message": "%= operator not supported in BML"
   },
   {
-    "line": 19,
+    "line": 88,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 91,
     "severity": "Information",
     "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
   },
   {
-    "line": 19,
+    "line": 91,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 91,
     "severity": "Hint",
-    "message": "Unused variable: rModulo"
+    "message": "Unused variable: bitwiseRes1"
+  },
+  {
+    "line": 92,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 92,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 92,
+    "severity": "Hint",
+    "message": "Unused variable: bitwiseRes2"
+  },
+  {
+    "line": 93,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 93,
+    "severity": "Information",
+    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 93,
+    "severity": "Hint",
+    "message": "Unused variable: bitwiseRes3"
+  },
+  {
+    "line": 96,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 96,
+    "severity": "Hint",
+    "message": "Unused variable: moduloRes"
   }
 ]

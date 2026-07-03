@@ -1,72 +1,117 @@
 [
   {
-    "line": 1,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 2,
+    "line": 6,
     "severity": "Information",
     "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
   },
   {
-    "line": 2,
+    "line": 6,
     "severity": "Hint",
     "message": "Unused variable: y"
   },
   {
-    "line": 4,
+    "line": 8,
     "severity": "Information",
     "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
   },
   {
-    "line": 4,
-    "severity": "Error",
-    "message": "Missing semicolon"
-  },
-  {
-    "line": 4,
+    "line": 8,
     "severity": "Hint",
     "message": "Unused variable: z"
   },
   {
-    "line": 7,
-    "severity": "Warning",
-    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+    "line": 13,
+    "severity": "Hint",
+    "message": "Unused variable: a"
   },
   {
-    "line": 8,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+    "line": 14,
+    "severity": "Information",
+    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
   },
   {
-    "line": 8,
+    "line": 15,
+    "severity": "Information",
+    "message": "Design Info: Magic number '50' detected. Consider defining a named constant"
+  },
+  {
+    "line": 18,
+    "severity": "Hint",
+    "message": "Unused variable: b"
+  },
+  {
+    "line": 23,
+    "severity": "Hint",
+    "message": "Unused variable: c"
+  },
+  {
+    "line": 24,
+    "severity": "Information",
+    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
+  },
+  {
+    "line": 27,
     "severity": "Error",
     "message": "Missing semicolon"
   },
   {
-    "line": 10,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
+    "line": 27,
+    "severity": "Hint",
+    "message": "Unused variable: d"
   },
   {
-    "line": 10,
+    "line": 32,
+    "severity": "Hint",
+    "message": "Unused variable: e"
+  },
+  {
+    "line": 37,
+    "severity": "Hint",
+    "message": "Unused variable: f"
+  },
+  {
+    "line": 44,
+    "severity": "Information",
+    "message": "Design Info: Magic number '42' detected. Consider defining a named constant"
+  },
+  {
+    "line": 44,
     "severity": "Error",
     "message": "Missing semicolon"
   },
   {
-    "line": 10,
-    "severity": "Warning",
-    "message": "Unreachable code: this can never execute - it comes after a previous always-true condition in the chain."
+    "line": 44,
+    "severity": "Hint",
+    "message": "Unused variable: missingAssign"
   },
   {
-    "line": 12,
+    "line": 45,
     "severity": "Error",
     "message": "Missing semicolon"
   },
   {
-    "line": 12,
-    "severity": "Warning",
-    "message": "Unreachable code: this can never execute - it comes after an if/elif/else chain where every branch already returns, breaks, continues, or throws."
+    "line": 45,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 47,
+    "severity": "Information",
+    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+  },
+  {
+    "line": 49,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 51,
+    "severity": "Error",
+    "message": "Missing semicolon"
+  },
+  {
+    "line": 54,
+    "severity": "Error",
+    "message": "Missing semicolon"
   }
 ]
