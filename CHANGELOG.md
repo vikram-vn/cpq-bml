@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.15.0] - 2026-07-03
+
+### Added
+- Implement linting and spell-check support for CPQ system variables.
+- Add GitHub Actions workflow to automate extension packaging and releases.
+
 ## [1.14.0] - 2026-07-03
 
 ### Added
