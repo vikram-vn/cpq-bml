@@ -1,11 +1,33 @@
 const vscode = require('vscode');
 
 function registerBmlCodeActions(context) {
-    // Captured here, before provideCodeActions' own (differently-typed)
-    // 'context' parameter below shadows this outer ExtensionContext name -
-    // threaded through to getSpellingSuggestions the same way lint/index.js
-    // threads it to checkSpelling (see that file's comment for why).
     const extensionPath = context.extensionPath;
+
+    // Register add word commands
+    const addUserWordCmd = vscode.commands.registerCommand('cpqBml.spelling.addUserWord', async (word) => {
+        const config = vscode.workspace.getConfiguration('cpqBml');
+        const userWords = config.get('spelling.userWords', []);
+        if (!userWords.includes(word)) {
+            await config.update('spelling.userWords', [...userWords, word], vscode.ConfigurationTarget.Global);
+            vscode.window.showInformationMessage(`Added "${word}" to User Settings.`);
+        }
+    });
+    context.subscriptions.push(addUserWordCmd);
+
+    const addWorkspaceWordCmd = vscode.commands.registerCommand('cpqBml.spelling.addWorkspaceWord', async (word) => {
+        const config = vscode.workspace.getConfiguration('cpqBml');
+        const userWords = config.get('spelling.userWords', []);
+        if (!userWords.includes(word)) {
+            try {
+                await config.update('spelling.userWords', [...userWords, word], vscode.ConfigurationTarget.Workspace);
+                vscode.window.showInformationMessage(`Added "${word}" to Workspace Settings.`);
+            } catch (e) {
+                await config.update('spelling.userWords', [...userWords, word], vscode.ConfigurationTarget.Global);
+                vscode.window.showInformationMessage(`Added "${word}" to User Settings (fallback).`);
+            }
+        }
+    });
+    context.subscriptions.push(addWorkspaceWordCmd);
 
     context.subscriptions.push(
         vscode.languages.registerCodeActionsProvider('bml', {
@@ -162,6 +184,24 @@ function registerBmlCodeActions(context) {
                             action.diagnostics = [diag];
                             fixes.push(action);
                         });
+
+                        const addUserWordAction = new vscode.CodeAction(`Add "${word}" to User Settings`, vscode.CodeActionKind.QuickFix);
+                        addUserWordAction.command = {
+                            title: 'Add Word to User Settings',
+                            command: 'cpqBml.spelling.addUserWord',
+                            arguments: [word]
+                        };
+                        addUserWordAction.diagnostics = [diag];
+                        fixes.push(addUserWordAction);
+
+                        const addWorkspaceWordAction = new vscode.CodeAction(`Add "${word}" to Workspace Settings`, vscode.CodeActionKind.QuickFix);
+                        addWorkspaceWordAction.command = {
+                            title: 'Add Word to Workspace Settings',
+                            command: 'cpqBml.spelling.addWorkspaceWord',
+                            arguments: [word]
+                        };
+                        addWorkspaceWordAction.diagnostics = [diag];
+                        fixes.push(addWorkspaceWordAction);
                     }
                 });
                 return fixes;

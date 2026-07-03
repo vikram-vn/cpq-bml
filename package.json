@@ -347,6 +347,14 @@
           "default": true,
           "description": "Enable BML spelling checker (checks spelling in comments, identifiers, and string literals using custom and English dictionaries)."
         },
+        "cpqBml.spelling.userWords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Custom words to ignore during BML spelling checks."
+        },
         "cpqBml.features.beautifier": {
           "type": "boolean",
           "default": true,

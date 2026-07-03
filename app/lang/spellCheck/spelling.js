@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
+const vscode = require("vscode");
 const { getCommentRanges } = require("../lint/comments");
 const { getStringRanges } = require("../lint/strings");
 
@@ -202,10 +203,22 @@ function levenshtein(a, b) {
 
 function getSpellingSuggestions(word, extensionPath) {
   const dict = loadDictionaries(extensionPath);
+  let userWords = [];
+  try {
+    const config = vscode.workspace.getConfiguration("cpqBml");
+    userWords = config.get("spelling.userWords") || [];
+  } catch (e) {}
+
+  const candidates = new Set(dict);
+  for (const w of userWords) {
+    const wLower = w.trim().toLowerCase();
+    if (wLower) candidates.add(wLower);
+  }
+
   const suggestions = [];
   const wordLower = word.toLowerCase();
 
-  for (const dictWord of dict) {
+  for (const dictWord of candidates) {
     if (Math.abs(dictWord.length - wordLower.length) > 2) continue;
     if (wordLower.length > 3 && dictWord[0] !== wordLower[0]) continue;
 
@@ -306,11 +319,22 @@ function checkSpelling(
   const commentRanges = getCommentRanges(text);
   const stringRanges = getStringRanges(cleanText);
 
+  let userWords = new Set();
+  try {
+    const config = vscode.workspace.getConfiguration("cpqBml");
+    const words = config.get("spelling.userWords") || [];
+    words.forEach(w => {
+      const wLower = w.trim().toLowerCase();
+      if (wLower) userWords.add(wLower);
+    });
+  } catch (e) {}
+
   const wordCache = new Map();
   const identCache = new Map();
 
   const checkWordCached = (word) => {
     const wordLower = word.toLowerCase();
+    if (userWords.has(wordLower)) return true;
     if (wordCache.has(wordLower)) return wordCache.get(wordLower);
     const res = checkWord(word, extensionPath);
     wordCache.set(wordLower, res);

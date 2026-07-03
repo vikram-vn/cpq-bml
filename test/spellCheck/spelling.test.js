@@ -1,6 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('../linter/fixtures');
+const { activateExtension } = require('../extensionHelper');
 const { getSpellingSuggestions, splitIdentifier, cleanCommentText } = require('../../app/lang/spellCheck/spelling');
 
 suite('BML Linter Test Suite - Custom Spellchecker', () => {
@@ -122,6 +123,57 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
             assert.ok(spellingErrors.length > 0, 'Spelling errors should be flagged when enabled again');
         } finally {
             await config.update('features.spelling', originalSpelling, vscode.ConfigurationTarget.Global);
+        }
+    });
+
+    test('Respects userWords dictionary additions', async function () {
+        this.timeout(15000);
+        const config = vscode.workspace.getConfiguration('cpqBml');
+        const originalUserWords = config.get('spelling.userWords');
+
+        try {
+            // "customword" should be flagged as misspelled by default
+            let diagnostics = lintText('// customword');
+            let spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+            assert.ok(spellingErrors.some(e => e.message.includes('customword')), 'Should flag unrecognized word customword');
+
+            // Add "customword" to userWords config
+            await config.update('spelling.userWords', ['customword'], vscode.ConfigurationTarget.Global);
+            diagnostics = lintText('// customword');
+            spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+            assert.strictEqual(spellingErrors.length, 0, 'Spelling errors should NOT be flagged for words in userWords');
+
+            // Get spelling suggestions for "customwrd" when "customword" is in userWords
+            const suggestions = getSpellingSuggestions('customwrd');
+            assert.ok(suggestions.includes('customword'), 'Suggestions should include the configured userWord customword');
+
+        } finally {
+            await config.update('spelling.userWords', originalUserWords, vscode.ConfigurationTarget.Global);
+        }
+    });
+
+    test('Add spelling word commands work correctly', async function () {
+        this.timeout(15000);
+        await activateExtension(vscode);
+        const config = vscode.workspace.getConfiguration('cpqBml');
+        const originalUserWords = config.get('spelling.userWords');
+
+        try {
+            // Trigger command to add a word globally
+            await vscode.commands.executeCommand('cpqBml.spelling.addUserWord', 'globaltestword');
+            let userWords = vscode.workspace.getConfiguration('cpqBml').get('spelling.userWords') || [];
+            assert.ok(userWords.includes('globaltestword'), 'addUserWord command should append word to userWords settings');
+
+            // Reset list and trigger command to add a word to workspace
+            await vscode.workspace.getConfiguration('cpqBml').update('spelling.userWords', originalUserWords, vscode.ConfigurationTarget.Global);
+            await vscode.commands.executeCommand('cpqBml.spelling.addWorkspaceWord', 'workspacetestword');
+            userWords = vscode.workspace.getConfiguration('cpqBml').get('spelling.userWords') || [];
+            assert.ok(userWords.includes('workspacetestword'), 'addWorkspaceWord command should append word to userWords settings');
+        } finally {
+            await vscode.workspace.getConfiguration('cpqBml').update('spelling.userWords', originalUserWords, vscode.ConfigurationTarget.Global);
+            try {
+                await vscode.workspace.getConfiguration('cpqBml').update('spelling.userWords', undefined, vscode.ConfigurationTarget.Workspace);
+            } catch (e) {}
         }
     });
 });
