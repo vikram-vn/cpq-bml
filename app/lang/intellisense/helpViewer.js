@@ -15,10 +15,10 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
-const zlib = require("zlib");
 const MarkdownIt = require("markdown-it");
 const container = require("markdown-it-container");
 const { getNonce, buildCsp } = require("../settingsPanel/html");
+const { existsCompressed, readCompressedText } = require("./compressedFile");
 
 const ADMONITIONS = {
     note: { label: "Note", icon: "📝", color: "#448aff" },
@@ -32,6 +32,17 @@ const FRONTMATTER_RE = /^---\r?\n[\s\S]*?\r?\n---\r?\n/;
 
 let panel = null;
 let md = null;
+let outputChannel = null;
+
+// Temporary diagnostic instrumentation for the "help doc takes 5-8s to open"
+// report. Logs a stage-by-stage timing breakdown to the "CPQ-BML Help" output
+// channel (Output panel dropdown) every time a topic is opened, so the real
+// bottleneck (our render code vs. VS Code's own webview creation) can be
+// identified instead of guessed at.
+function getOutputChannel() {
+    if (!outputChannel) outputChannel = vscode.window.createOutputChannel("CPQ-BML Help");
+    return outputChannel;
+}
 
 // Rendered <body> HTML cache, keyed by absolute file path.
 // { mtimeMs, body, title } - invalidated whenever the file's mtime changes.
@@ -86,6 +97,10 @@ function getMarkdownRenderer() {
 
     // Rewrite local image paths (e.g. "images/acos__BML.png") into
     // webview-safe URIs via the resolver supplied per-render through env.
+    // loading="lazy"/decoding="async" let the browser paint the surrounding
+    // text immediately instead of blocking the initial render on every
+    // image's resource fetch (docs with dozens of screenshots otherwise all
+    // request their images up front).
     md.renderer.rules.image = (tokens, idx, options, env, slf) => {
         const token = tokens[idx];
         const src = token.attrGet("src");
@@ -93,6 +108,8 @@ function getMarkdownRenderer() {
             token.attrSet("src", env.resolveImageUri(src));
         }
         token.attrSet("alt", slf.renderInlineAsText(token.children, options, env));
+        token.attrSet("loading", "lazy");
+        token.attrSet("decoding", "async");
         return slf.renderToken(tokens, idx, options);
     };
 
@@ -105,6 +122,9 @@ function extractTitle(markdownBody, fallback) {
 }
 
 function renderFile(filePath, webview) {
+    const out = getOutputChannel();
+    const tStart = Date.now();
+
     // Prefer a brotli-compressed sibling (.md.br) shipped in the .vsix;
     // fall back to the raw .md present in dev/test environments.
     const brPath = `${filePath}.br`;
@@ -114,36 +134,57 @@ function renderFile(filePath, webview) {
         // Dev path: use mtime to invalidate the render cache on file saves.
         const stat = fs.statSync(filePath);
         const cached = renderCache.get(filePath);
-        if (cached && cached.mtimeMs === stat.mtimeMs) return cached;
+        if (cached && cached.mtimeMs === stat.mtimeMs) {
+            out.appendLine(`[renderFile] cache hit (dev, mtime match) - ${Date.now() - tStart}ms`);
+            return cached;
+        }
     } else {
         // Package path: .md.br is an immutable build artifact — cache forever.
         const cached = renderCache.get(filePath);
-        if (cached) return cached;
+        if (cached) {
+            out.appendLine(`[renderFile] cache hit (packaged .br) - ${Date.now() - tStart}ms`);
+            return cached;
+        }
     }
 
-    const raw = hasBr
-        ? zlib.brotliDecompressSync(fs.readFileSync(brPath)).toString("utf8")
-        : fs.readFileSync(filePath, "utf8");
+    const tDecompressStart = Date.now();
+    const raw = readCompressedText(filePath);
+    const tDecompressEnd = Date.now();
 
     const body  = raw.replace(FRONTMATTER_RE, "");
     const title = extractTitle(body, path.basename(filePath, ".md"));
 
+    let imageUriCalls = 0;
+    let imageUriTotalMs = 0;
     const resolveImageUri = (src) => {
         if (/^https?:\/\//i.test(src)) return src;
         const abs = path.isAbsolute(src) ? src : path.join(path.dirname(filePath), src);
+        const tImg = Date.now();
         try {
             return webview.asWebviewUri(vscode.Uri.file(abs)).toString();
         } catch {
             return src;
+        } finally {
+            imageUriCalls++;
+            imageUriTotalMs += Date.now() - tImg;
         }
     };
 
+    const tRenderStart = Date.now();
     const renderer = getMarkdownRenderer();
     const html = renderer.render(body, { usedSlugs: new Map(), resolveImageUri });
+    const tRenderEnd = Date.now();
 
     const mtimeMs = hasBr ? undefined : fs.statSync(filePath).mtimeMs;
     const result  = { mtimeMs, html, title };
     renderCache.set(filePath, result);
+
+    out.appendLine(
+        `[renderFile] ${path.basename(filePath)}: ` +
+        `decompress/read=${tDecompressEnd - tDecompressStart}ms, ` +
+        `markdown-it render (incl. ${imageUriCalls} image URI calls, ${imageUriTotalMs}ms)=${tRenderEnd - tRenderStart}ms, ` +
+        `total=${Date.now() - tStart}ms`
+    );
     return result;
 }
 
@@ -232,12 +273,17 @@ ${scrollScript}
  * Markdown file, scrolling to `fragment` (a heading slug) if provided.
  */
 function openHelpTopic(context, filePath, fragment) {
-    // .md.br ships in the packaged .vsix (raw .md is dev/test-only, excluded by .vscodeignore).
-    if (!fs.existsSync(filePath) && !fs.existsSync(`${filePath}.br`)) {
+    const out = getOutputChannel();
+    const tOpen = Date.now();
+
+    if (!existsCompressed(filePath)) {
         vscode.window.showErrorMessage(`Help topic not found: ${filePath}`);
         return;
     }
+    out.appendLine(`\n[openHelpTopic] existsSync check: ${Date.now() - tOpen}ms`);
 
+    const tPanelStart = Date.now();
+    const isNewPanel = !panel;
     if (!panel) {
         panel = vscode.window.createWebviewPanel(
             "cpqBmlHelp",
@@ -260,10 +306,21 @@ function openHelpTopic(context, filePath, fragment) {
     } else {
         panel.reveal(vscode.ViewColumn.Beside, true);
     }
+    out.appendLine(`[openHelpTopic] ${isNewPanel ? 'createWebviewPanel' : 'reveal'}: ${Date.now() - tPanelStart}ms`);
 
+    const tRenderStart = Date.now();
     const rendered = renderFile(filePath, panel.webview);
+    out.appendLine(`[openHelpTopic] renderFile() call (see breakdown above): ${Date.now() - tRenderStart}ms`);
+
+    const tHtmlStart = Date.now();
     panel.title = rendered.title;
-    panel.webview.html = buildHtml(panel.webview, rendered, fragment);
+    const html = buildHtml(panel.webview, rendered, fragment);
+    out.appendLine(`[openHelpTopic] buildHtml(): ${Date.now() - tHtmlStart}ms`);
+
+    const tAssignStart = Date.now();
+    panel.webview.html = html;
+    out.appendLine(`[openHelpTopic] webview.html assignment (returns immediately; does not include browser paint time): ${Date.now() - tAssignStart}ms`);
+    out.appendLine(`[openHelpTopic] TOTAL extension-side time: ${Date.now() - tOpen}ms\n`);
 }
 
 module.exports = { openHelpTopic };
