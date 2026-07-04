@@ -6,11 +6,11 @@ const path = require('path');
 // app/knowledge/BML/string/string.md (to match every other category's
 // <category>/<name>.md layout), but its image references were left as
 // "images/foo.png" instead of "../images/foo.png" - the correct relative path
-// from a nested category folder up to the shared images/ directory. helpViewer.js
-// resolves image src attributes relative to the .md file's own directory, so
-// every one of those 29 references pointed at a nonexistent
-// app/knowledge/BML/string/images/ path: broken images in the rendered doc,
-// and the webview waiting on 29 failed vscode-resource loads before settling.
+// from a nested category folder up to the shared images/ directory. Nothing
+// at runtime resolves these paths any more (see
+// scripts/bml_intellisense/knowledge_docs.py, which strips images down to
+// their alt text), but this file is still the readable source a maintainer
+// edits directly, so keeping its own internal links correct still matters.
 const KNOWLEDGE_DIR = path.join(__dirname, '..', 'app', 'knowledge', 'BML');
 const IMAGE_REF_RE = /!\[[^\]]*\]\(([^)]+)\)/g;
 

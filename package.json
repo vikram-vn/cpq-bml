@@ -208,10 +208,6 @@
         "title": "CPQ-BML: Compare BML Snapshot",
         "category": "BML",
         "icon": "$(diff)"
-      },
-      {
-        "command": "cpqBml.openHelpTopic",
-        "title": "CPQ-BML: Open BML Offline Help Topic"
       }
     ],
     "menus": {
@@ -437,9 +433,9 @@
     }
   },
   "scripts": {
-    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py",
+    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
-    "vscode:prepublish": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/compress_markdown.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py",
+    "vscode:prepublish": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && esbuild app/lang/settingsPanel/webview/src/index.jsx --bundle --outfile=app/lang/settingsPanel/webview/dist/main.js --format=iife --platform=browser --jsx=automatic --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && python scripts/build/compress_dictionary.py && python scripts/build/compress_json.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py",
     "package": "npx @vscode/vsce package",
     "publish": "npx @vscode/vsce publish",
     "build": "npm run package",
@@ -459,8 +455,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
-    "markdown-it": "^14.2.0",
-    "markdown-it-container": "^4.0.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "zod": "^4.4.3"

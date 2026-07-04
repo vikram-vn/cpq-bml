@@ -7,7 +7,6 @@ const {
     resolveCallAtPosition,
     extractDocHeader,
 } = require('./workspaceIndex');
-const { openHelpTopic } = require('./helpViewer');
 const { formatAsJsDoc } = require('./docFormatting');
 const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
 const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
@@ -219,7 +218,7 @@ function registerBmlIntelliSense(context) {
                 }
                 const info = bmlApiData[key];
                 if (info) {
-                    item.documentation = formatAsJsDoc(info, context);
+                    item.documentation = formatAsJsDoc(info);
                 }
                 return item;
             }
@@ -236,7 +235,7 @@ function registerBmlIntelliSense(context) {
             if (!wordRange) return null;
 
             const info = lookupApiInfo(document.getText(wordRange));
-            return info ? new vscode.Hover(formatAsJsDoc(info, context)) : null;
+            return info ? new vscode.Hover(formatAsJsDoc(info)) : null;
         }
     });
 
@@ -257,7 +256,7 @@ function registerBmlIntelliSense(context) {
                 if (!info || info.category !== 'function') return null;
 
                 const signatureHelp = new vscode.SignatureHelp();
-                const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info, context));
+                const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info));
                 
                 signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax);
                 signatureHelp.signatures = [signatureInfo];
@@ -271,18 +270,6 @@ function registerBmlIntelliSense(context) {
     );
 
     context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
-
-    // Register command to open help topics in the fast, admonition-aware
-    // offline help viewer (see helpViewer.js).
-    const openCommand = vscode.commands.registerCommand('cpqBml.openHelpTopic', (uriString) => {
-        try {
-            const uri = vscode.Uri.parse(uriString);
-            openHelpTopic(context, uri.fsPath, uri.fragment);
-        } catch (err) {
-            vscode.window.showErrorMessage(`Failed to open help topic: ${err.message}`);
-        }
-    });
-    context.subscriptions.push(openCommand);
 
     // ── Go to Definition ─────────────────────────────────────────────────────
     const definitionProvider = vscode.languages.registerDefinitionProvider('bml', {

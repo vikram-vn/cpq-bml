@@ -53,9 +53,12 @@ app/lang/intellisense/*.json
 app/lookups/**
 scripts/**
 
-# Knowledge markdown: ship only the brotli-compressed .md.br variants
-# (helpViewer.js decompresses at runtime via Node's built-in zlib)
-app/knowledge/**/*.md
+# Knowledge base: build-time-only source for scripts/bml_intellisense/knowledge_docs.py,
+# which folds the relevant per-function excerpts directly into
+# bml_functions_api_usage.json's "docs" field (generate:intellisense). Nothing
+# at runtime reads app/knowledge/** any more - no separate offline-docs
+# viewer, no images, no markdown parsing needed in the shipped extension.
+app/knowledge/**
 
 # Settings webview CSS: ship only the minified .min.css variants
 # (html.js references the .min.css files directly)
