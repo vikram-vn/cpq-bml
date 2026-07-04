@@ -168,7 +168,7 @@ function registerBmlIntelliSense(context) {
 
     // The API JSON files are static bundled resources; only reload them if
     // they actually change on disk (e.g. a maintainer re-running the
-    // generator scripts, or `npm run compile` regenerating the .json.br
+    // generator scripts, or `npm run compile` regenerating the .min.json
     // files loadJson() prefers), instead of re-reading/re-parsing on every
     // request.
     const apiFilesWatcher = vscode.workspace.createFileSystemWatcher(

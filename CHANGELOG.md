@@ -4,6 +4,16 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.17.0] - 2026-07-04
+
+### Added
+- Implement BML intellisense engine with automated API data loading and discovery scripts.
+- Implement offline function documentation extraction and pre-packaging for improved hover performance.
+- Implement high-performance, Docusaurus-aware offline help viewer with cached rendering and Brotli support.
+
+### Fixed
+- Correct relative image paths in String.md and add regression test for broken documentation links.
+
 ## [1.16.1] - 2026-07-03
 
 ### Changed
@@ -58,19 +68,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Release v1.7.0 with comprehensive BML linting framework, diagnostic tools, and automated build scripts.
-- Add comprehensive BML linting engine and unreachable code detection diagnostics.
-- Implement settings panel UI and core linting logic for CPQ integration.
-- Implement BML best-practice linting for function constraints and literal misuses.
-- Add Markdown documentation transformer and BML crawler scripts.
-- Reorganize BML documentation scripts into a sub-directory and add web crawler utilities.
-- Add bml_crawler and bml_intellisense scripts with html-to-markdown conversion tools and linting rules.
-- Implement comprehensive BML linting framework with style, performance, and best practice rules.
-- Add release automation script to manage versioning, changelogs, and build packaging.
-
-## [1.7.0] - 2026-07-02
-
-### Added
-
 - Add comprehensive BML linting engine and unreachable code detection diagnostics.
 - Implement settings panel UI and core linting logic for CPQ integration.
 - Implement BML best-practice linting for function constraints and literal misuses.

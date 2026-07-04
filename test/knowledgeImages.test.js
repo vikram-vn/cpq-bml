@@ -3,15 +3,20 @@ const fs = require('fs');
 const path = require('path');
 
 // Regression guard for a real bug: app/knowledge/BML/String.md was moved into
-// app/knowledge/BML/string/string.md (to match every other category's
-// <category>/<name>.md layout), but its image references were left as
-// "images/foo.png" instead of "../images/foo.png" - the correct relative path
-// from a nested category folder up to the shared images/ directory. Nothing
-// at runtime resolves these paths any more (see
+// what's now scratch/knowledge/BML/string/string.md (to match every other
+// category's <category>/<name>.md layout), but its image references were
+// left as "images/foo.png" instead of "../images/foo.png" - the correct
+// relative path from a nested category folder up to the shared images/
+// directory. Nothing at runtime resolves these paths any more (see
 // scripts/bml_intellisense/knowledge_docs.py, which strips images down to
 // their alt text), but this file is still the readable source a maintainer
 // edits directly, so keeping its own internal links correct still matters.
-const KNOWLEDGE_DIR = path.join(__dirname, '..', 'app', 'knowledge', 'BML');
+//
+// scratch/ is gitignored (scripts/docs/bml_crawler writes the crawled
+// markdown there; only the JSON it produces gets committed), so this
+// directory won't exist in CI or a fresh clone - skip rather than fail when
+// there's nothing to check.
+const KNOWLEDGE_DIR = path.join(__dirname, '..', 'scratch', 'knowledge', 'BML');
 const IMAGE_REF_RE = /!\[[^\]]*\]\(([^)]+)\)/g;
 
 function findMarkdownFiles(dir) {
@@ -28,7 +33,12 @@ function findMarkdownFiles(dir) {
 }
 
 suite('knowledge base - image references', () => {
-    test('every ![]() image reference in every .md file resolves to a real file on disk', () => {
+    test('every ![]() image reference in every .md file resolves to a real file on disk', function () {
+        if (!fs.existsSync(KNOWLEDGE_DIR)) {
+            this.skip(); // no crawled markdown present (gitignored, not always populated)
+            return;
+        }
+
         const failures = [];
         for (const mdPath of findMarkdownFiles(KNOWLEDGE_DIR)) {
             const content = fs.readFileSync(mdPath, 'utf8');

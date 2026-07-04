@@ -56,7 +56,8 @@ function isProseExample(example) {
  * info.docs (when present) is a pre-generated, already hover-safe markdown
  * excerpt from the knowledge base - see scripts/bml_intellisense/knowledge_docs.py,
  * which extracts and sanitizes it once at build time (no runtime file
- * reading, no separate webview tab needed to read the docs).
+ * reading, no markdown parsing, no separate webview tab needed to read the
+ * docs). Images aren't shipped or rendered - only their alt text remains.
  */
 function formatAsJsDoc(info) {
     const md = new vscode.MarkdownString();

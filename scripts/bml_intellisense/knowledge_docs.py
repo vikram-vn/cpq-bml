@@ -1,12 +1,21 @@
 """Extracts and sanitizes per-function reference sections from the crawled
-knowledge base (app/knowledge/BML/**/*.md), for embedding directly into
-bml_functions_api_usage.json's "docs" field.
+knowledge base (scratch/knowledge/BML/**/*.md - see scripts/docs/bml_crawler),
+for embedding directly into bml_functions_api_usage.json's "docs" field.
+
+scratch/ is gitignored on purpose: the crawled markdown is a disposable
+intermediate, not something we want committed. Only the JSON this produces is
+kept in git. That means a fresh clone has no markdown to extract from -
+generate_bml_functions() in functions.py checks knowledge_source_available()
+and falls back to preserving whatever "docs" values are already in the
+existing output file, rather than silently wiping them out to None.
 
 This replaces what used to be a runtime feature (a separate offline-docs
 webview panel, plus JS code that read+parsed the markdown on every hover).
 Doing the extraction once here means the extension ships a single JSON file
 and needs zero markdown parsing, file reads, or webview machinery at runtime -
-the hover just reads info["docs"] directly.
+the hover just reads info["docs"] directly. Images are dropped entirely (not
+shipped, not rendered) - only their alt text remains, so the hover stays
+readable without needing to package any screenshots.
 """
 import os
 import re
@@ -37,7 +46,15 @@ _md_cache = {}
 
 
 def _knowledge_dir(root_dir):
-    return os.path.join(root_dir, 'app', 'knowledge', 'BML')
+    return os.path.join(root_dir, 'scratch', 'knowledge', 'BML')
+
+
+def knowledge_source_available(root_dir):
+    """True if the crawled markdown is present (e.g. scripts/docs/bml_crawler
+    was just run). False on a fresh clone, where scratch/ is gitignored and
+    empty - callers should treat that as "can't refresh, preserve existing
+    docs values" rather than "no docs exist"."""
+    return os.path.isdir(_knowledge_dir(root_dir))
 
 
 def _load_markdown(root_dir, category):
@@ -124,10 +141,9 @@ def sanitize_section_for_hover(section):
     - strips the redundant "**Syntax:**" line (already shown via the code
       block the hover renders above this excerpt)
     - replaces images with an italicized placeholder built from their alt
-      text instead of deleting them outright - dropping them silently would
+      text instead of shipping/rendering them - dropping them silently would
       leave the lead-in sentence dangling ("...you will see:" followed by
-      nothing). There's no separate viewer to point to for the real
-      screenshot, so the placeholder is purely descriptive.
+      nothing), so the placeholder stays purely descriptive.
     - turns ":::type ... :::" admonition containers (not standard markdown,
       markdown-it-container syntax used by the crawled docs) into a
       blockquote so they render as *something* instead of literal "::: " text

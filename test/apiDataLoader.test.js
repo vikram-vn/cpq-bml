@@ -2,17 +2,16 @@ const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const zlib = require('zlib');
 
 // Regression guard for a real bug: index.js (completion/hover data),
 // systemVariables.js, and metadataTypes.js all used to read
 // app/lang/intellisense/*.json directly with fs.readFileSync, bypassing
-// apiDataLoader.js's brotli decompression entirely. That worked fine in
-// dev/tests, where both the raw .json and generated .json.br sit side by
-// side on disk - but .vscodeignore excludes the raw .json from the packaged
-// .vsix (only .json.br ships), so the real installed extension silently
-// loaded {} for every category: no autocompletion, no hover, no system
-// variable recognition. Only a scenario where the .json is genuinely absent
+// apiDataLoader.js entirely. That worked fine in dev/tests, where both the
+// pretty .json and generated .min.json sit side by side on disk - but
+// .vscodeignore excludes the pretty .json from the packaged .vsix (only
+// .min.json ships), so the real installed extension silently loaded {} for
+// every category: no autocompletion, no hover, no system variable
+// recognition. Only a scenario where the pretty .json is genuinely absent
 // (as it is once packaged) reproduces the failure - every other test in this
 // repo runs against the full source tree where both files exist.
 function withTempDir(fn) {
@@ -46,12 +45,11 @@ suite('apiDataLoader', () => {
         return require('../app/lang/intellisense/apiDataLoader');
     }
 
-    test('loads correctly from only a .json.br file (the real packaged/.vsix scenario)', () => {
+    test('loads correctly from only a .min.json file (the real packaged/.vsix scenario)', () => {
         withTempDir((tmpDir) => {
             const baseName = freshBaseName();
             const payload = { atof: { syntax: 'atof(str)' } };
-            const compressed = zlib.brotliCompressSync(Buffer.from(JSON.stringify(payload)));
-            writeTree(tmpDir, { [`${baseName}.json.br`]: compressed });
+            writeTree(tmpDir, { [`${baseName}.min.json`]: JSON.stringify(payload) });
 
             const { loadJson } = loadFresh();
             const data = loadJson(baseName, tmpDir);
@@ -59,7 +57,7 @@ suite('apiDataLoader', () => {
         });
     });
 
-    test('falls back to the plain .json file when no .json.br is present (dev/test runs without a build step)', () => {
+    test('falls back to the pretty .json file when no .min.json is present (dev/test runs without a build step)', () => {
         withTempDir((tmpDir) => {
             const baseName = freshBaseName();
             const payload = { _user_name: { dataType: 'String' } };
@@ -71,14 +69,13 @@ suite('apiDataLoader', () => {
         });
     });
 
-    test('prefers .json.br over a stale .json when both are present', () => {
+    test('prefers .min.json over a stale pretty .json when both are present', () => {
         withTempDir((tmpDir) => {
             const baseName = freshBaseName();
             const fresh = { fnName: { syntax: 'fresh' } };
             const stale = { fnName: { syntax: 'stale' } };
-            const compressed = zlib.brotliCompressSync(Buffer.from(JSON.stringify(fresh)));
             writeTree(tmpDir, {
-                [`${baseName}.json.br`]: compressed,
+                [`${baseName}.min.json`]: JSON.stringify(fresh),
                 [`${baseName}.json`]: JSON.stringify(stale),
             });
 

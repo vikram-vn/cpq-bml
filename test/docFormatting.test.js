@@ -3,16 +3,18 @@ const fs = require('fs');
 const path = require('path');
 const { formatAsJsDoc } = require('../app/lang/intellisense/docFormatting');
 
-// docFormatting.js used to read+parse markdown from app/knowledge/BML at
-// hover time (a separate "offline docs" webview, plus runtime extraction of
-// the relevant "## <name>" section). That's gone now: the extraction and
-// hover-safe sanitization (stripping images, converting parameter tables to
-// bullets, turning ":::admonition:::" containers into blockquotes) happens
+// docFormatting.js used to read+parse markdown from a knowledge base at hover
+// time (a separate "offline docs" webview, plus runtime extraction of the
+// relevant "## <name>" section). That's gone now: the extraction and
+// hover-safe sanitization (converting parameter tables to bullets, turning
+// ":::admonition:::" containers into blockquotes, replacing images with an
+// alt-text placeholder - images aren't shipped or rendered at all) happens
 // once in scripts/bml_intellisense/knowledge_docs.py at generation time, and
 // is embedded directly as bml_functions_api_usage.json's "docs" field.
-// formatAsJsDoc() now just appends that pre-built string - no file reads, no
+// formatAsJsDoc() just appends that pre-built string - no file reads, no
 // markdown parsing, no separate webview tab needed at all.
-const FUNCTIONS_JSON_PATH = path.join(__dirname, '..', 'app', 'lang', 'intellisense', 'bml_functions_api_usage.json');
+const REPO_ROOT = path.join(__dirname, '..');
+const FUNCTIONS_JSON_PATH = path.join(REPO_ROOT, 'app', 'lang', 'intellisense', 'bml_functions_api_usage.json');
 
 suite('docFormatting - info.docs rendering', () => {
     test('appends info.docs under a clear "From the Docs" heading when present', () => {

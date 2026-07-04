@@ -1,19 +1,17 @@
-"""Minifies JSON files that VS Code core loads directly by path (themes and
-TextMate grammars), for packaging.
+"""Minifies JSON files for packaging - both the ones VS Code core loads
+directly by path (themes, TextMate grammars) and the intellisense data files
+apiDataLoader.js reads at runtime.
 
-These are declared in package.json's "contributes.themes"/"contributes.grammars"
-paths and read straight off disk by VS Code itself - not through our own Node
-code - so unlike the dictionary/JSON-data/markdown assets they can't be
-transparently decompressed at runtime. Whitespace stripping (this script) is
-the only lever available, same as the webview CSS. The pretty .json files are
-the editable sources kept in git; this generates .min.json siblings
-(gitignored) that package.json's contribution paths point to instead.
-Re-run automatically by `npm run compile` / `vscode:prepublish`.
+The pretty .json files (indent=4, readable/diffable in git - see
+scripts/bml_intellisense/*.py, which generate them) are the editable/generated
+sources kept in git; this generates .min.json siblings (gitignored) that ship
+instead. Re-run automatically by `npm run compile` / `vscode:prepublish`.
 """
 import json
 import os
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
+INTELLISENSE_DIR = os.path.join(ROOT, "app", "lang", "intellisense")
 
 FILES_TO_MINIFY = [
     os.path.join(ROOT, "themes", "dark-default.json"),
@@ -22,6 +20,14 @@ FILES_TO_MINIFY = [
     os.path.join(ROOT, "themes", "light.json"),
     os.path.join(ROOT, "app", "lang", "syntaxes", "bml.tmLanguage.json"),
     os.path.join(ROOT, "app", "lang", "syntaxes", "xslt.tmLanguage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml_functions_api_usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml_attributes_api_usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml_cpq_js_api_usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml_util_attributes_api_usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml_variables_api_usage.json"),
+    os.path.join(INTELLISENSE_DIR, "custom_snippets.json"),
+    os.path.join(INTELLISENSE_DIR, "functionParamDataTypes.json"),
+    os.path.join(INTELLISENSE_DIR, "functionReturnTypes.json"),
 ]
 
 

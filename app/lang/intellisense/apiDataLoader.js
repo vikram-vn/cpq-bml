@@ -1,7 +1,6 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
-const zlib = require("zlib");
 
 // ── Per-file cache ──────────────────────────────────────────────────────────
 const _cache = Object.create(null);
@@ -18,10 +17,11 @@ function invalidateCache() {
 }
 
 /**
- * Loads a brotli-compressed intellisense JSON file (.json.br), falling back
- * to the uncompressed .json when the .br is absent (e.g. unit-test runs that
- * skip the build step). Results are cached by filename for the lifetime of
- * the extension host process.
+ * Loads a minified intellisense JSON file (.min.json, produced by
+ * scripts/build/minify_json.py), falling back to the pretty .json when the
+ * .min.json is absent (e.g. unit-test runs that skip the build step).
+ * Results are cached by filename for the lifetime of the extension host
+ * process.
  *
  * @param {string} baseName      - Filename WITHOUT any extension,
  *                                 e.g. "bml_functions_api_usage"
@@ -31,16 +31,16 @@ function invalidateCache() {
 function loadJson(baseName, extPath) {
     if (_cache[baseName]) return _cache[baseName];
 
+    const minFile  = `${baseName}.min.json`;
     const jsonFile = `${baseName}.json`;
-    const brFile   = `${baseName}.json.br`;
     const relDir   = path.join("app", "lang", "intellisense");
 
     const candidates = [
-        // Compressed variant (preferred — ships in .vsix)
-        extPath && path.join(extPath, relDir, brFile),
-        path.join(__dirname, brFile),
-        path.join(__dirname, "..", relDir, brFile),
-        // Uncompressed fallback for dev / test runs without a build step
+        // Minified variant (preferred — ships in .vsix)
+        extPath && path.join(extPath, relDir, minFile),
+        path.join(__dirname, minFile),
+        path.join(__dirname, "..", relDir, minFile),
+        // Pretty fallback for dev / test runs without a build step
         extPath && path.join(extPath, relDir, jsonFile),
         path.join(__dirname, jsonFile),
         path.join(__dirname, "..", relDir, jsonFile),
@@ -48,10 +48,7 @@ function loadJson(baseName, extPath) {
 
     for (const candidate of candidates) {
         try {
-            const raw  = fs.readFileSync(candidate);
-            const text = candidate.endsWith(".br")
-                ? zlib.brotliDecompressSync(raw).toString("utf8")
-                : raw.toString("utf8");
+            const text = fs.readFileSync(candidate, "utf8");
             _cache[baseName] = JSON.parse(text);
             return _cache[baseName];
         } catch (_) {
@@ -65,12 +62,12 @@ function loadJson(baseName, extPath) {
 
 // ── Named convenience exports (one per JSON file) ───────────────────────────
 
-/** BML built-in functions (~196 KB raw, ~32 KB brotli) */
+/** BML built-in functions, including per-function doc excerpts */
 function loadBuiltInFunctionsJson(extPath) {
     return loadJson("bml_functions_api_usage", extPath);
 }
 
-/** BML attribute definitions (~188 KB raw, ~17 KB brotli) */
+/** BML attribute definitions */
 function loadBuiltInAttributesJson(extPath) {
     return loadJson("bml_attributes_api_usage", extPath);
 }

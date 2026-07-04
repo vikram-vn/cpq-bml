@@ -34,7 +34,7 @@ def rewrite_content(content):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.abspath(os.path.join(script_dir, "..", ".."))
-    bml_dir = os.path.join(root_dir, "app", "knowledge", "BML")
+    bml_dir = os.path.join(root_dir, "scratch", "knowledge", "BML")
     
     # 1. Traverse all .md files recursively
     md_files = []
