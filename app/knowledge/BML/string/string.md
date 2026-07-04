@@ -38,16 +38,16 @@ Error messages:
 If you attempt to pass an empty string or a string with letters into either `atoi` or `atof`, you will see:
 
 
-![atof/atoi empty string error message](images/atof_error1.png)
+![atof/atoi empty string error message](../images/atof_error1.png)
 
 
 Example of atof and atoi:
 
 
-![atof/atoi example](images/atofBML.png)
+![atof/atoi example](../images/atofBML.png)
 
 
-![atof/atoi output example](images/atofBML_console.png)
+![atof/atoi output example](../images/atofBML_console.png)
 
 
 :::warning
@@ -81,22 +81,22 @@ Error messages:
 * If you attempt to pass an empty string or a string with letters into either `atoi` or `atof`, you will see:
 
 
-![atof/atoi empty string error message](images/atof_error1.png)
+![atof/atoi empty string error message](../images/atof_error1.png)
 
 
 * If you attempt to pass a string with a decimal point ("123.456") into `atoi`, you will see:
 
 
-![atof/atoi decimal error message](images/atof_error2.png)
+![atof/atoi decimal error message](../images/atof_error2.png)
 
 
 Example of atof and atoi:
 
 
-![atof/atoi example](images/atofBML.png)
+![atof/atoi example](../images/atofBML.png)
 
 
-![atof/atoi output example](images/atofBML_console.png)
+![atof/atoi output example](../images/atofBML_console.png)
 
 
 :::note
@@ -216,10 +216,10 @@ This function checks whether a string ends with a particular substring.
 Example of startswith and endswith:
 
 
-![startswith example](images/starts__BML.png)
+![startswith example](../images/starts__BML.png)
 
 
-![startswith output example](images/starts__console.png)
+![startswith output example](../images/starts__console.png)
 
 
 We know that the return of `endResults`will be true because the string "I like this string", ends with the substring "string".
@@ -283,10 +283,10 @@ This example uses four different variations of the find function:
 * **result:** shows what happens if `find` is looking for a substring and contains both a start and end index.
 
 
-![find example](images/find__BML.png)
+![find example](../images/find__BML.png)
 
 
-![find output example](images/find__BML_console.png)
+![find output example](../images/find__BML_console.png)
 
 
 :::tip
@@ -466,10 +466,10 @@ The Boolean function `isnumber(str)`  returns true when the string is a number a
 **Example:**
 
 
-![isnumber example](images/isnumber__BML.png)
+![isnumber example](../images/isnumber__BML.png)
 
 
-![isnumber output example](images/isnumber__console.png)
+![isnumber output example](../images/isnumber__console.png)
 
 
 :::note
@@ -508,10 +508,10 @@ The `len` function returns the length of a string.
 **Example:**
 
 
-![len example](images/len.png)
+![len example](../images/len.png)
 
 
-![len output example](images/len_console.png)
+![len output example](../images/len_console.png)
 
 
 :::note
@@ -552,10 +552,10 @@ Example Use Cases:
 Example of upper & lower:
 
 
-![upper & lower example](images/upper__BML.png)
+![upper & lower example](../images/upper__BML.png)
 
 
-![upper & lower output example](images/upper__console.png)
+![upper & lower output example](../images/upper__console.png)
 
 
 The code will print three different examples:
@@ -607,10 +607,10 @@ Use this function to return a copy of a string, with all occurrences of the old 
 **Example:**
 
 
-![replace example](images/replaceBML.png)
+![replace example](../images/replaceBML.png)
 
 
-![replace output example](images/replace_console.png)
+![replace output example](../images/replace_console.png)
 
 
 :::note
@@ -689,10 +689,10 @@ This function checks whether a string starts with a particular substring.
 Example of startswith and endswith:
 
 
-![startswith example](images/starts__BML.png)
+![startswith example](../images/starts__BML.png)
 
 
-![startswith output example](images/starts__console.png)
+![startswith output example](../images/starts__console.png)
 
 
 We know that the return of `endResults`will be true because the string "I like this string", ends with the substring "string".
@@ -731,10 +731,10 @@ Converts a float, integer or boolean value into text.
 **Example:**
 
 
-![string example](images/string__BML.png)
+![string example](../images/string__BML.png)
 
 
-![string output example](images/string__console.png)
+![string output example](../images/string__console.png)
 
 
 :::note
@@ -794,10 +794,10 @@ Example Use Cases:
 * **longStartInd:** This last example shows you what to expect if start is given an index value that is greater than the length of the string.
 
 
-![substring example](images/substr__BML.png)
+![substring example](../images/substr__BML.png)
 
 
-![substring output example](images/substring__console.png)
+![substring output example](../images/substring__console.png)
 
 
 :::note
@@ -836,10 +836,10 @@ This function removes the white space from both edges of strings.
 **Example:**
 
 
-![trim example](images/trim__BML.png)
+![trim example](../images/trim__BML.png)
 
 
-![trim output example](images/trim__console.png)
+![trim output example](../images/trim__console.png)
 
 
 :::note
@@ -885,10 +885,10 @@ Example Use Cases:
 Example of upper & lower:
 
 
-![upper & lower example](images/upper__BML.png)
+![upper & lower example](../images/upper__BML.png)
 
 
-![upper & lower output example](images/upper__console.png)
+![upper & lower output example](../images/upper__console.png)
 
 
 The code will print three different examples:

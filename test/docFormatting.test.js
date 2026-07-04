@@ -57,12 +57,22 @@ suite('docFormatting - offline help link', () => {
         });
     });
 
-    test('DEBUG real repo atoi', () => {
+    test('shows the Read Offline Help link for one real function from every documented category', () => {
+        // Regression guard: every functionCategory value that actually appears in
+        // bml_functions_api_usage.json (except "logical", which covers control-flow
+        // keyword docs like "if..."/"if...else" that have no dedicated reference page)
+        // must resolve to a real, existing knowledge-base file.
         const repoRoot = path.join(__dirname, '..');
-        const info = { category: 'function', name: 'atoi', syntax: 'atoi(str)', functionCategory: 'string' };
-        const md = formatAsJsDoc(info, { extensionPath: repoRoot });
-        console.log('=== ATOI MARKDOWN ===');
-        console.log(md.value);
-        console.log('=== END ===');
+        const funcsPath = path.join(repoRoot, 'app', 'lang', 'intellisense', 'bml_functions_api_usage.json');
+        const funcs = JSON.parse(fs.readFileSync(funcsPath, 'utf8'));
+        const seen = new Set();
+        for (const [name, entry] of Object.entries(funcs)) {
+            const cat = entry.functionCategory;
+            if (!cat || cat === 'logical' || seen.has(cat)) continue;
+            seen.add(cat);
+            const info = { category: 'function', name, syntax: entry.syntax || name, functionCategory: cat };
+            const md = formatAsJsDoc(info, { extensionPath: repoRoot });
+            assert.match(md.value, /Read Offline Help/, `category "${cat}" (e.g. "${name}") should show the offline help link`);
+        }
     });
 });
