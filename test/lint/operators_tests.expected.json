@@ -318,5 +318,25 @@
     "line": 96,
     "severity": "Hint",
     "message": "Unused variable: moduloRes"
+  },
+  {
+    "line": 99,
+    "severity": "Hint",
+    "message": "Unused variable: concatRes"
+  },
+  {
+    "line": 99,
+    "severity": "Error",
+    "message": "'~' is not a BML operator. Use \"+\" for string concatenation"
+  },
+  {
+    "line": 99,
+    "severity": "Error",
+    "message": "Type mismatch: Cannot combine 'String' and 'Integer' using '+'. Convert the number to String using 'string()' or vice versa."
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Argument 1 to 'atoi' should be String, but got a Integer value."
   }
 ]

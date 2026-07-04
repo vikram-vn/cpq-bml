@@ -75,7 +75,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));
 
         const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
-        diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes));
+        diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
         diagnostics.push(...checkConstantConditions(cleanText, conditionRanges, doc, vscode));
 

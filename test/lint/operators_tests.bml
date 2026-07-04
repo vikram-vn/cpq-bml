@@ -96,4 +96,7 @@ bitwiseRes3 = 5 ^ 3;
 // 10. Valid modulo operator (supported in BML)
 moduloRes = 10 % 3;
 
+// 11. Invalid concatenation operator (bml-operator-fix error) - only "+" concatenates in BML
+concatRes = "test" + atoi(100) ~ "suffix";
+
 return "";

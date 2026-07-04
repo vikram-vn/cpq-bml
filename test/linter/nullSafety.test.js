@@ -40,7 +40,7 @@ suite('BML Linter Test Suite - Null Safety', () => {
     test('flags unguarded use of get() result', () => {
         const diags = lintText(`
             val = get(myDict, "key");
-            result = val ~ " suffix";
+            result = val + " suffix";
             return result;
         `);
         const nullDiags = diags.filter(d => d.code === 'bml-null-check-required');
@@ -50,7 +50,7 @@ suite('BML Linter Test Suite - Null Safety', () => {
     test('does not flag non-bmql assignments', () => {
         const diags = lintText(`
             x = "hello";
-            y = x ~ " world";
+            y = x + " world";
             return y;
         `);
         const nullDiags = diags.filter(d => d.code === 'bml-null-check-required');

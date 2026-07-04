@@ -223,5 +223,74 @@ suite('BML Linter Test Suite - variable type consistency', () => {
             const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
             assert.strictEqual(diag, undefined, 'Should not flag valid comparisons');
         });
+
+        // Regression: getLeftOperandType/getRightOperandType only recognized
+        // literals and plain variables - a function call operand like atoi(100)
+        // resolved to null (unknown), which short-circuited the whole check
+        // ("if (!leftType || !rightType) continue;"), silently letting
+        // `"test" + atoi(100)` (String + Integer) through uncaught.
+        test('Flags combining a String literal and a function call\'s Integer return type with +', () => {
+            const diagnostics = lintText(`
+                finalStr = "test" + atoi(100) + 100;
+                return finalStr;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag String + atoi(...) (Integer)');
+            assert.match(diag.message, /Cannot combine 'String' and 'Integer'/);
+        });
+
+        test('Flags combining a function call\'s Integer return type and a String literal with + (function call on the left)', () => {
+            const diagnostics = lintText(`
+                finalStr = atoi(100) + "test";
+                return finalStr;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag atoi(...) (Integer) + String');
+            assert.match(diag.message, /Cannot combine 'String' and 'Integer'/);
+        });
+
+        test('Does not flag two numeric-returning function calls combined with +', () => {
+            const diagnostics = lintText(`
+                total = atoi("1") + atoi("2");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.strictEqual(diag, undefined, 'atoi(...) + atoi(...) is Integer + Integer - should not be flagged');
+        });
+
+        test('Does not flag a function call combined with a variable of unknown type (e.g. a bare parameter)', () => {
+            const diagnostics = lintText(`
+                x = atoi("1") + someUndeclaredThing;
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.strictEqual(diag, undefined, 'Should stay conservative when the other operand\'s type is unknown, not guess a mismatch');
+        });
+
+        // Regression: the operand-type lookup only checked FUNCTION_RETURN_TYPES
+        // (regular functions), not TYPE_CONSTRUCTORS (dict/json/jsonarray/... -
+        // calls whose name IS the type they build), so `"test" + dict("float")`
+        // silently passed. Fixed by switching to bml_functions_api_usage.json's
+        // "returnType" field, generated from the real CPQ REST API data, which
+        // already unifies both categories (dict -> Dictionary, json -> Json,
+        // etc.) - verified this is a strict superset of the old hardcoded map.
+        test('Flags combining a String literal and dict()\'s Dictionary return type with +', () => {
+            const diagnostics = lintText(`
+                finalStr = "test" + "test" + dict("float");
+                return finalStr;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag String + dict(...) (Dictionary)');
+            assert.match(diag.message, /'String' and 'Dictionary'/);
+        });
+
+        test('Does not flag dict() combined with another Dictionary-typed value', () => {
+            const diagnostics = lintText(`
+                x = dict("float") == dict("float");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.strictEqual(diag, undefined, 'Comparing two Dictionary constructor calls should not be flagged as a type mismatch');
+        });
     });
 });

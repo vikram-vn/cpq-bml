@@ -2,7 +2,7 @@ const vscode = require('vscode');
 
 function checkOperators(cleanText, doc) {
     const diagnostics = [];
-    const operatorRegex = /(\+\+|--|===|!==|!=|< =|> =|&&|\|\||!|\+=|-=|\*=|\/=|%=)/g;
+    const operatorRegex = /(\+\+|--|===|!==|!=|< =|> =|&&|\|\||!|\+=|-=|\*=|\/=|%=|~)/g;
     let match;
 
     while ((match = operatorRegex.exec(cleanText)) !== null) {
@@ -20,6 +20,7 @@ function checkOperators(cleanText, doc) {
             case '!': message = 'Use "NOT" in BML'; break;
             case '++': message = 'Use var = var + 1 in BML'; break;
             case '--': message = 'Use var = var - 1 in BML'; break;
+            case '~': message = "'~' is not a BML operator. Use \"+\" for string concatenation"; break;
             default: message = `${match[0]} operator not supported in BML`; break;
         }
 
