@@ -73,6 +73,12 @@ function isSuccess(statusCode) {
     return statusCode >= 200 && statusCode < 300;
 }
 
+function parseErrorLine(message) {
+    if (!message) return null;
+    const match = message.match(/(?:on|at|near)?\s*line\s+(\d+)\b/i);
+    return match ? parseInt(match[1], 10) : null;
+}
+
 function mergeAttributes(existing, dependent) {
     const normalizedExisting = metadataLib.normalizeAttributes(existing);
     const normalizedDependent = metadataLib.normalizeAttributes(dependent);
@@ -334,6 +340,7 @@ module.exports = {
     formatElapsed,
     describeError,
     isSuccess,
+    parseErrorLine,
     mergeAttributes,
     findLibraryFunctionByVariableName,
     resolveMetadataForFile,

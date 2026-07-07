@@ -18,7 +18,10 @@ jsconfig.json
 *.bml
 .github
 bml
-SKILLS.md
+*.md
+!README.md
+!CHANGELOG.md
+!SKILLS.md
 requirements.txt
 scratch/**
 

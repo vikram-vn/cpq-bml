@@ -9,6 +9,7 @@ const {
   formatElapsed,
   describeError,
   isSuccess,
+  parseErrorLine,
   mergeAttributes,
   resolveMetadataForFile,
   appendDebugOutputToFile,
@@ -50,10 +51,48 @@ function formatAsTable(data) {
   return lines.join('\n');
 }
 
-function parseErrorLine(message) {
-  if (!message) return null;
-  const match = message.match(/(?:on|at|near)?\s*line\s+(\d+)\b/i);
-  return match ? parseInt(match[1], 10) : null;
+// Parses a "documentNumber~variableName~value" pipe-delimited transaction dump into a
+// header table (documentNumber 1, transaction-level attributes) and a line table (documentNumber
+// 2+, one row per transaction line). Splits on the first two "~" only, so values containing "~"
+// stay intact. Returns null when the text doesn't look like this format at all.
+function parseDocAttributeDump(text) {
+  if (typeof text !== 'string' || text.indexOf('~') === -1) return null;
+
+  const segments = text.split('|').map((s) => s.trim()).filter(Boolean);
+  if (segments.length === 0) return null;
+
+  const header = [];
+  const lineRows = new Map();
+  let matched = 0;
+
+  for (const seg of segments) {
+    const firstTilde = seg.indexOf('~');
+    const secondTilde = firstTilde === -1 ? -1 : seg.indexOf('~', firstTilde + 1);
+    if (firstTilde === -1 || secondTilde === -1) continue;
+
+    const docNumStr = seg.slice(0, firstTilde);
+    if (!/^\d+$/.test(docNumStr)) continue;
+
+    const variableName = seg.slice(firstTilde + 1, secondTilde);
+    const value = seg.slice(secondTilde + 1);
+    matched++;
+
+    const docNum = parseInt(docNumStr, 10);
+    if (docNum === 1) {
+      header.push({ variableName, value });
+    } else {
+      if (!lineRows.has(docNum)) lineRows.set(docNum, { documentNumber: docNum });
+      lineRows.get(docNum)[variableName] = value;
+    }
+  }
+
+  if (matched === 0) return null;
+
+  const lines = Array.from(lineRows.keys())
+    .sort((a, b) => a - b)
+    .map((docNum) => lineRows.get(docNum));
+
+  return { header, lines };
 }
 
 async function runDebugCurrentFile(
@@ -79,8 +118,9 @@ async function runDebugCurrentFile(
 
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== "bml") {
-    vscode.window.showErrorMessage("CPQ-BML: open a .bml file to debug.");
-    return;
+    const errorMessage = "CPQ-BML: open a .bml file to debug.";
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   if (diagnosticCollection) {
@@ -88,7 +128,9 @@ async function runDebugCurrentFile(
   }
 
   const hasCredentials = await ensureCredentials(context, vscode);
-  if (!hasCredentials) return;
+  if (!hasCredentials) {
+    return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
+  }
 
   const doc = editor.document;
   const metadata = await resolveMetadataForFile(
@@ -99,10 +141,9 @@ async function runDebugCurrentFile(
   );
   if (!metadata) {
     const variableName = metadataLib.variableNameFromBmlPath(doc.uri.fsPath);
-    vscode.window.showErrorMessage(
-      `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or confirm the function exists in CPQ.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or confirm the function exists in CPQ.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   writeRunHeader(resultsTerminal, "Debug", metadata.variableName);
@@ -152,7 +193,7 @@ async function runDebugCurrentFile(
         ignoreFocusOut: true,
       });
 
-      if (!selected) return; // cancelled
+      if (!selected) return { success: false, errorMessage: "Cancelled: no debug inputs selected." };
 
       if (selected.id === "last") {
         useCached = true;
@@ -179,7 +220,7 @@ async function runDebugCurrentFile(
         value: String(prefill !== undefined && prefill !== null ? prefill : ""),
         ignoreFocusOut: true,
       });
-      if (value === undefined) return; // cancelled
+      if (value === undefined) return { success: false, errorMessage: `Cancelled: no value given for parameter "${param.name}".` };
       value = metadataLib.normalizeNumericValue(value, param.dataType);
       parameterValues[param.name] = value;
     }
@@ -197,13 +238,12 @@ async function runDebugCurrentFile(
         value: prefill,
         ignoreFocusOut: true,
       });
-      if (transactionIdStr === undefined) return; // cancelled
+      if (transactionIdStr === undefined) return { success: false, errorMessage: "Cancelled: no transaction ID given." };
       transactionId = transactionIdStr.trim();
       if (!transactionId) {
-        vscode.window.showErrorMessage(
-          "CPQ-BML: Transaction ID is required to debug commerce functions.",
-        );
-        return;
+        const errorMessage = "CPQ-BML: Transaction ID is required to debug commerce functions.";
+        vscode.window.showErrorMessage(errorMessage);
+        return { success: false, errorMessage };
       }
     }
 
@@ -253,10 +293,9 @@ async function runDebugCurrentFile(
         "\x1b[31m",
       );
       resultsTerminal.show();
-      vscode.window.showErrorMessage(
-        `CPQ-BML: failed to load transaction data (HTTP ${loadResult.statusCode}). ${message}`,
-      );
-      return;
+      const errorMessage = `CPQ-BML: failed to load transaction data (HTTP ${loadResult.statusCode}). ${message}`;
+      vscode.window.showErrorMessage(errorMessage);
+      return { success: false, errorMessage, elapsedMs: Date.now() - startedAt };
     }
 
     const loadedData = loadResult.body || {};
@@ -305,7 +344,7 @@ async function runDebugCurrentFile(
       const startChar = lineText.length - lineText.trimStart().length;
       const endChar = lineText.length;
       const range = new vscode.Range(lineIdx, startChar, lineIdx, endChar);
-      
+
       const diagnostic = new vscode.Diagnostic(
         range,
         `BML Debug Runtime Error: ${message}`,
@@ -313,10 +352,16 @@ async function runDebugCurrentFile(
       );
       diagnostic.source = 'BML Debug';
       diagnostic.code = 'bml-debug-runtime-error';
-      
+
       diagnosticCollection.set(doc.uri, [diagnostic]);
     }
-    return;
+    return {
+      success: false,
+      errorMessage: message,
+      errorLine: lineNum,
+      statusCode,
+      elapsedMs: Date.now() - startedAt,
+    };
   }
 
   const returnVal = body && body.returnData;
@@ -369,6 +414,7 @@ async function runDebugCurrentFile(
       body.printLog ||
       body.logs ||
       body.printData);
+  let printOutput = [];
   if (logs) {
     const logLines = String(logs).split(/\r?\n/);
     if (logLines.length > 0 && logLines[logLines.length - 1] === "") {
@@ -381,6 +427,7 @@ async function runDebugCurrentFile(
     }
     // Persist print statements to bml_debug_print.log (if enabled).
     appendDebugPrintToFile(printLogPath, metadata.variableName, String(logs));
+    printOutput = logLines;
   }
 
   const scriptSizePrefix = body && body.scriptSize ? `${body.scriptSize} ` : "";
@@ -388,6 +435,15 @@ async function runDebugCurrentFile(
     `\x1b[90m${scriptSizePrefix}(${formatElapsed(startedAt)})\x1b[0m`,
   );
   resultsTerminal.show();
+
+  return {
+    success: true,
+    returnValue: returnVal,
+    table: parseDocAttributeDump(returnVal),
+    printOutput,
+    scriptSize: body && body.scriptSize,
+    elapsedMs: Date.now() - startedAt,
+  };
 }
 
-module.exports = { runDebugCurrentFile };
+module.exports = { runDebugCurrentFile, parseDocAttributeDump };

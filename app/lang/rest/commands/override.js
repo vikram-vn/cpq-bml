@@ -19,32 +19,32 @@ async function runCreateOverride(
   { transport } = {},
 ) {
   const hasCredentials = await ensureCredentials(context, vscode);
-  if (!hasCredentials) return;
+  if (!hasCredentials) {
+    return { success: false, errorMessage: 'CPQ-BML: credentials are not configured.' };
+  }
 
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== 'bml') {
-    vscode.window.showErrorMessage('CPQ-BML: open a .bml file to create an override.');
-    return;
+    const errorMessage = 'CPQ-BML: open a .bml file to create an override.';
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
   const doc = editor.document;
   const metadata = await resolveMetadataForFile(context, vscode, doc.uri.fsPath, transport);
   if (!metadata) {
-    vscode.window.showErrorMessage(
-      'CPQ-BML: could not find CPQ metadata for this function. Pull it first.',
-    );
-    return;
+    const errorMessage = 'CPQ-BML: could not find CPQ metadata for this function. Pull it first.';
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
   if (!metadata.isStandardFunction) {
-    vscode.window.showErrorMessage(
-      `CPQ-BML: "${metadata.variableName}" is not a standard function — override not applicable.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: "${metadata.variableName}" is not a standard function — override not applicable.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
   if (metadata.isOverridden) {
-    vscode.window.showErrorMessage(
-      `CPQ-BML: "${metadata.variableName}" is already overridden and editable.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: "${metadata.variableName}" is already overridden and editable.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   writeRunHeader(resultsTerminal, 'Create Override', metadata.variableName);
@@ -64,10 +64,9 @@ async function runCreateOverride(
       '\x1b[31m',
     );
     resultsTerminal.show();
-    vscode.window.showErrorMessage(
-      `CPQ-BML: create override failed (HTTP ${result.statusCode}). ${message}`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: create override failed (HTTP ${result.statusCode}). ${message}`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage, statusCode: result.statusCode, elapsedMs: Date.now() - startedAt };
   }
 
   const { metadata: updatedMeta } = metadataLib.splitFunctionResponse(result.body);
@@ -82,9 +81,9 @@ async function runCreateOverride(
     `\x1b[32m${getTimestamp()} Override created (${formatElapsed(startedAt)})\x1b[0m`,
   );
   resultsTerminal.show();
-  vscode.window.showInformationMessage(
-    `CPQ-BML: override created for "${metadata.variableName}". You can now edit and save it.`,
-  );
+  const message = `CPQ-BML: override created for "${metadata.variableName}". You can now edit and save it.`;
+  vscode.window.showInformationMessage(message);
+  return { success: true, message, elapsedMs: Date.now() - startedAt };
 }
 
 async function runRemoveOverride(
@@ -94,32 +93,32 @@ async function runRemoveOverride(
   { transport } = {},
 ) {
   const hasCredentials = await ensureCredentials(context, vscode);
-  if (!hasCredentials) return;
+  if (!hasCredentials) {
+    return { success: false, errorMessage: 'CPQ-BML: credentials are not configured.' };
+  }
 
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== 'bml') {
-    vscode.window.showErrorMessage('CPQ-BML: open a .bml file to remove an override.');
-    return;
+    const errorMessage = 'CPQ-BML: open a .bml file to remove an override.';
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
   const doc = editor.document;
   const metadata = await resolveMetadataForFile(context, vscode, doc.uri.fsPath, transport);
   if (!metadata) {
-    vscode.window.showErrorMessage(
-      'CPQ-BML: could not find CPQ metadata for this function.',
-    );
-    return;
+    const errorMessage = 'CPQ-BML: could not find CPQ metadata for this function.';
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
   if (!metadata.isStandardFunction) {
-    vscode.window.showErrorMessage(
-      `CPQ-BML: "${metadata.variableName}" is not a standard function.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: "${metadata.variableName}" is not a standard function.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
   if (!metadata.isOverridden) {
-    vscode.window.showErrorMessage(
-      `CPQ-BML: "${metadata.variableName}" is not overridden — nothing to remove.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: "${metadata.variableName}" is not overridden — nothing to remove.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   const confirm = await vscode.window.showWarningMessage(
@@ -127,7 +126,9 @@ async function runRemoveOverride(
     { modal: true },
     'Remove Override',
   );
-  if (confirm !== 'Remove Override') return;
+  if (confirm !== 'Remove Override') {
+    return { success: false, errorMessage: 'Cancelled: override removal was not confirmed.' };
+  }
 
   writeRunHeader(resultsTerminal, 'Remove Override', metadata.variableName);
   writeRunningLine(resultsTerminal, 'Remove Override', metadata.variableName);
@@ -146,10 +147,9 @@ async function runRemoveOverride(
       '\x1b[31m',
     );
     resultsTerminal.show();
-    vscode.window.showErrorMessage(
-      `CPQ-BML: remove override failed (HTTP ${result.statusCode}). ${message}`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: remove override failed (HTTP ${result.statusCode}). ${message}`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage, statusCode: result.statusCode, elapsedMs: Date.now() - startedAt };
   }
 
   const { scriptText, metadata: updatedMeta } = metadataLib.splitFunctionResponse(result.body);
@@ -173,9 +173,9 @@ async function runRemoveOverride(
     `\x1b[33m${getTimestamp()} Override removed — reverted to system version (${formatElapsed(startedAt)})\x1b[0m`,
   );
   resultsTerminal.show();
-  vscode.window.showInformationMessage(
-    `CPQ-BML: override removed for "${metadata.variableName}". Local file reverted to the system script.`,
-  );
+  const message = `CPQ-BML: override removed for "${metadata.variableName}". Local file reverted to the system script.`;
+  vscode.window.showInformationMessage(message);
+  return { success: true, message, elapsedMs: Date.now() - startedAt };
 }
 
 module.exports = { runCreateOverride, runRemoveOverride };

@@ -33,50 +33,66 @@ function requireLocalFile(vscode, variableName) {
     return { bmlPath };
 }
 
-function outcomeFrom(messages, lines) {
-    const success = messages.error.length === 0;
-    return {
-        success,
-        message: success ? messages.info[0] : messages.error[0],
-        log: lines,
-    };
+// Common shape for every tool below: wraps a rest/commands run*() function's structured
+// {success, errorMessage, ...} result into the tool's consistent shape - "error" is only
+// ever present on failure, everything else the underlying command returned (elapsedMs,
+// statusCode, processVarName, etc.) passes through untouched. extra (e.g. {variableName})
+// is spread first so the caller never has to cross-reference its own input args to know
+// what the result is about, but a same-named field on the underlying result (e.g. a
+// resolved processVarName) always wins since it reflects what actually happened.
+function structuredOutcome(extra, result, lines) {
+    const { success, errorMessage, ...rest } = result || {};
+    if (!success) {
+        return { success: false, ...extra, error: errorMessage || 'Operation failed for an unknown reason.', ...rest, log: lines };
+    }
+    return { success: true, ...extra, ...rest, log: lines };
 }
 
 async function saveFunction(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
-    if (located.error) return { success: false, error: located.error };
+    if (located.error) return { success: false, variableName, error: located.error };
 
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    await runSaveCurrentFile(context, vscodeProxy, terminal, { transport });
-    return outcomeFrom(messages, getLines());
+    const result = await runSaveCurrentFile(context, vscodeProxy, terminal, { transport });
+    return structuredOutcome({ variableName }, result, getLines());
 }
 
 async function validateFunction(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
-    if (located.error) return { success: false, error: located.error };
+    if (located.error) return { success: false, variableName, error: located.error };
 
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const diagnosticCollection = { delete: () => {}, set: () => {} };
-    await runValidateCurrentFile(context, vscodeProxy, diagnosticCollection, terminal, { transport });
-    return outcomeFrom(messages, getLines());
+    const result = await runValidateCurrentFile(context, vscodeProxy, diagnosticCollection, terminal, { transport });
+
+    if (!result || !result.success) {
+        return {
+            success: false,
+            variableName,
+            error: (result && result.errorMessage) || 'Validation failed for an unknown reason.',
+            errorLine: result && result.errorLine,
+            log: getLines(),
+        };
+    }
+    return { success: true, variableName, elapsedMs: result.elapsedMs, log: getLines() };
 }
 
 async function deployFunction(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
-    if (located.error) return { success: false, error: located.error };
+    if (located.error) return { success: false, variableName, error: located.error };
 
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    await runDeployCurrentFile(context, vscodeProxy, terminal, { transport });
-    return outcomeFrom(messages, getLines());
+    const result = await runDeployCurrentFile(context, vscodeProxy, terminal, { transport });
+    return structuredOutcome({ variableName }, result, getLines());
 }
 
 // Pre-seeds debug.js's workspaceState cache with the AI-supplied inputs, then auto-answers
@@ -85,15 +101,15 @@ async function debugFunction(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
-    if (located.error) return { success: false, error: located.error };
+    if (located.error) return { success: false, variableName, error: located.error };
 
     const metadata = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(located.bmlPath));
-    if (!metadata) return { success: false, error: `No local metadata found for "${variableName}". Run pull_function first.` };
+    if (!metadata) return { success: false, variableName, error: `No local metadata found for "${variableName}". Run pull_function first.` };
 
     const isCommerce = !!metadata.commerceDocument;
     const transactionId = args && args.transactionId;
     if (isCommerce && !transactionId) {
-        return { success: false, error: 'transactionId is required to debug a commerce function.' };
+        return { success: false, variableName, error: 'transactionId is required to debug a commerce function.' };
     }
     const parameterValues = (args && args.parameters) || {};
 
@@ -103,11 +119,33 @@ async function debugFunction(context, vscode, args, transport) {
     }
 
     const quickPickSelector = (items) => items.find((i) => i.id === 'last');
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath, quickPickSelector });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath, quickPickSelector });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    await runDebugCurrentFile(context, vscodeProxy, terminal, { transport });
-    const success = messages.error.length === 0;
-    return { success, message: success ? undefined : messages.error[0], log: getLines() };
+    const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport });
+
+    if (!result || !result.success) {
+        return {
+            success: false,
+            variableName,
+            error: (result && result.errorMessage) || 'Debug failed for an unknown reason.',
+            errorLine: result && result.errorLine,
+            log: getLines(),
+        };
+    }
+
+    // table is populated only when returnValue matches the "documentNumber~variableName~value"
+    // transaction dump format - a header (transaction-level) table plus a per-line table, split
+    // out for the caller instead of making it re-parse the raw pipe/tilde-delimited string.
+    return {
+        success: true,
+        variableName,
+        returnValue: result.returnValue,
+        table: result.table,
+        printOutput: result.printOutput,
+        scriptSize: result.scriptSize,
+        elapsedMs: result.elapsedMs,
+        log: getLines(),
+    };
 }
 
 async function massDeployUtilFunctions(context, vscode, args, transport) {
@@ -117,25 +155,23 @@ async function massDeployUtilFunctions(context, vscode, args, transport) {
     }
 
     const quickPickSelector = (items) => items.filter((i) => variableNames.includes(i.item.variableName));
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { quickPickSelector });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { quickPickSelector });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    await runDeployUtilFunctions(context, vscodeProxy, terminal, { transport });
-    return outcomeFrom(messages, getLines());
+    const result = await runDeployUtilFunctions(context, vscodeProxy, terminal, { transport });
+    return structuredOutcome({ variableNames }, result, getLines());
 }
 
 async function deployCommerceProcess(context, vscode, args, transport) {
     const configOverrides = {};
     if (args && args.processVarName) configOverrides['rest.commerceProcess'] = args.processVarName;
 
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { configOverrides });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { configOverrides });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    await runDeployCommerceProcess(context, vscodeProxy, terminal, { transport });
-    const success = messages.error.length === 0;
-    return {
-        success,
-        message: messages.info[0] || messages.warning[0] || messages.error[0],
-        log: getLines(),
-    };
+    const result = await runDeployCommerceProcess(context, vscodeProxy, terminal, { transport });
+    // No extra fields passed in: result.processVarName reflects what was actually resolved
+    // (config default when args.processVarName was omitted), which is more accurate than
+    // echoing back a possibly-undefined arg.
+    return structuredOutcome({}, result, getLines());
 }
 
 async function createUtilFunction(context, vscode, args, transport) {
@@ -168,7 +204,7 @@ async function createUtilFunction(context, vscode, args, transport) {
     if (!isSuccess(result.statusCode)) {
         const message = `Create failed (HTTP ${result.statusCode}). ${describeError(result.body)}`;
         writeTerminalMessage(terminal, 'Create failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');
-        return { success: false, error: message, log: getLines() };
+        return { success: false, variableName, error: message, log: getLines() };
     }
 
     // Pulled back instead of written locally: CPQ assigns canonical fields (folderName, namespace) we didn't set.
@@ -177,10 +213,10 @@ async function createUtilFunction(context, vscode, args, transport) {
     if (!pulled.success) {
         const message = `Created "${variableName}" on CPQ, but failed to pull it back locally: ${pulled.error}`;
         writeTerminalMessage(terminal, 'Create: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[33m');
-        return { success: true, message, log };
+        return { success: true, variableName, message, log };
     }
     terminal.writeLine(`\x1b[32m${getTimestamp()} Created (${formatElapsed(startedAt)})\x1b[0m`);
-    return { success: true, message: `Created "${variableName}".`, localPath: pulled.localPath, log };
+    return { success: true, variableName, message: `Created "${variableName}".`, localPath: pulled.localPath, log };
 }
 
 // Standard (system) functions cannot be validated/saved/deployed until overridden -
@@ -189,12 +225,12 @@ async function createOverride(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
-    if (located.error) return { success: false, error: located.error };
+    if (located.error) return { success: false, variableName, error: located.error };
 
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    await runCreateOverride(context, vscodeProxy, terminal, { transport });
-    return outcomeFrom(messages, getLines());
+    const result = await runCreateOverride(context, vscodeProxy, terminal, { transport });
+    return structuredOutcome({ variableName }, result, getLines());
 }
 
 // Destructive: reverts to the system version and discards local override customizations.
@@ -205,19 +241,20 @@ async function removeOverride(context, vscode, args, transport) {
     if (args.confirm !== true) {
         return {
             success: false,
+            variableName,
             error: 'Removing an override reverts to the CPQ system version and discards local override customizations. Re-call with confirm:true to proceed.',
         };
     }
     const located = requireLocalFile(vscode, variableName);
-    if (located.error) return { success: false, error: located.error };
+    if (located.error) return { success: false, variableName, error: located.error };
 
-    const { vscodeProxy, messages } = createToolVscodeContext(vscode, {
+    const { vscodeProxy } = createToolVscodeContext(vscode, {
         bmlPath: located.bmlPath,
         warningConfirm: 'Remove Override',
     });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    await runRemoveOverride(context, vscodeProxy, terminal, { transport });
-    return outcomeFrom(messages, getLines());
+    const result = await runRemoveOverride(context, vscodeProxy, terminal, { transport });
+    return structuredOutcome({ variableName }, result, getLines());
 }
 
 module.exports = {

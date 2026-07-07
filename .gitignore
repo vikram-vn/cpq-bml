@@ -13,6 +13,10 @@ dist/
 .env
 .cpqdevkit
 *.lock
+*.md
+!README.md
+!CHANGELOG.md
+!SKILLS.md
 /bml
 package-lock.json
 app/lang/settingsPanel/webview/dist/

@@ -75,7 +75,7 @@ async function pullFunction(context, vscode, args, transport) {
 
     const fail = (message) => {
         writeTerminalMessage(terminal, 'Pull failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');
-        return { success: false, error: message, log: getLines() };
+        return { success: false, variableName, error: message, log: getLines() };
     };
 
     const isCommerce = args.type === 'commerce';
@@ -122,7 +122,7 @@ async function pullFunction(context, vscode, args, transport) {
     const aiPath = findOrCreateAiCopy(vscode, metadata.variableName);
 
     terminal.writeLine(`\x1b[32m${getTimestamp()} Pulled (${formatElapsed(startedAt)})\x1b[0m`);
-    return { success: true, localPath: aiPath || bmlPath, canonicalPath: bmlPath, scriptText, metadata, log: getLines() };
+    return { success: true, variableName, localPath: aiPath || bmlPath, canonicalPath: bmlPath, scriptText, metadata, log: getLines() };
 }
 
 module.exports = { listUtilFunctions, listCommerceFunctions, pullFunction };

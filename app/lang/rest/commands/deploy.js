@@ -46,7 +46,9 @@ async function runDeployCommerceProcess(
   { transport, pollIntervalMs, pollTimeoutMs } = {},
 ) {
   const hasCredentials = await ensureCredentials(context, vscode);
-  if (!hasCredentials) return;
+  if (!hasCredentials) {
+    return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
+  }
 
   const editor = vscode.window.activeTextEditor;
   let processVarName = '';
@@ -83,10 +85,9 @@ async function runDeployCommerceProcess(
       "\x1b[31m",
     );
     resultsTerminal.show();
-    vscode.window.showErrorMessage(
-      `CPQ-BML: commerce process deployment failed (HTTP ${result.statusCode}). ${message}`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: commerce process deployment failed (HTTP ${result.statusCode}). ${message}`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, processVarName, errorMessage, statusCode: result.statusCode, elapsedMs: Date.now() - startedAt };
   }
 
   const taskId = result.body && result.body.taskId;
@@ -96,10 +97,9 @@ async function runDeployCommerceProcess(
       `\x1b[32m${getTimestamp()} Commerce process deployment queued (${formatElapsed(startedAt)})\x1b[0m`,
     );
     resultsTerminal.show();
-    vscode.window.showInformationMessage(
-      `CPQ-BML: commerce process "${processVarName}" deployment queued.`,
-    );
-    return;
+    const message = `CPQ-BML: commerce process "${processVarName}" deployment queued.`;
+    vscode.window.showInformationMessage(message);
+    return { success: true, processVarName, status: "queued", message, elapsedMs: Date.now() - startedAt };
   }
 
   resultsTerminal.writeLine(
@@ -118,10 +118,11 @@ async function runDeployCommerceProcess(
       `\x1b[32m${getTimestamp()} Commerce process deployed successfully (${elapsed})\x1b[0m`,
     );
     resultsTerminal.show();
-    vscode.window.showInformationMessage(
-      `CPQ-BML: commerce process "${processVarName}" deployed.`,
-    );
-  } else if (taskResult.status) {
+    const message = `CPQ-BML: commerce process "${processVarName}" deployed.`;
+    vscode.window.showInformationMessage(message);
+    return { success: true, processVarName, status: "complete", message, taskId, elapsedMs: Date.now() - startedAt };
+  }
+  if (taskResult.status) {
     const detail = (taskResult.body && taskResult.body.detailStatus && taskResult.body.detailStatus.message) || taskResult.status;
     writeTerminalMessage(
       resultsTerminal,
@@ -130,18 +131,17 @@ async function runDeployCommerceProcess(
       "\x1b[31m",
     );
     resultsTerminal.show();
-    vscode.window.showErrorMessage(
-      `CPQ-BML: commerce process deployment failed. ${detail}`,
-    );
-  } else {
-    resultsTerminal.writeLine(
-      `\x1b[33m${getTimestamp()} Deployment still running after ${elapsed} - check the CPQ Deployment Center for task ${taskId}.\x1b[0m`,
-    );
-    resultsTerminal.show();
-    vscode.window.showWarningMessage(
-      `CPQ-BML: commerce process deployment (task ${taskId}) is still running - check the CPQ Deployment Center.`,
-    );
+    const errorMessage = `CPQ-BML: commerce process deployment failed. ${detail}`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, processVarName, errorMessage, taskId, elapsedMs: Date.now() - startedAt };
   }
+  resultsTerminal.writeLine(
+    `\x1b[33m${getTimestamp()} Deployment still running after ${elapsed} - check the CPQ Deployment Center for task ${taskId}.\x1b[0m`,
+  );
+  resultsTerminal.show();
+  const message = `CPQ-BML: commerce process deployment (task ${taskId}) is still running - check the CPQ Deployment Center.`;
+  vscode.window.showWarningMessage(message);
+  return { success: true, processVarName, status: "running", message, taskId, elapsedMs: Date.now() - startedAt };
 }
 
 // Deploys the util function open in the active editor; it must already exist in CPQ (Save first if new).
@@ -153,27 +153,28 @@ async function runDeployCurrentFile(
 ) {
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== "bml") {
-    vscode.window.showErrorMessage("CPQ-BML: open a .bml file to deploy.");
-    return;
+    const errorMessage = "CPQ-BML: open a .bml file to deploy.";
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   const hasCredentials = await ensureCredentials(context, vscode);
-  if (!hasCredentials) return;
+  if (!hasCredentials) {
+    return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
+  }
 
   const metadata = await resolveMetadataForFile(context, vscode, editor.document.uri.fsPath, transport);
   if (!metadata) {
     const variableName = metadataLib.variableNameFromBmlPath(editor.document.uri.fsPath);
-    vscode.window.showErrorMessage(
-      `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or save it once to create it.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or save it once to create it.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   if (metadata.commerceDocument) {
-    vscode.window.showErrorMessage(
-      `CPQ-BML: "${metadata.variableName}" is a commerce function - use "CPQ-BML: Deploy Commerce Process Setup" instead.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: "${metadata.variableName}" is a commerce function - use "CPQ-BML: Deploy Commerce Process Setup" instead.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   writeRunHeader(resultsTerminal, "Deploy", metadata.variableName);
@@ -197,19 +198,18 @@ async function runDeployCurrentFile(
       "\x1b[31m",
     );
     resultsTerminal.show();
-    vscode.window.showErrorMessage(
-      `CPQ-BML: deploy failed (HTTP ${deployResult.statusCode}). ${message}`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: deploy failed (HTTP ${deployResult.statusCode}). ${message}`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage, statusCode: deployResult.statusCode, elapsedMs: Date.now() - startedAt };
   }
 
   resultsTerminal.writeLine(
     `\x1b[32m${getTimestamp()} Deployed (${formatElapsed(startedAt)})\x1b[0m`,
   );
   resultsTerminal.show();
-  vscode.window.showInformationMessage(
-    `CPQ-BML: ${metadata.variableName} deployed.`,
-  );
+  const message = `CPQ-BML: ${metadata.variableName} deployed.`;
+  vscode.window.showInformationMessage(message);
+  return { success: true, message, elapsedMs: Date.now() - startedAt };
 }
 
 // Synchronous (204 directly), unlike deployCommerceProcess's task polling above.
@@ -220,7 +220,9 @@ async function runDeployUtilFunctions(
   { transport } = {},
 ) {
   const hasCredentials = await ensureCredentials(context, vscode);
-  if (!hasCredentials) return;
+  if (!hasCredentials) {
+    return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
+  }
 
   let allItems = [];
   let offset = 0;
@@ -228,8 +230,9 @@ async function runDeployUtilFunctions(
   for (;;) {
     const { statusCode, body } = await api.listLibraryFunctions(context, vscode, { offset, limit }, transport);
     if (!isSuccess(statusCode)) {
-      vscode.window.showErrorMessage(`CPQ-BML: failed to list util library functions (HTTP ${statusCode}). ${describeError(body)}`);
-      return;
+      const errorMessage = `CPQ-BML: failed to list util library functions (HTTP ${statusCode}). ${describeError(body)}`;
+      vscode.window.showErrorMessage(errorMessage);
+      return { success: false, errorMessage };
     }
     allItems = allItems.concat(body.items || []);
     if (!body.hasMore) break;
@@ -237,8 +240,9 @@ async function runDeployUtilFunctions(
   }
 
   if (allItems.length === 0) {
-    vscode.window.showInformationMessage("CPQ-BML: no util library functions found.");
-    return;
+    const errorMessage = "CPQ-BML: no util library functions found.";
+    vscode.window.showInformationMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   const picks = allItems.map((item) => ({
@@ -251,7 +255,9 @@ async function runDeployUtilFunctions(
     canPickMany: true,
     placeHolder: "Select util library functions to deploy",
   });
-  if (!selected || selected.length === 0) return;
+  if (!selected || selected.length === 0) {
+    return { success: false, errorMessage: "CPQ-BML: no util library functions were selected to deploy." };
+  }
 
   const items = selected.map((pick) => metadataLib.buildDeployItem(pick.item));
   const label = items.length === 1 ? items[0].variableName : `${items.length} functions`;
@@ -272,19 +278,23 @@ async function runDeployUtilFunctions(
       "\x1b[31m",
     );
     resultsTerminal.show();
-    vscode.window.showErrorMessage(
-      `CPQ-BML: deploy failed (HTTP ${deployResult.statusCode}). ${message}`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: deploy failed (HTTP ${deployResult.statusCode}). ${message}`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage, statusCode: deployResult.statusCode, elapsedMs: Date.now() - startedAt };
   }
 
   resultsTerminal.writeLine(
     `\x1b[32m${getTimestamp()} Deployed ${items.length} function(s) (${formatElapsed(startedAt)})\x1b[0m`,
   );
   resultsTerminal.show();
-  vscode.window.showInformationMessage(
-    `CPQ-BML: deployed ${items.length} util function(s).`,
-  );
+  const message = `CPQ-BML: deployed ${items.length} util function(s).`;
+  vscode.window.showInformationMessage(message);
+  return {
+    success: true,
+    message,
+    deployedVariableNames: items.map((i) => i.variableName),
+    elapsedMs: Date.now() - startedAt,
+  };
 }
 
 module.exports = { runDeployCommerceProcess, runDeployCurrentFile, runDeployUtilFunctions };

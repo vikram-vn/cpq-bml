@@ -20,12 +20,15 @@ async function runSaveCurrentFile(
 ) {
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== "bml") {
-    vscode.window.showErrorMessage("CPQ-BML: open a .bml file to save.");
-    return;
+    const errorMessage = "CPQ-BML: open a .bml file to save.";
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   const hasCredentials = await ensureCredentials(context, vscode);
-  if (!hasCredentials) return;
+  if (!hasCredentials) {
+    return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
+  }
 
   const doc = editor.document;
   const metadata = await resolveMetadataForFile(
@@ -36,10 +39,9 @@ async function runSaveCurrentFile(
   );
   if (!metadata) {
     const variableName = metadataLib.variableNameFromBmlPath(doc.uri.fsPath);
-    vscode.window.showErrorMessage(
-      `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or confirm the function exists in CPQ.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or confirm the function exists in CPQ.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   // Standard (system-supplied) functions that have not been overridden yet
@@ -47,11 +49,10 @@ async function runSaveCurrentFile(
   // The user must click "Create Override" in the CPQ UI first to get a custom
   // copy, then pull it again before editing here.
   if (metadata.isStandardFunction && !metadata.isOverridden) {
-    vscode.window.showErrorMessage(
-      `CPQ-BML: "${metadata.variableName}" is a standard (system) function and cannot be saved directly. ` +
-      `Open it in the CPQ UI, click "Create Override", then use "CPQ-BML: Pull Commerce Functions from CPQ" to pull the override before saving.`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: "${metadata.variableName}" is a standard (system) function and cannot be saved directly. ` +
+      `Open it in the CPQ UI, click "Create Override", then use "CPQ-BML: Pull Commerce Functions from CPQ" to pull the override before saving.`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage };
   }
 
   const nsVarName = metadataLib.namespaceVariableNameFor(metadata);
@@ -89,10 +90,9 @@ async function runSaveCurrentFile(
           "\x1b[31m",
         );
         resultsTerminal.show();
-        vscode.window.showErrorMessage(
-          `CPQ-BML: create failed (HTTP ${createResult.statusCode}). ${message}`,
-        );
-        return;
+        const errorMessage = `CPQ-BML: create failed (HTTP ${createResult.statusCode}). ${message}`;
+        vscode.window.showErrorMessage(errorMessage);
+        return { success: false, errorMessage, statusCode: createResult.statusCode, elapsedMs: Date.now() - startedAt };
       }
     } else {
       writeTerminalMessage(
@@ -102,10 +102,9 @@ async function runSaveCurrentFile(
         "\x1b[31m",
       );
       resultsTerminal.show();
-      vscode.window.showErrorMessage(
-        `CPQ-BML: update failed (HTTP ${updateResult.statusCode}). ${errorMsg}`,
-      );
-      return;
+      const errorMessage = `CPQ-BML: update failed (HTTP ${updateResult.statusCode}). ${errorMsg}`;
+      vscode.window.showErrorMessage(errorMessage);
+      return { success: false, errorMessage, statusCode: updateResult.statusCode, elapsedMs: Date.now() - startedAt };
     }
   }
 
@@ -115,10 +114,9 @@ async function runSaveCurrentFile(
   if (metadata.commerceDocument) {
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Saved (${formatElapsed(startedAt)})\x1b[0m`);
     resultsTerminal.show();
-    vscode.window.showInformationMessage(
-      `CPQ-BML: ${metadata.variableName} saved.`,
-    );
-    return;
+    const message = `CPQ-BML: ${metadata.variableName} saved.`;
+    vscode.window.showInformationMessage(message);
+    return { success: true, deployed: false, message, elapsedMs: Date.now() - startedAt };
   }
 
   const deployResult = await api.deployLibraryFunctions(
@@ -137,17 +135,16 @@ async function runSaveCurrentFile(
       "\x1b[31m",
     );
     resultsTerminal.show();
-    vscode.window.showErrorMessage(
-      `CPQ-BML: save failed (HTTP ${deployResult.statusCode}). ${message}`,
-    );
-    return;
+    const errorMessage = `CPQ-BML: save failed (HTTP ${deployResult.statusCode}). ${message}`;
+    vscode.window.showErrorMessage(errorMessage);
+    return { success: false, errorMessage, statusCode: deployResult.statusCode, elapsedMs: Date.now() - startedAt };
   }
 
   resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Saved (${formatElapsed(startedAt)})\x1b[0m`);
   resultsTerminal.show();
-  vscode.window.showInformationMessage(
-    `CPQ-BML: ${metadata.variableName} saved.`,
-  );
+  const message = `CPQ-BML: ${metadata.variableName} saved.`;
+  vscode.window.showInformationMessage(message);
+  return { success: true, deployed: true, message, elapsedMs: Date.now() - startedAt };
 }
 
 module.exports = { runSaveCurrentFile };

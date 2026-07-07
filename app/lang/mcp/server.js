@@ -71,7 +71,9 @@ function registerTools(server, context, vscode) {
     "validate_function",
     {
       description:
-        "Validate the local .bml file for a function against Oracle's live BML compiler, without saving it.",
+        "Validate the local .bml file for a function against Oracle's live BML compiler, without saving it. " +
+        "On failure returns error (the compiler message) and errorLine (parsed line number, when the message " +
+        "includes one) directly - no need to parse the log array.",
       inputSchema: { variableName: z.string() },
     },
     async (args) =>
@@ -82,7 +84,11 @@ function registerTools(server, context, vscode) {
     "debug_function",
     {
       description:
-        "Run the local .bml file for a function on CPQ with the given inputs and return its output and print statements.",
+        "Run the local .bml file for a function on CPQ with the given inputs. Returns structured fields: " +
+        "returnValue (the raw return), printOutput (an array of print-statement lines), scriptSize, elapsedMs, " +
+        "and on failure error/errorLine. If returnValue is a \"documentNumber~variableName~value\" pipe-delimited " +
+        "transaction dump, table.header (transaction-level attributes) and table.lines (one row per transaction " +
+        "line, keyed by variableName) are also populated - use those instead of parsing returnValue yourself.",
       inputSchema: {
         variableName: z.string(),
         parameters: z
@@ -307,7 +313,20 @@ async function startMcpServer(context, vscode, port) {
       return;
     }
 
-    const requestServer = new McpServer({ name: "cpq-bml", version: "1.1.1" });
+    const requestServer = new McpServer(
+      { name: "cpq-bml", version: "1.1.1" },
+      {
+        instructions:
+          "Every tool returns { success: boolean, ... }. On failure, the reason is always in " +
+          "'error' (never 'message') plus 'errorLine' when a line number could be parsed from it - " +
+          "never parse 'log' for error text. On success, tools that ran a CPQ action include a " +
+          "human-readable 'message' confirmation. Tools scoped to one function always echo back " +
+          "'variableName' (or 'variableNames' for mass_deploy_util_functions), so the result is " +
+          "self-describing without cross-referencing the original call args. Tools that run through " +
+          "CPQ (save/validate/debug/deploy/override/create/pull) also include 'log', the human-readable " +
+          "terminal trace of what happened - useful for context, but structured fields are authoritative.",
+      },
+    );
     registerTools(requestServer, context, vscode);
 
     const transport = new StreamableHTTPServerTransport({

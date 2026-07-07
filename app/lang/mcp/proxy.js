@@ -96,6 +96,9 @@ function stripAnsi(text) {
 }
 
 // Captures every line for the tool result, and forwards live to realTerminal if provided.
+// The real terminal is shared with human-triggered commands, so lines forwarded there are
+// prefixed with "[MCP]" to distinguish AI-driven activity from the user's own; the captured
+// lines returned to the tool caller are left unprefixed.
 function createCapturingTerminal(realTerminal) {
     const lines = [];
     return {
@@ -103,7 +106,7 @@ function createCapturingTerminal(realTerminal) {
             writeLine: (l) => {
                 lines.push(l);
                 if (realTerminal) {
-                    try { realTerminal.writeLine(l); } catch (e) { /* best-effort */ }
+                    try { realTerminal.writeLine(`[MCP] ${l}`); } catch (e) { /* best-effort */ }
                 }
             },
             show: () => {

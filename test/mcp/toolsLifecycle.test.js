@@ -100,13 +100,22 @@ suite("MCP tools - lifecycle", () => {
         assert.strictEqual(result.success, true);
       }));
 
-    test("reports the failure message on a non-2xx validate response", () =>
+    test("reports the failure error on a non-2xx validate response", () =>
       withTempDir(async (tmpDir) => {
         writeLocalUtilFunction(tmpDir);
         const transport = async () => jsonResponse(400, { detail: "syntax error" });
         const result = await tools.validateFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
         assert.strictEqual(result.success, false);
-        assert.ok(result.message.includes("syntax error"));
+        assert.ok(result.error.includes("syntax error"));
+      }));
+
+    test("parses a line number out of the compiler error into errorLine", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir);
+        const transport = async () => jsonResponse(400, { detail: "Syntax error on line 7" });
+        const result = await tools.validateFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
+        assert.strictEqual(result.success, false);
+        assert.strictEqual(result.errorLine, 7);
       }));
   });
 
@@ -121,6 +130,8 @@ suite("MCP tools - lifecycle", () => {
         };
         const result = await tools.deployFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
         assert.strictEqual(result.success, true);
+        assert.strictEqual(result.variableName, "concatString");
+        assert.ok(result.message.includes("deployed"));
         assert.deepStrictEqual(calls, ["/rest/v18/bml/library/functions/actions/deploy"]);
       }));
 
@@ -129,7 +140,8 @@ suite("MCP tools - lifecycle", () => {
         writeLocalUtilFunction(tmpDir, { commerceProcess: "oraclecpqo", commerceDocument: "transaction" });
         const result = await tools.deployFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, async () => ({ statusCode: 200, headers: {}, text: "" }));
         assert.strictEqual(result.success, false);
-        assert.ok(result.message.includes("Deploy Commerce Process"));
+        assert.strictEqual(result.variableName, "concatString");
+        assert.ok(result.error.includes("Deploy Commerce Process"));
       }));
   });
 
@@ -148,11 +160,55 @@ suite("MCP tools - lifecycle", () => {
         );
 
         assert.strictEqual(result.success, true);
+        assert.strictEqual(result.returnValue, "alice bob");
+        assert.strictEqual(result.scriptSize, 42);
+        assert.strictEqual(result.table, null);
         assert.ok(result.log.some((l) => l.includes("alice bob")));
         assert.deepStrictEqual(context.workspaceState.get("debugCache:concatString").parameterValues, {
           stringOne: "alice",
           stringTwo: "bob",
         });
+      }));
+
+    test("splits a documentNumber~variableName~value dump into header/line tables", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir);
+        const dump = "1~customerName~Acme|1~customerId~12345|2~quantity~10|2~price~99.99|3~quantity~5|3~price~49.99";
+        const transport = async () => jsonResponse(200, { returnData: dump });
+
+        const result = await tools.debugFunction(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { variableName: "concatString", parameters: { stringOne: "a", stringTwo: "b" } },
+          transport,
+        );
+
+        assert.strictEqual(result.success, true);
+        assert.deepStrictEqual(result.table.header, [
+          { variableName: "customerName", value: "Acme" },
+          { variableName: "customerId", value: "12345" },
+        ]);
+        assert.deepStrictEqual(result.table.lines, [
+          { documentNumber: 2, quantity: "10", price: "99.99" },
+          { documentNumber: 3, quantity: "5", price: "49.99" },
+        ]);
+      }));
+
+    test("reports errorLine when the debug runtime error names a line number", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir);
+        const transport = async () => jsonResponse(400, { detail: "Division by zero on line 3" });
+
+        const result = await tools.debugFunction(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { variableName: "concatString", parameters: { stringOne: "a", stringTwo: "b" } },
+          transport,
+        );
+
+        assert.strictEqual(result.success, false);
+        assert.strictEqual(result.errorLine, 3);
+        assert.ok(result.error.includes("Division by zero"));
       }));
 
     test("requires a transactionId for commerce functions", () =>
@@ -179,6 +235,9 @@ suite("MCP tools - lifecycle", () => {
         const result = await tools.massDeployUtilFunctions(makeContext(), vscodeRootedAt(tmpDir), { variableNames: ["a", "c"] }, transport);
 
         assert.strictEqual(result.success, true);
+        assert.deepStrictEqual(result.variableNames, ["a", "c"]);
+        assert.deepStrictEqual(result.deployedVariableNames, ["a", "c"]);
+        assert.ok(result.message.includes("deployed"));
         const deployCall = calls.find((c) => c.method === "POST");
         const deployBody = JSON.parse(deployCall.body);
         assert.deepStrictEqual(deployBody.items.map((i) => i.variableName), ["a", "c"]);
@@ -203,6 +262,9 @@ suite("MCP tools - lifecycle", () => {
         const result = await tools.deployCommerceProcess(makeContext(), vscodeRootedAt(tmpDir), { processVarName: "customProc" }, transport);
 
         assert.strictEqual(result.success, true);
+        assert.strictEqual(result.processVarName, "customProc");
+        assert.strictEqual(result.status, "complete");
+        assert.ok(result.message.includes("customProc"));
         assert.ok(calls[0].includes("customProc"));
       }));
   });
@@ -263,6 +325,8 @@ suite("MCP tools - lifecycle", () => {
         const result = await tools.createOverride(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
 
         assert.strictEqual(result.success, true);
+        assert.strictEqual(result.variableName, "concatString");
+        assert.ok(result.message.includes("override created"));
         assert.strictEqual(calls[0].method, "POST");
         assert.ok(calls[0].path.endsWith("/actions/override"));
 
@@ -278,7 +342,8 @@ suite("MCP tools - lifecycle", () => {
         const transport = async () => jsonResponse(400, { detail: "cannot override" });
         const result = await tools.createOverride(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
         assert.strictEqual(result.success, false);
-        assert.ok(result.message.includes("cannot override"));
+        assert.strictEqual(result.variableName, "concatString");
+        assert.ok(result.error.includes("cannot override"));
       }));
 
     test("requires a variableName", async () => {
@@ -316,6 +381,8 @@ suite("MCP tools - lifecycle", () => {
         );
 
         assert.strictEqual(result.success, true);
+        assert.strictEqual(result.variableName, "concatString");
+        assert.ok(result.message.includes("override removed"));
         assert.strictEqual(fs.readFileSync(aiPath, "utf8"), systemScript);
       }));
   });
