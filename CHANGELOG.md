@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.17.2] - 2026-07-07
+
+### Changed
+- MCP server error fix.
+
+
 ## [1.17.1] - 2026-07-04
 
 ### Changed
