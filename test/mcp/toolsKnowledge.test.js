@@ -34,14 +34,14 @@ suite("MCP tools - knowledge (lint_function / get_function_metrics)", () => {
         assert.ok(result.error.includes("neverPulled"));
       }));
 
-    test("lints the function's -AI working copy and returns real diagnostics", () =>
+    test("lints the function's AI working copy and returns real diagnostics", () =>
       withTempDir(async (tmpDir) => {
         writeCanonicalBml(tmpDir, "badTypes", 'x = true + "1";\nreturn "";');
 
         const result = await tools.lintFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "badTypes" });
 
         assert.strictEqual(result.success, true);
-        assert.strictEqual(path.basename(path.dirname(result.filePath)), "badTypes-AI");
+        assert.strictEqual(path.basename(result.filePath), "badTypes_ai.bml");
         assert.ok(result.diagnosticCount > 0);
         const mismatch = result.diagnostics.find((d) => d.code === "bml-binary-type-mismatch");
         assert.ok(mismatch, "Should flag Boolean + String as a type mismatch");

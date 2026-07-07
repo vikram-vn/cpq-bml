@@ -24,7 +24,7 @@ const { findOrCreateAiCopy } = require('../locate');
 const { getAiTerminal } = require('../aiTerminal');
 const { pullFunction } = require('./lookup');
 
-// Operates on the "<variableName>-AI" working copy, never the pulled canonical file.
+// Operates on the "<variableName>_ai" working copy, never the pulled canonical file.
 function requireLocalFile(vscode, variableName) {
     const bmlPath = findOrCreateAiCopy(vscode, variableName);
     if (!bmlPath) {

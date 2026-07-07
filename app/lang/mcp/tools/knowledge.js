@@ -67,7 +67,7 @@ async function explainFunction(context, vscode, args) {
         .join('\n');
 
     // Read sidecar
-    const baseName = path.basename(bmlPath, '.bml').replace(/-AI$/, '');
+    const baseName = path.basename(bmlPath, '.bml').replace(/-AI$/i, '').replace(/_ai$/i, '');
     const metaPath = path.join(path.dirname(bmlPath), baseName + '-meta.json');
     let parameters = [], returnType = '';
     try {
@@ -238,7 +238,7 @@ async function searchFunctions(context, vscode, args) {
  * lint_function
  *
  * Runs the extension's own local BML linter against a locally pulled
- * function's "-AI" copy and returns its diagnostics. No CPQ connection or
+ * function's AI working copy and returns its diagnostics. No CPQ connection or
  * round trip to Oracle's compiler needed - much faster than
  * validate_function for iterating on a fix, though validate_function is
  * still the authoritative check before saving/deploying.

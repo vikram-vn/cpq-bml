@@ -10,7 +10,7 @@ function bmlPathToMetaPath(bmlFilePath) {
 }
 
 function variableNameFromBmlPath(bmlFilePath) {
-    return path.basename(bmlFilePath).replace(/\.bml$/i, '');
+    return path.basename(bmlFilePath).replace(/\.bml$/i, '').replace(/_ai$/i, '');
 }
 
 // Falls back to folderName: Oracle's docs show no top-level "namespace" field on a Get-one response, only folderName.

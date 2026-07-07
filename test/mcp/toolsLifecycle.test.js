@@ -28,7 +28,7 @@ function writeLocalUtilFunction(tmpDir, overrides) {
 
 suite("MCP tools - lifecycle", () => {
   suite("AI working copy isolation", () => {
-    test("save/validate/debug/deploy operate on the -AI copy, never the pulled canonical file", () =>
+    test("save/validate/debug/deploy operate on the AI copy, never the pulled canonical file", () =>
       withTempDir(async (tmpDir) => {
         const canonicalPath = writeLocalUtilFunction(tmpDir);
         const vscode = vscodeRootedAt(tmpDir);
@@ -40,7 +40,7 @@ suite("MCP tools - lifecycle", () => {
           return { statusCode: 204, headers: {}, text: "" };
         });
 
-        const aiPath = path.join(tmpDir, "library", "util", "concatString-AI", "concatString.bml");
+        const aiPath = path.join(tmpDir, "library", "util", "concatString", "concatString_ai.bml");
         assert.ok(fs.existsSync(aiPath), "AI copy should have been created");
         assert.strictEqual(fs.readFileSync(canonicalPath, "utf8"), SAMPLE_FUNCTION.scriptText, "canonical untouched");
 
@@ -229,7 +229,7 @@ suite("MCP tools - lifecycle", () => {
         const meta = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(result.localPath));
         assert.strictEqual(meta.variableName, "newFn");
         // localPath is the AI working copy - the same one pullFunction would produce
-        assert.strictEqual(result.localPath, path.join(tmpDir, "library", "util", "newFn-AI", "newFn.bml"));
+        assert.strictEqual(result.localPath, path.join(tmpDir, "library", "util", "newFn", "newFn_ai.bml"));
         // log covers both the create call and the pull-back it triggers internally
         assert.ok(result.log.some((l) => l.includes("Create") && l.includes("newFn")));
         assert.ok(result.log.some((l) => l.includes("Pull") && l.includes("newFn")));
@@ -266,7 +266,7 @@ suite("MCP tools - lifecycle", () => {
         assert.strictEqual(calls[0].method, "POST");
         assert.ok(calls[0].path.endsWith("/actions/override"));
 
-        const aiMetaPath = path.join(tmpDir, "library", "util", "concatString-AI", "concatString.bml");
+        const aiMetaPath = path.join(tmpDir, "library", "util", "concatString", "concatString_ai.bml");
         const aiMeta = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(aiMetaPath));
         assert.strictEqual(aiMeta.isOverridden, true);
         assert.strictEqual(fs.readFileSync(canonicalPath, "utf8"), SAMPLE_FUNCTION.scriptText, "canonical untouched");
@@ -303,7 +303,7 @@ suite("MCP tools - lifecycle", () => {
       withTempDir(async (tmpDir) => {
         const systemScript = 'return "system version";';
         writeLocalUtilFunction(tmpDir, { isStandardFunction: true, isOverridden: true });
-        const aiPath = path.join(tmpDir, "library", "util", "concatString-AI", "concatString.bml");
+        const aiPath = path.join(tmpDir, "library", "util", "concatString", "concatString_ai.bml");
 
         const transport = async (opts) =>
           jsonResponse(200, { ...SAMPLE_FUNCTION, isStandardFunction: true, isOverridden: false, scriptText: systemScript });

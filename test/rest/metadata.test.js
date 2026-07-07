@@ -48,6 +48,14 @@ suite("BML REST metadata", () => {
     assert.strictEqual(metadata.variableNameFromBmlPath("allUpdate.BML"), "allUpdate");
   });
 
+  test("variableNameFromBmlPath strips a trailing _ai suffix from the AI working copy filename", () => {
+    assert.strictEqual(
+      metadata.variableNameFromBmlPath("/ws/library/util/concatString/concatString_ai.bml"),
+      "concatString",
+    );
+    assert.strictEqual(metadata.variableNameFromBmlPath("concatString_AI.bml"), "concatString");
+  });
+
   test("namespaceOf returns namespace if present, otherwise empty string", () => {
     assert.strictEqual(metadata.namespaceOf({ folderName: "util" }), "");
     assert.strictEqual(

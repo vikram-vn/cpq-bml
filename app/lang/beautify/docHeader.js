@@ -30,7 +30,7 @@ function registerDocHeaderCompletion(context) {
 
                 // Build the doc header from sidecar metadata if available
                 const bmlPath = document.fileName;
-                const baseName = path.basename(bmlPath, '.bml').replace(/-AI$/, '');
+                const baseName = path.basename(bmlPath, '.bml').replace(/-AI$/i, '').replace(/_ai$/i, '');
                 const metaPath = path.join(path.dirname(bmlPath), baseName + '-meta.json');
 
                 let funcName = baseName;

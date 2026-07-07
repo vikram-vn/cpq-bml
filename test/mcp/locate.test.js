@@ -65,16 +65,34 @@ suite("MCP locate", () => {
       return bmlPath;
     }
 
-    test("clones the canonical .bml and -meta.json into a sibling <variableName>-AI folder", () =>
+    test("clones the canonical .bml and -meta.json into a same-folder <variableName>_ai.bml", () =>
       withTempDir((tmpDir) => {
         writeCanonical(tmpDir, "groupDiscount", 'return "v1";', { variableName: "groupDiscount" });
 
         const aiPath = findOrCreateAiCopy(vscodeRootedAt(tmpDir), "groupDiscount");
 
-        assert.strictEqual(aiPath, path.join(tmpDir, "library", "util", "groupDiscount-AI", "groupDiscount.bml"));
+        assert.strictEqual(aiPath, path.join(tmpDir, "library", "util", "groupDiscount", "groupDiscount_ai.bml"));
         assert.strictEqual(fs.readFileSync(aiPath, "utf8"), 'return "v1";');
-        const aiMeta = JSON.parse(fs.readFileSync(path.join(tmpDir, "library", "util", "groupDiscount-AI", "groupDiscount-meta.json"), "utf8"));
+        const aiMeta = JSON.parse(fs.readFileSync(path.join(tmpDir, "library", "util", "groupDiscount", "groupDiscount_ai-meta.json"), "utf8"));
         assert.strictEqual(aiMeta.variableName, "groupDiscount");
+      }));
+
+    test("recognizes a pre-existing legacy <variableName>-AI sibling folder instead of creating a new same-folder copy", () =>
+      withTempDir((tmpDir) => {
+        const canonicalPath = writeCanonical(tmpDir, "legacyFn", 'return "v1";', { variableName: "legacyFn" });
+        const legacyDir = path.join(tmpDir, "library", "util", "legacyFn-AI");
+        fs.mkdirSync(legacyDir, { recursive: true });
+        const legacyAiPath = path.join(legacyDir, "legacyFn.bml");
+        fs.writeFileSync(legacyAiPath, 'return "legacy-ai-edited";');
+
+        const aiPath = findOrCreateAiCopy(vscodeRootedAt(tmpDir), "legacyFn");
+
+        assert.strictEqual(aiPath, legacyAiPath);
+        assert.strictEqual(fs.readFileSync(aiPath, "utf8"), 'return "legacy-ai-edited";');
+        assert.ok(
+          !fs.existsSync(path.join(path.dirname(canonicalPath), "legacyFn_ai.bml")),
+          "should not also create a new same-folder copy when a legacy copy already exists",
+        );
       }));
 
     test("never overwrites an existing AI copy - re-pulling the canonical file does not clobber in-progress AI edits", () =>
@@ -108,7 +126,7 @@ suite("MCP locate", () => {
 
         assert.strictEqual(
           aiPath,
-          path.join(tmpDir, "library", "oraclecpqo", "transaction", "libraries", "myFunc-AI", "myFunc.bml"),
+          path.join(tmpDir, "library", "oraclecpqo", "transaction", "libraries", "myFunc", "myFunc_ai.bml"),
         );
         assert.strictEqual(fs.readFileSync(aiPath, "utf8"), 'return "x";');
       }));

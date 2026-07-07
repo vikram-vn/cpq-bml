@@ -98,7 +98,7 @@ function scanDir(dir, index) {
     } else if (
       entry.isFile() &&
       entry.name.endsWith(".bml") &&
-      !entry.name.endsWith("-AI.bml")
+      !/(-AI|_ai)\.bml$/i.test(entry.name)
     ) {
       indexBmlFile(fullPath, index);
     }

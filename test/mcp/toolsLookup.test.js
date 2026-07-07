@@ -95,8 +95,8 @@ suite("MCP tools - lookup", () => {
 
         assert.strictEqual(result.success, true);
 
-        // localPath is the AI working copy - sibling "-AI" folder, never the canonical one.
-        assert.strictEqual(path.basename(path.dirname(result.localPath)), "concatString-AI");
+        // localPath is the AI working copy - "_ai" suffixed file, never the canonical one.
+        assert.strictEqual(path.basename(result.localPath), "concatString_ai.bml");
         assert.ok(fs.existsSync(result.localPath), "AI copy should be written");
         assert.strictEqual(fs.readFileSync(result.localPath, "utf8"), SAMPLE_FUNCTION.scriptText);
         const aiMeta = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(result.localPath));

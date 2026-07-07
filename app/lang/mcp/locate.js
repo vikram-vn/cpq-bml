@@ -3,7 +3,8 @@ const path = require('path');
 const config = require('../rest/config');
 const metadataLib = require('../rest/metadata');
 
-const AI_COPY_SUFFIX = '-AI';
+const AI_FILE_SUFFIX = '_ai';
+const LEGACY_AI_FOLDER_SUFFIX = '-AI';
 
 // Pulled functions always land at <pullFolder>/.../<variableName>/<variableName>.bml,
 // so finding one by name means walking the pull folder for that directory.
@@ -36,21 +37,31 @@ function searchDir(dir, variableName, depthLeft) {
     return null;
 }
 
+// AI copy sits right next to the canonical file, e.g. concatString/concatString_ai.bml
+// alongside concatString/concatString.bml - no separate folder needed.
 function aiCopyPathFor(canonicalBmlPath, variableName) {
-    const canonicalDir = path.dirname(canonicalBmlPath);
-    const aiDir = path.join(path.dirname(canonicalDir), `${variableName}${AI_COPY_SUFFIX}`);
-    return path.join(aiDir, `${variableName}.bml`);
+    return path.join(path.dirname(canonicalBmlPath), `${variableName}${AI_FILE_SUFFIX}.bml`);
 }
 
-// MCP tools edit the sibling "<variableName>-AI" copy, never the canonical pulled file,
-// so the original stays a pristine diff baseline and re-pulling never clobbers AI edits.
+// Older pulls kept the AI copy in a sibling "<variableName>-AI" folder instead. Recognized
+// so in-progress edits made there before this change aren't orphaned or double-copied.
+function legacyAiCopyPathFor(canonicalBmlPath, variableName) {
+    const canonicalDir = path.dirname(canonicalBmlPath);
+    const legacyDir = path.join(path.dirname(canonicalDir), `${variableName}${LEGACY_AI_FOLDER_SUFFIX}`);
+    return path.join(legacyDir, `${variableName}.bml`);
+}
+
+// MCP tools edit the AI working copy, never the canonical pulled file, so the original
+// stays a pristine diff baseline and re-pulling never clobbers AI edits.
 function findOrCreateAiCopy(vscode, variableName) {
     const canonicalBmlPath = findLocalBmlPath(vscode, variableName);
     if (!canonicalBmlPath) return null;
 
+    const legacyAiPath = legacyAiCopyPathFor(canonicalBmlPath, variableName);
+    if (fs.existsSync(legacyAiPath)) return legacyAiPath;
+
     const aiBmlPath = aiCopyPathFor(canonicalBmlPath, variableName);
     if (!fs.existsSync(aiBmlPath)) {
-        fs.mkdirSync(path.dirname(aiBmlPath), { recursive: true });
         fs.copyFileSync(canonicalBmlPath, aiBmlPath);
 
         const canonicalMetaPath = metadataLib.bmlPathToMetaPath(canonicalBmlPath);
