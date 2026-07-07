@@ -4,6 +4,13 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.18.0] - 2026-07-07
+
+### Added
+- Implement MCP tools for BML lifecycle management, including AI-copy isolation, validation, deployment, and debug execution.
+- Implement MCP tools for BML lifecycle management, including file operations, deployments, and overrides.
+- Implement MCP tools for local BML knowledge, including function explanation, diffing, searching, and linting.
+
 ## [1.17.2] - 2026-07-07
 
 ### Changed
@@ -59,17 +66,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Implement BML static analysis engine with comprehensive documentation and linting test suite.
-
-## [1.10.0] - 2026-07-02
-
-### Added
-
-- Add sharp dependency to devDependencies.
-- Add comprehensive BML documentation and supporting image assets.
-
-## [1.9.0] - 2026-07-02
-
-### Added
-
-- Implement BML language linting support and XSLT preview functionality with workspace pairing.
-- Implement BML linting rules for function constraints, semicolons, and code style with associated tests.

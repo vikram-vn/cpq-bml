@@ -21,7 +21,7 @@ bml
 *.md
 !README.md
 !CHANGELOG.md
-!SKILLS.md
+SKILLS.md
 requirements.txt
 scratch/**
 
