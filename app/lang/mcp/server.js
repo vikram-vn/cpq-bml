@@ -232,6 +232,56 @@ function registerTools(server, context, vscode) {
     async (args) =>
       jsonResult(await tools.searchFunctions(context, vscode, args)),
   );
+
+  server.registerTool(
+    "lint_function",
+    {
+      description:
+        "Run the extension's own local BML linter against a locally pulled function's code and return its diagnostics (errors/warnings/hints with line numbers). No CPQ connection needed - much faster than validate_function for iterating on a fix, though validate_function against Oracle's live compiler is still the authoritative check before saving/deploying.",
+      inputSchema: { variableName: z.string() },
+    },
+    async (args) =>
+      jsonResult(await tools.lintFunction(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "get_function_metrics",
+    {
+      description:
+        "Code-quality metrics for a locally pulled function: cyclomatic complexity, max nesting depth, line counts, plus a diagnostic-count summary from the same linter lint_function uses. No CPQ connection needed.",
+      inputSchema: { variableName: z.string() },
+    },
+    async (args) =>
+      jsonResult(await tools.getFunctionMetrics(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "lookup_bml_reference",
+    {
+      description:
+        "Look up built-in BML functions/attributes/system variables/snippets by exact name, or browse a category (optionally filtered by attribute scope) when no name is given. Reads the same generated reference data the editor's own hover/completion uses - use this to check real syntax, return types, or valid attribute names instead of guessing.",
+      inputSchema: {
+        name: z
+          .string()
+          .optional()
+          .describe("Exact function/attribute/variable/snippet name to look up (case-insensitive)."),
+        category: z
+          .enum(["function", "cpqjs", "attribute", "utilAttribute", "variable", "snippet"])
+          .optional()
+          .describe("Restrict to one category. Omit to search all categories."),
+        scope: z
+          .string()
+          .optional()
+          .describe('For attributes: e.g. "Transaction", "Line Item", "System".'),
+        limit: z
+          .number()
+          .optional()
+          .describe("Max results when browsing without an exact name (default 20, max 100)."),
+      },
+    },
+    async (args) =>
+      jsonResult(await tools.lookupBmlReference(context, vscode, args)),
+  );
 }
 
 

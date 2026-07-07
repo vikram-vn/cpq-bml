@@ -1,6 +1,36 @@
 const fs = require('fs');
 const path = require('path');
 const { findOrCreateAiCopy } = require('../locate');
+const { lintBMLCustom } = require('../../lint/lint');
+const { computeComplexity } = require('../../metrics/complexity');
+
+// Builds the minimal doc-like object lintBMLCustom() needs, from a file already
+// read off disk - the same shape test/linter/fixtures.js uses to lint text
+// directly without a real open editor document.
+function lintFileText(vscode, extensionPath, bmlPath, text) {
+    const doc = {
+        languageId: 'bml',
+        getText: () => text,
+        positionAt: (idx) => {
+            const lines = text.slice(0, idx).split(/\r?\n/);
+            return new vscode.Position(lines.length - 1, lines[lines.length - 1].length);
+        },
+        uri: vscode.Uri.file(bmlPath),
+    };
+    const diagnostics = [];
+    const collection = { set: (uri, diags) => diagnostics.push(...diags) };
+    lintBMLCustom(doc, collection, vscode, extensionPath);
+    return diagnostics;
+}
+
+function severityLabel(vscode, severity) {
+    switch (severity) {
+        case vscode.DiagnosticSeverity.Error: return 'Error';
+        case vscode.DiagnosticSeverity.Warning: return 'Warning';
+        case vscode.DiagnosticSeverity.Information: return 'Information';
+        default: return 'Hint';
+    }
+}
 
 /**
  * explain_function
@@ -204,4 +234,91 @@ async function searchFunctions(context, vscode, args) {
     };
 }
 
-module.exports = { explainFunction, diffFunction, searchFunctions };
+/**
+ * lint_function
+ *
+ * Runs the extension's own local BML linter against a locally pulled
+ * function's "-AI" copy and returns its diagnostics. No CPQ connection or
+ * round trip to Oracle's compiler needed - much faster than
+ * validate_function for iterating on a fix, though validate_function is
+ * still the authoritative check before saving/deploying.
+ */
+async function lintFunction(context, vscode, args) {
+    const { variableName } = args || {};
+    if (!variableName) return { success: false, error: 'variableName is required.' };
+
+    const bmlPath = findOrCreateAiCopy(vscode, variableName);
+    if (!bmlPath) {
+        return { success: false, error: `No local file found for "${variableName}". Run pull_function first.` };
+    }
+
+    let text;
+    try { text = fs.readFileSync(bmlPath, 'utf8'); } catch (e) {
+        return { success: false, error: `Cannot read file: ${e.message}` };
+    }
+
+    const diagnostics = lintFileText(vscode, context.extensionPath, bmlPath, text);
+    return {
+        success: true,
+        variableName,
+        filePath: bmlPath,
+        diagnosticCount: diagnostics.length,
+        diagnostics: diagnostics.map((d) => ({
+            line: d.range.start.line + 1, // 1-indexed - easier for a human/AI to map back to the file
+            severity: severityLabel(vscode, d.severity),
+            code: d.code,
+            message: d.message,
+        })),
+    };
+}
+
+/**
+ * get_function_metrics
+ *
+ * Code-quality metrics for a locally pulled function: cyclomatic
+ * complexity, max nesting depth, line counts, plus a diagnostic-count
+ * summary from the same linter lint_function uses. Mirrors what the
+ * "CPQ-BML: Open Code Metrics Report" webview shows, scoped to one function.
+ */
+async function getFunctionMetrics(context, vscode, args) {
+    const { variableName } = args || {};
+    if (!variableName) return { success: false, error: 'variableName is required.' };
+
+    const bmlPath = findOrCreateAiCopy(vscode, variableName);
+    if (!bmlPath) {
+        return { success: false, error: `No local file found for "${variableName}". Run pull_function first.` };
+    }
+
+    let text;
+    try { text = fs.readFileSync(bmlPath, 'utf8'); } catch (e) {
+        return { success: false, error: `Cannot read file: ${e.message}` };
+    }
+
+    const metrics = computeComplexity(text);
+    const diagnostics = lintFileText(vscode, context.extensionPath, bmlPath, text);
+
+    const byCode = {};
+    let errorCount = 0;
+    let warningCount = 0;
+    let infoCount = 0;
+    for (const d of diagnostics) {
+        const key = d.code || 'uncategorized';
+        byCode[key] = (byCode[key] || 0) + 1;
+        if (d.severity === vscode.DiagnosticSeverity.Error) errorCount++;
+        else if (d.severity === vscode.DiagnosticSeverity.Warning) warningCount++;
+        else if (d.severity === vscode.DiagnosticSeverity.Information) infoCount++;
+    }
+
+    return {
+        success: true,
+        variableName,
+        filePath: bmlPath,
+        metrics,
+        errorCount,
+        warningCount,
+        infoCount,
+        byCode,
+    };
+}
+
+module.exports = { explainFunction, diffFunction, searchFunctions, lintFunction, getFunctionMetrics };

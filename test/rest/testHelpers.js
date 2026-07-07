@@ -4,17 +4,28 @@
 
 const path = require('path');
 
-class Range {
-    constructor(startLine, startChar, endLine, endChar) {
-        this.start = { line: startLine, character: startChar };
-        this.end = { line: endLine, character: endChar };
-    }
-}
-
 class Position {
     constructor(line, character) {
         this.line = line;
         this.character = character;
+    }
+    translate(lineDelta = 0, characterDelta = 0) {
+        return new Position(this.line + lineDelta, this.character + characterDelta);
+    }
+}
+
+// Real vscode.Range supports two overloads: (startLine, startChar, endLine, endChar)
+// and (start: Position, end: Position). Lint rule modules use the Position-pair form,
+// so both need to work here.
+class Range {
+    constructor(a, b, c, d) {
+        if (typeof a === 'object' && a !== null) {
+            this.start = new Position(a.line, a.character);
+            this.end = new Position(b.line, b.character);
+        } else {
+            this.start = new Position(a, b);
+            this.end = new Position(c, d);
+        }
     }
 }
 
@@ -39,6 +50,13 @@ function createFakeVscode({ config = {}, window = {}, workspace = {}, workspaceF
         Position,
         Diagnostic,
         DiagnosticSeverity,
+        Uri: {
+            file: (fsPath) => ({
+                fsPath,
+                scheme: 'file',
+                toString: () => 'file://' + String(fsPath).replace(/\\/g, '/')
+            })
+        },
         ConfigurationTarget: {
             Global: 1,
             Workspace: 2,
