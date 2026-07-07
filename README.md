@@ -231,6 +231,8 @@ When an AI agent requests a file modification or download via MCP, the extension
 * `deploy_function` / `mass_deploy_util_functions`: Deploy individual or batched functions.
 * `deploy_commerce_process`: Publish the entire process configuration.
 * `create_util_function`: Scaffold and publish a brand new utility function.
+* `create_override`: Create an editable override of a standard (system) function - required before it can be validated, saved, or deployed.
+* `remove_override`: Revert an overridden standard function back to CPQ's system version (destructive; requires `confirm:true`).
 
 ---
 

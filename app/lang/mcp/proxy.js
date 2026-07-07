@@ -3,7 +3,7 @@ const fs = require('fs');
 // Wraps the real vscode module so the existing run*() command logic can be reused unattended:
 // overrides activeTextEditor and QuickPick (which would otherwise block waiting for a human),
 // and intercepts the show*Message calls to capture outcome text for the tool result.
-function createToolVscodeContext(vscode, { bmlPath, quickPickSelector, configOverrides } = {}) {
+function createToolVscodeContext(vscode, { bmlPath, quickPickSelector, warningConfirm, configOverrides } = {}) {
     const messages = { info: [], error: [], warning: [] };
 
     const fakeEditor = bmlPath
@@ -32,9 +32,12 @@ function createToolVscodeContext(vscode, { bmlPath, quickPickSelector, configOve
                 };
             }
             if (prop === 'showWarningMessage') {
-                return (msg, ...rest) => {
+                // Never shows a real modal for a headless tool call: an explicit
+                // warningConfirm answers it directly, and the absence of one cancels
+                // rather than blocking on a popup no one is watching for.
+                return (msg) => {
                     messages.warning.push(msg);
-                    return target.showWarningMessage(msg, ...rest);
+                    return warningConfirm;
                 };
             }
             if (prop === 'showQuickPick') {

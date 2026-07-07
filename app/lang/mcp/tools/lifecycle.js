@@ -16,6 +16,8 @@ const {
     runDeployCurrentFile,
     runDeployUtilFunctions,
     runDeployCommerceProcess,
+    runCreateOverride,
+    runRemoveOverride,
 } = require('../../rest/commands');
 const { createToolVscodeContext, createCapturingTerminal } = require('../proxy');
 const { findOrCreateAiCopy } = require('../locate');
@@ -181,6 +183,43 @@ async function createUtilFunction(context, vscode, args, transport) {
     return { success: true, message: `Created "${variableName}".`, localPath: pulled.localPath, log };
 }
 
+// Standard (system) functions cannot be validated/saved/deployed until overridden -
+// this is the step that unblocks that entire pipeline for an AI working on one.
+async function createOverride(context, vscode, args, transport) {
+    const variableName = args && args.variableName;
+    if (!variableName) return { success: false, error: 'variableName is required.' };
+    const located = requireLocalFile(vscode, variableName);
+    if (located.error) return { success: false, error: located.error };
+
+    const { vscodeProxy, messages } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    await runCreateOverride(context, vscodeProxy, terminal, { transport });
+    return outcomeFrom(messages, getLines());
+}
+
+// Destructive: reverts to the system version and discards local override customizations.
+// confirm:true is the safety gate here since there is no human at a modal to click through.
+async function removeOverride(context, vscode, args, transport) {
+    const variableName = args && args.variableName;
+    if (!variableName) return { success: false, error: 'variableName is required.' };
+    if (args.confirm !== true) {
+        return {
+            success: false,
+            error: 'Removing an override reverts to the CPQ system version and discards local override customizations. Re-call with confirm:true to proceed.',
+        };
+    }
+    const located = requireLocalFile(vscode, variableName);
+    if (located.error) return { success: false, error: located.error };
+
+    const { vscodeProxy, messages } = createToolVscodeContext(vscode, {
+        bmlPath: located.bmlPath,
+        warningConfirm: 'Remove Override',
+    });
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    await runRemoveOverride(context, vscodeProxy, terminal, { transport });
+    return outcomeFrom(messages, getLines());
+}
+
 module.exports = {
     saveFunction,
     validateFunction,
@@ -189,4 +228,6 @@ module.exports = {
     massDeployUtilFunctions,
     deployCommerceProcess,
     createUtilFunction,
+    createOverride,
+    removeOverride,
 };

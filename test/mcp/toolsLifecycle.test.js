@@ -249,4 +249,74 @@ suite("MCP tools - lifecycle", () => {
         assert.ok(result.log.some((l) => l.includes("Create failed")));
       }));
   });
+
+  suite("createOverride", () => {
+    test("overrides a standard function and marks the AI copy as overridden", () =>
+      withTempDir(async (tmpDir) => {
+        const canonicalPath = writeLocalUtilFunction(tmpDir, { isStandardFunction: true, isOverridden: false });
+        const calls = [];
+        const transport = async (opts) => {
+          calls.push(opts);
+          return jsonResponse(200, { ...SAMPLE_FUNCTION, isStandardFunction: true, isOverridden: true });
+        };
+
+        const result = await tools.createOverride(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(calls[0].method, "POST");
+        assert.ok(calls[0].path.endsWith("/actions/override"));
+
+        const aiMetaPath = path.join(tmpDir, "library", "util", "concatString-AI", "concatString.bml");
+        const aiMeta = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(aiMetaPath));
+        assert.strictEqual(aiMeta.isOverridden, true);
+        assert.strictEqual(fs.readFileSync(canonicalPath, "utf8"), SAMPLE_FUNCTION.scriptText, "canonical untouched");
+      }));
+
+    test("reports the server error when override creation fails", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir, { isStandardFunction: true, isOverridden: false });
+        const transport = async () => jsonResponse(400, { detail: "cannot override" });
+        const result = await tools.createOverride(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
+        assert.strictEqual(result.success, false);
+        assert.ok(result.message.includes("cannot override"));
+      }));
+
+    test("requires a variableName", async () => {
+      const result = await tools.createOverride(makeContext(), createFakeVscode({}), {}, async () => {});
+      assert.strictEqual(result.success, false);
+    });
+  });
+
+  suite("removeOverride", () => {
+    test("refuses to run without confirm:true, and never calls the network", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir, { isStandardFunction: true, isOverridden: true });
+        let called = false;
+        const transport = async () => { called = true; return jsonResponse(200, {}); };
+        const result = await tools.removeOverride(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
+        assert.strictEqual(result.success, false);
+        assert.ok(result.error.includes("confirm:true"));
+        assert.strictEqual(called, false);
+      }));
+
+    test("with confirm:true, reverts the AI copy to the system script", () =>
+      withTempDir(async (tmpDir) => {
+        const systemScript = 'return "system version";';
+        writeLocalUtilFunction(tmpDir, { isStandardFunction: true, isOverridden: true });
+        const aiPath = path.join(tmpDir, "library", "util", "concatString-AI", "concatString.bml");
+
+        const transport = async (opts) =>
+          jsonResponse(200, { ...SAMPLE_FUNCTION, isStandardFunction: true, isOverridden: false, scriptText: systemScript });
+
+        const result = await tools.removeOverride(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { variableName: "concatString", confirm: true },
+          transport,
+        );
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(fs.readFileSync(aiPath, "utf8"), systemScript);
+      }));
+  });
 });

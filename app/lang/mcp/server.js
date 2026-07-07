@@ -164,6 +164,34 @@ function registerTools(server, context, vscode) {
   );
 
   server.registerTool(
+    "create_override",
+    {
+      description:
+        "Create an editable override of a standard (system) BML function on CPQ. Required before that function can be validated, saved, or deployed - standard functions are read-only until overridden. The function must already have been pulled locally.",
+      inputSchema: { variableName: z.string() },
+    },
+    async (args) =>
+      jsonResult(await tools.createOverride(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "remove_override",
+    {
+      description:
+        "Remove an override on a standard BML function, reverting it to CPQ's system version and discarding local override customizations. Destructive - requires confirm:true.",
+      inputSchema: {
+        variableName: z.string(),
+        confirm: z
+          .boolean()
+          .default(false)
+          .describe("Must be true to proceed; this discards local override customizations."),
+      },
+    },
+    async (args) =>
+      jsonResult(await tools.removeOverride(context, vscode, args)),
+  );
+
+  server.registerTool(
     "explain_function",
     {
       description:
@@ -209,15 +237,18 @@ function registerTools(server, context, vscode) {
 
 let httpServer = null;
 let boundPort = null;
-let mcpServer = null;
 
 // Binds 127.0.0.1 only - access is restricted to processes on this machine.
-// A fresh transport is created per request; the SDK throws if a StreamableHTTPServerTransport is reused.
+// Stateless mode (sessionIdGenerator: undefined) requires a fresh McpServer *and* a fresh
+// transport per request: the underlying low-level Server can only be bound to one transport
+// at a time, so reusing a single McpServer across concurrent requests lets one request's
+// connect() clobber another's transport. Some MCP clients (Claude Code included) tend to
+// serialize requests so this went unnoticed, but any client that opens concurrent requests
+// (parallel tool calls, or simply initialize + a fast follow-up) would get dropped/misrouted
+// responses. Creating both fresh per-request matches the SDK's own stateless-HTTP example and
+// keeps every client, not just Claude Code, working correctly.
 async function startMcpServer(context, vscode, port) {
   if (httpServer) return { port: boundPort };
-
-  mcpServer = new McpServer({ name: "cpq-bml", version: "1.1.1" });
-  registerTools(mcpServer, context, vscode);
 
   httpServer = http.createServer((req, res) => {
     const path = (req.url || "").split("?")[0];
@@ -226,12 +257,20 @@ async function startMcpServer(context, vscode, port) {
       return;
     }
 
+    const requestServer = new McpServer({ name: "cpq-bml", version: "1.1.1" });
+    registerTools(requestServer, context, vscode);
+
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
       enableJsonResponse: true,
     });
 
-    mcpServer
+    res.on("close", () => {
+      transport.close();
+      requestServer.close().catch(() => {});
+    });
+
+    requestServer
       .connect(transport)
       .then(() => transport.handleRequest(req, res))
       .catch(() => {
@@ -242,7 +281,6 @@ async function startMcpServer(context, vscode, port) {
   return new Promise((resolve, reject) => {
     httpServer.once("error", (err) => {
       httpServer = null;
-      mcpServer = null;
       reject(err);
     });
     httpServer.listen(port, "127.0.0.1", () => {
@@ -257,10 +295,6 @@ function stopMcpServer() {
     httpServer.close();
     httpServer = null;
     boundPort = null;
-  }
-  if (mcpServer) {
-    mcpServer.close().catch(() => {});
-    mcpServer = null;
   }
 }
 
