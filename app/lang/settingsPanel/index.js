@@ -1,6 +1,7 @@
 const { createSettingsPanel } = require("./panel");
 const { getHtml } = require("./html");
 const { handleMessage } = require("./messageHandler");
+const { titleForTab } = require("./tabTitles");
 const { hasMissingCredentials } = require("../rest/config");
 
 let currentPanel = null;
@@ -145,6 +146,7 @@ function openPanel(context, vscode, args) {
     currentPanel.reveal();
     if (targetTab) {
       currentPanel.webview.postMessage({ type: "switchTab", tab: targetTab });
+      currentPanel.title = titleForTab(targetTab);
     }
     return;
   }
@@ -153,6 +155,7 @@ function openPanel(context, vscode, args) {
   currentPanel = panel;
   if (targetTab) {
     panel.targetTab = targetTab;
+    panel.title = titleForTab(targetTab);
   }
 
   // Fall back to a visible error instead of a silently blank panel if HTML fails to build.

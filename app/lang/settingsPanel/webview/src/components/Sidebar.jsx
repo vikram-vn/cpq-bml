@@ -11,6 +11,7 @@ export default function Sidebar({ activeTab, setActiveTab, setError, isSaving, v
     const handleTabClick = (tab) => {
         setActiveTab(tab);
         setError(null);
+        vscodeApi.postMessage({ type: 'tabChanged', tab });
     };
 
     return (

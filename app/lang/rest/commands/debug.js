@@ -16,84 +16,7 @@ const {
   appendDebugPrintToFile,
   ensureCredentials,
 } = require("./shared");
-
-function formatAsTable(data) {
-  if (typeof data !== 'object' || data === null || Array.isArray(data)) {
-    return null;
-  }
-  const keys = Object.keys(data);
-  if (keys.length === 0) return null;
-
-  let maxKeyLen = 3; // "key"
-  let maxValLen = 5; // "value"
-
-  const rows = keys.map(k => {
-    const val = data[k];
-    const valStr = typeof val === 'object' && val !== null ? JSON.stringify(val) : String(val);
-    maxKeyLen = Math.max(maxKeyLen, k.length);
-    maxValLen = Math.max(maxValLen, valStr.length);
-    return { key: k, val: valStr };
-  });
-
-  const headerKey = "key".padEnd(maxKeyLen);
-  const headerVal = "value".padEnd(maxValLen);
-  const separator = "-".repeat(maxKeyLen) + "-+-" + "-".repeat(maxValLen);
-
-  const lines = [
-    `${headerKey} | ${headerVal}`,
-    separator
-  ];
-
-  for (const row of rows) {
-    lines.push(`${row.key.padEnd(maxKeyLen)} | ${row.val}`);
-  }
-
-  return lines.join('\n');
-}
-
-// Parses a "documentNumber~variableName~value" pipe-delimited transaction dump into a
-// header table (documentNumber 1, transaction-level attributes) and a line table (documentNumber
-// 2+, one row per transaction line). Splits on the first two "~" only, so values containing "~"
-// stay intact. Returns null when the text doesn't look like this format at all.
-function parseDocAttributeDump(text) {
-  if (typeof text !== 'string' || text.indexOf('~') === -1) return null;
-
-  const segments = text.split('|').map((s) => s.trim()).filter(Boolean);
-  if (segments.length === 0) return null;
-
-  const header = [];
-  const lineRows = new Map();
-  let matched = 0;
-
-  for (const seg of segments) {
-    const firstTilde = seg.indexOf('~');
-    const secondTilde = firstTilde === -1 ? -1 : seg.indexOf('~', firstTilde + 1);
-    if (firstTilde === -1 || secondTilde === -1) continue;
-
-    const docNumStr = seg.slice(0, firstTilde);
-    if (!/^\d+$/.test(docNumStr)) continue;
-
-    const variableName = seg.slice(firstTilde + 1, secondTilde);
-    const value = seg.slice(secondTilde + 1);
-    matched++;
-
-    const docNum = parseInt(docNumStr, 10);
-    if (docNum === 1) {
-      header.push({ variableName, value });
-    } else {
-      if (!lineRows.has(docNum)) lineRows.set(docNum, { documentNumber: docNum });
-      lineRows.get(docNum)[variableName] = value;
-    }
-  }
-
-  if (matched === 0) return null;
-
-  const lines = Array.from(lineRows.keys())
-    .sort((a, b) => a - b)
-    .map((docNum) => lineRows.get(docNum));
-
-  return { header, lines };
-}
+const { formatAsTable, formatDocAttributeDumpTables, parseDocAttributeDump } = require("./debugTableFormat");
 
 async function runDebugCurrentFile(
   context,
@@ -366,24 +289,47 @@ async function runDebugCurrentFile(
 
   const returnVal = body && body.returnData;
   let tableOutput = null;
+  let dumpTables = null;
 
   if (configLib.getShowDebugResultsAsTable(vscode) && returnVal !== undefined && returnVal !== null && returnVal !== "") {
-    try {
-      let parsed = null;
-      if (typeof returnVal === 'string') {
-        parsed = JSON.parse(returnVal);
-      } else if (typeof returnVal === 'object') {
-        parsed = returnVal;
+    // documentNumber~variableName~value dumps are never valid JSON, so this check comes
+    // first and short-circuits the generic JSON-object table attempt below.
+    if (typeof returnVal === 'string') {
+      const parsedDump = parseDocAttributeDump(returnVal);
+      if (parsedDump) dumpTables = formatDocAttributeDumpTables(parsedDump);
+    }
+    if (!dumpTables) {
+      try {
+        let parsed = null;
+        if (typeof returnVal === 'string') {
+          parsed = JSON.parse(returnVal);
+        } else if (typeof returnVal === 'object') {
+          parsed = returnVal;
+        }
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          tableOutput = formatAsTable(parsed);
+        }
+      } catch (e) {
+        // Not a valid JSON or not an object, fall back to normal output
       }
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-        tableOutput = formatAsTable(parsed);
-      }
-    } catch (e) {
-      // Not a valid JSON or not an object, fall back to normal output
     }
   }
 
-  if (tableOutput) {
+  if (dumpTables) {
+    resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
+    if (dumpTables.headerTable) {
+      resultsTerminal.writeLine(`\x1b[1m\x1b[32mHeader Attributes:\x1b[0m`);
+      for (const line of dumpTables.headerTable.split('\n')) {
+        resultsTerminal.writeLine(`\x1b[32m${line}\x1b[0m`);
+      }
+    }
+    if (dumpTables.lineTable) {
+      resultsTerminal.writeLine(`\x1b[1m\x1b[32mLine Attributes:\x1b[0m`);
+      for (const line of dumpTables.lineTable.split('\n')) {
+        resultsTerminal.writeLine(`\x1b[32m${line}\x1b[0m`);
+      }
+    }
+  } else if (tableOutput) {
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
     const tableLines = tableOutput.split('\n');
     for (const line of tableLines) {

@@ -2,6 +2,7 @@ const config = require('../rest/config');
 const { writePassword, writeAuthToken } = require('../rest/commands/secrets');
 const { applyEnvironment, addEnvironment, updateEnvironment, deleteEnvironment } = require('../rest/commands/env');
 const { buildState } = require('./state');
+const { titleForTab } = require('./tabTitles');
 
 const CPQ_SECTION = 'cpqBml';
 
@@ -108,6 +109,11 @@ async function dispatch(message, context, vscode, panel) {
 
         case 'openNativeSettings':
             await vscode.commands.executeCommand('workbench.action.openSettings', message.filter || CPQ_SECTION);
+            return;
+
+        // User clicked a different tab in the sidebar - keep the editor tab title in sync.
+        case 'tabChanged':
+            panel.title = titleForTab(message.tab);
             return;
 
         default:

@@ -1,7 +1,9 @@
+const { titleForTab } = require('./tabTitles');
+
 function createSettingsPanel(context, vscode) {
     const panel = vscode.window.createWebviewPanel(
         'cpqBmlSettings',
-        'CPQ-BML: Connection Settings',
+        titleForTab('connection'),
         vscode.ViewColumn.Active,
         {
             enableScripts: true,

@@ -216,6 +216,18 @@ suite("settingsPanel messageHandler", () => {
     assert.strictEqual(panel.targetTab, null);
   });
 
+  test("'tabChanged' updates the panel's editor tab title to match the new tab", async () => {
+    const panel = fakePanel();
+    panel.title = "CPQ-BML: Connection Settings";
+    const vscode = createFakeVscode({});
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "tabChanged", tab: "mcp" }, context, vscode, panel);
+
+    assert.strictEqual(panel.title, "CPQ-BML: MCP Server (AI)");
+    assert.strictEqual(panel.posted.length, 0, "tabChanged should not post anything back to the webview");
+  });
+
   test("an unknown message type posts an error instead of throwing", async () => {
     const panel = fakePanel();
     const vscode = createFakeVscode({});
