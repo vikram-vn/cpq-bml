@@ -96,5 +96,5 @@ function getResultsTerminal(vscode) {
     return sharedResultsTerminal;
 }
 
-module.exports = { createResultsTerminal, getResultsTerminal };
+module.exports = { createResultsTerminal, getResultsTerminal, getActiveEnvironmentName };
 

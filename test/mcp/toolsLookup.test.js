@@ -131,4 +131,57 @@ suite("MCP tools - lookup", () => {
       assert.strictEqual(result.success, false);
     });
   });
+
+  suite("pullFunctions", () => {
+    test("requires a non-empty items array", async () => {
+      const result = await tools.pullFunctions(makeContext(), createFakeVscode({}), {}, async () => {});
+      assert.strictEqual(result.success, false);
+    });
+
+    test("pulls a mix of util and commerce functions, tolerating a per-item variableName mistake", () =>
+      withTempDir(async (tmpDir) => {
+        const transport = async (opts) => {
+          if (opts.method === "GET" && opts.path.includes("/functions/concatString")) {
+            return jsonResponse(200, SAMPLE_FUNCTION);
+          }
+          return jsonResponse(200, { items: [SAMPLE_FUNCTION], hasMore: false });
+        };
+
+        const result = await tools.pullFunctions(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { items: [{ variableName: "concatString", type: "util" }, { type: "util" }] },
+          transport,
+        );
+
+        assert.strictEqual(result.success, false); // one item had no variableName
+        assert.strictEqual(result.successCount, 1);
+        assert.strictEqual(result.failureCount, 1);
+        assert.strictEqual(result.results.length, 2);
+        assert.strictEqual(result.results[0].success, true);
+        assert.strictEqual(result.results[0].variableName, "concatString");
+        assert.strictEqual(result.results[1].success, false);
+        assert.ok(result.results[1].error.includes("variableName"));
+      }));
+
+    test("reports overall success when every item pulls successfully", () =>
+      withTempDir(async (tmpDir) => {
+        const transport = async (opts) => jsonResponse(200, { items: [SAMPLE_FUNCTION], hasMore: false });
+        const transportWithGet = async (opts) => {
+          if (opts.method === "GET" && opts.path.includes("/functions/")) return jsonResponse(200, SAMPLE_FUNCTION);
+          return transport(opts);
+        };
+
+        const result = await tools.pullFunctions(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { items: [{ variableName: "concatString" }] },
+          transportWithGet,
+        );
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(result.successCount, 1);
+        assert.strictEqual(result.failureCount, 0);
+      }));
+  });
 });

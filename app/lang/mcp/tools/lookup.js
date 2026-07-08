@@ -125,4 +125,31 @@ async function pullFunction(context, vscode, args, transport) {
     return { success: true, variableName, localPath: aiPath || bmlPath, canonicalPath: bmlPath, scriptText, metadata, log: getLines() };
 }
 
-module.exports = { listUtilFunctions, listCommerceFunctions, pullFunction };
+// Batch form of pullFunction - each item can independently be a util or commerce function,
+// since a single call may need to pull a mix of both. Runs sequentially (not in parallel) so
+// a shared, sequential terminal log stays readable and rate limits on the CPQ side aren't hit.
+async function pullFunctions(context, vscode, args, transport) {
+    const items = args && args.items;
+    if (!Array.isArray(items) || items.length === 0) {
+        return { success: false, error: 'items (a non-empty array of { variableName, type?, commerceProcess?, commerceDocument? }) is required.' };
+    }
+
+    const results = [];
+    for (const item of items) {
+        if (!item || !item.variableName) {
+            results.push({ success: false, variableName: item && item.variableName, error: 'variableName is required.' });
+            continue;
+        }
+        results.push(await pullFunction(context, vscode, item, transport));
+    }
+
+    const successCount = results.filter((r) => r.success).length;
+    return {
+        success: successCount === results.length,
+        successCount,
+        failureCount: results.length - successCount,
+        results,
+    };
+}
+
+module.exports = { listUtilFunctions, listCommerceFunctions, pullFunction, pullFunctions };

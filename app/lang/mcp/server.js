@@ -13,6 +13,24 @@ function jsonResult(data) {
 
 function registerTools(server, context, vscode) {
   server.registerTool(
+    "get_connection_status",
+    {
+      description:
+        "Reports whether CPQ credentials are configured (never the secret values themselves), plus the " +
+        "active site URL/environment/commerce settings - check this before calling a CPQ-backed tool to " +
+        "avoid discovering a missing credential mid-call. Pass testConnection:true to also ping CPQ live " +
+        "and confirm the credentials actually work (slower - a real network round trip).",
+      inputSchema: {
+        testConnection: z
+          .boolean()
+          .optional()
+          .describe("If true, also makes a live request to CPQ to verify the credentials work."),
+      },
+    },
+    async (args) => jsonResult(await tools.getConnectionStatus(context, vscode, args)),
+  );
+
+  server.registerTool(
     "list_util_functions",
     {
       description:
@@ -55,6 +73,29 @@ function registerTools(server, context, vscode) {
       },
     },
     async (args) => jsonResult(await tools.pullFunction(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "pull_functions",
+    {
+      description:
+        "Batch form of pull_function - fetches multiple functions from CPQ in one call, each independently " +
+        "util or commerce, and writes each locally. Returns { results: [...one pull_function result per item], " +
+        "successCount, failureCount } - a partial failure does not stop the rest of the batch.",
+      inputSchema: {
+        items: z
+          .array(
+            z.object({
+              variableName: z.string(),
+              type: z.enum(["util", "commerce"]).default("util"),
+              commerceProcess: z.string().optional(),
+              commerceDocument: z.string().optional(),
+            }),
+          )
+          .min(1),
+      },
+    },
+    async (args) => jsonResult(await tools.pullFunctions(context, vscode, args)),
   );
 
   server.registerTool(
