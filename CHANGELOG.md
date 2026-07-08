@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.19.0] - 2026-07-08
+
+### Added
+- Implement MCP tools for status reporting and BML function management.
+- Add settings panel for configuration management and implement debug dump table visualization.
+
 ## [1.18.0] - 2026-07-07
 
 ### Added
@@ -60,9 +66,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Implement BML spellchecker with custom user dictionary and diagnostic support.
 - Implement modular BML language linting architecture and comprehensive validation tests.
-
-## [1.11.0] - 2026-07-02
-
-### Added
-
-- Implement BML static analysis engine with comprehensive documentation and linting test suite.
