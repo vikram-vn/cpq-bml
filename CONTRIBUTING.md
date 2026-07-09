@@ -50,6 +50,7 @@ from `extension.js`.
 | `app/lang/rest/` | `registerBmlRest` | via `./commands/index.js` | Live Oracle CPQ REST integration: pull/save/validate/debug/deploy |
 | `app/lang/mcp/` | `registerMcp` | inside the function, not top-level | MCP server so an AI agent can call the REST tools directly over localhost |
 | `app/lang/settings-panel/` | `registerSettingsPanel` | inside the function, not top-level | WebView settings UI (React, see section 6); auto-opens on first install if workspace looks unconfigured |
+| `app/ai/setup/` | `autoSetupAiSkills` | inside the function, not top-level | Automated zero-config AI setup script that decompresses built `.br` skills to global storage on MCP enable |
 | `app/lang/spell-check/` | `checkSpelling` (no `register*`) | none - takes `vscode` as a parameter | Pure spell-checker; called as a sub-step *from inside* `lint.js`, not from `extension.js` - see section 3 |
 | `app/lang/syntaxes/` | n/a (JSON only) | n/a | `bml.tmLanguage.json` TextMate grammar, referenced from `package.json` |
 

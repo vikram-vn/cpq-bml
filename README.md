@@ -240,7 +240,14 @@ When an AI agent requests a file modification or download via MCP, the extension
 
 ### 8. AI Agent Skills Integration (AgentSkills.io)
 
-CPQ-BML ships with a pre-compiled set of "Agent Skills" natively built into the extension payload, designed around the [AgentSkills.io](https://agentskills.io) specification. This injects deep domain knowledge into AI Coding Assistants (like Claude Code) that natively parse these skills when interacting with a workspace.
+CPQ-BML ships with a pre-compiled set of "Agent Skills" designed around the [AgentSkills.io](https://agentskills.io) specification. This injects deep domain knowledge into AI Coding Assistants (like Claude Code or Cursor) that natively parse these skills when interacting with your workspace.
+
+**Zero-Configuration Setup:**
+When you enable the MCP server in the extension settings, CPQ-BML automatically registers these skills into your workspace. There is no manual setup command to run!
+To keep the extension package tiny and your workspace clean:
+* The massive semantic knowledge base is compressed into a highly optimized `.br` archive at build time.
+* At runtime, the extension transparently decompresses this knowledge into your secure VS Code Global Storage directory.
+* It automatically provisions pointer files (e.g., `.agents/skills.json`, `CLAUDE.md`, `.cursorrules`) in your workspace that route your AI assistant to the global storage location.
 
 Instead of your AI blindly trying to edit BML using standard Javascript assumptions, the extension provides context-aware directives on:
 * BML's unique syntax limitations (e.g. no `var` or `let`, `==` over `===`, `NOT` instead of `!`).

@@ -4,15 +4,22 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.22.0] - 2026-07-09
+
+### Added
+- Implement automatic AI skills setup with brotli decompression and target file generation.
+
 ## [1.21.0] - 2026-07-09
 
 ### Added
 - Implement AI Agent Skills (AgentSkills.io) integration, shipping with 8 pre-compiled semantic skills to inject CPQ and BML domain knowledge into AI assistants.
-- Implement AI workspace skill integration and add comprehensive BML language linting, intellisense, and documentation tools.
+- **Zero-Config AI Setup:** Enabling the MCP server automatically scaffolds `.agents/skills.json`, `CLAUDE.md`, and `.cursorrules` to route assistants to the skills library.
+- **Payload Optimization:** The AI skills markdown knowledge base is compressed into a tiny `.br` archive at build time and excluded from the `.vsix` payload. It decompresses directly to VS Code's global storage directory at runtime.
 - Implement settings panel UI and core spellchecker functionality with associated test suites.
-- Implement new settings GUI dashboard with modular webview tabs and integrated linting and spelling utilities.
 - Implement MCP server with tool definitions for CPQ function lifecycle, testing, formatting, and status operations.
-- Implement text-based table formatting for debug outputs with word-wrapping and border support.
+
+### Removed
+- Removed the `CPQ-BML: Enable AI Agent Skills for this Workspace` manual command (setup is now fully automated when MCP is enabled).
 
 ## [1.20.0] - 2026-07-09
 
@@ -62,9 +69,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Added
 - Add documentation formatting utility and ensure offline help links resolve against both raw and compressed files.
-
-## [1.15.0] - 2026-07-03
-
-### Added
-- Implement linting and spell-check support for CPQ system variables.
-- Add GitHub Actions workflow to automate extension packaging and releases.

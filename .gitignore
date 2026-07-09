@@ -16,7 +16,7 @@ dist/
 *.md
 !README.md
 !CHANGELOG.md
-!SKILLS.md
+!CONTRIBUTING.md
 !app/ai/**/*.md
 /bml
 package-lock.json
