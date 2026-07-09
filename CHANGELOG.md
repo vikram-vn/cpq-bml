@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.24.0] - 2026-07-09
+
+### Added
+- Bump version to 1.23.0 and add BML language support with AI skill synchronization and MCP integration.
+- Implement automated project-specific AI skill synchronization for Claude, Cursor, and Copilot tools.
+- Implement comprehensive BML language support including linting, beautification, AI-assisted skills, and MCP integration.
+- Implement comprehensive linting, MCP support, AI skill enhancements, and expanded test coverage for BML development tools.
+
 ## [1.23.0] - 2026-07-09
 
 ### Added
@@ -66,8 +74,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 - Correct relative image paths in String.md and add regression test for broken documentation links.
-
-## [1.16.1] - 2026-07-03
-
-### Changed
-- Internal maintenance and housekeeping updates.
