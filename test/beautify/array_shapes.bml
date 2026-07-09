@@ -1,4 +1,0 @@
-sz = Integer[5];
-grid = Float[2][3];
-strs = String[]{"a", "b", "c"};
-nested = sz[0];
