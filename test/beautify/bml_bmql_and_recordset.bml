@@ -1,9 +1,0 @@
-myVar = "active";
-resultSet = bmql("SELECT name, id, status FROM products WHERE status = $myVar");
-for record in resultSet {
-name = get(record, "name");
-id = get(record, "id");
-if(name != "" and id > 0){
-print("Product: " + name);
-}
-}

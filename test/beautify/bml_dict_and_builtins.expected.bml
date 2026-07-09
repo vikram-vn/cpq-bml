@@ -1,9 +1,0 @@
-dict = dict("string");
-put(dict, "key1", "val1");
-put(dict, "key2", "val2");
-val = get(dict, "key1");
-if (len(val) > 2) {
-	sub = substring(val, 0, 2);
-	return sub;
-}
-return "";

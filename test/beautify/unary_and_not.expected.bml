@@ -1,6 +1,0 @@
-x = -5;
-y = x + -3;
-z = 10 - 3;
-flag = NOT(x == -5);
-flag2 = (x > 0 AND NOT(y < 0)) OR NOT z;
-arr = Integer[] {-1, -2, 3};
