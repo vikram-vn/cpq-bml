@@ -5,6 +5,67 @@ const path = require('path');
 
 // (Removed registerAiSetup since setup is purely automatic on MCP enable)
 
+// Maps each cpqBml.mcp.aiSkills.<key> setting to the performAiSetup pickIds it
+// controls - native skill/rule files plus that tool's legacy merged-file
+// target. Codex CLI (OpenAI) and Antigravity IDE (Google) are separate
+// vendors/toggles but happen to document the identical .agents/skills/
+// convention, so they map to the same pickIds - enabling either one writes
+// the same files (deduped via a Set in autoSetupAiSkills).
+const AI_SKILLS_TOOL_PICK_IDS = {
+    claude: ['claudeSkills', 'claude'],
+    cursor: ['cursorRules', 'cursor'],
+    copilot: ['copilotInstructions', 'copilot'],
+    codex: ['nativeAgentSkills', 'agentskills'],
+    antigravity: ['nativeAgentSkills', 'agentskills'],
+};
+
+// The native, per-skill directory each toggle family owns outright (safe to
+// delete wholesale when disabled - unlike the single merged files like
+// CLAUDE.md/.cursorrules/copilot-instructions.md, which are left alone since
+// they could plausibly contain content the user wrote by hand, not just what
+// we generated). Codex and Antigravity share one directory, so it's only
+// removed once *both* are off.
+const NATIVE_SKILL_TARGETS = [
+    { settingKeys: ['claude'], dir: (root) => path.join(root, '.claude', 'skills') },
+    { settingKeys: ['cursor'], dir: (root) => path.join(root, '.cursor', 'rules') },
+    { settingKeys: ['copilot'], dir: (root) => path.join(root, '.github', 'instructions') },
+    { settingKeys: ['codex', 'antigravity'], dir: (root) => path.join(root, '.agents', 'skills') },
+];
+
+// Removes dir, then removes its parent too if that parent is now genuinely
+// empty - so disabling a tool doesn't leave a dangling empty ".claude",
+// ".cursor", etc. behind. Never force-deletes the parent: rmdirSync only
+// succeeds on an empty directory, so anything else living there (e.g. a
+// hand-authored ".claude/settings.local.json") is left untouched.
+function removeDirAndEmptyParent(dir) {
+    fs.rmSync(dir, { recursive: true, force: true });
+    const parent = path.dirname(dir);
+    try {
+        if (fs.existsSync(parent) && fs.readdirSync(parent).length === 0) {
+            fs.rmdirSync(parent);
+        }
+    } catch (e) {
+        // Not actually empty (race with something else writing to it) or
+        // already gone - leave it alone rather than force anything.
+    }
+}
+
+// Removes our own pointer entry (matching customizationRoot) from
+// .agents/skills.json without touching any other entries that may be there,
+// and leaves the file alone entirely if it's missing or unparseable.
+function removeAgentSkillsPointerEntry(root, customizationRoot) {
+    const destFile = path.join(root, '.agents', 'skills.json');
+    if (!fs.existsSync(destFile)) return;
+    try {
+        const currentConfig = JSON.parse(fs.readFileSync(destFile, 'utf8'));
+        if (!Array.isArray(currentConfig.entries)) return;
+        currentConfig.entries = currentConfig.entries.filter((entry) => entry.path !== customizationRoot);
+        fs.writeFileSync(destFile, JSON.stringify(currentConfig, null, 2), 'utf8');
+    } catch (e) {
+        // Unparseable/unexpected shape - leave it alone rather than guess.
+    }
+}
+
 // Pulls "name" and "description" out of a SKILL.md's YAML frontmatter, handling
 // both inline scalars (`description: foo`) and folded block scalars
 // (`description: >-` followed by indented lines) - the only two styles the
@@ -46,6 +107,7 @@ function parseSkillFrontmatter(skillMdContent) {
 // Shared by the native '.claude/skills' and '.agents/skills' targets, which use
 // an identical on-disk convention.
 function copySkillDirsNative(destSkillsDir, skillsSrc, skillDirs) {
+    fs.mkdirSync(destSkillsDir, { recursive: true });
     for (const skillName of skillDirs) {
         const srcSkillDir = path.join(skillsSrc, skillName);
         const srcSkillFile = path.join(srcSkillDir, 'SKILL.md');
@@ -123,6 +185,7 @@ async function performAiSetup(context, root, pickIds, customizationRoot, skillsS
                 copySkillDirsNative(path.join(root, '.claude', 'skills'), skillsSrc, skillDirs);
                 created.push('.claude/skills/');
             } catch (e) {
+                console.error('CPQ-BML: Failed to write .claude/skills/:', e);
                 if (!silent) {
                     vscode.window.showErrorMessage(
                         `CPQ-BML: Failed to write .claude/skills/: ${e.message}`,
@@ -141,6 +204,7 @@ async function performAiSetup(context, root, pickIds, customizationRoot, skillsS
                 copySkillDirsNative(path.join(root, '.agents', 'skills'), skillsSrc, skillDirs);
                 created.push('.agents/skills/');
             } catch (e) {
+                console.error('CPQ-BML: Failed to write .agents/skills/:', e);
                 if (!silent) {
                     vscode.window.showErrorMessage(
                         `CPQ-BML: Failed to write .agents/skills/: ${e.message}`,
@@ -155,6 +219,7 @@ async function performAiSetup(context, root, pickIds, customizationRoot, skillsS
                 writeCursorRuleFiles(root, skillsSrc, skillDirs);
                 created.push('.cursor/rules/');
             } catch (e) {
+                console.error('CPQ-BML: Failed to write .cursor/rules/:', e);
                 if (!silent) {
                     vscode.window.showErrorMessage(
                         `CPQ-BML: Failed to write .cursor/rules/: ${e.message}`,
@@ -170,6 +235,7 @@ async function performAiSetup(context, root, pickIds, customizationRoot, skillsS
                 writeCopilotInstructionFiles(root, skillsSrc, skillDirs);
                 created.push('.github/instructions/');
             } catch (e) {
+                console.error('CPQ-BML: Failed to write .github/instructions/:', e);
                 if (!silent) {
                     vscode.window.showErrorMessage(
                         `CPQ-BML: Failed to write .github/instructions/: ${e.message}`,
@@ -314,11 +380,42 @@ async function autoSetupAiSkills(context) {
         }
     }
 
-    // 3. Setup skills using extracted files
-    await performAiSetup(context, root, [
-        'agentskills', 'claudeSkills', 'nativeAgentSkills', 'cursorRules', 'copilotInstructions',
-        'claude', 'copilot', 'cursor',
-    ], aiStorageDir, skillsSrc, summaryFile, true);
+    // 3. Scaffold whichever tools are enabled under cpqBml.mcp.aiSkills.*
+    // (Claude on by default, the rest opt-in - see package.json for defaults),
+    // and remove the native directory for any tool that's off, so the
+    // workspace always reflects exactly the current toggle state.
+    const cpqConfig = vscode.workspace.getConfiguration('cpqBml');
+    const enabled = {};
+    for (const settingKey of Object.keys(AI_SKILLS_TOOL_PICK_IDS)) {
+        enabled[settingKey] = cpqConfig.get(`mcp.aiSkills.${settingKey}`, settingKey === 'claude');
+    }
+
+    const pickIds = new Set();
+    for (const [settingKey, ids] of Object.entries(AI_SKILLS_TOOL_PICK_IDS)) {
+        if (enabled[settingKey]) ids.forEach((id) => pickIds.add(id));
+    }
+    console.log('CPQ-BML: autoSetupAiSkills - root:', root, 'enabled:', enabled, 'pickIds:', [...pickIds]);
+    if (pickIds.size > 0) {
+        await performAiSetup(context, root, [...pickIds], aiStorageDir, skillsSrc, summaryFile, true);
+    }
+
+    for (const target of NATIVE_SKILL_TARGETS) {
+        if (!target.settingKeys.some((k) => enabled[k])) {
+            const dir = target.dir(root);
+            try {
+                removeDirAndEmptyParent(dir);
+            } catch (e) {
+                console.error(`CPQ-BML: Failed to remove ${dir}:`, e);
+            }
+        }
+    }
+    if (!enabled.codex && !enabled.antigravity) {
+        try {
+            removeAgentSkillsPointerEntry(root, aiStorageDir);
+        } catch (e) {
+            console.error('CPQ-BML: Failed to clear .agents/skills.json pointer entry:', e);
+        }
+    }
 }
 
 module.exports = { autoSetupAiSkills, parseSkillFrontmatter };

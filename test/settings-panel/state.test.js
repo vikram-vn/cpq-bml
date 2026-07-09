@@ -54,7 +54,12 @@ suite("settings-panel state", () => {
         metrics: true,
         testing: true
       },
-      mcp: { enable: true, port: 12345, logToTerminal: true },
+      mcp: {
+        enable: true,
+        port: 12345,
+        logToTerminal: true,
+        aiSkills: { claude: true, cursor: false, copilot: false, codex: false, antigravity: false }
+      },
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],
       hasPassword: true,

@@ -33,6 +33,11 @@ const ALLOWED_FIELDS = new Set([
   "mcp.enable",
   "mcp.port",
   "mcp.logToTerminal",
+  "mcp.aiSkills.claude",
+  "mcp.aiSkills.cursor",
+  "mcp.aiSkills.copilot",
+  "mcp.aiSkills.codex",
+  "mcp.aiSkills.antigravity",
   "debug.logRestDetails",
   "debug.logOutputToFile",
   "debug.showResultsAsTable",
@@ -72,11 +77,20 @@ async function dispatch(message, context, vscode, panel) {
         .getConfiguration(CPQ_SECTION)
         .update(key, value, vscode.ConfigurationTarget.Global);
         
-      if (key === "mcp.enable" && value === true) {
+      // Re-sync on the initial MCP enable, or whenever a specific tool's AI
+      // skills toggle changes after MCP is already enabled - autoSetupAiSkills
+      // scaffolds newly-enabled tools AND removes the native folder for any
+      // tool just switched off, so the workspace always matches the toggles.
+      // Toggling an aiSkills.* setting while MCP itself is off has no effect
+      // until MCP is enabled.
+      const isInitialMcpEnable = key === "mcp.enable" && value === true;
+      const isAiSkillsToggleChange = key.startsWith("mcp.aiSkills.") &&
+        vscode.workspace.getConfiguration(CPQ_SECTION).get("mcp.enable", false);
+      if (isInitialMcpEnable || isAiSkillsToggleChange) {
         const { autoSetupAiSkills } = require("../../ai/setup");
         await autoSetupAiSkills(context);
       }
-        
+
       await sendState();
       return;
     }
