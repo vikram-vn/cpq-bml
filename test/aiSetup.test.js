@@ -64,7 +64,7 @@ suite('AI Setup Integration Test Suite', () => {
         assert.ok(fs.existsSync(skillsJsonPath), '.agents/skills.json should be created');
         const skillsJson = JSON.parse(fs.readFileSync(skillsJsonPath, 'utf8'));
         assert.ok(skillsJson.entries, 'skills.json should contain entries');
-        assert.ok(skillsJson.entries.some(e => e.path === expectedSkillsSrc), 'skills.json should point to global storage skills directory');
+        assert.ok(skillsJson.entries.some(e => e.path === expectedStorageDir), 'skills.json should point to global storage root directory');
 
         // 2. Check Claude Code (CLAUDE.md)
         assert.ok(fs.existsSync(claudePath), 'CLAUDE.md should be created');

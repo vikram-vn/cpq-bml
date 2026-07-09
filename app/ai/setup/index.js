@@ -5,7 +5,7 @@ const path = require('path');
 
 // (Removed registerAiSetup since setup is purely automatic on MCP enable)
 
-async function performAiSetup(context, root, pickIds, skillsSrc, summaryFile, silent = false) {
+async function performAiSetup(context, root, pickIds, customizationRoot, skillsSrc, summaryFile, silent = false) {
     const vscode = require('vscode');
 
     if (!fs.existsSync(skillsSrc)) return;
@@ -39,10 +39,10 @@ async function performAiSetup(context, root, pickIds, skillsSrc, summaryFile, si
                 }
                 
                 // Check if entry already exists
-                const alreadyExists = currentConfig.entries.some(entry => entry.path === skillsSrc);
+                const alreadyExists = currentConfig.entries.some(entry => entry.path === customizationRoot);
                 
                 if (!alreadyExists) {
-                    currentConfig.entries.push({ path: skillsSrc });
+                    currentConfig.entries.push({ path: customizationRoot });
                     fs.writeFileSync(destFile, JSON.stringify(currentConfig, null, 2), 'utf8');
                     created.push('.agents/skills.json');
                 } else {
@@ -157,7 +157,7 @@ async function autoSetupAiSkills(context) {
     }
 
     // 3. Setup skills using extracted files
-    await performAiSetup(context, root, ['agentskills', 'claude', 'copilot', 'cursor'], skillsSrc, summaryFile, true);
+    await performAiSetup(context, root, ['agentskills', 'claude', 'copilot', 'cursor'], aiStorageDir, skillsSrc, summaryFile, true);
 }
 
 module.exports = { autoSetupAiSkills };
