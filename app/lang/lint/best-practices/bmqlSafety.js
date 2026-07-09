@@ -6,7 +6,8 @@ const { vscode, makeDiagnostic, splitTopLevelArgs } = require('./shared');
  * Codes: bml-bmql-injection-risk, bml-bmql-select-star,
  *        bml-bmql-unbounded-mutation, bml-bmql-unbounded-delete,
  *        bml-bmql-select-truncated, bml-bmql-unbounded-select,
- *        bml-bmql-full-substitution, bml-bmql-join-system-table
+ *        bml-bmql-full-substitution, bml-bmql-join-system-table,
+ *        bml-bmql-mutation-error-unchecked
  */
 function checkBmqlSafety(cleanText, noStringsText, doc) {
     const diagnostics = [];
@@ -151,6 +152,29 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
                         vscode.DiagnosticSeverity.Information,
                         'bml-bmql-unbounded-select'
                     ));
+                }
+            }
+
+            // Per BMQL.md: INSERT/UPDATE/MODIFY can add a "records_error"
+            // entry to the result even when no exception is thrown (e.g. a
+            // duplicate natural key blocks a row) - DELETE has no such entry
+            // documented. Flag when the result variable is never checked for
+            // it anywhere in the file.
+            const mutationErrorMatch = /(?<!\$)\b(insert|update|modify)\b/i.exec(queryLiteralText);
+            if (mutationErrorMatch) {
+                const beforeCall = cleanText.slice(Math.max(0, startIdx - 60), startIdx);
+                const assignMatch = /([A-Za-z_]\w*)\s*=\s*$/.exec(beforeCall);
+                if (assignMatch) {
+                    const varName = assignMatch[1];
+                    const errorCheckPattern = new RegExp(`\\bget\\s*\\(\\s*${varName}\\s*,\\s*["']records_error["']\\s*\\)`, 'i');
+                    if (!errorCheckPattern.test(cleanText)) {
+                        diagnostics.push(makeDiagnostic(
+                            range,
+                            `Safety Warning: BMQL ${mutationErrorMatch[1].toUpperCase()} can add a "records_error" entry to '${varName}' even when no exception is thrown (e.g. a duplicate key blocks a row). Check get(${varName}, "records_error") to catch partial failures.`,
+                            vscode.DiagnosticSeverity.Warning,
+                            'bml-bmql-mutation-error-unchecked'
+                        ));
+                    }
                 }
             }
         }

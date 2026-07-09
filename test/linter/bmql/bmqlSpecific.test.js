@@ -89,6 +89,63 @@ suite("BML Linter Test Suite - BMQL specific tests", () => {
         });
     });
 
+    suite('INSERT/UPDATE/MODIFY result never checked for records_error (bml-bmql-mutation-error-unchecked)', () => {
+        test('Flags INSERT result never checked for records_error', () => {
+            const diagnostics = lintText(`
+                results = bmql("insert into table1 (column1) values ('value1')");
+                return results;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
+            assert.ok(diag, 'BMQL.md: a records_error entry can be added even when no exception is thrown');
+        });
+
+        test('Flags UPDATE result never checked for records_error', () => {
+            const diagnostics = lintText(`
+                results = bmql("update table1 set col1 = 'x' where id = $id");
+                return results;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
+            assert.ok(diag);
+        });
+
+        test('Flags MODIFY result never checked for records_error', () => {
+            const diagnostics = lintText(`
+                results = bmql("modify table1 set col1 = 'x' where id = $id");
+                return results;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
+            assert.ok(diag);
+        });
+
+        test('Does not flag when records_error is checked via get()', () => {
+            const diagnostics = lintText(`
+                results = bmql("insert into table1 (column1) values ('value1')");
+                errorMsg = get(results, "records_error");
+                return results;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test('Does not flag DELETE - records_error is not documented for DELETE', () => {
+            const diagnostics = lintText(`
+                results = bmql("delete from table1 where id = $id");
+                return results;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test('Does not flag a plain SELECT', () => {
+            const diagnostics = lintText(`
+                results = bmql("select id from table1 where id = $id");
+                return results;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
+            assert.strictEqual(diag, undefined);
+        });
+    });
+
     suite('SELECT * (bml-bmql-select-star)', () => {
         test('Flags SELECT * in BMQL', () => {
             const diagnostics = lintText(`

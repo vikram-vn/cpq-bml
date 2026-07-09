@@ -383,6 +383,48 @@ suite("BML Linter Test Suite - URL Access specific tests", () => {
         });
     });
 
+    suite("urldata() response consumed without checking Status-Code (bml-urldata-status-unchecked)", () => {
+        test("Flags reading Message-Body without ever checking Status-Code", () => {
+            const diagnostics = lintText(`
+                response = urldata("http://example.com", "GET");
+                body = get(response, "Message-Body");
+                return body;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-urldata-status-unchecked');
+            assert.ok(diag, 'URLAccess.md: urldata() never throws on HTTP errors/timeouts - failures come back as a normal response');
+        });
+
+        test("Does not flag when Status-Code is checked before other keys", () => {
+            const diagnostics = lintText(`
+                response = urldata("http://example.com", "GET");
+                status = get(response, "Status-Code");
+                body = get(response, "Message-Body");
+                return body;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-urldata-status-unchecked');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test("Does not flag when the response variable is never read via get() at all", () => {
+            const diagnostics = lintText(`
+                response = urldata("http://example.com", "GET");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-urldata-status-unchecked');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test("Does not flag urldatabyget() - it returns a String with its own defaultValue, not a Dictionary", () => {
+            const diagnostics = lintText(`
+                body = urldatabyget("http://example.com", "", "default");
+                x = get(body, "Message-Body");
+                return body;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-urldata-status-unchecked');
+            assert.strictEqual(diag, undefined);
+        });
+    });
+
     suite("Parameter type validations for URL functions", () => {
         test("50. urldata(url, method) - invalid first argument (expected String) → Warning", () => {
             const diagnostics = lintText(`r = urldata(123, "GET"); return "";`);
