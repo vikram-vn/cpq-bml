@@ -4,6 +4,15 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.26.0] - 2026-07-09
+
+### Added
+- Add BML linting rules and AI skill synchronization, and bump version to 1.25.0.
+- Implement linting rules for URL access, XML parsing, and BMQL safety with associated test suites.
+- Implement linting rules for logtime, globaldictset, generatehmacmessage, and stringbuilder functions.
+- Implement automatic AI skill synchronization for Claude, Cursor, and Copilot tools.
+- Implement automated AI skill synchronization for Claude, Cursor, and Copilot via native project configuration files.
+
 ## [1.25.0] - 2026-07-09
 
 ### Added
@@ -66,9 +75,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Changed
 - MCP server error fix.
-
-
-## [1.17.1] - 2026-07-04
-
-### Changed
-- Internal maintenance and housekeeping updates.
