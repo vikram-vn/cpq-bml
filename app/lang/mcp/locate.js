@@ -72,4 +72,23 @@ function findOrCreateAiCopy(vscode, variableName) {
     return aiBmlPath;
 }
 
-module.exports = { findLocalBmlPath, findOrCreateAiCopy };
+// Discards the AI working copy (whichever scheme it currently lives under - new same-folder
+// _ai.bml or a legacy -AI sibling folder) and its meta.json sidecar, then recreates a fresh copy
+// from canonical. Used when in-progress AI edits need a clean restart. Recreation always lands
+// on the new same-folder scheme, even if the discarded copy was a legacy one.
+function resetAiCopy(vscode, variableName) {
+    const canonicalBmlPath = findLocalBmlPath(vscode, variableName);
+    if (!canonicalBmlPath) return null;
+
+    for (const aiPath of [legacyAiCopyPathFor(canonicalBmlPath, variableName), aiCopyPathFor(canonicalBmlPath, variableName)]) {
+        if (fs.existsSync(aiPath)) {
+            fs.unlinkSync(aiPath);
+            const metaPath = metadataLib.bmlPathToMetaPath(aiPath);
+            if (fs.existsSync(metaPath)) fs.unlinkSync(metaPath);
+        }
+    }
+
+    return findOrCreateAiCopy(vscode, variableName);
+}
+
+module.exports = { findLocalBmlPath, findOrCreateAiCopy, resetAiCopy };

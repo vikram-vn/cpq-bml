@@ -3,6 +3,8 @@ const lifecycle = require('./lifecycle');
 const knowledge = require('./knowledge');
 const reference = require('./reference');
 const status = require('./status');
+const testing = require('./testing');
+const formatting = require('./formatting');
 
 module.exports = {
     ...lookup,
@@ -10,4 +12,6 @@ module.exports = {
     ...knowledge,
     ...reference,
     ...status,
+    ...testing,
+    ...formatting,
 };

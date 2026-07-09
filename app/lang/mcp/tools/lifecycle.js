@@ -20,7 +20,7 @@ const {
     runRemoveOverride,
 } = require('../../rest/commands');
 const { createToolVscodeContext, createCapturingTerminal } = require('../proxy');
-const { findOrCreateAiCopy } = require('../locate');
+const { findOrCreateAiCopy, findLocalBmlPath, resetAiCopy } = require('../locate');
 const { getAiTerminal } = require('../aiTerminal');
 const { pullFunction } = require('./lookup');
 
@@ -257,6 +257,26 @@ async function removeOverride(context, vscode, args, transport) {
     return structuredOutcome({ variableName }, result, getLines());
 }
 
+// Destructive: discards whatever the AI has changed in its working copy so far.
+// confirm:true is the safety gate here since there is no human at a modal to click through.
+async function resetAiCopyTool(context, vscode, args) {
+    const variableName = args && args.variableName;
+    if (!variableName) return { success: false, error: 'variableName is required.' };
+    if (args.confirm !== true) {
+        return {
+            success: false,
+            variableName,
+            error: 'Resetting discards all edits made to the AI working copy. Re-call with confirm:true to proceed.',
+        };
+    }
+    if (!findLocalBmlPath(vscode, variableName)) {
+        return { success: false, variableName, error: `No local file found for "${variableName}". Run pull_function first.` };
+    }
+
+    const aiPath = resetAiCopy(vscode, variableName);
+    return { success: true, variableName, filePath: aiPath };
+}
+
 module.exports = {
     saveFunction,
     validateFunction,
@@ -267,4 +287,5 @@ module.exports = {
     createUtilFunction,
     createOverride,
     removeOverride,
+    resetAiCopy: resetAiCopyTool,
 };

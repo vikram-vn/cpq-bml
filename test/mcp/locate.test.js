@@ -1,7 +1,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const { findLocalBmlPath, findOrCreateAiCopy } = require("../../app/lang/mcp/locate");
+const { findLocalBmlPath, findOrCreateAiCopy, resetAiCopy } = require("../../app/lang/mcp/locate");
 const { createFakeVscode } = require("../rest/testHelpers");
 const { withTempDir } = require("../rest/commands/fixtures");
 
@@ -129,6 +129,51 @@ suite("MCP locate", () => {
           path.join(tmpDir, "library", "oraclecpqo", "transaction", "libraries", "myFunc", "myFunc_ai.bml"),
         );
         assert.strictEqual(fs.readFileSync(aiPath, "utf8"), 'return "x";');
+      }));
+  });
+
+  suite("resetAiCopy", () => {
+    function writeCanonical(tmpDir, variableName, scriptText, metaContent) {
+      const dir = path.join(tmpDir, "library", "util", variableName);
+      fs.mkdirSync(dir, { recursive: true });
+      const bmlPath = path.join(dir, `${variableName}.bml`);
+      fs.writeFileSync(bmlPath, scriptText);
+      if (metaContent !== undefined) {
+        fs.writeFileSync(path.join(dir, `${variableName}-meta.json`), JSON.stringify(metaContent));
+      }
+      return bmlPath;
+    }
+
+    test("discards AI edits and recreates a fresh copy matching the canonical file", () =>
+      withTempDir((tmpDir) => {
+        writeCanonical(tmpDir, "groupDiscount", 'return "v1";', { variableName: "groupDiscount" });
+        const vscode = vscodeRootedAt(tmpDir);
+        const aiPath = findOrCreateAiCopy(vscode, "groupDiscount");
+        fs.writeFileSync(aiPath, 'return "ai-edited-and-broken";');
+
+        const resetPath = resetAiCopy(vscode, "groupDiscount");
+
+        assert.strictEqual(resetPath, aiPath);
+        assert.strictEqual(fs.readFileSync(resetPath, "utf8"), 'return "v1";');
+      }));
+
+    test("also discards a legacy -AI folder copy and recreates on the new same-folder scheme", () =>
+      withTempDir((tmpDir) => {
+        const canonicalPath = writeCanonical(tmpDir, "legacyFn", 'return "v1";', { variableName: "legacyFn" });
+        const legacyDir = path.join(tmpDir, "library", "util", "legacyFn-AI");
+        fs.mkdirSync(legacyDir, { recursive: true });
+        fs.writeFileSync(path.join(legacyDir, "legacyFn.bml"), 'return "legacy-ai-edited";');
+
+        const resetPath = resetAiCopy(vscodeRootedAt(tmpDir), "legacyFn");
+
+        assert.strictEqual(resetPath, path.join(path.dirname(canonicalPath), "legacyFn_ai.bml"));
+        assert.strictEqual(fs.readFileSync(resetPath, "utf8"), 'return "v1";');
+        assert.ok(!fs.existsSync(path.join(legacyDir, "legacyFn.bml")), "legacy copy should be discarded");
+      }));
+
+    test("returns null when the canonical file does not exist", () =>
+      withTempDir((tmpDir) => {
+        assert.strictEqual(resetAiCopy(vscodeRootedAt(tmpDir), "doesNotExist"), null);
       }));
   });
 });

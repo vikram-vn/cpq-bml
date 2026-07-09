@@ -386,4 +386,44 @@ suite("MCP tools - lifecycle", () => {
         assert.strictEqual(fs.readFileSync(aiPath, "utf8"), systemScript);
       }));
   });
+
+  suite("resetAiCopy", () => {
+    test("requires a variableName", async () => {
+      const result = await tools.resetAiCopy(makeContext(), createFakeVscode({}), { confirm: true });
+      assert.strictEqual(result.success, false);
+    });
+
+    test("refuses to run without confirm:true", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir);
+        const result = await tools.resetAiCopy(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" });
+        assert.strictEqual(result.success, false);
+        assert.ok(result.error.includes("confirm:true"));
+      }));
+
+    test("reports an error when the function was never pulled locally", () =>
+      withTempDir(async (tmpDir) => {
+        const result = await tools.resetAiCopy(makeContext(), vscodeRootedAt(tmpDir), { variableName: "neverPulled", confirm: true });
+        assert.strictEqual(result.success, false);
+        assert.ok(result.error.includes("neverPulled"));
+      }));
+
+    test("with confirm:true, discards AI edits and restores the canonical content", () =>
+      withTempDir(async (tmpDir) => {
+        const canonicalPath = writeLocalUtilFunction(tmpDir);
+        const vscode = vscodeRootedAt(tmpDir);
+        const aiPath = path.join(tmpDir, "library", "util", "concatString", "concatString_ai.bml");
+
+        // First tool call auto-creates the AI copy, then it gets edited (and broken).
+        await tools.lintFunction(makeContext(), vscode, { variableName: "concatString" });
+        fs.writeFileSync(aiPath, 'return "broken edit');
+
+        const result = await tools.resetAiCopy(makeContext(), vscode, { variableName: "concatString", confirm: true });
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(result.variableName, "concatString");
+        assert.strictEqual(result.filePath, aiPath);
+        assert.strictEqual(fs.readFileSync(aiPath, "utf8"), fs.readFileSync(canonicalPath, "utf8"));
+      }));
+  });
 });

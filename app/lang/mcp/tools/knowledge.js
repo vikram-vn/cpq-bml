@@ -3,6 +3,8 @@ const path = require('path');
 const { findOrCreateAiCopy } = require('../locate');
 const { lintBMLCustom } = require('../../lint/lint');
 const { computeComplexity } = require('../../metrics/complexity');
+const configLib = require('../../rest/config');
+const metadataLib = require('../../rest/metadata');
 
 // Builds the minimal doc-like object lintBMLCustom() needs, from a file already
 // read off disk - the same shape test/linter/fixtures.js uses to lint text
@@ -321,4 +323,118 @@ async function getFunctionMetrics(context, vscode, args) {
     };
 }
 
-module.exports = { explainFunction, diffFunction, searchFunctions, lintFunction, getFunctionMetrics };
+// Recurses into the pull folder looking for canonical <name>/<name>.bml files - a .bml file
+// whose basename matches its parent folder's name exactly. That pattern is unique to canonical
+// files: an AI copy is either <name>/<name>_ai.bml (basename carries the _ai suffix) or, under
+// the legacy scheme, <name>-AI/<name>.bml (parent folder carries the -AI suffix instead) -
+// either way the names don't match, so both copies are skipped automatically.
+function collectCanonicalBmlFiles(dir, results, depthLeft) {
+    if (depthLeft <= 0) return;
+    let entries;
+    try {
+        entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch (e) {
+        return;
+    }
+    for (const entry of entries) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            collectCanonicalBmlFiles(full, results, depthLeft - 1);
+        } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.bml')) {
+            if (path.basename(entry.name, '.bml') === path.basename(dir)) {
+                results.push(full);
+            }
+        }
+    }
+}
+
+/**
+ * list_local_functions
+ *
+ * Enumerates every function already pulled locally (from the configured pull folder), without
+ * needing to already know a variableName - useful for getting oriented in a workspace an AI
+ * hasn't seen before, instead of guessing names for explain_function/lint_function.
+ */
+async function listLocalFunctions(context, vscode) {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        return { success: false, error: 'No workspace folder is open.' };
+    }
+    const settings = configLib.getSettings(vscode);
+    const root = path.join(workspaceFolders[0].uri.fsPath, settings.pullFolder);
+
+    const canonicalPaths = [];
+    collectCanonicalBmlFiles(root, canonicalPaths, 10);
+
+    const functions = canonicalPaths.map((bmlPath) => {
+        const variableName = metadataLib.variableNameFromBmlPath(bmlPath);
+        const meta = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(bmlPath)) || {};
+        return {
+            variableName,
+            name: meta.name || variableName,
+            type: meta.commerceDocument ? 'commerce' : 'util',
+            commerceProcess: meta.commerceProcess,
+            commerceDocument: meta.commerceDocument,
+            canonicalPath: bmlPath,
+        };
+    });
+
+    return { success: true, count: functions.length, functions };
+}
+
+/**
+ * lint_all_functions
+ *
+ * Runs lint_function across every locally pulled function and returns an aggregate summary
+ * (total error/warning counts, worst offenders) alongside each function's full diagnostics -
+ * a workspace-wide health check instead of one function at a time.
+ */
+async function lintAllFunctions(context, vscode) {
+    const listing = await listLocalFunctions(context, vscode);
+    if (!listing.success) return listing;
+
+    const results = [];
+    for (const fn of listing.functions) {
+        const lintResult = await lintFunction(context, vscode, { variableName: fn.variableName });
+        if (!lintResult.success) {
+            results.push({ variableName: fn.variableName, success: false, error: lintResult.error });
+            continue;
+        }
+        const errorCount = lintResult.diagnostics.filter((d) => d.severity === 'Error').length;
+        const warningCount = lintResult.diagnostics.filter((d) => d.severity === 'Warning').length;
+        results.push({
+            variableName: fn.variableName,
+            success: true,
+            errorCount,
+            warningCount,
+            diagnostics: lintResult.diagnostics,
+        });
+    }
+
+    const totalErrors = results.reduce((sum, r) => sum + (r.errorCount || 0), 0);
+    const totalWarnings = results.reduce((sum, r) => sum + (r.warningCount || 0), 0);
+    const worstOffenders = results
+        .filter((r) => (r.errorCount || 0) + (r.warningCount || 0) > 0)
+        .sort((a, b) => (b.errorCount + b.warningCount) - (a.errorCount + a.warningCount))
+        .slice(0, 10)
+        .map((r) => ({ variableName: r.variableName, errorCount: r.errorCount, warningCount: r.warningCount }));
+
+    return {
+        success: totalErrors === 0,
+        functionCount: results.length,
+        totalErrors,
+        totalWarnings,
+        worstOffenders,
+        results,
+    };
+}
+
+module.exports = {
+    explainFunction,
+    diffFunction,
+    searchFunctions,
+    lintFunction,
+    getFunctionMetrics,
+    listLocalFunctions,
+    lintAllFunctions,
+};
