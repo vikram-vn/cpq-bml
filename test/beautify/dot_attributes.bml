@@ -1,6 +1,0 @@
-q = line.quantity_c;
-if(line.quantity_c > 0){
-amount = line.amount_c;
-return amount;
-}
-return _site_url;
