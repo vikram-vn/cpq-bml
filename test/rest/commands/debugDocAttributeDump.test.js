@@ -187,5 +187,102 @@ suite(
           "should print the raw JSON string instead",
         );
       }));
+
+    test("saves the same table to bml_debug_output.log that the terminal shows, when a dump is detected", () =>
+      withTempDir(async (tmpDir) => {
+        const bmlPath = path.join(tmpDir, "concatString.bml");
+        metadataLib.writeMetadata(
+          metadataLib.bmlPathToMetaPath(bmlPath),
+          metadataLib.splitFunctionResponse(SAMPLE_FUNCTION).metadata,
+        );
+        const editor = {
+          document: {
+            languageId: "bml",
+            uri: { fsPath: bmlPath },
+            getText: () => SAMPLE_FUNCTION.scriptText,
+          },
+        };
+
+        const fs = require("fs");
+        const outputLog = path.join(tmpDir, "bml_debug_output.log");
+
+        const vscode = createFakeVscode({
+          config: baseVscodeConfig({ "debug.logOutputToFile": true }),
+          window: {
+            activeTextEditor: editor,
+            showInputBox: async () => "value",
+          },
+          workspaceFolders: [{ uri: { fsPath: tmpDir } }],
+        });
+
+        const dump = "1~status_t~Active|2~qty_l~10|2~price_l~99.99";
+        const transport = async () => ({
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ returnData: dump }),
+        });
+
+        await commands.runDebugCurrentFile(
+          makeContext(),
+          vscode,
+          { writeLine: () => {}, show: () => {} },
+          { transport },
+        );
+
+        const logContent = fs.readFileSync(outputLog, "utf8");
+        // The log should contain the rendered tables, not the raw pipe/tilde dump.
+        assert.ok(!logContent.includes(dump), "raw dump string should not be logged as-is");
+        assert.ok(logContent.includes("Header Attributes:"));
+        assert.ok(logContent.includes("Line Attributes:"));
+        assert.ok(logContent.includes("Status") && logContent.includes("status_t") && logContent.includes("Active"));
+        assert.ok(logContent.includes("Qty") && logContent.includes("qty_l") && logContent.includes("10"));
+        assert.ok(logContent.includes("┌") && logContent.includes("│"), "should contain box-drawing table borders");
+      }));
+
+    test("saves the raw text to bml_debug_output.log when no table was rendered, matching what the terminal shows", () =>
+      withTempDir(async (tmpDir) => {
+        const bmlPath = path.join(tmpDir, "concatString.bml");
+        metadataLib.writeMetadata(
+          metadataLib.bmlPathToMetaPath(bmlPath),
+          metadataLib.splitFunctionResponse(SAMPLE_FUNCTION).metadata,
+        );
+        const editor = {
+          document: {
+            languageId: "bml",
+            uri: { fsPath: bmlPath },
+            getText: () => SAMPLE_FUNCTION.scriptText,
+          },
+        };
+
+        const fs = require("fs");
+        const outputLog = path.join(tmpDir, "bml_debug_output.log");
+
+        const vscode = createFakeVscode({
+          config: baseVscodeConfig({ "debug.logOutputToFile": true }), // showResultsAsTable left off
+          window: {
+            activeTextEditor: editor,
+            showInputBox: async () => "value",
+          },
+          workspaceFolders: [{ uri: { fsPath: tmpDir } }],
+        });
+
+        const transport = async () => ({
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ returnData: "just a plain string result" }),
+        });
+
+        await commands.runDebugCurrentFile(
+          makeContext(),
+          vscode,
+          { writeLine: () => {}, show: () => {} },
+          { transport },
+        );
+
+        const logContent = fs.readFileSync(outputLog, "utf8");
+        assert.ok(logContent.includes("just a plain string result"));
+        assert.ok(!logContent.includes("Header Attributes:"));
+        assert.ok(!logContent.includes("┌"), "should not contain table borders for non-table output");
+      }));
   },
 );

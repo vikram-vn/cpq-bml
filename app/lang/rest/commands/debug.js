@@ -16,7 +16,20 @@ const {
   appendDebugPrintToFile,
   ensureCredentials,
 } = require("./shared");
-const { formatAsTable, formatDocAttributeDumpTables, parseDocAttributeDump } = require("./debugTableFormat");
+const { formatAsTable, tableLinesToString, formatDocAttributeDumpTables, parseDocAttributeDump } = require("./debugTableFormat");
+
+// Structural elements (borders) are dimmed gray and headers are bold with no forced color, so
+// the table reads clearly and adapts to any terminal theme - not the same green used for plain
+// success output elsewhere in this file, which read as an unintentional/uniform table color.
+const TABLE_BORDER_COLOR = "\x1b[90m";
+const TABLE_HEADER_STYLE = "\x1b[1m";
+
+function writeTableLines(resultsTerminal, tableLines) {
+  for (const line of tableLines) {
+    const style = line.type === "border" ? TABLE_BORDER_COLOR : line.type === "header" ? TABLE_HEADER_STYLE : "";
+    resultsTerminal.writeLine(style ? `${style}${line.text}\x1b[0m` : line.text);
+  }
+}
 
 async function runDebugCurrentFile(
   context,
@@ -315,26 +328,29 @@ async function runDebugCurrentFile(
     }
   }
 
+  // Plain-text form of whatever got rendered as a table, for the debug output log file below -
+  // the log should read as the same table a user sees in the terminal, not the raw pipe/tilde
+  // dump or a bare JSON string.
+  let outputForLog = returnVal;
+
   if (dumpTables) {
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
+    const logParts = [];
     if (dumpTables.headerTable) {
-      resultsTerminal.writeLine(`\x1b[1m\x1b[32mHeader Attributes:\x1b[0m`);
-      for (const line of dumpTables.headerTable.split('\n')) {
-        resultsTerminal.writeLine(`\x1b[32m${line}\x1b[0m`);
-      }
+      resultsTerminal.writeLine(`\x1b[1m\x1b[36mHeader Attributes:\x1b[0m`);
+      writeTableLines(resultsTerminal, dumpTables.headerTable);
+      logParts.push('Header Attributes:', tableLinesToString(dumpTables.headerTable));
     }
     if (dumpTables.lineTable) {
-      resultsTerminal.writeLine(`\x1b[1m\x1b[32mLine Attributes:\x1b[0m`);
-      for (const line of dumpTables.lineTable.split('\n')) {
-        resultsTerminal.writeLine(`\x1b[32m${line}\x1b[0m`);
-      }
+      resultsTerminal.writeLine(`\x1b[1m\x1b[36mLine Attributes:\x1b[0m`);
+      writeTableLines(resultsTerminal, dumpTables.lineTable);
+      logParts.push('Line Attributes:', tableLinesToString(dumpTables.lineTable));
     }
+    outputForLog = logParts.join('\n');
   } else if (tableOutput) {
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
-    const tableLines = tableOutput.split('\n');
-    for (const line of tableLines) {
-      resultsTerminal.writeLine(`\x1b[32m${line}\x1b[0m`);
-    }
+    writeTableLines(resultsTerminal, tableOutput);
+    outputForLog = tableLinesToString(tableOutput);
   } else if (returnVal !== undefined && returnVal !== null && returnVal !== "") {
     writeTerminalMessage(
       resultsTerminal,
@@ -351,7 +367,7 @@ async function runDebugCurrentFile(
     );
   }
   // Persist return value to bml_debug_output.log (if enabled).
-  appendDebugOutputToFile(outputLogPath, metadata.variableName, returnVal);
+  appendDebugOutputToFile(outputLogPath, metadata.variableName, outputForLog);
 
   const logs =
     body &&

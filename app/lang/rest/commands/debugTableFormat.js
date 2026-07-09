@@ -1,10 +1,10 @@
 const { toDisplayName } = require('./shared');
 
-// Human-readable label for a BML variable name: drops a trailing "_t" (the common "temp"
-// suffix convention) and title-cases the rest, e.g. "status_t" -> "Status",
-// "netLaborCostBackup_t" -> "Net Labor Cost Backup".
+// Human-readable label for a BML variable name: drops a trailing "_t"/"_c"/"_l" (the common
+// temp/current/line naming-convention suffixes) and title-cases the rest, e.g. "status_t" ->
+// "Status", "netLaborCostBackup_t" -> "Net Labor Cost Backup", "qty_l" -> "Qty".
 function labelForVariable(variableName) {
-  return toDisplayName(variableName.replace(/_t$/i, ''));
+  return toDisplayName(variableName.replace(/_[tcl]$/i, ''));
 }
 
 // Caps how wide any single cell's column can stretch - without this, one long value (e.g. a
@@ -24,29 +24,42 @@ function wrapCell(text) {
 }
 
 // Box-drawing bordered table (┌─┬─┐ style), shared by the header/line dump tables and the
-// generic JSON-object table below. Each cell gets one space of padding on either side.
+// generic JSON-object table below. Each cell gets one space of padding on either side. Returns
+// an array of { type: 'border'|'header'|'data', text } lines rather than a flat string, so a
+// caller writing this to a terminal can style borders/headers/data differently (e.g. bold
+// headers, dim borders) instead of one uniform color for the whole table.
 function formatRowsAsTable(headers, rows) {
   const wrappedRows = rows.map((r) => r.map((c) => wrapCell(String(c ?? ''))));
   const widths = headers.map((h, i) => Math.max(h.length, ...wrappedRows.flatMap((r) => r[i]).map((l) => l.length)));
 
   const border = (left, mid, right) => left + widths.map((w) => '─'.repeat(w + 2)).join(mid) + right;
   const renderLine = (cells) => '│ ' + cells.map((c, i) => String(c ?? '').padEnd(widths[i])).join(' │ ') + ' │';
+  const rowSeparator = border('├', '┼', '┤');
 
-  const dataLines = [];
-  for (const wrappedRow of wrappedRows) {
+  const lines = [
+    { type: 'border', text: border('┌', '┬', '┐') },
+    { type: 'header', text: renderLine(headers) },
+    { type: 'border', text: rowSeparator },
+  ];
+
+  wrappedRows.forEach((wrappedRow, rowIndex) => {
     const subLineCount = Math.max(...wrappedRow.map((cellLines) => cellLines.length));
     for (let sub = 0; sub < subLineCount; sub++) {
-      dataLines.push(renderLine(wrappedRow.map((cellLines) => cellLines[sub] || '')));
+      lines.push({ type: 'data', text: renderLine(wrappedRow.map((cellLines) => cellLines[sub] || '')) });
     }
-  }
+    if (rowIndex < wrappedRows.length - 1) {
+      lines.push({ type: 'border', text: rowSeparator });
+    }
+  });
 
-  return [
-    border('┌', '┬', '┐'),
-    renderLine(headers),
-    border('├', '┼', '┤'),
-    ...dataLines,
-    border('└', '┴', '┘'),
-  ].join('\n');
+  lines.push({ type: 'border', text: border('└', '┴', '┘') });
+  return lines;
+}
+
+// Flattens formatRowsAsTable()'s structured lines back into plain text - for a log file, or
+// anywhere else that just wants the table's text without per-line-type styling.
+function tableLinesToString(tableLines) {
+  return tableLines.map((l) => l.text).join('\n');
 }
 
 function formatAsTable(data) {
@@ -144,4 +157,10 @@ function parseDocAttributeDump(text) {
   return { header, lines };
 }
 
-module.exports = { formatAsTable, formatRowsAsTable, formatDocAttributeDumpTables, parseDocAttributeDump };
+module.exports = {
+  formatAsTable,
+  formatRowsAsTable,
+  tableLinesToString,
+  formatDocAttributeDumpTables,
+  parseDocAttributeDump,
+};
