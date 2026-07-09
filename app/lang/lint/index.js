@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const { lintBMLCustom } = require('./lint');
 const { registerBmlCodeActions } = require('./codeActions');
-const { loadDictionaries } = require('../spellCheck/spelling');
+const { loadDictionaries } = require('../spell-check/spelling');
 
 let diagnosticCollection;
 
@@ -20,7 +20,7 @@ function registerBmlLinter(context) {
     // Threaded down to checkSpelling so its dictionary lookup can anchor to
     // the extension's real install root instead of __dirname, which after
     // esbuild bundles everything into dist/extension.js no longer points at
-    // app/lang/spellCheck/ - same convention as intellisense/index.js's
+    // app/lang/spell-check/ - same convention as intellisense/index.js's
     // loadApiData(context).
     const extensionPath = context.extensionPath;
 

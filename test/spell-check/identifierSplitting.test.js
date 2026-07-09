@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { lintText } = require('../linter/fixtures');
-const { splitIdentifier } = require('../../app/lang/spellCheck/spelling');
+const { splitIdentifier } = require('../../app/lang/spell-check/spelling');
 
 suite('BML Linter Test Suite - Custom Spellchecker - identifier splitting edge cases', () => {
     test('splitIdentifier handles a leading underscore (CPQ system variable style)', () => {

@@ -12,7 +12,7 @@ import os
 
 import rcssmin
 
-CSS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "app", "lang", "settingsPanel", "webview", "css")
+CSS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "app", "lang", "settings-panel", "web-view", "css")
 
 FILES_TO_MINIFY = [
     "main.css",

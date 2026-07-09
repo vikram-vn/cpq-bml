@@ -1,5 +1,5 @@
 // Debug: see exactly what diagnostics lintText produces for the failing test inputs
-// Run: node test/linter/debug_lint.js
+// Run: node test/linter/debugLint.js
 process.env.VSCODE_CWD = __dirname;
 const vscode = require('vscode');
 const { lintBMLCustom } = require('../../app/lang/lint/lint');

@@ -132,7 +132,7 @@ const extraAllowed = new Set([
 // extensionPath anchors the dictionary files correctly once bundled by esbuild, where __dirname resolves to dist/.
 function resolveSpellCheckDir(extensionPath) {
   if (extensionPath) {
-    return path.join(extensionPath, "app", "lang", "spellCheck");
+    return path.join(extensionPath, "app", "lang", "spell-check");
   }
   return __dirname;
 }

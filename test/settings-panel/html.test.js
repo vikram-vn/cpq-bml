@@ -1,7 +1,7 @@
 const assert = require("assert");
-const { getNonce, buildCsp } = require("../../app/lang/settingsPanel/html");
+const { getNonce, buildCsp } = require("../../app/lang/settings-panel/html");
 
-suite("settingsPanel html", () => {
+suite("settings-panel html", () => {
   test("getNonce returns a non-empty string and is different on each call", () => {
     const a = getNonce();
     const b = getNonce();

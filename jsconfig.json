@@ -9,7 +9,11 @@
 		"skipLibCheck": true,
 		"lib": [
 			"ES2022"
-		]
+		],
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["app/lang/*"]
+		}
 	},
 	"include": [
 		"app/lang/beautify/bml/**/*"

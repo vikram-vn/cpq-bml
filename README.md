@@ -362,7 +362,7 @@ The project has a modular design structure with clean segregation of BML editor 
 │       │   ├── report.js             # Metrics accumulator logic
 │       │   └── reportWebview.js      # WebView layout rendering
 │       ├── rest/                     # Oracle CPQ REST Client Integration
-│       ├── settingsPanel/            # Extension settings GUI dashboard WebView
+│       ├── settings-panel/           # Extension settings GUI dashboard WebView
 │       ├── testing/                  # Safe sandboxed local execution & unit testing
 │       │   ├── runner.js             # Sidecar *.bmltest.json executor
 │       │   └── snapshot.js           # Regression snapshot comparisons

@@ -9,7 +9,7 @@ const { refreshConnectionConfiguredContext } = require("../../../app/lang/rest/c
 // usable connection (siteUrl + username/password or token) is configured.
 // The underlying completeness checks themselves (siteUrl/username/password/
 // token, basic vs bearer) are exhaustively covered by hasMissingCredentials's
-// own tests in test/settingsPanel/index.test.js - this only verifies the
+// own tests in test/settings-panel/index.test.js - this only verifies the
 // setContext wiring inverts that verdict correctly.
 suite("BML REST commands - connection-configured context key", () => {
     test("sets the context key to false when credentials are missing (no siteUrl)", async () => {

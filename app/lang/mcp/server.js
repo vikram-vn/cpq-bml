@@ -4,13 +4,13 @@ const {
   StreamableHTTPServerTransport,
 } = require("@modelcontextprotocol/sdk/server/streamableHttp.js");
 const tools = require("./tools");
-const statusTools = require("./toolDefs/statusTools");
-const lookupTools = require("./toolDefs/lookupTools");
-const lifecycleTools = require("./toolDefs/lifecycleTools");
-const knowledgeTools = require("./toolDefs/knowledgeTools");
-const referenceTools = require("./toolDefs/referenceTools");
-const testingTools = require("./toolDefs/testingTools");
-const formattingTools = require("./toolDefs/formattingTools");
+const statusTools = require("./tool-defs/statusTools");
+const lookupTools = require("./tool-defs/lookupTools");
+const lifecycleTools = require("./tool-defs/lifecycleTools");
+const knowledgeTools = require("./tool-defs/knowledgeTools");
+const referenceTools = require("./tool-defs/referenceTools");
+const testingTools = require("./tool-defs/testingTools");
+const formattingTools = require("./tool-defs/formattingTools");
 
 function registerTools(server, context, vscode) {
   statusTools.register(server, context, vscode, tools);

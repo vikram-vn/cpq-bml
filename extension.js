@@ -53,7 +53,7 @@ function activate(context) {
   // measurably reducing the extension's reported activation time.
   setImmediate(() => {
     const { registerBmlRest } = require("./app/lang/rest");
-    const { registerSettingsPanel } = require("./app/lang/settingsPanel");
+    const { registerSettingsPanel } = require("./app/lang/settings-panel");
     const { registerMcp } = require("./app/lang/mcp");
     const { registerXslt } = require("./app/lang/xslt");
     const { registerMetrics } = require("./app/lang/metrics");

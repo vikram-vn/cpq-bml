@@ -11,7 +11,7 @@ no TypeScript anywhere, no `src/` folder. Source lives under `app/lang/`,
 tests under `test/`, mirroring each other. esbuild bundles to
 `dist/extension.js` for the real Node-side extension; a separate esbuild
 invocation bundles a React webview to
-`app/lang/settingsPanel/webview/dist/main.js`.
+`app/lang/settings-panel/web-view/dist/main.js`.
 
 ---
 
@@ -27,7 +27,7 @@ registerBmlLinter(context);         // ./app/lang/lint
 registerBmlComments(context);       // ./app/lang/comments
 registerBmlRest(context);           // ./app/lang/rest
 registerMcp(context);               // ./app/lang/mcp
-registerSettingsPanel(context);     // ./app/lang/settingsPanel
+registerSettingsPanel(context);     // ./app/lang/settings-panel
 ```
 
 Plus one inline command (`cpqBml.beautifyWorkspace`) registered directly in
@@ -49,8 +49,8 @@ from `extension.js`.
 | `app/lang/comments/` | `registerBmlComments` | top-level | Tag/directive/docHeader comment decorations + hover, debounced like the linter |
 | `app/lang/rest/` | `registerBmlRest` | via `./commands/index.js` | Live Oracle CPQ REST integration: pull/save/validate/debug/deploy |
 | `app/lang/mcp/` | `registerMcp` | inside the function, not top-level | MCP server so an AI agent can call the REST tools directly over localhost |
-| `app/lang/settingsPanel/` | `registerSettingsPanel` | inside the function, not top-level | WebView settings UI (React, see section 6); auto-opens on first install if workspace looks unconfigured |
-| `app/lang/spellCheck/` | `checkSpelling` (no `register*`) | none - takes `vscode` as a parameter | Pure spell-checker; called as a sub-step *from inside* `lint.js`, not from `extension.js` - see section 3 |
+| `app/lang/settings-panel/` | `registerSettingsPanel` | inside the function, not top-level | WebView settings UI (React, see section 6); auto-opens on first install if workspace looks unconfigured |
+| `app/lang/spell-check/` | `checkSpelling` (no `register*`) | none - takes `vscode` as a parameter | Pure spell-checker; called as a sub-step *from inside* `lint.js`, not from `extension.js` - see section 3 |
 | `app/lang/syntaxes/` | n/a (JSON only) | n/a | `bml.tmLanguage.json` TextMate grammar, referenced from `package.json` |
 
 **Why the `vscode`-at-top-level column matters:** any file with
@@ -211,7 +211,7 @@ real CPQ library code under `bml/library/`):
   (`[{line, severity, message}, ...]`, 0-indexed lines) and asserts the
   linter's output matches exactly. When a new rule legitimately also fires
   on existing fixture code, update the `.expected.json`, don't suppress it.
-- **`test/linter/_corpusSmoke.test.js`** is a permanent regression guard -
+- **`test/linter/corpusSmoke.test.js`** is a permanent regression guard -
   it lints every real `.bml` file under `bml/library/` through the actual
   `lintBMLCustom` entry point and asserts none of them throw. Keep this
   passing; it's cheap insurance against a rule that works on synthetic
@@ -228,31 +228,24 @@ real CPQ library code under `bml/library/`):
   (`--external:vscode --format=cjs --platform=node`), then runs
   `compile:webview` for the settings panel's React bundle
   (`--format=iife --platform=browser --jsx=automatic`, output to
-  `app/lang/settingsPanel/webview/dist/main.js`).
+  `app/lang/settings-panel/web-view/dist/main.js`).
 - `npm run watch` / `npm run minify` mirror the same two-bundle shape with
   `--watch` / `--minify --legal-comments=none` respectively.
 - `npm test` runs `pretest` (`compile`) then `vscode-test`.
 - **`.vscodeignore`** is the map of what's bundled-away vs shipped as-is in
   the VSIX. Source `.js` files for most modules (`beautify`, `lint`, `rest`,
-  `comments`, `mcp`, `intellisense`, `settingsPanel`, plus root
+  `comments`, `mcp`, `intellisense`, `settings-panel`, plus root
   `extension.js`) are excluded - they're already inlined into
   `dist/extension.js`. Data/static files ship as-is and are **not**
-  excluded: `app/lang/intellisense/*.json`, `app/lang/spellCheck/*.txt`,
+  excluded: `app/lang/intellisense/*.json`, `app/lang/spell-check/*.txt`,
   `app/lang/syntaxes/bml.tmLanguage.json`,
-  `app/lang/settingsPanel/webview/dist/main.js` (the *compiled* webview
-  output - the React `.jsx` sources under `webview/src/` are excluded,
+  `app/lang/settings-panel/web-view/dist/main.js` (the *compiled* webview
+  output - the React `.jsx` sources under `web-view/src/` are excluded,
   the bundle is not), `themes/*.json`, `language-configuration.json`,
   `app/images/`. When adding a new module with a JS entry point that gets
   bundled, add its source path to `.vscodeignore` alongside the others;
   when adding new static data files a module reads at runtime via `fs`,
   make sure they're *not* excluded.
-- **Known gap as of this writing:** `app/lang/spellCheck/spelling.js` is not
-  yet listed in `.vscodeignore` (every sibling module's `.js` source is).
-  Its dictionary `.txt` files correctly need to ship as-is, but the `.js`
-  itself is already inlined into `dist/extension.js` via `lint.js`'s
-  `require`, so shipping the raw source too is redundant VSIX bloat, not a
-  functional bug. Add `app/lang/spellCheck/*.js` to the exclusion list next
-  time that area is touched.
 
 ## 6. Settings & commands inventory
 
@@ -288,7 +281,7 @@ createBmlFunction, changeEnvironment}`, `cpqBml.mcp.showInfo`,
   chance it changed since you last looked at it.
 - **Trust `git status`/`Glob` over memory** - this project's state changes
   between sessions and even mid-session (e.g. `app/lang/cspell-loader/` was
-  deleted and replaced by the self-contained `app/lang/spellCheck/` module
+  deleted and replaced by the self-contained `app/lang/spell-check/` module
   mid-development; old plans/docs may reference settings keys like
   `cpqBml.lint.enable` that no longer exist - the real key today is
   `cpqBml.features.lint`).

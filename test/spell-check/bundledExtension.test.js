@@ -4,14 +4,14 @@ const { activateExtension } = require('../extensionHelper');
 
 // Regression guard for a real bug: loadDictionaries() in spelling.js used to
 // resolve bml-words.txt/english-words.txt relative to __dirname. That's
-// correct when the module is required directly (every other spellCheck test
+// correct when the module is required directly (every other spell-check test
 // does this, bypassing esbuild entirely), but esbuild bundles this module
 // into a single dist/extension.js, and __dirname for bundled code resolves
 // to dist/ - where those .txt files don't exist. The real installed
 // extension (package.json's "main": "./dist/extension.js") therefore loaded
 // an almost-empty dictionary and flagged ordinary words like "String".
 //
-// Every other test in this suite requires app/lang/spellCheck/spelling.js
+// Every other test in this suite requires app/lang/spell-check/spelling.js
 // directly, so __dirname is always correct there and none of them could
 // have caught this - only activating the real extension through its real
 // entry point (as this file does) exercises the actual bundled code path.

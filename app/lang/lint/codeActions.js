@@ -175,7 +175,7 @@ function registerBmlCodeActions(context) {
                     }
                     else if (diag.code === 'bml-spelling-error') {
                         const word = document.getText(editRange);
-                        const { getSpellingSuggestions } = require('../spellCheck/spelling');
+                        const { getSpellingSuggestions } = require('../spell-check/spelling');
                         const suggestions = getSpellingSuggestions(word, extensionPath);
                         suggestions.forEach(suggestion => {
                             const action = new vscode.CodeAction(`Spelling suggestion: "${suggestion}"`, vscode.CodeActionKind.QuickFix);

@@ -10,7 +10,7 @@ import os
 
 import brotli
 
-SPELLCHECK_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "app", "lang", "spellCheck")
+SPELLCHECK_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "app", "lang", "spell-check")
 
 FILES_TO_COMPRESS = [
     "bml-words.txt",

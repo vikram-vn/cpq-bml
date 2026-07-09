@@ -8,7 +8,7 @@ const vscode = require("vscode");
 // creates a real webview panel (including reading webview/index.html off disk,
 // building the CSP, and resolving asWebviewUri) without throwing, and that
 // re-invoking it (the singleton/reveal path) doesn't throw either.
-suite("settingsPanel panel (real vscode integration)", () => {
+suite("settings-panel panel (real vscode integration)", () => {
   test("cpqBml.settings.open creates a real webview panel without throwing, and re-invoking it (reveal path) doesn't throw either", async () => {
     await assert.doesNotReject(() => vscode.commands.executeCommand("cpqBml.settings.open"));
     await assert.doesNotReject(() => vscode.commands.executeCommand("cpqBml.settings.open"));
