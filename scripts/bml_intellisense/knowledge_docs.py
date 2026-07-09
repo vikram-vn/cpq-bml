@@ -1,13 +1,9 @@
 """Extracts and sanitizes per-function reference sections from the crawled
-knowledge base (scratch/knowledge/BML/**/*.md - see scripts/docs/bml_crawler),
+knowledge base (knowledge/BML/**/*.md - see scripts/docs/bml_crawler),
 for embedding directly into bml-functions-api-usage.json's "docs" field.
 
-scratch/ is gitignored on purpose: the crawled markdown is a disposable
-intermediate, not something we want committed. Only the JSON this produces is
-kept in git. That means a fresh clone has no markdown to extract from -
-generate_bml_functions() in functions.py checks knowledge_source_available()
-and falls back to preserving whatever "docs" values are already in the
-existing output file, rather than silently wiping them out to None.
+This directory is committed to source control and acts as the master reference 
+for both IntelliSense hovers and the AI Agent Skills.
 
 This replaces what used to be a runtime feature (a separate offline-docs
 webview panel, plus JS code that read+parsed the markdown on every hover).
@@ -26,18 +22,18 @@ import re
 # per-function reference page - generate_bml_functions() should simply not
 # set "docs" for those.
 CATEGORY_MAP = {
-    'string': 'string/string.md',
-    'math': 'math/math.md',
-    'date': 'date/date.md',
-    'json': 'json/json.md',
-    'xml': 'xml/xml.md',
-    'dictionary': 'dictionary/dictionary.md',
-    'array': 'array/arrays.md',
-    'arrays': 'array/arrays.md',
-    'bmql': 'bmql/bmql.md',
-    'url': 'url-access/urlAccess.md',
-    'others': 'others/others.md',
-    'direct_db_access': 'direct-db-access/directDbAccess.md',
+    'string': 'string.md',
+    'math': 'Math.md',
+    'date': 'Date.md',
+    'json': 'Json.md',
+    'xml': 'XML.md',
+    'dictionary': 'Dictionary.md',
+    'array': 'Arrays.md',
+    'arrays': 'Arrays.md',
+    'bmql': 'BMQL.md',
+    'url': 'URLAccess.md',
+    'others': 'Others.md',
+    'direct_db_access': 'DirectDBAccess.md',
 }
 
 ADMONITION_ICON = {'note': '📝', 'tip': '💡', 'info': 'ℹ️', 'warning': '⚠️', 'danger': '🚫'}
@@ -46,7 +42,7 @@ _md_cache = {}
 
 
 def _knowledge_dir(root_dir):
-    return os.path.join(root_dir, 'scratch', 'knowledge', 'BML')
+    return os.path.join(root_dir, 'knowledge', 'BML')
 
 
 def knowledge_source_available(root_dir):

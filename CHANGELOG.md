@@ -4,6 +4,15 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.21.0] - 2026-07-09
+
+### Added
+- Implement AI workspace skill integration and add comprehensive BML language linting, intellisense, and documentation tools.
+- Implement settings panel UI and core spellchecker functionality with associated test suites.
+- Implement new settings GUI dashboard with modular webview tabs and integrated linting and spelling utilities.
+- Implement MCP server with tool definitions for CPQ function lifecycle, testing, formatting, and status operations.
+- Implement text-based table formatting for debug outputs with word-wrapping and border support.
+
 ## [1.20.0] - 2026-07-09
 
 ### Added
@@ -58,9 +67,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 - Implement linting and spell-check support for CPQ system variables.
 - Add GitHub Actions workflow to automate extension packaging and releases.
-
-## [1.14.0] - 2026-07-03
-
-### Added
-
-- Implement build-time minification for webview CSS and contribution JSON files.

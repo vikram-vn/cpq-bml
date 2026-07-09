@@ -26,13 +26,11 @@ class BmlDocCrawler:
         if output_dir:
             self.output_dir = output_dir
         else:
-            # Resolve to scratch/knowledge/ relative to this file's folder
-            # (scripts/docs/bml_crawler/) - gitignored, disposable: only
-            # scripts/bml_intellisense/knowledge_docs.py reads it, to bake the
-            # relevant excerpts into bml-functions-api-usage.json. The crawled
-            # markdown itself is never committed.
+            # Resolve to knowledge/ relative to the repository root.
+            # This is the version-controlled source of truth for the Agent Skills
+            # and IntelliSense documentation.
             script_dir = os.path.dirname(os.path.abspath(__file__))
-            self.output_dir = os.path.abspath(os.path.join(script_dir, "..", "..", "..", "scratch", "knowledge"))
+            self.output_dir = os.path.abspath(os.path.join(script_dir, "..", "..", "..", "knowledge"))
             
         self.images_dir = os.path.join(self.output_dir, "BML", "images")
 
