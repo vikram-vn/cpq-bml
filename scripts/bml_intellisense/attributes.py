@@ -19,12 +19,12 @@ def get_bml_attributes_menu_values(item):
 
 def generate_bml_attributes(root_dir):
     commerce_dir = os.path.join(root_dir, 'app', 'lookups', 'commerce')
-    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml_attributes_api_usage.json')
-    
+    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml-attributes-api-usage.json')
+
     sources = [
         {"file": os.path.join(commerce_dir, 'transaction.json'), "context": 'Transaction'},
-        {"file": os.path.join(commerce_dir, 'transactionLine.json'), "context": 'Line Item'},
-        {"file": os.path.join(commerce_dir, 'systemVariables.json'), "context": 'System'}
+        {"file": os.path.join(commerce_dir, 'transaction-line.json'), "context": 'Line Item'},
+        {"file": os.path.join(commerce_dir, 'system-variables.json'), "context": 'System'}
     ]
     
     output = {}

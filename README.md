@@ -348,7 +348,7 @@ The project has a modular design structure with clean segregation of BML editor 
 │       │   ├── index.js              # Go to definition, References, Rename registrations
 │       │   ├── workspaceIndex.js     # Codebase scanner indexing util.* & commerce.*
 │       │   ├── helpViewer.js         # Fast offline docs webview (Docusaurus-style ::: admonitions)
-│       │   └── custom_snippets.json  # Smart snippet database
+│       │   └── custom-snippets.json  # Smart snippet database
 │       ├── lint/                     # Real-time Native Static Diagnostics
 │       │   ├── lint.js               # Central rule runner pipeline
 │       │   ├── nullSafety.js         # Checks nullable results of bmql() / get()

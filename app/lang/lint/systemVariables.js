@@ -7,7 +7,7 @@ function loadSystemVariables(extensionPath) {
   if (systemVariables) return systemVariables;
   systemVariables = new Map();
   try {
-    const data = loadJson("bml_variables_api_usage", extensionPath);
+    const data = loadJson("bml-variables-api-usage", extensionPath);
     if (data) {
       Object.keys(data).forEach((lookupCode) => {
         systemVariables.set(lookupCode.toLowerCase(), lookupCode);

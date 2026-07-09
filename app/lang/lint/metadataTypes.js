@@ -22,12 +22,12 @@ function loadLookupLabels(baseName, extensionPath) {
 }
 
 function getReturnTypeLabels(extensionPath) {
-    if (!returnTypeLabels) returnTypeLabels = loadLookupLabels('functionReturnTypes', extensionPath);
+    if (!returnTypeLabels) returnTypeLabels = loadLookupLabels('function-return-types', extensionPath);
     return returnTypeLabels;
 }
 
 function getParamTypeLabels(extensionPath) {
-    if (!paramTypeLabels) paramTypeLabels = loadLookupLabels('functionParamDataTypes', extensionPath);
+    if (!paramTypeLabels) paramTypeLabels = loadLookupLabels('function-param-data-types', extensionPath);
     return paramTypeLabels;
 }
 

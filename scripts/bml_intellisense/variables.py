@@ -2,8 +2,8 @@ import os
 import json
 
 def generate_bml_variables(root_dir):
-    input_path = os.path.join(root_dir, 'app', 'lookups', 'bml', 'commonVariables.json')
-    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml_variables_api_usage.json')
+    input_path = os.path.join(root_dir, 'app', 'lookups', 'bml', 'common-variables.json')
+    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml-variables-api-usage.json')
     
     print(f"[generateBmlVariables] Reading: {os.path.relpath(input_path, root_dir)}")
     with open(input_path, 'r', encoding='utf-8') as f:

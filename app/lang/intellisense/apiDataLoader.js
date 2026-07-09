@@ -24,7 +24,7 @@ function invalidateCache() {
  * process.
  *
  * @param {string} baseName      - Filename WITHOUT any extension,
- *                                 e.g. "bml_functions_api_usage"
+ *                                 e.g. "bml-functions-api-usage"
  * @param {string} [extPath]     - context.extensionPath (most reliable root).
  * @returns {object|Array}
  */
@@ -64,42 +64,42 @@ function loadJson(baseName, extPath) {
 
 /** BML built-in functions, including per-function doc excerpts */
 function loadBuiltInFunctionsJson(extPath) {
-    return loadJson("bml_functions_api_usage", extPath);
+    return loadJson("bml-functions-api-usage", extPath);
 }
 
 /** BML attribute definitions */
 function loadBuiltInAttributesJson(extPath) {
-    return loadJson("bml_attributes_api_usage", extPath);
+    return loadJson("bml-attributes-api-usage", extPath);
 }
 
 /** CPQ JS API usage data */
 function loadCpqJsApiJson(extPath) {
-    return loadJson("bml_cpq_js_api_usage", extPath);
+    return loadJson("bml-cpq-js-api-usage", extPath);
 }
 
 /** Util library attribute definitions */
 function loadUtilAttributesJson(extPath) {
-    return loadJson("bml_util_attributes_api_usage", extPath);
+    return loadJson("bml-util-attributes-api-usage", extPath);
 }
 
 /** BML system variables */
 function loadVariablesJson(extPath) {
-    return loadJson("bml_variables_api_usage", extPath);
+    return loadJson("bml-variables-api-usage", extPath);
 }
 
 /** Custom user snippets */
 function loadCustomSnippetsJson(extPath) {
-    return loadJson("custom_snippets", extPath);
+    return loadJson("custom-snippets", extPath);
 }
 
 /** Function parameter data type metadata */
 function loadFunctionParamDataTypesJson(extPath) {
-    return loadJson("functionParamDataTypes", extPath);
+    return loadJson("function-param-data-types", extPath);
 }
 
 /** Function return type metadata */
 function loadFunctionReturnTypesJson(extPath) {
-    return loadJson("functionReturnTypes", extPath);
+    return loadJson("function-return-types", extPath);
 }
 
 module.exports = {

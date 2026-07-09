@@ -14,11 +14,11 @@ def get_bml_util_attributes_key(item):
 
 def generate_bml_util_attributes(root_dir):
     config_dir = os.path.join(root_dir, 'app', 'lookups', 'configuration')
-    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml_util_attributes_api_usage.json')
+    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml-util-attributes-api-usage.json')
     
     sources = [
         {"file": os.path.join(config_dir, 'attributes.json'), "context": 'Configuration'},
-        {"file": os.path.join(config_dir, 'productFamilyAttributes.json'), "context": 'Product Family'}
+        {"file": os.path.join(config_dir, 'product-family-attributes.json'), "context": 'Product Family'}
     ]
     
     output = {}

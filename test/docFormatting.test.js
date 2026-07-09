@@ -10,11 +10,11 @@ const { formatAsJsDoc } = require('../app/lang/intellisense/docFormatting');
 // ":::admonition:::" containers into blockquotes, replacing images with an
 // alt-text placeholder - images aren't shipped or rendered at all) happens
 // once in scripts/bml_intellisense/knowledge_docs.py at generation time, and
-// is embedded directly as bml_functions_api_usage.json's "docs" field.
+// is embedded directly as bml-functions-api-usage.json's "docs" field.
 // formatAsJsDoc() just appends that pre-built string - no file reads, no
 // markdown parsing, no separate webview tab needed at all.
 const REPO_ROOT = path.join(__dirname, '..');
-const FUNCTIONS_JSON_PATH = path.join(REPO_ROOT, 'app', 'lang', 'intellisense', 'bml_functions_api_usage.json');
+const FUNCTIONS_JSON_PATH = path.join(REPO_ROOT, 'app', 'lang', 'intellisense', 'bml-functions-api-usage.json');
 
 suite('docFormatting - info.docs rendering', () => {
     test('appends info.docs under a clear "From the Docs" heading when present', () => {
@@ -50,7 +50,7 @@ suite('docFormatting - info.docs rendering', () => {
     });
 });
 
-suite('docFormatting - real generated bml_functions_api_usage.json integration', () => {
+suite('docFormatting - real generated bml-functions-api-usage.json integration', () => {
     // Validates the full pipeline end to end: Python generation
     // (knowledge_docs.py's extraction/sanitization) -> the JSON it writes ->
     // formatAsJsDoc() rendering that JSON's "docs" field.
@@ -61,7 +61,7 @@ suite('docFormatting - real generated bml_functions_api_usage.json integration',
 
     test('atoi has a docs excerpt with real prose, a bulleted parameter table, and no raw markdown table/images/admonition syntax', () => {
         const entry = functionsData.atoi;
-        assert.ok(entry, 'expected an "atoi" entry in bml_functions_api_usage.json');
+        assert.ok(entry, 'expected an "atoi" entry in bml-functions-api-usage.json');
         assert.ok(entry.docs, 'expected atoi to have a docs excerpt (string.md documents it)');
 
         const md = formatAsJsDoc({ category: 'function', name: 'atoi', syntax: entry.syntax, functionCategory: entry.functionCategory, docs: entry.docs });
@@ -79,7 +79,7 @@ suite('docFormatting - real generated bml_functions_api_usage.json integration',
         // exact "## recordset" heading match, so this one correctly has no
         // excerpt rather than a wrong/partial one.
         const entry = functionsData.recordset;
-        assert.ok(entry, 'expected a "recordset" entry in bml_functions_api_usage.json');
+        assert.ok(entry, 'expected a "recordset" entry in bml-functions-api-usage.json');
         assert.strictEqual(entry.docs, null);
     });
 });

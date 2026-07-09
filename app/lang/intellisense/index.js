@@ -13,15 +13,15 @@ const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoa
 
 // Each source file holds a different kind of entry. Tracking that here gives
 // accurate completion icons/hover labels - "does this syntax contain '(' "
-// is not reliable: custom_snippets.json bodies contain calls like print(...)
+// is not reliable: custom-snippets.json bodies contain calls like print(...)
 // even though the entry itself is a snippet, not a function.
 const API_FILES = [
-    { baseName: 'bml_attributes_api_usage', category: 'attribute' },
-    { baseName: 'bml_util_attributes_api_usage', category: 'attribute' },
-    { baseName: 'bml_variables_api_usage', category: 'variable' },
-    { baseName: 'bml_functions_api_usage', category: 'function' },
-    { baseName: 'bml_cpq_js_api_usage', category: 'function' },
-    { baseName: 'custom_snippets', category: 'snippet' }
+    { baseName: 'bml-attributes-api-usage', category: 'attribute' },
+    { baseName: 'bml-util-attributes-api-usage', category: 'attribute' },
+    { baseName: 'bml-variables-api-usage', category: 'variable' },
+    { baseName: 'bml-functions-api-usage', category: 'function' },
+    { baseName: 'bml-cpq-js-api-usage', category: 'function' },
+    { baseName: 'custom-snippets', category: 'snippet' }
 ];
 
 let bmlApiData = {};

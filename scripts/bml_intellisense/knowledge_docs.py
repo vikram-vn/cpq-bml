@@ -1,6 +1,6 @@
 """Extracts and sanitizes per-function reference sections from the crawled
 knowledge base (scratch/knowledge/BML/**/*.md - see scripts/docs/bml_crawler),
-for embedding directly into bml_functions_api_usage.json's "docs" field.
+for embedding directly into bml-functions-api-usage.json's "docs" field.
 
 scratch/ is gitignored on purpose: the crawled markdown is a disposable
 intermediate, not something we want committed. Only the JSON this produces is
@@ -20,7 +20,7 @@ readable without needing to package any screenshots.
 import os
 import re
 
-# Maps bml_functions_api_usage.json's "functionCategory" field to the knowledge
+# Maps bml-functions-api-usage.json's "functionCategory" field to the knowledge
 # base file that documents it. Categories not listed here (e.g. "logical",
 # which covers control-flow keyword docs like "if..."/"if...else") have no
 # per-function reference page - generate_bml_functions() should simply not

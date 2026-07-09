@@ -88,6 +88,14 @@
       }
     ],
     "snippets": [],
+    "chatInstructions": [
+      {
+        "file": "./app/ai/bml-skills.md",
+        "name": "BML Language & CPQ Development Guide",
+        "description": "BigMachines Language (BML) syntax rules, built-in functions, common pitfalls, CPQ domain concepts, and MCP tool workflow guidance for Oracle CPQ development.",
+        "when": "resourceLangId == bml || workspaceContains:**/*.bml"
+      }
+    ],
     "commands": [
       {
         "command": "cpqBml.rest.setPassword",
@@ -208,6 +216,11 @@
         "title": "CPQ-BML: Compare BML Snapshot",
         "category": "BML",
         "icon": "$(diff)"
+      },
+      {
+        "command": "cpqBml.ai.setupWorkspaceSkills",
+        "title": "CPQ-BML: Setup AI Skills for Workspace",
+        "category": "BML"
       }
     ],
     "menus": {

@@ -42,6 +42,7 @@ app/lang/settings-panel/web-view/src/**
 app/lang/xslt/**
 app/lang/metrics/**
 app/lang/testing/**
+app/lang/ai-setup/**
 
 # Ignore spell check JS source and uncompressed dictionaries
 # (runtime loads bml-words.txt.br/english-words.txt.br instead)
@@ -52,14 +53,14 @@ app/lang/spell-check/english-words.txt
 # Intellisense JSON: ship only the minified .min.json variants
 # (apiDataLoader.js reads them directly, same pattern as the themes/grammars below).
 # Exact filenames, not a "*.json" wildcard - that would also match "*.min.json".
-app/lang/intellisense/bml_functions_api_usage.json
-app/lang/intellisense/bml_attributes_api_usage.json
-app/lang/intellisense/bml_cpq_js_api_usage.json
-app/lang/intellisense/bml_util_attributes_api_usage.json
-app/lang/intellisense/bml_variables_api_usage.json
-app/lang/intellisense/custom_snippets.json
-app/lang/intellisense/functionParamDataTypes.json
-app/lang/intellisense/functionReturnTypes.json
+app/lang/intellisense/bml-functions-api-usage.json
+app/lang/intellisense/bml-attributes-api-usage.json
+app/lang/intellisense/bml-cpq-js-api-usage.json
+app/lang/intellisense/bml-util-attributes-api-usage.json
+app/lang/intellisense/bml-variables-api-usage.json
+app/lang/intellisense/custom-snippets.json
+app/lang/intellisense/function-param-data-types.json
+app/lang/intellisense/function-return-types.json
 
 # Exclude lookups and scripts that are only used in development
 app/lookups/**

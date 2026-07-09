@@ -5,7 +5,7 @@ from bml_intellisense.knowledge_docs import get_docs_excerpt, knowledge_source_a
 
 def generate_bml_functions(root_dir):
     input_path = os.path.join(root_dir, 'app', 'lookups', 'bml', 'common.json')
-    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml_functions_api_usage.json')
+    output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml-functions-api-usage.json')
 
     print(f"[generateBmlFunctions] Reading: {os.path.relpath(input_path, root_dir)}")
     with open(input_path, 'r', encoding='utf-8') as f:

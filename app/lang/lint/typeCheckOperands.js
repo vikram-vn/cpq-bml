@@ -97,7 +97,7 @@ const FUNCTION_RETURN_TYPES = {
     boolean: 'Boolean',
 };
 
-// bml_functions_api_usage.json is generated from the real CPQ REST API
+// bml-functions-api-usage.json is generated from the real CPQ REST API
 // (app/lookups/bml/common.json) and already carries a "returnType" per
 // function, including the type-constructor calls (dict/json/jsonarray/...) -
 // a strict superset of, and more authoritative than, the hardcoded

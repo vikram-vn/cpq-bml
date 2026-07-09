@@ -131,7 +131,7 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
 
     test('Does not flag built-in BML function names called in their canonical all-lowercase form', () => {
         // Regression test: these are real function names from
-        // app/lang/intellisense/bml_functions_api_usage.json. Called in
+        // app/lang/intellisense/bml-functions-api-usage.json. Called in
         // all-lowercase (BML's canonical call form), splitIdentifier finds no
         // camelCase/underscore boundaries, so the whole compound name must be
         // an exact dictionary entry - it was missing from bml-words.txt.

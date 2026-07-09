@@ -270,7 +270,7 @@ suite('BML Linter Test Suite - variable type consistency', () => {
         // Regression: the operand-type lookup only checked FUNCTION_RETURN_TYPES
         // (regular functions), not TYPE_CONSTRUCTORS (dict/json/jsonarray/... -
         // calls whose name IS the type they build), so `"test" + dict("float")`
-        // silently passed. Fixed by switching to bml_functions_api_usage.json's
+        // silently passed. Fixed by switching to bml-functions-api-usage.json's
         // "returnType" field, generated from the real CPQ REST API data, which
         // already unifies both categories (dict -> Dictionary, json -> Json,
         // etc.) - verified this is a strict superset of the old hardcoded map.

@@ -20,14 +20,14 @@ FILES_TO_MINIFY = [
     os.path.join(ROOT, "themes", "light.json"),
     os.path.join(ROOT, "app", "lang", "syntaxes", "bml.tmLanguage.json"),
     os.path.join(ROOT, "app", "lang", "syntaxes", "xslt.tmLanguage.json"),
-    os.path.join(INTELLISENSE_DIR, "bml_functions_api_usage.json"),
-    os.path.join(INTELLISENSE_DIR, "bml_attributes_api_usage.json"),
-    os.path.join(INTELLISENSE_DIR, "bml_cpq_js_api_usage.json"),
-    os.path.join(INTELLISENSE_DIR, "bml_util_attributes_api_usage.json"),
-    os.path.join(INTELLISENSE_DIR, "bml_variables_api_usage.json"),
-    os.path.join(INTELLISENSE_DIR, "custom_snippets.json"),
-    os.path.join(INTELLISENSE_DIR, "functionParamDataTypes.json"),
-    os.path.join(INTELLISENSE_DIR, "functionReturnTypes.json"),
+    os.path.join(INTELLISENSE_DIR, "bml-functions-api-usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml-attributes-api-usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml-cpq-js-api-usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml-util-attributes-api-usage.json"),
+    os.path.join(INTELLISENSE_DIR, "bml-variables-api-usage.json"),
+    os.path.join(INTELLISENSE_DIR, "custom-snippets.json"),
+    os.path.join(INTELLISENSE_DIR, "function-param-data-types.json"),
+    os.path.join(INTELLISENSE_DIR, "function-return-types.json"),
 ]
 
 

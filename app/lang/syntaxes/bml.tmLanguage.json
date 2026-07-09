@@ -348,12 +348,12 @@
         {
           "name": "variable.other.member.bml",
           "match": "\\bCRM_[A-Z_]+\\b",
-          "comment": "CRM system variables (e.g. CRM_CUSTOMER_ID) - per app/lang/intellisense/bml_util_attributes_api_usage.json, these don't follow the usual leading-underscore or _c/_t/_l suffix conventions"
+          "comment": "CRM system variables (e.g. CRM_CUSTOMER_ID) - per app/lang/intellisense/bml-util-attributes-api-usage.json, these don't follow the usual leading-underscore or _c/_t/_l suffix conventions"
         },
         {
           "name": "variable.other.member.bml",
           "match": "\\boRCL_[a-zA-Z]+\\b",
-          "comment": "ORCL_* system variables (e.g. oRCL_charges) - per app/lang/intellisense/bml_attributes_api_usage.json"
+          "comment": "ORCL_* system variables (e.g. oRCL_charges) - per app/lang/intellisense/bml-attributes-api-usage.json"
         },
         {
           "name": "variable.other.member.bml",

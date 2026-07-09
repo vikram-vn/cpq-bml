@@ -58,6 +58,7 @@ function activate(context) {
     const { registerXslt } = require("./app/lang/xslt");
     const { registerMetrics } = require("./app/lang/metrics");
     const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
+    const { registerAiSetup } = require("./app/lang/ai-setup");
 
     registerBmlRest(context);
     registerSettingsPanel(context);
@@ -66,6 +67,7 @@ function activate(context) {
     registerMetrics(context);
     registerBmlTestRunner(context);
     registerBmlSnapshot(context);
+    registerAiSetup(context);
   });
 }
 

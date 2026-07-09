@@ -11,7 +11,7 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('hover resolves dotted attribute access (line.x) via the bare attribute key', async () => {
-		// app/lang/intellisense/bml_attributes_api_usage.json keys attributes without any
+		// app/lang/intellisense/bml-attributes-api-usage.json keys attributes without any
 		// object prefix (e.g. "annualvalue_l"), but real BML code accesses them as
 		// "line.annualValue_l" - the word-range regex captures the whole dotted run, so
 		// the lookup has to fall back to the segment after the last ".".
@@ -93,7 +93,7 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('hover for a function renders numbered usage notes as markdown text, not a code block', async () => {
-		// bml_functions_api_usage.json "examples" are almost always numbered prose
+		// bml-functions-api-usage.json "examples" are almost always numbered prose
 		// ("1. This function..."), not runnable code - that must not be wrapped in a
 		// ```bml fenced block, and any embedded call like decodebase64("YWJj") should
 		// still read as inline code.

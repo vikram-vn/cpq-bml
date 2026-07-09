@@ -44,7 +44,7 @@ from `extension.js`.
 | Module | Entry export | `vscode` required at | Purpose |
 |---|---|---|---|
 | `app/lang/beautify/` | `registerBeautifier` | top-level | Document/range formatting providers; delegates to pure logic in `./bml/` |
-| `app/lang/intellisense/` | `registerBmlIntelliSense` | top-level | Completion + hover, data-driven from JSON files in this folder (`bml_*_api_usage.json`, `custom_snippets.json`) |
+| `app/lang/intellisense/` | `registerBmlIntelliSense` | top-level | Completion + hover, data-driven from JSON files in this folder (`bml-*-api-usage.json`, `custom-snippets.json`) |
 | `app/lang/lint/` | `registerBmlLinter` | top-level (in `index.js`; pure rule files do not) | Diagnostics - see section 3, the largest and most actively developed module |
 | `app/lang/comments/` | `registerBmlComments` | top-level | Tag/directive/docHeader comment decorations + hover, debounced like the linter |
 | `app/lang/rest/` | `registerBmlRest` | via `./commands/index.js` | Live Oracle CPQ REST integration: pull/save/validate/debug/deploy |
@@ -289,9 +289,9 @@ createBmlFunction, changeEnvironment}`, `cpqBml.mcp.showInfo`,
   confirming the check itself fires on a hand-built positive case.** This
   has caught multiple silently-broken rules in this codebase already.
 - **Reference data is Oracle's own official BML data catalog**, and lives
-  entirely under `app/lookups/bml/` (`common.json`, `commonVariables.json`,
-  `functionCategory.json`, `functionParamDataTypes.json`,
-  `functionReturnTypes.json`, `lookups.json`, `operators.json`) - dev-only,
+  entirely under `app/lookups/bml/` (`common.json`, `common-variables.json`,
+  `function-category.json`, `function-param-data-types.json`,
+  `function-return-types.json`, `lookups.json`, `operators.json`) - dev-only,
   `app/lookups/**` is excluded from packaging in `.vscodeignore`. **Nothing
   under `app/lang/` ever reads `app/lookups/` directly at runtime** - it is
   read only by the generator scripts under `scripts/`

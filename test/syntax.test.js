@@ -135,7 +135,7 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 
 		test('_l, _t, _c suffixed identifiers are scoped as attributes even without a dot prefix', () => {
 			// _l = transaction line attribute, _t = transaction attribute, _c = custom field
-			// on either - app/lookups/commerce/transaction.json and transactionLine.json
+			// on either - app/lookups/commerce/transaction.json and transaction-line.json
 			// confirm these suffixes, and real BML scripts use them as bare identifiers too,
 			// not just via a "line." prefix.
 			assert.match(scopesOf('x = quantity_l;', 'quantity_l'), /\bvariable\.other\.(transaction|line)\.attribute\.bml\b/);
@@ -146,8 +146,8 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 		});
 
 		test('known system variables that break naming conventions are still scoped as attributes', () => {
-			// app/lang/intellisense/bml_util_attributes_api_usage.json and
-			// bml_attributes_api_usage.json list these real system variables - they don't
+			// app/lang/intellisense/bml-util-attributes-api-usage.json and
+			// bml-attributes-api-usage.json list these real system variables - they don't
 			// start with "_" or end in _c/_t/_l, so they need explicit grammar entries.
 			for (const id of ['CRM_CUSTOMER_ID', 'oRCL_charges', 'bs_id', 'createOrderRestResponse', 'includedInBasePrice']) {
 				const line = `x = ${id};`;

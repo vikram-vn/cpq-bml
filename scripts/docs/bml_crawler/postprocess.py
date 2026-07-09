@@ -22,7 +22,7 @@ def _load_known_function_names(bml_dir):
     try:
         import json
         json_path = os.path.abspath(
-            os.path.join(bml_dir, "..", "..", "..", "lang", "intellisense", "bml_functions_api_usage.json")
+            os.path.join(bml_dir, "..", "..", "..", "lang", "intellisense", "bml-functions-api-usage.json")
         )
         if os.path.exists(json_path):
             with open(json_path, encoding="utf-8") as f:

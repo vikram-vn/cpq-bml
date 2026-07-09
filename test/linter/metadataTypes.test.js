@@ -105,7 +105,7 @@ suite('BML Linter Test Suite - metadata sidecar type validation', () => {
     test('Flags corrupted metadata where returnType.value does not match its own displayValue', () => {
         withTempDir((dir) => {
             const text = 'return 1;';
-            // lookupCode 3 in functionReturnTypes.json is "Integer", not "String".
+            // lookupCode 3 in function-return-types.json is "Integer", not "String".
             const bmlPath = writeBmlWithMeta(dir, 'fn', text, {
                 returnType: { value: 3, displayValue: 'String' },
                 parameters: [],

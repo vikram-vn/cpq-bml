@@ -61,7 +61,7 @@ suite('BML Linter Test Suite - CPQ system variables', () => {
 
     test('findClosestSystemVariable returns null for an exact match', () => {
         const vars = loadSystemVariables();
-        assert.ok(vars.size > 0, 'commonVariables.json should have loaded at least one entry');
+        assert.ok(vars.size > 0, 'common-variables.json should have loaded at least one entry');
         assert.strictEqual(findClosestSystemVariable('_user_name'), null);
     });
 

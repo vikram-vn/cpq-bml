@@ -29,7 +29,7 @@ class BmlDocCrawler:
             # Resolve to scratch/knowledge/ relative to this file's folder
             # (scripts/docs/bml_crawler/) - gitignored, disposable: only
             # scripts/bml_intellisense/knowledge_docs.py reads it, to bake the
-            # relevant excerpts into bml_functions_api_usage.json. The crawled
+            # relevant excerpts into bml-functions-api-usage.json. The crawled
             # markdown itself is never committed.
             script_dir = os.path.dirname(os.path.abspath(__file__))
             self.output_dir = os.path.abspath(os.path.join(script_dir, "..", "..", "..", "scratch", "knowledge"))

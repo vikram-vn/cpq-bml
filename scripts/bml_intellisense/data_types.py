@@ -4,7 +4,7 @@ import json
 def generate_bml_data_types(root_dir):
     lookups_dir = os.path.join(root_dir, 'app', 'lookups', 'bml')
     output_dir = os.path.join(root_dir, 'app', 'lang', 'intellisense')
-    files = ['functionParamDataTypes.json', 'functionReturnTypes.json']
+    files = ['function-param-data-types.json', 'function-return-types.json']
     
     for filename in files:
         input_path = os.path.join(lookups_dir, filename)

@@ -57,13 +57,13 @@ suite('BML Linter Test Suite - bundled lookups (functions/system variables/metad
         await new Promise((resolve) => setTimeout(resolve, 600));
 
         const diags = vscode.languages.getDiagnostics(doc.uri);
-        // If commonVariables.json failed to load, _user_name would be
+        // If common-variables.json failed to load, _user_name would be
         // completely unrecognized (vars.size === 0 short-circuits the whole
         // check) and this read-only-assignment warning would never fire.
         const readonlyWarning = diags.find((d) => d.code === 'bml-system-variable-readonly');
         assert.ok(
             readonlyWarning,
-            '_user_name should be recognized as a read-only system variable when commonVariables.json loads correctly'
+            '_user_name should be recognized as a read-only system variable when common-variables.json loads correctly'
         );
     });
 });
