@@ -100,12 +100,17 @@
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 46,
+    "line": 47,
+    "severity": "Information",
+    "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 55,
     "severity": "Warning",
     "message": "Style Warning: Line exceeds 200 characters of code (280 chars). Consider breaking it into multiple lines."
   },
   {
-    "line": 46,
+    "line": 55,
     "severity": "Hint",
     "message": "Unused variable: longExp"
   }

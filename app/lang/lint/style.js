@@ -123,9 +123,18 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
     }
 
     // 6. Print statements inside debug block check
+    // Matches both call syntax (print(x)) and BML's equally-valid bare
+    // statement syntax (print x;, print "literal";) - both are shown as
+    // interchangeable in Oracle's own docs/examples, so only matching the
+    // parenthesized form missed the bare form entirely. Checked against
+    // cleanLines (comments blanked, string literals intact) rather than
+    // noStringsLines: getStringRanges blanks the quote characters too, so a
+    // bare `print "just a literal";` would otherwise look like nothing but
+    // whitespace up to the semicolon and never match.
+    const printTriggerRegex = /\bprint\b\s*(?:\(|[^\s;])/;
     for (let i = 0; i < noStringsLines.length; i++) {
         const line = noStringsLines[i];
-        if (line.includes('print(')) {
+        if (printTriggerRegex.test(cleanLines[i])) {
             // Check if print is enclosed in a debug-controlled block
             // We can look upwards to find if there is an active 'if' with 'debug'
             let isDebugControlled = false;

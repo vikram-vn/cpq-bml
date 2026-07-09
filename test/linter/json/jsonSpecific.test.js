@@ -88,6 +88,30 @@ suite("BML Linter Test Suite - JSON specific tests", () => {
             const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
             assert.strictEqual(diag, undefined);
         });
+
+        test("jsonpathgetsingle(obj, path, 'integer') - flags missing defaultValue, same documented throw condition as jsonget", () => {
+            const diagnostics = lintText(`x = jsonpathgetsingle(obj, "$.path", "integer"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.ok(diag, 'Json.md documents the identical throw condition for jsonpathgetsingle as jsonget');
+        });
+
+        test("jsonpathgetsingle(obj, path, 'float', 0.0) - does not flag when a defaultValue is provided", () => {
+            const diagnostics = lintText(`x = jsonpathgetsingle(obj, "$.path", "float", 0.0); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test("jsonpathgetsingle(obj, path, 'string') - does not flag String valueType", () => {
+            const diagnostics = lintText(`x = jsonpathgetsingle(obj, "$.path", "string"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test("jsonpathgetsingle(obj, path) - does not flag the 2-arg form", () => {
+            const diagnostics = lintText(`x = jsonpathgetsingle(obj, "$.path"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.strictEqual(diag, undefined);
+        });
     });
 
     suite("JSON functions argument counts and types (negative tests)", () => {

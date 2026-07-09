@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.25.0] - 2026-07-09
+
+### Added
+- Implement linting rules for URL access, XML parsing, and BMQL safety with associated test suites.
+- Implement linting rules for logtime, globaldictset, generatehmacmessage, and stringbuilder functions.
+- Implement automatic AI skill synchronization for Claude, Cursor, and Copilot tools.
+- Implement automated AI skill synchronization for Claude, Cursor, and Copilot via native project configuration files.
+
 ## [1.24.0] - 2026-07-09
 
 ### Added
@@ -64,13 +72,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Changed
 - Internal maintenance and housekeeping updates.
-
-## [1.17.0] - 2026-07-04
-
-### Added
-- Implement BML intellisense engine with automated API data loading and discovery scripts.
-- Implement offline function documentation extraction and pre-packaging for improved hover performance.
-- Implement high-performance, Docusaurus-aware offline help viewer with cached rendering and Brotli support.
-
-### Fixed
-- Correct relative image paths in String.md and add regression test for broken documentation links.
