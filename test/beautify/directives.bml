@@ -1,0 +1,5 @@
+/* beautify ignore:start */
+x=1;
+y=2;
+/* beautify ignore:end */
+z=3;

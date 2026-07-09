@@ -1,0 +1,254 @@
+{
+    "_config_upgrade_name": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_config_upgrade_name",
+        "examples": [],
+        "notes": "_config_upgrade_name"
+    },
+    "_config_operation_context": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_config_operation_context",
+        "examples": [],
+        "notes": "Represents the previous action that brought us to configuration.  Recalculated each time configuration is entered."
+    },
+    "_system_config_model_path": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_system_config_model_path",
+        "examples": [],
+        "notes": "Model path from root in the System Configuration"
+    },
+    "_BM_USER_LANGUAGE": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_LANGUAGE",
+        "examples": [],
+        "notes": "Registered Item User Language"
+    },
+    "_BM_USER_EXCHANGE_RATE": {
+        "scope": "Product Family",
+        "dataType": "Float",
+        "syntax": "_BM_USER_EXCHANGE_RATE",
+        "examples": [],
+        "notes": "Registered Item User Exchange Rate"
+    },
+    "_BM_USER_NUMBER_FORMAT": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_NUMBER_FORMAT",
+        "examples": [],
+        "notes": "Registered Item User Number Format"
+    },
+    "CRM_CUSTOMER_ID": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_CUSTOMER_ID",
+        "examples": [],
+        "notes": "Registered Item Customer Id"
+    },
+    "CRM_BUYER_COMPANY": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_BUYER_COMPANY",
+        "examples": [],
+        "notes": "Registered Item Company Name"
+    },
+    "CRM_BILL_CITY": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_BILL_CITY",
+        "examples": [],
+        "notes": "Registered Item Bill City"
+    },
+    "CRM_BILL_STATE_PROVINCE": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_BILL_STATE_PROVINCE",
+        "examples": [],
+        "notes": "Registered Item Bill State Province"
+    },
+    "CRM_BILL_COUNTRY": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_BILL_COUNTRY",
+        "examples": [],
+        "notes": "Registered Item Bill Country"
+    },
+    "CRM_SHIP_CITY": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_SHIP_CITY",
+        "examples": [],
+        "notes": "Registered Item Ship City"
+    },
+    "CRM_SHIP_STATE_PROVINCE": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_SHIP_STATE_PROVINCE",
+        "examples": [],
+        "notes": "Registered Item Ship State Province"
+    },
+    "CRM_SHIP_COUNTRY": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "CRM_SHIP_COUNTRY",
+        "examples": [],
+        "notes": "Registered Item Ship Country"
+    },
+    "_BM_USER_COMPANY": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_COMPANY",
+        "examples": [],
+        "notes": "Registered Item User Company Name"
+    },
+    "_BM_USER_CURRENCY": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_CURRENCY",
+        "examples": [],
+        "notes": "Registered Item User Currency"
+    },
+    "_BM_USER_EMAIL": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_EMAIL",
+        "examples": [],
+        "notes": "Registered Item User Email"
+    },
+    "_BM_USER_LOGIN": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_LOGIN",
+        "examples": [],
+        "notes": "Registered Item User Login"
+    },
+    "_BM_USER_GROUPS": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_GROUPS",
+        "examples": [],
+        "notes": "Registered Item User Groups"
+    },
+    "_BM_USER_SESSION_ID": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_SESSION_ID",
+        "examples": [],
+        "notes": "Registered Item User Session ID"
+    },
+    "_BM_USER_PARTNER_SESSION_ID": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_PARTNER_SESSION_ID",
+        "examples": [],
+        "notes": "Registered Item User Partner Session ID"
+    },
+    "_BM_USER_PARTNER_SESSION_URL": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_BM_USER_PARTNER_SESSION_URL",
+        "examples": [],
+        "notes": "Registered Item User Partner Session URL"
+    },
+    "_price_book_var_name": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_price_book_var_name",
+        "examples": [],
+        "notes": "The active price book"
+    },
+    "_transaction_id": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_transaction_id",
+        "examples": [],
+        "notes": "Unique ID of the current transaction"
+    },
+    "_mobile_device_enabled": {
+        "scope": "Product Family",
+        "dataType": "Boolean",
+        "syntax": "_mobile_device_enabled",
+        "examples": [],
+        "notes": "The Boolean value is \"True\" if the user is licensed for mobile, on a recognized mobile device, and on a mobile layout"
+    },
+    "_bm_bom_instance": {
+        "scope": "Product Family",
+        "dataType": "JSON",
+        "syntax": "_bm_bom_instance",
+        "examples": [],
+        "notes": "The BOM Item instance of the current Model."
+    },
+    "_configuration_id": {
+        "scope": "Product Family",
+        "dataType": "Integer",
+        "syntax": "_configuration_id",
+        "examples": [],
+        "notes": "_configuration_id"
+    },
+    "_system_config_document_number": {
+        "scope": "Product Family",
+        "dataType": "Integer",
+        "syntax": "_system_config_document_number",
+        "examples": [],
+        "notes": "_system_config_document_number"
+    },
+    "_config_data_id": {
+        "scope": "Product Family",
+        "dataType": "Integer",
+        "syntax": "_config_data_id",
+        "examples": [],
+        "notes": "_config_data_id"
+    },
+    "serviceTypes_t": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "serviceTypes_t",
+        "examples": [],
+        "notes": "serviceTypes_t"
+    },
+    "_bm_pline_variable_name": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_bm_pline_variable_name",
+        "examples": [],
+        "notes": "Registered catalog item."
+    },
+    "_bm_pline_name": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_bm_pline_name",
+        "examples": [],
+        "notes": "Registered catalog item."
+    },
+    "_bm_model_variable_name": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_bm_model_variable_name",
+        "examples": [],
+        "notes": "Registered catalog item."
+    },
+    "_bm_model_name": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_bm_model_name",
+        "examples": [],
+        "notes": "Registered catalog item."
+    },
+    "_bm_model_partner_organization_id": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_bm_model_partner_organization_id",
+        "examples": [],
+        "notes": "Registered catalog item."
+    },
+    "_bm_model_partner_part_id": {
+        "scope": "Product Family",
+        "dataType": "Text",
+        "syntax": "_bm_model_partner_part_id",
+        "examples": [],
+        "notes": "Registered catalog item."
+    }
+}

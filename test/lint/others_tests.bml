@@ -1,0 +1,978 @@
+// ==========================================
+// BML Category: OTHERS - Senior QA Regression Suite
+// ==========================================
+
+// Common environment instances
+sb = stringbuilder();
+rs = bmql("select id from parts");
+myDict = dict("string");
+myJson = json();
+myJsonArr = jsonarray();
+myDate = getdate();
+
+val_getarrayattrstring_pos1 = getarrayattrstring("abc");
+var_getarrayattrstring_arg_0 = "abc";
+val_getarrayattrstring_pos2 = getarrayattrstring(var_getarrayattrstring_arg_0);
+val_getarrayattrstring_pos3 = GETARRAYATTRSTRING("abc");
+if (true) { val_getarrayattrstring_pos4 = getarrayattrstring("abc"); }
+for loopIdx in range(1) { val_getarrayattrstring_pos5 = getarrayattrstring("abc"); }
+val_getarrayattrstring_pos6 = getarrayattrstring(string(123));
+val_getarrayattrstring_pos7 = getarrayattrstring(   
+  	  "abc" 	
+  );
+val_getarrayattrstring_pos8 = getarrayattrstring(/* comment */ "abc");
+val_getarrayattrstring_pos9 = getarrayattrstring("");
+val_getarrayattrstring_pos10 = getarrayattrstring("abc");
+val_getarrayattrstring_neg1 = getarrayattrstring();
+val_getarrayattrstring_neg2 = getarrayattrstring("abc", "excess_parameter_value");
+val_getarrayattrstring_neg3 = getarrayattrstring(123);
+val_getarrayattrstring_neg4 = getarrayattrstring("abc",);
+val_getarrayattrstring_neg5 = invalid_ns.getarrayattrstring("abc");
+val_getarrayattrstring_neg6 = getarrayattrstring(, );
+getarrayattrstring("abc") = "override_val";
+val_getarrayattrstring_neg8 = getarrayattrstring(return, break);
+val_getarrayattrstring_neg9 = getarrayattrstring(123; 456);
+val_getarrayattrstring_neg10 = getarrayattrstring("abc" 
+
+val_getconfigattrvalue_pos1 = getconfigattrvalue("abc", "abc");
+var_getconfigattrvalue_arg_0 = "abc";
+var_getconfigattrvalue_arg_1 = "abc";
+val_getconfigattrvalue_pos2 = getconfigattrvalue(var_getconfigattrvalue_arg_0, var_getconfigattrvalue_arg_1);
+val_getconfigattrvalue_pos3 = GETCONFIGATTRVALUE("abc", "abc");
+if (true) { val_getconfigattrvalue_pos4 = getconfigattrvalue("abc", "abc"); }
+for loopIdx in range(1) { val_getconfigattrvalue_pos5 = getconfigattrvalue("abc", "abc"); }
+val_getconfigattrvalue_pos6 = getconfigattrvalue(string(123), string(123));
+val_getconfigattrvalue_pos7 = getconfigattrvalue(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_getconfigattrvalue_pos8 = getconfigattrvalue(/* comment */ "abc", /* next */ "abc");
+val_getconfigattrvalue_pos9 = getconfigattrvalue("", "");
+val_getconfigattrvalue_pos10 = getconfigattrvalue("abc", "abc");
+val_getconfigattrvalue_neg1 = getconfigattrvalue("abc");
+val_getconfigattrvalue_neg2 = getconfigattrvalue("abc", "abc", "excess_parameter_value");
+val_getconfigattrvalue_neg3 = getconfigattrvalue(123, 123);
+val_getconfigattrvalue_neg4 = getconfigattrvalue("abc", "abc",);
+val_getconfigattrvalue_neg5 = invalid_ns.getconfigattrvalue("abc", "abc");
+val_getconfigattrvalue_neg6 = getconfigattrvalue("abc", , );
+getconfigattrvalue("abc", "abc") = "override_val";
+val_getconfigattrvalue_neg8 = getconfigattrvalue(return, break);
+val_getconfigattrvalue_neg9 = getconfigattrvalue("abc"; "abc");
+val_getconfigattrvalue_neg10 = getconfigattrvalue("abc", "abc" 
+
+val_print_pos1 = print("abc");
+var_print_arg_0 = "abc";
+val_print_pos2 = print(var_print_arg_0);
+val_print_pos3 = PRINT("abc");
+if (true) { val_print_pos4 = print("abc"); }
+for loopIdx in range(1) { val_print_pos5 = print("abc"); }
+val_print_pos6 = print(string(123));
+val_print_pos7 = print(   
+  	  "abc" 	
+  );
+val_print_pos8 = print(/* comment */ "abc");
+val_print_pos9 = print("");
+val_print_pos10 = print("abc");
+val_print_neg1 = print();
+val_print_neg2 = print("abc", "excess_parameter_value");
+val_print_neg3 = print(123);
+val_print_neg4 = print("abc",);
+val_print_neg5 = invalid_ns.print("abc");
+val_print_neg6 = print(, );
+print("abc") = "override_val";
+val_print_neg8 = print(return, break);
+val_print_neg9 = print(123; 456);
+val_print_neg10 = print("abc" 
+
+val_isnull_pos1 = isnull("abc");
+var_isnull_arg_0 = "abc";
+val_isnull_pos2 = isnull(var_isnull_arg_0);
+val_isnull_pos3 = ISNULL("abc");
+if (true) { val_isnull_pos4 = isnull("abc"); }
+for loopIdx in range(1) { val_isnull_pos5 = isnull("abc"); }
+val_isnull_pos6 = isnull(string(123));
+val_isnull_pos7 = isnull(   
+  	  "abc" 	
+  );
+val_isnull_pos8 = isnull(/* comment */ "abc");
+val_isnull_pos9 = isnull("");
+val_isnull_pos10 = isnull("abc");
+val_isnull_neg1 = isnull();
+val_isnull_neg2 = isnull("abc", "excess_parameter_value");
+val_isnull_neg3 = isnull(123);
+val_isnull_neg4 = isnull("abc",);
+val_isnull_neg5 = invalid_ns.isnull("abc");
+val_isnull_neg6 = isnull(, );
+isnull("abc") = "override_val";
+val_isnull_neg8 = isnull(return, break);
+val_isnull_neg9 = isnull(123; 456);
+val_isnull_neg10 = isnull("abc" 
+
+val_getreasonstatus_pos1 = getreasonstatus("abc");
+var_getreasonstatus_arg_0 = "abc";
+val_getreasonstatus_pos2 = getreasonstatus(var_getreasonstatus_arg_0);
+val_getreasonstatus_pos3 = GETREASONSTATUS("abc");
+if (true) { val_getreasonstatus_pos4 = getreasonstatus("abc"); }
+for loopIdx in range(1) { val_getreasonstatus_pos5 = getreasonstatus("abc"); }
+val_getreasonstatus_pos6 = getreasonstatus(string(123));
+val_getreasonstatus_pos7 = getreasonstatus(   
+  	  "abc" 	
+  );
+val_getreasonstatus_pos8 = getreasonstatus(/* comment */ "abc");
+val_getreasonstatus_pos9 = getreasonstatus("");
+val_getreasonstatus_pos10 = getreasonstatus("abc");
+val_getreasonstatus_neg1 = getreasonstatus();
+val_getreasonstatus_neg2 = getreasonstatus("abc", "excess_parameter_value");
+val_getreasonstatus_neg3 = getreasonstatus(123);
+val_getreasonstatus_neg4 = getreasonstatus("abc",);
+val_getreasonstatus_neg5 = invalid_ns.getreasonstatus("abc");
+val_getreasonstatus_neg6 = getreasonstatus(, );
+getreasonstatus("abc") = "override_val";
+val_getreasonstatus_neg8 = getreasonstatus(return, break);
+val_getreasonstatus_neg9 = getreasonstatus(123; 456);
+val_getreasonstatus_neg10 = getreasonstatus("abc" 
+
+val_logtime_pos1 = logtime("abc", 123);
+var_logtime_arg_0 = "abc";
+var_logtime_arg_1 = 123;
+val_logtime_pos2 = logtime(var_logtime_arg_0, var_logtime_arg_1);
+val_logtime_pos3 = LOGTIME("abc", 123);
+if (true) { val_logtime_pos4 = logtime("abc", 123); }
+for loopIdx in range(1) { val_logtime_pos5 = logtime("abc", 123); }
+val_logtime_pos6 = logtime(string(123), atoi("12"));
+val_logtime_pos7 = logtime(   
+  	  "abc", 	
+  123 	
+  );
+val_logtime_pos8 = logtime(/* comment */ "abc", /* next */ 123);
+val_logtime_pos9 = logtime("", 2147483647);
+val_logtime_pos10 = logtime("abc", 123);
+val_logtime_neg1 = logtime("abc");
+val_logtime_neg2 = logtime("abc", 123, "excess_parameter_value");
+val_logtime_neg3 = logtime(123, "not_an_int");
+val_logtime_neg4 = logtime("abc", 123,);
+val_logtime_neg5 = invalid_ns.logtime("abc", 123);
+val_logtime_neg6 = logtime("abc", , );
+logtime("abc", 123) = "override_val";
+val_logtime_neg8 = logtime(return, break);
+val_logtime_neg9 = logtime("abc"; 123);
+val_logtime_neg10 = logtime("abc", 123 
+
+val_getoldvalue_pos1 = getoldvalue("abc");
+var_getoldvalue_arg_0 = "abc";
+val_getoldvalue_pos2 = getoldvalue(var_getoldvalue_arg_0);
+val_getoldvalue_pos3 = GETOLDVALUE("abc");
+if (true) { val_getoldvalue_pos4 = getoldvalue("abc"); }
+for loopIdx in range(1) { val_getoldvalue_pos5 = getoldvalue("abc"); }
+val_getoldvalue_pos6 = getoldvalue(string(123));
+val_getoldvalue_pos7 = getoldvalue(   
+  	  "abc" 	
+  );
+val_getoldvalue_pos8 = getoldvalue(/* comment */ "abc");
+val_getoldvalue_pos9 = getoldvalue("");
+val_getoldvalue_pos10 = getoldvalue("abc");
+val_getoldvalue_neg1 = getoldvalue();
+val_getoldvalue_neg2 = getoldvalue("abc", "excess_parameter_value");
+val_getoldvalue_neg3 = getoldvalue(123);
+val_getoldvalue_neg4 = getoldvalue("abc",);
+val_getoldvalue_neg5 = invalid_ns.getoldvalue("abc");
+val_getoldvalue_neg6 = getoldvalue(, );
+getoldvalue("abc") = "override_val";
+val_getoldvalue_neg8 = getoldvalue(return, break);
+val_getoldvalue_neg9 = getoldvalue(123; 456);
+val_getoldvalue_neg10 = getoldvalue("abc" 
+
+val_savebom_pos1 = savebom(123, json());
+var_savebom_arg_0 = 123;
+var_savebom_arg_1 = json();
+val_savebom_pos2 = savebom(var_savebom_arg_0, var_savebom_arg_1);
+val_savebom_pos3 = SAVEBOM(123, json());
+if (true) { val_savebom_pos4 = savebom(123, json()); }
+for loopIdx in range(1) { val_savebom_pos5 = savebom(123, json()); }
+val_savebom_pos6 = savebom(atoi("12"), json());
+val_savebom_pos7 = savebom(   
+  	  123, 	
+  json() 	
+  );
+val_savebom_pos8 = savebom(/* comment */ 123, /* next */ json());
+val_savebom_pos9 = savebom(2147483647, json());
+val_savebom_pos10 = savebom(123, json());
+val_savebom_neg1 = savebom(123);
+val_savebom_neg2 = savebom(123, json(), "excess_parameter_value");
+val_savebom_neg3 = savebom("not_an_int", "not_a_json");
+val_savebom_neg4 = savebom(123, json(),);
+val_savebom_neg5 = invalid_ns.savebom(123, json());
+val_savebom_neg6 = savebom(123, , );
+savebom(123, json()) = "override_val";
+val_savebom_neg8 = savebom(return, break);
+val_savebom_neg9 = savebom(123; json());
+val_savebom_neg10 = savebom(123, json() 
+
+val_getbom_pos1 = getbom(123, 123);
+var_getbom_arg_0 = 123;
+var_getbom_arg_1 = 123;
+val_getbom_pos2 = getbom(var_getbom_arg_0, var_getbom_arg_1);
+val_getbom_pos3 = GETBOM(123, 123);
+if (true) { val_getbom_pos4 = getbom(123, 123); }
+for loopIdx in range(1) { val_getbom_pos5 = getbom(123, 123); }
+val_getbom_pos6 = getbom(atoi("12"), atoi("12"));
+val_getbom_pos7 = getbom(   
+  	  123, 	
+  123 	
+  );
+val_getbom_pos8 = getbom(/* comment */ 123, /* next */ 123);
+val_getbom_pos9 = getbom(2147483647, 2147483647);
+val_getbom_pos10 = getbom(123, 123);
+val_getbom_neg1 = getbom(123);
+val_getbom_neg2 = getbom(123, 123, "excess_parameter_value");
+val_getbom_neg3 = getbom("not_an_int", "not_an_int");
+val_getbom_neg4 = getbom(123, 123,);
+val_getbom_neg5 = invalid_ns.getbom(123, 123);
+val_getbom_neg6 = getbom(123, , );
+getbom(123, 123) = "override_val";
+val_getbom_neg8 = getbom(return, break);
+val_getbom_neg9 = getbom(123; 123);
+val_getbom_neg10 = getbom(123, 123 
+
+val_getconfigbom_pos1 = getconfigbom(123, true);
+var_getconfigbom_arg_0 = 123;
+var_getconfigbom_arg_1 = true;
+val_getconfigbom_pos2 = getconfigbom(var_getconfigbom_arg_0, var_getconfigbom_arg_1);
+val_getconfigbom_pos3 = GETCONFIGBOM(123, true);
+if (true) { val_getconfigbom_pos4 = getconfigbom(123, true); }
+for loopIdx in range(1) { val_getconfigbom_pos5 = getconfigbom(123, true); }
+val_getconfigbom_pos6 = getconfigbom(atoi("12"), isempty(string[]{"a"}));
+val_getconfigbom_pos7 = getconfigbom(   
+  	  123, 	
+  true 	
+  );
+val_getconfigbom_pos8 = getconfigbom(/* comment */ 123, /* next */ true);
+val_getconfigbom_pos9 = getconfigbom(2147483647, false);
+val_getconfigbom_pos10 = getconfigbom(123, true);
+val_getconfigbom_neg1 = getconfigbom(123);
+val_getconfigbom_neg2 = getconfigbom(123, true, "excess_parameter_value");
+val_getconfigbom_neg3 = getconfigbom("not_an_int", "not_a_bool");
+val_getconfigbom_neg4 = getconfigbom(123, true,);
+val_getconfigbom_neg5 = invalid_ns.getconfigbom(123, true);
+val_getconfigbom_neg6 = getconfigbom(123, , );
+getconfigbom(123, true) = "override_val";
+val_getconfigbom_neg8 = getconfigbom(return, break);
+val_getconfigbom_neg9 = getconfigbom(123; true);
+val_getconfigbom_neg10 = getconfigbom(123, true 
+
+val_calculateconfiguration_pos1 = calculateconfiguration("abc", jsonarray());
+var_calculateconfiguration_arg_0 = "abc";
+var_calculateconfiguration_arg_1 = jsonarray();
+val_calculateconfiguration_pos2 = calculateconfiguration(var_calculateconfiguration_arg_0, var_calculateconfiguration_arg_1);
+val_calculateconfiguration_pos3 = CALCULATECONFIGURATION("abc", jsonarray());
+if (true) { val_calculateconfiguration_pos4 = calculateconfiguration("abc", jsonarray()); }
+for loopIdx in range(1) { val_calculateconfiguration_pos5 = calculateconfiguration("abc", jsonarray()); }
+val_calculateconfiguration_pos6 = calculateconfiguration(string(123), jsonarray());
+val_calculateconfiguration_pos7 = calculateconfiguration(   
+  	  "abc", 	
+  jsonarray() 	
+  );
+val_calculateconfiguration_pos8 = calculateconfiguration(/* comment */ "abc", /* next */ jsonarray());
+val_calculateconfiguration_pos9 = calculateconfiguration("", jsonarray());
+val_calculateconfiguration_pos10 = calculateconfiguration("abc", jsonarray());
+val_calculateconfiguration_neg1 = calculateconfiguration("abc");
+val_calculateconfiguration_neg2 = calculateconfiguration("abc", jsonarray(), "excess_parameter_value");
+val_calculateconfiguration_neg3 = calculateconfiguration(123, "not_a_jsonarray");
+val_calculateconfiguration_neg4 = calculateconfiguration("abc", jsonarray(),);
+val_calculateconfiguration_neg5 = invalid_ns.calculateconfiguration("abc", jsonarray());
+val_calculateconfiguration_neg6 = calculateconfiguration("abc", , );
+calculateconfiguration("abc", jsonarray()) = "override_val";
+val_calculateconfiguration_neg8 = calculateconfiguration(return, break);
+val_calculateconfiguration_neg9 = calculateconfiguration("abc"; jsonarray());
+val_calculateconfiguration_neg10 = calculateconfiguration("abc", jsonarray() 
+
+val_applybom_pos1 = applybom(json(), json());
+var_applybom_arg_0 = json();
+var_applybom_arg_1 = json();
+val_applybom_pos2 = applybom(var_applybom_arg_0, var_applybom_arg_1);
+val_applybom_pos3 = APPLYBOM(json(), json());
+if (true) { val_applybom_pos4 = applybom(json(), json()); }
+for loopIdx in range(1) { val_applybom_pos5 = applybom(json(), json()); }
+val_applybom_pos6 = applybom(json(), json());
+val_applybom_pos7 = applybom(   
+  	  json(), 	
+  json() 	
+  );
+val_applybom_pos8 = applybom(/* comment */ json(), /* next */ json());
+val_applybom_pos9 = applybom(json(), json());
+val_applybom_pos10 = applybom(json(), json());
+val_applybom_neg1 = applybom(json());
+val_applybom_neg2 = applybom(json(), json(), "excess_parameter_value");
+val_applybom_neg3 = applybom("not_a_json", "not_a_json");
+val_applybom_neg4 = applybom(json(), json(),);
+val_applybom_neg5 = invalid_ns.applybom(json(), json());
+val_applybom_neg6 = applybom(json(), , );
+applybom(json(), json()) = "override_val";
+val_applybom_neg8 = applybom(return, break);
+val_applybom_neg9 = applybom(json(); json());
+val_applybom_neg10 = applybom(json(), json() 
+
+val_calculatedeltabom_pos1 = calculatedeltabom(json(), json(), json());
+var_calculatedeltabom_arg_0 = json();
+var_calculatedeltabom_arg_1 = json();
+var_calculatedeltabom_arg_2 = json();
+val_calculatedeltabom_pos2 = calculatedeltabom(var_calculatedeltabom_arg_0, var_calculatedeltabom_arg_1, var_calculatedeltabom_arg_2);
+val_calculatedeltabom_pos3 = CALCULATEDELTABOM(json(), json(), json());
+if (true) { val_calculatedeltabom_pos4 = calculatedeltabom(json(), json(), json()); }
+for loopIdx in range(1) { val_calculatedeltabom_pos5 = calculatedeltabom(json(), json(), json()); }
+val_calculatedeltabom_pos6 = calculatedeltabom(json(), json(), json());
+val_calculatedeltabom_pos7 = calculatedeltabom(   
+  	  json(), 	
+  json(), 	
+  json() 	
+  );
+val_calculatedeltabom_pos8 = calculatedeltabom(/* comment */ json(), /* next */ json(), /* next */ json());
+val_calculatedeltabom_pos9 = calculatedeltabom(json(), json(), json());
+val_calculatedeltabom_pos10 = calculatedeltabom(json(), json(), json());
+val_calculatedeltabom_neg1 = calculatedeltabom(json(), json());
+val_calculatedeltabom_neg2 = calculatedeltabom(json(), json(), json(), "excess_parameter_value");
+val_calculatedeltabom_neg3 = calculatedeltabom("not_a_json", "not_a_json", "not_a_json");
+val_calculatedeltabom_neg4 = calculatedeltabom(json(), json(), json(),);
+val_calculatedeltabom_neg5 = invalid_ns.calculatedeltabom(json(), json(), json());
+val_calculatedeltabom_neg6 = calculatedeltabom(json(), , json());
+calculatedeltabom(json(), json(), json()) = "override_val";
+val_calculatedeltabom_neg8 = calculatedeltabom(return, break);
+val_calculatedeltabom_neg9 = calculatedeltabom(json(); json(); json());
+val_calculatedeltabom_neg10 = calculatedeltabom(json(), json(), json() 
+
+val_saveconfigbom_pos1 = saveconfigbom(json());
+var_saveconfigbom_arg_0 = json();
+val_saveconfigbom_pos2 = saveconfigbom(var_saveconfigbom_arg_0);
+val_saveconfigbom_pos3 = SAVECONFIGBOM(json());
+if (true) { val_saveconfigbom_pos4 = saveconfigbom(json()); }
+for loopIdx in range(1) { val_saveconfigbom_pos5 = saveconfigbom(json()); }
+val_saveconfigbom_pos6 = saveconfigbom(json());
+val_saveconfigbom_pos7 = saveconfigbom(   
+  	  json() 	
+  );
+val_saveconfigbom_pos8 = saveconfigbom(/* comment */ json());
+val_saveconfigbom_pos9 = saveconfigbom(json());
+val_saveconfigbom_pos10 = saveconfigbom(json());
+val_saveconfigbom_neg1 = saveconfigbom();
+val_saveconfigbom_neg2 = saveconfigbom(json(), "excess_parameter_value");
+val_saveconfigbom_neg3 = saveconfigbom("not_a_json");
+val_saveconfigbom_neg4 = saveconfigbom(json(),);
+val_saveconfigbom_neg5 = invalid_ns.saveconfigbom(json());
+val_saveconfigbom_neg6 = saveconfigbom(, );
+saveconfigbom(json()) = "override_val";
+val_saveconfigbom_neg8 = saveconfigbom(return, break);
+val_saveconfigbom_neg9 = saveconfigbom(123; 456);
+val_saveconfigbom_neg10 = saveconfigbom(json() 
+
+val_usersessionset_pos1 = usersessionset("abc", "abc");
+var_usersessionset_arg_0 = "abc";
+var_usersessionset_arg_1 = "abc";
+val_usersessionset_pos2 = usersessionset(var_usersessionset_arg_0, var_usersessionset_arg_1);
+val_usersessionset_pos3 = USERSESSIONSET("abc", "abc");
+if (true) { val_usersessionset_pos4 = usersessionset("abc", "abc"); }
+for loopIdx in range(1) { val_usersessionset_pos5 = usersessionset("abc", "abc"); }
+val_usersessionset_pos6 = usersessionset(string(123), string(123));
+val_usersessionset_pos7 = usersessionset(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_usersessionset_pos8 = usersessionset(/* comment */ "abc", /* next */ "abc");
+val_usersessionset_pos9 = usersessionset("", "");
+val_usersessionset_pos10 = usersessionset("abc", "abc");
+val_usersessionset_neg1 = usersessionset("abc");
+val_usersessionset_neg2 = usersessionset("abc", "abc", "excess_parameter_value");
+val_usersessionset_neg3 = usersessionset(123, 123);
+val_usersessionset_neg4 = usersessionset("abc", "abc",);
+val_usersessionset_neg5 = invalid_ns.usersessionset("abc", "abc");
+val_usersessionset_neg6 = usersessionset("abc", , );
+usersessionset("abc", "abc") = "override_val";
+val_usersessionset_neg8 = usersessionset(return, break);
+val_usersessionset_neg9 = usersessionset("abc"; "abc");
+val_usersessionset_neg10 = usersessionset("abc", "abc" 
+
+val_usersessionget_pos1 = usersessionget("abc");
+var_usersessionget_arg_0 = "abc";
+val_usersessionget_pos2 = usersessionget(var_usersessionget_arg_0);
+val_usersessionget_pos3 = USERSESSIONGET("abc");
+if (true) { val_usersessionget_pos4 = usersessionget("abc"); }
+for loopIdx in range(1) { val_usersessionget_pos5 = usersessionget("abc"); }
+val_usersessionget_pos6 = usersessionget(string(123));
+val_usersessionget_pos7 = usersessionget(   
+  	  "abc" 	
+  );
+val_usersessionget_pos8 = usersessionget(/* comment */ "abc");
+val_usersessionget_pos9 = usersessionget("");
+val_usersessionget_pos10 = usersessionget("abc");
+val_usersessionget_neg1 = usersessionget();
+val_usersessionget_neg2 = usersessionget("abc", "excess_parameter_value");
+val_usersessionget_neg3 = usersessionget(123);
+val_usersessionget_neg4 = usersessionget("abc",);
+val_usersessionget_neg5 = invalid_ns.usersessionget("abc");
+val_usersessionget_neg6 = usersessionget(, );
+usersessionget("abc") = "override_val";
+val_usersessionget_neg8 = usersessionget(return, break);
+val_usersessionget_neg9 = usersessionget(123; 456);
+val_usersessionget_neg10 = usersessionget("abc" 
+
+val_globaldictget_pos1 = globaldictget("abc");
+var_globaldictget_arg_0 = "abc";
+val_globaldictget_pos2 = globaldictget(var_globaldictget_arg_0);
+val_globaldictget_pos3 = GLOBALDICTGET("abc");
+if (true) { val_globaldictget_pos4 = globaldictget("abc"); }
+for loopIdx in range(1) { val_globaldictget_pos5 = globaldictget("abc"); }
+val_globaldictget_pos6 = globaldictget(string(123));
+val_globaldictget_pos7 = globaldictget(   
+  	  "abc" 	
+  );
+val_globaldictget_pos8 = globaldictget(/* comment */ "abc");
+val_globaldictget_pos9 = globaldictget("");
+val_globaldictget_pos10 = globaldictget("abc");
+val_globaldictget_neg1 = globaldictget();
+val_globaldictget_neg2 = globaldictget("abc", "excess_parameter_value");
+val_globaldictget_neg3 = globaldictget(123);
+val_globaldictget_neg4 = globaldictget("abc",);
+val_globaldictget_neg5 = invalid_ns.globaldictget("abc");
+val_globaldictget_neg6 = globaldictget(, );
+globaldictget("abc") = "override_val";
+val_globaldictget_neg8 = globaldictget(return, break);
+val_globaldictget_neg9 = globaldictget(123; 456);
+val_globaldictget_neg10 = globaldictget("abc" 
+
+val_usersessionremove_pos1 = usersessionremove("abc");
+var_usersessionremove_arg_0 = "abc";
+val_usersessionremove_pos2 = usersessionremove(var_usersessionremove_arg_0);
+val_usersessionremove_pos3 = USERSESSIONREMOVE("abc");
+if (true) { val_usersessionremove_pos4 = usersessionremove("abc"); }
+for loopIdx in range(1) { val_usersessionremove_pos5 = usersessionremove("abc"); }
+val_usersessionremove_pos6 = usersessionremove(string(123));
+val_usersessionremove_pos7 = usersessionremove(   
+  	  "abc" 	
+  );
+val_usersessionremove_pos8 = usersessionremove(/* comment */ "abc");
+val_usersessionremove_pos9 = usersessionremove("");
+val_usersessionremove_pos10 = usersessionremove("abc");
+val_usersessionremove_neg1 = usersessionremove();
+val_usersessionremove_neg2 = usersessionremove("abc", "excess_parameter_value");
+val_usersessionremove_neg3 = usersessionremove(123);
+val_usersessionremove_neg4 = usersessionremove("abc",);
+val_usersessionremove_neg5 = invalid_ns.usersessionremove("abc");
+val_usersessionremove_neg6 = usersessionremove(, );
+usersessionremove("abc") = "override_val";
+val_usersessionremove_neg8 = usersessionremove(return, break);
+val_usersessionremove_neg9 = usersessionremove(123; 456);
+val_usersessionremove_neg10 = usersessionremove("abc" 
+
+val_globaldictremove_pos1 = globaldictremove("abc");
+var_globaldictremove_arg_0 = "abc";
+val_globaldictremove_pos2 = globaldictremove(var_globaldictremove_arg_0);
+val_globaldictremove_pos3 = GLOBALDICTREMOVE("abc");
+if (true) { val_globaldictremove_pos4 = globaldictremove("abc"); }
+for loopIdx in range(1) { val_globaldictremove_pos5 = globaldictremove("abc"); }
+val_globaldictremove_pos6 = globaldictremove(string(123));
+val_globaldictremove_pos7 = globaldictremove(   
+  	  "abc" 	
+  );
+val_globaldictremove_pos8 = globaldictremove(/* comment */ "abc");
+val_globaldictremove_pos9 = globaldictremove("");
+val_globaldictremove_pos10 = globaldictremove("abc");
+val_globaldictremove_neg1 = globaldictremove();
+val_globaldictremove_neg2 = globaldictremove("abc", "excess_parameter_value");
+val_globaldictremove_neg3 = globaldictremove(123);
+val_globaldictremove_neg4 = globaldictremove("abc",);
+val_globaldictremove_neg5 = invalid_ns.globaldictremove("abc");
+val_globaldictremove_neg6 = globaldictremove(, );
+globaldictremove("abc") = "override_val";
+val_globaldictremove_neg8 = globaldictremove(return, break);
+val_globaldictremove_neg9 = globaldictremove(123; 456);
+val_globaldictremove_neg10 = globaldictremove("abc" 
+
+val_throwerror_pos1 = throwerror("abc");
+var_throwerror_arg_0 = "abc";
+val_throwerror_pos2 = throwerror(var_throwerror_arg_0);
+val_throwerror_pos3 = THROWERROR("abc");
+if (true) { val_throwerror_pos4 = throwerror("abc"); }
+for loopIdx in range(1) { val_throwerror_pos5 = throwerror("abc"); }
+val_throwerror_pos6 = throwerror(string(123));
+val_throwerror_pos7 = throwerror(   
+  	  "abc" 	
+  );
+val_throwerror_pos8 = throwerror(/* comment */ "abc");
+val_throwerror_pos9 = throwerror("");
+val_throwerror_pos10 = throwerror("abc");
+val_throwerror_neg1 = throwerror();
+val_throwerror_neg2 = throwerror("abc", "excess_parameter_value");
+val_throwerror_neg3 = throwerror(123);
+val_throwerror_neg4 = throwerror("abc",);
+val_throwerror_neg5 = invalid_ns.throwerror("abc");
+val_throwerror_neg6 = throwerror(, );
+throwerror("abc") = "override_val";
+val_throwerror_neg8 = throwerror(return, break);
+val_throwerror_neg9 = throwerror(123; 456);
+val_throwerror_neg10 = throwerror("abc" 
+
+val_getuuid_pos1 = getuuid(123);
+var_getuuid_arg_0 = 123;
+val_getuuid_pos2 = getuuid(var_getuuid_arg_0);
+val_getuuid_pos3 = GETUUID(123);
+if (true) { val_getuuid_pos4 = getuuid(123); }
+for loopIdx in range(1) { val_getuuid_pos5 = getuuid(123); }
+val_getuuid_pos6 = getuuid(atoi("12"));
+val_getuuid_pos7 = getuuid(   
+  	  123 	
+  );
+val_getuuid_pos8 = getuuid(/* comment */ 123);
+val_getuuid_pos9 = getuuid(2147483647);
+val_getuuid_pos10 = getuuid(123);
+val_getuuid_neg1 = getuuid();
+val_getuuid_neg2 = getuuid(123, "excess_parameter_value");
+val_getuuid_neg3 = getuuid("not_an_int");
+val_getuuid_neg4 = getuuid(123,);
+val_getuuid_neg5 = invalid_ns.getuuid(123);
+val_getuuid_neg6 = getuuid(, );
+getuuid(123) = "override_val";
+val_getuuid_neg8 = getuuid(return, break);
+val_getuuid_neg9 = getuuid(123; 456);
+val_getuuid_neg10 = getuuid(123 
+
+val_convertbomtohier_pos1 = convertbomtohier(json());
+var_convertbomtohier_arg_0 = json();
+val_convertbomtohier_pos2 = convertbomtohier(var_convertbomtohier_arg_0);
+val_convertbomtohier_pos3 = CONVERTBOMTOHIER(json());
+if (true) { val_convertbomtohier_pos4 = convertbomtohier(json()); }
+for loopIdx in range(1) { val_convertbomtohier_pos5 = convertbomtohier(json()); }
+val_convertbomtohier_pos6 = convertbomtohier(json());
+val_convertbomtohier_pos7 = convertbomtohier(   
+  	  json() 	
+  );
+val_convertbomtohier_pos8 = convertbomtohier(/* comment */ json());
+val_convertbomtohier_pos9 = convertbomtohier(json());
+val_convertbomtohier_pos10 = convertbomtohier(json());
+val_convertbomtohier_neg1 = convertbomtohier();
+val_convertbomtohier_neg2 = convertbomtohier(json(), "excess_parameter_value");
+val_convertbomtohier_neg3 = convertbomtohier("not_a_json");
+val_convertbomtohier_neg4 = convertbomtohier(json(),);
+val_convertbomtohier_neg5 = invalid_ns.convertbomtohier(json());
+val_convertbomtohier_neg6 = convertbomtohier(, );
+convertbomtohier(json()) = "override_val";
+val_convertbomtohier_neg8 = convertbomtohier(return, break);
+val_convertbomtohier_neg9 = convertbomtohier(123; 456);
+val_convertbomtohier_neg10 = convertbomtohier(json() 
+
+val_convertbomtoflat_pos1 = convertbomtoflat(json());
+var_convertbomtoflat_arg_0 = json();
+val_convertbomtoflat_pos2 = convertbomtoflat(var_convertbomtoflat_arg_0);
+val_convertbomtoflat_pos3 = CONVERTBOMTOFLAT(json());
+if (true) { val_convertbomtoflat_pos4 = convertbomtoflat(json()); }
+for loopIdx in range(1) { val_convertbomtoflat_pos5 = convertbomtoflat(json()); }
+val_convertbomtoflat_pos6 = convertbomtoflat(json());
+val_convertbomtoflat_pos7 = convertbomtoflat(   
+  	  json() 	
+  );
+val_convertbomtoflat_pos8 = convertbomtoflat(/* comment */ json());
+val_convertbomtoflat_pos9 = convertbomtoflat(json());
+val_convertbomtoflat_pos10 = convertbomtoflat(json());
+val_convertbomtoflat_neg1 = convertbomtoflat();
+val_convertbomtoflat_neg2 = convertbomtoflat(json(), "excess_parameter_value");
+val_convertbomtoflat_neg3 = convertbomtoflat("not_a_json");
+val_convertbomtoflat_neg4 = convertbomtoflat(json(),);
+val_convertbomtoflat_neg5 = invalid_ns.convertbomtoflat(json());
+val_convertbomtoflat_neg6 = convertbomtoflat(, );
+convertbomtoflat(json()) = "override_val";
+val_convertbomtoflat_neg8 = convertbomtoflat(return, break);
+val_convertbomtoflat_neg9 = convertbomtoflat(123; 456);
+val_convertbomtoflat_neg10 = convertbomtoflat(json() 
+
+val_getattachmentdata_pos1 = getattachmentdata("abc");
+var_getattachmentdata_arg_0 = "abc";
+val_getattachmentdata_pos2 = getattachmentdata(var_getattachmentdata_arg_0);
+val_getattachmentdata_pos3 = GETATTACHMENTDATA("abc");
+if (true) { val_getattachmentdata_pos4 = getattachmentdata("abc"); }
+for loopIdx in range(1) { val_getattachmentdata_pos5 = getattachmentdata("abc"); }
+val_getattachmentdata_pos6 = getattachmentdata(string(123));
+val_getattachmentdata_pos7 = getattachmentdata(   
+  	  "abc" 	
+  );
+val_getattachmentdata_pos8 = getattachmentdata(/* comment */ "abc");
+val_getattachmentdata_pos9 = getattachmentdata("");
+val_getattachmentdata_pos10 = getattachmentdata("abc");
+val_getattachmentdata_neg1 = getattachmentdata();
+val_getattachmentdata_neg2 = getattachmentdata("abc", "excess_parameter_value");
+val_getattachmentdata_neg3 = getattachmentdata(123);
+val_getattachmentdata_neg4 = getattachmentdata("abc",);
+val_getattachmentdata_neg5 = invalid_ns.getattachmentdata("abc");
+val_getattachmentdata_neg6 = getattachmentdata(, );
+getattachmentdata("abc") = "override_val";
+val_getattachmentdata_neg8 = getattachmentdata(return, break);
+val_getattachmentdata_neg9 = getattachmentdata(123; 456);
+val_getattachmentdata_neg10 = getattachmentdata("abc" 
+
+val_globaldictset_pos1 = globaldictset("abc", "abc");
+var_globaldictset_arg_0 = "abc";
+var_globaldictset_arg_1 = "abc";
+val_globaldictset_pos2 = globaldictset(var_globaldictset_arg_0, var_globaldictset_arg_1);
+val_globaldictset_pos3 = GLOBALDICTSET("abc", "abc");
+if (true) { val_globaldictset_pos4 = globaldictset("abc", "abc"); }
+for loopIdx in range(1) { val_globaldictset_pos5 = globaldictset("abc", "abc"); }
+val_globaldictset_pos6 = globaldictset(string(123), string(123));
+val_globaldictset_pos7 = globaldictset(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_globaldictset_pos8 = globaldictset(/* comment */ "abc", /* next */ "abc");
+val_globaldictset_pos9 = globaldictset("", "");
+val_globaldictset_pos10 = globaldictset("abc", "abc");
+val_globaldictset_neg1 = globaldictset("abc");
+val_globaldictset_neg2 = globaldictset("abc", "abc", "excess_parameter_value");
+val_globaldictset_neg3 = globaldictset(123, 123);
+val_globaldictset_neg4 = globaldictset("abc", "abc",);
+val_globaldictset_neg5 = invalid_ns.globaldictset("abc", "abc");
+val_globaldictset_neg6 = globaldictset("abc", , );
+globaldictset("abc", "abc") = "override_val";
+val_globaldictset_neg8 = globaldictset(return, break);
+val_globaldictset_neg9 = globaldictset("abc"; "abc");
+val_globaldictset_neg10 = globaldictset("abc", "abc" 
+
+val_addpartstotransaction_pos1 = addpartstotransaction(jsonarray());
+var_addpartstotransaction_arg_0 = jsonarray();
+val_addpartstotransaction_pos2 = addpartstotransaction(var_addpartstotransaction_arg_0);
+val_addpartstotransaction_pos3 = ADDPARTSTOTRANSACTION(jsonarray());
+if (true) { val_addpartstotransaction_pos4 = addpartstotransaction(jsonarray()); }
+for loopIdx in range(1) { val_addpartstotransaction_pos5 = addpartstotransaction(jsonarray()); }
+val_addpartstotransaction_pos6 = addpartstotransaction(jsonarray());
+val_addpartstotransaction_pos7 = addpartstotransaction(   
+  	  jsonarray() 	
+  );
+val_addpartstotransaction_pos8 = addpartstotransaction(/* comment */ jsonarray());
+val_addpartstotransaction_pos9 = addpartstotransaction(jsonarray());
+val_addpartstotransaction_pos10 = addpartstotransaction(jsonarray());
+val_addpartstotransaction_neg1 = addpartstotransaction();
+val_addpartstotransaction_neg2 = addpartstotransaction(jsonarray(), "excess_parameter_value");
+val_addpartstotransaction_neg3 = addpartstotransaction("not_a_jsonarray");
+val_addpartstotransaction_neg4 = addpartstotransaction(jsonarray(),);
+val_addpartstotransaction_neg5 = invalid_ns.addpartstotransaction(jsonarray());
+val_addpartstotransaction_neg6 = addpartstotransaction(, );
+addpartstotransaction(jsonarray()) = "override_val";
+val_addpartstotransaction_neg8 = addpartstotransaction(return, break);
+val_addpartstotransaction_neg9 = addpartstotransaction(123; 456);
+val_addpartstotransaction_neg10 = addpartstotransaction(jsonarray() 
+
+val_validatequoteforagreement_pos1 = validatequoteforagreement();
+val_validatequoteforagreement_pos2 = validatequoteforagreement();
+val_validatequoteforagreement_pos3 = VALIDATEQUOTEFORAGREEMENT();
+if (true) { val_validatequoteforagreement_pos4 = validatequoteforagreement(); }
+for loopIdx in range(1) { val_validatequoteforagreement_pos5 = validatequoteforagreement(); }
+val_validatequoteforagreement_pos6 = validatequoteforagreement();
+val_validatequoteforagreement_pos7 = validatequoteforagreement(   
+  	   	
+  );
+val_validatequoteforagreement_pos8 = validatequoteforagreement(/* comment */);
+val_validatequoteforagreement_pos9 = validatequoteforagreement();
+val_validatequoteforagreement_pos10 = validatequoteforagreement();
+val_validatequoteforagreement_neg1 = validatequoteforagreement("excess_parameter");
+val_validatequoteforagreement_neg2 = validatequoteforagreement("excess_parameter_value");
+val_validatequoteforagreement_neg3 = validatequoteforagreement(123);
+val_validatequoteforagreement_neg4 = validatequoteforagreement(,);
+val_validatequoteforagreement_neg5 = invalid_ns.validatequoteforagreement();
+val_validatequoteforagreement_neg6 = validatequoteforagreement(, );
+validatequoteforagreement() = "override_val";
+val_validatequoteforagreement_neg8 = validatequoteforagreement(return, break);
+val_validatequoteforagreement_neg9 = validatequoteforagreement(123; 456);
+val_validatequoteforagreement_neg10 = validatequoteforagreement( 
+
+val_generatehmacmessage_pos1 = generatehmacmessage("abc", "abc");
+var_generatehmacmessage_arg_0 = "abc";
+var_generatehmacmessage_arg_1 = "abc";
+val_generatehmacmessage_pos2 = generatehmacmessage(var_generatehmacmessage_arg_0, var_generatehmacmessage_arg_1);
+val_generatehmacmessage_pos3 = GENERATEHMACMESSAGE("abc", "abc");
+if (true) { val_generatehmacmessage_pos4 = generatehmacmessage("abc", "abc"); }
+for loopIdx in range(1) { val_generatehmacmessage_pos5 = generatehmacmessage("abc", "abc"); }
+val_generatehmacmessage_pos6 = generatehmacmessage(string(123), string(123));
+val_generatehmacmessage_pos7 = generatehmacmessage(   
+  	  "abc", 	
+  "abc" 	
+  );
+val_generatehmacmessage_pos8 = generatehmacmessage(/* comment */ "abc", /* next */ "abc");
+val_generatehmacmessage_pos9 = generatehmacmessage("", "");
+val_generatehmacmessage_pos10 = generatehmacmessage("abc", "abc");
+val_generatehmacmessage_neg1 = generatehmacmessage("abc");
+val_generatehmacmessage_neg2 = generatehmacmessage("abc", "abc", "excess_parameter_value");
+val_generatehmacmessage_neg3 = generatehmacmessage(123, 123);
+val_generatehmacmessage_neg4 = generatehmacmessage("abc", "abc",);
+val_generatehmacmessage_neg5 = invalid_ns.generatehmacmessage("abc", "abc");
+val_generatehmacmessage_neg6 = generatehmacmessage("abc", , );
+generatehmacmessage("abc", "abc") = "override_val";
+val_generatehmacmessage_neg8 = generatehmacmessage(return, break);
+val_generatehmacmessage_neg9 = generatehmacmessage("abc"; "abc");
+val_generatehmacmessage_neg10 = generatehmacmessage("abc", "abc" 
+
+val_addtotransaction_pos1 = addtotransaction(jsonarray());
+var_addtotransaction_arg_0 = jsonarray();
+val_addtotransaction_pos2 = addtotransaction(var_addtotransaction_arg_0);
+val_addtotransaction_pos3 = ADDTOTRANSACTION(jsonarray());
+if (true) { val_addtotransaction_pos4 = addtotransaction(jsonarray()); }
+for loopIdx in range(1) { val_addtotransaction_pos5 = addtotransaction(jsonarray()); }
+val_addtotransaction_pos6 = addtotransaction(jsonarray());
+val_addtotransaction_pos7 = addtotransaction(   
+  	  jsonarray() 	
+  );
+val_addtotransaction_pos8 = addtotransaction(/* comment */ jsonarray());
+val_addtotransaction_pos9 = addtotransaction(jsonarray());
+val_addtotransaction_pos10 = addtotransaction(jsonarray());
+val_addtotransaction_neg1 = addtotransaction();
+val_addtotransaction_neg2 = addtotransaction(jsonarray(), "excess_parameter_value");
+val_addtotransaction_neg3 = addtotransaction("not_a_jsonarray");
+val_addtotransaction_neg4 = addtotransaction(jsonarray(),);
+val_addtotransaction_neg5 = invalid_ns.addtotransaction(jsonarray());
+val_addtotransaction_neg6 = addtotransaction(, );
+addtotransaction(jsonarray()) = "override_val";
+val_addtotransaction_neg8 = addtotransaction(return, break);
+val_addtotransaction_neg9 = addtotransaction(123; 456);
+val_addtotransaction_neg10 = addtotransaction(jsonarray() 
+
+val_stringbuilder_pos1 = stringbuilder("abc");
+var_stringbuilder_arg_0 = "abc";
+val_stringbuilder_pos2 = stringbuilder(var_stringbuilder_arg_0);
+val_stringbuilder_pos3 = STRINGBUILDER("abc");
+if (true) { val_stringbuilder_pos4 = stringbuilder("abc"); }
+for loopIdx in range(1) { val_stringbuilder_pos5 = stringbuilder("abc"); }
+val_stringbuilder_pos6 = stringbuilder(string(123));
+val_stringbuilder_pos7 = stringbuilder(   
+  	  "abc" 	
+  );
+val_stringbuilder_pos8 = stringbuilder(/* comment */ "abc");
+val_stringbuilder_pos9 = stringbuilder("");
+val_stringbuilder_pos10 = stringbuilder("abc");
+val_stringbuilder_neg1 = stringbuilder();
+val_stringbuilder_neg2 = stringbuilder("abc", "excess_parameter_value");
+val_stringbuilder_neg3 = stringbuilder(123);
+val_stringbuilder_neg4 = stringbuilder("abc",);
+val_stringbuilder_neg5 = invalid_ns.stringbuilder("abc");
+val_stringbuilder_neg6 = stringbuilder(, );
+stringbuilder("abc") = "override_val";
+val_stringbuilder_neg8 = stringbuilder(return, break);
+val_stringbuilder_neg9 = stringbuilder(123; 456);
+val_stringbuilder_neg10 = stringbuilder("abc" 
+
+val_sbappend_pos1 = sbappend(stringbuilder());
+var_sbappend_arg_0 = stringbuilder();
+val_sbappend_pos2 = sbappend(var_sbappend_arg_0);
+val_sbappend_pos3 = SBAPPEND(stringbuilder());
+if (true) { val_sbappend_pos4 = sbappend(stringbuilder()); }
+for loopIdx in range(1) { val_sbappend_pos5 = sbappend(stringbuilder()); }
+val_sbappend_pos6 = sbappend(stringbuilder());
+val_sbappend_pos7 = sbappend(   
+  	  stringbuilder() 	
+  );
+val_sbappend_pos8 = sbappend(/* comment */ stringbuilder());
+val_sbappend_pos9 = sbappend(stringbuilder());
+val_sbappend_pos10 = sbappend(stringbuilder());
+val_sbappend_neg1 = sbappend();
+val_sbappend_neg2 = sbappend(stringbuilder(), "excess_parameter_value");
+val_sbappend_neg3 = sbappend("not_a_sb");
+val_sbappend_neg4 = sbappend(stringbuilder(),);
+val_sbappend_neg5 = invalid_ns.sbappend(stringbuilder());
+val_sbappend_neg6 = sbappend(, );
+sbappend(stringbuilder()) = "override_val";
+val_sbappend_neg8 = sbappend(return, break);
+val_sbappend_neg9 = sbappend(123; 456);
+val_sbappend_neg10 = sbappend(stringbuilder() 
+
+val_sbtostring_pos1 = sbtostring(stringbuilder());
+var_sbtostring_arg_0 = stringbuilder();
+val_sbtostring_pos2 = sbtostring(var_sbtostring_arg_0);
+val_sbtostring_pos3 = SBTOSTRING(stringbuilder());
+if (true) { val_sbtostring_pos4 = sbtostring(stringbuilder()); }
+for loopIdx in range(1) { val_sbtostring_pos5 = sbtostring(stringbuilder()); }
+val_sbtostring_pos6 = sbtostring(stringbuilder());
+val_sbtostring_pos7 = sbtostring(   
+  	  stringbuilder() 	
+  );
+val_sbtostring_pos8 = sbtostring(/* comment */ stringbuilder());
+val_sbtostring_pos9 = sbtostring(stringbuilder());
+val_sbtostring_pos10 = sbtostring(stringbuilder());
+val_sbtostring_neg1 = sbtostring();
+val_sbtostring_neg2 = sbtostring(stringbuilder(), "excess_parameter_value");
+val_sbtostring_neg3 = sbtostring("not_a_sb");
+val_sbtostring_neg4 = sbtostring(stringbuilder(),);
+val_sbtostring_neg5 = invalid_ns.sbtostring(stringbuilder());
+val_sbtostring_neg6 = sbtostring(, );
+sbtostring(stringbuilder()) = "override_val";
+val_sbtostring_neg8 = sbtostring(return, break);
+val_sbtostring_neg9 = sbtostring(123; 456);
+val_sbtostring_neg10 = sbtostring(stringbuilder() 
+
+val_getsystemattrvalues_pos1 = getsystemattrvalues("abc");
+var_getsystemattrvalues_arg_0 = "abc";
+val_getsystemattrvalues_pos2 = getsystemattrvalues(var_getsystemattrvalues_arg_0);
+val_getsystemattrvalues_pos3 = GETSYSTEMATTRVALUES("abc");
+if (true) { val_getsystemattrvalues_pos4 = getsystemattrvalues("abc"); }
+for loopIdx in range(1) { val_getsystemattrvalues_pos5 = getsystemattrvalues("abc"); }
+val_getsystemattrvalues_pos6 = getsystemattrvalues(string(123));
+val_getsystemattrvalues_pos7 = getsystemattrvalues(   
+  	  "abc" 	
+  );
+val_getsystemattrvalues_pos8 = getsystemattrvalues(/* comment */ "abc");
+val_getsystemattrvalues_pos9 = getsystemattrvalues("");
+val_getsystemattrvalues_pos10 = getsystemattrvalues("abc");
+val_getsystemattrvalues_neg1 = getsystemattrvalues();
+val_getsystemattrvalues_neg2 = getsystemattrvalues("abc", "excess_parameter_value");
+val_getsystemattrvalues_neg3 = getsystemattrvalues(123);
+val_getsystemattrvalues_neg4 = getsystemattrvalues("abc",);
+val_getsystemattrvalues_neg5 = invalid_ns.getsystemattrvalues("abc");
+val_getsystemattrvalues_neg6 = getsystemattrvalues(, );
+getsystemattrvalues("abc") = "override_val";
+val_getsystemattrvalues_neg8 = getsystemattrvalues(return, break);
+val_getsystemattrvalues_neg9 = getsystemattrvalues(123; 456);
+val_getsystemattrvalues_neg10 = getsystemattrvalues("abc" 
+
+val_getsystemmultipleattrvalues_pos1 = getsystemmultipleattrvalues("abc");
+var_getsystemmultipleattrvalues_arg_0 = "abc";
+val_getsystemmultipleattrvalues_pos2 = getsystemmultipleattrvalues(var_getsystemmultipleattrvalues_arg_0);
+val_getsystemmultipleattrvalues_pos3 = GETSYSTEMMULTIPLEATTRVALUES("abc");
+if (true) { val_getsystemmultipleattrvalues_pos4 = getsystemmultipleattrvalues("abc"); }
+for loopIdx in range(1) { val_getsystemmultipleattrvalues_pos5 = getsystemmultipleattrvalues("abc"); }
+val_getsystemmultipleattrvalues_pos6 = getsystemmultipleattrvalues(string(123));
+val_getsystemmultipleattrvalues_pos7 = getsystemmultipleattrvalues(   
+  	  "abc" 	
+  );
+val_getsystemmultipleattrvalues_pos8 = getsystemmultipleattrvalues(/* comment */ "abc");
+val_getsystemmultipleattrvalues_pos9 = getsystemmultipleattrvalues("");
+val_getsystemmultipleattrvalues_pos10 = getsystemmultipleattrvalues("abc");
+val_getsystemmultipleattrvalues_neg1 = getsystemmultipleattrvalues();
+val_getsystemmultipleattrvalues_neg2 = getsystemmultipleattrvalues("abc", "excess_parameter_value");
+val_getsystemmultipleattrvalues_neg3 = getsystemmultipleattrvalues(123);
+val_getsystemmultipleattrvalues_neg4 = getsystemmultipleattrvalues("abc",);
+val_getsystemmultipleattrvalues_neg5 = invalid_ns.getsystemmultipleattrvalues("abc");
+val_getsystemmultipleattrvalues_neg6 = getsystemmultipleattrvalues(, );
+getsystemmultipleattrvalues("abc") = "override_val";
+val_getsystemmultipleattrvalues_neg8 = getsystemmultipleattrvalues(return, break);
+val_getsystemmultipleattrvalues_neg9 = getsystemmultipleattrvalues(123; 456);
+val_getsystemmultipleattrvalues_neg10 = getsystemmultipleattrvalues("abc" 
+
+val_getsystemdata_pos1 = getsystemdata();
+val_getsystemdata_pos2 = getsystemdata();
+val_getsystemdata_pos3 = GETSYSTEMDATA();
+if (true) { val_getsystemdata_pos4 = getsystemdata(); }
+for loopIdx in range(1) { val_getsystemdata_pos5 = getsystemdata(); }
+val_getsystemdata_pos6 = getsystemdata();
+val_getsystemdata_pos7 = getsystemdata(   
+  	   	
+  );
+val_getsystemdata_pos8 = getsystemdata(/* comment */);
+val_getsystemdata_pos9 = getsystemdata();
+val_getsystemdata_pos10 = getsystemdata();
+val_getsystemdata_neg1 = getsystemdata("excess_parameter");
+val_getsystemdata_neg2 = getsystemdata("excess_parameter_value");
+val_getsystemdata_neg3 = getsystemdata(123);
+val_getsystemdata_neg4 = getsystemdata(,);
+val_getsystemdata_neg5 = invalid_ns.getsystemdata();
+val_getsystemdata_neg6 = getsystemdata(, );
+getsystemdata() = "override_val";
+val_getsystemdata_neg8 = getsystemdata(return, break);
+val_getsystemdata_neg9 = getsystemdata(123; 456);
+val_getsystemdata_neg10 = getsystemdata( 
+
+val_importtransactiondata_pos1 = importtransactiondata("abc");
+var_importtransactiondata_arg_0 = "abc";
+val_importtransactiondata_pos2 = importtransactiondata(var_importtransactiondata_arg_0);
+val_importtransactiondata_pos3 = IMPORTTRANSACTIONDATA("abc");
+if (true) { val_importtransactiondata_pos4 = importtransactiondata("abc"); }
+for loopIdx in range(1) { val_importtransactiondata_pos5 = importtransactiondata("abc"); }
+val_importtransactiondata_pos6 = importtransactiondata(string(123));
+val_importtransactiondata_pos7 = importtransactiondata(   
+  	  "abc" 	
+  );
+val_importtransactiondata_pos8 = importtransactiondata(/* comment */ "abc");
+val_importtransactiondata_pos9 = importtransactiondata("");
+val_importtransactiondata_pos10 = importtransactiondata("abc");
+val_importtransactiondata_neg1 = importtransactiondata();
+val_importtransactiondata_neg2 = importtransactiondata("abc", "excess_parameter_value");
+val_importtransactiondata_neg3 = importtransactiondata(123);
+val_importtransactiondata_neg4 = importtransactiondata("abc",);
+val_importtransactiondata_neg5 = invalid_ns.importtransactiondata("abc");
+val_importtransactiondata_neg6 = importtransactiondata(, );
+importtransactiondata("abc") = "override_val";
+val_importtransactiondata_neg8 = importtransactiondata(return, break);
+val_importtransactiondata_neg9 = importtransactiondata(123; 456);
+val_importtransactiondata_neg10 = importtransactiondata("abc" 
+
+val_setattributevalue_pos1 = setattributevalue(123, "abc", "abc", "abc", "abc");
+var_setattributevalue_arg_0 = 123;
+var_setattributevalue_arg_1 = "abc";
+var_setattributevalue_arg_2 = "abc";
+var_setattributevalue_arg_3 = "abc";
+var_setattributevalue_arg_4 = "abc";
+val_setattributevalue_pos2 = setattributevalue(var_setattributevalue_arg_0, var_setattributevalue_arg_1, var_setattributevalue_arg_2, var_setattributevalue_arg_3, var_setattributevalue_arg_4);
+val_setattributevalue_pos3 = SETATTRIBUTEVALUE(123, "abc", "abc", "abc", "abc");
+if (true) { val_setattributevalue_pos4 = setattributevalue(123, "abc", "abc", "abc", "abc"); }
+for loopIdx in range(1) { val_setattributevalue_pos5 = setattributevalue(123, "abc", "abc", "abc", "abc"); }
+val_setattributevalue_pos6 = setattributevalue(atoi("12"), string(123), string(123), string(123), string(123));
+val_setattributevalue_pos7 = setattributevalue(   
+  	  123, 	
+  "abc", 	
+  "abc", 	
+  "abc", 	
+  "abc" 	
+  );
+val_setattributevalue_pos8 = setattributevalue(/* comment */ 123, /* next */ "abc", /* next */ "abc", /* next */ "abc", /* next */ "abc");
+val_setattributevalue_pos9 = setattributevalue(2147483647, "", "", "", "");
+val_setattributevalue_pos10 = setattributevalue(123, "abc", "abc", "abc", "abc");
+val_setattributevalue_neg1 = setattributevalue(123, "abc", "abc", "abc");
+val_setattributevalue_neg2 = setattributevalue(123, "abc", "abc", "abc", "abc", "excess_parameter_value");
+val_setattributevalue_neg3 = setattributevalue("not_an_int", 123, 123, 123, 123);
+val_setattributevalue_neg4 = setattributevalue(123, "abc", "abc", "abc", "abc",);
+val_setattributevalue_neg5 = invalid_ns.setattributevalue(123, "abc", "abc", "abc", "abc");
+val_setattributevalue_neg6 = setattributevalue(123, , "abc", "abc", "abc");
+setattributevalue(123, "abc", "abc", "abc", "abc") = "override_val";
+val_setattributevalue_neg8 = setattributevalue(return, break);
+val_setattributevalue_neg9 = setattributevalue(123; "abc"; "abc"; "abc"; "abc");
+val_setattributevalue_neg10 = setattributevalue(123, "abc", "abc", "abc", "abc" 
+
+val_getcoveragesupportdict_pos1 = getcoveragesupportdict();
+val_getcoveragesupportdict_pos2 = getcoveragesupportdict();
+val_getcoveragesupportdict_pos3 = GETCOVERAGESUPPORTDICT();
+if (true) { val_getcoveragesupportdict_pos4 = getcoveragesupportdict(); }
+for loopIdx in range(1) { val_getcoveragesupportdict_pos5 = getcoveragesupportdict(); }
+val_getcoveragesupportdict_pos6 = getcoveragesupportdict();
+val_getcoveragesupportdict_pos7 = getcoveragesupportdict(   
+  	   	
+  );
+val_getcoveragesupportdict_pos8 = getcoveragesupportdict(/* comment */);
+val_getcoveragesupportdict_pos9 = getcoveragesupportdict();
+val_getcoveragesupportdict_pos10 = getcoveragesupportdict();
+val_getcoveragesupportdict_neg1 = getcoveragesupportdict("excess_parameter");
+val_getcoveragesupportdict_neg2 = getcoveragesupportdict("excess_parameter_value");
+val_getcoveragesupportdict_neg3 = getcoveragesupportdict(123);
+val_getcoveragesupportdict_neg4 = getcoveragesupportdict(,);
+val_getcoveragesupportdict_neg5 = invalid_ns.getcoveragesupportdict();
+val_getcoveragesupportdict_neg6 = getcoveragesupportdict(, );
+getcoveragesupportdict() = "override_val";
+val_getcoveragesupportdict_neg8 = getcoveragesupportdict(return, break);
+val_getcoveragesupportdict_neg9 = getcoveragesupportdict(123; 456);
+val_getcoveragesupportdict_neg10 = getcoveragesupportdict( 
+
+val_configureabo_pos1 = configureabo(123);
+var_configureabo_arg_0 = 123;
+val_configureabo_pos2 = configureabo(var_configureabo_arg_0);
+val_configureabo_pos3 = CONFIGUREABO(123);
+if (true) { val_configureabo_pos4 = configureabo(123); }
+for loopIdx in range(1) { val_configureabo_pos5 = configureabo(123); }
+val_configureabo_pos6 = configureabo(atoi("12"));
+val_configureabo_pos7 = configureabo(   
+  	  123 	
+  );
+val_configureabo_pos8 = configureabo(/* comment */ 123);
+val_configureabo_pos9 = configureabo(2147483647);
+val_configureabo_pos10 = configureabo(123);
+val_configureabo_neg1 = configureabo();
+val_configureabo_neg2 = configureabo(123, "excess_parameter_value");
+val_configureabo_neg3 = configureabo("not_an_int");
+val_configureabo_neg4 = configureabo(123,);
+val_configureabo_neg5 = invalid_ns.configureabo(123);
+val_configureabo_neg6 = configureabo(, );
+configureabo(123) = "override_val";
+val_configureabo_neg8 = configureabo(return, break);
+val_configureabo_neg9 = configureabo(123; 456);
+val_configureabo_neg10 = configureabo(123 
+
+return "";

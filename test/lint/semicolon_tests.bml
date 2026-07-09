@@ -1,0 +1,55 @@
+// ==========================================
+// BML Category: SEMICOLONS - Senior QA Regression Suite
+// ==========================================
+
+// 1. Valid Semicolon usage
+x = 10;
+y = 20;
+if (x > 0) {
+    z = 5;
+}
+
+// 2. Valid continuation lines (no semicolon required)
+// Line ends with operator
+a = 100 +
+    200 -
+    50;
+
+// Line ends with logic operators
+b = true AND
+    false OR
+    true;
+
+// Next line continues with operator '+'
+c = 10
+    + 20;
+
+// Next line starts with continuation keyword logic
+d = true
+    AND false
+    OR true;
+
+// Within open parentheses/brackets
+e = getdate(
+    true
+);
+
+// Literal array bodies (comma separated element lines)
+f = string[]{
+    "element_1",
+    "element_2",
+    "element_3"
+};
+
+// 3. Missing Semicolon Errors (bml-missing-semicolon)
+missingAssign = 42
+print("missing print semicolon")
+
+for loopIdx in range(3) {
+    if (loopIdx == 1) {
+        break
+    }
+    continue
+}
+
+return ""
