@@ -48,6 +48,36 @@ function checkOthers(cleanText, noStringsText, doc) {
         }
     }
 
+    // generatehmacmessage(message, key, [algorithm]) - per Others.md, the
+    // algorithm argument is case-sensitive and only SHA256/SHA384/SHA512/
+    // SHA1/MD5 are valid (no hyphens, despite the surrounding prose using
+    // "SHA-256" style); anything else errors at runtime.
+    const validHmacAlgorithms = new Set(['SHA256', 'SHA384', 'SHA512', 'SHA1', 'MD5']);
+    const hmacRegex = /\bgeneratehmacmessage\s*\(/g;
+    while ((match = hmacRegex.exec(cleanText)) !== null) {
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        if (closeParenIndex === -1) continue;
+        const args = splitTopLevelArgs(cleanText.slice(openParenIndex + 1, closeParenIndex));
+        if (args.length === 3) {
+            const algoArg = args[2].trim();
+            const literalMatch = /^(?:"([^"\\]*(?:\\.[^"\\]*)*)"|'([^'\\]*(?:\\.[^'\\]*)*)')$/.exec(algoArg);
+            if (literalMatch) {
+                const algo = literalMatch[1] !== undefined ? literalMatch[1] : literalMatch[2];
+                if (!validHmacAlgorithms.has(algo)) {
+                    const startPos = doc.positionAt(match.index);
+                    const endPos = doc.positionAt(closeParenIndex + 1);
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Error: 'generatehmacmessage()' algorithm '${algo}' is not valid. Values are case-sensitive; use exactly one of SHA256, SHA384, SHA512, SHA1, or MD5.`,
+                        vscode.DiagnosticSeverity.Error,
+                        'bml-hmac-invalid-algorithm'
+                    ));
+                }
+            }
+        }
+    }
+
     // stringbuilder() call validation
     const stringbuilderRegex = /\bstringbuilder\s*\(/g;
     while ((match = stringbuilderRegex.exec(cleanText)) !== null) {

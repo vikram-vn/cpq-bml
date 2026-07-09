@@ -22,6 +22,73 @@ suite("BML Linter Test Suite - BMQL specific tests", () => {
         });
     });
 
+    suite('Full substitution - bare variable as the whole query (bml-bmql-full-substitution)', () => {
+        test('Flags a bare variable passed directly as the query string', () => {
+            const diagnostics = lintText(`
+                x = bmql(queryStringVar);
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
+            assert.ok(diag, 'DynamicBMQLVariables.md calls this out as "Incorrect: Full Substitution"');
+        });
+
+        test('Does not flag a string literal query', () => {
+            const diagnostics = lintText(`
+                x = bmql("SELECT id FROM my_table WHERE id = $id");
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test('Does not flag string concatenation (that is the injection-risk case, not full substitution)', () => {
+            const diagnostics = lintText(`
+                x = bmql("SELECT id FROM " + tableName);
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test('Does not flag a bmql() call with no arguments', () => {
+            const diagnostics = lintText(`
+                x = bmql();
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
+            assert.strictEqual(diag, undefined);
+        });
+    });
+
+    suite('JOIN against a system-defined table (bml-bmql-join-system-table)', () => {
+        test('Flags JOIN against a table prefixed with an underscore', () => {
+            const diagnostics = lintText(`
+                x = bmql("SELECT a.id FROM my_table a JOIN _parts p ON a.id = p.id WHERE a.id = $id");
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-join-system-table');
+            assert.ok(diag, 'BMQL.md: JOIN is only supported for customer-defined tables, not system tables like _parts');
+        });
+
+        test('Does not flag JOIN against a customer-defined table', () => {
+            const diagnostics = lintText(`
+                x = bmql("SELECT a.id FROM my_table a JOIN other_table b ON a.id = b.id WHERE a.id = $id");
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-join-system-table');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test('Does not flag a query with no JOIN at all', () => {
+            const diagnostics = lintText(`
+                x = bmql("SELECT id FROM _parts WHERE id = $id");
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-join-system-table');
+            assert.strictEqual(diag, undefined);
+        });
+    });
+
     suite('SELECT * (bml-bmql-select-star)', () => {
         test('Flags SELECT * in BMQL', () => {
             const diagnostics = lintText(`

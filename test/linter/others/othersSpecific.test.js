@@ -270,6 +270,39 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
     });
   });
 
+  suite("generatehmacmessage() algorithm whitelist (bml-hmac-invalid-algorithm)", () => {
+    for (const algo of ["SHA256", "SHA384", "SHA512", "SHA1", "MD5"]) {
+      test(`generatehmacmessage(msg, key, "${algo}") - valid algorithm does not flag`, () => {
+        const diagnostics = lintText(`h = generatehmacmessage("message", "key", "${algo}"); return "";`);
+        assert.strictEqual(diagnostics.find(d => d.code === 'bml-hmac-invalid-algorithm'), undefined);
+      });
+    }
+
+    test('generatehmacmessage(msg, key, "sha256") - lowercase is flagged, values are case sensitive per Others.md', () => {
+      const diagnostics = lintText('h = generatehmacmessage("message", "key", "sha256"); return "";');
+      const diag = diagnostics.find(d => d.code === 'bml-hmac-invalid-algorithm');
+      assert.ok(diag);
+    });
+
+    test('generatehmacmessage(msg, key, "SHA-256") - hyphenated form is flagged, only unhyphenated names are valid', () => {
+      const diagnostics = lintText('h = generatehmacmessage("message", "key", "SHA-256"); return "";');
+      const diag = diagnostics.find(d => d.code === 'bml-hmac-invalid-algorithm');
+      assert.ok(diag);
+    });
+
+    test('generatehmacmessage(msg, key, "DES") - unsupported algorithm is flagged', () => {
+      const diagnostics = lintText('h = generatehmacmessage("message", "key", "DES"); return "";');
+      const diag = diagnostics.find(d => d.code === 'bml-hmac-invalid-algorithm');
+      assert.ok(diag);
+    });
+
+    test("generatehmacmessage(msg, key, algoVar) - a variable algorithm is not statically checkable, no false positive", () => {
+      const diagnostics = lintText('h = generatehmacmessage("message", "key", algoVar); return "";');
+      const diag = diagnostics.find(d => d.code === 'bml-hmac-invalid-algorithm');
+      assert.strictEqual(diag, undefined);
+    });
+  });
+
   suite("BOM and Configuration API Actions", () => {
     test("applybom(bom) - Valid", () => {
       const diagnostics = lintText('bom = dict("anytype"); applybom(bom, "parent"); return "";');

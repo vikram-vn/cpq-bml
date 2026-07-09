@@ -5621,6 +5621,11 @@
   },
   {
     "line": 697,
+    "severity": "Error",
+    "message": "Error: 'generatehmacmessage()' algorithm 'excess_parameter_value' is not valid. Values are case-sensitive; use exactly one of SHA256, SHA384, SHA512, SHA1, or MD5."
+  },
+  {
+    "line": 697,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_neg2"
   },

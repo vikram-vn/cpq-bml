@@ -1,11 +1,12 @@
-const { vscode, makeDiagnostic } = require('./shared');
+const { vscode, makeDiagnostic, splitTopLevelArgs } = require('./shared');
 
 /**
  * BMQL query safety and performance checks.
  *
  * Codes: bml-bmql-injection-risk, bml-bmql-select-star,
  *        bml-bmql-unbounded-mutation, bml-bmql-unbounded-delete,
- *        bml-bmql-select-truncated, bml-bmql-unbounded-select
+ *        bml-bmql-select-truncated, bml-bmql-unbounded-select,
+ *        bml-bmql-full-substitution, bml-bmql-join-system-table
  */
 function checkBmqlSafety(cleanText, noStringsText, doc) {
     const diagnostics = [];
@@ -59,6 +60,21 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
                     vscode.DiagnosticSeverity.Error,
                     'bml-bmql-injection-risk'
                 ));
+            } else {
+                // "Full Substitution" - passing a bare variable as the whole
+                // query string, e.g. bmql(queryStringVar) - is called out in
+                // DynamicBMQLVariables.md as an explicit anti-pattern distinct
+                // from + concatenation: no quotes/+ appear at all, so the
+                // hasDynamicConcat scan above can't see it.
+                const firstArg = (splitTopLevelArgs(argsText)[0] || '').trim();
+                if (/^[A-Za-z_]\w*$/.test(firstArg)) {
+                    diagnostics.push(makeDiagnostic(
+                        range,
+                        `Security Warning: Passing the bare variable '${firstArg}' directly as the whole bmql() query ("Full Substitution") is a documented anti-pattern. Use $variable syntax inside a query string literal instead (e.g. bmql("SELECT * FROM t WHERE id = $id", dict)) to prevent SQL injection.`,
+                        vscode.DiagnosticSeverity.Error,
+                        'bml-bmql-full-substitution'
+                    ));
+                }
             }
 
             if (/(?<!\$)\bselect\s+\*/i.test(queryLiteralText)) {
@@ -67,6 +83,21 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
                     "Commerce Best Practice: Avoid using 'SELECT *' in BMQL. Explicitly list the required columns to optimize performance and reduce memory usage.",
                     vscode.DiagnosticSeverity.Warning,
                     'bml-bmql-select-star'
+                ));
+            }
+
+            // Per BMQL.md's Notes: "JOIN clauses are only supported for
+            // customer-defined tables... if you have a query using a JOIN
+            // clause for the system-defined _parts table, you will receive
+            // an error message." System tables are conventionally prefixed
+            // with an underscore.
+            const joinSystemTableMatch = /\bjoin\s+(_\w+)/i.exec(queryLiteralText);
+            if (joinSystemTableMatch) {
+                diagnostics.push(makeDiagnostic(
+                    range,
+                    `Error: BMQL JOIN against system-defined table '${joinSystemTableMatch[1]}' is not supported and will error at runtime - JOIN only works with customer-defined tables.`,
+                    vscode.DiagnosticSeverity.Error,
+                    'bml-bmql-join-system-table'
                 ));
             }
 

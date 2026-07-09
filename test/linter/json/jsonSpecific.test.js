@@ -52,6 +52,44 @@ suite("BML Linter Test Suite - JSON specific tests", () => {
         });
     });
 
+    suite("jsonget() 3-arg numeric valueType without a defaultValue (bml-json-get-throws-without-default)", () => {
+        test("jsonget(obj, key, 'integer') - flags missing defaultValue for a numeric valueType", () => {
+            const diagnostics = lintText(`x = jsonget(obj, "key", "integer"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.ok(diag, 'Json.md: throws if the key is missing AND valueType is Integer/Float/Boolean AND no defaultValue is given');
+        });
+
+        test("jsonget(obj, key, 'float') - flags missing defaultValue", () => {
+            const diagnostics = lintText(`x = jsonget(obj, "key", "float"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.ok(diag);
+        });
+
+        test("jsonget(obj, key, 'boolean') - flags missing defaultValue", () => {
+            const diagnostics = lintText(`x = jsonget(obj, "key", "boolean"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.ok(diag);
+        });
+
+        test("jsonget(obj, key, 'integer', 0) - does not flag when a defaultValue is provided", () => {
+            const diagnostics = lintText(`x = jsonget(obj, "key", "integer", 0); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test("jsonget(obj, key, 'string') - does not flag String valueType (returns null safely)", () => {
+            const diagnostics = lintText(`x = jsonget(obj, "key", "string"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.strictEqual(diag, undefined);
+        });
+
+        test("jsonget(obj, key) - does not flag the 2-arg form", () => {
+            const diagnostics = lintText(`x = jsonget(obj, "key"); return "";`);
+            const diag = diagnostics.find(d => d.code === 'bml-json-get-throws-without-default');
+            assert.strictEqual(diag, undefined);
+        });
+    });
+
     suite("JSON functions argument counts and types (negative tests)", () => {
         test("6. jsonget() - Invalid 0 args & 1 arg", () => {
             const diagnostics1 = lintText(`x = jsonget(); return "";`);

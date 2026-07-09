@@ -41,6 +41,33 @@ function checkJson(cleanText, noStringsText, doc) {
         }
     }
 
+    // jsonget(jsonId, key, valueType) - the 3-arg form with no 4th
+    // defaultValue throws if the key is missing AND valueType is
+    // Integer/Float/Boolean (per Json.md). The 2-arg form and
+    // String/JSON/JSONArray valueTypes return null safely instead; only the
+    // numeric/boolean 3-arg form is a throw risk.
+    const jsonGetRegex = /\bjsonget\s*\(/g;
+    while ((match = jsonGetRegex.exec(cleanText)) !== null) {
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        if (closeParenIndex === -1) continue;
+        const args = splitTopLevelArgs(cleanText.slice(openParenIndex + 1, closeParenIndex));
+        if (args.length === 3) {
+            const valueTypeArg = args[2].trim();
+            const typeMatch = /^["'](integer|float|boolean)["']$/i.exec(valueTypeArg);
+            if (typeMatch) {
+                const startPos = doc.positionAt(match.index);
+                const endPos = doc.positionAt(closeParenIndex + 1);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Warning: 'jsonget()' with valueType '${typeMatch[1]}' and no defaultValue throws if the key is missing or the value can't be converted. Add a 4th defaultValue argument to avoid a runtime exception.`,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-json-get-throws-without-default'
+                ));
+            }
+        }
+    }
+
     // json() / jsonarray() / jsonnull() call validations
     const jsonFuncs = [
         { name: 'json', min: 0, max: 1, paramType: 'String' },
