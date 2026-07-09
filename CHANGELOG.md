@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.20.0] - 2026-07-09
+
+### Added
+- Implement table formatting for BML debug document attribute dumps and command output.
+
 ## [1.19.0] - 2026-07-08
 
 ### Added
@@ -59,10 +64,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Implement build-time minification for webview CSS and contribution JSON files.
-
-## [1.12.0] - 2026-07-03
-
-### Added
-
-- Implement BML spellchecker with custom user dictionary and diagnostic support.
-- Implement modular BML language linting architecture and comprehensive validation tests.
