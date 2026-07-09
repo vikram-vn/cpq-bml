@@ -1,4 +1,0 @@
-strArray = String[] {"hello", "world"};
-intArray = Integer[5];
-floatArray = Float[] {1.5, 2.5, 3.5};
-boolArray = Boolean[] {true, false};
