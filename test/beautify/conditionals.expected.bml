@@ -1,0 +1,5 @@
+if (x == 1) {
+	return "hello";
+} elif (x == 2) {
+	return "world";
+}

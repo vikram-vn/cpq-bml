@@ -1,0 +1,34 @@
+{
+    "hasMore": false,
+    "links": [
+        {
+            "rel": "self",
+            "href": "https://cpq.bigmachines.com/rest/v18/allProductFamilySetups"
+        }
+    ],
+    "items": [
+        {
+            "companyId": 4118171,
+            "variableName": "_allProductFamilies",
+            "label": "All Product Families",
+            "links": [
+                {
+                    "rel": "self",
+                    "href": "https://cpq.bigmachines.com/rest/v18/allProductFamilySetups/_allProductFamilies"
+                },
+                {
+                    "kind": "",
+                    "rel": "child",
+                    "name": "attributes",
+                    "href": "https://cpq.bigmachines.com/rest/v18/allProductFamilySetups/_allProductFamilies/attributes"
+                },
+                {
+                    "kind": "",
+                    "rel": "child",
+                    "name": "productFamilies",
+                    "href": "https://cpq.bigmachines.com/rest/v18/allProductFamilySetups/_allProductFamilies/productFamilies"
+                }
+            ]
+        }
+    ]
+}
