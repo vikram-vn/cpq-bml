@@ -41,7 +41,7 @@ suite('parseSkillFrontmatter', () => {
     });
 });
 
-const AI_SKILLS_KEYS = ['claude', 'cursor', 'copilot', 'codex', 'antigravity'];
+const AI_SKILLS_KEYS = ['claude', 'cursor', 'copilot'];
 
 // Sets cpqBml.mcp.aiSkills.<key> for each key present in overrides (Global
 // scope, matching how the settings webview itself writes these), runs fn(),
@@ -129,10 +129,11 @@ suite('AI Setup Integration Test Suite', () => {
         if (fs.existsSync(copilotInstructionsDir)) fs.rmSync(copilotInstructionsDir, { recursive: true, force: true });
         if (fs.existsSync(expectedStorageDir)) fs.rmSync(expectedStorageDir, { recursive: true, force: true });
 
-        // Execute the function with every tool's AI skills toggle enabled, since
+        // Execute the function with every settings-driven tool enabled, since
         // this test asserts all of them - by default only Claude is on.
+        // Codex/Antigravity are unconditional now (no setting to enable).
         await withAiSkillsConfig(
-            { claude: true, cursor: true, copilot: true, codex: true, antigravity: true },
+            { claude: true, cursor: true, copilot: true },
             () => autoSetupAiSkills(fakeContext)
         );
 
@@ -249,7 +250,7 @@ suite('AI Setup Integration Test Suite', () => {
 
         try {
             await withAiSkillsConfig(
-                { claude: true, cursor: true, copilot: true, codex: true, antigravity: true },
+                { claude: true, cursor: true, copilot: true },
                 () => autoSetupAiSkills(fakeContext)
             );
 
@@ -278,7 +279,7 @@ suite('AI Setup Integration Test Suite', () => {
 
         try {
             await withAiSkillsConfig(
-                { claude: true, cursor: false, copilot: false, codex: false, antigravity: false },
+                { claude: true, cursor: false, copilot: false },
                 () => autoSetupAiSkills(fakeContext)
             );
 
@@ -301,10 +302,10 @@ suite('AI Setup Integration Test Suite', () => {
         const { fakeContext, skillsJsonPath, claudeSkillsDir, cleanup } = setupFakeContext('mock_global_storage_idempotent');
 
         try {
-            // skills.json is only written by the codex/antigravity 'agentskills'
-            // pickId, so enable one of them here to exercise its dedup logic.
+            // skills.json is written by the always-on 'agentskills' pickId
+            // (Codex/Antigravity), so its dedup logic is exercised every run.
             await withAiSkillsConfig(
-                { claude: true, cursor: false, copilot: false, codex: true, antigravity: false },
+                { claude: true, cursor: false, copilot: false },
                 async () => {
                     await autoSetupAiSkills(fakeContext);
                     await autoSetupAiSkills(fakeContext);
@@ -319,7 +320,7 @@ suite('AI Setup Integration Test Suite', () => {
         }
     });
 
-    test('defaults to only Claude Code when no aiSkills settings are configured', async function () {
+    test('defaults to Claude Code + the always-on Codex/Antigravity family when no aiSkills settings are configured', async function () {
         if (!workspaceRoot) {
             console.warn('Skipping ai setup test because no workspace is open');
             return;
@@ -329,15 +330,16 @@ suite('AI Setup Integration Test Suite', () => {
 
         try {
             // undefined clears any override, letting package.json's schema
-            // defaults apply: claude=true, everything else=false.
+            // defaults apply: claude=true, cursor/copilot=false. Codex/
+            // Antigravity aren't settings-driven at all anymore - always on.
             await withAiSkillsConfig(
-                { claude: undefined, cursor: undefined, copilot: undefined, codex: undefined, antigravity: undefined },
+                { claude: undefined, cursor: undefined, copilot: undefined },
                 () => autoSetupAiSkills(fakeContext)
             );
 
             assert.ok(fs.existsSync(path.join(claudeSkillsDir, 'bml-language', 'SKILL.md')), 'Claude Code should be scaffolded by default');
-            assert.ok(!fs.existsSync(agentsSkillsDir), '.agents/skills/ should not be created when codex/antigravity are off by default');
-            assert.ok(!fs.existsSync(skillsJsonPath), '.agents/skills.json should not be created when codex/antigravity are off by default');
+            assert.ok(fs.existsSync(path.join(agentsSkillsDir, 'bml-language', 'SKILL.md')), '.agents/skills/ should always be scaffolded - Codex/Antigravity are unconditional');
+            assert.ok(fs.existsSync(skillsJsonPath), '.agents/skills.json should always be created - Codex/Antigravity are unconditional');
             assert.ok(!fs.existsSync(cursorRulesDir), '.cursor/rules/ should not be created when cursor is off by default');
             assert.ok(!fs.existsSync(copilotInstructionsDir), '.github/instructions/ should not be created when copilot is off by default');
             assert.ok(fs.existsSync(path.join(workspaceRoot, 'CLAUDE.md')), 'CLAUDE.md should still be created by the default-on claude merged-file pickId');
@@ -347,24 +349,22 @@ suite('AI Setup Integration Test Suite', () => {
         }
     });
 
-    test('enabling only Cursor in addition to the Claude default does not turn on Copilot or the Codex/Antigravity family', async function () {
+    test('enabling only Cursor in addition to the Claude default does not turn on Copilot', async function () {
         if (!workspaceRoot) {
             console.warn('Skipping ai setup test because no workspace is open');
             return;
         }
-        const { fakeContext, claudeSkillsDir, cursorRulesDir, agentsSkillsDir, copilotInstructionsDir, skillsJsonPath, cleanup } =
+        const { fakeContext, claudeSkillsDir, cursorRulesDir, copilotInstructionsDir, cleanup } =
             setupFakeContext('mock_global_storage_cursor_only');
 
         try {
             await withAiSkillsConfig(
-                { claude: undefined, cursor: true, copilot: undefined, codex: undefined, antigravity: undefined },
+                { claude: undefined, cursor: true, copilot: undefined },
                 () => autoSetupAiSkills(fakeContext)
             );
 
             assert.ok(fs.existsSync(path.join(claudeSkillsDir, 'bml-language', 'SKILL.md')), 'Claude Code should still be scaffolded (default on)');
             assert.ok(fs.existsSync(path.join(cursorRulesDir, 'bml-language.mdc')), 'Cursor should be scaffolded once explicitly enabled');
-            assert.ok(!fs.existsSync(agentsSkillsDir), '.agents/skills/ should stay off - only cursor was enabled');
-            assert.ok(!fs.existsSync(skillsJsonPath), '.agents/skills.json should stay off - only cursor was enabled');
             assert.ok(!fs.existsSync(copilotInstructionsDir), '.github/instructions/ should stay off - only cursor was enabled');
         } finally {
             fs.rmSync(path.join(workspaceRoot, 'CLAUDE.md'), { force: true });
@@ -383,14 +383,14 @@ suite('AI Setup Integration Test Suite', () => {
         try {
             // Round 1: claude (default) + cursor enabled.
             await withAiSkillsConfig(
-                { claude: undefined, cursor: true, copilot: undefined, codex: undefined, antigravity: undefined },
+                { claude: undefined, cursor: true, copilot: undefined },
                 () => autoSetupAiSkills(fakeContext)
             );
             assert.ok(fs.existsSync(path.join(cursorRulesDir, 'bml-language.mdc')), 'sanity check: cursor should be scaffolded in round 1');
 
             // Round 2: cursor switched off; claude left alone.
             await withAiSkillsConfig(
-                { claude: undefined, cursor: false, copilot: undefined, codex: undefined, antigravity: undefined },
+                { claude: undefined, cursor: false, copilot: undefined },
                 () => autoSetupAiSkills(fakeContext)
             );
 
@@ -400,6 +400,44 @@ suite('AI Setup Integration Test Suite', () => {
         } finally {
             fs.rmSync(path.join(workspaceRoot, 'CLAUDE.md'), { force: true });
             fs.rmSync(path.join(workspaceRoot, '.cursorrules'), { force: true });
+            cleanup();
+        }
+    });
+
+    test('turning a tool off also removes its merged single file (CLAUDE.md / .cursorrules / copilot-instructions.md)', async function () {
+        if (!workspaceRoot) {
+            console.warn('Skipping ai setup test because no workspace is open');
+            return;
+        }
+        const { fakeContext, cleanup } = setupFakeContext('mock_global_storage_merged_file_disable');
+        const claudeMdPath = path.join(workspaceRoot, 'CLAUDE.md');
+        const cursorrulesPath = path.join(workspaceRoot, '.cursorrules');
+        const copilotInstructionsPath = path.join(workspaceRoot, '.github', 'copilot-instructions.md');
+
+        try {
+            // Round 1: all three enabled - all three merged files should appear.
+            await withAiSkillsConfig(
+                { claude: true, cursor: true, copilot: true },
+                () => autoSetupAiSkills(fakeContext)
+            );
+            assert.ok(fs.existsSync(claudeMdPath), 'sanity check: CLAUDE.md should be created in round 1');
+            assert.ok(fs.existsSync(cursorrulesPath), 'sanity check: .cursorrules should be created in round 1');
+            assert.ok(fs.existsSync(copilotInstructionsPath), 'sanity check: copilot-instructions.md should be created in round 1');
+
+            // Round 2: all three turned off.
+            await withAiSkillsConfig(
+                { claude: false, cursor: false, copilot: false },
+                () => autoSetupAiSkills(fakeContext)
+            );
+
+            assert.ok(!fs.existsSync(claudeMdPath), 'CLAUDE.md should be removed once claude is turned off');
+            assert.ok(!fs.existsSync(cursorrulesPath), '.cursorrules should be removed once cursor is turned off');
+            assert.ok(!fs.existsSync(copilotInstructionsPath), 'copilot-instructions.md should be removed once copilot is turned off');
+            assert.ok(fs.existsSync(workspaceRoot), 'the workspace root itself must never be touched');
+        } finally {
+            fs.rmSync(claudeMdPath, { force: true });
+            fs.rmSync(cursorrulesPath, { force: true });
+            fs.rmSync(copilotInstructionsPath, { force: true });
             cleanup();
         }
     });
@@ -416,7 +454,7 @@ suite('AI Setup Integration Test Suite', () => {
         try {
             // Round 1: claude enabled - scaffolds .claude/skills/.
             await withAiSkillsConfig(
-                { claude: true, cursor: undefined, copilot: undefined, codex: undefined, antigravity: undefined },
+                { claude: true, cursor: undefined, copilot: undefined },
                 () => autoSetupAiSkills(fakeContext)
             );
             assert.ok(fs.existsSync(claudeSkillsDir), 'sanity check: .claude/skills/ should be scaffolded in round 1');
@@ -426,7 +464,7 @@ suite('AI Setup Integration Test Suite', () => {
 
             // Round 2: claude switched off.
             await withAiSkillsConfig(
-                { claude: false, cursor: undefined, copilot: undefined, codex: undefined, antigravity: undefined },
+                { claude: false, cursor: undefined, copilot: undefined },
                 () => autoSetupAiSkills(fakeContext)
             );
 
@@ -440,33 +478,40 @@ suite('AI Setup Integration Test Suite', () => {
         }
     });
 
-    test('turning off both Codex and Antigravity removes .agents/skills/ and clears (not deletes) the skills.json pointer entry', async function () {
+    test('Codex/Antigravity (.agents/skills/) are always scaffolded and never removed, regardless of any other tool being toggled', async function () {
         if (!workspaceRoot) {
             console.warn('Skipping ai setup test because no workspace is open');
             return;
         }
-        const { fakeContext, expectedStorageDir, agentsSkillsDir, skillsJsonPath, cleanup } = setupFakeContext('mock_global_storage_disable_agents');
+        const { fakeContext, expectedStorageDir, agentsSkillsDir, skillsJsonPath, cleanup } = setupFakeContext('mock_global_storage_agents_always_on');
 
         try {
-            // Round 1: codex enabled (antigravity stays off) - shared .agents/skills/ should appear.
+            // Round 1: every settings-driven tool off.
             await withAiSkillsConfig(
-                { claude: undefined, cursor: undefined, copilot: undefined, codex: true, antigravity: undefined },
+                { claude: false, cursor: false, copilot: false },
                 () => autoSetupAiSkills(fakeContext)
             );
-            assert.ok(fs.existsSync(agentsSkillsDir), 'sanity check: .agents/skills/ should be scaffolded in round 1');
-            assert.ok(fs.existsSync(skillsJsonPath), 'sanity check: .agents/skills.json should be created in round 1');
+            assert.ok(fs.existsSync(path.join(agentsSkillsDir, 'bml-language', 'SKILL.md')), '.agents/skills/ should be scaffolded even with every other tool off');
+            assert.ok(fs.existsSync(skillsJsonPath), '.agents/skills.json should be created even with every other tool off');
+            const skillsJson1 = JSON.parse(fs.readFileSync(skillsJsonPath, 'utf8'));
+            assert.ok(skillsJson1.entries.some((e) => e.path === expectedStorageDir), 'pointer entry should be present');
 
-            // Round 2: codex switched off (antigravity still off) - both codex/antigravity are now off.
+            // Round 2: turn everything else on - agents family should remain, not duplicated.
             await withAiSkillsConfig(
-                { claude: undefined, cursor: undefined, copilot: undefined, codex: false, antigravity: undefined },
+                { claude: true, cursor: true, copilot: true },
                 () => autoSetupAiSkills(fakeContext)
             );
-
-            assert.ok(!fs.existsSync(agentsSkillsDir), '.agents/skills/ should be removed once both codex and antigravity are off');
-            assert.ok(fs.existsSync(skillsJsonPath), 'skills.json itself should remain (other integrations may use it), just with our entry cleared');
-            const skillsJson = JSON.parse(fs.readFileSync(skillsJsonPath, 'utf8'));
-            assert.ok(!skillsJson.entries.some((e) => e.path === expectedStorageDir), 'our pointer entry should be removed from skills.json');
+            assert.ok(fs.existsSync(agentsSkillsDir), '.agents/skills/ should still be present after other tools are enabled');
+            const skillsJson2 = JSON.parse(fs.readFileSync(skillsJsonPath, 'utf8'));
+            assert.strictEqual(
+                skillsJson2.entries.filter((e) => e.path === expectedStorageDir).length,
+                1,
+                'pointer entry should not be duplicated across runs'
+            );
         } finally {
+            fs.rmSync(path.join(workspaceRoot, 'CLAUDE.md'), { force: true });
+            fs.rmSync(path.join(workspaceRoot, '.cursorrules'), { force: true });
+            fs.rmSync(path.join(workspaceRoot, '.github', 'copilot-instructions.md'), { force: true });
             cleanup();
         }
     });

@@ -77,19 +77,12 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                 />
 
                 <Switch
-                    id="aiSkillsCodex"
-                    label="Codex CLI (OpenAI)"
-                    description="Native project skills (.agents/skills/)"
-                    checked={aiSkills.codex}
-                    onChange={(v) => updateField('mcp.aiSkills.codex', v)}
-                />
-
-                <Switch
-                    id="aiSkillsAntigravity"
-                    label="Antigravity IDE (Google)"
-                    description="Native project skills (.agents/skills/) - same convention as Codex CLI, so enabling either writes the same files"
-                    checked={aiSkills.antigravity}
-                    onChange={(v) => updateField('mcp.aiSkills.antigravity', v)}
+                    id="aiSkillsCodexAntigravity"
+                    label="Codex CLI (OpenAI) & Antigravity IDE (Google)"
+                    description="Native project skills (.agents/skills/) - always enabled, both tools share this convention"
+                    checked={true}
+                    disabled={true}
+                    onChange={() => {}}
                 />
             </section>
         </div>

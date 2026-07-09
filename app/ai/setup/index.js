@@ -7,29 +7,38 @@ const path = require('path');
 
 // Maps each cpqBml.mcp.aiSkills.<key> setting to the performAiSetup pickIds it
 // controls - native skill/rule files plus that tool's legacy merged-file
-// target. Codex CLI (OpenAI) and Antigravity IDE (Google) are separate
-// vendors/toggles but happen to document the identical .agents/skills/
-// convention, so they map to the same pickIds - enabling either one writes
-// the same files (deduped via a Set in autoSetupAiSkills).
+// target.
 const AI_SKILLS_TOOL_PICK_IDS = {
     claude: ['claudeSkills', 'claude'],
     cursor: ['cursorRules', 'cursor'],
     copilot: ['copilotInstructions', 'copilot'],
-    codex: ['nativeAgentSkills', 'agentskills'],
-    antigravity: ['nativeAgentSkills', 'agentskills'],
 };
 
+// Codex CLI (OpenAI) and Antigravity IDE (Google) both document the identical
+// .agents/skills/ convention. Always on, not user-configurable - unlike the
+// other three tools, toggling these on/off never reliably reproduced, so
+// they're simply always scaffolded rather than gated behind a setting.
+const ALWAYS_ON_PICK_IDS = ['nativeAgentSkills', 'agentskills'];
+
 // The native, per-skill directory each toggle family owns outright (safe to
-// delete wholesale when disabled - unlike the single merged files like
-// CLAUDE.md/.cursorrules/copilot-instructions.md, which are left alone since
-// they could plausibly contain content the user wrote by hand, not just what
-// we generated). Codex and Antigravity share one directory, so it's only
-// removed once *both* are off.
+// delete wholesale when disabled - unlike the single merged files, which get
+// their own removal pass below since a stray leftover file, not a directory,
+// needs different empty-parent handling).
 const NATIVE_SKILL_TARGETS = [
     { settingKeys: ['claude'], dir: (root) => path.join(root, '.claude', 'skills') },
     { settingKeys: ['cursor'], dir: (root) => path.join(root, '.cursor', 'rules') },
     { settingKeys: ['copilot'], dir: (root) => path.join(root, '.github', 'instructions') },
-    { settingKeys: ['codex', 'antigravity'], dir: (root) => path.join(root, '.agents', 'skills') },
+];
+
+// The single merged-content file each toggle family also writes (in addition
+// to its native target above). Removed on disable too, for the same reason
+// the native targets are: this automation already silently overwrites these
+// files with no confirmation when enabling, so it's no more destructive to
+// silently remove them when disabling.
+const MERGED_FILE_TARGETS = [
+    { settingKeys: ['claude'], file: (root) => path.join(root, 'CLAUDE.md') },
+    { settingKeys: ['cursor'], file: (root) => path.join(root, '.cursorrules') },
+    { settingKeys: ['copilot'], file: (root) => path.join(root, '.github', 'copilot-instructions.md') },
 ];
 
 // Removes dir, then removes its parent too if that parent is now genuinely
@@ -50,19 +59,19 @@ function removeDirAndEmptyParent(dir) {
     }
 }
 
-// Removes our own pointer entry (matching customizationRoot) from
-// .agents/skills.json without touching any other entries that may be there,
-// and leaves the file alone entirely if it's missing or unparseable.
-function removeAgentSkillsPointerEntry(root, customizationRoot) {
-    const destFile = path.join(root, '.agents', 'skills.json');
-    if (!fs.existsSync(destFile)) return;
+// Same idea as removeDirAndEmptyParent but for a single file (CLAUDE.md,
+// .cursorrules, copilot-instructions.md). Never removes the workspace root
+// itself even if it were somehow empty - only a real subfolder like .github.
+function removeFileAndEmptyParentDir(filePath, root) {
+    fs.rmSync(filePath, { force: true });
+    const parent = path.dirname(filePath);
+    if (parent === root) return;
     try {
-        const currentConfig = JSON.parse(fs.readFileSync(destFile, 'utf8'));
-        if (!Array.isArray(currentConfig.entries)) return;
-        currentConfig.entries = currentConfig.entries.filter((entry) => entry.path !== customizationRoot);
-        fs.writeFileSync(destFile, JSON.stringify(currentConfig, null, 2), 'utf8');
+        if (fs.existsSync(parent) && fs.readdirSync(parent).length === 0) {
+            fs.rmdirSync(parent);
+        }
     } catch (e) {
-        // Unparseable/unexpected shape - leave it alone rather than guess.
+        // Not actually empty or already gone - leave it alone.
     }
 }
 
@@ -381,23 +390,22 @@ async function autoSetupAiSkills(context) {
     }
 
     // 3. Scaffold whichever tools are enabled under cpqBml.mcp.aiSkills.*
-    // (Claude on by default, the rest opt-in - see package.json for defaults),
-    // and remove the native directory for any tool that's off, so the
-    // workspace always reflects exactly the current toggle state.
+    // (Claude on by default, Cursor/Copilot opt-in - see package.json for
+    // defaults), plus Codex/Antigravity unconditionally, and remove the
+    // native directory/merged file for any of the three settings-driven
+    // tools that's off, so the workspace always reflects the current toggles.
     const cpqConfig = vscode.workspace.getConfiguration('cpqBml');
     const enabled = {};
     for (const settingKey of Object.keys(AI_SKILLS_TOOL_PICK_IDS)) {
         enabled[settingKey] = cpqConfig.get(`mcp.aiSkills.${settingKey}`, settingKey === 'claude');
     }
 
-    const pickIds = new Set();
+    const pickIds = new Set(ALWAYS_ON_PICK_IDS);
     for (const [settingKey, ids] of Object.entries(AI_SKILLS_TOOL_PICK_IDS)) {
         if (enabled[settingKey]) ids.forEach((id) => pickIds.add(id));
     }
     console.log('CPQ-BML: autoSetupAiSkills - root:', root, 'enabled:', enabled, 'pickIds:', [...pickIds]);
-    if (pickIds.size > 0) {
-        await performAiSetup(context, root, [...pickIds], aiStorageDir, skillsSrc, summaryFile, true);
-    }
+    await performAiSetup(context, root, [...pickIds], aiStorageDir, skillsSrc, summaryFile, true);
 
     for (const target of NATIVE_SKILL_TARGETS) {
         if (!target.settingKeys.some((k) => enabled[k])) {
@@ -409,11 +417,14 @@ async function autoSetupAiSkills(context) {
             }
         }
     }
-    if (!enabled.codex && !enabled.antigravity) {
-        try {
-            removeAgentSkillsPointerEntry(root, aiStorageDir);
-        } catch (e) {
-            console.error('CPQ-BML: Failed to clear .agents/skills.json pointer entry:', e);
+    for (const target of MERGED_FILE_TARGETS) {
+        if (!target.settingKeys.some((k) => enabled[k])) {
+            const file = target.file(root);
+            try {
+                removeFileAndEmptyParentDir(file, root);
+            } catch (e) {
+                console.error(`CPQ-BML: Failed to remove ${file}:`, e);
+            }
         }
     }
 }

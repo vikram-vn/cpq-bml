@@ -51,9 +51,7 @@ async function buildState(context, vscode) {
             aiSkills: {
                 claude: cpqConfig.get('mcp.aiSkills.claude', true),
                 cursor: cpqConfig.get('mcp.aiSkills.cursor', false),
-                copilot: cpqConfig.get('mcp.aiSkills.copilot', false),
-                codex: cpqConfig.get('mcp.aiSkills.codex', false),
-                antigravity: cpqConfig.get('mcp.aiSkills.antigravity', false)
+                copilot: cpqConfig.get('mcp.aiSkills.copilot', false)
             }
         },
         debug: {

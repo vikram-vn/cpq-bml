@@ -182,6 +182,15 @@ button.link:hover {
     box-shadow: 0 0 0 1px var(--vscode-focusBorder);
 }
 
+/* Read-only switch: always on, not user-configurable */
+.switch-disabled {
+    opacity: 0.6;
+}
+
+.switch-disabled .switch-control {
+    cursor: default;
+}
+
 /* Status pills */
 .pill {
     display: inline-flex;

@@ -36,8 +36,6 @@ const ALLOWED_FIELDS = new Set([
   "mcp.aiSkills.claude",
   "mcp.aiSkills.cursor",
   "mcp.aiSkills.copilot",
-  "mcp.aiSkills.codex",
-  "mcp.aiSkills.antigravity",
   "debug.logRestDetails",
   "debug.logOutputToFile",
   "debug.showResultsAsTable",

@@ -58,7 +58,7 @@ suite("settings-panel state", () => {
         enable: true,
         port: 12345,
         logToTerminal: true,
-        aiSkills: { claude: true, cursor: false, copilot: false, codex: false, antigravity: false }
+        aiSkills: { claude: true, cursor: false, copilot: false }
       },
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],

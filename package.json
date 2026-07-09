@@ -434,16 +434,6 @@
           "default": false,
           "description": "When the MCP server is enabled, scaffold native GitHub Copilot path-scoped instructions (.github/instructions/*.instructions.md) plus a repo-wide .github/copilot-instructions.md in the workspace root."
         },
-        "cpqBml.mcp.aiSkills.codex": {
-          "type": "boolean",
-          "default": false,
-          "description": "When the MCP server is enabled, scaffold native OpenAI Codex CLI project skills (.agents/skills/) in the workspace root."
-        },
-        "cpqBml.mcp.aiSkills.antigravity": {
-          "type": "boolean",
-          "default": false,
-          "description": "When the MCP server is enabled, scaffold native Google Antigravity IDE project skills (.agents/skills/) in the workspace root. Shares the same convention as Codex CLI, so enabling either writes the same files."
-        },
         "cpqBml.debug.logRestDetails": {
           "type": "boolean",
           "default": false,
