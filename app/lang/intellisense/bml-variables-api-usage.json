@@ -1,0 +1,345 @@
+{
+    "_user_shipping_country": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_country",
+        "examples": [],
+        "notes": "Current User's Shipping Country"
+    },
+    "_user_billing_company_2": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_company_2",
+        "examples": [],
+        "notes": "Current User's Billing Company 2"
+    },
+    "_site_url": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_site_url",
+        "examples": [],
+        "notes": "Site Url"
+    },
+    "_user_shipping_first_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_first_name",
+        "examples": [],
+        "notes": "Current User's Shipping First Name"
+    },
+    "_user_partner_session_Id": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_partner_session_Id",
+        "examples": [],
+        "notes": "Current User's Partner Session Id"
+    },
+    "_user_billing_phone": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_phone",
+        "examples": [],
+        "notes": "Current User's Billing Phone"
+    },
+    "_user_type": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_type",
+        "examples": [],
+        "notes": "Current User's Type"
+    },
+    "_user_shipping_company": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_company",
+        "examples": [],
+        "notes": "Current User's Shipping Company"
+    },
+    "_user_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_name",
+        "examples": [],
+        "notes": "Current User's Name"
+    },
+    "_user_shipping_phone": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_phone",
+        "examples": [],
+        "notes": "Current User's Shipping Phone"
+    },
+    "_user_date_preference": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_date_preference",
+        "examples": [],
+        "notes": "Current User's Date Preference"
+    },
+    "_user_billing_fax": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_fax",
+        "examples": [],
+        "notes": "Current User's Billing Fax"
+    },
+    "_user_last_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_last_name",
+        "examples": [],
+        "notes": "Current User's Last Name"
+    },
+    "_user_billing_company": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_company",
+        "examples": [],
+        "notes": "Current User's Billing Company"
+    },
+    "_user_billing_province": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_province",
+        "examples": [],
+        "notes": "Current User's Billing State/Province"
+    },
+    "_supplier_company_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_supplier_company_name",
+        "examples": [],
+        "notes": "Supplier's Company Name"
+    },
+    "_user_shipping_province": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_province",
+        "examples": [],
+        "notes": "Current User's Shipping State/Province"
+    },
+    "_user_login": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_login",
+        "examples": [],
+        "notes": "Current User's Login"
+    },
+    "_user_billing_last_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_last_name",
+        "examples": [],
+        "notes": "Current User's Billing Last Name"
+    },
+    "_current_date": {
+        "scope": "BML Variable",
+        "dataType": "Date",
+        "syntax": "_current_date",
+        "examples": [],
+        "notes": "Current Date"
+    },
+    "_user_billing_country": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_country",
+        "examples": [],
+        "notes": "Current User's Billing Country"
+    },
+    "_user_currency_preference": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_currency_preference",
+        "examples": [],
+        "notes": "Current User's Currency Pref"
+    },
+    "_user_shipping_zip": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_zip",
+        "examples": [],
+        "notes": "Current User's Shipping Zip"
+    },
+    "_user_session_id": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_session_id",
+        "examples": [],
+        "notes": "Current User's Session Id"
+    },
+    "_user_shipping_address_2": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_address_2",
+        "examples": [],
+        "notes": "Current User's Shipping Address 2"
+    },
+    "_user_number_format": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_number_format",
+        "examples": [],
+        "notes": "Current User's Number Format"
+    },
+    "_user_shipping_company_2": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_company_2",
+        "examples": [],
+        "notes": "Current User's Shipping Company 2"
+    },
+    "_user_fax": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_fax",
+        "examples": [],
+        "notes": "Current User's Fax"
+    },
+    "_user_language_preference": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_language_preference",
+        "examples": [],
+        "notes": "Current User's Language Preference"
+    },
+    "_user_shipping_address": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_address",
+        "examples": [],
+        "notes": "Current User's Shipping Address"
+    },
+    "_user_job_title": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_job_title",
+        "examples": [],
+        "notes": "Current User's Job Title"
+    },
+    "_user_billing_zip": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_zip",
+        "examples": [],
+        "notes": "Current User's Billing Zip"
+    },
+    "_user_shipping_last_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_last_name",
+        "examples": [],
+        "notes": "Current User's Shipping Last Name"
+    },
+    "_user_phone": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_phone",
+        "examples": [],
+        "notes": "Current User's Phone"
+    },
+    "_user_shipping_fax": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_fax",
+        "examples": [],
+        "notes": "Current User's Shipping Fax"
+    },
+    "_user_billing_address": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_address",
+        "examples": [],
+        "notes": "Current User's Billing Address"
+    },
+    "_user_billing_city": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_city",
+        "examples": [],
+        "notes": "Current User's Billing City"
+    },
+    "_subscription_order_enabled": {
+        "scope": "BML Variable",
+        "dataType": "Boolean",
+        "syntax": "_subscription_order_enabled",
+        "examples": [],
+        "notes": "Boolean value is \"true\" when the subscription order is enabled"
+    },
+    "_user_group": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_group",
+        "examples": [],
+        "notes": "Current User's Groups"
+    },
+    "_user_billing_address_2": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_address_2",
+        "examples": [],
+        "notes": "Current User's Billing Address 2"
+    },
+    "_user_first_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_first_name",
+        "examples": [],
+        "notes": "Current User's First Name"
+    },
+    "_user_shipping_email": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_email",
+        "examples": [],
+        "notes": "Current User's Shipping Email"
+    },
+    "_user_billing_email": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_email",
+        "examples": [],
+        "notes": "Current User's Billing Email"
+    },
+    "_user_timezone": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_timezone",
+        "examples": [],
+        "notes": "Current User's Time Zone"
+    },
+    "_user_unit": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_unit",
+        "examples": [],
+        "notes": "Current User's Units"
+    },
+    "_company_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_company_name",
+        "examples": [],
+        "notes": "Current User's Company Name"
+    },
+    "_user_billing_first_name": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_billing_first_name",
+        "examples": [],
+        "notes": "Current User's Billing First Name"
+    },
+    "_user_shipping_city": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_shipping_city",
+        "examples": [],
+        "notes": "Current User's Shipping City"
+    },
+    "_user_email": {
+        "scope": "BML Variable",
+        "dataType": "String",
+        "syntax": "_user_email",
+        "examples": [],
+        "notes": "Current User's Email"
+    }
+}

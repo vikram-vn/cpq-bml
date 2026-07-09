@@ -1,0 +1,54 @@
+// ==========================================
+// BML Category: DATA TYPE CONSISTENCY - Senior QA Regression Suite
+// ==========================================
+
+// 1. Valid Type Operations (no errors)
+validInt1 = 10;
+validInt2 = 20;
+sumInt = validInt1 + validInt2;
+
+validStr1 = "SKU";
+validStr2 = "Price";
+sumStr = validStr1 + validStr2;
+
+validFlt1 = 10.5;
+validFlt2 = 20.5;
+sumFlt = validFlt1 + validFlt2;
+
+validBool1 = true;
+validBool2 = false;
+
+// Comparing matches
+if (validInt1 == validInt2) { print("equal"); }
+if (validStr1 == validStr2) { print("equal"); }
+if (validBool1 == validBool2) { print("equal"); }
+if (validInt1 < validInt2) { print("less"); }
+
+// 2. Variable Reassignment Type Mismatch (bml-type-mismatch)
+mismatchVar = 100;
+mismatchVar = "now assigning string";
+
+mismatchBool = true;
+mismatchBool = 50.5;
+
+// 3. Binary operator type mismatch (bml-binary-type-mismatch)
+// Addition mismatch
+errAdd1 = "sku" + 5;
+errAdd2 = 10 + "price";
+errAdd3 = true + false;
+
+// Subtraction, multiplication, division mismatch
+errSub = "sku" - 5;
+errMul = "sku" * 10;
+errDiv = "sku" / 2;
+
+// Relational equality mismatch
+errEq1 = "sku" == 100;
+errEq2 = true != 10.5;
+errEq3 = "sku" <> false;
+
+// Relational inequality mismatch
+errIneq1 = "sku" < 10;
+errIneq2 = 20.5 >= "price";
+
+return "";

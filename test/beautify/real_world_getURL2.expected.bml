@@ -1,0 +1,24 @@
+/*
+Name: getURL2
+Description: This function queries ext_Config_URL and return_URL from the Oracle_ExtCfgDetails data table for a particular system and model and returns them both in a JSON object.
+Inputs:
+    sysname - String
+    modelname - String
+Return: Json
+*/
+
+return_URL = "";
+ext_Config_URL = "";
+// Get external configuration URL and return URL from data table Oracle_ExtCfgDetails
+results = bmql("select ext_Config_URL,return_URL from Oracle_ExtCfgDetails where System =$sysname and SegPlineModelVarName=$modelname");
+
+
+for result in results {
+	ext_Config_URL = get(result, "ext_Config_URL");
+	return_URL = get(result, "return_URL");
+}
+
+jsonObject = json();
+jsonput(jsonObject, "key1", return_URL);
+jsonput(jsonObject, "key2", ext_Config_URL);
+return jsonObject;
