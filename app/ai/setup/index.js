@@ -5,6 +5,102 @@ const path = require('path');
 
 // (Removed registerAiSetup since setup is purely automatic on MCP enable)
 
+// Pulls "name" and "description" out of a SKILL.md's YAML frontmatter, handling
+// both inline scalars (`description: foo`) and folded block scalars
+// (`description: >-` followed by indented lines) - the only two styles the
+// generated SKILL.md templates use. Not a general YAML parser.
+function parseSkillFrontmatter(skillMdContent) {
+    const match = skillMdContent.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+    if (!match) return { name: null, description: '', body: skillMdContent.trim() };
+
+    const [, frontmatter, body] = match;
+    const lines = frontmatter.split(/\r?\n/);
+    let name = null;
+    let description = '';
+
+    for (let i = 0; i < lines.length; i++) {
+        const nameMatch = lines[i].match(/^name:\s*(.+)$/);
+        if (nameMatch) name = nameMatch[1].trim();
+
+        const descMatch = lines[i].match(/^description:\s*(.*)$/);
+        if (descMatch) {
+            const inline = descMatch[1].trim();
+            if (inline && !/^[>|][-+]?$/.test(inline)) {
+                description = inline.replace(/^["']|["']$/g, '');
+            } else {
+                const folded = [];
+                let j = i + 1;
+                while (j < lines.length && /^\s+\S/.test(lines[j])) {
+                    folded.push(lines[j].trim());
+                    j++;
+                }
+                description = folded.join(' ').trim();
+            }
+        }
+    }
+
+    return { name, description, body: body.trim() };
+}
+
+// Copies each skill's SKILL.md (+ references/) as-is into destSkillsDir/<name>/.
+// Shared by the native '.claude/skills' and '.agents/skills' targets, which use
+// an identical on-disk convention.
+function copySkillDirsNative(destSkillsDir, skillsSrc, skillDirs) {
+    for (const skillName of skillDirs) {
+        const srcSkillDir = path.join(skillsSrc, skillName);
+        const srcSkillFile = path.join(srcSkillDir, 'SKILL.md');
+        if (!fs.existsSync(srcSkillFile)) continue;
+
+        const destSkillDir = path.join(destSkillsDir, skillName);
+        fs.mkdirSync(destSkillDir, { recursive: true });
+        fs.copyFileSync(srcSkillFile, path.join(destSkillDir, 'SKILL.md'));
+
+        const srcRefsDir = path.join(srcSkillDir, 'references');
+        if (fs.existsSync(srcRefsDir)) {
+            const destRefsDir = path.join(destSkillDir, 'references');
+            fs.mkdirSync(destRefsDir, { recursive: true });
+            for (const refFile of fs.readdirSync(srcRefsDir)) {
+                fs.copyFileSync(path.join(srcRefsDir, refFile), path.join(destRefsDir, refFile));
+            }
+        }
+    }
+}
+
+// Writes one .cursor/rules/<name>.mdc per skill - Cursor's native project rules
+// format (the root .cursorrules file is reportedly ignored in Agent mode as of
+// 2026). description-only + alwaysApply:false makes each an "Agent Requested"
+// rule, so Cursor decides relevance the same way Claude/Codex/Antigravity do
+// for their native skills, rather than always-on or path-glob-triggered.
+function writeCursorRuleFiles(root, skillsSrc, skillDirs) {
+    const destDir = path.join(root, '.cursor', 'rules');
+    fs.mkdirSync(destDir, { recursive: true });
+    for (const skillName of skillDirs) {
+        const srcSkillFile = path.join(skillsSrc, skillName, 'SKILL.md');
+        if (!fs.existsSync(srcSkillFile)) continue;
+        const { description, body } = parseSkillFrontmatter(fs.readFileSync(srcSkillFile, 'utf8'));
+
+        const mdc = `---\ndescription: >-\n  ${description || skillName}\nalwaysApply: false\n---\n\n${body}\n`;
+        fs.writeFileSync(path.join(destDir, `${skillName}.mdc`), mdc, 'utf8');
+    }
+}
+
+// Writes one .github/instructions/<name>.instructions.md per skill - Copilot's
+// native path-scoped instructions format (supported in VS Code Chat, the cloud
+// coding agent, code review, JetBrains, and Copilot CLI). Every BML skill here
+// is scoped to *.bml files since that's the entire premise of this extension.
+function writeCopilotInstructionFiles(root, skillsSrc, skillDirs) {
+    const destDir = path.join(root, '.github', 'instructions');
+    fs.mkdirSync(destDir, { recursive: true });
+    for (const skillName of skillDirs) {
+        const srcSkillFile = path.join(skillsSrc, skillName, 'SKILL.md');
+        if (!fs.existsSync(srcSkillFile)) continue;
+        const { description, body } = parseSkillFrontmatter(fs.readFileSync(srcSkillFile, 'utf8'));
+
+        const instructions = `---\napplyTo: '**/*.bml'\ndescription: >-\n  ${description || skillName}\n---\n\n${body}\n`;
+        fs.writeFileSync(path.join(destDir, `${skillName}.instructions.md`), instructions, 'utf8');
+    }
+}
+
 async function performAiSetup(context, root, pickIds, customizationRoot, skillsSrc, summaryFile, silent = false) {
     const vscode = require('vscode');
 
@@ -18,7 +114,69 @@ async function performAiSetup(context, root, pickIds, customizationRoot, skillsS
     const skipped = [];
 
     for (const pickId of pickIds) {
-        if (pickId === 'agentskills') {
+        if (pickId === 'claudeSkills') {
+            // Native Claude Code project skills: .claude/skills/<name>/SKILL.md
+            // (+ references/), discovered and loaded on demand by Claude Code
+            // itself - unlike the 'claude' branch below, which only writes a
+            // single always-loaded CLAUDE.md summary.
+            try {
+                copySkillDirsNative(path.join(root, '.claude', 'skills'), skillsSrc, skillDirs);
+                created.push('.claude/skills/');
+            } catch (e) {
+                if (!silent) {
+                    vscode.window.showErrorMessage(
+                        `CPQ-BML: Failed to write .claude/skills/: ${e.message}`,
+                    );
+                }
+            }
+        } else if (pickId === 'nativeAgentSkills') {
+            // Native Codex CLI + Antigravity IDE project skills. Both tools
+            // independently document the exact same convention -
+            // .agents/skills/<name>/SKILL.md (+ references/) - scanned from cwd
+            // up to the repo root, loaded on demand by description match. This
+            // is a real skill directory, unlike the 'agentskills' pointer-file
+            // branch below (kept for whatever else may read that pointer, but
+            // it does not match either tool's documented format).
+            try {
+                copySkillDirsNative(path.join(root, '.agents', 'skills'), skillsSrc, skillDirs);
+                created.push('.agents/skills/');
+            } catch (e) {
+                if (!silent) {
+                    vscode.window.showErrorMessage(
+                        `CPQ-BML: Failed to write .agents/skills/: ${e.message}`,
+                    );
+                }
+            }
+        } else if (pickId === 'cursorRules') {
+            // Native Cursor project rules: .cursor/rules/<name>.mdc, one per
+            // skill - unlike the 'cursor' branch below, which only writes the
+            // legacy root .cursorrules file (reportedly ignored in Agent mode).
+            try {
+                writeCursorRuleFiles(root, skillsSrc, skillDirs);
+                created.push('.cursor/rules/');
+            } catch (e) {
+                if (!silent) {
+                    vscode.window.showErrorMessage(
+                        `CPQ-BML: Failed to write .cursor/rules/: ${e.message}`,
+                    );
+                }
+            }
+        } else if (pickId === 'copilotInstructions') {
+            // Native Copilot path-scoped instructions: one
+            // .github/instructions/<name>.instructions.md per skill, applied to
+            // *.bml files - unlike the 'copilot' branch below, which only
+            // writes the single repo-wide copilot-instructions.md summary.
+            try {
+                writeCopilotInstructionFiles(root, skillsSrc, skillDirs);
+                created.push('.github/instructions/');
+            } catch (e) {
+                if (!silent) {
+                    vscode.window.showErrorMessage(
+                        `CPQ-BML: Failed to write .github/instructions/: ${e.message}`,
+                    );
+                }
+            }
+        } else if (pickId === 'agentskills') {
             // Create a pointer file at .agents/skills.json instead of copying files
             const destDir = path.join(root, '.agents');
             const destFile = path.join(destDir, 'skills.json');
@@ -157,7 +315,10 @@ async function autoSetupAiSkills(context) {
     }
 
     // 3. Setup skills using extracted files
-    await performAiSetup(context, root, ['agentskills', 'claude', 'copilot', 'cursor'], aiStorageDir, skillsSrc, summaryFile, true);
+    await performAiSetup(context, root, [
+        'agentskills', 'claudeSkills', 'nativeAgentSkills', 'cursorRules', 'copilotInstructions',
+        'claude', 'copilot', 'cursor',
+    ], aiStorageDir, skillsSrc, summaryFile, true);
 }
 
-module.exports = { autoSetupAiSkills };
+module.exports = { autoSetupAiSkills, parseSkillFrontmatter };

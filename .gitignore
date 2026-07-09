@@ -12,7 +12,9 @@ dist/
 *.vsix
 .env
 .agents
+.claude/skills
 .cpqdevkit
+.cursor/rules
 .cursorrules
 *.lock
 *.md
