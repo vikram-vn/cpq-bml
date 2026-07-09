@@ -1,0 +1,13 @@
+// ==========================================
+// BML Category: LOGICAL - Senior QA Regression Suite
+// ==========================================
+
+// Common environment instances
+sb = stringbuilder();
+rs = bmql("select id from parts");
+myDict = dict("string");
+myJson = json();
+myJsonArr = jsonarray();
+myDate = getdate();
+
+return "";

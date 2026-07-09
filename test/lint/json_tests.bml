@@ -1,0 +1,570 @@
+// ==========================================
+// BML Category: JSON - Senior QA Regression Suite
+// ==========================================
+
+// Common environment instances
+sb = stringbuilder();
+rs = bmql("select id from parts");
+myDict = dict("string");
+myJson = json();
+myJsonArr = jsonarray();
+myDate = getdate();
+
+val_json_pos1 = json("abc");
+var_json_arg_0 = "abc";
+val_json_pos2 = json(var_json_arg_0);
+val_json_pos3 = JSON("abc");
+if (true) { val_json_pos4 = json("abc"); }
+for loopIdx in range(1) { val_json_pos5 = json("abc"); }
+val_json_pos6 = json(string(123));
+val_json_pos7 = json(   
+  	  "abc" 	
+  );
+val_json_pos8 = json(/* comment */ "abc");
+val_json_pos9 = json("");
+val_json_pos10 = json("abc");
+val_json_neg1 = json();
+val_json_neg2 = json("abc", "excess_parameter_value");
+val_json_neg3 = json(123);
+val_json_neg4 = json("abc",);
+val_json_neg5 = invalid_ns.json("abc");
+val_json_neg6 = json(, );
+json("abc") = "override_val";
+val_json_neg8 = json(return, break);
+val_json_neg9 = json(123; 456);
+val_json_neg10 = json("abc" 
+
+val_jsonarray_pos1 = jsonarray("abc");
+var_jsonarray_arg_0 = "abc";
+val_jsonarray_pos2 = jsonarray(var_jsonarray_arg_0);
+val_jsonarray_pos3 = JSONARRAY("abc");
+if (true) { val_jsonarray_pos4 = jsonarray("abc"); }
+for loopIdx in range(1) { val_jsonarray_pos5 = jsonarray("abc"); }
+val_jsonarray_pos6 = jsonarray(string(123));
+val_jsonarray_pos7 = jsonarray(   
+  	  "abc" 	
+  );
+val_jsonarray_pos8 = jsonarray(/* comment */ "abc");
+val_jsonarray_pos9 = jsonarray("");
+val_jsonarray_pos10 = jsonarray("abc");
+val_jsonarray_neg1 = jsonarray();
+val_jsonarray_neg2 = jsonarray("abc", "excess_parameter_value");
+val_jsonarray_neg3 = jsonarray(123);
+val_jsonarray_neg4 = jsonarray("abc",);
+val_jsonarray_neg5 = invalid_ns.jsonarray("abc");
+val_jsonarray_neg6 = jsonarray(, );
+jsonarray("abc") = "override_val";
+val_jsonarray_neg8 = jsonarray(return, break);
+val_jsonarray_neg9 = jsonarray(123; 456);
+val_jsonarray_neg10 = jsonarray("abc" 
+
+val_jsonnull_pos1 = jsonnull();
+val_jsonnull_pos2 = jsonnull();
+val_jsonnull_pos3 = JSONNULL();
+if (true) { val_jsonnull_pos4 = jsonnull(); }
+for loopIdx in range(1) { val_jsonnull_pos5 = jsonnull(); }
+val_jsonnull_pos6 = jsonnull();
+val_jsonnull_pos7 = jsonnull(   
+  	   	
+  );
+val_jsonnull_pos8 = jsonnull(/* comment */);
+val_jsonnull_pos9 = jsonnull();
+val_jsonnull_pos10 = jsonnull();
+val_jsonnull_neg1 = jsonnull("excess_parameter");
+val_jsonnull_neg2 = jsonnull("excess_parameter_value");
+val_jsonnull_neg3 = jsonnull(123);
+val_jsonnull_neg4 = jsonnull(,);
+val_jsonnull_neg5 = invalid_ns.jsonnull();
+val_jsonnull_neg6 = jsonnull(, );
+jsonnull() = "override_val";
+val_jsonnull_neg8 = jsonnull(return, break);
+val_jsonnull_neg9 = jsonnull(123; 456);
+val_jsonnull_neg10 = jsonnull( 
+
+val_jsonkeys_pos1 = jsonkeys(json());
+var_jsonkeys_arg_0 = json();
+val_jsonkeys_pos2 = jsonkeys(var_jsonkeys_arg_0);
+val_jsonkeys_pos3 = JSONKEYS(json());
+if (true) { val_jsonkeys_pos4 = jsonkeys(json()); }
+for loopIdx in range(1) { val_jsonkeys_pos5 = jsonkeys(json()); }
+val_jsonkeys_pos6 = jsonkeys(json());
+val_jsonkeys_pos7 = jsonkeys(   
+  	  json() 	
+  );
+val_jsonkeys_pos8 = jsonkeys(/* comment */ json());
+val_jsonkeys_pos9 = jsonkeys(json());
+val_jsonkeys_pos10 = jsonkeys(json());
+val_jsonkeys_neg1 = jsonkeys();
+val_jsonkeys_neg2 = jsonkeys(json(), "excess_parameter_value");
+val_jsonkeys_neg3 = jsonkeys("not_a_json");
+val_jsonkeys_neg4 = jsonkeys(json(),);
+val_jsonkeys_neg5 = invalid_ns.jsonkeys(json());
+val_jsonkeys_neg6 = jsonkeys(, );
+jsonkeys(json()) = "override_val";
+val_jsonkeys_neg8 = jsonkeys(return, break);
+val_jsonkeys_neg9 = jsonkeys(123; 456);
+val_jsonkeys_neg10 = jsonkeys(json() 
+
+val_jsontostr_pos1 = jsontostr(json());
+var_jsontostr_arg_0 = json();
+val_jsontostr_pos2 = jsontostr(var_jsontostr_arg_0);
+val_jsontostr_pos3 = JSONTOSTR(json());
+if (true) { val_jsontostr_pos4 = jsontostr(json()); }
+for loopIdx in range(1) { val_jsontostr_pos5 = jsontostr(json()); }
+val_jsontostr_pos6 = jsontostr(json());
+val_jsontostr_pos7 = jsontostr(   
+  	  json() 	
+  );
+val_jsontostr_pos8 = jsontostr(/* comment */ json());
+val_jsontostr_pos9 = jsontostr(json());
+val_jsontostr_pos10 = jsontostr(json());
+val_jsontostr_neg1 = jsontostr();
+val_jsontostr_neg2 = jsontostr(json(), "excess_parameter_value");
+val_jsontostr_neg3 = jsontostr("not_a_json");
+val_jsontostr_neg4 = jsontostr(json(),);
+val_jsontostr_neg5 = invalid_ns.jsontostr(json());
+val_jsontostr_neg6 = jsontostr(, );
+jsontostr(json()) = "override_val";
+val_jsontostr_neg8 = jsontostr(return, break);
+val_jsontostr_neg9 = jsontostr(123; 456);
+val_jsontostr_neg10 = jsontostr(json() 
+
+val_jsonget_pos1 = jsonget(json(), "abc");
+var_jsonget_arg_0 = json();
+var_jsonget_arg_1 = "abc";
+val_jsonget_pos2 = jsonget(var_jsonget_arg_0, var_jsonget_arg_1);
+val_jsonget_pos3 = JSONGET(json(), "abc");
+if (true) { val_jsonget_pos4 = jsonget(json(), "abc"); }
+for loopIdx in range(1) { val_jsonget_pos5 = jsonget(json(), "abc"); }
+val_jsonget_pos6 = jsonget(json(), string(123));
+val_jsonget_pos7 = jsonget(   
+  	  json(), 	
+  "abc" 	
+  );
+val_jsonget_pos8 = jsonget(/* comment */ json(), /* next */ "abc");
+val_jsonget_pos9 = jsonget(json(), "");
+val_jsonget_pos10 = jsonget(json(), "abc");
+val_jsonget_neg1 = jsonget(json());
+val_jsonget_neg2 = jsonget(json(), "abc", "excess_parameter_value");
+val_jsonget_neg3 = jsonget("not_a_json", 123);
+val_jsonget_neg4 = jsonget(json(), "abc",);
+val_jsonget_neg5 = invalid_ns.jsonget(json(), "abc");
+val_jsonget_neg6 = jsonget(json(), , );
+jsonget(json(), "abc") = "override_val";
+val_jsonget_neg8 = jsonget(return, break);
+val_jsonget_neg9 = jsonget(json(); "abc");
+val_jsonget_neg10 = jsonget(json(), "abc" 
+
+val_jsonput_pos1 = jsonput(json(), "abc", "abc");
+var_jsonput_arg_0 = json();
+var_jsonput_arg_1 = "abc";
+var_jsonput_arg_2 = "abc";
+val_jsonput_pos2 = jsonput(var_jsonput_arg_0, var_jsonput_arg_1, var_jsonput_arg_2);
+val_jsonput_pos3 = JSONPUT(json(), "abc", "abc");
+if (true) { val_jsonput_pos4 = jsonput(json(), "abc", "abc"); }
+for loopIdx in range(1) { val_jsonput_pos5 = jsonput(json(), "abc", "abc"); }
+val_jsonput_pos6 = jsonput(json(), string(123), string(123));
+val_jsonput_pos7 = jsonput(   
+  	  json(), 	
+  "abc", 	
+  "abc" 	
+  );
+val_jsonput_pos8 = jsonput(/* comment */ json(), /* next */ "abc", /* next */ "abc");
+val_jsonput_pos9 = jsonput(json(), "", "");
+val_jsonput_pos10 = jsonput(json(), "abc", "abc");
+val_jsonput_neg1 = jsonput(json(), "abc");
+val_jsonput_neg2 = jsonput(json(), "abc", "abc", "excess_parameter_value");
+val_jsonput_neg3 = jsonput("not_a_json", 123, 123);
+val_jsonput_neg4 = jsonput(json(), "abc", "abc",);
+val_jsonput_neg5 = invalid_ns.jsonput(json(), "abc", "abc");
+val_jsonput_neg6 = jsonput(json(), , "abc");
+jsonput(json(), "abc", "abc") = "override_val";
+val_jsonput_neg8 = jsonput(return, break);
+val_jsonput_neg9 = jsonput(json(); "abc"; "abc");
+val_jsonput_neg10 = jsonput(json(), "abc", "abc" 
+
+val_jsonremove_pos1 = jsonremove(json(), "abc");
+var_jsonremove_arg_0 = json();
+var_jsonremove_arg_1 = "abc";
+val_jsonremove_pos2 = jsonremove(var_jsonremove_arg_0, var_jsonremove_arg_1);
+val_jsonremove_pos3 = JSONREMOVE(json(), "abc");
+if (true) { val_jsonremove_pos4 = jsonremove(json(), "abc"); }
+for loopIdx in range(1) { val_jsonremove_pos5 = jsonremove(json(), "abc"); }
+val_jsonremove_pos6 = jsonremove(json(), string(123));
+val_jsonremove_pos7 = jsonremove(   
+  	  json(), 	
+  "abc" 	
+  );
+val_jsonremove_pos8 = jsonremove(/* comment */ json(), /* next */ "abc");
+val_jsonremove_pos9 = jsonremove(json(), "");
+val_jsonremove_pos10 = jsonremove(json(), "abc");
+val_jsonremove_neg1 = jsonremove(json());
+val_jsonremove_neg2 = jsonremove(json(), "abc", "excess_parameter_value");
+val_jsonremove_neg3 = jsonremove("not_a_json", 123);
+val_jsonremove_neg4 = jsonremove(json(), "abc",);
+val_jsonremove_neg5 = invalid_ns.jsonremove(json(), "abc");
+val_jsonremove_neg6 = jsonremove(json(), , );
+jsonremove(json(), "abc") = "override_val";
+val_jsonremove_neg8 = jsonremove(return, break);
+val_jsonremove_neg9 = jsonremove(json(); "abc");
+val_jsonremove_neg10 = jsonremove(json(), "abc" 
+
+val_isjsonnull_pos1 = isjsonnull(json(), "abc", 123);
+var_isjsonnull_arg_0 = json();
+var_isjsonnull_arg_1 = "abc";
+var_isjsonnull_arg_2 = 123;
+val_isjsonnull_pos2 = isjsonnull(var_isjsonnull_arg_0, var_isjsonnull_arg_1, var_isjsonnull_arg_2);
+val_isjsonnull_pos3 = ISJSONNULL(json(), "abc", 123);
+if (true) { val_isjsonnull_pos4 = isjsonnull(json(), "abc", 123); }
+for loopIdx in range(1) { val_isjsonnull_pos5 = isjsonnull(json(), "abc", 123); }
+val_isjsonnull_pos6 = isjsonnull(json(), string(123), atoi("12"));
+val_isjsonnull_pos7 = isjsonnull(   
+  	  json(), 	
+  "abc", 	
+  123 	
+  );
+val_isjsonnull_pos8 = isjsonnull(/* comment */ json(), /* next */ "abc", /* next */ 123);
+val_isjsonnull_pos9 = isjsonnull(json(), "", 2147483647);
+val_isjsonnull_pos10 = isjsonnull(json(), "abc", 123);
+val_isjsonnull_neg1 = isjsonnull(json(), "abc");
+val_isjsonnull_neg2 = isjsonnull(json(), "abc", 123, "excess_parameter_value");
+val_isjsonnull_neg3 = isjsonnull("not_a_json", 123, "not_an_int");
+val_isjsonnull_neg4 = isjsonnull(json(), "abc", 123,);
+val_isjsonnull_neg5 = invalid_ns.isjsonnull(json(), "abc", 123);
+val_isjsonnull_neg6 = isjsonnull(json(), , 123);
+isjsonnull(json(), "abc", 123) = "override_val";
+val_isjsonnull_neg8 = isjsonnull(return, break);
+val_isjsonnull_neg9 = isjsonnull(json(); "abc"; 123);
+val_isjsonnull_neg10 = isjsonnull(json(), "abc", 123 
+
+val_jsonarraytostr_pos1 = jsonarraytostr(jsonarray());
+var_jsonarraytostr_arg_0 = jsonarray();
+val_jsonarraytostr_pos2 = jsonarraytostr(var_jsonarraytostr_arg_0);
+val_jsonarraytostr_pos3 = JSONARRAYTOSTR(jsonarray());
+if (true) { val_jsonarraytostr_pos4 = jsonarraytostr(jsonarray()); }
+for loopIdx in range(1) { val_jsonarraytostr_pos5 = jsonarraytostr(jsonarray()); }
+val_jsonarraytostr_pos6 = jsonarraytostr(jsonarray());
+val_jsonarraytostr_pos7 = jsonarraytostr(   
+  	  jsonarray() 	
+  );
+val_jsonarraytostr_pos8 = jsonarraytostr(/* comment */ jsonarray());
+val_jsonarraytostr_pos9 = jsonarraytostr(jsonarray());
+val_jsonarraytostr_pos10 = jsonarraytostr(jsonarray());
+val_jsonarraytostr_neg1 = jsonarraytostr();
+val_jsonarraytostr_neg2 = jsonarraytostr(jsonarray(), "excess_parameter_value");
+val_jsonarraytostr_neg3 = jsonarraytostr("not_a_jsonarray");
+val_jsonarraytostr_neg4 = jsonarraytostr(jsonarray(),);
+val_jsonarraytostr_neg5 = invalid_ns.jsonarraytostr(jsonarray());
+val_jsonarraytostr_neg6 = jsonarraytostr(, );
+jsonarraytostr(jsonarray()) = "override_val";
+val_jsonarraytostr_neg8 = jsonarraytostr(return, break);
+val_jsonarraytostr_neg9 = jsonarraytostr(123; 456);
+val_jsonarraytostr_neg10 = jsonarraytostr(jsonarray() 
+
+val_jsonarrayget_pos1 = jsonarrayget(jsonarray(), 123);
+var_jsonarrayget_arg_0 = jsonarray();
+var_jsonarrayget_arg_1 = 123;
+val_jsonarrayget_pos2 = jsonarrayget(var_jsonarrayget_arg_0, var_jsonarrayget_arg_1);
+val_jsonarrayget_pos3 = JSONARRAYGET(jsonarray(), 123);
+if (true) { val_jsonarrayget_pos4 = jsonarrayget(jsonarray(), 123); }
+for loopIdx in range(1) { val_jsonarrayget_pos5 = jsonarrayget(jsonarray(), 123); }
+val_jsonarrayget_pos6 = jsonarrayget(jsonarray(), atoi("12"));
+val_jsonarrayget_pos7 = jsonarrayget(   
+  	  jsonarray(), 	
+  123 	
+  );
+val_jsonarrayget_pos8 = jsonarrayget(/* comment */ jsonarray(), /* next */ 123);
+val_jsonarrayget_pos9 = jsonarrayget(jsonarray(), 2147483647);
+val_jsonarrayget_pos10 = jsonarrayget(jsonarray(), 123);
+val_jsonarrayget_neg1 = jsonarrayget(jsonarray());
+val_jsonarrayget_neg2 = jsonarrayget(jsonarray(), 123, "excess_parameter_value");
+val_jsonarrayget_neg3 = jsonarrayget("not_a_jsonarray", "not_an_int");
+val_jsonarrayget_neg4 = jsonarrayget(jsonarray(), 123,);
+val_jsonarrayget_neg5 = invalid_ns.jsonarrayget(jsonarray(), 123);
+val_jsonarrayget_neg6 = jsonarrayget(jsonarray(), , );
+jsonarrayget(jsonarray(), 123) = "override_val";
+val_jsonarrayget_neg8 = jsonarrayget(return, break);
+val_jsonarrayget_neg9 = jsonarrayget(jsonarray(); 123);
+val_jsonarrayget_neg10 = jsonarrayget(jsonarray(), 123 
+
+val_jsonarraysize_pos1 = jsonarraysize(jsonarray());
+var_jsonarraysize_arg_0 = jsonarray();
+val_jsonarraysize_pos2 = jsonarraysize(var_jsonarraysize_arg_0);
+val_jsonarraysize_pos3 = JSONARRAYSIZE(jsonarray());
+if (true) { val_jsonarraysize_pos4 = jsonarraysize(jsonarray()); }
+for loopIdx in range(1) { val_jsonarraysize_pos5 = jsonarraysize(jsonarray()); }
+val_jsonarraysize_pos6 = jsonarraysize(jsonarray());
+val_jsonarraysize_pos7 = jsonarraysize(   
+  	  jsonarray() 	
+  );
+val_jsonarraysize_pos8 = jsonarraysize(/* comment */ jsonarray());
+val_jsonarraysize_pos9 = jsonarraysize(jsonarray());
+val_jsonarraysize_pos10 = jsonarraysize(jsonarray());
+val_jsonarraysize_neg1 = jsonarraysize();
+val_jsonarraysize_neg2 = jsonarraysize(jsonarray(), "excess_parameter_value");
+val_jsonarraysize_neg3 = jsonarraysize("not_a_jsonarray");
+val_jsonarraysize_neg4 = jsonarraysize(jsonarray(),);
+val_jsonarraysize_neg5 = invalid_ns.jsonarraysize(jsonarray());
+val_jsonarraysize_neg6 = jsonarraysize(, );
+jsonarraysize(jsonarray()) = "override_val";
+val_jsonarraysize_neg8 = jsonarraysize(return, break);
+val_jsonarraysize_neg9 = jsonarraysize(123; 456);
+val_jsonarraysize_neg10 = jsonarraysize(jsonarray() 
+
+val_jsonarrayappend_pos1 = jsonarrayappend(jsonarray(), "abc");
+var_jsonarrayappend_arg_0 = jsonarray();
+var_jsonarrayappend_arg_1 = "abc";
+val_jsonarrayappend_pos2 = jsonarrayappend(var_jsonarrayappend_arg_0, var_jsonarrayappend_arg_1);
+val_jsonarrayappend_pos3 = JSONARRAYAPPEND(jsonarray(), "abc");
+if (true) { val_jsonarrayappend_pos4 = jsonarrayappend(jsonarray(), "abc"); }
+for loopIdx in range(1) { val_jsonarrayappend_pos5 = jsonarrayappend(jsonarray(), "abc"); }
+val_jsonarrayappend_pos6 = jsonarrayappend(jsonarray(), string(123));
+val_jsonarrayappend_pos7 = jsonarrayappend(   
+  	  jsonarray(), 	
+  "abc" 	
+  );
+val_jsonarrayappend_pos8 = jsonarrayappend(/* comment */ jsonarray(), /* next */ "abc");
+val_jsonarrayappend_pos9 = jsonarrayappend(jsonarray(), "");
+val_jsonarrayappend_pos10 = jsonarrayappend(jsonarray(), "abc");
+val_jsonarrayappend_neg1 = jsonarrayappend(jsonarray());
+val_jsonarrayappend_neg2 = jsonarrayappend(jsonarray(), "abc", "excess_parameter_value");
+val_jsonarrayappend_neg3 = jsonarrayappend("not_a_jsonarray", 123);
+val_jsonarrayappend_neg4 = jsonarrayappend(jsonarray(), "abc",);
+val_jsonarrayappend_neg5 = invalid_ns.jsonarrayappend(jsonarray(), "abc");
+val_jsonarrayappend_neg6 = jsonarrayappend(jsonarray(), , );
+jsonarrayappend(jsonarray(), "abc") = "override_val";
+val_jsonarrayappend_neg8 = jsonarrayappend(return, break);
+val_jsonarrayappend_neg9 = jsonarrayappend(jsonarray(); "abc");
+val_jsonarrayappend_neg10 = jsonarrayappend(jsonarray(), "abc" 
+
+val_jsonarrayremove_pos1 = jsonarrayremove(jsonarray(), 123);
+var_jsonarrayremove_arg_0 = jsonarray();
+var_jsonarrayremove_arg_1 = 123;
+val_jsonarrayremove_pos2 = jsonarrayremove(var_jsonarrayremove_arg_0, var_jsonarrayremove_arg_1);
+val_jsonarrayremove_pos3 = JSONARRAYREMOVE(jsonarray(), 123);
+if (true) { val_jsonarrayremove_pos4 = jsonarrayremove(jsonarray(), 123); }
+for loopIdx in range(1) { val_jsonarrayremove_pos5 = jsonarrayremove(jsonarray(), 123); }
+val_jsonarrayremove_pos6 = jsonarrayremove(jsonarray(), atoi("12"));
+val_jsonarrayremove_pos7 = jsonarrayremove(   
+  	  jsonarray(), 	
+  123 	
+  );
+val_jsonarrayremove_pos8 = jsonarrayremove(/* comment */ jsonarray(), /* next */ 123);
+val_jsonarrayremove_pos9 = jsonarrayremove(jsonarray(), 2147483647);
+val_jsonarrayremove_pos10 = jsonarrayremove(jsonarray(), 123);
+val_jsonarrayremove_neg1 = jsonarrayremove(jsonarray());
+val_jsonarrayremove_neg2 = jsonarrayremove(jsonarray(), 123, "excess_parameter_value");
+val_jsonarrayremove_neg3 = jsonarrayremove("not_a_jsonarray", "not_an_int");
+val_jsonarrayremove_neg4 = jsonarrayremove(jsonarray(), 123,);
+val_jsonarrayremove_neg5 = invalid_ns.jsonarrayremove(jsonarray(), 123);
+val_jsonarrayremove_neg6 = jsonarrayremove(jsonarray(), , );
+jsonarrayremove(jsonarray(), 123) = "override_val";
+val_jsonarrayremove_neg8 = jsonarrayremove(return, break);
+val_jsonarrayremove_neg9 = jsonarrayremove(jsonarray(); 123);
+val_jsonarrayremove_neg10 = jsonarrayremove(jsonarray(), 123 
+
+val_jsonpathremove_pos1 = jsonpathremove(json(), "abc");
+var_jsonpathremove_arg_0 = json();
+var_jsonpathremove_arg_1 = "abc";
+val_jsonpathremove_pos2 = jsonpathremove(var_jsonpathremove_arg_0, var_jsonpathremove_arg_1);
+val_jsonpathremove_pos3 = JSONPATHREMOVE(json(), "abc");
+if (true) { val_jsonpathremove_pos4 = jsonpathremove(json(), "abc"); }
+for loopIdx in range(1) { val_jsonpathremove_pos5 = jsonpathremove(json(), "abc"); }
+val_jsonpathremove_pos6 = jsonpathremove(json(), string(123));
+val_jsonpathremove_pos7 = jsonpathremove(   
+  	  json(), 	
+  "abc" 	
+  );
+val_jsonpathremove_pos8 = jsonpathremove(/* comment */ json(), /* next */ "abc");
+val_jsonpathremove_pos9 = jsonpathremove(json(), "");
+val_jsonpathremove_pos10 = jsonpathremove(json(), "abc");
+val_jsonpathremove_neg1 = jsonpathremove(json());
+val_jsonpathremove_neg2 = jsonpathremove(json(), "abc", "excess_parameter_value");
+val_jsonpathremove_neg3 = jsonpathremove("not_a_json", 123);
+val_jsonpathremove_neg4 = jsonpathremove(json(), "abc",);
+val_jsonpathremove_neg5 = invalid_ns.jsonpathremove(json(), "abc");
+val_jsonpathremove_neg6 = jsonpathremove(json(), , );
+jsonpathremove(json(), "abc") = "override_val";
+val_jsonpathremove_neg8 = jsonpathremove(return, break);
+val_jsonpathremove_neg9 = jsonpathremove(json(); "abc");
+val_jsonpathremove_neg10 = jsonpathremove(json(), "abc" 
+
+val_jsonpathgetsingle_pos1 = jsonpathgetsingle(json(), "abc");
+var_jsonpathgetsingle_arg_0 = json();
+var_jsonpathgetsingle_arg_1 = "abc";
+val_jsonpathgetsingle_pos2 = jsonpathgetsingle(var_jsonpathgetsingle_arg_0, var_jsonpathgetsingle_arg_1);
+val_jsonpathgetsingle_pos3 = JSONPATHGETSINGLE(json(), "abc");
+if (true) { val_jsonpathgetsingle_pos4 = jsonpathgetsingle(json(), "abc"); }
+for loopIdx in range(1) { val_jsonpathgetsingle_pos5 = jsonpathgetsingle(json(), "abc"); }
+val_jsonpathgetsingle_pos6 = jsonpathgetsingle(json(), string(123));
+val_jsonpathgetsingle_pos7 = jsonpathgetsingle(   
+  	  json(), 	
+  "abc" 	
+  );
+val_jsonpathgetsingle_pos8 = jsonpathgetsingle(/* comment */ json(), /* next */ "abc");
+val_jsonpathgetsingle_pos9 = jsonpathgetsingle(json(), "");
+val_jsonpathgetsingle_pos10 = jsonpathgetsingle(json(), "abc");
+val_jsonpathgetsingle_neg1 = jsonpathgetsingle(json());
+val_jsonpathgetsingle_neg2 = jsonpathgetsingle(json(), "abc", "excess_parameter_value");
+val_jsonpathgetsingle_neg3 = jsonpathgetsingle("not_a_json", 123);
+val_jsonpathgetsingle_neg4 = jsonpathgetsingle(json(), "abc",);
+val_jsonpathgetsingle_neg5 = invalid_ns.jsonpathgetsingle(json(), "abc");
+val_jsonpathgetsingle_neg6 = jsonpathgetsingle(json(), , );
+jsonpathgetsingle(json(), "abc") = "override_val";
+val_jsonpathgetsingle_neg8 = jsonpathgetsingle(return, break);
+val_jsonpathgetsingle_neg9 = jsonpathgetsingle(json(); "abc");
+val_jsonpathgetsingle_neg10 = jsonpathgetsingle(json(), "abc" 
+
+val_jsoncopy_pos1 = jsoncopy(json());
+var_jsoncopy_arg_0 = json();
+val_jsoncopy_pos2 = jsoncopy(var_jsoncopy_arg_0);
+val_jsoncopy_pos3 = JSONCOPY(json());
+if (true) { val_jsoncopy_pos4 = jsoncopy(json()); }
+for loopIdx in range(1) { val_jsoncopy_pos5 = jsoncopy(json()); }
+val_jsoncopy_pos6 = jsoncopy(json());
+val_jsoncopy_pos7 = jsoncopy(   
+  	  json() 	
+  );
+val_jsoncopy_pos8 = jsoncopy(/* comment */ json());
+val_jsoncopy_pos9 = jsoncopy(json());
+val_jsoncopy_pos10 = jsoncopy(json());
+val_jsoncopy_neg1 = jsoncopy();
+val_jsoncopy_neg2 = jsoncopy(json(), "excess_parameter_value");
+val_jsoncopy_neg3 = jsoncopy("not_a_json");
+val_jsoncopy_neg4 = jsoncopy(json(),);
+val_jsoncopy_neg5 = invalid_ns.jsoncopy(json());
+val_jsoncopy_neg6 = jsoncopy(, );
+jsoncopy(json()) = "override_val";
+val_jsoncopy_neg8 = jsoncopy(return, break);
+val_jsoncopy_neg9 = jsoncopy(123; 456);
+val_jsoncopy_neg10 = jsoncopy(json() 
+
+val_jsonarraycopy_pos1 = jsonarraycopy(jsonarray());
+var_jsonarraycopy_arg_0 = jsonarray();
+val_jsonarraycopy_pos2 = jsonarraycopy(var_jsonarraycopy_arg_0);
+val_jsonarraycopy_pos3 = JSONARRAYCOPY(jsonarray());
+if (true) { val_jsonarraycopy_pos4 = jsonarraycopy(jsonarray()); }
+for loopIdx in range(1) { val_jsonarraycopy_pos5 = jsonarraycopy(jsonarray()); }
+val_jsonarraycopy_pos6 = jsonarraycopy(jsonarray());
+val_jsonarraycopy_pos7 = jsonarraycopy(   
+  	  jsonarray() 	
+  );
+val_jsonarraycopy_pos8 = jsonarraycopy(/* comment */ jsonarray());
+val_jsonarraycopy_pos9 = jsonarraycopy(jsonarray());
+val_jsonarraycopy_pos10 = jsonarraycopy(jsonarray());
+val_jsonarraycopy_neg1 = jsonarraycopy();
+val_jsonarraycopy_neg2 = jsonarraycopy(jsonarray(), "excess_parameter_value");
+val_jsonarraycopy_neg3 = jsonarraycopy("not_a_jsonarray");
+val_jsonarraycopy_neg4 = jsonarraycopy(jsonarray(),);
+val_jsonarraycopy_neg5 = invalid_ns.jsonarraycopy(jsonarray());
+val_jsonarraycopy_neg6 = jsonarraycopy(, );
+jsonarraycopy(jsonarray()) = "override_val";
+val_jsonarraycopy_neg8 = jsonarraycopy(return, break);
+val_jsonarraycopy_neg9 = jsonarraycopy(123; 456);
+val_jsonarraycopy_neg10 = jsonarraycopy(jsonarray() 
+
+val_jsonpathcheck_pos1 = jsonpathcheck(json(), "abc");
+var_jsonpathcheck_arg_0 = json();
+var_jsonpathcheck_arg_1 = "abc";
+val_jsonpathcheck_pos2 = jsonpathcheck(var_jsonpathcheck_arg_0, var_jsonpathcheck_arg_1);
+val_jsonpathcheck_pos3 = JSONPATHCHECK(json(), "abc");
+if (true) { val_jsonpathcheck_pos4 = jsonpathcheck(json(), "abc"); }
+for loopIdx in range(1) { val_jsonpathcheck_pos5 = jsonpathcheck(json(), "abc"); }
+val_jsonpathcheck_pos6 = jsonpathcheck(json(), string(123));
+val_jsonpathcheck_pos7 = jsonpathcheck(   
+  	  json(), 	
+  "abc" 	
+  );
+val_jsonpathcheck_pos8 = jsonpathcheck(/* comment */ json(), /* next */ "abc");
+val_jsonpathcheck_pos9 = jsonpathcheck(json(), "");
+val_jsonpathcheck_pos10 = jsonpathcheck(json(), "abc");
+val_jsonpathcheck_neg1 = jsonpathcheck(json());
+val_jsonpathcheck_neg2 = jsonpathcheck(json(), "abc", "excess_parameter_value");
+val_jsonpathcheck_neg3 = jsonpathcheck("not_a_json", 123);
+val_jsonpathcheck_neg4 = jsonpathcheck(json(), "abc",);
+val_jsonpathcheck_neg5 = invalid_ns.jsonpathcheck(json(), "abc");
+val_jsonpathcheck_neg6 = jsonpathcheck(json(), , );
+jsonpathcheck(json(), "abc") = "override_val";
+val_jsonpathcheck_neg8 = jsonpathcheck(return, break);
+val_jsonpathcheck_neg9 = jsonpathcheck(json(); "abc");
+val_jsonpathcheck_neg10 = jsonpathcheck(json(), "abc" 
+
+val_jsonpathset_pos1 = jsonpathset(json(), "abc", "abc");
+var_jsonpathset_arg_0 = json();
+var_jsonpathset_arg_1 = "abc";
+var_jsonpathset_arg_2 = "abc";
+val_jsonpathset_pos2 = jsonpathset(var_jsonpathset_arg_0, var_jsonpathset_arg_1, var_jsonpathset_arg_2);
+val_jsonpathset_pos3 = JSONPATHSET(json(), "abc", "abc");
+if (true) { val_jsonpathset_pos4 = jsonpathset(json(), "abc", "abc"); }
+for loopIdx in range(1) { val_jsonpathset_pos5 = jsonpathset(json(), "abc", "abc"); }
+val_jsonpathset_pos6 = jsonpathset(json(), string(123), string(123));
+val_jsonpathset_pos7 = jsonpathset(   
+  	  json(), 	
+  "abc", 	
+  "abc" 	
+  );
+val_jsonpathset_pos8 = jsonpathset(/* comment */ json(), /* next */ "abc", /* next */ "abc");
+val_jsonpathset_pos9 = jsonpathset(json(), "", "");
+val_jsonpathset_pos10 = jsonpathset(json(), "abc", "abc");
+val_jsonpathset_neg1 = jsonpathset(json(), "abc");
+val_jsonpathset_neg2 = jsonpathset(json(), "abc", "abc", "excess_parameter_value");
+val_jsonpathset_neg3 = jsonpathset("not_a_json", 123, 123);
+val_jsonpathset_neg4 = jsonpathset(json(), "abc", "abc",);
+val_jsonpathset_neg5 = invalid_ns.jsonpathset(json(), "abc", "abc");
+val_jsonpathset_neg6 = jsonpathset(json(), , "abc");
+jsonpathset(json(), "abc", "abc") = "override_val";
+val_jsonpathset_neg8 = jsonpathset(return, break);
+val_jsonpathset_neg9 = jsonpathset(json(); "abc"; "abc");
+val_jsonpathset_neg10 = jsonpathset(json(), "abc", "abc" 
+
+val_jsonpathgetmultiple_pos1 = jsonpathgetmultiple(json(), "abc");
+var_jsonpathgetmultiple_arg_0 = json();
+var_jsonpathgetmultiple_arg_1 = "abc";
+val_jsonpathgetmultiple_pos2 = jsonpathgetmultiple(var_jsonpathgetmultiple_arg_0, var_jsonpathgetmultiple_arg_1);
+val_jsonpathgetmultiple_pos3 = JSONPATHGETMULTIPLE(json(), "abc");
+if (true) { val_jsonpathgetmultiple_pos4 = jsonpathgetmultiple(json(), "abc"); }
+for loopIdx in range(1) { val_jsonpathgetmultiple_pos5 = jsonpathgetmultiple(json(), "abc"); }
+val_jsonpathgetmultiple_pos6 = jsonpathgetmultiple(json(), string(123));
+val_jsonpathgetmultiple_pos7 = jsonpathgetmultiple(   
+  	  json(), 	
+  "abc" 	
+  );
+val_jsonpathgetmultiple_pos8 = jsonpathgetmultiple(/* comment */ json(), /* next */ "abc");
+val_jsonpathgetmultiple_pos9 = jsonpathgetmultiple(json(), "");
+val_jsonpathgetmultiple_pos10 = jsonpathgetmultiple(json(), "abc");
+val_jsonpathgetmultiple_neg1 = jsonpathgetmultiple(json());
+val_jsonpathgetmultiple_neg2 = jsonpathgetmultiple(json(), "abc", "excess_parameter_value");
+val_jsonpathgetmultiple_neg3 = jsonpathgetmultiple("not_a_json", 123);
+val_jsonpathgetmultiple_neg4 = jsonpathgetmultiple(json(), "abc",);
+val_jsonpathgetmultiple_neg5 = invalid_ns.jsonpathgetmultiple(json(), "abc");
+val_jsonpathgetmultiple_neg6 = jsonpathgetmultiple(json(), , );
+jsonpathgetmultiple(json(), "abc") = "override_val";
+val_jsonpathgetmultiple_neg8 = jsonpathgetmultiple(return, break);
+val_jsonpathgetmultiple_neg9 = jsonpathgetmultiple(json(); "abc");
+val_jsonpathgetmultiple_neg10 = jsonpathgetmultiple(json(), "abc" 
+
+val_jsonarrayrefid_pos1 = jsonarrayrefid(jsonarray());
+var_jsonarrayrefid_arg_0 = jsonarray();
+val_jsonarrayrefid_pos2 = jsonarrayrefid(var_jsonarrayrefid_arg_0);
+val_jsonarrayrefid_pos3 = JSONARRAYREFID(jsonarray());
+if (true) { val_jsonarrayrefid_pos4 = jsonarrayrefid(jsonarray()); }
+for loopIdx in range(1) { val_jsonarrayrefid_pos5 = jsonarrayrefid(jsonarray()); }
+val_jsonarrayrefid_pos6 = jsonarrayrefid(jsonarray());
+val_jsonarrayrefid_pos7 = jsonarrayrefid(   
+  	  jsonarray() 	
+  );
+val_jsonarrayrefid_pos8 = jsonarrayrefid(/* comment */ jsonarray());
+val_jsonarrayrefid_pos9 = jsonarrayrefid(jsonarray());
+val_jsonarrayrefid_pos10 = jsonarrayrefid(jsonarray());
+val_jsonarrayrefid_neg1 = jsonarrayrefid();
+val_jsonarrayrefid_neg2 = jsonarrayrefid(jsonarray(), "excess_parameter_value");
+val_jsonarrayrefid_neg3 = jsonarrayrefid("not_a_jsonarray");
+val_jsonarrayrefid_neg4 = jsonarrayrefid(jsonarray(),);
+val_jsonarrayrefid_neg5 = invalid_ns.jsonarrayrefid(jsonarray());
+val_jsonarrayrefid_neg6 = jsonarrayrefid(, );
+jsonarrayrefid(jsonarray()) = "override_val";
+val_jsonarrayrefid_neg8 = jsonarrayrefid(return, break);
+val_jsonarrayrefid_neg9 = jsonarrayrefid(123; 456);
+val_jsonarrayrefid_neg10 = jsonarrayrefid(jsonarray() 
+
+return "";
