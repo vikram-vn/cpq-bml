@@ -291,27 +291,27 @@ async function runDebugCurrentFile(
   let tableOutput = null;
   let dumpTables = null;
 
-  if (configLib.getShowDebugResultsAsTable(vscode) && returnVal !== undefined && returnVal !== null && returnVal !== "") {
-    // documentNumber~variableName~value dumps are never valid JSON, so this check comes
-    // first and short-circuits the generic JSON-object table attempt below.
-    if (typeof returnVal === 'string') {
-      const parsedDump = parseDocAttributeDump(returnVal);
-      if (parsedDump) dumpTables = formatDocAttributeDumpTables(parsedDump);
-    }
-    if (!dumpTables) {
-      try {
-        let parsed = null;
-        if (typeof returnVal === 'string') {
-          parsed = JSON.parse(returnVal);
-        } else if (typeof returnVal === 'object') {
-          parsed = returnVal;
-        }
-        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-          tableOutput = formatAsTable(parsed);
-        }
-      } catch (e) {
-        // Not a valid JSON or not an object, fall back to normal output
+  // Unlike the generic JSON-object table below (opt-in via showResultsAsTable, since it could
+  // reformat output the user didn't want touched), a documentNumber~variableName~value dump is
+  // an unambiguous, specific pattern - it renders as two tables unconditionally whenever detected.
+  if (typeof returnVal === 'string') {
+    const parsedDump = parseDocAttributeDump(returnVal);
+    if (parsedDump) dumpTables = formatDocAttributeDumpTables(parsedDump);
+  }
+
+  if (!dumpTables && configLib.getShowDebugResultsAsTable(vscode) && returnVal !== undefined && returnVal !== null && returnVal !== "") {
+    try {
+      let parsed = null;
+      if (typeof returnVal === 'string') {
+        parsed = JSON.parse(returnVal);
+      } else if (typeof returnVal === 'object') {
+        parsed = returnVal;
       }
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        tableOutput = formatAsTable(parsed);
+      }
+    } catch (e) {
+      // Not a valid JSON or not an object, fall back to normal output
     }
   }
 

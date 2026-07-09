@@ -3,7 +3,13 @@ const path = require("path");
 const commands = require("../../../app/lang/rest/commands");
 const metadataLib = require("../../../app/lang/rest/metadata");
 const { createFakeVscode } = require("../testHelpers");
-const { SAMPLE_FUNCTION, baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("./fixtures");
+const {
+  SAMPLE_FUNCTION,
+  baseVscodeConfig,
+  makeContext,
+  withTempDir,
+  fakeResultsTerminal,
+} = require("./fixtures");
 
 suite("BML REST commands - debug (util functions)", () => {
   suite("runDebugCurrentFile", () => {
@@ -277,17 +283,38 @@ suite("BML REST commands - debug (util functions)", () => {
           { transport },
         );
 
-        assert.ok(fs.existsSync(outputLog), "bml_debug_output.log should be created");
-        assert.ok(fs.existsSync(printLog), "bml_debug_print.log should be created");
+        assert.ok(
+          fs.existsSync(outputLog),
+          "bml_debug_output.log should be created",
+        );
+        assert.ok(
+          fs.existsSync(printLog),
+          "bml_debug_print.log should be created",
+        );
 
         const outputContent = fs.readFileSync(outputLog, "utf8");
-        assert.ok(outputContent.includes("hello world"), "output log should contain returnData");
-        assert.ok(outputContent.includes("[concatString]"), "output log should include variableName");
+        assert.ok(
+          outputContent.includes("hello world"),
+          "output log should contain returnData",
+        );
+        assert.ok(
+          outputContent.includes("[concatString]"),
+          "output log should include variableName",
+        );
 
         const printContent = fs.readFileSync(printLog, "utf8");
-        assert.ok(printContent.includes("Print Line 1"), "print log should contain print lines");
-        assert.ok(printContent.includes("Print Line 2"), "print log should contain print lines");
-        assert.ok(printContent.includes("[concatString]"), "print log should include variableName");
+        assert.ok(
+          printContent.includes("Print Line 1"),
+          "print log should contain print lines",
+        );
+        assert.ok(
+          printContent.includes("Print Line 2"),
+          "print log should contain print lines",
+        );
+        assert.ok(
+          printContent.includes("[concatString]"),
+          "print log should include variableName",
+        );
       }));
 
     test("does not create log files when logOutputToFile is disabled (default)", () =>
@@ -333,8 +360,14 @@ suite("BML REST commands - debug (util functions)", () => {
           { transport },
         );
 
-        assert.ok(!fs.existsSync(outputLog), "bml_debug_output.log should NOT be created when setting is off");
-        assert.ok(!fs.existsSync(printLog), "bml_debug_print.log should NOT be created when setting is off");
+        assert.ok(
+          !fs.existsSync(outputLog),
+          "bml_debug_output.log should NOT be created when setting is off",
+        );
+        assert.ok(
+          !fs.existsSync(printLog),
+          "bml_debug_print.log should NOT be created when setting is off",
+        );
       }));
 
     test("formats JSON returnData as a table when showResultsAsTable is enabled", () =>
@@ -385,10 +418,22 @@ suite("BML REST commands - debug (util functions)", () => {
         );
 
         // Verify table output contains the headers and keys/values
-        assert.ok(lines.some((l) => l.includes("key")), "Should contain 'key' header");
-        assert.ok(lines.some((l) => l.includes("value")), "Should contain 'value' header");
-        assert.ok(lines.some((l) => l.includes("name") && l.includes("Devtest")), "Should contain name -> Devtest row");
-        assert.ok(lines.some((l) => l.includes("status") && l.includes("Active")), "Should contain status -> Active row");
+        assert.ok(
+          lines.some((l) => l.includes("key")),
+          "Should contain 'key' header",
+        );
+        assert.ok(
+          lines.some((l) => l.includes("value")),
+          "Should contain 'value' header",
+        );
+        assert.ok(
+          lines.some((l) => l.includes("name") && l.includes("Devtest")),
+          "Should contain name -> Devtest row",
+        );
+        assert.ok(
+          lines.some((l) => l.includes("status") && l.includes("Active")),
+          "Should contain status -> Active row",
+        );
       }));
 
     test("publishes diagnostic error on the correct line when debug fails with a line number in the error", () =>
