@@ -1,0 +1,15 @@
+{
+  "name": "Test",
+  "variableName": "test",
+  "description": "",
+  "folderName": "",
+  "testScript": "",
+  "useTestScript": false,
+  "returnType": {
+    "value": 1,
+    "displayValue": "String"
+  },
+  "parameters": [],
+  "libraryFunctions": [],
+  "attributes": []
+}

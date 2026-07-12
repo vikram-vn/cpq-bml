@@ -9,6 +9,7 @@ venv/
 scratch/
 .vscode-test/
 dist/
+logs/
 *.vsix
 .env
 .agents

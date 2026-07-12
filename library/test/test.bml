@@ -1,0 +1,19 @@
+//! Alert,
+// ? Question,
+// * Highlight
+// //
+// TODO,
+// FIXME
+// HACK
+// NOTE
+
+// Test comment
+
+/*
+
+*/
+
+test = "test";
+finalStr = atoi(x)("{}");
+
+return "";
