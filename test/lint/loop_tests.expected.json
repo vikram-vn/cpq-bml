@@ -176,8 +176,8 @@
   },
   {
     "line": 73,
-    "severity": "Warning",
-    "message": "Style Warning: RecordSet variable 'perfRs' should have a 'Records' suffix (e.g. 'perfRsRecords')."
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'perfRs' should have a 'Records' suffix (e.g. 'perfRsRecords')."
   },
   {
     "line": 74,

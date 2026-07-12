@@ -119,4 +119,82 @@ suite("BML REST commands - download logs", () => {
       assert.ok(transportCalled);
       assert.strictEqual(fs.readFileSync(tempFilePath, "utf8"), "custom log content");
     }));
+
+  test("sends a browser-style request to the log servlet: Accept */*, session cookie, no JSON Content-Type", () =>
+    withTempDir(async (tmpDir) => {
+      const vscode = createFakeVscode({
+        config: baseVscodeConfig(),
+        window: {
+          showQuickPick: async (items) => items[0],
+          showTextDocument: async () => {},
+          showInformationMessage: () => {},
+          withProgress: async (options, task) => task(),
+        },
+        workspaceFolders: [{ uri: { fsPath: tmpDir, scheme: "file" } }],
+      });
+      vscode.ProgressLocation = { Notification: 15 };
+      vscode.workspace.fs = { createDirectory: async () => {}, writeFile: async () => {} };
+      vscode.workspace.openTextDocument = async () => ({});
+      vscode.Uri = {
+        file: (p) => ({ fsPath: p, scheme: "file" }),
+        joinPath: (base, ...segments) => ({ fsPath: path.join(base.fsPath, ...segments), scheme: "file" }),
+      };
+
+      let servletHeaders = null;
+      const transport = async (opts) => {
+        if (opts.path.includes("/currentUser")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json", "set-cookie": ["JSESSIONID=mocksession123; Path=/; Secure"] },
+            text: "{}",
+          };
+        }
+        servletHeaders = opts.headers;
+        return { statusCode: 200, headers: { "content-type": "text/plain" }, text: "log" };
+      };
+
+      await runDownloadLogFile(makeContext(), vscode, transport);
+
+      assert.ok(servletHeaders, "servlet request should have been made");
+      assert.strictEqual(servletHeaders.Accept, "*/*", "the servlet is not a REST endpoint - no JSON content negotiation");
+      assert.strictEqual(servletHeaders["Content-Type"], undefined, "a GET with no body must not carry Content-Type: application/json");
+      assert.strictEqual(servletHeaders.Cookie, "JSESSIONID=mocksession123", "the UI session cookie from the REST login must be forwarded");
+    }));
+
+  test("reports a clear error when the servlet redirects to the login page instead of serving the log", () =>
+    withTempDir(async (tmpDir) => {
+      const errors = [];
+      const vscode = createFakeVscode({
+        config: baseVscodeConfig(),
+        window: {
+          showQuickPick: async (items) => items[0],
+          showTextDocument: async () => {},
+          showInformationMessage: () => {},
+          showErrorMessage: (msg) => errors.push(msg),
+          withProgress: async (options, task) => task(),
+        },
+        workspaceFolders: [{ uri: { fsPath: tmpDir, scheme: "file" } }],
+      });
+      vscode.ProgressLocation = { Notification: 15 };
+      vscode.workspace.fs = { createDirectory: async () => {}, writeFile: async () => {} };
+      vscode.workspace.openTextDocument = async () => ({});
+      vscode.Uri = {
+        file: (p) => ({ fsPath: p, scheme: "file" }),
+        joinPath: (base, ...segments) => ({ fsPath: path.join(base.fsPath, ...segments), scheme: "file" }),
+      };
+
+      const transport = async (opts) => {
+        if (opts.path.includes("/currentUser")) {
+          return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+        }
+        return { statusCode: 302, headers: { location: "/login" }, text: "" };
+      };
+
+      await runDownloadLogFile(makeContext(), vscode, transport);
+
+      assert.ok(
+        errors.some((e) => e.includes("authenticated UI session")),
+        `expected a login-redirect explanation, got: ${JSON.stringify(errors)}`
+      );
+    }));
 });

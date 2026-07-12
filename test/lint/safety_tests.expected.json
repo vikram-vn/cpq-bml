@@ -1,8 +1,8 @@
 [
   {
     "line": 6,
-    "severity": "Warning",
-    "message": "Style Warning: RecordSet variable 'rsSafe' should have a 'Records' suffix (e.g. 'rsSafeRecords')."
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'rsSafe' should have a 'Records' suffix (e.g. 'rsSafeRecords')."
   },
   {
     "line": 8,
@@ -11,8 +11,8 @@
   },
   {
     "line": 12,
-    "severity": "Warning",
-    "message": "Style Warning: RecordSet variable 'rsUnsafe' should have a 'Records' suffix (e.g. 'rsUnsafeRecords')."
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'rsUnsafe' should have a 'Records' suffix (e.g. 'rsUnsafeRecords')."
   },
   {
     "line": 13,
@@ -56,8 +56,8 @@
   },
   {
     "line": 30,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'partsListSafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'partsListSafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 32,
@@ -66,8 +66,8 @@
   },
   {
     "line": 36,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'partsListUnsafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'partsListUnsafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 37,
@@ -81,8 +81,8 @@
   },
   {
     "line": 41,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'dictOK' should have a 'Dict' suffix (e.g. 'dictOKDict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'dictOK' should have a 'Dict' suffix (e.g. 'dictOKDict')."
   },
   {
     "line": 41,
@@ -101,8 +101,8 @@
   },
   {
     "line": 43,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'dictErr' should have a 'Dict' suffix (e.g. 'dictErrDict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'dictErr' should have a 'Dict' suffix (e.g. 'dictErrDict')."
   },
   {
     "line": 43,

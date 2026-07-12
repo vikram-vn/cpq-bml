@@ -11,8 +11,8 @@
   },
   {
     "line": 6,
-    "severity": "Warning",
-    "message": "Style Warning: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
   },
   {
     "line": 6,
@@ -46,8 +46,8 @@
   },
   {
     "line": 12,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos1')."
   },
   {
     "line": 12,
@@ -56,13 +56,13 @@
   },
   {
     "line": 13,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_makeurlparam_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_makeurlparam_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_makeurlparam_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_makeurlparam_arg_0')."
   },
   {
     "line": 14,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_makeurlparam_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_makeurlparam_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_makeurlparam_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_makeurlparam_arg_1')."
   },
   {
     "line": 15,
@@ -71,8 +71,8 @@
   },
   {
     "line": 15,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos2')."
   },
   {
     "line": 15,
@@ -86,8 +86,8 @@
   },
   {
     "line": 16,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos3')."
   },
   {
     "line": 16,
@@ -116,8 +116,8 @@
   },
   {
     "line": 17,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos4')."
   },
   {
     "line": 17,
@@ -141,8 +141,8 @@
   },
   {
     "line": 18,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos5')."
   },
   {
     "line": 18,
@@ -171,8 +171,8 @@
   },
   {
     "line": 19,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos6')."
   },
   {
     "line": 19,
@@ -186,8 +186,8 @@
   },
   {
     "line": 20,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos7')."
   },
   {
     "line": 20,
@@ -201,8 +201,8 @@
   },
   {
     "line": 24,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos8')."
   },
   {
     "line": 24,
@@ -216,8 +216,8 @@
   },
   {
     "line": 25,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos9')."
   },
   {
     "line": 25,
@@ -231,8 +231,8 @@
   },
   {
     "line": 26,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos10')."
   },
   {
     "line": 26,
@@ -246,8 +246,8 @@
   },
   {
     "line": 27,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg1')."
   },
   {
     "line": 27,
@@ -261,8 +261,8 @@
   },
   {
     "line": 28,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg2')."
   },
   {
     "line": 28,
@@ -286,8 +286,8 @@
   },
   {
     "line": 29,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg3')."
   },
   {
     "line": 29,
@@ -301,8 +301,8 @@
   },
   {
     "line": 30,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg4')."
   },
   {
     "line": 30,
@@ -321,8 +321,8 @@
   },
   {
     "line": 31,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg5')."
   },
   {
     "line": 31,
@@ -336,8 +336,8 @@
   },
   {
     "line": 32,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg6')."
   },
   {
     "line": 32,
@@ -366,8 +366,8 @@
   },
   {
     "line": 34,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg8')."
   },
   {
     "line": 34,
@@ -381,8 +381,8 @@
   },
   {
     "line": 35,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg9')."
   },
   {
     "line": 35,
@@ -391,8 +391,8 @@
   },
   {
     "line": 36,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_makeurlparam_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg10')."
   },
   {
     "line": 36,
@@ -406,13 +406,13 @@
   },
   {
     "line": 38,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos1' should have a 'Dict' suffix (e.g. 'val_urldata_pos1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos1' should have a 'Dict' suffix (e.g. 'val_urldata_pos1Dict')."
   },
   {
     "line": 38,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos1')."
   },
   {
     "line": 38,
@@ -421,33 +421,33 @@
   },
   {
     "line": 39,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldata_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldata_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_0')."
   },
   {
     "line": 40,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldata_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldata_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_1')."
   },
   {
     "line": 41,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'var_urldata_arg_2' should have a 'Dict' suffix (e.g. 'var_urldata_arg_2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urldata_arg_2' should have a 'Dict' suffix (e.g. 'var_urldata_arg_2Dict')."
   },
   {
     "line": 41,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldata_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldata_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_2')."
   },
   {
     "line": 42,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos2' should have a 'Dict' suffix (e.g. 'val_urldata_pos2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos2' should have a 'Dict' suffix (e.g. 'val_urldata_pos2Dict')."
   },
   {
     "line": 42,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos2')."
   },
   {
     "line": 42,
@@ -456,13 +456,13 @@
   },
   {
     "line": 43,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos3' should have a 'Dict' suffix (e.g. 'val_urldata_pos3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos3' should have a 'Dict' suffix (e.g. 'val_urldata_pos3Dict')."
   },
   {
     "line": 43,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos3')."
   },
   {
     "line": 43,
@@ -491,13 +491,13 @@
   },
   {
     "line": 44,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos4' should have a 'Dict' suffix (e.g. 'val_urldata_pos4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos4' should have a 'Dict' suffix (e.g. 'val_urldata_pos4Dict')."
   },
   {
     "line": 44,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos4')."
   },
   {
     "line": 44,
@@ -521,13 +521,13 @@
   },
   {
     "line": 45,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos5' should have a 'Dict' suffix (e.g. 'val_urldata_pos5Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos5' should have a 'Dict' suffix (e.g. 'val_urldata_pos5Dict')."
   },
   {
     "line": 45,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos5')."
   },
   {
     "line": 45,
@@ -546,13 +546,13 @@
   },
   {
     "line": 46,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos6' should have a 'Dict' suffix (e.g. 'val_urldata_pos6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos6' should have a 'Dict' suffix (e.g. 'val_urldata_pos6Dict')."
   },
   {
     "line": 46,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos6')."
   },
   {
     "line": 46,
@@ -566,13 +566,13 @@
   },
   {
     "line": 47,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos7' should have a 'Dict' suffix (e.g. 'val_urldata_pos7Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos7' should have a 'Dict' suffix (e.g. 'val_urldata_pos7Dict')."
   },
   {
     "line": 47,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos7')."
   },
   {
     "line": 47,
@@ -586,13 +586,13 @@
   },
   {
     "line": 52,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos8' should have a 'Dict' suffix (e.g. 'val_urldata_pos8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos8' should have a 'Dict' suffix (e.g. 'val_urldata_pos8Dict')."
   },
   {
     "line": 52,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos8')."
   },
   {
     "line": 52,
@@ -606,13 +606,13 @@
   },
   {
     "line": 53,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos9' should have a 'Dict' suffix (e.g. 'val_urldata_pos9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos9' should have a 'Dict' suffix (e.g. 'val_urldata_pos9Dict')."
   },
   {
     "line": 53,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos9')."
   },
   {
     "line": 53,
@@ -626,13 +626,13 @@
   },
   {
     "line": 54,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_pos10' should have a 'Dict' suffix (e.g. 'val_urldata_pos10Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_pos10' should have a 'Dict' suffix (e.g. 'val_urldata_pos10Dict')."
   },
   {
     "line": 54,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos10')."
   },
   {
     "line": 54,
@@ -646,13 +646,13 @@
   },
   {
     "line": 55,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_neg1' should have a 'Dict' suffix (e.g. 'val_urldata_neg1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg1' should have a 'Dict' suffix (e.g. 'val_urldata_neg1Dict')."
   },
   {
     "line": 55,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg1')."
   },
   {
     "line": 55,
@@ -666,13 +666,13 @@
   },
   {
     "line": 56,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_neg2' should have a 'Dict' suffix (e.g. 'val_urldata_neg2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg2' should have a 'Dict' suffix (e.g. 'val_urldata_neg2Dict')."
   },
   {
     "line": 56,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg2')."
   },
   {
     "line": 56,
@@ -706,13 +706,13 @@
   },
   {
     "line": 57,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_neg3' should have a 'Dict' suffix (e.g. 'val_urldata_neg3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg3' should have a 'Dict' suffix (e.g. 'val_urldata_neg3Dict')."
   },
   {
     "line": 57,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg3')."
   },
   {
     "line": 57,
@@ -726,13 +726,13 @@
   },
   {
     "line": 58,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_neg4' should have a 'Dict' suffix (e.g. 'val_urldata_neg4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg4' should have a 'Dict' suffix (e.g. 'val_urldata_neg4Dict')."
   },
   {
     "line": 58,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg4')."
   },
   {
     "line": 58,
@@ -756,8 +756,8 @@
   },
   {
     "line": 59,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg5')."
   },
   {
     "line": 59,
@@ -766,13 +766,13 @@
   },
   {
     "line": 60,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_neg6' should have a 'Dict' suffix (e.g. 'val_urldata_neg6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg6' should have a 'Dict' suffix (e.g. 'val_urldata_neg6Dict')."
   },
   {
     "line": 60,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg6')."
   },
   {
     "line": 60,
@@ -791,13 +791,13 @@
   },
   {
     "line": 62,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_neg8' should have a 'Dict' suffix (e.g. 'val_urldata_neg8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg8' should have a 'Dict' suffix (e.g. 'val_urldata_neg8Dict')."
   },
   {
     "line": 62,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg8')."
   },
   {
     "line": 62,
@@ -811,8 +811,8 @@
   },
   {
     "line": 63,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urldata_neg9' should have a 'Dict' suffix (e.g. 'val_urldata_neg9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg9' should have a 'Dict' suffix (e.g. 'val_urldata_neg9Dict')."
   },
   {
     "line": 63,
@@ -821,8 +821,8 @@
   },
   {
     "line": 63,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg9')."
   },
   {
     "line": 63,
@@ -831,8 +831,8 @@
   },
   {
     "line": 64,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldata_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg10')."
   },
   {
     "line": 64,
@@ -846,8 +846,8 @@
   },
   {
     "line": 66,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos1')."
   },
   {
     "line": 66,
@@ -856,18 +856,18 @@
   },
   {
     "line": 67,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabyget_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabyget_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_0')."
   },
   {
     "line": 68,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabyget_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabyget_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_1')."
   },
   {
     "line": 69,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabyget_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabyget_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_2')."
   },
   {
     "line": 70,
@@ -876,13 +876,13 @@
   },
   {
     "line": 70,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabyget_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabyget_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_3')."
   },
   {
     "line": 71,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos2')."
   },
   {
     "line": 71,
@@ -896,8 +896,8 @@
   },
   {
     "line": 72,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos3')."
   },
   {
     "line": 72,
@@ -926,8 +926,8 @@
   },
   {
     "line": 73,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos4')."
   },
   {
     "line": 73,
@@ -951,8 +951,8 @@
   },
   {
     "line": 74,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos5')."
   },
   {
     "line": 74,
@@ -976,8 +976,8 @@
   },
   {
     "line": 75,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos6')."
   },
   {
     "line": 75,
@@ -986,8 +986,8 @@
   },
   {
     "line": 76,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos7')."
   },
   {
     "line": 76,
@@ -1006,8 +1006,8 @@
   },
   {
     "line": 82,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos8')."
   },
   {
     "line": 82,
@@ -1026,8 +1026,8 @@
   },
   {
     "line": 83,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos9')."
   },
   {
     "line": 83,
@@ -1041,8 +1041,8 @@
   },
   {
     "line": 84,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos10')."
   },
   {
     "line": 84,
@@ -1051,8 +1051,8 @@
   },
   {
     "line": 85,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg1')."
   },
   {
     "line": 85,
@@ -1071,8 +1071,8 @@
   },
   {
     "line": 86,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg2')."
   },
   {
     "line": 86,
@@ -1116,8 +1116,8 @@
   },
   {
     "line": 87,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg3')."
   },
   {
     "line": 87,
@@ -1131,8 +1131,8 @@
   },
   {
     "line": 88,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg4')."
   },
   {
     "line": 88,
@@ -1156,8 +1156,8 @@
   },
   {
     "line": 89,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg5')."
   },
   {
     "line": 89,
@@ -1171,8 +1171,8 @@
   },
   {
     "line": 90,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg6')."
   },
   {
     "line": 90,
@@ -1196,8 +1196,8 @@
   },
   {
     "line": 92,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg8')."
   },
   {
     "line": 92,
@@ -1221,8 +1221,8 @@
   },
   {
     "line": 93,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg9')."
   },
   {
     "line": 93,
@@ -1236,8 +1236,8 @@
   },
   {
     "line": 94,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabyget_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg10')."
   },
   {
     "line": 94,
@@ -1246,8 +1246,8 @@
   },
   {
     "line": 96,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos1')."
   },
   {
     "line": 96,
@@ -1256,33 +1256,33 @@
   },
   {
     "line": 97,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_0')."
   },
   {
     "line": 98,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_1')."
   },
   {
     "line": 99,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypost_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_2')."
   },
   {
     "line": 100,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'var_urldatabypost_arg_3' should have a 'Dict' suffix (e.g. 'var_urldatabypost_arg_3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urldatabypost_arg_3' should have a 'Dict' suffix (e.g. 'var_urldatabypost_arg_3Dict')."
   },
   {
     "line": 100,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypost_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_3')."
   },
   {
     "line": 101,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos2')."
   },
   {
     "line": 101,
@@ -1291,8 +1291,8 @@
   },
   {
     "line": 102,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos3')."
   },
   {
     "line": 102,
@@ -1316,8 +1316,8 @@
   },
   {
     "line": 103,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos4')."
   },
   {
     "line": 103,
@@ -1336,8 +1336,8 @@
   },
   {
     "line": 104,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos5')."
   },
   {
     "line": 104,
@@ -1361,8 +1361,8 @@
   },
   {
     "line": 105,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos6')."
   },
   {
     "line": 105,
@@ -1371,8 +1371,8 @@
   },
   {
     "line": 106,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos7')."
   },
   {
     "line": 106,
@@ -1381,8 +1381,8 @@
   },
   {
     "line": 112,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos8')."
   },
   {
     "line": 112,
@@ -1391,8 +1391,8 @@
   },
   {
     "line": 113,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos9')."
   },
   {
     "line": 113,
@@ -1401,8 +1401,8 @@
   },
   {
     "line": 114,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos10')."
   },
   {
     "line": 114,
@@ -1411,8 +1411,8 @@
   },
   {
     "line": 115,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg1')."
   },
   {
     "line": 115,
@@ -1426,8 +1426,8 @@
   },
   {
     "line": 116,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg2')."
   },
   {
     "line": 116,
@@ -1471,8 +1471,8 @@
   },
   {
     "line": 117,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg3')."
   },
   {
     "line": 117,
@@ -1481,8 +1481,8 @@
   },
   {
     "line": 118,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg4')."
   },
   {
     "line": 118,
@@ -1501,8 +1501,8 @@
   },
   {
     "line": 119,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg5')."
   },
   {
     "line": 119,
@@ -1511,8 +1511,8 @@
   },
   {
     "line": 120,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg6')."
   },
   {
     "line": 120,
@@ -1531,8 +1531,8 @@
   },
   {
     "line": 122,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg8')."
   },
   {
     "line": 122,
@@ -1551,8 +1551,8 @@
   },
   {
     "line": 123,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg9')."
   },
   {
     "line": 123,
@@ -1561,8 +1561,8 @@
   },
   {
     "line": 124,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypost_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg10')."
   },
   {
     "line": 124,
@@ -1571,8 +1571,8 @@
   },
   {
     "line": 126,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos1')."
   },
   {
     "line": 126,
@@ -1581,38 +1581,38 @@
   },
   {
     "line": 127,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypostasync_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_0')."
   },
   {
     "line": 128,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypostasync_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_1')."
   },
   {
     "line": 129,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypostasync_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_2')."
   },
   {
     "line": 130,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypostasync_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_3')."
   },
   {
     "line": 131,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'var_urldatabypostasync_arg_4' should have a 'Dict' suffix (e.g. 'var_urldatabypostasync_arg_4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urldatabypostasync_arg_4' should have a 'Dict' suffix (e.g. 'var_urldatabypostasync_arg_4Dict')."
   },
   {
     "line": 131,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urldatabypostasync_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_4')."
   },
   {
     "line": 132,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos2')."
   },
   {
     "line": 132,
@@ -1621,8 +1621,8 @@
   },
   {
     "line": 133,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos3')."
   },
   {
     "line": 133,
@@ -1646,8 +1646,8 @@
   },
   {
     "line": 134,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos4')."
   },
   {
     "line": 134,
@@ -1666,8 +1666,8 @@
   },
   {
     "line": 135,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos5')."
   },
   {
     "line": 135,
@@ -1696,8 +1696,8 @@
   },
   {
     "line": 136,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos6')."
   },
   {
     "line": 136,
@@ -1706,8 +1706,8 @@
   },
   {
     "line": 137,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos7')."
   },
   {
     "line": 137,
@@ -1716,8 +1716,8 @@
   },
   {
     "line": 144,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos8')."
   },
   {
     "line": 144,
@@ -1726,8 +1726,8 @@
   },
   {
     "line": 145,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos9')."
   },
   {
     "line": 145,
@@ -1736,8 +1736,8 @@
   },
   {
     "line": 146,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos10')."
   },
   {
     "line": 146,
@@ -1746,8 +1746,8 @@
   },
   {
     "line": 147,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg1')."
   },
   {
     "line": 147,
@@ -1761,8 +1761,8 @@
   },
   {
     "line": 148,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg2')."
   },
   {
     "line": 148,
@@ -1816,8 +1816,8 @@
   },
   {
     "line": 149,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg3')."
   },
   {
     "line": 149,
@@ -1826,8 +1826,8 @@
   },
   {
     "line": 150,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg4')."
   },
   {
     "line": 150,
@@ -1846,8 +1846,8 @@
   },
   {
     "line": 151,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg5')."
   },
   {
     "line": 151,
@@ -1856,8 +1856,8 @@
   },
   {
     "line": 152,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg6')."
   },
   {
     "line": 152,
@@ -1876,8 +1876,8 @@
   },
   {
     "line": 154,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg8')."
   },
   {
     "line": 154,
@@ -1896,8 +1896,8 @@
   },
   {
     "line": 155,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg9')."
   },
   {
     "line": 155,
@@ -1906,8 +1906,8 @@
   },
   {
     "line": 156,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urldatabypostasync_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg10')."
   },
   {
     "line": 156,
@@ -1916,13 +1916,13 @@
   },
   {
     "line": 158,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos1Dict')."
   },
   {
     "line": 158,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos1')."
   },
   {
     "line": 158,
@@ -1931,33 +1931,33 @@
   },
   {
     "line": 159,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urlmultipartbypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_0')."
   },
   {
     "line": 160,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urlmultipartbypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_1')."
   },
   {
     "line": 161,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'var_urlmultipartbypost_arg_2' should have a 'Dict' suffix (e.g. 'var_urlmultipartbypost_arg_2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urlmultipartbypost_arg_2' should have a 'Dict' suffix (e.g. 'var_urlmultipartbypost_arg_2Dict')."
   },
   {
     "line": 161,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_urlmultipartbypost_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_2')."
   },
   {
     "line": 162,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos2Dict')."
   },
   {
     "line": 162,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos2')."
   },
   {
     "line": 162,
@@ -1966,13 +1966,13 @@
   },
   {
     "line": 163,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos3' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos3' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos3Dict')."
   },
   {
     "line": 163,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos3')."
   },
   {
     "line": 163,
@@ -1996,13 +1996,13 @@
   },
   {
     "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos4Dict')."
   },
   {
     "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos4')."
   },
   {
     "line": 164,
@@ -2021,13 +2021,13 @@
   },
   {
     "line": 165,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos5' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos5Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos5' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos5Dict')."
   },
   {
     "line": 165,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos5')."
   },
   {
     "line": 165,
@@ -2046,13 +2046,13 @@
   },
   {
     "line": 166,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos6' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos6' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos6Dict')."
   },
   {
     "line": 166,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos6')."
   },
   {
     "line": 166,
@@ -2061,13 +2061,13 @@
   },
   {
     "line": 167,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos7' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos7Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos7' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos7Dict')."
   },
   {
     "line": 167,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos7')."
   },
   {
     "line": 167,
@@ -2076,13 +2076,13 @@
   },
   {
     "line": 172,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos8Dict')."
   },
   {
     "line": 172,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos8')."
   },
   {
     "line": 172,
@@ -2091,13 +2091,13 @@
   },
   {
     "line": 173,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos9Dict')."
   },
   {
     "line": 173,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos9')."
   },
   {
     "line": 173,
@@ -2106,13 +2106,13 @@
   },
   {
     "line": 174,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_pos10' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos10Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos10' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos10Dict')."
   },
   {
     "line": 174,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos10')."
   },
   {
     "line": 174,
@@ -2121,13 +2121,13 @@
   },
   {
     "line": 175,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_neg1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg1Dict')."
   },
   {
     "line": 175,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg1')."
   },
   {
     "line": 175,
@@ -2141,13 +2141,13 @@
   },
   {
     "line": 176,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_neg2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg2Dict')."
   },
   {
     "line": 176,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg2')."
   },
   {
     "line": 176,
@@ -2181,13 +2181,13 @@
   },
   {
     "line": 177,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_neg3' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg3' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg3Dict')."
   },
   {
     "line": 177,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg3')."
   },
   {
     "line": 177,
@@ -2196,13 +2196,13 @@
   },
   {
     "line": 178,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_neg4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg4Dict')."
   },
   {
     "line": 178,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg4')."
   },
   {
     "line": 178,
@@ -2221,8 +2221,8 @@
   },
   {
     "line": 179,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg5')."
   },
   {
     "line": 179,
@@ -2231,13 +2231,13 @@
   },
   {
     "line": 180,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_neg6' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg6' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg6Dict')."
   },
   {
     "line": 180,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg6')."
   },
   {
     "line": 180,
@@ -2251,13 +2251,13 @@
   },
   {
     "line": 182,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_neg8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg8Dict')."
   },
   {
     "line": 182,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg8')."
   },
   {
     "line": 182,
@@ -2271,8 +2271,8 @@
   },
   {
     "line": 183,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_urlmultipartbypost_neg9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg9Dict')."
   },
   {
     "line": 183,
@@ -2281,8 +2281,8 @@
   },
   {
     "line": 183,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg9')."
   },
   {
     "line": 183,
@@ -2291,8 +2291,8 @@
   },
   {
     "line": 184,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_urlmultipartbypost_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg10')."
   },
   {
     "line": 184,

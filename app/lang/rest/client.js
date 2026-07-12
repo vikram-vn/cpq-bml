@@ -56,6 +56,7 @@ async function request({
   body,
   authHeader,
   headers: extraHeaders,
+  includeHeaders = false,
   logFilePath,
   transport = defaultTransport,
 }) {
@@ -66,9 +67,13 @@ async function request({
   const url = new URL(baseUrl);
   const fullPath = buildPath(path, query);
 
+  // Content-Type only makes sense when a body is actually sent - stamping it
+  // on GETs confuses non-REST endpoints (e.g. UI servlets like
+  // /log/logFileTransfer). Both defaults are still overridable per call via
+  // extraHeaders, which is spread last.
   const headers = {
     Accept: "application/json",
-    "Content-Type": "application/json",
+    ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
     ...extraHeaders,
   };
   if (authHeader) headers.Authorization = authHeader;
@@ -124,7 +129,10 @@ async function request({
     }
   }
 
-  return { statusCode: response.statusCode, headers: response.headers, body: parsedBody };
+  if (includeHeaders) {
+    return { statusCode: response.statusCode, headers: response.headers, body: parsedBody };
+  }
+  return { statusCode: response.statusCode, body: parsedBody };
 }
 
 module.exports = { request, buildPath, defaultTransport };

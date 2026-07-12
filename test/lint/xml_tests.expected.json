@@ -11,8 +11,8 @@
   },
   {
     "line": 6,
-    "severity": "Warning",
-    "message": "Style Warning: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
   },
   {
     "line": 6,
@@ -41,8 +41,8 @@
   },
   {
     "line": 12,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos1')."
   },
   {
     "line": 12,
@@ -51,13 +51,13 @@
   },
   {
     "line": 13,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_applytemplate_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_applytemplate_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_applytemplate_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_applytemplate_arg_0')."
   },
   {
     "line": 14,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos2')."
   },
   {
     "line": 14,
@@ -66,8 +66,8 @@
   },
   {
     "line": 15,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos3')."
   },
   {
     "line": 15,
@@ -91,8 +91,8 @@
   },
   {
     "line": 16,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos4')."
   },
   {
     "line": 16,
@@ -111,8 +111,8 @@
   },
   {
     "line": 17,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos5')."
   },
   {
     "line": 17,
@@ -131,8 +131,8 @@
   },
   {
     "line": 18,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos6')."
   },
   {
     "line": 18,
@@ -141,8 +141,8 @@
   },
   {
     "line": 19,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos7')."
   },
   {
     "line": 19,
@@ -151,8 +151,8 @@
   },
   {
     "line": 22,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos8')."
   },
   {
     "line": 22,
@@ -161,8 +161,8 @@
   },
   {
     "line": 23,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos9')."
   },
   {
     "line": 23,
@@ -171,8 +171,8 @@
   },
   {
     "line": 24,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos10')."
   },
   {
     "line": 24,
@@ -186,8 +186,8 @@
   },
   {
     "line": 25,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg1')."
   },
   {
     "line": 25,
@@ -201,8 +201,8 @@
   },
   {
     "line": 26,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg2')."
   },
   {
     "line": 26,
@@ -221,8 +221,8 @@
   },
   {
     "line": 27,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg3')."
   },
   {
     "line": 27,
@@ -231,8 +231,8 @@
   },
   {
     "line": 28,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg4')."
   },
   {
     "line": 28,
@@ -251,8 +251,8 @@
   },
   {
     "line": 29,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg5')."
   },
   {
     "line": 29,
@@ -261,8 +261,8 @@
   },
   {
     "line": 30,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg6')."
   },
   {
     "line": 30,
@@ -281,8 +281,8 @@
   },
   {
     "line": 32,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg8')."
   },
   {
     "line": 32,
@@ -306,8 +306,8 @@
   },
   {
     "line": 33,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg9')."
   },
   {
     "line": 33,
@@ -316,8 +316,8 @@
   },
   {
     "line": 34,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_applytemplate_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg10')."
   },
   {
     "line": 34,
@@ -326,8 +326,8 @@
   },
   {
     "line": 36,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos1')."
   },
   {
     "line": 36,
@@ -336,18 +336,18 @@
   },
   {
     "line": 37,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_transformxml_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_transformxml_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_transformxml_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_transformxml_arg_0')."
   },
   {
     "line": 38,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_transformxml_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_transformxml_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_transformxml_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_transformxml_arg_1')."
   },
   {
     "line": 39,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos2')."
   },
   {
     "line": 39,
@@ -356,8 +356,8 @@
   },
   {
     "line": 40,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos3')."
   },
   {
     "line": 40,
@@ -381,8 +381,8 @@
   },
   {
     "line": 41,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos4')."
   },
   {
     "line": 41,
@@ -401,8 +401,8 @@
   },
   {
     "line": 42,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos5')."
   },
   {
     "line": 42,
@@ -421,8 +421,8 @@
   },
   {
     "line": 43,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos6')."
   },
   {
     "line": 43,
@@ -431,8 +431,8 @@
   },
   {
     "line": 44,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos7')."
   },
   {
     "line": 44,
@@ -441,8 +441,8 @@
   },
   {
     "line": 48,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos8')."
   },
   {
     "line": 48,
@@ -451,8 +451,8 @@
   },
   {
     "line": 49,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos9')."
   },
   {
     "line": 49,
@@ -461,8 +461,8 @@
   },
   {
     "line": 50,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos10')."
   },
   {
     "line": 50,
@@ -476,8 +476,8 @@
   },
   {
     "line": 51,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg1')."
   },
   {
     "line": 51,
@@ -486,8 +486,8 @@
   },
   {
     "line": 52,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg2')."
   },
   {
     "line": 52,
@@ -516,8 +516,8 @@
   },
   {
     "line": 53,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg3')."
   },
   {
     "line": 53,
@@ -526,8 +526,8 @@
   },
   {
     "line": 54,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg4')."
   },
   {
     "line": 54,
@@ -546,8 +546,8 @@
   },
   {
     "line": 55,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg5')."
   },
   {
     "line": 55,
@@ -556,8 +556,8 @@
   },
   {
     "line": 56,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg6')."
   },
   {
     "line": 56,
@@ -576,8 +576,8 @@
   },
   {
     "line": 58,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg8')."
   },
   {
     "line": 58,
@@ -596,8 +596,8 @@
   },
   {
     "line": 59,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg9')."
   },
   {
     "line": 59,
@@ -606,8 +606,8 @@
   },
   {
     "line": 60,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_transformxml_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg10')."
   },
   {
     "line": 60,
@@ -621,13 +621,13 @@
   },
   {
     "line": 62,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos1' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos1' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos1Dict')."
   },
   {
     "line": 62,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos1')."
   },
   {
     "line": 62,
@@ -636,23 +636,23 @@
   },
   {
     "line": 63,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_readxmlsingle_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlsingle_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_readxmlsingle_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlsingle_arg_0')."
   },
   {
     "line": 64,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_readxmlsingle_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlsingle_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_readxmlsingle_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlsingle_arg_1')."
   },
   {
     "line": 65,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos2' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos2' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos2Dict')."
   },
   {
     "line": 65,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos2')."
   },
   {
     "line": 65,
@@ -666,13 +666,13 @@
   },
   {
     "line": 66,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos3' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos3' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos3Dict')."
   },
   {
     "line": 66,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos3')."
   },
   {
     "line": 66,
@@ -701,13 +701,13 @@
   },
   {
     "line": 67,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos4' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos4' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos4Dict')."
   },
   {
     "line": 67,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos4')."
   },
   {
     "line": 67,
@@ -731,13 +731,13 @@
   },
   {
     "line": 68,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos5' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos5Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos5' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos5Dict')."
   },
   {
     "line": 68,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos5')."
   },
   {
     "line": 68,
@@ -756,13 +756,13 @@
   },
   {
     "line": 69,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos6' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos6' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos6Dict')."
   },
   {
     "line": 69,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos6')."
   },
   {
     "line": 69,
@@ -776,13 +776,13 @@
   },
   {
     "line": 70,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos7' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos7Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos7' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos7Dict')."
   },
   {
     "line": 70,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos7')."
   },
   {
     "line": 70,
@@ -796,13 +796,13 @@
   },
   {
     "line": 74,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos8' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos8' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos8Dict')."
   },
   {
     "line": 74,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos8')."
   },
   {
     "line": 74,
@@ -816,13 +816,13 @@
   },
   {
     "line": 75,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos9' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos9' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos9Dict')."
   },
   {
     "line": 75,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos9')."
   },
   {
     "line": 75,
@@ -836,13 +836,13 @@
   },
   {
     "line": 76,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_pos10' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos10Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos10' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos10Dict')."
   },
   {
     "line": 76,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos10')."
   },
   {
     "line": 76,
@@ -856,13 +856,13 @@
   },
   {
     "line": 77,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_neg1' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_neg1' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg1Dict')."
   },
   {
     "line": 77,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg1')."
   },
   {
     "line": 77,
@@ -876,13 +876,13 @@
   },
   {
     "line": 78,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_neg2' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_neg2' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg2Dict')."
   },
   {
     "line": 78,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg2')."
   },
   {
     "line": 78,
@@ -911,13 +911,13 @@
   },
   {
     "line": 79,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_neg3' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_neg3' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg3Dict')."
   },
   {
     "line": 79,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg3')."
   },
   {
     "line": 79,
@@ -931,13 +931,13 @@
   },
   {
     "line": 80,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_neg4' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_neg4' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg4Dict')."
   },
   {
     "line": 80,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg4')."
   },
   {
     "line": 80,
@@ -956,8 +956,8 @@
   },
   {
     "line": 81,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg5')."
   },
   {
     "line": 81,
@@ -966,13 +966,13 @@
   },
   {
     "line": 82,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_neg6' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_neg6' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg6Dict')."
   },
   {
     "line": 82,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg6')."
   },
   {
     "line": 82,
@@ -996,13 +996,13 @@
   },
   {
     "line": 84,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_neg8' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_neg8' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg8Dict')."
   },
   {
     "line": 84,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg8')."
   },
   {
     "line": 84,
@@ -1016,8 +1016,8 @@
   },
   {
     "line": 85,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlsingle_neg9' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlsingle_neg9' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_neg9Dict')."
   },
   {
     "line": 85,
@@ -1026,8 +1026,8 @@
   },
   {
     "line": 85,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg9')."
   },
   {
     "line": 85,
@@ -1036,8 +1036,8 @@
   },
   {
     "line": 86,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlsingle_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg10')."
   },
   {
     "line": 86,
@@ -1051,13 +1051,13 @@
   },
   {
     "line": 88,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos1' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos1' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos1Dict')."
   },
   {
     "line": 88,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos1')."
   },
   {
     "line": 88,
@@ -1066,23 +1066,23 @@
   },
   {
     "line": 89,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_readxmlmultiple_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlmultiple_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_readxmlmultiple_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlmultiple_arg_0')."
   },
   {
     "line": 90,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_readxmlmultiple_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlmultiple_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_readxmlmultiple_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_readxmlmultiple_arg_1')."
   },
   {
     "line": 91,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos2' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos2' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos2Dict')."
   },
   {
     "line": 91,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos2')."
   },
   {
     "line": 91,
@@ -1096,13 +1096,13 @@
   },
   {
     "line": 92,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos3' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos3' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos3Dict')."
   },
   {
     "line": 92,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos3')."
   },
   {
     "line": 92,
@@ -1131,13 +1131,13 @@
   },
   {
     "line": 93,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos4' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos4' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos4Dict')."
   },
   {
     "line": 93,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos4')."
   },
   {
     "line": 93,
@@ -1161,13 +1161,13 @@
   },
   {
     "line": 94,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos5' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos5Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos5' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos5Dict')."
   },
   {
     "line": 94,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos5')."
   },
   {
     "line": 94,
@@ -1186,13 +1186,13 @@
   },
   {
     "line": 95,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos6' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos6' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos6Dict')."
   },
   {
     "line": 95,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos6')."
   },
   {
     "line": 95,
@@ -1206,13 +1206,13 @@
   },
   {
     "line": 96,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos7' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos7Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos7' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos7Dict')."
   },
   {
     "line": 96,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos7')."
   },
   {
     "line": 96,
@@ -1226,13 +1226,13 @@
   },
   {
     "line": 100,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos8' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos8' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos8Dict')."
   },
   {
     "line": 100,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos8')."
   },
   {
     "line": 100,
@@ -1246,13 +1246,13 @@
   },
   {
     "line": 101,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos9' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos9' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos9Dict')."
   },
   {
     "line": 101,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos9')."
   },
   {
     "line": 101,
@@ -1266,13 +1266,13 @@
   },
   {
     "line": 102,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_pos10' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos10Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos10' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos10Dict')."
   },
   {
     "line": 102,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos10')."
   },
   {
     "line": 102,
@@ -1286,13 +1286,13 @@
   },
   {
     "line": 103,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_neg1' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg1Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_neg1' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg1Dict')."
   },
   {
     "line": 103,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg1')."
   },
   {
     "line": 103,
@@ -1306,13 +1306,13 @@
   },
   {
     "line": 104,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_neg2' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg2Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_neg2' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg2Dict')."
   },
   {
     "line": 104,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg2')."
   },
   {
     "line": 104,
@@ -1341,13 +1341,13 @@
   },
   {
     "line": 105,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_neg3' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg3Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_neg3' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg3Dict')."
   },
   {
     "line": 105,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg3')."
   },
   {
     "line": 105,
@@ -1361,13 +1361,13 @@
   },
   {
     "line": 106,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_neg4' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg4Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_neg4' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg4Dict')."
   },
   {
     "line": 106,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg4')."
   },
   {
     "line": 106,
@@ -1386,8 +1386,8 @@
   },
   {
     "line": 107,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg5')."
   },
   {
     "line": 107,
@@ -1396,13 +1396,13 @@
   },
   {
     "line": 108,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_neg6' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg6Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_neg6' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg6Dict')."
   },
   {
     "line": 108,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg6')."
   },
   {
     "line": 108,
@@ -1426,13 +1426,13 @@
   },
   {
     "line": 110,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_neg8' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg8Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_neg8' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg8Dict')."
   },
   {
     "line": 110,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg8')."
   },
   {
     "line": 110,
@@ -1446,8 +1446,8 @@
   },
   {
     "line": 111,
-    "severity": "Warning",
-    "message": "Style Warning: Dictionary variable 'val_readxmlmultiple_neg9' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg9Dict')."
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_readxmlmultiple_neg9' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_neg9Dict')."
   },
   {
     "line": 111,
@@ -1456,8 +1456,8 @@
   },
   {
     "line": 111,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg9')."
   },
   {
     "line": 111,
@@ -1466,8 +1466,8 @@
   },
   {
     "line": 112,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_readxmlmultiple_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg10')."
   },
   {
     "line": 112,

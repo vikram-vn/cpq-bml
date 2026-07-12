@@ -123,15 +123,15 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
                 
                 let message;
                 if (varName.includes('_')) {
-                    message = `Style Warning: Variable '${varName}' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of '${varName}').`;
+                    message = `Style Info: Variable '${varName}' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of '${varName}').`;
                 } else {
-                    message = `Style Warning: Variable '${varName}' should start with a lowercase letter (e.g. 'totalListPrice' instead of '${varName}').`;
+                    message = `Style Info: Variable '${varName}' should start with a lowercase letter (e.g. 'totalListPrice' instead of '${varName}').`;
                 }
 
                 diagnostics.push(makeDiagnostic(
                     decl.range,
                     message,
-                    vscode.DiagnosticSeverity.Warning,
+                    vscode.DiagnosticSeverity.Information,
                     'bml-variable-camelcase'
                 ));
             });
@@ -183,8 +183,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
                     if (!/(List|Arr|Array|2d)$/i.test(varName)) {
                         diagnostics.push(makeDiagnostic(
                             decl.range,
-                            `Style Warning: Array variable '${varName}' should have a suffix of 'List', 'Arr', 'Array', or '2D'.`,
-                            vscode.DiagnosticSeverity.Warning,
+                            `Style Info: Array variable '${varName}' should have a suffix of 'List', 'Arr', 'Array', or '2D'.`,
+                            vscode.DiagnosticSeverity.Information,
                             'bml-array-naming-suffix'
                         ));
                     }
@@ -194,8 +194,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
                     if (!/Dict$/i.test(varName)) {
                         diagnostics.push(makeDiagnostic(
                             decl.range,
-                            `Style Warning: Dictionary variable '${varName}' should have a 'Dict' suffix (e.g. '${varName}Dict').`,
-                            vscode.DiagnosticSeverity.Warning,
+                            `Style Info: Dictionary variable '${varName}' should have a 'Dict' suffix (e.g. '${varName}Dict').`,
+                            vscode.DiagnosticSeverity.Information,
                             'bml-dict-naming-suffix'
                         ));
                     }
@@ -205,8 +205,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
                     if (!/Records$/i.test(varName)) {
                         diagnostics.push(makeDiagnostic(
                             decl.range,
-                            `Style Warning: RecordSet variable '${varName}' should have a 'Records' suffix (e.g. '${varName}Records').`,
-                            vscode.DiagnosticSeverity.Warning,
+                            `Style Info: RecordSet variable '${varName}' should have a 'Records' suffix (e.g. '${varName}Records').`,
+                            vscode.DiagnosticSeverity.Information,
                             'bml-recordset-naming-suffix'
                         ));
                     }
@@ -218,8 +218,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
                     if (!hasCorrectPrefix && !isDebugException) {
                         diagnostics.push(makeDiagnostic(
                             decl.range,
-                            `Style Warning: Boolean variable '${varName}' should have an 'is' or 'has' prefix (e.g. 'is${varName[0].toUpperCase()}${varName.slice(1)}').`,
-                            vscode.DiagnosticSeverity.Warning,
+                            `Style Info: Boolean variable '${varName}' should have an 'is' or 'has' prefix (e.g. 'is${varName[0].toUpperCase()}${varName.slice(1)}').`,
+                            vscode.DiagnosticSeverity.Information,
                             'bml-boolean-naming-prefix'
                         ));
                     }

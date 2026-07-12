@@ -1,5 +1,4 @@
 const path = require("path");
-const os = require("os");
 const api = require("../client");
 const configLib = require("../config");
 
@@ -76,6 +75,7 @@ async function runDownloadLogFile(context, vscode, transport) {
                 path: `/rest/${version}/currentUser`,
                 method: "GET",
                 authHeader,
+                includeHeaders: true,
                 transport
             });
 
@@ -90,6 +90,10 @@ async function runDownloadLogFile(context, vscode, transport) {
                 }
             }
 
+            // /log/logFileTransfer is a UI servlet, NOT a REST endpoint: it
+            // serves the raw log as a file download and expects a browser-like
+            // request against an authenticated UI session (the JSESSIONID
+            // harvested above), not JSON content negotiation.
             const response = await api.request({
                 baseUrl: siteUrl,
                 path: "/log/logFileTransfer",
@@ -99,12 +103,30 @@ async function runDownloadLogFile(context, vscode, transport) {
                     log_categ: "GENERAL"
                 },
                 authHeader,
-                headers: extraHeaders,
+                headers: { Accept: "*/*", ...extraHeaders },
+                includeHeaders: true,
                 transport
             });
 
+            // The servlet never 401s - an unauthenticated UI session gets a
+            // 302 redirect to the login page (or a 200 whose body IS the login
+            // page), so surface that specifically instead of a generic error.
+            if (response.statusCode === 301 || response.statusCode === 302) {
+                throw new Error(
+                    `Redirected to ${(response.headers && response.headers.location) || "login"} - ` +
+                    "the log servlet requires an authenticated UI session, which this site did not grant from the REST login. " +
+                    "Check that the configured user has Admin access to Error Logs."
+                );
+            }
             if (response.statusCode !== 200) {
                 throw new Error(`Server returned HTTP ${response.statusCode}`);
+            }
+            const bodyText = typeof response.body === "string" ? response.body : "";
+            if (bodyText && /<(html|form)[\s>]/i.test(bodyText.slice(0, 2000)) && /login/i.test(bodyText.slice(0, 2000))) {
+                throw new Error(
+                    "The server answered with its login page instead of the log file - " +
+                    "the UI session was not accepted. Check that the configured user has Admin access to Error Logs."
+                );
             }
 
             const content = typeof response.body === "string" 

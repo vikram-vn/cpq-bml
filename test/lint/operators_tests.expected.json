@@ -6,13 +6,13 @@
   },
   {
     "line": 5,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'valBool1' should have an 'is' or 'has' prefix (e.g. 'isValBool1')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'valBool1' should have an 'is' or 'has' prefix (e.g. 'isValBool1')."
   },
   {
     "line": 6,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'valBool2' should have an 'is' or 'has' prefix (e.g. 'isValBool2')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'valBool2' should have an 'is' or 'has' prefix (e.g. 'isValBool2')."
   },
   {
     "line": 9,

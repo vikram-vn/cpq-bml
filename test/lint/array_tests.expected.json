@@ -16,8 +16,8 @@
   },
   {
     "line": 6,
-    "severity": "Warning",
-    "message": "Style Warning: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
   },
   {
     "line": 6,
@@ -46,13 +46,13 @@
   },
   {
     "line": 12,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 12,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos1')."
   },
   {
     "line": 12,
@@ -61,18 +61,18 @@
   },
   {
     "line": 13,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_bytearray_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_bytearray_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_bytearray_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_bytearray_arg_0')."
   },
   {
     "line": 14,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 14,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos2')."
   },
   {
     "line": 14,
@@ -81,13 +81,13 @@
   },
   {
     "line": 15,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 15,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos3')."
   },
   {
     "line": 15,
@@ -101,8 +101,8 @@
   },
   {
     "line": 16,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 16,
@@ -116,8 +116,8 @@
   },
   {
     "line": 16,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos4')."
   },
   {
     "line": 16,
@@ -126,8 +126,8 @@
   },
   {
     "line": 17,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 17,
@@ -141,8 +141,8 @@
   },
   {
     "line": 17,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos5')."
   },
   {
     "line": 17,
@@ -161,13 +161,13 @@
   },
   {
     "line": 18,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 18,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos6')."
   },
   {
     "line": 18,
@@ -176,13 +176,13 @@
   },
   {
     "line": 19,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 19,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos7')."
   },
   {
     "line": 19,
@@ -191,13 +191,13 @@
   },
   {
     "line": 22,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 22,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos8')."
   },
   {
     "line": 22,
@@ -206,13 +206,13 @@
   },
   {
     "line": 23,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 23,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos9')."
   },
   {
     "line": 23,
@@ -221,13 +221,13 @@
   },
   {
     "line": 24,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 24,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_pos10')."
   },
   {
     "line": 24,
@@ -241,13 +241,13 @@
   },
   {
     "line": 25,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 25,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg1')."
   },
   {
     "line": 25,
@@ -256,13 +256,13 @@
   },
   {
     "line": 26,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 26,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg2')."
   },
   {
     "line": 26,
@@ -276,13 +276,13 @@
   },
   {
     "line": 27,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 27,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg3')."
   },
   {
     "line": 27,
@@ -296,13 +296,13 @@
   },
   {
     "line": 28,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 28,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg4')."
   },
   {
     "line": 28,
@@ -321,8 +321,8 @@
   },
   {
     "line": 29,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg5')."
   },
   {
     "line": 29,
@@ -331,13 +331,13 @@
   },
   {
     "line": 30,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 30,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg6')."
   },
   {
     "line": 30,
@@ -356,13 +356,13 @@
   },
   {
     "line": 32,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 32,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg8')."
   },
   {
     "line": 32,
@@ -381,8 +381,8 @@
   },
   {
     "line": 33,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_bytearray_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_bytearray_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 33,
@@ -391,8 +391,8 @@
   },
   {
     "line": 33,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg9')."
   },
   {
     "line": 33,
@@ -401,8 +401,8 @@
   },
   {
     "line": 34,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_bytearray_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_bytearray_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_bytearray_neg10')."
   },
   {
     "line": 34,
@@ -416,8 +416,8 @@
   },
   {
     "line": 36,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos1')."
   },
   {
     "line": 36,
@@ -426,18 +426,18 @@
   },
   {
     "line": 37,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_append_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_append_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_append_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_append_arg_0')."
   },
   {
     "line": 38,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_append_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_append_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_append_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_append_arg_1')."
   },
   {
     "line": 39,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_append_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_append_arg_2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_append_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_append_arg_2')."
   },
   {
     "line": 40,
@@ -446,8 +446,8 @@
   },
   {
     "line": 40,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos2')."
   },
   {
     "line": 40,
@@ -461,8 +461,8 @@
   },
   {
     "line": 41,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos3')."
   },
   {
     "line": 41,
@@ -491,8 +491,8 @@
   },
   {
     "line": 42,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos4')."
   },
   {
     "line": 42,
@@ -516,8 +516,8 @@
   },
   {
     "line": 43,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos5')."
   },
   {
     "line": 43,
@@ -546,8 +546,8 @@
   },
   {
     "line": 44,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos6')."
   },
   {
     "line": 44,
@@ -561,8 +561,8 @@
   },
   {
     "line": 45,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos7')."
   },
   {
     "line": 45,
@@ -576,8 +576,8 @@
   },
   {
     "line": 50,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos8')."
   },
   {
     "line": 50,
@@ -591,8 +591,8 @@
   },
   {
     "line": 51,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos9')."
   },
   {
     "line": 51,
@@ -606,8 +606,8 @@
   },
   {
     "line": 52,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos10')."
   },
   {
     "line": 52,
@@ -621,8 +621,8 @@
   },
   {
     "line": 53,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg1')."
   },
   {
     "line": 53,
@@ -636,8 +636,8 @@
   },
   {
     "line": 54,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg2')."
   },
   {
     "line": 54,
@@ -666,8 +666,8 @@
   },
   {
     "line": 55,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg3')."
   },
   {
     "line": 55,
@@ -681,8 +681,8 @@
   },
   {
     "line": 56,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg4')."
   },
   {
     "line": 56,
@@ -701,8 +701,8 @@
   },
   {
     "line": 57,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg5')."
   },
   {
     "line": 57,
@@ -716,8 +716,8 @@
   },
   {
     "line": 58,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg6')."
   },
   {
     "line": 58,
@@ -736,8 +736,8 @@
   },
   {
     "line": 60,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg8')."
   },
   {
     "line": 60,
@@ -756,8 +756,8 @@
   },
   {
     "line": 61,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg9')."
   },
   {
     "line": 61,
@@ -766,8 +766,8 @@
   },
   {
     "line": 62,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_append_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_append_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg10')."
   },
   {
     "line": 62,
@@ -781,8 +781,8 @@
   },
   {
     "line": 64,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos1')."
   },
   {
     "line": 64,
@@ -791,18 +791,18 @@
   },
   {
     "line": 65,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_findinarray_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_findinarray_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_findinarray_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_findinarray_arg_0')."
   },
   {
     "line": 66,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_findinarray_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_findinarray_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_findinarray_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_findinarray_arg_1')."
   },
   {
     "line": 67,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_findinarray_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_findinarray_arg_2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_findinarray_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_findinarray_arg_2')."
   },
   {
     "line": 68,
@@ -811,8 +811,8 @@
   },
   {
     "line": 68,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos2')."
   },
   {
     "line": 68,
@@ -826,8 +826,8 @@
   },
   {
     "line": 69,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos3')."
   },
   {
     "line": 69,
@@ -856,8 +856,8 @@
   },
   {
     "line": 70,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos4')."
   },
   {
     "line": 70,
@@ -881,8 +881,8 @@
   },
   {
     "line": 71,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos5')."
   },
   {
     "line": 71,
@@ -911,8 +911,8 @@
   },
   {
     "line": 72,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos6')."
   },
   {
     "line": 72,
@@ -926,8 +926,8 @@
   },
   {
     "line": 73,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos7')."
   },
   {
     "line": 73,
@@ -941,8 +941,8 @@
   },
   {
     "line": 78,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos8')."
   },
   {
     "line": 78,
@@ -956,8 +956,8 @@
   },
   {
     "line": 79,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos9')."
   },
   {
     "line": 79,
@@ -971,8 +971,8 @@
   },
   {
     "line": 80,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos10')."
   },
   {
     "line": 80,
@@ -986,8 +986,8 @@
   },
   {
     "line": 81,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg1')."
   },
   {
     "line": 81,
@@ -1001,8 +1001,8 @@
   },
   {
     "line": 82,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg2')."
   },
   {
     "line": 82,
@@ -1031,8 +1031,8 @@
   },
   {
     "line": 83,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg3')."
   },
   {
     "line": 83,
@@ -1046,8 +1046,8 @@
   },
   {
     "line": 84,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg4')."
   },
   {
     "line": 84,
@@ -1066,8 +1066,8 @@
   },
   {
     "line": 85,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg5')."
   },
   {
     "line": 85,
@@ -1081,8 +1081,8 @@
   },
   {
     "line": 86,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg6')."
   },
   {
     "line": 86,
@@ -1101,8 +1101,8 @@
   },
   {
     "line": 88,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg8')."
   },
   {
     "line": 88,
@@ -1121,8 +1121,8 @@
   },
   {
     "line": 89,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg9')."
   },
   {
     "line": 89,
@@ -1131,8 +1131,8 @@
   },
   {
     "line": 90,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_findinarray_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_findinarray_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg10')."
   },
   {
     "line": 90,
@@ -1146,13 +1146,13 @@
   },
   {
     "line": 92,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos1')."
   },
   {
     "line": 92,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos1')."
   },
   {
     "line": 92,
@@ -1161,18 +1161,18 @@
   },
   {
     "line": 93,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_isempty_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_isempty_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_isempty_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_isempty_arg_0')."
   },
   {
     "line": 94,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos2')."
   },
   {
     "line": 94,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos2')."
   },
   {
     "line": 94,
@@ -1186,13 +1186,13 @@
   },
   {
     "line": 95,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos3')."
   },
   {
     "line": 95,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos3')."
   },
   {
     "line": 95,
@@ -1211,8 +1211,8 @@
   },
   {
     "line": 96,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos4')."
   },
   {
     "line": 96,
@@ -1226,8 +1226,8 @@
   },
   {
     "line": 96,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos4')."
   },
   {
     "line": 96,
@@ -1241,8 +1241,8 @@
   },
   {
     "line": 97,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos5')."
   },
   {
     "line": 97,
@@ -1256,8 +1256,8 @@
   },
   {
     "line": 97,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos5')."
   },
   {
     "line": 97,
@@ -1271,13 +1271,13 @@
   },
   {
     "line": 98,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos6')."
   },
   {
     "line": 98,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos6')."
   },
   {
     "line": 98,
@@ -1291,13 +1291,13 @@
   },
   {
     "line": 99,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos7')."
   },
   {
     "line": 99,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos7')."
   },
   {
     "line": 99,
@@ -1311,13 +1311,13 @@
   },
   {
     "line": 102,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos8')."
   },
   {
     "line": 102,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos8')."
   },
   {
     "line": 102,
@@ -1331,13 +1331,13 @@
   },
   {
     "line": 103,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos9')."
   },
   {
     "line": 103,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos9')."
   },
   {
     "line": 103,
@@ -1351,13 +1351,13 @@
   },
   {
     "line": 104,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos10')."
   },
   {
     "line": 104,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_pos10')."
   },
   {
     "line": 104,
@@ -1371,13 +1371,13 @@
   },
   {
     "line": 105,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg1')."
   },
   {
     "line": 105,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg1')."
   },
   {
     "line": 105,
@@ -1391,13 +1391,13 @@
   },
   {
     "line": 106,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg2')."
   },
   {
     "line": 106,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg2')."
   },
   {
     "line": 106,
@@ -1416,13 +1416,13 @@
   },
   {
     "line": 107,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg3')."
   },
   {
     "line": 107,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg3')."
   },
   {
     "line": 107,
@@ -1436,13 +1436,13 @@
   },
   {
     "line": 108,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg4')."
   },
   {
     "line": 108,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg4')."
   },
   {
     "line": 108,
@@ -1461,8 +1461,8 @@
   },
   {
     "line": 109,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg5')."
   },
   {
     "line": 109,
@@ -1471,13 +1471,13 @@
   },
   {
     "line": 110,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg6')."
   },
   {
     "line": 110,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg6')."
   },
   {
     "line": 110,
@@ -1506,13 +1506,13 @@
   },
   {
     "line": 112,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg8')."
   },
   {
     "line": 112,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg8')."
   },
   {
     "line": 112,
@@ -1531,8 +1531,8 @@
   },
   {
     "line": 113,
-    "severity": "Warning",
-    "message": "Style Warning: Boolean variable 'val_isempty_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_isempty_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_neg9')."
   },
   {
     "line": 113,
@@ -1541,8 +1541,8 @@
   },
   {
     "line": 113,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg9')."
   },
   {
     "line": 113,
@@ -1551,8 +1551,8 @@
   },
   {
     "line": 114,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_isempty_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isempty_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg10')."
   },
   {
     "line": 114,
@@ -1566,8 +1566,8 @@
   },
   {
     "line": 116,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos1')."
   },
   {
     "line": 116,
@@ -1576,13 +1576,13 @@
   },
   {
     "line": 117,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_max_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_max_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_max_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_max_arg_0')."
   },
   {
     "line": 118,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos2')."
   },
   {
     "line": 118,
@@ -1596,8 +1596,8 @@
   },
   {
     "line": 119,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos3')."
   },
   {
     "line": 119,
@@ -1626,8 +1626,8 @@
   },
   {
     "line": 120,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos4')."
   },
   {
     "line": 120,
@@ -1651,8 +1651,8 @@
   },
   {
     "line": 121,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos5')."
   },
   {
     "line": 121,
@@ -1666,8 +1666,8 @@
   },
   {
     "line": 122,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos6')."
   },
   {
     "line": 122,
@@ -1681,8 +1681,8 @@
   },
   {
     "line": 123,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos7')."
   },
   {
     "line": 123,
@@ -1696,8 +1696,8 @@
   },
   {
     "line": 126,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos8')."
   },
   {
     "line": 126,
@@ -1711,8 +1711,8 @@
   },
   {
     "line": 127,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos9')."
   },
   {
     "line": 127,
@@ -1726,8 +1726,8 @@
   },
   {
     "line": 128,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos10')."
   },
   {
     "line": 128,
@@ -1741,8 +1741,8 @@
   },
   {
     "line": 129,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg1')."
   },
   {
     "line": 129,
@@ -1756,8 +1756,8 @@
   },
   {
     "line": 130,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg2')."
   },
   {
     "line": 130,
@@ -1776,8 +1776,8 @@
   },
   {
     "line": 131,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg3')."
   },
   {
     "line": 131,
@@ -1791,8 +1791,8 @@
   },
   {
     "line": 132,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg4')."
   },
   {
     "line": 132,
@@ -1811,8 +1811,8 @@
   },
   {
     "line": 133,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg5')."
   },
   {
     "line": 133,
@@ -1821,8 +1821,8 @@
   },
   {
     "line": 134,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg6')."
   },
   {
     "line": 134,
@@ -1851,8 +1851,8 @@
   },
   {
     "line": 136,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg8')."
   },
   {
     "line": 136,
@@ -1876,8 +1876,8 @@
   },
   {
     "line": 137,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg9')."
   },
   {
     "line": 137,
@@ -1886,8 +1886,8 @@
   },
   {
     "line": 138,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_max_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_max_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_neg10')."
   },
   {
     "line": 138,
@@ -1901,8 +1901,8 @@
   },
   {
     "line": 140,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos1')."
   },
   {
     "line": 140,
@@ -1911,13 +1911,13 @@
   },
   {
     "line": 141,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_min_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_min_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_min_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_min_arg_0')."
   },
   {
     "line": 142,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos2')."
   },
   {
     "line": 142,
@@ -1931,8 +1931,8 @@
   },
   {
     "line": 143,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos3')."
   },
   {
     "line": 143,
@@ -1961,8 +1961,8 @@
   },
   {
     "line": 144,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos4')."
   },
   {
     "line": 144,
@@ -1986,8 +1986,8 @@
   },
   {
     "line": 145,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos5')."
   },
   {
     "line": 145,
@@ -2001,8 +2001,8 @@
   },
   {
     "line": 146,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos6')."
   },
   {
     "line": 146,
@@ -2016,8 +2016,8 @@
   },
   {
     "line": 147,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos7')."
   },
   {
     "line": 147,
@@ -2031,8 +2031,8 @@
   },
   {
     "line": 150,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos8')."
   },
   {
     "line": 150,
@@ -2046,8 +2046,8 @@
   },
   {
     "line": 151,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos9')."
   },
   {
     "line": 151,
@@ -2061,8 +2061,8 @@
   },
   {
     "line": 152,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos10')."
   },
   {
     "line": 152,
@@ -2076,8 +2076,8 @@
   },
   {
     "line": 153,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg1')."
   },
   {
     "line": 153,
@@ -2091,8 +2091,8 @@
   },
   {
     "line": 154,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg2')."
   },
   {
     "line": 154,
@@ -2111,8 +2111,8 @@
   },
   {
     "line": 155,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg3')."
   },
   {
     "line": 155,
@@ -2126,8 +2126,8 @@
   },
   {
     "line": 156,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg4')."
   },
   {
     "line": 156,
@@ -2146,8 +2146,8 @@
   },
   {
     "line": 157,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg5')."
   },
   {
     "line": 157,
@@ -2156,8 +2156,8 @@
   },
   {
     "line": 158,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg6')."
   },
   {
     "line": 158,
@@ -2186,8 +2186,8 @@
   },
   {
     "line": 160,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg8')."
   },
   {
     "line": 160,
@@ -2211,8 +2211,8 @@
   },
   {
     "line": 161,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg9')."
   },
   {
     "line": 161,
@@ -2221,8 +2221,8 @@
   },
   {
     "line": 162,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_min_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_min_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg10')."
   },
   {
     "line": 162,
@@ -2236,13 +2236,13 @@
   },
   {
     "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos1')."
   },
   {
     "line": 164,
@@ -2256,18 +2256,18 @@
   },
   {
     "line": 165,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_range_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_range_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_range_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_range_arg_0')."
   },
   {
     "line": 166,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 166,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos2')."
   },
   {
     "line": 166,
@@ -2281,13 +2281,13 @@
   },
   {
     "line": 167,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 167,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos3')."
   },
   {
     "line": 167,
@@ -2306,8 +2306,8 @@
   },
   {
     "line": 168,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 168,
@@ -2321,8 +2321,8 @@
   },
   {
     "line": 168,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos4')."
   },
   {
     "line": 168,
@@ -2336,8 +2336,8 @@
   },
   {
     "line": 169,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 169,
@@ -2351,8 +2351,8 @@
   },
   {
     "line": 169,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos5')."
   },
   {
     "line": 169,
@@ -2361,13 +2361,13 @@
   },
   {
     "line": 170,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 170,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos6')."
   },
   {
     "line": 170,
@@ -2376,13 +2376,13 @@
   },
   {
     "line": 171,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 171,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos7')."
   },
   {
     "line": 171,
@@ -2401,13 +2401,13 @@
   },
   {
     "line": 174,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 174,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos8')."
   },
   {
     "line": 174,
@@ -2426,13 +2426,13 @@
   },
   {
     "line": 175,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 175,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos9')."
   },
   {
     "line": 175,
@@ -2446,13 +2446,13 @@
   },
   {
     "line": 176,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 176,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_pos10')."
   },
   {
     "line": 176,
@@ -2466,13 +2466,13 @@
   },
   {
     "line": 177,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 177,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg1')."
   },
   {
     "line": 177,
@@ -2491,13 +2491,13 @@
   },
   {
     "line": 178,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 178,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg2')."
   },
   {
     "line": 178,
@@ -2511,13 +2511,13 @@
   },
   {
     "line": 179,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 179,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg3')."
   },
   {
     "line": 179,
@@ -2531,13 +2531,13 @@
   },
   {
     "line": 180,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 180,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg4')."
   },
   {
     "line": 180,
@@ -2561,8 +2561,8 @@
   },
   {
     "line": 181,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg5')."
   },
   {
     "line": 181,
@@ -2571,13 +2571,13 @@
   },
   {
     "line": 182,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 182,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg6')."
   },
   {
     "line": 182,
@@ -2606,13 +2606,13 @@
   },
   {
     "line": 184,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 184,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg8')."
   },
   {
     "line": 184,
@@ -2631,8 +2631,8 @@
   },
   {
     "line": 185,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_range_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_range_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 185,
@@ -2641,8 +2641,8 @@
   },
   {
     "line": 185,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg9')."
   },
   {
     "line": 185,
@@ -2656,8 +2656,8 @@
   },
   {
     "line": 186,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_range_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_range_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg10')."
   },
   {
     "line": 186,
@@ -2676,8 +2676,8 @@
   },
   {
     "line": 188,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos1')."
   },
   {
     "line": 188,
@@ -2686,8 +2686,8 @@
   },
   {
     "line": 189,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_remove_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_remove_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_remove_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_remove_arg_0')."
   },
   {
     "line": 190,
@@ -2696,13 +2696,13 @@
   },
   {
     "line": 190,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_remove_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_remove_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_remove_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_remove_arg_1')."
   },
   {
     "line": 191,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos2')."
   },
   {
     "line": 191,
@@ -2721,8 +2721,8 @@
   },
   {
     "line": 192,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos3')."
   },
   {
     "line": 192,
@@ -2756,8 +2756,8 @@
   },
   {
     "line": 193,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos4')."
   },
   {
     "line": 193,
@@ -2786,8 +2786,8 @@
   },
   {
     "line": 194,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos5')."
   },
   {
     "line": 194,
@@ -2801,8 +2801,8 @@
   },
   {
     "line": 195,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos6')."
   },
   {
     "line": 195,
@@ -2816,8 +2816,8 @@
   },
   {
     "line": 196,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos7')."
   },
   {
     "line": 196,
@@ -2841,8 +2841,8 @@
   },
   {
     "line": 200,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos8')."
   },
   {
     "line": 200,
@@ -2866,8 +2866,8 @@
   },
   {
     "line": 201,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos9')."
   },
   {
     "line": 201,
@@ -2886,8 +2886,8 @@
   },
   {
     "line": 202,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos10')."
   },
   {
     "line": 202,
@@ -2901,8 +2901,8 @@
   },
   {
     "line": 203,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg1')."
   },
   {
     "line": 203,
@@ -2921,8 +2921,8 @@
   },
   {
     "line": 204,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg2')."
   },
   {
     "line": 204,
@@ -2946,8 +2946,8 @@
   },
   {
     "line": 205,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg3')."
   },
   {
     "line": 205,
@@ -2966,8 +2966,8 @@
   },
   {
     "line": 206,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg4')."
   },
   {
     "line": 206,
@@ -2991,8 +2991,8 @@
   },
   {
     "line": 207,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg5')."
   },
   {
     "line": 207,
@@ -3006,8 +3006,8 @@
   },
   {
     "line": 208,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg6')."
   },
   {
     "line": 208,
@@ -3036,8 +3036,8 @@
   },
   {
     "line": 210,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg8')."
   },
   {
     "line": 210,
@@ -3061,8 +3061,8 @@
   },
   {
     "line": 211,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg9')."
   },
   {
     "line": 211,
@@ -3076,8 +3076,8 @@
   },
   {
     "line": 212,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_remove_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_remove_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg10')."
   },
   {
     "line": 212,
@@ -3091,13 +3091,13 @@
   },
   {
     "line": 214,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 214,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos1')."
   },
   {
     "line": 214,
@@ -3106,18 +3106,18 @@
   },
   {
     "line": 215,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_reverse_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_reverse_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_reverse_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_reverse_arg_0')."
   },
   {
     "line": 216,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 216,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos2')."
   },
   {
     "line": 216,
@@ -3131,13 +3131,13 @@
   },
   {
     "line": 217,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 217,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos3')."
   },
   {
     "line": 217,
@@ -3156,8 +3156,8 @@
   },
   {
     "line": 218,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 218,
@@ -3171,8 +3171,8 @@
   },
   {
     "line": 218,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos4')."
   },
   {
     "line": 218,
@@ -3186,8 +3186,8 @@
   },
   {
     "line": 219,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 219,
@@ -3201,8 +3201,8 @@
   },
   {
     "line": 219,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos5')."
   },
   {
     "line": 219,
@@ -3216,13 +3216,13 @@
   },
   {
     "line": 220,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 220,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos6')."
   },
   {
     "line": 220,
@@ -3236,13 +3236,13 @@
   },
   {
     "line": 221,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 221,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos7')."
   },
   {
     "line": 221,
@@ -3256,13 +3256,13 @@
   },
   {
     "line": 224,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 224,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos8')."
   },
   {
     "line": 224,
@@ -3276,13 +3276,13 @@
   },
   {
     "line": 225,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 225,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos9')."
   },
   {
     "line": 225,
@@ -3296,13 +3296,13 @@
   },
   {
     "line": 226,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 226,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_pos10')."
   },
   {
     "line": 226,
@@ -3316,13 +3316,13 @@
   },
   {
     "line": 227,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 227,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg1')."
   },
   {
     "line": 227,
@@ -3336,13 +3336,13 @@
   },
   {
     "line": 228,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 228,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg2')."
   },
   {
     "line": 228,
@@ -3361,13 +3361,13 @@
   },
   {
     "line": 229,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 229,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg3')."
   },
   {
     "line": 229,
@@ -3381,13 +3381,13 @@
   },
   {
     "line": 230,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 230,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg4')."
   },
   {
     "line": 230,
@@ -3406,8 +3406,8 @@
   },
   {
     "line": 231,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg5')."
   },
   {
     "line": 231,
@@ -3416,13 +3416,13 @@
   },
   {
     "line": 232,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 232,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg6')."
   },
   {
     "line": 232,
@@ -3451,13 +3451,13 @@
   },
   {
     "line": 234,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 234,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg8')."
   },
   {
     "line": 234,
@@ -3476,8 +3476,8 @@
   },
   {
     "line": 235,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_reverse_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_reverse_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 235,
@@ -3486,8 +3486,8 @@
   },
   {
     "line": 235,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg9')."
   },
   {
     "line": 235,
@@ -3496,8 +3496,8 @@
   },
   {
     "line": 236,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_reverse_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_reverse_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_reverse_neg10')."
   },
   {
     "line": 236,
@@ -3511,8 +3511,8 @@
   },
   {
     "line": 238,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos1')."
   },
   {
     "line": 238,
@@ -3521,13 +3521,13 @@
   },
   {
     "line": 239,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_sizeofarray_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_sizeofarray_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_sizeofarray_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_sizeofarray_arg_0')."
   },
   {
     "line": 240,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos2')."
   },
   {
     "line": 240,
@@ -3541,8 +3541,8 @@
   },
   {
     "line": 241,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos3')."
   },
   {
     "line": 241,
@@ -3571,8 +3571,8 @@
   },
   {
     "line": 242,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos4')."
   },
   {
     "line": 242,
@@ -3596,8 +3596,8 @@
   },
   {
     "line": 243,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos5')."
   },
   {
     "line": 243,
@@ -3611,8 +3611,8 @@
   },
   {
     "line": 244,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos6')."
   },
   {
     "line": 244,
@@ -3626,8 +3626,8 @@
   },
   {
     "line": 245,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos7')."
   },
   {
     "line": 245,
@@ -3641,8 +3641,8 @@
   },
   {
     "line": 248,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos8')."
   },
   {
     "line": 248,
@@ -3656,8 +3656,8 @@
   },
   {
     "line": 249,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos9')."
   },
   {
     "line": 249,
@@ -3671,8 +3671,8 @@
   },
   {
     "line": 250,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos10')."
   },
   {
     "line": 250,
@@ -3686,8 +3686,8 @@
   },
   {
     "line": 251,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg1')."
   },
   {
     "line": 251,
@@ -3701,8 +3701,8 @@
   },
   {
     "line": 252,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg2')."
   },
   {
     "line": 252,
@@ -3721,8 +3721,8 @@
   },
   {
     "line": 253,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg3')."
   },
   {
     "line": 253,
@@ -3736,8 +3736,8 @@
   },
   {
     "line": 254,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg4')."
   },
   {
     "line": 254,
@@ -3756,8 +3756,8 @@
   },
   {
     "line": 255,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg5')."
   },
   {
     "line": 255,
@@ -3766,8 +3766,8 @@
   },
   {
     "line": 256,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg6')."
   },
   {
     "line": 256,
@@ -3796,8 +3796,8 @@
   },
   {
     "line": 258,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg8')."
   },
   {
     "line": 258,
@@ -3821,8 +3821,8 @@
   },
   {
     "line": 259,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg9')."
   },
   {
     "line": 259,
@@ -3831,8 +3831,8 @@
   },
   {
     "line": 260,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sizeofarray_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sizeofarray_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_neg10')."
   },
   {
     "line": 260,
@@ -3846,13 +3846,13 @@
   },
   {
     "line": 262,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 262,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos1')."
   },
   {
     "line": 262,
@@ -3861,23 +3861,23 @@
   },
   {
     "line": 263,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_sort_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_sort_arg_0')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_sort_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_sort_arg_0')."
   },
   {
     "line": 264,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'var_sort_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_sort_arg_1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_sort_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_sort_arg_1')."
   },
   {
     "line": 265,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 265,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos2')."
   },
   {
     "line": 265,
@@ -3891,13 +3891,13 @@
   },
   {
     "line": 266,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 266,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos3')."
   },
   {
     "line": 266,
@@ -3916,8 +3916,8 @@
   },
   {
     "line": 267,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 267,
@@ -3931,8 +3931,8 @@
   },
   {
     "line": 267,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos4')."
   },
   {
     "line": 267,
@@ -3946,8 +3946,8 @@
   },
   {
     "line": 268,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 268,
@@ -3961,8 +3961,8 @@
   },
   {
     "line": 268,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos5')."
   },
   {
     "line": 268,
@@ -3981,13 +3981,13 @@
   },
   {
     "line": 269,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 269,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos6')."
   },
   {
     "line": 269,
@@ -4001,13 +4001,13 @@
   },
   {
     "line": 270,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 270,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos7')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos7')."
   },
   {
     "line": 270,
@@ -4021,13 +4021,13 @@
   },
   {
     "line": 274,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 274,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos8')."
   },
   {
     "line": 274,
@@ -4041,13 +4041,13 @@
   },
   {
     "line": 275,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 275,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos9')."
   },
   {
     "line": 275,
@@ -4061,13 +4061,13 @@
   },
   {
     "line": 276,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 276,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos10')."
   },
   {
     "line": 276,
@@ -4081,13 +4081,13 @@
   },
   {
     "line": 277,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 277,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg1')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg1')."
   },
   {
     "line": 277,
@@ -4101,13 +4101,13 @@
   },
   {
     "line": 278,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 278,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg2')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg2')."
   },
   {
     "line": 278,
@@ -4136,13 +4136,13 @@
   },
   {
     "line": 279,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 279,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg3')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg3')."
   },
   {
     "line": 279,
@@ -4156,13 +4156,13 @@
   },
   {
     "line": 280,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 280,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg4')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg4')."
   },
   {
     "line": 280,
@@ -4181,8 +4181,8 @@
   },
   {
     "line": 281,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg5')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg5')."
   },
   {
     "line": 281,
@@ -4196,13 +4196,13 @@
   },
   {
     "line": 282,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 282,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg6')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg6')."
   },
   {
     "line": 282,
@@ -4226,13 +4226,13 @@
   },
   {
     "line": 284,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 284,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg8')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg8')."
   },
   {
     "line": 284,
@@ -4241,8 +4241,8 @@
   },
   {
     "line": 285,
-    "severity": "Warning",
-    "message": "Style Warning: Array variable 'val_sort_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "severity": "Information",
+    "message": "Style Info: Array variable 'val_sort_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 285,
@@ -4251,8 +4251,8 @@
   },
   {
     "line": 285,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg9')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg9')."
   },
   {
     "line": 285,
@@ -4261,8 +4261,8 @@
   },
   {
     "line": 286,
-    "severity": "Warning",
-    "message": "Style Warning: Variable 'val_sort_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg10')."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sort_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg10')."
   },
   {
     "line": 286,
