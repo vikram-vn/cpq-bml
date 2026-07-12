@@ -70,6 +70,26 @@ async function runDownloadLogFile(context, vscode, transport) {
         cancellable: false
     }, async () => {
         try {
+            const version = configLib.getRestVersion(vscode);
+            const authResponse = await api.request({
+                baseUrl: siteUrl,
+                path: `/rest/${version}/currentUser`,
+                method: "GET",
+                authHeader,
+                transport
+            });
+
+            const extraHeaders = {};
+            if (authResponse.headers && authResponse.headers["set-cookie"]) {
+                const cookies = Array.isArray(authResponse.headers["set-cookie"])
+                    ? authResponse.headers["set-cookie"]
+                    : [authResponse.headers["set-cookie"]];
+                const jsessionCookie = cookies.find(c => c.startsWith("JSESSIONID="));
+                if (jsessionCookie) {
+                    extraHeaders.Cookie = jsessionCookie.split(";")[0];
+                }
+            }
+
             const response = await api.request({
                 baseUrl: siteUrl,
                 path: "/log/logFileTransfer",
@@ -79,6 +99,7 @@ async function runDownloadLogFile(context, vscode, transport) {
                     log_categ: "GENERAL"
                 },
                 authHeader,
+                headers: extraHeaders,
                 transport
             });
 

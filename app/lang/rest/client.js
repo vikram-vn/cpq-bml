@@ -55,6 +55,7 @@ async function request({
   query,
   body,
   authHeader,
+  headers: extraHeaders,
   logFilePath,
   transport = defaultTransport,
 }) {
@@ -68,6 +69,7 @@ async function request({
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
+    ...extraHeaders,
   };
   if (authHeader) headers.Authorization = authHeader;
 
@@ -122,7 +124,7 @@ async function request({
     }
   }
 
-  return { statusCode: response.statusCode, body: parsedBody };
+  return { statusCode: response.statusCode, headers: response.headers, body: parsedBody };
 }
 
 module.exports = { request, buildPath, defaultTransport };

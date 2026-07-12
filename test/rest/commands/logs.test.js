@@ -41,6 +41,13 @@ suite("BML REST commands - download logs", () => {
 
       let transportCalled = false;
       const transport = async (opts) => {
+        if (opts.path.includes("/currentUser")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json", "set-cookie": ["JSESSIONID=mocksession123; Path=/; Secure"] },
+            text: "{}",
+          };
+        }
         transportCalled = true;
         assert.strictEqual(opts.path, "/log/logFileTransfer?file_path=bm.log&log_categ=GENERAL");
         assert.strictEqual(opts.method, "GET");
@@ -91,6 +98,13 @@ suite("BML REST commands - download logs", () => {
 
       let transportCalled = false;
       const transport = async (opts) => {
+        if (opts.path.includes("/currentUser")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json", "set-cookie": ["JSESSIONID=mocksession123; Path=/; Secure"] },
+            text: "{}",
+          };
+        }
         transportCalled = true;
         assert.strictEqual(opts.path, "/log/logFileTransfer?file_path=custom%2Fpath%2Fto%2Fserver.log&log_categ=GENERAL");
         return {
