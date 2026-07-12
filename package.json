@@ -110,42 +110,42 @@
       {
         "command": "cpqBml.rest.validateCurrentFile",
         "title": "CPQ-BML: Validate Current File Against CPQ",
-        "icon": "$(check)"
+        "icon": "app/icons/validate.svg"
       },
       {
         "command": "cpqBml.rest.debugCurrentFile",
         "title": "CPQ-BML: Debug Current Function on CPQ",
-        "icon": "$(play)"
+        "icon": "app/icons/debug.svg"
       },
       {
         "command": "cpqBml.rest.saveCurrentFile",
         "title": "CPQ-BML: Save Current File to CPQ",
-        "icon": "$(cloud-upload)"
+        "icon": "app/icons/save.svg"
       },
       {
         "command": "cpqBml.rest.clearResults",
         "title": "CPQ-BML: Clear Results Terminal",
-        "icon": "$(clear-all)"
+        "icon": "app/icons/clear.svg"
       },
       {
         "command": "cpqBml.rest.createOverride",
         "title": "CPQ-BML: Create Override",
-        "icon": "$(repo-forked)"
+        "icon": "app/icons/create-override.svg"
       },
       {
         "command": "cpqBml.rest.removeOverride",
         "title": "CPQ-BML: Remove Override",
-        "icon": "$(discard)"
+        "icon": "app/icons/remove-override.svg"
       },
       {
         "command": "cpqBml.rest.deployCommerceProcess",
         "title": "CPQ-BML: Deploy Commerce Process Setup",
-        "icon": "$(rocket)"
+        "icon": "app/icons/deploy.svg"
       },
       {
         "command": "cpqBml.rest.deployCurrentFile",
         "title": "CPQ-BML: Deploy Current Util Function to CPQ",
-        "icon": "$(rocket)"
+        "icon": "app/icons/deploy.svg"
       },
       {
         "command": "cpqBml.rest.deployUtilFunctions",
@@ -165,7 +165,7 @@
       {
         "command": "cpqBml.rest.downloadLogFile",
         "title": "CPQ-BML: Download Log File",
-        "icon": "$(output)"
+        "icon": "app/icons/download-log.svg"
       },
       {
         "command": "cpqBml.mcp.showInfo",

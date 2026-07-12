@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <path d="M13 3C13 3 10 2.5 7 5.5C5 7.5 4.5 10 4.5 10L3 11.5L4.5 13L6 11.5C6 11.5 8.5 11 10.5 9C13.5 6 13 3 13 3Z" fill="url(#skyGrad)"/>
+  <path d="M4.5 10C3.5 10.5 3 11.5 3 11.5L4.5 13C4.5 13 5.5 12.5 6 11.5" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M3 13.5C2.5 13.5 2 14 2 14.5C2 15 2.5 15 2.5 15C3.5 14.5 3.5 14 3.5 14" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="9" cy="7" r="1.2" fill="#ffffff"/>
+  <defs>
+    <linearGradient id="skyGrad" x1="4.5" y1="3" x2="13" y2="11.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -12,6 +12,14 @@ function getExtensionId() {
 async function activateExtension(vscode) {
     const ext = vscode.extensions.getExtension(getExtensionId());
     await ext.activate();
+
+    // Always ensure features.lint is enabled for tests to avoid stale state
+    const config = vscode.workspace.getConfiguration('cpqBml');
+    if (config.get('features.lint') !== true) {
+        await config.update('features.lint', true, vscode.ConfigurationTarget.Global);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+
     return ext;
 }
 

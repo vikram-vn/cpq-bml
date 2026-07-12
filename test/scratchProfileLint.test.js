@@ -161,8 +161,7 @@ suite('SCRATCH: profile linter on real library', () => {
             slowestFiles: fileTotals.slice(0, 15),
             ruleHits: Object.fromEntries(Object.entries(ruleHits).sort((a, b) => b[1] - a[1])),
         };
-        const outPath = path.join(__dirname, '..', 'scratch_lint_profile.json');
-        fs.writeFileSync(outPath, JSON.stringify(out, null, 2), 'utf8');
-        console.log(`Profiled ${bmlFiles.length} files -> ${outPath}`);
+        console.log("--- BML Linter Profiling Results ---");
+        console.log(JSON.stringify(out, null, 2));
     });
 });

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <!-- Terminal screen background -->
+  <rect x="2" y="3" width="12" height="10" rx="1.5" fill="url(#termGrad)"/>
+  <!-- Console prompt symbol >_ -->
+  <path d="M5 6L7 7.5L5 9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="8.5" y1="9" x2="10.5" y2="9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Red delete/clear circle badge in bottom right corner -->
+  <circle cx="12" cy="11" r="3.5" fill="#ef4444" stroke="#1e293b" stroke-width="1"/>
+  <path d="M10.8 11H13.2" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="termGrad" x1="2" y1="3" x2="14" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+</svg>
