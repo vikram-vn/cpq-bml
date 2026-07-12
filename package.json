@@ -163,11 +163,6 @@
         "icon": "app/icons/change-env.svg"
       },
       {
-        "command": "cpqBml.rest.downloadLogFile",
-        "title": "CPQ-BML: Download Log File",
-        "icon": "app/icons/download-log.svg"
-      },
-      {
         "command": "cpqBml.mcp.showInfo",
         "title": "CPQ-BML: Show MCP Server Connection Info",
         "icon": "$(info)"
@@ -266,11 +261,6 @@
           "command": "cpqBml.rest.deployCurrentFile",
           "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
-        },
-        {
-          "command": "cpqBml.rest.downloadLogFile",
-          "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
-          "group": "navigation@7"
         },
         {
           "command": "cpqBml.xslt.preview",

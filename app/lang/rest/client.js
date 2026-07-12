@@ -68,9 +68,9 @@ async function request({
   const fullPath = buildPath(path, query);
 
   // Content-Type only makes sense when a body is actually sent - stamping it
-  // on GETs confuses non-REST endpoints (e.g. UI servlets like
-  // /log/logFileTransfer). Both defaults are still overridable per call via
-  // extraHeaders, which is spread last.
+  // on body-less GETs is incorrect HTTP and confuses non-REST endpoints.
+  // Both defaults are still overridable per call via extraHeaders, which is
+  // spread last.
   const headers = {
     Accept: "application/json",
     ...(body !== undefined ? { "Content-Type": "application/json" } : {}),

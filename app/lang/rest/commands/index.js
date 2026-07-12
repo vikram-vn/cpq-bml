@@ -13,7 +13,6 @@ const {
 } = require("./deploy");
 const { runCreateBmlFunction } = require("./scaffold");
 const { runChangeEnvironment } = require("./env");
-const { runDownloadLogFile } = require("./logs");
 const {
   describeError,
   findLibraryFunctionByVariableName,
@@ -245,9 +244,6 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.changeEnvironment", () =>
       runChangeEnvironment(context, vscode),
     ),
-    vscode.commands.registerCommand("cpqBml.rest.downloadLogFile", () =>
-      runDownloadLogFile(context, vscode),
-    ),
     vscode.commands.registerCommand("cpqBml.rest.clearResults", () =>
       resultsTerminal.clear(),
     ),
@@ -279,7 +275,6 @@ module.exports = {
   runDeployUtilFunctions,
   runCreateBmlFunction,
   runChangeEnvironment,
-  runDownloadLogFile,
   describeError,
   findLibraryFunctionByVariableName,
   resolveMetadataForFile,
