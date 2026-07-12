@@ -56,4 +56,31 @@ suite('BML Linter Test Suite - Null Safety', () => {
         const nullDiags = diags.filter(d => d.code === 'bml-null-check-required');
         assert.strictEqual(nullDiags.length, 0, 'Should not flag regular string assignments');
     });
+
+    test('does not flag a bmql result consumed only via for-in iteration', () => {
+        // BMQL.md's own examples consume results exactly this way - an empty
+        // RecordSet simply never enters the loop, so no guard is needed.
+        const diags = lintText(`
+            results = bmql("SELECT id FROM table WHERE x = $x");
+            for row in results {
+                print(row);
+            }
+            return "";
+        `);
+        const nullDiags = diags.filter(d => d.code === 'bml-null-check-required');
+        assert.strictEqual(nullDiags.length, 0, 'for-in iteration is the documented safe consumption pattern');
+    });
+
+    test('still flags a non-loop expression use even when a for-in also exists', () => {
+        const diags = lintText(`
+            results = bmql("SELECT id FROM table WHERE x = $x");
+            summary = "got: " + results;
+            for row in results {
+                print(row);
+            }
+            return summary;
+        `);
+        const nullDiags = diags.filter(d => d.code === 'bml-null-check-required');
+        assert.ok(nullDiags.length > 0, 'expression use before the loop must still be flagged');
+    });
 });

@@ -33,6 +33,24 @@ function registerBmlLinter(context) {
         setImmediate(() => loadDictionaries(extensionPath));
     }
 
+    // Same idea for the intellisense API data the type/function checkers
+    // lazily parse on their first call (bml-functions-api-usage is ~1MB -
+    // profiled at ~500ms parse+index on first use, which otherwise lands on
+    // the user's first edit of a .bml file).
+    if (isLintEnabled()) {
+        setImmediate(() => {
+            try {
+                const { loadJson } = require('../intellisense/apiDataLoader');
+                loadJson('bml-functions-api-usage', extensionPath);
+                loadJson('bml-variables-api-usage', extensionPath);
+                loadJson('function-return-types', extensionPath);
+                loadJson('function-param-data-types', extensionPath);
+            } catch (e) {
+                // Prewarm only - the checkers load on demand if this failed.
+            }
+        });
+    }
+
     const lintDelay = 300;
     const lintTimers = new Map();
 

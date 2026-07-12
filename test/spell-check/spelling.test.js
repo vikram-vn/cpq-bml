@@ -176,4 +176,39 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
             } catch (e) {}
         }
     });
+
+    suite('compound identifier segmentation', () => {
+        test('does not flag all-lowercase compounds of known words (linejson, orderline, dummyarray)', () => {
+            const diagnostics = lintText(`
+                linejson = "";
+                orderline = "";
+                dummyarray = "";
+                numberof = 1;
+                return "";
+            `);
+            const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+            assert.deepStrictEqual(spellingErrors.map(e => e.message), [], 'compounds of dictionary words must not be flagged');
+        });
+
+        test('still flags real typos that are not clean compounds (struture, hiearchy, servcie)', () => {
+            const diagnostics = lintText(`
+                struture = "";
+                hiearchy = "";
+                servcie = "";
+                return "";
+            `);
+            const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+            assert.strictEqual(spellingErrors.length, 3, 'genuine typos must survive the compound fallback');
+        });
+
+        test('does not flag acronym+suffix identifiers split as RES+Tful (RESTful)', () => {
+            const diagnostics = lintText(`
+                // Uses a RESTful endpoint for the call.
+                x = webRESTfulName;
+                return "";
+            `);
+            const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+            assert.deepStrictEqual(spellingErrors.map(e => e.message), [], 'neighbor-merge should reassemble restful from RES+Tful');
+        });
+    });
 });

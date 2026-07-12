@@ -38,15 +38,5 @@
     "line": 20,
     "severity": "Warning",
     "message": "Commerce Best Practice: Return information must be formatted as '[docNo]~variableName~variableValue|' (missing '|' delimiter)"
-  },
-  {
-    "line": 21,
-    "severity": "Hint",
-    "message": "Unused variable: retErr"
-  },
-  {
-    "line": 24,
-    "severity": "Warning",
-    "message": "Commerce Best Practice: Return information must be formatted as '[docNo]~variableName~variableValue|' (missing '|' delimiter)"
   }
 ]

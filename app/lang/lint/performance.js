@@ -155,11 +155,14 @@ function checkPerformance(cleanText, noStringsText, doc) {
     });
 
     // 4. Deep Nesting Warning (run on noStringsText to ignore braces inside strings)
+    // Only the brace that CROSSES the threshold (depth 3 -> 4) is flagged, so
+    // one deeply nested region produces one warning at its entry point rather
+    // than a separate duplicate warning for every additional brace inside it.
     let currentDepth = 0;
     for (let i = 0; i < noStringsText.length; i++) {
         if (noStringsText[i] === '{') {
             currentDepth++;
-            if (currentDepth > 3) {
+            if (currentDepth === 4) {
                 const startPos = doc.positionAt(i);
                 const endPos = startPos.translate(0, 1);
                 diagnostics.push(makeDiagnostic(

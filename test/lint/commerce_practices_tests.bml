@@ -17,9 +17,9 @@ badAttr2 = _config_attr_text;
 badAttr3 = _CONFIG_ATTRIBUTES;
 
 // 3. Commerce Return Format Delimiter Check (bml-commerce-return-format)
-// Assigning return values containing '~' without trailing '|'
-ret = "1~price_line~25.50"; 
-retErr = "2~qty_line~10";
+// Multiple doc~var~value triplets glued together without the '|' separator
+ret = "1~price_line~25.50" + "1~qty_line~10";
 
-// Returning string containing '~' without trailing '|'
+// A single triplet is valid without a trailing '|' - Oracle's own reference
+// library returns these bare, the pipe only separates multiple triplets.
 return "1~price_line~25.50";

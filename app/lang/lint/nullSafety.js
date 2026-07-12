@@ -101,6 +101,16 @@ function checkNullSafety(cleanText, noStringsText, doc) {
             const argAfter = noStringsText.slice(useIndex + varName.length, useIndex + varName.length + 20).trimStart();
             if (/[(,]$/.test(argBefore) && /^[,)]/.test(argAfter)) continue;
 
+            // Skip for-in iteration: `for row in results { ... }` is the
+            // documented, safe way to consume a bmql() RecordSet (BMQL.md's
+            // own examples use exactly this) - an empty result simply never
+            // enters the loop, so no null/empty guard is needed. This was the
+            // single largest false-positive source on real library code.
+            // (Wider window than argBefore: "for <longLoopVarName> in " can
+            // exceed 20 chars.)
+            const forInBefore = noStringsText.slice(Math.max(0, useIndex - 60), useIndex).trimEnd();
+            if (/\bfor\s+\w+\s+in\s*$/.test(forInBefore)) continue;
+
             // Unguarded use found
             const startPos = doc.positionAt(useIndex);
             const endPos = startPos.translate(0, varName.length);

@@ -17,6 +17,7 @@ const formattingTools = require("./tool-defs/formattingTools");
 // Reads all SKILL.md files from app/ai/skills/ and concatenates them into a
 // single string for the MCP server instructions, stripping YAML frontmatter.
 function loadSkillsInstructions(extensionPath) {
+  if (!extensionPath) return "";
   const skillsDir = nodePath.join(extensionPath, "app", "ai", "skills");
   let combined = "";
   try {
@@ -59,7 +60,8 @@ let boundPort = null;
 async function startMcpServer(context, vscode, port) {
   if (httpServer) return { port: boundPort };
 
-  const skillsText = loadSkillsInstructions(context.extensionPath);
+  const extensionPath = context && context.extensionPath ? context.extensionPath : "";
+  const skillsText = loadSkillsInstructions(extensionPath);
 
   httpServer = http.createServer((req, res) => {
     const path = (req.url || "").split("?")[0];

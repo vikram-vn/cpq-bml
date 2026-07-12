@@ -131,38 +131,37 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
     // noStringsLines: getStringRanges blanks the quote characters too, so a
     // bare `print "just a literal";` would otherwise look like nothing but
     // whitespace up to the semicolon and never match.
+    //
+    // Debug-controlled state is precomputed in ONE forward pass (a stack of
+    // open blocks, marking whether each is an `if (...debug...)` block) - the
+    // previous per-print upward rescan was O(lines^2) on print-heavy files.
     const printTriggerRegex = /\bprint\b\s*(?:\(|[^\s;])/;
+    const debugBlockStack = [];
+    const lineIsDebugControlled = new Array(noStringsLines.length);
     for (let i = 0; i < noStringsLines.length; i++) {
-        const line = noStringsLines[i];
-        if (printTriggerRegex.test(cleanLines[i])) {
-            // Check if print is enclosed in a debug-controlled block
-            // We can look upwards to find if there is an active 'if' with 'debug'
-            let isDebugControlled = false;
-            let openBraceCount = 0;
-            for (let j = i; j >= 0; j--) {
-                const prevLine = noStringsLines[j].trim();
-                if (prevLine.includes('}')) {
-                    openBraceCount--;
-                }
-                if (prevLine.includes('{')) {
-                    openBraceCount++;
-                    if (openBraceCount > 0 && prevLine.toLowerCase().includes('if') && prevLine.toLowerCase().includes('debug')) {
-                        isDebugControlled = true;
-                        break;
-                    }
-                }
+        lineIsDebugControlled[i] = debugBlockStack.some(Boolean);
+        const trimmed = noStringsLines[i].trim();
+        const lower = trimmed.toLowerCase();
+        for (let c = 0; c < trimmed.length; c++) {
+            if (trimmed[c] === '{') {
+                debugBlockStack.push(lower.includes('if') && lower.includes('debug'));
+                // An `if (debug) {` guards its own line too, not just lines below.
+                if (debugBlockStack[debugBlockStack.length - 1]) lineIsDebugControlled[i] = true;
+            } else if (trimmed[c] === '}') {
+                debugBlockStack.pop();
             }
-
-            if (!isDebugControlled) {
-                const startPos = new vscode.Position(i, lines[i].indexOf('print'));
-                const endPos = startPos.translate(0, 5);
-                diagnostics.push(makeDiagnostic(
-                    new vscode.Range(startPos, endPos),
-                    'Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... }).',
-                    vscode.DiagnosticSeverity.Information,
-                    'bml-unguarded-print'
-                ));
-            }
+        }
+    }
+    for (let i = 0; i < noStringsLines.length; i++) {
+        if (printTriggerRegex.test(cleanLines[i]) && !lineIsDebugControlled[i]) {
+            const startPos = new vscode.Position(i, lines[i].indexOf('print'));
+            const endPos = startPos.translate(0, 5);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                'Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... }).',
+                vscode.DiagnosticSeverity.Information,
+                'bml-unguarded-print'
+            ));
         }
     }
 

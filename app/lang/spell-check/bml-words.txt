@@ -1209,3 +1209,17 @@ esignature
 pline
 puid
 uom
+bmfsweb
+charset
+docx
+ics
+jsp
+restful
+servlet
+servlets
+utf
+wsdl
+www
+xa
+xmlsoap
+xsi
