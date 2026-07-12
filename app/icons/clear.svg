@@ -1,16 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="1.5 2 14 14" fill="none">
-  <!-- Terminal screen background -->
-  <rect x="2" y="3" width="12" height="10" rx="1.5" fill="url(#termGrad)"/>
-  <!-- Console prompt symbol >_ -->
-  <path d="M5 6L7 7.5L5 9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="8.5" y1="9" x2="10.5" y2="9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
-  <!-- Red delete/clear circle badge in bottom right corner -->
-  <circle cx="12" cy="11" r="3.5" fill="#ef4444" stroke="#1e293b" stroke-width="1"/>
-  <path d="M10.8 11H13.2" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
-  <defs>
-    <linearGradient id="termGrad" x1="2" y1="3" x2="14" y2="13" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#475569"/>
-      <stop offset="100%" stop-color="#1e293b"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <rect x="1" y="2" width="14" height="12" rx="2" fill="url(#clrGrad)"/>
+  <path d="M4.5 5.5L6.5 7.5L4.5 9.5" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="8" y1="9.5" x2="11" y2="9.5" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="13" cy="12" r="3" fill="#ef4444" stroke="#1e1e1e" stroke-width="0.8"/>
+  <path d="M11.8 12H14.2" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+  <defs><linearGradient id="clrGrad" x1="1" y1="2" x2="15" y2="14" gradientUnits="userSpaceOnUse"><stop stop-color="#334155"/><stop offset="1" stop-color="#1e293b"/></linearGradient></defs>
 </svg>

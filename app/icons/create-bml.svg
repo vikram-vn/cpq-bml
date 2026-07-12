@@ -1,12 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="1.25 0.75 14.5 14.5" fill="none">
-  <path d="M4 2.5C4 1.67 4.67 1 5.5 1H10L13 4V13.5C13 14.33 12.33 15 11.5 15H5.5C4.67 15 4 14.33 4 13.5V2.5Z" fill="url(#fileRedGrad)"/>
-  <path d="M10 1V4H13L10 1Z" fill="#ffcccc"/>
-  <!-- Plus symbol inside -->
-  <path d="M8.5 6.5V11.5M6 9H11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
-  <defs>
-    <linearGradient id="fileRedGrad" x1="4" y1="1" x2="13" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#ff2a2a"/>
-      <stop offset="100%" stop-color="#F80000"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <path d="M3 2.5C3 1.67 3.67 1 4.5 1H9.5L13 4.5V13.5C13 14.33 12.33 15 11.5 15H4.5C3.67 15 3 14.33 3 13.5V2.5Z" fill="url(#bmlGrad)"/>
+  <path d="M9.5 1V4.5H13L9.5 1Z" fill="#fca5a5"/>
+  <path d="M8 6.5V11.5M5.5 9H10.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <defs><linearGradient id="bmlGrad" x1="3" y1="1" x2="13" y2="15" gradientUnits="userSpaceOnUse"><stop stop-color="#f87171"/><stop offset="1" stop-color="#dc2626"/></linearGradient></defs>
 </svg>
