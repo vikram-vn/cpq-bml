@@ -1,49 +1,19 @@
 const assert = require("assert");
 const vscode = require("vscode");
 const { getMcpServerStatus, stopMcpServer } = require("../../app/lang/mcp/server");
+const { activateExtension } = require("../extensionHelper");
 
 suite("MCP Server Config Reactivity Integration", () => {
   suiteSetup(async () => {
+    await activateExtension(vscode);
+    // Wait dynamically for setImmediate commands registration to finish
+    let commands = await vscode.commands.getCommands(true);
+    while (!commands.includes('cpqBml.mcp.showInfo')) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        commands = await vscode.commands.getCommands(true);
+    }
     const { startMcpServer, stopMcpServer, getMcpServerStatus } = require("../../app/lang/mcp/server");
 
-    const getSettings = () => {
-        const cfg = vscode.workspace.getConfiguration('cpqBml');
-        return {
-            enable: cfg.get('mcp.enable', false),
-            port: cfg.get('mcp.port', 47821),
-        };
-    };
-
-    const ensureStarted = async () => {
-        const { enable, port } = getSettings();
-        if (!enable) return { started: false, reason: 'cpqBml.mcp.enable is false' };
-        try {
-            const result = await startMcpServer(null, vscode, port);
-            return { started: true, port: result.port };
-        } catch (err) {
-            console.error("TEST ENSURE STARTED ERROR:", err);
-            return { started: false, reason: err && err.message ? err.message : String(err) };
-        }
-    };
-
-    vscode.workspace.onDidChangeConfiguration(async (e) => {
-        if (!e.affectsConfiguration('cpqBml.mcp')) return;
-        const status = getMcpServerStatus();
-        const { enable, port } = getSettings();
-        
-        if (!enable) {
-            if (status.running) {
-                stopMcpServer();
-            }
-        } else {
-            if (status.running && status.port !== port) {
-                stopMcpServer();
-                await ensureStarted();
-            } else if (!status.running) {
-                await ensureStarted();
-            }
-        }
-    });
   });
 
   suiteTeardown(() => {

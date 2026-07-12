@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="2.5 3.5 11 11" fill="none">
   <path d="M3 8H10C11.66 8 13 9.34 13 11C13 12.66 11.66 14 10 14" stroke="url(#revertGrad)" stroke-width="2.5" stroke-linecap="round"/>
   <path d="M3 8L6.5 4.5M3 8L6.5 11.5" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
   <defs>
