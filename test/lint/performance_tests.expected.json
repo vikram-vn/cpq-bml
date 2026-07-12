@@ -25,6 +25,11 @@
     "message": "Performance Info: Table 'parts' is queried 4 times. Consider combining queries"
   },
   {
+    "line": 12,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'cachedRs' should have a 'Records' suffix (e.g. 'cachedRsRecords')."
+  },
+  {
     "line": 13,
     "severity": "Information",
     "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
@@ -53,6 +58,11 @@
     "line": 19,
     "severity": "Warning",
     "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
+  },
+  {
+    "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'loopRs' should have a 'Records' suffix (e.g. 'loopRsRecords')."
   },
   {
     "line": 19,
@@ -91,6 +101,11 @@
   },
   {
     "line": 36,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rs1' should have a 'Records' suffix (e.g. 'rs1Records')."
+  },
+  {
+    "line": 36,
     "severity": "Hint",
     "message": "Unused variable: rs1"
   },
@@ -98,6 +113,11 @@
     "line": 37,
     "severity": "Information",
     "message": "Performance Info: Repeated identical BMQL query. Consider caching the results"
+  },
+  {
+    "line": 37,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rs2' should have a 'Records' suffix (e.g. 'rs2Records')."
   },
   {
     "line": 37,
@@ -111,6 +131,11 @@
   },
   {
     "line": 40,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'qParts1' should have a 'Records' suffix (e.g. 'qParts1Records')."
+  },
+  {
+    "line": 40,
     "severity": "Hint",
     "message": "Unused variable: qParts1"
   },
@@ -121,6 +146,11 @@
   },
   {
     "line": 41,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'qParts2' should have a 'Records' suffix (e.g. 'qParts2Records')."
+  },
+  {
+    "line": 41,
     "severity": "Hint",
     "message": "Unused variable: qParts2"
   },
@@ -128,6 +158,11 @@
     "line": 42,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 4 times. Consider combining queries"
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'qParts3' should have a 'Records' suffix (e.g. 'qParts3Records')."
   },
   {
     "line": 42,
@@ -163,6 +198,86 @@
     "line": 49,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 56,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c1' should have an 'is' or 'has' prefix (e.g. 'isC1')."
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c2' should have an 'is' or 'has' prefix (e.g. 'isC2')."
+  },
+  {
+    "line": 58,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c3' should have an 'is' or 'has' prefix (e.g. 'isC3')."
+  },
+  {
+    "line": 59,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c4' should have an 'is' or 'has' prefix (e.g. 'isC4')."
+  },
+  {
+    "line": 60,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c5' should have an 'is' or 'has' prefix (e.g. 'isC5')."
+  },
+  {
+    "line": 61,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c6' should have an 'is' or 'has' prefix (e.g. 'isC6')."
+  },
+  {
+    "line": 62,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c7' should have an 'is' or 'has' prefix (e.g. 'isC7')."
+  },
+  {
+    "line": 63,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c8' should have an 'is' or 'has' prefix (e.g. 'isC8')."
+  },
+  {
+    "line": 64,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c9' should have an 'is' or 'has' prefix (e.g. 'isC9')."
+  },
+  {
+    "line": 65,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c10' should have an 'is' or 'has' prefix (e.g. 'isC10')."
+  },
+  {
+    "line": 66,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c11' should have an 'is' or 'has' prefix (e.g. 'isC11')."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c12' should have an 'is' or 'has' prefix (e.g. 'isC12')."
+  },
+  {
+    "line": 68,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c13' should have an 'is' or 'has' prefix (e.g. 'isC13')."
+  },
+  {
+    "line": 69,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c14' should have an 'is' or 'has' prefix (e.g. 'isC14')."
+  },
+  {
+    "line": 70,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c15' should have an 'is' or 'has' prefix (e.g. 'isC15')."
+  },
+  {
+    "line": 71,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'c16' should have an 'is' or 'has' prefix (e.g. 'isC16')."
   },
   {
     "line": 73,

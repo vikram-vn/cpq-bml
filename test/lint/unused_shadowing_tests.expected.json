@@ -10,6 +10,11 @@
     "message": "Unused variable: unusedLocal"
   },
   {
+    "line": 10,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'trigger_event' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'trigger_event')."
+  },
+  {
     "line": 14,
     "severity": "Information",
     "message": "Design Info: Magic number '3' detected. Consider defining a named constant"

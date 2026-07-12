@@ -5,6 +5,16 @@
     "message": "Complexity Warning: Cyclomatic complexity is high (29). Consider refactoring into helper functions"
   },
   {
+    "line": 5,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'valBool1' should have an 'is' or 'has' prefix (e.g. 'isValBool1')."
+  },
+  {
+    "line": 6,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'valBool2' should have an 'is' or 'has' prefix (e.g. 'isValBool2')."
+  },
+  {
     "line": 9,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
@@ -321,13 +331,13 @@
   },
   {
     "line": 99,
-    "severity": "Hint",
-    "message": "Unused variable: concatRes"
+    "severity": "Error",
+    "message": "'~' is not a BML operator. Use \"+\" for string concatenation"
   },
   {
     "line": 99,
-    "severity": "Error",
-    "message": "'~' is not a BML operator. Use \"+\" for string concatenation"
+    "severity": "Warning",
+    "message": "Argument 1 to 'atoi' should be String, but got a Integer value."
   },
   {
     "line": 99,
@@ -336,7 +346,7 @@
   },
   {
     "line": 99,
-    "severity": "Warning",
-    "message": "Argument 1 to 'atoi' should be String, but got a Integer value."
+    "severity": "Hint",
+    "message": "Unused variable: concatRes"
   }
 ]

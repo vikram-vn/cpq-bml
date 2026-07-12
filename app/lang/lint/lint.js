@@ -69,7 +69,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkOperators(noStringsText, doc));
         diagnostics.push(...checkPerformance(cleanText, noStringsText, doc));
         diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc));
-        diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars));
+        diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath));
         diagnostics.push(...checkBoundaries(cleanText, noStringsText, doc));
         diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath));
         diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));

@@ -6,7 +6,7 @@ function makeDiagnostic(range, message, severity, code) {
     return diag;
 }
 
-function checkStyle(cleanText, noStringsText, doc, declaredVars) {
+function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) {
     const diagnostics = [];
     const lines = doc.getText().split(/\r?\n/);
     const cleanLines = cleanText.split(/\r?\n/);
@@ -105,7 +105,128 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars) {
         }
     }
 
-    // 4. Local Variable Naming checks (Removed to align with official Oracle BML standards)
+    // 4. Local Variable Naming checks
+    const { getAssignmentRhsText, inferExpressionType } = require('./typeCheck');
+    const returnTypes = require('./typeCheckOperands').getFunctionReturnTypes(extensionPath);
+
+    declaredVars.forEach((decls, varName) => {
+        const isConstant = /^[A-Z_][A-Z0-9_]*$/.test(varName) && /[A-Z]/.test(varName);
+
+        if (isConstant) {
+            return;
+        }
+
+        // Regular variable rule: camelCase, starts with lowercase, no underscores
+        if (!/^[a-z][a-zA-Z0-9]*$/.test(varName)) {
+            decls.forEach((decl) => {
+                if (decl.isLoopVar) return;
+                
+                let message;
+                if (varName.includes('_')) {
+                    message = `Style Warning: Variable '${varName}' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of '${varName}').`;
+                } else {
+                    message = `Style Warning: Variable '${varName}' should start with a lowercase letter (e.g. 'totalListPrice' instead of '${varName}').`;
+                }
+
+                diagnostics.push(makeDiagnostic(
+                    decl.range,
+                    message,
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-variable-camelcase'
+                ));
+            });
+        }
+
+        // Suffix/Prefix checks based on inferred type
+        let inferredType = null;
+        for (const decl of decls) {
+            if (decl.isLoopVar) continue;
+            const eqIdx = noStringsText.indexOf('=', decl.index);
+            if (eqIdx !== -1) {
+                const prevChar = eqIdx > 0 ? noStringsText[eqIdx - 1] : '';
+                const nextChar = eqIdx + 1 < noStringsText.length ? noStringsText[eqIdx + 1] : '';
+                if (prevChar === '<' || prevChar === '>' || prevChar === '!' || nextChar === '=') {
+                    continue;
+                }
+                const rhs = getAssignmentRhsText(noStringsText, eqIdx + 1);
+                if (rhs && rhs.text) {
+                    const t = inferExpressionType(rhs.text);
+                    if (t) {
+                        inferredType = t;
+                        break;
+                    }
+                    const trimmed = rhs.text.trim();
+                    const callMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(/);
+                    if (callMatch) {
+                        const nameLower = callMatch[1].toLowerCase();
+                        if (nameLower === 'bmql') {
+                            inferredType = 'RecordSet';
+                            break;
+                        }
+                        const retType = returnTypes[nameLower];
+                        if (retType) {
+                            inferredType = retType;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (inferredType) {
+            const inferredLower = inferredType.toLowerCase();
+            decls.forEach((decl) => {
+                if (decl.isLoopVar) return;
+
+                // Array Check
+                if (inferredLower.endsWith('[]') || inferredLower.includes('array')) {
+                    if (!/(List|Arr|Array|2d)$/i.test(varName)) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Warning: Array variable '${varName}' should have a suffix of 'List', 'Arr', 'Array', or '2D'.`,
+                            vscode.DiagnosticSeverity.Warning,
+                            'bml-array-naming-suffix'
+                        ));
+                    }
+                }
+                // Dictionary Check
+                else if (inferredLower.includes('dictionary') || inferredLower === 'dict') {
+                    if (!/Dict$/i.test(varName)) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Warning: Dictionary variable '${varName}' should have a 'Dict' suffix (e.g. '${varName}Dict').`,
+                            vscode.DiagnosticSeverity.Warning,
+                            'bml-dict-naming-suffix'
+                        ));
+                    }
+                }
+                // RecordSet Check
+                else if (inferredLower.includes('recordset') || inferredLower === 'records') {
+                    if (!/Records$/i.test(varName)) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Warning: RecordSet variable '${varName}' should have a 'Records' suffix (e.g. '${varName}Records').`,
+                            vscode.DiagnosticSeverity.Warning,
+                            'bml-recordset-naming-suffix'
+                        ));
+                    }
+                }
+                // Boolean Check
+                else if (inferredLower === 'boolean') {
+                    const hasCorrectPrefix = /^(is|has)[A-Z]\w*$/.test(varName);
+                    const isDebugException = varName.toLowerCase() === 'debug';
+                    if (!hasCorrectPrefix && !isDebugException) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Warning: Boolean variable '${varName}' should have an 'is' or 'has' prefix (e.g. 'is${varName[0].toUpperCase()}${varName.slice(1)}').`,
+                            vscode.DiagnosticSeverity.Warning,
+                            'bml-boolean-naming-prefix'
+                        ));
+                    }
+                }
+            });
+        }
+    });
 
     // 5. Functions with a single argument must have parenthesis
     // e.g. not hasLicensing -> not(hasLicensing)

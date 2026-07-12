@@ -16,6 +16,11 @@
   },
   {
     "line": 6,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
+  },
+  {
+    "line": 6,
     "severity": "Hint",
     "message": "Unused variable: rs"
   },
@@ -46,13 +51,33 @@
   },
   {
     "line": 12,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos1')."
+  },
+  {
+    "line": 12,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos1"
+  },
+  {
+    "line": 13,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_adddays_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_adddays_arg_0')."
   },
   {
     "line": 14,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 14,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_adddays_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_adddays_arg_1')."
+  },
+  {
+    "line": 15,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos2')."
   },
   {
     "line": 15,
@@ -63,6 +88,11 @@
     "line": 16,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos3')."
   },
   {
     "line": 16,
@@ -91,6 +121,11 @@
   },
   {
     "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos4')."
+  },
+  {
+    "line": 17,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos4"
   },
@@ -111,6 +146,11 @@
   },
   {
     "line": 18,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos5')."
+  },
+  {
+    "line": 18,
     "severity": "Information",
     "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
   },
@@ -121,8 +161,18 @@
   },
   {
     "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos6')."
+  },
+  {
+    "line": 19,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos6"
+  },
+  {
+    "line": 20,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos7')."
   },
   {
     "line": 20,
@@ -141,6 +191,11 @@
   },
   {
     "line": 24,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos8')."
+  },
+  {
+    "line": 24,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos8"
   },
@@ -156,6 +211,11 @@
   },
   {
     "line": 25,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos9')."
+  },
+  {
+    "line": 25,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos9"
   },
@@ -166,6 +226,11 @@
   },
   {
     "line": 26,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos10')."
+  },
+  {
+    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos10"
   },
@@ -173,6 +238,11 @@
     "line": 27,
     "severity": "Error",
     "message": "Built-in function 'adddays' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg1')."
   },
   {
     "line": 27,
@@ -191,6 +261,11 @@
   },
   {
     "line": 28,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg2')."
+  },
+  {
+    "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg2"
   },
@@ -206,6 +281,11 @@
   },
   {
     "line": 29,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg3')."
+  },
+  {
+    "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg3"
   },
@@ -213,6 +293,11 @@
     "line": 30,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 30,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg4')."
   },
   {
     "line": 30,
@@ -236,8 +321,18 @@
   },
   {
     "line": 31,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg5')."
+  },
+  {
+    "line": 31,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg5"
+  },
+  {
+    "line": 32,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg6')."
   },
   {
     "line": 32,
@@ -261,6 +356,11 @@
   },
   {
     "line": 34,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg8')."
+  },
+  {
+    "line": 34,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg8"
   },
@@ -281,6 +381,11 @@
   },
   {
     "line": 35,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg9')."
+  },
+  {
+    "line": 35,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg9"
   },
@@ -288,6 +393,11 @@
     "line": 36,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 36,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_adddays_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg10')."
   },
   {
     "line": 36,
@@ -301,13 +411,33 @@
   },
   {
     "line": 38,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos1')."
+  },
+  {
+    "line": 38,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos1"
+  },
+  {
+    "line": 39,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_addmonths_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_addmonths_arg_0')."
   },
   {
     "line": 40,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 40,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_addmonths_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_addmonths_arg_1')."
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos2')."
   },
   {
     "line": 41,
@@ -318,6 +448,11 @@
     "line": 42,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos3')."
   },
   {
     "line": 42,
@@ -346,6 +481,11 @@
   },
   {
     "line": 43,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos4')."
+  },
+  {
+    "line": 43,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos4"
   },
@@ -366,13 +506,28 @@
   },
   {
     "line": 44,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos5')."
+  },
+  {
+    "line": 44,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos5"
   },
   {
     "line": 45,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos6')."
+  },
+  {
+    "line": 45,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos6"
+  },
+  {
+    "line": 46,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos7')."
   },
   {
     "line": 46,
@@ -391,6 +546,11 @@
   },
   {
     "line": 50,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos8')."
+  },
+  {
+    "line": 50,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos8"
   },
@@ -406,6 +566,11 @@
   },
   {
     "line": 51,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos9')."
+  },
+  {
+    "line": 51,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos9"
   },
@@ -416,6 +581,11 @@
   },
   {
     "line": 52,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos10')."
+  },
+  {
+    "line": 52,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos10"
   },
@@ -423,6 +593,11 @@
     "line": 53,
     "severity": "Error",
     "message": "Built-in function 'addmonths' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 53,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg1')."
   },
   {
     "line": 53,
@@ -441,6 +616,11 @@
   },
   {
     "line": 54,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg2')."
+  },
+  {
+    "line": 54,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg2"
   },
@@ -456,6 +636,11 @@
   },
   {
     "line": 55,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg3')."
+  },
+  {
+    "line": 55,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg3"
   },
@@ -463,6 +648,11 @@
     "line": 56,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 56,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg4')."
   },
   {
     "line": 56,
@@ -486,8 +676,18 @@
   },
   {
     "line": 57,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg5')."
+  },
+  {
+    "line": 57,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg5"
+  },
+  {
+    "line": 58,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg6')."
   },
   {
     "line": 58,
@@ -511,6 +711,11 @@
   },
   {
     "line": 60,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg8')."
+  },
+  {
+    "line": 60,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg8"
   },
@@ -531,6 +736,11 @@
   },
   {
     "line": 61,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg9')."
+  },
+  {
+    "line": 61,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg9"
   },
@@ -541,8 +751,18 @@
   },
   {
     "line": 62,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_addmonths_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg10')."
+  },
+  {
+    "line": 62,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg10"
+  },
+  {
+    "line": 64,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos1')."
   },
   {
     "line": 64,
@@ -550,9 +770,24 @@
     "message": "Unused variable: val_datetostr_pos1"
   },
   {
+    "line": 65,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_datetostr_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_datetostr_arg_0')."
+  },
+  {
+    "line": 66,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos2')."
+  },
+  {
     "line": 66,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_pos2"
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos3')."
   },
   {
     "line": 67,
@@ -576,6 +811,11 @@
   },
   {
     "line": 68,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos4')."
+  },
+  {
+    "line": 68,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_pos4"
   },
@@ -591,8 +831,18 @@
   },
   {
     "line": 69,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos5')."
+  },
+  {
+    "line": 69,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_pos5"
+  },
+  {
+    "line": 70,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos6')."
   },
   {
     "line": 70,
@@ -601,8 +851,18 @@
   },
   {
     "line": 71,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos7')."
+  },
+  {
+    "line": 71,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_pos7"
+  },
+  {
+    "line": 74,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos8')."
   },
   {
     "line": 74,
@@ -611,8 +871,18 @@
   },
   {
     "line": 75,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos9')."
+  },
+  {
+    "line": 75,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_pos9"
+  },
+  {
+    "line": 76,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_pos10')."
   },
   {
     "line": 76,
@@ -626,8 +896,18 @@
   },
   {
     "line": 77,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg1')."
+  },
+  {
+    "line": 77,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_neg1"
+  },
+  {
+    "line": 78,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg2')."
   },
   {
     "line": 78,
@@ -641,8 +921,18 @@
   },
   {
     "line": 79,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg3')."
+  },
+  {
+    "line": 79,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_neg3"
+  },
+  {
+    "line": 80,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg4')."
   },
   {
     "line": 80,
@@ -661,8 +951,18 @@
   },
   {
     "line": 81,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg5')."
+  },
+  {
+    "line": 81,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_neg5"
+  },
+  {
+    "line": 82,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg6')."
   },
   {
     "line": 82,
@@ -678,6 +978,11 @@
     "line": 84,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 84,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg8')."
   },
   {
     "line": 84,
@@ -701,8 +1006,18 @@
   },
   {
     "line": 85,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg9')."
+  },
+  {
+    "line": 85,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_neg9"
+  },
+  {
+    "line": 86,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_datetostr_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_datetostr_neg10')."
   },
   {
     "line": 86,
@@ -711,13 +1026,38 @@
   },
   {
     "line": 88,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos1')."
+  },
+  {
+    "line": 88,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_pos1"
+  },
+  {
+    "line": 89,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'var_getdate_arg_0' should have an 'is' or 'has' prefix (e.g. 'isVar_getdate_arg_0')."
+  },
+  {
+    "line": 89,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getdate_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getdate_arg_0')."
+  },
+  {
+    "line": 90,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos2')."
   },
   {
     "line": 90,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_pos2"
+  },
+  {
+    "line": 91,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos3')."
   },
   {
     "line": 91,
@@ -741,6 +1081,11 @@
   },
   {
     "line": 92,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos4')."
+  },
+  {
+    "line": 92,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_pos4"
   },
@@ -756,8 +1101,18 @@
   },
   {
     "line": 93,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos5')."
+  },
+  {
+    "line": 93,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_pos5"
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos6')."
   },
   {
     "line": 94,
@@ -766,8 +1121,18 @@
   },
   {
     "line": 95,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos7')."
+  },
+  {
+    "line": 95,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_pos7"
+  },
+  {
+    "line": 98,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos8')."
   },
   {
     "line": 98,
@@ -776,13 +1141,28 @@
   },
   {
     "line": 99,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos9')."
+  },
+  {
+    "line": 99,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_pos9"
   },
   {
     "line": 100,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_pos10')."
+  },
+  {
+    "line": 100,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_pos10"
+  },
+  {
+    "line": 101,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg1')."
   },
   {
     "line": 101,
@@ -796,6 +1176,11 @@
   },
   {
     "line": 102,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg2')."
+  },
+  {
+    "line": 102,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_neg2"
   },
@@ -806,8 +1191,18 @@
   },
   {
     "line": 103,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg3')."
+  },
+  {
+    "line": 103,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_neg3"
+  },
+  {
+    "line": 104,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg4')."
   },
   {
     "line": 104,
@@ -826,8 +1221,18 @@
   },
   {
     "line": 105,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg5')."
+  },
+  {
+    "line": 105,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_neg5"
+  },
+  {
+    "line": 106,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg6')."
   },
   {
     "line": 106,
@@ -851,6 +1256,11 @@
   },
   {
     "line": 108,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg8')."
+  },
+  {
+    "line": 108,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_neg8"
   },
@@ -871,8 +1281,18 @@
   },
   {
     "line": 109,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg9')."
+  },
+  {
+    "line": 109,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_neg9"
+  },
+  {
+    "line": 110,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdate_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg10')."
   },
   {
     "line": 110,
@@ -881,13 +1301,38 @@
   },
   {
     "line": 112,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos1')."
+  },
+  {
+    "line": 112,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_pos1"
+  },
+  {
+    "line": 113,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getdiffindays_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getdiffindays_arg_0')."
+  },
+  {
+    "line": 114,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getdiffindays_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getdiffindays_arg_1')."
+  },
+  {
+    "line": 115,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos2')."
   },
   {
     "line": 115,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_pos2"
+  },
+  {
+    "line": 116,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos3')."
   },
   {
     "line": 116,
@@ -911,6 +1356,11 @@
   },
   {
     "line": 117,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos4')."
+  },
+  {
+    "line": 117,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_pos4"
   },
@@ -926,8 +1376,18 @@
   },
   {
     "line": 118,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos5')."
+  },
+  {
+    "line": 118,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_pos5"
+  },
+  {
+    "line": 119,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos6')."
   },
   {
     "line": 119,
@@ -936,8 +1396,18 @@
   },
   {
     "line": 120,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos7')."
+  },
+  {
+    "line": 120,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_pos7"
+  },
+  {
+    "line": 124,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos8')."
   },
   {
     "line": 124,
@@ -946,8 +1416,18 @@
   },
   {
     "line": 125,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos9')."
+  },
+  {
+    "line": 125,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_pos9"
+  },
+  {
+    "line": 126,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_pos10')."
   },
   {
     "line": 126,
@@ -961,6 +1441,11 @@
   },
   {
     "line": 127,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg1')."
+  },
+  {
+    "line": 127,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg1"
   },
@@ -968,6 +1453,11 @@
     "line": 128,
     "severity": "Error",
     "message": "Built-in function 'getdiffindays' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 128,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg2')."
   },
   {
     "line": 128,
@@ -986,8 +1476,18 @@
   },
   {
     "line": 129,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg3')."
+  },
+  {
+    "line": 129,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg3"
+  },
+  {
+    "line": 130,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg4')."
   },
   {
     "line": 130,
@@ -1006,8 +1506,18 @@
   },
   {
     "line": 131,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg5')."
+  },
+  {
+    "line": 131,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg5"
+  },
+  {
+    "line": 132,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg6')."
   },
   {
     "line": 132,
@@ -1026,6 +1536,11 @@
   },
   {
     "line": 134,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg8')."
+  },
+  {
+    "line": 134,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg8"
   },
@@ -1041,8 +1556,18 @@
   },
   {
     "line": 135,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg9')."
+  },
+  {
+    "line": 135,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg9"
+  },
+  {
+    "line": 136,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getdiffindays_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg10')."
   },
   {
     "line": 136,
@@ -1051,13 +1576,28 @@
   },
   {
     "line": 138,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos1')."
+  },
+  {
+    "line": 138,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_pos1"
   },
   {
     "line": 139,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos2')."
+  },
+  {
+    "line": 139,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_pos2"
+  },
+  {
+    "line": 140,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos3')."
   },
   {
     "line": 140,
@@ -1081,6 +1621,11 @@
   },
   {
     "line": 141,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos4')."
+  },
+  {
+    "line": 141,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_pos4"
   },
@@ -1096,8 +1641,18 @@
   },
   {
     "line": 142,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos5')."
+  },
+  {
+    "line": 142,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_pos5"
+  },
+  {
+    "line": 143,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos6')."
   },
   {
     "line": 143,
@@ -1106,8 +1661,18 @@
   },
   {
     "line": 144,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos7')."
+  },
+  {
+    "line": 144,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_pos7"
+  },
+  {
+    "line": 147,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos8')."
   },
   {
     "line": 147,
@@ -1116,8 +1681,18 @@
   },
   {
     "line": 148,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos9')."
+  },
+  {
+    "line": 148,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_pos9"
+  },
+  {
+    "line": 149,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_pos10')."
   },
   {
     "line": 149,
@@ -1131,6 +1706,11 @@
   },
   {
     "line": 150,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg1')."
+  },
+  {
+    "line": 150,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_neg1"
   },
@@ -1138,6 +1718,11 @@
     "line": 151,
     "severity": "Error",
     "message": "Built-in function 'getstrdate' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 151,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg2')."
   },
   {
     "line": 151,
@@ -1156,6 +1741,11 @@
   },
   {
     "line": 152,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg3')."
+  },
+  {
+    "line": 152,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_neg3"
   },
@@ -1163,6 +1753,11 @@
     "line": 153,
     "severity": "Error",
     "message": "Built-in function 'getstrdate' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 153,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg4')."
   },
   {
     "line": 153,
@@ -1181,6 +1776,11 @@
   },
   {
     "line": 154,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg5')."
+  },
+  {
+    "line": 154,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_neg5"
   },
@@ -1188,6 +1788,11 @@
     "line": 155,
     "severity": "Error",
     "message": "Built-in function 'getstrdate' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 155,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg6')."
   },
   {
     "line": 155,
@@ -1208,6 +1813,11 @@
     "line": 157,
     "severity": "Error",
     "message": "Built-in function 'getstrdate' expects 0 argument(s), but got 2."
+  },
+  {
+    "line": 157,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg8')."
   },
   {
     "line": 157,
@@ -1236,8 +1846,18 @@
   },
   {
     "line": 158,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg9')."
+  },
+  {
+    "line": 158,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_neg9"
+  },
+  {
+    "line": 159,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getstrdate_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg10')."
   },
   {
     "line": 159,
@@ -1251,6 +1871,16 @@
   },
   {
     "line": 161,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos1')."
+  },
+  {
+    "line": 161,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos1')."
+  },
+  {
+    "line": 161,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_pos1"
   },
@@ -1258,6 +1888,21 @@
     "line": 162,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 162,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_isleap_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_isleap_arg_0')."
+  },
+  {
+    "line": 163,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos2')."
+  },
+  {
+    "line": 163,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos2')."
   },
   {
     "line": 163,
@@ -1268,6 +1913,16 @@
     "line": 164,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 164,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos3')."
+  },
+  {
+    "line": 164,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos3')."
   },
   {
     "line": 164,
@@ -1287,12 +1942,22 @@
   {
     "line": 165,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos4')."
+  },
+  {
+    "line": 165,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 165,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 165,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos4')."
   },
   {
     "line": 165,
@@ -1307,6 +1972,11 @@
   {
     "line": 166,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos5')."
+  },
+  {
+    "line": 166,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
@@ -1316,13 +1986,38 @@
   },
   {
     "line": 166,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos5')."
+  },
+  {
+    "line": 166,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_pos5"
   },
   {
     "line": 167,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos6')."
+  },
+  {
+    "line": 167,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos6')."
+  },
+  {
+    "line": 167,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_pos6"
+  },
+  {
+    "line": 168,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos7')."
+  },
+  {
+    "line": 168,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos7')."
   },
   {
     "line": 168,
@@ -1341,6 +2036,16 @@
   },
   {
     "line": 171,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos8')."
+  },
+  {
+    "line": 171,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos8')."
+  },
+  {
+    "line": 171,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_pos8"
   },
@@ -1356,6 +2061,16 @@
   },
   {
     "line": 172,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos9')."
+  },
+  {
+    "line": 172,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos9')."
+  },
+  {
+    "line": 172,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_pos9"
   },
@@ -1366,6 +2081,16 @@
   },
   {
     "line": 173,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_pos10')."
+  },
+  {
+    "line": 173,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_pos10')."
+  },
+  {
+    "line": 173,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_pos10"
   },
@@ -1373,6 +2098,16 @@
     "line": 174,
     "severity": "Error",
     "message": "Built-in function 'isleap' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 174,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_neg1')."
+  },
+  {
+    "line": 174,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg1')."
   },
   {
     "line": 174,
@@ -1391,6 +2126,16 @@
   },
   {
     "line": 175,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_neg2')."
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg2')."
+  },
+  {
+    "line": 175,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg2"
   },
@@ -1401,6 +2146,16 @@
   },
   {
     "line": 176,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_neg3')."
+  },
+  {
+    "line": 176,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg3')."
+  },
+  {
+    "line": 176,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg3"
   },
@@ -1408,6 +2163,16 @@
     "line": 177,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 177,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_neg4')."
+  },
+  {
+    "line": 177,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg4')."
   },
   {
     "line": 177,
@@ -1431,8 +2196,23 @@
   },
   {
     "line": 178,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg5')."
+  },
+  {
+    "line": 178,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg5"
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_neg6')."
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg6')."
   },
   {
     "line": 179,
@@ -1461,6 +2241,16 @@
   },
   {
     "line": 181,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_neg8')."
+  },
+  {
+    "line": 181,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg8')."
+  },
+  {
+    "line": 181,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg8"
   },
@@ -1477,7 +2267,17 @@
   {
     "line": 182,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isleap_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_isleap_neg9')."
+  },
+  {
+    "line": 182,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 182,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg9')."
   },
   {
     "line": 182,
@@ -1491,8 +2291,23 @@
   },
   {
     "line": 183,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isleap_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isleap_neg10')."
+  },
+  {
+    "line": 183,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg10"
+  },
+  {
+    "line": 185,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos1')."
+  },
+  {
+    "line": 185,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos1')."
   },
   {
     "line": 185,
@@ -1500,9 +2315,34 @@
     "message": "Unused variable: val_isweekend_pos1"
   },
   {
+    "line": 186,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_isweekend_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_isweekend_arg_0')."
+  },
+  {
+    "line": 187,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos2')."
+  },
+  {
+    "line": 187,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos2')."
+  },
+  {
     "line": 187,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_pos2"
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos3')."
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos3')."
   },
   {
     "line": 188,
@@ -1517,12 +2357,22 @@
   {
     "line": 189,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos4')."
+  },
+  {
+    "line": 189,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 189,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 189,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos4')."
   },
   {
     "line": 189,
@@ -1532,6 +2382,11 @@
   {
     "line": 190,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos5')."
+  },
+  {
+    "line": 190,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
@@ -1541,8 +2396,23 @@
   },
   {
     "line": 190,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos5')."
+  },
+  {
+    "line": 190,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_pos5"
+  },
+  {
+    "line": 191,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos6')."
+  },
+  {
+    "line": 191,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos6')."
   },
   {
     "line": 191,
@@ -1551,8 +2421,28 @@
   },
   {
     "line": 192,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos7')."
+  },
+  {
+    "line": 192,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos7')."
+  },
+  {
+    "line": 192,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_pos7"
+  },
+  {
+    "line": 195,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos8')."
+  },
+  {
+    "line": 195,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos8')."
   },
   {
     "line": 195,
@@ -1561,8 +2451,28 @@
   },
   {
     "line": 196,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos9')."
+  },
+  {
+    "line": 196,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos9')."
+  },
+  {
+    "line": 196,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_pos9"
+  },
+  {
+    "line": 197,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_pos10')."
+  },
+  {
+    "line": 197,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_pos10')."
   },
   {
     "line": 197,
@@ -1576,6 +2486,16 @@
   },
   {
     "line": 198,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_neg1')."
+  },
+  {
+    "line": 198,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg1')."
+  },
+  {
+    "line": 198,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg1"
   },
@@ -1583,6 +2503,16 @@
     "line": 199,
     "severity": "Error",
     "message": "Built-in function 'isweekend' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 199,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_neg2')."
+  },
+  {
+    "line": 199,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg2')."
   },
   {
     "line": 199,
@@ -1596,8 +2526,28 @@
   },
   {
     "line": 200,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_neg3')."
+  },
+  {
+    "line": 200,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg3')."
+  },
+  {
+    "line": 200,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg3"
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_neg4')."
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg4')."
   },
   {
     "line": 201,
@@ -1616,8 +2566,23 @@
   },
   {
     "line": 202,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg5')."
+  },
+  {
+    "line": 202,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg5"
+  },
+  {
+    "line": 203,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_neg6')."
+  },
+  {
+    "line": 203,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg6')."
   },
   {
     "line": 203,
@@ -1641,6 +2606,16 @@
   },
   {
     "line": 205,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_neg8')."
+  },
+  {
+    "line": 205,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg8')."
+  },
+  {
+    "line": 205,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg8"
   },
@@ -1657,12 +2632,27 @@
   {
     "line": 206,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isweekend_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_isweekend_neg9')."
+  },
+  {
+    "line": 206,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 206,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg9')."
   },
   {
     "line": 206,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg9"
+  },
+  {
+    "line": 207,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isweekend_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isweekend_neg10')."
   },
   {
     "line": 207,
@@ -1676,13 +2666,33 @@
   },
   {
     "line": 209,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos1')."
+  },
+  {
+    "line": 209,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos1"
+  },
+  {
+    "line": 210,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_minusdays_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_minusdays_arg_0')."
   },
   {
     "line": 211,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 211,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_minusdays_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_minusdays_arg_1')."
+  },
+  {
+    "line": 212,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos2')."
   },
   {
     "line": 212,
@@ -1693,6 +2703,11 @@
     "line": 213,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 213,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos3')."
   },
   {
     "line": 213,
@@ -1721,6 +2736,11 @@
   },
   {
     "line": 214,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos4')."
+  },
+  {
+    "line": 214,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos4"
   },
@@ -1741,13 +2761,28 @@
   },
   {
     "line": 215,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos5')."
+  },
+  {
+    "line": 215,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos5"
   },
   {
     "line": 216,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos6')."
+  },
+  {
+    "line": 216,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos6"
+  },
+  {
+    "line": 217,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos7')."
   },
   {
     "line": 217,
@@ -1766,6 +2801,11 @@
   },
   {
     "line": 221,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos8')."
+  },
+  {
+    "line": 221,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos8"
   },
@@ -1781,6 +2821,11 @@
   },
   {
     "line": 222,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos9')."
+  },
+  {
+    "line": 222,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos9"
   },
@@ -1791,6 +2836,11 @@
   },
   {
     "line": 223,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos10')."
+  },
+  {
+    "line": 223,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos10"
   },
@@ -1798,6 +2848,11 @@
     "line": 224,
     "severity": "Error",
     "message": "Built-in function 'minusdays' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 224,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg1')."
   },
   {
     "line": 224,
@@ -1816,6 +2871,11 @@
   },
   {
     "line": 225,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg2')."
+  },
+  {
+    "line": 225,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg2"
   },
@@ -1831,6 +2891,11 @@
   },
   {
     "line": 226,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg3')."
+  },
+  {
+    "line": 226,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg3"
   },
@@ -1838,6 +2903,11 @@
     "line": 227,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 227,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg4')."
   },
   {
     "line": 227,
@@ -1861,8 +2931,18 @@
   },
   {
     "line": 228,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg5')."
+  },
+  {
+    "line": 228,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg5"
+  },
+  {
+    "line": 229,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg6')."
   },
   {
     "line": 229,
@@ -1886,6 +2966,11 @@
   },
   {
     "line": 231,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg8')."
+  },
+  {
+    "line": 231,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg8"
   },
@@ -1906,6 +2991,11 @@
   },
   {
     "line": 232,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg9')."
+  },
+  {
+    "line": 232,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg9"
   },
@@ -1913,6 +3003,11 @@
     "line": 233,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 233,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_minusdays_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg10')."
   },
   {
     "line": 233,
@@ -1926,8 +3021,23 @@
   },
   {
     "line": 235,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos1')."
+  },
+  {
+    "line": 235,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos1"
+  },
+  {
+    "line": 236,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_strtodate_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_strtodate_arg_0')."
+  },
+  {
+    "line": 237,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_strtodate_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_strtodate_arg_1')."
   },
   {
     "line": 238,
@@ -1936,8 +3046,18 @@
   },
   {
     "line": 238,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos2')."
+  },
+  {
+    "line": 238,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos2"
+  },
+  {
+    "line": 239,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos3')."
   },
   {
     "line": 239,
@@ -1966,6 +3086,11 @@
   },
   {
     "line": 240,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos4')."
+  },
+  {
+    "line": 240,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos4"
   },
@@ -1983,6 +3108,11 @@
     "line": 241,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 241,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos5')."
   },
   {
     "line": 241,
@@ -2006,6 +3136,11 @@
   },
   {
     "line": 242,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos6')."
+  },
+  {
+    "line": 242,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos6"
   },
@@ -2013,6 +3148,11 @@
     "line": 243,
     "severity": "Warning",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
+  },
+  {
+    "line": 243,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos7')."
   },
   {
     "line": 243,
@@ -2026,6 +3166,11 @@
   },
   {
     "line": 247,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos8')."
+  },
+  {
+    "line": 247,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos8"
   },
@@ -2033,6 +3178,11 @@
     "line": 248,
     "severity": "Warning",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
+  },
+  {
+    "line": 248,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos9')."
   },
   {
     "line": 248,
@@ -2046,6 +3196,11 @@
   },
   {
     "line": 249,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos10')."
+  },
+  {
+    "line": 249,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos10"
   },
@@ -2056,6 +3211,11 @@
   },
   {
     "line": 250,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg1')."
+  },
+  {
+    "line": 250,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg1"
   },
@@ -2063,6 +3223,11 @@
     "line": 251,
     "severity": "Warning",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
+  },
+  {
+    "line": 251,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg2')."
   },
   {
     "line": 251,
@@ -2086,6 +3251,11 @@
   },
   {
     "line": 252,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg3')."
+  },
+  {
+    "line": 252,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg3"
   },
@@ -2093,6 +3263,11 @@
     "line": 253,
     "severity": "Warning",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
+  },
+  {
+    "line": 253,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg4')."
   },
   {
     "line": 253,
@@ -2116,6 +3291,11 @@
   },
   {
     "line": 254,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg5')."
+  },
+  {
+    "line": 254,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg5"
   },
@@ -2123,6 +3303,11 @@
     "line": 255,
     "severity": "Warning",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
+  },
+  {
+    "line": 255,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg6')."
   },
   {
     "line": 255,
@@ -2151,6 +3336,11 @@
   },
   {
     "line": 257,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg8')."
+  },
+  {
+    "line": 257,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg8"
   },
@@ -2166,6 +3356,11 @@
   },
   {
     "line": 258,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg9')."
+  },
+  {
+    "line": 258,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg9"
   },
@@ -2176,8 +3371,18 @@
   },
   {
     "line": 259,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtodate_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_neg10')."
+  },
+  {
+    "line": 259,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg10"
+  },
+  {
+    "line": 261,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos1')."
   },
   {
     "line": 261,
@@ -2185,9 +3390,29 @@
     "message": "Unused variable: val_strtojavadate_pos1"
   },
   {
+    "line": 262,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_strtojavadate_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_strtojavadate_arg_0')."
+  },
+  {
+    "line": 263,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_strtojavadate_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_strtojavadate_arg_1')."
+  },
+  {
+    "line": 264,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos2')."
+  },
+  {
     "line": 264,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos2"
+  },
+  {
+    "line": 265,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos3')."
   },
   {
     "line": 265,
@@ -2211,6 +3436,11 @@
   },
   {
     "line": 266,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos4')."
+  },
+  {
+    "line": 266,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos4"
   },
@@ -2223,6 +3453,11 @@
     "line": 267,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 267,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos5')."
   },
   {
     "line": 267,
@@ -2241,8 +3476,18 @@
   },
   {
     "line": 268,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos6')."
+  },
+  {
+    "line": 268,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos6"
+  },
+  {
+    "line": 269,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos7')."
   },
   {
     "line": 269,
@@ -2251,13 +3496,28 @@
   },
   {
     "line": 273,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos8')."
+  },
+  {
+    "line": 273,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos8"
   },
   {
     "line": 274,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos9')."
+  },
+  {
+    "line": 274,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos9"
+  },
+  {
+    "line": 275,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos10')."
   },
   {
     "line": 275,
@@ -2271,8 +3531,18 @@
   },
   {
     "line": 276,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg1')."
+  },
+  {
+    "line": 276,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg1"
+  },
+  {
+    "line": 277,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg2')."
   },
   {
     "line": 277,
@@ -2301,8 +3571,18 @@
   },
   {
     "line": 278,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg3')."
+  },
+  {
+    "line": 278,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg3"
+  },
+  {
+    "line": 279,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg4')."
   },
   {
     "line": 279,
@@ -2321,8 +3601,18 @@
   },
   {
     "line": 280,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg5')."
+  },
+  {
+    "line": 280,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg5"
+  },
+  {
+    "line": 281,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg6')."
   },
   {
     "line": 281,
@@ -2341,6 +3631,11 @@
   },
   {
     "line": 283,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg8')."
+  },
+  {
+    "line": 283,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg8"
   },
@@ -2356,8 +3651,18 @@
   },
   {
     "line": 284,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg9')."
+  },
+  {
+    "line": 284,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg9"
+  },
+  {
+    "line": 285,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_strtojavadate_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg10')."
   },
   {
     "line": 285,
@@ -2366,13 +3671,38 @@
   },
   {
     "line": 287,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos1')."
+  },
+  {
+    "line": 287,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_pos1"
+  },
+  {
+    "line": 288,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_comparedates_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_comparedates_arg_0')."
+  },
+  {
+    "line": 289,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_comparedates_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_comparedates_arg_1')."
+  },
+  {
+    "line": 290,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos2')."
   },
   {
     "line": 290,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_pos2"
+  },
+  {
+    "line": 291,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos3')."
   },
   {
     "line": 291,
@@ -2396,6 +3726,11 @@
   },
   {
     "line": 292,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos4')."
+  },
+  {
+    "line": 292,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_pos4"
   },
@@ -2411,8 +3746,18 @@
   },
   {
     "line": 293,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos5')."
+  },
+  {
+    "line": 293,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_pos5"
+  },
+  {
+    "line": 294,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos6')."
   },
   {
     "line": 294,
@@ -2421,8 +3766,18 @@
   },
   {
     "line": 295,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos7')."
+  },
+  {
+    "line": 295,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_pos7"
+  },
+  {
+    "line": 299,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos8')."
   },
   {
     "line": 299,
@@ -2431,8 +3786,18 @@
   },
   {
     "line": 300,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos9')."
+  },
+  {
+    "line": 300,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_pos9"
+  },
+  {
+    "line": 301,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_pos10')."
   },
   {
     "line": 301,
@@ -2446,6 +3811,11 @@
   },
   {
     "line": 302,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg1')."
+  },
+  {
+    "line": 302,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg1"
   },
@@ -2453,6 +3823,11 @@
     "line": 303,
     "severity": "Error",
     "message": "Built-in function 'comparedates' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 303,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg2')."
   },
   {
     "line": 303,
@@ -2471,8 +3846,18 @@
   },
   {
     "line": 304,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg3')."
+  },
+  {
+    "line": 304,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg3"
+  },
+  {
+    "line": 305,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg4')."
   },
   {
     "line": 305,
@@ -2491,8 +3876,18 @@
   },
   {
     "line": 306,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg5')."
+  },
+  {
+    "line": 306,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg5"
+  },
+  {
+    "line": 307,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg6')."
   },
   {
     "line": 307,
@@ -2511,6 +3906,11 @@
   },
   {
     "line": 309,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg8')."
+  },
+  {
+    "line": 309,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg8"
   },
@@ -2526,8 +3926,18 @@
   },
   {
     "line": 310,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg9')."
+  },
+  {
+    "line": 310,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg9"
+  },
+  {
+    "line": 311,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_comparedates_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg10')."
   },
   {
     "line": 311,
@@ -2536,13 +3946,28 @@
   },
   {
     "line": 313,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos1')."
+  },
+  {
+    "line": 313,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_pos1"
   },
   {
     "line": 314,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos2')."
+  },
+  {
+    "line": 314,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_pos2"
+  },
+  {
+    "line": 315,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos3')."
   },
   {
     "line": 315,
@@ -2566,6 +3991,11 @@
   },
   {
     "line": 316,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos4')."
+  },
+  {
+    "line": 316,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_pos4"
   },
@@ -2581,8 +4011,18 @@
   },
   {
     "line": 317,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos5')."
+  },
+  {
+    "line": 317,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_pos5"
+  },
+  {
+    "line": 318,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos6')."
   },
   {
     "line": 318,
@@ -2591,8 +4031,18 @@
   },
   {
     "line": 319,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos7')."
+  },
+  {
+    "line": 319,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_pos7"
+  },
+  {
+    "line": 322,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos8')."
   },
   {
     "line": 322,
@@ -2601,8 +4051,18 @@
   },
   {
     "line": 323,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos9')."
+  },
+  {
+    "line": 323,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_pos9"
+  },
+  {
+    "line": 324,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_pos10')."
   },
   {
     "line": 324,
@@ -2616,6 +4076,11 @@
   },
   {
     "line": 325,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg1')."
+  },
+  {
+    "line": 325,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_neg1"
   },
@@ -2623,6 +4088,11 @@
     "line": 326,
     "severity": "Error",
     "message": "Built-in function 'getcurrenttimeinmillis' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 326,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg2')."
   },
   {
     "line": 326,
@@ -2641,6 +4111,11 @@
   },
   {
     "line": 327,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg3')."
+  },
+  {
+    "line": 327,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_neg3"
   },
@@ -2648,6 +4123,11 @@
     "line": 328,
     "severity": "Error",
     "message": "Built-in function 'getcurrenttimeinmillis' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 328,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg4')."
   },
   {
     "line": 328,
@@ -2666,6 +4146,11 @@
   },
   {
     "line": 329,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg5')."
+  },
+  {
+    "line": 329,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_neg5"
   },
@@ -2673,6 +4158,11 @@
     "line": 330,
     "severity": "Error",
     "message": "Built-in function 'getcurrenttimeinmillis' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 330,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg6')."
   },
   {
     "line": 330,
@@ -2693,6 +4183,11 @@
     "line": 332,
     "severity": "Error",
     "message": "Built-in function 'getcurrenttimeinmillis' expects 0 argument(s), but got 2."
+  },
+  {
+    "line": 332,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg8')."
   },
   {
     "line": 332,
@@ -2721,8 +4216,18 @@
   },
   {
     "line": 333,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg9')."
+  },
+  {
+    "line": 333,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_neg9"
+  },
+  {
+    "line": 334,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getcurrenttimeinmillis_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg10')."
   },
   {
     "line": 334,

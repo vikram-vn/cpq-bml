@@ -66,6 +66,11 @@
   },
   {
     "line": 37,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'f' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 37,
     "severity": "Hint",
     "message": "Unused variable: f"
   },

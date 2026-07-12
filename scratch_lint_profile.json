@@ -2,111 +2,105 @@
   "fileCount": 207,
   "checkers": [
     {
+      "name": "style",
+      "totalMs": 637,
+      "maxMs": 450.1,
+      "maxFile": "util\\defaultLocationDataMapping\\defaultLocationDataMapping.bml"
+    },
+    {
       "name": "nullSafety",
-      "totalMs": 1034,
-      "maxMs": 480.3,
-      "maxFile": "util\\abo_processDeltaBom\\abo_processDeltaBom.bml"
+      "totalMs": 524,
+      "maxMs": 105.3,
+      "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "bestPractices",
-      "totalMs": 819,
-      "maxMs": 430.6,
-      "maxFile": "util\\abo_processDeltaItem\\abo_processDeltaItem.bml"
+      "totalMs": 355,
+      "maxMs": 16.8,
+      "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "boundaries",
-      "totalMs": 373,
-      "maxMs": 211.7,
+      "totalMs": 310,
+      "maxMs": 179.9,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "functionCalls",
-      "totalMs": 293,
-      "maxMs": 126.7,
+      "totalMs": 261,
+      "maxMs": 118.8,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "spelling",
-      "totalMs": 253,
-      "maxMs": 12,
+      "totalMs": 233,
+      "maxMs": 10.7,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "assignmentTypeConsistency",
-      "totalMs": 238,
-      "maxMs": 48.4,
+      "totalMs": 214,
+      "maxMs": 47.8,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "useBeforeDefine",
-      "totalMs": 167,
-      "maxMs": 4.6,
-      "maxFile": "util\\abo_apply\\abo_apply.bml"
+      "totalMs": 128,
+      "maxMs": 2.9,
+      "maxFile": "SM\\oRCL_pRC_oraclePricingSubscriptionBaseProfile\\oRCL_pRC_oraclePricingSubscriptionBaseProfile.bml"
     },
     {
       "name": "metadataTypeConsistency",
-      "totalMs": 121,
-      "maxMs": 2.1,
-      "maxFile": "util\\getFileData\\getFileData.bml"
-    },
-    {
-      "name": "style",
-      "totalMs": 111,
-      "maxMs": 13.5,
-      "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
+      "totalMs": 96,
+      "maxMs": 1.4,
+      "maxFile": "SM\\oRCL_pRC_oraclePricingSubscriptionBaseProfile\\oRCL_pRC_oraclePricingSubscriptionBaseProfile.bml"
     },
     {
       "name": "parseConditionalChains",
-      "totalMs": 98,
-      "maxMs": 8.2,
+      "totalMs": 80,
+      "maxMs": 9.5,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "variableDiagnostics",
-      "totalMs": 48,
-      "maxMs": 3.9,
+      "totalMs": 41,
+      "maxMs": 3.7,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
-      "name": "systemVariables",
-      "totalMs": 41,
-      "maxMs": 13.2,
-      "maxFile": "oraclecpqo\\transaction\\libraries\\bulkCreateTransaction_c\\bulkCreateTransaction_c.bml"
-    },
-    {
       "name": "performance",
-      "totalMs": 40,
-      "maxMs": 8,
+      "totalMs": 37,
+      "maxMs": 7.7,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "missingSemicolons",
-      "totalMs": 33,
-      "maxMs": 3,
+      "totalMs": 30,
+      "maxMs": 3.5,
       "maxFile": "oraclecpqo\\transaction\\libraries\\bulkCreateTransaction_c\\bulkCreateTransaction_c.bml"
     },
     {
+      "name": "systemVariables",
+      "totalMs": 27,
+      "maxMs": 2.5,
+      "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_convertQuoteToObj\\system_calculations_convertQuoteToObj.bml"
+    },
+    {
       "name": "unreachableCode",
-      "totalMs": 21,
-      "maxMs": 1.8,
+      "totalMs": 16,
+      "maxMs": 1.9,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "unclosedStrings",
-      "totalMs": 16,
-      "maxMs": 1.4,
-      "maxFile": "oraclecpqo\\transaction\\libraries\\cancelOrder\\cancelOrder.bml"
-    },
-    {
-      "name": "lonelyIf",
-      "totalMs": 12,
-      "maxMs": 3.9,
+      "totalMs": 14,
+      "maxMs": 1.2,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
-      "name": "unusedExpressions",
-      "totalMs": 12,
-      "maxMs": 0.9,
+      "name": "lonelyIf",
+      "totalMs": 13,
+      "maxMs": 4.7,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
@@ -116,126 +110,136 @@
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
-      "name": "infiniteLoop",
-      "totalMs": 9,
-      "maxMs": 0.7,
+      "name": "unusedExpressions",
+      "totalMs": 11,
+      "maxMs": 1.1,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
-      "name": "mixedOperators",
-      "totalMs": 6,
+      "name": "infiniteLoop",
+      "totalMs": 9,
       "maxMs": 0.6,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
-      "name": "duplicateBranches",
+      "name": "mixedOperators",
       "totalMs": 5,
-      "maxMs": 0.7,
+      "maxMs": 0.9,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "constantConditions",
       "totalMs": 4,
-      "maxMs": 0.4,
+      "maxMs": 0.3,
+      "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
+    },
+    {
+      "name": "duplicateBranches",
+      "totalMs": 4,
+      "maxMs": 0.8,
       "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
     },
     {
       "name": "assignmentInCondition",
-      "totalMs": 1,
-      "maxMs": 0.2,
-      "maxFile": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml"
+      "totalMs": 2,
+      "maxMs": 0.3,
+      "maxFile": "oraclecpqo\\transaction\\libraries\\oRCL_abo_ReconfigureAction\\oRCL_abo_ReconfigureAction.bml"
     },
     {
       "name": "operators",
-      "totalMs": 1,
+      "totalMs": 2,
       "maxMs": 0.1,
-      "maxFile": "util\\abo_updateLineIdandFields\\abo_updateLineIdandFields.bml"
+      "maxFile": "util\\ORCL_CN_CompareDocx\\ORCL_CN_CompareDocx.bml"
     }
   ],
   "slowestFiles": [
     {
       "file": "oraclecpqo\\transaction\\libraries\\system_calculations_process\\system_calculations_process.bml",
       "lineCount": 1495,
-      "totalMs": 655.4
+      "totalMs": 589.4
     },
     {
-      "file": "util\\abo_processDeltaBom\\abo_processDeltaBom.bml",
-      "lineCount": 137,
-      "totalMs": 494.1
+      "file": "util\\defaultLocationDataMapping\\defaultLocationDataMapping.bml",
+      "lineCount": 16,
+      "totalMs": 456.3
     },
     {
-      "file": "util\\abo_processDeltaItem\\abo_processDeltaItem.bml",
-      "lineCount": 101,
-      "totalMs": 450.3
-    },
-    {
-      "file": "oraclecpqo\\transaction\\libraries\\system_calculations_convertQuoteToObj\\system_calculations_convertQuoteToObj.bml",
-      "lineCount": 353,
-      "totalMs": 74.1
-    },
-    {
-      "file": "oraclecpqo\\transaction\\libraries\\oRCL_fOM_populateCharges\\oRCL_fOM_populateCharges.bml",
-      "lineCount": 251,
-      "totalMs": 68.1
+      "file": "util\\getEncodedDict\\getEncodedDict.bml",
+      "lineCount": 17,
+      "totalMs": 383.8
     },
     {
       "file": "oraclecpqo\\transaction\\libraries\\bulkCreateTransaction_c\\bulkCreateTransaction_c.bml",
       "lineCount": 195,
-      "totalMs": 61.9
+      "totalMs": 97.8
     },
     {
-      "file": "oraclecpqo\\transaction\\libraries\\_s_ABO_loadDefaultContext\\_s_ABO_loadDefaultContext.bml",
-      "lineCount": 345,
-      "totalMs": 52.4
+      "file": "oraclecpqo\\transaction\\libraries\\oRCL_fOM_populateCharges\\oRCL_fOM_populateCharges.bml",
+      "lineCount": 251,
+      "totalMs": 77.8
     },
     {
-      "file": "oraclecpqo\\transaction\\libraries\\cancelOrder\\cancelOrder.bml",
-      "lineCount": 190,
-      "totalMs": 51.6
+      "file": "oraclecpqo\\transaction\\libraries\\system_calculations_convertQuoteToObj\\system_calculations_convertQuoteToObj.bml",
+      "lineCount": 353,
+      "totalMs": 69.3
     },
     {
       "file": "oraclecpqo\\transaction\\libraries\\system_rollup_maindoc\\system_rollup_maindoc.bml",
       "lineCount": 159,
-      "totalMs": 50.1
+      "totalMs": 48.9
+    },
+    {
+      "file": "oraclecpqo\\transaction\\libraries\\cancelOrder\\cancelOrder.bml",
+      "lineCount": 190,
+      "totalMs": 43.8
     },
     {
       "file": "util\\abo_convertDeltaBomtoAsset\\abo_convertDeltaBomtoAsset.bml",
       "lineCount": 310,
-      "totalMs": 49.3
+      "totalMs": 42.7
     },
     {
-      "file": "oraclecpqo\\transaction\\libraries\\_s_tCAAccountIntegration\\_s_tCAAccountIntegration.bml",
-      "lineCount": 152,
-      "totalMs": 48.4
-    },
-    {
-      "file": "util\\abo_apply\\abo_apply.bml",
-      "lineCount": 275,
-      "totalMs": 47.4
+      "file": "oraclecpqo\\transaction\\libraries\\_s_ABO_loadDefaultContext\\_s_ABO_loadDefaultContext.bml",
+      "lineCount": 345,
+      "totalMs": 42.2
     },
     {
       "file": "ORCL_ABO\\abotester_doUpdateAsset\\abotester_doUpdateAsset.bml",
       "lineCount": 310,
-      "totalMs": 45.3
+      "totalMs": 38.8
     },
     {
       "file": "oraclecpqo\\transaction\\libraries\\system_rollup_subdoc\\system_rollup_subdoc.bml",
       "lineCount": 205,
-      "totalMs": 44.1
+      "totalMs": 38.2
     },
     {
-      "file": "util\\abo_updateAsset\\abo_updateAsset.bml",
-      "lineCount": 231,
-      "totalMs": 40.9
+      "file": "SM\\oRCL_pRC_oraclePricingSubscriptionBaseProfile\\oRCL_pRC_oraclePricingSubscriptionBaseProfile.bml",
+      "lineCount": 253,
+      "totalMs": 36.5
+    },
+    {
+      "file": "util\\abo_apply\\abo_apply.bml",
+      "lineCount": 275,
+      "totalMs": 36.4
+    },
+    {
+      "file": "oraclecpqo\\transaction\\libraries\\_s_tCAAccountIntegration\\_s_tCAAccountIntegration.bml",
+      "lineCount": 152,
+      "totalMs": 35
     }
   ],
   "ruleHits": {
     "bml-spelling-error": 530,
+    "bml-variable-camelcase": 498,
     "bml-null-check-required": 360,
     "bml-unused-variable": 199,
     "bml-magic-number": 117,
+    "bml-array-naming-suffix": 117,
     "bml-unguarded-print": 114,
+    "bml-dict-naming-suffix": 112,
     "bml-deep-nesting": 107,
+    "bml-boolean-naming-prefix": 62,
     "bml-unused-loop-var": 61,
     "bml-array-element-assignment": 61,
     "bml-function-not-found-workspace": 44,
@@ -244,6 +248,7 @@
     "bml-unsafe-atoi-atof": 36,
     "bml-lonelyIf": 33,
     "bml-high-complexity": 32,
+    "bml-recordset-naming-suffix": 30,
     "bml-hardcoded-url": 26,
     "bml-unchecked-split-access": 22,
     "bml-line-too-long": 22,

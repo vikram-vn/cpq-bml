@@ -30,6 +30,16 @@
     "message": "Unused variable: sumFlt"
   },
   {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'validBool1' should have an 'is' or 'has' prefix (e.g. 'isValidBool1')."
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'validBool2' should have an 'is' or 'has' prefix (e.g. 'isValidBool2')."
+  },
+  {
     "line": 21,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
@@ -101,6 +111,11 @@
   },
   {
     "line": 30,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'mismatchBool' should have an 'is' or 'has' prefix (e.g. 'isMismatchBool')."
+  },
+  {
+    "line": 30,
     "severity": "Hint",
     "message": "Unused variable: mismatchBool"
   },
@@ -108,6 +123,11 @@
     "line": 31,
     "severity": "Information",
     "message": "Design Info: Magic number '50.5' detected. Consider defining a named constant"
+  },
+  {
+    "line": 31,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'mismatchBool' should have an 'is' or 'has' prefix (e.g. 'isMismatchBool')."
   },
   {
     "line": 31,

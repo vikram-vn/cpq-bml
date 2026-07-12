@@ -11,6 +11,11 @@
   },
   {
     "line": 7,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rsBbmql' should have a 'Records' suffix (e.g. 'rsBbmqlRecords')."
+  },
+  {
+    "line": 7,
     "severity": "Hint",
     "message": "Unused variable: rsBbmql"
   },
@@ -36,8 +41,18 @@
   },
   {
     "line": 15,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'rOldTable1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 15,
     "severity": "Hint",
     "message": "Unused variable: rOldTable1"
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'rOldTable2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 16,
@@ -51,8 +66,18 @@
   },
   {
     "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'rOldParts1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 19,
     "severity": "Hint",
     "message": "Unused variable: rOldParts1"
+  },
+  {
+    "line": 20,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'rOldParts2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 20,

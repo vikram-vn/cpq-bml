@@ -175,6 +175,11 @@
     "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
   },
   {
+    "line": 73,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'perfRs' should have a 'Records' suffix (e.g. 'perfRsRecords')."
+  },
+  {
     "line": 74,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."

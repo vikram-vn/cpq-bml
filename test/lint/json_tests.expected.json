@@ -16,6 +16,11 @@
   },
   {
     "line": 6,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
+  },
+  {
+    "line": 6,
     "severity": "Hint",
     "message": "Unused variable: rs"
   },
@@ -41,13 +46,33 @@
   },
   {
     "line": 12,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos1')."
+  },
+  {
+    "line": 12,
     "severity": "Hint",
     "message": "Unused variable: val_json_pos1"
+  },
+  {
+    "line": 13,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_json_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_json_arg_0')."
+  },
+  {
+    "line": 14,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos2')."
   },
   {
     "line": 14,
     "severity": "Hint",
     "message": "Unused variable: val_json_pos2"
+  },
+  {
+    "line": 15,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos3')."
   },
   {
     "line": 15,
@@ -71,6 +96,11 @@
   },
   {
     "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos4')."
+  },
+  {
+    "line": 16,
     "severity": "Hint",
     "message": "Unused variable: val_json_pos4"
   },
@@ -83,6 +113,11 @@
     "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos5')."
   },
   {
     "line": 17,
@@ -101,8 +136,18 @@
   },
   {
     "line": 18,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos6')."
+  },
+  {
+    "line": 18,
     "severity": "Hint",
     "message": "Unused variable: val_json_pos6"
+  },
+  {
+    "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos7')."
   },
   {
     "line": 19,
@@ -111,8 +156,18 @@
   },
   {
     "line": 22,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos8')."
+  },
+  {
+    "line": 22,
     "severity": "Hint",
     "message": "Unused variable: val_json_pos8"
+  },
+  {
+    "line": 23,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos9')."
   },
   {
     "line": 23,
@@ -121,8 +176,18 @@
   },
   {
     "line": 24,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_pos10')."
+  },
+  {
+    "line": 24,
     "severity": "Hint",
     "message": "Unused variable: val_json_pos10"
+  },
+  {
+    "line": 25,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg1')."
   },
   {
     "line": 25,
@@ -136,6 +201,11 @@
   },
   {
     "line": 26,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg2')."
+  },
+  {
+    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_json_neg2"
   },
@@ -143,6 +213,11 @@
     "line": 27,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg3')."
   },
   {
     "line": 27,
@@ -161,6 +236,11 @@
   },
   {
     "line": 28,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg4')."
+  },
+  {
+    "line": 28,
     "severity": "Error",
     "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
@@ -176,6 +256,11 @@
   },
   {
     "line": 29,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg5')."
+  },
+  {
+    "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_json_neg5"
   },
@@ -183,6 +268,11 @@
     "line": 30,
     "severity": "Error",
     "message": "Error: 'json()' expects 0 to 1 arguments, but got 2."
+  },
+  {
+    "line": 30,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg6')."
   },
   {
     "line": 30,
@@ -206,6 +296,11 @@
   },
   {
     "line": 32,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg8')."
+  },
+  {
+    "line": 32,
     "severity": "Hint",
     "message": "Unused variable: val_json_neg8"
   },
@@ -226,8 +321,18 @@
   },
   {
     "line": 33,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg9')."
+  },
+  {
+    "line": 33,
     "severity": "Hint",
     "message": "Unused variable: val_json_neg9"
+  },
+  {
+    "line": 34,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_json_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg10')."
   },
   {
     "line": 34,
@@ -236,13 +341,48 @@
   },
   {
     "line": 36,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 36,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos1')."
+  },
+  {
+    "line": 36,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_pos1"
+  },
+  {
+    "line": 37,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarray_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarray_arg_0')."
+  },
+  {
+    "line": 38,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 38,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos2')."
   },
   {
     "line": 38,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_pos2"
+  },
+  {
+    "line": 39,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 39,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos3')."
   },
   {
     "line": 39,
@@ -257,12 +397,22 @@
   {
     "line": 40,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 40,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 40,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 40,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos4')."
   },
   {
     "line": 40,
@@ -272,12 +422,22 @@
   {
     "line": 41,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 41,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos5')."
   },
   {
     "line": 41,
@@ -291,8 +451,28 @@
   },
   {
     "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos6')."
+  },
+  {
+    "line": 42,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_pos6"
+  },
+  {
+    "line": 43,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 43,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos7')."
   },
   {
     "line": 43,
@@ -301,8 +481,28 @@
   },
   {
     "line": 46,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 46,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos8')."
+  },
+  {
+    "line": 46,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_pos8"
+  },
+  {
+    "line": 47,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 47,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos9')."
   },
   {
     "line": 47,
@@ -311,8 +511,28 @@
   },
   {
     "line": 48,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 48,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_pos10')."
+  },
+  {
+    "line": 48,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_pos10"
+  },
+  {
+    "line": 49,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 49,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg1')."
   },
   {
     "line": 49,
@@ -326,6 +546,16 @@
   },
   {
     "line": 50,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 50,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg2')."
+  },
+  {
+    "line": 50,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_neg2"
   },
@@ -333,6 +563,16 @@
     "line": 51,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 51,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 51,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg3')."
   },
   {
     "line": 51,
@@ -351,6 +591,16 @@
   },
   {
     "line": 52,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 52,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg4')."
+  },
+  {
+    "line": 52,
     "severity": "Error",
     "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
@@ -366,6 +616,11 @@
   },
   {
     "line": 53,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg5')."
+  },
+  {
+    "line": 53,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_neg5"
   },
@@ -373,6 +628,16 @@
     "line": 54,
     "severity": "Error",
     "message": "Error: 'jsonarray()' expects 0 to 1 arguments, but got 2."
+  },
+  {
+    "line": 54,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 54,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg6')."
   },
   {
     "line": 54,
@@ -396,6 +661,16 @@
   },
   {
     "line": 56,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 56,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg8')."
+  },
+  {
+    "line": 56,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_neg8"
   },
@@ -412,7 +687,17 @@
   {
     "line": 57,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarray_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg9')."
   },
   {
     "line": 57,
@@ -421,8 +706,18 @@
   },
   {
     "line": 58,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarray_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg10')."
+  },
+  {
+    "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_neg10"
+  },
+  {
+    "line": 60,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos1')."
   },
   {
     "line": 60,
@@ -431,8 +726,18 @@
   },
   {
     "line": 61,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos2')."
+  },
+  {
+    "line": 61,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_pos2"
+  },
+  {
+    "line": 62,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos3')."
   },
   {
     "line": 62,
@@ -456,6 +761,11 @@
   },
   {
     "line": 63,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos4')."
+  },
+  {
+    "line": 63,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_pos4"
   },
@@ -471,8 +781,18 @@
   },
   {
     "line": 64,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos5')."
+  },
+  {
+    "line": 64,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_pos5"
+  },
+  {
+    "line": 65,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos6')."
   },
   {
     "line": 65,
@@ -481,8 +801,18 @@
   },
   {
     "line": 66,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos7')."
+  },
+  {
+    "line": 66,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_pos7"
+  },
+  {
+    "line": 69,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos8')."
   },
   {
     "line": 69,
@@ -491,8 +821,18 @@
   },
   {
     "line": 70,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos9')."
+  },
+  {
+    "line": 70,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_pos9"
+  },
+  {
+    "line": 71,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_pos10')."
   },
   {
     "line": 71,
@@ -506,6 +846,11 @@
   },
   {
     "line": 72,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg1')."
+  },
+  {
+    "line": 72,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_neg1"
   },
@@ -513,6 +858,11 @@
     "line": 73,
     "severity": "Error",
     "message": "Error: 'jsonnull()' expects 0 arguments, but got 1."
+  },
+  {
+    "line": 73,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg2')."
   },
   {
     "line": 73,
@@ -531,6 +881,11 @@
   },
   {
     "line": 74,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg3')."
+  },
+  {
+    "line": 74,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_neg3"
   },
@@ -538,6 +893,11 @@
     "line": 75,
     "severity": "Error",
     "message": "Error: 'jsonnull()' expects 0 arguments, but got 2."
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg4')."
   },
   {
     "line": 75,
@@ -556,6 +916,11 @@
   },
   {
     "line": 76,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg5')."
+  },
+  {
+    "line": 76,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_neg5"
   },
@@ -563,6 +928,11 @@
     "line": 77,
     "severity": "Error",
     "message": "Error: 'jsonnull()' expects 0 arguments, but got 2."
+  },
+  {
+    "line": 77,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg6')."
   },
   {
     "line": 77,
@@ -583,6 +953,11 @@
     "line": 79,
     "severity": "Error",
     "message": "Error: 'jsonnull()' expects 0 arguments, but got 2."
+  },
+  {
+    "line": 79,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg8')."
   },
   {
     "line": 79,
@@ -611,8 +986,18 @@
   },
   {
     "line": 80,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg9')."
+  },
+  {
+    "line": 80,
     "severity": "Hint",
     "message": "Unused variable: val_jsonnull_neg9"
+  },
+  {
+    "line": 81,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonnull_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonnull_neg10')."
   },
   {
     "line": 81,
@@ -621,13 +1006,48 @@
   },
   {
     "line": 83,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 83,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos1')."
+  },
+  {
+    "line": 83,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_pos1"
+  },
+  {
+    "line": 84,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonkeys_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonkeys_arg_0')."
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos2')."
   },
   {
     "line": 85,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_pos2"
+  },
+  {
+    "line": 86,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 86,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos3')."
   },
   {
     "line": 86,
@@ -642,12 +1062,22 @@
   {
     "line": 87,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 87,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 87,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 87,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos4')."
   },
   {
     "line": 87,
@@ -657,6 +1087,11 @@
   {
     "line": 88,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 88,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
@@ -666,8 +1101,23 @@
   },
   {
     "line": 88,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos5')."
+  },
+  {
+    "line": 88,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_pos5"
+  },
+  {
+    "line": 89,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 89,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos6')."
   },
   {
     "line": 89,
@@ -676,8 +1126,28 @@
   },
   {
     "line": 90,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 90,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos7')."
+  },
+  {
+    "line": 90,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_pos7"
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos8')."
   },
   {
     "line": 93,
@@ -686,8 +1156,28 @@
   },
   {
     "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos9')."
+  },
+  {
+    "line": 94,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_pos9"
+  },
+  {
+    "line": 95,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 95,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_pos10')."
   },
   {
     "line": 95,
@@ -701,6 +1191,16 @@
   },
   {
     "line": 96,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 96,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg1')."
+  },
+  {
+    "line": 96,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_neg1"
   },
@@ -708,6 +1208,16 @@
     "line": 97,
     "severity": "Warning",
     "message": "Argument 2 to 'jsonkeys' should be Boolean, but got a String value."
+  },
+  {
+    "line": 97,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 97,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg2')."
   },
   {
     "line": 97,
@@ -721,8 +1231,28 @@
   },
   {
     "line": 98,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 98,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg3')."
+  },
+  {
+    "line": 98,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_neg3"
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg4')."
   },
   {
     "line": 99,
@@ -741,8 +1271,23 @@
   },
   {
     "line": 100,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg5')."
+  },
+  {
+    "line": 100,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_neg5"
+  },
+  {
+    "line": 101,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 101,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg6')."
   },
   {
     "line": 101,
@@ -758,6 +1303,16 @@
     "line": 103,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 103,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 103,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg8')."
   },
   {
     "line": 103,
@@ -777,7 +1332,17 @@
   {
     "line": 104,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonkeys_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 104,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 104,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg9')."
   },
   {
     "line": 104,
@@ -786,8 +1351,18 @@
   },
   {
     "line": 105,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonkeys_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonkeys_neg10')."
+  },
+  {
+    "line": 105,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_neg10"
+  },
+  {
+    "line": 107,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos1')."
   },
   {
     "line": 107,
@@ -795,9 +1370,24 @@
     "message": "Unused variable: val_jsontostr_pos1"
   },
   {
+    "line": 108,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsontostr_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsontostr_arg_0')."
+  },
+  {
+    "line": 109,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos2')."
+  },
+  {
     "line": 109,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_pos2"
+  },
+  {
+    "line": 110,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos3')."
   },
   {
     "line": 110,
@@ -821,6 +1411,11 @@
   },
   {
     "line": 111,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos4')."
+  },
+  {
+    "line": 111,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_pos4"
   },
@@ -836,8 +1431,18 @@
   },
   {
     "line": 112,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos5')."
+  },
+  {
+    "line": 112,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_pos5"
+  },
+  {
+    "line": 113,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos6')."
   },
   {
     "line": 113,
@@ -846,8 +1451,18 @@
   },
   {
     "line": 114,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos7')."
+  },
+  {
+    "line": 114,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_pos7"
+  },
+  {
+    "line": 117,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos8')."
   },
   {
     "line": 117,
@@ -856,8 +1471,18 @@
   },
   {
     "line": 118,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos9')."
+  },
+  {
+    "line": 118,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_pos9"
+  },
+  {
+    "line": 119,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_pos10')."
   },
   {
     "line": 119,
@@ -871,6 +1496,11 @@
   },
   {
     "line": 120,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg1')."
+  },
+  {
+    "line": 120,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_neg1"
   },
@@ -878,6 +1508,11 @@
     "line": 121,
     "severity": "Error",
     "message": "Built-in function 'jsontostr' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 121,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg2')."
   },
   {
     "line": 121,
@@ -891,8 +1526,18 @@
   },
   {
     "line": 122,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg3')."
+  },
+  {
+    "line": 122,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_neg3"
+  },
+  {
+    "line": 123,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg4')."
   },
   {
     "line": 123,
@@ -911,8 +1556,18 @@
   },
   {
     "line": 124,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg5')."
+  },
+  {
+    "line": 124,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_neg5"
+  },
+  {
+    "line": 125,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg6')."
   },
   {
     "line": 125,
@@ -936,6 +1591,11 @@
   },
   {
     "line": 127,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg8')."
+  },
+  {
+    "line": 127,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_neg8"
   },
@@ -956,8 +1616,18 @@
   },
   {
     "line": 128,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg9')."
+  },
+  {
+    "line": 128,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_neg9"
+  },
+  {
+    "line": 129,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsontostr_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsontostr_neg10')."
   },
   {
     "line": 129,
@@ -966,13 +1636,38 @@
   },
   {
     "line": 131,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos1')."
+  },
+  {
+    "line": 131,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos1"
+  },
+  {
+    "line": 132,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonget_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonget_arg_0')."
+  },
+  {
+    "line": 133,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonget_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonget_arg_1')."
+  },
+  {
+    "line": 134,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos2')."
   },
   {
     "line": 134,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos2"
+  },
+  {
+    "line": 135,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos3')."
   },
   {
     "line": 135,
@@ -996,6 +1691,11 @@
   },
   {
     "line": 136,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos4')."
+  },
+  {
+    "line": 136,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos4"
   },
@@ -1011,6 +1711,11 @@
   },
   {
     "line": 137,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos5')."
+  },
+  {
+    "line": 137,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos5"
   },
@@ -1021,8 +1726,18 @@
   },
   {
     "line": 138,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos6')."
+  },
+  {
+    "line": 138,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos6"
+  },
+  {
+    "line": 139,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos7')."
   },
   {
     "line": 139,
@@ -1031,13 +1746,28 @@
   },
   {
     "line": 143,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos8')."
+  },
+  {
+    "line": 143,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos8"
   },
   {
     "line": 144,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos9')."
+  },
+  {
+    "line": 144,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos9"
+  },
+  {
+    "line": 145,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos10')."
   },
   {
     "line": 145,
@@ -1051,8 +1781,18 @@
   },
   {
     "line": 146,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg1')."
+  },
+  {
+    "line": 146,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg1"
+  },
+  {
+    "line": 147,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg2')."
   },
   {
     "line": 147,
@@ -1076,8 +1816,18 @@
   },
   {
     "line": 148,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg3')."
+  },
+  {
+    "line": 148,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg3"
+  },
+  {
+    "line": 149,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg4')."
   },
   {
     "line": 149,
@@ -1096,8 +1846,18 @@
   },
   {
     "line": 150,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg5')."
+  },
+  {
+    "line": 150,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg5"
+  },
+  {
+    "line": 151,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg6')."
   },
   {
     "line": 151,
@@ -1116,6 +1876,11 @@
   },
   {
     "line": 153,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg8')."
+  },
+  {
+    "line": 153,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg8"
   },
@@ -1131,8 +1896,18 @@
   },
   {
     "line": 154,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg9')."
+  },
+  {
+    "line": 154,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg9"
+  },
+  {
+    "line": 155,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonget_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg10')."
   },
   {
     "line": 155,
@@ -1141,13 +1916,43 @@
   },
   {
     "line": 157,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos1')."
+  },
+  {
+    "line": 157,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos1"
+  },
+  {
+    "line": 158,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonput_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonput_arg_0')."
+  },
+  {
+    "line": 159,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonput_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonput_arg_1')."
+  },
+  {
+    "line": 160,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonput_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonput_arg_2')."
+  },
+  {
+    "line": 161,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos2')."
   },
   {
     "line": 161,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos2"
+  },
+  {
+    "line": 162,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos3')."
   },
   {
     "line": 162,
@@ -1171,6 +1976,11 @@
   },
   {
     "line": 163,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos4')."
+  },
+  {
+    "line": 163,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos4"
   },
@@ -1183,6 +1993,11 @@
     "line": 164,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 164,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos5')."
   },
   {
     "line": 164,
@@ -1201,8 +2016,18 @@
   },
   {
     "line": 165,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos6')."
+  },
+  {
+    "line": 165,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos6"
+  },
+  {
+    "line": 166,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos7')."
   },
   {
     "line": 166,
@@ -1211,13 +2036,28 @@
   },
   {
     "line": 171,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos8')."
+  },
+  {
+    "line": 171,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos8"
   },
   {
     "line": 172,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos9')."
+  },
+  {
+    "line": 172,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos9"
+  },
+  {
+    "line": 173,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos10')."
   },
   {
     "line": 173,
@@ -1231,6 +2071,11 @@
   },
   {
     "line": 174,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg1')."
+  },
+  {
+    "line": 174,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg1"
   },
@@ -1238,6 +2083,11 @@
     "line": 175,
     "severity": "Error",
     "message": "Built-in function 'jsonput' expects 3 argument(s), but got 4."
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg2')."
   },
   {
     "line": 175,
@@ -1266,8 +2116,18 @@
   },
   {
     "line": 176,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg3')."
+  },
+  {
+    "line": 176,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg3"
+  },
+  {
+    "line": 177,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg4')."
   },
   {
     "line": 177,
@@ -1286,8 +2146,18 @@
   },
   {
     "line": 178,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg5')."
+  },
+  {
+    "line": 178,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg5"
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg6')."
   },
   {
     "line": 179,
@@ -1306,6 +2176,11 @@
   },
   {
     "line": 181,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg8')."
+  },
+  {
+    "line": 181,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg8"
   },
@@ -1321,8 +2196,18 @@
   },
   {
     "line": 182,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg9')."
+  },
+  {
+    "line": 182,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg9"
+  },
+  {
+    "line": 183,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonput_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg10')."
   },
   {
     "line": 183,
@@ -1331,13 +2216,53 @@
   },
   {
     "line": 185,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos1')."
+  },
+  {
+    "line": 185,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos1')."
+  },
+  {
+    "line": 185,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos1"
+  },
+  {
+    "line": 186,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonremove_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonremove_arg_0')."
+  },
+  {
+    "line": 187,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonremove_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonremove_arg_1')."
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos2')."
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos2')."
   },
   {
     "line": 188,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos2"
+  },
+  {
+    "line": 189,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos3')."
+  },
+  {
+    "line": 189,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos3')."
   },
   {
     "line": 189,
@@ -1352,12 +2277,22 @@
   {
     "line": 190,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos4')."
+  },
+  {
+    "line": 190,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 190,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 190,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos4')."
   },
   {
     "line": 190,
@@ -1367,12 +2302,22 @@
   {
     "line": 191,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos5')."
+  },
+  {
+    "line": 191,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 191,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 191,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos5')."
   },
   {
     "line": 191,
@@ -1386,8 +2331,28 @@
   },
   {
     "line": 192,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos6')."
+  },
+  {
+    "line": 192,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos6')."
+  },
+  {
+    "line": 192,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos6"
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos7')."
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos7')."
   },
   {
     "line": 193,
@@ -1396,13 +2361,43 @@
   },
   {
     "line": 197,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos8')."
+  },
+  {
+    "line": 197,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos8')."
+  },
+  {
+    "line": 197,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos8"
   },
   {
     "line": 198,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos9')."
+  },
+  {
+    "line": 198,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos9')."
+  },
+  {
+    "line": 198,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos9"
+  },
+  {
+    "line": 199,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_pos10')."
+  },
+  {
+    "line": 199,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos10')."
   },
   {
     "line": 199,
@@ -1416,6 +2411,16 @@
   },
   {
     "line": 200,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_neg1')."
+  },
+  {
+    "line": 200,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg1')."
+  },
+  {
+    "line": 200,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg1"
   },
@@ -1423,6 +2428,16 @@
     "line": 201,
     "severity": "Error",
     "message": "Built-in function 'jsonremove' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_neg2')."
+  },
+  {
+    "line": 201,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg2')."
   },
   {
     "line": 201,
@@ -1446,8 +2461,28 @@
   },
   {
     "line": 202,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_neg3')."
+  },
+  {
+    "line": 202,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg3')."
+  },
+  {
+    "line": 202,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg3"
+  },
+  {
+    "line": 203,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_neg4')."
+  },
+  {
+    "line": 203,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg4')."
   },
   {
     "line": 203,
@@ -1466,8 +2501,23 @@
   },
   {
     "line": 204,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg5')."
+  },
+  {
+    "line": 204,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg5"
+  },
+  {
+    "line": 205,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_neg6')."
+  },
+  {
+    "line": 205,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg6')."
   },
   {
     "line": 205,
@@ -1486,6 +2536,16 @@
   },
   {
     "line": 207,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_neg8')."
+  },
+  {
+    "line": 207,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg8')."
+  },
+  {
+    "line": 207,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg8"
   },
@@ -1497,12 +2557,27 @@
   {
     "line": 208,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonremove_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonremove_neg9')."
+  },
+  {
+    "line": 208,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 208,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg9')."
   },
   {
     "line": 208,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg9"
+  },
+  {
+    "line": 209,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonremove_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg10')."
   },
   {
     "line": 209,
@@ -1521,8 +2596,28 @@
   },
   {
     "line": 211,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos1')."
+  },
+  {
+    "line": 211,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos1')."
+  },
+  {
+    "line": 211,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_pos1"
+  },
+  {
+    "line": 212,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_isjsonnull_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_isjsonnull_arg_0')."
+  },
+  {
+    "line": 213,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_isjsonnull_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_isjsonnull_arg_1')."
   },
   {
     "line": 214,
@@ -1530,9 +2625,24 @@
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
+    "line": 214,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_isjsonnull_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_isjsonnull_arg_2')."
+  },
+  {
     "line": 215,
     "severity": "Error",
     "message": "Built-in function 'isjsonnull' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 215,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos2')."
+  },
+  {
+    "line": 215,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos2')."
   },
   {
     "line": 215,
@@ -1548,6 +2658,16 @@
     "line": 216,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 216,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos3')."
+  },
+  {
+    "line": 216,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos3')."
   },
   {
     "line": 216,
@@ -1572,12 +2692,22 @@
   {
     "line": 217,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos4')."
+  },
+  {
+    "line": 217,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 217,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 217,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos4')."
   },
   {
     "line": 217,
@@ -1597,12 +2727,22 @@
   {
     "line": 218,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos5')."
+  },
+  {
+    "line": 218,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 218,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 218,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos5')."
   },
   {
     "line": 218,
@@ -1621,6 +2761,16 @@
   },
   {
     "line": 219,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos6')."
+  },
+  {
+    "line": 219,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos6')."
+  },
+  {
+    "line": 219,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_pos6"
   },
@@ -1628,6 +2778,16 @@
     "line": 220,
     "severity": "Error",
     "message": "Built-in function 'isjsonnull' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 220,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos7')."
+  },
+  {
+    "line": 220,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos7')."
   },
   {
     "line": 220,
@@ -1651,6 +2811,16 @@
   },
   {
     "line": 225,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos8')."
+  },
+  {
+    "line": 225,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos8')."
+  },
+  {
+    "line": 225,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_pos8"
   },
@@ -1671,6 +2841,16 @@
   },
   {
     "line": 226,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos9')."
+  },
+  {
+    "line": 226,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos9')."
+  },
+  {
+    "line": 226,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_pos9"
   },
@@ -1686,8 +2866,28 @@
   },
   {
     "line": 227,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_pos10')."
+  },
+  {
+    "line": 227,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_pos10')."
+  },
+  {
+    "line": 227,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_pos10"
+  },
+  {
+    "line": 228,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_neg1')."
+  },
+  {
+    "line": 228,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg1')."
   },
   {
     "line": 228,
@@ -1706,6 +2906,16 @@
   },
   {
     "line": 229,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_neg2')."
+  },
+  {
+    "line": 229,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg2')."
+  },
+  {
+    "line": 229,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_neg2"
   },
@@ -1721,6 +2931,16 @@
   },
   {
     "line": 230,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_neg3')."
+  },
+  {
+    "line": 230,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg3')."
+  },
+  {
+    "line": 230,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_neg3"
   },
@@ -1733,6 +2953,16 @@
     "line": 231,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 231,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_neg4')."
+  },
+  {
+    "line": 231,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg4')."
   },
   {
     "line": 231,
@@ -1756,6 +2986,11 @@
   },
   {
     "line": 232,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg5')."
+  },
+  {
+    "line": 232,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_neg5"
   },
@@ -1768,6 +3003,16 @@
     "line": 233,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 233,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_neg6')."
+  },
+  {
+    "line": 233,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg6')."
   },
   {
     "line": 233,
@@ -1791,6 +3036,16 @@
   },
   {
     "line": 235,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_neg8')."
+  },
+  {
+    "line": 235,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg8')."
+  },
+  {
+    "line": 235,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_neg8"
   },
@@ -1807,7 +3062,17 @@
   {
     "line": 236,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_isjsonnull_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_isjsonnull_neg9')."
+  },
+  {
+    "line": 236,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 236,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg9')."
   },
   {
     "line": 236,
@@ -1821,8 +3086,18 @@
   },
   {
     "line": 237,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_isjsonnull_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg10')."
+  },
+  {
+    "line": 237,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_neg10"
+  },
+  {
+    "line": 239,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos1')."
   },
   {
     "line": 239,
@@ -1830,9 +3105,29 @@
     "message": "Unused variable: val_jsonarraytostr_pos1"
   },
   {
+    "line": 240,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'var_jsonarraytostr_arg_0' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 240,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarraytostr_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarraytostr_arg_0')."
+  },
+  {
+    "line": 241,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos2')."
+  },
+  {
     "line": 241,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_pos2"
+  },
+  {
+    "line": 242,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos3')."
   },
   {
     "line": 242,
@@ -1856,6 +3151,11 @@
   },
   {
     "line": 243,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos4')."
+  },
+  {
+    "line": 243,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_pos4"
   },
@@ -1871,8 +3171,18 @@
   },
   {
     "line": 244,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos5')."
+  },
+  {
+    "line": 244,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_pos5"
+  },
+  {
+    "line": 245,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos6')."
   },
   {
     "line": 245,
@@ -1881,8 +3191,18 @@
   },
   {
     "line": 246,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos7')."
+  },
+  {
+    "line": 246,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_pos7"
+  },
+  {
+    "line": 249,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos8')."
   },
   {
     "line": 249,
@@ -1891,8 +3211,18 @@
   },
   {
     "line": 250,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos9')."
+  },
+  {
+    "line": 250,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_pos9"
+  },
+  {
+    "line": 251,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_pos10')."
   },
   {
     "line": 251,
@@ -1906,6 +3236,11 @@
   },
   {
     "line": 252,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg1')."
+  },
+  {
+    "line": 252,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_neg1"
   },
@@ -1913,6 +3248,11 @@
     "line": 253,
     "severity": "Error",
     "message": "Built-in function 'jsonarraytostr' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 253,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg2')."
   },
   {
     "line": 253,
@@ -1926,8 +3266,18 @@
   },
   {
     "line": 254,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg3')."
+  },
+  {
+    "line": 254,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_neg3"
+  },
+  {
+    "line": 255,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg4')."
   },
   {
     "line": 255,
@@ -1946,8 +3296,18 @@
   },
   {
     "line": 256,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg5')."
+  },
+  {
+    "line": 256,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_neg5"
+  },
+  {
+    "line": 257,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg6')."
   },
   {
     "line": 257,
@@ -1971,6 +3331,11 @@
   },
   {
     "line": 259,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg8')."
+  },
+  {
+    "line": 259,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_neg8"
   },
@@ -1991,8 +3356,18 @@
   },
   {
     "line": 260,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg9')."
+  },
+  {
+    "line": 260,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_neg9"
+  },
+  {
+    "line": 261,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraytostr_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg10')."
   },
   {
     "line": 261,
@@ -2006,13 +3381,38 @@
   },
   {
     "line": 263,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos1')."
+  },
+  {
+    "line": 263,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_pos1"
+  },
+  {
+    "line": 264,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'var_jsonarrayget_arg_0' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 264,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarrayget_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarrayget_arg_0')."
   },
   {
     "line": 265,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 265,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarrayget_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarrayget_arg_1')."
+  },
+  {
+    "line": 266,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos2')."
   },
   {
     "line": 266,
@@ -2023,6 +3423,11 @@
     "line": 267,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 267,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos3')."
   },
   {
     "line": 267,
@@ -2051,6 +3456,11 @@
   },
   {
     "line": 268,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos4')."
+  },
+  {
+    "line": 268,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_pos4"
   },
@@ -2071,13 +3481,28 @@
   },
   {
     "line": 269,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos5')."
+  },
+  {
+    "line": 269,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_pos5"
   },
   {
     "line": 270,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos6')."
+  },
+  {
+    "line": 270,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_pos6"
+  },
+  {
+    "line": 271,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos7')."
   },
   {
     "line": 271,
@@ -2096,6 +3521,11 @@
   },
   {
     "line": 275,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos8')."
+  },
+  {
+    "line": 275,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_pos8"
   },
@@ -2111,6 +3541,11 @@
   },
   {
     "line": 276,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos9')."
+  },
+  {
+    "line": 276,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_pos9"
   },
@@ -2118,6 +3553,11 @@
     "line": 277,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 277,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_pos10')."
   },
   {
     "line": 277,
@@ -2131,6 +3571,11 @@
   },
   {
     "line": 278,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg1')."
+  },
+  {
+    "line": 278,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg1"
   },
@@ -2138,6 +3583,11 @@
     "line": 279,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 279,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg2')."
   },
   {
     "line": 279,
@@ -2156,6 +3606,11 @@
   },
   {
     "line": 280,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg3')."
+  },
+  {
+    "line": 280,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg3"
   },
@@ -2163,6 +3618,11 @@
     "line": 281,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 281,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg4')."
   },
   {
     "line": 281,
@@ -2186,8 +3646,18 @@
   },
   {
     "line": 282,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg5')."
+  },
+  {
+    "line": 282,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg5"
+  },
+  {
+    "line": 283,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg6')."
   },
   {
     "line": 283,
@@ -2211,6 +3681,11 @@
   },
   {
     "line": 285,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg8')."
+  },
+  {
+    "line": 285,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg8"
   },
@@ -2231,6 +3706,11 @@
   },
   {
     "line": 286,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg9')."
+  },
+  {
+    "line": 286,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg9"
   },
@@ -2241,8 +3721,18 @@
   },
   {
     "line": 287,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayget_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg10')."
+  },
+  {
+    "line": 287,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg10"
+  },
+  {
+    "line": 289,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos1')."
   },
   {
     "line": 289,
@@ -2250,9 +3740,29 @@
     "message": "Unused variable: val_jsonarraysize_pos1"
   },
   {
+    "line": 290,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'var_jsonarraysize_arg_0' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 290,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarraysize_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarraysize_arg_0')."
+  },
+  {
+    "line": 291,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos2')."
+  },
+  {
     "line": 291,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_pos2"
+  },
+  {
+    "line": 292,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos3')."
   },
   {
     "line": 292,
@@ -2276,6 +3786,11 @@
   },
   {
     "line": 293,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos4')."
+  },
+  {
+    "line": 293,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_pos4"
   },
@@ -2291,8 +3806,18 @@
   },
   {
     "line": 294,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos5')."
+  },
+  {
+    "line": 294,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_pos5"
+  },
+  {
+    "line": 295,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos6')."
   },
   {
     "line": 295,
@@ -2301,8 +3826,18 @@
   },
   {
     "line": 296,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos7')."
+  },
+  {
+    "line": 296,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_pos7"
+  },
+  {
+    "line": 299,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos8')."
   },
   {
     "line": 299,
@@ -2311,8 +3846,18 @@
   },
   {
     "line": 300,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos9')."
+  },
+  {
+    "line": 300,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_pos9"
+  },
+  {
+    "line": 301,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_pos10')."
   },
   {
     "line": 301,
@@ -2326,6 +3871,11 @@
   },
   {
     "line": 302,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg1')."
+  },
+  {
+    "line": 302,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_neg1"
   },
@@ -2333,6 +3883,11 @@
     "line": 303,
     "severity": "Error",
     "message": "Built-in function 'jsonarraysize' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 303,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg2')."
   },
   {
     "line": 303,
@@ -2346,8 +3901,18 @@
   },
   {
     "line": 304,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg3')."
+  },
+  {
+    "line": 304,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_neg3"
+  },
+  {
+    "line": 305,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg4')."
   },
   {
     "line": 305,
@@ -2366,8 +3931,18 @@
   },
   {
     "line": 306,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg5')."
+  },
+  {
+    "line": 306,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_neg5"
+  },
+  {
+    "line": 307,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg6')."
   },
   {
     "line": 307,
@@ -2391,6 +3966,11 @@
   },
   {
     "line": 309,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg8')."
+  },
+  {
+    "line": 309,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_neg8"
   },
@@ -2411,8 +3991,18 @@
   },
   {
     "line": 310,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg9')."
+  },
+  {
+    "line": 310,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_neg9"
+  },
+  {
+    "line": 311,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraysize_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraysize_neg10')."
   },
   {
     "line": 311,
@@ -2421,13 +4011,43 @@
   },
   {
     "line": 313,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos1')."
+  },
+  {
+    "line": 313,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos1"
+  },
+  {
+    "line": 314,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'var_jsonarrayappend_arg_0' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 314,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarrayappend_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarrayappend_arg_0')."
+  },
+  {
+    "line": 315,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarrayappend_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarrayappend_arg_1')."
+  },
+  {
+    "line": 316,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos2')."
   },
   {
     "line": 316,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos2"
+  },
+  {
+    "line": 317,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos3')."
   },
   {
     "line": 317,
@@ -2451,6 +4071,11 @@
   },
   {
     "line": 318,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos4')."
+  },
+  {
+    "line": 318,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos4"
   },
@@ -2466,6 +4091,11 @@
   },
   {
     "line": 319,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos5')."
+  },
+  {
+    "line": 319,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos5"
   },
@@ -2476,8 +4106,18 @@
   },
   {
     "line": 320,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos6')."
+  },
+  {
+    "line": 320,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos6"
+  },
+  {
+    "line": 321,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos7')."
   },
   {
     "line": 321,
@@ -2486,13 +4126,28 @@
   },
   {
     "line": 325,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos8')."
+  },
+  {
+    "line": 325,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos8"
   },
   {
     "line": 326,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos9')."
+  },
+  {
+    "line": 326,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos9"
+  },
+  {
+    "line": 327,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos10')."
   },
   {
     "line": 327,
@@ -2506,6 +4161,11 @@
   },
   {
     "line": 328,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg1')."
+  },
+  {
+    "line": 328,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg1"
   },
@@ -2513,6 +4173,11 @@
     "line": 329,
     "severity": "Error",
     "message": "Built-in function 'jsonarrayappend' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 329,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg2')."
   },
   {
     "line": 329,
@@ -2531,8 +4196,18 @@
   },
   {
     "line": 330,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg3')."
+  },
+  {
+    "line": 330,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg3"
+  },
+  {
+    "line": 331,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg4')."
   },
   {
     "line": 331,
@@ -2551,8 +4226,18 @@
   },
   {
     "line": 332,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg5')."
+  },
+  {
+    "line": 332,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg5"
+  },
+  {
+    "line": 333,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg6')."
   },
   {
     "line": 333,
@@ -2571,6 +4256,11 @@
   },
   {
     "line": 335,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg8')."
+  },
+  {
+    "line": 335,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg8"
   },
@@ -2586,8 +4276,18 @@
   },
   {
     "line": 336,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg9')."
+  },
+  {
+    "line": 336,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg9"
+  },
+  {
+    "line": 337,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayappend_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg10')."
   },
   {
     "line": 337,
@@ -2601,13 +4301,38 @@
   },
   {
     "line": 339,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos1')."
+  },
+  {
+    "line": 339,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_pos1"
+  },
+  {
+    "line": 340,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'var_jsonarrayremove_arg_0' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 340,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarrayremove_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarrayremove_arg_0')."
   },
   {
     "line": 341,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 341,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarrayremove_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarrayremove_arg_1')."
+  },
+  {
+    "line": 342,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos2')."
   },
   {
     "line": 342,
@@ -2618,6 +4343,11 @@
     "line": 343,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 343,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos3')."
   },
   {
     "line": 343,
@@ -2646,6 +4376,11 @@
   },
   {
     "line": 344,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos4')."
+  },
+  {
+    "line": 344,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_pos4"
   },
@@ -2666,13 +4401,28 @@
   },
   {
     "line": 345,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos5')."
+  },
+  {
+    "line": 345,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_pos5"
   },
   {
     "line": 346,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos6')."
+  },
+  {
+    "line": 346,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_pos6"
+  },
+  {
+    "line": 347,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos7')."
   },
   {
     "line": 347,
@@ -2691,6 +4441,11 @@
   },
   {
     "line": 351,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos8')."
+  },
+  {
+    "line": 351,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_pos8"
   },
@@ -2706,6 +4461,11 @@
   },
   {
     "line": 352,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos9')."
+  },
+  {
+    "line": 352,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_pos9"
   },
@@ -2716,6 +4476,11 @@
   },
   {
     "line": 353,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_pos10')."
+  },
+  {
+    "line": 353,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_pos10"
   },
@@ -2723,6 +4488,11 @@
     "line": 354,
     "severity": "Error",
     "message": "Built-in function 'jsonarrayremove' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 354,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg1')."
   },
   {
     "line": 354,
@@ -2741,6 +4511,11 @@
   },
   {
     "line": 355,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg2')."
+  },
+  {
+    "line": 355,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg2"
   },
@@ -2756,6 +4531,11 @@
   },
   {
     "line": 356,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg3')."
+  },
+  {
+    "line": 356,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg3"
   },
@@ -2763,6 +4543,11 @@
     "line": 357,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 357,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg4')."
   },
   {
     "line": 357,
@@ -2786,8 +4571,18 @@
   },
   {
     "line": 358,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg5')."
+  },
+  {
+    "line": 358,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg5"
+  },
+  {
+    "line": 359,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg6')."
   },
   {
     "line": 359,
@@ -2811,6 +4606,11 @@
   },
   {
     "line": 361,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg8')."
+  },
+  {
+    "line": 361,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg8"
   },
@@ -2831,6 +4631,11 @@
   },
   {
     "line": 362,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg9')."
+  },
+  {
+    "line": 362,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg9"
   },
@@ -2841,8 +4646,23 @@
   },
   {
     "line": 363,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayremove_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg10')."
+  },
+  {
+    "line": 363,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg10"
+  },
+  {
+    "line": 365,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos1')."
+  },
+  {
+    "line": 365,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos1')."
   },
   {
     "line": 365,
@@ -2850,9 +4670,39 @@
     "message": "Unused variable: val_jsonpathremove_pos1"
   },
   {
+    "line": 366,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathremove_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathremove_arg_0')."
+  },
+  {
+    "line": 367,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathremove_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathremove_arg_1')."
+  },
+  {
+    "line": 368,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos2')."
+  },
+  {
+    "line": 368,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos2')."
+  },
+  {
     "line": 368,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos2"
+  },
+  {
+    "line": 369,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos3')."
+  },
+  {
+    "line": 369,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos3')."
   },
   {
     "line": 369,
@@ -2867,12 +4717,22 @@
   {
     "line": 370,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos4')."
+  },
+  {
+    "line": 370,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 370,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 370,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos4')."
   },
   {
     "line": 370,
@@ -2882,12 +4742,22 @@
   {
     "line": 371,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos5')."
+  },
+  {
+    "line": 371,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 371,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 371,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos5')."
   },
   {
     "line": 371,
@@ -2901,8 +4771,28 @@
   },
   {
     "line": 372,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos6')."
+  },
+  {
+    "line": 372,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos6')."
+  },
+  {
+    "line": 372,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos6"
+  },
+  {
+    "line": 373,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos7')."
+  },
+  {
+    "line": 373,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos7')."
   },
   {
     "line": 373,
@@ -2911,13 +4801,43 @@
   },
   {
     "line": 377,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos8')."
+  },
+  {
+    "line": 377,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos8')."
+  },
+  {
+    "line": 377,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos8"
   },
   {
     "line": 378,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos9')."
+  },
+  {
+    "line": 378,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos9')."
+  },
+  {
+    "line": 378,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos9"
+  },
+  {
+    "line": 379,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_pos10')."
+  },
+  {
+    "line": 379,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos10')."
   },
   {
     "line": 379,
@@ -2931,6 +4851,16 @@
   },
   {
     "line": 380,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_neg1')."
+  },
+  {
+    "line": 380,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg1')."
+  },
+  {
+    "line": 380,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg1"
   },
@@ -2938,6 +4868,16 @@
     "line": 381,
     "severity": "Error",
     "message": "Built-in function 'jsonpathremove' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 381,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_neg2')."
+  },
+  {
+    "line": 381,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg2')."
   },
   {
     "line": 381,
@@ -2961,8 +4901,28 @@
   },
   {
     "line": 382,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_neg3')."
+  },
+  {
+    "line": 382,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg3')."
+  },
+  {
+    "line": 382,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg3"
+  },
+  {
+    "line": 383,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_neg4')."
+  },
+  {
+    "line": 383,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg4')."
   },
   {
     "line": 383,
@@ -2981,8 +4941,23 @@
   },
   {
     "line": 384,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg5')."
+  },
+  {
+    "line": 384,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg5"
+  },
+  {
+    "line": 385,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_neg6')."
+  },
+  {
+    "line": 385,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg6')."
   },
   {
     "line": 385,
@@ -3001,6 +4976,16 @@
   },
   {
     "line": 387,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_neg8')."
+  },
+  {
+    "line": 387,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg8')."
+  },
+  {
+    "line": 387,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg8"
   },
@@ -3012,7 +4997,17 @@
   {
     "line": 388,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathremove_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathremove_neg9')."
+  },
+  {
+    "line": 388,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 388,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg9')."
   },
   {
     "line": 388,
@@ -3021,8 +5016,18 @@
   },
   {
     "line": 389,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathremove_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg10')."
+  },
+  {
+    "line": 389,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg10"
+  },
+  {
+    "line": 391,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos1')."
   },
   {
     "line": 391,
@@ -3030,9 +5035,29 @@
     "message": "Unused variable: val_jsonpathgetsingle_pos1"
   },
   {
+    "line": 392,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathgetsingle_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathgetsingle_arg_0')."
+  },
+  {
+    "line": 393,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathgetsingle_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathgetsingle_arg_1')."
+  },
+  {
+    "line": 394,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos2')."
+  },
+  {
     "line": 394,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos2"
+  },
+  {
+    "line": 395,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos3')."
   },
   {
     "line": 395,
@@ -3056,6 +5081,11 @@
   },
   {
     "line": 396,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos4')."
+  },
+  {
+    "line": 396,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos4"
   },
@@ -3071,6 +5101,11 @@
   },
   {
     "line": 397,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos5')."
+  },
+  {
+    "line": 397,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos5"
   },
@@ -3081,8 +5116,18 @@
   },
   {
     "line": 398,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos6')."
+  },
+  {
+    "line": 398,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos6"
+  },
+  {
+    "line": 399,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos7')."
   },
   {
     "line": 399,
@@ -3091,13 +5136,28 @@
   },
   {
     "line": 403,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos8')."
+  },
+  {
+    "line": 403,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos8"
   },
   {
     "line": 404,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos9')."
+  },
+  {
+    "line": 404,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos9"
+  },
+  {
+    "line": 405,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos10')."
   },
   {
     "line": 405,
@@ -3111,8 +5171,18 @@
   },
   {
     "line": 406,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg1')."
+  },
+  {
+    "line": 406,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg1"
+  },
+  {
+    "line": 407,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg2')."
   },
   {
     "line": 407,
@@ -3136,8 +5206,18 @@
   },
   {
     "line": 408,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg3')."
+  },
+  {
+    "line": 408,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg3"
+  },
+  {
+    "line": 409,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg4')."
   },
   {
     "line": 409,
@@ -3156,8 +5236,18 @@
   },
   {
     "line": 410,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg5')."
+  },
+  {
+    "line": 410,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg5"
+  },
+  {
+    "line": 411,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg6')."
   },
   {
     "line": 411,
@@ -3176,6 +5266,11 @@
   },
   {
     "line": 413,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg8')."
+  },
+  {
+    "line": 413,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg8"
   },
@@ -3191,8 +5286,18 @@
   },
   {
     "line": 414,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg9')."
+  },
+  {
+    "line": 414,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg9"
+  },
+  {
+    "line": 415,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetsingle_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg10')."
   },
   {
     "line": 415,
@@ -3201,13 +5306,33 @@
   },
   {
     "line": 417,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos1')."
+  },
+  {
+    "line": 417,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_pos1"
+  },
+  {
+    "line": 418,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsoncopy_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsoncopy_arg_0')."
+  },
+  {
+    "line": 419,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos2')."
   },
   {
     "line": 419,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_pos2"
+  },
+  {
+    "line": 420,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos3')."
   },
   {
     "line": 420,
@@ -3231,6 +5356,11 @@
   },
   {
     "line": 421,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos4')."
+  },
+  {
+    "line": 421,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_pos4"
   },
@@ -3246,8 +5376,18 @@
   },
   {
     "line": 422,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos5')."
+  },
+  {
+    "line": 422,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_pos5"
+  },
+  {
+    "line": 423,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos6')."
   },
   {
     "line": 423,
@@ -3256,8 +5396,18 @@
   },
   {
     "line": 424,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos7')."
+  },
+  {
+    "line": 424,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_pos7"
+  },
+  {
+    "line": 427,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos8')."
   },
   {
     "line": 427,
@@ -3266,8 +5416,18 @@
   },
   {
     "line": 428,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos9')."
+  },
+  {
+    "line": 428,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_pos9"
+  },
+  {
+    "line": 429,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_pos10')."
   },
   {
     "line": 429,
@@ -3281,6 +5441,11 @@
   },
   {
     "line": 430,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg1')."
+  },
+  {
+    "line": 430,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_neg1"
   },
@@ -3288,6 +5453,11 @@
     "line": 431,
     "severity": "Error",
     "message": "Built-in function 'jsoncopy' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 431,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg2')."
   },
   {
     "line": 431,
@@ -3301,8 +5471,18 @@
   },
   {
     "line": 432,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg3')."
+  },
+  {
+    "line": 432,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_neg3"
+  },
+  {
+    "line": 433,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg4')."
   },
   {
     "line": 433,
@@ -3321,8 +5501,18 @@
   },
   {
     "line": 434,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg5')."
+  },
+  {
+    "line": 434,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_neg5"
+  },
+  {
+    "line": 435,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg6')."
   },
   {
     "line": 435,
@@ -3346,6 +5536,11 @@
   },
   {
     "line": 437,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg8')."
+  },
+  {
+    "line": 437,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_neg8"
   },
@@ -3366,8 +5561,18 @@
   },
   {
     "line": 438,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg9')."
+  },
+  {
+    "line": 438,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_neg9"
+  },
+  {
+    "line": 439,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsoncopy_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg10')."
   },
   {
     "line": 439,
@@ -3376,13 +5581,53 @@
   },
   {
     "line": 441,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 441,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos1')."
+  },
+  {
+    "line": 441,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_pos1"
+  },
+  {
+    "line": 442,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'var_jsonarraycopy_arg_0' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 442,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarraycopy_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarraycopy_arg_0')."
+  },
+  {
+    "line": 443,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 443,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos2')."
   },
   {
     "line": 443,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_pos2"
+  },
+  {
+    "line": 444,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 444,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos3')."
   },
   {
     "line": 444,
@@ -3397,12 +5642,22 @@
   {
     "line": 445,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 445,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 445,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 445,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos4')."
   },
   {
     "line": 445,
@@ -3412,6 +5667,11 @@
   {
     "line": 446,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 446,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
@@ -3421,8 +5681,23 @@
   },
   {
     "line": 446,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos5')."
+  },
+  {
+    "line": 446,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_pos5"
+  },
+  {
+    "line": 447,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 447,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos6')."
   },
   {
     "line": 447,
@@ -3431,8 +5706,28 @@
   },
   {
     "line": 448,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 448,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos7')."
+  },
+  {
+    "line": 448,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_pos7"
+  },
+  {
+    "line": 451,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 451,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos8')."
   },
   {
     "line": 451,
@@ -3441,8 +5736,28 @@
   },
   {
     "line": 452,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 452,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos9')."
+  },
+  {
+    "line": 452,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_pos9"
+  },
+  {
+    "line": 453,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 453,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_pos10')."
   },
   {
     "line": 453,
@@ -3456,6 +5771,16 @@
   },
   {
     "line": 454,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 454,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg1')."
+  },
+  {
+    "line": 454,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_neg1"
   },
@@ -3463,6 +5788,16 @@
     "line": 455,
     "severity": "Error",
     "message": "Built-in function 'jsonarraycopy' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 455,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 455,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg2')."
   },
   {
     "line": 455,
@@ -3476,8 +5811,28 @@
   },
   {
     "line": 456,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 456,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg3')."
+  },
+  {
+    "line": 456,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_neg3"
+  },
+  {
+    "line": 457,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 457,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg4')."
   },
   {
     "line": 457,
@@ -3496,8 +5851,23 @@
   },
   {
     "line": 458,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg5')."
+  },
+  {
+    "line": 458,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_neg5"
+  },
+  {
+    "line": 459,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 459,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg6')."
   },
   {
     "line": 459,
@@ -3521,6 +5891,16 @@
   },
   {
     "line": 461,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 461,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg8')."
+  },
+  {
+    "line": 461,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_neg8"
   },
@@ -3537,7 +5917,17 @@
   {
     "line": 462,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonarraycopy_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 462,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 462,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg9')."
   },
   {
     "line": 462,
@@ -3546,8 +5936,23 @@
   },
   {
     "line": 463,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarraycopy_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraycopy_neg10')."
+  },
+  {
+    "line": 463,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_neg10"
+  },
+  {
+    "line": 465,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos1')."
+  },
+  {
+    "line": 465,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos1')."
   },
   {
     "line": 465,
@@ -3555,9 +5960,39 @@
     "message": "Unused variable: val_jsonpathcheck_pos1"
   },
   {
+    "line": 466,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathcheck_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathcheck_arg_0')."
+  },
+  {
+    "line": 467,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathcheck_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathcheck_arg_1')."
+  },
+  {
+    "line": 468,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos2')."
+  },
+  {
+    "line": 468,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos2')."
+  },
+  {
     "line": 468,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos2"
+  },
+  {
+    "line": 469,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos3')."
+  },
+  {
+    "line": 469,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos3')."
   },
   {
     "line": 469,
@@ -3572,12 +6007,22 @@
   {
     "line": 470,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos4')."
+  },
+  {
+    "line": 470,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 470,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 470,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos4')."
   },
   {
     "line": 470,
@@ -3587,12 +6032,22 @@
   {
     "line": 471,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos5')."
+  },
+  {
+    "line": 471,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 471,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 471,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos5')."
   },
   {
     "line": 471,
@@ -3606,8 +6061,28 @@
   },
   {
     "line": 472,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos6')."
+  },
+  {
+    "line": 472,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos6')."
+  },
+  {
+    "line": 472,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos6"
+  },
+  {
+    "line": 473,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos7')."
+  },
+  {
+    "line": 473,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos7')."
   },
   {
     "line": 473,
@@ -3616,13 +6091,43 @@
   },
   {
     "line": 477,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos8')."
+  },
+  {
+    "line": 477,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos8')."
+  },
+  {
+    "line": 477,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos8"
   },
   {
     "line": 478,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos9')."
+  },
+  {
+    "line": 478,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos9')."
+  },
+  {
+    "line": 478,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos9"
+  },
+  {
+    "line": 479,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_pos10')."
+  },
+  {
+    "line": 479,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos10')."
   },
   {
     "line": 479,
@@ -3636,6 +6141,16 @@
   },
   {
     "line": 480,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_neg1')."
+  },
+  {
+    "line": 480,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg1')."
+  },
+  {
+    "line": 480,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg1"
   },
@@ -3643,6 +6158,16 @@
     "line": 481,
     "severity": "Error",
     "message": "Built-in function 'jsonpathcheck' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 481,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_neg2')."
+  },
+  {
+    "line": 481,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg2')."
   },
   {
     "line": 481,
@@ -3666,8 +6191,28 @@
   },
   {
     "line": 482,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_neg3')."
+  },
+  {
+    "line": 482,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg3')."
+  },
+  {
+    "line": 482,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg3"
+  },
+  {
+    "line": 483,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_neg4')."
+  },
+  {
+    "line": 483,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg4')."
   },
   {
     "line": 483,
@@ -3686,8 +6231,23 @@
   },
   {
     "line": 484,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg5')."
+  },
+  {
+    "line": 484,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg5"
+  },
+  {
+    "line": 485,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_neg6')."
+  },
+  {
+    "line": 485,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg6')."
   },
   {
     "line": 485,
@@ -3706,6 +6266,16 @@
   },
   {
     "line": 487,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_neg8')."
+  },
+  {
+    "line": 487,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg8')."
+  },
+  {
+    "line": 487,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg8"
   },
@@ -3717,7 +6287,17 @@
   {
     "line": 488,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_jsonpathcheck_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_jsonpathcheck_neg9')."
+  },
+  {
+    "line": 488,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 488,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg9')."
   },
   {
     "line": 488,
@@ -3726,8 +6306,23 @@
   },
   {
     "line": 489,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathcheck_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg10')."
+  },
+  {
+    "line": 489,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg10"
+  },
+  {
+    "line": 491,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 491,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos1')."
   },
   {
     "line": 491,
@@ -3735,9 +6330,44 @@
     "message": "Unused variable: val_jsonpathset_pos1"
   },
   {
+    "line": 492,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathset_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathset_arg_0')."
+  },
+  {
+    "line": 493,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathset_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathset_arg_1')."
+  },
+  {
+    "line": 494,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathset_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathset_arg_2')."
+  },
+  {
+    "line": 495,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 495,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos2')."
+  },
+  {
     "line": 495,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos2"
+  },
+  {
+    "line": 496,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 496,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos3')."
   },
   {
     "line": 496,
@@ -3752,12 +6382,22 @@
   {
     "line": 497,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 497,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 497,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 497,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos4')."
   },
   {
     "line": 497,
@@ -3767,12 +6407,22 @@
   {
     "line": 498,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 498,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 498,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 498,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos5')."
   },
   {
     "line": 498,
@@ -3791,8 +6441,28 @@
   },
   {
     "line": 499,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 499,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos6')."
+  },
+  {
+    "line": 499,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos6"
+  },
+  {
+    "line": 500,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 500,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos7')."
   },
   {
     "line": 500,
@@ -3801,13 +6471,43 @@
   },
   {
     "line": 505,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 505,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos8')."
+  },
+  {
+    "line": 505,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos8"
   },
   {
     "line": 506,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 506,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos9')."
+  },
+  {
+    "line": 506,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos9"
+  },
+  {
+    "line": 507,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 507,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos10')."
   },
   {
     "line": 507,
@@ -3821,6 +6521,16 @@
   },
   {
     "line": 508,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 508,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg1')."
+  },
+  {
+    "line": 508,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg1"
   },
@@ -3828,6 +6538,16 @@
     "line": 509,
     "severity": "Error",
     "message": "Built-in function 'jsonpathset' expects 3 argument(s), but got 4."
+  },
+  {
+    "line": 509,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 509,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg2')."
   },
   {
     "line": 509,
@@ -3856,8 +6576,28 @@
   },
   {
     "line": 510,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 510,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg3')."
+  },
+  {
+    "line": 510,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg3"
+  },
+  {
+    "line": 511,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 511,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg4')."
   },
   {
     "line": 511,
@@ -3876,8 +6616,23 @@
   },
   {
     "line": 512,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg5')."
+  },
+  {
+    "line": 512,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg5"
+  },
+  {
+    "line": 513,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 513,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg6')."
   },
   {
     "line": 513,
@@ -3896,6 +6651,16 @@
   },
   {
     "line": 515,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 515,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg8')."
+  },
+  {
+    "line": 515,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg8"
   },
@@ -3907,7 +6672,17 @@
   {
     "line": 516,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathset_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 516,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 516,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg9')."
   },
   {
     "line": 516,
@@ -3916,8 +6691,23 @@
   },
   {
     "line": 517,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathset_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg10')."
+  },
+  {
+    "line": 517,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg10"
+  },
+  {
+    "line": 519,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 519,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos1')."
   },
   {
     "line": 519,
@@ -3925,9 +6715,39 @@
     "message": "Unused variable: val_jsonpathgetmultiple_pos1"
   },
   {
+    "line": 520,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathgetmultiple_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathgetmultiple_arg_0')."
+  },
+  {
+    "line": 521,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonpathgetmultiple_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonpathgetmultiple_arg_1')."
+  },
+  {
+    "line": 522,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 522,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos2')."
+  },
+  {
     "line": 522,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos2"
+  },
+  {
+    "line": 523,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 523,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos3')."
   },
   {
     "line": 523,
@@ -3942,12 +6762,22 @@
   {
     "line": 524,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 524,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 524,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 524,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos4')."
   },
   {
     "line": 524,
@@ -3957,12 +6787,22 @@
   {
     "line": 525,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 525,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 525,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 525,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos5')."
   },
   {
     "line": 525,
@@ -3976,8 +6816,28 @@
   },
   {
     "line": 526,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 526,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos6')."
+  },
+  {
+    "line": 526,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos6"
+  },
+  {
+    "line": 527,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 527,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos7')."
   },
   {
     "line": 527,
@@ -3986,13 +6846,43 @@
   },
   {
     "line": 531,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 531,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos8')."
+  },
+  {
+    "line": 531,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos8"
   },
   {
     "line": 532,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 532,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos9')."
+  },
+  {
+    "line": 532,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos9"
+  },
+  {
+    "line": 533,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 533,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos10')."
   },
   {
     "line": 533,
@@ -4006,6 +6896,16 @@
   },
   {
     "line": 534,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 534,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg1')."
+  },
+  {
+    "line": 534,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg1"
   },
@@ -4013,6 +6913,16 @@
     "line": 535,
     "severity": "Warning",
     "message": "Argument 3 to 'jsonpathgetmultiple' should be Boolean, but got a String value."
+  },
+  {
+    "line": 535,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 535,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg2')."
   },
   {
     "line": 535,
@@ -4036,8 +6946,28 @@
   },
   {
     "line": 536,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 536,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg3')."
+  },
+  {
+    "line": 536,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg3"
+  },
+  {
+    "line": 537,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 537,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg4')."
   },
   {
     "line": 537,
@@ -4056,8 +6986,23 @@
   },
   {
     "line": 538,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg5')."
+  },
+  {
+    "line": 538,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg5"
+  },
+  {
+    "line": 539,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 539,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg6')."
   },
   {
     "line": 539,
@@ -4076,6 +7021,16 @@
   },
   {
     "line": 541,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 541,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg8')."
+  },
+  {
+    "line": 541,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg8"
   },
@@ -4087,7 +7042,17 @@
   {
     "line": 542,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_jsonpathgetmultiple_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 542,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 542,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg9')."
   },
   {
     "line": 542,
@@ -4096,8 +7061,18 @@
   },
   {
     "line": 543,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonpathgetmultiple_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg10')."
+  },
+  {
+    "line": 543,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg10"
+  },
+  {
+    "line": 545,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos1')."
   },
   {
     "line": 545,
@@ -4105,9 +7080,29 @@
     "message": "Unused variable: val_jsonarrayrefid_pos1"
   },
   {
+    "line": 546,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'var_jsonarrayrefid_arg_0' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 546,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_jsonarrayrefid_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_jsonarrayrefid_arg_0')."
+  },
+  {
+    "line": 547,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos2')."
+  },
+  {
     "line": 547,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_pos2"
+  },
+  {
+    "line": 548,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos3')."
   },
   {
     "line": 548,
@@ -4131,6 +7126,11 @@
   },
   {
     "line": 549,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos4')."
+  },
+  {
+    "line": 549,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_pos4"
   },
@@ -4146,8 +7146,18 @@
   },
   {
     "line": 550,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos5')."
+  },
+  {
+    "line": 550,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_pos5"
+  },
+  {
+    "line": 551,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos6')."
   },
   {
     "line": 551,
@@ -4156,8 +7166,18 @@
   },
   {
     "line": 552,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos7')."
+  },
+  {
+    "line": 552,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_pos7"
+  },
+  {
+    "line": 555,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos8')."
   },
   {
     "line": 555,
@@ -4166,8 +7186,18 @@
   },
   {
     "line": 556,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos9')."
+  },
+  {
+    "line": 556,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_pos9"
+  },
+  {
+    "line": 557,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_pos10')."
   },
   {
     "line": 557,
@@ -4181,6 +7211,11 @@
   },
   {
     "line": 558,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg1')."
+  },
+  {
+    "line": 558,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_neg1"
   },
@@ -4188,6 +7223,11 @@
     "line": 559,
     "severity": "Error",
     "message": "Built-in function 'jsonarrayrefid' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 559,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg2')."
   },
   {
     "line": 559,
@@ -4201,8 +7241,18 @@
   },
   {
     "line": 560,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg3')."
+  },
+  {
+    "line": 560,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_neg3"
+  },
+  {
+    "line": 561,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg4')."
   },
   {
     "line": 561,
@@ -4221,8 +7271,18 @@
   },
   {
     "line": 562,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg5')."
+  },
+  {
+    "line": 562,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_neg5"
+  },
+  {
+    "line": 563,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg6')."
   },
   {
     "line": 563,
@@ -4246,6 +7306,11 @@
   },
   {
     "line": 565,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg8')."
+  },
+  {
+    "line": 565,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_neg8"
   },
@@ -4266,8 +7331,18 @@
   },
   {
     "line": 566,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg9')."
+  },
+  {
+    "line": 566,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_neg9"
+  },
+  {
+    "line": 567,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_jsonarrayrefid_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg10')."
   },
   {
     "line": 567,

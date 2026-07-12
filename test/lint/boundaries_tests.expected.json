@@ -41,6 +41,11 @@
   },
   {
     "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rs1' should have a 'Records' suffix (e.g. 'rs1Records')."
+  },
+  {
+    "line": 16,
     "severity": "Hint",
     "message": "Unused variable: rs1"
   },
@@ -53,6 +58,11 @@
     "line": 18,
     "severity": "Information",
     "message": "Performance Info: BMQL SELECT has no WHERE clause and will return every matching record with no limit. Add a WHERE clause if you only need a subset."
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rs2' should have a 'Records' suffix (e.g. 'rs2Records')."
   },
   {
     "line": 18,

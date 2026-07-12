@@ -1,8 +1,18 @@
 [
   {
+    "line": 6,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rsSafe' should have a 'Records' suffix (e.g. 'rsSafeRecords')."
+  },
+  {
     "line": 8,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 12,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rsUnsafe' should have a 'Records' suffix (e.g. 'rsUnsafeRecords')."
   },
   {
     "line": 13,
@@ -45,9 +55,19 @@
     "message": "Unused variable: valFltUnsafe"
   },
   {
+    "line": 30,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'partsListSafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
     "line": 32,
     "severity": "Hint",
     "message": "Unused variable: p1"
+  },
+  {
+    "line": 36,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'partsListUnsafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 37,
@@ -58,6 +78,11 @@
     "line": 37,
     "severity": "Hint",
     "message": "Unused variable: p2"
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
+    "message": "Style Warning: Dictionary variable 'dictOK' should have a 'Dict' suffix (e.g. 'dictOKDict')."
   },
   {
     "line": 41,
@@ -73,6 +98,11 @@
     "line": 43,
     "severity": "Error",
     "message": "'dict()' requires a type argument (e.g. dict(\"string\"), dict(\"integer[]\"), dict(\"anytype\")) - calling it with none will throw at runtime"
+  },
+  {
+    "line": 43,
+    "severity": "Warning",
+    "message": "Style Warning: Dictionary variable 'dictErr' should have a 'Dict' suffix (e.g. 'dictErrDict')."
   },
   {
     "line": 43,

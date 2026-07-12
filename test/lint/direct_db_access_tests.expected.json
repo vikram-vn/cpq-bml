@@ -21,6 +21,11 @@
   },
   {
     "line": 6,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'rs' should have a 'Records' suffix (e.g. 'rsRecords')."
+  },
+  {
+    "line": 6,
     "severity": "Hint",
     "message": "Unused variable: rs"
   },
@@ -51,8 +56,33 @@
   },
   {
     "line": 12,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 12,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos1')."
+  },
+  {
+    "line": 12,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos1"
+  },
+  {
+    "line": 13,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_gettabledata_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_gettabledata_arg_0')."
+  },
+  {
+    "line": 14,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_gettabledata_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_gettabledata_arg_1')."
+  },
+  {
+    "line": 15,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_gettabledata_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_gettabledata_arg_2')."
   },
   {
     "line": 16,
@@ -61,8 +91,28 @@
   },
   {
     "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 16,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos2')."
+  },
+  {
+    "line": 16,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos2"
+  },
+  {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 17,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos3')."
   },
   {
     "line": 17,
@@ -82,12 +132,22 @@
   {
     "line": 18,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 18,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 18,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos4')."
   },
   {
     "line": 18,
@@ -102,12 +162,22 @@
   {
     "line": 19,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 19,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 19,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 19,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos5')."
   },
   {
     "line": 19,
@@ -141,6 +211,16 @@
   },
   {
     "line": 20,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 20,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos6')."
+  },
+  {
+    "line": 20,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos6"
   },
@@ -148,6 +228,16 @@
     "line": 21,
     "severity": "Error",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 21,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 21,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos7')."
   },
   {
     "line": 21,
@@ -161,6 +251,16 @@
   },
   {
     "line": 26,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 26,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos8')."
+  },
+  {
+    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos8"
   },
@@ -168,6 +268,16 @@
     "line": 27,
     "severity": "Error",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 27,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos9')."
   },
   {
     "line": 27,
@@ -181,6 +291,16 @@
   },
   {
     "line": 28,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 28,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos10')."
+  },
+  {
+    "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos10"
   },
@@ -191,6 +311,16 @@
   },
   {
     "line": 29,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 29,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg1')."
+  },
+  {
+    "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg1"
   },
@@ -198,6 +328,16 @@
     "line": 30,
     "severity": "Error",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 30,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 30,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg2')."
   },
   {
     "line": 30,
@@ -226,6 +366,16 @@
   },
   {
     "line": 31,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 31,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg3')."
+  },
+  {
+    "line": 31,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg3"
   },
@@ -233,6 +383,16 @@
     "line": 32,
     "severity": "Error",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 32,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 32,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg4')."
   },
   {
     "line": 32,
@@ -256,6 +416,11 @@
   },
   {
     "line": 33,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg5')."
+  },
+  {
+    "line": 33,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg5"
   },
@@ -263,6 +428,16 @@
     "line": 34,
     "severity": "Error",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 34,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 34,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg6')."
   },
   {
     "line": 34,
@@ -286,6 +461,16 @@
   },
   {
     "line": 36,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 36,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg8')."
+  },
+  {
+    "line": 36,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg8"
   },
@@ -297,7 +482,17 @@
   {
     "line": 37,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_gettabledata_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 37,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 37,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg9')."
   },
   {
     "line": 37,
@@ -311,6 +506,11 @@
   },
   {
     "line": 38,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettabledata_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_neg10')."
+  },
+  {
+    "line": 38,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg10"
   },
@@ -321,8 +521,38 @@
   },
   {
     "line": 40,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 40,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos1')."
+  },
+  {
+    "line": 40,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos1"
+  },
+  {
+    "line": 41,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getpartsdata_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getpartsdata_arg_0')."
+  },
+  {
+    "line": 42,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getpartsdata_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getpartsdata_arg_1')."
+  },
+  {
+    "line": 43,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getpartsdata_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getpartsdata_arg_2')."
+  },
+  {
+    "line": 44,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getpartsdata_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getpartsdata_arg_3')."
   },
   {
     "line": 45,
@@ -331,8 +561,28 @@
   },
   {
     "line": 45,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 45,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos2')."
+  },
+  {
+    "line": 45,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos2"
+  },
+  {
+    "line": 46,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 46,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos3')."
   },
   {
     "line": 46,
@@ -352,12 +602,22 @@
   {
     "line": 47,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 47,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 47,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 47,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos4')."
   },
   {
     "line": 47,
@@ -372,12 +632,22 @@
   {
     "line": 48,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 48,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 48,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 48,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos5')."
   },
   {
     "line": 48,
@@ -411,6 +681,16 @@
   },
   {
     "line": 49,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 49,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos6')."
+  },
+  {
+    "line": 49,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos6"
   },
@@ -418,6 +698,16 @@
     "line": 50,
     "severity": "Error",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 50,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 50,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos7')."
   },
   {
     "line": 50,
@@ -431,6 +721,16 @@
   },
   {
     "line": 56,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 56,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos8')."
+  },
+  {
+    "line": 56,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos8"
   },
@@ -438,6 +738,16 @@
     "line": 57,
     "severity": "Error",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos9')."
   },
   {
     "line": 57,
@@ -451,6 +761,16 @@
   },
   {
     "line": 58,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 58,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos10')."
+  },
+  {
+    "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos10"
   },
@@ -461,6 +781,16 @@
   },
   {
     "line": 59,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 59,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg1')."
+  },
+  {
+    "line": 59,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg1"
   },
@@ -468,6 +798,16 @@
     "line": 60,
     "severity": "Error",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 60,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 60,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg2')."
   },
   {
     "line": 60,
@@ -501,6 +841,16 @@
   },
   {
     "line": 61,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 61,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg3')."
+  },
+  {
+    "line": 61,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg3"
   },
@@ -508,6 +858,16 @@
     "line": 62,
     "severity": "Error",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 62,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 62,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg4')."
   },
   {
     "line": 62,
@@ -531,6 +891,11 @@
   },
   {
     "line": 63,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg5')."
+  },
+  {
+    "line": 63,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg5"
   },
@@ -538,6 +903,16 @@
     "line": 64,
     "severity": "Error",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 64,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 64,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg6')."
   },
   {
     "line": 64,
@@ -561,6 +936,16 @@
   },
   {
     "line": 66,
+    "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 66,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg8')."
+  },
+  {
+    "line": 66,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg8"
   },
@@ -572,7 +957,17 @@
   {
     "line": 67,
     "severity": "Warning",
+    "message": "Style Warning: Array variable 'val_getpartsdata_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg9')."
   },
   {
     "line": 67,
@@ -583,6 +978,11 @@
     "line": 68,
     "severity": "Error",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
+  },
+  {
+    "line": 68,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getpartsdata_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_neg10')."
   },
   {
     "line": 68,
@@ -606,6 +1006,16 @@
   },
   {
     "line": 70,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos1')."
+  },
+  {
+    "line": 70,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos1')."
+  },
+  {
+    "line": 70,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_pos1"
   },
@@ -623,6 +1033,26 @@
     "line": 71,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 71,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'var_haserror_arg_0' should have a 'Records' suffix (e.g. 'var_haserror_arg_0Records')."
+  },
+  {
+    "line": 71,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_haserror_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_haserror_arg_0')."
+  },
+  {
+    "line": 72,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos2')."
+  },
+  {
+    "line": 72,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos2')."
   },
   {
     "line": 72,
@@ -643,6 +1073,16 @@
     "line": 73,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 73,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos3')."
+  },
+  {
+    "line": 73,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos3')."
   },
   {
     "line": 73,
@@ -672,12 +1112,22 @@
   {
     "line": 74,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos4')."
+  },
+  {
+    "line": 74,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 74,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 74,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos4')."
   },
   {
     "line": 74,
@@ -707,12 +1157,22 @@
   {
     "line": 75,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos5')."
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 75,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos5')."
   },
   {
     "line": 75,
@@ -736,8 +1196,28 @@
   },
   {
     "line": 76,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos6')."
+  },
+  {
+    "line": 76,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos6')."
+  },
+  {
+    "line": 76,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_pos6"
+  },
+  {
+    "line": 77,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos7')."
+  },
+  {
+    "line": 77,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos7')."
   },
   {
     "line": 77,
@@ -776,6 +1256,16 @@
   },
   {
     "line": 80,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos8')."
+  },
+  {
+    "line": 80,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos8')."
+  },
+  {
+    "line": 80,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_pos8"
   },
@@ -793,6 +1283,16 @@
     "line": 81,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 81,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos9')."
+  },
+  {
+    "line": 81,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos9')."
   },
   {
     "line": 81,
@@ -816,6 +1316,16 @@
   },
   {
     "line": 82,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos10')."
+  },
+  {
+    "line": 82,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_pos10')."
+  },
+  {
+    "line": 82,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_pos10"
   },
@@ -823,6 +1333,16 @@
     "line": 83,
     "severity": "Error",
     "message": "Built-in function 'haserror' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 83,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_neg1')."
+  },
+  {
+    "line": 83,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg1')."
   },
   {
     "line": 83,
@@ -851,6 +1371,16 @@
   },
   {
     "line": 84,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_neg2')."
+  },
+  {
+    "line": 84,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg2')."
+  },
+  {
+    "line": 84,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_neg2"
   },
@@ -858,6 +1388,16 @@
     "line": 85,
     "severity": "Warning",
     "message": "Argument 1 to 'haserror' should be RecordSet, but got a String value."
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_neg3')."
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg3')."
   },
   {
     "line": 85,
@@ -878,6 +1418,16 @@
     "line": 86,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 86,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_neg4')."
+  },
+  {
+    "line": 86,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg4')."
   },
   {
     "line": 86,
@@ -911,8 +1461,23 @@
   },
   {
     "line": 87,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg5')."
+  },
+  {
+    "line": 87,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_neg5"
+  },
+  {
+    "line": 88,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_neg6')."
+  },
+  {
+    "line": 88,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg6')."
   },
   {
     "line": 88,
@@ -951,6 +1516,16 @@
   },
   {
     "line": 90,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_neg8')."
+  },
+  {
+    "line": 90,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg8')."
+  },
+  {
+    "line": 90,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_neg8"
   },
@@ -967,7 +1542,17 @@
   {
     "line": 91,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_haserror_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_neg9')."
+  },
+  {
+    "line": 91,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 91,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg9')."
   },
   {
     "line": 91,
@@ -991,6 +1576,11 @@
   },
   {
     "line": 92,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_haserror_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_haserror_neg10')."
+  },
+  {
+    "line": 92,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_neg10"
   },
@@ -1008,6 +1598,11 @@
     "line": 94,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos1')."
   },
   {
     "line": 94,
@@ -1030,6 +1625,21 @@
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
   },
   {
+    "line": 95,
+    "severity": "Warning",
+    "message": "Style Warning: RecordSet variable 'var_getmessage_arg_0' should have a 'Records' suffix (e.g. 'var_getmessage_arg_0Records')."
+  },
+  {
+    "line": 95,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getmessage_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getmessage_arg_0')."
+  },
+  {
+    "line": 96,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos2')."
+  },
+  {
     "line": 96,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_pos2"
@@ -1048,6 +1658,11 @@
     "line": 97,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 97,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos3')."
   },
   {
     "line": 97,
@@ -1086,6 +1701,11 @@
   },
   {
     "line": 98,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos4')."
+  },
+  {
+    "line": 98,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_pos4"
   },
@@ -1121,6 +1741,11 @@
   },
   {
     "line": 99,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos5')."
+  },
+  {
+    "line": 99,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_pos5"
   },
@@ -1141,8 +1766,18 @@
   },
   {
     "line": 100,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos6')."
+  },
+  {
+    "line": 100,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_pos6"
+  },
+  {
+    "line": 101,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos7')."
   },
   {
     "line": 101,
@@ -1181,6 +1816,11 @@
   },
   {
     "line": 104,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos8')."
+  },
+  {
+    "line": 104,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_pos8"
   },
@@ -1198,6 +1838,11 @@
     "line": 105,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 105,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos9')."
   },
   {
     "line": 105,
@@ -1221,6 +1866,11 @@
   },
   {
     "line": 106,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos10')."
+  },
+  {
+    "line": 106,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_pos10"
   },
@@ -1228,6 +1878,11 @@
     "line": 107,
     "severity": "Error",
     "message": "Built-in function 'getmessage' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 107,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg1')."
   },
   {
     "line": 107,
@@ -1256,6 +1911,11 @@
   },
   {
     "line": 108,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg2')."
+  },
+  {
+    "line": 108,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_neg2"
   },
@@ -1263,6 +1923,11 @@
     "line": 109,
     "severity": "Warning",
     "message": "Argument 1 to 'getmessage' should be RecordSet, but got a String value."
+  },
+  {
+    "line": 109,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg3')."
   },
   {
     "line": 109,
@@ -1283,6 +1948,11 @@
     "line": 110,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 110,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg4')."
   },
   {
     "line": 110,
@@ -1316,8 +1986,18 @@
   },
   {
     "line": 111,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg5')."
+  },
+  {
+    "line": 111,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_neg5"
+  },
+  {
+    "line": 112,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg6')."
   },
   {
     "line": 112,
@@ -1356,6 +2036,11 @@
   },
   {
     "line": 114,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg8')."
+  },
+  {
+    "line": 114,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_neg8"
   },
@@ -1373,6 +2058,11 @@
     "line": 115,
     "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 115,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg9')."
   },
   {
     "line": 115,
@@ -1396,6 +2086,11 @@
   },
   {
     "line": 116,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getmessage_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_neg10')."
+  },
+  {
+    "line": 116,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_neg10"
   },
@@ -1406,8 +2101,28 @@
   },
   {
     "line": 118,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos1')."
+  },
+  {
+    "line": 118,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos1"
+  },
+  {
+    "line": 119,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getint_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getint_arg_0')."
+  },
+  {
+    "line": 120,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getint_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getint_arg_1')."
+  },
+  {
+    "line": 121,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos2')."
   },
   {
     "line": 121,
@@ -1418,6 +2133,11 @@
     "line": 122,
     "severity": "Warning",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 122,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos3')."
   },
   {
     "line": 122,
@@ -1446,6 +2166,11 @@
   },
   {
     "line": 123,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos4')."
+  },
+  {
+    "line": 123,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos4"
   },
@@ -1466,6 +2191,11 @@
   },
   {
     "line": 124,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos5')."
+  },
+  {
+    "line": 124,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos5"
   },
@@ -1481,6 +2211,11 @@
   },
   {
     "line": 125,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos6')."
+  },
+  {
+    "line": 125,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos6"
   },
@@ -1488,6 +2223,11 @@
     "line": 126,
     "severity": "Warning",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 126,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos7')."
   },
   {
     "line": 126,
@@ -1501,6 +2241,11 @@
   },
   {
     "line": 130,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos8')."
+  },
+  {
+    "line": 130,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos8"
   },
@@ -1508,6 +2253,11 @@
     "line": 131,
     "severity": "Warning",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 131,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos9')."
   },
   {
     "line": 131,
@@ -1521,6 +2271,11 @@
   },
   {
     "line": 132,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos10')."
+  },
+  {
+    "line": 132,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos10"
   },
@@ -1531,6 +2286,11 @@
   },
   {
     "line": 133,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg1')."
+  },
+  {
+    "line": 133,
     "severity": "Hint",
     "message": "Unused variable: val_getint_neg1"
   },
@@ -1538,6 +2298,11 @@
     "line": 134,
     "severity": "Error",
     "message": "Built-in function 'getint' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 134,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg2')."
   },
   {
     "line": 134,
@@ -1566,6 +2331,11 @@
   },
   {
     "line": 135,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg3')."
+  },
+  {
+    "line": 135,
     "severity": "Hint",
     "message": "Unused variable: val_getint_neg3"
   },
@@ -1573,6 +2343,11 @@
     "line": 136,
     "severity": "Warning",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 136,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg4')."
   },
   {
     "line": 136,
@@ -1591,6 +2366,11 @@
   },
   {
     "line": 137,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg5')."
+  },
+  {
+    "line": 137,
     "severity": "Hint",
     "message": "Unused variable: val_getint_neg5"
   },
@@ -1598,6 +2378,11 @@
     "line": 138,
     "severity": "Warning",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 138,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg6')."
   },
   {
     "line": 138,
@@ -1621,6 +2406,11 @@
   },
   {
     "line": 140,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg8')."
+  },
+  {
+    "line": 140,
     "severity": "Hint",
     "message": "Unused variable: val_getint_neg8"
   },
@@ -1636,8 +2426,18 @@
   },
   {
     "line": 141,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg9')."
+  },
+  {
+    "line": 141,
     "severity": "Hint",
     "message": "Unused variable: val_getint_neg9"
+  },
+  {
+    "line": 142,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getint_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg10')."
   },
   {
     "line": 142,
@@ -1651,8 +2451,28 @@
   },
   {
     "line": 144,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos1')."
+  },
+  {
+    "line": 144,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos1"
+  },
+  {
+    "line": 145,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getfloat_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getfloat_arg_0')."
+  },
+  {
+    "line": 146,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getfloat_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getfloat_arg_1')."
+  },
+  {
+    "line": 147,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos2')."
   },
   {
     "line": 147,
@@ -1663,6 +2483,11 @@
     "line": 148,
     "severity": "Warning",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 148,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos3')."
   },
   {
     "line": 148,
@@ -1691,6 +2516,11 @@
   },
   {
     "line": 149,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos4')."
+  },
+  {
+    "line": 149,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos4"
   },
@@ -1711,6 +2541,11 @@
   },
   {
     "line": 150,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos5')."
+  },
+  {
+    "line": 150,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos5"
   },
@@ -1726,6 +2561,11 @@
   },
   {
     "line": 151,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos6')."
+  },
+  {
+    "line": 151,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos6"
   },
@@ -1733,6 +2573,11 @@
     "line": 152,
     "severity": "Warning",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 152,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos7')."
   },
   {
     "line": 152,
@@ -1746,6 +2591,11 @@
   },
   {
     "line": 156,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos8')."
+  },
+  {
+    "line": 156,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos8"
   },
@@ -1753,6 +2603,11 @@
     "line": 157,
     "severity": "Warning",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 157,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos9')."
   },
   {
     "line": 157,
@@ -1766,6 +2621,11 @@
   },
   {
     "line": 158,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos10')."
+  },
+  {
+    "line": 158,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos10"
   },
@@ -1776,6 +2636,11 @@
   },
   {
     "line": 159,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg1')."
+  },
+  {
+    "line": 159,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_neg1"
   },
@@ -1783,6 +2648,11 @@
     "line": 160,
     "severity": "Error",
     "message": "Built-in function 'getfloat' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 160,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg2')."
   },
   {
     "line": 160,
@@ -1811,6 +2681,11 @@
   },
   {
     "line": 161,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg3')."
+  },
+  {
+    "line": 161,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_neg3"
   },
@@ -1818,6 +2693,11 @@
     "line": 162,
     "severity": "Warning",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 162,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg4')."
   },
   {
     "line": 162,
@@ -1836,6 +2716,11 @@
   },
   {
     "line": 163,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg5')."
+  },
+  {
+    "line": 163,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_neg5"
   },
@@ -1843,6 +2728,11 @@
     "line": 164,
     "severity": "Warning",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 164,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg6')."
   },
   {
     "line": 164,
@@ -1866,6 +2756,11 @@
   },
   {
     "line": 166,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg8')."
+  },
+  {
+    "line": 166,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_neg8"
   },
@@ -1881,8 +2776,18 @@
   },
   {
     "line": 167,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg9')."
+  },
+  {
+    "line": 167,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_neg9"
+  },
+  {
+    "line": 168,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getfloat_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg10')."
   },
   {
     "line": 168,
@@ -1896,8 +2801,38 @@
   },
   {
     "line": 170,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos1')."
+  },
+  {
+    "line": 170,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos1')."
+  },
+  {
+    "line": 170,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos1"
+  },
+  {
+    "line": 171,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getboolean_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getboolean_arg_0')."
+  },
+  {
+    "line": 172,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_getboolean_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_getboolean_arg_1')."
+  },
+  {
+    "line": 173,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos2')."
+  },
+  {
+    "line": 173,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos2')."
   },
   {
     "line": 173,
@@ -1908,6 +2843,16 @@
     "line": 174,
     "severity": "Warning",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 174,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos3')."
+  },
+  {
+    "line": 174,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos3')."
   },
   {
     "line": 174,
@@ -1927,12 +2872,22 @@
   {
     "line": 175,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos4')."
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 175,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 175,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos4')."
   },
   {
     "line": 175,
@@ -1947,12 +2902,22 @@
   {
     "line": 176,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos5')."
+  },
+  {
+    "line": 176,
+    "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
     "line": 176,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 176,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos5')."
   },
   {
     "line": 176,
@@ -1971,6 +2936,16 @@
   },
   {
     "line": 177,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos6')."
+  },
+  {
+    "line": 177,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos6')."
+  },
+  {
+    "line": 177,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos6"
   },
@@ -1978,6 +2953,16 @@
     "line": 178,
     "severity": "Warning",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 178,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos7')."
+  },
+  {
+    "line": 178,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos7')."
   },
   {
     "line": 178,
@@ -1991,6 +2976,16 @@
   },
   {
     "line": 182,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos8')."
+  },
+  {
+    "line": 182,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos8')."
+  },
+  {
+    "line": 182,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos8"
   },
@@ -1998,6 +2993,16 @@
     "line": 183,
     "severity": "Warning",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 183,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos9')."
+  },
+  {
+    "line": 183,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos9')."
   },
   {
     "line": 183,
@@ -2011,6 +3016,16 @@
   },
   {
     "line": 184,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos10')."
+  },
+  {
+    "line": 184,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos10')."
+  },
+  {
+    "line": 184,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos10"
   },
@@ -2021,6 +3036,16 @@
   },
   {
     "line": 185,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_neg1')."
+  },
+  {
+    "line": 185,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg1')."
+  },
+  {
+    "line": 185,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_neg1"
   },
@@ -2028,6 +3053,16 @@
     "line": 186,
     "severity": "Error",
     "message": "Built-in function 'getboolean' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 186,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_neg2')."
+  },
+  {
+    "line": 186,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg2')."
   },
   {
     "line": 186,
@@ -2056,6 +3091,16 @@
   },
   {
     "line": 187,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_neg3')."
+  },
+  {
+    "line": 187,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg3')."
+  },
+  {
+    "line": 187,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_neg3"
   },
@@ -2063,6 +3108,16 @@
     "line": 188,
     "severity": "Warning",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_neg4')."
+  },
+  {
+    "line": 188,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg4')."
   },
   {
     "line": 188,
@@ -2081,6 +3136,11 @@
   },
   {
     "line": 189,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg5')."
+  },
+  {
+    "line": 189,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_neg5"
   },
@@ -2088,6 +3148,16 @@
     "line": 190,
     "severity": "Warning",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 190,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_neg6')."
+  },
+  {
+    "line": 190,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg6')."
   },
   {
     "line": 190,
@@ -2111,6 +3181,16 @@
   },
   {
     "line": 192,
+    "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_neg8')."
+  },
+  {
+    "line": 192,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg8')."
+  },
+  {
+    "line": 192,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_neg8"
   },
@@ -2122,12 +3202,27 @@
   {
     "line": 193,
     "severity": "Warning",
+    "message": "Style Warning: Boolean variable 'val_getboolean_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_neg9')."
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 193,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg9')."
   },
   {
     "line": 193,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_neg9"
+  },
+  {
+    "line": 194,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_getboolean_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg10')."
   },
   {
     "line": 194,
@@ -2141,8 +3236,23 @@
   },
   {
     "line": 196,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos1')."
+  },
+  {
+    "line": 196,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_pos1"
+  },
+  {
+    "line": 197,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'var_gettransaction_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_gettransaction_arg_0')."
+  },
+  {
+    "line": 198,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos2')."
   },
   {
     "line": 198,
@@ -2153,6 +3263,11 @@
     "line": 199,
     "severity": "Warning",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 199,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos3')."
   },
   {
     "line": 199,
@@ -2181,6 +3296,11 @@
   },
   {
     "line": 200,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos4')."
+  },
+  {
+    "line": 200,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_pos4"
   },
@@ -2201,6 +3321,11 @@
   },
   {
     "line": 201,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos5')."
+  },
+  {
+    "line": 201,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_pos5"
   },
@@ -2208,6 +3333,11 @@
     "line": 202,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 202,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos6')."
   },
   {
     "line": 202,
@@ -2221,6 +3351,11 @@
   },
   {
     "line": 203,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos7')."
+  },
+  {
+    "line": 203,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_pos7"
   },
@@ -2228,6 +3363,11 @@
     "line": 206,
     "severity": "Warning",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 206,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos8')."
   },
   {
     "line": 206,
@@ -2241,6 +3381,11 @@
   },
   {
     "line": 207,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos9')."
+  },
+  {
+    "line": 207,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_pos9"
   },
@@ -2251,6 +3396,11 @@
   },
   {
     "line": 208,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos10')."
+  },
+  {
+    "line": 208,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_pos10"
   },
@@ -2258,6 +3408,11 @@
     "line": 209,
     "severity": "Error",
     "message": "Built-in function 'gettransaction' expects 1 to 3 argument(s), but got 0."
+  },
+  {
+    "line": 209,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg1')."
   },
   {
     "line": 209,
@@ -2276,6 +3431,11 @@
   },
   {
     "line": 210,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg2')."
+  },
+  {
+    "line": 210,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg2"
   },
@@ -2286,6 +3446,11 @@
   },
   {
     "line": 211,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg3')."
+  },
+  {
+    "line": 211,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg3"
   },
@@ -2293,6 +3458,11 @@
     "line": 212,
     "severity": "Warning",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 212,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg4')."
   },
   {
     "line": 212,
@@ -2311,8 +3481,18 @@
   },
   {
     "line": 213,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg5')."
+  },
+  {
+    "line": 213,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg5"
+  },
+  {
+    "line": 214,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg6')."
   },
   {
     "line": 214,
@@ -2336,6 +3516,11 @@
   },
   {
     "line": 216,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg8')."
+  },
+  {
+    "line": 216,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg8"
   },
@@ -2356,8 +3541,18 @@
   },
   {
     "line": 217,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg9')."
+  },
+  {
+    "line": 217,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg9"
+  },
+  {
+    "line": 218,
+    "severity": "Warning",
+    "message": "Style Warning: Variable 'val_gettransaction_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_neg10')."
   },
   {
     "line": 218,
