@@ -53,15 +53,13 @@ function activate(context) {
   );
   context.subscriptions.push(workspaceCmd);
 
-  setImmediate(() => {
-    registerBmlRest(context);
-    registerSettingsPanel(context);
-    registerMcp(context);
-    registerXslt(context);
-    registerMetrics(context);
-    registerBmlTestRunner(context);
-    registerBmlSnapshot(context);
-  });
+  registerBmlRest(context);
+  registerSettingsPanel(context);
+  registerMcp(context);
+  registerXslt(context);
+  registerMetrics(context);
+  registerBmlTestRunner(context);
+  registerBmlSnapshot(context);
 }
 
 function deactivate() {}
