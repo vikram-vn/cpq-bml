@@ -4,6 +4,22 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.27.0] - 2026-07-12
+
+### Added
+- Add custom SVG icons and implement MCP server configuration integration tests.
+- Replace built-in VS Code icons with custom SVG assets for extension commands.
+- Add UI icons and implement a BML linter performance profiling harness.
+- Add UI icons to BML commands, expose log download in navigation, and update lint performance profile.
+- Add linting engine and comprehensive unit test coverage for BML code analysis.
+- Implement BML linting engine with performance, spell-checking, and best-practices analysis modules.
+- Implement BML linting rules and automated AI skill synchronization, and bump version to 1.26.0.
+- Add BML linting rules and AI skill synchronization, and bump version to 1.25.0.
+- Implement linting rules for URL access, XML parsing, and BMQL safety with associated test suites.
+- Implement linting rules for logtime, globaldictset, generatehmacmessage, and stringbuilder functions.
+- Implement automatic AI skill synchronization for Claude, Cursor, and Copilot tools.
+- Implement automated AI skill synchronization for Claude, Cursor, and Copilot via native project configuration files.
+
 ## [1.26.0] - 2026-07-09
 
 ### Added
@@ -70,8 +86,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement MCP tools for BML lifecycle management, including AI-copy isolation, validation, deployment, and debug execution.
 - Implement MCP tools for BML lifecycle management, including file operations, deployments, and overrides.
 - Implement MCP tools for local BML knowledge, including function explanation, diffing, searching, and linting.
-
-## [1.17.2] - 2026-07-07
-
-### Changed
-- MCP server error fix.
