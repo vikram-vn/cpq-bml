@@ -1,5 +1,6 @@
 const config = require("../rest/config");
 const { writePassword, writeAuthToken } = require("../rest/commands/secrets");
+const { autoSetupAiSkills } = require("../../ai/setup");
 const {
   applyEnvironment,
   addEnvironment,
@@ -85,7 +86,6 @@ async function dispatch(message, context, vscode, panel) {
       const isAiSkillsToggleChange = key.startsWith("mcp.aiSkills.") &&
         vscode.workspace.getConfiguration(CPQ_SECTION).get("mcp.enable", false);
       if (isInitialMcpEnable || isAiSkillsToggleChange) {
-        const { autoSetupAiSkills } = require("../../ai/setup");
         await autoSetupAiSkills(context);
       }
 

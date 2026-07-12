@@ -1,6 +1,9 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
+const { runDebugCurrentFile } = require('../rest/commands');
+const { createToolVscodeContext, createCapturingTerminal } = require('../mcp/proxy');
+const { getAiTerminal } = require('../mcp/aiTerminal');
 
 /**
  * BML Unit Test Runner
@@ -64,11 +67,6 @@ async function runBmlTests(context, vscode) {
     channel.appendLine(`${'─'.repeat(60)}`);
     channel.appendLine(`Found ${testCases.length} test case(s)\n`);
 
-    // Lazy-load the debug command to avoid circular deps
-    const { runDebugCurrentFile } = require('../rest/commands');
-    const { createToolVscodeContext, createCapturingTerminal } = require('../mcp/proxy');
-    const { getAiTerminal } = require('../mcp/aiTerminal');
-
     let passed = 0, failed = 0;
     const start = Date.now();
 
@@ -122,7 +120,6 @@ async function runBmlTests(context, vscode) {
 }
 
 function registerBmlTestRunner(context) {
-    const vscode = require('vscode');
     const runCmd = vscode.commands.registerCommand('cpqBml.test.runTests', () => runBmlTests(context, vscode));
     context.subscriptions.push(runCmd);
 }

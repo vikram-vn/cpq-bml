@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const api = require('../../rest/api');
 const { findOrCreateAiCopy } = require('../locate');
 const { lintBMLCustom } = require('../../lint/lint');
 const { computeComplexity } = require('../../metrics/complexity');
@@ -116,7 +117,6 @@ async function diffFunction(context, vscode, args) {
     // Fetch remote content
     let remoteText;
     try {
-        const api = require('../../rest/api');
         const cfg = vscode.workspace.getConfiguration('cpqBml');
         const baseUrl = cfg.get('connection.siteUrl', '');
         if (!baseUrl) return { success: false, error: 'No CPQ site URL configured.' };

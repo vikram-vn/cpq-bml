@@ -1,7 +1,22 @@
+const vscode = require('vscode');
+const pathLib = require('path');
+const fs = require('fs');
 const { startMcpServer, stopMcpServer, getMcpServerStatus } = require('./server');
 
+function logMcpServerEvent(message) {
+    try {
+        if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+            const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+            const mcpLogsDir = pathLib.join(workspaceRoot, 'logs', 'mcp-logs');
+            fs.mkdirSync(mcpLogsDir, { recursive: true });
+            const mcpLogPath = pathLib.join(mcpLogsDir, 'mcp.log');
+            const timestamp = new Date().toISOString();
+            fs.appendFileSync(mcpLogPath, `[${timestamp}] [Server] ${message}\n`);
+        }
+    } catch (e) {}
+}
+
 function registerMcp(context) {
-    const vscode = require('vscode');
 
     const getSettings = () => {
         const cfg = vscode.workspace.getConfiguration('cpqBml');
@@ -16,14 +31,19 @@ function registerMcp(context) {
         if (!enable) return { started: false, reason: 'cpqBml.mcp.enable is false' };
         try {
             const result = await startMcpServer(context, vscode, port);
+            logMcpServerEvent(`MCP server started on port ${result.port}`);
             return { started: true, port: result.port };
         } catch (err) {
             console.error("MCP SERVER START ERROR:", err);
+            logMcpServerEvent(`MCP server failed to start: ${err && err.message ? err.message : String(err)}`);
             return { started: false, reason: err && err.message ? err.message : String(err) };
         }
     };
 
-    context.subscriptions.push({ dispose: stopMcpServer });
+    context.subscriptions.push({ dispose: () => {
+        stopMcpServer();
+        logMcpServerEvent("MCP server stopped");
+    }});
 
     // Auto-start on activation if the user has already opted in.
     ensureStarted();
@@ -35,10 +55,12 @@ function registerMcp(context) {
         if (!enable) {
             if (status.running) {
                 stopMcpServer();
+                logMcpServerEvent("MCP server stopped via configuration change");
             }
         } else {
             if (status.running && status.port !== port) {
                 stopMcpServer();
+                logMcpServerEvent("MCP server stopped for port reconfiguration");
                 await ensureStarted();
             } else if (!status.running) {
                 await ensureStarted();

@@ -1,3 +1,4 @@
+const vscode = require("vscode");
 const { createSettingsPanel } = require("./panel");
 const { getHtml } = require("./html");
 const { handleMessage } = require("./messageHandler");
@@ -16,8 +17,6 @@ function shouldAutoOpenOnInstall(context) {
 }
 
 function registerSettingsPanel(context) {
-  const vscode = require("vscode");
-
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.settings.open", (args) =>
       openPanel(context, vscode, args),

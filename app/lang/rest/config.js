@@ -1,3 +1,7 @@
+const fs = require("fs");
+const pathLib = require("path");
+const { request } = require("./client");
+
 const DEFAULT_REST_VERSION = 'v18';
 const DEFAULT_DOMAIN_SUFFIX = '.bigmachines.com';
 
@@ -38,14 +42,16 @@ function getSettings(vscode) {
     };
 }
 
-// Returns null when cpqBml.debug.logOutputToFile is off or no workspace folder is open.
 function getDebugOutputLogPath(vscode) {
     const { logOutputToFile } = getSettings(vscode);
     if (!logOutputToFile) return null;
     const folders = vscode.workspace.workspaceFolders;
     if (!folders || folders.length === 0) return null;
-    const pathLib = require('path');
-    return pathLib.join(folders[0].uri.fsPath, 'bml_debug_output.log');
+    const logsDir = pathLib.join(folders[0].uri.fsPath, 'logs', 'transaction-debug-logs');
+    try {
+        fs.mkdirSync(logsDir, { recursive: true });
+    } catch (e) {}
+    return pathLib.join(logsDir, 'bml_debug_output.log');
 }
 
 function getDebugPrintLogPath(vscode) {
@@ -53,8 +59,11 @@ function getDebugPrintLogPath(vscode) {
     if (!logOutputToFile) return null;
     const folders = vscode.workspace.workspaceFolders;
     if (!folders || folders.length === 0) return null;
-    const pathLib = require('path');
-    return pathLib.join(folders[0].uri.fsPath, 'bml_debug_print.log');
+    const logsDir = pathLib.join(folders[0].uri.fsPath, 'logs', 'transaction-debug-logs');
+    try {
+        fs.mkdirSync(logsDir, { recursive: true });
+    } catch (e) {}
+    return pathLib.join(logsDir, 'bml_debug_print.log');
 }
 
 function getBaseUrl(vscode) {
@@ -166,7 +175,6 @@ async function runTestConnection(context, vscode, transport) {
 
     try {
         const version = getRestVersion(vscode);
-        const { request } = require('./client');
         const { statusCode, body } = await request({
             baseUrl: normalizeSiteUrl(siteUrl),
             path: `/rest/${version}/currentUser`,

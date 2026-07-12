@@ -1,3 +1,5 @@
+const vscode = require("vscode");
+const { getResultsTerminal } = require("../terminal");
 const { runSetPassword, runSetAuthToken } = require("./secrets");
 const { runPullLibraryFunctions, runPullCommerceFunctions } = require("./pull");
 const { runValidateCurrentFile } = require("./validate");
@@ -147,9 +149,6 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
 }
 
 function registerBmlRestCommands(context) {
-  const vscode = require("vscode");
-  const { getResultsTerminal } = require("../terminal");
-
   const diagnosticCollection =
     vscode.languages.createDiagnosticCollection("rest-validate");
   context.subscriptions.push(diagnosticCollection);

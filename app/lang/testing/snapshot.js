@@ -1,6 +1,9 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
+const { runDebugCurrentFile } = require('../rest/commands');
+const { createToolVscodeContext, createCapturingTerminal } = require('../mcp/proxy');
+const { getAiTerminal } = require('../mcp/aiTerminal');
 
 /**
  * BML Snapshot Testing
@@ -49,10 +52,6 @@ async function updateSnapshot(context, vscode) {
     }
 
     // Run the function
-    const { runDebugCurrentFile } = require('../rest/commands');
-    const { createToolVscodeContext, createCapturingTerminal } = require('../mcp/proxy');
-    const { getAiTerminal } = require('../mcp/aiTerminal');
-
     const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     await runDebugCurrentFile(context, vscodeProxy, terminal, { parameters: params });
@@ -94,10 +93,6 @@ async function compareSnapshot(context, vscode, diagnosticCollection) {
         return;
     }
 
-    const { runDebugCurrentFile } = require('../rest/commands');
-    const { createToolVscodeContext, createCapturingTerminal } = require('../mcp/proxy');
-    const { getAiTerminal } = require('../mcp/aiTerminal');
-
     const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     await runDebugCurrentFile(context, vscodeProxy, terminal, { parameters: snap.params || {} });
@@ -123,7 +118,6 @@ async function compareSnapshot(context, vscode, diagnosticCollection) {
 }
 
 function registerBmlSnapshot(context) {
-    const vscode = require('vscode');
     const snapshotDiagnostics = vscode.languages.createDiagnosticCollection('bml-snapshot');
     context.subscriptions.push(snapshotDiagnostics);
 

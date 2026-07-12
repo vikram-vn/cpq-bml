@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { keywords: reservedWords, loadBuiltInFunctions } = require('./functions');
 const { loadSystemVariables } = require('./systemVariables');
 
@@ -11,7 +12,6 @@ function isCommerceFunction(metadata) {
 function readLocalMetadataForGating(bmlFilePath) {
     if (!bmlFilePath) return null;
     try {
-        const fs = require('fs');
         const metaPath = bmlFilePath.replace(/\.bml$/i, '-meta.json');
         if (!fs.existsSync(metaPath)) return null;
         return JSON.parse(fs.readFileSync(metaPath, 'utf8'));

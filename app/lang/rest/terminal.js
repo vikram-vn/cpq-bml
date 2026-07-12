@@ -1,4 +1,5 @@
 // Read-only Pseudoterminal — unlike Terminal#sendText(), it never executes its output as shell input.
+const { normalizeSiteUrl } = require('./config');
 function createResultsTerminal(vscode, name) {
     const writeEmitter = new vscode.EventEmitter();
     const pty = {
@@ -34,7 +35,6 @@ function getActiveEnvironmentName(vscode) {
         const username = (config.get('connection.username', '') || '').trim().toLowerCase();
         const authMethod = config.get('connection.authMethod', 'basic');
 
-        const { normalizeSiteUrl } = require('./config');
         const normalizedActiveSite = normalizeSiteUrl(siteUrl).toLowerCase();
 
         const environments = config.get('connection.environments', []) || [];

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const pathLib = require('path');
 const api = require('../api');
 const config = require('../config');
 const metadataLib = require('../metadata');
@@ -204,7 +205,6 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
                 const pullFolder = config.getSettings(vscode).pullFolder || 'library';
 
                 let createdMetadata = {};
-                const pathLib = require('path');
                 let finalBmlPath = '';
 
                 if (typePick.id === 'util') {

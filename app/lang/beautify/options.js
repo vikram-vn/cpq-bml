@@ -1,14 +1,14 @@
 // options.js
-module.exports = async function optionsProvider(document, formattingOptions) {
-    let vscode = null;
+const fs = require('fs');
+const path = require('path');
+let vscode = null;
 try {
   vscode = require('vscode');
 } catch (e) {
   // Running outside VS Code – ignore
 }
 
-    const fs = require('fs');
-    const path = require('path');
+module.exports = async function optionsProvider(document, formattingOptions) {
     // Load workspace config if present
     let workspaceConfig = {};
     let config = {

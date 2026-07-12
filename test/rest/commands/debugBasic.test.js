@@ -256,8 +256,8 @@ suite("BML REST commands - debug (util functions)", () => {
         };
 
         const fs = require("fs");
-        const outputLog = path.join(tmpDir, "bml_debug_output.log");
-        const printLog = path.join(tmpDir, "bml_debug_print.log");
+        const outputLog = path.join(tmpDir, "logs", "transaction-debug-logs", "bml_debug_output.log");
+        const printLog = path.join(tmpDir, "logs", "transaction-debug-logs", "bml_debug_print.log");
 
         const vscode = createFakeVscode({
           config: baseVscodeConfig({ "debug.logOutputToFile": true }),
@@ -333,8 +333,8 @@ suite("BML REST commands - debug (util functions)", () => {
         };
 
         const fs = require("fs");
-        const outputLog = path.join(tmpDir, "bml_debug_output.log");
-        const printLog = path.join(tmpDir, "bml_debug_print.log");
+        const outputLog = path.join(tmpDir, "logs", "transaction-debug-logs", "bml_debug_output.log");
+        const printLog = path.join(tmpDir, "logs", "transaction-debug-logs", "bml_debug_print.log");
 
         const vscode = createFakeVscode({
           config: baseVscodeConfig(), // logOutputToFile defaults to false

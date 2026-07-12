@@ -36,19 +36,22 @@ async function runDownloadLogFile(context, vscode, transport) {
         filePath = customPath.trim();
     }
 
-    // 3. Prompt for saving the file
-    let defaultDir = os.homedir();
-    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
-        defaultDir = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    // 3. Determine workspace directory and target log path
+    if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length === 0) {
+        vscode.window.showErrorMessage("CPQ-BML: No workspace folder open. Cannot download logs.");
+        return;
+    }
+    const workspaceRoot = vscode.workspace.workspaceFolders[0].uri;
+    const systemLogsUri = vscode.Uri.joinPath(workspaceRoot, "logs", "system-logs");
+
+    try {
+        await vscode.workspace.fs.createDirectory(systemLogsUri);
+    } catch (err) {
+        // ignore
     }
 
-    const defaultUri = vscode.Uri.file(path.join(defaultDir, filePath));
-    const saveUri = await vscode.window.showSaveDialog({
-        defaultUri,
-        filters: { "Log Files": ["log"], "All Files": ["*"] },
-        title: `Save ${filePath} As`
-    });
-    if (!saveUri) return;
+    const filename = path.basename(filePath);
+    const saveUri = vscode.Uri.joinPath(systemLogsUri, filename);
 
     // 4. Download the log file
     const siteUrl = configLib.getBaseUrl(vscode);

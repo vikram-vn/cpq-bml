@@ -8,7 +8,7 @@ const { baseVscodeConfig, makeContext, withTempDir } = require("./fixtures");
 suite("BML REST commands - download logs", () => {
   test("successfully downloads bm.log and saves/opens it", () =>
     withTempDir(async (tmpDir) => {
-      const tempFilePath = path.join(tmpDir, "downloaded_bm.log");
+      const tempFilePath = path.join(tmpDir, "logs", "system-logs", "bm.log");
       const prompts = [];
       const vscode = createFakeVscode({
         config: baseVscodeConfig(),
@@ -19,11 +19,14 @@ suite("BML REST commands - download logs", () => {
           showInformationMessage: (msg) => prompts.push(msg),
           withProgress: async (options, task) => task(),
         },
+        workspaceFolders: [{ uri: { fsPath: tmpDir, scheme: "file" } }],
       });
       vscode.ProgressLocation = { Notification: 15 };
 
       vscode.workspace.fs = {
+        createDirectory: async () => {},
         writeFile: async (uri, data) => {
+          fs.mkdirSync(path.dirname(uri.fsPath), { recursive: true });
           fs.writeFileSync(uri.fsPath, data);
         },
       };
@@ -33,6 +36,7 @@ suite("BML REST commands - download logs", () => {
       };
       vscode.Uri = {
         file: (p) => ({ fsPath: p, scheme: "file" }),
+        joinPath: (base, ...segments) => ({ fsPath: path.join(base.fsPath, ...segments), scheme: "file" }),
       };
 
       let transportCalled = false;
@@ -57,7 +61,7 @@ suite("BML REST commands - download logs", () => {
 
   test("supports custom log file path", () =>
     withTempDir(async (tmpDir) => {
-      const tempFilePath = path.join(tmpDir, "custom.log");
+      const tempFilePath = path.join(tmpDir, "logs", "system-logs", "server.log");
       const vscode = createFakeVscode({
         config: baseVscodeConfig(),
         window: {
@@ -68,17 +72,21 @@ suite("BML REST commands - download logs", () => {
           showInformationMessage: () => {},
           withProgress: async (options, task) => task(),
         },
+        workspaceFolders: [{ uri: { fsPath: tmpDir, scheme: "file" } }],
       });
       vscode.ProgressLocation = { Notification: 15 };
 
       vscode.workspace.fs = {
+        createDirectory: async () => {},
         writeFile: async (uri, data) => {
+          fs.mkdirSync(path.dirname(uri.fsPath), { recursive: true });
           fs.writeFileSync(uri.fsPath, data);
         },
       };
       vscode.workspace.openTextDocument = async () => ({});
       vscode.Uri = {
         file: (p) => ({ fsPath: p, scheme: "file" }),
+        joinPath: (base, ...segments) => ({ fsPath: path.join(base.fsPath, ...segments), scheme: "file" }),
       };
 
       let transportCalled = false;

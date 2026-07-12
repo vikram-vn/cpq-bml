@@ -204,7 +204,7 @@ suite(
         };
 
         const fs = require("fs");
-        const outputLog = path.join(tmpDir, "bml_debug_output.log");
+        const outputLog = path.join(tmpDir, "logs", "transaction-debug-logs", "bml_debug_output.log");
 
         const vscode = createFakeVscode({
           config: baseVscodeConfig({ "debug.logOutputToFile": true }),
@@ -255,7 +255,7 @@ suite(
         };
 
         const fs = require("fs");
-        const outputLog = path.join(tmpDir, "bml_debug_output.log");
+        const outputLog = path.join(tmpDir, "logs", "transaction-debug-logs", "bml_debug_output.log");
 
         const vscode = createFakeVscode({
           config: baseVscodeConfig({ "debug.logOutputToFile": true }), // showResultsAsTable left off

@@ -10,6 +10,7 @@ const {
     writeRunningLine,
     writeTerminalMessage,
     formatElapsed,
+    findLibraryFunctionByVariableName,
 } = require('../../rest/commands/shared');
 const { findOrCreateAiCopy } = require('../locate');
 const { getAiTerminal } = require('../aiTerminal');
@@ -88,7 +89,6 @@ async function pullFunction(context, vscode, args, transport) {
         target = { commerceProcess, commerceDocument };
     }
 
-    const { findLibraryFunctionByVariableName } = require('../../rest/commands/shared');
     const match = await findLibraryFunctionByVariableName(context, vscode, variableName, transport, target);
     if (!match) return fail(`Function "${variableName}" was not found on CPQ.`);
 

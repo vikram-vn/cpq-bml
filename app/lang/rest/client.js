@@ -1,4 +1,5 @@
 const https = require("https");
+const fs = require("fs");
 
 // Builds the path + query string for a request, e.g.
 //   buildPath('/rest/v18/bml/library/functions', { offset: 0, limit: 1000 })
@@ -77,7 +78,6 @@ async function request({
   }
 
   if (logFilePath) {
-    const fs = require("fs");
     const requestInfo = {
       url: `${baseUrl}${fullPath}`,
       method,
@@ -100,7 +100,6 @@ async function request({
   });
 
   if (logFilePath) {
-    const fs = require("fs");
     const responseInfo = {
       statusCode: response.statusCode,
       headers: redactHeadersForLog(response.headers),

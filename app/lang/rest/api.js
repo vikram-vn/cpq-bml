@@ -1,3 +1,5 @@
+const fs = require("fs");
+const pathLib = require("path");
 const { request } = require("./client");
 const { getBaseUrl, getRestVersion, getCommerceProcess, getAuthHeader, getSettings } = require("./config");
 
@@ -22,8 +24,29 @@ async function call(context, vscode, { path, method, query, body }, transport) {
   const settings = getSettings(vscode);
   let logFilePath;
   if (settings.debugLog && vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
-    const pathLib = require('path');
-    logFilePath = pathLib.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'bml_rest_api.log');
+    const logsDir = pathLib.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'logs', 'rest-api-logs');
+    try {
+      fs.mkdirSync(logsDir, { recursive: true });
+    } catch (e) {}
+    
+    let txnId = '';
+    if (body && typeof body === 'object') {
+      if (body.transactionId) txnId = String(body.transactionId);
+      else if (body.transactionID) txnId = String(body.transactionID);
+      else if (body.transactionID_t) txnId = String(body.transactionID_t);
+    }
+    if (!txnId && query && typeof query === 'object') {
+      if (query.transactionId) txnId = String(query.transactionId);
+      else if (query.transactionID) txnId = String(query.transactionID);
+      else if (query.transactionID_t) txnId = String(query.transactionID_t);
+    }
+    if (!txnId && path && typeof path === 'string') {
+      const match = path.match(/\/(?:documents|transaction(?:Setup)?s?)\/(\d+)/i);
+      if (match) txnId = match[1];
+    }
+    
+    const logFileName = txnId ? `bml_rest_api_${txnId}.log` : 'bml_rest_api.log';
+    logFilePath = pathLib.join(logsDir, logFileName);
   }
 
   return request({

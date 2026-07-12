@@ -290,7 +290,7 @@ suite("BML REST api", () => {
       const vscode = withWorkspace({ "debug.logRestDetails": true });
       try {
         await api.validateLibraryFunction(fakeContext(), vscode, { variableName: "x" }, capturingTransport({}));
-        const logPath = path.join(tmpDir, "bml_rest_api.log");
+        const logPath = path.join(tmpDir, "logs", "rest-api-logs", "bml_rest_api.log");
         assert.ok(fs.existsSync(logPath));
         assert.ok(fs.readFileSync(logPath, "utf8").includes("REQUEST:"));
       } finally {
