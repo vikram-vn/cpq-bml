@@ -99,11 +99,13 @@
       },
       {
         "command": "cpqBml.rest.pullLibraryFunctions",
-        "title": "CPQ-BML: Pull Util Library Functions from CPQ"
+        "title": "CPQ-BML: Pull Util Library Functions from CPQ",
+        "icon": "$(repo-pull)"
       },
       {
         "command": "cpqBml.rest.pullCommerceFunctions",
-        "title": "CPQ-BML: Pull Commerce Functions from CPQ"
+        "title": "CPQ-BML: Pull Commerce Functions from CPQ",
+        "icon": "$(repo-pull)"
       },
       {
         "command": "cpqBml.rest.validateCurrentFile",
@@ -147,33 +149,40 @@
       },
       {
         "command": "cpqBml.rest.deployUtilFunctions",
-        "title": "CPQ-BML: Mass Deploy Util Library Functions"
+        "title": "CPQ-BML: Mass Deploy Util Library Functions",
+        "icon": "$(rocket)"
       },
       {
         "command": "cpqBml.rest.createBmlFunction",
-        "title": "CPQ-BML: Create BML Function"
+        "title": "CPQ-BML: Create BML Function",
+        "icon": "$(new-file)"
       },
       {
         "command": "cpqBml.rest.changeEnvironment",
-        "title": "CPQ-BML: Change Environment"
+        "title": "CPQ-BML: Change Environment",
+        "icon": "$(server)"
       },
       {
         "command": "cpqBml.rest.downloadLogFile",
-        "title": "CPQ-BML: Download Log File"
+        "title": "CPQ-BML: Download Log File",
+        "icon": "$(output)"
       },
       {
         "command": "cpqBml.mcp.showInfo",
-        "title": "CPQ-BML: Show MCP Server Connection Info"
+        "title": "CPQ-BML: Show MCP Server Connection Info",
+        "icon": "$(info)"
       },
       {
         "command": "cpqBml.settings.open",
         "title": "CPQ-BML: Open Settings",
-        "category": "BML"
+        "category": "BML",
+        "icon": "$(gear)"
       },
       {
         "command": "cpqBml.beautifyWorkspace",
         "title": "CPQ-BML: Beautify / Format All BML Files in Workspace",
-        "category": "BML"
+        "category": "BML",
+        "icon": "$(paintcan)"
       },
       {
         "command": "cpqBml.xslt.preview",
@@ -212,7 +221,8 @@
       {
         "command": "cpqBml.ai.setupWorkspaceSkills",
         "title": "CPQ-BML: Setup AI Skills for Workspace",
-        "category": "BML"
+        "category": "BML",
+        "icon": "$(hubot)"
       }
     ],
     "menus": {
@@ -256,6 +266,11 @@
           "command": "cpqBml.rest.deployCurrentFile",
           "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
+        },
+        {
+          "command": "cpqBml.rest.downloadLogFile",
+          "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
+          "group": "navigation@7"
         },
         {
           "command": "cpqBml.xslt.preview",
