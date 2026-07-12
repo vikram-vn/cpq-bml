@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <!-- Left side file (original snapshot) -->
+  <rect x="2" y="2" width="5.5" height="12" rx="1" fill="url(#blueCompGrad)" stroke="#3b82f6" stroke-width="1"/>
+  <!-- Right side file (new snapshot) -->
+  <rect x="8.5" y="2" width="5.5" height="12" rx="1" fill="url(#greenCompGrad)" stroke="#10b981" stroke-width="1"/>
+  <!-- Horizontal comparison lines -->
+  <line x1="4.5" y1="8" x2="11.5" y2="8" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="blueCompGrad" x1="2" y1="2" x2="7.5" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="greenCompGrad" x1="8.5" y1="2" x2="14" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+</svg>

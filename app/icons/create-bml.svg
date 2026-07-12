@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <path d="M4 2.5C4 1.67 4.67 1 5.5 1H10L13 4V13.5C13 14.33 12.33 15 11.5 15H5.5C4.67 15 4 14.33 4 13.5V2.5Z" fill="url(#fileRedGrad)"/>
+  <path d="M10 1V4H13L10 1Z" fill="#ffcccc"/>
+  <!-- Plus symbol inside -->
+  <path d="M8.5 6.5V11.5M6 9H11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="fileRedGrad" x1="4" y1="1" x2="13" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ff2a2a"/>
+      <stop offset="100%" stop-color="#F80000"/>
+    </linearGradient>
+  </defs>
+</svg>

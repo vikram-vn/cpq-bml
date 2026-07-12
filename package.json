@@ -100,12 +100,12 @@
       {
         "command": "cpqBml.rest.pullLibraryFunctions",
         "title": "CPQ-BML: Pull Util Library Functions from CPQ",
-        "icon": "$(repo-pull)"
+        "icon": "app/icons/pull.svg"
       },
       {
         "command": "cpqBml.rest.pullCommerceFunctions",
         "title": "CPQ-BML: Pull Commerce Functions from CPQ",
-        "icon": "$(repo-pull)"
+        "icon": "app/icons/pull.svg"
       },
       {
         "command": "cpqBml.rest.validateCurrentFile",
@@ -150,17 +150,17 @@
       {
         "command": "cpqBml.rest.deployUtilFunctions",
         "title": "CPQ-BML: Mass Deploy Util Library Functions",
-        "icon": "$(rocket)"
+        "icon": "app/icons/deploy-mass.svg"
       },
       {
         "command": "cpqBml.rest.createBmlFunction",
         "title": "CPQ-BML: Create BML Function",
-        "icon": "$(new-file)"
+        "icon": "app/icons/create-bml.svg"
       },
       {
         "command": "cpqBml.rest.changeEnvironment",
         "title": "CPQ-BML: Change Environment",
-        "icon": "$(server)"
+        "icon": "app/icons/change-env.svg"
       },
       {
         "command": "cpqBml.rest.downloadLogFile",
@@ -176,53 +176,53 @@
         "command": "cpqBml.settings.open",
         "title": "CPQ-BML: Open Settings",
         "category": "BML",
-        "icon": "$(gear)"
+        "icon": "app/icons/settings.svg"
       },
       {
         "command": "cpqBml.beautifyWorkspace",
         "title": "CPQ-BML: Beautify / Format All BML Files in Workspace",
         "category": "BML",
-        "icon": "$(paintcan)"
+        "icon": "app/icons/beautify.svg"
       },
       {
         "command": "cpqBml.xslt.preview",
         "title": "CPQ-BML: Preview XSLT",
-        "icon": "$(preview)"
+        "icon": "app/icons/preview.svg"
       },
       {
         "command": "cpqBml.xslt.switchFile",
         "title": "CPQ-BML: Switch to Linked XML/XSLT File",
-        "icon": "$(arrow-swap)"
+        "icon": "app/icons/switch-file.svg"
       },
       {
         "command": "cpqBml.metrics.openReport",
         "title": "CPQ-BML: Open Code Metrics Report",
         "category": "BML",
-        "icon": "$(graph)"
+        "icon": "app/icons/metrics.svg"
       },
       {
         "command": "cpqBml.test.runTests",
         "title": "CPQ-BML: Run BML Tests",
         "category": "BML",
-        "icon": "$(beaker)"
+        "icon": "app/icons/run-tests.svg"
       },
       {
         "command": "cpqBml.test.updateSnapshot",
         "title": "CPQ-BML: Update BML Snapshot",
         "category": "BML",
-        "icon": "$(save)"
+        "icon": "app/icons/snapshot-update.svg"
       },
       {
         "command": "cpqBml.test.compareSnapshot",
         "title": "CPQ-BML: Compare BML Snapshot",
         "category": "BML",
-        "icon": "$(diff)"
+        "icon": "app/icons/snapshot-compare.svg"
       },
       {
         "command": "cpqBml.ai.setupWorkspaceSkills",
         "title": "CPQ-BML: Setup AI Skills for Workspace",
         "category": "BML",
-        "icon": "$(hubot)"
+        "icon": "app/icons/ai-setup.svg"
       }
     ],
     "menus": {

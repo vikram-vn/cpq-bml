@@ -43,8 +43,13 @@ suite('CPQ-BML End-to-End Command Registration & Flow Verification', () => {
 
     test('Showing MCP server info command handles showInfo flow without crashing', async () => {
         const originalShowErr = vscode.window.showErrorMessage;
+        const originalShowInfo = vscode.window.showInformationMessage;
         let errMsg = '';
         vscode.window.showErrorMessage = async (msg) => {
+            errMsg = msg;
+            return undefined;
+        };
+        vscode.window.showInformationMessage = async (msg) => {
             errMsg = msg;
             return undefined;
         };
@@ -54,6 +59,7 @@ suite('CPQ-BML End-to-End Command Registration & Flow Verification', () => {
             assert.ok(errMsg.includes('MCP server is not running') || errMsg.includes('running at'), 'Expected MCP status message');
         } finally {
             vscode.window.showErrorMessage = originalShowErr;
+            vscode.window.showInformationMessage = originalShowInfo;
         }
     });
 });

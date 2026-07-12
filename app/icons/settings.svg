@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <circle cx="8" cy="8" r="3.2" fill="url(#gearGrad)" stroke="#475569" stroke-width="1"/>
+  <!-- Gear teeth -->
+  <path d="M8 2V4M8 12V14M2 8H4M12 8H14M3.75 3.75L5.17 5.17M10.83 10.83L12.25 12.25M3.75 12.25L5.17 10.83M10.83 5.17L12.25 3.75" stroke="#475569" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="8" cy="8" r="1.5" fill="#ffffff"/>
+  <defs>
+    <linearGradient id="gearGrad" x1="2" y1="2" x2="14" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+  </defs>
+</svg>

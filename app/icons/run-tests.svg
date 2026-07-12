@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <!-- Beaker outline -->
+  <path d="M6 2H10M7 2V5.5L3.5 12C2.8 13.5 3.8 15 5.5 15H10.5C12.2 15 13.2 13.5 12.5 12L9 5.5V2" stroke="#475569" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Liquid inside -->
+  <path d="M4.6 12C4.3 12.5 4.8 13.5 5.5 13.5H10.5C11.2 13.5 11.7 12.5 11.4 12L9.5 8.5H6.5L4.6 12Z" fill="url(#purpleTestGrad)"/>
+  <!-- Bubbles -->
+  <circle cx="8" cy="10" r="0.8" fill="#c084fc"/>
+  <circle cx="6.5" cy="11.5" r="1.2" fill="#c084fc"/>
+  <circle cx="9.5" cy="11" r="1" fill="#c084fc"/>
+  <defs>
+    <linearGradient id="purpleTestGrad" x1="5.5" y1="8.5" x2="10.5" y2="13.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+</svg>

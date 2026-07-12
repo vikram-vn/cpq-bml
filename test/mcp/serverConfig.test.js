@@ -21,6 +21,7 @@ suite("MCP Server Config Reactivity Integration", () => {
             const result = await startMcpServer(null, vscode, port);
             return { started: true, port: result.port };
         } catch (err) {
+            console.error("TEST ENSURE STARTED ERROR:", err);
             return { started: false, reason: err && err.message ? err.message : String(err) };
         }
     };
@@ -63,13 +64,19 @@ suite("MCP Server Config Reactivity Integration", () => {
       await new Promise(resolve => setTimeout(resolve, 500));
 
       await config.update("mcp.enable", true, vscode.ConfigurationTarget.Global);
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      for (let i = 0; i < 50; i++) {
+        if (getMcpServerStatus().running) break;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
 
       const statusEnabled = getMcpServerStatus();
       assert.strictEqual(statusEnabled.running, true, "Server should have started automatically when enabled");
 
       await config.update("mcp.enable", false, vscode.ConfigurationTarget.Global);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      for (let i = 0; i < 50; i++) {
+        if (!getMcpServerStatus().running) break;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
 
       const statusDisabled = getMcpServerStatus();
       assert.strictEqual(statusDisabled.running, false, "Server should have stopped automatically when disabled");

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <rect x="2" y="4" width="12" height="9" rx="1.5" fill="url(#camGrad)" stroke="#475569" stroke-width="1"/>
+  <path d="M5 4L6 2H10L11 4H5Z" fill="#475569"/>
+  <circle cx="8" cy="8.5" r="2.5" fill="#ffffff" stroke="#475569" stroke-width="1"/>
+  <circle cx="8" cy="8.5" r="1" fill="#3b82f6"/>
+  <defs>
+    <linearGradient id="camGrad" x1="2" y1="4" x2="14" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+</svg>
