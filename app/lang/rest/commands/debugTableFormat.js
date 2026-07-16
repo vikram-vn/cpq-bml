@@ -126,20 +126,28 @@ function parseDocAttributeDump(text) {
   const header = [];
   const lineRows = new Map();
   let matched = 0;
-
   for (const seg of segments) {
     const firstTilde = seg.indexOf('~');
-    const secondTilde = firstTilde === -1 ? -1 : seg.indexOf('~', firstTilde + 1);
-    if (firstTilde === -1 || secondTilde === -1) continue;
+    if (firstTilde === -1) continue;
 
-    const docNumStr = seg.slice(0, firstTilde);
+    const docNumStr = seg.slice(0, firstTilde).trim();
     if (!/^\d+$/.test(docNumStr)) continue;
 
-    const variableName = seg.slice(firstTilde + 1, secondTilde);
-    const value = seg.slice(secondTilde + 1);
+    const docNum = parseInt(docNumStr, 10);
+    const secondTilde = seg.indexOf('~', firstTilde + 1);
+
+    let variableName;
+    let value;
+
+    if (secondTilde === -1) {
+      variableName = 'value';
+      value = seg.slice(firstTilde + 1).trim();
+    } else {
+      variableName = seg.slice(firstTilde + 1, secondTilde).trim();
+      value = seg.slice(secondTilde + 1).trim();
+    }
     matched++;
 
-    const docNum = parseInt(docNumStr, 10);
     if (docNum === 1) {
       header.push({ variableName, value });
     } else {

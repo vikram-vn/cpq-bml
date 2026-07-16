@@ -28,11 +28,32 @@ suite("BML REST commands - debug - parseDocAttributeDump", () => {
     assert.deepStrictEqual(result.header, [{ variableName: "note", value: "a~b~c" }]);
   });
 
-  test("ignores malformed segments (missing a second ~ or a non-numeric prefix)", () => {
+  test("ignores malformed segments (no tilde at all or a non-numeric prefix)", () => {
     const dump = "1~customerName~Acme|garbage|notanumber~x~y";
     const result = parseDocAttributeDump(dump);
     assert.deepStrictEqual(result.header, [{ variableName: "customerName", value: "Acme" }]);
     assert.deepStrictEqual(result.lines, []);
+  });
+
+  test("parses single-tilde segments as documentNumber~value format with variableName defaulted to 'value'", () => {
+    const dump = "2~100.0|3~150.0|1~HeaderValue";
+    const result = parseDocAttributeDump(dump);
+    assert.deepStrictEqual(result.header, [
+      { variableName: "value", value: "HeaderValue" }
+    ]);
+    assert.deepStrictEqual(result.lines, [
+      { documentNumber: 2, value: "100.0" },
+      { documentNumber: 3, value: "150.0" }
+    ]);
+  });
+
+  test("handles spaces around the first tilde and document number", () => {
+    const dump = " 2 ~ qty ~ 10 | 3 ~ 200.0 ";
+    const result = parseDocAttributeDump(dump);
+    assert.deepStrictEqual(result.lines, [
+      { documentNumber: 2, qty: "10" },
+      { documentNumber: 3, value: "200.0" }
+    ]);
   });
 
   test("returns null for plain text with no ~ at all", () => {
