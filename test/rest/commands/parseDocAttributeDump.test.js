@@ -38,12 +38,21 @@ suite("BML REST commands - debug - parseDocAttributeDump", () => {
   test("parses single-tilde segments as documentNumber~value format with variableName defaulted to 'value'", () => {
     const dump = "2~100.0|3~150.0|1~HeaderValue";
     const result = parseDocAttributeDump(dump);
-    assert.deepStrictEqual(result.header, [
-      { variableName: "value", value: "HeaderValue" }
-    ]);
+    assert.deepStrictEqual(result.header, []);
     assert.deepStrictEqual(result.lines, [
+      { documentNumber: 1, value: "HeaderValue" },
       { documentNumber: 2, value: "100.0" },
       { documentNumber: 3, value: "150.0" }
+    ]);
+  });
+
+  test("groups documentNumber 1 segment into lines if its variableName matches a line item attribute", () => {
+    const dump = "1~qty~10|2~qty~5";
+    const result = parseDocAttributeDump(dump);
+    assert.deepStrictEqual(result.header, []);
+    assert.deepStrictEqual(result.lines, [
+      { documentNumber: 1, qty: "10" },
+      { documentNumber: 2, qty: "5" }
     ]);
   });
 

@@ -123,9 +123,10 @@ function parseDocAttributeDump(text) {
   const segments = text.split('|').map((s) => s.trim()).filter(Boolean);
   if (segments.length === 0) return null;
 
-  const header = [];
-  const lineRows = new Map();
+  const parsedSegments = [];
+  const lineVariables = new Set();
   let matched = 0;
+
   for (const seg of segments) {
     const firstTilde = seg.indexOf('~');
     if (firstTilde === -1) continue;
@@ -146,17 +147,28 @@ function parseDocAttributeDump(text) {
       variableName = seg.slice(firstTilde + 1, secondTilde).trim();
       value = seg.slice(secondTilde + 1).trim();
     }
-    matched++;
 
-    if (docNum === 1) {
-      header.push({ variableName, value });
-    } else {
-      if (!lineRows.has(docNum)) lineRows.set(docNum, { documentNumber: docNum });
-      lineRows.get(docNum)[variableName] = value;
+    matched++;
+    parsedSegments.push({ docNum, variableName, value });
+
+    if (docNum > 1 || variableName === 'value') {
+      lineVariables.add(variableName);
     }
   }
 
   if (matched === 0) return null;
+
+  const header = [];
+  const lineRows = new Map();
+
+  for (const { docNum, variableName, value } of parsedSegments) {
+    if (docNum > 1 || lineVariables.has(variableName)) {
+      if (!lineRows.has(docNum)) lineRows.set(docNum, { documentNumber: docNum });
+      lineRows.get(docNum)[variableName] = value;
+    } else {
+      header.push({ variableName, value });
+    }
+  }
 
   const lines = Array.from(lineRows.keys())
     .sort((a, b) => a - b)
