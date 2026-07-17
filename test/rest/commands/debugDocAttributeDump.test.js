@@ -13,7 +13,7 @@ const {
 suite(
   "BML REST commands - debug - documentNumber~variableName~value terminal tables",
   () => {
-    test("renders a dump as separate header/line tables even when  is off (default)", () =>
+    test("renders a dump as separate header/line tables when showResultsAsTable is on", () =>
       withTempDir(async (tmpDir) => {
         const bmlPath = path.join(tmpDir, "concatString.bml");
         metadataLib.writeMetadata(
@@ -28,9 +28,10 @@ suite(
           },
         };
 
-        //  deliberately left at its default (off) - the dump-table
-        // rendering must not depend on it; only the generic JSON-object table does.
+        // Dump-table rendering is gated behind showResultsAsTable, same as the generic
+        // JSON-object table - must be explicitly enabled to see either as a table.
         const config = baseVscodeConfig();
+        config["debug.showResultsAsTable"] = true;
 
         const vscode = createFakeVscode({
           config,
@@ -83,6 +84,57 @@ suite(
         assert.ok(lines.some((l) => l.includes("Price") && l.includes("price") && l.includes("99.99") && l.includes("49.99")));
       }));
 
+    test("renders a dump as raw plain text (no tables) when showResultsAsTable is off (default)", () =>
+      withTempDir(async (tmpDir) => {
+        const bmlPath = path.join(tmpDir, "concatString.bml");
+        metadataLib.writeMetadata(
+          metadataLib.bmlPathToMetaPath(bmlPath),
+          metadataLib.splitFunctionResponse(SAMPLE_FUNCTION).metadata,
+        );
+        const editor = {
+          document: {
+            languageId: "bml",
+            uri: { fsPath: bmlPath },
+            getText: () => SAMPLE_FUNCTION.scriptText,
+          },
+        };
+
+        const config = baseVscodeConfig(); // showResultsAsTable left at its default (off)
+
+        const vscode = createFakeVscode({
+          config,
+          window: {
+            activeTextEditor: editor,
+            showInputBox: async () => "value",
+          },
+        });
+
+        const lines = [];
+        const resultsTerminal = {
+          writeLine: (l) => lines.push(l),
+          show: () => {},
+        };
+
+        const dump =
+          "1~customerName~Acme|1~customerId~12345|3~qty~5|3~price~49.99|2~qty~10|2~price~99.99";
+        const transport = async () => ({
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ returnData: dump }),
+        });
+
+        await commands.runDebugCurrentFile(
+          makeContext(),
+          vscode,
+          resultsTerminal,
+          { transport },
+        );
+
+        assert.ok(!lines.some((l) => l.includes("Header Attributes:")));
+        assert.ok(!lines.some((l) => l.includes("Line Attributes:")));
+        assert.ok(lines.some((l) => l.includes(dump)), "should print the raw dump string instead");
+      }));
+
     test("falls back to plain text when returnData doesn't match the dump format", () =>
       withTempDir(async (tmpDir) => {
         const bmlPath = path.join(tmpDir, "concatString.bml");
@@ -133,7 +185,7 @@ suite(
         assert.ok(lines.some((l) => l.includes("just a plain string result")));
       }));
 
-    test("plain JSON object returnData is still NOT table-formatted when  is off (default) - only the dump format bypasses that setting", () =>
+    test("plain JSON object returnData is NOT table-formatted when showResultsAsTable is off (default)", () =>
       withTempDir(async (tmpDir) => {
         const bmlPath = path.join(tmpDir, "concatString.bml");
         metadataLib.writeMetadata(
@@ -148,7 +200,7 @@ suite(
           },
         };
 
-        const config = baseVscodeConfig(); //  left at its default (off)
+        const config = baseVscodeConfig(); // showResultsAsTable left at its default (off)
         const vscode = createFakeVscode({
           config,
           window: {
@@ -207,7 +259,7 @@ suite(
         const outputLog = path.join(tmpDir, "logs", "transaction-debug-logs", "bml_debug_output.log");
 
         const vscode = createFakeVscode({
-          config: baseVscodeConfig({ "debug.logOutputToFile": true }),
+          config: baseVscodeConfig({ "debug.logOutputToFile": true, "debug.showResultsAsTable": true }),
           window: {
             activeTextEditor: editor,
             showInputBox: async () => "value",

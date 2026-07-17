@@ -241,6 +241,12 @@ async function runDebugCurrentFile(
       metadata.mainDocAttributes = loadedData.mainDocAttributes;
     if (loadedData.subDocAttributes)
       metadata.subDocAttributes = loadedData.subDocAttributes;
+    // subDocAttributes only carries attribute names; the actual per-line values live here,
+    // one array per transactionLine row. Without it the script iterates zero line items.
+    if (loadedData.subDocAttributesData)
+      metadata.subDocAttributesData = loadedData.subDocAttributesData;
+    if (loadedData.contextParams)
+      metadata.contextParams = loadedData.contextParams;
   }
 
   const payload = metadataLib.buildDebugPayload(
@@ -303,16 +309,17 @@ async function runDebugCurrentFile(
   const returnVal = body && body.returnData;
   let tableOutput = null;
   let dumpTables = null;
+  const showAsTable = configLib.getShowDebugResultsAsTable(vscode);
 
-  // Unlike the generic JSON-object table below (opt-in via showResultsAsTable, since it could
-  // reformat output the user didn't want touched), a documentNumber~variableName~value dump is
-  // an unambiguous, specific pattern - it renders as two tables unconditionally whenever detected.
-  if (typeof returnVal === 'string') {
+  // Gated behind the same showResultsAsTable setting as the generic JSON-object table below -
+  // table rendering is opt-in, so a documentNumber~variableName~value dump only renders as two
+  // tables when the user has turned the setting on; otherwise it falls through to plain output.
+  if (showAsTable && typeof returnVal === 'string') {
     const parsedDump = parseDocAttributeDump(returnVal);
     if (parsedDump) dumpTables = formatDocAttributeDumpTables(parsedDump);
   }
 
-  if (!dumpTables && configLib.getShowDebugResultsAsTable(vscode) && returnVal !== undefined && returnVal !== null && returnVal !== "") {
+  if (!dumpTables && showAsTable && returnVal !== undefined && returnVal !== null && returnVal !== "") {
     try {
       let parsed = null;
       if (typeof returnVal === 'string') {

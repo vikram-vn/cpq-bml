@@ -206,6 +206,10 @@ function buildFunctionPayload(metadata, scriptText) {
         if (metadata.systemAttributes !== undefined) payload.systemAttributes = normalizeAttributes(metadata.systemAttributes);
         if (metadata.mainDocAttributes !== undefined) payload.mainDocAttributes = normalizeAttributes(metadata.mainDocAttributes);
         if (metadata.subDocAttributes !== undefined) payload.subDocAttributes = normalizeAttributes(metadata.subDocAttributes);
+        // Per-line-item values (one array per transactionLine row) - subDocAttributes above is
+        // only the attribute name schema. Without this the debug endpoint runs with zero line data.
+        if (metadata.subDocAttributesData !== undefined) payload.subDocAttributesData = metadata.subDocAttributesData;
+        if (metadata.contextParams !== undefined) payload.contextParams = metadata.contextParams;
     } else {
         payload.testScript = metadata.testScript || '';
         payload.libraryFunctions = normalizeLibraryFunctions(metadata.libraryFunctions);

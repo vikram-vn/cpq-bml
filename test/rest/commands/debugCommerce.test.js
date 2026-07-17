@@ -55,7 +55,12 @@ suite("BML REST commands - debug (commerce functions)", () => {
               text: JSON.stringify({
                 systemAttributes: [{ name: "stage", value: "approved" }],
                 mainDocAttributes: [{ name: "price", value: 100.0 }],
-                subDocAttributes: [{ name: "quantity", value: 5 }]
+                subDocAttributes: [{ name: "quantity", value: 5 }],
+                subDocAttributesData: [
+                  [{ name: "_document_number", value: "1" }, { name: "quantity", value: 3 }],
+                  [{ name: "_document_number", value: "2" }, { name: "quantity", value: 7 }],
+                ],
+                contextParams: "pricebook=_default_price_book,language=en,currency=USD",
               }),
             };
           }
@@ -95,6 +100,14 @@ suite("BML REST commands - debug (commerce functions)", () => {
         assert.deepStrictEqual(debugBody.systemAttributes, [{ name: "stage", value: "approved" }]);
         assert.deepStrictEqual(debugBody.mainDocAttributes, [{ name: "price", value: 100.0 }]);
         assert.deepStrictEqual(debugBody.subDocAttributes, [{ name: "quantity", value: 5 }]);
+        // subDocAttributes only carries the attribute name schema; the actual per-line values
+        // returned by loadTransactionData must be forwarded to the debug call as subDocAttributesData,
+        // and the transaction's resolved contextParams (pricebook/language/currency) must come along too.
+        assert.deepStrictEqual(debugBody.subDocAttributesData, [
+          [{ name: "_document_number", value: "1" }, { name: "quantity", value: 3 }],
+          [{ name: "_document_number", value: "2" }, { name: "quantity", value: 7 }],
+        ]);
+        assert.strictEqual(debugBody.contextParams, "pricebook=_default_price_book,language=en,currency=USD");
 
         assert.ok(lines.some((l) => l.includes("hello world")));
       }));
