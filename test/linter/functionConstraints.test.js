@@ -30,6 +30,15 @@ suite('BML Linter Test Suite - documented per-function constraints', () => {
             assert.strictEqual(diag, undefined);
         });
 
+        test('Flags jNaN() when invoked as a function call instead of a constant', () => {
+            const diagnostics = lintText(`
+                x = jNaN();
+                return x;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-jnan-function-call');
+            assert.ok(diag, 'Should flag jNaN() function call');
+        });
+
         test('Does not flag a variable used as the array size', () => {
             const diagnostics = lintText(`
                 arr = float[n];

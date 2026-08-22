@@ -19,6 +19,22 @@ function checkMath(cleanText, noStringsText, doc) {
         ));
     }
 
+    // jNaN is a constant, not a function - check for jNaN(...) calls
+    const jnanCallRegex = /\bjNaN\s*\(/g;
+    while ((match = jnanCallRegex.exec(cleanText)) !== null) {
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        const endOffset = closeParenIndex !== -1 ? closeParenIndex + 1 : match.index + match[0].length;
+        const startPos = doc.positionAt(match.index);
+        const endPos = doc.positionAt(endOffset);
+        diagnostics.push(makeDiagnostic(
+            new vscode.Range(startPos, endPos),
+            "Error: 'jNaN' is a constant, not a function. Do not invoke it with parentheses.",
+            vscode.DiagnosticSeverity.Error,
+            'bml-jnan-function-call'
+        ));
+    }
+
     // acos(x) / asin(x) - check domain [-1, 1]
     const mathDomainRegex = /\b(acos|asin)\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)/g;
     while ((match = mathDomainRegex.exec(cleanText)) !== null) {
