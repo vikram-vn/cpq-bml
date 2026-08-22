@@ -183,26 +183,27 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
 
         if (!leftType || !rightType) continue;
 
-        const isNumeric = (type) => ['Integer', 'Float', 'Long', 'Double'].includes(type);
+        const isNumeric = (type) => ['Integer', 'Float', 'Long', 'Double', 'integer', 'float', 'long', 'double'].includes(type);
+        const isString = (type) => type === 'String' || type === 'string';
         const isNullType = (type) => ['Null', 'JsonNull'].includes(type);
 
         let mismatch = false;
         let msg = '';
 
         if (op === '+' || op === '+=') {
-            const isLeftString = leftType === 'String';
-            const isRightString = rightType === 'String';
+            const isLeftStr = isString(leftType);
+            const isRightStr = isString(rightType);
             const isLeftNumeric = isNumeric(leftType);
             const isRightNumeric = isNumeric(rightType);
 
-            if (isLeftString && isRightString) {
+            if (isLeftStr && isRightStr) {
                 // valid string concatenation
             } else if (isLeftNumeric && isRightNumeric) {
                 // valid numeric addition
             } else {
                 mismatch = true;
-                if ((isLeftString && isRightNumeric) || (isLeftNumeric && isRightString)) {
-                    msg = `Type mismatch: Cannot combine 'String' and '${isLeftString ? rightType : leftType}' using '${op}'. Convert ${isLeftString ? 'the number' : 'the other operand'} to String using 'string()' or vice versa.`;
+                if ((isLeftStr && isRightNumeric) || (isLeftNumeric && isRightStr)) {
+                    msg = `Type mismatch: Cannot combine 'String' and '${isLeftStr ? rightType : leftType}' using '${op}'. Convert ${isLeftStr ? 'the number' : 'the other operand'} to String using 'string()' or vice versa.`;
                 } else {
                     msg = `Type mismatch: Operator '${op}' cannot be applied to '${leftType}' and '${rightType}'.`;
                 }
@@ -217,7 +218,7 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
                 const isLeftNumeric = isNumeric(leftType);
                 const isRightNumeric = isNumeric(rightType);
 
-                if (leftType === rightType) {
+                if (leftType === rightType || (isString(leftType) && isString(rightType))) {
                     // valid: equality is well-defined for any matching type
                     // (String, Boolean, Dictionary, Json, RecordSet, ...),
                     // not just the primitives singled out below.
@@ -229,12 +230,12 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
                 }
             }
         } else if (op === '<' || op === '>' || op === '<=' || op === '>=') {
-            const isLeftString = leftType === 'String';
-            const isRightString = rightType === 'String';
+            const isLeftStr = isString(leftType);
+            const isRightStr = isString(rightType);
             const isLeftNumeric = isNumeric(leftType);
             const isRightNumeric = isNumeric(rightType);
 
-            if (isLeftString && isRightString) {
+            if (isLeftStr && isRightStr) {
                 // valid string comparison
             } else if (isLeftNumeric && isRightNumeric) {
                 // valid numeric comparison

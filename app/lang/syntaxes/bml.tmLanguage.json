@@ -1,10 +1,8 @@
 {
   "information_for_contributors": [
-    "This file has been converted from https://github.com/atom/language-java/blob/master/grammars/java.cson",
-    "If you want to provide a fix or improvement, please create a pull request against the original repository.",
-    "Once accepted there, we are happy to receive an update request."
+    "CPQ BML (BigMachines Language) TextMate Syntax Grammar for syntax highlighting."
   ],
-  "version": "https://github.com/atom/language-java/commit/29f977dc42a7e2568b39bb6fb34c4ef108eb59b3",
+  "version": "1.32.0",
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "CPQ BML",
   "scopeName": "source.bml",
@@ -63,7 +61,7 @@
           },
           "patterns": [
             {
-              "match": "@\\w+\\b",
+              "match": "@(param|return|returns|throws|author|version|deprecated|description|example|see|since|input|output)\\b",
               "name": "keyword.other.documentation.bml"
             }
           ]
@@ -81,16 +79,33 @@
             "0": {
               "name": "punctuation.definition.comment.end.bml"
             }
-          }
+          },
+          "patterns": [
+            {
+              "match": "\\b(beautify ignore:(start|end))\\b",
+              "name": "keyword.other.directive.bml"
+            }
+          ]
         },
         {
           "name": "comment.line.double-slash.bml",
-          "match": "//.*",
-          "captures": {
+          "begin": "//",
+          "end": "$",
+          "beginCaptures": {
             "0": {
               "name": "punctuation.definition.comment.bml"
             }
-          }
+          },
+          "patterns": [
+            {
+              "match": "\\b(bml-lint-disable(-line|-next-line)?)\\b",
+              "name": "keyword.other.directive.bml"
+            },
+            {
+              "match": "\\b(TODO|FIXME|BUG|HACK|NOTE|WARNING|XXX)\\b",
+              "name": "storage.type.class.todo.bml"
+            }
+          ]
         }
       ]
     },
@@ -116,8 +131,51 @@
               "name": "constant.character.escape.bml"
             },
             {
-              "match": "\\$_(access_token_salesforce|access_token_dynamics365|access_token_oauthprovider)\\$",
+              "match": "\\$_(access_token_salesforce|access_token_dynamics365|access_token_oauthprovider|BM_ASYNC_ADDRESSING_TOKEN|BM_ASYNC_PAYLOAD)\\$",
               "name": "variable.other.constant.bml"
+            },
+            {
+              "match": "\\$(BASE_PATH|LINE)\\$",
+              "name": "variable.other.constant.bml"
+            },
+            {
+              "match": "\\$([a-zA-Z_]\\w*)",
+              "name": "variable.other.bmql.bml",
+              "comment": "BMQL variable substitution inside query strings (e.g. $pno, $lead, $eval)"
+            },
+            {
+              "match": "(?i)\\b(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)\\b",
+              "name": "keyword.other.bmql.bml",
+              "comment": "BMQL SQL keywords inside string literals"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.bml",
+          "begin": "'",
+          "end": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bml"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\\\(['\\\\bfnrt]|u[0-9a-fA-F]{4})",
+              "name": "constant.character.escape.bml"
+            },
+            {
+              "match": "\\$([a-zA-Z_]\\w*)",
+              "name": "variable.other.bmql.bml"
+            },
+            {
+              "match": "(?i)\\b(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)\\b",
+              "name": "keyword.other.bmql.bml"
             }
           ]
         }
@@ -155,7 +213,7 @@
       "patterns": [
         {
           "name": "storage.type.bml",
-          "match": "(?i)\\b(String|Integer|Float|Boolean|Date|Json|JsonArray|JsonNull|ByteArray|Record|RecordSet|StringBuilder|Dictionary|dict)\\b"
+          "match": "(?i)\\b(String|Integer|Float|Boolean|Date|Json|JsonArray|JsonNull|ByteArray|Record|RecordSet|StringBuilder|Dictionary|dict)(?:\\[\\])*(?:<(?:string|integer|float|boolean|date|anytype|dict<anytype>)>)?\\b"
         }
       ]
     },
@@ -183,7 +241,7 @@
         },
         {
           "name": "constant.other.bml",
-          "match": "BM_PARTNER_SECURITY_TOKEN|BM_DEFAULT_SOURCE_IDENTIFIER|BM_SALES_ROOT_BOM|BM_PRIOR_ROOT_BOM_ITEM|BM_PRIOR_CONFIGURATION_KEY|BM_CONFIGURATION_KEY"
+          "match": "\\b(BM_PARTNER_SECURITY_TOKEN|BM_DEFAULT_SOURCE_IDENTIFIER|BM_SALES_ROOT_BOM|BM_SALES_ROOT_BOM_ITEM|BM_PRIOR_ROOT_BOM_ITEM|BM_PRIOR_CONFIGURATION_KEY|BM_CONFIGURATION_KEY)\\b"
         }
       ]
     },
@@ -191,7 +249,7 @@
       "patterns": [
         {
           "name": "keyword.operator.arithmetic.bml",
-          "match": "[+\\-*/%]"
+          "match": "[+\\-*/%~]"
         },
         {
           "name": "keyword.operator.comparison.bml",
@@ -239,15 +297,15 @@
       "patterns": [
         {
           "name": "entity.name.function.string.bml",
-          "match": "(?i)\\b(atof|atoi|decodebase64|encodebase64|endswith|find|formatascurrency|getcurrencyvalue|html|isnumber|join|len|lower|replace|split|startswith|string|substring|trim|upper|format)\\b"
+          "match": "(?i)\\b(atof|atoi|decodebase64|encodebase64|endswith|find|formatascurrency|getcurrencyvalue|html|isnumber|join|len|lower|replace|split|startswith|string|substring|trim|upper|format|stringbuilder|sbtostring|sbappend)\\b"
         },
         {
           "name": "entity.name.function.math.bml",
-          "match": "(?i)\\b(acos|asin|atan|ceil|cos|cosh|exp|fabs|fmod|hypot|integer|ln|log|pow|round|sin|sinh|sqrt|tan|tanh|abs)\\b"
+          "match": "(?i)\\b(acos|asin|atan|ceil|cos|cosh|exp|fabs|fmod|hypot|integer|float|ln|log|pow|round|sin|sinh|sqrt|tan|tanh|abs)\\b"
         },
         {
           "name": "entity.name.function.date.bml",
-          "match": "(?i)\\b(adddays|addmonths|comparedates|datetostr|getdate|getdiffindays|getstrdate|isleap|isweekend|minusdays|strtodate|strtojavadate|getcurrenttimeinmillis|formatdate)\\b"
+          "match": "(?i)\\b(adddays|addmonths|comparedates|datetostr|date|getdate|getdiffindays|getstrdate|isleap|isweekend|minusdays|strtodate|strtojavadate|getcurrenttimeinmillis|formatdate)\\b"
         },
         {
           "name": "entity.name.function.database.bml",
@@ -275,7 +333,7 @@
         },
         {
           "name": "entity.name.function.misc.bml",
-          "match": "(?i)\\b(addtotransaction|sbappend|sbtostring|addpartstotransaction|applybom|calculatedeltabom|calculateconfiguration|configureabo|convertbomtohier|convertbomtoflat|generateuuid|generatehmacmessage|getattachmentdata|getarrayattrstring|getbom|getconfigattrvalue|getconfigbom|getcoveragesupportdict|getoldvalue|getreasonstatus|getsystemattrvalues|getsystemdata|getsystemmultipleattrvalues|getuuid|globaldictget|globaldictremove|globaldictset|importtransactiondata|isnull|logtime|print|savebom|saveconfigbom|setattributevalue|throwerror|validatequoteforagreement|usersessionget|usersessionremove|usersessionset)\\b"
+          "match": "(?i)\\b(addtotransaction|addpartstotransaction|applybom|calculatedeltabom|calculateconfiguration|configureabo|convertbomtohier|convertbomtoflat|generateuuid|generatehmacmessage|getattachmentdata|getarrayattrstring|getbom|getconfigattrvalue|getconfigbom|getcoveragesupportdict|getoldvalue|getreasonstatus|getsystemattrvalues|getsystemdata|getsystemmultipleattrvalues|getuuid|globaldictget|globaldictremove|globaldictset|importtransactiondata|isnull|logtime|print|savebom|saveconfigbom|setattributevalue|throwerror|validatequoteforagreement|usersessionget|usersessionremove|usersessionset)\\b"
         }
       ]
     },
@@ -332,33 +390,44 @@
     "attributes": {
       "patterns": [
         {
-          "name": "variable.other.member.bml",
-          "match": "\\b_[a-zA-Z0-9_]+\\b"
+          "name": "variable.other.system.bml",
+          "match": "\\b_(BM_USER_[A-Z_]+|system_[a-zA-Z0-9_]+|config_[a-zA-Z0-9_]+|bm_[a-zA-Z0-9_]+)\\b",
+          "comment": "System context variables (_BM_USER_*, _system_*, _config_*, _bm_*)"
         },
         {
           "name": "variable.other.line.attribute.bml",
-          "match": "\\b(line\\.[a-zA-Z0-9_]+(?:_[ctl]))\\b",
-          "comment": "Matches line item attributes (suffixes _c or _l)"
+          "match": "\\bline\\._[a-zA-Z0-9_]+\\b",
+          "comment": "Matches line item system attributes e.g. line._document_number"
+        },
+        {
+          "name": "variable.other.line.attribute.bml",
+          "match": "\\bline\\.[a-zA-Z0-9_]+(?:_[ctl])?\\b",
+          "comment": "Matches line item custom/standard attributes"
         },
         {
           "name": "variable.other.transaction.attribute.bml",
           "match": "\\b([a-zA-Z0-9_]+(?:_[ctl]))\\b",
-          "comment": "Matches transaction and transaction-line attributes (suffixes _c, _t, or _l), with or without a dot prefix"
+          "comment": "Matches transaction and commerce attributes with suffix _c, _t, or _l"
         },
         {
           "name": "variable.other.member.bml",
-          "match": "\\bCRM_[A-Z_]+\\b",
-          "comment": "CRM system variables (e.g. CRM_CUSTOMER_ID) - per app/lang/intellisense/bml-util-attributes-api-usage.json, these don't follow the usual leading-underscore or _c/_t/_l suffix conventions"
+          "match": "\\b_[a-zA-Z0-9_]+\\b",
+          "comment": "Matches system attributes with leading underscore (e.g. _document_number, _price_quantity)"
         },
         {
           "name": "variable.other.member.bml",
-          "match": "\\boRCL_[a-zA-Z]+\\b",
-          "comment": "ORCL_* system variables (e.g. oRCL_charges) - per app/lang/intellisense/bml-attributes-api-usage.json"
+          "match": "\\bCRM_[A-Z0-9_]+\\b",
+          "comment": "CRM system variables (e.g. CRM_CUSTOMER_ID, CRM_BUYER_COMPANY)"
         },
         {
           "name": "variable.other.member.bml",
-          "match": "\\b(bs_id|createOrderRestResponse|includedInBasePrice)\\b",
-          "comment": "Remaining known system variables/attributes from app/lang/intellisense that don't follow any naming convention"
+          "match": "\\b(?:oRCL|ORCL)_[a-zA-Z0-9_]+\\b",
+          "comment": "ORCL_* system integration variables"
+        },
+        {
+          "name": "variable.other.member.bml",
+          "match": "\\b(bs_id|createOrderRestResponse|includedInBasePrice|records_inserted|records_updated|records_deleted|records_error)\\b",
+          "comment": "System attributes and BMQL result keys"
         },
         {
           "name": "variable.other.property.bml",

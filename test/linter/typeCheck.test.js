@@ -292,5 +292,26 @@ suite('BML Linter Test Suite - variable type consistency', () => {
             const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
             assert.strictEqual(diag, undefined, 'Comparing two Dictionary constructor calls should not be flagged as a type mismatch');
         });
+
+        test('Does not flag array elements indexed with [] combined with String literals (string[] indexing)', () => {
+            const diagnostics = lintText(`
+                lineNoConfigArray = split("a.b", ".");
+                lineNoConfig = lineNoConfigArray[0] + "." + lineNoConfigArray[1];
+                return lineNoConfig;
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.strictEqual(diag, undefined, 'Indexing string[] returns String, not string[] - should not flag binary mismatch');
+        });
+
+        test('Flags combining an Integer array element and a String literal with +', () => {
+            const diagnostics = lintText(`
+                numArr = integer[]{1, 2, 3};
+                val = numArr[0] + "hello";
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag Integer + String when array element is indexed');
+        });
     });
 });
+
