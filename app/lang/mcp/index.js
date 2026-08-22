@@ -87,6 +87,25 @@ function registerMcp(context) {
             );
         }),
     );
+
+    if (vscode.lm && typeof vscode.lm.registerMcpServerProvider === 'function') {
+        context.subscriptions.push(
+            vscode.lm.registerMcpServerProvider('cpqBml.mcpServers', {
+                provideMcpServerDefinitions: async () => {
+                    const { enable, port } = getSettings();
+                    if (!enable) return [];
+                    return [{
+                        id: 'cpqBml.mcpServer',
+                        label: 'CPQ-BML Local MCP Server',
+                        transport: {
+                            type: 'http',
+                            url: `http://127.0.0.1:${port}/mcp`
+                        }
+                    }];
+                }
+            })
+        );
+    }
 }
 
 module.exports = { registerMcp };

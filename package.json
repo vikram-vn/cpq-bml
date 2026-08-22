@@ -21,6 +21,34 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "cpqBml.mcpServers",
+        "label": "CPQ-BML MCP Server"
+      }
+    ],
+    "chatParticipants": [
+      {
+        "id": "cpqBml.bmlAssistant",
+        "name": "bml",
+        "fullName": "CPQ-BML Assistant",
+        "description": "Oracle CPQ BML specialist for BML code, BMQL, REST APIs, and MCP tools.",
+        "isSticky": true
+      }
+    ],
+    "languageModelTools": [
+      {
+        "name": "cpq_bml_active_environment",
+        "displayName": "Active CPQ Environment",
+        "toolReferenceName": "cpqEnv",
+        "canBeReferencedInPrompt": true,
+        "modelDescription": "Returns active Oracle CPQ environment URL and authentication status.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    ],
     "languages": [
       {
         "id": "bml",
