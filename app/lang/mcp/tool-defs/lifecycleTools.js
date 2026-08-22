@@ -56,8 +56,14 @@ function register(server, context, vscode, tools) {
     "deploy_function",
     {
       description:
-        "Deploy a single util function on CPQ without saving it first (the local script content must already be saved).",
-      inputSchema: { variableName: z.string() },
+        "Deploy a single util function on CPQ without saving it first (the local script content must already be saved). Requires confirm:true.",
+      inputSchema: {
+        variableName: z.string(),
+        confirm: z
+          .boolean()
+          .default(false)
+          .describe("Must be true to proceed; deploying pushes changes directly to the live CPQ environment."),
+      },
     },
     async (args) =>
       jsonResult(await tools.deployFunction(context, vscode, args)),
@@ -67,8 +73,14 @@ function register(server, context, vscode, tools) {
     "mass_deploy_util_functions",
     {
       description:
-        "Deploy multiple util functions on CPQ in a single batch call.",
-      inputSchema: { variableNames: z.array(z.string()).min(1) },
+        "Deploy multiple util functions on CPQ in a single batch call. Requires confirm:true.",
+      inputSchema: {
+        variableNames: z.array(z.string()).min(1),
+        confirm: z
+          .boolean()
+          .default(false)
+          .describe("Must be true to proceed; deploying pushes changes directly to the live CPQ environment."),
+      },
     },
     async (args) =>
       jsonResult(await tools.massDeployUtilFunctions(context, vscode, args)),
@@ -78,12 +90,16 @@ function register(server, context, vscode, tools) {
     "deploy_commerce_process",
     {
       description:
-        "Deploy a commerce process setup on CPQ and wait for the deployment task to finish.",
+        "Deploy a commerce process setup on CPQ and wait for the deployment task to finish. Requires confirm:true.",
       inputSchema: {
         processVarName: z
           .string()
           .optional()
           .describe("Defaults to cpqBml.connection.commerceProcess."),
+        confirm: z
+          .boolean()
+          .default(false)
+          .describe("Must be true to proceed; deploying pushes changes directly to the live CPQ environment."),
       },
     },
     async (args) =>

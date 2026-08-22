@@ -276,6 +276,11 @@
   },
   {
     "line": 27,
+    "severity": "Error",
+    "message": "Error: Argument 1 to 'bytearray' should be String, but got Integer."
+  },
+  {
+    "line": 27,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_bytearray_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -288,11 +293,6 @@
     "line": 27,
     "severity": "Hint",
     "message": "Unused variable: val_bytearray_neg3"
-  },
-  {
-    "line": 27,
-    "severity": "Warning",
-    "message": "Warning: Argument 1 to 'bytearray' should be String, but got Integer."
   },
   {
     "line": 28,
@@ -313,6 +313,11 @@
     "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_bytearray_neg4"
+  },
+  {
+    "line": 29,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 29,
@@ -616,7 +621,7 @@
   },
   {
     "line": 53,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'append' should be Array, but got a String value."
   },
   {
@@ -693,6 +698,11 @@
     "line": 56,
     "severity": "Hint",
     "message": "Unused variable: val_append_neg4"
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 57,
@@ -981,7 +991,7 @@
   },
   {
     "line": 81,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'findinarray' should be Array, but got a String value."
   },
   {
@@ -1058,6 +1068,11 @@
     "line": 84,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_neg4"
+  },
+  {
+    "line": 85,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 85,
@@ -1141,7 +1156,7 @@
   },
   {
     "line": 92,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1181,7 +1196,7 @@
   },
   {
     "line": 95,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1201,7 +1216,7 @@
   },
   {
     "line": 96,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1236,7 +1251,7 @@
   },
   {
     "line": 97,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1286,7 +1301,7 @@
   },
   {
     "line": 99,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1306,7 +1321,7 @@
   },
   {
     "line": 102,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1326,7 +1341,7 @@
   },
   {
     "line": 103,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1346,7 +1361,7 @@
   },
   {
     "line": 104,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1406,7 +1421,7 @@
   },
   {
     "line": 107,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a Integer value."
   },
   {
@@ -1431,7 +1446,7 @@
   },
   {
     "line": 108,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1453,6 +1468,11 @@
     "line": 108,
     "severity": "Hint",
     "message": "Unused variable: val_isempty_neg4"
+  },
+  {
+    "line": 109,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 109,
@@ -1491,7 +1511,7 @@
   },
   {
     "line": 111,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
@@ -1561,7 +1581,7 @@
   },
   {
     "line": 116,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1591,7 +1611,7 @@
   },
   {
     "line": 119,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1606,7 +1626,7 @@
   },
   {
     "line": 120,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1636,7 +1656,7 @@
   },
   {
     "line": 121,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1676,7 +1696,7 @@
   },
   {
     "line": 123,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1691,7 +1711,7 @@
   },
   {
     "line": 126,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1706,7 +1726,7 @@
   },
   {
     "line": 127,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1721,7 +1741,7 @@
   },
   {
     "line": 128,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1766,7 +1786,7 @@
   },
   {
     "line": 131,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a Integer value."
   },
   {
@@ -1786,7 +1806,7 @@
   },
   {
     "line": 132,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1803,6 +1823,11 @@
     "line": 132,
     "severity": "Hint",
     "message": "Unused variable: val_max_neg4"
+  },
+  {
+    "line": 133,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 133,
@@ -1836,7 +1861,7 @@
   },
   {
     "line": 135,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1896,7 +1921,7 @@
   },
   {
     "line": 140,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1926,7 +1951,7 @@
   },
   {
     "line": 143,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1941,7 +1966,7 @@
   },
   {
     "line": 144,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -1971,7 +1996,7 @@
   },
   {
     "line": 145,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -2011,7 +2036,7 @@
   },
   {
     "line": 147,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -2026,7 +2051,7 @@
   },
   {
     "line": 150,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -2041,7 +2066,7 @@
   },
   {
     "line": 151,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -2056,7 +2081,7 @@
   },
   {
     "line": 152,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -2101,7 +2126,7 @@
   },
   {
     "line": 155,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a Integer value."
   },
   {
@@ -2121,7 +2146,7 @@
   },
   {
     "line": 156,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -2138,6 +2163,11 @@
     "line": 156,
     "severity": "Hint",
     "message": "Unused variable: val_min_neg4"
+  },
+  {
+    "line": 157,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 157,
@@ -2171,7 +2201,7 @@
   },
   {
     "line": 159,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
@@ -2506,7 +2536,7 @@
   },
   {
     "line": 179,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'range' should be Integer, but got a String value."
   },
   {
@@ -2548,6 +2578,11 @@
     "line": 180,
     "severity": "Hint",
     "message": "Unused variable: val_range_neg4"
+  },
+  {
+    "line": 181,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 181,
@@ -2666,7 +2701,7 @@
   },
   {
     "line": 188,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2711,7 +2746,7 @@
   },
   {
     "line": 192,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2731,7 +2766,7 @@
   },
   {
     "line": 193,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2766,7 +2801,7 @@
   },
   {
     "line": 194,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2811,7 +2846,7 @@
   },
   {
     "line": 196,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2831,7 +2866,7 @@
   },
   {
     "line": 200,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2851,7 +2886,7 @@
   },
   {
     "line": 201,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2876,7 +2911,7 @@
   },
   {
     "line": 202,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2931,12 +2966,12 @@
   },
   {
     "line": 205,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a Integer value."
   },
   {
     "line": 205,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'remove' should be Integer, but got a String value."
   },
   {
@@ -2956,7 +2991,7 @@
   },
   {
     "line": 206,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -2981,6 +3016,11 @@
   },
   {
     "line": 207,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 207,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.remove(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -3001,7 +3041,7 @@
   },
   {
     "line": 208,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -3021,7 +3061,7 @@
   },
   {
     "line": 209,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
@@ -3086,7 +3126,7 @@
   },
   {
     "line": 214,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3126,7 +3166,7 @@
   },
   {
     "line": 217,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3146,7 +3186,7 @@
   },
   {
     "line": 218,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3181,7 +3221,7 @@
   },
   {
     "line": 219,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3231,7 +3271,7 @@
   },
   {
     "line": 221,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3251,7 +3291,7 @@
   },
   {
     "line": 224,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3271,7 +3311,7 @@
   },
   {
     "line": 225,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3291,7 +3331,7 @@
   },
   {
     "line": 226,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3351,7 +3391,7 @@
   },
   {
     "line": 229,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a Integer value."
   },
   {
@@ -3376,7 +3416,7 @@
   },
   {
     "line": 230,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3398,6 +3438,11 @@
     "line": 230,
     "severity": "Hint",
     "message": "Unused variable: val_reverse_neg4"
+  },
+  {
+    "line": 231,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 231,
@@ -3436,7 +3481,7 @@
   },
   {
     "line": 233,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
@@ -3506,7 +3551,7 @@
   },
   {
     "line": 238,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3536,7 +3581,7 @@
   },
   {
     "line": 241,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3551,7 +3596,7 @@
   },
   {
     "line": 242,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3581,7 +3626,7 @@
   },
   {
     "line": 243,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3621,7 +3666,7 @@
   },
   {
     "line": 245,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3636,7 +3681,7 @@
   },
   {
     "line": 248,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3651,7 +3696,7 @@
   },
   {
     "line": 249,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3666,7 +3711,7 @@
   },
   {
     "line": 250,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3711,7 +3756,7 @@
   },
   {
     "line": 253,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a Integer value."
   },
   {
@@ -3731,7 +3776,7 @@
   },
   {
     "line": 254,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3748,6 +3793,11 @@
     "line": 254,
     "severity": "Hint",
     "message": "Unused variable: val_sizeofarray_neg4"
+  },
+  {
+    "line": 255,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 255,
@@ -3781,7 +3831,7 @@
   },
   {
     "line": 257,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
@@ -3841,7 +3891,7 @@
   },
   {
     "line": 262,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -3886,7 +3936,7 @@
   },
   {
     "line": 266,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -3906,7 +3956,7 @@
   },
   {
     "line": 267,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -3941,7 +3991,7 @@
   },
   {
     "line": 268,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -3996,7 +4046,7 @@
   },
   {
     "line": 270,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4016,7 +4066,7 @@
   },
   {
     "line": 274,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4036,7 +4086,7 @@
   },
   {
     "line": 275,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4056,7 +4106,7 @@
   },
   {
     "line": 276,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4076,7 +4126,7 @@
   },
   {
     "line": 277,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4096,7 +4146,7 @@
   },
   {
     "line": 278,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4116,12 +4166,12 @@
   },
   {
     "line": 279,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a Integer value."
   },
   {
     "line": 279,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'sort' should be String, but got a Integer value."
   },
   {
@@ -4151,7 +4201,7 @@
   },
   {
     "line": 280,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4176,6 +4226,11 @@
   },
   {
     "line": 281,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 281,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.sort(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -4191,7 +4246,7 @@
   },
   {
     "line": 282,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
@@ -4216,7 +4271,7 @@
   },
   {
     "line": 283,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {

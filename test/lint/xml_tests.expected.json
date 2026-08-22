@@ -196,7 +196,7 @@
   },
   {
     "line": 26,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'applytemplate' should be Dictionary, but got a String value."
   },
   {
@@ -211,7 +211,7 @@
   },
   {
     "line": 27,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'applytemplate' should be String, but got a Integer value."
   },
   {
@@ -243,6 +243,11 @@
     "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_applytemplate_neg4"
+  },
+  {
+    "line": 29,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 29,
@@ -496,12 +501,12 @@
   },
   {
     "line": 53,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'transformxml' should be String, but got a Integer value."
   },
   {
     "line": 53,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'transformxml' should be String, but got a Integer value."
   },
   {
@@ -538,6 +543,11 @@
     "line": 54,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_neg4"
+  },
+  {
+    "line": 55,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 55,
@@ -616,7 +626,7 @@
   },
   {
     "line": 62,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -661,7 +671,7 @@
   },
   {
     "line": 66,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -681,7 +691,7 @@
   },
   {
     "line": 67,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -716,7 +726,7 @@
   },
   {
     "line": 68,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -771,7 +781,7 @@
   },
   {
     "line": 70,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -791,7 +801,7 @@
   },
   {
     "line": 74,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -811,7 +821,7 @@
   },
   {
     "line": 75,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -831,7 +841,7 @@
   },
   {
     "line": 76,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -871,7 +881,7 @@
   },
   {
     "line": 78,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -891,12 +901,12 @@
   },
   {
     "line": 79,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'readxmlsingle' should be String, but got a Integer value."
   },
   {
     "line": 79,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a Integer value."
   },
   {
@@ -926,7 +936,7 @@
   },
   {
     "line": 80,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -948,6 +958,11 @@
     "line": 80,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_neg4"
+  },
+  {
+    "line": 81,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 81,
@@ -986,7 +1001,7 @@
   },
   {
     "line": 83,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
@@ -1046,7 +1061,7 @@
   },
   {
     "line": 88,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1091,7 +1106,7 @@
   },
   {
     "line": 92,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1111,7 +1126,7 @@
   },
   {
     "line": 93,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1146,7 +1161,7 @@
   },
   {
     "line": 94,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1201,7 +1216,7 @@
   },
   {
     "line": 96,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1221,7 +1236,7 @@
   },
   {
     "line": 100,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1241,7 +1256,7 @@
   },
   {
     "line": 101,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1261,7 +1276,7 @@
   },
   {
     "line": 102,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1301,7 +1316,7 @@
   },
   {
     "line": 104,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1321,12 +1336,12 @@
   },
   {
     "line": 105,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'readxmlmultiple' should be String, but got a Integer value."
   },
   {
     "line": 105,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a Integer value."
   },
   {
@@ -1356,7 +1371,7 @@
   },
   {
     "line": 106,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
@@ -1378,6 +1393,11 @@
     "line": 106,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_neg4"
+  },
+  {
+    "line": 107,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 107,
@@ -1416,7 +1436,7 @@
   },
   {
     "line": 109,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {

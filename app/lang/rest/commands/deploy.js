@@ -64,6 +64,15 @@ async function runDeployCommerceProcess(
     processVarName = getCommerceProcess(vscode);
   }
 
+  const confirm = await vscode.window.showWarningMessage(
+    `Are you sure you want to deploy Commerce Process "${processVarName}" to live CPQ?`,
+    { modal: true },
+    "Deploy"
+  );
+  if (confirm !== "Deploy") {
+    return { success: false, errorMessage: "CPQ-BML: commerce process deployment cancelled by user." };
+  }
+
   writeRunHeader(resultsTerminal, "Deploy Commerce Process", processVarName);
   writeRunningLine(resultsTerminal, "Deploy Commerce Process", processVarName);
   resultsTerminal.show();
@@ -177,6 +186,15 @@ async function runDeployCurrentFile(
     return { success: false, errorMessage };
   }
 
+  const confirm = await vscode.window.showWarningMessage(
+    `Are you sure you want to deploy util function "${metadata.variableName}" to live CPQ?`,
+    { modal: true },
+    "Deploy"
+  );
+  if (confirm !== "Deploy") {
+    return { success: false, errorMessage: "CPQ-BML: deployment cancelled by user." };
+  }
+
   writeRunHeader(resultsTerminal, "Deploy", metadata.variableName);
   writeRunningLine(resultsTerminal, "Deploy", metadata.variableName);
   resultsTerminal.show();
@@ -261,6 +279,15 @@ async function runDeployUtilFunctions(
 
   const items = selected.map((pick) => metadataLib.buildDeployItem(pick.item));
   const label = items.length === 1 ? items[0].variableName : `${items.length} functions`;
+
+  const confirm = await vscode.window.showWarningMessage(
+    `Are you sure you want to deploy ${items.length} util function(s) to live CPQ?`,
+    { modal: true },
+    "Deploy"
+  );
+  if (confirm !== "Deploy") {
+    return { success: false, errorMessage: "CPQ-BML: mass deployment cancelled by user." };
+  }
 
   writeRunHeader(resultsTerminal, "Mass Deploy", label);
   writeRunningLine(resultsTerminal, "Mass Deploy", label);

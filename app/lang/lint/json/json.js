@@ -102,8 +102,8 @@ function checkJson(cleanText, noStringsText, doc) {
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Warning: Argument 1 to '${jf.name}' should be ${jf.paramType}, but got ${actual}.`,
-                        vscode.DiagnosticSeverity.Warning,
+                        `Error: Argument 1 to '${jf.name}' should be ${jf.paramType}, but got ${actual}.`,
+                        vscode.DiagnosticSeverity.Error,
                         'bml-function-arg-type'
                     ));
                 }

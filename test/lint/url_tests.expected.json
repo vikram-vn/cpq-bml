@@ -241,7 +241,7 @@
   },
   {
     "line": 27,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
   },
   {
@@ -313,6 +313,11 @@
     "line": 30,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg4"
+  },
+  {
+    "line": 31,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 31,
@@ -681,17 +686,17 @@
   },
   {
     "line": 57,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'urldata' should be String, but got a Integer value."
   },
   {
     "line": 57,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'urldata' should be String, but got a Integer value."
   },
   {
     "line": 57,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'urldata' should be Dictionary, but got a String value."
   },
   {
@@ -743,6 +748,11 @@
     "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_neg4"
+  },
+  {
+    "line": 59,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 59,
@@ -1061,7 +1071,7 @@
   },
   {
     "line": 86,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 5 to 'urldatabyget' should be Dictionary, but got a String value."
   },
   {
@@ -1081,22 +1091,22 @@
   },
   {
     "line": 87,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'urldatabyget' should be String, but got a Integer value."
   },
   {
     "line": 87,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'urldatabyget' should be String, but got a Integer value."
   },
   {
     "line": 87,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'urldatabyget' should be String, but got a Integer value."
   },
   {
     "line": 87,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 4 to 'urldatabyget' should be Integer, but got a String value."
   },
   {
@@ -1143,6 +1153,11 @@
     "line": 88,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabyget_neg4"
+  },
+  {
+    "line": 89,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 89,
@@ -1421,7 +1436,7 @@
   },
   {
     "line": 116,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 5 to 'urldatabypost' should be Boolean, but got a String value."
   },
   {
@@ -1436,22 +1451,22 @@
   },
   {
     "line": 117,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'urldatabypost' should be String, but got a Integer value."
   },
   {
     "line": 117,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'urldatabypost' should be String, but got a Integer value."
   },
   {
     "line": 117,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'urldatabypost' should be String, but got a Integer value."
   },
   {
     "line": 117,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 4 to 'urldatabypost' should be Dictionary, but got a String value."
   },
   {
@@ -1493,6 +1508,11 @@
     "line": 118,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_neg4"
+  },
+  {
+    "line": 119,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 119,
@@ -1756,7 +1776,7 @@
   },
   {
     "line": 148,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 6 to 'urldatabypostasync' should be Boolean, but got a String value."
   },
   {
@@ -1771,27 +1791,27 @@
   },
   {
     "line": 149,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'urldatabypostasync' should be String, but got a Integer value."
   },
   {
     "line": 149,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'urldatabypostasync' should be String, but got a Integer value."
   },
   {
     "line": 149,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'urldatabypostasync' should be String, but got a Integer value."
   },
   {
     "line": 149,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 4 to 'urldatabypostasync' should be String, but got a Integer value."
   },
   {
     "line": 149,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 5 to 'urldatabypostasync' should be Dictionary, but got a String value."
   },
   {
@@ -1838,6 +1858,11 @@
     "line": 150,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_neg4"
+  },
+  {
+    "line": 151,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 151,
@@ -2136,7 +2161,7 @@
   },
   {
     "line": 176,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 4 to 'urlmultipartbypost' should be Dictionary, but got a String value."
   },
   {
@@ -2156,17 +2181,17 @@
   },
   {
     "line": 177,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'urlmultipartbypost' should be String, but got a Integer value."
   },
   {
     "line": 177,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'urlmultipartbypost' should be String, but got a Integer value."
   },
   {
     "line": 177,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'urlmultipartbypost' should be Dictionary, but got a String value."
   },
   {
@@ -2213,6 +2238,11 @@
     "line": 178,
     "severity": "Hint",
     "message": "Unused variable: val_urlmultipartbypost_neg4"
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 179,

@@ -62,7 +62,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
 
     if (isLintEnabled) {
         const declaredVars = getDeclaredVariables(noStringsText, doc);
-        diagnostics.push(...checkVariableDiagnostics(noStringsText, declaredVars, doc));
+        diagnostics.push(...checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText));
 
         diagnostics.push(...checkMissingSemicolons(cleanText, noStringsText, conditionRanges));
         diagnostics.push(...checkAssignmentInCondition(noStringsText, conditionRanges, doc));
@@ -87,7 +87,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
 
         diagnostics.push(...checkMixedOperators(cleanText, conditionRanges, doc, vscode));
         diagnostics.push(...checkUnusedExpressions(cleanText, doc, vscode));
-        diagnostics.push(...checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath));
+        diagnostics.push(...checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath, cleanText));
 
         // Phase 1 new checkers
         diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));

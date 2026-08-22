@@ -1,6 +1,11 @@
 [
   {
     "line": 6,
+    "severity": "Warning",
+    "message": "'jNaN' is read here but is never defined in this function."
+  },
+  {
+    "line": 6,
     "severity": "Hint",
     "message": "Unused variable: nanJava"
   },
@@ -83,6 +88,11 @@
     "line": 20,
     "severity": "Hint",
     "message": "Unused variable: rOldParts2"
+  },
+  {
+    "line": 23,
+    "severity": "Warning",
+    "message": "'NaN' is read here but is never defined in this function."
   },
   {
     "line": 23,

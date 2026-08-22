@@ -67,8 +67,8 @@ function checkMath(cleanText, noStringsText, doc) {
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Warning: Argument 1 to '${cf.name}' should be ${cf.expected.join(' or ')}, but got ${actual}.`,
-                        vscode.DiagnosticSeverity.Warning,
+                        `Error: Argument 1 to '${cf.name}' should be ${cf.expected.join(' or ')}, but got ${actual}.`,
+                        vscode.DiagnosticSeverity.Error,
                         'bml-function-arg-type'
                     ));
                 }

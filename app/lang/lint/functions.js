@@ -304,7 +304,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                             const diag = new vscode.Diagnostic(
                                 new vscode.Range(startPos, endPos),
                                 `Argument ${i + 1} to '${displayNamespace}.${targetFunc.name}' should be ${expectedType}, but got a ${actualType} value.`,
-                                vscode.DiagnosticSeverity.Warning
+                                vscode.DiagnosticSeverity.Error
                             );
                             diag.code = 'bml-function-arg-type';
                             diagnostics.push(diag);
@@ -371,7 +371,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                             const diag = new vscode.Diagnostic(
                                 new vscode.Range(startPos, endPos),
                                 `Argument ${err.index + 1} to '${builtIn.name}' should be ${expectedStr}, but got a ${err.actual} value.`,
-                                vscode.DiagnosticSeverity.Warning
+                                vscode.DiagnosticSeverity.Error
                             );
                             diag.code = 'bml-function-arg-type';
                             diagnostics.push(diag);

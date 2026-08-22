@@ -20,14 +20,17 @@ function readLocalMetadataForGating(bmlFilePath) {
     }
 }
 
-function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath) {
+function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath, cleanText = noStringsText) {
     const diagnostics = [];
-
-    const metadata = readLocalMetadataForGating(doc.uri && doc.uri.fsPath);
-    if (isCommerceFunction(metadata)) return diagnostics;
 
     const systemVars = loadSystemVariables(extensionPath);
     const builtIns = loadBuiltInFunctions(extensionPath);
+
+    const isIgnoredSymbol = (nameLower) => {
+        if (reservedWords.has(nameLower) || systemVars.has(nameLower) || builtIns.has(nameLower)) return true;
+        if (nameLower.startsWith('_') || nameLower.startsWith('bm_')) return true;
+        return false;
+    };
 
     const declaredNames = new Set();
     const earliestDeclByName = new Map();
@@ -39,6 +42,10 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
         declSitesByName.set(varName, new Set(decls.map((d) => d.index)));
     });
 
+    const metadata = readLocalMetadataForGating(doc.uri && doc.uri.fsPath);
+    const isCommerce = isCommerceFunction(metadata);
+
+    // 1. Bare code identifier references in noStringsText
     const identRegex = /\b([a-zA-Z_]\w*)\b/g;
     let match;
     while ((match = identRegex.exec(noStringsText)) !== null) {
@@ -46,7 +53,7 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
         const nameLower = name.toLowerCase();
         const idx = match.index;
 
-        if (reservedWords.has(nameLower) || systemVars.has(nameLower) || builtIns.has(nameLower)) continue;
+        if (isIgnoredSymbol(nameLower)) continue;
 
         // Dotted member/attribute access, not a bare variable read.
         let before = idx - 1;
@@ -64,17 +71,67 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
 
         const earliest = earliestDeclByName.get(name);
         if (earliest !== undefined && earliest <= idx) continue;
-        if (earliest === undefined) continue;
 
-        const startPos = doc.positionAt(idx);
-        const endPos = startPos.translate(0, name.length);
-        const diag = new vscode.Diagnostic(
-            new vscode.Range(startPos, endPos),
-            `'${name}' is read here but isn't assigned until later in this file (line ${doc.positionAt(earliest).line + 1}) - this will read an uninitialized value.`,
-            vscode.DiagnosticSeverity.Warning
-        );
-        diag.code = 'bml-useBeforeDefine';
-        diagnostics.push(diag);
+        if (earliest !== undefined && earliest > idx) {
+            if (isCommerce) continue;
+            const startPos = doc.positionAt(idx);
+            const endPos = startPos.translate(0, name.length);
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `'${name}' is read here but isn't assigned until later in this file (line ${doc.positionAt(earliest).line + 1}) - this will read an uninitialized value.`,
+                vscode.DiagnosticSeverity.Warning
+            );
+            diag.code = 'bml-useBeforeDefine';
+            diagnostics.push(diag);
+        } else if (earliest === undefined) {
+            if (isCommerce) continue;
+            const startPos = doc.positionAt(idx);
+            const endPos = startPos.translate(0, name.length);
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `'${name}' is read here but is never defined in this function.`,
+                vscode.DiagnosticSeverity.Warning
+            );
+            diag.code = 'bml-undeclared-variable';
+            diagnostics.push(diag);
+        }
+    }
+
+    // 2. BMQL dynamic variable references ($varName) inside string literals in cleanText
+    if (cleanText) {
+        const bmqlVarRegex = /\$([a-zA-Z_]\w*)\b/g;
+        let bmqlMatch;
+        while ((bmqlMatch = bmqlVarRegex.exec(cleanText)) !== null) {
+            const name = bmqlMatch[1];
+            const nameLower = name.toLowerCase();
+            const idx = bmqlMatch.index + 1; // position after '$'
+
+            if (isIgnoredSymbol(nameLower)) continue;
+
+            const earliest = earliestDeclByName.get(name);
+            if (earliest !== undefined && earliest <= idx) continue;
+
+            const startPos = doc.positionAt(idx);
+            const endPos = startPos.translate(0, name.length);
+
+            if (earliest !== undefined && earliest > idx) {
+                const diag = new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `'${name}' is referenced in BMQL query as '$${name}' here, but isn't assigned until later in this file (line ${doc.positionAt(earliest).line + 1}).`,
+                    vscode.DiagnosticSeverity.Warning
+                );
+                diag.code = 'bml-useBeforeDefine';
+                diagnostics.push(diag);
+            } else if (earliest === undefined) {
+                const diag = new vscode.Diagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `'${name}' is referenced in BMQL query as '$${name}' here, but variable '${name}' is never defined in this function.`,
+                    vscode.DiagnosticSeverity.Warning
+                );
+                diag.code = 'bml-undeclared-variable';
+                diagnostics.push(diag);
+            }
+        }
     }
 
     return diagnostics;

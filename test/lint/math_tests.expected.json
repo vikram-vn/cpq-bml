@@ -286,7 +286,7 @@
   },
   {
     "line": 27,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'acos' should be Float, but got a String value."
   },
   {
@@ -318,6 +318,11 @@
     "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_acos_neg4"
+  },
+  {
+    "line": 29,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 29,
@@ -666,7 +671,7 @@
   },
   {
     "line": 51,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'asin' should be Float, but got a String value."
   },
   {
@@ -698,6 +703,11 @@
     "line": 52,
     "severity": "Hint",
     "message": "Unused variable: val_asin_neg4"
+  },
+  {
+    "line": 53,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 53,
@@ -1016,7 +1026,7 @@
   },
   {
     "line": 75,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'atan' should be Float, but got a String value."
   },
   {
@@ -1048,6 +1058,11 @@
     "line": 76,
     "severity": "Hint",
     "message": "Unused variable: val_atan_neg4"
+  },
+  {
+    "line": 77,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 77,
@@ -1356,7 +1371,7 @@
   },
   {
     "line": 99,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'ceil' should be Float, but got a String value."
   },
   {
@@ -1388,6 +1403,11 @@
     "line": 100,
     "severity": "Hint",
     "message": "Unused variable: val_ceil_neg4"
+  },
+  {
+    "line": 101,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 101,
@@ -1696,7 +1716,7 @@
   },
   {
     "line": 123,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'cos' should be Float, but got a String value."
   },
   {
@@ -1728,6 +1748,11 @@
     "line": 124,
     "severity": "Hint",
     "message": "Unused variable: val_cos_neg4"
+  },
+  {
+    "line": 125,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 125,
@@ -2036,7 +2061,7 @@
   },
   {
     "line": 147,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'cosh' should be Float, but got a String value."
   },
   {
@@ -2068,6 +2093,11 @@
     "line": 148,
     "severity": "Hint",
     "message": "Unused variable: val_cosh_neg4"
+  },
+  {
+    "line": 149,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 149,
@@ -2376,7 +2406,7 @@
   },
   {
     "line": 171,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'exp' should be Float, but got a String value."
   },
   {
@@ -2408,6 +2438,11 @@
     "line": 172,
     "severity": "Hint",
     "message": "Unused variable: val_exp_neg4"
+  },
+  {
+    "line": 173,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 173,
@@ -2716,7 +2751,7 @@
   },
   {
     "line": 195,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'fabs' should be Float, but got a String value."
   },
   {
@@ -2748,6 +2783,11 @@
     "line": 196,
     "severity": "Hint",
     "message": "Unused variable: val_fabs_neg4"
+  },
+  {
+    "line": 197,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 197,
@@ -3111,12 +3151,12 @@
   },
   {
     "line": 221,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'fmod' should be Float, but got a String value."
   },
   {
     "line": 221,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'fmod' should be Float, but got a String value."
   },
   {
@@ -3153,6 +3193,11 @@
     "line": 222,
     "severity": "Hint",
     "message": "Unused variable: val_fmod_neg4"
+  },
+  {
+    "line": 223,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 223,
@@ -3536,12 +3581,12 @@
   },
   {
     "line": 247,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'hypot' should be Float, but got a String value."
   },
   {
     "line": 247,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'hypot' should be Float, but got a String value."
   },
   {
@@ -3578,6 +3623,11 @@
     "line": 248,
     "severity": "Hint",
     "message": "Unused variable: val_hypot_neg4"
+  },
+  {
+    "line": 249,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 249,
@@ -3861,6 +3911,11 @@
   },
   {
     "line": 268,
+    "severity": "Error",
+    "message": "Error: Argument 1 to 'integer' should be Float, but got Integer."
+  },
+  {
+    "line": 268,
     "severity": "Information",
     "message": "Style Info: Variable 'val_integer_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_integer_pos10')."
   },
@@ -3868,11 +3923,6 @@
     "line": 268,
     "severity": "Hint",
     "message": "Unused variable: val_integer_pos10"
-  },
-  {
-    "line": 268,
-    "severity": "Warning",
-    "message": "Warning: Argument 1 to 'integer' should be Float, but got Integer."
   },
   {
     "line": 269,
@@ -3911,6 +3961,11 @@
   },
   {
     "line": 271,
+    "severity": "Error",
+    "message": "Error: Argument 1 to 'integer' should be Float, but got String."
+  },
+  {
+    "line": 271,
     "severity": "Information",
     "message": "Style Info: Variable 'val_integer_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_integer_neg3')."
   },
@@ -3918,11 +3973,6 @@
     "line": 271,
     "severity": "Hint",
     "message": "Unused variable: val_integer_neg3"
-  },
-  {
-    "line": 271,
-    "severity": "Warning",
-    "message": "Warning: Argument 1 to 'integer' should be Float, but got String."
   },
   {
     "line": 272,
@@ -3948,6 +3998,11 @@
     "line": 272,
     "severity": "Hint",
     "message": "Unused variable: val_integer_neg4"
+  },
+  {
+    "line": 273,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 273,
@@ -4261,7 +4316,7 @@
   },
   {
     "line": 295,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'ln' should be Float, but got a String value."
   },
   {
@@ -4293,6 +4348,11 @@
     "line": 296,
     "severity": "Hint",
     "message": "Unused variable: val_ln_neg4"
+  },
+  {
+    "line": 297,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 297,
@@ -4601,7 +4661,7 @@
   },
   {
     "line": 319,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'log' should be Float, but got a String value."
   },
   {
@@ -4633,6 +4693,11 @@
     "line": 320,
     "severity": "Hint",
     "message": "Unused variable: val_log_neg4"
+  },
+  {
+    "line": 321,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 321,
@@ -4996,12 +5061,12 @@
   },
   {
     "line": 345,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'pow' should be Float, but got a String value."
   },
   {
     "line": 345,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'pow' should be Float, but got a String value."
   },
   {
@@ -5038,6 +5103,11 @@
     "line": 346,
     "severity": "Hint",
     "message": "Unused variable: val_pow_neg4"
+  },
+  {
+    "line": 347,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 347,
@@ -5366,7 +5436,7 @@
   },
   {
     "line": 369,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sin' should be Float, but got a String value."
   },
   {
@@ -5398,6 +5468,11 @@
     "line": 370,
     "severity": "Hint",
     "message": "Unused variable: val_sin_neg4"
+  },
+  {
+    "line": 371,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 371,
@@ -5706,7 +5781,7 @@
   },
   {
     "line": 393,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sinh' should be Float, but got a String value."
   },
   {
@@ -5738,6 +5813,11 @@
     "line": 394,
     "severity": "Hint",
     "message": "Unused variable: val_sinh_neg4"
+  },
+  {
+    "line": 395,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 395,
@@ -6046,7 +6126,7 @@
   },
   {
     "line": 417,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sqrt' should be Float, but got a String value."
   },
   {
@@ -6078,6 +6158,11 @@
     "line": 418,
     "severity": "Hint",
     "message": "Unused variable: val_sqrt_neg4"
+  },
+  {
+    "line": 419,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 419,
@@ -6386,7 +6471,7 @@
   },
   {
     "line": 441,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'tan' should be Float, but got a String value."
   },
   {
@@ -6418,6 +6503,11 @@
     "line": 442,
     "severity": "Hint",
     "message": "Unused variable: val_tan_neg4"
+  },
+  {
+    "line": 443,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 443,
@@ -6726,7 +6816,7 @@
   },
   {
     "line": 465,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'tanh' should be Float, but got a String value."
   },
   {
@@ -6758,6 +6848,11 @@
     "line": 466,
     "severity": "Hint",
     "message": "Unused variable: val_tanh_neg4"
+  },
+  {
+    "line": 467,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 467,
@@ -7131,12 +7226,12 @@
   },
   {
     "line": 491,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'round' should be Float, but got a String value."
   },
   {
     "line": 491,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'round' should be Integer, but got a String value."
   },
   {
@@ -7173,6 +7268,11 @@
     "line": 492,
     "severity": "Hint",
     "message": "Unused variable: val_round_neg4"
+  },
+  {
+    "line": 493,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 493,

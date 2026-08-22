@@ -53,5 +53,30 @@
     "line": 25,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
+  },
+  {
+    "line": 30,
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'bmqlRes' should have a 'Records' suffix (e.g. 'bmqlResRecords')."
+  },
+  {
+    "line": 30,
+    "severity": "Hint",
+    "message": "Unused variable: bmqlRes"
+  },
+  {
+    "line": 33,
+    "severity": "Warning",
+    "message": "'test2' is referenced in BMQL query as '$test2' here, but variable 'test2' is never defined in this function."
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Style Info: RecordSet variable 'bmqlErrRes' should have a 'Records' suffix (e.g. 'bmqlErrResRecords')."
+  },
+  {
+    "line": 33,
+    "severity": "Hint",
+    "message": "Unused variable: bmqlErrRes"
   }
 ]

@@ -47,16 +47,16 @@ function getDeclaredVariables(cleanText, doc) {
     return declaredVars;
 }
 
-function checkVariableDiagnostics(cleanText, declaredVars, doc) {
+function checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText = noStringsText) {
     const diagnostics = [];
 
     // Find all blocks { ... } to help with shadowing
     const blocks = [];
     const stack = [];
-    for (let i = 0; i < cleanText.length; i++) {
-        if (cleanText[i] === '{') {
+    for (let i = 0; i < noStringsText.length; i++) {
+        if (noStringsText[i] === '{') {
             stack.push({ start: i });
-        } else if (cleanText[i] === '}') {
+        } else if (noStringsText[i] === '}') {
             if (stack.length > 0) {
                 const block = stack.pop();
                 block.end = i + 1;
@@ -75,14 +75,26 @@ function checkVariableDiagnostics(cleanText, declaredVars, doc) {
     const occurrencesByName = new Map();
     const identRegex = /\b[a-zA-Z_]\w*\b/g;
     let identMatch;
-    while ((identMatch = identRegex.exec(cleanText)) !== null) {
+    while ((identMatch = identRegex.exec(noStringsText)) !== null) {
         const idx = identMatch.index;
         let before = idx - 1;
-        while (before >= 0 && /\s/.test(cleanText[before])) before--;
-        if (before >= 0 && cleanText[before] === '.') continue; // property access, not a bare reference
+        while (before >= 0 && /\s/.test(noStringsText[before])) before--;
+        if (before >= 0 && noStringsText[before] === '.') continue; // property access, not a bare reference
         const name = identMatch[0];
         if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
         occurrencesByName.get(name).push(idx);
+    }
+
+    // Record dynamic BMQL variable occurrences ($varName) inside string literals / cleanText
+    if (cleanText) {
+        const bmqlVarRegex = /\$([a-zA-Z_]\w*)\b/g;
+        let bmqlMatch;
+        while ((bmqlMatch = bmqlVarRegex.exec(cleanText)) !== null) {
+            const name = bmqlMatch[1];
+            const idx = bmqlMatch.index + 1;
+            if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
+            occurrencesByName.get(name).push(idx);
+        }
     }
 
     declaredVars.forEach((decls, varName) => {

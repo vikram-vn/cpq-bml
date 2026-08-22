@@ -346,6 +346,11 @@
   },
   {
     "line": 29,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 29,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.dict(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -796,6 +801,11 @@
   },
   {
     "line": 57,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 57,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.containskey(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -892,7 +902,7 @@
   {
     "line": 64,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 64,
@@ -936,11 +946,6 @@
   },
   {
     "line": 69,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 69,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos2')."
   },
@@ -952,7 +957,7 @@
   {
     "line": 70,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 70,
@@ -967,7 +972,7 @@
   {
     "line": 71,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 71,
@@ -997,7 +1002,7 @@
   {
     "line": 72,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 72,
@@ -1022,7 +1027,7 @@
   {
     "line": 73,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 73,
@@ -1047,7 +1052,7 @@
   {
     "line": 74,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 74,
@@ -1062,7 +1067,7 @@
   {
     "line": 80,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 80,
@@ -1077,7 +1082,7 @@
   {
     "line": 81,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 81,
@@ -1092,7 +1097,7 @@
   {
     "line": 82,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 82,
@@ -1117,7 +1122,7 @@
   {
     "line": 84,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 5."
+    "message": "Built-in function 'put' expects 3 to 4 argument(s), but got 5."
   },
   {
     "line": 84,
@@ -1132,7 +1137,12 @@
   {
     "line": 85,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 1 to 'put' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 85,
+    "severity": "Error",
+    "message": "Argument 4 to 'put' should be Boolean, but got a String value."
   },
   {
     "line": 85,
@@ -1157,7 +1167,7 @@
   {
     "line": 86,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 86,
@@ -1173,6 +1183,11 @@
     "line": 86,
     "severity": "Hint",
     "message": "Unused variable: val_put_neg4"
+  },
+  {
+    "line": 87,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 87,
@@ -1192,7 +1207,7 @@
   {
     "line": 88,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 88,
@@ -1207,7 +1222,7 @@
   {
     "line": 89,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 90,
@@ -1217,7 +1232,7 @@
   {
     "line": 90,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 2."
+    "message": "Built-in function 'put' expects 3 to 4 argument(s), but got 2."
   },
   {
     "line": 90,
@@ -1232,7 +1247,7 @@
   {
     "line": 91,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 1."
+    "message": "Built-in function 'put' expects 3 to 4 argument(s), but got 1."
   },
   {
     "line": 91,
@@ -1571,6 +1586,11 @@
   },
   {
     "line": 119,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 119,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.get(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -1816,7 +1836,7 @@
   },
   {
     "line": 141,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'keys' should be Dictionary, but got a String value."
   },
   {
@@ -1843,6 +1863,11 @@
     "line": 142,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg4"
+  },
+  {
+    "line": 143,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 143,
@@ -2096,7 +2121,7 @@
   },
   {
     "line": 165,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'values' should be Dictionary, but got a String value."
   },
   {
@@ -2123,6 +2148,11 @@
     "line": 166,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg4"
+  },
+  {
+    "line": 167,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 167,

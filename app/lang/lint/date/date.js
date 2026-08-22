@@ -47,8 +47,8 @@ function checkDate(cleanText, noStringsText, doc) {
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Warning: Argument 1 to 'date' should be Integer (timestamp) or String, but got ${actual}.`,
-                        vscode.DiagnosticSeverity.Warning,
+                        `Error: Argument 1 to 'date' should be Integer (timestamp) or String, but got ${actual}.`,
+                        vscode.DiagnosticSeverity.Error,
                         'bml-function-arg-type'
                     ));
                 }
@@ -60,8 +60,8 @@ function checkDate(cleanText, noStringsText, doc) {
                         const endPos = doc.positionAt(closeParenIndex + 1);
                         diagnostics.push(makeDiagnostic(
                             new vscode.Range(startPos, endPos),
-                            `Warning: Argument ${i + 1} to 'date' should be Integer, but got ${actual}.`,
-                            vscode.DiagnosticSeverity.Warning,
+                            `Error: Argument ${i + 1} to 'date' should be Integer, but got ${actual}.`,
+                            vscode.DiagnosticSeverity.Error,
                             'bml-function-arg-type'
                         ));
                     }

@@ -104,8 +104,8 @@ function checkOthers(cleanText, noStringsText, doc) {
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Warning: Argument 1 to 'stringbuilder' should be String or String[], but got ${actual1}.`,
-                        vscode.DiagnosticSeverity.Warning,
+                        `Error: Argument 1 to 'stringbuilder' should be String or String[], but got ${actual1}.`,
+                        vscode.DiagnosticSeverity.Error,
                         'bml-function-arg-type'
                     ));
                 }
@@ -117,8 +117,8 @@ function checkOthers(cleanText, noStringsText, doc) {
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Warning: Argument 2 to 'stringbuilder' should be String, but got ${actual2}.`,
-                        vscode.DiagnosticSeverity.Warning,
+                        `Error: Argument 2 to 'stringbuilder' should be String, but got ${actual2}.`,
+                        vscode.DiagnosticSeverity.Error,
                         'bml-function-arg-type'
                     ));
                 }
@@ -130,8 +130,8 @@ function checkOthers(cleanText, noStringsText, doc) {
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Warning: Argument 3 to 'stringbuilder' should be Boolean, but got ${actual3}.`,
-                        vscode.DiagnosticSeverity.Warning,
+                        `Error: Argument 3 to 'stringbuilder' should be Boolean, but got ${actual3}.`,
+                        vscode.DiagnosticSeverity.Error,
                         'bml-function-arg-type'
                     ));
                 }

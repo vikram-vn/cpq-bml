@@ -216,6 +216,11 @@
   },
   {
     "line": 27,
+    "severity": "Error",
+    "message": "Error: Argument 1 to 'json' should be String, but got Integer."
+  },
+  {
+    "line": 27,
     "severity": "Information",
     "message": "Style Info: Variable 'val_json_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_json_neg3')."
   },
@@ -223,11 +228,6 @@
     "line": 27,
     "severity": "Hint",
     "message": "Unused variable: val_json_neg3"
-  },
-  {
-    "line": 27,
-    "severity": "Warning",
-    "message": "Warning: Argument 1 to 'json' should be String, but got Integer."
   },
   {
     "line": 28,
@@ -248,6 +248,11 @@
     "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_json_neg4"
+  },
+  {
+    "line": 29,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 29,
@@ -566,6 +571,11 @@
   },
   {
     "line": 51,
+    "severity": "Error",
+    "message": "Error: Argument 1 to 'jsonarray' should be String, but got Integer."
+  },
+  {
+    "line": 51,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_jsonarray_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -578,11 +588,6 @@
     "line": 51,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_neg3"
-  },
-  {
-    "line": 51,
-    "severity": "Warning",
-    "message": "Warning: Argument 1 to 'jsonarray' should be String, but got Integer."
   },
   {
     "line": 52,
@@ -608,6 +613,11 @@
     "line": 52,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarray_neg4"
+  },
+  {
+    "line": 53,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 53,
@@ -911,6 +921,11 @@
   },
   {
     "line": 76,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 76,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.jsonnull(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -1206,7 +1221,7 @@
   },
   {
     "line": 97,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonkeys' should be Boolean, but got a String value."
   },
   {
@@ -1226,7 +1241,7 @@
   },
   {
     "line": 98,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonkeys' should be Json, but got a String value."
   },
   {
@@ -1263,6 +1278,11 @@
     "line": 99,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_neg4"
+  },
+  {
+    "line": 100,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 100,
@@ -1521,7 +1541,7 @@
   },
   {
     "line": 122,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsontostr' should be Json, but got a String value."
   },
   {
@@ -1548,6 +1568,11 @@
     "line": 123,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_neg4"
+  },
+  {
+    "line": 124,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 124,
@@ -1801,12 +1826,12 @@
   },
   {
     "line": 148,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonget' should be Json, but got a String value."
   },
   {
     "line": 148,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonget' should be String, but got a Integer value."
   },
   {
@@ -1838,6 +1863,11 @@
     "line": 149,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg4"
+  },
+  {
+    "line": 150,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 150,
@@ -2096,12 +2126,12 @@
   },
   {
     "line": 176,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonput' should be Json, but got a String value."
   },
   {
     "line": 176,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonput' should be String, but got a Integer value."
   },
   {
@@ -2138,6 +2168,11 @@
     "line": 177,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg4"
+  },
+  {
+    "line": 178,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 178,
@@ -2446,12 +2481,12 @@
   },
   {
     "line": 202,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonremove' should be Json, but got a String value."
   },
   {
     "line": 202,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonremove' should be String, but got a Integer value."
   },
   {
@@ -2493,6 +2528,11 @@
     "line": 203,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg4"
+  },
+  {
+    "line": 204,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 204,
@@ -2976,6 +3016,11 @@
   },
   {
     "line": 232,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 232,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.isjsonnull(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -3261,7 +3306,7 @@
   },
   {
     "line": 254,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonarraytostr' should be JsonArray, but got a String value."
   },
   {
@@ -3288,6 +3333,11 @@
     "line": 255,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraytostr_neg4"
+  },
+  {
+    "line": 256,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 256,
@@ -3596,12 +3646,12 @@
   },
   {
     "line": 280,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonarrayget' should be JsonArray, but got a String value."
   },
   {
     "line": 280,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonarrayget' should be Integer, but got a String value."
   },
   {
@@ -3633,6 +3683,11 @@
     "line": 281,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg4"
+  },
+  {
+    "line": 282,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 282,
@@ -3896,7 +3951,7 @@
   },
   {
     "line": 304,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonarraysize' should be JsonArray, but got a String value."
   },
   {
@@ -3923,6 +3978,11 @@
     "line": 305,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_neg4"
+  },
+  {
+    "line": 306,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 306,
@@ -4186,7 +4246,7 @@
   },
   {
     "line": 330,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonarrayappend' should be JsonArray, but got a String value."
   },
   {
@@ -4218,6 +4278,11 @@
     "line": 331,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg4"
+  },
+  {
+    "line": 332,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 332,
@@ -4521,12 +4586,12 @@
   },
   {
     "line": 356,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonarrayremove' should be JsonArray, but got a String value."
   },
   {
     "line": 356,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonarrayremove' should be Integer, but got a String value."
   },
   {
@@ -4558,6 +4623,11 @@
     "line": 357,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg4"
+  },
+  {
+    "line": 358,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 358,
@@ -4886,12 +4956,12 @@
   },
   {
     "line": 382,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonpathremove' should be Json, but got a String value."
   },
   {
     "line": 382,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonpathremove' should be String, but got a Integer value."
   },
   {
@@ -4933,6 +5003,11 @@
     "line": 383,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg4"
+  },
+  {
+    "line": 384,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 384,
@@ -5191,12 +5266,12 @@
   },
   {
     "line": 408,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonpathgetsingle' should be Json, but got a String value."
   },
   {
     "line": 408,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonpathgetsingle' should be String, but got a Integer value."
   },
   {
@@ -5228,6 +5303,11 @@
     "line": 409,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg4"
+  },
+  {
+    "line": 410,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 410,
@@ -5466,7 +5546,7 @@
   },
   {
     "line": 432,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsoncopy' should be Json, but got a String value."
   },
   {
@@ -5493,6 +5573,11 @@
     "line": 433,
     "severity": "Hint",
     "message": "Unused variable: val_jsoncopy_neg4"
+  },
+  {
+    "line": 434,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 434,
@@ -5806,7 +5891,7 @@
   },
   {
     "line": 456,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonarraycopy' should be JsonArray, but got a String value."
   },
   {
@@ -5843,6 +5928,11 @@
     "line": 457,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_neg4"
+  },
+  {
+    "line": 458,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 458,
@@ -6176,12 +6266,12 @@
   },
   {
     "line": 482,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonpathcheck' should be Json, but got a String value."
   },
   {
     "line": 482,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonpathcheck' should be String, but got a Integer value."
   },
   {
@@ -6223,6 +6313,11 @@
     "line": 483,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg4"
+  },
+  {
+    "line": 484,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 484,
@@ -6556,12 +6651,12 @@
   },
   {
     "line": 510,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonpathset' should be Json, but got a String value."
   },
   {
     "line": 510,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonpathset' should be String, but got a Integer value."
   },
   {
@@ -6608,6 +6703,11 @@
     "line": 511,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg4"
+  },
+  {
+    "line": 512,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 512,
@@ -6911,7 +7011,7 @@
   },
   {
     "line": 535,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'jsonpathgetmultiple' should be Boolean, but got a String value."
   },
   {
@@ -6931,12 +7031,12 @@
   },
   {
     "line": 536,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonpathgetmultiple' should be Json, but got a String value."
   },
   {
     "line": 536,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'jsonpathgetmultiple' should be String, but got a Integer value."
   },
   {
@@ -6978,6 +7078,11 @@
     "line": 537,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg4"
+  },
+  {
+    "line": 538,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 538,
@@ -7236,7 +7341,7 @@
   },
   {
     "line": 560,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'jsonarrayrefid' should be JsonArray, but got a String value."
   },
   {
@@ -7263,6 +7368,11 @@
     "line": 561,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayrefid_neg4"
+  },
+  {
+    "line": 562,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 562,

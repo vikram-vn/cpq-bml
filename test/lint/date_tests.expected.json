@@ -271,12 +271,12 @@
   },
   {
     "line": 29,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'adddays' should be Date, but got a String value."
   },
   {
     "line": 29,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'adddays' should be Integer, but got a String value."
   },
   {
@@ -308,6 +308,11 @@
     "line": 30,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg4"
+  },
+  {
+    "line": 31,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 31,
@@ -626,12 +631,12 @@
   },
   {
     "line": 55,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'addmonths' should be Date, but got a String value."
   },
   {
     "line": 55,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'addmonths' should be Integer, but got a String value."
   },
   {
@@ -663,6 +668,11 @@
     "line": 56,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg4"
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 57,
@@ -916,7 +926,7 @@
   },
   {
     "line": 79,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'datetostr' should be Date, but got a String value."
   },
   {
@@ -943,6 +953,11 @@
     "line": 80,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_neg4"
+  },
+  {
+    "line": 81,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 81,
@@ -1171,7 +1186,7 @@
   },
   {
     "line": 102,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getdate' should be Record, but got a Boolean value."
   },
   {
@@ -1186,7 +1201,7 @@
   },
   {
     "line": 103,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getdate' should be Boolean, but got a String value."
   },
   {
@@ -1213,6 +1228,11 @@
     "line": 104,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_neg4"
+  },
+  {
+    "line": 105,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 105,
@@ -1461,12 +1481,12 @@
   },
   {
     "line": 129,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getdiffindays' should be Date, but got a String value."
   },
   {
     "line": 129,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getdiffindays' should be Date, but got a String value."
   },
   {
@@ -1493,6 +1513,11 @@
     "line": 130,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg4"
+  },
+  {
+    "line": 131,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 131,
@@ -1763,6 +1788,11 @@
     "line": 153,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_neg4"
+  },
+  {
+    "line": 154,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 154,
@@ -2136,7 +2166,7 @@
   },
   {
     "line": 176,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isleap' should be Integer, but got a String value."
   },
   {
@@ -2178,6 +2208,11 @@
     "line": 177,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg4"
+  },
+  {
+    "line": 178,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 178,
@@ -2516,7 +2551,7 @@
   },
   {
     "line": 200,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isweekend' should be Date, but got a String value."
   },
   {
@@ -2553,6 +2588,11 @@
     "line": 201,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg4"
+  },
+  {
+    "line": 202,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 202,
@@ -2876,12 +2916,12 @@
   },
   {
     "line": 226,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'minusdays' should be Date, but got a String value."
   },
   {
     "line": 226,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'minusdays' should be Integer, but got a String value."
   },
   {
@@ -2913,6 +2953,11 @@
     "line": 227,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg4"
+  },
+  {
+    "line": 228,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 228,
@@ -3276,6 +3321,11 @@
   },
   {
     "line": 254,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 254,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.strtodate(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -3546,12 +3596,12 @@
   },
   {
     "line": 278,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'strtojavadate' should be String, but got a Integer value."
   },
   {
     "line": 278,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'strtojavadate' should be String, but got a Integer value."
   },
   {
@@ -3588,6 +3638,11 @@
     "line": 279,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg4"
+  },
+  {
+    "line": 280,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 280,
@@ -3831,12 +3886,12 @@
   },
   {
     "line": 304,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'comparedates' should be Date, but got a String value."
   },
   {
     "line": 304,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'comparedates' should be Date, but got a String value."
   },
   {
@@ -3863,6 +3918,11 @@
     "line": 305,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg4"
+  },
+  {
+    "line": 306,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 306,
@@ -4133,6 +4193,11 @@
     "line": 328,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_neg4"
+  },
+  {
+    "line": 329,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 329,

@@ -86,10 +86,17 @@ async function validateFunction(context, vscode, args, transport) {
 async function deployFunction(context, vscode, args, transport) {
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
+    if (args.confirm !== true) {
+        return {
+            success: false,
+            variableName,
+            error: 'Deploying a function to the live CPQ environment requires human permission. Re-call with confirm:true to proceed.',
+        };
+    }
     const located = requireLocalFile(vscode, variableName);
     if (located.error) return { success: false, variableName, error: located.error };
 
-    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath, warningConfirm: 'Deploy' });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const result = await runDeployCurrentFile(context, vscodeProxy, terminal, { transport });
     return structuredOutcome({ variableName }, result, getLines());
@@ -153,19 +160,32 @@ async function massDeployUtilFunctions(context, vscode, args, transport) {
     if (!Array.isArray(variableNames) || variableNames.length === 0) {
         return { success: false, error: 'variableNames (a non-empty array) is required.' };
     }
+    if (args.confirm !== true) {
+        return {
+            success: false,
+            variableNames,
+            error: 'Mass deploying util functions to the live CPQ environment requires human permission. Re-call with confirm:true to proceed.',
+        };
+    }
 
     const quickPickSelector = (items) => items.filter((i) => variableNames.includes(i.item.variableName));
-    const { vscodeProxy } = createToolVscodeContext(vscode, { quickPickSelector });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { quickPickSelector, warningConfirm: 'Deploy' });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const result = await runDeployUtilFunctions(context, vscodeProxy, terminal, { transport });
     return structuredOutcome({ variableNames }, result, getLines());
 }
 
 async function deployCommerceProcess(context, vscode, args, transport) {
+    if (args && args.confirm !== true) {
+        return {
+            success: false,
+            error: 'Deploying a commerce process setup to the live CPQ environment requires human permission. Re-call with confirm:true to proceed.',
+        };
+    }
     const configOverrides = {};
     if (args && args.processVarName) configOverrides['rest.commerceProcess'] = args.processVarName;
 
-    const { vscodeProxy } = createToolVscodeContext(vscode, { configOverrides });
+    const { vscodeProxy } = createToolVscodeContext(vscode, { configOverrides, warningConfirm: 'Deploy' });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const result = await runDeployCommerceProcess(context, vscodeProxy, terminal, { transport });
     // No extra fields passed in: result.processVarName reflects what was actually resolved

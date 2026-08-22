@@ -120,7 +120,15 @@ suite("MCP tools - lifecycle", () => {
   });
 
   suite("deployFunction", () => {
-    test("deploys a single already-saved util function", () =>
+    test("refuses to run without confirm:true", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir);
+        const result = await tools.deployFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" });
+        assert.strictEqual(result.success, false);
+        assert.ok(result.error.includes("human permission"));
+      }));
+
+    test("deploys a single already-saved util function with confirm:true", () =>
       withTempDir(async (tmpDir) => {
         writeLocalUtilFunction(tmpDir);
         const calls = [];
@@ -128,7 +136,7 @@ suite("MCP tools - lifecycle", () => {
           calls.push(opts.path);
           return { statusCode: 204, headers: {}, text: "" };
         };
-        const result = await tools.deployFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, transport);
+        const result = await tools.deployFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString", confirm: true }, transport);
         assert.strictEqual(result.success, true);
         assert.strictEqual(result.variableName, "concatString");
         assert.ok(result.message.includes("deployed"));
@@ -138,7 +146,7 @@ suite("MCP tools - lifecycle", () => {
     test("rejects deploying a commerce function with a clear error", () =>
       withTempDir(async (tmpDir) => {
         writeLocalUtilFunction(tmpDir, { commerceProcess: "oraclecpqo", commerceDocument: "transaction" });
-        const result = await tools.deployFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString" }, async () => ({ statusCode: 200, headers: {}, text: "" }));
+        const result = await tools.deployFunction(makeContext(), vscodeRootedAt(tmpDir), { variableName: "concatString", confirm: true }, async () => ({ statusCode: 200, headers: {}, text: "" }));
         assert.strictEqual(result.success, false);
         assert.strictEqual(result.variableName, "concatString");
         assert.ok(result.error.includes("Deploy Commerce Process"));
@@ -221,7 +229,14 @@ suite("MCP tools - lifecycle", () => {
   });
 
   suite("massDeployUtilFunctions", () => {
-    test("deploys only the variableNames the caller selected", () =>
+    test("refuses to run without confirm:true", () =>
+      withTempDir(async (tmpDir) => {
+        const result = await tools.massDeployUtilFunctions(makeContext(), vscodeRootedAt(tmpDir), { variableNames: ["a"] });
+        assert.strictEqual(result.success, false);
+        assert.ok(result.error.includes("human permission"));
+      }));
+
+    test("deploys only the variableNames the caller selected with confirm:true", () =>
       withTempDir(async (tmpDir) => {
         const calls = [];
         const transport = async (opts) => {
@@ -232,7 +247,7 @@ suite("MCP tools - lifecycle", () => {
           return { statusCode: 204, headers: {}, text: "" };
         };
 
-        const result = await tools.massDeployUtilFunctions(makeContext(), vscodeRootedAt(tmpDir), { variableNames: ["a", "c"] }, transport);
+        const result = await tools.massDeployUtilFunctions(makeContext(), vscodeRootedAt(tmpDir), { variableNames: ["a", "c"], confirm: true }, transport);
 
         assert.strictEqual(result.success, true);
         assert.deepStrictEqual(result.variableNames, ["a", "c"]);
@@ -244,13 +259,20 @@ suite("MCP tools - lifecycle", () => {
       }));
 
     test("requires a non-empty variableNames array", async () => {
-      const result = await tools.massDeployUtilFunctions(makeContext(), createFakeVscode({}), {}, async () => {});
+      const result = await tools.massDeployUtilFunctions(makeContext(), createFakeVscode({}), { confirm: true }, async () => {});
       assert.strictEqual(result.success, false);
     });
   });
 
   suite("deployCommerceProcess", () => {
-    test("deploys the explicitly given processVarName and polls until complete", () =>
+    test("refuses to run without confirm:true", () =>
+      withTempDir(async (tmpDir) => {
+        const result = await tools.deployCommerceProcess(makeContext(), vscodeRootedAt(tmpDir), { processVarName: "customProc" });
+        assert.strictEqual(result.success, false);
+        assert.ok(result.error.includes("human permission"));
+      }));
+
+    test("deploys the explicitly given processVarName and polls until complete with confirm:true", () =>
       withTempDir(async (tmpDir) => {
         const calls = [];
         const transport = async (opts) => {
@@ -259,7 +281,7 @@ suite("MCP tools - lifecycle", () => {
           return jsonResponse(200, { status: "Completed" });
         };
 
-        const result = await tools.deployCommerceProcess(makeContext(), vscodeRootedAt(tmpDir), { processVarName: "customProc" }, transport);
+        const result = await tools.deployCommerceProcess(makeContext(), vscodeRootedAt(tmpDir), { processVarName: "customProc", confirm: true }, transport);
 
         assert.strictEqual(result.success, true);
         assert.strictEqual(result.processVarName, "customProc");

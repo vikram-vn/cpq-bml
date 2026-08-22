@@ -406,6 +406,11 @@
   },
   {
     "line": 33,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 33,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.gettabledata(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -878,6 +883,11 @@
     "line": 62,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg4"
+  },
+  {
+    "line": 63,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 63,
@@ -1386,7 +1396,7 @@
   },
   {
     "line": 85,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'haserror' should be RecordSet, but got a String value."
   },
   {
@@ -1438,6 +1448,11 @@
     "line": 86,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_neg4"
+  },
+  {
+    "line": 87,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 87,
@@ -1921,7 +1936,7 @@
   },
   {
     "line": 109,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getmessage' should be RecordSet, but got a String value."
   },
   {
@@ -1963,6 +1978,11 @@
     "line": 110,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_neg4"
+  },
+  {
+    "line": 111,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 111,
@@ -2096,7 +2116,7 @@
   },
   {
     "line": 118,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2131,7 +2151,7 @@
   },
   {
     "line": 122,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2146,7 +2166,7 @@
   },
   {
     "line": 123,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2176,7 +2196,7 @@
   },
   {
     "line": 124,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2221,7 +2241,7 @@
   },
   {
     "line": 126,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2236,7 +2256,7 @@
   },
   {
     "line": 130,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2251,7 +2271,7 @@
   },
   {
     "line": 131,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2266,7 +2286,7 @@
   },
   {
     "line": 132,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2311,12 +2331,12 @@
   },
   {
     "line": 135,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a Integer value."
   },
   {
     "line": 135,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getint' should be String, but got a Integer value."
   },
   {
@@ -2341,7 +2361,7 @@
   },
   {
     "line": 136,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2361,6 +2381,11 @@
   },
   {
     "line": 137,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 137,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.getint(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -2376,7 +2401,7 @@
   },
   {
     "line": 138,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2396,7 +2421,7 @@
   },
   {
     "line": 139,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
@@ -2446,7 +2471,7 @@
   },
   {
     "line": 144,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2481,7 +2506,7 @@
   },
   {
     "line": 148,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2496,7 +2521,7 @@
   },
   {
     "line": 149,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2526,7 +2551,7 @@
   },
   {
     "line": 150,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2571,7 +2596,7 @@
   },
   {
     "line": 152,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2586,7 +2611,7 @@
   },
   {
     "line": 156,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2601,7 +2626,7 @@
   },
   {
     "line": 157,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2616,7 +2641,7 @@
   },
   {
     "line": 158,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2661,12 +2686,12 @@
   },
   {
     "line": 161,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a Integer value."
   },
   {
     "line": 161,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getfloat' should be String, but got a Integer value."
   },
   {
@@ -2691,7 +2716,7 @@
   },
   {
     "line": 162,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2711,6 +2736,11 @@
   },
   {
     "line": 163,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 163,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.getfloat(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -2726,7 +2756,7 @@
   },
   {
     "line": 164,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2746,7 +2776,7 @@
   },
   {
     "line": 165,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
@@ -2796,7 +2826,7 @@
   },
   {
     "line": 170,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -2841,7 +2871,7 @@
   },
   {
     "line": 174,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -2861,7 +2891,7 @@
   },
   {
     "line": 175,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -2896,7 +2926,7 @@
   },
   {
     "line": 176,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -2951,7 +2981,7 @@
   },
   {
     "line": 178,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -2971,7 +3001,7 @@
   },
   {
     "line": 182,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -2991,7 +3021,7 @@
   },
   {
     "line": 183,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -3011,7 +3041,7 @@
   },
   {
     "line": 184,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -3071,12 +3101,12 @@
   },
   {
     "line": 187,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a Integer value."
   },
   {
     "line": 187,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getboolean' should be String, but got a Integer value."
   },
   {
@@ -3106,7 +3136,7 @@
   },
   {
     "line": 188,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -3131,6 +3161,11 @@
   },
   {
     "line": 189,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 189,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.getboolean(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -3146,7 +3181,7 @@
   },
   {
     "line": 190,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -3171,7 +3206,7 @@
   },
   {
     "line": 191,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
@@ -3231,7 +3266,7 @@
   },
   {
     "line": 196,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3261,7 +3296,7 @@
   },
   {
     "line": 199,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3276,7 +3311,7 @@
   },
   {
     "line": 200,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3306,7 +3341,7 @@
   },
   {
     "line": 201,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3346,7 +3381,7 @@
   },
   {
     "line": 203,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3361,7 +3396,7 @@
   },
   {
     "line": 206,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3376,7 +3411,7 @@
   },
   {
     "line": 207,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3391,7 +3426,7 @@
   },
   {
     "line": 208,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3421,12 +3456,12 @@
   },
   {
     "line": 210,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
     "line": 210,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'gettransaction' should be Json, but got a String value."
   },
   {
@@ -3456,7 +3491,7 @@
   },
   {
     "line": 212,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
@@ -3473,6 +3508,11 @@
     "line": 212,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg4"
+  },
+  {
+    "line": 213,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 213,
@@ -3506,7 +3546,7 @@
   },
   {
     "line": 215,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {

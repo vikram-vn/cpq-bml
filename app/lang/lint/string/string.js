@@ -128,8 +128,8 @@ function checkString(cleanText, noStringsText, doc) {
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
                         new vscode.Range(startPos, endPos),
-                        `Warning: Argument 1 to 'string' should be Float, Integer, or Boolean, but got ${actual}.`,
-                        vscode.DiagnosticSeverity.Warning,
+                        `Error: Argument 1 to 'string' should be Float, Integer, or Boolean, but got ${actual}.`,
+                        vscode.DiagnosticSeverity.Error,
                         'bml-function-arg-type'
                     ));
                 }

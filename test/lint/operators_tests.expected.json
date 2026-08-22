@@ -336,7 +336,7 @@
   },
   {
     "line": 99,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'atoi' should be String, but got a Integer value."
   },
   {

@@ -46,7 +46,7 @@
   },
   {
     "line": 12,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -76,7 +76,7 @@
   },
   {
     "line": 15,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -91,7 +91,7 @@
   },
   {
     "line": 16,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -121,7 +121,7 @@
   },
   {
     "line": 17,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -166,7 +166,7 @@
   },
   {
     "line": 19,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -181,7 +181,7 @@
   },
   {
     "line": 22,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -196,7 +196,7 @@
   },
   {
     "line": 23,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -211,7 +211,7 @@
   },
   {
     "line": 24,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -256,7 +256,7 @@
   },
   {
     "line": 27,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a Integer value."
   },
   {
@@ -276,7 +276,7 @@
   },
   {
     "line": 28,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -293,6 +293,11 @@
     "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_getarrayattrstring_neg4"
+  },
+  {
+    "line": 29,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 29,
@@ -326,7 +331,7 @@
   },
   {
     "line": 31,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
@@ -561,12 +566,12 @@
   },
   {
     "line": 53,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getconfigattrvalue' should be String, but got a Integer value."
   },
   {
     "line": 53,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getconfigattrvalue' should be String, but got a Integer value."
   },
   {
@@ -603,6 +608,11 @@
     "line": 54,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_neg4"
+  },
+  {
+    "line": 55,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 55,
@@ -938,6 +948,11 @@
     "line": 78,
     "severity": "Hint",
     "message": "Unused variable: val_print_neg4"
+  },
+  {
+    "line": 79,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 79,
@@ -1281,7 +1296,7 @@
   },
   {
     "line": 101,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'isnull' should be String or Date or Array or dict or Json, but got a Integer value."
   },
   {
@@ -1323,6 +1338,11 @@
     "line": 102,
     "severity": "Hint",
     "message": "Unused variable: val_isnull_neg4"
+  },
+  {
+    "line": 103,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 103,
@@ -1618,6 +1638,11 @@
     "line": 126,
     "severity": "Hint",
     "message": "Unused variable: val_getreasonstatus_neg4"
+  },
+  {
+    "line": 127,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 127,
@@ -1931,12 +1956,12 @@
   },
   {
     "line": 151,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'logtime' should be String, but got a Integer value."
   },
   {
     "line": 151,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'logtime' should be Integer, but got a String value."
   },
   {
@@ -1973,6 +1998,11 @@
     "line": 152,
     "severity": "Hint",
     "message": "Unused variable: val_logtime_neg4"
+  },
+  {
+    "line": 153,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 153,
@@ -2221,7 +2251,7 @@
   },
   {
     "line": 174,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getoldvalue' should be Integer, but got a String value."
   },
   {
@@ -2236,7 +2266,7 @@
   },
   {
     "line": 175,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getoldvalue' should be String, but got a Integer value."
   },
   {
@@ -2268,6 +2298,11 @@
     "line": 176,
     "severity": "Hint",
     "message": "Unused variable: val_getoldvalue_neg4"
+  },
+  {
+    "line": 177,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 177,
@@ -2571,12 +2606,12 @@
   },
   {
     "line": 201,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'savebom' should be Integer, but got a String value."
   },
   {
     "line": 201,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'savebom' should be Json, but got a String value."
   },
   {
@@ -2608,6 +2643,11 @@
     "line": 202,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_neg4"
+  },
+  {
+    "line": 203,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 203,
@@ -2966,7 +3006,7 @@
   },
   {
     "line": 226,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'getbom' should be String[], but got a String value."
   },
   {
@@ -2991,12 +3031,12 @@
   },
   {
     "line": 227,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getbom' should be Integer, but got a String value."
   },
   {
     "line": 227,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getbom' should be Integer, but got a String value."
   },
   {
@@ -3033,6 +3073,11 @@
     "line": 228,
     "severity": "Hint",
     "message": "Unused variable: val_getbom_neg4"
+  },
+  {
+    "line": 229,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 229,
@@ -3386,12 +3431,12 @@
   },
   {
     "line": 253,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getconfigbom' should be Integer, but got a String value."
   },
   {
     "line": 253,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getconfigbom' should be Boolean, but got a String value."
   },
   {
@@ -3423,6 +3468,11 @@
     "line": 254,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigbom_neg4"
+  },
+  {
+    "line": 255,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 255,
@@ -3701,12 +3751,12 @@
   },
   {
     "line": 279,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'calculateconfiguration' should be String, but got a Integer value."
   },
   {
     "line": 279,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'calculateconfiguration' should be JsonArray, but got a String value."
   },
   {
@@ -3738,6 +3788,11 @@
     "line": 280,
     "severity": "Hint",
     "message": "Unused variable: val_calculateconfiguration_neg4"
+  },
+  {
+    "line": 281,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 281,
@@ -3966,7 +4021,7 @@
   },
   {
     "line": 304,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'applybom' should be Json, but got a String value."
   },
   {
@@ -3981,12 +4036,12 @@
   },
   {
     "line": 305,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'applybom' should be Json, but got a String value."
   },
   {
     "line": 305,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'applybom' should be Json, but got a String value."
   },
   {
@@ -4013,6 +4068,11 @@
     "line": 306,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_neg4"
+  },
+  {
+    "line": 307,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 307,
@@ -4246,7 +4306,7 @@
   },
   {
     "line": 332,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 4 to 'calculatedeltabom' should be Json, but got a String value."
   },
   {
@@ -4261,17 +4321,17 @@
   },
   {
     "line": 333,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'calculatedeltabom' should be Json, but got a String value."
   },
   {
     "line": 333,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'calculatedeltabom' should be Json, but got a String value."
   },
   {
     "line": 333,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'calculatedeltabom' should be Json, but got a String value."
   },
   {
@@ -4298,6 +4358,11 @@
     "line": 334,
     "severity": "Hint",
     "message": "Unused variable: val_calculatedeltabom_neg4"
+  },
+  {
+    "line": 335,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 335,
@@ -4521,7 +4586,7 @@
   },
   {
     "line": 356,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'saveconfigbom' should be Dictionary, but got a String value."
   },
   {
@@ -4536,7 +4601,7 @@
   },
   {
     "line": 357,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'saveconfigbom' should be Json, but got a String value."
   },
   {
@@ -4563,6 +4628,11 @@
     "line": 358,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_neg4"
+  },
+  {
+    "line": 359,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 359,
@@ -4821,7 +4891,7 @@
   },
   {
     "line": 383,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'usersessionset' should be String, but got a Integer value."
   },
   {
@@ -4858,6 +4928,11 @@
     "line": 384,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_neg4"
+  },
+  {
+    "line": 385,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 385,
@@ -5096,7 +5171,7 @@
   },
   {
     "line": 407,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'usersessionget' should be String, but got a Integer value."
   },
   {
@@ -5128,6 +5203,11 @@
     "line": 408,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionget_neg4"
+  },
+  {
+    "line": 409,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 409,
@@ -5361,7 +5441,7 @@
   },
   {
     "line": 430,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'globaldictget' should be Boolean, but got a String value."
   },
   {
@@ -5376,7 +5456,7 @@
   },
   {
     "line": 431,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'globaldictget' should be String, but got a Integer value."
   },
   {
@@ -5408,6 +5488,11 @@
     "line": 432,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictget_neg4"
+  },
+  {
+    "line": 433,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 433,
@@ -5716,7 +5801,7 @@
   },
   {
     "line": 455,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'usersessionremove' should be String, but got a Integer value."
   },
   {
@@ -5758,6 +5843,11 @@
     "line": 456,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionremove_neg4"
+  },
+  {
+    "line": 457,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 457,
@@ -6086,7 +6176,7 @@
   },
   {
     "line": 479,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'globaldictremove' should be String, but got a Integer value."
   },
   {
@@ -6128,6 +6218,11 @@
     "line": 480,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictremove_neg4"
+  },
+  {
+    "line": 481,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 481,
@@ -6386,7 +6481,7 @@
   },
   {
     "line": 502,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'throwerror' should be Boolean, but got a String value."
   },
   {
@@ -6401,7 +6496,7 @@
   },
   {
     "line": 503,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'throwerror' should be String, but got a Integer value."
   },
   {
@@ -6433,6 +6528,11 @@
     "line": 504,
     "severity": "Hint",
     "message": "Unused variable: val_throwerror_neg4"
+  },
+  {
+    "line": 505,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 505,
@@ -6791,7 +6891,7 @@
   },
   {
     "line": 527,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getuuid' should be Integer, but got a String value."
   },
   {
@@ -6833,6 +6933,11 @@
     "line": 528,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_neg4"
+  },
+  {
+    "line": 529,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 529,
@@ -7111,7 +7216,7 @@
   },
   {
     "line": 551,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'convertbomtohier' should be Json, but got a String value."
   },
   {
@@ -7138,6 +7243,11 @@
     "line": 552,
     "severity": "Hint",
     "message": "Unused variable: val_convertbomtohier_neg4"
+  },
+  {
+    "line": 553,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 553,
@@ -7386,7 +7496,7 @@
   },
   {
     "line": 575,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'convertbomtoflat' should be Json, but got a String value."
   },
   {
@@ -7413,6 +7523,11 @@
     "line": 576,
     "severity": "Hint",
     "message": "Unused variable: val_convertbomtoflat_neg4"
+  },
+  {
+    "line": 577,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 577,
@@ -7706,7 +7821,7 @@
   },
   {
     "line": 598,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'getattachmentdata' should be Boolean, but got a String value."
   },
   {
@@ -7726,7 +7841,7 @@
   },
   {
     "line": 599,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getattachmentdata' should be String, but got a Integer value."
   },
   {
@@ -7768,6 +7883,11 @@
     "line": 600,
     "severity": "Hint",
     "message": "Unused variable: val_getattachmentdata_neg4"
+  },
+  {
+    "line": 601,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 601,
@@ -8026,7 +8146,7 @@
   },
   {
     "line": 624,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 3 to 'globaldictset' should be Integer, but got a String value."
   },
   {
@@ -8041,12 +8161,12 @@
   },
   {
     "line": 625,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'globaldictset' should be String, but got a Integer value."
   },
   {
     "line": 625,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'globaldictset' should be String, but got a Integer value."
   },
   {
@@ -8083,6 +8203,11 @@
     "line": 626,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_neg4"
+  },
+  {
+    "line": 627,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 627,
@@ -8381,7 +8506,7 @@
   },
   {
     "line": 649,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'addpartstotransaction' should be JsonArray or Json or gt, but got a String value."
   },
   {
@@ -8418,6 +8543,11 @@
     "line": 650,
     "severity": "Hint",
     "message": "Unused variable: val_addpartstotransaction_neg4"
+  },
+  {
+    "line": 651,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 651,
@@ -8781,6 +8911,11 @@
   },
   {
     "line": 674,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 674,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.validatequoteforagreement(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -9066,12 +9201,12 @@
   },
   {
     "line": 698,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'generatehmacmessage' should be String, but got a Integer value."
   },
   {
     "line": 698,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 2 to 'generatehmacmessage' should be String, but got a Integer value."
   },
   {
@@ -9108,6 +9243,11 @@
     "line": 699,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_neg4"
+  },
+  {
+    "line": 700,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 700,
@@ -9406,7 +9546,7 @@
   },
   {
     "line": 722,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'addtotransaction' should be JsonArray or Json or gt, but got a String value."
   },
   {
@@ -9443,6 +9583,11 @@
     "line": 723,
     "severity": "Hint",
     "message": "Unused variable: val_addtotransaction_neg4"
+  },
+  {
+    "line": 724,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 724,
@@ -9701,6 +9846,11 @@
   },
   {
     "line": 746,
+    "severity": "Error",
+    "message": "Error: Argument 1 to 'stringbuilder' should be String or String[], but got Integer."
+  },
+  {
+    "line": 746,
     "severity": "Information",
     "message": "Style Info: Variable 'val_stringbuilder_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_neg3')."
   },
@@ -9708,11 +9858,6 @@
     "line": 746,
     "severity": "Hint",
     "message": "Unused variable: val_stringbuilder_neg3"
-  },
-  {
-    "line": 746,
-    "severity": "Warning",
-    "message": "Warning: Argument 1 to 'stringbuilder' should be String or String[], but got Integer."
   },
   {
     "line": 747,
@@ -9728,6 +9873,11 @@
     "line": 747,
     "severity": "Hint",
     "message": "Unused variable: val_stringbuilder_neg4"
+  },
+  {
+    "line": 748,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 748,
@@ -9986,6 +10136,11 @@
   },
   {
     "line": 772,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 772,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.sbappend(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -10226,7 +10381,7 @@
   },
   {
     "line": 794,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'sbtostring' should be StringBuilder, but got a String value."
   },
   {
@@ -10253,6 +10408,11 @@
     "line": 795,
     "severity": "Hint",
     "message": "Unused variable: val_sbtostring_neg4"
+  },
+  {
+    "line": 796,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 796,
@@ -10566,7 +10726,7 @@
   },
   {
     "line": 818,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'getsystemattrvalues' should be String, but got a Integer value."
   },
   {
@@ -10608,6 +10768,11 @@
     "line": 819,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemattrvalues_neg4"
+  },
+  {
+    "line": 820,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 820,
@@ -10976,6 +11141,11 @@
   },
   {
     "line": 844,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 844,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.getsystemmultipleattrvalues(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -11271,6 +11441,11 @@
   },
   {
     "line": 867,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 867,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.getsystemdata(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -11366,7 +11541,7 @@
   },
   {
     "line": 874,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11396,7 +11571,7 @@
   },
   {
     "line": 877,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11411,7 +11586,7 @@
   },
   {
     "line": 878,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11441,7 +11616,7 @@
   },
   {
     "line": 879,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11481,7 +11656,7 @@
   },
   {
     "line": 881,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11496,7 +11671,7 @@
   },
   {
     "line": 884,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11511,7 +11686,7 @@
   },
   {
     "line": 885,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11526,7 +11701,7 @@
   },
   {
     "line": 886,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11586,7 +11761,7 @@
   },
   {
     "line": 890,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -11603,6 +11778,11 @@
     "line": 890,
     "severity": "Hint",
     "message": "Unused variable: val_importtransactiondata_neg4"
+  },
+  {
+    "line": 891,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 891,
@@ -11636,7 +11816,7 @@
   },
   {
     "line": 893,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
@@ -12066,6 +12246,11 @@
   },
   {
     "line": 923,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 923,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.setattributevalue(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -12431,6 +12616,11 @@
   },
   {
     "line": 946,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 946,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.getcoveragesupportdict(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
@@ -12751,7 +12941,7 @@
   },
   {
     "line": 968,
-    "severity": "Warning",
+    "severity": "Error",
     "message": "Argument 1 to 'configureabo' should be Integer, but got a String value."
   },
   {
@@ -12783,6 +12973,11 @@
     "line": 969,
     "severity": "Hint",
     "message": "Unused variable: val_configureabo_neg4"
+  },
+  {
+    "line": 970,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
     "line": 970,
