@@ -19,6 +19,17 @@ function getPerformanceFixes(document, diag, editRange) {
             fixes.push(action);
         }
     }
+    else if (diag.code === 'bml-bmql-in-loop') {
+        const action = new vscode.CodeAction("Add comment marker to batch query outside loop", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        const lineIndex = editRange.start.line;
+        const lineText = document.lineAt(lineIndex).text;
+        const indent = lineText.match(/^\s*/)[0];
+        const lineStartPos = new vscode.Position(lineIndex, 0);
+        action.edit.insert(document.uri, lineStartPos, `${indent}// OPTIMIZATION: batch BMQL query outside of loop to prevent N+1 queries\n`);
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
 
     return fixes;
 }

@@ -35,14 +35,7 @@ function severityLabel(vscode, severity) {
     }
 }
 
-/**
- * explain_function
- *
- * Returns structured documentation for a locally pulled BML function:
- * the docHeader block comment, first 50 code lines, parameter list,
- * and return type sourced from the -meta.json sidecar.
- * Works fully offline — no CPQ REST call required.
- */
+// explain_function: Returns structured documentation for a locally pulled BML function.
 async function explainFunction(context, vscode, args) {
     const { variableName } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };

@@ -19,9 +19,7 @@ const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testi
 // makes. Not available on every Node version the extension host may bundle.
 const DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT_MS = 1000;
 
-/**
- * @param {vscode.ExtensionContext} context
- */
+// Main activation entry point for CPQ-BML extension host
 function activate(context) {
   const output = vscode.window.createOutputChannel("CPQ-BML");
   context.subscriptions.push(output);

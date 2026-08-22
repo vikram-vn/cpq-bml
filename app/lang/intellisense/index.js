@@ -34,13 +34,7 @@ let cachedSystemItems = null;
 let cachedCpqjsItems = null;
 let cachedAllAttributes = null;
 
-/**
- * Load and merge the BML API JSON files, tagging each entry with which file
- * it came from. These are static bundled resources, so this only ever reads
- * from disk once per extension-host session; registerBmlIntelliSense() wires
- * up a file watcher to invalidate the cache if they're regenerated on disk
- * (e.g. via `yarn generate:intellisense` while VS Code is open).
- */
+// Load and merge BML API JSON files, cached in memory per extension host session.
 function loadApiData(context) {
     if (apiDataLoaded) {
         return bmlApiData;

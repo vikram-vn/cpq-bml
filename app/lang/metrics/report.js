@@ -3,10 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { computeComplexity } = require('./complexity');
 
-/**
- * Collects metrics and diagnostic counts for all *.bml files in the workspace.
- * Returns an array of file report objects suitable for the WebView.
- */
+// Collects metrics and diagnostic counts for all *.bml files in the workspace.
 async function buildWorkspaceReport(diagnosticCollection) {
     const uris = await vscode.workspace.findFiles('**/*.bml', '**/node_modules/**');
     const files = [];

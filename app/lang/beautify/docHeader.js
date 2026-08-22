@@ -2,21 +2,7 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Auto Doc-Header Insertion
- *
- * Triggered when the user types `///` at the beginning of a line in a .bml file.
- * Inserts a fully-formed BML docHeader block comment, pre-populated from the
- * file's -meta.json sidecar when available.
- *
- * Template:
- *   /*
- *    * Function Name: <name>
- *    * Description: 
- *    * Inputs: <param1> (<type>), ...
- *    * Returns: <returnType>
- *    *\/
- */
+// Auto Doc-Header Insertion: Triggered when the user types /// at the beginning of a line.
 function registerDocHeaderCompletion(context) {
     const provider = vscode.languages.registerCompletionItemProvider(
         'bml',

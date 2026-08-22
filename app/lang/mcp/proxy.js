@@ -108,7 +108,8 @@ function createCapturingTerminal(realTerminal) {
             writeLine: (l) => {
                 lines.push(l);
                 if (realTerminal) {
-                    try { realTerminal.writeLine(`[MCP] ${l}`); } catch (e) { /* best-effort */ }
+                    try { realTerminal.writeLine(`[MCP] ${l}`); } catch (e) { // best-effort
+                    }
                 }
                 try {
                     if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
@@ -123,12 +124,14 @@ function createCapturingTerminal(realTerminal) {
             },
             show: () => {
                 if (realTerminal) {
-                    try { realTerminal.show(); } catch (e) { /* best-effort */ }
+                    try { realTerminal.show(); } catch (e) { // best-effort
+                    }
                 }
             },
             clear: () => {
                 if (realTerminal) {
-                    try { realTerminal.clear(); } catch (e) { /* best-effort */ }
+                    try { realTerminal.clear(); } catch (e) { // best-effort
+                    }
                 }
             },
         },

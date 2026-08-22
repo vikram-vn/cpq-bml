@@ -114,15 +114,6 @@ function checkCommerceAttributes(cleanText, noStringsText, doc, vscodeModule, ex
                 vscode.DiagnosticSeverity.Warning,
                 'bml-commerce-attribute-scope-mismatch'
             ));
-        } else if (isLineVar && attrScope === 'transaction') {
-            const startPos = doc.positionAt(match.index);
-            const endPos = doc.positionAt(match.index + match[0].length);
-            diagnostics.push(makeDiagnostic(
-                new vscode.Range(startPos, endPos),
-                `Commerce Attribute Scope Error: '${attrName}' is a Transaction header level attribute, but is accessed on Line Item object '${varName}'. Transaction-level attributes are accessed on the parent transaction context.`,
-                vscode.DiagnosticSeverity.Warning,
-                'bml-commerce-attribute-scope-mismatch'
-            ));
         }
     }
 
@@ -140,7 +131,6 @@ function checkCommerceAttributes(cleanText, noStringsText, doc, vscodeModule, ex
         if (attrScope === 'unknown') continue;
 
         const isTransactionVar = transactionLoopVars.has(varLower) || ['transaction', 'transactionrow', 'trans', 'transrecord', 'header', 'quote', 'parentrecord'].includes(varLower) || (varLower.includes('transaction') && !varLower.includes('line'));
-        const isLineVar = lineLoopVars.has(varLower) || ['line', 'linerow', 'lineitem', 'linerecord', 'row', 'item'].includes(varLower) || (varLower.includes('line') && !varLower.includes('items') && !varLower.includes('array') && !varLower.includes('list'));
 
         if (isTransactionVar && attrScope === 'line') {
             const startPos = doc.positionAt(match.index);
@@ -148,15 +138,6 @@ function checkCommerceAttributes(cleanText, noStringsText, doc, vscodeModule, ex
             diagnostics.push(makeDiagnostic(
                 new vscode.Range(startPos, endPos),
                 `Commerce Attribute Scope Error: '${attrName}' is a Line Item level attribute, but is accessed on Transaction object '${varName}'. Line-level attributes must be read from line items inside _line_items.`,
-                vscode.DiagnosticSeverity.Warning,
-                'bml-commerce-attribute-scope-mismatch'
-            ));
-        } else if (isLineVar && attrScope === 'transaction') {
-            const startPos = doc.positionAt(match.index);
-            const endPos = doc.positionAt(match.index + match[0].length);
-            diagnostics.push(makeDiagnostic(
-                new vscode.Range(startPos, endPos),
-                `Commerce Attribute Scope Error: '${attrName}' is a Transaction header level attribute, but is accessed on Line Item object '${varName}'. Transaction-level attributes are accessed on the parent transaction context.`,
                 vscode.DiagnosticSeverity.Warning,
                 'bml-commerce-attribute-scope-mismatch'
             ));

@@ -1,13 +1,5 @@
 "use strict";
-/**
- * Beautifier options for BML.
- *
- * Only options that map to an actual BML formatting decision are exposed here -
- * no e4x/XML-literal flag, no comma-first style, no chained-method indentation, no
- * per-templating-language switches, and no separate anonymous/named "function" spacing,
- * since BML has none of those constructs (each Function Editor script body is itself one
- * function - there's no `function` keyword to space around).
- */
+// Beautifier options for BML formatting configuration.
 
 function normalizeKeys(options) {
   const result = {};

@@ -83,4 +83,17 @@ suite('BML Linter Test Suite - Null Safety', () => {
         const nullDiags = diags.filter(d => d.code === 'bml-null-check-required');
         assert.ok(nullDiags.length > 0, 'expression use before the loop must still be flagged');
     });
+
+    test('does not flag pre-initialized variable with fallback default value and contains guard', () => {
+        const diags = lintText(`
+            cur = 0;
+            if (contains(somedic, "somekey")) {
+                cur = get(somedic, "somekey");
+            }
+            test = cur + 10;
+            return test;
+        `);
+        const nullDiags = diags.filter(d => d.code === 'bml-null-check-required');
+        assert.strictEqual(nullDiags.length, 0, 'Should not flag pre-initialized variable with contains guard');
+    });
 });

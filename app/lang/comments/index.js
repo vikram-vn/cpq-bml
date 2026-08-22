@@ -21,14 +21,14 @@ function createDecorationTypes() {
             }
         }));
     }
-    // Directives change tool behavior, so they get a visually distinct style from tags.
+    // Directives change tool behavior - styled with light gray instead of bright purple.
     const directiveType = vscode.window.createTextEditorDecorationType({
-        color: '#B180FF',
-        fontWeight: 'bold',
-        backgroundColor: 'rgba(177, 128, 255, 0.12)',
+        color: '#AAAAAA',
+        fontWeight: 'normal',
+        backgroundColor: 'rgba(170, 170, 170, 0.12)',
         light: {
-            color: '#7F00FF',
-            backgroundColor: 'rgba(127, 0, 255, 0.08)'
+            color: '#666666',
+            backgroundColor: 'rgba(102, 102, 102, 0.08)'
         }
     });
     const docHeaderType = vscode.window.createTextEditorDecorationType({

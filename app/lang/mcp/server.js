@@ -29,9 +29,11 @@ function loadSkillsInstructions(extensionPath) {
         // Strip YAML frontmatter
         content = content.replace(/^---[\s\S]*?---\s*\n/, "");
         combined += content + "\n\n";
-      } catch { /* skill file missing or unreadable - skip */ }
+      } catch { // skill file missing or unreadable - skip
+      }
     }
-  } catch { /* skills dir missing - return empty */ }
+  } catch { // skills dir missing - return empty
+  }
   return combined.trim();
 }
 
@@ -48,15 +50,7 @@ function registerTools(server, context, vscode) {
 let httpServer = null;
 let boundPort = null;
 
-// Binds 127.0.0.1 only - access is restricted to processes on this machine.
-// Stateless mode (sessionIdGenerator: undefined) requires a fresh McpServer *and* a fresh
-// transport per request: the underlying low-level Server can only be bound to one transport
-// at a time, so reusing a single McpServer across concurrent requests lets one request's
-// connect() clobber another's transport. Some MCP clients (Claude Code included) tend to
-// serialize requests so this went unnoticed, but any client that opens concurrent requests
-// (parallel tool calls, or simply initialize + a fast follow-up) would get dropped/misrouted
-// responses. Creating both fresh per-request matches the SDK's own stateless-HTTP example and
-// keeps every client, not just Claude Code, working correctly.
+// Starts local stateless HTTP MCP Server bound to 127.0.0.1.
 async function startMcpServer(context, vscode, port) {
   if (httpServer) return { port: boundPort };
 

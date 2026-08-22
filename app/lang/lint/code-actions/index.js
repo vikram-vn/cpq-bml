@@ -25,6 +25,7 @@ function registerBmlCodeActions(context) {
                     const editRange = diag.originalRange ?? diag.range;
 
                     fixes.push(
+                        ...getSuppressionFixes(document, diag, editRange),
                         ...getSyntaxFixes(document, diag, editRange),
                         ...getQualityFixes(document, diag, editRange, extensionPath),
                         ...getStyleFixes(document, diag, editRange),
@@ -33,8 +34,7 @@ function registerBmlCodeActions(context) {
                         ...getApiFixes(document, diag, editRange),
                         ...getUnreachableFixes(document, diag, editRange),
                         ...getSecurityFixes(document, diag, editRange),
-                        ...getSpellingFixes(document, diag, editRange, extensionPath),
-                        ...getSuppressionFixes(document, diag, editRange)
+                        ...getSpellingFixes(document, diag, editRange, extensionPath)
                     );
                 });
                 return fixes;

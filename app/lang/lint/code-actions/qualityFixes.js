@@ -111,6 +111,36 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
             fixes.push(action);
         }
     }
+    else if (diag.code === 'bml-null-check-required') {
+        const varName = document.getText(editRange);
+        const lineIndex = editRange.start.line;
+        const lineText = document.lineAt(lineIndex).text;
+        const indent = lineText.match(/^\s*/)[0];
+
+        const guardAction = new vscode.CodeAction(`Wrap with null check 'if (not(isnull(${varName})))'`, vscode.CodeActionKind.QuickFix);
+        guardAction.edit = new vscode.WorkspaceEdit();
+        const lineRange = document.lineAt(lineIndex).range;
+        const wrappedCode = `${indent}if (not(isnull(${varName}))) {\n    ${lineText.trim()}\n${indent}}`;
+        guardAction.edit.replace(document.uri, lineRange, wrappedCode);
+        guardAction.diagnostics = [diag];
+        fixes.push(guardAction);
+    }
+    else if (diag.code === 'bml-unused-variable' || diag.code === 'bml-unused-loop-var') {
+        const varName = document.getText(editRange);
+        const action = new vscode.CodeAction(`Prefix unused variable with '_' ('_${varName}')`, vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, `_${varName}`);
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-array-negative-index') {
+        const idxText = document.getText(editRange);
+        const action0 = new vscode.CodeAction(`Replace negative index '${idxText}' with '0' (first element)`, vscode.CodeActionKind.QuickFix);
+        action0.edit = new vscode.WorkspaceEdit();
+        action0.edit.replace(document.uri, editRange, '0');
+        action0.diagnostics = [diag];
+        fixes.push(action0);
+    }
 
     return fixes;
 }
