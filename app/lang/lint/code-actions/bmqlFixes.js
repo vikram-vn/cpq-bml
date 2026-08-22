@@ -34,7 +34,8 @@ function getBmqlFixes(document, diag, editRange) {
         const text = document.getText(editRange);
         const action = new vscode.CodeAction("Convert dynamic concatenation to $variable substitution", vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
-        const replaced = text.replace(/["']\s*\+\s*([a-zA-Z_]\w*)/g, '$$$1"');
+        let replaced = text.replace(/["']\s*\+\s*([a-zA-Z_]\w*)\s*\+\s*["']/g, ' $$$1 ');
+        replaced = replaced.replace(/["']\s*\+\s*([a-zA-Z_]\w*)/g, ' $$$1"');
         action.edit.replace(document.uri, editRange, replaced);
         action.diagnostics = [diag];
         fixes.push(action);
