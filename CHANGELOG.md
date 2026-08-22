@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.38.0] - 2026-08-22
+
+### Added
+- Implement quick fixes for BMQL linting diagnostic issues.
+
 ## [1.37.0] - 2026-08-22
 
 ### Added
@@ -261,26 +266,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement REST client and log file download command for CPQ-BML.
 - Add command to download and display remote CPQ system logs.
 - Implement automated BML attribute dumping, add MCP configuration integration tests, and bump version to 1.28.0.
-- Implement automated document attribute dumping and logging for BML REST debug commands.
-- Add download-log and settings SVG icons to assets.
-- Add application-specific SVG icons to support new UI features.
-- Add debug icon SVG to assets directory.
-- Add custom SVG icons and implement MCP server configuration integration tests.
-- Replace built-in VS Code icons with custom SVG assets for extension commands.
-- Add UI icons and implement a BML linter performance profiling harness.
-- Add UI icons to BML commands, expose log download in navigation, and update lint performance profile.
-- Add linting engine and comprehensive unit test coverage for BML code analysis.
-- Implement BML linting engine with performance, spell-checking, and best-practices analysis modules.
-- Implement BML linting rules and automated AI skill synchronization, and bump version to 1.26.0.
-- Add BML linting rules and AI skill synchronization, and bump version to 1.25.0.
-- Implement linting rules for URL access, XML parsing, and BMQL safety with associated test suites.
-- Implement linting rules for logtime, globaldictset, generatehmacmessage, and stringbuilder functions.
-- Implement automatic AI skill synchronization for Claude, Cursor, and Copilot tools.
-- Implement automated AI skill synchronization for Claude, Cursor, and Copilot via native project configuration files.
-
-## [1.28.0] - 2026-07-12
-
-### Added
 - Implement automated document attribute dumping and logging for BML REST debug commands.
 - Add download-log and settings SVG icons to assets.
 - Add application-specific SVG icons to support new UI features.
