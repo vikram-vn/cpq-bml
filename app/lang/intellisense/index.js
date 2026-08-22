@@ -10,6 +10,7 @@ const {
 const { formatAsJsDoc } = require('./docFormatting');
 const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
 const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
+const { resolveParameterCompletions } = require('./paramCompletions');
 
 // Each source file holds a different kind of entry. Tracking that here gives
 // accurate completion icons/hover labels - "does this syntax contain '(' "
@@ -191,6 +192,15 @@ function registerBmlIntelliSense(context) {
                     buildCategorizedItems();
                 }
 
+                // Check if inside a function call expecting parameter completions
+                const activeCall = getActiveFunctionCall(document, position);
+                if (activeCall && activeCall.funcName) {
+                    const paramCompletions = resolveParameterCompletions(activeCall, document, position);
+                    if (paramCompletions) {
+                        return paramCompletions;
+                    }
+                }
+
                 const linePrefix = document.lineAt(position).text.substring(0, position.character);
                 const objMatch = linePrefix.match(/(\b\w+)\s*\.\s*[\w_]*$/i);
 
@@ -223,7 +233,7 @@ function registerBmlIntelliSense(context) {
                 return item;
             }
         },
-        '.', '(', '_'
+        '.', '(', '_', '"', '\'', ',', '+', '-', '/', ':'
     );
 
     const hoverProvider = vscode.languages.registerHoverProvider('bml', {

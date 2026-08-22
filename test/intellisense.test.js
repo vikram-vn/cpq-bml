@@ -172,4 +172,119 @@ suite('BML IntelliSense', () => {
 		assert.match(activeSig.label, /datetostr/i);
 		assert.strictEqual(sigHelp.activeParameter, 1, 'expected active parameter index to be 1');
 	});
+
+	test('completion in 3rd parameter of datetostr suggests timezones including GMT+4', async () => {
+		const content = 'twelvehour = datetostr(testDate, "yyyy-MM-dd hh:mm:ss a", "");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 58); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('GMT+4'), 'expected GMT+4 in timezone completions');
+		assert.ok(labels.includes('GMT-6'), 'expected GMT-6 in timezone completions');
+		assert.ok(labels.includes('UTC'), 'expected UTC in timezone completions');
+		assert.ok(labels.includes('America/New_York'), 'expected America/New_York in timezone completions');
+		assert.ok(labels.includes('Europe/Paris'), 'expected Europe/Paris in timezone completions');
+	});
+
+	test('completion in 3rd parameter of strtojavadate suggests Europe/Paris and America/Chicago', async () => {
+		const content = 'parisdate = strtojavadate("01/02/2010 16:30:40", "dd/MM/yyyy HH:mm:ss", "");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 73); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('Europe/Paris'), 'expected Europe/Paris in strtojavadate timezone completions');
+		assert.ok(labels.includes('America/Chicago'), 'expected America/Chicago in strtojavadate timezone completions');
+		assert.ok(labels.includes('GMT+4'), 'expected GMT+4 in strtojavadate timezone completions');
+	});
+
+	test('completion in 2nd parameter of formatascurrency suggests currency codes', async () => {
+		const content = 'val = formatascurrency(100.0, "");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 31); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('USD'), 'expected USD in currency completions');
+		assert.ok(labels.includes('EUR'), 'expected EUR in currency completions');
+		assert.ok(labels.includes('GBP'), 'expected GBP in currency completions');
+	});
+
+	test('completion in 2nd parameter of split suggests delimiters', async () => {
+		const content = 'arr = split(str, "");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 18); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes(','), 'expected comma in split delimiter completions');
+		assert.ok(labels.includes(';'), 'expected semicolon in split delimiter completions');
+		assert.ok(labels.includes('|'), 'expected pipe in split delimiter completions');
+	});
+
+	test('completion in 1st parameter of urldataaccess suggests HTTP methods', async () => {
+		const content = 'res = urldataaccess("");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 21); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('GET'), 'expected GET in HTTP method completions');
+		assert.ok(labels.includes('POST'), 'expected POST in HTTP method completions');
+		assert.ok(labels.includes('PUT'), 'expected PUT in HTTP method completions');
+		assert.ok(labels.includes('DELETE'), 'expected DELETE in HTTP method completions');
+	});
+
+	test('completion in 4th parameter of sendmail suggests content types', async () => {
+		const content = 'sendmail("to@test.com", "subject", "body", "");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 44); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('text/html'), 'expected text/html in sendmail content type completions');
+		assert.ok(labels.includes('text/plain'), 'expected text/plain in sendmail content type completions');
+	});
+
+	test('completion in 1st parameter of bmql suggests BMQL select template', async () => {
+		const content = 'rs = bmql("");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 11); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.some(l => l.includes('SELECT')), 'expected BMQL SELECT template');
+	});
+
+	test('completion in 1st parameter of CPQJS.getTableInfo suggests lineItemGrid', async () => {
+		const content = 'CPQJS.getTableInfo("");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 20); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('lineItemGrid'), 'expected lineItemGrid in CPQJS table completions');
+	});
+
+	test('completion in 2nd parameter of jsonpathget suggests JSONPath templates', async () => {
+		const content = 'val = jsonpathget(jsonObj, "");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 28); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('$.fieldName'), 'expected $.fieldName in JSONPath completions');
+	});
+
+	test('completion in 1st parameter of CPQJS.performAction suggests action variables', async () => {
+		const content = 'CPQJS.performAction("");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 21); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('saveAction'), 'expected saveAction in CPQJS action completions');
+		assert.ok(labels.includes('submitQuote'), 'expected submitQuote in CPQJS action completions');
+	});
 });
