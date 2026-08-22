@@ -486,9 +486,9 @@
     }
   },
   "scripts": {
-    "compile": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && esbuild app/lang/settings-panel/web-view/src/index.jsx --bundle --outfile=app/lang/settings-panel/web-view/dist/main.js --format=iife --platform=browser --jsx=automatic && python scripts/build/compress_dictionary.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py && python scripts/build/build_skills.py && python scripts/build/compress_ai.py",
+    "compile": "node scripts/build/compile.js",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
-    "vscode:prepublish": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && esbuild app/lang/settings-panel/web-view/src/index.jsx --bundle --outfile=app/lang/settings-panel/web-view/dist/main.js --format=iife --platform=browser --jsx=automatic --minify --legal-comments=none --define:process.env.NODE_ENV=\"'production'\" && python scripts/build/compress_dictionary.py && python scripts/build/minify_css.py && python scripts/build/minify_json.py && python scripts/build/build_skills.py && python scripts/build/compress_ai.py",
+    "vscode:prepublish": "node scripts/build/compile.js --production",
     "package": "npx @vscode/vsce package",
     "publish": "npx @vscode/vsce publish",
     "crawl:docs": "python scripts/docs/bml_crawler/crawler.py",
