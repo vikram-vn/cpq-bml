@@ -292,4 +292,60 @@ suite('BML Linter Test Suite - documented per-function constraints', () => {
             assert.ok(errDiag2, 'Should flag unsupported "OPTIONS"');
         });
     });
+
+    suite('Smart Parameter Type Check across variables and functions (bml-function-arg-type)', () => {
+        test('Flags jsonarrayappend(test, 1) when test is assigned a String', () => {
+            const diagnostics = lintText(`
+                test = "hello";
+                jsonarrayappend(test, 1);
+                return "";
+            `);
+            const err = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(err, 'Should flag passing string variable to jsonarrayappend expecting JsonArray');
+            assert.match(err.message, /Argument 1 to 'jsonarrayappend' should be JsonArray, but got a String value/);
+        });
+
+        test('Does not flag jsonarrayappend(myArr, 1) when myArr is a JsonArray', () => {
+            const diagnostics = lintText(`
+                myArr = jsonarray();
+                jsonarrayappend(myArr, 1);
+                return "";
+            `);
+            const err = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.strictEqual(err, undefined);
+        });
+
+        test('Flags adddays(strVal, 5) when strVal is assigned a String', () => {
+            const diagnostics = lintText(`
+                strVal = "2026-01-01";
+                res = adddays(strVal, 5);
+                return "";
+            `);
+            const err = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(err, 'Should flag passing String variable to adddays expecting Date');
+            assert.match(err.message, /Argument 1 to 'adddays' should be Date, but got a String value/);
+        });
+
+        test('Flags len(myDate) when myDate is assigned a Date', () => {
+            const diagnostics = lintText(`
+                myDate = getdate();
+                lengthVal = len(myDate);
+                return "";
+            `);
+            const err = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(err, 'Should flag passing Date to len expecting String');
+            assert.match(err.message, /Argument 1 to 'len' should be String, but got a Date value/);
+        });
+
+        test('Flags split(floatArr, ",") when floatArr is a Float[] array', () => {
+            const diagnostics = lintText(`
+                floatArr = float[5];
+                res = split(floatArr, ",");
+                return "";
+            `);
+            const err = diagnostics.find(d => d.code === 'bml-function-arg-type');
+            assert.ok(err, 'Should flag passing float[] to split expecting String');
+            assert.match(err.message, /Argument 1 to 'split' should be String, but got a float\[\] value/);
+        });
+    });
 });

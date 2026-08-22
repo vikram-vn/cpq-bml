@@ -341,5 +341,152 @@
         "syntax": "_user_email",
         "examples": [],
         "notes": "Current User's Email"
+    },
+    "BM_CM_RULES_LOCATION": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_CM_RULES_LOCATION",
+        "examples": [],
+        "notes": "Configuration Rule Location Constant"
+    },
+    "BM_CM_RULES_MESSAGE": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_CM_RULES_MESSAGE",
+        "examples": [],
+        "notes": "Configuration Rule Message Constant"
+    },
+    "BM_CM_RULES_OPERATOR": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_CM_RULES_OPERATOR",
+        "examples": [],
+        "notes": "Configuration Rule Operator Constant"
+    },
+    "BM_CM_RULES_VALUES": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_CM_RULES_VALUES",
+        "examples": [],
+        "notes": "Configuration Rule Values Constant"
+    },
+    "BM_CONFIGURATION_KEY": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_CONFIGURATION_KEY",
+        "examples": [],
+        "notes": "Configuration Key Constant"
+    },
+    "BM_DEFAULT_SOURCE_IDENTIFIER": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_DEFAULT_SOURCE_IDENTIFIER",
+        "examples": [],
+        "notes": "Default Source Identifier Constant"
+    },
+    "BM_PARTNER_SECURITY_TOKEN": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_PARTNER_SECURITY_TOKEN",
+        "examples": [],
+        "notes": "Partner Security Token Constant"
+    },
+    "BM_PRIOR_CONFIGURATION_KEY": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_PRIOR_CONFIGURATION_KEY",
+        "examples": [],
+        "notes": "Prior Configuration Key Constant"
+    },
+    "BM_PRIOR_ROOT_BOM_ITEM": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_PRIOR_ROOT_BOM_ITEM",
+        "examples": [],
+        "notes": "Prior Root BOM Item Constant"
+    },
+    "BM_REASON_STATUS_APPROVED": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REASON_STATUS_APPROVED",
+        "examples": [],
+        "notes": "Reason Status Approved Constant"
+    },
+    "BM_REASON_STATUS_INACTIVE": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REASON_STATUS_INACTIVE",
+        "examples": [],
+        "notes": "Reason Status Inactive Constant"
+    },
+    "BM_REASON_STATUS_INVALID": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REASON_STATUS_INVALID",
+        "examples": [],
+        "notes": "Reason Status Invalid Constant"
+    },
+    "BM_REASON_STATUS_PENDING": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REASON_STATUS_PENDING",
+        "examples": [],
+        "notes": "Reason Status Pending Constant"
+    },
+    "BM_REASON_STATUS_REJECTED": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REASON_STATUS_REJECTED",
+        "examples": [],
+        "notes": "Reason Status Rejected Constant"
+    },
+    "BM_REMOTE_APPROVAL_STATUS_APPROVED": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REMOTE_APPROVAL_STATUS_APPROVED",
+        "examples": [],
+        "notes": "Remote Approval Status Approved Constant"
+    },
+    "BM_REMOTE_APPROVAL_STATUS_CUSTOM": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REMOTE_APPROVAL_STATUS_CUSTOM",
+        "examples": [],
+        "notes": "Remote Approval Status Custom Constant"
+    },
+    "BM_REMOTE_APPROVAL_STATUS_REJECTED": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_REMOTE_APPROVAL_STATUS_REJECTED",
+        "examples": [],
+        "notes": "Remote Approval Status Rejected Constant"
+    },
+    "BM_SALES_ROOT_BOM_ITEM": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_SALES_ROOT_BOM_ITEM",
+        "examples": [],
+        "notes": "Sales Root BOM Item Constant"
+    },
+    "BM_UNCHANGED_DATE": {
+        "scope": "CPQ Constant",
+        "dataType": "Date",
+        "syntax": "BM_UNCHANGED_DATE",
+        "examples": [],
+        "notes": "Unchanged Date Constant"
+    },
+    "BM_UNCHANGED_NUM": {
+        "scope": "CPQ Constant",
+        "dataType": "Float",
+        "syntax": "BM_UNCHANGED_NUM",
+        "examples": [],
+        "notes": "Unchanged Num Constant"
+    },
+    "BM_UNCHANGED_STR": {
+        "scope": "CPQ Constant",
+        "dataType": "String",
+        "syntax": "BM_UNCHANGED_STR",
+        "examples": [],
+        "notes": "Unchanged String Constant"
     }
 }

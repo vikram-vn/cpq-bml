@@ -83,13 +83,12 @@ function inferExpressionType(rhsText) {
     return null;
 }
 
-function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, extensionPath) {
-    const diagnostics = [];
+function collectVariableTypes(cleanText, doc, declaredTypes) {
     const firstTypeByVar = new Map();
-    const returnTypes = getFunctionReturnTypes(extensionPath);
 
     if (declaredTypes) {
         for (const [paramNameLower, type] of declaredTypes.entries()) {
+            firstTypeByVar.set(paramNameLower.toLowerCase(), { type, line: -1, isParam: true });
             firstTypeByVar.set(paramNameLower, { type, line: -1, isParam: true });
         }
     }
@@ -97,7 +96,6 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
     const assignRegex = /\b([a-zA-Z_]\w*)\s*=(?!=)/g;
     let match;
 
-    // First pass: collect variable types
     while ((match = assignRegex.exec(cleanText)) !== null) {
         const varName = match[1];
         const matchIndex = match.index;
@@ -112,17 +110,28 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
         const rhs = getAssignmentRhsText(cleanText, rhsStart);
         if (!rhs) continue;
 
-        const inferredType = inferLiteralType(rhs.text);
+        const inferredType = inferExpressionType(rhs.text);
         if (!inferredType) continue;
 
-        const lookupKey = declaredTypes && declaredTypes.has(varName.toLowerCase()) ? varName.toLowerCase() : varName;
-        if (!firstTypeByVar.has(lookupKey) && !firstTypeByVar.has(varName)) {
-            firstTypeByVar.set(varName, { type: inferredType, line: doc.positionAt(matchIndex).line });
+        const lookupKey = varName.toLowerCase();
+        if (!firstTypeByVar.has(lookupKey)) {
+            const entry = { type: inferredType, line: doc ? doc.positionAt(matchIndex).line : 0 };
+            firstTypeByVar.set(lookupKey, entry);
+            firstTypeByVar.set(varName, entry);
         }
     }
 
+    return firstTypeByVar;
+}
+
+function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, extensionPath) {
+    const diagnostics = [];
+    const firstTypeByVar = collectVariableTypes(cleanText, doc, declaredTypes);
+    const returnTypes = getFunctionReturnTypes(extensionPath);
+
     // Second pass: validate assignments
-    assignRegex.lastIndex = 0;
+    const assignRegex = /\b([a-zA-Z_]\w*)\s*=(?!=)/g;
+    let match;
     while ((match = assignRegex.exec(cleanText)) !== null) {
         const varName = match[1];
         const matchIndex = match.index;
@@ -261,4 +270,4 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
     return diagnostics;
 }
 
-module.exports = { inferLiteralType, inferExpressionType, checkAssignmentTypeConsistency, getAssignmentRhsText };
+module.exports = { inferLiteralType, inferExpressionType, checkAssignmentTypeConsistency, collectVariableTypes, getAssignmentRhsText };

@@ -10,7 +10,7 @@ const { checkStyle } = require('./style');
 const { checkBoundaries } = require('./boundaries');
 const { checkFunctionCalls } = require('./functions');
 const { checkSystemVariables } = require('./systemVariables');
-const { checkAssignmentTypeConsistency, inferLiteralType } = require('./typeCheck');
+const { checkAssignmentTypeConsistency, collectVariableTypes, inferLiteralType } = require('./typeCheck');
 const { checkMetadataTypeConsistency, getDeclaredParameterTypes } = require('./metadataTypes');
 const { checkConstantConditions } = require('./constantConditions');
 const { checkUnreachableCode } = require('./unreachable');
@@ -71,11 +71,13 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkPerformance(cleanText, noStringsText, doc));
         diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc));
         diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath));
+        const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
+        const firstTypeByVar = collectVariableTypes(cleanText, doc, declaredParamTypes);
+
         diagnostics.push(...checkBoundaries(cleanText, noStringsText, doc));
-        diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath));
+        diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath, firstTypeByVar));
         diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));
 
-        const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
         diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
         diagnostics.push(...checkConstantConditions(cleanText, conditionRanges, doc, vscode));

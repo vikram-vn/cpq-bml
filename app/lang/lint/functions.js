@@ -1,8 +1,30 @@
 const { parseParameterSignature, splitArgumentsList } = require('./functionSignature');
 const { levenshtein } = require('./levenshtein');
-const { inferLiteralType } = require('./typeCheck');
+const { inferLiteralType, inferExpressionType } = require('./typeCheck');
 const { getWorkspaceFunctionsCached } = require('./workspaceFunctions');
 const { loadBuiltInFunctionsJson } = require('../intellisense/apiDataLoader');
+const { getFunctionReturnTypes } = require('./typeCheckOperands');
+
+function inferArgumentType(argText, firstTypeByVar, returnTypes) {
+    if (!argText) return null;
+    const trimmed = argText.trim();
+    if (!trimmed) return null;
+
+    const lit = inferLiteralType(trimmed);
+    if (lit) return lit;
+
+    if (/^[a-zA-Z_]\w*$/.test(trimmed)) {
+        const keyLower = trimmed.toLowerCase();
+        if (firstTypeByVar) {
+            const entry = firstTypeByVar.get(keyLower) || firstTypeByVar.get(trimmed);
+            if (entry && entry.type) return entry.type;
+        }
+        if (/^(true|false)$/i.test(trimmed)) return 'Boolean';
+        if (/^null$/i.test(trimmed)) return 'Null';
+    }
+
+    return inferExpressionType(trimmed);
+}
 
 let builtInFunctions = null;
 // Mirrors the grammar's reserved words/storage-type constructors so they're never flagged as unknown functions.
@@ -173,9 +195,13 @@ function findClosestWorkspaceFunction(fullName, wsFunctions) {
 
 function normalizeType(type) {
     if (!type) return null;
-    const match = type.match(/^([A-Za-z]+)((?:\[\])*)$/);
-    if (!match) return type.toLowerCase();
-    return `${match[1].toLowerCase()}${match[2]}`;
+    let clean = type.toLowerCase().trim();
+    if (clean.startsWith('dict<') || clean.startsWith('dictionary<')) {
+        clean = clean.startsWith('dict<') ? 'dict' : 'dictionary';
+    }
+    const match = clean.match(/^([a-z_]\w*)((?:\[\])*)$/);
+    if (!match) return clean;
+    return `${match[1]}${match[2]}`;
 }
 
 // Integer literals are accepted for a Float parameter (numeric widening); everything else must match.
@@ -186,23 +212,25 @@ function argumentTypeCompatible(expectedType, actualType) {
     }
     const expected = normalizeType(expectedType);
     const actual = normalizeType(actualType);
+    if (expected === 'any' || expected === 'anytype' || expected === 'object' || expected === 'valuetype') return true;
+    if (actual === 'any' || actual === 'anytype' || actual === 'object') return true;
     if (expected === actual) return true;
     if (expected === 'float' && actual === 'integer') return true;
     if (expected === 'long' && actual === 'integer') return true;
     if (expected === 'float' && actual === 'long') return true;
-    if (expected === 'numeric' && (actual === 'integer' || actual === 'float' || actual === 'long')) return true;
+    if ((expected === 'numeric' || expected === 'number') && (actual === 'integer' || actual === 'float' || actual === 'long')) return true;
     if (expected === 'array' && actual.endsWith('[]')) return true;
     if (expected === 'singlearray' && actual.endsWith('[]') && !actual.endsWith('[][]')) return true;
     if (expected === 'doublearray' && actual.endsWith('[][]')) return true;
-    if (expected === 'dictionary' && actual === 'dict') return true;
-    if (expected === 'dict' && actual === 'dictionary') return true;
+    if ((expected === 'dictionary' || expected === 'dict') && (actual === 'dict' || actual === 'dictionary')) return true;
     return false;
 }
 
-function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath) {
+function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath, firstTypeByVar) {
     const diagnostics = [];
     const builtIns = loadBuiltInFunctions(extensionPath);
     const wsFunctions = getWorkspaceFunctionsCached(vscode);
+    const returnTypes = getFunctionReturnTypes(extensionPath);
 
     // Matches namespaced or bare function calls: [util/commerce.[folder.]]name(
     // The middle "folder" segment covers Oracle CPQ's util library folders/
@@ -298,7 +326,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     for (let i = 0; i < args.length && i < targetFunc.params.length; i++) {
                         const expectedType = targetFunc.params[i].type;
                         if (!expectedType) continue;
-                        const actualType = inferLiteralType(args[i]);
+                        const actualType = inferArgumentType(args[i], firstTypeByVar, returnTypes);
                         if (!actualType) continue;
                         if (!argumentTypeCompatible(expectedType, actualType)) {
                             const diag = new vscode.Diagnostic(
@@ -349,7 +377,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                         for (let i = 0; i < args.length && i < ov.params.length; i++) {
                             const expectedType = ov.params[i].type;
                             if (!expectedType) continue;
-                            const actualType = inferLiteralType(args[i]);
+                            const actualType = inferArgumentType(args[i], firstTypeByVar, returnTypes);
                             if (!actualType) continue;
                             if (!argumentTypeCompatible(expectedType, actualType)) {
                                 match = false;
