@@ -10,7 +10,7 @@ const keywords = new Set([
     'if', 'elif', 'else', 'for', 'in', 'break', 'continue', 'return',
     'true', 'false', 'null', 'and', 'or', 'not',
     'string', 'integer', 'float', 'boolean', 'date', 'json', 'jsonarray',
-    'jsonnull', 'bytearray', 'record', 'recordset', 'stringbuilder', 'dictionary', 'dict',
+    'jsonnull', 'jnan', 'bytearray', 'record', 'recordset', 'stringbuilder', 'dictionary', 'dict',
     'bmql',
 ]);
 const deprecated = new Set(['strtodate', 'gettabledata', 'getpartsdata']);

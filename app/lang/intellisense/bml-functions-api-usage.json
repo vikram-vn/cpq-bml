@@ -1,4 +1,15 @@
 {
+    "jNaN": {
+        "functionCategory": "math",
+        "returnType": "Float",
+        "fullSignature": "Float jNaN(Integer type)",
+        "syntax": "jNaN(${1:type})",
+        "examples": [
+            "nanVal = jNaN(1);"
+        ],
+        "notes": "Returns a Float NaN (Not-a-Number) value",
+        "docs": "This function returns a Float NaN (Not-a-Number) floating point value.\n\n- **Parameter:** type · **Data Type:** Integer · **Description:** Pass 1 or 2 for NaN representation.\n\n**Return Type:** Float"
+    },
     "atof": {
         "functionCategory": "string",
         "returnType": "Float",
