@@ -54,9 +54,11 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
             continue;
         }
 
-        // Opening brace '{' check: must open at the end of the line
-        if (codeLine.includes('{') && !codeLine.includes('{{')) {
-            const idx = codeLine.indexOf('{');
+        // Opening brace '{' check: must open at the end of the line for control flow blocks (if, for, else, elif)
+        // Skip inline object/JSON/dictionary literals inside function calls, variable assignments, etc.
+        const isControlFlowBlock = /^\b(if|for|else|elif)\b/i.test(codeLine);
+        if (isControlFlowBlock && codeLine.includes('{') && !codeLine.includes('{{')) {
+            const idx = codeLine.lastIndexOf('{');
             const afterBrace = codeLine.substring(idx + 1).trim();
             if (afterBrace.length > 0 && !afterBrace.startsWith('}')) {
                 const startPos = new vscode.Position(i, 0);

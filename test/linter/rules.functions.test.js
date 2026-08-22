@@ -9,7 +9,7 @@ suite('BML Linter Test Suite - rules (functions & syntax)', function() {
             x = atof("5.0"); // OK
             y = atof("5.0", "extra"); // Error: expects 1, got 2
             z = getdate(); // OK
-            w = getdate(true, false); // Error: expects 0 to 1, got 2
+            w = getdate(recordRow, "created_date"); // OK (Record field overload)
             return "";
         `);
 
@@ -19,8 +19,8 @@ suite('BML Linter Test Suite - rules (functions & syntax)', function() {
         const errDiag1 = diagnostics.find(d => d.message.includes("function 'atof' expects 1 argument") && d.range.start.line === 2);
         assert.ok(errDiag1, 'Should flag atof with 2 arguments');
 
-        const errDiag2 = diagnostics.find(d => d.message.includes("function 'getdate' expects 0 to 1 argument") && d.range.start.line === 4);
-        assert.ok(errDiag2, 'Should flag getdate with 2 arguments');
+        const okDiag2 = diagnostics.find(d => d.message.includes("function 'getdate'") && d.range.start.line === 4);
+        assert.strictEqual(okDiag2, undefined, 'getdate(recordRow, "created_date") is correct');
     });
 
     test('Linter flags unknown bare function calls', () => {

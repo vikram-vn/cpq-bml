@@ -139,6 +139,16 @@ suite('BML Linter Test Suite - rules', function() {
         assert.strictEqual(braceDiag, undefined, 'Should not flag data initializer closing brace as a style violation');
     });
 
+    test('Linter does not flag inline dict/object literals in function calls as bml-brace-style-open', () => {
+        const diagnostics = lintText(`
+            urlParamsStr = makeurlparam({"grant_type": ["client_credentials"]});
+            return "";
+        `);
+
+        const braceDiag = diagnostics.find(d => d.code === 'bml-brace-style-open');
+        assert.strictEqual(braceDiag, undefined, 'Should not flag inline dict literal in makeurlparam() as a brace style open violation');
+    });
+
     test('Linter flags trailing commas in function calls or brackets as Syntax Errors and highlights full line', () => {
         const diagnostics = lintText(`
             put(fancyStepDict, "waitingForSignature", );

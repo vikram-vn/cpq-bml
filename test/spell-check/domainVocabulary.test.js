@@ -67,6 +67,21 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
         assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
     });
 
+    test('Does not flag ISO currency codes (USD, EUR, GBP, CAD, AUD, JPY, INR, CHF, etc.)', () => {
+        const diagnostics = lintText(`
+            currencyUSD = "USD";
+            currencyEUR = "EUR";
+            currencyGBP = "GBP";
+            currencyCAD = "CAD";
+            currencyAUD = "AUD";
+            currencyJPY = "JPY";
+            currencyINR = "INR";
+            return "";
+        `);
+        const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
+        assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
+    });
+
     test('Does not flag a real BML "Function Name" docHeader comment block with camelCase identifiers', () => {
         // Regression test: docHeader blocks are a widespread convention in
         // real BML library code (e.g. bml/library/ORCL_ABO/abo_getOneAssetState)

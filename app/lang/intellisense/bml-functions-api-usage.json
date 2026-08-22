@@ -497,13 +497,14 @@
     "getdate": {
         "functionCategory": "date",
         "returnType": "Date",
-        "fullSignature": "Date getdate([boolean includeTime])",
+        "fullSignature": "Date getdate([Boolean includeTime])\n(or)\nDate getdate(Record record, String fieldName)",
         "syntax": "getdate()",
         "examples": [
-            "1. This function will return the current system date \n2. The parameter includeTime is optional.  If it is not included it will be set to true by default."
+            "1. Returns the current system date: getdate() or getdate(false)",
+            "2. Returns the date value in a BMQL Record for a field name: getdate(recordRow, \"created_date\")"
         ],
-        "notes": "Returns the current date.",
-        "docs": "This function returns the current date/time based on the base time zone you have set-up in your application. The function takes a parameter and returns a date, with or without time. **Example Use Case:** Find the current date.\n\n- **Parameter:** [includeTime] · **Data Type:** Boolean · **Description:** **Optional:** Returns the current system date and time. If it is not included, it will be set to true by default. If this parameter is set to false, the component is set to 00:00:00 and is not displayed to the user.\n\n**Return Type:** Date\n\nExample getdate:\n\n*🖼️ getdate example*\n\n*🖼️ getdate output example*\n\nExample getdate(false):\n\n*🖼️ getdate example*\n\n*🖼️ getdate output example*"
+        "notes": "Returns current system date or date field value from a BMQL Record.",
+        "docs": "### System Date Usage:\nReturns the current date/time based on application time zone.\n\n- **Parameter:** [includeTime] · **Data Type:** Boolean · **Description:** Optional. Returns system date and time. If false, time component is 00:00:00.\n\n### BMQL Record Field Usage:\nReturns the Date value in a BMQL Record for the specified field name.\n\n- **Parameter:** record · **Data Type:** Record · **Description:** BMQL row Record object.\n- **Parameter:** fieldName · **Data Type:** String · **Description:** Name of the date field/column in the Record.\n\n**Return Type:** Date"
     },
     "getdiffindays": {
         "functionCategory": "date",
