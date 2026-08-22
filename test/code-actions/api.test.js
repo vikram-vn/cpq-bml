@@ -23,7 +23,7 @@ function runApiCodeActionTests() {
             assert.ok(statusDiag, 'Should have urldata status unchecked diagnostic');
 
             const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, statusDiag.range);
-            const statusAction = codeActions.find(a => a.title.includes('Insert HTTP status_code check'));
+            const statusAction = codeActions.find(a => a.title.includes('Insert HTTP Status-Code check'));
             assert.ok(statusAction, 'Should offer HTTP status check insertion Quick Fix');
         });
 

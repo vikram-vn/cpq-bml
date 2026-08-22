@@ -19,6 +19,22 @@ function checkArray(cleanText, noStringsText, doc) {
         ));
     }
 
+    // Negative array index access on variables: var[-N]
+    const negativeIndexRegex = /\b([a-zA-Z_]\w*)\s*\[\s*(-\d+)\s*\]/g;
+    while ((match = negativeIndexRegex.exec(noStringsText)) !== null) {
+        const varName = match[1];
+        if (!['float', 'integer', 'string', 'boolean', 'date'].includes(varName.toLowerCase())) {
+            const startPos = doc.positionAt(match.index);
+            const endPos = doc.positionAt(match.index + match[0].length);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                `Error: Negative array index '${match[2]}' on variable '${varName}' will throw an ArrayOutOfBoundsException at runtime. Array indices must be >= 0.`,
+                vscode.DiagnosticSeverity.Error,
+                'bml-array-negative-index'
+            ));
+        }
+    }
+
     // bytearray() call validation
     const bytearrayRegex = /\bbytearray\s*\(/g;
     while ((match = bytearrayRegex.exec(cleanText)) !== null) {

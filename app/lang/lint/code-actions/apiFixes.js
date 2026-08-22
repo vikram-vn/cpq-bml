@@ -20,9 +20,9 @@ function getApiFixes(document, diag, editRange) {
         const resVar = varMatch ? varMatch[1] : 'response';
         const indentMatch = lineText.match(/^\s*/);
         const indent = indentMatch ? indentMatch[0] : '';
-        const statusCheckSnippet = `\n${indent}if (containskey(${resVar}, "status_code") and get(${resVar}, "status_code") == "200") {\n${indent}    // process response\n${indent}}`;
+        const statusCheckSnippet = `\n${indent}if (containskey(${resVar}, "Status-Code") and get(${resVar}, "Status-Code") == "200 OK") {\n${indent}    // process response\n${indent}}`;
 
-        const action = new vscode.CodeAction("Insert HTTP status_code check", vscode.CodeActionKind.QuickFix);
+        const action = new vscode.CodeAction("Insert HTTP Status-Code check", vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
         const endOfLinePos = new vscode.Position(lineIndex, lineText.length);
         action.edit.insert(document.uri, endOfLinePos, statusCheckSnippet);

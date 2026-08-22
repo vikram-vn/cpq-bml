@@ -320,4 +320,30 @@ suite("BML Linter Test Suite - BMQL specific tests", () => {
             assert.strictEqual(err, undefined);
         });
     });
+
+    suite('BMQL inside loop detection (bml-bmql-in-loop)', () => {
+        test('Flags BMQL query inside a for loop', () => {
+            const diagnostics = lintText(`
+                items = string[]{"a", "b"};
+                for item in items {
+                    rs = bmql("SELECT price FROM parts WHERE id = $item");
+                }
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-in-loop');
+            assert.ok(diag, 'Should flag BMQL query executed inside a loop');
+        });
+
+        test('Does not flag BMQL query executed outside a loop', () => {
+            const diagnostics = lintText(`
+                rs = bmql("SELECT price FROM parts WHERE status = 'ACTIVE'");
+                for rec in rs {
+                    p = get(rec, "price");
+                }
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-bmql-in-loop');
+            assert.strictEqual(diag, undefined);
+        });
+    });
 });

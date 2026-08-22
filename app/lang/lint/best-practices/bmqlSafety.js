@@ -177,6 +177,33 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
                     }
                 }
             }
+
+            // Detect BMQL queries inside a for-loop body (N+1 query problem)
+            const textBefore = cleanText.slice(0, startIdx);
+            const forLoopRegex = /\bfor\b[^{]*\{/g;
+            let forMatch;
+            let insideLoop = false;
+            while ((forMatch = forLoopRegex.exec(textBefore)) !== null) {
+                const blockStart = forMatch.index + forMatch[0].length - 1;
+                let depth = 1;
+                for (let i = blockStart + 1; i < startIdx; i++) {
+                    if (cleanText[i] === '{') depth++;
+                    else if (cleanText[i] === '}') depth--;
+                }
+                if (depth > 0) {
+                    insideLoop = true;
+                    break;
+                }
+            }
+
+            if (insideLoop) {
+                diagnostics.push(makeDiagnostic(
+                    range,
+                    'Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead.',
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-bmql-in-loop'
+                ));
+            }
         }
     }
 

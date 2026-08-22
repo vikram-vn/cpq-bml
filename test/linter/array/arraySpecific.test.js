@@ -410,4 +410,18 @@ suite("BML Linter Test Suite - Array specific tests", () => {
       assert.ok(err);
     });
   });
+
+  suite("Negative array indexing on variables (bml-array-negative-index)", () => {
+    test("Flags negative index on array variable arr[-1]", () => {
+      const diagnostics = lintText('arr = string[]{"a", "b"}; x = arr[-1]; return "";');
+      const err = diagnostics.find((d) => d.code === "bml-array-negative-index");
+      assert.ok(err, "Should flag negative array indexing arr[-1]");
+    });
+
+    test("Does not flag valid positive index arr[0] or arr[1]", () => {
+      const diagnostics = lintText('arr = string[]{"a", "b"}; x = arr[0]; return "";');
+      const err = diagnostics.find((d) => d.code === "bml-array-negative-index");
+      assert.strictEqual(err, undefined);
+    });
+  });
 });
