@@ -267,14 +267,15 @@ suite('BML IntelliSense', () => {
 		assert.ok(labels.includes('lineItemGrid'), 'expected lineItemGrid in CPQJS table completions');
 	});
 
-	test('completion in 2nd parameter of jsonpathget suggests JSONPath templates', async () => {
-		const content = 'val = jsonpathget(jsonObj, "");';
+	test('completion in 2nd parameter of jsonpathgetsingle and jsonpathgetmultiple suggests JSONPath templates', async () => {
+		const content = 'val = jsonpathgetsingle(jsonObj, "");';
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
-		const position = new vscode.Position(0, 28); // inside ""
+		const position = new vscode.Position(0, 34); // inside ""
 		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
 		const labels = list.items.map(i => i.label);
 
 		assert.ok(labels.includes('$.fieldName'), 'expected $.fieldName in JSONPath completions');
+		assert.ok(labels.includes('$..value'), 'expected $..value deep scan in JSONPath completions');
 	});
 
 	test('completion in 1st parameter of CPQJS.performAction suggests action variables', async () => {
@@ -286,5 +287,17 @@ suite('BML IntelliSense', () => {
 
 		assert.ok(labels.includes('saveAction'), 'expected saveAction in CPQJS action completions');
 		assert.ok(labels.includes('submitQuote'), 'expected submitQuote in CPQJS action completions');
+	});
+
+	test('completion in 1st parameter of dict suggests dictionary data types', async () => {
+		const content = 'configDictVal = dict("");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 22); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('string'), 'expected "string" in dict parameter completions');
+		assert.ok(labels.includes('integer'), 'expected "integer" in dict parameter completions');
+		assert.ok(labels.includes('dict<anytype>'), 'expected "dict<anytype>" in dict parameter completions');
 	});
 });

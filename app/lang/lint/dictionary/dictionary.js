@@ -46,10 +46,10 @@ function checkDictionary(cleanText, noStringsText, doc) {
 
     // dict(dictType) - check if literal type is valid
     const allowedDictTypes = new Set([
-        'string', 'integer', 'float', 'date', 'boolean',
-        'string[]', 'integer[]', 'float[]', 'date[]',
-        'string[][]', 'integer[][]', 'float[][]', 'date[][]',
-        'anytype'
+        'string', 'integer', 'float', 'date', 'boolean', 'json', 'jsonarray', 'bytearray',
+        'string[]', 'integer[]', 'float[]', 'date[]', 'boolean[]', 'json[]', 'jsonarray[]', 'bytearray[]',
+        'string[][]', 'integer[][]', 'float[][]', 'date[][]', 'boolean[][]',
+        'anytype', 'dict<string>', 'dict<integer>', 'dict<float>', 'dict<boolean>', 'dict<date>', 'dict<json>', 'dict<jsonarray>', 'dict<anytype>'
     ]);
     const dictRegex = /\bdict\s*\(\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')\s*\)/g;
     while ((match = dictRegex.exec(cleanText)) !== null) {
@@ -59,7 +59,7 @@ function checkDictionary(cleanText, noStringsText, doc) {
             const endPos = doc.positionAt(match.index + match[0].length);
             diagnostics.push(makeDiagnostic(
                 new vscode.Range(startPos, endPos),
-                `Error: 'dict()' type '${typeArg}' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'.`,
+                `Error: 'dict()' type '${typeArg}' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>.`,
                 vscode.DiagnosticSeverity.Error,
                 'bml-dict-invalid-type'
             ));

@@ -83,6 +83,12 @@ suite("BML Linter Test Suite - Dictionary specific tests", () => {
       assert.ok(err);
     });
 
+    test("dict(type) - dict<anytype>, dict<string>, bytearray, json, and jsonarray are valid type arguments → no error", () => {
+      const diagnostics = lintText('x = dict("dict<anytype>"); y = dict("dict<string>"); z = dict("bytearray"); a = dict("json"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-dict-invalid-type");
+      assert.strictEqual(err, undefined);
+    });
+
     test("containskey(dict, key) - correct 2 arguments → no error", () => {
       const diagnostics = lintText('d = dict("string"); x = containskey(d, "key"); return "";');
       assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);

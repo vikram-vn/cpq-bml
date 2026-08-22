@@ -21,6 +21,7 @@ const {
 } = require('./cpqjsParams');
 const { BMQL_TEMPLATES, getBmqlQueryCompletions } = require('./bmqlParams');
 const { JSON_PATH_TEMPLATES, getJsonPathCompletions } = require('./jsonParams');
+const { DICT_TYPES, getDictTypeCompletions } = require('./dictParams');
 
 /**
  * Main dispatcher for Smart Parameter Completions based on active function call and parameter index.
@@ -30,6 +31,11 @@ function resolveParameterCompletions(activeCall, document, position) {
 
     const fn = activeCall.funcName.toLowerCase();
     const paramIdx = activeCall.paramIndex;
+
+    // Dictionary constructor functions: dict, dictionary
+    if (['dict', 'dictionary'].includes(fn) && paramIdx === 0) {
+        return getDictTypeCompletions(document, position);
+    }
 
     // Date functions: datetostr, strtojavadate, strtodate
     if (['datetostr', 'strtojavadate', 'strtodate'].includes(fn)) {
@@ -55,8 +61,8 @@ function resolveParameterCompletions(activeCall, document, position) {
         return getContentTypeCompletions(document, position);
     }
 
-    // JSONPath functions: jsonpathget, jsonpathset
-    if (['jsonpathget', 'jsonpathset'].includes(fn) && paramIdx === 1) {
+    // JSONPath functions: jsonpathgetsingle, jsonpathgetmultiple, jsonpathset, jsonpathremove, jsonpathcheck, jsonpathget
+    if (['jsonpathgetsingle', 'jsonpathgetmultiple', 'jsonpathset', 'jsonpathremove', 'jsonpathcheck', 'jsonpathget'].includes(fn) && paramIdx === 1) {
         return getJsonPathCompletions(document, position);
     }
 
@@ -105,5 +111,7 @@ module.exports = {
     getBmqlQueryCompletions,
     JSON_PATH_TEMPLATES,
     getJsonPathCompletions,
+    DICT_TYPES,
+    getDictTypeCompletions,
     resolveParameterCompletions
 };
