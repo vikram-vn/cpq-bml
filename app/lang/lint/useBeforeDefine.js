@@ -28,7 +28,9 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
 
     const isIgnoredSymbol = (nameLower) => {
         if (reservedWords.has(nameLower) || systemVars.has(nameLower) || builtIns.has(nameLower)) return true;
-        if (nameLower.startsWith('_') || nameLower.startsWith('bm_')) return true;
+        if (nameLower === 'commerce' || nameLower === 'util' || nameLower === 'transaction' || nameLower === 'line') return true;
+        if (nameLower.startsWith('_') || nameLower.startsWith('bm_') || nameLower.startsWith('_c_') || nameLower.startsWith('_t_') || nameLower.startsWith('_l_')) return true;
+        if (nameLower.endsWith('_c') || nameLower.endsWith('_t') || nameLower.endsWith('_l')) return true;
         return false;
     };
 

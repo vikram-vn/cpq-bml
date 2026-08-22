@@ -123,7 +123,15 @@ function checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText = 
             const isIgnoredUnused = varName.toLowerCase() === "dummy" ||
                                     varName.toLowerCase() === "temp" ||
                                     varName.toLowerCase().startsWith("trigger_") ||
-                                    varName.toLowerCase() === "unused";
+                                    varName.toLowerCase() === "unused" ||
+                                    varName.toLowerCase() === "commerce" ||
+                                    varName.toLowerCase() === "util" ||
+                                    varName.toLowerCase() === "transaction" ||
+                                    varName.toLowerCase() === "line" ||
+                                    varName.toLowerCase().startsWith("_") ||
+                                    varName.toLowerCase().endsWith("_c") ||
+                                    varName.toLowerCase().endsWith("_t") ||
+                                    varName.toLowerCase().endsWith("_l");
             if (isIgnoredUnused) {
                 return;
             }
