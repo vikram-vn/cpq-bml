@@ -22,6 +22,13 @@ function getSecurityFixes(document, diag, editRange) {
         action.edit.replace(document.uri, editRange, 'endpointUrl');
         action.diagnostics = [diag];
         fixes.push(action);
+    } else if (diag.code === 'bml-log-sensitive-data') {
+        const text = document.getText(editRange);
+        const action = new vscode.CodeAction(`Mask sensitive variable '${text}' with '[REDACTED]'`, vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, '"[REDACTED]"');
+        action.diagnostics = [diag];
+        fixes.push(action);
     }
 
     return fixes;

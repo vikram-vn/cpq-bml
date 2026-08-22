@@ -146,7 +146,7 @@ function checkVariableDiagnostics(
       if (isOnlyLoopVar) {
         const diag = new vscode.Diagnostic(
           range,
-          `Unused loop variable: '${varName}' is never referenced inside its loop body.`,
+          `Unused loop variable: '${varName}' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo.`,
           vscode.DiagnosticSeverity.Information,
         );
         diag.code = "bml-unused-loop-var";
