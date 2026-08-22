@@ -167,5 +167,12 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 				assert.match(scopesOf(`x = ${word};`, word), /\bconstant\.language\.bml\b/, `constant "${word}"`);
 			}
 		});
+
+		test('built-in functions are scoped correctly as entity.name.function.*.bml', () => {
+			for (const fn of ['setattributevalue', 'addtotransaction', 'print', 'sizeofarray', 'jsonput', 'urldata']) {
+				const scope = scopesOf(`${fn}("test");`, fn);
+				assert.match(scope, /\bentity\.name\.function\.(misc|string|array|dictionary|json|url)\.bml\b/, `function "${fn}" scope: ${scope}`);
+			}
+		});
 	});
 });

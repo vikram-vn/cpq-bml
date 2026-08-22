@@ -604,7 +604,7 @@
     {
       "scope": "entity.name.function.misc.bml",
       "settings": {
-        "foreground": "#c8e1ff",
+        "foreground": "#b392f0",
         "fontStyle": "bold"
       }
     },

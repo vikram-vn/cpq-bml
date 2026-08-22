@@ -698,7 +698,7 @@
     {
       "scope": "entity.name.function.misc.bml",
       "settings": {
-        "foreground": "#57606a",
+        "foreground": "#8250df",
         "fontStyle": "bold"
       }
     },

@@ -600,7 +600,7 @@
     {
       "scope": "entity.name.function.misc.bml",
       "settings": {
-        "foreground": "#586069",
+        "foreground": "#6f42c1",
         "fontStyle": "bold"
       }
     },

@@ -713,7 +713,7 @@
     {
       "scope": "entity.name.function.misc.bml",
       "settings": {
-        "foreground": "#c9d1d9",
+        "foreground": "#d2a8ff",
         "fontStyle": "bold"
       }
     },
