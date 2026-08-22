@@ -656,6 +656,11 @@
   },
   {
     "line": 65,
+    "severity": "Error",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 65,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos2' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos2Dict')."
   },
@@ -753,6 +758,11 @@
     "line": 68,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_pos5"
+  },
+  {
+    "line": 69,
+    "severity": "Error",
+    "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
   },
   {
     "line": 69,
@@ -1091,6 +1101,11 @@
   },
   {
     "line": 91,
+    "severity": "Error",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 91,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos2' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos2Dict')."
   },
@@ -1188,6 +1203,11 @@
     "line": 94,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_pos5"
+  },
+  {
+    "line": 95,
+    "severity": "Error",
+    "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
   },
   {
     "line": 95,

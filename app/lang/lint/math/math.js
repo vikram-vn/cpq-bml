@@ -11,12 +11,14 @@ function checkMath(cleanText, noStringsText, doc) {
     while ((match = nanRegex.exec(noStringsText)) !== null) {
         const startPos = doc.positionAt(match.index);
         const endPos = startPos.translate(0, 3);
-        diagnostics.push(makeDiagnostic(
+        const diag = makeDiagnostic(
             new vscode.Range(startPos, endPos),
             "Deprecated constant 'NaN'. Use 'jNaN' instead for Java compatibility",
-            vscode.DiagnosticSeverity.Warning,
+            vscode.DiagnosticSeverity.Hint,
             'bml-nan-fix'
-        ));
+        );
+        diag.tags = [vscode.DiagnosticTag.Deprecated];
+        diagnostics.push(diag);
     }
 
     // jNaN is a constant, not a function - check for jNaN(...) calls

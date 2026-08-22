@@ -127,6 +127,8 @@ function checkVariableDiagnostics(
         varName.toLowerCase() === "unused" ||
         varName.toLowerCase() === "commerce" ||
         varName.toLowerCase() === "util" ||
+        varName.toLowerCase() === "cpqjs" ||
+        varName.toLowerCase() === "cpqjsready" ||
         varName.toLowerCase() === "transaction" ||
         varName.toLowerCase() === "line" ||
         varName.toLowerCase().startsWith("_") ||

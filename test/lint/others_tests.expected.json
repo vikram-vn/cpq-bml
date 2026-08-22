@@ -66,6 +66,11 @@
   },
   {
     "line": 14,
+    "severity": "Error",
+    "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
+  },
+  {
+    "line": 14,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getarrayattrstring_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_pos2')."
   },
@@ -148,6 +153,11 @@
     "line": 17,
     "severity": "Hint",
     "message": "Unused variable: val_getarrayattrstring_pos5"
+  },
+  {
+    "line": 18,
+    "severity": "Error",
+    "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
   },
   {
     "line": 18,
@@ -11561,6 +11571,11 @@
   },
   {
     "line": 876,
+    "severity": "Error",
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+  },
+  {
+    "line": 876,
     "severity": "Information",
     "message": "Style Info: Variable 'val_importtransactiondata_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_pos2')."
   },
@@ -11638,6 +11653,11 @@
     "line": 879,
     "severity": "Hint",
     "message": "Unused variable: val_importtransactiondata_pos5"
+  },
+  {
+    "line": 880,
+    "severity": "Error",
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 880,

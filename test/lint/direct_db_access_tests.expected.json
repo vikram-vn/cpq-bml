@@ -51,7 +51,7 @@
   },
   {
     "line": 12,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -86,7 +86,7 @@
   },
   {
     "line": 16,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -126,7 +126,7 @@
   },
   {
     "line": 18,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -156,7 +156,7 @@
   },
   {
     "line": 19,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -191,7 +191,7 @@
   },
   {
     "line": 20,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -226,7 +226,7 @@
   },
   {
     "line": 21,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -246,7 +246,7 @@
   },
   {
     "line": 26,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -266,7 +266,7 @@
   },
   {
     "line": 27,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -286,7 +286,7 @@
   },
   {
     "line": 28,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -306,7 +306,7 @@
   },
   {
     "line": 29,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -326,7 +326,7 @@
   },
   {
     "line": 30,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -346,7 +346,7 @@
   },
   {
     "line": 31,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -381,7 +381,7 @@
   },
   {
     "line": 32,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -416,7 +416,7 @@
   },
   {
     "line": 33,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -431,7 +431,7 @@
   },
   {
     "line": 34,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -451,7 +451,7 @@
   },
   {
     "line": 35,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -461,7 +461,7 @@
   },
   {
     "line": 36,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -481,7 +481,7 @@
   },
   {
     "line": 37,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -506,7 +506,7 @@
   },
   {
     "line": 38,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -521,7 +521,7 @@
   },
   {
     "line": 40,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -561,7 +561,7 @@
   },
   {
     "line": 45,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -601,7 +601,7 @@
   },
   {
     "line": 47,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -631,7 +631,7 @@
   },
   {
     "line": 48,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -661,7 +661,7 @@
   },
   {
     "line": 49,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -701,7 +701,7 @@
   },
   {
     "line": 50,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -721,7 +721,7 @@
   },
   {
     "line": 56,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -741,7 +741,7 @@
   },
   {
     "line": 57,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -761,7 +761,7 @@
   },
   {
     "line": 58,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -781,7 +781,7 @@
   },
   {
     "line": 59,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -801,7 +801,7 @@
   },
   {
     "line": 60,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -821,7 +821,7 @@
   },
   {
     "line": 61,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -861,7 +861,7 @@
   },
   {
     "line": 62,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -896,7 +896,7 @@
   },
   {
     "line": 63,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -911,7 +911,7 @@
   },
   {
     "line": 64,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -931,7 +931,7 @@
   },
   {
     "line": 65,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -941,7 +941,7 @@
   },
   {
     "line": 66,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -961,7 +961,7 @@
   },
   {
     "line": 67,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -986,7 +986,7 @@
   },
   {
     "line": 68,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -1121,6 +1121,11 @@
   },
   {
     "line": 74,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead."
+  },
+  {
+    "line": 74,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_haserror_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_haserror_pos4')."
   },
@@ -1158,6 +1163,11 @@
     "line": 75,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 75,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead."
   },
   {
     "line": 75,
@@ -1706,6 +1716,11 @@
   },
   {
     "line": 98,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead."
+  },
+  {
+    "line": 98,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getmessage_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getmessage_pos4')."
   },
@@ -1738,6 +1753,11 @@
     "line": 99,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
+  },
+  {
+    "line": 99,
+    "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead."
   },
   {
     "line": 99,
@@ -2141,6 +2161,11 @@
   },
   {
     "line": 121,
+    "severity": "Error",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 121,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getint_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos2')."
   },
@@ -2218,6 +2243,11 @@
     "line": 124,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos5"
+  },
+  {
+    "line": 125,
+    "severity": "Error",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
     "line": 125,
@@ -2496,6 +2526,11 @@
   },
   {
     "line": 147,
+    "severity": "Error",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 147,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getfloat_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos2')."
   },
@@ -2573,6 +2608,11 @@
     "line": 150,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos5"
+  },
+  {
+    "line": 151,
+    "severity": "Error",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
     "line": 151,
@@ -2856,6 +2896,11 @@
   },
   {
     "line": 173,
+    "severity": "Error",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 173,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_getboolean_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_getboolean_pos2')."
   },
@@ -2953,6 +2998,11 @@
     "line": 176,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos5"
+  },
+  {
+    "line": 177,
+    "severity": "Error",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
     "line": 177,
@@ -3286,6 +3336,11 @@
   },
   {
     "line": 198,
+    "severity": "Error",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
+  },
+  {
+    "line": 198,
     "severity": "Information",
     "message": "Style Info: Variable 'val_gettransaction_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettransaction_pos2')."
   },
@@ -3363,6 +3418,11 @@
     "line": 201,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_pos5"
+  },
+  {
+    "line": 202,
+    "severity": "Error",
+    "message": "Argument 1 to 'gettransaction' should be Long, but got a String value."
   },
   {
     "line": 202,

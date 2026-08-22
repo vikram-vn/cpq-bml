@@ -1181,6 +1181,11 @@
   },
   {
     "line": 94,
+    "severity": "Error",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
+  },
+  {
+    "line": 94,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_isempty_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_isempty_pos2')."
   },
@@ -1278,6 +1283,11 @@
     "line": 97,
     "severity": "Hint",
     "message": "Unused variable: val_isempty_pos5"
+  },
+  {
+    "line": 98,
+    "severity": "Error",
+    "message": "Argument 1 to 'isempty' should be Array, but got a String value."
   },
   {
     "line": 98,
@@ -1601,6 +1611,11 @@
   },
   {
     "line": 118,
+    "severity": "Error",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 118,
     "severity": "Information",
     "message": "Style Info: Variable 'val_max_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_max_pos2')."
   },
@@ -1678,6 +1693,11 @@
     "line": 121,
     "severity": "Hint",
     "message": "Unused variable: val_max_pos5"
+  },
+  {
+    "line": 122,
+    "severity": "Error",
+    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
     "line": 122,
@@ -1941,6 +1961,11 @@
   },
   {
     "line": 142,
+    "severity": "Error",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+  },
+  {
+    "line": 142,
     "severity": "Information",
     "message": "Style Info: Variable 'val_min_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_pos2')."
   },
@@ -2018,6 +2043,11 @@
     "line": 145,
     "severity": "Hint",
     "message": "Unused variable: val_min_pos5"
+  },
+  {
+    "line": 146,
+    "severity": "Error",
+    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
   },
   {
     "line": 146,
@@ -2736,6 +2766,11 @@
   },
   {
     "line": 191,
+    "severity": "Error",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
+  },
+  {
+    "line": 191,
     "severity": "Information",
     "message": "Style Info: Variable 'val_remove_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_pos2')."
   },
@@ -2828,6 +2863,11 @@
     "line": 194,
     "severity": "Hint",
     "message": "Unused variable: val_remove_pos5"
+  },
+  {
+    "line": 195,
+    "severity": "Error",
+    "message": "Argument 1 to 'remove' should be Array, but got a String value."
   },
   {
     "line": 195,
@@ -3151,6 +3191,11 @@
   },
   {
     "line": 216,
+    "severity": "Error",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
+  },
+  {
+    "line": 216,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_reverse_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -3248,6 +3293,11 @@
     "line": 219,
     "severity": "Hint",
     "message": "Unused variable: val_reverse_pos5"
+  },
+  {
+    "line": 220,
+    "severity": "Error",
+    "message": "Argument 1 to 'reverse' should be Array, but got a String value."
   },
   {
     "line": 220,
@@ -3571,6 +3621,11 @@
   },
   {
     "line": 240,
+    "severity": "Error",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
+  },
+  {
+    "line": 240,
     "severity": "Information",
     "message": "Style Info: Variable 'val_sizeofarray_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sizeofarray_pos2')."
   },
@@ -3648,6 +3703,11 @@
     "line": 243,
     "severity": "Hint",
     "message": "Unused variable: val_sizeofarray_pos5"
+  },
+  {
+    "line": 244,
+    "severity": "Error",
+    "message": "Argument 1 to 'sizeofarray' should be Array, but got a String value."
   },
   {
     "line": 244,
@@ -3921,6 +3981,11 @@
   },
   {
     "line": 265,
+    "severity": "Error",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 265,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -4018,6 +4083,11 @@
     "line": 268,
     "severity": "Hint",
     "message": "Unused variable: val_sort_pos5"
+  },
+  {
+    "line": 269,
+    "severity": "Error",
+    "message": "Argument 1 to 'sort' should be Array, but got a String value."
   },
   {
     "line": 269,

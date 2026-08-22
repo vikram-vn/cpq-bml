@@ -3056,7 +3056,7 @@
   },
   {
     "line": 235,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3081,7 +3081,7 @@
   },
   {
     "line": 238,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3111,7 +3111,7 @@
   },
   {
     "line": 240,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3136,7 +3136,7 @@
   },
   {
     "line": 241,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3161,7 +3161,7 @@
   },
   {
     "line": 242,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3186,7 +3186,7 @@
   },
   {
     "line": 243,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3201,7 +3201,7 @@
   },
   {
     "line": 247,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3216,7 +3216,7 @@
   },
   {
     "line": 248,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3231,7 +3231,7 @@
   },
   {
     "line": 249,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3246,7 +3246,7 @@
   },
   {
     "line": 250,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3261,7 +3261,7 @@
   },
   {
     "line": 251,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3276,7 +3276,7 @@
   },
   {
     "line": 252,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3301,7 +3301,7 @@
   },
   {
     "line": 253,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3331,7 +3331,7 @@
   },
   {
     "line": 254,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3346,7 +3346,7 @@
   },
   {
     "line": 255,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3366,7 +3366,7 @@
   },
   {
     "line": 256,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3376,7 +3376,7 @@
   },
   {
     "line": 257,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3391,7 +3391,7 @@
   },
   {
     "line": 258,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -3411,7 +3411,7 @@
   },
   {
     "line": 259,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -4363,6 +4363,11 @@
     "line": 358,
     "severity": "Information",
     "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
+  },
+  {
+    "line": 358,
+    "severity": "Error",
+    "message": "Type mismatch: Cannot compare 'Date' and 'Date' using '>'. both operands must be both numeric or both string."
   },
   {
     "line": 359,

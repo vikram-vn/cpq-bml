@@ -3456,6 +3456,11 @@
   },
   {
     "line": 267,
+    "severity": "Error",
+    "message": "Argument 1 to 'join' should be String[], but got a String value."
+  },
+  {
+    "line": 267,
     "severity": "Information",
     "message": "Style Info: Variable 'val_join_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_join_pos2')."
   },
@@ -3533,6 +3538,11 @@
     "line": 270,
     "severity": "Hint",
     "message": "Unused variable: val_join_pos5"
+  },
+  {
+    "line": 271,
+    "severity": "Error",
+    "message": "Argument 1 to 'join' should be String[], but got a String value."
   },
   {
     "line": 271,

@@ -14,10 +14,12 @@ function checkBmql(cleanText, noStringsText, doc) {
         const endPos = startPos.translate(0, name.length);
 
         const message = `Deprecated function '${name}'. Use 'bmql' instead to avoid SQL injection vulnerability`;
-        const severity = vscode.DiagnosticSeverity.Error; // SQL vulnerability is High risk
+        const severity = vscode.DiagnosticSeverity.Hint;
         const code = name === 'gettabledata' ? 'bml-gettabledata-fix' : 'bml-getpartsdata-fix';
 
-        diagnostics.push(makeDiagnostic(new vscode.Range(startPos, endPos), message, severity, code));
+        const diag = makeDiagnostic(new vscode.Range(startPos, endPos), message, severity, code);
+        diag.tags = [vscode.DiagnosticTag.Deprecated];
+        diagnostics.push(diag);
     }
 
     // bmql() call validation

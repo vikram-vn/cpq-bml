@@ -1,11 +1,6 @@
 [
   {
     "line": 6,
-    "severity": "Warning",
-    "message": "'jNaN' is read here but is never defined in this function."
-  },
-  {
-    "line": 6,
     "severity": "Hint",
     "message": "Unused variable: nanJava"
   },
@@ -26,7 +21,7 @@
   },
   {
     "line": 11,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
@@ -41,7 +36,7 @@
   },
   {
     "line": 15,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -66,7 +61,7 @@
   },
   {
     "line": 19,
-    "severity": "Error",
+    "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
@@ -91,12 +86,7 @@
   },
   {
     "line": 23,
-    "severity": "Warning",
-    "message": "'NaN' is read here but is never defined in this function."
-  },
-  {
-    "line": 23,
-    "severity": "Warning",
+    "severity": "Hint",
     "message": "Deprecated constant 'NaN'. Use 'jNaN' instead for Java compatibility"
   },
   {

@@ -42,7 +42,7 @@
   {
     "line": 12,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 12,
@@ -102,7 +102,7 @@
   {
     "line": 16,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 16,
@@ -132,7 +132,7 @@
   {
     "line": 17,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 17,
@@ -187,7 +187,7 @@
   {
     "line": 19,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 19,
@@ -207,7 +207,7 @@
   {
     "line": 22,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 22,
@@ -227,7 +227,7 @@
   {
     "line": 23,
     "severity": "Error",
-    "message": "Error: 'dict()' type '' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type '' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 23,
@@ -247,7 +247,7 @@
   {
     "line": 24,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 24,
@@ -357,7 +357,7 @@
   {
     "line": 29,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 29,
@@ -392,7 +392,7 @@
   {
     "line": 31,
     "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are string, integer, float, date, boolean, and their 1-D / 2-D array suffixes, or 'anytype'."
+    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
   },
   {
     "line": 32,
@@ -943,6 +943,11 @@
     "line": 68,
     "severity": "Information",
     "message": "Style Info: Variable 'var_put_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_put_arg_3')."
+  },
+  {
+    "line": 69,
+    "severity": "Error",
+    "message": "Argument 4 to 'put' should be Boolean, but got a Dictionary value."
   },
   {
     "line": 69,

@@ -116,6 +116,11 @@
   },
   {
     "line": 46,
+    "severity": "Error",
+    "message": "Error: Division or modulo by zero ('/ 0') will throw an ArithmeticException at runtime."
+  },
+  {
+    "line": 46,
     "severity": "Hint",
     "message": "Unused variable: zeroDiv1"
   },
@@ -128,6 +133,11 @@
     "line": 47,
     "severity": "Error",
     "message": "Division by literal zero ('0.0') will throw a runtime exception"
+  },
+  {
+    "line": 47,
+    "severity": "Error",
+    "message": "Error: Division or modulo by zero ('/ 0.0') will throw an ArithmeticException at runtime."
   },
   {
     "line": 47,

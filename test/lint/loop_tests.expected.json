@@ -172,6 +172,11 @@
   {
     "line": 73,
     "severity": "Warning",
+    "message": "Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead."
+  },
+  {
+    "line": 73,
+    "severity": "Warning",
     "message": "Performance Warning: BMQL query inside loop. Move query outside the loop for better performance"
   },
   {

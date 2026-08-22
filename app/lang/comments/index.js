@@ -38,11 +38,48 @@ function createDecorationTypes() {
             backgroundColor: 'rgba(70, 130, 180, 0.06)'
         }
     });
-    return { tagTypes, directiveType, docHeaderType };
+    const deprecatedType = vscode.window.createTextEditorDecorationType({
+        textDecoration: 'line-through'
+    });
+    return { tagTypes, directiveType, docHeaderType, deprecatedType };
 }
 
 function toVscodeRanges(document, offsetRanges) {
     return offsetRanges.map(([start, end]) => new vscode.Range(document.positionAt(start), document.positionAt(end)));
+}
+
+function findDeprecatedRanges(documentText, document) {
+    const { getCommentRanges } = require('../lint/comments');
+    const { getStringRanges } = require('../lint/strings');
+    const commentRanges = getCommentRanges(documentText);
+    const stringRanges = getStringRanges(documentText);
+
+    const chars = documentText.split('');
+    for (const [start, end] of [...commentRanges, ...stringRanges]) {
+        for (let i = start; i < end; i++) {
+            if (chars[i] !== '\n' && chars[i] !== '\r') {
+                chars[i] = ' ';
+            }
+        }
+    }
+    const cleanText = chars.join('');
+
+    const ranges = [];
+    const deprecatedRegexes = [
+        /\bNaN\b/g,
+        /\bstrtodate\b/gi,
+        /\b(gettabledata|getpartsdata)\b/gi
+    ];
+
+    for (const regex of deprecatedRegexes) {
+        let match;
+        while ((match = regex.exec(cleanText)) !== null) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+            ranges.push(new vscode.Range(startPos, endPos));
+        }
+    }
+    return ranges;
 }
 
 function applyDecorations(editor, decorationTypes) {
@@ -55,6 +92,9 @@ function applyDecorations(editor, decorationTypes) {
     }
     editor.setDecorations(decorationTypes.directiveType, toVscodeRanges(document, directives));
     editor.setDecorations(decorationTypes.docHeaderType, toVscodeRanges(document, docHeaders));
+
+    const deprecatedRanges = findDeprecatedRanges(document.getText(), document);
+    editor.setDecorations(decorationTypes.deprecatedType, deprecatedRanges);
 }
 
 function clearDecorations(editor, decorationTypes) {
@@ -62,12 +102,13 @@ function clearDecorations(editor, decorationTypes) {
     for (const type of decorationTypes.tagTypes.values()) editor.setDecorations(type, []);
     editor.setDecorations(decorationTypes.directiveType, []);
     editor.setDecorations(decorationTypes.docHeaderType, []);
+    editor.setDecorations(decorationTypes.deprecatedType, []);
 }
 
 function registerBmlComments(context) {
     const decorationTypes = createDecorationTypes();
     for (const type of decorationTypes.tagTypes.values()) context.subscriptions.push(type);
-    context.subscriptions.push(decorationTypes.directiveType, decorationTypes.docHeaderType);
+    context.subscriptions.push(decorationTypes.directiveType, decorationTypes.docHeaderType, decorationTypes.deprecatedType);
 
     const decorateDelay = 300;
     const decorateTimers = new Map();

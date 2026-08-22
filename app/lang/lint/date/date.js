@@ -14,10 +14,12 @@ function checkDate(cleanText, noStringsText, doc) {
         const endPos = startPos.translate(0, name.length);
 
         const message = `Deprecated function 'strtodate'. Use 'strtojavadate' instead`;
-        const severity = vscode.DiagnosticSeverity.Warning;
+        const severity = vscode.DiagnosticSeverity.Hint;
         const code = 'bml-strtodate-fix';
 
-        diagnostics.push(makeDiagnostic(new vscode.Range(startPos, endPos), message, severity, code));
+        const diag = makeDiagnostic(new vscode.Range(startPos, endPos), message, severity, code);
+        diag.tags = [vscode.DiagnosticTag.Deprecated];
+        diagnostics.push(diag);
     }
 
     // date() call validation
