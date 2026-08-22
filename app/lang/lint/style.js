@@ -204,7 +204,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
                 }
                 // RecordSet Check
                 else if (inferredLower.includes('recordset') || inferredLower === 'records') {
-                    if (!/Records$/i.test(varName)) {
+                    if (!/(Records|RecordSet)$/i.test(varName)) {
                         diagnostics.push(makeDiagnostic(
                             decl.range,
                             `Style Info: RecordSet variable '${varName}' should have a 'Records' suffix (e.g. '${varName}Records').`,

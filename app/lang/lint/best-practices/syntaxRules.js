@@ -64,7 +64,7 @@ function checkSyntaxRules(cleanText, noStringsText, doc) {
         const prefix = match[1];
         const suffix = match[2];
         const isMethodCall = match[0].trim().endsWith("(");
-        if (prefix === "util" || prefix === "commerce") {
+        if (prefix === "util" || prefix === "commerce" || prefix.toLowerCase() === "cpqjs") {
             continue;
         }
         // Skip the tail segment of a util.<folder>.<name>(...) / commerce.<folder>.<name>(...)
@@ -72,7 +72,7 @@ function checkSyntaxRules(cleanText, noStringsText, doc) {
         // looks at adjacent dot-pairs, so the folder.name part of a 3-segment chain would
         // otherwise look like an unsupported member access on its own.
         const beforeMatch = noStringsText.slice(Math.max(0, match.index - 12), match.index);
-        if (/\b(?:util|commerce)\.$/i.test(beforeMatch)) {
+        if (/\b(?:util|commerce|cpqjs)\.$/i.test(beforeMatch)) {
             continue;
         }
         const isInvalidProperty = suffix === "length" || suffix === "size";

@@ -71,9 +71,10 @@ suite('BML Linter Test Suite - Variable Naming Styles', () => {
     });
 
     test('RecordSet suffix checks', () => {
-        // Valid recordset names
+        // Valid recordset names (ending with Records or RecordSet)
         const diags1 = lintText(`
             userRecords = bmql("SELECT username FROM users");
+            bmqlQueryResultSetRecordSet = bmql("SELECT username FROM users");
             return "";
         `);
         assert.strictEqual(diags1.filter(d => d.code === 'bml-recordset-naming-suffix').length, 0);
