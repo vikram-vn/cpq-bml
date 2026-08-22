@@ -175,4 +175,24 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 			}
 		});
 	});
+
+	suite('string literals vs bmql', () => {
+		test('words like "in" inside ordinary string literals are not scoped as BMQL keywords', () => {
+			const line = 's = "Oracle CPQ BML Full Built-in Specification Executed";';
+			const scope = scopesOf(line, 'in');
+			assert.strictEqual(scope, 'source.bml string.quoted.double.bml');
+		});
+
+		test('SQL keywords inside bmql(...) calls are scoped as keyword.other.bmql.bml', () => {
+			const line = 'res = bmql("SELECT id FROM table WHERE status IN ($list)");';
+			const scope = scopesOf(line, 'IN');
+			assert.match(scope, /\bkeyword\.other\.bmql\.bml\b/);
+		});
+
+		test('hyphenated or underscored identifiers like "active-in" in BMQL queries are not scoped as SQL keywords', () => {
+			const line = 'res = bmql("SELECT part_number, price, active-in FROM c_parts WHERE status = $test");';
+			const scope = scopesOf(line, 'active-in');
+			assert.strictEqual(scope, 'source.bml string.quoted.double.bmql.bml');
+		});
+	});
 });

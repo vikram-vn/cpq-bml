@@ -37,7 +37,7 @@ def main():
     # 3. Compress
     os.makedirs(os.path.dirname(DEST_FILE), exist_ok=True)
     json_bytes = json.dumps(payload, separators=(',', ':')).encode('utf-8')
-    compressed = brotli.compress(json_bytes, quality=11)
+    compressed = brotli.compress(json_bytes, quality=6)
 
     with open(DEST_FILE, "wb") as f:
         f.write(compressed)

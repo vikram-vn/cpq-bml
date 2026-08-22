@@ -23,9 +23,13 @@ def main():
         src_path = os.path.join(SPELLCHECK_DIR, file_name)
         out_path = src_path + ".br"
 
+        if os.path.exists(out_path) and os.path.getmtime(out_path) >= os.path.getmtime(src_path):
+            print(f"up-to-date: {file_name}.br")
+            continue
+
         with open(src_path, "rb") as f:
             data = f.read()
-        compressed = brotli.compress(data, quality=11)
+        compressed = brotli.compress(data, quality=6)
         with open(out_path, "wb") as f:
             f.write(compressed)
         print(f"compressed {file_name}: {len(data)} -> {len(compressed)} bytes")

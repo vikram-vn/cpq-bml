@@ -6,7 +6,9 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "CPQ BML",
   "scopeName": "source.bml",
-  "fileTypes": ["bml"],
+  "fileTypes": [
+    "bml"
+  ],
   "patterns": [
     {
       "include": "#comments"
@@ -112,6 +114,64 @@
     "strings": {
       "patterns": [
         {
+          "name": "string.quoted.double.bmql.bml",
+          "begin": "(?i)\\bbmql\\s*\\(\\s*\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bml"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\\\([\"\\\\bfnrt]|u[0-9a-fA-F]{4})",
+              "name": "constant.character.escape.bml"
+            },
+            {
+              "match": "\\$([a-zA-Z_]\\w*)",
+              "name": "variable.other.bmql.bml"
+            },
+            {
+              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)(?![\\w-])",
+              "name": "keyword.other.bmql.bml"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.bmql.bml",
+          "begin": "(?i)\\bbmql\\s*\\(\\s*'",
+          "end": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bml"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\\\(['\\\\bfnrt]|u[0-9a-fA-F]{4})",
+              "name": "constant.character.escape.bml"
+            },
+            {
+              "match": "\\$([a-zA-Z_]\\w*)",
+              "name": "variable.other.bmql.bml"
+            },
+            {
+              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)(?![\\w-])",
+              "name": "keyword.other.bmql.bml"
+            }
+          ]
+        },
+        {
           "name": "string.quoted.double.bml",
           "begin": "\"",
           "end": "\"",
@@ -142,11 +202,6 @@
               "match": "\\$([a-zA-Z_]\\w*)",
               "name": "variable.other.bmql.bml",
               "comment": "BMQL variable substitution inside query strings (e.g. $pno, $lead, $eval)"
-            },
-            {
-              "match": "(?i)\\b(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)\\b",
-              "name": "keyword.other.bmql.bml",
-              "comment": "BMQL SQL keywords inside string literals"
             }
           ]
         },
@@ -172,10 +227,6 @@
             {
               "match": "\\$([a-zA-Z_]\\w*)",
               "name": "variable.other.bmql.bml"
-            },
-            {
-              "match": "(?i)\\b(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)\\b",
-              "name": "keyword.other.bmql.bml"
             }
           ]
         }
