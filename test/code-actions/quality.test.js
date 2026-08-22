@@ -63,6 +63,20 @@ function runQualityCodeActionTests() {
             assert.ok(extractAction, 'Should offer constant extraction Quick Fix');
         });
 
+        test('Magic number suppression on constant candidate definition lines', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'CONST_2026 = 2026;\nisLeapYearBool = isleap(CONST_2026);\nreturn "";'
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const magicDiag = diags.find(d => d.code === 'bml-magic-number');
+            assert.strictEqual(magicDiag, undefined, 'CONST_2026 = 2026; should not trigger magic number diagnostic');
+        });
+
         test('Quick Fix for empty block and missing return', async () => {
             const doc = await vscode.workspace.openTextDocument({
                 language: 'bml',

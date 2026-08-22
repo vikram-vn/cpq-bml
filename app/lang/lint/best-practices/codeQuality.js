@@ -39,6 +39,12 @@ function checkCodeQuality(cleanText, noStringsText, doc) {
             }
         }
 
+        const lineStart = noStringsText.lastIndexOf('\n', index) + 1;
+        const linePrefix = noStringsText.substring(lineStart, index);
+        if (/\b(?:CONST_[a-zA-Z0-9_]+|[A-Z0-9_]{2,})\s*=\s*$/.test(linePrefix.trim())) {
+            continue; // part of constant definition (e.g. CONST_2026 = 2026; or MY_CONST = 2026;)
+        }
+
         const startPos = doc.positionAt(index);
         const endPos = startPos.translate(0, val.length);
         diagnostics.push(makeDiagnostic(

@@ -5,8 +5,6 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
 
     if (diag.code === 'bml-magic-number') {
         const val = document.getText(editRange);
-        const isFloat = val.includes('.');
-        const typeName = isFloat ? 'Float' : 'Integer';
         const constName = 'CONST_' + val.replace('.', '_');
 
         const extractAction = new vscode.CodeAction(`Extract '${val}' to constant candidate '${constName}'`, vscode.CodeActionKind.QuickFix);
@@ -14,7 +12,7 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
         const lineText = document.lineAt(editRange.start.line).text;
         const indentMatch = lineText.match(/^\s*/);
         const indent = indentMatch ? indentMatch[0] : '';
-        const decl = `${indent}${typeName} ${constName} = ${val};\n`;
+        const decl = `${indent}${constName} = ${val};\n`;
         const lineStartPos = new vscode.Position(editRange.start.line, 0);
         extractAction.edit.insert(document.uri, lineStartPos, decl);
         extractAction.edit.replace(document.uri, editRange, constName);
