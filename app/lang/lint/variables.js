@@ -19,29 +19,36 @@ function getDeclaredVariables(cleanText, doc) {
             continue;
         }
 
-        const startPos = doc.positionAt(matchIndex);
-        const endPos = startPos.translate(0, varName.length);
-        const range = new vscode.Range(startPos, endPos);
-
         if (!declaredVars.has(varName)) {
             declaredVars.set(varName, []);
         }
-        declaredVars.get(varName).push({ index: matchIndex, range, isLoopVar: false });
+        declaredVars.get(varName).push({
+            index: matchIndex,
+            get range() {
+                const startPos = doc.positionAt(matchIndex);
+                return new vscode.Range(startPos, startPos.translate(0, varName.length));
+            },
+            isLoopVar: false
+        });
     }
 
     // 2. Find all loop variables: for varName in ...
     const loopRegex = /\bfor\s+([a-zA-Z_]\w*)\s+in\s+/gi;
     while ((match = loopRegex.exec(cleanText)) !== null) {
         const varName = match[1];
-        const startPos = doc.positionAt(match.index + match[0].indexOf(varName));
-        const endPos = startPos.translate(0, varName.length);
-        const range = new vscode.Range(startPos, endPos);
         const matchIndex = match.index + match[0].indexOf(varName);
 
         if (!declaredVars.has(varName)) {
             declaredVars.set(varName, []);
         }
-        declaredVars.get(varName).push({ index: matchIndex, range, isLoopVar: true });
+        declaredVars.get(varName).push({
+            index: matchIndex,
+            get range() {
+                const startPos = doc.positionAt(matchIndex);
+                return new vscode.Range(startPos, startPos.translate(0, varName.length));
+            },
+            isLoopVar: true
+        });
     }
 
     return declaredVars;
@@ -132,21 +139,22 @@ function checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText = 
             // that was assigned and then forgotten, so it gets a lower-severity,
             // more precise diagnostic instead of the same 'Unused variable' Warning.
             const isOnlyLoopVar = decls.every(d => d.isLoopVar);
+            const startPos = doc.positionAt(firstDecl.index);
+            const endPos = startPos.translate(0, varName.length);
+            const range = new vscode.Range(startPos, endPos);
+
             if (isOnlyLoopVar) {
                 const diag = new vscode.Diagnostic(
-                    firstDecl.range,
+                    range,
                     `Unused loop variable: '${varName}' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo.`,
                     vscode.DiagnosticSeverity.Information
                 );
                 diag.code = 'bml-unused-loop-var';
-                // Renders the variable faded out instead of underlined, matching
-                // how VS Code shows unused locals in other languages - dulled
-                // text reads as "safe to ignore/remove" rather than "fix this".
                 diag.tags = [vscode.DiagnosticTag.Unnecessary];
                 diagnostics.push(diag);
             } else {
                 const diag = new vscode.Diagnostic(
-                    firstDecl.range,
+                    range,
                     `Unused variable: ${varName}`,
                     vscode.DiagnosticSeverity.Hint
                 );

@@ -115,6 +115,15 @@ function getSyntaxFixes(document, diag, editRange) {
             fixes.push(action);
         }
     }
+    else if (diag.code === 'bml-division-by-zero') {
+        const text = document.getText(editRange);
+        const action = new vscode.CodeAction("Replace zero divisor with safe fallback ('1.0')", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        const replaced = text.replace(/0(?:\.0+)?/, '1.0');
+        action.edit.replace(document.uri, editRange, replaced);
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
 
     return fixes;
 }

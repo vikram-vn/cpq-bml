@@ -29,6 +29,20 @@ function checkOperators(cleanText, doc) {
         diagnostics.push(diag);
     }
 
+    // Division / Modulo by Zero detection (/ 0, / 0.0, % 0)
+    const divZeroRegex = /[\/%]\s*(0(?:\.0+)?)\b/g;
+    while ((match = divZeroRegex.exec(cleanText)) !== null) {
+        const startPos = doc.positionAt(match.index);
+        const endPos = doc.positionAt(match.index + match[0].length);
+        const diag = new vscode.Diagnostic(
+            new vscode.Range(startPos, endPos),
+            `Error: Division or modulo by zero ('${match[0]}') will throw an ArithmeticException at runtime.`,
+            vscode.DiagnosticSeverity.Error
+        );
+        diag.code = 'bml-division-by-zero';
+        diagnostics.push(diag);
+    }
+
     return diagnostics;
 }
 

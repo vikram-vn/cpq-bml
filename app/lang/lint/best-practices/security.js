@@ -59,6 +59,20 @@ function checkSecurity(cleanText, noStringsText, doc) {
         ));
     }
 
+    // Sensitive data logging check: print() or logtime() passing sensitive variables
+    const sensitiveLogRegex = /\b(?:print|logtime)\s*\([^)]*\b(\w*(?:password|passwd|pwd|api[_-]?key|secret|token|credential|_bm_user_token)\w*)\b[^)]*\)/gi;
+    while ((match = sensitiveLogRegex.exec(cleanText)) !== null) {
+        const varName = match[1];
+        const startPos = doc.positionAt(match.index);
+        const endPos = doc.positionAt(match.index + match[0].length);
+        diagnostics.push(makeDiagnostic(
+            new vscode.Range(startPos, endPos),
+            `Security Warning: Sensitive variable '${varName}' is logged via print()/logtime(). Avoid writing credentials or tokens to execution logs.`,
+            vscode.DiagnosticSeverity.Warning,
+            'bml-log-sensitive-data'
+        ));
+    }
+
     return diagnostics;
 }
 
