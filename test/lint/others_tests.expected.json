@@ -101,6 +101,11 @@
   },
   {
     "line": 16,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getarrayattrstring_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_pos4')."
+  },
+  {
+    "line": 16,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -108,11 +113,6 @@
     "line": 16,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 16,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getarrayattrstring_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_pos4')."
   },
   {
     "line": 16,
@@ -126,6 +126,11 @@
   },
   {
     "line": 17,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getarrayattrstring_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_pos5')."
+  },
+  {
+    "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -133,11 +138,6 @@
     "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 17,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getarrayattrstring_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_pos5')."
   },
   {
     "line": 17,
@@ -361,13 +361,13 @@
   },
   {
     "line": 33,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getarrayattrstring_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_neg9')."
   },
   {
     "line": 33,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getarrayattrstring_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 33,
@@ -431,6 +431,11 @@
   },
   {
     "line": 41,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getconfigattrvalue_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_pos4')."
+  },
+  {
+    "line": 41,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -438,11 +443,6 @@
     "line": 41,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 41,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getconfigattrvalue_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_pos4')."
   },
   {
     "line": 41,
@@ -451,6 +451,11 @@
   },
   {
     "line": 42,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getconfigattrvalue_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_pos5')."
+  },
+  {
+    "line": 42,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -458,11 +463,6 @@
     "line": 42,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 42,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getconfigattrvalue_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_pos5')."
   },
   {
     "line": 42,
@@ -656,13 +656,13 @@
   },
   {
     "line": 59,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getconfigattrvalue_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_neg9')."
   },
   {
     "line": 59,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getconfigattrvalue_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 59,
@@ -736,6 +736,11 @@
   },
   {
     "line": 66,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_print_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_print_pos4')."
+  },
+  {
+    "line": 66,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -743,11 +748,6 @@
     "line": 66,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 66,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_print_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_print_pos4')."
   },
   {
     "line": 66,
@@ -761,6 +761,11 @@
   },
   {
     "line": 67,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_print_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_print_pos5')."
+  },
+  {
+    "line": 67,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -768,11 +773,6 @@
     "line": 67,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 67,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_print_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_print_pos5')."
   },
   {
     "line": 67,
@@ -1026,13 +1026,13 @@
   },
   {
     "line": 83,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_print_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_print_neg9')."
   },
   {
     "line": 83,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_print_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_print_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 83,
@@ -1116,6 +1116,11 @@
   },
   {
     "line": 90,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isnull_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isnull_pos4')."
+  },
+  {
+    "line": 90,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1123,11 +1128,6 @@
     "line": 90,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 90,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_isnull_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isnull_pos4')."
   },
   {
     "line": 90,
@@ -1141,6 +1141,11 @@
   },
   {
     "line": 91,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isnull_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isnull_pos5')."
+  },
+  {
+    "line": 91,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1148,11 +1153,6 @@
     "line": 91,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 91,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_isnull_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isnull_pos5')."
   },
   {
     "line": 91,
@@ -1401,13 +1401,13 @@
   },
   {
     "line": 107,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_isnull_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isnull_neg9')."
   },
   {
     "line": 107,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_isnull_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isnull_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 107,
@@ -1466,6 +1466,11 @@
   },
   {
     "line": 114,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getreasonstatus_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_pos4')."
+  },
+  {
+    "line": 114,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1473,11 +1478,6 @@
     "line": 114,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 114,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getreasonstatus_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_pos4')."
   },
   {
     "line": 114,
@@ -1486,6 +1486,11 @@
   },
   {
     "line": 115,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getreasonstatus_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_pos5')."
+  },
+  {
+    "line": 115,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1493,11 +1498,6 @@
     "line": 115,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 115,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getreasonstatus_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_pos5')."
   },
   {
     "line": 115,
@@ -1681,13 +1681,13 @@
   },
   {
     "line": 131,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getreasonstatus_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_neg9')."
   },
   {
     "line": 131,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getreasonstatus_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 131,
@@ -1771,6 +1771,11 @@
   },
   {
     "line": 139,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_logtime_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_pos4')."
+  },
+  {
+    "line": 139,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1778,11 +1783,6 @@
     "line": 139,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 139,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_logtime_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_pos4')."
   },
   {
     "line": 139,
@@ -1796,6 +1796,11 @@
   },
   {
     "line": 140,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_logtime_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_pos5')."
+  },
+  {
+    "line": 140,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1803,11 +1808,6 @@
     "line": 140,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 140,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_logtime_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_pos5')."
   },
   {
     "line": 140,
@@ -2041,13 +2041,13 @@
   },
   {
     "line": 157,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_logtime_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_neg9')."
   },
   {
     "line": 157,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_logtime_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 157,
@@ -2111,6 +2111,11 @@
   },
   {
     "line": 164,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getoldvalue_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getoldvalue_pos4')."
+  },
+  {
+    "line": 164,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -2118,11 +2123,6 @@
     "line": 164,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 164,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getoldvalue_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getoldvalue_pos4')."
   },
   {
     "line": 164,
@@ -2131,6 +2131,11 @@
   },
   {
     "line": 165,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getoldvalue_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getoldvalue_pos5')."
+  },
+  {
+    "line": 165,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -2138,11 +2143,6 @@
     "line": 165,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 165,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getoldvalue_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getoldvalue_pos5')."
   },
   {
     "line": 165,
@@ -2326,13 +2326,13 @@
   },
   {
     "line": 181,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getoldvalue_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getoldvalue_neg9')."
   },
   {
     "line": 181,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getoldvalue_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getoldvalue_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 181,
@@ -2416,6 +2416,11 @@
   },
   {
     "line": 189,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_savebom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos4')."
+  },
+  {
+    "line": 189,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -2423,11 +2428,6 @@
     "line": 189,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 189,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_savebom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos4')."
   },
   {
     "line": 189,
@@ -2441,6 +2441,11 @@
   },
   {
     "line": 190,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_savebom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos5')."
+  },
+  {
+    "line": 190,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -2448,11 +2453,6 @@
     "line": 190,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 190,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_savebom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos5')."
   },
   {
     "line": 190,
@@ -2681,13 +2681,13 @@
   },
   {
     "line": 207,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_savebom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_neg9')."
   },
   {
     "line": 207,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_savebom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 207,
@@ -2796,6 +2796,11 @@
   },
   {
     "line": 215,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getbom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getbom_pos4')."
+  },
+  {
+    "line": 215,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -2803,11 +2808,6 @@
     "line": 215,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 215,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getbom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getbom_pos4')."
   },
   {
     "line": 215,
@@ -2826,6 +2826,11 @@
   },
   {
     "line": 216,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getbom_pos5')."
+  },
+  {
+    "line": 216,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -2833,11 +2838,6 @@
     "line": 216,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 216,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getbom_pos5')."
   },
   {
     "line": 216,
@@ -3121,13 +3121,13 @@
   },
   {
     "line": 233,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getbom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getbom_neg9')."
   },
   {
     "line": 233,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getbom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getbom_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 233,
@@ -3226,6 +3226,11 @@
   },
   {
     "line": 241,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getconfigbom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigbom_pos4')."
+  },
+  {
+    "line": 241,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -3233,11 +3238,6 @@
     "line": 241,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 241,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getconfigbom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigbom_pos4')."
   },
   {
     "line": 241,
@@ -3251,6 +3251,11 @@
   },
   {
     "line": 242,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getconfigbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigbom_pos5')."
+  },
+  {
+    "line": 242,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -3258,11 +3263,6 @@
     "line": 242,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 242,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getconfigbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigbom_pos5')."
   },
   {
     "line": 242,
@@ -3496,13 +3496,13 @@
   },
   {
     "line": 259,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getconfigbom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigbom_neg9')."
   },
   {
     "line": 259,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getconfigbom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigbom_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 259,
@@ -3576,6 +3576,11 @@
   },
   {
     "line": 267,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_calculateconfiguration_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_pos4')."
+  },
+  {
+    "line": 267,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -3583,11 +3588,6 @@
     "line": 267,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 267,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_calculateconfiguration_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_pos4')."
   },
   {
     "line": 267,
@@ -3596,6 +3596,11 @@
   },
   {
     "line": 268,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_calculateconfiguration_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_pos5')."
+  },
+  {
+    "line": 268,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -3603,11 +3608,6 @@
     "line": 268,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 268,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_calculateconfiguration_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_pos5')."
   },
   {
     "line": 268,
@@ -3791,13 +3791,13 @@
   },
   {
     "line": 285,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_calculateconfiguration_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg9')."
   },
   {
     "line": 285,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_calculateconfiguration_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 285,
@@ -3861,6 +3861,11 @@
   },
   {
     "line": 293,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applybom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos4')."
+  },
+  {
+    "line": 293,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -3868,11 +3873,6 @@
     "line": 293,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 293,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_applybom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos4')."
   },
   {
     "line": 293,
@@ -3881,6 +3881,11 @@
   },
   {
     "line": 294,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applybom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos5')."
+  },
+  {
+    "line": 294,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -3888,11 +3893,6 @@
     "line": 294,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 294,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_applybom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos5')."
   },
   {
     "line": 294,
@@ -4066,13 +4066,13 @@
   },
   {
     "line": 311,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applybom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_neg9')."
   },
   {
     "line": 311,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_applybom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 311,
@@ -4141,6 +4141,11 @@
   },
   {
     "line": 320,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_calculatedeltabom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_pos4')."
+  },
+  {
+    "line": 320,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -4148,11 +4153,6 @@
     "line": 320,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 320,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_calculatedeltabom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_pos4')."
   },
   {
     "line": 320,
@@ -4161,6 +4161,11 @@
   },
   {
     "line": 321,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_calculatedeltabom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_pos5')."
+  },
+  {
+    "line": 321,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -4168,11 +4173,6 @@
     "line": 321,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 321,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_calculatedeltabom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_pos5')."
   },
   {
     "line": 321,
@@ -4351,13 +4351,13 @@
   },
   {
     "line": 339,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_calculatedeltabom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg9')."
   },
   {
     "line": 339,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_calculatedeltabom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 339,
@@ -4416,6 +4416,11 @@
   },
   {
     "line": 346,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_saveconfigbom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos4')."
+  },
+  {
+    "line": 346,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -4423,11 +4428,6 @@
     "line": 346,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 346,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_saveconfigbom_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos4')."
   },
   {
     "line": 346,
@@ -4436,6 +4436,11 @@
   },
   {
     "line": 347,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_saveconfigbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos5')."
+  },
+  {
+    "line": 347,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -4443,11 +4448,6 @@
     "line": 347,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 347,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_saveconfigbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos5')."
   },
   {
     "line": 347,
@@ -4621,13 +4621,13 @@
   },
   {
     "line": 363,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_saveconfigbom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_neg9')."
   },
   {
     "line": 363,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_saveconfigbom_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 363,
@@ -4691,6 +4691,11 @@
   },
   {
     "line": 371,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionset_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_pos4')."
+  },
+  {
+    "line": 371,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -4698,11 +4703,6 @@
     "line": 371,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 371,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionset_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_pos4')."
   },
   {
     "line": 371,
@@ -4711,6 +4711,11 @@
   },
   {
     "line": 372,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionset_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_pos5')."
+  },
+  {
+    "line": 372,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -4718,11 +4723,6 @@
     "line": 372,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 372,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionset_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_pos5')."
   },
   {
     "line": 372,
@@ -4911,13 +4911,13 @@
   },
   {
     "line": 389,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionset_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_neg9')."
   },
   {
     "line": 389,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionset_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 389,
@@ -4976,6 +4976,11 @@
   },
   {
     "line": 396,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionget_pos4')."
+  },
+  {
+    "line": 396,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -4983,11 +4988,6 @@
     "line": 396,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 396,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionget_pos4')."
   },
   {
     "line": 396,
@@ -4996,6 +4996,11 @@
   },
   {
     "line": 397,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionget_pos5')."
+  },
+  {
+    "line": 397,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -5003,11 +5008,6 @@
     "line": 397,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 397,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionget_pos5')."
   },
   {
     "line": 397,
@@ -5186,13 +5186,13 @@
   },
   {
     "line": 413,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionget_neg9')."
   },
   {
     "line": 413,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionget_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 413,
@@ -5251,6 +5251,11 @@
   },
   {
     "line": 420,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictget_pos4')."
+  },
+  {
+    "line": 420,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -5258,11 +5263,6 @@
     "line": 420,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 420,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictget_pos4')."
   },
   {
     "line": 420,
@@ -5271,6 +5271,11 @@
   },
   {
     "line": 421,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictget_pos5')."
+  },
+  {
+    "line": 421,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -5278,11 +5283,6 @@
     "line": 421,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 421,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictget_pos5')."
   },
   {
     "line": 421,
@@ -5466,13 +5466,13 @@
   },
   {
     "line": 437,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictget_neg9')."
   },
   {
     "line": 437,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictget_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 437,
@@ -5551,6 +5551,11 @@
   },
   {
     "line": 444,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionremove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionremove_pos4')."
+  },
+  {
+    "line": 444,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -5558,11 +5563,6 @@
     "line": 444,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 444,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionremove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionremove_pos4')."
   },
   {
     "line": 444,
@@ -5576,6 +5576,11 @@
   },
   {
     "line": 445,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionremove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionremove_pos5')."
+  },
+  {
+    "line": 445,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -5583,11 +5588,6 @@
     "line": 445,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 445,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionremove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionremove_pos5')."
   },
   {
     "line": 445,
@@ -5836,13 +5836,13 @@
   },
   {
     "line": 461,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_usersessionremove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionremove_neg9')."
   },
   {
     "line": 461,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_usersessionremove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionremove_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 461,
@@ -5921,6 +5921,11 @@
   },
   {
     "line": 468,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictremove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictremove_pos4')."
+  },
+  {
+    "line": 468,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -5928,11 +5933,6 @@
     "line": 468,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 468,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictremove_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictremove_pos4')."
   },
   {
     "line": 468,
@@ -5946,6 +5946,11 @@
   },
   {
     "line": 469,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictremove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictremove_pos5')."
+  },
+  {
+    "line": 469,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -5953,11 +5958,6 @@
     "line": 469,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 469,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictremove_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictremove_pos5')."
   },
   {
     "line": 469,
@@ -6206,13 +6206,13 @@
   },
   {
     "line": 485,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictremove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictremove_neg9')."
   },
   {
     "line": 485,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictremove_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictremove_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 485,
@@ -6276,6 +6276,11 @@
   },
   {
     "line": 492,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_throwerror_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_throwerror_pos4')."
+  },
+  {
+    "line": 492,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -6283,11 +6288,6 @@
     "line": 492,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 492,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_throwerror_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_throwerror_pos4')."
   },
   {
     "line": 492,
@@ -6296,6 +6296,11 @@
   },
   {
     "line": 493,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_throwerror_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_throwerror_pos5')."
+  },
+  {
+    "line": 493,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -6303,11 +6308,6 @@
     "line": 493,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 493,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_throwerror_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_throwerror_pos5')."
   },
   {
     "line": 493,
@@ -6491,13 +6491,13 @@
   },
   {
     "line": 509,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_throwerror_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_throwerror_neg9')."
   },
   {
     "line": 509,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_throwerror_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_throwerror_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 509,
@@ -6596,6 +6596,11 @@
   },
   {
     "line": 516,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getuuid_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_pos4')."
+  },
+  {
+    "line": 516,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -6603,11 +6608,6 @@
     "line": 516,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 516,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getuuid_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_pos4')."
   },
   {
     "line": 516,
@@ -6626,6 +6626,11 @@
   },
   {
     "line": 517,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getuuid_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_pos5')."
+  },
+  {
+    "line": 517,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -6633,11 +6638,6 @@
     "line": 517,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 517,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getuuid_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_pos5')."
   },
   {
     "line": 517,
@@ -6921,13 +6921,13 @@
   },
   {
     "line": 533,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getuuid_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_neg9')."
   },
   {
     "line": 533,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getuuid_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 533,
@@ -6991,6 +6991,11 @@
   },
   {
     "line": 540,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_convertbomtohier_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtohier_pos4')."
+  },
+  {
+    "line": 540,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -6998,11 +7003,6 @@
     "line": 540,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 540,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_convertbomtohier_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtohier_pos4')."
   },
   {
     "line": 540,
@@ -7011,6 +7011,11 @@
   },
   {
     "line": 541,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_convertbomtohier_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtohier_pos5')."
+  },
+  {
+    "line": 541,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -7018,11 +7023,6 @@
     "line": 541,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 541,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_convertbomtohier_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtohier_pos5')."
   },
   {
     "line": 541,
@@ -7201,13 +7201,13 @@
   },
   {
     "line": 557,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_convertbomtohier_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtohier_neg9')."
   },
   {
     "line": 557,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_convertbomtohier_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtohier_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 557,
@@ -7266,6 +7266,11 @@
   },
   {
     "line": 564,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_convertbomtoflat_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtoflat_pos4')."
+  },
+  {
+    "line": 564,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -7273,11 +7278,6 @@
     "line": 564,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 564,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_convertbomtoflat_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtoflat_pos4')."
   },
   {
     "line": 564,
@@ -7286,6 +7286,11 @@
   },
   {
     "line": 565,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_convertbomtoflat_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtoflat_pos5')."
+  },
+  {
+    "line": 565,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -7293,11 +7298,6 @@
     "line": 565,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 565,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_convertbomtoflat_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtoflat_pos5')."
   },
   {
     "line": 565,
@@ -7476,13 +7476,13 @@
   },
   {
     "line": 581,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_convertbomtoflat_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtoflat_neg9')."
   },
   {
     "line": 581,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_convertbomtoflat_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_convertbomtoflat_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 581,
@@ -7556,16 +7556,6 @@
   },
   {
     "line": 588,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 588,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 588,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getattachmentdata_pos4' should have a 'Dict' suffix (e.g. 'val_getattachmentdata_pos4Dict')."
   },
@@ -7576,18 +7566,18 @@
   },
   {
     "line": 588,
-    "severity": "Hint",
-    "message": "Unused variable: val_getattachmentdata_pos4"
-  },
-  {
-    "line": 589,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 589,
+    "line": 588,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 588,
+    "severity": "Hint",
+    "message": "Unused variable: val_getattachmentdata_pos4"
   },
   {
     "line": 589,
@@ -7598,6 +7588,16 @@
     "line": 589,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getattachmentdata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getattachmentdata_pos5')."
+  },
+  {
+    "line": 589,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 589,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 589,
@@ -7841,13 +7841,13 @@
   },
   {
     "line": 605,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getattachmentdata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getattachmentdata_neg9')."
   },
   {
     "line": 605,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getattachmentdata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getattachmentdata_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 605,
@@ -7911,6 +7911,11 @@
   },
   {
     "line": 613,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictset_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_pos4')."
+  },
+  {
+    "line": 613,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -7918,11 +7923,6 @@
     "line": 613,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 613,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictset_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_pos4')."
   },
   {
     "line": 613,
@@ -7931,6 +7931,11 @@
   },
   {
     "line": 614,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictset_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_pos5')."
+  },
+  {
+    "line": 614,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -7938,11 +7943,6 @@
     "line": 614,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 614,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictset_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_pos5')."
   },
   {
     "line": 614,
@@ -8136,13 +8136,13 @@
   },
   {
     "line": 631,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_globaldictset_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_neg9')."
   },
   {
     "line": 631,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_globaldictset_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 631,
@@ -8226,6 +8226,11 @@
   },
   {
     "line": 638,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_addpartstotransaction_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addpartstotransaction_pos4')."
+  },
+  {
+    "line": 638,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -8233,11 +8238,6 @@
     "line": 638,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 638,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_addpartstotransaction_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addpartstotransaction_pos4')."
   },
   {
     "line": 638,
@@ -8251,6 +8251,11 @@
   },
   {
     "line": 639,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_addpartstotransaction_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addpartstotransaction_pos5')."
+  },
+  {
+    "line": 639,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -8258,11 +8263,6 @@
     "line": 639,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 639,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_addpartstotransaction_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addpartstotransaction_pos5')."
   },
   {
     "line": 639,
@@ -8491,13 +8491,13 @@
   },
   {
     "line": 655,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_addpartstotransaction_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addpartstotransaction_neg9')."
   },
   {
     "line": 655,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_addpartstotransaction_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addpartstotransaction_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 655,
@@ -8571,6 +8571,11 @@
   },
   {
     "line": 661,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_validatequoteforagreement_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_validatequoteforagreement_pos4')."
+  },
+  {
+    "line": 661,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -8578,11 +8583,6 @@
     "line": 661,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 661,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_validatequoteforagreement_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_validatequoteforagreement_pos4')."
   },
   {
     "line": 661,
@@ -8596,6 +8596,11 @@
   },
   {
     "line": 662,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_validatequoteforagreement_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_validatequoteforagreement_pos5')."
+  },
+  {
+    "line": 662,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -8603,11 +8608,6 @@
     "line": 662,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 662,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_validatequoteforagreement_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_validatequoteforagreement_pos5')."
   },
   {
     "line": 662,
@@ -8866,13 +8866,13 @@
   },
   {
     "line": 678,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_validatequoteforagreement_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_validatequoteforagreement_neg9')."
   },
   {
     "line": 678,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_validatequoteforagreement_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_validatequoteforagreement_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 678,
@@ -8936,6 +8936,11 @@
   },
   {
     "line": 686,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_generatehmacmessage_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_pos4')."
+  },
+  {
+    "line": 686,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -8943,11 +8948,6 @@
     "line": 686,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 686,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_generatehmacmessage_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_pos4')."
   },
   {
     "line": 686,
@@ -8956,6 +8956,11 @@
   },
   {
     "line": 687,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_generatehmacmessage_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_pos5')."
+  },
+  {
+    "line": 687,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -8963,11 +8968,6 @@
     "line": 687,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 687,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_generatehmacmessage_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_pos5')."
   },
   {
     "line": 687,
@@ -9161,13 +9161,13 @@
   },
   {
     "line": 704,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_generatehmacmessage_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_neg9')."
   },
   {
     "line": 704,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_generatehmacmessage_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 704,
@@ -9251,6 +9251,11 @@
   },
   {
     "line": 711,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_addtotransaction_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addtotransaction_pos4')."
+  },
+  {
+    "line": 711,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -9258,11 +9263,6 @@
     "line": 711,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 711,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_addtotransaction_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addtotransaction_pos4')."
   },
   {
     "line": 711,
@@ -9276,6 +9276,11 @@
   },
   {
     "line": 712,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_addtotransaction_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addtotransaction_pos5')."
+  },
+  {
+    "line": 712,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -9283,11 +9288,6 @@
     "line": 712,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 712,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_addtotransaction_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addtotransaction_pos5')."
   },
   {
     "line": 712,
@@ -9516,13 +9516,13 @@
   },
   {
     "line": 728,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_addtotransaction_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addtotransaction_neg9')."
   },
   {
     "line": 728,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_addtotransaction_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addtotransaction_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 728,
@@ -9581,6 +9581,11 @@
   },
   {
     "line": 735,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_stringbuilder_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_pos4')."
+  },
+  {
+    "line": 735,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -9588,11 +9593,6 @@
     "line": 735,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 735,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_stringbuilder_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_pos4')."
   },
   {
     "line": 735,
@@ -9601,6 +9601,11 @@
   },
   {
     "line": 736,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_stringbuilder_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_pos5')."
+  },
+  {
+    "line": 736,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -9608,11 +9613,6 @@
     "line": 736,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 736,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_stringbuilder_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_pos5')."
   },
   {
     "line": 736,
@@ -9786,13 +9786,13 @@
   },
   {
     "line": 752,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_stringbuilder_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_neg9')."
   },
   {
     "line": 752,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_stringbuilder_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 752,
@@ -9851,6 +9851,11 @@
   },
   {
     "line": 759,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sbappend_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbappend_pos4')."
+  },
+  {
+    "line": 759,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -9858,11 +9863,6 @@
     "line": 759,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 759,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_sbappend_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbappend_pos4')."
   },
   {
     "line": 759,
@@ -9871,6 +9871,11 @@
   },
   {
     "line": 760,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sbappend_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbappend_pos5')."
+  },
+  {
+    "line": 760,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -9878,11 +9883,6 @@
     "line": 760,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 760,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_sbappend_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbappend_pos5')."
   },
   {
     "line": 760,
@@ -10041,13 +10041,13 @@
   },
   {
     "line": 776,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sbappend_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbappend_neg9')."
   },
   {
     "line": 776,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_sbappend_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbappend_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 776,
@@ -10106,6 +10106,11 @@
   },
   {
     "line": 783,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sbtostring_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbtostring_pos4')."
+  },
+  {
+    "line": 783,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -10113,11 +10118,6 @@
     "line": 783,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 783,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_sbtostring_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbtostring_pos4')."
   },
   {
     "line": 783,
@@ -10126,6 +10126,11 @@
   },
   {
     "line": 784,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sbtostring_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbtostring_pos5')."
+  },
+  {
+    "line": 784,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -10133,11 +10138,6 @@
     "line": 784,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 784,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_sbtostring_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbtostring_pos5')."
   },
   {
     "line": 784,
@@ -10316,13 +10316,13 @@
   },
   {
     "line": 800,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_sbtostring_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbtostring_neg9')."
   },
   {
     "line": 800,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_sbtostring_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbtostring_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 800,
@@ -10401,6 +10401,11 @@
   },
   {
     "line": 807,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getsystemattrvalues_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemattrvalues_pos4')."
+  },
+  {
+    "line": 807,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -10408,11 +10413,6 @@
     "line": 807,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 807,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getsystemattrvalues_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemattrvalues_pos4')."
   },
   {
     "line": 807,
@@ -10426,6 +10426,11 @@
   },
   {
     "line": 808,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getsystemattrvalues_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemattrvalues_pos5')."
+  },
+  {
+    "line": 808,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -10433,11 +10438,6 @@
     "line": 808,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 808,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getsystemattrvalues_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemattrvalues_pos5')."
   },
   {
     "line": 808,
@@ -10686,13 +10686,13 @@
   },
   {
     "line": 824,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getsystemattrvalues_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemattrvalues_neg9')."
   },
   {
     "line": 824,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getsystemattrvalues_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemattrvalues_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 824,
@@ -10766,16 +10766,6 @@
   },
   {
     "line": 831,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 831,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 831,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_pos4' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_pos4Dict')."
   },
@@ -10786,18 +10776,18 @@
   },
   {
     "line": 831,
-    "severity": "Hint",
-    "message": "Unused variable: val_getsystemmultipleattrvalues_pos4"
-  },
-  {
-    "line": 832,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 832,
+    "line": 831,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 831,
+    "severity": "Hint",
+    "message": "Unused variable: val_getsystemmultipleattrvalues_pos4"
   },
   {
     "line": 832,
@@ -10808,6 +10798,16 @@
     "line": 832,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getsystemmultipleattrvalues_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemmultipleattrvalues_pos5')."
+  },
+  {
+    "line": 832,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 832,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 832,
@@ -11051,13 +11051,13 @@
   },
   {
     "line": 848,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getsystemmultipleattrvalues_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemmultipleattrvalues_neg9')."
   },
   {
     "line": 848,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getsystemmultipleattrvalues_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemmultipleattrvalues_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 848,
@@ -11111,6 +11111,11 @@
   },
   {
     "line": 854,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getsystemdata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemdata_pos4')."
+  },
+  {
+    "line": 854,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -11118,11 +11123,6 @@
     "line": 854,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 854,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getsystemdata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemdata_pos4')."
   },
   {
     "line": 854,
@@ -11131,6 +11131,11 @@
   },
   {
     "line": 855,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getsystemdata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemdata_pos5')."
+  },
+  {
+    "line": 855,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -11138,11 +11143,6 @@
     "line": 855,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 855,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getsystemdata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemdata_pos5')."
   },
   {
     "line": 855,
@@ -11341,13 +11341,13 @@
   },
   {
     "line": 871,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getsystemdata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemdata_neg9')."
   },
   {
     "line": 871,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getsystemdata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemdata_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 871,
@@ -11421,6 +11421,11 @@
   },
   {
     "line": 878,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_importtransactiondata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_pos4')."
+  },
+  {
+    "line": 878,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -11428,11 +11433,6 @@
     "line": 878,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 878,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_importtransactiondata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_pos4')."
   },
   {
     "line": 878,
@@ -11446,6 +11446,11 @@
   },
   {
     "line": 879,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_importtransactiondata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_pos5')."
+  },
+  {
+    "line": 879,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -11453,11 +11458,6 @@
     "line": 879,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 879,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_importtransactiondata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_pos5')."
   },
   {
     "line": 879,
@@ -11671,13 +11671,13 @@
   },
   {
     "line": 895,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_importtransactiondata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_neg9')."
   },
   {
     "line": 895,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_importtransactiondata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 895,
@@ -11796,6 +11796,11 @@
   },
   {
     "line": 906,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_setattributevalue_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_pos4')."
+  },
+  {
+    "line": 906,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -11803,11 +11808,6 @@
     "line": 906,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 906,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_setattributevalue_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_pos4')."
   },
   {
     "line": 906,
@@ -11826,6 +11826,11 @@
   },
   {
     "line": 907,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_setattributevalue_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_pos5')."
+  },
+  {
+    "line": 907,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -11833,11 +11838,6 @@
     "line": 907,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 907,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_setattributevalue_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_pos5')."
   },
   {
     "line": 907,
@@ -12136,13 +12136,13 @@
   },
   {
     "line": 927,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_setattributevalue_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_neg9')."
   },
   {
     "line": 927,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_setattributevalue_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 927,
@@ -12216,16 +12216,6 @@
   },
   {
     "line": 933,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 933,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 933,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getcoveragesupportdict_pos4' should have a 'Dict' suffix (e.g. 'val_getcoveragesupportdict_pos4Dict')."
   },
@@ -12236,18 +12226,18 @@
   },
   {
     "line": 933,
-    "severity": "Hint",
-    "message": "Unused variable: val_getcoveragesupportdict_pos4"
-  },
-  {
-    "line": 934,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 934,
+    "line": 933,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 933,
+    "severity": "Hint",
+    "message": "Unused variable: val_getcoveragesupportdict_pos4"
   },
   {
     "line": 934,
@@ -12258,6 +12248,16 @@
     "line": 934,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getcoveragesupportdict_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcoveragesupportdict_pos5')."
+  },
+  {
+    "line": 934,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 934,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 934,
@@ -12516,13 +12516,13 @@
   },
   {
     "line": 950,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_getcoveragesupportdict_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcoveragesupportdict_neg9')."
   },
   {
     "line": 950,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_getcoveragesupportdict_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcoveragesupportdict_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 950,
@@ -12601,6 +12601,11 @@
   },
   {
     "line": 957,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_configureabo_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_configureabo_pos4')."
+  },
+  {
+    "line": 957,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -12608,11 +12613,6 @@
     "line": 957,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 957,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_configureabo_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_configureabo_pos4')."
   },
   {
     "line": 957,
@@ -12626,6 +12626,11 @@
   },
   {
     "line": 958,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_configureabo_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_configureabo_pos5')."
+  },
+  {
+    "line": 958,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -12633,11 +12638,6 @@
     "line": 958,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 958,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_configureabo_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_configureabo_pos5')."
   },
   {
     "line": 958,
@@ -12851,13 +12851,13 @@
   },
   {
     "line": 974,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_configureabo_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_configureabo_neg9')."
   },
   {
     "line": 974,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_configureabo_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_configureabo_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 974,

@@ -81,6 +81,11 @@
   },
   {
     "line": 16,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos4')."
+  },
+  {
+    "line": 16,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -88,11 +93,6 @@
     "line": 16,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 16,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_applytemplate_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos4')."
   },
   {
     "line": 16,
@@ -101,6 +101,11 @@
   },
   {
     "line": 17,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos5')."
+  },
+  {
+    "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -108,11 +113,6 @@
     "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 17,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_applytemplate_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_pos5')."
   },
   {
     "line": 17,
@@ -301,13 +301,13 @@
   },
   {
     "line": 33,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_applytemplate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg9')."
   },
   {
     "line": 33,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_applytemplate_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applytemplate_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 33,
@@ -371,6 +371,11 @@
   },
   {
     "line": 41,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos4')."
+  },
+  {
+    "line": 41,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -378,11 +383,6 @@
     "line": 41,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 41,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_transformxml_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos4')."
   },
   {
     "line": 41,
@@ -391,6 +391,11 @@
   },
   {
     "line": 42,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos5')."
+  },
+  {
+    "line": 42,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -398,11 +403,6 @@
     "line": 42,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 42,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_transformxml_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos5')."
   },
   {
     "line": 42,
@@ -591,13 +591,13 @@
   },
   {
     "line": 59,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_transformxml_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg9')."
   },
   {
     "line": 59,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_transformxml_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 59,
@@ -691,16 +691,6 @@
   },
   {
     "line": 67,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 67,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 67,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos4' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos4Dict')."
   },
@@ -708,6 +698,16 @@
     "line": 67,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlsingle_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos4')."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 67,
@@ -721,16 +721,6 @@
   },
   {
     "line": 68,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 68,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 68,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_readxmlsingle_pos5' should have a 'Dict' suffix (e.g. 'val_readxmlsingle_pos5Dict')."
   },
@@ -738,6 +728,16 @@
     "line": 68,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlsingle_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos5')."
+  },
+  {
+    "line": 68,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 68,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 68,
@@ -1021,13 +1021,13 @@
   },
   {
     "line": 85,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlsingle_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg9')."
   },
   {
     "line": 85,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_readxmlsingle_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 85,
@@ -1121,16 +1121,6 @@
   },
   {
     "line": 93,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 93,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 93,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos4' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos4Dict')."
   },
@@ -1138,6 +1128,16 @@
     "line": 93,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlmultiple_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos4')."
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 93,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 93,
@@ -1151,16 +1151,6 @@
   },
   {
     "line": 94,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 94,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 94,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_readxmlmultiple_pos5' should have a 'Dict' suffix (e.g. 'val_readxmlmultiple_pos5Dict')."
   },
@@ -1168,6 +1158,16 @@
     "line": 94,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlmultiple_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos5')."
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 94,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 94,
@@ -1451,13 +1451,13 @@
   },
   {
     "line": 111,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_readxmlmultiple_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg9')."
   },
   {
     "line": 111,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_readxmlmultiple_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 111,

@@ -106,6 +106,11 @@
   },
   {
     "line": 17,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos4')."
+  },
+  {
+    "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -113,11 +118,6 @@
     "line": 17,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 17,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_makeurlparam_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos4')."
   },
   {
     "line": 17,
@@ -131,6 +131,11 @@
   },
   {
     "line": 18,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos5')."
+  },
+  {
+    "line": 18,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -138,11 +143,6 @@
     "line": 18,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 18,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_makeurlparam_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos5')."
   },
   {
     "line": 18,
@@ -376,13 +376,13 @@
   },
   {
     "line": 35,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_makeurlparam_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg9')."
   },
   {
     "line": 35,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_makeurlparam_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 35,
@@ -481,16 +481,6 @@
   },
   {
     "line": 44,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 44,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 44,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos4' should have a 'Dict' suffix (e.g. 'val_urldata_pos4Dict')."
   },
@@ -498,6 +488,16 @@
     "line": 44,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos4')."
+  },
+  {
+    "line": 44,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 44,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 44,
@@ -511,16 +511,6 @@
   },
   {
     "line": 45,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 45,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 45,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos5' should have a 'Dict' suffix (e.g. 'val_urldata_pos5Dict')."
   },
@@ -528,6 +518,16 @@
     "line": 45,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos5')."
+  },
+  {
+    "line": 45,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 45,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 45,
@@ -816,13 +816,13 @@
   },
   {
     "line": 63,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg9')."
   },
   {
     "line": 63,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 63,
@@ -916,6 +916,11 @@
   },
   {
     "line": 73,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos4')."
+  },
+  {
+    "line": 73,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -923,11 +928,6 @@
     "line": 73,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 73,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos4')."
   },
   {
     "line": 73,
@@ -941,6 +941,11 @@
   },
   {
     "line": 74,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos5')."
+  },
+  {
+    "line": 74,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -948,11 +953,6 @@
     "line": 74,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 74,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos5')."
   },
   {
     "line": 74,
@@ -1216,13 +1216,13 @@
   },
   {
     "line": 93,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg9')."
   },
   {
     "line": 93,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 93,
@@ -1306,6 +1306,11 @@
   },
   {
     "line": 103,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos4')."
+  },
+  {
+    "line": 103,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1313,11 +1318,6 @@
     "line": 103,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 103,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos4')."
   },
   {
     "line": 103,
@@ -1326,6 +1326,11 @@
   },
   {
     "line": 104,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos5')."
+  },
+  {
+    "line": 104,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1333,11 +1338,6 @@
     "line": 104,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 104,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos5')."
   },
   {
     "line": 104,
@@ -1546,13 +1546,13 @@
   },
   {
     "line": 123,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg9')."
   },
   {
     "line": 123,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 123,
@@ -1636,6 +1636,11 @@
   },
   {
     "line": 134,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos4')."
+  },
+  {
+    "line": 134,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1643,11 +1648,6 @@
     "line": 134,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 134,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos4')."
   },
   {
     "line": 134,
@@ -1656,6 +1656,11 @@
   },
   {
     "line": 135,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos5')."
+  },
+  {
+    "line": 135,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
@@ -1663,11 +1668,6 @@
     "line": 135,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 135,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos5')."
   },
   {
     "line": 135,
@@ -1891,13 +1891,13 @@
   },
   {
     "line": 155,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg9')."
   },
   {
     "line": 155,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 155,
@@ -1986,16 +1986,6 @@
   },
   {
     "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 164,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos4Dict')."
   },
@@ -2006,18 +1996,18 @@
   },
   {
     "line": 164,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos4"
-  },
-  {
-    "line": 165,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 165,
+    "line": 164,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 164,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos4"
   },
   {
     "line": 165,
@@ -2028,6 +2018,16 @@
     "line": 165,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urlmultipartbypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos5')."
+  },
+  {
+    "line": 165,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 165,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
     "line": 165,
@@ -2276,13 +2276,13 @@
   },
   {
     "line": 183,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg9')."
   },
   {
     "line": 183,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg9')."
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
     "line": 183,
