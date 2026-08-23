@@ -295,7 +295,7 @@
         },
         {
           "name": "keyword.control.flow.bml",
-          "match": "(?i)\\b(for|in|break|continue|return)\\b"
+          "match": "(?i)\\b(for|in|break|continue|return|throwerror|print)\\b"
         },
         {
           "name": "constant.language.bml",

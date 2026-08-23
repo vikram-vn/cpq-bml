@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.52.0] - 2026-08-23
+
+### Added
+- Add parameter type validation tests and BML function API usage definitions.
+- Add lint test expectations, parameter type validation tests, and BML function API usage definitions.
+- Implement function call linting and type compatibility checking for BML scripts.
+- Implement BML style and safety linting engine and add expected test outputs.
+
 ## [1.51.0] - 2026-08-23
 
 ### Added
@@ -85,12 +93,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Implement BML parameter type validation and add comprehensive linting test suites.
 - Add linter rules and tests for BML function parameter constraints.
-
-## [1.42.0] - 2026-08-22
-
-### Added
-
-- Implement parameter completion dispatcher and dictionary linter validation rules.
-- Introduce CPQ BML language grammar, build scripts, and syntax testing suite.
-- Implement MCP server registration and add chat participant and tool configurations.
-- Add BML function metadata and lint definitions for intellisense support.

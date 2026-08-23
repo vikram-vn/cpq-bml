@@ -128,7 +128,7 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 		});
 
 		test('other flow keywords are scoped as keyword.control.flow.bml', () => {
-			for (const kw of ['for', 'in', 'break', 'continue', 'return']) {
+			for (const kw of ['for', 'in', 'break', 'continue', 'return', 'throwerror', 'print']) {
 				const line = `${kw} x;`;
 				assert.match(scopesOf(line, kw), /\bkeyword\.control\.flow\.bml\b/, `keyword "${kw}"`);
 			}
@@ -177,9 +177,9 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 		});
 
 		test('built-in functions are scoped correctly as entity.name.function.*.bml', () => {
-			for (const fn of ['setattributevalue', 'addtotransaction', 'print', 'sizeofarray', 'jsonput', 'urldata']) {
+			for (const fn of ['setattributevalue', 'addtotransaction', 'getdate', 'sizeofarray', 'jsonput', 'urldata']) {
 				const scope = scopesOf(`${fn}("test");`, fn);
-				assert.match(scope, /\bentity\.name\.function\.(misc|string|array|dictionary|json|url)\.bml\b/, `function "${fn}" scope: ${scope}`);
+				assert.match(scope, /\bentity\.name\.function\.(misc|string|array|dictionary|json|url|date)\.bml\b/, `function "${fn}" scope: ${scope}`);
 			}
 		});
 	});
