@@ -4,6 +4,22 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.50.0] - 2026-08-23
+
+### Added
+- Add BML sample test file and supplemental configuration for linting and spell-checking.
+- Implement BML linting and spell-check diagnostic engine with configurable feature support.
+- Implement BML linter rules and initialize regression test expectations.
+- Implement automated safe code refactoring and linting fixes for BML files.
+- Add performance benchmark suite for linter, code actions, and complexity analysis.
+- Implement automated quality and style quick fixes for BML linting diagnostics.
+- Implement automated safe code actions for BML style, naming, and formatting fixes.
+- Add FeaturesTab component to settings panel and update documentation.
+- Release version 1.48.0 with XSLT tooling support, BML quick-fixes, and expanded linting rules.
+- Implement XSLT preview, linting, formatting, and code action support.
+- Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
+- Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.
+
 ## [1.49.0] - 2026-08-23
 
 ### Added
@@ -77,10 +93,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Initialize spell-check word lists with BML and English dictionaries.
-
-## [1.40.0] - 2026-08-22
-
-### Added
-
-- Implement security quick-fixes and add variable usage analysis for linting.
-- Implement commerce attribute scope validation and comprehensive linting code-actions framework.
