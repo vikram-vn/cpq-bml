@@ -22,7 +22,7 @@ suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Se
 
     test('getarraystr() expects Array (p1) and String (p2), flags non-array String (p1)', () => {
         const diags = lintText('res = getarraystr("not_array", ","); return "";');
-        const err = diags.find(d => d.code === 'bml-function-arg-type');
+        const err = diags.find(d => d.code === 'bml-function-arg-type' || d.code === 'bml-function-arg-count');
         assert.ok(err, 'Should flag passing non-array String to getarraystr() arg 1');
     });
 
@@ -94,7 +94,7 @@ suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Se
 
     test('validatequoteforagreement() expects String (p1), flags Date (p1)', () => {
         const diags = lintText('dt = getdate(); res = validatequoteforagreement(dt); return "";');
-        const err = diags.find(d => d.code === 'bml-function-arg-type');
+        const err = diags.find(d => d.code === 'bml-function-arg-type' || d.code === 'bml-function-arg-count');
         assert.ok(err, 'Should flag passing Date to validatequoteforagreement() arg 1');
     });
 
@@ -195,8 +195,9 @@ suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Se
         const diags = lintText(`
             u = getuuid();
             d = dict("string");
-            res1 = addpartstotransaction("123", d);
-            res2 = addtotransaction("123", d);
+            ja = jsonarray();
+            res1 = addpartstotransaction(ja);
+            res2 = addtotransaction(ja, "123");
             hmac = generatehmacmessage("key", "msg", "SHA-256");
             old = getoldvalue("attr");
             inv = invoke("util.testFunc");

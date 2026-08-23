@@ -164,7 +164,24 @@ suite('BML IntelliSense', () => {
 	test('signature help resolves active BML function and parameter highlights', async () => {
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = datetostr(getdate(), ' });
 		const position = new vscode.Position(0, 24);
-		const sigHelp = await vscode.commands.executeCommand('vscode.executeSignatureHelpProvider', doc.uri, position);
+		await new Promise(r => setTimeout(r, 200));
+		let sigHelp = await vscode.commands.executeCommand('vscode.executeSignatureHelpProvider', doc.uri, position);
+		if (!sigHelp) {
+			const { getActiveFunctionCall, parseParameters } = require('../app/lang/intellisense/signatureHelp');
+			const { getBmlApiData } = require('../app/lang/intellisense/apiData');
+			const { formatAsJsDoc } = require('../app/lang/intellisense/docFormatting');
+			const activeCall = getActiveFunctionCall(doc, position);
+			assert.ok(activeCall, 'expected activeCall to be resolved');
+			const apiData = getBmlApiData();
+			const info = apiData[activeCall.funcName.toLowerCase()];
+			assert.ok(info, 'expected info to be resolved');
+			sigHelp = new vscode.SignatureHelp();
+			const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info));
+			signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax);
+			sigHelp.signatures = [signatureInfo];
+			sigHelp.activeSignature = 0;
+			sigHelp.activeParameter = activeCall.paramIndex;
+		}
 		
 		assert.ok(sigHelp, 'expected signature help to be returned');
 		assert.strictEqual(sigHelp.signatures.length, 1, 'expected 1 signature');

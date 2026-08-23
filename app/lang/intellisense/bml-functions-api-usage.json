@@ -801,7 +801,7 @@
     "makeurlparam": {
         "functionCategory": "url",
         "returnType": "String",
-        "fullSignature": "String makeurlparam({'name':value1, 'name2':value2})",
+        "fullSignature": "String makeurlparam(String name, String value) OR String makeurlparam(Dictionary dict)",
         "syntax": "makeurlparam(${1:{'name1':value1}, ${2:'name2':value2}})",
         "examples": [
             "Example: makeurlparam({'name1':value1, 'name2':value2}) returns a string \"name1=value1&name2=value2\""
@@ -1051,7 +1051,7 @@
     "remove": {
         "functionCategory": "array",
         "returnType": "Integer",
-        "fullSignature": "Integer remove(Array arrayIdentifier, Integer removePos)",
+        "fullSignature": "Integer remove(Array arrayIdentifier, Integer removePos) OR Boolean remove(Dictionary dictionary, String key)",
         "syntax": "remove(${1:arrayIdentifier}, ${2:index})",
         "examples": [
             "1. Returns new size of array after removing the element.\n\n2. If the array is empty, the remove will fail.\n\n3. Only integers are allowed to be passed in for the index of the element to be removed."

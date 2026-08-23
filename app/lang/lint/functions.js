@@ -165,10 +165,8 @@ function loadBuiltInFunctions(extensionPath) {
     },
     getarraystr: {
       name: "getarraystr",
-      syntax: "getarraystr(Array array, String delimiter)",
-      overloads: [
-        { min: 2, max: 2, params: [{ type: "Array" }, { type: "String" }] },
-      ],
+      syntax: "getarraystr(String arrayIdentifier)",
+      overloads: [{ min: 1, max: 1, params: [{ type: "String" }] }],
     },
     sbappend: {
       name: "sbappend",
@@ -183,34 +181,8 @@ function loadBuiltInFunctions(extensionPath) {
     },
     validatequoteforagreement: {
       name: "validatequoteforagreement",
-      syntax: "validatequoteforagreement(String quoteId)",
-      overloads: [{ min: 1, max: 1, params: [{ type: "String" }] }],
-    },
-    remove: {
-      name: "remove",
-      syntax:
-        "remove(Array array, Integer index) OR remove(Dictionary dict, String key)",
-      overloads: [
-        {
-          min: 2,
-          max: 2,
-          params: [{ type: "Array" }, { type: ["Integer", "String"] }],
-        },
-        {
-          min: 2,
-          max: 2,
-          params: [{ type: "Dictionary" }, { type: "String" }],
-        },
-      ],
-    },
-    makeurlparam: {
-      name: "makeurlparam",
-      syntax:
-        "makeurlparam(String name, String value) OR makeurlparam(Dictionary dict)",
-      overloads: [
-        { min: 2, max: 2, params: [{ type: "String" }, { type: "String" }] },
-        { min: 1, max: 1, params: [{ type: "Dictionary" }] },
-      ],
+      syntax: "validatequoteforagreement()",
+      overloads: [{ min: 0, max: 0, params: [] }],
     },
     addpartstotransaction: {
       name: "addpartstotransaction",

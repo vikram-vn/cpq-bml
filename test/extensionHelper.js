@@ -19,6 +19,10 @@ async function activateExtension(vscode) {
         await config.update('features.lint', true, vscode.ConfigurationTarget.Global);
         await new Promise((resolve) => setTimeout(resolve, 500));
     }
+    if (config.get('features.intellisense') !== true) {
+        await config.update('features.intellisense', true, vscode.ConfigurationTarget.Global);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+    }
 
     return ext;
 }

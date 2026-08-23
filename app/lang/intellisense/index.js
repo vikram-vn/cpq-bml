@@ -251,8 +251,8 @@ function registerBmlIntelliSense(context) {
                 const activeCall = getActiveFunctionCall(document, position);
                 if (!activeCall) return null;
 
-                const { funcName, paramIndex } = activeCall;
-                const info = bmlApiData[funcName.toLowerCase()] || lookupApiInfo(funcName);
+                const apiData = getBmlApiData(context);
+                const info = apiData[funcName.toLowerCase()] || lookupApiInfo(funcName);
                 if (!info) return null;
 
                 const signatureHelp = new vscode.SignatureHelp();
