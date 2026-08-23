@@ -9,6 +9,7 @@ const { getBmqlFixes } = require('./bmqlFixes');
 const { getApiFixes } = require('./apiFixes');
 const { getUnreachableFixes } = require('./unreachableFixes');
 const { getSecurityFixes } = require('./securityFixes');
+const { getFixAllSafeAction } = require('./fixAllSafe');
 
 function registerBmlCodeActions(context) {
     const extensionPath = context.extensionPath;
@@ -37,8 +38,26 @@ function registerBmlCodeActions(context) {
                         ...getSpellingFixes(document, diag, editRange, extensionPath)
                     );
                 });
+
+                const docDiags = (vscode.languages && vscode.languages.getDiagnostics)
+                    ? (vscode.languages.getDiagnostics(document.uri) || context.diagnostics)
+                    : context.diagnostics;
+
+                const fixAllActions = getFixAllSafeAction(document, docDiags && docDiags.length > 0 ? docDiags : context.diagnostics);
+                if (fixAllActions && fixAllActions.length > 0) {
+                    fixes.push(...fixAllActions);
+                }
+
                 return fixes;
             }
+        }, {
+            providedCodeActionKinds: [
+                vscode.CodeActionKind.QuickFix,
+                vscode.CodeActionKind.Refactor,
+                vscode.CodeActionKind.RefactorRewrite,
+                vscode.CodeActionKind.RefactorExtract,
+                vscode.CodeActionKind.SourceFixAll
+            ]
         })
     );
 }

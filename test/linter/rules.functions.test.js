@@ -89,7 +89,7 @@ suite('BML Linter Test Suite - rules (functions & syntax)', function() {
 
         const emptyBlockDiag = diagnostics.find(d => d.message.includes('Empty block detected'));
         assert.ok(emptyBlockDiag, 'Should flag empty block');
-        assert.strictEqual(emptyBlockDiag.severity, require('vscode').DiagnosticSeverity.Warning);
+        assert.strictEqual(emptyBlockDiag.severity, require('vscode').DiagnosticSeverity.Error);
 
         // Should not flag the empty array initializer list = string[]{}
         const arrayInitDiag = diagnostics.find(d => d.range.start.line === 4 && d.message.includes('Empty block detected'));
@@ -293,5 +293,44 @@ suite('BML Linter Test Suite - rules (functions & syntax)', function() {
         assert.ok(argCountDiag, "Should also flag find() as missing arguments, not just the trailing comma");
         assert.ok(argCountDiag.message.includes('expects 2 to 4 argument(s), but got 1'));
         assert.strictEqual(argCountDiag.severity, require('vscode').DiagnosticSeverity.Error);
+    });
+
+    test('Linter smart magic number exemptions for safe contexts', () => {
+        const diagnostics = lintText(`
+            // Safe contexts that should NOT be flagged as magic numbers
+            strPart = substring(rawStr, 0, 5);
+            nextDate = adddays(orderDate, 7);
+            arrItem = items[0];
+            idxItem = items[i + 1];
+            if (statusCode == 200) {
+                print("OK");
+            }
+            if (status != 404) {
+                print("Found");
+            }
+            secVal = msVal / 1000;
+            if (find(haystack, "needle") == -1) {
+                print("not found");
+            }
+
+            // Raw magic numbers that SHOULD be flagged
+            mRate_03 = 47.25;
+            discountFactor = 0.85;
+            return "";
+        `);
+
+        const magicDiags = diagnostics.filter(d => d.code === 'bml-magic-number');
+        const magicMessages = magicDiags.map(d => d.message);
+
+        // Verify that 47.25 and 0.85 are flagged
+        assert.ok(magicMessages.some(m => m.includes("'47.25'")), "Should flag raw business number 47.25");
+        assert.ok(magicMessages.some(m => m.includes("'0.85'")), "Should flag raw factor 0.85");
+
+        // Verify that safe context numbers are NOT flagged
+        assert.ok(!magicMessages.some(m => m.includes("'5'")), "Should NOT flag substring length 5");
+        assert.ok(!magicMessages.some(m => m.includes("'7'")), "Should NOT flag adddays offset 7");
+        assert.ok(!magicMessages.some(m => m.includes("'200'")), "Should NOT flag HTTP status 200");
+        assert.ok(!magicMessages.some(m => m.includes("'404'")), "Should NOT flag HTTP status 404");
+        assert.ok(!magicMessages.some(m => m.includes("'1000'")), "Should NOT flag time multiplier 1000");
     });
 });

@@ -30,7 +30,7 @@ if (validVar == 10) {
     print("redundant duplicate branch");
 }
 
-// 5. Empty Blocks Warning (bml-empty-block)
+// 5. Empty Blocks Error (bml-empty-block)
 if (validVar == 5) {
 } else {
 }

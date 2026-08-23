@@ -63,6 +63,51 @@ function runQualityCodeActionTests() {
             assert.ok(extractAction, 'Should offer constant extraction Quick Fix');
         });
 
+        test('Quick Fix infers smart constant names from target variable and comparisons', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'mRate_03 = 47.25;\nif (orderTotal > 15000) {\n    print("high");\n}\nreturn "";'
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const rateDiag = diags.find(d => d.message.includes('47.25'));
+            assert.ok(rateDiag, 'Should flag 47.25');
+
+            const rateActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, rateDiag.range);
+            const smartRateAction = rateActions.find(a => a.title.includes("M_RATE_03_DEFAULT"));
+            assert.ok(smartRateAction, 'Should offer smart constant name M_RATE_03_DEFAULT');
+
+            // Apply workspace edit and verify in-place replacement (no redundant duplicate line)
+            const applied = await vscode.workspace.applyEdit(smartRateAction.edit);
+            assert.ok(applied, 'Should apply rename edit in place');
+            assert.ok(doc.getText().includes('M_RATE_03_DEFAULT = 47.25;'), 'Should rename directly to M_RATE_03_DEFAULT = 47.25;');
+            assert.ok(!doc.getText().includes('mRate_03 = M_RATE_03_DEFAULT;'), 'Should NOT have redundant duplicate assignment');
+        });
+
+        test('Function argument magic number extraction does not misappropriate result variable name', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'resLog = log(123.75);\nreturn string(resLog);'
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const magicDiag = diags.find(d => d.message.includes('123.75'));
+            assert.ok(magicDiag, 'Should flag 123.75');
+
+            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, magicDiag.range);
+            const extractAction = codeActions.find(a => a.title.includes("CONST_123_75"));
+            assert.ok(extractAction, 'Should offer CONST_123_75');
+            // Should NOT offer RES_LOG for the function argument 123.75
+            const wrongResLogAction = codeActions.find(a => a.title.includes("RES_LOG"));
+            assert.strictEqual(wrongResLogAction, undefined, 'Should not name the argument constant after resLog');
+        });
+
         test('Magic number suppression on constant candidate definition lines', async () => {
             const doc = await vscode.workspace.openTextDocument({
                 language: 'bml',

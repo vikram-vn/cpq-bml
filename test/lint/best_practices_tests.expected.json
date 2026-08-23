@@ -61,13 +61,13 @@
   },
   {
     "line": 33,
-    "severity": "Warning",
-    "message": "Design Warning: Empty block detected"
+    "severity": "Error",
+    "message": "Syntax Error: Empty block detected"
   },
   {
     "line": 34,
-    "severity": "Warning",
-    "message": "Design Warning: Empty block detected"
+    "severity": "Error",
+    "message": "Syntax Error: Empty block detected"
   },
   {
     "line": 38,

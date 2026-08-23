@@ -1,23 +1,123 @@
 const vscode = require('vscode');
 
+function toUpperSnakeCase(ident) {
+    return ident
+        .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+        .replace(/[^a-zA-Z0-9_]/g, '_')
+        .toUpperCase();
+}
+
+function inferConstantCandidateName(lineText, charPos, val) {
+    const valStr = String(val);
+    const safeValFallback = 'CONST_' + valStr.replace(/[^0-9]/g, '_');
+    const prefix = lineText.substring(0, charPos);
+    const suffix = lineText.substring(charPos + valStr.length);
+
+    // 1. Direct Assignment context: `myVar = <val>` or `float myVar = -<val>`
+    const assignMatch = prefix.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?([a-zA-Z_]\w*)\s*=\s*[+-]?\s*$/i);
+    if (assignMatch) {
+        const varName = assignMatch[1];
+        const upper = toUpperSnakeCase(varName);
+        if (upper.endsWith('_DEFAULT') || upper.endsWith('_CONST') || upper.endsWith('_LIMIT') || upper.endsWith('_RATE')) {
+            return upper;
+        }
+        return `${upper}_DEFAULT`;
+    }
+
+    // 2. Comparison context: `if (totalAmount > <val>)`
+    const compMatch = prefix.match(/([a-zA-Z_]\w*)\s*(>|>=|<|<=|==|!=)\s*$/);
+    if (compMatch) {
+        const varName = compMatch[1];
+        const op = compMatch[2];
+        const upper = toUpperSnakeCase(varName);
+        if (op === '>' || op === '>=') {
+            return `${upper}_LIMIT`;
+        } else if (op === '<' || op === '<=') {
+            return `${upper}_MIN_LIMIT`;
+        } else {
+            return `${upper}_TARGET`;
+        }
+    }
+
+    // 3. Right-hand comparison: `<val> < totalAmount`
+    const rightCompMatch = suffix.match(/^\s*(>|>=|<|<=|==|!=)\s*([a-zA-Z_]\w*)/);
+    if (rightCompMatch) {
+        const op = rightCompMatch[1];
+        const varName = rightCompMatch[2];
+        const upper = toUpperSnakeCase(varName);
+        if (op === '<' || op === '<=') {
+            return `${upper}_LIMIT`;
+        } else if (op === '>' || op === '>=') {
+            return `${upper}_MIN_LIMIT`;
+        } else {
+            return `${upper}_TARGET`;
+        }
+    }
+
+    return safeValFallback;
+}
+
+function renameIdentifierInDocument(document, oldName, newName, edit) {
+    const text = document.getText();
+    const regex = new RegExp(`\\b${oldName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'g');
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+        const startPos = document.positionAt(match.index);
+        const endPos = document.positionAt(match.index + oldName.length);
+        edit.replace(document.uri, new vscode.Range(startPos, endPos), newName);
+    }
+}
+
+function renameLiteralNumberInDocument(document, val, newName, edit) {
+    const text = document.getText();
+    const regex = new RegExp(`(?<![a-zA-Z0-9_.])\\b${val.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b(?![a-zA-Z0-9_.])`, 'g');
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+        const startPos = document.positionAt(match.index);
+        const endPos = document.positionAt(match.index + val.length);
+        edit.replace(document.uri, new vscode.Range(startPos, endPos), newName);
+    }
+}
+
 function getQualityFixes(document, diag, editRange, extensionPath) {
     const fixes = [];
 
     if (diag.code === 'bml-magic-number') {
         const val = document.getText(editRange);
-        const constName = 'CONST_' + val.replace('.', '_');
-
-        const extractAction = new vscode.CodeAction(`Extract '${val}' to constant candidate '${constName}'`, vscode.CodeActionKind.QuickFix);
-        extractAction.edit = new vscode.WorkspaceEdit();
         const lineText = document.lineAt(editRange.start.line).text;
+        const prefix = lineText.substring(0, editRange.start.character);
+        const suffix = lineText.substring(editRange.start.character + val.length);
+        const smartName = inferConstantCandidateName(lineText, editRange.start.character, val);
+        const fallbackName = 'CONST_' + val.replace(/[^0-9]/g, '_');
+
+        const candidateNames = [smartName];
+        if (fallbackName !== smartName) {
+            candidateNames.push(fallbackName);
+        }
+
+        const directAssignMatch = prefix.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?([a-zA-Z_]\w*)\s*=\s*$/i);
+        const isPureAssignment = directAssignMatch && (/^[\s;]*$/.test(suffix));
+
         const indentMatch = lineText.match(/^\s*/);
         const indent = indentMatch ? indentMatch[0] : '';
-        const decl = `${indent}${constName} = ${val};\n`;
         const lineStartPos = new vscode.Position(editRange.start.line, 0);
-        extractAction.edit.insert(document.uri, lineStartPos, decl);
-        extractAction.edit.replace(document.uri, editRange, constName);
-        extractAction.diagnostics = [diag];
-        fixes.push(extractAction);
+
+        for (const constName of candidateNames) {
+            const action = new vscode.CodeAction(`Extract '${val}' to constant candidate '${constName}' (all occurrences)`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+
+            if (isPureAssignment) {
+                const targetVar = directAssignMatch[1];
+                renameIdentifierInDocument(document, targetVar, constName, action.edit);
+            } else {
+                const decl = `${indent}${constName} = ${val};\n`;
+                action.edit.insert(document.uri, lineStartPos, decl);
+                action.edit.replace(document.uri, editRange, constName);
+            }
+
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
     }
     else if (diag.code === 'bml-empty-block') {
         const text = document.getText(editRange);
