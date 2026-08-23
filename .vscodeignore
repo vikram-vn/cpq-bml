@@ -41,6 +41,7 @@ app/lang/mcp/*.js
 app/lang/mcp/tools/*.js
 app/lang/mcp/tool-defs/*.js
 app/lang/intellisense/*.js
+app/lang/intellisense/**/*.js
 app/lang/settings-panel/*.js
 app/lang/settings-panel/web-view/src/**
 app/lang/syntaxes/*.json
@@ -68,6 +69,7 @@ app/lang/intellisense/bml-variables-api-usage.json
 app/lang/intellisense/custom-snippets.json
 app/lang/intellisense/function-param-data-types.json
 app/lang/intellisense/function-return-types.json
+
 
 # Exclude lookups and scripts that are only used in development
 app/lookups/**
