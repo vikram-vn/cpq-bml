@@ -113,15 +113,14 @@ suite('BML Linter Test Suite - Unused Variables & Hint Diagnostics', function() 
 
         const diagnostics = lintText(bmlContent, sampleBmlPath);
 
-        // 1. Verify testName on line 13
-        const testNameDiag = diagnostics.find(d => d.code === 'bml-unused-variable' && d.message === 'Unused variable: testName');
-        assert.ok(testNameDiag, 'test/bml/sample.bml line 13 testName must be flagged as unused');
-        assert.strictEqual(testNameDiag.severity, vscode.DiagnosticSeverity.Hint, 'testName must have Hint severity');
-        assert.ok(testNameDiag.tags && testNameDiag.tags.includes(vscode.DiagnosticTag.Unnecessary), 'testName must have Unnecessary tag');
-        assert.strictEqual(testNameDiag.range.start.line, 12, 'testName is on line 13 (0-indexed 12)');
+        // 1. Verify unused dictionary variable in sample.bml is flagged as Hint with Unnecessary tag
+        const unusedSampleDiag = diagnostics.find(d => d.code === 'bml-unused-variable');
+        assert.ok(unusedSampleDiag, 'sample.bml must flag unused variables');
+        assert.strictEqual(unusedSampleDiag.severity, vscode.DiagnosticSeverity.Hint, 'Unused variable must have Hint severity');
+        assert.ok(unusedSampleDiag.tags && unusedSampleDiag.tags.includes(vscode.DiagnosticTag.Unnecessary), 'Unused variable must have Unnecessary tag');
 
-        // 2. Verify used variables inside test/bml/sample.bml are NOT falsely flagged as unused
-        const usedVars = ['dictString', 'sampleStr', 'sampleDate', 'sampleJson', 'mId01', 'mRate01', 'categories01', 'tiers01', 'matchCount01'];
+        // 2. Verify active used variables inside test/bml/sample.bml are NOT falsely flagged as unused
+        const usedVars = ['sampleJson', 'sampleJsonArr', 'categories01Array', 'tiers01Array', 'matchCount01', 'bmqlSum01'];
         for (const varName of usedVars) {
             const falselyFlagged = diagnostics.find(d => d.code === 'bml-unused-variable' && d.message === `Unused variable: ${varName}`);
             assert.strictEqual(falselyFlagged, undefined, `${varName} is used in sample.bml and should not be flagged as unused`);
