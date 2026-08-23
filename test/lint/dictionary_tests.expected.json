@@ -901,11 +901,6 @@
   },
   {
     "line": 64,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 64,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos1')."
   },
@@ -946,11 +941,6 @@
   },
   {
     "line": 69,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 69,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos2')."
   },
@@ -961,11 +951,6 @@
   },
   {
     "line": 70,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 70,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos3')."
   },
@@ -973,11 +958,6 @@
     "line": 70,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos3"
-  },
-  {
-    "line": 71,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
   },
   {
     "line": 71,
@@ -1006,11 +986,6 @@
   },
   {
     "line": 72,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 72,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos5')."
   },
@@ -1028,11 +1003,6 @@
     "line": 72,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos5"
-  },
-  {
-    "line": 73,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
   },
   {
     "line": 73,
@@ -1056,11 +1026,6 @@
   },
   {
     "line": 74,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 74,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos7')."
   },
@@ -1068,11 +1033,6 @@
     "line": 74,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos7"
-  },
-  {
-    "line": 80,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
   },
   {
     "line": 80,
@@ -1086,11 +1046,6 @@
   },
   {
     "line": 81,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 81,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos9')."
   },
@@ -1098,11 +1053,6 @@
     "line": 81,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos9"
-  },
-  {
-    "line": 82,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
   },
   {
     "line": 82,
@@ -1126,11 +1076,6 @@
   },
   {
     "line": 84,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 5."
-  },
-  {
-    "line": 84,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg2')."
   },
@@ -1138,21 +1083,6 @@
     "line": 84,
     "severity": "Hint",
     "message": "Unused variable: val_put_neg2"
-  },
-  {
-    "line": 85,
-    "severity": "Error",
-    "message": "Argument 1 to 'put' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 85,
-    "severity": "Error",
-    "message": "Argument 2 to 'put' should be String, but got a Integer value."
-  },
-  {
-    "line": 85,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
   },
   {
     "line": 85,
@@ -1173,11 +1103,6 @@
     "line": 85,
     "severity": "Hint",
     "message": "Unused variable: val_put_neg3"
-  },
-  {
-    "line": 86,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
   },
   {
     "line": 86,
@@ -1225,19 +1150,9 @@
     "message": "Unused variable: val_put_neg6"
   },
   {
-    "line": 89,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
     "line": 90,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 90,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 2."
   },
   {
     "line": 90,
@@ -1248,11 +1163,6 @@
     "line": 90,
     "severity": "Hint",
     "message": "Unused variable: val_put_neg8"
-  },
-  {
-    "line": 91,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 1."
   },
   {
     "line": 91,

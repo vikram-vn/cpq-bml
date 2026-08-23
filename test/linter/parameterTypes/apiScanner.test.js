@@ -8,6 +8,12 @@ const builtIns = loadBuiltInFunctions(projectRoot);
 
 function getIncompatibleArgForType(expectedType) {
     if (!expectedType) return '"test"';
+    if (Array.isArray(expectedType)) {
+        const typesLower = expectedType.map(t => String(t).toLowerCase());
+        if (typesLower.includes('string')) {
+            return 'getdate()';
+        }
+    }
     const typeStr = Array.isArray(expectedType) ? expectedType[0] : expectedType;
     const lower = typeStr.toLowerCase();
 

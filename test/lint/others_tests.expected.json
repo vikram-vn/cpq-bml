@@ -1617,7 +1617,7 @@
   {
     "line": 123,
     "severity": "Error",
-    "message": "Built-in function 'getreasonstatus' expects 2 or 1 argument(s), but got 0."
+    "message": "Built-in function 'getreasonstatus' expects 1 argument(s), but got 0."
   },
   {
     "line": 123,
@@ -1628,6 +1628,11 @@
     "line": 123,
     "severity": "Hint",
     "message": "Unused variable: val_getreasonstatus_neg1"
+  },
+  {
+    "line": 124,
+    "severity": "Error",
+    "message": "Built-in function 'getreasonstatus' expects 1 argument(s), but got 2."
   },
   {
     "line": 124,
@@ -1697,7 +1702,7 @@
   {
     "line": 128,
     "severity": "Error",
-    "message": "Built-in function 'getreasonstatus' expects 2 or 1 argument(s), but got 0."
+    "message": "Built-in function 'getreasonstatus' expects 1 argument(s), but got 0."
   },
   {
     "line": 128,
@@ -1718,6 +1723,11 @@
     "line": 130,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 130,
+    "severity": "Error",
+    "message": "Built-in function 'getreasonstatus' expects 1 argument(s), but got 2."
   },
   {
     "line": 130,
@@ -1956,6 +1966,11 @@
   },
   {
     "line": 149,
+    "severity": "Error",
+    "message": "Built-in function 'logtime' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 149,
     "severity": "Information",
     "message": "Style Info: Variable 'val_logtime_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_neg1')."
   },
@@ -1967,7 +1982,7 @@
   {
     "line": 150,
     "severity": "Error",
-    "message": "Built-in function 'logtime' expects 1 to 2 argument(s), but got 3."
+    "message": "Built-in function 'logtime' expects 2 argument(s), but got 3."
   },
   {
     "line": 150,
@@ -1988,6 +2003,11 @@
     "line": 151,
     "severity": "Error",
     "message": "Argument 1 to 'logtime' should be String, but got a Integer value."
+  },
+  {
+    "line": 151,
+    "severity": "Error",
+    "message": "Argument 2 to 'logtime' should be Integer, but got a String value."
   },
   {
     "line": 151,
@@ -2051,6 +2071,11 @@
   },
   {
     "line": 154,
+    "severity": "Error",
+    "message": "Built-in function 'logtime' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 154,
     "severity": "Information",
     "message": "Style Info: Variable 'val_logtime_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_neg6')."
   },
@@ -2083,6 +2108,11 @@
     "line": 156,
     "severity": "Hint",
     "message": "Unused variable: val_logtime_neg8"
+  },
+  {
+    "line": 157,
+    "severity": "Error",
+    "message": "Built-in function 'logtime' expects 2 argument(s), but got 1."
   },
   {
     "line": 157,
@@ -2597,7 +2627,7 @@
   {
     "line": 199,
     "severity": "Error",
-    "message": "Built-in function 'savebom' expects 2 argument(s), but got 1."
+    "message": "Built-in function 'savebom' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 199,
@@ -2613,11 +2643,6 @@
     "line": 199,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_neg1"
-  },
-  {
-    "line": 200,
-    "severity": "Error",
-    "message": "Built-in function 'savebom' expects 2 argument(s), but got 3."
   },
   {
     "line": 200,
@@ -2637,7 +2662,12 @@
   {
     "line": 201,
     "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary or Json, but got a String value."
+    "message": "Argument 1 to 'savebom' should be Integer, but got a String value."
+  },
+  {
+    "line": 201,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Json, but got a String value."
   },
   {
     "line": 201,
@@ -2697,7 +2727,7 @@
   {
     "line": 204,
     "severity": "Error",
-    "message": "Built-in function 'savebom' expects 2 argument(s), but got 1."
+    "message": "Built-in function 'savebom' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 204,
@@ -2742,7 +2772,7 @@
   {
     "line": 207,
     "severity": "Error",
-    "message": "Built-in function 'savebom' expects 2 argument(s), but got 1."
+    "message": "Built-in function 'savebom' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 207,
@@ -3016,6 +3046,11 @@
   },
   {
     "line": 225,
+    "severity": "Error",
+    "message": "Built-in function 'getbom' expects 2 to 6 argument(s), but got 1."
+  },
+  {
+    "line": 225,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -3053,6 +3088,11 @@
     "line": 226,
     "severity": "Hint",
     "message": "Unused variable: val_getbom_neg2"
+  },
+  {
+    "line": 227,
+    "severity": "Error",
+    "message": "Argument 1 to 'getbom' should be Integer, but got a String value."
   },
   {
     "line": 227,
@@ -3126,6 +3166,11 @@
   },
   {
     "line": 230,
+    "severity": "Error",
+    "message": "Built-in function 'getbom' expects 2 to 6 argument(s), but got 1."
+  },
+  {
+    "line": 230,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -3168,6 +3213,11 @@
     "line": 232,
     "severity": "Hint",
     "message": "Unused variable: val_getbom_neg8"
+  },
+  {
+    "line": 233,
+    "severity": "Error",
+    "message": "Built-in function 'getbom' expects 2 to 6 argument(s), but got 1."
   },
   {
     "line": 233,
@@ -3726,6 +3776,11 @@
   },
   {
     "line": 277,
+    "severity": "Error",
+    "message": "Built-in function 'calculateconfiguration' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 277,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculateconfiguration_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg1')."
   },
@@ -3737,7 +3792,7 @@
   {
     "line": 278,
     "severity": "Error",
-    "message": "Built-in function 'calculateconfiguration' expects 1 to 2 or 2 argument(s), but got 3."
+    "message": "Built-in function 'calculateconfiguration' expects 2 argument(s), but got 3."
   },
   {
     "line": 278,
@@ -3752,12 +3807,12 @@
   {
     "line": 279,
     "severity": "Error",
-    "message": "Argument 1 to 'calculateconfiguration' should be Dictionary or String, but got a Integer value."
+    "message": "Argument 1 to 'calculateconfiguration' should be String, but got a Integer value."
   },
   {
     "line": 279,
     "severity": "Error",
-    "message": "Argument 2 to 'calculateconfiguration' should be Dictionary or JsonArray, but got a String value."
+    "message": "Argument 2 to 'calculateconfiguration' should be JsonArray, but got a String value."
   },
   {
     "line": 279,
@@ -3811,6 +3866,11 @@
   },
   {
     "line": 282,
+    "severity": "Error",
+    "message": "Built-in function 'calculateconfiguration' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 282,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculateconfiguration_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg6')."
   },
@@ -3838,6 +3898,11 @@
     "line": 284,
     "severity": "Hint",
     "message": "Unused variable: val_calculateconfiguration_neg8"
+  },
+  {
+    "line": 285,
+    "severity": "Error",
+    "message": "Built-in function 'calculateconfiguration' expects 2 argument(s), but got 1."
   },
   {
     "line": 285,
@@ -4001,6 +4066,11 @@
   },
   {
     "line": 303,
+    "severity": "Error",
+    "message": "Built-in function 'applybom' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 303,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_neg1')."
   },
@@ -4012,7 +4082,7 @@
   {
     "line": 304,
     "severity": "Error",
-    "message": "Built-in function 'applybom' expects 2 or 1 argument(s), but got 3."
+    "message": "Argument 3 to 'applybom' should be Json, but got a String value."
   },
   {
     "line": 304,
@@ -4027,7 +4097,12 @@
   {
     "line": 305,
     "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary or Json, but got a String value."
+    "message": "Argument 1 to 'applybom' should be Json, but got a String value."
+  },
+  {
+    "line": 305,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Json, but got a String value."
   },
   {
     "line": 305,
@@ -4076,6 +4151,11 @@
   },
   {
     "line": 308,
+    "severity": "Error",
+    "message": "Built-in function 'applybom' expects 2 to 3 argument(s), but got 1."
+  },
+  {
+    "line": 308,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_neg6')."
   },
@@ -4103,6 +4183,11 @@
     "line": 310,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_neg8"
+  },
+  {
+    "line": 311,
+    "severity": "Error",
+    "message": "Built-in function 'applybom' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 311,
@@ -4271,6 +4356,11 @@
   },
   {
     "line": 331,
+    "severity": "Error",
+    "message": "Built-in function 'calculatedeltabom' expects 3 to 4 argument(s), but got 2."
+  },
+  {
+    "line": 331,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg1')."
   },
@@ -4297,17 +4387,17 @@
   {
     "line": 333,
     "severity": "Error",
-    "message": "Argument 1 to 'calculatedeltabom' should be Dictionary or Json, but got a String value."
+    "message": "Argument 1 to 'calculatedeltabom' should be Json, but got a String value."
   },
   {
     "line": 333,
     "severity": "Error",
-    "message": "Argument 2 to 'calculatedeltabom' should be Dictionary or Json, but got a String value."
+    "message": "Argument 2 to 'calculatedeltabom' should be Json, but got a String value."
   },
   {
     "line": 333,
     "severity": "Error",
-    "message": "Argument 3 to 'calculatedeltabom' should be Dictionary or Json, but got a String value."
+    "message": "Argument 3 to 'calculatedeltabom' should be Json, but got a String value."
   },
   {
     "line": 333,
@@ -4356,6 +4446,11 @@
   },
   {
     "line": 336,
+    "severity": "Error",
+    "message": "Built-in function 'calculatedeltabom' expects 3 to 4 argument(s), but got 2."
+  },
+  {
+    "line": 336,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg6')."
   },
@@ -4371,6 +4466,11 @@
   },
   {
     "line": 338,
+    "severity": "Error",
+    "message": "Built-in function 'calculatedeltabom' expects 3 to 4 argument(s), but got 2."
+  },
+  {
+    "line": 338,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg8')."
   },
@@ -4382,7 +4482,7 @@
   {
     "line": 339,
     "severity": "Error",
-    "message": "Built-in function 'calculatedeltabom' expects 2 to 4 argument(s), but got 1."
+    "message": "Built-in function 'calculatedeltabom' expects 3 to 4 argument(s), but got 1."
   },
   {
     "line": 339,
@@ -4542,7 +4642,7 @@
   {
     "line": 355,
     "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 or 1 argument(s), but got 0."
+    "message": "Built-in function 'saveconfigbom' expects 1 to 3 argument(s), but got 0."
   },
   {
     "line": 355,
@@ -4557,7 +4657,7 @@
   {
     "line": 356,
     "severity": "Error",
-    "message": "Argument 2 to 'saveconfigbom' should be Dictionary or Json, but got a String value."
+    "message": "Argument 2 to 'saveconfigbom' should be Dictionary, but got a String value."
   },
   {
     "line": 356,
@@ -4622,7 +4722,7 @@
   {
     "line": 360,
     "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 or 1 argument(s), but got 0."
+    "message": "Built-in function 'saveconfigbom' expects 1 to 3 argument(s), but got 0."
   },
   {
     "line": 360,
@@ -6621,18 +6721,8 @@
   },
   {
     "line": 512,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 512,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 512,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 512,
@@ -6656,16 +6746,6 @@
   },
   {
     "line": 514,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 514,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
-  },
-  {
-    "line": 514,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getuuid_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_pos2')."
   },
@@ -6676,18 +6756,8 @@
   },
   {
     "line": 515,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 515,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 515,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 515,
@@ -6701,11 +6771,6 @@
   },
   {
     "line": 516,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 516,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
@@ -6713,11 +6778,6 @@
     "line": 516,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 516,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 516,
@@ -6741,18 +6801,8 @@
   },
   {
     "line": 517,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 517,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 517,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos5' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 517,
@@ -6776,16 +6826,6 @@
   },
   {
     "line": 518,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 518,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
-  },
-  {
-    "line": 518,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getuuid_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_pos6')."
   },
@@ -6793,16 +6833,6 @@
     "line": 518,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_pos6"
-  },
-  {
-    "line": 519,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 519,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos7' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 519,
@@ -6821,18 +6851,8 @@
   },
   {
     "line": 522,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 522,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 522,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 522,
@@ -6843,11 +6863,6 @@
     "line": 522,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_pos8"
-  },
-  {
-    "line": 523,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 523,
@@ -6862,11 +6877,6 @@
   {
     "line": 523,
     "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
-  },
-  {
-    "line": 523,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_getuuid_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_pos9')."
   },
   {
@@ -6876,18 +6886,8 @@
   },
   {
     "line": 524,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 524,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 524,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 524,
@@ -6902,11 +6902,6 @@
   {
     "line": 525,
     "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
-  },
-  {
-    "line": 525,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_getuuid_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_neg1')."
   },
   {
@@ -6917,17 +6912,12 @@
   {
     "line": 526,
     "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 2."
+    "message": "Built-in function 'getuuid' expects 0 or 1 argument(s), but got 2."
   },
   {
     "line": 526,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 526,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 526,
@@ -6942,12 +6932,7 @@
   {
     "line": 527,
     "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 527,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "message": "Argument 1 to 'getuuid' should be Integer, but got a String value."
   },
   {
     "line": 527,
@@ -6961,18 +6946,8 @@
   },
   {
     "line": 528,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 528,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 528,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_neg4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 528,
@@ -7017,11 +6992,6 @@
   {
     "line": 530,
     "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
-  },
-  {
-    "line": 530,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_getuuid_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getuuid_neg6')."
   },
   {
@@ -7036,11 +7006,6 @@
   },
   {
     "line": 531,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 531,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -7052,12 +7017,7 @@
   {
     "line": 532,
     "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 2."
-  },
-  {
-    "line": 532,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_neg8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+    "message": "Built-in function 'getuuid' expects 0 or 1 argument(s), but got 2."
   },
   {
     "line": 532,
@@ -7071,11 +7031,6 @@
   },
   {
     "line": 533,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 533,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -7083,11 +7038,6 @@
     "line": 533,
     "severity": "Information",
     "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
-  },
-  {
-    "line": 533,
-    "severity": "Information",
-    "message": "Style Info: Array variable 'val_getuuid_neg9' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
     "line": 533,
@@ -8557,7 +8507,7 @@
   {
     "line": 647,
     "severity": "Error",
-    "message": "Built-in function 'addpartstotransaction' expects 1 to 4 or 2 argument(s), but got 0."
+    "message": "Built-in function 'addpartstotransaction' expects 1 to 4 argument(s), but got 0."
   },
   {
     "line": 647,
@@ -8652,7 +8602,7 @@
   {
     "line": 652,
     "severity": "Error",
-    "message": "Built-in function 'addpartstotransaction' expects 1 to 4 or 2 argument(s), but got 0."
+    "message": "Built-in function 'addpartstotransaction' expects 1 to 4 argument(s), but got 0."
   },
   {
     "line": 652,
@@ -8911,6 +8861,11 @@
   },
   {
     "line": 670,
+    "severity": "Error",
+    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 670,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_validatequoteforagreement_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -8926,6 +8881,11 @@
   },
   {
     "line": 671,
+    "severity": "Error",
+    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 671,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_validatequoteforagreement_neg2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -8938,6 +8898,11 @@
     "line": 671,
     "severity": "Hint",
     "message": "Unused variable: val_validatequoteforagreement_neg2"
+  },
+  {
+    "line": 672,
+    "severity": "Error",
+    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
   },
   {
     "line": 672,
@@ -9027,7 +8992,7 @@
   {
     "line": 677,
     "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 to 1 argument(s), but got 2."
+    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 2."
   },
   {
     "line": 677,
@@ -9043,6 +9008,11 @@
     "line": 677,
     "severity": "Hint",
     "message": "Unused variable: val_validatequoteforagreement_neg8"
+  },
+  {
+    "line": 678,
+    "severity": "Error",
+    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
   },
   {
     "line": 678,
@@ -9577,7 +9547,7 @@
   {
     "line": 720,
     "severity": "Error",
-    "message": "Built-in function 'addtotransaction' expects 1 to 4 or 2 argument(s), but got 0."
+    "message": "Built-in function 'addtotransaction' expects 1 to 4 argument(s), but got 0."
   },
   {
     "line": 720,
@@ -9672,7 +9642,7 @@
   {
     "line": 725,
     "severity": "Error",
-    "message": "Built-in function 'addtotransaction' expects 1 to 4 or 2 argument(s), but got 0."
+    "message": "Built-in function 'addtotransaction' expects 1 to 4 argument(s), but got 0."
   },
   {
     "line": 725,
@@ -10178,11 +10148,6 @@
     "line": 769,
     "severity": "Hint",
     "message": "Unused variable: val_sbappend_neg2"
-  },
-  {
-    "line": 770,
-    "severity": "Error",
-    "message": "Argument 1 to 'sbappend' should be StringBuilder, but got a String value."
   },
   {
     "line": 770,
@@ -11692,7 +11657,7 @@
   {
     "line": 874,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 874,
@@ -11712,7 +11677,7 @@
   {
     "line": 876,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 876,
@@ -11727,7 +11692,7 @@
   {
     "line": 877,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 877,
@@ -11742,7 +11707,7 @@
   {
     "line": 878,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 878,
@@ -11772,7 +11737,7 @@
   {
     "line": 879,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 879,
@@ -11797,7 +11762,7 @@
   {
     "line": 880,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 880,
@@ -11817,7 +11782,7 @@
   {
     "line": 881,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 881,
@@ -11832,7 +11797,7 @@
   {
     "line": 884,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 884,
@@ -11847,7 +11812,7 @@
   {
     "line": 885,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 885,
@@ -11862,7 +11827,7 @@
   {
     "line": 886,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 886,
@@ -11877,7 +11842,7 @@
   {
     "line": 887,
     "severity": "Error",
-    "message": "Built-in function 'importtransactiondata' expects 2 or 1 argument(s), but got 0."
+    "message": "Built-in function 'importtransactiondata' expects 1 argument(s), but got 0."
   },
   {
     "line": 887,
@@ -11888,6 +11853,16 @@
     "line": 887,
     "severity": "Hint",
     "message": "Unused variable: val_importtransactiondata_neg1"
+  },
+  {
+    "line": 888,
+    "severity": "Error",
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+  },
+  {
+    "line": 888,
+    "severity": "Error",
+    "message": "Built-in function 'importtransactiondata' expects 1 argument(s), but got 2."
   },
   {
     "line": 888,
@@ -11917,7 +11892,7 @@
   {
     "line": 890,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 890,
@@ -11957,7 +11932,7 @@
   {
     "line": 892,
     "severity": "Error",
-    "message": "Built-in function 'importtransactiondata' expects 2 or 1 argument(s), but got 0."
+    "message": "Built-in function 'importtransactiondata' expects 1 argument(s), but got 0."
   },
   {
     "line": 892,
@@ -11977,12 +11952,17 @@
   {
     "line": 893,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
   },
   {
     "line": 894,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 894,
+    "severity": "Error",
+    "message": "Built-in function 'importtransactiondata' expects 1 argument(s), but got 2."
   },
   {
     "line": 894,

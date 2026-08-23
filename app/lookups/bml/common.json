@@ -2605,10 +2605,24 @@
             ]
         },
         {
+            "name": "getuuid",
+            "category": "OTHERS",
+            "description": "This function will generate a list of random unique IDs.",
+            "syntax": "String getuuid()\n(or)\nString[] getuuid(Integer count)",
+            "example": "1. Parameter 'count' is of type Integer and it is the number of unique IDs to be generated.\n\nExample: \ngetuuid(2); //Generates string array with 2 unique IDs.\noutput: [6bafc278-25fd-495f-8360-67bcfb8776b0, 65abced9-5c47-47c6-bf18-ab96fb73935f]",
+            "shortSyntax": "getuuid(count)",
+            "links": [
+                {
+                    "rel": "self",
+                    "href": "https://cpq.bigmachines.com/rest/v18/bml/common/functions/getuuid"
+                }
+            ]
+        },
+        {
             "name": "setattributevalue",
             "category": "OTHERS",
             "description": "This function sets the value of a Commerce attribute.",
-            "syntax": "setattributevalue([Integer documentNumber, ] String Literal variableName, String(or Float, Integer, Date, Boolean) value)",
+            "syntax": "setattributevalue(Integer (or String) documentNumberOrName, String (or Integer or Float or Boolean or Any) value)\n(or)\nsetattributevalue(Integer documentNumber, String variableName, String (or Integer or Float or Boolean or Any) value)",
             "example": "Parameters:<br/>1. Optional Integer document number.<br/>2. Variable name of a main or sub document Commerce attribute, as a String Literal.<br/>3. Value to be set, as the correct type for that attribute.<br/><br/>Additional Info:<br/>Sets the provided value to the named Commerce attribute, returning nothing. The type of the value should match the type of the Commerce attribute,<br/>with array sets being represented by json array reference ids created by the jsonarrayrefid function.<br/><br/>The setattributevalue function can only be used in Advanced Default (main document), Advanced Default - Before Formulas (sub document), <br/>Advanced Default - After Formulas (sub document), Advanced Modify - Before Formulas, Advanced Modify - After Formulas, and Commerce Libraries.<br/><br/>Attributes being set by this function will return the updated value in the remaining of the script.  Values set in this way will persist as if they were <br/>returned as part of a bulk modification.<br/><br/>Example:<br/>//Set the value of an array set containing a text field, and a single row, named arraySet.<br/>newRow = json();<br/>arraySet = jsonarray();</br>jsonput(newRow, \"textField\", \"example\");<br/>jsonarrayappend(arraySet, newRow);<br/>setattributevalue(1, \"arraySet\", jsonarrayrefid(arraySet));<br/>",
             "shortSyntax": "setattributevalue([documentNumber, ] stringLiteralVariableName, value)",
             "links": [

@@ -37,7 +37,12 @@
   {
     "line": 15,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 15,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 15,
@@ -57,7 +62,12 @@
   {
     "line": 16,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 16,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 16,
@@ -73,6 +83,11 @@
     "line": 19,
     "severity": "Error",
     "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 19,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 3 to 4 argument(s), but got 1."
   },
   {
     "line": 19,
@@ -93,6 +108,11 @@
     "line": 20,
     "severity": "Error",
     "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 20,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 3 to 4 argument(s), but got 1."
   },
   {
     "line": 20,

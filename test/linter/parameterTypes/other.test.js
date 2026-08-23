@@ -50,10 +50,10 @@ suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Se
         assert.ok(err, 'Should flag passing Float to getreasonstatus() arg 1');
     });
 
-    test('getuuid() takes no arguments, flags unexpected argument count', () => {
+    test('getuuid() expects Integer count (p1), flags String (p1)', () => {
         const diags = lintText('res = getuuid("invalid"); return "";');
-        const err = diags.find(d => d.code === 'bml-function-arg-count');
-        assert.ok(err, 'Should flag passing argument to getuuid()');
+        const err = diags.find(d => d.code === 'bml-function-arg-type');
+        assert.ok(err, 'Should flag passing String to getuuid() count');
     });
 
     test('importtransactiondata() expects String (p1 & p2), flags Date (p1)', () => {

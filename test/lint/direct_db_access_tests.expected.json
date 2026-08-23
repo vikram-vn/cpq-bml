@@ -52,7 +52,12 @@
   {
     "line": 12,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 12,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 12,
@@ -92,7 +97,12 @@
   {
     "line": 16,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 16,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 16,
@@ -117,7 +127,12 @@
   {
     "line": 17,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 17,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 17,
@@ -137,7 +152,12 @@
   {
     "line": 18,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 18,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 18,
@@ -177,7 +197,12 @@
   {
     "line": 19,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 19,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 19,
@@ -217,7 +242,12 @@
   {
     "line": 20,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 20,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 20,
@@ -257,7 +287,12 @@
   {
     "line": 21,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 21,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 21,
@@ -282,7 +317,12 @@
   {
     "line": 26,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 26,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 26,
@@ -307,7 +347,12 @@
   {
     "line": 27,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 27,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 27,
@@ -332,7 +377,12 @@
   {
     "line": 28,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 28,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 28,
@@ -357,7 +407,7 @@
   {
     "line": 29,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 2."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 29,
@@ -382,7 +432,17 @@
   {
     "line": 30,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Argument 4 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 30,
@@ -412,7 +472,12 @@
   {
     "line": 31,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a Integer value."
+  },
+  {
+    "line": 31,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a Integer value."
   },
   {
     "line": 31,
@@ -452,7 +517,12 @@
   {
     "line": 32,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 32,
@@ -507,7 +577,7 @@
   {
     "line": 34,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 2."
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 34,
@@ -532,7 +602,12 @@
   {
     "line": 35,
     "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'gettabledata' should be String[], but got a String value."
+  },
+  {
+    "line": 35,
+    "severity": "Error",
+    "message": "Argument 3 to 'gettabledata' should be String[], but got a String value."
   },
   {
     "line": 35,
@@ -543,11 +618,6 @@
     "line": 36,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 36,
-    "severity": "Error",
-    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 2."
   },
   {
     "line": 36,
@@ -568,6 +638,11 @@
     "line": 36,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg8"
+  },
+  {
+    "line": 37,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 2 to 6 argument(s), but got 1."
   },
   {
     "line": 37,
@@ -617,7 +692,7 @@
   {
     "line": 40,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 40,
@@ -667,7 +742,7 @@
   {
     "line": 45,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 45,
@@ -697,7 +772,7 @@
   {
     "line": 46,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 46,
@@ -722,7 +797,7 @@
   {
     "line": 47,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 47,
@@ -767,7 +842,7 @@
   {
     "line": 48,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 48,
@@ -807,7 +882,7 @@
   {
     "line": 49,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 49,
@@ -857,7 +932,7 @@
   {
     "line": 50,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 50,
@@ -887,7 +962,7 @@
   {
     "line": 56,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 56,
@@ -917,7 +992,7 @@
   {
     "line": 57,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 57,
@@ -947,7 +1022,7 @@
   {
     "line": 58,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 58,
@@ -977,7 +1052,7 @@
   {
     "line": 59,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 3."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 59,
@@ -1007,7 +1082,12 @@
   {
     "line": 60,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 5."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 60,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 3 to 4 argument(s), but got 5."
   },
   {
     "line": 60,
@@ -1037,7 +1117,17 @@
   {
     "line": 61,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a Integer value."
+  },
+  {
+    "line": 61,
+    "severity": "Error",
+    "message": "Argument 3 to 'getpartsdata' should be String, but got a Integer value."
+  },
+  {
+    "line": 61,
+    "severity": "Error",
+    "message": "Argument 4 to 'getpartsdata' should be String, but got a Integer value."
   },
   {
     "line": 61,
@@ -1087,7 +1177,7 @@
   {
     "line": 62,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 62,
@@ -1146,11 +1236,6 @@
   },
   {
     "line": 64,
-    "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 3."
-  },
-  {
-    "line": 64,
     "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -1177,7 +1262,7 @@
   {
     "line": 65,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+    "message": "Argument 2 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 65,
@@ -1192,7 +1277,7 @@
   {
     "line": 66,
     "severity": "Error",
-    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 2."
+    "message": "Built-in function 'getpartsdata' expects 3 to 4 argument(s), but got 2."
   },
   {
     "line": 66,
@@ -1213,6 +1298,11 @@
     "line": 66,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg8"
+  },
+  {
+    "line": 67,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 3 to 4 argument(s), but got 1."
   },
   {
     "line": 67,

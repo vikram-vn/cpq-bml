@@ -41,6 +41,16 @@
   },
   {
     "line": 12,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 12,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 12,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos1')."
   },
@@ -61,6 +71,16 @@
   },
   {
     "line": 15,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 15,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 15,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos2')."
   },
@@ -71,6 +91,16 @@
   },
   {
     "line": 16,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 16,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 16,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos3')."
   },
@@ -78,6 +108,16 @@
     "line": 16,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos3"
+  },
+  {
+    "line": 17,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 17,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
   },
   {
     "line": 17,
@@ -106,6 +146,16 @@
   },
   {
     "line": 18,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 18,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 18,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos5')."
   },
@@ -131,6 +181,16 @@
   },
   {
     "line": 19,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 19,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 19,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -151,6 +211,16 @@
   },
   {
     "line": 20,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 20,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 20,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos7')."
   },
@@ -158,6 +228,16 @@
     "line": 20,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos7"
+  },
+  {
+    "line": 24,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 24,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
   },
   {
     "line": 24,
@@ -171,6 +251,16 @@
   },
   {
     "line": 25,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 25,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
+    "line": 25,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos9')."
   },
@@ -178,6 +268,16 @@
     "line": 25,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos9"
+  },
+  {
+    "line": 26,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 26,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
   },
   {
     "line": 26,
@@ -192,7 +292,7 @@
   {
     "line": 27,
     "severity": "Error",
-    "message": "Argument 1 to 'makeurlparam' should be Dictionary, but got a String value."
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
   },
   {
     "line": 27,
@@ -207,7 +307,12 @@
   {
     "line": 28,
     "severity": "Error",
-    "message": "Built-in function 'makeurlparam' expects 1 or 2 argument(s), but got 3."
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 28,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 3."
   },
   {
     "line": 28,
@@ -222,12 +327,12 @@
   {
     "line": 29,
     "severity": "Error",
-    "message": "Argument 1 to 'makeurlparam' should be String, but got a Integer value."
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a Integer value."
   },
   {
     "line": 29,
     "severity": "Error",
-    "message": "Argument 2 to 'makeurlparam' should be String, but got a Integer value."
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
   },
   {
     "line": 29,
@@ -248,6 +353,16 @@
     "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg3"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
   },
   {
     "line": 30,
@@ -287,7 +402,7 @@
   {
     "line": 32,
     "severity": "Error",
-    "message": "Argument 1 to 'makeurlparam' should be Dictionary, but got a String value."
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
   },
   {
     "line": 32,
@@ -305,9 +420,24 @@
     "message": "Unused variable: val_makeurlparam_neg6"
   },
   {
+    "line": 33,
+    "severity": "Error",
+    "message": "Argument 1 to 'makeurlparam' should be name or value1, but got a String value."
+  },
+  {
+    "line": 33,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
+  },
+  {
     "line": 34,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 34,
+    "severity": "Error",
+    "message": "Built-in function 'makeurlparam' expects 1 argument(s), but got 2."
   },
   {
     "line": 34,

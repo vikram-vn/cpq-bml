@@ -22,14 +22,20 @@ def generate_bml_functions(root_dir):
 
     existing_docs = {}
     existing_examples = {}
-    if not have_fresh_source and os.path.exists(output_path):
-        with open(output_path, 'r', encoding='utf-8') as f:
-            for k, v in json.load(f).items():
-                existing_docs[k] = v.get('docs')
-                existing_examples[k] = v.get('examples', [])
+    existing_data = {}
+    if os.path.exists(output_path):
+        try:
+            with open(output_path, 'r', encoding='utf-8') as f:
+                existing_data = json.load(f)
+        except Exception:
+            existing_data = {}
+
+    for k, v in existing_data.items():
+        existing_docs[k] = v.get('docs')
+        existing_examples[k] = v.get('examples', [])
 
     items = raw.get('items', [])
-    result = {}
+    result = dict(existing_data)
     docs_found = 0
     examples_found = 0
 
@@ -37,9 +43,12 @@ def generate_bml_functions(root_dir):
         key = item.get('name')
         if not key:
             continue
-        full_sig = strip_html(item.get('syntax', ''))
+        item_syntax = strip_html(item.get('syntax', ''))
         category = item.get('category').lower() if item.get('category') else None
-        
+
+        existing_entry = existing_data.get(key, {})
+        full_sig = existing_entry.get('fullSignature') or item_syntax
+
         docs = get_docs_excerpt(root_dir, category, key) if have_fresh_source else existing_docs.get(key)
         if docs:
             docs_found += 1
@@ -65,12 +74,12 @@ def generate_bml_functions(root_dir):
             examples_found += 1
 
         result[key] = {
-            "functionCategory": category,
-            "returnType": extract_return_type(full_sig),
+            "functionCategory": category or existing_entry.get("functionCategory"),
+            "returnType": extract_return_type(full_sig) or existing_entry.get("returnType"),
             "fullSignature": full_sig if full_sig else None,
-            "syntax": to_snippet_syntax(item.get('shortSyntax') or item.get('name')),
+            "syntax": existing_entry.get("syntax") or to_snippet_syntax(item.get('shortSyntax') or item.get('name')),
             "examples": extracted_examples,
-            "notes": strip_html(item.get('description', '')),
+            "notes": strip_html(item.get('description', '')) or existing_entry.get("notes"),
             "docs": docs,
         }
 
