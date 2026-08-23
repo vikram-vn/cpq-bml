@@ -29,6 +29,7 @@ function collectLocalVariables(document, position) {
 
 /**
  * Resolves local variable suggestions when typing '$' in BMQL strings or BML script.
+ * Applies VS Code Locality Bonus sortText ranking based on distance to cursor.
  */
 function getBmqlVariableCompletions(document, position) {
     const lineText = document.lineAt(position.line).text;
@@ -42,6 +43,11 @@ function getBmqlVariableCompletions(document, position) {
         item.detail = `BMQL Substitution Variable ($${v.name})`;
         item.documentation = new vscode.MarkdownString(`Substitutes \`$${v.name}\` into the BMQL query string.`);
         item.insertText = v.name;
+        
+        // Locality Bonus: Sort variables closest to the cursor line first
+        const lineDistance = Math.abs(position.line - v.line);
+        item.sortText = `0_${String(lineDistance).padStart(4, '0')}_${v.name}`;
+        
         return item;
     });
 }

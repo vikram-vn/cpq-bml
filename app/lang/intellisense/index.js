@@ -91,9 +91,11 @@ function lookupApiInfo(word) {
 
 const CATEGORY_KIND = {
     function: vscode.CompletionItemKind.Function,
-    attribute: vscode.CompletionItemKind.Field,
+    attribute: vscode.CompletionItemKind.Property,
     variable: vscode.CompletionItemKind.Variable,
-    snippet: vscode.CompletionItemKind.Snippet
+    constant: vscode.CompletionItemKind.Constant,
+    snippet: vscode.CompletionItemKind.Snippet,
+    keyword: vscode.CompletionItemKind.Keyword
 };
 
 /**
@@ -124,15 +126,17 @@ function buildCategorizedItems() {
             item.detail = syntax;
             item.insertText = new vscode.SnippetString(strippedSyntax);
             item.filterText = strippedKey;
+            item.sortText = `1_${strippedKey}`;
             cachedCpqjsItems.push(item);
             return;
         }
 
         if (info.category === 'attribute') {
-            const item = new vscode.CompletionItem(info.name, vscode.CompletionItemKind.Field);
+            const item = new vscode.CompletionItem(info.name, vscode.CompletionItemKind.Property);
             item.detail = syntax;
             item.insertText = new vscode.SnippetString(syntax);
             item.filterText = key;
+            item.sortText = `4_${key}`;
 
             cachedAllAttributes.push(item);
 
@@ -148,11 +152,29 @@ function buildCategorizedItems() {
             return;
         }
 
-        const kind = CATEGORY_KIND[info.category] || vscode.CompletionItemKind.Text;
+        let kind = CATEGORY_KIND[info.category] || vscode.CompletionItemKind.Text;
+        let sortGroup = '2_';
+        if (info.scope === 'CPQ Constant') {
+            kind = vscode.CompletionItemKind.Constant;
+            sortGroup = '3_';
+        } else if (info.category === 'variable') {
+            sortGroup = '1_';
+        }
+
         const item = new vscode.CompletionItem(info.name, kind);
         item.detail = syntax;
         item.insertText = new vscode.SnippetString(syntax);
         item.filterText = key;
+        item.sortText = `${sortGroup}${key}`;
+
+        if (info.category === 'function') {
+            item.commitCharacters = ['('];
+            item.command = {
+                command: 'editor.action.triggerParameterHints',
+                title: 'Trigger Parameter Hints'
+            };
+        }
+
         cachedGlobalItems.push(item);
     });
 }
