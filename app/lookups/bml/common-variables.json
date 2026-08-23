@@ -440,6 +440,216 @@
                 "lookupCode": 2,
                 "displayLabel": "String"
             }
+        },
+        {
+            "lookupCode": "BM_CM_RULES_LOCATION",
+            "displayLabel": "BM_CM_RULES_LOCATION",
+            "description": "Configuration Rule Location Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_CM_RULES_MESSAGE",
+            "displayLabel": "BM_CM_RULES_MESSAGE",
+            "description": "Configuration Rule Message Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_CM_RULES_OPERATOR",
+            "displayLabel": "BM_CM_RULES_OPERATOR",
+            "description": "Configuration Rule Operator Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_CM_RULES_VALUES",
+            "displayLabel": "BM_CM_RULES_VALUES",
+            "description": "Configuration Rule Values Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_CONFIGURATION_KEY",
+            "displayLabel": "BM_CONFIGURATION_KEY",
+            "description": "Configuration Key Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_DEFAULT_SOURCE_IDENTIFIER",
+            "displayLabel": "BM_DEFAULT_SOURCE_IDENTIFIER",
+            "description": "Default Source Identifier Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_PARTNER_SECURITY_TOKEN",
+            "displayLabel": "BM_PARTNER_SECURITY_TOKEN",
+            "description": "Partner Security Token Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_PRIOR_CONFIGURATION_KEY",
+            "displayLabel": "BM_PRIOR_CONFIGURATION_KEY",
+            "description": "Prior Configuration Key Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_PRIOR_ROOT_BOM_ITEM",
+            "displayLabel": "BM_PRIOR_ROOT_BOM_ITEM",
+            "description": "Prior Root BOM Item Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REASON_STATUS_APPROVED",
+            "displayLabel": "BM_REASON_STATUS_APPROVED",
+            "description": "Reason Status Approved Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REASON_STATUS_INACTIVE",
+            "displayLabel": "BM_REASON_STATUS_INACTIVE",
+            "description": "Reason Status Inactive Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REASON_STATUS_INVALID",
+            "displayLabel": "BM_REASON_STATUS_INVALID",
+            "description": "Reason Status Invalid Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REASON_STATUS_PENDING",
+            "displayLabel": "BM_REASON_STATUS_PENDING",
+            "description": "Reason Status Pending Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REASON_STATUS_REJECTED",
+            "displayLabel": "BM_REASON_STATUS_REJECTED",
+            "description": "Reason Status Rejected Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REMOTE_APPROVAL_STATUS_APPROVED",
+            "displayLabel": "BM_REMOTE_APPROVAL_STATUS_APPROVED",
+            "description": "Remote Approval Status Approved Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REMOTE_APPROVAL_STATUS_CUSTOM",
+            "displayLabel": "BM_REMOTE_APPROVAL_STATUS_CUSTOM",
+            "description": "Remote Approval Status Custom Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_REMOTE_APPROVAL_STATUS_REJECTED",
+            "displayLabel": "BM_REMOTE_APPROVAL_STATUS_REJECTED",
+            "description": "Remote Approval Status Rejected Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_SALES_ROOT_BOM_ITEM",
+            "displayLabel": "BM_SALES_ROOT_BOM_ITEM",
+            "description": "Sales Root BOM Item Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_UNCHANGED_DATE",
+            "displayLabel": "BM_UNCHANGED_DATE",
+            "description": "Unchanged Date Constant",
+            "dataType": {
+                "lookupCode": 5,
+                "displayLabel": "Date"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_UNCHANGED_NUM",
+            "displayLabel": "BM_UNCHANGED_NUM",
+            "description": "Unchanged Num Constant",
+            "dataType": {
+                "lookupCode": 3,
+                "displayLabel": "Float"
+            },
+            "scope": "CPQ Constant"
+        },
+        {
+            "lookupCode": "BM_UNCHANGED_STR",
+            "displayLabel": "BM_UNCHANGED_STR",
+            "description": "Unchanged String Constant",
+            "dataType": {
+                "lookupCode": 2,
+                "displayLabel": "String"
+            },
+            "scope": "CPQ Constant"
         }
     ],
     "links": [

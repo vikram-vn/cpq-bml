@@ -19,9 +19,10 @@ def generate_bml_variables(root_dir):
         dt = item.get('dataType').get('displayLabel') if item.get('dataType') else 'String'
         label = item.get('displayLabel') or key
         desc = item.get('description') or label
+        scope = item.get('scope') or "BML Variable"
         
         result[key] = {
-            "scope": "BML Variable",
+            "scope": scope,
             "dataType": dt,
             "syntax": key,
             "examples": [],

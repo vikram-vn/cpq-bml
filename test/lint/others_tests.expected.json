@@ -3401,11 +3401,6 @@
   },
   {
     "line": 251,
-    "severity": "Error",
-    "message": "Built-in function 'getconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 251,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -3422,7 +3417,7 @@
   {
     "line": 252,
     "severity": "Error",
-    "message": "Built-in function 'getconfigbom' expects 2 argument(s), but got 3."
+    "message": "Built-in function 'getconfigbom' expects 1 to 2 argument(s), but got 3."
   },
   {
     "line": 252,
@@ -3543,11 +3538,6 @@
     "line": 258,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigbom_neg8"
-  },
-  {
-    "line": 259,
-    "severity": "Error",
-    "message": "Built-in function 'getconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 259,

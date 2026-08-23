@@ -42,11 +42,6 @@
   {
     "line": 20,
     "severity": "Error",
-    "message": "Built-in function 'put' expects 3 to 4 argument(s), but got 2."
-  },
-  {
-    "line": 20,
-    "severity": "Error",
     "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {

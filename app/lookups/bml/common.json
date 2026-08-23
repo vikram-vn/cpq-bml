@@ -883,20 +883,6 @@
             ]
         },
         {
-            "name": "getdate (for bmql)",
-            "category": "DIRECT_DB_ACCESS",
-            "description": "Returns the date value in the Record for the provided field name.",
-            "syntax": "Date getdate(Record record, String fieldName)",
-            "example": "1. Returns the date value in the Record given the field name<br/><br/>Example: <br/><br/>rows = bmql(\"select datecol... \");<br/>for row in rows {<br/>&nbsp;&nbsp;&nbsp;&nbsp;val = getdate(row, \"datecol\");<br/>&nbsp;&nbsp;&nbsp;&nbsp;isweekend(val); // can do date operations.Date functions can be applied<br/>}",
-            "shortSyntax": "getdate(record, fieldName)",
-            "links": [
-                {
-                    "rel": "self",
-                    "href": "https://cpq.bigmachines.com/rest/v18/bml/common/functions/getdate (for bmql)"
-                }
-            ]
-        },
-        {
             "name": "recordset",
             "category": "DIRECT_DB_ACCESS",
             "description": "Returns a new RecordSet.",
@@ -1159,20 +1145,6 @@
                 {
                     "rel": "self",
                     "href": "https://cpq.bigmachines.com/rest/v18/bml/common/functions/boolean[n]"
-                }
-            ]
-        },
-        {
-            "name": "string[n][n]",
-            "category": "ARRAY",
-            "description": "Initializes a 2-D String array with specified size.",
-            "syntax": "String[][] string[Integer n][Integer n]",
-            "example": "1. Negative number (including NaN, which is equal to -999999) specified for array size throws a runtime exception. For example, arr = string[-9][0]; throws a RuntimeException.<br/><br/>2. When you specify the array size equal to jNaN, then array of size 0 is initialized.<br/><br/>3. Contact admin for size limits.<br/><br/>4. For string array, the value in each field of the array after array declaration (example, arr = integer[10][2];) is equal to null, if the array fields are not initialized.",
-            "shortSyntax": "string[n][n]",
-            "links": [
-                {
-                    "rel": "self",
-                    "href": "https://cpq.bigmachines.com/rest/v18/bml/common/functions/string[n][n]"
                 }
             ]
         },
@@ -2257,10 +2229,10 @@
         {
             "name": "getconfigbom",
             "category": "OTHERS",
-            "description": "Extracts a client integration BOM instance using configId",
-            "syntax": "Json getConfigBom(Integer configId, Boolean flattenChildItems)",
-            "example": "1. configId is the Configuration ID for the client side integration action and is not the same as the configuration_id system attribute.<br/>&nbsp;&nbsp;&nbsp;For UI integrations, the client side integration action returns the config_id  in response json.<br/>&nbsp;&nbsp;&nbsp;For other actions such as Terminate, Renew, Suspend, and Resume order, RESTful calls generated from the saveBomConfig BML function return the lineId.<br/><br/>2. flattenChildItems is an optional parameter used to flatten child items. If true, all descendant BOM items are stored as direct children of the returned root BOM item.<br/>&nbsp;&nbsp;&nbsp;If the parameter is not provided, the value is by default false.<br/><br/>",
-            "shortSyntax": "getconfigbom(configId [, flattenChildItems])",
+            "description": "Retrieves configuration BOM for ABO assets.",
+            "syntax": "Json getconfigbom(Integer configId [, Boolean flattenChildProducts])",
+            "example": "bomJson = getconfigbom(12345, true);",
+            "shortSyntax": "getconfigbom(configId, flattenChildProducts)",
             "links": [
                 {
                     "rel": "self",
@@ -2673,6 +2645,93 @@
                     "href": "https://cpq.bigmachines.com/rest/v18/bml/common/functions/configureabo"
                 }
             ]
+        },
+        {
+            "name": "format",
+            "category": "STRING",
+            "description": "Formats a string using pattern placeholders.",
+            "syntax": "String format(String pattern, ...)",
+            "shortSyntax": "format(pattern, ...)",
+            "example": "str = format(\"Item: %s, Price: %.2f\", \"Widget\", 19.99);\nprint str;"
+        },
+        {
+            "name": "getarraystr",
+            "category": "OTHERS",
+            "description": "Converts an array attribute identifier into a formatted string.",
+            "syntax": "String getarraystr(String arrayIdentifier)",
+            "shortSyntax": "getarraystr(arrayIdentifier)",
+            "example": "arrStr = getarraystr(\"line._part_custom_field\");"
+        },
+        {
+            "name": "float",
+            "category": "MATH",
+            "description": "Casts or converts an integer, string, or boolean value to a Float.",
+            "syntax": "Float float(val)",
+            "shortSyntax": "float(val)",
+            "example": "valFloat = float(\"123.45\");\nprint valFloat;"
+        },
+        {
+            "name": "abs",
+            "category": "MATH",
+            "description": "Returns the absolute value of a numeric value.",
+            "syntax": "Float abs(Float val)",
+            "shortSyntax": "abs(val)",
+            "example": "diff = abs(-42.5);\nprint diff;"
+        },
+        {
+            "name": "date",
+            "category": "DATE",
+            "description": "Constructs a BML Date object from string and format pattern.",
+            "syntax": "Date date(String dateStr [, String format])",
+            "shortSyntax": "date(dateStr, format)",
+            "example": "myDate = date(\"2026-08-23\", \"yyyy-MM-dd\");"
+        },
+        {
+            "name": "formatdate",
+            "category": "DATE",
+            "description": "Formats a Date object as a string according to specified pattern.",
+            "syntax": "String formatdate(Date date, String format)",
+            "shortSyntax": "formatdate(date, format)",
+            "example": "strDate = formatdate(getdate(), \"yyyy/MM/dd HH:mm:ss\");"
+        },
+        {
+            "name": "indexof",
+            "category": "ARRAYS",
+            "description": "Returns index of first occurrence of element in array, or -1 if not found.",
+            "syntax": "Integer indexof(array, element)",
+            "shortSyntax": "indexof(array, element)",
+            "example": "items = String[]{\"apple\", \"banana\", \"cherry\"};\npos = indexof(items, \"banana\");"
+        },
+        {
+            "name": "slice",
+            "category": "ARRAYS",
+            "description": "Returns a slice of an array from startIndex to endIndex.",
+            "syntax": "array slice(array, startIndex [, endIndex])",
+            "shortSyntax": "slice(array, startIndex, endIndex)",
+            "example": "items = String[]{\"a\", \"b\", \"c\", \"d\"};\nsubItems = slice(items, 1, 3);"
+        },
+        {
+            "name": "generateuuid",
+            "category": "OTHERS",
+            "description": "Generates a unique UUID string.",
+            "syntax": "String generateuuid()",
+            "shortSyntax": "generateuuid()",
+            "example": "uuid = generateuuid();\nprint uuid;"
+        },
+        {
+            "name": "getconfigurationbom",
+            "category": "OTHERS",
+            "description": "Retrieves configuration BOM for ABO assets (alias for getconfigbom).",
+            "syntax": "Json getconfigurationbom(Integer configId [, Boolean flattenChildProducts])",
+            "shortSyntax": "getconfigurationbom(configId, flattenChildProducts)",
+            "example": "bomJson = getconfigurationbom(12345, true);"
+        },
+        {
+            "name": "invoke",
+            "category": "OTHERS",
+            "description": "Invokes a global table function.",
+            "syntax": "Boolean invoke(String globalTableFunction [, String delimitedData [, String defaultData]])",
+            "shortSyntax": "invoke(globalTableFunction, delimitedData, defaultData)"
         }
     ],
     "links": [

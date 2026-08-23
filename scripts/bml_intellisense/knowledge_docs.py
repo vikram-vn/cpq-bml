@@ -1,28 +1,12 @@
-"""Extracts and sanitizes per-function reference sections from the crawled
-knowledge base (knowledge/BML/**/*.md - see scripts/docs/bml_crawler),
-for embedding directly into bml-functions-api-usage.json's "docs" field.
-
-This directory is committed to source control and acts as the master reference 
-for both IntelliSense hovers and the AI Agent Skills.
-
-This replaces what used to be a runtime feature (a separate offline-docs
-webview panel, plus JS code that read+parsed the markdown on every hover).
-Doing the extraction once here means the extension ships a single JSON file
-and needs zero markdown parsing, file reads, or webview machinery at runtime -
-the hover just reads info["docs"] directly. Images are dropped entirely (not
-shipped, not rendered) - only their alt text remains, so the hover stays
-readable without needing to package any screenshots.
+"""
+Python module to extract and sanitize documentation excerpts and code examples from
+the crawled markdown files under `knowledge/BML/` for hover IntelliSense generation.
 """
 import os
 import re
 
-# Maps bml-functions-api-usage.json's "functionCategory" field to the knowledge
-# base file that documents it. Categories not listed here (e.g. "logical",
-# which covers control-flow keyword docs like "if..."/"if...else") have no
-# per-function reference page - generate_bml_functions() should simply not
-# set "docs" for those.
 CATEGORY_MAP = {
-    'string': 'string.md',
+    'string': 'String.md',
     'math': 'Math.md',
     'date': 'Date.md',
     'json': 'Json.md',
@@ -33,6 +17,11 @@ CATEGORY_MAP = {
     'bmql': 'BMQL.md',
     'url': 'URLAccess.md',
     'others': 'Others.md',
+    'others-bom': 'Others-BOM.md',
+    'others-constants': 'Others-Constants.md',
+    'others-globaldict': 'Others-GlobalDict.md',
+    'others-sysconfig': 'Others-SysConfig.md',
+    'others-usersessions': 'Others-UserSessions.md',
     'direct_db_access': 'DirectDBAccess.md',
 }
 
@@ -46,10 +35,7 @@ def _knowledge_dir(root_dir):
 
 
 def knowledge_source_available(root_dir):
-    """True if the crawled markdown is present (e.g. scripts/docs/bml_crawler
-    was just run). False on a fresh clone, where scratch/ is gitignored and
-    empty - callers should treat that as "can't refresh, preserve existing
-    docs values" rather than "no docs exist"."""
+    """True if the crawled markdown is present."""
     return os.path.isdir(_knowledge_dir(root_dir))
 
 
@@ -74,9 +60,7 @@ def _load_markdown(root_dir, category):
 
 def extract_function_section(md_body, name):
     """Finds the "## <name>" section (case-insensitive) and returns everything
-    up to the next "## " heading. Docs that aren't structured this way (e.g.
-    bmql.md, a prose guide with no per-function headings) simply won't match -
-    callers should treat None as "no excerpt available"."""
+    up to the next "## " heading."""
     heading_re = re.compile(r'^##\s+' + re.escape(name) + r'\s*$', re.IGNORECASE | re.MULTILINE)
     match = heading_re.search(md_body)
     if not match:
@@ -102,10 +86,6 @@ def _parse_table_row(line):
 
 
 def _convert_tables_to_list(text):
-    """VS Code's hover popover renders markdown tables poorly (cramped width,
-    no real column-alignment support) - especially bad for code-heavy cells
-    like parameter tables. Converts each data row into a
-    "**Header:** value · **Header:** value" bullet instead."""
     lines = text.split('\n')
     out = []
     i = 0
@@ -133,36 +113,59 @@ def _replace_admonition(match):
 
 
 def sanitize_section_for_hover(section):
-    """Converts a raw per-function doc section into hover-safe markdown:
-    - strips the redundant "**Syntax:**" line (already shown via the code
-      block the hover renders above this excerpt)
-    - replaces images with an italicized placeholder built from their alt
-      text instead of shipping/rendering them - dropping them silently would
-      leave the lead-in sentence dangling ("...you will see:" followed by
-      nothing), so the placeholder stays purely descriptive.
-    - turns ":::type ... :::" admonition containers (not standard markdown,
-      markdown-it-container syntax used by the crawled docs) into a
-      blockquote so they render as *something* instead of literal "::: " text
-    - trims a leading/trailing "---" (the section's own divider before the
-      next heading in the source file, meaningless once excerpted alone)
-    - converts parameter tables into bullets (see _convert_tables_to_list)
-    """
+    """Sanitizes raw markdown section for clean VS Code Hover tooltips."""
     text = _convert_tables_to_list(section)
     text = re.sub(r'^\*\*Syntax:\*\*.*$', '', text, count=1, flags=re.IGNORECASE | re.MULTILINE)
     text = re.sub(r'!\[([^\]]*)\]\([^)]*\)', lambda m: f'*🖼️ {m.group(1)}*' if m.group(1) else '', text)
-    text = re.sub(r':::(\w+)\r?\n([\s\S]*?):::', _replace_admonition, text)
+    text = re.sub(r':::(\w+)\s*\r?\n?([\s\S]*?):::', _replace_admonition, text)
+    text = re.sub(r'\*\*Example:\*\*[\s\S]*$', '', text, flags=re.IGNORECASE).strip()
+    text = re.sub(r'```(?:bml|json|xml)?[\s\S]*?```', '', text).strip()
     text = re.sub(r'\n{3,}', '\n\n', text)
     text = re.sub(r'^-{3,}\s*|\s*-{3,}$', '', text)
     return text.strip()
 
 
-def get_docs_excerpt(root_dir, category, name):
-    """Returns the sanitized "## <name>" section for a function, or None if
-    the category has no matching knowledge base file or heading."""
+def get_raw_doc_section(root_dir, category, name):
+    """Returns the raw "## <name>" markdown section for a function, with fallback search."""
     md_body = _load_markdown(root_dir, category)
-    if not md_body:
-        return None
-    section = extract_function_section(md_body, name)
+    if md_body:
+        section = extract_function_section(md_body, name)
+        if section:
+            return section
+
+    kdir = _knowledge_dir(root_dir)
+    if os.path.exists(kdir):
+        for fname in os.listdir(kdir):
+            if fname.endswith('.md'):
+                fpath = os.path.join(kdir, fname)
+                try:
+                    with open(fpath, encoding='utf-8') as f:
+                        content = f.read()
+                    section = extract_function_section(content, name)
+                    if section:
+                        return section
+                except Exception:
+                    continue
+    return None
+
+
+def extract_examples_from_section(section):
+    """Extracts code blocks (```bml ... ```, ```json ... ```, or ```xml ... ```) from a markdown section."""
+    if not section:
+        return []
+
+    pattern = re.compile(r'```(?:bml|json|xml|text|java)?(?:\s+title="[^"]*")?\s*\n([\s\S]*?)\n```', re.IGNORECASE)
+    matches = pattern.findall(section)
+    examples = []
+    for match in matches:
+        code = match.strip()
+        if code and code not in examples:
+            examples.append(code)
+    return examples
+
+
+def get_docs_excerpt(root_dir, category, name):
+    section = get_raw_doc_section(root_dir, category, name)
     if not section:
         return None
     return sanitize_section_for_hover(section)

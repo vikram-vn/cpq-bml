@@ -11,6 +11,8 @@ const { formatAsJsDoc, formatWorkspaceFunctionHover, KEYWORD_HOVERS } = require(
 const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
 const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
 const { resolveParameterCompletions } = require('./paramCompletions');
+const { registerInlayHintsProvider } = require('./inlayHints');
+const { getBmqlVariableCompletions } = require('./bmqlVariableCompletions');
 
 // Each source file holds a different kind of entry. Tracking that here gives
 // accurate completion icons/hover labels - "does this syntax contain '(' "
@@ -186,6 +188,12 @@ function registerBmlIntelliSense(context) {
                     buildCategorizedItems();
                 }
 
+                // Check if typing $ for BMQL variable substitution
+                const bmqlVarItems = getBmqlVariableCompletions(document, position);
+                if (bmqlVarItems && bmqlVarItems.length > 0) {
+                    return bmqlVarItems;
+                }
+
                 // Check if inside a function call expecting parameter completions
                 const activeCall = getActiveFunctionCall(document, position);
                 if (activeCall && activeCall.funcName) {
@@ -227,7 +235,7 @@ function registerBmlIntelliSense(context) {
                 return item;
             }
         },
-        '.', '(', '_', '"', '\'', ',', '+', '-', '/', ':'
+        '.', '(', '_', '"', '\'', ',', '+', '-', '/', ':', '$'
     );
 
     const hoverProvider = vscode.languages.registerHoverProvider('bml', {
@@ -472,6 +480,10 @@ function registerBmlIntelliSense(context) {
 
     // Register workspace index file-system watchers
     registerWorkspaceIndexWatcher(context);
+
+    // Register Inlay Hints Provider for parameter names inline
+    const inlayHintsProvider = registerInlayHintsProvider(context);
+    context.subscriptions.push(inlayHintsProvider);
 }
 
 module.exports = { registerBmlIntelliSense };
