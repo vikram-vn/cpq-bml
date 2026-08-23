@@ -1742,7 +1742,7 @@
   {
     "line": 116,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 116,
@@ -1762,7 +1762,7 @@
   {
     "line": 118,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 118,
@@ -1777,7 +1777,7 @@
   {
     "line": 119,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 119,
@@ -1792,7 +1792,7 @@
   {
     "line": 120,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 120,
@@ -1822,7 +1822,7 @@
   {
     "line": 121,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 121,
@@ -1847,7 +1847,7 @@
   {
     "line": 122,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 122,
@@ -1867,7 +1867,7 @@
   {
     "line": 123,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 123,
@@ -1882,7 +1882,7 @@
   {
     "line": 126,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 126,
@@ -1897,7 +1897,7 @@
   {
     "line": 127,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 127,
@@ -1912,7 +1912,7 @@
   {
     "line": 128,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 128,
@@ -1927,7 +1927,7 @@
   {
     "line": 129,
     "severity": "Error",
-    "message": "Built-in function 'max' expects 1 argument(s), but got 0."
+    "message": "Built-in function 'max' expects 1 or 2 argument(s), but got 0."
   },
   {
     "line": 129,
@@ -1942,12 +1942,12 @@
   {
     "line": 130,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Float, but got a String value."
   },
   {
     "line": 130,
     "severity": "Error",
-    "message": "Built-in function 'max' expects 1 argument(s), but got 2."
+    "message": "Argument 2 to 'max' should be Float, but got a String value."
   },
   {
     "line": 130,
@@ -1962,7 +1962,7 @@
   {
     "line": 131,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a Integer value."
+    "message": "Argument 1 to 'max' should be Array, but got a Integer value."
   },
   {
     "line": 131,
@@ -1982,7 +1982,7 @@
   {
     "line": 132,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 132,
@@ -2022,7 +2022,7 @@
   {
     "line": 134,
     "severity": "Error",
-    "message": "Built-in function 'max' expects 1 argument(s), but got 0."
+    "message": "Built-in function 'max' expects 1 or 2 argument(s), but got 0."
   },
   {
     "line": 134,
@@ -2042,17 +2042,12 @@
   {
     "line": 135,
     "severity": "Error",
-    "message": "Argument 1 to 'max' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'max' should be Array, but got a String value."
   },
   {
     "line": 136,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 136,
-    "severity": "Error",
-    "message": "Built-in function 'max' expects 1 argument(s), but got 2."
   },
   {
     "line": 136,
@@ -2102,7 +2097,7 @@
   {
     "line": 140,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 140,
@@ -2122,7 +2117,7 @@
   {
     "line": 142,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 142,
@@ -2137,7 +2132,7 @@
   {
     "line": 143,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 143,
@@ -2152,7 +2147,7 @@
   {
     "line": 144,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 144,
@@ -2182,7 +2177,7 @@
   {
     "line": 145,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 145,
@@ -2207,7 +2202,7 @@
   {
     "line": 146,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 146,
@@ -2227,7 +2222,7 @@
   {
     "line": 147,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 147,
@@ -2242,7 +2237,7 @@
   {
     "line": 150,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 150,
@@ -2257,7 +2252,7 @@
   {
     "line": 151,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 151,
@@ -2272,7 +2267,7 @@
   {
     "line": 152,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 152,
@@ -2287,7 +2282,7 @@
   {
     "line": 153,
     "severity": "Error",
-    "message": "Built-in function 'min' expects 1 argument(s), but got 0."
+    "message": "Built-in function 'min' expects 1 or 2 argument(s), but got 0."
   },
   {
     "line": 153,
@@ -2302,12 +2297,12 @@
   {
     "line": 154,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Float, but got a String value."
   },
   {
     "line": 154,
     "severity": "Error",
-    "message": "Built-in function 'min' expects 1 argument(s), but got 2."
+    "message": "Argument 2 to 'min' should be Float, but got a String value."
   },
   {
     "line": 154,
@@ -2322,7 +2317,7 @@
   {
     "line": 155,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a Integer value."
+    "message": "Argument 1 to 'min' should be Array, but got a Integer value."
   },
   {
     "line": 155,
@@ -2342,7 +2337,7 @@
   {
     "line": 156,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 156,
@@ -2382,7 +2377,7 @@
   {
     "line": 158,
     "severity": "Error",
-    "message": "Built-in function 'min' expects 1 argument(s), but got 0."
+    "message": "Built-in function 'min' expects 1 or 2 argument(s), but got 0."
   },
   {
     "line": 158,
@@ -2402,17 +2397,12 @@
   {
     "line": 159,
     "severity": "Error",
-    "message": "Argument 1 to 'min' should be Integer[] or Float[] or Date[], but got a String value."
+    "message": "Argument 1 to 'min' should be Array, but got a String value."
   },
   {
     "line": 160,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 160,
-    "severity": "Error",
-    "message": "Built-in function 'min' expects 1 argument(s), but got 2."
   },
   {
     "line": 160,

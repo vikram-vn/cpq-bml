@@ -14,7 +14,7 @@ function invalidateCache() {
 
 // Loads minified or fallback JSON data, cached by filename.
 function loadJson(baseName, extPath) {
-    if (_cache[baseName]) return _cache[baseName];
+    if (_cache[baseName] && Object.keys(_cache[baseName]).length > 0) return _cache[baseName];
 
     const minFile  = `${baseName}.min.json`;
     const jsonFile = `${baseName}.json`;
@@ -22,9 +22,11 @@ function loadJson(baseName, extPath) {
 
     const candidates = [
         extPath && path.join(extPath, relDir, minFile),
+        path.join(process.cwd(), relDir, minFile),
         path.join(__dirname, minFile),
         path.join(__dirname, "..", relDir, minFile),
         extPath && path.join(extPath, relDir, jsonFile),
+        path.join(process.cwd(), relDir, jsonFile),
         path.join(__dirname, jsonFile),
         path.join(__dirname, "..", relDir, jsonFile),
     ].filter(Boolean);

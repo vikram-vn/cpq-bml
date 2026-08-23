@@ -39,7 +39,8 @@ suite('BML Linter Test Suite - file-based fixtures', function() {
                     }
                 };
 
-                lintBMLCustom(doc, collection, vscode);
+                const extPath = path.resolve(__dirname, '../../');
+                lintBMLCustom(doc, collection, vscode, extPath);
 
                 const actual = diagnostics
                     .filter(d => d.code !== 'bml-spelling-error')
@@ -59,9 +60,12 @@ suite('BML Linter Test Suite - file-based fixtures', function() {
                 };
 
                 actual.sort(sortByLineAndMessage);
-                expected.sort(sortByLineAndMessage);
-
-                assert.deepStrictEqual(actual, expected);
+                if (process.env.UPDATE_SNAPSHOTS === 'true') {
+                    fs.writeFileSync(expectedPath, JSON.stringify(actual, null, 2));
+                } else {
+                    expected.sort(sortByLineAndMessage);
+                    assert.deepStrictEqual(actual, expected);
+                }
             });
         }
     }

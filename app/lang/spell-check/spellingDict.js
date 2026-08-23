@@ -114,8 +114,20 @@ function getSpellingSuggestions(word, extensionPath) {
     }
   }
 
-  matches.sort((a, b) => a.dist - b.dist);
-  return matches.slice(0, 5).map((m) => m.word);
+  matches.sort((a, b) => {
+    if (a.dist !== b.dist) return a.dist - b.dist;
+    return a.word.localeCompare(b.word);
+  });
+
+  const isFirstUpper =
+    word[0] === word[0].toUpperCase() && word[0] !== word[0].toLowerCase();
+  const isAllUpper = word === word.toUpperCase() && word !== word.toLowerCase();
+
+  return matches.slice(0, 5).map((m) => {
+    if (isAllUpper) return m.word.toUpperCase();
+    if (isFirstUpper) return m.word.charAt(0).toUpperCase() + m.word.slice(1);
+    return m.word;
+  });
 }
 
 module.exports = {

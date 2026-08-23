@@ -27,7 +27,9 @@ function lintText(bmlText, filePath = '/mock/test.bml') {
     };
     const diagnostics = [];
     const collection = { set: (uri, diags) => diagnostics.push(...diags) };
-    lintBMLCustom(doc, collection, vscode);
+    const path = require('path');
+    const extPath = path.resolve(__dirname, '../../');
+    lintBMLCustom(doc, collection, vscode, extPath);
     return diagnostics;
 }
 

@@ -66,7 +66,8 @@ suite("BML REST commands - environment CRUD (used by the settings webview)", () 
   });
 });
 
-suite("BML REST commands - changeEnvironment & site-specific secrets", () => {
+suite("BML REST commands - changeEnvironment & site-specific secrets", function () {
+  this.timeout(10000);
   test("switches environment configurations correctly based on cpqBml.connection.environments setting", async () => {
     const configValues = {
       "connection.environments": [

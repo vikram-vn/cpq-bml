@@ -22,6 +22,13 @@ const {
     CATEGORY_KIND
 } = require('./apiData');
 
+let cachedGlobalItems = null;
+let cachedTransactionItems = null;
+let cachedLineItems = null;
+let cachedSystemItems = null;
+let cachedCpqjsItems = null;
+let cachedAllAttributes = null;
+
 /**
  * Builds the categorized completion item lists once per data generation.
  */
@@ -38,7 +45,7 @@ function buildCategorizedItems() {
     cpqjsItem.insertText = 'CPQJS';
     cachedGlobalItems.push(cpqjsItem);
 
-    Object.entries(bmlApiData).forEach(([key, info]) => {
+    Object.entries(getBmlApiData()).forEach(([key, info]) => {
         const syntax = info.syntax || info.name;
 
         if (key.startsWith('cpqjs.')) {
@@ -90,6 +97,7 @@ function buildCategorizedItems() {
         item.insertText = new vscode.SnippetString(syntax);
         item.filterText = key;
         item.sortText = `${sortGroup}${key}`;
+        item.documentation = formatAsJsDoc(info);
 
         if (info.category === 'function') {
             item.commitCharacters = ['('];
@@ -174,13 +182,14 @@ function registerBmlIntelliSense(context) {
                 return cachedGlobalItems;
             },
             resolveCompletionItem(item) {
-                let key = item.filterText;
+                loadApiData(context);
+                let key = (typeof item.label === 'string' ? item.label : (item.label && item.label.label) || item.filterText || '').toLowerCase();
                 if (item.kind === vscode.CompletionItemKind.Method) {
                     if (bmlApiData['cpqjs.' + key]) {
                         key = 'cpqjs.' + key;
                     }
                 }
-                const info = bmlApiData[key];
+                const info = bmlApiData[key] || lookupApiInfo(key);
                 if (info) {
                     item.documentation = formatAsJsDoc(info);
                 }
@@ -243,8 +252,8 @@ function registerBmlIntelliSense(context) {
                 if (!activeCall) return null;
 
                 const { funcName, paramIndex } = activeCall;
-                const info = bmlApiData[funcName.toLowerCase()];
-                if (!info || info.category !== 'function') return null;
+                const info = bmlApiData[funcName.toLowerCase()] || lookupApiInfo(funcName);
+                if (!info) return null;
 
                 const signatureHelp = new vscode.SignatureHelp();
                 const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info));
@@ -252,7 +261,7 @@ function registerBmlIntelliSense(context) {
                 signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax);
                 signatureHelp.signatures = [signatureInfo];
                 signatureHelp.activeSignature = 0;
-                signatureHelp.activeParameter = Math.min(paramIndex, signatureInfo.parameters.length ? signatureInfo.parameters.length - 1 : 0);
+                signatureHelp.activeParameter = paramIndex;
 
                 return signatureHelp;
             }

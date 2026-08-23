@@ -19,15 +19,21 @@ let cachedSystemItems = null;
 let cachedCpqjsItems = null;
 let cachedAllAttributes = null;
 
+let savedContext = null;
+
 function loadApiData(context) {
-    if (apiDataLoaded) {
+    if (context && context.extensionPath) {
+        savedContext = context;
+    }
+    if (apiDataLoaded && Object.keys(bmlApiData).length > 0) {
         return bmlApiData;
     }
 
     bmlApiData = {};
+    const extPath = (context && context.extensionPath) || (savedContext && savedContext.extensionPath) || undefined;
     API_FILES.forEach(({ baseName, category }) => {
         try {
-            const fileData = loadJson(baseName, context.extensionPath);
+            const fileData = loadJson(baseName, extPath);
             Object.entries(fileData).forEach(([key, val]) => {
                 bmlApiData[key.toLowerCase()] = { ...val, category, name: key };
             });
@@ -52,6 +58,9 @@ function invalidateApiData() {
 }
 
 function lookupApiInfo(word) {
+    if (!apiDataLoaded || Object.keys(bmlApiData).length === 0) {
+        loadApiData({ extensionPath: undefined });
+    }
     const lower = word.toLowerCase();
     if (bmlApiData[lower]) return bmlApiData[lower];
 
@@ -71,7 +80,10 @@ const CATEGORY_KIND = {
     keyword: vscode.CompletionItemKind.Keyword
 };
 
-function getBmlApiData() {
+function getBmlApiData(context) {
+    if (!apiDataLoaded || Object.keys(bmlApiData).length === 0) {
+        loadApiData(context || { extensionPath: undefined });
+    }
     return bmlApiData;
 }
 

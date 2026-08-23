@@ -4,7 +4,7 @@ const { loadJson } = require("../intellisense/apiDataLoader");
 let systemVariables = null; // Map<lowercaseName, canonicalName>
 
 function loadSystemVariables(extensionPath) {
-  if (systemVariables) return systemVariables;
+  if (systemVariables && systemVariables.size > 0) return systemVariables;
   systemVariables = new Map();
   try {
     const data = loadJson("bml-variables-api-usage", extensionPath);

@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.53.0] - 2026-08-23
+
+### Added
+- Add comprehensive BML test suite covering system variables, data types, and built-in functions.
+
 ## [1.52.0] - 2026-08-23
 
 ### Added
@@ -86,10 +91,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Add linting rules for detecting undeclared variables and use-before-define errors in BML.
 - Implement BML syntax rules and variable naming convention linters.
-
-## [1.43.0] - 2026-08-22
-
-### Added
-
-- Implement BML parameter type validation and add comprehensive linting test suites.
-- Add linter rules and tests for BML function parameter constraints.

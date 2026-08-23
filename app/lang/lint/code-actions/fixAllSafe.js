@@ -2,6 +2,7 @@ const vscode = require('vscode');
 const { inferConstantCandidateName } = require('./qualityHelpers');
 const {
     toCamelCase,
+    formatBooleanName,
     withPreservedStrings,
     commentOutEmptyConditionalChains,
     commentOutEmptyLoops,

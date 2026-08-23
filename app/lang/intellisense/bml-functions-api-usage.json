@@ -1117,7 +1117,7 @@
     "put": {
         "functionCategory": "dictionary",
         "returnType": null,
-        "fullSignature": "put(Dictionary dictionaryIdentifier, String(or Integer, Float))key,  value)",
+        "fullSignature": "put(Dictionary dictionaryIdentifier, String(or Integer, Float) key, String value)",
         "syntax": "put(${1:dictionaryIdentifier}, ${2:key}, ${3:value})",
         "examples": [
             "1. Puts an entry (key-value pair) into the dictionary.\n2. Dict(\"anytype\") supports multiple datatypes in one dictionary.\nFor example, \nd = dict(\"string\");\nput(d, \"key1\", \"testValue1\");\n\nFor dict : \nd1 = dict(\"anytype\");\njObj = json(\"{\\\"K1\\\":\\\"V1\\\"}\");\nput(d1, \"key1\",\"value1\");\nput(d1, \"key2\", 10);\nput(d1, \"key3\", jObj);"
@@ -1128,7 +1128,7 @@
     "get": {
         "functionCategory": "dictionary",
         "returnType": null,
-        "fullSignature": "get(Dictionary dictionaryIdentifier, String(or Integer, Float)key) \n (or) \n  get(Dictionary dictionaryIdentifier, String(or Integer(or Float))key, String valueType)",
+        "fullSignature": "get(Dictionary dictionaryIdentifier, String(or Integer, Float) key) \n (or) \n  get(Dictionary dictionaryIdentifier, String(or Integer, Float) key, String valueType)",
         "syntax": "get(${1:dictionaryIdentifier}, ${2:key})",
         "examples": [
             "1. Gets the value from the dictionary for the key provided.\n2. Get is also used to get the value of a field in a record.\n3. For dict(\"anytype\") function the 3rd parameter is mandatory.\n4. An error will be thrown if the value for the key is not of valueType datatype.\n\nFor example of dictionary, \nd = dict(\"string\");\nput(d, \"key1\", \"testValue1\");\ns = get(d, \"key1\");\n\nFor example on Record, \nrows = bmql(\"select col...\");\nfor row in rows {\n    val = get(row, \"col\"); // returns value of 'col' in that row\n};\n\nFor dict : \nd1 = dict(\"anytype\");\njObj = json(\"{\\\"K1\\\":\\\"V1\\\"}\");\nput(d1, \"key1\",\"value1\");\nput(d1, \"key2\", 10);\nput(d1, \"key3\", jObj);\nprint(get(d1, \"key1\" , \"string\"));\n//Output : value1\nprint(get(d1, \"key3\" , \"string\"));\n//Error will be thrown as the value corresponding to key3 is of json type"

@@ -556,11 +556,6 @@
   },
   {
     "line": 51,
-    "severity": "Error",
-    "message": "Built-in function 'getconfigattrvalue' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 51,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getconfigattrvalue_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_neg1')."
   },
@@ -572,7 +567,7 @@
   {
     "line": 52,
     "severity": "Error",
-    "message": "Built-in function 'getconfigattrvalue' expects 2 argument(s), but got 3."
+    "message": "Built-in function 'getconfigattrvalue' expects 1 or 2 argument(s), but got 3."
   },
   {
     "line": 52,
@@ -651,11 +646,6 @@
   },
   {
     "line": 56,
-    "severity": "Error",
-    "message": "Built-in function 'getconfigattrvalue' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 56,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getconfigattrvalue_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_neg6')."
   },
@@ -683,11 +673,6 @@
     "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_neg8"
-  },
-  {
-    "line": 59,
-    "severity": "Error",
-    "message": "Built-in function 'getconfigattrvalue' expects 2 argument(s), but got 1."
   },
   {
     "line": 59,
@@ -10151,6 +10136,11 @@
   },
   {
     "line": 770,
+    "severity": "Error",
+    "message": "Argument 1 to 'sbappend' should be StringBuilder, but got a String value."
+  },
+  {
+    "line": 770,
     "severity": "Information",
     "message": "Style Info: Variable 'val_sbappend_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sbappend_neg3')."
   },
@@ -12011,11 +12001,6 @@
   },
   {
     "line": 898,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 898,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -12061,11 +12046,6 @@
   },
   {
     "line": 904,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 904,
     "severity": "Information",
     "message": "Style Info: Variable 'val_setattributevalue_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_pos2')."
   },
@@ -12073,11 +12053,6 @@
     "line": 904,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos2"
-  },
-  {
-    "line": 905,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 905,
@@ -12093,11 +12068,6 @@
     "line": 905,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos3"
-  },
-  {
-    "line": 906,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 906,
@@ -12131,11 +12101,6 @@
   },
   {
     "line": 907,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 907,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -12158,11 +12123,6 @@
     "line": 907,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos5"
-  },
-  {
-    "line": 908,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 908,
@@ -12196,11 +12156,6 @@
   },
   {
     "line": 909,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 909,
     "severity": "Information",
     "message": "Style Info: Variable 'val_setattributevalue_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_pos7')."
   },
@@ -12216,11 +12171,6 @@
   },
   {
     "line": 916,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 916,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -12233,11 +12183,6 @@
     "line": 916,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos8"
-  },
-  {
-    "line": 917,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 917,
@@ -12261,11 +12206,6 @@
   },
   {
     "line": 918,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 918,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -12278,11 +12218,6 @@
     "line": 918,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos10"
-  },
-  {
-    "line": 919,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 4."
   },
   {
     "line": 919,
@@ -12301,11 +12236,6 @@
   },
   {
     "line": 920,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 6."
-  },
-  {
-    "line": 920,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -12318,11 +12248,6 @@
     "line": 920,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg2"
-  },
-  {
-    "line": 921,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 921,
@@ -12353,11 +12278,6 @@
     "line": 921,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg3"
-  },
-  {
-    "line": 922,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 922,
@@ -12406,11 +12326,6 @@
   },
   {
     "line": 924,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 4."
-  },
-  {
-    "line": 924,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -12423,11 +12338,6 @@
     "line": 924,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg6"
-  },
-  {
-    "line": 925,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 925,
@@ -12448,11 +12358,6 @@
     "line": 926,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg8"
-  },
-  {
-    "line": 927,
-    "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 1."
   },
   {
     "line": 927,

@@ -87,7 +87,7 @@ function inferLiteralType(rhsText) {
     return null;
 }
 
-function inferExpressionType(rhsText) {
+function inferExpressionType(rhsText, extensionPath) {
     const literalType = inferLiteralType(rhsText);
     if (literalType) return literalType;
 
@@ -96,7 +96,11 @@ function inferExpressionType(rhsText) {
         const ctorMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(([^()]*)\)$/);
         if (ctorMatch) {
             const nameLower = ctorMatch[1].toLowerCase();
-            const returnType = FUNCTION_RETURN_TYPES[nameLower];
+            if (nameLower === 'bmql') return null;
+            const ctorType = TYPE_CONSTRUCTORS[nameLower];
+            if (ctorType) return ctorType;
+            const returnTypes = getFunctionReturnTypes(extensionPath);
+            const returnType = returnTypes[nameLower] || FUNCTION_RETURN_TYPES[nameLower];
             if (returnType) return returnType;
         }
     }
@@ -104,7 +108,7 @@ function inferExpressionType(rhsText) {
     return null;
 }
 
-function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode) {
+function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode, extensionPath) {
     const diagnostics = [];
     const firstTypeByVar = new Map();
 
@@ -132,7 +136,7 @@ function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode
         const rhs = getAssignmentRhsText(cleanText, rhsStart);
         if (!rhs) continue;
 
-        const inferredType = inferExpressionType(rhs.text);
+        const inferredType = inferExpressionType(rhs.text, extensionPath);
         if (!inferredType) continue;
 
         const lookupKey = varName.toLowerCase();

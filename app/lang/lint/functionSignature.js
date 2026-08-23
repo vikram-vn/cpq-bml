@@ -7,6 +7,7 @@
 // rather than guessing a wrong shape.
 
 function findOuterParamsText(signature) {
+    if (!signature) return null;
     const closeIdx = signature.lastIndexOf(')');
     if (closeIdx === -1) return null;
 
@@ -16,10 +17,16 @@ function findOuterParamsText(signature) {
         if (ch === ')') depth++;
         else if (ch === '(') {
             depth--;
-            if (depth === 0) return signature.slice(i + 1, closeIdx);
+            if (depth === 0) {
+                const prefix = signature.slice(0, i).trim();
+                if (!/[a-zA-Z_]\w*$/.test(prefix)) {
+                    return null;
+                }
+                return signature.slice(i + 1, closeIdx);
+            }
         }
     }
-    return null; // unbalanced - caller treats as unparseable
+    return null;
 }
 
 function parseUnionTypes(typeStr) {
@@ -78,9 +85,10 @@ function extractTypeAndName(chunkText) {
 // missing the comma a well-formed optional tail has, so a single chunk ends up containing two
 // "Type name" pairs - a reliable signal to skip validation rather than enforce a wrong shape.
 function hasGluedParameterPairs(paramsText) {
+    const cleanParams = paramsText.replace(/\([^)]*\)/g, '');
     const TYPE_NAME_PATTERN = '([A-Za-z_]\\w*(?:\\s*\\[\\s*\\])*)\\s+([A-Za-z_]\\w*)';
     const globalMatcher = new RegExp(TYPE_NAME_PATTERN, 'g');
-    return paramsText.split(',').some((chunk) => {
+    return cleanParams.split(',').some((chunk) => {
         const matches = chunk.match(globalMatcher);
         if (!matches) return false;
         const realMatches = matches.filter(m => {

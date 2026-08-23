@@ -78,7 +78,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkOperators(noStringsText, doc));
         diagnostics.push(...checkPerformance(cleanText, noStringsText, doc));
         const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
-        const { firstTypeByVar, diagnostics: assignmentMismatches } = collectVariableTypesAndMismatches(cleanText, doc, declaredParamTypes, vscode);
+        const { firstTypeByVar, diagnostics: assignmentMismatches } = collectVariableTypesAndMismatches(cleanText, doc, declaredParamTypes, vscode, extensionPath);
 
         diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc, firstTypeByVar));
         diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, firstTypeByVar));

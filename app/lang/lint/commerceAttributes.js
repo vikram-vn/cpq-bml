@@ -5,7 +5,7 @@ const { makeDiagnostic } = require('./best-practices/shared');
 let attributesMap = null; // Map<lowercaseName, { canonicalName, scope }>
 
 function loadAttributeMetadata(extensionPath) {
-    if (attributesMap) return attributesMap;
+    if (attributesMap && attributesMap.size > 0) return attributesMap;
     attributesMap = new Map();
     try {
         const data = loadJson('bml-attributes-api-usage', extensionPath);

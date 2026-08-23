@@ -10,6 +10,8 @@ function toCamelCase(name) {
         result += part.charAt(0).toUpperCase() + part.slice(1);
     }
     return result;
+}
+
 function formatBooleanName(name) {
     const camel = toCamelCase(name);
     if (/^(is|has)[A-Z]/.test(camel)) {
@@ -322,6 +324,7 @@ function commentOutUnusedAssignments(text, unusedVarNames, renameMap, eol) {
 
 module.exports = {
     toCamelCase,
+    formatBooleanName,
     withPreservedStrings,
     commentOutEmptyConditionalChains,
     commentOutEmptyLoops,

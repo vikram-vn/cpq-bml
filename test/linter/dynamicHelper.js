@@ -52,12 +52,14 @@ function runDynamicTestsForCategory(category, suiteTitle) {
             return;
         }
 
-        const overloads = item.fullSignature.split(/\r?\n\s*\(or\)\s*\r?\n/).map(sig => parseParameterSignature(sig));
+        const overloads = item.fullSignature.split(/\s+OR\s+|\r?\n\s*\(or\)\s*\r?\n/i).map(sig => parseParameterSignature(sig));
         if (nameLower === 'put') {
             overloads[0].params = [{type: 'dictionary'}, {type: 'string'}, {type: 'string'}];
         } else if (nameLower === 'sbappend') {
             overloads[0].params = [{type: 'stringbuilder'}, {type: 'string'}];
         }
+
+        if (!overloads[0] || !overloads[0].params) return;
 
         suite(`Dynamic Function: ${name}`, () => {
             const globalMin = Math.min(...overloads.map(ov => ov.min));
