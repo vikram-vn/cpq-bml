@@ -16,13 +16,36 @@ const CATEGORY_LABEL = {
     function: 'function',
     attribute: 'attribute',
     variable: 'variable',
-    snippet: 'snippet'
+    snippet: 'snippet',
+    keyword: 'keyword',
+    constant: 'constant'
 };
 
-// Maps common.json's "category" field to the grammar's entity.name.function.* sub-scopes.
 const FUNCTION_CATEGORY_LABEL = {
     direct_db_access: 'database',
+    arrays: 'array',
+    string: 'string',
+    date: 'date',
+    dictionary: 'dictionary',
+    json: 'json',
+    math: 'math',
+    url_access: 'url',
+    xml: 'xml',
     others: 'misc'
+};
+
+const KEYWORD_HOVERS = {
+    'if': { syntax: 'if (condition) { ... }', category: 'keyword', notes: 'Executes block if condition evaluates to true.' },
+    'elif': { syntax: 'elif (condition) { ... }', category: 'keyword', notes: 'Executes block if previous if/elif condition was false and this condition is true.' },
+    'else': { syntax: 'else { ... }', category: 'keyword', notes: 'Executes block if all preceding if/elif conditions were false.' },
+    'for': { syntax: 'for var in array { ... }', category: 'keyword', notes: 'Loops through each element in an array or collection.' },
+    'return': { syntax: 'return value;', category: 'keyword', notes: 'Returns value from the function and terminates execution.' },
+    'bmql': { syntax: 'recordset bmql("SELECT column1, column2 FROM dataTable WHERE condition = $var");', category: 'function', functionCategory: 'direct_db_access', notes: 'BigMachines Query Language (BMQL) - executes direct database SQL queries on CPQ Data Tables.' },
+    'throwerror': { syntax: 'throwerror(errorMessage [, isSystemError]);', category: 'function', functionCategory: 'others', notes: 'Stops script execution and raises a user-facing error message on CPQ UI.' },
+    'print': { syntax: 'print(value);', category: 'function', functionCategory: 'others', notes: 'Prints value to the CPQ BML Function Editor execution log / console.' },
+    'true': { syntax: 'true', category: 'constant', notes: 'Boolean true constant.' },
+    'false': { syntax: 'false', category: 'constant', notes: 'Boolean false constant.' },
+    'null': { syntax: 'null', category: 'constant', notes: 'Null reference or empty object.' }
 };
 
 /**
@@ -31,7 +54,7 @@ const FUNCTION_CATEGORY_LABEL = {
  */
 function buildMetadataLine(info) {
     if (info.category === 'function') {
-        if (!info.functionCategory) return '';
+        if (!info.functionCategory) return '*function*';
         const label = FUNCTION_CATEGORY_LABEL[info.functionCategory] || info.functionCategory;
         return `*${label} function*`;
     }
@@ -39,25 +62,18 @@ function buildMetadataLine(info) {
     return parts.length ? `*${parts.join(' · ')}*` : '';
 }
 
-// Requires no space before "(" so English asides like "by default (see below)" aren't misread as calls.
 const INLINE_CALL_RE = /\b[a-zA-Z_][\w.]*\([^()]*(?:\([^()]*\)[^()]*)*\)/g;
 
 function highlightInlineCode(text) {
     return text.replace(INLINE_CALL_RE, match => `\`${match}\``);
 }
 
-// A leading "1." marks a numbered prose usage note rather than runnable code (which never starts that way).
 function isProseExample(example) {
     return /^\s*\d+\.\s/.test(example);
 }
 
 /**
- * Build a Markdown tooltip with syntax, scope/type, notes, and examples.
- * info.docs (when present) is a pre-generated, already hover-safe markdown
- * excerpt from the knowledge base - see scripts/bml_intellisense/knowledge_docs.py,
- * which extracts and sanitizes it once at build time (no runtime file
- * reading, no markdown parsing, no separate webview tab needed to read the
- * docs). Images aren't shipped or rendered - only their alt text remains.
+ * Format a Markdown hover tooltip for built-in functions, attributes, and variables.
  */
 function formatAsJsDoc(info) {
     const md = new vscode.MarkdownString();
@@ -102,10 +118,56 @@ function formatAsJsDoc(info) {
     return md;
 }
 
+/**
+ * Format a Markdown hover tooltip for custom workspace functions (util.* or commerce.*).
+ */
+function formatWorkspaceFunctionHover(wsInfo) {
+    const md = new vscode.MarkdownString();
+    md.isTrusted = true;
+
+    const returnType = wsInfo.returnType ? `${wsInfo.returnType} ` : '';
+    const paramsList = wsInfo.parameters && wsInfo.parameters.length
+        ? wsInfo.parameters.map(p => `${p.dataType ? p.dataType + ' ' : ''}${p.name}`).join(', ')
+        : '';
+
+    const signatureStr = `(util function) ${returnType}${wsInfo.qualifiedName}(${paramsList})`;
+    md.appendCodeblock(signatureStr, 'bml');
+
+    md.appendMarkdown(`*Workspace BML Function*\n\n`);
+
+    if (wsInfo.docHeader) {
+        md.appendMarkdown(`${decodeHtmlEntities(wsInfo.docHeader)}\n\n`);
+    }
+
+    if (wsInfo.parameters && wsInfo.parameters.length) {
+        md.appendMarkdown(`**Parameters:**\n`);
+        wsInfo.parameters.forEach(p => {
+            md.appendMarkdown(`- \`${p.name}\` \`[${p.dataType || 'any'}]\`\n`);
+        });
+        md.appendMarkdown('\n');
+    }
+
+    if (wsInfo.returnType) {
+        md.appendMarkdown(`**Returns:** \`${wsInfo.returnType}\`\n\n`);
+    }
+
+    if (wsInfo.filePath) {
+        try {
+            const fileUri = vscode.Uri.file(wsInfo.filePath);
+            const lineNum = (wsInfo.line || 0) + 1;
+            md.appendMarkdown(`---\n[📍 Source: \`${wsInfo.qualifiedName}\`](${fileUri.toString()}#L${lineNum})\n`);
+        } catch (_) {}
+    }
+
+    return md;
+}
+
 module.exports = {
     decodeHtmlEntities,
     buildMetadataLine,
     highlightInlineCode,
     isProseExample,
     formatAsJsDoc,
+    formatWorkspaceFunctionHover,
+    KEYWORD_HOVERS
 };

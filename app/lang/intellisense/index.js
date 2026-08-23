@@ -7,7 +7,7 @@ const {
     resolveCallAtPosition,
     extractDocHeader,
 } = require('./workspaceIndex');
-const { formatAsJsDoc } = require('./docFormatting');
+const { formatAsJsDoc, formatWorkspaceFunctionHover, KEYWORD_HOVERS } = require('./docFormatting');
 const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
 const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
 const { resolveParameterCompletions } = require('./paramCompletions');
@@ -235,11 +235,38 @@ function registerBmlIntelliSense(context) {
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                 return null;
             }
-            const wordRange = document.getWordRangeAtPosition(position, /[\w.]+/);
+            loadApiData(context);
+
+            const wsCall = resolveCallAtPosition(document, position);
+            if (wsCall) {
+                const wsIndex = getWorkspaceIndex();
+                const wsInfo = wsIndex.get(wsCall.qualifiedName.toLowerCase());
+                if (wsInfo) {
+                    return new vscode.Hover(formatWorkspaceFunctionHover(wsInfo));
+                }
+            }
+
+            const wordRange = document.getWordRangeAtPosition(position, /[\w._]+/);
             if (!wordRange) return null;
 
-            const info = lookupApiInfo(document.getText(wordRange));
-            return info ? new vscode.Hover(formatAsJsDoc(info)) : null;
+            const word = document.getText(wordRange);
+            const lowerWord = word.toLowerCase();
+
+            const wsIndex = getWorkspaceIndex();
+            if (wsIndex.has(lowerWord)) {
+                return new vscode.Hover(formatWorkspaceFunctionHover(wsIndex.get(lowerWord)));
+            }
+
+            const info = lookupApiInfo(word);
+            if (info) {
+                return new vscode.Hover(formatAsJsDoc(info));
+            }
+
+            if (KEYWORD_HOVERS[lowerWord]) {
+                return new vscode.Hover(formatAsJsDoc(KEYWORD_HOVERS[lowerWord]));
+            }
+
+            return null;
         }
     });
 
