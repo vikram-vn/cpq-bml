@@ -1,10 +1,5 @@
 [
   {
-    "line": 5,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
     "line": 6,
     "severity": "Hint",
     "message": "Unused variable: nanJava"
@@ -31,18 +26,8 @@
   },
   {
     "line": 11,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 11,
     "severity": "Hint",
     "message": "Unused variable: dOld1"
-  },
-  {
-    "line": 12,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 12,
@@ -66,11 +51,6 @@
   },
   {
     "line": 15,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 15,
     "severity": "Hint",
     "message": "Unused variable: rOldTable1"
   },
@@ -83,11 +63,6 @@
     "line": 16,
     "severity": "Information",
     "message": "Style Info: Array variable 'rOldTable2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
-  },
-  {
-    "line": 16,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 16,

@@ -60,11 +60,6 @@
     "message": "Style Info: Array variable 'partsListSafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
-    "line": 30,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
     "line": 32,
     "severity": "Hint",
     "message": "Unused variable: p1"
@@ -73,11 +68,6 @@
     "line": 36,
     "severity": "Information",
     "message": "Style Info: Array variable 'partsListUnsafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
-  },
-  {
-    "line": 36,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 37,

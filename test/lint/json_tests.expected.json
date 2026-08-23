@@ -206,11 +206,6 @@
   },
   {
     "line": 26,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_json_neg2"
   },
@@ -563,11 +558,6 @@
     "line": 50,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonarray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarray_neg2')."
-  },
-  {
-    "line": 50,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 50,
@@ -1246,11 +1236,6 @@
   },
   {
     "line": 97,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 97,
     "severity": "Hint",
     "message": "Unused variable: val_jsonkeys_neg2"
   },
@@ -1556,11 +1541,6 @@
   },
   {
     "line": 121,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 121,
     "severity": "Hint",
     "message": "Unused variable: val_jsontostr_neg2"
   },
@@ -1696,11 +1676,6 @@
   },
   {
     "line": 131,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 131,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos1"
   },
@@ -1731,11 +1706,6 @@
   },
   {
     "line": 135,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 135,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos3"
   },
@@ -1761,11 +1731,6 @@
   },
   {
     "line": 136,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 136,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos4"
   },
@@ -1783,11 +1748,6 @@
     "line": 137,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 137,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 137,
@@ -1826,11 +1786,6 @@
   },
   {
     "line": 143,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 143,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos8"
   },
@@ -1841,11 +1796,6 @@
   },
   {
     "line": 144,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 144,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_pos9"
   },
@@ -1853,11 +1803,6 @@
     "line": 145,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonget_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_pos10')."
-  },
-  {
-    "line": 145,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 145,
@@ -1883,11 +1828,6 @@
     "line": 147,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonget_neg2')."
-  },
-  {
-    "line": 147,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 147,
@@ -1951,11 +1891,6 @@
   },
   {
     "line": 150,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 150,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg5"
   },
@@ -1978,11 +1913,6 @@
     "line": 151,
     "severity": "Hint",
     "message": "Unused variable: val_jsonget_neg6"
-  },
-  {
-    "line": 152,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 153,
@@ -2036,11 +1966,6 @@
   },
   {
     "line": 157,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 157,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos1"
   },
@@ -2076,11 +2001,6 @@
   },
   {
     "line": 162,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 162,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos3"
   },
@@ -2106,11 +2026,6 @@
   },
   {
     "line": 163,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 163,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos4"
   },
@@ -2128,11 +2043,6 @@
     "line": 164,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 164,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 164,
@@ -2176,11 +2086,6 @@
   },
   {
     "line": 171,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 171,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos8"
   },
@@ -2191,11 +2096,6 @@
   },
   {
     "line": 172,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 172,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_pos9"
   },
@@ -2203,11 +2103,6 @@
     "line": 173,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonput_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_pos10')."
-  },
-  {
-    "line": 173,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 173,
@@ -2226,11 +2121,6 @@
   },
   {
     "line": 174,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 174,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg1"
   },
@@ -2243,11 +2133,6 @@
     "line": 175,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonput_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonput_neg2')."
-  },
-  {
-    "line": 175,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 175,
@@ -2316,11 +2201,6 @@
   },
   {
     "line": 178,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 178,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg5"
   },
@@ -2336,18 +2216,8 @@
   },
   {
     "line": 179,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 179,
     "severity": "Hint",
     "message": "Unused variable: val_jsonput_neg6"
-  },
-  {
-    "line": 180,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 181,
@@ -2411,11 +2281,6 @@
   },
   {
     "line": 185,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 185,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos1"
   },
@@ -2456,11 +2321,6 @@
   },
   {
     "line": 189,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 189,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos3"
   },
@@ -2491,11 +2351,6 @@
   },
   {
     "line": 190,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 190,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos4"
   },
@@ -2518,11 +2373,6 @@
     "line": 191,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 191,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 191,
@@ -2576,11 +2426,6 @@
   },
   {
     "line": 197,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 197,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos8"
   },
@@ -2596,11 +2441,6 @@
   },
   {
     "line": 198,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 198,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_pos9"
   },
@@ -2613,11 +2453,6 @@
     "line": 199,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonremove_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_pos10')."
-  },
-  {
-    "line": 199,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 199,
@@ -2658,11 +2493,6 @@
     "line": 201,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonremove_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonremove_neg2')."
-  },
-  {
-    "line": 201,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 201,
@@ -2736,11 +2566,6 @@
   },
   {
     "line": 204,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 204,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg5"
   },
@@ -2768,11 +2593,6 @@
     "line": 205,
     "severity": "Hint",
     "message": "Unused variable: val_jsonremove_neg6"
-  },
-  {
-    "line": 206,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 207,
@@ -3136,11 +2956,6 @@
   },
   {
     "line": 228,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 228,
     "severity": "Hint",
     "message": "Unused variable: val_isjsonnull_neg1"
   },
@@ -3163,11 +2978,6 @@
     "line": 229,
     "severity": "Information",
     "message": "Style Info: Variable 'val_isjsonnull_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg2')."
-  },
-  {
-    "line": 229,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 229,
@@ -3198,11 +3008,6 @@
     "line": 230,
     "severity": "Information",
     "message": "Style Info: Variable 'val_isjsonnull_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isjsonnull_neg3')."
-  },
-  {
-    "line": 230,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 230,
@@ -3518,11 +3323,6 @@
     "line": 253,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonarraytostr_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarraytostr_neg2')."
-  },
-  {
-    "line": 253,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 253,
@@ -3871,11 +3671,6 @@
   },
   {
     "line": 279,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 279,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayget_neg2"
   },
@@ -3893,11 +3688,6 @@
     "line": 280,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonarrayget_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayget_neg3')."
-  },
-  {
-    "line": 280,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 280,
@@ -4191,11 +3981,6 @@
   },
   {
     "line": 303,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 303,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraysize_neg2"
   },
@@ -4331,11 +4116,6 @@
   },
   {
     "line": 313,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 313,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos1"
   },
@@ -4371,11 +4151,6 @@
   },
   {
     "line": 317,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 317,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos3"
   },
@@ -4401,11 +4176,6 @@
   },
   {
     "line": 318,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 318,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos4"
   },
@@ -4423,11 +4193,6 @@
     "line": 319,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 319,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 319,
@@ -4466,11 +4231,6 @@
   },
   {
     "line": 325,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 325,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos8"
   },
@@ -4481,11 +4241,6 @@
   },
   {
     "line": 326,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 326,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_pos9"
   },
@@ -4493,11 +4248,6 @@
     "line": 327,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonarrayappend_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_pos10')."
-  },
-  {
-    "line": 327,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 327,
@@ -4528,11 +4278,6 @@
     "line": 329,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonarrayappend_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayappend_neg2')."
-  },
-  {
-    "line": 329,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 329,
@@ -4591,11 +4336,6 @@
   },
   {
     "line": 332,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 332,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg5"
   },
@@ -4618,11 +4358,6 @@
     "line": 333,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayappend_neg6"
-  },
-  {
-    "line": 334,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 335,
@@ -4891,11 +4626,6 @@
   },
   {
     "line": 355,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 355,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarrayremove_neg2"
   },
@@ -4913,11 +4643,6 @@
     "line": 356,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonarrayremove_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayremove_neg3')."
-  },
-  {
-    "line": 356,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 356,
@@ -5061,11 +4786,6 @@
   },
   {
     "line": 365,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 365,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos1"
   },
@@ -5106,11 +4826,6 @@
   },
   {
     "line": 369,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 369,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos3"
   },
@@ -5141,11 +4856,6 @@
   },
   {
     "line": 370,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 370,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos4"
   },
@@ -5168,11 +4878,6 @@
     "line": 371,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 371,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 371,
@@ -5226,11 +4931,6 @@
   },
   {
     "line": 377,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 377,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos8"
   },
@@ -5246,11 +4946,6 @@
   },
   {
     "line": 378,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 378,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_pos9"
   },
@@ -5263,11 +4958,6 @@
     "line": 379,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathremove_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_pos10')."
-  },
-  {
-    "line": 379,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 379,
@@ -5308,11 +4998,6 @@
     "line": 381,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathremove_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathremove_neg2')."
-  },
-  {
-    "line": 381,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 381,
@@ -5386,11 +5071,6 @@
   },
   {
     "line": 384,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 384,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg5"
   },
@@ -5418,11 +5098,6 @@
     "line": 385,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathremove_neg6"
-  },
-  {
-    "line": 386,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 387,
@@ -5486,11 +5161,6 @@
   },
   {
     "line": 391,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 391,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos1"
   },
@@ -5521,11 +5191,6 @@
   },
   {
     "line": 395,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 395,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos3"
   },
@@ -5551,11 +5216,6 @@
   },
   {
     "line": 396,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 396,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos4"
   },
@@ -5573,11 +5233,6 @@
     "line": 397,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 397,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 397,
@@ -5616,11 +5271,6 @@
   },
   {
     "line": 403,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 403,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos8"
   },
@@ -5631,11 +5281,6 @@
   },
   {
     "line": 404,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 404,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_pos9"
   },
@@ -5643,11 +5288,6 @@
     "line": 405,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathgetsingle_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_pos10')."
-  },
-  {
-    "line": 405,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 405,
@@ -5673,11 +5313,6 @@
     "line": 407,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathgetsingle_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetsingle_neg2')."
-  },
-  {
-    "line": 407,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 407,
@@ -5741,11 +5376,6 @@
   },
   {
     "line": 410,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 410,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg5"
   },
@@ -5768,11 +5398,6 @@
     "line": 411,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetsingle_neg6"
-  },
-  {
-    "line": 412,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 413,
@@ -5973,11 +5598,6 @@
     "line": 431,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsoncopy_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsoncopy_neg2')."
-  },
-  {
-    "line": 431,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 431,
@@ -6331,11 +5951,6 @@
   },
   {
     "line": 455,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 455,
     "severity": "Hint",
     "message": "Unused variable: val_jsonarraycopy_neg2"
   },
@@ -6501,11 +6116,6 @@
   },
   {
     "line": 465,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 465,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos1"
   },
@@ -6546,11 +6156,6 @@
   },
   {
     "line": 469,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 469,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos3"
   },
@@ -6581,11 +6186,6 @@
   },
   {
     "line": 470,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 470,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos4"
   },
@@ -6608,11 +6208,6 @@
     "line": 471,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 471,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 471,
@@ -6666,11 +6261,6 @@
   },
   {
     "line": 477,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 477,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos8"
   },
@@ -6686,11 +6276,6 @@
   },
   {
     "line": 478,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 478,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_pos9"
   },
@@ -6703,11 +6288,6 @@
     "line": 479,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathcheck_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_pos10')."
-  },
-  {
-    "line": 479,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 479,
@@ -6748,11 +6328,6 @@
     "line": 481,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathcheck_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathcheck_neg2')."
-  },
-  {
-    "line": 481,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 481,
@@ -6826,11 +6401,6 @@
   },
   {
     "line": 484,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 484,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg5"
   },
@@ -6858,11 +6428,6 @@
     "line": 485,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathcheck_neg6"
-  },
-  {
-    "line": 486,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 487,
@@ -6931,11 +6496,6 @@
   },
   {
     "line": 491,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 491,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos1"
   },
@@ -6981,11 +6541,6 @@
   },
   {
     "line": 496,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 496,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos3"
   },
@@ -7016,11 +6571,6 @@
   },
   {
     "line": 497,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 497,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos4"
   },
@@ -7043,11 +6593,6 @@
     "line": 498,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 498,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 498,
@@ -7106,11 +6651,6 @@
   },
   {
     "line": 505,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 505,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos8"
   },
@@ -7126,11 +6666,6 @@
   },
   {
     "line": 506,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 506,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_pos9"
   },
@@ -7143,11 +6678,6 @@
     "line": 507,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathset_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_pos10')."
-  },
-  {
-    "line": 507,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 507,
@@ -7171,11 +6701,6 @@
   },
   {
     "line": 508,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 508,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg1"
   },
@@ -7193,11 +6718,6 @@
     "line": 509,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathset_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathset_neg2')."
-  },
-  {
-    "line": 509,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 509,
@@ -7276,11 +6796,6 @@
   },
   {
     "line": 512,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 512,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg5"
   },
@@ -7301,18 +6816,8 @@
   },
   {
     "line": 513,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 513,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathset_neg6"
-  },
-  {
-    "line": 514,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 515,
@@ -7386,11 +6891,6 @@
   },
   {
     "line": 519,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 519,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos1"
   },
@@ -7431,11 +6931,6 @@
   },
   {
     "line": 523,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 523,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos3"
   },
@@ -7466,11 +6961,6 @@
   },
   {
     "line": 524,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 524,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos4"
   },
@@ -7493,11 +6983,6 @@
     "line": 525,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 525,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 525,
@@ -7551,11 +7036,6 @@
   },
   {
     "line": 531,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 531,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos8"
   },
@@ -7571,11 +7051,6 @@
   },
   {
     "line": 532,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 532,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_pos9"
   },
@@ -7588,11 +7063,6 @@
     "line": 533,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathgetmultiple_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_pos10')."
-  },
-  {
-    "line": 533,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 533,
@@ -7633,11 +7103,6 @@
     "line": 535,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonpathgetmultiple_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonpathgetmultiple_neg2')."
-  },
-  {
-    "line": 535,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 535,
@@ -7711,11 +7176,6 @@
   },
   {
     "line": 538,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 538,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg5"
   },
@@ -7743,11 +7203,6 @@
     "line": 539,
     "severity": "Hint",
     "message": "Unused variable: val_jsonpathgetmultiple_neg6"
-  },
-  {
-    "line": 540,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 541,
@@ -7963,11 +7418,6 @@
     "line": 559,
     "severity": "Information",
     "message": "Style Info: Variable 'val_jsonarrayrefid_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_jsonarrayrefid_neg2')."
-  },
-  {
-    "line": 559,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 559,

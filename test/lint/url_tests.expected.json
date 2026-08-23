@@ -46,11 +46,6 @@
   },
   {
     "line": 12,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 12,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos1"
   },
@@ -81,11 +76,6 @@
   },
   {
     "line": 16,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 16,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos3"
   },
@@ -111,11 +101,6 @@
   },
   {
     "line": 17,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 17,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos4"
   },
@@ -133,11 +118,6 @@
     "line": 18,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 18,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 18,
@@ -186,11 +166,6 @@
   },
   {
     "line": 24,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 24,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos8"
   },
@@ -201,11 +176,6 @@
   },
   {
     "line": 25,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 25,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos9"
   },
@@ -213,11 +183,6 @@
     "line": 26,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos10')."
-  },
-  {
-    "line": 26,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 26,
@@ -248,11 +213,6 @@
     "line": 28,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg2')."
-  },
-  {
-    "line": 28,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 28,
@@ -321,11 +281,6 @@
   },
   {
     "line": 31,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 31,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg5"
   },
@@ -348,11 +303,6 @@
     "line": 32,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg6"
-  },
-  {
-    "line": 33,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 34,
@@ -651,11 +601,6 @@
   },
   {
     "line": 55,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 55,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_neg1"
   },
@@ -673,11 +618,6 @@
     "line": 56,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg2')."
-  },
-  {
-    "line": 56,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 56,
@@ -718,11 +658,6 @@
     "line": 57,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg3')."
-  },
-  {
-    "line": 57,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 57,
@@ -1071,11 +1006,6 @@
   },
   {
     "line": 85,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 85,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabyget_neg1"
   },
@@ -1093,11 +1023,6 @@
     "line": 86,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabyget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg2')."
-  },
-  {
-    "line": 86,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 86,
@@ -1143,11 +1068,6 @@
     "line": 87,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabyget_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg3')."
-  },
-  {
-    "line": 87,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 87,
@@ -1451,11 +1371,6 @@
   },
   {
     "line": 115,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 115,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_neg1"
   },
@@ -1468,11 +1383,6 @@
     "line": 116,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg2')."
-  },
-  {
-    "line": 116,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 116,
@@ -1518,11 +1428,6 @@
     "line": 117,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg3')."
-  },
-  {
-    "line": 117,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 117,
@@ -1806,11 +1711,6 @@
   },
   {
     "line": 147,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 147,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_neg1"
   },
@@ -1823,11 +1723,6 @@
     "line": 148,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg2')."
-  },
-  {
-    "line": 148,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 148,
@@ -1883,11 +1778,6 @@
     "line": 149,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg3')."
-  },
-  {
-    "line": 149,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 149,
@@ -2206,11 +2096,6 @@
   },
   {
     "line": 175,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 175,
     "severity": "Hint",
     "message": "Unused variable: val_urlmultipartbypost_neg1"
   },
@@ -2228,11 +2113,6 @@
     "line": 176,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urlmultipartbypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg2')."
-  },
-  {
-    "line": 176,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 176,
@@ -2273,11 +2153,6 @@
     "line": 177,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urlmultipartbypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg3')."
-  },
-  {
-    "line": 177,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 177,

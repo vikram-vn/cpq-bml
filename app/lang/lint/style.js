@@ -32,9 +32,10 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
             ));
         }
 
-        // Trailing comma check on noStringsLines: e.g. put(fancyStepDict, "x", );
-        if (line.includes(',')) {
-            const trailingCommaMatch = line.match(/,\s*([)\]])/);
+        // Trailing comma check on cleanLines (strings intact so trailing string literals are not mistaken for empty args): e.g. put(fancyStepDict, "x", );
+        const cleanLine = cleanLines[i];
+        if (cleanLine && cleanLine.includes(',')) {
+            const trailingCommaMatch = cleanLine.match(/,\s*([)\]])/);
             if (trailingCommaMatch) {
                 const char = trailingCommaMatch[1];
                 const startPos = new vscode.Position(i, 0);

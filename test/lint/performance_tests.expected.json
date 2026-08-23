@@ -10,11 +10,6 @@
     "message": "Unused loop variable: 'validIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
   },
   {
-    "line": 7,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
     "line": 9,
     "severity": "Hint",
     "message": "Unused variable: validResult"

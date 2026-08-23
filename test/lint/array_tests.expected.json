@@ -266,11 +266,6 @@
   },
   {
     "line": 26,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_bytearray_neg2"
   },
@@ -436,11 +431,6 @@
   },
   {
     "line": 36,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 36,
     "severity": "Hint",
     "message": "Unused variable: val_append_pos1"
   },
@@ -496,11 +486,6 @@
   },
   {
     "line": 41,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 41,
     "severity": "Hint",
     "message": "Unused variable: val_append_pos3"
   },
@@ -536,11 +521,6 @@
   },
   {
     "line": 42,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 42,
     "severity": "Hint",
     "message": "Unused variable: val_append_pos4"
   },
@@ -568,11 +548,6 @@
     "line": 43,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 43,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 43,
@@ -651,11 +626,6 @@
   },
   {
     "line": 50,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 50,
     "severity": "Hint",
     "message": "Unused variable: val_append_pos8"
   },
@@ -673,11 +643,6 @@
     "line": 51,
     "severity": "Information",
     "message": "Style Info: Variable 'val_append_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_pos9')."
-  },
-  {
-    "line": 51,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 51,
@@ -701,11 +666,6 @@
   },
   {
     "line": 52,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 52,
     "severity": "Hint",
     "message": "Unused variable: val_append_pos10"
   },
@@ -718,11 +678,6 @@
     "line": 53,
     "severity": "Information",
     "message": "Style Info: Variable 'val_append_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg1')."
-  },
-  {
-    "line": 53,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 53,
@@ -743,11 +698,6 @@
     "line": 54,
     "severity": "Information",
     "message": "Style Info: Variable 'val_append_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_append_neg2')."
-  },
-  {
-    "line": 54,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 54,
@@ -831,11 +781,6 @@
   },
   {
     "line": 57,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 57,
     "severity": "Hint",
     "message": "Unused variable: val_append_neg5"
   },
@@ -851,11 +796,6 @@
   },
   {
     "line": 58,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_append_neg6"
   },
@@ -868,11 +808,6 @@
     "line": 59,
     "severity": "Error",
     "message": "Built-in function 'append' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 59,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 60,
@@ -936,11 +871,6 @@
   },
   {
     "line": 64,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 64,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_pos1"
   },
@@ -996,11 +926,6 @@
   },
   {
     "line": 69,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 69,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_pos3"
   },
@@ -1036,11 +961,6 @@
   },
   {
     "line": 70,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 70,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_pos4"
   },
@@ -1068,11 +988,6 @@
     "line": 71,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 71,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 71,
@@ -1151,11 +1066,6 @@
   },
   {
     "line": 78,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 78,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_pos8"
   },
@@ -1173,11 +1083,6 @@
     "line": 79,
     "severity": "Information",
     "message": "Style Info: Variable 'val_findinarray_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_pos9')."
-  },
-  {
-    "line": 79,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 79,
@@ -1201,11 +1106,6 @@
   },
   {
     "line": 80,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 80,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_pos10"
   },
@@ -1218,11 +1118,6 @@
     "line": 81,
     "severity": "Information",
     "message": "Style Info: Variable 'val_findinarray_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg1')."
-  },
-  {
-    "line": 81,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 81,
@@ -1243,11 +1138,6 @@
     "line": 82,
     "severity": "Information",
     "message": "Style Info: Variable 'val_findinarray_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_findinarray_neg2')."
-  },
-  {
-    "line": 82,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 82,
@@ -1331,11 +1221,6 @@
   },
   {
     "line": 85,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 85,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_neg5"
   },
@@ -1351,11 +1236,6 @@
   },
   {
     "line": 86,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 86,
     "severity": "Hint",
     "message": "Unused variable: val_findinarray_neg6"
   },
@@ -1368,11 +1248,6 @@
     "line": 87,
     "severity": "Error",
     "message": "Built-in function 'findinarray' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 87,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 88,
@@ -1693,11 +1568,6 @@
     "line": 106,
     "severity": "Information",
     "message": "Style Info: Variable 'val_isempty_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_isempty_neg2')."
-  },
-  {
-    "line": 106,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 106,
@@ -2086,11 +1956,6 @@
   },
   {
     "line": 130,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 130,
     "severity": "Hint",
     "message": "Unused variable: val_max_neg2"
   },
@@ -2448,11 +2313,6 @@
     "line": 154,
     "severity": "Information",
     "message": "Style Info: Variable 'val_min_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_min_neg2')."
-  },
-  {
-    "line": 154,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 154,
@@ -2823,11 +2683,6 @@
     "line": 178,
     "severity": "Information",
     "message": "Style Info: Variable 'val_range_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_range_neg2')."
-  },
-  {
-    "line": 178,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 178,
@@ -3271,11 +3126,6 @@
   },
   {
     "line": 204,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 204,
     "severity": "Hint",
     "message": "Unused variable: val_remove_neg2"
   },
@@ -3288,11 +3138,6 @@
     "line": 205,
     "severity": "Information",
     "message": "Style Info: Variable 'val_remove_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_remove_neg3')."
-  },
-  {
-    "line": 205,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 205,
@@ -3706,11 +3551,6 @@
   },
   {
     "line": 228,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 228,
     "severity": "Hint",
     "message": "Unused variable: val_reverse_neg2"
   },
@@ -4096,11 +3936,6 @@
   },
   {
     "line": 252,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 252,
     "severity": "Hint",
     "message": "Unused variable: val_sizeofarray_neg2"
   },
@@ -4261,11 +4096,6 @@
   },
   {
     "line": 262,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 262,
     "severity": "Hint",
     "message": "Unused variable: val_sort_pos1"
   },
@@ -4326,11 +4156,6 @@
   },
   {
     "line": 266,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 266,
     "severity": "Hint",
     "message": "Unused variable: val_sort_pos3"
   },
@@ -4376,11 +4201,6 @@
   },
   {
     "line": 267,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 267,
     "severity": "Hint",
     "message": "Unused variable: val_sort_pos4"
   },
@@ -4418,11 +4238,6 @@
     "line": 268,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 268,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 268,
@@ -4526,11 +4341,6 @@
   },
   {
     "line": 274,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 274,
     "severity": "Hint",
     "message": "Unused variable: val_sort_pos8"
   },
@@ -4561,11 +4371,6 @@
   },
   {
     "line": 275,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 275,
     "severity": "Hint",
     "message": "Unused variable: val_sort_pos9"
   },
@@ -4593,11 +4398,6 @@
     "line": 276,
     "severity": "Information",
     "message": "Style Info: Variable 'val_sort_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_pos10')."
-  },
-  {
-    "line": 276,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 276,
@@ -4658,11 +4458,6 @@
     "line": 278,
     "severity": "Information",
     "message": "Style Info: Variable 'val_sort_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg2')."
-  },
-  {
-    "line": 278,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 278,
@@ -4776,11 +4571,6 @@
   },
   {
     "line": 281,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 281,
     "severity": "Hint",
     "message": "Unused variable: val_sort_neg5"
   },
@@ -4833,11 +4623,6 @@
     "line": 283,
     "severity": "Error",
     "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
-  },
-  {
-    "line": 283,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 284,
