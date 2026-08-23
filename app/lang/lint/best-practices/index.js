@@ -22,9 +22,9 @@ const { checkXml } = require('../xml/xml');
  * Each sub-check lives in its own file, grouped by concern - see the doc
  * comment at the top of each for its codes.
  */
-function checkBestPractices(cleanText, noStringsText, doc) {
+function checkBestPractices(cleanText, noStringsText, doc, firstTypeByVar) {
     return [
-        ...checkArray(cleanText, noStringsText, doc),
+        ...checkArray(cleanText, noStringsText, doc, firstTypeByVar),
         ...checkBmql(cleanText, noStringsText, doc),
         ...checkDate(cleanText, noStringsText, doc),
         ...checkDictionary(cleanText, noStringsText, doc),

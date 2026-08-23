@@ -1,15 +1,11 @@
 function findMatchingBracket(text, openIndex, openChar, closeChar) {
+    const openCode = typeof openChar === 'string' ? openChar.charCodeAt(0) : openChar;
+    const closeCode = typeof closeChar === 'string' ? closeChar.charCodeAt(0) : closeChar;
     let depth = 0;
-    let inSingleQuote = false;
-    let inDoubleQuote = false;
     for (let i = openIndex; i < text.length; i++) {
-        const ch = text[i];
-        if (ch === '\\') { i++; continue; }
-        if (ch === "'" && !inDoubleQuote) inSingleQuote = !inSingleQuote;
-        else if (ch === '"' && !inSingleQuote) inDoubleQuote = !inDoubleQuote;
-        if (inSingleQuote || inDoubleQuote) continue;
-        if (ch === openChar) depth++;
-        else if (ch === closeChar) {
+        const ch = text.charCodeAt(i);
+        if (ch === openCode) depth++;
+        else if (ch === closeCode) {
             depth--;
             if (depth === 0) return i;
         }
@@ -17,71 +13,55 @@ function findMatchingBracket(text, openIndex, openChar, closeChar) {
     return -1;
 }
 
-// Groups consecutive if -> elif* -> else? sequences into chains. Bails out of a chain
-// as soon as anything else appears between branches, or a condition/body isn't a clean
-// (...) / {...} pair - conservative since this is text scanning, not a real parser.
+// Groups consecutive if -> elif* -> else? sequences into chains in a single linear pass.
 function parseConditionalChains(text) {
     const chains = [];
+    const kwRegex = /\b(if|elif|else)\b/gi;
+    let match;
     let currentChain = null;
-    let i = 0;
+    let lastBranchEnd = -1;
 
-    while (i < text.length) {
-        while (i < text.length && /\s/.test(text[i])) i++;
-        if (i >= text.length) break;
+    while ((match = kwRegex.exec(text)) !== null) {
+        const kw = match[1].toLowerCase();
+        const kwStart = match.index;
+        let i = kwStart + match[0].length;
 
-        const kwMatch = /^(if|elif|else)\b/i.exec(text.slice(i, i + 4));
-        if (!kwMatch) {
-            currentChain = null;
-            i++;
-            continue;
-        }
-
-        const kw = kwMatch[1].toLowerCase();
-        const kwStart = i;
-        i += kwMatch[1].length;
         let conditionText = null;
-
         if (kw === 'if' || kw === 'elif') {
-            while (i < text.length && /\s/.test(text[i])) i++;
-            if (text[i] !== '(') { currentChain = null; continue; }
-            const condEnd = findMatchingBracket(text, i, '(', ')');
+            while (i < text.length && text.charCodeAt(i) <= 32) i++;
+            if (text.charCodeAt(i) !== 40) { // '('
+                currentChain = null;
+                continue;
+            }
+            const condEnd = findMatchingBracket(text, i, 40, 41);
             if (condEnd === -1) { currentChain = null; break; }
             conditionText = text.slice(i + 1, condEnd);
             i = condEnd + 1;
         }
 
-        while (i < text.length && /\s/.test(text[i])) i++;
-        if (text[i] !== '{') { currentChain = null; continue; } // single-statement bodies aren't modeled - bail on this branch
+        while (i < text.length && text.charCodeAt(i) <= 32) i++;
+        if (text.charCodeAt(i) !== 123) { // '{'
+            currentChain = null;
+            continue;
+        }
         const bodyOpen = i;
-        const bodyEnd = findMatchingBracket(text, i, '{', '}');
+        const bodyEnd = findMatchingBracket(text, i, 123, 125);
         if (bodyEnd === -1) { currentChain = null; break; }
-        i = bodyEnd + 1;
         const bodyStart = bodyOpen + 1;
 
         if (kw === 'if') {
             currentChain = [{ type: 'if', conditionText, kwStart, bodyStart, bodyEnd }];
             chains.push(currentChain);
-        } else if (kw === 'elif' && currentChain) {
+        } else if (kw === 'elif' && currentChain && kwStart >= lastBranchEnd) {
             currentChain.push({ type: 'elif', conditionText, kwStart, bodyStart, bodyEnd });
-        } else if (kw === 'else' && currentChain) {
+        } else if (kw === 'else' && currentChain && kwStart >= lastBranchEnd) {
             currentChain.push({ type: 'else', conditionText: null, kwStart, bodyStart, bodyEnd });
             currentChain = null;
         } else {
             currentChain = null;
         }
 
-        // Recursively find nested chains inside the branch body
-        const bodyText = text.slice(bodyStart, bodyEnd);
-        const subChains = parseConditionalChains(bodyText);
-        for (const subChain of subChains) {
-            const adjustedChain = subChain.map(branch => ({
-                ...branch,
-                kwStart: branch.kwStart + bodyStart,
-                bodyStart: branch.bodyStart + bodyStart,
-                bodyEnd: branch.bodyEnd + bodyStart
-            }));
-            chains.push(adjustedChain);
-        }
+        lastBranchEnd = bodyEnd;
     }
 
     return chains;

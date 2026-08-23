@@ -31,16 +31,17 @@ const { checkCommerceAttributes } = require('./commerceAttributes');
 
 // Preserves \n/\r so line numbers (and thus diagnostic positions) stay correct.
 function blankRanges(text, ranges) {
-    const chars = text.split('');
+    if (!ranges || ranges.length === 0) return text;
+    const buf = Buffer.from(text, 'utf8');
     for (const [start, end] of ranges) {
         for (let i = start; i < end; i++) {
-            const ch = chars[i];
-            if (ch !== '\n' && ch !== '\r') {
-                chars[i] = ' ';
+            const b = buf[i];
+            if (b !== 10 && b !== 13) {
+                buf[i] = 32; // ' '
             }
         }
     }
-    return chars.join('');
+    return buf.toString('utf8');
 }
 
 function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
@@ -77,16 +78,17 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         }
         diagnostics.push(...checkOperators(noStringsText, doc));
         diagnostics.push(...checkPerformance(cleanText, noStringsText, doc));
-        diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc));
-        diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath));
         const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
         const firstTypeByVar = collectVariableTypes(cleanText, doc, declaredParamTypes);
+
+        diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc, firstTypeByVar));
+        diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, firstTypeByVar));
 
         diagnostics.push(...checkBoundaries(cleanText, noStringsText, doc));
         diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath, firstTypeByVar));
         diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));
 
-        diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath));
+        diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath, noStringsText, firstTypeByVar));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
         
         if (hasConditions) {
@@ -144,9 +146,25 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         (d) => !suppressions.isSuppressed(d.range.start.line, d.code)
     );
 
+    docDiagnosticCache.set(doc.uri.toString(), {
+        version: doc.version,
+        diagnostics: visibleDiagnostics
+    });
+
+    applyAndSetDiagnostics(doc, visibleDiagnostics, diagnosticCollection, vscode);
+}
+
+const docDiagnosticCache = new Map();
+
+function applyAndSetDiagnostics(doc, rawDiagnostics, diagnosticCollection, vscode) {
+    if (!rawDiagnostics || rawDiagnostics.length === 0) {
+        diagnosticCollection.set(doc.uri, []);
+        return;
+    }
+
     // Find visible ranges if this document is currently open in an active editor
     let visibleRanges = [];
-    if (vscode.window && Array.isArray(vscode.window.visibleTextEditors)) {
+    if (vscode && vscode.window && Array.isArray(vscode.window.visibleTextEditors)) {
         const editor = vscode.window.visibleTextEditors.find(
             (e) => e.document && e.document.uri && e.document.uri.toString() === doc.uri.toString()
         );
@@ -163,8 +181,8 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         );
     };
 
-    // Sort diagnostics: items in or near visible viewport come first, then sort by natural document order
-    visibleDiagnostics.sort((a, b) => {
+    // Sort diagnostics: items in or near visible viewport come first, then natural document order
+    const sorted = [...rawDiagnostics].sort((a, b) => {
         const aVisible = isNearVisible(a) ? 1 : 0;
         const bVisible = isNearVisible(b) ? 1 : 0;
         if (aVisible !== bVisible) {
@@ -176,15 +194,23 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         return a.range.start.character - b.range.start.character;
     });
 
-    // In very large files (> 500 diagnostics), prioritize all visible diagnostics and cap total
-    // to avoid swamping VS Code's editor decoration pipeline and degrading performance.
     const MAX_DIAGNOSTICS_PER_FILE = 500;
-    const finalDiagnostics = (visibleDiagnostics.length > MAX_DIAGNOSTICS_PER_FILE && visibleRanges.length > 0)
-        ? visibleDiagnostics.slice(0, MAX_DIAGNOSTICS_PER_FILE)
-        : visibleDiagnostics;
+    const finalDiagnostics = (sorted.length > MAX_DIAGNOSTICS_PER_FILE && visibleRanges.length > 0)
+        ? sorted.slice(0, MAX_DIAGNOSTICS_PER_FILE)
+        : sorted;
 
     diagnosticCollection.set(doc.uri, finalDiagnostics);
 }
 
-module.exports = { lintBMLCustom, getStringRanges };
+function reorderVisibleDiagnostics(doc, diagnosticCollection, vscode) {
+    if (!doc || !diagnosticCollection) return false;
+    const cached = docDiagnosticCache.get(doc.uri.toString());
+    if (!cached || (doc.version !== undefined && cached.version !== doc.version)) {
+        return false;
+    }
+    applyAndSetDiagnostics(doc, cached.diagnostics, diagnosticCollection, vscode);
+    return true;
+}
+
+module.exports = { lintBMLCustom, reorderVisibleDiagnostics, getStringRanges };
 

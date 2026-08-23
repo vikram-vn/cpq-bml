@@ -25,28 +25,15 @@ function readLocalMetadataForGating(bmlFilePath) {
 /**
  * Returns the character index immediately following the end of the statement containing declIndex.
  */
-function getStatementEndIndex(text, declIndex) {
-    let idx = declIndex;
-    let inString = false;
-    let stringChar = '';
-
-    while (idx < text.length) {
-        const ch = text[idx];
-        if (inString) {
-            if (ch === stringChar && text[idx - 1] !== '\\') {
-                inString = false;
-            }
-        } else {
-            if (ch === '"' || ch === "'") {
-                inString = true;
-                stringChar = ch;
-            } else if (ch === ';' || ch === '\n') {
-                return idx + 1;
-            }
-        }
-        idx++;
+function getStatementEndIndex(noStringsText, declIndex) {
+    const semiIdx = noStringsText.indexOf(';', declIndex);
+    const nlIdx = noStringsText.indexOf('\n', declIndex);
+    if (semiIdx !== -1 && nlIdx !== -1) {
+        return Math.min(semiIdx, nlIdx) + 1;
     }
-    return text.length;
+    if (semiIdx !== -1) return semiIdx + 1;
+    if (nlIdx !== -1) return nlIdx + 1;
+    return noStringsText.length;
 }
 
 /**
@@ -86,22 +73,33 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
     const metadata = readLocalMetadataForGating(doc.uri && doc.uri.fsPath);
     const isCommerce = isCommerceFunction(metadata);
 
+    const ignoredCache = new Map();
     const isIgnoredSymbol = (nameLower) => {
-        if (reservedWords.has(nameLower) || systemVars.has(nameLower) || builtIns.has(nameLower)) return true;
-        if (nameLower === 'commerce' || nameLower === 'util' || nameLower === 'transaction' || nameLower === 'line' || nameLower === 'cpqjs' || nameLower === 'cpqjsready' || nameLower === 'nan' || nameLower === 'jnan') return true;
-        if (nameLower.startsWith('_') || nameLower.startsWith('bm_') || nameLower.startsWith('_c_') || nameLower.startsWith('_t_') || nameLower.startsWith('_l_')) return true;
-        if (nameLower.endsWith('_c') || nameLower.endsWith('_t') || nameLower.endsWith('_l')) return true;
-        
-        if (isCommerce) {
+        const cached = ignoredCache.get(nameLower);
+        if (cached !== undefined) return cached;
+
+        let result = false;
+        if (reservedWords.has(nameLower) || systemVars.has(nameLower) || builtIns.has(nameLower)) {
+            result = true;
+        } else if (nameLower === 'commerce' || nameLower === 'util' || nameLower === 'transaction' || nameLower === 'line' || nameLower === 'cpqjs' || nameLower === 'cpqjsready' || nameLower === 'nan' || nameLower === 'jnan') {
+            result = true;
+        } else if (nameLower.startsWith('_') || nameLower.startsWith('bm_') || nameLower.startsWith('_c_') || nameLower.startsWith('_t_') || nameLower.startsWith('_l_')) {
+            result = true;
+        } else if (nameLower.endsWith('_c') || nameLower.endsWith('_t') || nameLower.endsWith('_l')) {
+            result = true;
+        } else if (isCommerce) {
             const attrScope = getAttributeScope(nameLower, extensionPath);
-            if (attrScope !== 'unknown') return true;
+            if (attrScope !== 'unknown') result = true;
         }
-        return false;
+
+        ignoredCache.set(nameLower, result);
+        return result;
     };
 
     const declaredNames = new Set();
     const earliestAvailableReadByName = new Map();
     const declSitesByName = new Map();
+    const suggestionCache = new Map();
 
     declaredVars.forEach((decls, varName) => {
         declaredNames.add(varName);
@@ -116,27 +114,30 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
     let match;
     while ((match = identRegex.exec(noStringsText)) !== null) {
         const name = match[1];
-        const nameLower = name.toLowerCase();
         const idx = match.index;
 
+        // Fast path for valid declared variables that are already in scope
+        const earliestAvailable = earliestAvailableReadByName.get(name);
+        if (earliestAvailable !== undefined && earliestAvailable <= idx) {
+            continue;
+        }
+
+        const nameLower = name.toLowerCase();
         if (isIgnoredSymbol(nameLower)) continue;
 
         // Dotted member/attribute access, not a bare variable read.
         let before = idx - 1;
-        while (before >= 0 && /\s/.test(noStringsText[before])) before--;
-        if (before >= 0 && noStringsText[before] === '.') continue;
+        while (before >= 0 && noStringsText.charCodeAt(before) <= 32) before--;
+        if (before >= 0 && noStringsText.charCodeAt(before) === 46) continue; // '.'
 
         // Function-call name, not a variable read.
         let after = idx + name.length;
-        while (after < noStringsText.length && /\s/.test(noStringsText[after])) after++;
-        if (noStringsText[after] === '(') continue;
+        while (after < noStringsText.length && noStringsText.charCodeAt(after) <= 32) after++;
+        if (after < noStringsText.length && noStringsText.charCodeAt(after) === 40) continue; // '('
 
         // This occurrence is itself a declaration site (LHS), not a read.
         const sites = declSitesByName.get(name);
         if (sites && sites.has(idx)) continue;
-
-        const earliestAvailable = earliestAvailableReadByName.get(name);
-        if (earliestAvailable !== undefined && earliestAvailable <= idx) continue;
 
         if (earliestAvailable !== undefined && earliestAvailable > idx) {
             const startPos = doc.positionAt(idx);
@@ -151,7 +152,11 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
         } else if (earliestAvailable === undefined) {
             const startPos = doc.positionAt(idx);
             const endPos = startPos.translate(0, name.length);
-            const suggestion = findClosestDeclaredVariable(name, declaredNames);
+            let suggestion = suggestionCache.get(name);
+            if (suggestion === undefined) {
+                suggestion = findClosestDeclaredVariable(name, declaredNames);
+                suggestionCache.set(name, suggestion);
+            }
             const suggestionText = suggestion ? ` Did you mean '${suggestion}'?` : '';
             const diag = new vscode.Diagnostic(
                 new vscode.Range(startPos, endPos),

@@ -47,22 +47,27 @@ function checkNullSafety(cleanText, noStringsText, doc) {
             'i'
         );
 
+        const hasPrevInit = prevInitRegex.test(noStringsText);
+
         const occurrences = occurrencesByName.get(varName) || [];
-        let foundUnguarded = false;
         for (const useIndex of occurrences) {
-            if (prevInitRegex.test(noStringsText.slice(0, useIndex))) break;
+            if (hasPrevInit && prevInitRegex.test(noStringsText.slice(0, useIndex))) break;
 
             const tail = noStringsText.slice(useIndex, useIndex + varName.length + 30);
             if (/^\w+\s*=\s*(?:bmql|get|dictget|jsonget)\s*\(/.test(tail)) continue;
 
-            const after = noStringsText.slice(useIndex + varName.length).trimStart();
-            if (after.startsWith('=') && !after.startsWith('==') && !after.startsWith('=>')) continue;
+            let afterIdx = useIndex + varName.length;
+            while (afterIdx < noStringsText.length && noStringsText.charCodeAt(afterIdx) <= 32) afterIdx++;
+            if (afterIdx < noStringsText.length && noStringsText.charCodeAt(afterIdx) === 61) { // '='
+                const nextChar = afterIdx + 1 < noStringsText.length ? noStringsText.charCodeAt(afterIdx + 1) : 0;
+                if (nextChar !== 61 && nextChar !== 62) continue; // not '==' or '=>'
+            }
 
             const windowStart = Math.max(0, useIndex - 15);
             const window = noStringsText.slice(windowStart, useIndex + varName.length + 5);
             if (insideGuardRe.test(window)) continue;
 
-            const contextStart = Math.max(0, useIndex - 4000);
+            const contextStart = Math.max(0, useIndex - 1500);
             const context = noStringsText.slice(contextStart, useIndex);
             if (guardPattern.test(context)) continue;
 
@@ -84,7 +89,6 @@ function checkNullSafety(cleanText, noStringsText, doc) {
             );
             diag.code = 'bml-null-check-required';
             diagnostics.push(diag);
-            foundUnguarded = true;
             break; // one diagnostic per variable is enough
         }
     }

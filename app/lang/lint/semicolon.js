@@ -55,11 +55,22 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
         lineBraceDepths[lineIndex] = braceStack.length;
     }
 
-    const isLineInCondition = (lineIndex) => {
-        const lineStart = lineStarts[lineIndex];
-        const lineEnd = lineStart + lines[lineIndex].length;
-        return conditionRanges.some(([start, end]) => start < lineEnd && end > lineStart);
-    };
+    const conditionLineSet = new Set();
+    if (conditionRanges && conditionRanges.length > 0) {
+        let lineIdx = 0;
+        for (const [cStart, cEnd] of conditionRanges) {
+            while (lineIdx < lineStarts.length && lineStarts[lineIdx] + lines[lineIdx].length <= cStart) {
+                lineIdx++;
+            }
+            let cur = lineIdx;
+            while (cur < lineStarts.length && lineStarts[cur] < cEnd) {
+                conditionLineSet.add(cur);
+                cur++;
+            }
+        }
+    }
+
+    const isLineInCondition = (lineIndex) => conditionLineSet.has(lineIndex);
 
     const endsWithOperator = (codeLine) => {
         const trimmed = codeLine.trim();

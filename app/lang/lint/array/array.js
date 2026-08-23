@@ -2,10 +2,10 @@ const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('../
 const { inferExpressionType, collectVariableTypes } = require('../typeCheck');
 const vscode = require('vscode');
 
-function checkArray(cleanText, noStringsText, doc) {
+function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
     const diagnostics = [];
     let match;
-    const firstTypeByVar = collectVariableTypes(cleanText, doc);
+    const firstTypeByVar = precomputedFirstTypes || collectVariableTypes(cleanText, doc);
 
     // Negative literal array size: <type>[-N] or <type>[-N][n] / [n][-N]
     const negativeArraySizeRegex = /\b(float|integer|string|boolean|date)\s*\[\s*(-\d+)\s*\]/gi;

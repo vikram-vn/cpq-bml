@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { lintBMLCustom } = require('./lint');
+const { lintBMLCustom, reorderVisibleDiagnostics } = require('./lint');
 const { registerBmlCodeActions } = require('./codeActions');
 const { loadDictionaries } = require('../spell-check/spelling');
 
@@ -88,7 +88,10 @@ function registerBmlLinter(context) {
     if (vscode.window && vscode.window.onDidChangeTextEditorVisibleRanges) {
         vscode.window.onDidChangeTextEditorVisibleRanges((e) => {
             if (e.textEditor && isBmlDoc(e.textEditor.document)) {
-                triggerLint(e.textEditor.document);
+                const handled = reorderVisibleDiagnostics(e.textEditor.document, diagnosticCollection, vscode);
+                if (!handled) {
+                    triggerLint(e.textEditor.document);
+                }
             }
         }, null, context.subscriptions);
     }

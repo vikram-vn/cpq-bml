@@ -18,9 +18,13 @@ const SAFE_CONTEXT_FUNCTIONS = new Set([
 ]);
 
 function isInsideSquareBrackets(linePrefix) {
-    const openCount = (linePrefix.match(/\[/g) || []).length;
-    const closeCount = (linePrefix.match(/\]/g) || []).length;
-    return openCount > closeCount;
+    let openCount = 0;
+    for (let i = 0; i < linePrefix.length; i++) {
+        const c = linePrefix.charCodeAt(i);
+        if (c === 91) openCount++; // '['
+        else if (c === 93) openCount--; // ']'
+    }
+    return openCount > 0;
 }
 
 function isIndexArithmetic(linePrefix, val) {
@@ -33,7 +37,8 @@ function isIndexArithmetic(linePrefix, val) {
 
 function isInsideSafeFunctionCall(text, index) {
     let depth = 0;
-    for (let i = index - 1; i >= 0; i--) {
+    const minBound = Math.max(0, index - 300);
+    for (let i = index - 1; i >= minBound; i--) {
         const ch = text[i];
         if (ch === ')') {
             depth++;
@@ -49,11 +54,8 @@ function isInsideSafeFunctionCall(text, index) {
                 }
                 break;
             }
-        } else if (ch === ';' || ch === '\n') {
-            const stmtSnippet = text.substring(i, index);
-            if ((stmtSnippet.match(/\(/g) || []).length === 0) {
-                break;
-            }
+        } else if (ch === ';' || ch === '{' || ch === '}') {
+            if (depth === 0) break;
         }
     }
     return false;

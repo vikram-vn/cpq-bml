@@ -11,6 +11,7 @@ const { vscode, makeDiagnostic, splitTopLevelArgs } = require('./shared');
  */
 function checkBmqlSafety(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    let loopRanges = null;
 
     // SQL Injection and SELECT * in BMQL (run on cleanText since we need string literals intact)
     const bmqlRegex = /\bbmql\s*\(/gi;
@@ -179,22 +180,31 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
             }
 
             // Detect BMQL queries inside a for-loop body (N+1 query problem)
-            const textBefore = cleanText.slice(0, startIdx);
-            const forLoopRegex = /\bfor\b[^{]*\{/g;
-            let forMatch;
-            let insideLoop = false;
-            while ((forMatch = forLoopRegex.exec(textBefore)) !== null) {
-                const blockStart = forMatch.index + forMatch[0].length - 1;
-                let depth = 1;
-                for (let i = blockStart + 1; i < startIdx; i++) {
-                    if (cleanText[i] === '{') depth++;
-                    else if (cleanText[i] === '}') depth--;
-                }
-                if (depth > 0) {
-                    insideLoop = true;
-                    break;
+            if (!loopRanges) {
+                loopRanges = [];
+                const forLoopRegex = /\bfor\b[^{]*\{/g;
+                let forMatch;
+                while ((forMatch = forLoopRegex.exec(cleanText)) !== null) {
+                    const blockStart = forMatch.index + forMatch[0].length - 1;
+                    let depth = 1;
+                    let blockEnd = -1;
+                    for (let i = blockStart + 1; i < cleanText.length; i++) {
+                        if (cleanText[i] === '{') depth++;
+                        else if (cleanText[i] === '}') {
+                            depth--;
+                            if (depth === 0) {
+                                blockEnd = i;
+                                break;
+                            }
+                        }
+                    }
+                    if (blockEnd !== -1) {
+                        loopRanges.push([blockStart, blockEnd]);
+                    }
                 }
             }
+
+            const insideLoop = loopRanges.some(([bStart, bEnd]) => startIdx > bStart && startIdx < bEnd);
 
             if (insideLoop) {
                 diagnostics.push(makeDiagnostic(

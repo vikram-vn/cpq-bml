@@ -44,25 +44,42 @@ const {
 // anything else (calls, concatenation, variable refs) returns null rather than guess.
 function inferLiteralType(rhsText) {
     const trimmed = rhsText.trim();
+    if (!trimmed) return null;
+    const first = trimmed.charCodeAt(0);
 
-    if (/^(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')$/.test(trimmed)) return 'String';
-    if (/^(?:true|false)$/i.test(trimmed)) return 'Boolean';
-    if (/^-?\d+\.\d+$/.test(trimmed)) return 'Float';
-    if (/^-?\d+$/.test(trimmed)) return 'Integer';
+    // Fast-path string literal check
+    if (first === 34 || first === 39) { // '"' or "'"
+        const last = trimmed.charCodeAt(trimmed.length - 1);
+        if (last === first && trimmed.length >= 2) {
+            if (/^(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')$/.test(trimmed)) return 'String';
+        }
+        return null;
+    }
+
+    // Fast-path boolean literals
+    if (trimmed === 'true' || trimmed === 'false' || trimmed === 'True' || trimmed === 'False') return 'Boolean';
+
+    // Fast-path numbers: digits or '-'
+    if ((first >= 48 && first <= 57) || first === 45) {
+        if (/^-?\d+\.\d+$/.test(trimmed)) return 'Float';
+        if (/^-?\d+$/.test(trimmed)) return 'Integer';
+    }
 
     // Typed array literal or bare declaration: string[]{"a","b"}, integer[][]{...}, date[];
-    const arrayMatch = trimmed.match(/^(string|integer|float|boolean|date)((?:\[\])+)\s*(?:\{[\s\S]*\})?$/i);
-    if (arrayMatch) {
-        return `${arrayMatch[1].toLowerCase()}${arrayMatch[2]}`;
+    if (trimmed.includes('[')) {
+        const arrayMatch = trimmed.match(/^(string|integer|float|boolean|date)((?:\[\])+)\s*(?:\{[\s\S]*\})?$/i);
+        if (arrayMatch) {
+            return `${arrayMatch[1].toLowerCase()}${arrayMatch[2]}`;
+        }
     }
 
     // Type-named constructor call: dict(...), json(...), jsonarray(...), etc.
-    // No nested parens allowed in the args, to stay conservative about what
-    // counts as "unambiguous" - dict("a", lookupSomething()) is skipped.
-    const ctorMatch = trimmed.match(/^([a-zA-Z]+)\s*\(([^()]*)\)$/);
-    if (ctorMatch) {
-        const ctorType = TYPE_CONSTRUCTORS[ctorMatch[1].toLowerCase()];
-        if (ctorType) return ctorType;
+    if (trimmed.endsWith(')')) {
+        const ctorMatch = trimmed.match(/^([a-zA-Z]+)\s*\(([^()]*)\)$/);
+        if (ctorMatch) {
+            const ctorType = TYPE_CONSTRUCTORS[ctorMatch[1].toLowerCase()];
+            if (ctorType) return ctorType;
+        }
     }
 
     return null;
@@ -73,11 +90,13 @@ function inferExpressionType(rhsText) {
     if (literalType) return literalType;
 
     const trimmed = rhsText.trim();
-    const ctorMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(([^()]*)\)$/);
-    if (ctorMatch) {
-        const nameLower = ctorMatch[1].toLowerCase();
-        const returnType = FUNCTION_RETURN_TYPES[nameLower];
-        if (returnType) return returnType;
+    if (trimmed.endsWith(')')) {
+        const ctorMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(([^()]*)\)$/);
+        if (ctorMatch) {
+            const nameLower = ctorMatch[1].toLowerCase();
+            const returnType = FUNCTION_RETURN_TYPES[nameLower];
+            if (returnType) return returnType;
+        }
     }
 
     return null;
@@ -98,10 +117,15 @@ function collectVariableTypes(cleanText, doc, declaredTypes) {
 
     while ((match = assignRegex.exec(cleanText)) !== null) {
         const varName = match[1];
+        const lookupKey = varName.toLowerCase();
+        if (firstTypeByVar.has(lookupKey)) {
+            continue; // Already collected first type for this variable!
+        }
+
         const matchIndex = match.index;
 
         let before = matchIndex - 1;
-        while (before >= 0 && /\s/.test(cleanText[before])) before--;
+        while (before >= 0 && cleanText.charCodeAt(before) <= 32) before--;
         if (before >= 0 && (cleanText[before] === '<' || cleanText[before] === '>' || cleanText[before] === '!')) {
             continue;
         }
@@ -113,20 +137,17 @@ function collectVariableTypes(cleanText, doc, declaredTypes) {
         const inferredType = inferExpressionType(rhs.text);
         if (!inferredType) continue;
 
-        const lookupKey = varName.toLowerCase();
-        if (!firstTypeByVar.has(lookupKey)) {
-            const entry = { type: inferredType, line: doc ? doc.positionAt(matchIndex).line : 0 };
-            firstTypeByVar.set(lookupKey, entry);
-            firstTypeByVar.set(varName, entry);
-        }
+        const entry = { type: inferredType, line: doc ? doc.positionAt(matchIndex).line : 0 };
+        firstTypeByVar.set(lookupKey, entry);
+        firstTypeByVar.set(varName, entry);
     }
 
     return firstTypeByVar;
 }
 
-function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, extensionPath) {
+function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, extensionPath, noStringsText, precomputedFirstTypes) {
     const diagnostics = [];
-    const firstTypeByVar = collectVariableTypes(cleanText, doc, declaredTypes);
+    const firstTypeByVar = precomputedFirstTypes || collectVariableTypes(cleanText, doc, declaredTypes);
     const returnTypes = getFunctionReturnTypes(extensionPath);
 
     // Second pass: validate assignments
@@ -168,19 +189,12 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
         }
     }
 
-    // Binary expressions type checking
-    const { getStringRanges } = require('./strings');
-    const stringRanges = getStringRanges(cleanText);
-    const isInsideString = (index) => {
-        return stringRanges.some(([start, end]) => index >= start && index < end);
-    };
-
+    // Binary expressions type checking - run directly on noStringsText to skip string literal operators
+    const textForOps = noStringsText || cleanText;
     const binaryOpRegex = /(==|!=|<>|<=|>=|\+=|-=|\*=|\/=|[-+*/<>])/g;
-    while ((match = binaryOpRegex.exec(cleanText)) !== null) {
+    while ((match = binaryOpRegex.exec(textForOps)) !== null) {
         const op = match[1];
         const opIndex = match.index;
-
-        if (isInsideString(opIndex)) continue;
 
         const nextChar = cleanText[opIndex + op.length];
         const prevChar = cleanText[opIndex - 1];

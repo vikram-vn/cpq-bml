@@ -1,4 +1,6 @@
 const vscode = require('vscode');
+const { getAssignmentRhsText, inferExpressionType } = require('./typeCheck');
+const { getFunctionReturnTypes } = require('./typeCheckOperands');
 
 function makeDiagnostic(range, message, severity, code) {
     const diag = new vscode.Diagnostic(range, message, severity);
@@ -6,21 +8,18 @@ function makeDiagnostic(range, message, severity, code) {
     return diag;
 }
 
-function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) {
+function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, firstTypeByVar) {
     const diagnostics = [];
     const lines = doc.getText().split(/\r?\n/);
-    const cleanLines = cleanText.split(/\r?\n/);
+    const noStringsLines = noStringsText.split(/\r?\n/);
 
     // 2. Multiple statements and Curly brackets alignment checks
-    // Scan noStringsText line by line
-    const noStringsLines = noStringsText.split(/\r?\n/);
     for (let i = 0; i < noStringsLines.length; i++) {
         const line = noStringsLines[i];
-        const rawCodeLine = line.split('//')[0];
         
-        // Semicolon count check
-        const semicolonCount = (rawCodeLine.match(/;/g) || []).length;
-        if (semicolonCount > 1) {
+        // Fast semicolon count check: check if there's more than one ';'
+        const firstSemi = line.indexOf(';');
+        if (firstSemi !== -1 && line.indexOf(';', firstSemi + 1) !== -1) {
             const startPos = new vscode.Position(i, 0);
             const endPos = new vscode.Position(i, lines[i].length);
             diagnostics.push(makeDiagnostic(
@@ -31,10 +30,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
             ));
         }
 
-        // Trailing comma check: e.g. put(fancyStepDict, "waitingForSignature", );
-        const cleanRawLine = cleanLines[i].split('//')[0];
-        const lineWithoutStrings = cleanRawLine.replace(/"(?:[^"\\]|\\.)*"/g, '"x"');
-        const trailingCommaMatch = lineWithoutStrings.match(/,\s*([)\]])/);
+        // Trailing comma check on noStringsLines (strings are already replaced with spaces): e.g. put(fancyStepDict, "x", );
+        const trailingCommaMatch = line.match(/,\s*([)\]])/);
         if (trailingCommaMatch) {
             const char = trailingCommaMatch[1];
             const startPos = new vscode.Position(i, 0);
@@ -47,7 +44,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
             ));
         }
 
-        const codeLine = rawCodeLine.trim();
+        const codeLine = line.trim();
 
         // Skip array literals (e.g. string[]{"a"} or string[5]{"a"})
         if (codeLine.includes('[]') || codeLine.match(/\w+\s*\[/)) {
@@ -108,8 +105,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
     }
 
     // 4. Local Variable Naming checks
-    const { getAssignmentRhsText, inferExpressionType } = require('./typeCheck');
-    const returnTypes = require('./typeCheckOperands').getFunctionReturnTypes(extensionPath);
+    const returnTypes = getFunctionReturnTypes(extensionPath);
 
     declaredVars.forEach((decls, varName) => {
         const isConstant = /^[A-Z_][A-Z0-9_]*$/.test(varName) && /[A-Z]/.test(varName);
@@ -140,35 +136,37 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
         }
 
         // Suffix/Prefix checks based on inferred type
-        let inferredType = null;
-        for (const decl of decls) {
-            if (decl.isLoopVar) continue;
-            const eqIdx = noStringsText.indexOf('=', decl.index);
-            if (eqIdx !== -1) {
-                const prevChar = eqIdx > 0 ? noStringsText[eqIdx - 1] : '';
-                const nextChar = eqIdx + 1 < noStringsText.length ? noStringsText[eqIdx + 1] : '';
-                if (prevChar === '<' || prevChar === '>' || prevChar === '!' || nextChar === '=') {
-                    continue;
-                }
-                const rhs = getAssignmentRhsText(noStringsText, eqIdx + 1);
-                if (rhs && rhs.text) {
-                    const t = inferExpressionType(rhs.text);
-                    if (t) {
-                        inferredType = t;
-                        break;
+        let inferredType = firstTypeByVar ? (firstTypeByVar.get(varName.toLowerCase())?.type || firstTypeByVar.get(varName)?.type) : null;
+        if (!inferredType) {
+            for (const decl of decls) {
+                if (decl.isLoopVar) continue;
+                const eqIdx = noStringsText.indexOf('=', decl.index);
+                if (eqIdx !== -1) {
+                    const prevChar = eqIdx > 0 ? noStringsText[eqIdx - 1] : '';
+                    const nextChar = eqIdx + 1 < noStringsText.length ? noStringsText[eqIdx + 1] : '';
+                    if (prevChar === '<' || prevChar === '>' || prevChar === '!' || nextChar === '=') {
+                        continue;
                     }
-                    const trimmed = rhs.text.trim();
-                    const callMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(/);
-                    if (callMatch) {
-                        const nameLower = callMatch[1].toLowerCase();
-                        if (nameLower === 'bmql') {
-                            inferredType = 'RecordSet';
+                    const rhs = getAssignmentRhsText(noStringsText, eqIdx + 1);
+                    if (rhs && rhs.text) {
+                        const t = inferExpressionType(rhs.text);
+                        if (t) {
+                            inferredType = t;
                             break;
                         }
-                        const retType = returnTypes[nameLower];
-                        if (retType) {
-                            inferredType = retType;
-                            break;
+                        const trimmed = rhs.text.trim();
+                        const callMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(/);
+                        if (callMatch) {
+                            const nameLower = callMatch[1].toLowerCase();
+                            if (nameLower === 'bmql') {
+                                inferredType = 'RecordSet';
+                                break;
+                            }
+                            const retType = returnTypes[nameLower];
+                            if (retType) {
+                                inferredType = retType;
+                                break;
+                            }
                         }
                     }
                 }
@@ -276,7 +274,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath) 
         }
     }
     for (let i = 0; i < noStringsLines.length; i++) {
-        if (printTriggerRegex.test(cleanLines[i]) && !lineIsDebugControlled[i]) {
+        if (printTriggerRegex.test(noStringsLines[i]) && !lineIsDebugControlled[i]) {
             const startPos = new vscode.Position(i, lines[i].indexOf('print'));
             const endPos = startPos.translate(0, 5);
             diagnostics.push(makeDiagnostic(
