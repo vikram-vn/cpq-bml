@@ -14,6 +14,9 @@
       "include": "#comments"
     },
     {
+      "include": "#bmql-function-calls"
+    },
+    {
       "include": "#strings"
     },
     {
@@ -111,11 +114,41 @@
         }
       ]
     },
-    "strings": {
+    "bmql-function-calls": {
+      "patterns": [
+        {
+          "name": "meta.function-call.bmql.bml",
+          "begin": "(?i)\\b(bmql)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.function.database.bml"
+            },
+            "2": {
+              "name": "punctuation.section.arguments.begin.bml"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.arguments.end.bml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#bmql-strings"
+            },
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "bmql-strings": {
       "patterns": [
         {
           "name": "string.quoted.double.bmql.bml",
-          "begin": "(?i)\\bbmql\\s*\\(\\s*\"",
+          "begin": "\"",
           "end": "\"",
           "beginCaptures": {
             "0": {
@@ -137,14 +170,14 @@
               "name": "variable.other.bmql.bml"
             },
             {
-              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)(?![\\w-])",
+              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN)(?![\\w-])",
               "name": "keyword.other.bmql.bml"
             }
           ]
         },
         {
           "name": "string.quoted.single.bmql.bml",
-          "begin": "(?i)\\bbmql\\s*\\(\\s*'",
+          "begin": "'",
           "end": "'",
           "beginCaptures": {
             "0": {
@@ -166,11 +199,15 @@
               "name": "variable.other.bmql.bml"
             },
             {
-              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL|ASC|DESC)(?![\\w-])",
+              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN)(?![\\w-])",
               "name": "keyword.other.bmql.bml"
             }
           ]
-        },
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
         {
           "name": "string.quoted.double.bml",
           "begin": "\"",
@@ -202,6 +239,11 @@
               "match": "\\$([a-zA-Z_]\\w*)",
               "name": "variable.other.bmql.bml",
               "comment": "BMQL variable substitution inside query strings (e.g. $pno, $lead, $eval)"
+            },
+            {
+              "match": "(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN)(?![\\w-])",
+              "name": "keyword.other.bmql.bml",
+              "comment": "BMQL SQL query keywords (uppercase only for general strings)"
             }
           ]
         },
@@ -227,6 +269,11 @@
             {
               "match": "\\$([a-zA-Z_]\\w*)",
               "name": "variable.other.bmql.bml"
+            },
+            {
+              "match": "(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN)(?![\\w-])",
+              "name": "keyword.other.bmql.bml",
+              "comment": "BMQL SQL query keywords (uppercase only for general strings)"
             }
           ]
         }
