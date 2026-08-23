@@ -4,7 +4,7 @@
         "dataType": "String",
         "syntax": "_transaction_document_number",
         "examples": [
-            "val = transaction._transaction_document_number;"
+            "val = _transaction_document_number;"
         ],
         "notes": "Unique doc number to be used as document identifier in a process",
         "values": null
@@ -24,7 +24,7 @@
         "dataType": "String",
         "syntax": "_transaction_price_book_var_name",
         "examples": [
-            "val = transaction._transaction_price_book_var_name;"
+            "val = _transaction_price_book_var_name;"
         ],
         "notes": "Variable Name of the Price Book used to get the price for this line item",
         "values": null
@@ -44,7 +44,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_first_name",
         "examples": [
-            "val = transaction._transaction_customer_t_first_name;"
+            "val = _transaction_customer_t_first_name;"
         ],
         "notes": "First Name of the contact person for the buying organization linked from the CRM System. This is functionally eqivalent to the Sold To contact information linked from the ERP System.",
         "values": null
@@ -54,7 +54,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_last_name",
         "examples": [
-            "val = line._transaction_customer_t_last_name;"
+            "val = _transaction_customer_t_last_name;"
         ],
         "notes": "Last Name of the contact person for the buying organization linked from the CRM System. This is functionally eqivalent to the Sold To contact information linked from the ERP System.",
         "values": null
@@ -78,7 +78,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_company_name",
         "examples": [
-            "val = transaction._transaction_customer_t_company_name;"
+            "val = _transaction_customer_t_company_name;"
         ],
         "notes": "Company Name of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -88,7 +88,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_company_name_2",
         "examples": [
-            "val = transaction._transaction_customer_t_company_name_2;"
+            "val = _transaction_customer_t_company_name_2;"
         ],
         "notes": "Secondary Company Name of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -98,7 +98,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_address",
         "examples": [
-            "val = transaction._transaction_customer_t_address;"
+            "val = _transaction_customer_t_address;"
         ],
         "notes": "First Line for the Address of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -108,7 +108,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_address_2",
         "examples": [
-            "val = transaction._transaction_customer_t_address_2;"
+            "val = _transaction_customer_t_address_2;"
         ],
         "notes": "Second Line for the Address of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -118,7 +118,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_city",
         "examples": [
-            "val = transaction._transaction_customer_t_city;"
+            "val = _transaction_customer_t_city;"
         ],
         "notes": "City of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -128,7 +128,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_state",
         "examples": [
-            "val = transaction._transaction_customer_t_state;"
+            "val = _transaction_customer_t_state;"
         ],
         "notes": "State or Province of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -138,7 +138,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_zip",
         "examples": [
-            "val = transaction._transaction_customer_t_zip;"
+            "val = _transaction_customer_t_zip;"
         ],
         "notes": "Zip Code of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -148,7 +148,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_country",
         "examples": [
-            "val = transaction._transaction_customer_t_country;"
+            "val = _transaction_customer_t_country;"
         ],
         "notes": "Country of the buying organization for this transation linked from the CRM System. This is functionally eqivalent to the Sold To company.",
         "values": null
@@ -158,7 +158,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_phone",
         "examples": [
-            "val = transaction._transaction_customer_t_phone;"
+            "val = _transaction_customer_t_phone;"
         ],
         "notes": "Phone Number for the contact person for the buying organization linked from the CRM System. This is functionally eqivalent to the Sold To contact information linked from the ERP System.",
         "values": null
@@ -168,7 +168,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_fax",
         "examples": [
-            "val = transaction._transaction_customer_t_fax;"
+            "val = _transaction_customer_t_fax;"
         ],
         "notes": "Fax Number for the contact person for the buying organization linked from the CRM System. This is functionally eqivalent to the Sold To contact information linked from the ERP System.",
         "values": null
@@ -178,7 +178,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_t_email",
         "examples": [
-            "val = transaction._transaction_customer_t_email;"
+            "val = _transaction_customer_t_email;"
         ],
         "notes": "Email Address of the contact person for the buying organization linked from the CRM System. This is functionally eqivalent to the Sold To contact information linked from the ERP System.",
         "values": null
@@ -198,7 +198,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_first_name",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_first_name;"
+            "val = _transaction_invoiceTo_t_first_name;"
         ],
         "notes": "First Name of the contact person for the organization being billed for this transaction.",
         "values": null
@@ -208,7 +208,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_last_name",
         "examples": [
-            "val = line._transaction_invoiceTo_t_last_name;"
+            "val = _transaction_invoiceTo_t_last_name;"
         ],
         "notes": "Last Name of the contact person for the organization being billed for this transaction.",
         "values": null
@@ -218,7 +218,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_company_name",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_company_name;"
+            "val = _transaction_invoiceTo_t_company_name;"
         ],
         "notes": "Company Name of the organization being billed for this transaction.",
         "values": null
@@ -228,7 +228,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_company_name_2",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_company_name_2;"
+            "val = _transaction_invoiceTo_t_company_name_2;"
         ],
         "notes": "Secondary Company Name of the organization being billed for this transaction.",
         "values": null
@@ -238,7 +238,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_address",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_address;"
+            "val = _transaction_invoiceTo_t_address;"
         ],
         "notes": "First Line for the Address of the organization being billed for this transaction.",
         "values": null
@@ -248,7 +248,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_address_2",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_address_2;"
+            "val = _transaction_invoiceTo_t_address_2;"
         ],
         "notes": "Second Line for the Address of the organization being billed for this transaction.",
         "values": null
@@ -258,7 +258,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_city",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_city;"
+            "val = _transaction_invoiceTo_t_city;"
         ],
         "notes": "City of the organization being billed for this transaction.",
         "values": null
@@ -268,7 +268,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_state",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_state;"
+            "val = _transaction_invoiceTo_t_state;"
         ],
         "notes": "State or Province of the organization being billed for this transaction.",
         "values": null
@@ -278,7 +278,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_zip",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_zip;"
+            "val = _transaction_invoiceTo_t_zip;"
         ],
         "notes": "Zip Code of the organization being billed for this transaction.",
         "values": null
@@ -288,7 +288,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_country",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_country;"
+            "val = _transaction_invoiceTo_t_country;"
         ],
         "notes": "Country of the organization being billed for this transaction.",
         "values": null
@@ -298,7 +298,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_phone",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_phone;"
+            "val = _transaction_invoiceTo_t_phone;"
         ],
         "notes": "Phone Number for the contact person for the organization being billed for this transaction.",
         "values": null
@@ -308,7 +308,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_fax",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_fax;"
+            "val = _transaction_invoiceTo_t_fax;"
         ],
         "notes": "Fax Number for the contact person for the organization being billed for this transaction.",
         "values": null
@@ -318,7 +318,7 @@
         "dataType": "String",
         "syntax": "_transaction_invoiceTo_t_email",
         "examples": [
-            "val = transaction._transaction_invoiceTo_t_email;"
+            "val = _transaction_invoiceTo_t_email;"
         ],
         "notes": "Email Address of the contact person for the organization being billed for this transaction.",
         "values": null
@@ -676,7 +676,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_transaction_transaction_total",
         "examples": [
-            "val = transaction._transaction_transaction_total;"
+            "val = _transaction_transaction_total;"
         ],
         "notes": "The Transaction Total.  The total value of this transaction including all one-time, recurring and shipping charges over the duration of the contract. Synonymous with the Total Contract Value.",
         "values": null
@@ -716,7 +716,7 @@
         "dataType": "String",
         "syntax": "bs_id",
         "examples": [
-            "val = transaction.bs_id;"
+            "val = bs_id;"
         ],
         "notes": "Current Unique Buy-side ID.  This is the internal identifier for a transaction within a CPQ site.",
         "values": null
@@ -746,7 +746,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_first_name",
         "examples": [
-            "val = transaction._transaction_soldTo_t_first_name;"
+            "val = _transaction_soldTo_t_first_name;"
         ],
         "notes": "First Name of the contact person for the buying organization linked from the ERP System. This is functionally eqivalent to the Customer contact information linked from the CRM System.",
         "values": null
@@ -756,7 +756,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_last_name",
         "examples": [
-            "val = line._transaction_soldTo_t_last_name;"
+            "val = _transaction_soldTo_t_last_name;"
         ],
         "notes": "Last Name of the contact person for the buying organization linked from the ERP System. This is functionally eqivalent to the Customer contact information linked from the CRM System.",
         "values": null
@@ -781,7 +781,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_company_name",
         "examples": [
-            "val = transaction._transaction_soldTo_t_company_name;"
+            "val = _transaction_soldTo_t_company_name;"
         ],
         "notes": "Company Name of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -791,7 +791,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_company_name_2",
         "examples": [
-            "val = transaction._transaction_soldTo_t_company_name_2;"
+            "val = _transaction_soldTo_t_company_name_2;"
         ],
         "notes": "Secondary Company Name of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -801,7 +801,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_address",
         "examples": [
-            "val = transaction._transaction_soldTo_t_address;"
+            "val = _transaction_soldTo_t_address;"
         ],
         "notes": "First Line of the Address of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -811,7 +811,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_address_2",
         "examples": [
-            "val = transaction._transaction_soldTo_t_address_2;"
+            "val = _transaction_soldTo_t_address_2;"
         ],
         "notes": "Second Line of the Address of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -821,7 +821,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_city",
         "examples": [
-            "val = transaction._transaction_soldTo_t_city;"
+            "val = _transaction_soldTo_t_city;"
         ],
         "notes": "City of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -831,7 +831,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_state",
         "examples": [
-            "val = transaction._transaction_soldTo_t_state;"
+            "val = _transaction_soldTo_t_state;"
         ],
         "notes": "State or Province of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -841,7 +841,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_zip",
         "examples": [
-            "val = transaction._transaction_soldTo_t_zip;"
+            "val = _transaction_soldTo_t_zip;"
         ],
         "notes": "Zip Code of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -851,7 +851,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_country",
         "examples": [
-            "val = transaction._transaction_soldTo_t_country;"
+            "val = _transaction_soldTo_t_country;"
         ],
         "notes": "Country of the buying organization for this transation linked from the ERP System. This is functionally eqivalent to the Customer contact information.",
         "values": null
@@ -861,7 +861,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_phone",
         "examples": [
-            "val = transaction._transaction_soldTo_t_phone;"
+            "val = _transaction_soldTo_t_phone;"
         ],
         "notes": "Phone Number for the contact person for the buying organization linked from the ERP System. This is functionally eqivalent to the Customer contact information linked from the CRM System.",
         "values": null
@@ -871,7 +871,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_fax",
         "examples": [
-            "val = transaction._transaction_soldTo_t_fax;"
+            "val = _transaction_soldTo_t_fax;"
         ],
         "notes": "Fax Number for the contact person for the buying organization linked from the ERP System. This is functionally eqivalent to the Customer contact information linked from the CRM System.",
         "values": null
@@ -881,7 +881,7 @@
         "dataType": "String",
         "syntax": "_transaction_soldTo_t_email",
         "examples": [
-            "val = transaction._transaction_soldTo_t_email;"
+            "val = _transaction_soldTo_t_email;"
         ],
         "notes": "Email Address for  the contact person for the buying organization linked from the ERP System. This is functionally eqivalent to the Customer contact information linked from the CRM System.",
         "values": null
@@ -901,7 +901,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_first_name",
         "examples": [
-            "val = transaction._transaction_shipTo_t_first_name;"
+            "val = _transaction_shipTo_t_first_name;"
         ],
         "notes": "First Name of the contact person for the organization to which this order will be shipped.",
         "values": null
@@ -911,7 +911,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_last_name",
         "examples": [
-            "val = line._transaction_shipTo_t_last_name;"
+            "val = _transaction_shipTo_t_last_name;"
         ],
         "notes": "Last Name of the contact person for the organization to which this order will be shipped.",
         "values": null
@@ -931,7 +931,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_company_name",
         "examples": [
-            "val = transaction._transaction_shipTo_t_company_name;"
+            "val = _transaction_shipTo_t_company_name;"
         ],
         "notes": "Company Name of the organization where this transaction will be shipped.",
         "values": null
@@ -941,7 +941,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_company_name_2",
         "examples": [
-            "val = transaction._transaction_shipTo_t_company_name_2;"
+            "val = _transaction_shipTo_t_company_name_2;"
         ],
         "notes": "Secondary Company Name of the organization where this transaction will be shipped.",
         "values": null
@@ -951,7 +951,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_address",
         "examples": [
-            "val = transaction._transaction_shipTo_t_address;"
+            "val = _transaction_shipTo_t_address;"
         ],
         "notes": "First Line of the Address of the organization where this transaction will be shipped.",
         "values": null
@@ -961,7 +961,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_address_2",
         "examples": [
-            "val = transaction._transaction_shipTo_t_address_2;"
+            "val = _transaction_shipTo_t_address_2;"
         ],
         "notes": "Second Line of the Address of the organization where this transaction will be shipped.",
         "values": null
@@ -971,7 +971,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_city",
         "examples": [
-            "val = transaction._transaction_shipTo_t_city;"
+            "val = _transaction_shipTo_t_city;"
         ],
         "notes": "City of the organization where this transaction will be shipped.",
         "values": null
@@ -981,7 +981,7 @@
         "dataType": "String",
         "syntax": "_transaction_document_link",
         "examples": [
-            "val = line._transaction_document_link;"
+            "val = _transaction_document_link;"
         ],
         "notes": "Link to the transaction",
         "values": null
@@ -991,7 +991,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_state",
         "examples": [
-            "val = transaction._transaction_shipTo_t_state;"
+            "val = _transaction_shipTo_t_state;"
         ],
         "notes": "State or Province of the organization where this transaction will be shipped.",
         "values": null
@@ -1001,7 +1001,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_zip",
         "examples": [
-            "val = transaction._transaction_shipTo_t_zip;"
+            "val = _transaction_shipTo_t_zip;"
         ],
         "notes": "Zip Code of the organization where this transaction will be shipped.",
         "values": null
@@ -1021,7 +1021,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_country",
         "examples": [
-            "val = transaction._transaction_shipTo_t_country;"
+            "val = _transaction_shipTo_t_country;"
         ],
         "notes": "Country of the organization where this transaction will be shipped.",
         "values": null
@@ -1031,7 +1031,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_phone",
         "examples": [
-            "val = transaction._transaction_shipTo_t_phone;"
+            "val = _transaction_shipTo_t_phone;"
         ],
         "notes": "Phone Number for the contact person for the organization to which this order will be shipped.",
         "values": null
@@ -1041,7 +1041,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_fax",
         "examples": [
-            "val = transaction._transaction_shipTo_t_fax;"
+            "val = _transaction_shipTo_t_fax;"
         ],
         "notes": "Fax Number for the contact person for the organization to which this order will be shipped.",
         "values": null
@@ -1051,7 +1051,7 @@
         "dataType": "String",
         "syntax": "_transaction_shipTo_t_email",
         "examples": [
-            "val = transaction._transaction_shipTo_t_email;"
+            "val = _transaction_shipTo_t_email;"
         ],
         "notes": "Email Address for the contact person for the organization to which this order will be shipped.",
         "values": null
@@ -1082,7 +1082,7 @@
         "dataType": "String",
         "syntax": "_transaction_eSignatureAttributeSet_esig_recipients",
         "examples": [
-            "val = transaction._transaction_eSignatureAttributeSet_esig_recipients;"
+            "val = _transaction_eSignatureAttributeSet_esig_recipients;"
         ],
         "notes": "The Recipients holds the emails and names of the intended recipients",
         "values": null
@@ -1092,7 +1092,7 @@
         "dataType": "String (date)",
         "syntax": "_transaction_eSignatureAttributeSet_esig_date_modified",
         "examples": [
-            "val = transaction._transaction_eSignatureAttributeSet_esig_date_modified;"
+            "val = _transaction_eSignatureAttributeSet_esig_date_modified;"
         ],
         "notes": "The Date Modified field contains the date of the most recently performed action on this document",
         "values": null
@@ -1102,7 +1102,7 @@
         "dataType": "String",
         "syntax": "_transaction_eSignatureAttributeSet_esig_envelope_id",
         "examples": [
-            "val = transaction._transaction_eSignatureAttributeSet_esig_envelope_id;"
+            "val = _transaction_eSignatureAttributeSet_esig_envelope_id;"
         ],
         "notes": "The Envelope ID is a hidden field that is sent along with the document to the eSignature Vendor",
         "values": null
@@ -1112,7 +1112,7 @@
         "dataType": "String",
         "syntax": "_transaction_customer_id",
         "examples": [
-            "val = transaction._transaction_customer_id;"
+            "val = _transaction_customer_id;"
         ],
         "notes": "This is the special Customer ID (with attribute type = Customer ID) used in CPQ-platform-supplied CRM integrations.  This attribute is associated with the automatically-created Autofill, Browse, Select Alternate Address, and View Actions.",
         "values": null
@@ -1122,7 +1122,7 @@
         "dataType": "String",
         "syntax": "_transaction_eSignatureAttributeSet_esig_status",
         "examples": [
-            "val = transaction._transaction_eSignatureAttributeSet_esig_status;"
+            "val = _transaction_eSignatureAttributeSet_esig_status;"
         ],
         "notes": "The Status field contains the current status of this document",
         "values": [
@@ -1643,7 +1643,7 @@
         "dataType": "String",
         "syntax": "_transaction_approve_link",
         "examples": [
-            "val = line._transaction_approve_link;"
+            "val = _transaction_approve_link;"
         ],
         "notes": "Links to auto-generate approve response. This is only populated in advanced notification email rules.",
         "values": null
@@ -1673,7 +1673,7 @@
         "dataType": "String",
         "syntax": "_transaction_reject_link",
         "examples": [
-            "val = line._transaction_reject_link;"
+            "val = _transaction_reject_link;"
         ],
         "notes": "Links to auto-generate reject response. This is only populated in advanced notification email rules.",
         "values": null
@@ -2146,7 +2146,7 @@
         "dataType": "String",
         "syntax": "createOrderRestResponse",
         "examples": [
-            "val = transaction.createOrderRestResponse;"
+            "val = createOrderRestResponse;"
         ],
         "notes": "This attribute holds the rest response of create order",
         "values": null
@@ -2336,7 +2336,7 @@
         "dataType": "String",
         "syntax": "_transaction_price_book_name",
         "examples": [
-            "val = transaction._transaction_price_book_name;"
+            "val = _transaction_price_book_name;"
         ],
         "notes": "Price Book Name",
         "values": null
@@ -2346,7 +2346,7 @@
         "dataType": "String",
         "syntax": "_transaction_price_book_desc",
         "examples": [
-            "val = transaction._transaction_price_book_desc;"
+            "val = _transaction_price_book_desc;"
         ],
         "notes": "Price Book Description",
         "values": null
@@ -2356,7 +2356,7 @@
         "dataType": "String",
         "syntax": "_transaction_price_book_custom_fields",
         "examples": [
-            "val = transaction._transaction_price_book_custom_fields;"
+            "val = _transaction_price_book_custom_fields;"
         ],
         "notes": "Price Book Custom Field Values",
         "values": null
@@ -2366,7 +2366,7 @@
         "dataType": "String",
         "syntax": "_transaction_price_book_custom_field_text",
         "examples": [
-            "val = transaction._transaction_price_book_custom_field_text;"
+            "val = _transaction_price_book_custom_field_text;"
         ],
         "notes": "Price Book Custom Field Text",
         "values": null
@@ -2376,7 +2376,7 @@
         "dataType": "String",
         "syntax": "_transaction_partner_price_book_id",
         "examples": [
-            "val = transaction._transaction_partner_price_book_id;"
+            "val = _transaction_partner_price_book_id;"
         ],
         "notes": "Partner Price Book Id",
         "values": null
@@ -2508,7 +2508,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_first_name",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_first_name;"
+            "val = _transaction_s_billTo_t_first_name;"
         ],
         "notes": "First Name of the contact person for the organization to which this order will be billed.",
         "values": null
@@ -2518,7 +2518,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_last_name",
         "examples": [
-            "val = line._transaction_s_billTo_t_last_name;"
+            "val = _transaction_s_billTo_t_last_name;"
         ],
         "notes": "Last Name of the contact person for the organization to which this order will be billed.",
         "values": null
@@ -2528,7 +2528,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_company_name",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_company_name;"
+            "val = _transaction_s_billTo_t_company_name;"
         ],
         "notes": "Company Name of the organization where this transaction will be billed.",
         "values": null
@@ -2538,7 +2538,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_company_name_2",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_company_name_2;"
+            "val = _transaction_s_billTo_t_company_name_2;"
         ],
         "notes": "Secondary Company Name of the organization where this transaction will be billed.",
         "values": null
@@ -2548,7 +2548,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_address",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_address;"
+            "val = _transaction_s_billTo_t_address;"
         ],
         "notes": "First Line of the Address of the organization where this transaction will be billed.",
         "values": null
@@ -2558,7 +2558,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_address_2",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_address_2;"
+            "val = _transaction_s_billTo_t_address_2;"
         ],
         "notes": "Second Line of the Address of the organization where this transaction will be billed.",
         "values": null
@@ -2568,7 +2568,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_city",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_city;"
+            "val = _transaction_s_billTo_t_city;"
         ],
         "notes": "City of the organization where this transaction will be billed.",
         "values": null
@@ -2578,7 +2578,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_state",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_state;"
+            "val = _transaction_s_billTo_t_state;"
         ],
         "notes": "State or Province of the organization where this transaction will be billed.",
         "values": null
@@ -2588,7 +2588,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_zip",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_zip;"
+            "val = _transaction_s_billTo_t_zip;"
         ],
         "notes": "Zip Code of the organization where this transaction will be billed.",
         "values": null
@@ -2598,7 +2598,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_country",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_country;"
+            "val = _transaction_s_billTo_t_country;"
         ],
         "notes": "Country of the organization where this transaction will be billed.",
         "values": null
@@ -2608,7 +2608,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_phone",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_phone;"
+            "val = _transaction_s_billTo_t_phone;"
         ],
         "notes": "Phone Number for the contact person for the organization to which this order will be billed.",
         "values": null
@@ -2618,7 +2618,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_fax",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_fax;"
+            "val = _transaction_s_billTo_t_fax;"
         ],
         "notes": "Fax Number for the contact person for the organization to which this order will be billed.",
         "values": null
@@ -2628,7 +2628,7 @@
         "dataType": "String",
         "syntax": "_transaction_s_billTo_t_email",
         "examples": [
-            "val = transaction._transaction_s_billTo_t_email;"
+            "val = _transaction_s_billTo_t_email;"
         ],
         "notes": "Email Address for the contact person for the organization to which this order will be billed.",
         "values": null
@@ -2648,7 +2648,7 @@
         "dataType": "Boolean",
         "syntax": "_transaction_freezePrice",
         "examples": [
-            "val = transaction._transaction_freezePrice;"
+            "val = _transaction_freezePrice;"
         ],
         "notes": "Determines whether the CPQ Pricing should be invoked or not. If set to true, CPQ will not price the products/quote lines and will uses the pricing provided by external system.",
         "values": null
@@ -2658,7 +2658,7 @@
         "dataType": "String",
         "syntax": "_transaction_stage",
         "examples": [
-            "val = transaction._transaction_stage;"
+            "val = _transaction_stage;"
         ],
         "notes": "Current Stage of transaction",
         "values": [
@@ -3022,7 +3022,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "annualValue_l",
         "examples": [
-            "val = annualValue_l;"
+            "val = line.annualValue_l;"
         ],
         "notes": "The annual contract value of the recurring charges on this line.",
         "values": null
@@ -3032,7 +3032,7 @@
         "dataType": "String",
         "syntax": "_document_number",
         "examples": [
-            "val = transaction._document_number;"
+            "val = line._document_number;"
         ],
         "notes": "Unique doc number to be used as document identifier in a process",
         "values": null
@@ -3042,7 +3042,7 @@
         "dataType": "String",
         "syntax": "cancelReason_l",
         "examples": [
-            "val = cancelReason_l;"
+            "val = line.cancelReason_l;"
         ],
         "notes": "The reason why the customer canceled this line.",
         "values": [
@@ -3057,7 +3057,7 @@
         "dataType": "String",
         "syntax": "_parent_doc_number",
         "examples": [
-            "val = transaction._parent_doc_number;"
+            "val = line._parent_doc_number;"
         ],
         "notes": "Used to identify the parent document number, if any, for this subdocument.",
         "values": null
@@ -3067,7 +3067,7 @@
         "dataType": "String",
         "syntax": "_config_attributes",
         "examples": [
-            "val = transaction._config_attributes;"
+            "val = line._config_attributes;"
         ],
         "notes": "Configurable Attribute is a composite attribute. This attribute is always read only. However Reconfigure action may be used to modify the values.",
         "values": null
@@ -3087,7 +3087,7 @@
         "dataType": "String",
         "syntax": "_config_attr_text",
         "examples": [
-            "val = transaction._config_attr_text;"
+            "val = line._config_attr_text;"
         ],
         "notes": "Configurable Attribute Text format is similar Configurable Attribute. The only difference is that the values correspond to the display text of the attributes.",
         "values": null
@@ -3107,7 +3107,7 @@
         "dataType": "String",
         "syntax": "_config_attr_info",
         "examples": [
-            "val = transaction._config_attr_info;"
+            "val = line._config_attr_info;"
         ],
         "notes": "Configurable Attribute Information is populated with variable name, attribute name, data type and menu type information.",
         "values": null
@@ -3117,7 +3117,7 @@
         "dataType": "Boolean",
         "syntax": "_is_recommended_price",
         "examples": [
-            "val = transaction._is_recommended_price;"
+            "val = line._is_recommended_price;"
         ],
         "notes": "Used to identify if the line item has recommended price set by a rule.",
         "values": null
@@ -3127,7 +3127,7 @@
         "dataType": "Integer",
         "syntax": "contractedPeriods_l",
         "examples": [
-            "val = contractedPeriods_l;"
+            "val = line.contractedPeriods_l;"
         ],
         "notes": "Number of periods the customer has contracted to receive the item.",
         "values": null
@@ -3137,7 +3137,7 @@
         "dataType": "Boolean",
         "syntax": "_is_part_pricing_rule_price",
         "examples": [
-            "val = transaction._is_part_pricing_rule_price;"
+            "val = line._is_part_pricing_rule_price;"
         ],
         "notes": "Used to identify if a line item has a part pricing rule set by a rule",
         "values": null
@@ -3147,7 +3147,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "contractValue_l",
         "examples": [
-            "val = contractValue_l;"
+            "val = line.contractValue_l;"
         ],
         "notes": "The total contract value of this line including all one-time and recurring charges.",
         "values": null
@@ -3157,7 +3157,7 @@
         "dataType": "String",
         "syntax": "_original_document_number",
         "examples": [
-            "val = transaction._original_document_number;"
+            "val = line._original_document_number;"
         ],
         "notes": "Used to identify the document number from which the line item is copied.",
         "values": null
@@ -3167,7 +3167,7 @@
         "dataType": "String",
         "syntax": "createdBy_l",
         "examples": [
-            "val = createdBy_l;"
+            "val = line.createdBy_l;"
         ],
         "notes": "The person that created the transaction line.",
         "values": null
@@ -3177,7 +3177,7 @@
         "dataType": "String",
         "syntax": "_reconfiguration_date",
         "examples": [
-            "val = transaction._reconfiguration_date;"
+            "val = line._reconfiguration_date;"
         ],
         "notes": "Used to Store the Reconfiguration Date of the model. -1 for Part and non-configured Model.",
         "values": null
@@ -3187,7 +3187,7 @@
         "dataType": "String (date)",
         "syntax": "createdDate_l",
         "examples": [
-            "val = createdDate_l;"
+            "val = line.createdDate_l;"
         ],
         "notes": "The date when the transaction line was created.",
         "values": null
@@ -3207,7 +3207,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "costAmount_l",
         "examples": [
-            "val = costAmount_l;"
+            "val = line.costAmount_l;"
         ],
         "notes": "The total cost of this line.",
         "values": null
@@ -3227,7 +3227,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "customDiscountAmount_l",
         "examples": [
-            "val = customDiscountAmount_l;"
+            "val = line.customDiscountAmount_l;"
         ],
         "notes": "The amount by which to adjust the list price because of a custom discount.",
         "values": null
@@ -3247,7 +3247,7 @@
         "dataType": "Float",
         "syntax": "customDiscountValue_l",
         "examples": [
-            "val = customDiscountValue_l;"
+            "val = line.customDiscountValue_l;"
         ],
         "notes": "Used to capture the numeric value associated with the discount type. This might be an override price, amount off or percentage.",
         "values": null
@@ -3257,7 +3257,7 @@
         "dataType": "String",
         "syntax": "customDiscountType_l",
         "examples": [
-            "val = customDiscountType_l;"
+            "val = line.customDiscountType_l;"
         ],
         "notes": "The type of custom discount to apply to this line.",
         "values": [
@@ -3271,7 +3271,7 @@
         "dataType": "String",
         "syntax": "_part_number",
         "examples": [
-            "val = transaction._part_number;"
+            "val = line._part_number;"
         ],
         "notes": "Part Number",
         "values": null
@@ -3281,7 +3281,7 @@
         "dataType": "String",
         "syntax": "_part_desc",
         "examples": [
-            "val = transaction._part_desc;"
+            "val = line._part_desc;"
         ],
         "notes": "Description of the part",
         "values": null
@@ -3291,7 +3291,7 @@
         "dataType": "String (date)",
         "syntax": "contractStartDate_l",
         "examples": [
-            "val = contractStartDate_l;"
+            "val = line.contractStartDate_l;"
         ],
         "notes": "Date that the customer starts to receive the service.",
         "values": null
@@ -3301,7 +3301,7 @@
         "dataType": "String",
         "syntax": "_part_extended_desc_1",
         "examples": [
-            "val = transaction._part_extended_desc_1;"
+            "val = line._part_extended_desc_1;"
         ],
         "notes": "Extended description of the part",
         "values": null
@@ -3311,7 +3311,7 @@
         "dataType": "String",
         "syntax": "_part_extended_desc_2",
         "examples": [
-            "val = transaction._part_extended_desc_2;"
+            "val = line._part_extended_desc_2;"
         ],
         "notes": "Extended description of the part",
         "values": null
@@ -3321,7 +3321,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_part_base_price",
         "examples": [
-            "val = transaction._part_base_price;"
+            "val = line._part_base_price;"
         ],
         "notes": "Price of the part",
         "values": null
@@ -3331,7 +3331,7 @@
         "dataType": "String",
         "syntax": "_part_units",
         "examples": [
-            "val = transaction._part_units;"
+            "val = line._part_units;"
         ],
         "notes": "Units of the part",
         "values": null
@@ -3351,7 +3351,7 @@
         "dataType": "String",
         "syntax": "_part_supplier_company_name",
         "examples": [
-            "val = transaction._part_supplier_company_name;"
+            "val = line._part_supplier_company_name;"
         ],
         "notes": "Name of the part supplier company",
         "values": null
@@ -3361,7 +3361,7 @@
         "dataType": "String",
         "syntax": "_part_drawing_position",
         "examples": [
-            "val = transaction._part_drawing_position;"
+            "val = line._part_drawing_position;"
         ],
         "notes": "Drawing Position",
         "values": null
@@ -3371,7 +3371,7 @@
         "dataType": "String",
         "syntax": "_part_direct_buy",
         "examples": [
-            "val = transaction._part_direct_buy;"
+            "val = line._part_direct_buy;"
         ],
         "notes": "Direct Buy",
         "values": null
@@ -3381,7 +3381,7 @@
         "dataType": "String",
         "syntax": "_partner_entity_id",
         "examples": [
-            "val = transaction._partner_entity_id;"
+            "val = line._partner_entity_id;"
         ],
         "notes": "Partner Entity Id",
         "values": null
@@ -3391,7 +3391,7 @@
         "dataType": "String",
         "syntax": "itemInstanceId_l",
         "examples": [
-            "val = itemInstanceId_l;"
+            "val = line.itemInstanceId_l;"
         ],
         "notes": "The unique, invariant, internal identifier of this instance of a product. It is used to link sales order lines to the assets they change in an asset based order and as the key stored in a sales order line association. This ID is assigned when the product instance is created in either an external federated asset repository or in CPQ when a sales order line is created.",
         "values": null
@@ -3401,7 +3401,7 @@
         "dataType": "String",
         "syntax": "lastUpdatedBy_l",
         "examples": [
-            "val = lastUpdatedBy_l;"
+            "val = line.lastUpdatedBy_l;"
         ],
         "notes": "The person that last updated this transaction line.",
         "values": null
@@ -3411,7 +3411,7 @@
         "dataType": "String (date)",
         "syntax": "lastUpdatedDate_l",
         "examples": [
-            "val = lastUpdatedDate_l;"
+            "val = line.lastUpdatedDate_l;"
         ],
         "notes": "The date and time the transaction line was last updated.",
         "values": null
@@ -3421,7 +3421,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "listAmount_l",
         "examples": [
-            "val = listAmount_l;"
+            "val = line.listAmount_l;"
         ],
         "notes": "The extended list amount for this line.",
         "values": null
@@ -3431,7 +3431,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "listPrice_l",
         "examples": [
-            "val = listPrice_l;"
+            "val = line.listPrice_l;"
         ],
         "notes": "The list price of the item.",
         "values": null
@@ -3441,7 +3441,7 @@
         "dataType": "String",
         "syntax": "_model_name",
         "examples": [
-            "val = transaction._model_name;"
+            "val = line._model_name;"
         ],
         "notes": "Name of the model",
         "values": null
@@ -3451,7 +3451,7 @@
         "dataType": "String",
         "syntax": "_model_segment_name",
         "examples": [
-            "val = transaction._model_segment_name;"
+            "val = line._model_segment_name;"
         ],
         "notes": "Segment to which the model belongs",
         "values": null
@@ -3461,7 +3461,7 @@
         "dataType": "String",
         "syntax": "_model_segment_var_name",
         "examples": [
-            "val = transaction._model_segment_var_name;"
+            "val = line._model_segment_var_name;"
         ],
         "notes": "Segment to which the model belongs",
         "values": null
@@ -3491,7 +3491,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_model_base_price",
         "examples": [
-            "val = transaction._model_base_price;"
+            "val = line._model_base_price;"
         ],
         "notes": "Base price of the model",
         "values": null
@@ -3501,7 +3501,7 @@
         "dataType": "String",
         "syntax": "_model_attributes",
         "examples": [
-            "val = transaction._model_attributes;"
+            "val = line._model_attributes;"
         ],
         "notes": "Placeholder for all model attributes",
         "values": null
@@ -3511,7 +3511,7 @@
         "dataType": "String",
         "syntax": "_model_supplier_company_name",
         "examples": [
-            "val = transaction._model_supplier_company_name;"
+            "val = line._model_supplier_company_name;"
         ],
         "notes": "Model supplier company name",
         "values": null
@@ -3521,7 +3521,7 @@
         "dataType": "String",
         "syntax": "_model_bom",
         "examples": [
-            "val = transaction._model_bom;"
+            "val = line._model_bom;"
         ],
         "notes": "Model BOM Link",
         "values": null
@@ -3531,7 +3531,7 @@
         "dataType": "String",
         "syntax": "_model_variable_name",
         "examples": [
-            "val = transaction._model_variable_name;"
+            "val = line._model_variable_name;"
         ],
         "notes": "Variable name of the model",
         "values": null
@@ -3551,7 +3551,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "netAmount_l",
         "examples": [
-            "val = netAmount_l;"
+            "val = line.netAmount_l;"
         ],
         "notes": "The extended list amount minus any discounts for this line.",
         "values": null
@@ -3561,7 +3561,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "netPrice_l",
         "examples": [
-            "val = netPrice_l;"
+            "val = line.netPrice_l;"
         ],
         "notes": "The price paid by the customer for the item.",
         "values": null
@@ -3571,7 +3571,7 @@
         "dataType": "String",
         "syntax": "pricePeriod_l",
         "examples": [
-            "val = pricePeriod_l;"
+            "val = line.pricePeriod_l;"
         ],
         "notes": "The period of service purchased at this price.",
         "values": [
@@ -3584,7 +3584,7 @@
         "dataType": "String",
         "syntax": "priceType_l",
         "examples": [
-            "val = priceType_l;"
+            "val = line.priceType_l;"
         ],
         "notes": "Indicates whether the amount on this line is charged once or periodically.",
         "values": [
@@ -3598,7 +3598,7 @@
         "dataType": "String",
         "syntax": "requestedUnitOfMeasure_l",
         "examples": [
-            "val = requestedUnitOfMeasure_l;"
+            "val = line.requestedUnitOfMeasure_l;"
         ],
         "notes": "The unit of measure of the item requested by the customer (e.g. \"Each\").",
         "values": [
@@ -3619,7 +3619,7 @@
         "dataType": "String",
         "syntax": "status_l",
         "examples": [
-            "val = status_l;"
+            "val = line.status_l;"
         ],
         "notes": "The status of this line.",
         "values": [
@@ -3640,7 +3640,7 @@
         "dataType": "String",
         "syntax": "transactionID_l",
         "examples": [
-            "val = transactionID_l;"
+            "val = line.transactionID_l;"
         ],
         "notes": "The parent transaction's internal ID.",
         "values": null
@@ -3650,7 +3650,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "unitCost_l",
         "examples": [
-            "val = unitCost_l;"
+            "val = line.unitCost_l;"
         ],
         "notes": "The unit cost of the item.",
         "values": null
@@ -3660,7 +3660,7 @@
         "dataType": "Boolean",
         "syntax": "priceWithinPolicy_l",
         "examples": [
-            "val = priceWithinPolicy_l;"
+            "val = line.priceWithinPolicy_l;"
         ],
         "notes": "Flag which indicates if line price is within requesting user's defined pricing limits",
         "values": null
@@ -3670,7 +3670,7 @@
         "dataType": "Integer",
         "syntax": "_price_quantity",
         "examples": [
-            "val = transaction._price_quantity;"
+            "val = line._price_quantity;"
         ],
         "notes": "Quantity",
         "values": null
@@ -3680,7 +3680,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_price_item_price_each",
         "examples": [
-            "val = transaction._price_item_price_each;"
+            "val = line._price_item_price_each;"
         ],
         "notes": "The starting price. For Parts it will be the base price or price book price. For models it may be the base model price or the pricing rule or attribute value prices.",
         "values": null
@@ -3700,7 +3700,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_pricing_rule_price_each",
         "examples": [
-            "val = transaction._pricing_rule_price_each;"
+            "val = line._pricing_rule_price_each;"
         ],
         "notes": "Currenly the customer level pricing. (Not applicable for Models)",
         "values": null
@@ -3710,7 +3710,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_price_unit_price_each",
         "examples": [
-            "val = transaction._price_unit_price_each;"
+            "val = line._price_unit_price_each;"
         ],
         "notes": "Will usually be the same value as the List Price, unless a contract price applies.",
         "values": null
@@ -3720,7 +3720,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_price_configurable_price",
         "examples": [
-            "val = transaction._price_configurable_price;"
+            "val = line._price_configurable_price;"
         ],
         "notes": "Original price as per catalog (inclusive of discount and premium)",
         "values": null
@@ -3730,7 +3730,7 @@
         "dataType": "String",
         "syntax": "_price_component_prices",
         "examples": [
-            "val = transaction._price_component_prices;"
+            "val = line._price_component_prices;"
         ],
         "notes": "Additional prices based on configuration",
         "values": null
@@ -3740,7 +3740,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "annualDiscount_l",
         "examples": [
-            "val = annualDiscount_l;"
+            "val = line.annualDiscount_l;"
         ],
         "notes": "The annual discount on the recurring charges on this line.",
         "values": null
@@ -3750,7 +3750,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "contractDiscount_l",
         "examples": [
-            "val = contractDiscount_l;"
+            "val = line.contractDiscount_l;"
         ],
         "notes": "The total discount of this line including all one-time and recurring charges.",
         "values": null
@@ -3760,7 +3760,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "discountAmount_l",
         "examples": [
-            "val = discountAmount_l;"
+            "val = line.discountAmount_l;"
         ],
         "notes": "The discount amount for this line.",
         "values": null
@@ -3770,7 +3770,7 @@
         "dataType": "String",
         "syntax": "itemInstanceName_l",
         "examples": [
-            "val = itemInstanceName_l;"
+            "val = line.itemInstanceName_l;"
         ],
         "notes": "The public identifier of the instance of a product. For goods this is typically the serial #. For services it might be another identifier such as the telephone #. This does not have to be unique across all product instances (e.g. a cell phone # may be reallocated over time). It is one of the primary attributes for searching for a product instance.",
         "values": null
@@ -3780,7 +3780,7 @@
         "dataType": "String (date)",
         "syntax": "requestDate_l",
         "examples": [
-            "val = requestDate_l;"
+            "val = line.requestDate_l;"
         ],
         "notes": "The date on which the user requests that fulfillment occur for this transaction line.",
         "values": null
@@ -3790,7 +3790,7 @@
         "dataType": "String (date)",
         "syntax": "contractEndDate_l",
         "examples": [
-            "val = contractEndDate_l;"
+            "val = line.contractEndDate_l;"
         ],
         "notes": "Date that the customer stops to receive the service.",
         "values": null
@@ -3800,7 +3800,7 @@
         "dataType": "String",
         "syntax": "fulfillmentStatus_l",
         "examples": [
-            "val = fulfillmentStatus_l;"
+            "val = line.fulfillmentStatus_l;"
         ],
         "notes": "The status for this line supplied by the fulfillment system after the transaction is submitted as a sales order.",
         "values": [
@@ -3821,7 +3821,7 @@
         "dataType": "String",
         "syntax": "_part_display_number",
         "examples": [
-            "val = transaction._part_display_number;"
+            "val = line._part_display_number;"
         ],
         "notes": "Part Display Number",
         "values": null
@@ -3831,7 +3831,7 @@
         "dataType": "String",
         "syntax": "_part_company_associations",
         "examples": [
-            "val = transaction._part_company_associations;"
+            "val = line._part_company_associations;"
         ],
         "notes": "Company Associations",
         "values": null
@@ -3911,7 +3911,7 @@
         "dataType": "String",
         "syntax": "_config_extra_info",
         "examples": [
-            "val = transaction._config_extra_info;"
+            "val = line._config_extra_info;"
         ],
         "notes": "Configuration Extra Information.",
         "values": null
@@ -3921,7 +3921,7 @@
         "dataType": "String",
         "syntax": "_configuration_id",
         "examples": [
-            "val = transaction._configuration_id;"
+            "val = line._configuration_id;"
         ],
         "notes": "Configuration id for integrations.",
         "values": null
@@ -3931,7 +3931,7 @@
         "dataType": "Integer",
         "syntax": "_sequence_number",
         "examples": [
-            "val = transaction._sequence_number;"
+            "val = line._sequence_number;"
         ],
         "notes": "Sequence number for the subdocument.",
         "values": null
@@ -3941,7 +3941,7 @@
         "dataType": "String",
         "syntax": "_group_sequence_number",
         "examples": [
-            "val = transaction._group_sequence_number;"
+            "val = line._group_sequence_number;"
         ],
         "notes": "Group sequence number for the subdocument.",
         "values": null
@@ -3951,7 +3951,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "annualListValue_l",
         "examples": [
-            "val = annualListValue_l;"
+            "val = line.annualListValue_l;"
         ],
         "notes": "The extended value at list price for recurring pricing on this transaction line over the duration of the contracted periods.",
         "values": null
@@ -3961,7 +3961,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "contractListValue_l",
         "examples": [
-            "val = contractListValue_l;"
+            "val = line.contractListValue_l;"
         ],
         "notes": "The total of all contract list value of this line, including all one-time and recurring charges.",
         "values": null
@@ -3971,7 +3971,7 @@
         "dataType": "String",
         "syntax": "winLossStatus_l",
         "examples": [
-            "val = winLossStatus_l;"
+            "val = line.winLossStatus_l;"
         ],
         "notes": "The determining status of whether the transaction line represents a won or a lost sale. This can be used in Deal Management analysis.",
         "values": [
@@ -3985,7 +3985,7 @@
         "dataType": "Integer",
         "syntax": "priceScore_l",
         "examples": [
-            "val = priceScore_l;"
+            "val = line.priceScore_l;"
         ],
         "notes": "The calculated price score for this transaction line, based on the line item's List and Net pricing.",
         "values": null
@@ -3995,7 +3995,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "unitMargin_l",
         "examples": [
-            "val = unitMargin_l;"
+            "val = line.unitMargin_l;"
         ],
         "notes": "The margin for a single unit of this transaction line.",
         "values": null
@@ -4005,7 +4005,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "marginAmount_l",
         "examples": [
-            "val = marginAmount_l;"
+            "val = line.marginAmount_l;"
         ],
         "notes": "The margin for all quoted units of this transaction line.",
         "values": null
@@ -4015,7 +4015,7 @@
         "dataType": "Float",
         "syntax": "marginPercent_l",
         "examples": [
-            "val = marginPercent_l;"
+            "val = line.marginPercent_l;"
         ],
         "notes": "The percentage of the List price for which this transaction line's margin accounts.",
         "values": null
@@ -4025,7 +4025,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "annualCost_l",
         "examples": [
-            "val = annualCost_l;"
+            "val = line.annualCost_l;"
         ],
         "notes": "The extended cost for recurring pricing on this transaction line.",
         "values": null
@@ -4035,7 +4035,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "contractCost_l",
         "examples": [
-            "val = contractCost_l;"
+            "val = line.contractCost_l;"
         ],
         "notes": "The total of all contract extended costs for this line, including one-time and recurring costs.",
         "values": null
@@ -4045,7 +4045,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "annualMargin_l",
         "examples": [
-            "val = annualMargin_l;"
+            "val = line.annualMargin_l;"
         ],
         "notes": "The extended margin for recurring pricing on this transaction line.",
         "values": null
@@ -4055,7 +4055,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "contractMargin_l",
         "examples": [
-            "val = contractMargin_l;"
+            "val = line.contractMargin_l;"
         ],
         "notes": "The total of all contract extended margins for this line, including one-time and recurring values.",
         "values": null
@@ -4065,7 +4065,7 @@
         "dataType": "String",
         "syntax": "_price_calculation_info",
         "examples": [
-            "val = transaction._price_calculation_info;"
+            "val = line._price_calculation_info;"
         ],
         "notes": "JSON array of aggregated calculation information returned from advanced pricing profiles",
         "values": null
@@ -4075,7 +4075,7 @@
         "dataType": "Boolean",
         "syntax": "_model_is_valid",
         "examples": [
-            "val = transaction._model_is_valid;"
+            "val = line._model_is_valid;"
         ],
         "notes": "Check if model is configured or unconfigured",
         "values": null
@@ -4085,7 +4085,7 @@
         "dataType": "Float",
         "syntax": "discountPercent_l",
         "examples": [
-            "val = discountPercent_l;"
+            "val = line.discountPercent_l;"
         ],
         "notes": "The percentage of the Contract Value (List) that is discounted off of the transaction line.",
         "values": null
@@ -4095,7 +4095,7 @@
         "dataType": "String",
         "syntax": "lineType_l",
         "examples": [
-            "val = lineType_l;"
+            "val = line.lineType_l;"
         ],
         "notes": "The type of a transaction line whether it represents a model or a part.",
         "values": [
@@ -4108,7 +4108,7 @@
         "dataType": "String",
         "syntax": "oRCL_ERP_OrderNumber_l",
         "examples": [
-            "val = oRCL_ERP_OrderNumber_l;"
+            "val = line.oRCL_ERP_OrderNumber_l;"
         ],
         "notes": "The order number assigned by the external Order Management and ERP system.",
         "values": null
@@ -4118,7 +4118,7 @@
         "dataType": "String",
         "syntax": "priceRecurFrequency_l",
         "examples": [
-            "val = priceRecurFrequency_l;"
+            "val = line.priceRecurFrequency_l;"
         ],
         "notes": "The periodicity or frequency of this pricing. Derived from the pricePeriod_l.",
         "values": [
@@ -4131,7 +4131,7 @@
         "dataType": "String",
         "syntax": "_model_partner_entity_id",
         "examples": [
-            "val = transaction._model_partner_entity_id;"
+            "val = line._model_partner_entity_id;"
         ],
         "notes": "Partner entity id for the model",
         "values": null
@@ -4141,7 +4141,7 @@
         "dataType": "String",
         "syntax": "_model_partner_organization_id",
         "examples": [
-            "val = transaction._model_partner_organization_id;"
+            "val = line._model_partner_organization_id;"
         ],
         "notes": "partner organization id for the model",
         "values": null
@@ -4151,7 +4151,7 @@
         "dataType": "String",
         "syntax": "rootLine_l",
         "examples": [
-            "val = rootLine_l;"
+            "val = line.rootLine_l;"
         ],
         "notes": "Indicates whether the line is a root line. Root lines include only root model lines and standalone part lines.",
         "values": [
@@ -4164,7 +4164,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "nonRecurRevSummable_l",
         "examples": [
-            "val = nonRecurRevSummable_l;"
+            "val = line.nonRecurRevSummable_l;"
         ],
         "notes": "One-time revenue net of all discounts for this line.",
         "values": null
@@ -4174,7 +4174,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "recurringRevSummable_l",
         "examples": [
-            "val = recurringRevSummable_l;"
+            "val = line.recurringRevSummable_l;"
         ],
         "notes": "Recurring revenue net of all discounts for this line.",
         "values": null
@@ -4184,7 +4184,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "usageRevSummable_l",
         "examples": [
-            "val = usageRevSummable_l;"
+            "val = line.usageRevSummable_l;"
         ],
         "notes": "Usage revenue net of all discounts for this line.",
         "values": null
@@ -4194,7 +4194,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "monthlyRecurRevSummable_l",
         "examples": [
-            "val = monthlyRecurRevSummable_l;"
+            "val = line.monthlyRecurRevSummable_l;"
         ],
         "notes": "Monthly recurring revenues net of all discounts for this line.",
         "values": null
@@ -4204,7 +4204,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "monthlyUsageRevSummable_l",
         "examples": [
-            "val = monthlyUsageRevSummable_l;"
+            "val = line.monthlyUsageRevSummable_l;"
         ],
         "notes": "Monthly usage revenues net of all discounts for this line.",
         "values": null
@@ -4214,7 +4214,7 @@
         "dataType": "String",
         "syntax": "priceTypeRollup_l",
         "examples": [
-            "val = priceTypeRollup_l;"
+            "val = line.priceTypeRollup_l;"
         ],
         "notes": "Indicates whether the amount on this line is charged once or periodically. For Root model lines, this will represent a rollup of values for all child lines.",
         "values": [
@@ -4229,7 +4229,7 @@
         "dataType": "String",
         "syntax": "priceRecurFrequencyRollup_l",
         "examples": [
-            "val = priceRecurFrequencyRollup_l;"
+            "val = line.priceRecurFrequencyRollup_l;"
         ],
         "notes": "The periodicity or frequency of this pricing or for the root model rolled up to include all child values.",
         "values": [
@@ -4242,7 +4242,7 @@
         "dataType": "Integer",
         "syntax": "contractedPeriodsRollup_l",
         "examples": [
-            "val = contractedPeriodsRollup_l;"
+            "val = line.contractedPeriodsRollup_l;"
         ],
         "notes": "Number of periods the customer has contracted to receive the item or for the root model rolled up to include all child values.",
         "values": null
@@ -4252,7 +4252,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "listPriceRollup_l",
         "examples": [
-            "val = listPriceRollup_l;"
+            "val = line.listPriceRollup_l;"
         ],
         "notes": "The list price of the item or for the root model rolled up to include all child values.",
         "values": null
@@ -4262,7 +4262,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "netPriceRollup_l",
         "examples": [
-            "val = netPriceRollup_l;"
+            "val = line.netPriceRollup_l;"
         ],
         "notes": "The price paid by the customer for the individual item or for the root model rolled up to include all child values.",
         "values": null
@@ -4272,7 +4272,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "netAmountRollup_l",
         "examples": [
-            "val = netAmountRollup_l;"
+            "val = line.netAmountRollup_l;"
         ],
         "notes": "The extended list amount minus any discounts for this line or for the root model rolled up to include all child values.",
         "values": null
@@ -4282,7 +4282,7 @@
         "dataType": "Float",
         "syntax": "discountPercentRollup_l",
         "examples": [
-            "val = discountPercentRollup_l;"
+            "val = line.discountPercentRollup_l;"
         ],
         "notes": "The percentage of the Contract Value (List) that is discounted off of the transaction line or for the root model rolled up to include all child values.",
         "values": null
@@ -4292,7 +4292,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "nonRecurRevRollup_l",
         "examples": [
-            "val = nonRecurRevRollup_l;"
+            "val = line.nonRecurRevRollup_l;"
         ],
         "notes": "One-time revenue on this line or for the root model lines, the sum of one-time revenues for all the child lines.",
         "values": null
@@ -4302,7 +4302,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "recurRevRollup_l",
         "examples": [
-            "val = recurRevRollup_l;"
+            "val = line.recurRevRollup_l;"
         ],
         "notes": "Recurring revenue on this line or for the root model lines, the sum of recurring revenues for all the child lines.",
         "values": null
@@ -4312,7 +4312,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "usageRevRollup_l",
         "examples": [
-            "val = usageRevRollup_l;"
+            "val = line.usageRevRollup_l;"
         ],
         "notes": "Usage revenue on this line or for the root model lines, the sum of usage revenues for all the child lines.",
         "values": null
@@ -4322,7 +4322,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "contractValueRollup_l",
         "examples": [
-            "val = contractValueRollup_l;"
+            "val = line.contractValueRollup_l;"
         ],
         "notes": "Contract value on this line or for the root model lines, the sum of all contract revenues for all the child lines.",
         "values": null
@@ -4332,7 +4332,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "contractListValueRollup_l",
         "examples": [
-            "val = contractListValueRollup_l;"
+            "val = line.contractListValueRollup_l;"
         ],
         "notes": "Contract list value on this line or for the root model lines, the sum of all contract list values for all the child lines.",
         "values": null
@@ -4342,7 +4342,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "monthlyRecurRevRollup_l",
         "examples": [
-            "val = monthlyRecurRevRollup_l;"
+            "val = line.monthlyRecurRevRollup_l;"
         ],
         "notes": "Monthly recurring revenue on this line or for the root model lines, the sum of monthly recurring revenues for all the child lines.",
         "values": null
@@ -4352,7 +4352,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "monthlyUsageRevRollup_l",
         "examples": [
-            "val = monthlyUsageRevRollup_l;"
+            "val = line.monthlyUsageRevRollup_l;"
         ],
         "notes": "Monthly usage revenue on this line or for the root model lines, the sum of monthly usage revenues for all the child lines.",
         "values": null
@@ -4362,7 +4362,7 @@
         "dataType": "String",
         "syntax": "_config_attr_values",
         "examples": [
-            "val = transaction._config_attr_values;"
+            "val = line._config_attr_values;"
         ],
         "notes": "Stores configurable attributes values in a user-friendly JSON format that are passed in from the CRM partner at the time of quote creation. These values are used as a starting point when creating quote lines from opportunity revenue lines and are not updated by subsequent reconfiguration. Usage should be limited to a small number of attributes to assure performance. Only simple configuration attribute data types are supported.",
         "values": null
@@ -4372,7 +4372,7 @@
         "dataType": "String",
         "syntax": "_revenueId_l",
         "examples": [
-            "val = _revenueId_l;"
+            "val = line._revenueId_l;"
         ],
         "notes": "The ID of the Revenue Line Item in the associated opportunity.",
         "values": null
@@ -4382,7 +4382,7 @@
         "dataType": "String",
         "syntax": "_revenueCategory_l",
         "examples": [
-            "val = _revenueCategory_l;"
+            "val = line._revenueCategory_l;"
         ],
         "notes": "Identifies the category of revenue for this line (E.g. renewal vs new business).",
         "values": [
@@ -4398,7 +4398,7 @@
         "dataType": "String",
         "syntax": "oRCL_ABO_ActionCode_l",
         "examples": [
-            "val = oRCL_ABO_ActionCode_l;"
+            "val = line.oRCL_ABO_ActionCode_l;"
         ],
         "notes": "Indicates the changes required by the transaction line.",
         "values": [
@@ -4417,7 +4417,7 @@
         "dataType": "String",
         "syntax": "salesChannel_l",
         "examples": [
-            "val = salesChannel_l;"
+            "val = line.salesChannel_l;"
         ],
         "notes": "Sales Channel",
         "values": [
@@ -4430,7 +4430,7 @@
         "dataType": "String",
         "syntax": "subscriptionId_l",
         "examples": [
-            "val = subscriptionId_l;"
+            "val = line.subscriptionId_l;"
         ],
         "notes": "The unique identifier for the subscription. Used only for  subscription billing-related transactions.",
         "values": null
@@ -4440,7 +4440,7 @@
         "dataType": "String",
         "syntax": "subscriptionLineId_l",
         "examples": [
-            "val = subscriptionLineId_l;"
+            "val = line.subscriptionLineId_l;"
         ],
         "notes": "The unique identifier for the subscription line. Used only for  subscription billing-related transactions.",
         "values": null
@@ -4450,7 +4450,7 @@
         "dataType": "String",
         "syntax": "parentAssetKey_l",
         "examples": [
-            "val = parentAssetKey_l;"
+            "val = line.parentAssetKey_l;"
         ],
         "notes": "The identifier for the corresponding parent asset in an external asset repository. Used only for asset-related lines.",
         "values": null
@@ -4460,7 +4460,7 @@
         "dataType": "String",
         "syntax": "rootAssetKey_l",
         "examples": [
-            "val = rootAssetKey_l;"
+            "val = line.rootAssetKey_l;"
         ],
         "notes": "RootAssetKey",
         "values": null
@@ -4470,7 +4470,7 @@
         "dataType": "String",
         "syntax": "ownerResourceId_l",
         "examples": [
-            "val = ownerResourceId_l;"
+            "val = line.ownerResourceId_l;"
         ],
         "notes": "The owner of the associated Opportunity Revenue Line.",
         "values": null
@@ -4480,7 +4480,7 @@
         "dataType": "Integer",
         "syntax": "lineNumber_l",
         "examples": [
-            "val = lineNumber_l;"
+            "val = line.lineNumber_l;"
         ],
         "notes": "Line number in a line item grid is a sequential number assigned to each row or line of the grid. This is used to sort lines on the screen and in documents.",
         "values": null
@@ -4490,7 +4490,7 @@
         "dataType": "String (date)",
         "syntax": "renewDate_l",
         "examples": [
-            "val = renewDate_l;"
+            "val = line.renewDate_l;"
         ],
         "notes": "Renewal date of a subscription service.",
         "values": null
@@ -4500,7 +4500,7 @@
         "dataType": "String (date)",
         "syntax": "suspendDate_l",
         "examples": [
-            "val = suspendDate_l;"
+            "val = line.suspendDate_l;"
         ],
         "notes": "Suspension date of a subscription service",
         "values": null
@@ -4510,7 +4510,7 @@
         "dataType": "String (date)",
         "syntax": "resumeDate_l",
         "examples": [
-            "val = resumeDate_l;"
+            "val = line.resumeDate_l;"
         ],
         "notes": "Resuming date of a subscription service",
         "values": null
@@ -4520,7 +4520,7 @@
         "dataType": "String",
         "syntax": "oRCL_ABO_ComponentAttributes_l",
         "examples": [
-            "val = oRCL_ABO_ComponentAttributes_l;"
+            "val = line.oRCL_ABO_ComponentAttributes_l;"
         ],
         "notes": "A comma separated collection of key / value pair attributes that define the configuration of this asset / component plus an action code indicating whether the attribute has changed.",
         "values": null
@@ -4530,7 +4530,7 @@
         "dataType": "String (date)",
         "syntax": "orderDate_l",
         "examples": [
-            "val = orderDate_l;"
+            "val = line.orderDate_l;"
         ],
         "notes": "The date and time the order was placed for fulfillment.",
         "values": null
@@ -4540,7 +4540,7 @@
         "dataType": "String",
         "syntax": "_part_default_price_type",
         "examples": [
-            "val = transaction._part_default_price_type;"
+            "val = line._part_default_price_type;"
         ],
         "notes": "Default Price Type",
         "values": null
@@ -4550,7 +4550,7 @@
         "dataType": "String",
         "syntax": "oRCL_SFA_InventoryOrgID_l",
         "examples": [
-            "val = oRCL_SFA_InventoryOrgID_l;"
+            "val = line.oRCL_SFA_InventoryOrgID_l;"
         ],
         "notes": "The inventory organization in SFA used for sales products.",
         "values": null
@@ -4560,7 +4560,7 @@
         "dataType": "String",
         "syntax": "oRCL_SFA_Status_l",
         "examples": [
-            "val = oRCL_SFA_Status_l;"
+            "val = line.oRCL_SFA_Status_l;"
         ],
         "notes": "The SFA status of the transaction line. This value may differ from the transaction status for CPQ. Initially, there is no internal logic setting this value.",
         "values": null
@@ -4570,7 +4570,7 @@
         "dataType": "String",
         "syntax": "oRCL_SFA_InventoryItemID_l",
         "examples": [
-            "val = oRCL_SFA_InventoryItemID_l;"
+            "val = line.oRCL_SFA_InventoryItemID_l;"
         ],
         "notes": "The inventory item id of the sales product in SFA.",
         "values": null
@@ -4580,7 +4580,7 @@
         "dataType": "String",
         "syntax": "_part_sale_enabled",
         "examples": [
-            "val = transaction._part_sale_enabled;"
+            "val = line._part_sale_enabled;"
         ],
         "notes": "Eligible to sell or order",
         "values": null
@@ -4590,7 +4590,7 @@
         "dataType": "String",
         "syntax": "_part_serv_req_enabled",
         "examples": [
-            "val = transaction._part_serv_req_enabled;"
+            "val = line._part_serv_req_enabled;"
         ],
         "notes": "Eligible for service",
         "values": null
@@ -4600,7 +4600,7 @@
         "dataType": "String",
         "syntax": "_part_css_enabled",
         "examples": [
-            "val = transaction._part_css_enabled;"
+            "val = line._part_css_enabled;"
         ],
         "notes": "Customer Self-service enabled flag",
         "values": null
@@ -4610,7 +4610,7 @@
         "dataType": "String",
         "syntax": "_part_external_key1",
         "examples": [
-            "val = transaction._part_external_key1;"
+            "val = line._part_external_key1;"
         ],
         "notes": "External system's key",
         "values": null
@@ -4620,7 +4620,7 @@
         "dataType": "String",
         "syntax": "_part_external_key2",
         "examples": [
-            "val = transaction._part_external_key2;"
+            "val = line._part_external_key2;"
         ],
         "notes": "External system's key",
         "values": null
@@ -4630,7 +4630,7 @@
         "dataType": "String",
         "syntax": "_part_default_periodicity",
         "examples": [
-            "val = transaction._part_default_periodicity;"
+            "val = line._part_default_periodicity;"
         ],
         "notes": "Default Price Periodicity",
         "values": null
@@ -4640,7 +4640,7 @@
         "dataType": "String",
         "syntax": "_part_default_periods",
         "examples": [
-            "val = transaction._part_default_periods;"
+            "val = line._part_default_periods;"
         ],
         "notes": "Default number of price periods",
         "values": null
@@ -4650,7 +4650,7 @@
         "dataType": "String",
         "syntax": "_part_default_uom",
         "examples": [
-            "val = transaction._part_default_uom;"
+            "val = line._part_default_uom;"
         ],
         "notes": "Default unit of measure",
         "values": null
@@ -4660,7 +4660,7 @@
         "dataType": "String",
         "syntax": "_part_sales_product_type",
         "examples": [
-            "val = transaction._part_sales_product_type;"
+            "val = line._part_sales_product_type;"
         ],
         "notes": "ProductTypeCode Valid values comes from a lookup. E.g Goods, Included Warranty etc.",
         "values": null
@@ -4670,7 +4670,7 @@
         "dataType": "String",
         "syntax": "_partner_organization_id",
         "examples": [
-            "val = transaction._partner_organization_id;"
+            "val = line._partner_organization_id;"
         ],
         "notes": "Partner Organization Id",
         "values": null
@@ -4680,7 +4680,7 @@
         "dataType": "String",
         "syntax": "fulfillmentLineId_l",
         "examples": [
-            "val = fulfillmentLineId_l;"
+            "val = line.fulfillmentLineId_l;"
         ],
         "notes": "Value that uniquely identifies the fulfillment line.",
         "values": null
@@ -4690,7 +4690,7 @@
         "dataType": "Boolean",
         "syntax": "rollupFlag_l",
         "examples": [
-            "val = rollupFlag_l;"
+            "val = line.rollupFlag_l;"
         ],
         "notes": "Specifies a charge component as a rollup value or aggregate value for the element code of the charge component price.",
         "values": null
@@ -4700,7 +4700,7 @@
         "dataType": "String",
         "syntax": "fulfillmentOrganizationCode_l",
         "examples": [
-            "val = fulfillmentOrganizationCode_l;"
+            "val = line.fulfillmentOrganizationCode_l;"
         ],
         "notes": "Abbreviation that identifies the organization that ships the shipment.",
         "values": null
@@ -4710,7 +4710,7 @@
         "dataType": "String",
         "syntax": "paymentTerms_l",
         "examples": [
-            "val = paymentTerms_l;"
+            "val = line.paymentTerms_l;"
         ],
         "notes": "Payment terms to apply to collect payment. Review and update the value for this attribute using the Setup and Maintenance work area, and the Manage Receivables Payment Terms task. To collect data for this attribute, use the Collect Order Reference Data task for Fusion Source.",
         "values": [
@@ -4723,7 +4723,7 @@
         "dataType": "String",
         "syntax": "parentDocNumber_l",
         "examples": [
-            "val = parentDocNumber_l;"
+            "val = line.parentDocNumber_l;"
         ],
         "notes": "Document number of the parent line item.",
         "values": null
@@ -4733,7 +4733,7 @@
         "dataType": "String",
         "syntax": "associatedLineId_l",
         "examples": [
-            "val = associatedLineId_l;"
+            "val = line.associatedLineId_l;"
         ],
         "notes": "Document number to be associated with the subscription line.",
         "values": null
@@ -4743,7 +4743,7 @@
         "dataType": "String",
         "syntax": "associatedOrderId_l",
         "examples": [
-            "val = associatedOrderId_l;"
+            "val = line.associatedOrderId_l;"
         ],
         "notes": "Source order Id associated with the subscription line",
         "values": null
@@ -4753,7 +4753,7 @@
         "dataType": "String",
         "syntax": "documentNumber_l",
         "examples": [
-            "val = documentNumber_l;"
+            "val = line.documentNumber_l;"
         ],
         "notes": "Document number of the line.",
         "values": null
@@ -4763,7 +4763,7 @@
         "dataType": "String (date)",
         "syntax": "requestShipDate_l",
         "examples": [
-            "val = requestShipDate_l;"
+            "val = line.requestShipDate_l;"
         ],
         "notes": "The requested ship date for the order line.",
         "values": null
@@ -4773,7 +4773,7 @@
         "dataType": "String",
         "syntax": "changeCode_l",
         "examples": [
-            "val = changeCode_l;"
+            "val = line.changeCode_l;"
         ],
         "notes": "A single select menu to handle all the possible codes to close a subscription.",
         "values": [
@@ -4787,7 +4787,7 @@
         "dataType": "String",
         "syntax": "changeReason_l",
         "examples": [
-            "val = changeReason_l;"
+            "val = line.changeReason_l;"
         ],
         "notes": "A single select menu to handle all the possible reasons for closing a subscription.",
         "values": [
@@ -4804,7 +4804,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_delta_price",
         "examples": [
-            "val = transaction._delta_price;"
+            "val = line._delta_price;"
         ],
         "notes": "Delta Price",
         "values": null
@@ -4814,7 +4814,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_prior_price",
         "examples": [
-            "val = transaction._prior_price;"
+            "val = line._prior_price;"
         ],
         "notes": "Prior Price",
         "values": null
@@ -4824,7 +4824,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_rollup_delta_price",
         "examples": [
-            "val = transaction._rollup_delta_price;"
+            "val = line._rollup_delta_price;"
         ],
         "notes": "Rollup Delta Price",
         "values": null
@@ -4874,7 +4874,7 @@
         "dataType": "Integer",
         "syntax": "_chargeSetControl",
         "examples": [
-            "val = transaction._chargeSetControl;"
+            "val = line._chargeSetControl;"
         ],
         "notes": "Charge Set Control",
         "values": null
@@ -4884,7 +4884,7 @@
         "dataType": "String",
         "syntax": "_price_type",
         "examples": [
-            "val = transaction._price_type;"
+            "val = line._price_type;"
         ],
         "notes": "Type of price (For example: One-time, Periodic - monthly, quarterly etc)",
         "values": null
@@ -4894,7 +4894,7 @@
         "dataType": "String",
         "syntax": "_price_period",
         "examples": [
-            "val = transaction._price_period;"
+            "val = line._price_period;"
         ],
         "notes": "Period for which the price will be applicable.",
         "values": null
@@ -4904,7 +4904,7 @@
         "dataType": "String",
         "syntax": "_price_applied_ratePlan",
         "examples": [
-            "val = transaction._price_applied_ratePlan;"
+            "val = line._price_applied_ratePlan;"
         ],
         "notes": "Applied Rate Plan",
         "values": null
@@ -4914,7 +4914,7 @@
         "dataType": "String",
         "syntax": "_price_applied_ratePlan_number",
         "examples": [
-            "val = transaction._price_applied_ratePlan_number;"
+            "val = line._price_applied_ratePlan_number;"
         ],
         "notes": "Applied Rate Plan Number",
         "values": null
@@ -4924,7 +4924,7 @@
         "dataType": "Boolean",
         "syntax": "_is_bom_price",
         "examples": [
-            "val = transaction._is_bom_price;"
+            "val = line._is_bom_price;"
         ],
         "notes": "Used to identify if the line item has BOM price. Applicable for a BOM item only",
         "values": null
@@ -4934,7 +4934,7 @@
         "dataType": "Boolean",
         "syntax": "includedInBasePrice",
         "examples": [
-            "val = transaction.includedInBasePrice;"
+            "val = line.includedInBasePrice;"
         ],
         "notes": "Used to identify if the line item is included in the base price. Applicable for a BOM item only.",
         "values": null
@@ -4944,7 +4944,7 @@
         "dataType": "String",
         "syntax": "_price_applied_ratePlan_integrationId",
         "examples": [
-            "val = transaction._price_applied_ratePlan_integrationId;"
+            "val = line._price_applied_ratePlan_integrationId;"
         ],
         "notes": "Applied Rate Plan Integration Id",
         "values": null
@@ -4954,7 +4954,7 @@
         "dataType": "String",
         "syntax": "_s_coverageOrderNumber",
         "examples": [
-            "val = transaction._s_coverageOrderNumber;"
+            "val = line._s_coverageOrderNumber;"
         ],
         "notes": "Source order number of the coverage line for OM Integration.",
         "values": null
@@ -4974,7 +4974,7 @@
         "dataType": "String",
         "syntax": "_s_coverageLineNumber",
         "examples": [
-            "val = transaction._s_coverageLineNumber;"
+            "val = line._s_coverageLineNumber;"
         ],
         "notes": "Source line number of the coverage line for OM Integration.",
         "values": null
@@ -5014,7 +5014,7 @@
         "dataType": "String",
         "syntax": "_s_partID_l",
         "examples": [
-            "val = _s_partID_l;"
+            "val = line._s_partID_l;"
         ],
         "notes": "Part number from the Items table.",
         "values": null
@@ -5024,7 +5024,7 @@
         "dataType": "String",
         "syntax": "_transactionLine_id",
         "examples": [
-            "val = transaction._transactionLine_id;"
+            "val = line._transactionLine_id;"
         ],
         "notes": "Unique identifier for this subdocument.",
         "values": null
@@ -5034,7 +5034,7 @@
         "dataType": "Integer",
         "syntax": "_availableRatePlanSetControl",
         "examples": [
-            "val = transaction._availableRatePlanSetControl;"
+            "val = line._availableRatePlanSetControl;"
         ],
         "notes": "Available Rate Plan Set Control",
         "values": null
@@ -5044,7 +5044,7 @@
         "dataType": "Boolean",
         "syntax": "_is_coverage",
         "examples": [
-            "val = transaction._is_coverage;"
+            "val = line._is_coverage;"
         ],
         "notes": "Indicates whether the product is of coverage type",
         "values": null
@@ -5054,7 +5054,7 @@
         "dataType": "Boolean",
         "syntax": "_s_freezeNegotiationFlag_l",
         "examples": [
-            "val = _s_freezeNegotiationFlag_l;"
+            "val = line._s_freezeNegotiationFlag_l;"
         ],
         "notes": "Flag indicating whether price negotiation is permitted.",
         "values": null
@@ -5064,7 +5064,7 @@
         "dataType": "String",
         "syntax": "_price_applied_agreement_name",
         "examples": [
-            "val = transaction._price_applied_agreement_name;"
+            "val = line._price_applied_agreement_name;"
         ],
         "notes": "Applied Agreement Name",
         "values": null
@@ -5074,7 +5074,7 @@
         "dataType": "String",
         "syntax": "_price_applied_agreement_number",
         "examples": [
-            "val = transaction._price_applied_agreement_number;"
+            "val = line._price_applied_agreement_number;"
         ],
         "notes": "Applied Agreement Number",
         "values": null
@@ -5084,7 +5084,7 @@
         "dataType": "String",
         "syntax": "_price_applied_agreement_integrationId",
         "examples": [
-            "val = transaction._price_applied_agreement_integrationId;"
+            "val = line._price_applied_agreement_integrationId;"
         ],
         "notes": "Applied Agreement Integration Id",
         "values": null
@@ -5094,7 +5094,7 @@
         "dataType": "String",
         "syntax": "_model_sales_product_type",
         "examples": [
-            "val = transaction._model_sales_product_type;"
+            "val = line._model_sales_product_type;"
         ],
         "notes": "ProductTypeCode Valid values comes from a lookup. E.g Goods, Included Warranty etc.",
         "values": null
@@ -5104,7 +5104,7 @@
         "dataType": "String",
         "syntax": "_part_service_duration_type_code",
         "examples": [
-            "val = transaction._part_service_duration_type_code;"
+            "val = line._part_service_duration_type_code;"
         ],
         "notes": "Service Duration Type",
         "values": null
@@ -5114,7 +5114,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_s_lastPricePaid_l",
         "examples": [
-            "val = _s_lastPricePaid_l;"
+            "val = line._s_lastPricePaid_l;"
         ],
         "notes": "The most recent price at which the part/model was quoted.",
         "values": null
@@ -5124,7 +5124,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_s_lastPricePaidCustomerId_l",
         "examples": [
-            "val = _s_lastPricePaidCustomerId_l;"
+            "val = line._s_lastPricePaidCustomerId_l;"
         ],
         "notes": "The most recent price at which the part/model was quoted to the customer.",
         "values": null
@@ -5134,7 +5134,7 @@
         "dataType": "Integer",
         "syntax": "_s_priceScoreMarginBased_l",
         "examples": [
-            "val = _s_priceScoreMarginBased_l;"
+            "val = line._s_priceScoreMarginBased_l;"
         ],
         "notes": "Margin Based Method price score calculation for a line.",
         "values": null
@@ -5144,7 +5144,7 @@
         "dataType": "Integer",
         "syntax": "_s_priceScoreListBased_l",
         "examples": [
-            "val = _s_priceScoreListBased_l;"
+            "val = line._s_priceScoreListBased_l;"
         ],
         "notes": "List Based Method price score calculation for line.",
         "values": null
@@ -5154,7 +5154,7 @@
         "dataType": "Float",
         "syntax": "_s_priceScoreWeighting_l",
         "examples": [
-            "val = _s_priceScoreWeighting_l;"
+            "val = line._s_priceScoreWeighting_l;"
         ],
         "notes": "Weighting attribute for price score calculation at the transaction level.",
         "values": null
@@ -5164,7 +5164,7 @@
         "dataType": "Integer",
         "syntax": "_s_priceScoreSimpleMarginNetPrice_l",
         "examples": [
-            "val = _s_priceScoreSimpleMarginNetPrice_l;"
+            "val = line._s_priceScoreSimpleMarginNetPrice_l;"
         ],
         "notes": "Price score calculation using Simple Margin Based method and Net Price as Basis attribute.",
         "values": null
@@ -5174,7 +5174,7 @@
         "dataType": "Integer",
         "syntax": "_s_priceScoreSimpleMarginUnitCost_l",
         "examples": [
-            "val = _s_priceScoreSimpleMarginUnitCost_l;"
+            "val = line._s_priceScoreSimpleMarginUnitCost_l;"
         ],
         "notes": "Price score calculation using Simple Margin Based method and Unit Cost as Basis attribute.",
         "values": null
@@ -5184,7 +5184,7 @@
         "dataType": "Integer",
         "syntax": "_s_priceScoreSimpleMarginListPrice_l",
         "examples": [
-            "val = _s_priceScoreSimpleMarginListPrice_l;"
+            "val = line._s_priceScoreSimpleMarginListPrice_l;"
         ],
         "notes": "Price score calculation using Simple Margin Based method and List Price as Basis attribute.",
         "values": null
@@ -5194,7 +5194,7 @@
         "dataType": "Float",
         "syntax": "_s_lineDiscountGuidanceFloor_l",
         "examples": [
-            "val = _s_lineDiscountGuidanceFloor_l;"
+            "val = line._s_lineDiscountGuidanceFloor_l;"
         ],
         "notes": "Lower bound of the line discount guidance.",
         "values": null
@@ -5204,7 +5204,7 @@
         "dataType": "Float",
         "syntax": "_s_lineDiscountGuidanceCeiling_l",
         "examples": [
-            "val = _s_lineDiscountGuidanceCeiling_l;"
+            "val = line._s_lineDiscountGuidanceCeiling_l;"
         ],
         "notes": "Upper bound of the line discount guidance.",
         "values": null
@@ -5214,7 +5214,7 @@
         "dataType": "Float",
         "syntax": "_s_lineDiscountGuidanceMax_l",
         "examples": [
-            "val = _s_lineDiscountGuidanceMax_l;"
+            "val = line._s_lineDiscountGuidanceMax_l;"
         ],
         "notes": "Max of the line discount guidance.",
         "values": null
@@ -5224,7 +5224,7 @@
         "dataType": "String",
         "syntax": "aBO_Delta_Action_Code_l",
         "examples": [
-            "val = aBO_Delta_Action_Code_l;"
+            "val = line.aBO_Delta_Action_Code_l;"
         ],
         "notes": "An action code indicating whether a transaction line attribute has changed during an ABO operation.",
         "values": [
@@ -5243,7 +5243,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_s_unitProratedOrderDiscount_l",
         "examples": [
-            "val = _s_unitProratedOrderDiscount_l;"
+            "val = line._s_unitProratedOrderDiscount_l;"
         ],
         "notes": "Prorated Order Level Discount Per Unit for the current line.",
         "values": null
@@ -5253,7 +5253,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_s_totalProratedOrderDiscount_l",
         "examples": [
-            "val = _s_totalProratedOrderDiscount_l;"
+            "val = line._s_totalProratedOrderDiscount_l;"
         ],
         "notes": "Total Prorated Order Discount accounted for the current line.",
         "values": null
@@ -5263,7 +5263,7 @@
         "dataType": "String",
         "syntax": "_requestedRatePlan",
         "examples": [
-            "val = transaction._requestedRatePlan;"
+            "val = line._requestedRatePlan;"
         ],
         "notes": "This menu attribute is populated with the list of available rate plans.",
         "values": null
@@ -5273,7 +5273,7 @@
         "dataType": "String",
         "syntax": "_txnRef_externalLineId_l",
         "examples": [
-            "val = _txnRef_externalLineId_l;"
+            "val = line._txnRef_externalLineId_l;"
         ],
         "notes": "Reference Identifier for the current line from the external system, for example: Commerce Cart or Self Service Cart.",
         "values": null
@@ -5283,7 +5283,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_taxPrice_l",
         "examples": [
-            "val = _tax_taxPrice_l;"
+            "val = line._tax_taxPrice_l;"
         ],
         "notes": "Tax amount for one unit of this line.",
         "values": null
@@ -5293,7 +5293,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_totalPrice_l",
         "examples": [
-            "val = _tax_totalPrice_l;"
+            "val = line._tax_totalPrice_l;"
         ],
         "notes": "The total price per unit of the item including taxes. If 'Is Tax Inclusive' is false, it is summation of Net Price per unit and tax per unit, otherwise it is same as Net Price per unit.",
         "values": null
@@ -5303,7 +5303,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_totalAmount_l",
         "examples": [
-            "val = _tax_totalAmount_l;"
+            "val = line._tax_totalAmount_l;"
         ],
         "notes": "Total Price for this line including taxes.",
         "values": null
@@ -5313,7 +5313,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_totalPriceMinusTax_l",
         "examples": [
-            "val = _tax_totalPriceMinusTax_l;"
+            "val = line._tax_totalPriceMinusTax_l;"
         ],
         "notes": "Total Price for this line excluding taxes.",
         "values": null
@@ -5323,7 +5323,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_totalAmountMinusTax_l",
         "examples": [
-            "val = _tax_totalAmountMinusTax_l;"
+            "val = line._tax_totalAmountMinusTax_l;"
         ],
         "notes": "Total Price for this line including taxes.",
         "values": null
@@ -5333,7 +5333,7 @@
         "dataType": "String",
         "syntax": "_tax_calculation_info",
         "examples": [
-            "val = transaction._tax_calculation_info;"
+            "val = line._tax_calculation_info;"
         ],
         "notes": "Additional Information for tax calculation.",
         "values": null
@@ -5343,7 +5343,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_taxRollup_l",
         "examples": [
-            "val = _tax_taxRollup_l;"
+            "val = line._tax_taxRollup_l;"
         ],
         "notes": "The tax price of the item or for the root model rolled up to include all child values.",
         "values": null
@@ -5353,7 +5353,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_totalPriceRollup_l",
         "examples": [
-            "val = _tax_totalPriceRollup_l;"
+            "val = line._tax_totalPriceRollup_l;"
         ],
         "notes": "The total price of each item or for the root model rolled up to include all child values.",
         "values": null
@@ -5363,7 +5363,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_totalAmountRollup_l",
         "examples": [
-            "val = _tax_totalAmountRollup_l;"
+            "val = line._tax_totalAmountRollup_l;"
         ],
         "notes": "The total amount of the item or for the root model rolled up to include all child values.",
         "values": null
@@ -5373,7 +5373,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "_tax_totalContractPriceRollup_l",
         "examples": [
-            "val = _tax_totalContractPriceRollup_l;"
+            "val = line._tax_totalContractPriceRollup_l;"
         ],
         "notes": "The total amount for the contract duration for the root model rolled up to include all child values.",
         "values": null
@@ -5383,7 +5383,7 @@
         "dataType": "String",
         "syntax": "_shipping_shippingServiceLevel_l",
         "examples": [
-            "val = _shipping_shippingServiceLevel_l;"
+            "val = line._shipping_shippingServiceLevel_l;"
         ],
         "notes": "Shipping level of service to use to deliver the shipment.",
         "values": null
@@ -5393,7 +5393,7 @@
         "dataType": "String",
         "syntax": "_shipping_shipCarrierName_l",
         "examples": [
-            "val = _shipping_shipCarrierName_l;"
+            "val = line._shipping_shipCarrierName_l;"
         ],
         "notes": "The name of the carrier who ships and delivers the items.",
         "values": null
@@ -5403,7 +5403,7 @@
         "dataType": "String",
         "syntax": "_shipping_shipModeOfTransport_l",
         "examples": [
-            "val = _shipping_shipModeOfTransport_l;"
+            "val = line._shipping_shipModeOfTransport_l;"
         ],
         "notes": "The mode of transport to ship and deliver the item.",
         "values": null
@@ -5413,7 +5413,7 @@
         "dataType": "String",
         "syntax": "_shipping_shippingInstructions_l",
         "examples": [
-            "val = _shipping_shippingInstructions_l;"
+            "val = line._shipping_shippingInstructions_l;"
         ],
         "notes": "Instructions for the system on how to ship this item.",
         "values": null
@@ -5423,7 +5423,7 @@
         "dataType": "String",
         "syntax": "_shipping_shippingGroupId_l",
         "examples": [
-            "val = _shipping_shippingGroupId_l;"
+            "val = line._shipping_shippingGroupId_l;"
         ],
         "notes": "Identifier for the group of order lines in the order that ship together from one location to one destination, and that use the same scheduled ship date.",
         "values": null
@@ -5433,7 +5433,7 @@
         "dataType": "String",
         "syntax": "_shipping_shipToPartyId_l",
         "examples": [
-            "val = _shipping_shipToPartyId_l;"
+            "val = line._shipping_shipToPartyId_l;"
         ],
         "notes": "The Party ID for the Ship To Customer for this line. This attribute is used when a generalized Party object is used to identify customer parties.",
         "values": null
@@ -5443,7 +5443,7 @@
         "dataType": "String",
         "syntax": "_shipping_shipToPartySiteId_l",
         "examples": [
-            "val = _shipping_shipToPartySiteId_l;"
+            "val = line._shipping_shipToPartySiteId_l;"
         ],
         "notes": "The ID for the Party Site or Address of the Ship To party for this line.",
         "values": null
@@ -5453,7 +5453,7 @@
         "dataType": "String",
         "syntax": "_covered_item_uom",
         "examples": [
-            "val = transaction._covered_item_uom;"
+            "val = line._covered_item_uom;"
         ],
         "notes": "To store the Unit of Measure attribute value of covered product in the coverage service line.",
         "values": null
@@ -5463,7 +5463,7 @@
         "dataType": "String",
         "syntax": "_s_orderLineId_l",
         "examples": [
-            "val = _s_orderLineId_l;"
+            "val = line._s_orderLineId_l;"
         ],
         "notes": "Order Line Id assigned by the external Order Management and ERP system",
         "values": null
@@ -5473,7 +5473,7 @@
         "dataType": "String",
         "syntax": "_s_prevAssetKey_l",
         "examples": [
-            "val = _s_prevAssetKey_l;"
+            "val = line._s_prevAssetKey_l;"
         ],
         "notes": "Oracle Internal Attribute. References the prior asset instance from which this line was created, during an ABO operation.",
         "values": null
@@ -5483,7 +5483,7 @@
         "dataType": "String",
         "syntax": "_s_origAssetKey_l",
         "examples": [
-            "val = _s_origAssetKey_l;"
+            "val = line._s_origAssetKey_l;"
         ],
         "notes": "Oracle Internal Attribute. References the first asset instance from which this line was created during an ABO operation.",
         "values": null
@@ -5493,7 +5493,7 @@
         "dataType": "String",
         "syntax": "_s_origRootAssetKey_l",
         "examples": [
-            "val = _s_origRootAssetKey_l;"
+            "val = line._s_origRootAssetKey_l;"
         ],
         "notes": "Oracle Internal Attribute. References the root asset key instance of the first asset instance from which this line was created, during an ABO operation.",
         "values": null
@@ -5503,7 +5503,7 @@
         "dataType": "Float",
         "syntax": "_s_fulfilledQuantity_l",
         "examples": [
-            "val = _s_fulfilledQuantity_l;"
+            "val = line._s_fulfilledQuantity_l;"
         ],
         "notes": "For Future Use. The quantity of items fulfilled by the fulfillment system after the sales order is processed.",
         "values": null
@@ -5513,7 +5513,7 @@
         "dataType": "Float",
         "syntax": "_s_cancelledQuantity_l",
         "examples": [
-            "val = _s_cancelledQuantity_l;"
+            "val = line._s_cancelledQuantity_l;"
         ],
         "notes": "For Future Use. The quantity of items cancelled by the fulfillment system after the sales order is processed.",
         "values": null
@@ -5523,7 +5523,7 @@
         "dataType": "String",
         "syntax": "_s_coveredItemFulfillmentLineId_l",
         "examples": [
-            "val = _s_coveredItemFulfillmentLineId_l;"
+            "val = line._s_coveredItemFulfillmentLineId_l;"
         ],
         "notes": "For Future Use. Fulfillment Line Id of the covered item.",
         "values": null
@@ -5533,7 +5533,7 @@
         "dataType": "String",
         "syntax": "_s_subscriptionNumber_l",
         "examples": [
-            "val = _s_subscriptionNumber_l;"
+            "val = line._s_subscriptionNumber_l;"
         ],
         "notes": "Subscription Number for the draft subscription line created during Create Subscription Integration.",
         "values": null
@@ -5543,7 +5543,7 @@
         "dataType": "String",
         "syntax": "_availableRatePlans",
         "examples": [
-            "val = transaction._availableRatePlans;"
+            "val = line._availableRatePlans;"
         ],
         "notes": "This menu attribute is populated with the list of available rate plans.",
         "values": null
@@ -5553,7 +5553,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "totalShippingCost_l",
         "examples": [
-            "val = totalShippingCost_l;"
+            "val = line.totalShippingCost_l;"
         ],
         "notes": "Total shipping cost for this line inclusive of taxes (for all quantities)",
         "values": null
@@ -5563,7 +5563,7 @@
         "dataType": "String",
         "syntax": "_s_newAssetKey_l",
         "examples": [
-            "val = _s_newAssetKey_l;"
+            "val = line._s_newAssetKey_l;"
         ],
         "notes": "Oracle Internal Attribute to store the generated new asset key when an asset instance is updated, renewed etc during an ABO operation.",
         "values": null
@@ -5573,7 +5573,7 @@
         "dataType": "Float",
         "syntax": "_part_custom_field5",
         "examples": [
-            "val = transaction._part_custom_field5;"
+            "val = line._part_custom_field5;"
         ],
         "notes": "Cost",
         "values": null
@@ -5583,7 +5583,7 @@
         "dataType": "String",
         "syntax": "_s_newRootAssetKey_l",
         "examples": [
-            "val = _s_newRootAssetKey_l;"
+            "val = line._s_newRootAssetKey_l;"
         ],
         "notes": "Oracle Internal Attribute used to store the generated new root asset key when an asset instance is updated, renewed etc during an ABO operation.",
         "values": null
@@ -5593,7 +5593,7 @@
         "dataType": "String",
         "syntax": "_s_prevRootAssetKey_l",
         "examples": [
-            "val = _s_prevRootAssetKey_l;"
+            "val = line._s_prevRootAssetKey_l;"
         ],
         "notes": "Oracle Internal Attribute. References the prior root asset instance from which this line was created, during an ABO operation.",
         "values": null
@@ -5603,7 +5603,7 @@
         "dataType": "String",
         "syntax": "_part_custom_field1",
         "examples": [
-            "val = transaction._part_custom_field1;"
+            "val = line._part_custom_field1;"
         ],
         "notes": "Product Group",
         "values": null
@@ -5613,7 +5613,7 @@
         "dataType": "String",
         "syntax": "_s_originalFulfillmentLineId_l",
         "examples": [
-            "val = _s_originalFulfillmentLineId_l;"
+            "val = line._s_originalFulfillmentLineId_l;"
         ],
         "notes": "Original Fulfilment order line reference from external system for an asset instance.",
         "values": null
@@ -5623,7 +5623,7 @@
         "dataType": "String",
         "syntax": "_fusion_part_id",
         "examples": [
-            "val = transaction._fusion_part_id;"
+            "val = line._fusion_part_id;"
         ],
         "notes": "Fusion Part Id",
         "values": null
@@ -5633,7 +5633,7 @@
         "dataType": "String (date)",
         "syntax": "_s_closedDate_l",
         "examples": [
-            "val = _s_closedDate_l;"
+            "val = line._s_closedDate_l;"
         ],
         "notes": "The date on which the asset associated with this quote line was closed, during an ABO operation",
         "values": null
@@ -5643,7 +5643,7 @@
         "dataType": "String",
         "syntax": "_s_prevSubscriptionNumber_l",
         "examples": [
-            "val = _s_prevSubscriptionNumber_l;"
+            "val = line._s_prevSubscriptionNumber_l;"
         ],
         "notes": "The public key of the subscription created before amendment. Used only for subscription billing related transactions.",
         "values": null
@@ -5653,7 +5653,7 @@
         "dataType": "String",
         "syntax": "_s_prevSubscriptionProductPuid_l",
         "examples": [
-            "val = _s_prevSubscriptionProductPuid_l;"
+            "val = line._s_prevSubscriptionProductPuid_l;"
         ],
         "notes": "The public key of the subscription product created before amendment. Used only for subscription billing related transactions.",
         "values": null
@@ -5663,7 +5663,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "lineUpfrontAmount_l",
         "examples": [
-            "val = lineUpfrontAmount_l;"
+            "val = line.lineUpfrontAmount_l;"
         ],
         "notes": "Amount to be collected for this line during checkout.",
         "values": null
@@ -5673,7 +5673,7 @@
         "dataType": "Numeric (currency)",
         "syntax": "lineUpfrontAmountRollup_l",
         "examples": [
-            "val = lineUpfrontAmountRollup_l;"
+            "val = line.lineUpfrontAmountRollup_l;"
         ],
         "notes": "Amount to be collected for this root line (and its child lines) during checkout.",
         "values": null
@@ -5683,7 +5683,7 @@
         "dataType": "Float",
         "syntax": "_part_custom_field7",
         "examples": [
-            "val = transaction._part_custom_field7;"
+            "val = line._part_custom_field7;"
         ],
         "notes": "Part Lead Time(Week)",
         "values": null
@@ -5693,7 +5693,7 @@
         "dataType": "String",
         "syntax": "_s_lineActionComment_l",
         "examples": [
-            "val = _s_lineActionComment_l;"
+            "val = line._s_lineActionComment_l;"
         ],
         "notes": "Captures remarks or comments provided during the execution of a line-level action on the asset or transaction.",
         "values": null
@@ -5703,7 +5703,7 @@
         "dataType": "Array Set",
         "syntax": "_availableRatePlanSet",
         "examples": [
-            "val = transaction._availableRatePlanSet;"
+            "val = line._availableRatePlanSet;"
         ],
         "notes": "This&#32;array&#32;set&#32;fetches&#32;the&#32;list&#32;of&#32;available&#32;Rate&#32;Plans.",
         "values": null
@@ -5713,7 +5713,7 @@
         "dataType": "Array Set",
         "syntax": "_chargeSet",
         "examples": [
-            "val = transaction._chargeSet;"
+            "val = line._chargeSet;"
         ],
         "notes": "&#160;",
         "values": null
@@ -5723,7 +5723,7 @@
         "dataType": "Array Set",
         "syntax": "oRCL_deltaChargeAttributes",
         "examples": [
-            "val = transaction.oRCL_deltaChargeAttributes;"
+            "val = line.oRCL_deltaChargeAttributes;"
         ],
         "notes": "Defines&#32;attributes&#32;that&#32;stores&#32;the&#32;calculated&#32;delta&#32;information&#32;for&#32;charges&#32;when&#32;ABO&#32;actions&#32;are&#32;invoked.",
         "values": null
@@ -5733,7 +5733,7 @@
         "dataType": "Array Set",
         "syntax": "oRCL_charges",
         "examples": [
-            "val = transaction.oRCL_charges;"
+            "val = line.oRCL_charges;"
         ],
         "notes": "All&#32;prices&#32;including&#32;Product&#32;Price&#32;for&#32;OM&#32;Integration",
         "values": null
@@ -5743,7 +5743,7 @@
         "dataType": "Array Set",
         "syntax": "_productAssociationSet",
         "examples": [
-            "val = transaction._productAssociationSet;"
+            "val = line._productAssociationSet;"
         ],
         "notes": "Defines&#32;attributes&#32;that&#32;maintain&#32;the&#32;relationship&#32;between&#32;a&#32;coverage&#32;or&#32;subscription&#32;product&#32;and&#32;the&#32;base&#32;product(s)&#32;it&#32;protects&#32;or&#32;extends.",
         "values": null
@@ -5753,7 +5753,7 @@
         "dataType": "String (date)",
         "syntax": "_system_date",
         "examples": [
-            "val = transaction._system_date;"
+            "val = _system_date;"
         ],
         "notes": "Current Date",
         "values": null
@@ -5763,7 +5763,7 @@
         "dataType": "String",
         "syntax": "_system_user_name",
         "examples": [
-            "val = transaction._system_user_name;"
+            "val = _system_user_name;"
         ],
         "notes": "Current User's Name",
         "values": null
@@ -5773,7 +5773,7 @@
         "dataType": "String",
         "syntax": "_system_user_login",
         "examples": [
-            "val = line._system_user_login;"
+            "val = _system_user_login;"
         ],
         "notes": "Current User's Login",
         "values": null
@@ -5783,7 +5783,7 @@
         "dataType": "String",
         "syntax": "_system_user_email",
         "examples": [
-            "val = transaction._system_user_email;"
+            "val = _system_user_email;"
         ],
         "notes": "Current User's Email",
         "values": null
@@ -5793,7 +5793,7 @@
         "dataType": "String",
         "syntax": "_system_company_name",
         "examples": [
-            "val = transaction._system_company_name;"
+            "val = _system_company_name;"
         ],
         "notes": "Current User's Company Name",
         "values": null
@@ -5803,7 +5803,7 @@
         "dataType": "String",
         "syntax": "_system_current_document_number",
         "examples": [
-            "val = transaction._system_current_document_number;"
+            "val = _system_current_document_number;"
         ],
         "notes": "Current Document Number",
         "values": null
@@ -5813,7 +5813,7 @@
         "dataType": "String",
         "syntax": "_system_user_currency_pref",
         "examples": [
-            "val = transaction._system_user_currency_pref;"
+            "val = _system_user_currency_pref;"
         ],
         "notes": "Current User's Currency Pref",
         "values": null
@@ -5823,7 +5823,7 @@
         "dataType": "String",
         "syntax": "_system_current_document_currency_pref",
         "examples": [
-            "val = transaction._system_current_document_currency_pref;"
+            "val = _system_current_document_currency_pref;"
         ],
         "notes": "Current Document's Currency Pref",
         "values": null
@@ -5833,7 +5833,7 @@
         "dataType": "String",
         "syntax": "_system_buyside_id",
         "examples": [
-            "val = transaction._system_buyside_id;"
+            "val = _system_buyside_id;"
         ],
         "notes": "Current Unique Buy-Side ID",
         "values": null
@@ -5843,7 +5843,7 @@
         "dataType": "String",
         "syntax": "_system_base_currency",
         "examples": [
-            "val = transaction._system_base_currency;"
+            "val = _system_base_currency;"
         ],
         "notes": "Supplier's Base Currency",
         "values": null
@@ -5853,7 +5853,7 @@
         "dataType": "Float",
         "syntax": "_system_currency_conv_rate",
         "examples": [
-            "val = transaction._system_currency_conv_rate;"
+            "val = _system_currency_conv_rate;"
         ],
         "notes": "Supplier's Currency Conversion Rate",
         "values": null
@@ -5863,7 +5863,7 @@
         "dataType": "String",
         "syntax": "_system_user_groups",
         "examples": [
-            "val = transaction._system_user_groups;"
+            "val = _system_user_groups;"
         ],
         "notes": "Current User's Groups",
         "values": null
@@ -5873,7 +5873,7 @@
         "dataType": "String",
         "syntax": "_system_add_from_catalog_action",
         "examples": [
-            "val = transaction._system_add_from_catalog_action;"
+            "val = _system_add_from_catalog_action;"
         ],
         "notes": "Current Add From Catalog Action",
         "values": null
@@ -5883,7 +5883,7 @@
         "dataType": "String",
         "syntax": "_system_supplier_company_name",
         "examples": [
-            "val = transaction._system_supplier_company_name;"
+            "val = _system_supplier_company_name;"
         ],
         "notes": "Supplier's Company Name",
         "values": null
@@ -5893,7 +5893,7 @@
         "dataType": "String",
         "syntax": "_system_current_document_language",
         "examples": [
-            "val = line._system_current_document_language;"
+            "val = _system_current_document_language;"
         ],
         "notes": "Current Document's Language",
         "values": null
@@ -5903,7 +5903,7 @@
         "dataType": "String",
         "syntax": "_system_current_step_var",
         "examples": [
-            "val = transaction._system_current_step_var;"
+            "val = _system_current_step_var;"
         ],
         "notes": "Current Step's Variable Name",
         "values": null
@@ -5913,7 +5913,7 @@
         "dataType": "String",
         "syntax": "_system_user_type",
         "examples": [
-            "val = transaction._system_user_type;"
+            "val = _system_user_type;"
         ],
         "notes": "Current User's Type",
         "values": null
@@ -5923,7 +5923,7 @@
         "dataType": "String",
         "syntax": "_system_user_first_name",
         "examples": [
-            "val = transaction._system_user_first_name;"
+            "val = _system_user_first_name;"
         ],
         "notes": "Current User's First Name",
         "values": null
@@ -5933,7 +5933,7 @@
         "dataType": "String",
         "syntax": "_system_user_last_name",
         "examples": [
-            "val = line._system_user_last_name;"
+            "val = _system_user_last_name;"
         ],
         "notes": "Current User's Last Name",
         "values": null
@@ -5943,7 +5943,7 @@
         "dataType": "String",
         "syntax": "_system_user_job_title",
         "examples": [
-            "val = transaction._system_user_job_title;"
+            "val = _system_user_job_title;"
         ],
         "notes": "Current User's Job Title",
         "values": null
@@ -5953,7 +5953,7 @@
         "dataType": "String",
         "syntax": "_system_user_phone",
         "examples": [
-            "val = transaction._system_user_phone;"
+            "val = _system_user_phone;"
         ],
         "notes": "Current User's Phone",
         "values": null
@@ -5963,7 +5963,7 @@
         "dataType": "String",
         "syntax": "_system_user_fax",
         "examples": [
-            "val = transaction._system_user_fax;"
+            "val = _system_user_fax;"
         ],
         "notes": "Current User's Fax",
         "values": null
@@ -5973,7 +5973,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_first_name",
         "examples": [
-            "val = transaction._system_user_bill_first_name;"
+            "val = _system_user_bill_first_name;"
         ],
         "notes": "Current User's Billing First Name",
         "values": null
@@ -5983,7 +5983,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_last_name",
         "examples": [
-            "val = line._system_user_bill_last_name;"
+            "val = _system_user_bill_last_name;"
         ],
         "notes": "Current User's Billing Last Name",
         "values": null
@@ -5993,7 +5993,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_company",
         "examples": [
-            "val = transaction._system_user_bill_company;"
+            "val = _system_user_bill_company;"
         ],
         "notes": "Current User's Billing Company",
         "values": null
@@ -6003,7 +6003,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_company_2",
         "examples": [
-            "val = transaction._system_user_bill_company_2;"
+            "val = _system_user_bill_company_2;"
         ],
         "notes": "Current User's Billing Company 2",
         "values": null
@@ -6013,7 +6013,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_address",
         "examples": [
-            "val = transaction._system_user_bill_address;"
+            "val = _system_user_bill_address;"
         ],
         "notes": "Current User's Billing Address",
         "values": null
@@ -6023,7 +6023,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_address_2",
         "examples": [
-            "val = transaction._system_user_bill_address_2;"
+            "val = _system_user_bill_address_2;"
         ],
         "notes": "Current User's Billing Address 2",
         "values": null
@@ -6033,7 +6033,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_city",
         "examples": [
-            "val = transaction._system_user_bill_city;"
+            "val = _system_user_bill_city;"
         ],
         "notes": "Current User's Billing City",
         "values": null
@@ -6043,7 +6043,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_state_province",
         "examples": [
-            "val = transaction._system_user_bill_state_province;"
+            "val = _system_user_bill_state_province;"
         ],
         "notes": "Current User's Billing State/Province",
         "values": null
@@ -6053,7 +6053,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_zip",
         "examples": [
-            "val = transaction._system_user_bill_zip;"
+            "val = _system_user_bill_zip;"
         ],
         "notes": "Current User's Billing Zip",
         "values": null
@@ -6063,7 +6063,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_country",
         "examples": [
-            "val = transaction._system_user_bill_country;"
+            "val = _system_user_bill_country;"
         ],
         "notes": "Current User's Billing Country",
         "values": null
@@ -6073,7 +6073,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_phone",
         "examples": [
-            "val = transaction._system_user_bill_phone;"
+            "val = _system_user_bill_phone;"
         ],
         "notes": "Current User's Billing Phone",
         "values": null
@@ -6083,7 +6083,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_fax",
         "examples": [
-            "val = transaction._system_user_bill_fax;"
+            "val = _system_user_bill_fax;"
         ],
         "notes": "Current User's Billing Fax",
         "values": null
@@ -6093,7 +6093,7 @@
         "dataType": "String",
         "syntax": "_system_user_bill_email",
         "examples": [
-            "val = transaction._system_user_bill_email;"
+            "val = _system_user_bill_email;"
         ],
         "notes": "Current User's Billing Email",
         "values": null
@@ -6103,7 +6103,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_first_name",
         "examples": [
-            "val = transaction._system_user_ship_first_name;"
+            "val = _system_user_ship_first_name;"
         ],
         "notes": "Current User's Shipping First Name",
         "values": null
@@ -6113,7 +6113,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_last_name",
         "examples": [
-            "val = line._system_user_ship_last_name;"
+            "val = _system_user_ship_last_name;"
         ],
         "notes": "Current User's Shipping Last Name",
         "values": null
@@ -6123,7 +6123,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_company",
         "examples": [
-            "val = transaction._system_user_ship_company;"
+            "val = _system_user_ship_company;"
         ],
         "notes": "Current User's Shipping Company",
         "values": null
@@ -6133,7 +6133,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_company_2",
         "examples": [
-            "val = transaction._system_user_ship_company_2;"
+            "val = _system_user_ship_company_2;"
         ],
         "notes": "Current User's Shipping Company 2",
         "values": null
@@ -6143,7 +6143,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_address",
         "examples": [
-            "val = transaction._system_user_ship_address;"
+            "val = _system_user_ship_address;"
         ],
         "notes": "Current User's Shipping Address",
         "values": null
@@ -6153,7 +6153,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_address_2",
         "examples": [
-            "val = transaction._system_user_ship_address_2;"
+            "val = _system_user_ship_address_2;"
         ],
         "notes": "Current User's Shipping Address 2",
         "values": null
@@ -6163,7 +6163,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_city",
         "examples": [
-            "val = transaction._system_user_ship_city;"
+            "val = _system_user_ship_city;"
         ],
         "notes": "Current User's Shipping City",
         "values": null
@@ -6173,7 +6173,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_state_province",
         "examples": [
-            "val = transaction._system_user_ship_state_province;"
+            "val = _system_user_ship_state_province;"
         ],
         "notes": "Current User's Shipping State/Province",
         "values": null
@@ -6183,7 +6183,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_zip",
         "examples": [
-            "val = transaction._system_user_ship_zip;"
+            "val = _system_user_ship_zip;"
         ],
         "notes": "Current User's Shipping Zip",
         "values": null
@@ -6193,7 +6193,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_country",
         "examples": [
-            "val = transaction._system_user_ship_country;"
+            "val = _system_user_ship_country;"
         ],
         "notes": "Current User's Shipping Country",
         "values": null
@@ -6203,7 +6203,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_phone",
         "examples": [
-            "val = transaction._system_user_ship_phone;"
+            "val = _system_user_ship_phone;"
         ],
         "notes": "Current User's Shipping Phone",
         "values": null
@@ -6213,7 +6213,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_fax",
         "examples": [
-            "val = transaction._system_user_ship_fax;"
+            "val = _system_user_ship_fax;"
         ],
         "notes": "Current User's Shipping Fax",
         "values": null
@@ -6223,7 +6223,7 @@
         "dataType": "String",
         "syntax": "_system_user_ship_email",
         "examples": [
-            "val = transaction._system_user_ship_email;"
+            "val = _system_user_ship_email;"
         ],
         "notes": "Current User's Shipping Email",
         "values": null
@@ -6233,7 +6233,7 @@
         "dataType": "Boolean",
         "syntax": "_system_user_is_notify_email",
         "examples": [
-            "val = transaction._system_user_is_notify_email;"
+            "val = _system_user_is_notify_email;"
         ],
         "notes": "Current User's Notify Email",
         "values": null
@@ -6243,7 +6243,7 @@
         "dataType": "String",
         "syntax": "_system_user_number_format",
         "examples": [
-            "val = transaction._system_user_number_format;"
+            "val = _system_user_number_format;"
         ],
         "notes": "Current User's Number Format",
         "values": null
@@ -6253,7 +6253,7 @@
         "dataType": "String",
         "syntax": "_system_user_units",
         "examples": [
-            "val = transaction._system_user_units;"
+            "val = _system_user_units;"
         ],
         "notes": "Current User's Units",
         "values": null
@@ -6263,7 +6263,7 @@
         "dataType": "String",
         "syntax": "_system_user_date_pref",
         "examples": [
-            "val = transaction._system_user_date_pref;"
+            "val = _system_user_date_pref;"
         ],
         "notes": "Current User's Date Preference",
         "values": null
@@ -6273,7 +6273,7 @@
         "dataType": "String",
         "syntax": "_system_user_time_zone",
         "examples": [
-            "val = transaction._system_user_time_zone;"
+            "val = _system_user_time_zone;"
         ],
         "notes": "Current User's Time Zone",
         "values": null
@@ -6283,7 +6283,7 @@
         "dataType": "String",
         "syntax": "_system_user_session_id",
         "examples": [
-            "val = transaction._system_user_session_id;"
+            "val = _system_user_session_id;"
         ],
         "notes": "Current User's Session Id",
         "values": null
@@ -6293,7 +6293,7 @@
         "dataType": "String",
         "syntax": "_system_user_partner_session_id",
         "examples": [
-            "val = transaction._system_user_partner_session_id;"
+            "val = _system_user_partner_session_id;"
         ],
         "notes": "Current User's Partner Session Id",
         "values": null
@@ -6303,7 +6303,7 @@
         "dataType": "Integer",
         "syntax": "_system_transaction_counter_value",
         "examples": [
-            "val = transaction._system_transaction_counter_value;"
+            "val = _system_transaction_counter_value;"
         ],
         "notes": "Current Process Transaction Counter",
         "values": null
@@ -6313,7 +6313,7 @@
         "dataType": "String",
         "syntax": "_system_current_user_language",
         "examples": [
-            "val = line._system_current_user_language;"
+            "val = _system_current_user_language;"
         ],
         "notes": "Current User's Language Preference",
         "values": null
@@ -6323,7 +6323,7 @@
         "dataType": "String",
         "syntax": "_system_modify_order",
         "examples": [
-            "val = transaction._system_modify_order;"
+            "val = _system_modify_order;"
         ],
         "notes": "Current Modify Order - \"1\" for the first modify and \"2\" for the second modify",
         "values": null
@@ -6333,7 +6333,7 @@
         "dataType": "String",
         "syntax": "_auto_update_triggered_from",
         "examples": [
-            "val = transaction._auto_update_triggered_from;"
+            "val = _auto_update_triggered_from;"
         ],
         "notes": "Value available only for autoupdate function of the main document; specifies variable name of the attribute triggering auto update",
         "values": null
@@ -6343,7 +6343,7 @@
         "dataType": "String",
         "syntax": "_system_selected_document_number",
         "examples": [
-            "val = transaction._system_selected_document_number;"
+            "val = _system_selected_document_number;"
         ],
         "notes": "Document Number of selected line item",
         "values": null
@@ -6353,7 +6353,7 @@
         "dataType": "String",
         "syntax": "_system_filtered_document_numbers",
         "examples": [
-            "val = transaction._system_filtered_document_numbers;"
+            "val = _system_filtered_document_numbers;"
         ],
         "notes": "List of Filtered Document Numbers in line item",
         "values": null
@@ -6363,7 +6363,7 @@
         "dataType": "Boolean",
         "syntax": "_mobile_device_enabled",
         "examples": [
-            "val = transaction._mobile_device_enabled;"
+            "val = _mobile_device_enabled;"
         ],
         "notes": "The Boolean value is \"True\" if the user is licensed for mobile, on a recognized mobile device, and on a mobile layout",
         "values": null
@@ -6373,7 +6373,7 @@
         "dataType": "String",
         "syntax": "_system_async_payload",
         "examples": [
-            "val = transaction._system_async_payload;"
+            "val = _system_async_payload;"
         ],
         "notes": "Asynchronous Payload from SOAP, transient value, only valid during receiving asynchronous calls",
         "values": null
@@ -6383,7 +6383,7 @@
         "dataType": "Boolean",
         "syntax": "_system_transaction_is_locked",
         "examples": [
-            "val = line._system_transaction_is_locked;"
+            "val = _system_transaction_is_locked;"
         ],
         "notes": "Boolean value is \"true\" when the Transaction is locked for any user",
         "values": null
@@ -6393,7 +6393,7 @@
         "dataType": "String",
         "syntax": "_system_transaction_lock_user",
         "examples": [
-            "val = line._system_transaction_lock_user;"
+            "val = _system_transaction_lock_user;"
         ],
         "notes": "Name of user who locked the Transaction; if the Transaction is unlocked, the value is null",
         "values": null
@@ -6403,7 +6403,7 @@
         "dataType": "String (date)",
         "syntax": "_system_transaction_locked_date",
         "examples": [
-            "val = line._system_transaction_locked_date;"
+            "val = _system_transaction_locked_date;"
         ],
         "notes": "Date the Transaction was locked; if the Transaction is unlocked, the value is null",
         "values": null
@@ -6413,7 +6413,7 @@
         "dataType": "String",
         "syntax": "_system_account_id_field",
         "examples": [
-            "val = transaction._system_account_id_field;"
+            "val = _system_account_id_field;"
         ],
         "notes": "Unique Account Id",
         "values": null
@@ -6423,7 +6423,7 @@
         "dataType": "String",
         "syntax": "_system_process_name",
         "examples": [
-            "val = transaction._system_process_name;"
+            "val = _system_process_name;"
         ],
         "notes": "Current Process Name",
         "values": null
@@ -6433,7 +6433,7 @@
         "dataType": "Boolean",
         "syntax": "_system_subscription_order_enabled",
         "examples": [
-            "val = transaction._system_subscription_order_enabled;"
+            "val = _system_subscription_order_enabled;"
         ],
         "notes": "Boolean value is \"true\" when the subscription order is enabled",
         "values": null
@@ -6443,7 +6443,7 @@
         "dataType": "String",
         "syntax": "_system_current_pp_name",
         "examples": [
-            "val = transaction._system_current_pp_name;"
+            "val = _system_current_pp_name;"
         ],
         "notes": "Current Participant Profile's Name",
         "values": null
@@ -6453,7 +6453,7 @@
         "dataType": "String",
         "syntax": "_system_host_company_full_name",
         "examples": [
-            "val = transaction._system_host_company_full_name;"
+            "val = _system_host_company_full_name;"
         ],
         "notes": "Host Company Full Name",
         "values": null
@@ -6463,7 +6463,7 @@
         "dataType": "String",
         "syntax": "_system_valid_stages",
         "examples": [
-            "val = transaction._system_valid_stages;"
+            "val = _system_valid_stages;"
         ],
         "notes": "Valid Stages for Current Process",
         "values": null
@@ -6473,7 +6473,7 @@
         "dataType": "String",
         "syntax": "_system_site_url",
         "examples": [
-            "val = transaction._system_site_url;"
+            "val = _system_site_url;"
         ],
         "notes": "Site url",
         "values": null
@@ -6483,7 +6483,7 @@
         "dataType": "Boolean",
         "syntax": "_standard_abo_enabled",
         "examples": [
-            "val = transaction._standard_abo_enabled;"
+            "val = _standard_abo_enabled;"
         ],
         "notes": "Boolean value is \"true\" when the standard ABO is enabled",
         "values": null

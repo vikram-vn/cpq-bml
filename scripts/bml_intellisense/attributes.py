@@ -46,12 +46,10 @@ def generate_bml_attributes(root_dir):
             if not key:
                 continue
             
-            if key.endswith('_t') or key.endswith('_l') or key.endswith('_c'):
-                ex = [f'val = {key};']
-            elif '_l' in key or 'line' in key:
+            if context == 'Line Item':
                 ex = [f'val = line.{key};']
             else:
-                ex = [f'val = transaction.{key};']
+                ex = [f'val = {key};']
 
             output[key] = {
                 "scope": context,
