@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.54.0] - 2026-08-23
+
+### Added
+- Add parameter type validation tests and BML function API definitions for intellisense support.
+- Implement BML linting engine, intellisense data loader, and extensive test coverage for static analysis.
+- Implement robust code action system with cascading cleanups, spelling suggestions, and comprehensive diagnostic fixes.
+- Add comprehensive BML test suite covering system variables, data types, and built-in functions.
+
 ## [1.53.0] - 2026-08-23
 
 ### Added
@@ -84,10 +92,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Consolidate build scripts into build_all.py and update package.json commands.
-
-## [1.44.0] - 2026-08-22
-
-### Added
-
-- Add linting rules for detecting undeclared variables and use-before-define errors in BML.
-- Implement BML syntax rules and variable naming convention linters.
