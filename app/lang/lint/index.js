@@ -83,6 +83,8 @@ function registerBmlLinter(context) {
     vscode.workspace.onDidChangeTextDocument((e) => triggerLint(e.document), null, context.subscriptions);
     vscode.workspace.onDidSaveTextDocument(triggerLint, null, context.subscriptions);
 
+    const isBmlDoc = (doc) => doc && (doc.languageId === 'bml' || (doc.uri && doc.uri.fsPath && doc.uri.fsPath.endsWith('.bml')));
+
     // Toggling cpqBml.features.lint or cpqBml.features.spelling should take effect immediately rather than
     // waiting for the next edit/save of each open document.
     vscode.workspace.onDidChangeConfiguration((e) => {
@@ -92,12 +94,12 @@ function registerBmlLinter(context) {
             return;
         }
         vscode.workspace.textDocuments.forEach((doc) => {
-            if (doc.languageId === 'bml') triggerLint(doc);
+            if (isBmlDoc(doc)) triggerLint(doc);
         });
     }, null, context.subscriptions);
 
     vscode.workspace.textDocuments.forEach((doc) => {
-        if (doc.languageId === 'bml') triggerLint(doc);
+        if (isBmlDoc(doc)) triggerLint(doc);
     });
 
     // register code actions

@@ -44,7 +44,8 @@ function blankRanges(text, ranges) {
 }
 
 function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
-    if (doc.languageId !== 'bml') return;
+    const isBml = doc.languageId === 'bml' || (doc.uri && doc.uri.fsPath && doc.uri.fsPath.endsWith('.bml'));
+    if (!isBml) return;
 
     const text = doc.getText();
     const lines = text.split(/\r?\n/);
