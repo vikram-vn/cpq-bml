@@ -37,7 +37,7 @@
   {
     "line": 20,
     "severity": "Warning",
-    "message": "'myDict' is read here but is never defined in this function."
+    "message": "'myDict' is read here but is never defined in this function. Did you mean 'c'?"
   },
   {
     "line": 20,

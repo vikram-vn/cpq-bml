@@ -141,6 +141,52 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
         action0.diagnostics = [diag];
         fixes.push(action0);
     }
+    else if (diag.code === 'bml-float-equality') {
+        const text = document.getText(editRange);
+        const m = text.match(/^\s*([a-zA-Z_]\w*)\s*(==|!=|<>)\s*(\d+\.\d+)\s*$/) ||
+                  text.match(/^\s*(\d+\.\d+)\s*(==|!=|<>)\s*([a-zA-Z_]\w*)\s*$/);
+        if (m) {
+            const isLeftVar = /^[a-zA-Z_]/.test(m[1]);
+            const varName = isLeftVar ? m[1] : m[3];
+            const op = isLeftVar ? m[2] : m[2];
+            const floatVal = isLeftVar ? m[3] : m[1];
+
+            const isNotEqual = (op === '!=' || op === '<>');
+            const isZero = (parseFloat(floatVal) === 0);
+
+            const compOp = isNotEqual ? '>' : '<=';
+            const toleranceCode = isZero
+                ? `abs(${varName}) ${compOp} 0.000001`
+                : `abs(${varName} - ${floatVal}) ${compOp} 0.000001`;
+
+            const fix1 = new vscode.CodeAction(`Replace with tolerance check '${toleranceCode}'`, vscode.CodeActionKind.QuickFix);
+            fix1.edit = new vscode.WorkspaceEdit();
+            fix1.edit.replace(document.uri, editRange, toleranceCode);
+            fix1.diagnostics = [diag];
+            fixes.push(fix1);
+
+            if (isZero && isNotEqual) {
+                const gtCode = `${varName} > 0.0`;
+                const fix2 = new vscode.CodeAction(`Replace with '${gtCode}'`, vscode.CodeActionKind.QuickFix);
+                fix2.edit = new vscode.WorkspaceEdit();
+                fix2.edit.replace(document.uri, editRange, gtCode);
+                fix2.diagnostics = [diag];
+                fixes.push(fix2);
+            }
+        }
+    }
+    else if (diag.code === 'bml-undeclared-variable' || diag.code === 'bml-useBeforeDefine') {
+        const msg = diag.message;
+        const m = msg.match(/Did you mean '([^']+)'\?/);
+        if (m) {
+            const suggestion = m[1];
+            const action = new vscode.CodeAction(`Replace with '${suggestion}'`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, suggestion);
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
+    }
 
     return fixes;
 }

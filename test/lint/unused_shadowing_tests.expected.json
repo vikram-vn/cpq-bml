@@ -67,7 +67,7 @@
   {
     "line": 33,
     "severity": "Warning",
-    "message": "'test2' is referenced in BMQL query as '$test2' here, but variable 'test2' is never defined in this function."
+    "message": "'test2' is referenced in BMQL query as '$test2' here, but variable 'test2' is never defined in this function. Did you mean 'temp'?"
   },
   {
     "line": 33,

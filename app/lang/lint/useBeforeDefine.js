@@ -2,6 +2,7 @@ const fs = require('fs');
 const { keywords: reservedWords, loadBuiltInFunctions } = require('./functions');
 const { loadSystemVariables } = require('./systemVariables');
 const { getAttributeScope } = require('./commerceAttributes');
+const { levenshtein } = require('./levenshtein');
 
 // Commerce functions have implicit platform bindings (document attributes, etc.)
 // this rule can't see from the file's text, so it only runs for util functions
@@ -48,6 +49,34 @@ function getStatementEndIndex(text, declIndex) {
     return text.length;
 }
 
+/**
+ * Finds the closest declared variable name for fuzzy "Did you mean ...?" suggestions.
+ */
+function findClosestDeclaredVariable(name, declaredNames) {
+    let minDistance = Infinity;
+    let closest = null;
+    const nameLower = name.toLowerCase();
+
+    declaredNames.forEach((declName) => {
+        const declLower = declName.toLowerCase();
+        if (declLower.startsWith(nameLower) || nameLower.startsWith(declLower) || declLower.includes(nameLower) || nameLower.includes(declLower)) {
+            const dist = levenshtein(nameLower, declLower);
+            if (dist < minDistance) {
+                minDistance = dist;
+                closest = declName;
+            }
+        } else {
+            const dist = levenshtein(nameLower, declLower);
+            if (dist <= 3 && dist < minDistance) {
+                minDistance = dist;
+                closest = declName;
+            }
+        }
+    });
+
+    return closest;
+}
+
 function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath, cleanText = noStringsText) {
     const diagnostics = [];
 
@@ -78,7 +107,6 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
         declaredNames.add(varName);
         declSitesByName.set(varName, new Set(decls.map((d) => d.index)));
         
-        // A declaration site only makes the variable available AFTER the assignment statement completes
         const stmtEnds = decls.map((d) => getStatementEndIndex(noStringsText, d.index));
         earliestAvailableReadByName.set(varName, Math.min(...stmtEnds));
     });
@@ -123,9 +151,11 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
         } else if (earliestAvailable === undefined) {
             const startPos = doc.positionAt(idx);
             const endPos = startPos.translate(0, name.length);
+            const suggestion = findClosestDeclaredVariable(name, declaredNames);
+            const suggestionText = suggestion ? ` Did you mean '${suggestion}'?` : '';
             const diag = new vscode.Diagnostic(
                 new vscode.Range(startPos, endPos),
-                `'${name}' is read here but is never defined in this function.`,
+                `'${name}' is read here but is never defined in this function.${suggestionText}`,
                 vscode.DiagnosticSeverity.Warning
             );
             diag.code = 'bml-undeclared-variable';
@@ -159,9 +189,11 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
                 diag.code = 'bml-useBeforeDefine';
                 diagnostics.push(diag);
             } else if (earliestAvailable === undefined) {
+                const suggestion = findClosestDeclaredVariable(name, declaredNames);
+                const suggestionText = suggestion ? ` Did you mean '${suggestion}'?` : '';
                 const diag = new vscode.Diagnostic(
                     new vscode.Range(startPos, endPos),
-                    `'${name}' is referenced in BMQL query as '$${name}' here, but variable '${name}' is never defined in this function.`,
+                    `'${name}' is referenced in BMQL query as '$${name}' here, but variable '${name}' is never defined in this function.${suggestionText}`,
                     vscode.DiagnosticSeverity.Warning
                 );
                 diag.code = 'bml-undeclared-variable';
