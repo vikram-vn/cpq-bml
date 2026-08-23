@@ -76,10 +76,6 @@ function buildFixAllText(document, relevantDiags) {
             renameMap.set(name, base.endsWith('RecordSet') ? base : base + 'RecordSet');
         } else if (diag.code === 'bml-boolean-naming-prefix') {
             renameMap.set(name, formatBooleanName(name));
-        } else if (diag.code === 'bml-unused-variable' || diag.code === 'bml-unused-loop-var') {
-            if (!name.startsWith('_')) {
-                renameMap.set(name, '_' + name);
-            }
         }
     }
 
@@ -90,7 +86,25 @@ function buildFixAllText(document, relevantDiags) {
 
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
 
-    // 2. String-preserved cleanups (never alters contents inside "quotes")
+    // 2. Comment out unused variable statements
+    const unusedDiags = relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var');
+    if (unusedDiags.length > 0) {
+        const unusedLineIndices = new Set(unusedDiags.map(d => (d.originalRange ?? d.range).start.line));
+        const lines = text.split(/\r?\n/);
+        for (const lineIdx of unusedLineIndices) {
+            if (lineIdx < lines.length) {
+                const line = lines[lineIdx];
+                if (!line.trim().startsWith('//')) {
+                    const indentMatch = line.match(/^\s*/);
+                    const indent = indentMatch ? indentMatch[0] : '';
+                    lines[lineIdx] = `${indent}// ${line.trim()}`;
+                }
+            }
+        }
+        text = lines.join(eol);
+    }
+
+    // 3. String-preserved cleanups (never alters contents inside "quotes")
     text = withPreservedStrings(text, (code) => {
         // Redundant literal type casts
         code = code.replace(/\binteger\s*\(\s*(\d+)\s*\)/g, '$1');
@@ -253,7 +267,7 @@ function getFixAllSafeAction(document, diagnostics) {
     // 5. Category: Unused Variables
     const unusedDiags = relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var');
     if (unusedDiags.length > 0) {
-        const unusedTitle = `Prefix all unused variables with '_' (${unusedDiags.length} issue${unusedDiags.length > 1 ? 's' : ''})`;
+        const unusedTitle = `Comment out all unused variable statements (${unusedDiags.length} issue${unusedDiags.length > 1 ? 's' : ''})`;
         const unusedText = buildFixAllText(document, unusedDiags);
         const unusedEdit = new vscode.WorkspaceEdit();
         unusedEdit.replace(document.uri, fullRange, unusedText);

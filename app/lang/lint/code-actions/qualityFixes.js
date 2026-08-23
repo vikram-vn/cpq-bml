@@ -453,11 +453,24 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
     }
     else if (diag.code === 'bml-unused-variable' || diag.code === 'bml-unused-loop-var') {
         const varName = document.getText(editRange);
-        const action = new vscode.CodeAction(`Prefix unused variable with '_' ('_${varName}')`, vscode.CodeActionKind.QuickFix);
-        action.edit = new vscode.WorkspaceEdit();
-        action.edit.replace(document.uri, editRange, `_${varName}`);
-        action.diagnostics = [diag];
-        fixes.push(action);
+        const lineIndex = editRange.start.line;
+        const lineText = document.lineAt(lineIndex).text;
+        const indentMatch = lineText.match(/^\s*/);
+        const indent = indentMatch ? indentMatch[0] : '';
+
+        const commentAction = new vscode.CodeAction(`Comment out unused variable '${varName}' statement`, vscode.CodeActionKind.QuickFix);
+        commentAction.edit = new vscode.WorkspaceEdit();
+        const commentedLine = `${indent}// ${lineText.trim()}`;
+        commentAction.edit.replace(document.uri, document.lineAt(lineIndex).range, commentedLine);
+        commentAction.diagnostics = [diag];
+        fixes.push(commentAction);
+
+        const removeAction = new vscode.CodeAction(`Remove unused variable '${varName}' statement`, vscode.CodeActionKind.QuickFix);
+        removeAction.edit = new vscode.WorkspaceEdit();
+        const lineRangeWithBreak = document.lineAt(lineIndex).rangeIncludingLineBreak;
+        removeAction.edit.delete(document.uri, lineRangeWithBreak);
+        removeAction.diagnostics = [diag];
+        fixes.push(removeAction);
     }
     else if (diag.code === 'bml-array-negative-index') {
         const idxText = document.getText(editRange);

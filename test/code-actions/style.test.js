@@ -47,8 +47,10 @@ function runStyleCodeActionTests() {
             const unusedDiag = diags.find(d => d.code === 'bml-unused-variable');
             if (unusedDiag) {
                 const unusedCodeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, unusedDiag.range);
-                const unusedAction = unusedCodeActions.find(a => a.title.includes("Prefix unused variable with '_'"));
-                assert.ok(unusedAction, 'Should offer unused variable prefix Quick Fix');
+                const commentAction = unusedCodeActions.find(a => a.title.includes("Comment out unused variable"));
+                assert.ok(commentAction, 'Should offer comment out unused variable Quick Fix');
+                const removeAction = unusedCodeActions.find(a => a.title.includes("Remove unused variable"));
+                assert.ok(removeAction, 'Should offer remove unused variable Quick Fix');
             }
 
             const arrayNamingDiag = diags.find(d => d.code === 'bml-array-naming-suffix');

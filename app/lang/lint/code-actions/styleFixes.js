@@ -100,13 +100,27 @@ function getStyleFixes(document, diag, editRange) {
         fixes.push(action);
     }
     else if (diag.code === 'bml-unused-variable' || diag.code === 'bml-unused-loop-var') {
-        const name = document.getText(editRange);
-        const newName = '_' + name;
-        const action = new vscode.CodeAction(`Prefix unused variable with '_' (${newName})`, vscode.CodeActionKind.QuickFix);
-        action.edit = new vscode.WorkspaceEdit();
-        renameIdentifierInDocument(document, name, newName, action.edit);
-        action.diagnostics = [diag];
-        fixes.push(action);
+        const varName = document.getText(editRange);
+        const lineIndex = editRange.start.line;
+        const lineText = document.lineAt(lineIndex).text;
+        const indentMatch = lineText.match(/^\s*/);
+        const indent = indentMatch ? indentMatch[0] : '';
+
+        // 1. Comment out unused variable line
+        const commentAction = new vscode.CodeAction(`Comment out unused variable '${varName}' statement`, vscode.CodeActionKind.QuickFix);
+        commentAction.edit = new vscode.WorkspaceEdit();
+        const commentedLine = `${indent}// ${lineText.trim()}`;
+        commentAction.edit.replace(document.uri, document.lineAt(lineIndex).range, commentedLine);
+        commentAction.diagnostics = [diag];
+        fixes.push(commentAction);
+
+        // 2. Remove unused variable line
+        const removeAction = new vscode.CodeAction(`Remove unused variable '${varName}' statement`, vscode.CodeActionKind.QuickFix);
+        removeAction.edit = new vscode.WorkspaceEdit();
+        const lineRangeWithBreak = document.lineAt(lineIndex).rangeIncludingLineBreak;
+        removeAction.edit.delete(document.uri, lineRangeWithBreak);
+        removeAction.diagnostics = [diag];
+        fixes.push(removeAction);
     }
 
     return fixes;
