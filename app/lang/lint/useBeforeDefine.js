@@ -11,13 +11,21 @@ function isCommerceFunction(metadata) {
     return !!(metadata && metadata.commerceDocument);
 }
 
+const _metaGatingCache = new Map();
 function readLocalMetadataForGating(bmlFilePath) {
     if (!bmlFilePath) return null;
+    if (_metaGatingCache.has(bmlFilePath)) return _metaGatingCache.get(bmlFilePath);
     try {
         const metaPath = bmlFilePath.replace(/\.bml$/i, '-meta.json');
-        if (!fs.existsSync(metaPath)) return null;
-        return JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        if (!fs.existsSync(metaPath)) {
+            _metaGatingCache.set(bmlFilePath, null);
+            return null;
+        }
+        const data = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        _metaGatingCache.set(bmlFilePath, data);
+        return data;
     } catch (e) {
+        _metaGatingCache.set(bmlFilePath, null);
         return null;
     }
 }
@@ -169,18 +177,18 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
     }
 
     // 2. BMQL dynamic variable references ($varName) inside string literals in cleanText
-    if (cleanText) {
+    if (cleanText && cleanText.includes('$')) {
         const bmqlVarRegex = /\$([a-zA-Z_]\w*)\b/g;
         let bmqlMatch;
         while ((bmqlMatch = bmqlVarRegex.exec(cleanText)) !== null) {
             const name = bmqlMatch[1];
-            const nameLower = name.toLowerCase();
             const idx = bmqlMatch.index + 1;
-
-            if (isIgnoredSymbol(nameLower)) continue;
 
             const earliestAvailable = earliestAvailableReadByName.get(name);
             if (earliestAvailable !== undefined && earliestAvailable <= idx) continue;
+
+            const nameLower = name.toLowerCase();
+            if (isIgnoredSymbol(nameLower)) continue;
 
             const startPos = doc.positionAt(idx);
             const endPos = startPos.translate(0, name.length);
@@ -194,7 +202,11 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
                 diag.code = 'bml-useBeforeDefine';
                 diagnostics.push(diag);
             } else if (earliestAvailable === undefined) {
-                const suggestion = findClosestDeclaredVariable(name, declaredNames);
+                let suggestion = suggestionCache.get(name);
+                if (suggestion === undefined) {
+                    suggestion = findClosestDeclaredVariable(name, declaredNames);
+                    suggestionCache.set(name, suggestion);
+                }
                 const suggestionText = suggestion ? ` Did you mean '${suggestion}'?` : '';
                 const diag = new vscode.Diagnostic(
                     new vscode.Range(startPos, endPos),

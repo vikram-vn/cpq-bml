@@ -113,14 +113,14 @@ function checkCodeQuality(cleanText, noStringsText, doc) {
     const magicNumRegex = /\b\d+(?:\.\d+)?\b/g;
     while ((match = magicNumRegex.exec(noStringsText)) !== null) {
         const val = match[0];
-        if (STANDARD_NUMBERS.has(val)) {
+        if (STANDARD_NUMBERS.has(val) || HTTP_STATUS_CODES.has(val) || TIME_UNIT_MULTIPLIERS.has(val)) {
             continue;
         }
 
         const index = match.index;
         if (index > 0) {
-            const precedingChar = noStringsText[index - 1];
-            if (precedingChar === '.' || precedingChar === '_' || /[a-zA-Z]/.test(precedingChar)) {
+            const precedingChar = noStringsText.charCodeAt(index - 1);
+            if (precedingChar === 46 || precedingChar === 95 || (precedingChar >= 65 && precedingChar <= 90) || (precedingChar >= 97 && precedingChar <= 122)) {
                 continue; // part of property or variable name
             }
         }

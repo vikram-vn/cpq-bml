@@ -4,6 +4,7 @@ const vscode = require('vscode');
 
 function checkDate(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    if (!cleanText.includes('date') && !cleanText.includes('days') && !cleanText.includes('months')) return diagnostics;
     let match;
 
     // Deprecated date methods (run on noStringsText to ignore calls inside strings/comments)

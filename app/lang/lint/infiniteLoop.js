@@ -11,6 +11,7 @@ const vscode = require('vscode');
  */
 function checkInfiniteLoop(noStringsText, doc) {
     const diagnostics = [];
+    if (!noStringsText.includes('{') || !noStringsText.includes('}')) return diagnostics;
 
     // Find variables assigned empty typed array literals: var = type[]{}  or  type[][]{} etc.
     // The regex matches: varName = <word>[][...]{} with nothing inside braces

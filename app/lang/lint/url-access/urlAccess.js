@@ -3,6 +3,7 @@ const vscode = require('vscode');
 
 function checkUrlAccess(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    if (!cleanText.includes('urldata')) return diagnostics;
     let match;
 
     // urldata(url, method) - check HTTP methods (GET, DELETE, PATCH, POST, PUT)

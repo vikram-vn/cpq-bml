@@ -17,7 +17,15 @@ const TokenType = {
 function getTagName(tagValue, isClose) {
     const start = isClose ? 2 : 1;
     let end = start;
-    while (end < tagValue.length && /[\w:-]/.test(tagValue[end])) end++;
+    const len = tagValue.length;
+    while (end < len) {
+        const c = tagValue.charCodeAt(end);
+        if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c >= 48 && c <= 57) || c === 95 || c === 58 || c === 45 || c === 46) {
+            end++;
+        } else {
+            break;
+        }
+    }
     return tagValue.substring(start, end).toLowerCase();
 }
 
@@ -28,7 +36,7 @@ function tokenize(input) {
 
     while (i < n) {
         if (input[i] === '<') {
-            if (input.substr(i, 5) === '<?xml' || input.substr(i, 2) === '<?') {
+            if (input.startsWith('<?', i)) {
                 const end = input.indexOf('?>', i);
                 if (end === -1) {
                     tokens.push({ type: TokenType.Text, value: input[i++] });
@@ -38,7 +46,7 @@ function tokenize(input) {
                 i = end + 2;
                 continue;
             }
-            if (input.substr(i, 4) === '<!--') {
+            if (input.startsWith('<!--', i)) {
                 const end = input.indexOf('-->', i);
                 if (end === -1) {
                     tokens.push({ type: TokenType.Text, value: input[i++] });
@@ -48,7 +56,7 @@ function tokenize(input) {
                 i = end + 3;
                 continue;
             }
-            if (input.substr(i, 9) === '<![CDATA[') {
+            if (input.startsWith('<![CDATA[', i)) {
                 const end = input.indexOf(']]>', i);
                 if (end === -1) {
                     tokens.push({ type: TokenType.Text, value: input[i++] });
@@ -58,7 +66,7 @@ function tokenize(input) {
                 i = end + 3;
                 continue;
             }
-            if (input.substr(i, 2) === '<!' && (input.substr(i, 9) === '<!DOCTYPE' || input.substr(i, 9) === '<!doctype')) {
+            if (input.startsWith('<!DOCTYPE', i) || input.startsWith('<!doctype', i)) {
                 let j = i + 9;
                 let inQuote = '';
                 while (j < n) {

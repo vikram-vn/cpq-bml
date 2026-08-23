@@ -48,30 +48,39 @@ function toVscodeRanges(document, offsetRanges) {
     return offsetRanges.map(([start, end]) => new vscode.Range(document.positionAt(start), document.positionAt(end)));
 }
 
+const { getCommentRanges } = require('../lint/comments');
+const { getStringRanges } = require('../lint/strings');
+
+const DEPRECATED_REGEXES = [
+    /\bNaN\b/g,
+    /\bstrtodate\b/gi,
+    /\b(gettabledata|getpartsdata)\b/gi
+];
+
 function findDeprecatedRanges(documentText, document) {
-    const { getCommentRanges } = require('../lint/comments');
-    const { getStringRanges } = require('../lint/strings');
+    if (!documentText.includes('NaN') && !documentText.includes('strtodate') && !documentText.includes('gettabledata') && !documentText.includes('getpartsdata')) {
+        return [];
+    }
+
     const commentRanges = getCommentRanges(documentText);
     const stringRanges = getStringRanges(documentText);
 
-    const chars = documentText.split('');
-    for (const [start, end] of [...commentRanges, ...stringRanges]) {
+    const buf = Buffer.from(documentText, 'utf8');
+    for (const [start, end] of commentRanges) {
         for (let i = start; i < end; i++) {
-            if (chars[i] !== '\n' && chars[i] !== '\r') {
-                chars[i] = ' ';
-            }
+            if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
         }
     }
-    const cleanText = chars.join('');
+    for (const [start, end] of stringRanges) {
+        for (let i = start; i < end; i++) {
+            if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+        }
+    }
+    const cleanText = buf.toString('utf8');
 
     const ranges = [];
-    const deprecatedRegexes = [
-        /\bNaN\b/g,
-        /\bstrtodate\b/gi,
-        /\b(gettabledata|getpartsdata)\b/gi
-    ];
-
-    for (const regex of deprecatedRegexes) {
+    for (const regex of DEPRECATED_REGEXES) {
+        regex.lastIndex = 0;
         let match;
         while ((match = regex.exec(cleanText)) !== null) {
             const startPos = document.positionAt(match.index);

@@ -13,7 +13,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
     const lines = doc.getText().split(/\r?\n/);
     const noStringsLines = noStringsText.split(/\r?\n/);
 
-    // 2. Multiple statements and Curly brackets alignment checks
+    // 2. Line-by-line checks: Semicolons, Trailing Comma, Braces, Line Length
+    const bmqlLineRe = /\bbmql\s*\(/i;
     for (let i = 0; i < noStringsLines.length; i++) {
         const line = noStringsLines[i];
         
@@ -30,17 +31,31 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
             ));
         }
 
-        // Trailing comma check on noStringsLines (strings are already replaced with spaces): e.g. put(fancyStepDict, "x", );
-        const trailingCommaMatch = line.match(/,\s*([)\]])/);
-        if (trailingCommaMatch) {
-            const char = trailingCommaMatch[1];
+        // Trailing comma check on noStringsLines: e.g. put(fancyStepDict, "x", );
+        if (line.includes(',')) {
+            const trailingCommaMatch = line.match(/,\s*([)\]])/);
+            if (trailingCommaMatch) {
+                const char = trailingCommaMatch[1];
+                const startPos = new vscode.Position(i, 0);
+                const endPos = new vscode.Position(i, lines[i].length);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Syntax Error: Trailing comma before closing '${char}' is not allowed.`,
+                    vscode.DiagnosticSeverity.Error,
+                    'bml-trailing-comma-error'
+                ));
+            }
+        }
+
+        // Line Length Check (>200 chars)
+        if (line.length > 200 && !bmqlLineRe.test(lines[i])) {
             const startPos = new vscode.Position(i, 0);
             const endPos = new vscode.Position(i, lines[i].length);
             diagnostics.push(makeDiagnostic(
                 new vscode.Range(startPos, endPos),
-                `Syntax Error: Trailing comma before closing '${char}' is not allowed.`,
-                vscode.DiagnosticSeverity.Error,
-                'bml-trailing-comma-error'
+                `Style Warning: Line exceeds 200 characters of code (${line.trim().length} chars). Consider breaking it into multiple lines.`,
+                vscode.DiagnosticSeverity.Warning,
+                'bml-line-too-long'
             ));
         }
 
@@ -52,7 +67,6 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
         }
 
         // Opening brace '{' check: must open at the end of the line for control flow blocks (if, for, else, elif)
-        // Skip inline object/JSON/dictionary literals inside function calls, variable assignments, etc.
         const isControlFlowBlock = /^\b(if|for|else|elif)\b/i.test(codeLine);
         if (isControlFlowBlock && codeLine.includes('{') && !codeLine.includes('{{')) {
             const idx = codeLine.lastIndexOf('{');
@@ -75,13 +89,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
             const beforeBrace = codeLine.substring(0, idx).trim();
             const afterBrace = codeLine.substring(idx + 1).trim();
             
-            // Allow '} else {' or '} elif (...) {' - BML's own brace_style: 'collapse'
-            // default (the beautifier's HUGS_PREVIOUS_BLOCK list) treats elif exactly
-            // like else, so a chain of '} elif (...) {' is the *recommended* shape,
-            // not a violation - real CPQ library code almost always writes it this way.
             const isElseOrElif = /^(else|elif)\b/i.test(afterBrace);
-            
-            // Allow expressions or initializers like '};', '},', '})', etc.
             const isExpressionOrInitializer = /^[);,]/.test(afterBrace);
 
             let isViolation = false;
@@ -287,27 +295,6 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
     }
 
 
-
-    // 8. Very long statement check (>200 chars, excluding strings/comments)
-    // A bmql(...) call's query string has to stay on one line - BML has no
-    // line-continuation syntax that keeps a string literal intact across
-    // lines - so a long BMQL query legitimately can't be wrapped and is
-    // exempt from this check.
-    const bmqlLineRe = /\bbmql\s*\(/i;
-    for (let i = 0; i < noStringsLines.length; i++) {
-        const line = noStringsLines[i];
-        const codeOnly = line.split('//')[0].trim();
-        if (codeOnly.length > 200 && !bmqlLineRe.test(lines[i])) {
-            const startPos = new vscode.Position(i, 0);
-            const endPos = new vscode.Position(i, lines[i].length);
-            diagnostics.push(makeDiagnostic(
-                new vscode.Range(startPos, endPos),
-                `Style Warning: Line exceeds 200 characters of code (${codeOnly.length} chars). Consider breaking it into multiple lines.`,
-                vscode.DiagnosticSeverity.Warning,
-                'bml-line-too-long'
-            ));
-        }
-    }
 
     return diagnostics;
 }

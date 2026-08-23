@@ -130,7 +130,10 @@ const FUNCTION_RETURN_TYPES = {
 // dump), kept here as a fallback for those.
 const { loadBuiltInFunctionsJson } = require('../intellisense/apiDataLoader');
 
+let _cachedReturnTypes = null;
+
 function getFunctionReturnTypes(extensionPath) {
+    if (_cachedReturnTypes) return _cachedReturnTypes;
     const map = Object.create(null);
     try {
         const data = loadBuiltInFunctionsJson(extensionPath);
@@ -145,7 +148,8 @@ function getFunctionReturnTypes(extensionPath) {
     for (const [name, type] of Object.entries(FUNCTION_RETURN_TYPES)) {
         if (!map[name]) map[name] = type;
     }
-    return map;
+    _cachedReturnTypes = map;
+    return _cachedReturnTypes;
 }
 
 // Given `text` ending in ")" right at `parenCloseIndex", balances parens
@@ -262,15 +266,23 @@ function getLeftOperandType(text, index, varTypes, returnTypes) {
         baseType = getFunctionCallReturnTypeEndingAt(text, i, returnTypes);
     } else {
         let start = i;
-        while (start >= 0 && /[a-zA-Z0-9_.]/.test(text[start])) {
-            start--;
+        while (start >= 0) {
+            const c = text.charCodeAt(start);
+            if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c === 95 || c === 46) {
+                start--;
+            } else {
+                break;
+            }
         }
         const token = text.slice(start + 1, i + 1);
-        if (/^\d+\.\d+$/.test(token)) baseType = 'Float';
-        else if (/^\d+$/.test(token)) baseType = 'Integer';
-        else if (/^(?:true|false)$/i.test(token)) baseType = 'Boolean';
-        else if (token === 'null') baseType = 'Null';
-        else if (/^[a-zA-Z_]\w*$/.test(token)) {
+        const first = token.charCodeAt(0);
+        if (first >= 48 && first <= 57) {
+            baseType = token.includes('.') ? 'Float' : 'Integer';
+        } else if (token === 'true' || token === 'false' || token === 'True' || token === 'False') {
+            baseType = 'Boolean';
+        } else if (token === 'null') {
+            baseType = 'Null';
+        } else if (token.length > 0) {
             const typeInfo = varTypes.get(token) || varTypes.get(token.toLowerCase());
             if (typeInfo) baseType = typeInfo.type;
         }
@@ -287,34 +299,31 @@ function getLeftOperandType(text, index, varTypes, returnTypes) {
 
 function getRightOperandType(text, index, varTypes, returnTypes) {
     let i = index + 1;
-    while (i < text.length && /\s/.test(text[i])) {
+    while (i < text.length && text.charCodeAt(i) <= 32) {
         i++;
     }
     if (i >= text.length) return null;
 
-    if (text[i] === '"' || text[i] === "'") {
-        const quote = text[i];
-        let j = i + 1;
-        while (j < text.length) {
-            if (text[j] === quote && text[j-1] !== '\\') {
-                return 'String';
-            }
-            j++;
-        }
+    if (text.charCodeAt(i) === 34 || text.charCodeAt(i) === 39) { // '"' or "'"
         return 'String';
     }
 
     let end = i;
-    while (end < text.length && /[a-zA-Z0-9_.]/.test(text[end])) {
-        end++;
+    while (end < text.length) {
+        const c = text.charCodeAt(end);
+        if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c === 95 || c === 46) {
+            end++;
+        } else {
+            break;
+        }
     }
     const token = text.slice(i, end);
-    if (/^\d+\.\d+$/.test(token)) return 'Float';
-    if (/^\d+$/.test(token)) return 'Integer';
-    if (/^(?:true|false)$/i.test(token)) return 'Boolean';
+    const first = token.charCodeAt(0);
+    if (first >= 48 && first <= 57) return token.includes('.') ? 'Float' : 'Integer';
+    if (token === 'true' || token === 'false' || token === 'True' || token === 'False') return 'Boolean';
     if (token === 'null') return 'Null';
 
-    if (/^[a-zA-Z_]\w*$/.test(token)) {
+    if (token.length > 0) {
         const callType = getFunctionCallReturnTypeStartingAt(text, i, end, returnTypes);
         let type = callType;
         if (!type) {

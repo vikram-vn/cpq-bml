@@ -17,13 +17,14 @@ function checkNullSafety(cleanText, noStringsText, doc) {
     if (nullableVars.size === 0) return diagnostics;
 
     const occurrencesByName = new Map();
-    const identRegex = /\b[a-zA-Z_]\w*\b/g;
-    let identMatch;
-    while ((identMatch = identRegex.exec(noStringsText)) !== null) {
-        const name = identMatch[0];
-        if (!nullableVars.has(name)) continue;
-        if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
-        occurrencesByName.get(name).push(identMatch.index);
+    for (const varName of nullableVars) {
+        const varRegex = new RegExp(`\\b${varName}\\b`, 'g');
+        const list = [];
+        let m;
+        while ((m = varRegex.exec(noStringsText)) !== null) {
+            list.push(m.index);
+        }
+        occurrencesByName.set(varName, list);
     }
 
     for (const varName of nullableVars) {
@@ -65,9 +66,9 @@ function checkNullSafety(cleanText, noStringsText, doc) {
 
             const windowStart = Math.max(0, useIndex - 15);
             const window = noStringsText.slice(windowStart, useIndex + varName.length + 5);
-            if (insideGuardRe.test(window)) continue;
+            if (window.includes('(') && insideGuardRe.test(window)) continue;
 
-            const contextStart = Math.max(0, useIndex - 1500);
+            const contextStart = Math.max(0, useIndex - 400);
             const context = noStringsText.slice(contextStart, useIndex);
             if (guardPattern.test(context)) continue;
 

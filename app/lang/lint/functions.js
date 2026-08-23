@@ -76,86 +76,43 @@ function loadBuiltInFunctions(extensionPath) {
 
 function getArgumentsTextAndEnd(text, startIndex) {
     let depth = 1;
-    let endIdx = -1;
-    let inSingleQuote = false;
-    let inDoubleQuote = false;
-
     for (let i = startIndex; i < text.length; i++) {
-        const char = text[i];
-
-        if (char === '\\') {
-            if (i + 1 < text.length) i++;
-            continue;
-        }
-
-        if (char === "'" && !inDoubleQuote) {
-            inSingleQuote = !inSingleQuote;
-        } else if (char === '"' && !inSingleQuote) {
-            inDoubleQuote = !inDoubleQuote;
-        }
-
-        if (!inSingleQuote && !inDoubleQuote) {
-            if (char === '(') depth++;
-            else if (char === ')') depth--;
-
+        const charCode = text.charCodeAt(i);
+        if (charCode === 40) depth++; // '('
+        else if (charCode === 41) { // ')'
+            depth--;
             if (depth === 0) {
-                endIdx = i;
-                break;
+                return {
+                    text: text.substring(startIndex, i),
+                    endIndex: i
+                };
             }
         }
-    }
-
-    if (endIdx !== -1) {
-        return {
-            text: text.substring(startIndex, endIdx),
-            endIndex: endIdx
-        };
     }
     return null;
 }
 
 function countArguments(argsText) {
-    if (!argsText.trim()) {
-        return 0;
-    }
-
-    // Strip a trailing top-level comma so that `find(x,)` counts as 1 arg, not 2.
-    // This lets the arg-count diagnostic still fire alongside bml-trailing-comma-error.
-    const stripped = argsText.trimEnd();
-    const lastChar = stripped[stripped.length - 1];
-    const effectiveArgs = lastChar === ',' ? stripped.slice(0, -1) : stripped;
+    let len = argsText.length;
+    while (len > 0 && argsText.charCodeAt(len - 1) <= 32) len--;
+    if (len === 0) return 0;
+    if (argsText.charCodeAt(len - 1) === 44) len--; // ','
 
     let commas = 0;
     let parenDepth = 0;
     let bracketDepth = 0;
     let braceDepth = 0;
-    let inSingleQuote = false;
-    let inDoubleQuote = false;
 
-    for (let i = 0; i < effectiveArgs.length; i++) {
-        const char = effectiveArgs[i];
-
-        if (char === '\\') {
-            if (i + 1 < effectiveArgs.length) i++;
-            continue;
-        }
-
-        if (char === "'" && !inDoubleQuote) {
-            inSingleQuote = !inSingleQuote;
-        } else if (char === '"' && !inSingleQuote) {
-            inDoubleQuote = !inDoubleQuote;
-        }
-
-        if (!inSingleQuote && !inDoubleQuote) {
-            if (char === '(') parenDepth++;
-            else if (char === ')') parenDepth = Math.max(0, parenDepth - 1);
-            else if (char === '[') bracketDepth++;
-            else if (char === ']') bracketDepth = Math.max(0, bracketDepth - 1);
-            else if (char === '{') braceDepth++;
-            else if (char === '}') braceDepth = Math.max(0, braceDepth - 1);
-            else if (char === ',' && parenDepth === 0 && bracketDepth === 0 && braceDepth === 0) {
-                commas++;
-            }
+    for (let i = 0; i < len; i++) {
+        const c = argsText.charCodeAt(i);
+        if (c === 40) parenDepth++;
+        else if (c === 41) parenDepth = Math.max(0, parenDepth - 1);
+        else if (c === 91) bracketDepth++;
+        else if (c === 93) bracketDepth = Math.max(0, bracketDepth - 1);
+        else if (c === 123) braceDepth++;
+        else if (c === 125) braceDepth = Math.max(0, braceDepth - 1);
+        else if (c === 44 && parenDepth === 0 && bracketDepth === 0 && braceDepth === 0) {
+            commas++;
         }
     }
 

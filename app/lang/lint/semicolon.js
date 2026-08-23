@@ -34,15 +34,16 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
     for (let lineIndex = 0; lineIndex < noStringsLines.length; lineIndex++) {
         const line = noStringsLines[lineIndex];
         for (let i = 0; i < line.length; i++) {
-            if (line[i] === '(') parenDepth++;
-            else if (line[i] === ')') parenDepth = Math.max(0, parenDepth - 1);
-            else if (line[i] === '[') bracketDepth++;
-            else if (line[i] === ']') bracketDepth = Math.max(0, bracketDepth - 1);
-            else if (line[i] === '{') {
+            const c = line.charCodeAt(i);
+            if (c === 40) parenDepth++; // '('
+            else if (c === 41) parenDepth = Math.max(0, parenDepth - 1); // ')'
+            else if (c === 91) bracketDepth++; // '['
+            else if (c === 93) bracketDepth = Math.max(0, bracketDepth - 1); // ']'
+            else if (c === 123) { // '{'
                 let j = i - 1;
-                while (j >= 0 && /\s/.test(line[j])) j--;
-                braceStack.push(j >= 0 && line[j] === ']');
-            } else if (line[i] === '}') {
+                while (j >= 0 && line.charCodeAt(j) <= 32) j--;
+                braceStack.push(j >= 0 && line.charCodeAt(j) === 93); // ']'
+            } else if (c === 125) { // '}'
                 const popped = braceStack.pop();
                 if (popped === true) {
                     lineClosesLiteralBrace[lineIndex] = true;

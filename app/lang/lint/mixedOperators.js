@@ -36,7 +36,8 @@ function checkMixedOperators(text, conditionRanges, doc, vscode) {
         if (raw.length < 2 || raw[0] !== '(' || raw[raw.length - 1] !== ')') continue;
         const conditionText = raw.slice(1, -1);
 
-        if (hasMixedAndOrAtTopLevel(conditionText)) {
+        const lower = conditionText.toLowerCase();
+        if (lower.includes('and') && lower.includes('or') && hasMixedAndOrAtTopLevel(conditionText)) {
             const startPos = doc.positionAt(start);
             const endPos = doc.positionAt(start + raw.length);
             const diag = new vscode.Diagnostic(

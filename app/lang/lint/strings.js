@@ -3,14 +3,15 @@ function getStringRanges(text) {
     let inSingleQuote = false;
     let inDoubleQuote = false;
     let start = -1;
+    const len = text.length;
 
-    for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        if (char === '\\') {
+    for (let i = 0; i < len; i++) {
+        const char = text.charCodeAt(i);
+        if (char === 92) { // '\\'
             i++; // skip escaped char
             continue;
         }
-        if (char === "'" && !inDoubleQuote) {
+        if (char === 39 && !inDoubleQuote) { // "'"
             if (!inSingleQuote) {
                 inSingleQuote = true;
                 start = i;
@@ -18,7 +19,7 @@ function getStringRanges(text) {
                 inSingleQuote = false;
                 stringRanges.push([start, i + 1]);
             }
-        } else if (char === '"' && !inSingleQuote) {
+        } else if (char === 34 && !inSingleQuote) { // '"'
             if (!inDoubleQuote) {
                 inDoubleQuote = true;
                 start = i;
@@ -37,6 +38,9 @@ function checkUnclosedStrings(cleanText, doc, vscode) {
     
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
         const lineText = lines[lineIndex];
+        if (!lineText.includes('"') && !lineText.includes("'")) {
+            continue;
+        }
         let inSingleQuote = false;
         let inDoubleQuote = false;
         let startCharIndex = -1;

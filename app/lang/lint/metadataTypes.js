@@ -31,12 +31,21 @@ function getParamTypeLabels(extensionPath) {
     return paramTypeLabels;
 }
 
+const _localMetaCache = new Map();
 function readLocalMetadata(bmlFilePath) {
+    if (!bmlFilePath) return null;
+    if (_localMetaCache.has(bmlFilePath)) return _localMetaCache.get(bmlFilePath);
     try {
         const metaPath = bmlFilePath.replace(/\.bml$/i, '-meta.json');
-        if (!fs.existsSync(metaPath)) return null;
-        return JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        if (!fs.existsSync(metaPath)) {
+            _localMetaCache.set(bmlFilePath, null);
+            return null;
+        }
+        const data = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        _localMetaCache.set(bmlFilePath, data);
+        return data;
     } catch (e) {
+        _localMetaCache.set(bmlFilePath, null);
         return null;
     }
 }

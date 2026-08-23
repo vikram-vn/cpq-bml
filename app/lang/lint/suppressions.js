@@ -56,6 +56,9 @@ function parseDirectives(text, commentRanges, lineStarts) {
 }
 
 function computeSuppressions(text, commentRanges) {
+    if (!text.includes('bml-lint-')) {
+        return { isSuppressed: () => false };
+    }
     const lineStarts = computeLineStarts(text);
     const totalLines = lineStarts.length;
     const directives = parseDirectives(text, commentRanges, lineStarts);

@@ -9,6 +9,11 @@ function makeDiagnostic(range, message, severity, code) {
 function checkPerformance(cleanText, noStringsText, doc) {
     const diagnostics = [];
 
+    // Fast check: if no loops exist in document, skip all loop performance checks
+    if (!noStringsText.includes('for')) {
+        return diagnostics;
+    }
+
     // Helper: Find all for-loop ranges in noStringsText
     const loops = [];
     const loopRegex = /\bfor\s+([a-zA-Z_]\w*)\s+in\s+/gi;
@@ -20,11 +25,14 @@ function checkPerformance(cleanText, noStringsText, doc) {
             let depth = 1;
             let endBrace = -1;
             for (let i = openBrace + 1; i < noStringsText.length; i++) {
-                if (noStringsText[i] === '{') depth++;
-                else if (noStringsText[i] === '}') depth--;
-                if (depth === 0) {
-                    endBrace = i + 1;
-                    break;
+                const c = noStringsText.charCodeAt(i);
+                if (c === 123) depth++;
+                else if (c === 125) {
+                    depth--;
+                    if (depth === 0) {
+                        endBrace = i + 1;
+                        break;
+                    }
                 }
             }
             if (endBrace !== -1) {
@@ -33,9 +41,27 @@ function checkPerformance(cleanText, noStringsText, doc) {
         }
     }
 
+    if (loops.length === 0) {
+        return diagnostics;
+    }
+
+    const isInLoop = (index) => {
+        for (let i = 0; i < loops.length; i++) {
+            if (index >= loops[i].start && index < loops[i].end) return true;
+        }
+        return false;
+    };
+
     // Check for nested loops
-    loops.forEach(l1 => {
-        const isNested = loops.some(l2 => l1.start > l2.start && l1.end < l2.end);
+    for (let i = 0; i < loops.length; i++) {
+        const l1 = loops[i];
+        let isNested = false;
+        for (let j = 0; j < loops.length; j++) {
+            if (i !== j && l1.start > loops[j].start && l1.end < loops[j].end) {
+                isNested = true;
+                break;
+            }
+        }
         if (isNested) {
             const startPos = doc.positionAt(l1.startIndex);
             const endPos = startPos.translate(0, 3); // length of 'for'
@@ -46,14 +72,13 @@ function checkPerformance(cleanText, noStringsText, doc) {
                 'bml-nested-loop'
             ));
         }
-    });
+    }
 
     // 1. BMQL inside loops detection (run on noStringsText to ignore bmql in comments/strings)
     const bmqlRegex = /\bbmql\s*\(/gi;
     while ((match = bmqlRegex.exec(noStringsText)) !== null) {
         const index = match.index;
-        const inLoop = loops.some(loop => index >= loop.start && index < loop.end);
-        if (inLoop) {
+        if (isInLoop(index)) {
             const startPos = doc.positionAt(index);
             const endPos = startPos.translate(0, 4); // length of 'bmql'
             diagnostics.push(makeDiagnostic(

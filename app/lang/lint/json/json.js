@@ -4,6 +4,7 @@ const vscode = require('vscode');
 
 function checkJson(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    if (!cleanText.includes('json')) return diagnostics;
     let match;
 
     // jsonput(jsonId, key, value) - a literal "null"/'null' or a quoted

@@ -12,14 +12,14 @@ function getDeclaredVariables(cleanText, doc) {
 
     // Filter out operators like <=, >=, !=, <>
     let idx = matchIndex - 1;
-    while (idx >= 0 && /\s/.test(cleanText[idx])) {
+    while (idx >= 0 && cleanText.charCodeAt(idx) <= 32) {
       idx--;
     }
     if (
       idx >= 0 &&
-      (cleanText[idx] === "<" ||
-        cleanText[idx] === ">" ||
-        cleanText[idx] === "!")
+      (cleanText.charCodeAt(idx) === 60 || // '<'
+        cleanText.charCodeAt(idx) === 62 || // '>'
+        cleanText.charCodeAt(idx) === 33)   // '!'
     ) {
       continue;
     }
@@ -73,29 +73,14 @@ function checkVariableDiagnostics(
 ) {
   const diagnostics = [];
 
-  // Find all blocks { ... } to help with shadowing
-  const blocks = [];
-  const stack = [];
-  for (let i = 0; i < noStringsText.length; i++) {
-    if (noStringsText[i] === "{") {
-      stack.push({ start: i });
-    } else if (noStringsText[i] === "}") {
-      if (stack.length > 0) {
-        const block = stack.pop();
-        block.end = i + 1;
-        blocks.push(block);
-      }
-    }
-  }
-
   const occurrencesByName = new Map();
   const identRegex = /\b[a-zA-Z_]\w*\b/g;
   let identMatch;
   while ((identMatch = identRegex.exec(noStringsText)) !== null) {
     const idx = identMatch.index;
     let before = idx - 1;
-    while (before >= 0 && /\s/.test(noStringsText[before])) before--;
-    if (before >= 0 && noStringsText[before] === ".") continue;
+    while (before >= 0 && noStringsText.charCodeAt(before) <= 32) before--;
+    if (before >= 0 && noStringsText.charCodeAt(before) === 46) continue; // '.'
     const name = identMatch[0];
     if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
     occurrencesByName.get(name).push(idx);

@@ -11,12 +11,23 @@ const metadataLib = require('../../rest/metadata');
 // read off disk - the same shape test/linter/fixtures.js uses to lint text
 // directly without a real open editor document.
 function lintFileText(vscode, extensionPath, bmlPath, text) {
+    const lineOffsets = [0];
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] === '\n') lineOffsets.push(i + 1);
+    }
     const doc = {
         languageId: 'bml',
         getText: () => text,
         positionAt: (idx) => {
-            const lines = text.slice(0, idx).split(/\r?\n/);
-            return new vscode.Position(lines.length - 1, lines[lines.length - 1].length);
+            let low = 0, high = lineOffsets.length - 1;
+            while (low <= high) {
+                const mid = (low + high) >> 1;
+                if (lineOffsets[mid] <= idx) low = mid + 1;
+                else high = mid - 1;
+            }
+            const line = high;
+            const character = idx - lineOffsets[line];
+            return new vscode.Position(line, character);
         },
         uri: vscode.Uri.file(bmlPath),
     };
@@ -148,27 +159,73 @@ async function diffFunction(context, vscode, args) {
  * Returns lines prefixed with '+', '-', or ' '.
  */
 function computeLineDiff(oldLines, newLines) {
-    // Build LCS table
-    const m = oldLines.length, n = newLines.length;
-    const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
-    for (let i = 1; i <= m; i++) {
-        for (let j = 1; j <= n; j++) {
-            dp[i][j] = oldLines[i - 1] === newLines[j - 1]
-                ? dp[i - 1][j - 1] + 1
-                : Math.max(dp[i - 1][j], dp[i][j - 1]);
-        }
+    const m = oldLines.length;
+    const n = newLines.length;
+
+    // Fast trim common prefix
+    let prefixCount = 0;
+    while (prefixCount < m && prefixCount < n && oldLines[prefixCount] === newLines[prefixCount]) {
+        prefixCount++;
     }
-    // Backtrack
-    const result = [];
-    let i = m, j = n;
-    while (i > 0 || j > 0) {
-        if (i > 0 && j > 0 && oldLines[i - 1] === newLines[j - 1]) {
-            result.unshift(' ' + oldLines[i - 1]); i--; j--;
-        } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-            result.unshift('+' + newLines[j - 1]); j--;
-        } else {
-            result.unshift('-' + oldLines[i - 1]); i--;
+
+    // Fast trim common suffix
+    let suffixCount = 0;
+    while (
+        suffixCount < m - prefixCount &&
+        suffixCount < n - prefixCount &&
+        oldLines[m - 1 - suffixCount] === newLines[n - 1 - suffixCount]
+    ) {
+        suffixCount++;
+    }
+
+    const trimmedOld = oldLines.slice(prefixCount, m - suffixCount);
+    const trimmedNew = newLines.slice(prefixCount, n - suffixCount);
+    const tm = trimmedOld.length;
+    const tn = trimmedNew.length;
+
+    const diffMiddle = [];
+    if (tm > 0 && tn > 0) {
+        const stride = tn + 1;
+        const dp = new Int32Array((tm + 1) * stride);
+        for (let i = 1; i <= tm; i++) {
+            const rowOffset = i * stride;
+            const prevRowOffset = (i - 1) * stride;
+            for (let j = 1; j <= tn; j++) {
+                dp[rowOffset + j] = trimmedOld[i - 1] === trimmedNew[j - 1]
+                    ? dp[prevRowOffset + j - 1] + 1
+                    : Math.max(dp[prevRowOffset + j], dp[rowOffset + j - 1]);
+            }
         }
+
+        let i = tm, j = tn;
+        while (i > 0 || j > 0) {
+            const rowOffset = i * stride;
+            if (i > 0 && j > 0 && trimmedOld[i - 1] === trimmedNew[j - 1]) {
+                diffMiddle.unshift(' ' + trimmedOld[i - 1]);
+                i--;
+                j--;
+            } else if (j > 0 && (i === 0 || dp[rowOffset + j - 1] >= dp[(i - 1) * stride + j])) {
+                diffMiddle.unshift('+' + trimmedNew[j - 1]);
+                j--;
+            } else {
+                diffMiddle.unshift('-' + trimmedOld[i - 1]);
+                i--;
+            }
+        }
+    } else {
+        for (let i = 0; i < tm; i++) diffMiddle.push('-' + trimmedOld[i]);
+        for (let j = 0; j < tn; j++) diffMiddle.push('+' + trimmedNew[j]);
+    }
+
+    const result = [];
+    for (let i = 0; i < prefixCount; i++) {
+        result.push(' ' + oldLines[i]);
+    }
+    for (let i = 0; i < diffMiddle.length; i++) {
+        result.push(diffMiddle[i]);
+    }
+    for (let i = m - suffixCount; i < m; i++) {
+        result.push(' ' + oldLines[i]);
     }
     return result;
 }
@@ -430,4 +487,5 @@ module.exports = {
     getFunctionMetrics,
     listLocalFunctions,
     lintAllFunctions,
+    computeLineDiff,
 };

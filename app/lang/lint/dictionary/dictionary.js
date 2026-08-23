@@ -3,6 +3,7 @@ const vscode = require('vscode');
 
 function checkDictionary(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    if (!cleanText.includes('dict')) return diagnostics;
     let match;
 
     // dict("boolean") / dict("anytype") / dict("...[][]") declarations later

@@ -19,15 +19,26 @@ const DEFAULT_TAGS = [
     { id: 'idea', kind: 'word', color: '#3498DB', lightColor: '#2980B9' }
 ];
 
+DEFAULT_TAGS.forEach((tag) => {
+    if (tag.kind === 'word') {
+        tag.regex = new RegExp('^' + tag.id + '\\b', 'i');
+    }
+});
+
 function matchTag(commentBodyText, isLineComment) {
-    const trimmed = commentBodyText.replace(/^\s+/, '');
+    let start = 0;
+    while (start < commentBodyText.length && commentBodyText.charCodeAt(start) <= 32) {
+        start++;
+    }
+    const trimmed = start > 0 ? commentBodyText.slice(start) : commentBodyText;
+    if (!trimmed) return null;
+
     for (const tag of DEFAULT_TAGS) {
         if (tag.lineCommentOnly && !isLineComment) continue;
         if (tag.kind === 'symbol') {
             if (trimmed.startsWith(tag.id)) return tag.id;
         } else {
-            const re = new RegExp('^' + tag.id + '\\b', 'i');
-            if (re.test(trimmed)) return tag.id;
+            if (tag.regex.test(trimmed)) return tag.id;
         }
     }
     return null;

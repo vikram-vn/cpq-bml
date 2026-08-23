@@ -24,14 +24,19 @@ function loadAttributeMetadata(extensionPath) {
     return attributesMap;
 }
 
+const _scopeCache = new Map();
 function getAttributeScope(attrName, extensionPath) {
     const attrLower = attrName.toLowerCase();
+    const cached = _scopeCache.get(attrLower);
+    if (cached !== undefined) return cached;
     
     // Check naming convention suffix/prefix first
     if (attrLower.endsWith('_t') || attrLower.startsWith('_transaction_')) {
+        _scopeCache.set(attrLower, 'transaction');
         return 'transaction';
     }
     if (attrLower.endsWith('_l') || attrLower.startsWith('_line_')) {
+        _scopeCache.set(attrLower, 'line');
         return 'line';
     }
 
@@ -39,9 +44,13 @@ function getAttributeScope(attrName, extensionPath) {
     const metaMap = loadAttributeMetadata(extensionPath);
     if (metaMap.has(attrLower)) {
         const entry = metaMap.get(attrLower);
-        if (entry.scope !== 'unknown') return entry.scope;
+        if (entry.scope !== 'unknown') {
+            _scopeCache.set(attrLower, entry.scope);
+            return entry.scope;
+        }
     }
 
+    _scopeCache.set(attrLower, 'unknown');
     return 'unknown';
 }
 

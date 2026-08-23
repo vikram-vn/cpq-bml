@@ -10,7 +10,7 @@ const { checkStyle } = require('./style');
 const { checkBoundaries } = require('./boundaries');
 const { checkFunctionCalls } = require('./functions');
 const { checkSystemVariables } = require('./systemVariables');
-const { checkAssignmentTypeConsistency, collectVariableTypes, inferLiteralType } = require('./typeCheck');
+const { checkAssignmentTypeConsistency, collectVariableTypes, collectVariableTypesAndMismatches, inferLiteralType } = require('./typeCheck');
 const { checkMetadataTypeConsistency, getDeclaredParameterTypes } = require('./metadataTypes');
 const { checkConstantConditions } = require('./constantConditions');
 const { checkUnreachableCode } = require('./unreachable');
@@ -29,10 +29,8 @@ const { checkCommerceAttributes } = require('./commerceAttributes');
 
 
 
-// Preserves \n/\r so line numbers (and thus diagnostic positions) stay correct.
-function blankRanges(text, ranges) {
-    if (!ranges || ranges.length === 0) return text;
-    const buf = Buffer.from(text, 'utf8');
+function blankBufferRanges(buf, ranges) {
+    if (!ranges || ranges.length === 0) return;
     for (const [start, end] of ranges) {
         for (let i = start; i < end; i++) {
             const b = buf[i];
@@ -41,7 +39,6 @@ function blankRanges(text, ranges) {
             }
         }
     }
-    return buf.toString('utf8');
 }
 
 function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
@@ -49,19 +46,21 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     if (!isBml) return;
 
     const text = doc.getText();
-    const lines = text.split(/\r?\n/);
     const diagnostics = [];
     const isLintEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.lint', true);
     const isSpellingEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true);
 
     const commentRanges = getCommentRanges(text);
-    const conditionRanges = getConditionRanges(text);
+    const buf = Buffer.from(text, 'utf8');
+    blankBufferRanges(buf, commentRanges);
+    const cleanText = buf.toString('utf8');
 
-    const cleanText = blankRanges(text, commentRanges);
+    const conditionRanges = getConditionRanges(cleanText);
 
     // noStringsText additionally blanks strings, for checks that must not match inside string literals.
     const stringRanges = getStringRanges(cleanText);
-    const noStringsText = blankRanges(cleanText, stringRanges);
+    blankBufferRanges(buf, stringRanges);
+    const noStringsText = buf.toString('utf8');
 
     // Fast keyword pre-checks to skip irrelevant checker passes
     const hasConditions = conditionRanges.length > 0 || cleanText.includes('if') || cleanText.includes('elif');
@@ -79,7 +78,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkOperators(noStringsText, doc));
         diagnostics.push(...checkPerformance(cleanText, noStringsText, doc));
         const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
-        const firstTypeByVar = collectVariableTypes(cleanText, doc, declaredParamTypes);
+        const { firstTypeByVar, diagnostics: assignmentMismatches } = collectVariableTypesAndMismatches(cleanText, doc, declaredParamTypes, vscode);
 
         diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc, firstTypeByVar));
         diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, firstTypeByVar));
@@ -88,7 +87,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath, firstTypeByVar));
         diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));
 
-        diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath, noStringsText, firstTypeByVar));
+        diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath, noStringsText, firstTypeByVar, assignmentMismatches));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
         
         if (hasConditions) {
@@ -113,7 +112,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         if (hasLoops) {
             diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
         }
-        diagnostics.push(...checkShadowedVariables(noStringsText, doc));
+        diagnostics.push(...checkShadowedVariables(noStringsText, doc, declaredVars));
         
         if (hasCommerce) {
             diagnostics.push(...checkCommerceAttributes(cleanText, noStringsText, doc, vscode, extensionPath));
@@ -133,7 +132,12 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     for (const d of diagnostics) {
         if (d.severity === vscode.DiagnosticSeverity.Error) {
             const line = d.range.start.line;
-            const lineLength = lines[line] ? lines[line].length : 0;
+            let lineLength = 0;
+            try {
+                lineLength = doc.lineAt(line).text.length;
+            } catch (e) {
+                lineLength = 0;
+            }
             d.originalRange = d.range;  // save narrow range for code actions
             d.range = new vscode.Range(
                 new vscode.Position(line, 0),

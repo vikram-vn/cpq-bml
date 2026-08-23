@@ -13,6 +13,7 @@ const XML_SENTINEL_ERROR_KEYS = {
  */
 function checkXml(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    if (!cleanText.includes('readxml')) return diagnostics;
 
     for (const [funcName, errorKey] of Object.entries(XML_SENTINEL_ERROR_KEYS)) {
         const assignRegex = new RegExp(`\\b([A-Za-z_]\\w*)\\s*=\\s*${funcName}\\s*\\(`, 'gi');

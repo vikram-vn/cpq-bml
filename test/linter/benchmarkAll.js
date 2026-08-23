@@ -29,21 +29,27 @@ const { getDeclaredParameterTypes } = require('../../app/lang/lint/metadataTypes
 
 function createMockDoc(text, fsPath = 'test.bml') {
     const lines = text.split(/\r?\n/);
+    const lineOffsets = [0];
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] === '\n') lineOffsets.push(i + 1);
+    }
     return {
         getText: () => text,
         languageId: 'bml',
         lineCount: lines.length,
         version: 1,
         uri: vscodeMock.Uri.file(fsPath),
+        lineAt: (line) => ({ text: lines[line] || '', range: new vscodeMock.Range(new vscodeMock.Position(line, 0), new vscodeMock.Position(line, (lines[line] || '').length)) }),
         positionAt: (offset) => {
-            let cur = 0;
-            for (let i = 0; i < lines.length; i++) {
-                if (cur + lines[i].length >= offset) {
-                    return new vscodeMock.Position(i, offset - cur);
-                }
-                cur += lines[i].length + 1;
+            let low = 0, high = lineOffsets.length - 1;
+            while (low <= high) {
+                const mid = (low + high) >> 1;
+                if (lineOffsets[mid] <= offset) low = mid + 1;
+                else high = mid - 1;
             }
-            return new vscodeMock.Position(lines.length - 1, 0);
+            const line = high;
+            const character = offset - lineOffsets[line];
+            return new vscodeMock.Position(line, character);
         }
     };
 }
@@ -148,10 +154,38 @@ results.formatMed = benchmark('Beautify Medium (110 lines)', () => bml_beautify(
 results.formatLarge = benchmark('Beautify Massive (2,771 lines)', () => bml_beautify(largeCode, { indent_size: 4 }), 10);
 
 // 4. INTELLISENSE / METADATA LOOKUP BENCHMARKS
-console.log('[4/4] Running Intellisense / Variable Analysis Benchmarks...');
+console.log('[4/6] Running Intellisense / Variable Analysis Benchmarks...');
 results.intelSmall = benchmark('Scope Analysis Small', () => getDeclaredVariables(smallCode, smallDoc), 50);
 results.intelMed = benchmark('Scope Analysis Medium', () => getDeclaredVariables(mediumCode, medDoc), 30);
 results.intelLarge = benchmark('Scope Analysis Massive', () => getDeclaredVariables(largeCode, largeDoc), 10);
+
+// 5. COMMENTS & METRICS BENCHMARKS
+console.log('[5/6] Running Comments & Code Metrics Benchmarks...');
+const { buildCommentDecorations } = require('../../app/lang/comments/decorate');
+const { computeComplexity } = require('../../app/lang/metrics/complexity');
+
+results.commentMed = benchmark('Comment Tags & Docs (110 lines)', () => buildCommentDecorations(mediumCode), 50);
+results.commentLarge = benchmark('Comment Tags & Docs (2,771 lines)', () => buildCommentDecorations(largeCode), 20);
+results.metricsMed = benchmark('Metrics Complexity (110 lines)', () => computeComplexity(mediumCode), 50);
+results.metricsLarge = benchmark('Metrics Complexity (2,771 lines)', () => computeComplexity(largeCode), 20);
+
+// 6. XSLT & MCP TOOLS BENCHMARKS
+console.log('[6/6] Running XSLT & MCP Knowledge Tools Benchmarks...');
+const { formatXml } = require('../../app/lang/xslt/formatter');
+const { lintXslt } = require('../../app/lang/xslt/xsltLinter');
+const { computeLineDiff } = require('../../app/lang/mcp/tools/knowledge');
+
+const xsltSample = '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:template match="/"><html><body><h1><xsl:value-of select="title"/></h1><p>Test</p></body></html></xsl:template></xsl:stylesheet>';
+const xsltDoc = createMockDoc(xsltSample, 'sample.xsl');
+
+results.xsltFormat = benchmark('XSLT Formatter', () => formatXml(xsltSample, 4), 50);
+results.xsltLint = benchmark('XSLT Linter', () => lintXslt(xsltDoc), 50);
+
+const linesOld = largeCode.split(/\r?\n/);
+const linesNew = [...linesOld];
+linesNew[10] = '// Modified line 10';
+linesNew[500] = '// Modified line 500';
+results.mcpDiff = benchmark('MCP Function Diff (2,771 lines)', () => computeLineDiff(linesOld, linesNew), 20);
 
 console.log('\n' + '='.repeat(70));
 console.log('BENCHMARK RESULTS SUMMARY');

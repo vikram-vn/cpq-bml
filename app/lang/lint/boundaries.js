@@ -113,16 +113,22 @@ function checkBoundaries(cleanText, noStringsText, doc) {
         }
     }
 
-    // 4. Numeric Limits (run on noStringsText to ignore numbers in comments/strings)
-    const numericRegex = /\b\d+(?:\.\d+)?\b/g;
-    while ((match = numericRegex.exec(noStringsText)) !== null) {
+    // 4. Numeric Precision & Range Limits
+    const numRegex = /\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/g;
+    while ((match = numRegex.exec(noStringsText)) !== null) {
         const val = match[0];
+        
+        // Fast-path: small integers under 7 digits cannot exceed any limits
+        if (val.length < 7 && !val.includes('.') && !val.includes('e') && !val.includes('E')) {
+            continue;
+        }
+
         const index = match.index;
         
         // Exclude properties/variables
         if (index > 0) {
-            const precedingChar = noStringsText[index - 1];
-            if (precedingChar === '.' || precedingChar === '_' || /[a-zA-Z]/.test(precedingChar)) {
+            const precedingChar = noStringsText.charCodeAt(index - 1);
+            if (precedingChar === 46 || precedingChar === 95 || (precedingChar >= 65 && precedingChar <= 90) || (precedingChar >= 97 && precedingChar <= 122)) {
                 continue;
             }
         }

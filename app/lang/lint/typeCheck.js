@@ -4,28 +4,29 @@ function getAssignmentRhsText(text, startIndex) {
     let depth = 0;
     let inSingleQuote = false;
     let inDoubleQuote = false;
+    const len = text.length;
 
-    for (let i = startIndex; i < text.length; i++) {
-        const ch = text[i];
+    for (let i = startIndex; i < len; i++) {
+        const ch = text.charCodeAt(i);
 
-        if (ch === '\\') {
+        if (ch === 92) { // '\\'
             i++;
             continue;
         }
-        if (ch === "'" && !inDoubleQuote) {
+        if (ch === 39 && !inDoubleQuote) { // "'"
             inSingleQuote = !inSingleQuote;
-        } else if (ch === '"' && !inSingleQuote) {
+        } else if (ch === 34 && !inSingleQuote) { // '"'
             inDoubleQuote = !inDoubleQuote;
         }
         if (inSingleQuote || inDoubleQuote) continue;
 
-        if (ch === '{' || ch === '(' || ch === '[') {
+        if (ch === 123 || ch === 40 || ch === 91) { // '{', '(', '['
             depth++;
-        } else if (ch === '}' || ch === ')' || ch === ']') {
+        } else if (ch === 125 || ch === 41 || ch === 93) { // '}', ')', ']'
             depth = Math.max(0, depth - 1);
-        } else if (ch === ';' && depth === 0) {
+        } else if (ch === 59 && depth === 0) { // ';'
             return { text: text.slice(startIndex, i), endIndex: i };
-        } else if (ch === '\n' && depth === 0) {
+        } else if (ch === 10 && depth === 0) { // '\n'
             return null;
         }
     }
@@ -102,7 +103,8 @@ function inferExpressionType(rhsText) {
     return null;
 }
 
-function collectVariableTypes(cleanText, doc, declaredTypes) {
+function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode) {
+    const diagnostics = [];
     const firstTypeByVar = new Map();
 
     if (declaredTypes) {
@@ -117,11 +119,6 @@ function collectVariableTypes(cleanText, doc, declaredTypes) {
 
     while ((match = assignRegex.exec(cleanText)) !== null) {
         const varName = match[1];
-        const lookupKey = varName.toLowerCase();
-        if (firstTypeByVar.has(lookupKey)) {
-            continue; // Already collected first type for this variable!
-        }
-
         const matchIndex = match.index;
 
         let before = matchIndex - 1;
@@ -137,57 +134,44 @@ function collectVariableTypes(cleanText, doc, declaredTypes) {
         const inferredType = inferExpressionType(rhs.text);
         if (!inferredType) continue;
 
-        const entry = { type: inferredType, line: doc ? doc.positionAt(matchIndex).line : 0 };
-        firstTypeByVar.set(lookupKey, entry);
-        firstTypeByVar.set(varName, entry);
+        const lookupKey = varName.toLowerCase();
+        const prior = firstTypeByVar.get(lookupKey) || firstTypeByVar.get(varName);
+        if (!prior) {
+            const entry = { type: inferredType, line: doc ? doc.positionAt(matchIndex).line : 0 };
+            firstTypeByVar.set(lookupKey, entry);
+            firstTypeByVar.set(varName, entry);
+        } else if (vscode && doc) {
+            const currentLine = doc.positionAt(matchIndex).line;
+            const literalType = inferLiteralType(rhs.text);
+            if (literalType && prior.line !== currentLine && prior.type !== literalType) {
+                const startPos = doc.positionAt(matchIndex);
+                const endPos = startPos.translate(0, varName.length);
+                const range = new vscode.Range(startPos, endPos);
+                const origin = prior.isParam
+                    ? `was declared as a ${prior.type} parameter`
+                    : `was first assigned a ${prior.type} value (line ${prior.line + 1})`;
+                const diag = new vscode.Diagnostic(
+                    range,
+                    `Type mismatch: '${varName}' ${origin} - CPQ will not accept reassigning it to a ${literalType} value.`,
+                    vscode.DiagnosticSeverity.Error
+                );
+                diag.code = 'bml-type-mismatch';
+                diagnostics.push(diag);
+            }
+        }
     }
 
-    return firstTypeByVar;
+    return { firstTypeByVar, diagnostics };
 }
 
-function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, extensionPath, noStringsText, precomputedFirstTypes) {
-    const diagnostics = [];
+function collectVariableTypes(cleanText, doc, declaredTypes) {
+    return collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, null).firstTypeByVar;
+}
+
+function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, extensionPath, noStringsText, precomputedFirstTypes, precomputedDiagnostics) {
+    const diagnostics = precomputedDiagnostics ? [...precomputedDiagnostics] : [];
     const firstTypeByVar = precomputedFirstTypes || collectVariableTypes(cleanText, doc, declaredTypes);
     const returnTypes = getFunctionReturnTypes(extensionPath);
-
-    // Second pass: validate assignments
-    const assignRegex = /\b([a-zA-Z_]\w*)\s*=(?!=)/g;
-    let match;
-    while ((match = assignRegex.exec(cleanText)) !== null) {
-        const varName = match[1];
-        const matchIndex = match.index;
-
-        let before = matchIndex - 1;
-        while (before >= 0 && /\s/.test(cleanText[before])) before--;
-        if (before >= 0 && (cleanText[before] === '<' || cleanText[before] === '>' || cleanText[before] === '!')) {
-            continue;
-        }
-
-        const rhsStart = matchIndex + match[0].length;
-        const rhs = getAssignmentRhsText(cleanText, rhsStart);
-        if (!rhs) continue;
-
-        const inferredType = inferLiteralType(rhs.text);
-        if (!inferredType) continue;
-
-        const lookupKey = declaredTypes && declaredTypes.has(varName.toLowerCase()) ? varName.toLowerCase() : varName;
-        const prior = firstTypeByVar.get(lookupKey) || firstTypeByVar.get(varName);
-        if (prior && prior.line !== doc.positionAt(matchIndex).line && prior.type !== inferredType) {
-            const startPos = doc.positionAt(matchIndex);
-            const endPos = startPos.translate(0, varName.length);
-            const range = new vscode.Range(startPos, endPos);
-            const origin = prior.isParam
-                ? `was declared as a ${prior.type} parameter`
-                : `was first assigned a ${prior.type} value (line ${prior.line + 1})`;
-            const diag = new vscode.Diagnostic(
-                range,
-                `Type mismatch: '${varName}' ${origin} - CPQ will not accept reassigning it to a ${inferredType} value.`,
-                vscode.DiagnosticSeverity.Error
-            );
-            diag.code = 'bml-type-mismatch';
-            diagnostics.push(diag);
-        }
-    }
 
     // Binary expressions type checking - run directly on noStringsText to skip string literal operators
     const textForOps = noStringsText || cleanText;
@@ -284,4 +268,4 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
     return diagnostics;
 }
 
-module.exports = { inferLiteralType, inferExpressionType, checkAssignmentTypeConsistency, collectVariableTypes, getAssignmentRhsText };
+module.exports = { inferLiteralType, inferExpressionType, checkAssignmentTypeConsistency, collectVariableTypes, collectVariableTypesAndMismatches, getAssignmentRhsText };
