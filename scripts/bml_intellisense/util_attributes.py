@@ -1,21 +1,10 @@
 import os
 import json
 
-def get_bml_util_attributes_data_type(item):
-    dt = item.get('dataType')
-    if not dt:
-        return 'String'
-    if isinstance(dt, str):
-        return dt
-    return dt.get('displayValue') or dt.get('displayLabel') or str(dt)
-
-def get_bml_util_attributes_key(item):
-    return item.get('variableName') or item.get('name')
-
 def generate_bml_util_attributes(root_dir):
     config_dir = os.path.join(root_dir, 'app', 'lookups', 'configuration')
     output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'bml-util-attributes-api-usage.json')
-    
+
     sources = [
         {"file": os.path.join(config_dir, 'attributes.json'), "context": 'Configuration'},
         {"file": os.path.join(config_dir, 'product-family-attributes.json'), "context": 'Product Family'}
@@ -36,20 +25,19 @@ def generate_bml_util_attributes(root_dir):
             
         items = raw.get('items', [])
         for item in items:
-            key = get_bml_util_attributes_key(item)
+            key = item.get('variableName') or item.get('name')
             if not key:
                 continue
-                
-            dt = get_bml_util_attributes_data_type(item)
-            label = item.get('displayLabel') or key
-            desc = item.get('description') or label
             
+            dt = item.get('dataType')
+            dataType = dt.get('displayValue') if isinstance(dt, dict) else 'String'
+
             output[key] = {
-                "scope": context,
-                "dataType": dt,
-                "syntax": key,
-                "examples": [],
-                "notes": desc
+                "scope": f"util.{context}",
+                "dataType": dataType,
+                "syntax": f"util.{key}",
+                "examples": [f'val = util.{key};'],
+                "notes": item.get('description') or item.get('label') or item.get('displayLabel') or ''
             }
         print(f"[generateBmlUtilAttributes]   -> {len(items)} items from {os.path.basename(filepath)}")
         

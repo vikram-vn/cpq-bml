@@ -25,7 +25,7 @@ def generate_bml_variables(root_dir):
             "scope": scope,
             "dataType": dt,
             "syntax": key,
-            "examples": [],
+            "examples": [f'val = {key};'],
             "notes": desc
         }
         

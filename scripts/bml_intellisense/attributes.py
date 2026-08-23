@@ -15,7 +15,7 @@ def get_bml_attributes_menu_values(item):
         v = e.get('displayValue') or e.get('value')
         if v:
             vals.append(v)
-    return vals[:10]  # cap long menus at 10
+    return vals[:10]
 
 def generate_bml_attributes(root_dir):
     commerce_dir = os.path.join(root_dir, 'app', 'lookups', 'commerce')
@@ -45,11 +45,19 @@ def generate_bml_attributes(root_dir):
             key = item.get('name')
             if not key:
                 continue
+            
+            if key.endswith('_t') or key.endswith('_l') or key.endswith('_c'):
+                ex = [f'val = {key};']
+            elif '_l' in key or 'line' in key:
+                ex = [f'val = line.{key};']
+            else:
+                ex = [f'val = transaction.{key};']
+
             output[key] = {
                 "scope": context,
                 "dataType": get_bml_attributes_data_type(item),
                 "syntax": key,
-                "examples": [],
+                "examples": ex,
                 "notes": item.get('description') or item.get('displayLabel') or '',
                 "values": get_bml_attributes_menu_values(item)
             }
