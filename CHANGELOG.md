@@ -4,6 +4,13 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.51.0] - 2026-08-23
+
+### Added
+- Implement comprehensive linting framework with code actions, diagnostic rules, and supporting test infrastructure.
+- Implement BML static analysis engine, metrics calculator, and XML/XSLT formatter.
+- Implement linting engine for BML code style, naming conventions, and syntax safety.
+
 ## [1.50.0] - 2026-08-23
 
 ### Added
@@ -87,9 +94,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Introduce CPQ BML language grammar, build scripts, and syntax testing suite.
 - Implement MCP server registration and add chat participant and tool configurations.
 - Add BML function metadata and lint definitions for intellisense support.
-
-## [1.41.0] - 2026-08-22
-
-### Added
-
-- Initialize spell-check word lists with BML and English dictionaries.
