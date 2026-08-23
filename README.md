@@ -28,8 +28,6 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 
 ---
 
-
-
 ## 📖 Table of Contents
 
 - [Features at a Glance](#-features-at-a-glance)
@@ -55,15 +53,15 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 
 ## ✨ Features at a Glance
 
-* 🎨 **BML Color Themes:** Four tailored editor themes offering deep semantic token coloring.
-* 💡 **IntelliSense:** Context-aware auto-completion, signature help, and parameter tooltips.
-* 🔍 **Linter & Diagnostics:** 70+ real-time checks for security (SQL injection, hardcoded secrets), guaranteed compile/runtime failures verified against Oracle's own BML docs, deprecated APIs, and logical errors.
-* 📖 **Offline Help Viewer:** Docusaurus-style rendered documentation (with `:::note`/`:::warning` callouts) opens instantly from any hover tooltip - no internet connection required.
-* 🛠 **Workspace-Wide Formatting:** Recursively beautify directories or targeted folders.
-* ☁ **REST Integration:** Synchronize, compile, validate, debug, and deploy BML functions directly on remote CPQ instances.
-* 🤖 **AI-Agent Connectivity (MCP):** Build or debug via AI using the secure local Model Context Protocol (MCP) server.
-* 🧠 **AI Agent Skills (AgentSkills.io):** Ships with 8 pre-compiled semantic skills to inject profound CPQ and BML domain knowledge into AI assistants like Claude Code.
-* 📝 **Better Comments:** Distinct visual styling for tasks, tags, directives, and function headers.
+- 🎨 **BML Color Themes:** Four tailored editor themes offering deep semantic token coloring.
+- 💡 **IntelliSense:** Context-aware auto-completion, signature help, and parameter tooltips.
+- 🔍 **Linter & Diagnostics:** 70+ real-time checks for security (SQL injection, hardcoded secrets), guaranteed compile/runtime failures verified against Oracle's own BML docs, deprecated APIs, and logical errors.
+- 📖 **Offline Help Viewer:** Docusaurus-style rendered documentation (with `:::note`/`:::warning` callouts) opens instantly from any hover tooltip - no internet connection required.
+- 🛠 **Workspace-Wide Formatting:** Recursively beautify directories or targeted folders.
+- ☁ **REST Integration:** Synchronize, compile, validate, debug, and deploy BML functions directly on remote CPQ instances.
+- 🤖 **AI-Agent Connectivity (MCP):** Build or debug via AI using the secure local Model Context Protocol (MCP) server.
+- 🧠 **AI Agent Skills (AgentSkills.io):** Ships with 8 pre-compiled semantic skills to inject profound CPQ and BML domain knowledge into AI assistants like Claude Code.
+- 📝 **Better Comments:** Distinct visual styling for tasks, tags, directives, and function headers.
 
 ---
 
@@ -71,20 +69,20 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 
 ### 1. Language Support & IntelliSense
 
-* **Rich Syntax Highlighting:** Full grammar support for BML methods, control flow statements (`if`, `elif`, `else`, `for`), database queries (`bmql`), operators, and literals.
-* **Snippets Library:** Instant, context-aware code skeletons for looping constructs, common string operations, JSON manipulations, and system functions.
-* **Autocomplete & Tooltips:** Signatures, return types, and parameter checklists populate as you type, matching Oracle CPQ specifications.
-* **Offline Help Viewer:** Every hover tooltip for a built-in function includes a **📖 Read Offline Help** link that opens a fast, self-contained documentation panel - no internet connection needed. It renders Docusaurus-style `:::note`/`:::tip`/`:::warning` callouts as proper colored boxes (not raw markdown text), theme-matched to your editor, and reuses a single panel across opens so repeated lookups are instant rather than re-launching a preview each time.
-* **Spell Checker Integration:** Preconfigured with `cspell.json` definitions to automatically support CPQ-specific functions (`strtojavadate`, `jsonarrayrefid`, `bmql`, etc.) without triggering spelling errors.
+- **Rich Syntax Highlighting:** Full grammar support for BML methods, control flow statements (`if`, `elif`, `else`, `for`), database queries (`bmql`), operators, and literals.
+- **Snippets Library:** Instant, context-aware code skeletons for looping constructs, common string operations, JSON manipulations, and system functions.
+- **Autocomplete & Tooltips:** Signatures, return types, and parameter checklists populate as you type, matching Oracle CPQ specifications.
+- **Offline Help Viewer:** Every hover tooltip for a built-in function includes a **📖 Read Offline Help** link that opens a fast, self-contained documentation panel - no internet connection needed. It renders Docusaurus-style `:::note`/`:::tip`/`:::warning` callouts as proper colored boxes (not raw markdown text), theme-matched to your editor, and reuses a single panel across opens so repeated lookups are instant rather than re-launching a preview each time.
+- **Spell Checker Integration:** Preconfigured with `cspell.json` definitions to automatically support CPQ-specific functions (`strtojavadate`, `jsonarrayrefid`, `bmql`, etc.) without triggering spelling errors.
 
 ---
 
 ### 2. Workspace Formatter & Beautifier
 
-* **Recursive Formatting:** Run `CPQ-BML: Beautify / Format All BML Files in Workspace` (`cpqBml.beautifyWorkspace`) to format BML files recursively.
-* **Folder Targeting UI:** A multi-select quick-pick picker displays workspace root paths and folders, letting you target specific modules.
-* **CPQ Conventions:** Standardizes indentation, spacing, brace layouts, and enforces uppercase rules like auto-replacing the keyword `not` with the compiler-mandated `NOT`.
-* **Flexible Configuration:** Formatter behavior can be overridden for specific directories using local `.bmlbeautifyrc` JSON files.
+- **Recursive Formatting:** Run `CPQ-BML: Beautify / Format All BML Files in Workspace` (`cpqBml.beautifyWorkspace`) to format BML files recursively.
+- **Folder Targeting UI:** A multi-select quick-pick picker displays workspace root paths and folders, letting you target specific modules.
+- **CPQ Conventions:** Standardizes indentation, spacing, brace layouts, and enforces uppercase rules like auto-replacing the keyword `not` with the compiler-mandated `NOT`.
+- **Flexible Configuration:** Formatter behavior can be overridden for specific directories using local `.bmlbeautifyrc` JSON files.
 
 ---
 
@@ -92,26 +90,26 @@ A professional, feature-rich Visual Studio Code extension for Oracle CPQ BigMach
 
 The extension includes a custom BML-native static analyzer to capture defects, anti-patterns, and vulnerabilities before you upload to CPQ:
 
-| Linter Rule Category | Diagnostic Checks & Validations | Recommendation / Fix |
-| :--- | :--- | :--- |
-| **BMQL Safety** | String concatenation inside `bmql(...)` queries (SQL injection risk). `SELECT *` usage. `UPDATE`/`MODIFY`/`DELETE` with no `WHERE` clause (silently mutates or clears the whole table). `SELECT ... DISTINCT`/`ORDER BY` with no `WHERE` (result set silently capped/truncated at 1,000 records). Plain `SELECT` with no `WHERE` (unbounded result set). | Use safe `$variable` placeholder syntax; list explicit columns; add a `WHERE` clause unless clearing/scanning the whole table is intentional. |
-| **API Deprecations** | Flags outdated methods like `strtodate`, `gettabledata`, and `getpartsdata`. | Suggests `strtojavadate` and secure `bmql` database queries. |
-| **Oracle Constants** | Catches JS-specific `NaN` references. | Auto-suggests CPQ-compatible `jNaN`. |
-| **Return Statements** | Checks for missing return paths or invalid Commerce BML returns (missing the delimiter `\|`). | Enforces valid BML return statements and delimiter patterns. |
-| **Array Boundary Safety** | Detects access on `split()` array indices without preceding `sizeofarray()` checks. | Enforces array size validation before index access. |
-| **Parsing Validations** | Flags unsafe `atoi()` and `atof()` conversions on variables. | Suggests checking numeric status first with `isnumber()`. |
-| **Guaranteed Compile/Runtime Failures** | Patterns verified against Oracle's own BML documentation to *always* fail, regardless of data: `atoi("")`/`atof("")` (always throws), `isnumber()` with no argument (compile error - `isnumber("")` is fine), `replace(str, "", new)` (empty search pattern always throws), `string("literal")` (compile error - `string()` casts Float/Integer/Boolean only), negative literal array sizes like `float[-9]` (runtime exception), a Util/Commerce Library function calling itself by name (recursive self-reference always fails to compile). | Each has a one-line, deterministic fix - these only fire on literal arguments, never on variables whose runtime value can't be known statically, so they're zero-false-positive by construction. |
-| **Documented Function Limits** | `logtime()` tag argument over 128 characters (silently truncated). `globaldictset()` `minTimeToLive` outside the documented `0 < n < 525600` range. `jsonput()` given the literal string `"null"` or a `{...}`/`[...]`-wrapped value (both are silently stripped of their quotes instead of saved as written). `values()` called on a `boolean`, `anytype`, or double-dimensional dictionary (unsupported). | Adjust the literal argument to stay within the documented behavior for that function. |
-| **Security & Secrets** | Hardcoded URLs in string literals. Hardcoded credentials - a variable named like `password`/`apiKey`/`secret`/`token` assigned a non-trivial string literal directly (common placeholder values and function-sourced values are excluded to avoid noise). | Extract URLs into Data Tables or System Variables; store secrets in a System Variable or secure configuration instead of literal source code. |
-| **Logic & Style** | Empty control flows (`if`, `elif`, `else`, `for`), magic literals (except `0`, `1`, `2`, `10`, `100`), and strict semicolon rules. | Recommends naming constants and formatting blocks correctly. |
-| **Performance** | Nested loops, BMQL queries inside loops, string concatenation inside loops, repeated/duplicate BMQL queries on the same table. | Move queries outside loops; use `StringBuilder` (`sbappend`/`sbtostring`) for string accumulation; cache repeated queries. |
-| **Design & Complexity** | Nesting depth > 3, cyclomatic complexity > 15 (counted decision points: `if`/`elif`/`for`/`and`/`or`). | Refactor deeply nested blocks into helper functions. |
-| **Style** | Multiple statements on one line, opening/closing brace placement, `not` without parentheses around its argument, unguarded `print()` calls, lines exceeding 200 characters of code (BMQL query lines are exempt - a query string can't be wrapped across lines). | Enforces one-statement-per-line, collapse brace style, `not(x)` syntax, debug-flag-guarded print, and line-length limits. |
-| **Safety** | Float direct equality comparison (`==`/`!=`) against a literal float, division by literal zero, `break`/`continue` outside a loop body, forbidden `_config_attributes`/`_config_attr_text` system variables. | Use a tolerance threshold for float comparison; guard division; remove misplaced loop control statements; use supported CPQ attributes instead. |
-| **Syntax Errors** | Array element assignment (`arr[i] = v` is unsupported in BML), invalid member access or method calls on non-object values (e.g. `x.length`, `x.doSomething()`), `dict()` called with no type argument. | Use `append()`/`insert()` for arrays; use BML built-in functions (`sizeofarray()`, `jsonget()`, etc.) instead of dot-notation; supply a type to `dict()` (e.g., `dict("string")`). |
-| **Function Calls** | Unknown bare function names (with "did you mean" typo suggestions), incorrect argument counts against Oracle's built-in signatures, mismatched argument literal types, unknown workspace `util.*` / `commerce.*` function references - including functions grouped under a util library folder (`util.<Folder>.<name>(...)`). | Apply Quick Fix to correct the function name; match the expected argument count and types. |
-| **Dead Code & Logic** | Always-true/always-false conditions, unreachable code after an unconditional `return`/`break`/`continue`/`throwerror` *or* after an `if`/`elif`/`else` chain where every branch already terminates, duplicate `elif` branch conditions, `AND`/`OR` mixed without grouping parentheses, lonely `else { if ... }` (use `elif`), bare comparison with no effect (likely a typo for `=`). Unreachable code and unused variables render **faded out** in the editor (VS Code's standard "unnecessary code" styling) instead of just underlined. | Remove or refactor dead branches; add explicit parentheses for operator precedence; replace `else { if }` with `elif`; use assignment `=` where intended. |
-| **Variable Checks** | Type-consistency violations (variable re-assigned with a conflicting literal type), variable read before its assignment in the same file (`no-undef`/useBeforeDefine, util library only), assignment to read-only CPQ system variables (`_user_*`, `_site_*`), metadata sidecar type mismatches. | Ensure consistent literal types across assignments; initialize variables before use; do not write to read-only system variables. |
+| Linter Rule Category                    | Diagnostic Checks & Validations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Recommendation / Fix                                                                                                                                                                             |
+| :-------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **BMQL Safety**                         | String concatenation inside `bmql(...)` queries (SQL injection risk). `SELECT *` usage. `UPDATE`/`MODIFY`/`DELETE` with no `WHERE` clause (silently mutates or clears the whole table). `SELECT ... DISTINCT`/`ORDER BY` with no `WHERE` (result set silently capped/truncated at 1,000 records). Plain `SELECT` with no `WHERE` (unbounded result set).                                                                                                                                                                                      | Use safe `$variable` placeholder syntax; list explicit columns; add a `WHERE` clause unless clearing/scanning the whole table is intentional.                                                    |
+| **API Deprecations**                    | Flags outdated methods like `strtodate`, `gettabledata`, and `getpartsdata`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Suggests `strtojavadate` and secure `bmql` database queries.                                                                                                                                     |
+| **Oracle Constants**                    | Catches JS-specific `NaN` references.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Auto-suggests CPQ-compatible `jNaN`.                                                                                                                                                             |
+| **Return Statements**                   | Checks for missing return paths or invalid Commerce BML returns (missing the delimiter `\|`).                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Enforces valid BML return statements and delimiter patterns.                                                                                                                                     |
+| **Array Boundary Safety**               | Detects access on `split()` array indices without preceding `sizeofarray()` checks.                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Enforces array size validation before index access.                                                                                                                                              |
+| **Parsing Validations**                 | Flags unsafe `atoi()` and `atof()` conversions on variables.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Suggests checking numeric status first with `isnumber()`.                                                                                                                                        |
+| **Guaranteed Compile/Runtime Failures** | Patterns verified against Oracle's own BML documentation to _always_ fail, regardless of data: `atoi("")`/`atof("")` (always throws), `isnumber()` with no argument (compile error - `isnumber("")` is fine), `replace(str, "", new)` (empty search pattern always throws), `string("literal")` (compile error - `string()` casts Float/Integer/Boolean only), negative literal array sizes like `float[-9]` (runtime exception), a Util/Commerce Library function calling itself by name (recursive self-reference always fails to compile). | Each has a one-line, deterministic fix - these only fire on literal arguments, never on variables whose runtime value can't be known statically, so they're zero-false-positive by construction. |
+| **Documented Function Limits**          | `logtime()` tag argument over 128 characters (silently truncated). `globaldictset()` `minTimeToLive` outside the documented `0 < n < 525600` range. `jsonput()` given the literal string `"null"` or a `{...}`/`[...]`-wrapped value (both are silently stripped of their quotes instead of saved as written). `values()` called on a `boolean`, `anytype`, or double-dimensional dictionary (unsupported).                                                                                                                                   | Adjust the literal argument to stay within the documented behavior for that function.                                                                                                            |
+| **Security & Secrets**                  | Hardcoded URLs in string literals. Hardcoded credentials - a variable named like `password`/`apiKey`/`secret`/`token` assigned a non-trivial string literal directly (common placeholder values and function-sourced values are excluded to avoid noise).                                                                                                                                                                                                                                                                                     | Extract URLs into Data Tables or System Variables; store secrets in a System Variable or secure configuration instead of literal source code.                                                    |
+| **Logic & Style**                       | Empty control flows (`if`, `elif`, `else`, `for`), magic literals (except `0`, `1`, `2`, `10`, `100`), and strict semicolon rules.                                                                                                                                                                                                                                                                                                                                                                                                            | Recommends naming constants and formatting blocks correctly.                                                                                                                                     |
+| **Performance**                         | Nested loops, BMQL queries inside loops, string concatenation inside loops, repeated/duplicate BMQL queries on the same table.                                                                                                                                                                                                                                                                                                                                                                                                                | Move queries outside loops; use `StringBuilder` (`sbappend`/`sbtostring`) for string accumulation; cache repeated queries.                                                                       |
+| **Design & Complexity**                 | Nesting depth > 3, cyclomatic complexity > 15 (counted decision points: `if`/`elif`/`for`/`and`/`or`).                                                                                                                                                                                                                                                                                                                                                                                                                                        | Refactor deeply nested blocks into helper functions.                                                                                                                                             |
+| **Style**                               | Multiple statements on one line, opening/closing brace placement, `not` without parentheses around its argument, unguarded `print()` calls, lines exceeding 200 characters of code (BMQL query lines are exempt - a query string can't be wrapped across lines).                                                                                                                                                                                                                                                                              | Enforces one-statement-per-line, collapse brace style, `not(x)` syntax, debug-flag-guarded print, and line-length limits.                                                                        |
+| **Safety**                              | Float direct equality comparison (`==`/`!=`) against a literal float, division by literal zero, `break`/`continue` outside a loop body, forbidden `_config_attributes`/`_config_attr_text` system variables.                                                                                                                                                                                                                                                                                                                                  | Use a tolerance threshold for float comparison; guard division; remove misplaced loop control statements; use supported CPQ attributes instead.                                                  |
+| **Syntax Errors**                       | Array element assignment (`arr[i] = v` is unsupported in BML), invalid member access or method calls on non-object values (e.g. `x.length`, `x.doSomething()`), `dict()` called with no type argument.                                                                                                                                                                                                                                                                                                                                        | Use `append()`/`insert()` for arrays; use BML built-in functions (`sizeofarray()`, `jsonget()`, etc.) instead of dot-notation; supply a type to `dict()` (e.g., `dict("string")`).               |
+| **Function Calls**                      | Unknown bare function names (with "did you mean" typo suggestions), incorrect argument counts against Oracle's built-in signatures, mismatched argument literal types, unknown workspace `util.*` / `commerce.*` function references - including functions grouped under a util library folder (`util.<Folder>.<name>(...)`).                                                                                                                                                                                                                 | Apply Quick Fix to correct the function name; match the expected argument count and types.                                                                                                       |
+| **Dead Code & Logic**                   | Always-true/always-false conditions, unreachable code after an unconditional `return`/`break`/`continue`/`throwerror` _or_ after an `if`/`elif`/`else` chain where every branch already terminates, duplicate `elif` branch conditions, `AND`/`OR` mixed without grouping parentheses, lonely `else { if ... }` (use `elif`), bare comparison with no effect (likely a typo for `=`). Unreachable code and unused variables render **faded out** in the editor (VS Code's standard "unnecessary code" styling) instead of just underlined.    | Remove or refactor dead branches; add explicit parentheses for operator precedence; replace `else { if }` with `elif`; use assignment `=` where intended.                                        |
+| **Variable Checks**                     | Type-consistency violations (variable re-assigned with a conflicting literal type), variable read before its assignment in the same file (`no-undef`/useBeforeDefine, util library only), assignment to read-only CPQ system variables (`_user_*`, `_site_*`), metadata sidecar type mismatches.                                                                                                                                                                                                                                              | Ensure consistent literal types across assignments; initialize variables before use; do not write to read-only system variables.                                                                 |
 
 #### Inline Suppressions
 
@@ -129,15 +127,15 @@ x = 10 / 0;                            ← only those two codes are suppressed
 
 Supported directive styles:
 
-| Directive | Scope |
-| :--- | :--- |
-| `// bml-lint-disable-file [code ...]` | Entire file, regardless of where placed |
-| `// bml-lint-disable [code ...]` | From here until matching `bml-lint-enable` |
-| `// bml-lint-enable [code ...]` | Re-enables a previous `bml-lint-disable` |
-| `// bml-lint-disable-line [code ...]` | The line the comment is on |
-| `// bml-lint-disable-next-line [code ...]` | The immediately following line |
-| `/* bml-lint-disable-line */` | Same-line block comment |
-| `/* bml-lint-disable-next-line */` | Block comment before the target line |
+| Directive                                  | Scope                                      |
+| :----------------------------------------- | :----------------------------------------- |
+| `// bml-lint-disable-file [code ...]`      | Entire file, regardless of where placed    |
+| `// bml-lint-disable [code ...]`           | From here until matching `bml-lint-enable` |
+| `// bml-lint-enable [code ...]`            | Re-enables a previous `bml-lint-disable`   |
+| `// bml-lint-disable-line [code ...]`      | The line the comment is on                 |
+| `// bml-lint-disable-next-line [code ...]` | The immediately following line             |
+| `/* bml-lint-disable-line */`              | Same-line block comment                    |
+| `/* bml-lint-disable-next-line */`         | Block comment before the target line       |
 
 > [!TIP]
 > Omitting a code list suppresses **all** diagnostics; listing one or more `bml-*` codes suppresses only those specific rules. Lightbulb **Quick Fixes** (`Ctrl+.` or `Cmd+.`) are available for many diagnostics, allowing you to auto-resolve semicolon styling, variable typos, formatting errors, or deprecated APIs instantly.
@@ -150,23 +148,23 @@ Enhance code readability by styling comments into categorized tasks, statuses, o
 
 #### Custom Tag Styling
 
-| Comment Prefix | Color / Visual Representation | Purpose / Meaning |
-| :--- | :--- | :--- |
-| `// !` | **Vibrant Red** (High Contrast) | Critical alert, warning, or security notice |
-| `// ?` | **Soft Blue** (Italics) | Questions, design reviews, or unresolved paths |
-| `// *` | **Vibrant Green** (Italics) | Highlighted note, key takeaway, or important info |
-| `// //` | **Muted Strike-through** | Commented-out dead code blocks |
-| `// TODO:` | **Bright Orange** | Task to be implemented |
-| `// FIXME:` / `BUG:` | **Light Red (Bold)** | Code bug or issue that must be fixed |
-| `// WARNING:` | **Yellow (Bold)** | High-importance action warning |
-| `// HACK:` / `XXX:` | **Orange (Bold & Underlined)** | Temporary workaround or caution area |
-| `// NOTE:` / `OPTIMIZE:` | **Teal (Bold)** | Performance suggestions or general context |
-| `// IDEA:` | **Blue** | Design suggestion or potential improvement |
+| Comment Prefix           | Color / Visual Representation   | Purpose / Meaning                                 |
+| :----------------------- | :------------------------------ | :------------------------------------------------ |
+| `// !`                   | **Vibrant Red** (High Contrast) | Critical alert, warning, or security notice       |
+| `// ?`                   | **Soft Blue** (Italics)         | Questions, design reviews, or unresolved paths    |
+| `// *`                   | **Vibrant Green** (Italics)     | Highlighted note, key takeaway, or important info |
+| `// //`                  | **Muted Strike-through**        | Commented-out dead code blocks                    |
+| `// TODO:`               | **Bright Orange**               | Task to be implemented                            |
+| `// FIXME:` / `BUG:`     | **Light Red (Bold)**            | Code bug or issue that must be fixed              |
+| `// WARNING:`            | **Yellow (Bold)**               | High-importance action warning                    |
+| `// HACK:` / `XXX:`      | **Orange (Bold & Underlined)**  | Temporary workaround or caution area              |
+| `// NOTE:` / `OPTIMIZE:` | **Teal (Bold)**                 | Performance suggestions or general context        |
+| `// IDEA:`               | **Blue**                        | Design suggestion or potential improvement        |
 
 #### Directives & Block Headers
 
-* **Lint & Formatting Directives:** Comments like `// bml-lint-disable-line` or `/* beautify ignore:start */` are styled with a distinctive purple border to keep control tags visible yet out of the way.
-* **Standard Doc Headers:** Function doc blocks starting with `Function Name:`, `Description:`, `Inputs:`, or `Returns:` are automatically grouped and colorized in light blue italicized fonts.
+- **Lint & Formatting Directives:** Comments like `// bml-lint-disable-line` or `/* beautify ignore:start */` are styled with a distinctive purple border to keep control tags visible yet out of the way.
+- **Standard Doc Headers:** Function doc blocks starting with `Function Name:`, `Description:`, `Inputs:`, or `Returns:` are automatically grouped and colorized in light blue italicized fonts.
 
 ---
 
@@ -174,11 +172,11 @@ Enhance code readability by styling comments into categorized tasks, statuses, o
 
 Configure connections and features via a custom graphical dashboard using `CPQ-BML: Open Settings` (`cpqBml.settings.open`):
 
-* **Connection Tab:** Input your server's site URL, authentication scheme, and active API credentials.
-* **Environments Tab:** Store multiple sandboxes (e.g. `Dev`, `Test`, `UAT`, `Production`) to switch active targets.
-* **Features Tab:** Toggle linting rules, Better Comments styling, and general extension assistants in a clean UI.
-* **Secure Storage integration:** Connects directly with the VS Code Secret Storage API. Credentials, passwords, and tokens are saved on your OS keychain, never written in plaintext configuration files.
-* **Test Connection:** A one-click check verifies remote credentials and site connectivity immediately before applying settings.
+- **Connection Tab:** Input your server's site URL, authentication scheme, and active API credentials.
+- **Environments Tab:** Store multiple sandboxes (e.g. `Dev`, `Test`, `UAT`, `Production`) to switch active targets.
+- **Features Tab:** Toggle linting rules, Better Comments styling, and general extension assistants in a clean UI.
+- **Secure Storage integration:** Connects directly with the VS Code Secret Storage API. Credentials, passwords, and tokens are saved on your OS keychain, never written in plaintext configuration files.
+- **Test Connection:** A one-click check verifies remote credentials and site connectivity immediately before applying settings.
 
 ---
 
@@ -186,10 +184,10 @@ Configure connections and features via a custom graphical dashboard using `CPQ-B
 
 Perform CPQ development workflows entirely inside your local editor:
 
-* **Pull Code:** Fetch Utility Library functions and Commerce Process functions (`cpqBml.rest.pullLibraryFunctions`, `cpqBml.rest.pullCommerceFunctions`) from the remote server along with their metadata.
-* **Remote Validation & Compilation:** Run `CPQ-BML: Validate Current File Against CPQ` to trigger Oracle's server-side compiler on the active document and surface syntax diagnostics locally.
-* **Sandbox Debugger:** Press `CPQ-BML: Debug Current Function on CPQ` to launch a parameter picker dialog, send test values to the sandbox runtime, and review standard outputs in the terminal.
-* **Deployment Controls:** Deploy modified code instantly using individual file saves, utility library batch deployments, or full commerce process configurations.
+- **Pull Code:** Fetch Utility Library functions and Commerce Process functions (`cpqBml.rest.pullLibraryFunctions`, `cpqBml.rest.pullCommerceFunctions`) from the remote server along with their metadata.
+- **Remote Validation & Compilation:** Run `CPQ-BML: Validate Current File Against CPQ` to trigger Oracle's server-side compiler on the active document and surface syntax diagnostics locally.
+- **Sandbox Debugger:** Press `CPQ-BML: Debug Current Function on CPQ` to launch a parameter picker dialog, send test values to the sandbox runtime, and review standard outputs in the terminal.
+- **Deployment Controls:** Deploy modified code instantly using individual file saves, utility library batch deployments, or full commerce process configurations.
 
 ---
 
@@ -218,23 +216,26 @@ graph TD
 ```
 
 #### Security Model
+
 Credentials, cookies, and secret tokens are kept within the extension's secure context. The MCP server does not expose these values to the AI client. It only acts as an executor, routing requests through the local extension instance.
 
 #### AI Work Isolation
+
 When an AI agent requests a file modification or download via MCP, the extension creates an isolated `[variableName]-AI.bml` working copy. This prevents the agent from overwriting your local scripts and ensures you can review changes via a diff tool before committing.
 
 #### Exposed MCP Tools
-* `list_util_functions`: Enumerate all remote utility library functions.
-* `list_commerce_functions`: List all commerce scripts on the CPQ instance.
-* `pull_function`: Fetch standard BML and save locally as `.bml` and `-meta.json` files.
-* `save_function`: Apply updates to the CPQ environment.
-* `validate_function`: Query the CPQ server compiler to validate changes.
-* `debug_function`: Execute the function remotely with test parameters.
-* `deploy_function` / `mass_deploy_util_functions`: Deploy individual or batched functions.
-* `deploy_commerce_process`: Publish the entire process configuration.
-* `create_util_function`: Scaffold and publish a brand new utility function.
-* `create_override`: Create an editable override of a standard (system) function - required before it can be validated, saved, or deployed.
-* `remove_override`: Revert an overridden standard function back to CPQ's system version (destructive; requires `confirm:true`).
+
+- `list_util_functions`: Enumerate all remote utility library functions.
+- `list_commerce_functions`: List all commerce scripts on the CPQ instance.
+- `pull_function`: Fetch standard BML and save locally as `.bml` and `-meta.json` files.
+- `save_function`: Apply updates to the CPQ environment.
+- `validate_function`: Query the CPQ server compiler to validate changes.
+- `debug_function`: Execute the function remotely with test parameters.
+- `deploy_function` / `mass_deploy_util_functions`: Deploy individual or batched functions.
+- `deploy_commerce_process`: Publish the entire process configuration.
+- `create_util_function`: Scaffold and publish a brand new utility function.
+- `create_override`: Create an editable override of a standard (system) function - required before it can be validated, saved, or deployed.
+- `remove_override`: Revert an overridden standard function back to CPQ's system version (destructive; requires `confirm:true`).
 
 ---
 
@@ -245,15 +246,17 @@ CPQ-BML ships with a pre-compiled set of "Agent Skills" designed around the [Age
 **Zero-Configuration Setup:**
 When you enable the MCP server in the extension settings, CPQ-BML automatically registers these skills into your workspace. There is no manual setup command to run!
 To keep the extension package tiny and your workspace clean:
-* The massive semantic knowledge base is compressed into a highly optimized `.br` archive at build time.
-* At runtime, the extension transparently decompresses this knowledge into your secure VS Code Global Storage directory.
-* It automatically provisions pointer files (e.g., `.agents/skills.json`, `CLAUDE.md`, `.cursorrules`) in your workspace that route your AI assistant to the global storage location.
+
+- The massive semantic knowledge base is compressed into a highly optimized `.br` archive at build time.
+- At runtime, the extension transparently decompresses this knowledge into your secure VS Code Global Storage directory.
+- It automatically provisions pointer files (e.g., `.agents/skills.json`, `CLAUDE.md`, `.cursorrules`) in your workspace that route your AI assistant to the global storage location.
 
 Instead of your AI blindly trying to edit BML using standard Javascript assumptions, the extension provides context-aware directives on:
-* BML's unique syntax limitations (e.g. no `var` or `let`, `==` over `===`, `NOT` instead of `!`).
-* Direct Database Access vs BMQL syntax.
-* Best practices regarding dictionary, JSON, and string manipulation in CPQ.
-* How to correctly utilize the CPQ-BML MCP tools (like `pull_function`, `save_function`, `validate_function`) as part of an end-to-end AI development workflow.
+
+- BML's unique syntax limitations (e.g. no `var` or `let`, `==` over `===`, `NOT` instead of `!`).
+- Direct Database Access vs BMQL syntax.
+- Best practices regarding dictionary, JSON, and string manipulation in CPQ.
+- How to correctly utilize the CPQ-BML MCP tools (like `pull_function`, `save_function`, `validate_function`) as part of an end-to-end AI development workflow.
 
 The AI dynamically fetches these contextual rules in real-time, bridging the gap between standard LLM code generation and Oracle CPQ's proprietary runtime.
 
@@ -262,18 +265,20 @@ The AI dynamically fetches these contextual rules in real-time, bridging the gap
 ### 9. BML Color Themes
 
 Four specialized themes are bundled with the extension:
-* **BML Dark**
-* **BML Dark Default**
-* **BML Light**
-* **BML Light Default**
+
+- **BML Dark**
+- **BML Dark Default**
+- **BML Light**
+- **BML Light Default**
 
 > [!NOTE]
 > Syntax coloring is theme-driven. The extension does not force overrides onto external themes. Select one of the BML themes (`Ctrl+K Ctrl+T` / `Cmd+K Cmd+T`) to view CPQ-specific token colors.
 
 #### Color Details
-* **Categorized Functions:** Distinct colors are assigned to built-in function categories (e.g., string, math, date, DB/BMQL, array, URL, dictionary, JSON, XML).
-* **Attribute Access:** CPQ member variables (such as `line.attribute` and `transaction.attribute`) are highlighted differently from general variables.
-* **Operators:** Math, logical, and assignment operators are styled distinctly, helping you catch syntax typos like writing `=` instead of `==`.
+
+- **Categorized Functions:** Distinct colors are assigned to built-in function categories (e.g., string, math, date, DB/BMQL, array, URL, dictionary, JSON, XML).
+- **Attribute Access:** CPQ member variables (such as `line.attribute` and `transaction.attribute`) are highlighted differently from general variables.
+- **Operators:** Math, logical, and assignment operators are styled distinctly, helping you catch syntax typos like writing `=` instead of `==`.
 
 ---
 
@@ -281,27 +286,27 @@ Four specialized themes are bundled with the extension:
 
 Use the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) to trigger these actions:
 
-| Command ID | Title | Description | Editor Toolbar Shortcut |
-| :--- | :--- | :--- | :---: |
-| `cpqBml.settings.open` | `CPQ-BML: Open Settings` | Launches WebView dashboard | - |
-| `cpqBml.beautifyWorkspace` | `CPQ-BML: Beautify / Format All BML Files in Workspace` | Recursively formats workspace | - |
-| `cpqBml.rest.changeEnvironment` | `CPQ-BML: Change Environment` | Quick-pick switch between environments | - |
-| `cpqBml.rest.setPassword` | `CPQ-BML: Set CPQ Password` | Securely stores password for Basic auth | - |
-| `cpqBml.rest.setAuthToken` | `CPQ-BML: Set CPQ Auth Token` | Securely stores Bearer token credentials | - |
-| `cpqBml.rest.pullLibraryFunctions` | `CPQ-BML: Pull Util Library Functions from CPQ` | Downloads utility BML functions | - |
-| `cpqBml.rest.pullCommerceFunctions` | `CPQ-BML: Pull Commerce Functions from CPQ` | Downloads commerce BML scripts | - |
-| `cpqBml.rest.validateCurrentFile` | `CPQ-BML: Validate Current File Against CPQ` | Compiles active BML file on server | `$(check)` |
-| `cpqBml.rest.debugCurrentFile` | `CPQ-BML: Debug Current Function on CPQ` | Launches live runner dialog | `$(play)` |
-| `cpqBml.rest.saveCurrentFile` | `CPQ-BML: Save Current File to CPQ` | Saves buffer changes to remote CPQ | `$(cloud-upload)` |
-| `cpqBml.rest.createBmlFunction` | `CPQ-BML: Create BML Function` | Scaffold BML function locally/remotely | - |
-| `cpqBml.rest.deployCurrentFile` | `CPQ-BML: Deploy Current Util Function to CPQ` | Publishes utility script on server | `$(rocket)` |
-| `cpqBml.rest.deployUtilFunctions` | `CPQ-BML: Mass Deploy Util Library Functions` | Pushes local utility files in batches | - |
-| `cpqBml.rest.deployCommerceProcess` | `CPQ-BML: Deploy Commerce Process Setup` | Deploys active process configuration | `$(rocket)` |
-| `cpqBml.rest.createOverride` | `CPQ-BML: Create Override` | Overrides standard file locally | `$(repo-forked)` |
-| `cpqBml.rest.removeOverride` | `CPQ-BML: Remove Override` | Discards active local override file | `$(discard)` |
-| `cpqBml.rest.clearResults` | `CPQ-BML: Clear Results Terminal` | Wipes outputs in log panel | `$(clear-all)` |
-| `cpqBml.mcp.showInfo` | `CPQ-BML: Show MCP Server Connection Info` | Prints local MCP access endpoint URL | - |
-| `cpqBml.openHelpTopic` | `CPQ-BML: Open BML Offline Help Topic` | Opens the fast offline documentation viewer (normally launched from a hover tooltip's **Read Offline Help** link) | - |
+| Command ID                          | Title                                                   | Description                                                                                                       | Editor Toolbar Shortcut |
+| :---------------------------------- | :------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------- | :---------------------: |
+| `cpqBml.settings.open`              | `CPQ-BML: Open Settings`                                | Launches WebView dashboard                                                                                        |            -            |
+| `cpqBml.beautifyWorkspace`          | `CPQ-BML: Beautify / Format All BML Files in Workspace` | Recursively formats workspace                                                                                     |            -            |
+| `cpqBml.rest.changeEnvironment`     | `CPQ-BML: Change Environment`                           | Quick-pick switch between environments                                                                            |            -            |
+| `cpqBml.rest.setPassword`           | `CPQ-BML: Set CPQ Password`                             | Securely stores password for Basic auth                                                                           |            -            |
+| `cpqBml.rest.setAuthToken`          | `CPQ-BML: Set CPQ Auth Token`                           | Securely stores Bearer token credentials                                                                          |            -            |
+| `cpqBml.rest.pullLibraryFunctions`  | `CPQ-BML: Pull Util Library Functions from CPQ`         | Downloads utility BML functions                                                                                   |            -            |
+| `cpqBml.rest.pullCommerceFunctions` | `CPQ-BML: Pull Commerce Functions from CPQ`             | Downloads commerce BML scripts                                                                                    |            -            |
+| `cpqBml.rest.validateCurrentFile`   | `CPQ-BML: Validate Current File Against CPQ`            | Compiles active BML file on server                                                                                |       `$(check)`        |
+| `cpqBml.rest.debugCurrentFile`      | `CPQ-BML: Debug Current Function on CPQ`                | Launches live runner dialog                                                                                       |        `$(play)`        |
+| `cpqBml.rest.saveCurrentFile`       | `CPQ-BML: Save Current File to CPQ`                     | Saves buffer changes to remote CPQ                                                                                |    `$(cloud-upload)`    |
+| `cpqBml.rest.createBmlFunction`     | `CPQ-BML: Create BML Function`                          | Scaffold BML function locally/remotely                                                                            |            -            |
+| `cpqBml.rest.deployCurrentFile`     | `CPQ-BML: Deploy Current Util Function to CPQ`          | Publishes utility script on server                                                                                |       `$(rocket)`       |
+| `cpqBml.rest.deployUtilFunctions`   | `CPQ-BML: Mass Deploy Util Library Functions`           | Pushes local utility files in batches                                                                             |            -            |
+| `cpqBml.rest.deployCommerceProcess` | `CPQ-BML: Deploy Commerce Process Setup`                | Deploys active process configuration                                                                              |       `$(rocket)`       |
+| `cpqBml.rest.createOverride`        | `CPQ-BML: Create Override`                              | Overrides standard file locally                                                                                   |    `$(repo-forked)`     |
+| `cpqBml.rest.removeOverride`        | `CPQ-BML: Remove Override`                              | Discards active local override file                                                                               |      `$(discard)`       |
+| `cpqBml.rest.clearResults`          | `CPQ-BML: Clear Results Terminal`                       | Wipes outputs in log panel                                                                                        |     `$(clear-all)`      |
+| `cpqBml.mcp.showInfo`               | `CPQ-BML: Show MCP Server Connection Info`              | Prints local MCP access endpoint URL                                                                              |            -            |
+| `cpqBml.openHelpTopic`              | `CPQ-BML: Open BML Offline Help Topic`                  | Opens the fast offline documentation viewer (normally launched from a hover tooltip's **Read Offline Help** link) |            -            |
 
 ---
 
@@ -389,7 +394,7 @@ The project has a modular design structure with clean segregation of BML editor 
 │       ├── testing/                  # Safe sandboxed local execution & unit testing
 │       │   ├── runner.js             # Sidecar *.bmltest.json executor
 │       │   └── snapshot.js           # Regression snapshot comparisons
-│       └── xslt/                     # XSLT preview, formatting, & linking features
+│       └── xslt/                     # XSLT formatting, & linking features
 │
 ├── test/                             # Automated Test Suites
 │   ├── linter/                       # Tests for suppressions & core linter behaviors
@@ -417,8 +422,9 @@ The project has a modular design structure with clean segregation of BML editor 
 If you wish to run, customize, or contribute to this extension:
 
 ### Prerequisites
-* [Node.js](https://nodejs.org/) (v22 or newer recommended)
-* Visual Studio Code
+
+- [Node.js](https://nodejs.org/) (v22 or newer recommended)
+- Visual Studio Code
 
 ### Steps
 
@@ -442,6 +448,6 @@ If you wish to run, customize, or contribute to this extension:
 
 ## 📄 License & Changelog
 
-* **License:** This project is licensed under the [MIT License](LICENSE.txt).
-* **Changelog:** Detailed version history, additions, and updates are available in [CHANGELOG.md](CHANGELOG.md).
-* **Disclaimer:** This extension is an independent community project and is not affiliated with, sponsored by, endorsed by, or otherwise associated with Oracle Corporation or BigMachines.
+- **License:** This project is licensed under the [MIT License](LICENSE.txt).
+- **Changelog:** Detailed version history, additions, and updates are available in [CHANGELOG.md](CHANGELOG.md).
+- **Disclaimer:** This extension is an independent community project and is not affiliated with, sponsored by, endorsed by, or otherwise associated with Oracle Corporation or BigMachines.

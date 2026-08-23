@@ -63,8 +63,8 @@ export default function FeaturesTab({ active, features = {}, updateField }) {
 
                 <Switch
                     id="xsltEnable"
-                    label="Enable XSLT Preview &amp; Formatting"
-                    description="Enables XSLT live preview panels, side-by-side editing, jump to source, and standard XML/XSLT document formatting"
+                    label="Enable XSLT Formatting"
+                    description="Formats XML/XSLT documents using standard XML/XSLT formatting style"
                     checked={features.xslt}
                     onChange={(v) => updateField('features.xslt', v)}
                 />
