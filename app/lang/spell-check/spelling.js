@@ -384,6 +384,8 @@ function checkWord(word, extensionPath, allowCompound = true) {
   return wordLower.length >= 5 && segmentsIntoKnownWords(wordLower, dict, 3);
 }
 
+let globalWordCache = new Map();
+
 function checkSpelling(
   text,
   cleanText,
@@ -406,16 +408,17 @@ function checkSpelling(
     });
   } catch (e) {}
 
-  const wordCache = new Map();
   const identCache = new Map();
 
   const checkWordCached = (word, allowCompound = true) => {
     const wordLower = word.toLowerCase();
     if (userWords.has(wordLower)) return true;
     const cacheKey = `${wordLower}|${allowCompound}`;
-    if (wordCache.has(cacheKey)) return wordCache.get(cacheKey);
+    if (globalWordCache.has(cacheKey)) return globalWordCache.get(cacheKey);
     const res = checkWord(word, extensionPath, allowCompound);
-    wordCache.set(cacheKey, res);
+    if (globalWordCache.size < 15000) {
+      globalWordCache.set(cacheKey, res);
+    }
     return res;
   };
 

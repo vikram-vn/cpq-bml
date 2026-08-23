@@ -85,6 +85,14 @@ function registerBmlLinter(context) {
 
     const isBmlDoc = (doc) => doc && (doc.languageId === 'bml' || (doc.uri && doc.uri.fsPath && doc.uri.fsPath.endsWith('.bml')));
 
+    if (vscode.window && vscode.window.onDidChangeTextEditorVisibleRanges) {
+        vscode.window.onDidChangeTextEditorVisibleRanges((e) => {
+            if (e.textEditor && isBmlDoc(e.textEditor.document)) {
+                triggerLint(e.textEditor.document);
+            }
+        }, null, context.subscriptions);
+    }
+
     // Toggling cpqBml.features.lint or cpqBml.features.spelling should take effect immediately rather than
     // waiting for the next edit/save of each open document.
     vscode.workspace.onDidChangeConfiguration((e) => {

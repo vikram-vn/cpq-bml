@@ -62,12 +62,19 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     const stringRanges = getStringRanges(cleanText);
     const noStringsText = blankRanges(cleanText, stringRanges);
 
+    // Fast keyword pre-checks to skip irrelevant checker passes
+    const hasConditions = conditionRanges.length > 0 || cleanText.includes('if') || cleanText.includes('elif');
+    const hasLoops = noStringsText.includes('for') || noStringsText.includes('while');
+    const hasCommerce = cleanText.includes('commerce.') || cleanText.includes('line.') || cleanText.includes('transaction.');
+
     if (isLintEnabled) {
         const declaredVars = getDeclaredVariables(noStringsText, doc);
         diagnostics.push(...checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText));
 
         diagnostics.push(...checkMissingSemicolons(cleanText, noStringsText, conditionRanges));
-        diagnostics.push(...checkAssignmentInCondition(noStringsText, conditionRanges, doc));
+        if (hasConditions) {
+            diagnostics.push(...checkAssignmentInCondition(noStringsText, conditionRanges, doc));
+        }
         diagnostics.push(...checkOperators(noStringsText, doc));
         diagnostics.push(...checkPerformance(cleanText, noStringsText, doc));
         diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc));
@@ -81,24 +88,34 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
 
         diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
-        diagnostics.push(...checkConstantConditions(cleanText, conditionRanges, doc, vscode));
+        
+        if (hasConditions) {
+            diagnostics.push(...checkConstantConditions(cleanText, conditionRanges, doc, vscode));
 
-        // Shared parse so duplicateBranches, lonelyIf, and unreachable don't each re-parse the whole file.
-        const conditionalChains = parseConditionalChains(cleanText);
-        diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode, conditionalChains));
-        diagnostics.push(...checkDuplicateConditionBranches(conditionalChains, doc, vscode));
-        diagnostics.push(...checkLonelyIf(cleanText, conditionalChains, doc, vscode));
+            // Shared parse so duplicateBranches, lonelyIf, and unreachable don't each re-parse the whole file.
+            const conditionalChains = parseConditionalChains(cleanText);
+            diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode, conditionalChains));
+            diagnostics.push(...checkDuplicateConditionBranches(conditionalChains, doc, vscode));
+            diagnostics.push(...checkLonelyIf(cleanText, conditionalChains, doc, vscode));
 
-        diagnostics.push(...checkMixedOperators(cleanText, conditionRanges, doc, vscode));
+            diagnostics.push(...checkMixedOperators(cleanText, conditionRanges, doc, vscode));
+        }
+
         diagnostics.push(...checkUnusedExpressions(cleanText, doc, vscode));
         diagnostics.push(...checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath, cleanText));
 
         // Phase 1 new checkers
         diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));
         diagnostics.push(...checkUnclosedStrings(cleanText, doc, vscode));
-        diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
+        
+        if (hasLoops) {
+            diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
+        }
         diagnostics.push(...checkShadowedVariables(noStringsText, doc));
-        diagnostics.push(...checkCommerceAttributes(cleanText, noStringsText, doc, vscode, extensionPath));
+        
+        if (hasCommerce) {
+            diagnostics.push(...checkCommerceAttributes(cleanText, noStringsText, doc, vscode, extensionPath));
+        }
     }
 
     if (isSpellingEnabled) {
@@ -127,7 +144,47 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         (d) => !suppressions.isSuppressed(d.range.start.line, d.code)
     );
 
-    diagnosticCollection.set(doc.uri, visibleDiagnostics);
+    // Find visible ranges if this document is currently open in an active editor
+    let visibleRanges = [];
+    if (vscode.window && Array.isArray(vscode.window.visibleTextEditors)) {
+        const editor = vscode.window.visibleTextEditors.find(
+            (e) => e.document && e.document.uri && e.document.uri.toString() === doc.uri.toString()
+        );
+        if (editor && Array.isArray(editor.visibleRanges) && editor.visibleRanges.length > 0) {
+            visibleRanges = editor.visibleRanges;
+        }
+    }
+
+    const isNearVisible = (d) => {
+        if (visibleRanges.length === 0) return true;
+        const line = d.range.start.line;
+        return visibleRanges.some(
+            (vr) => line >= Math.max(0, vr.start.line - 50) && line <= vr.end.line + 50
+        );
+    };
+
+    // Sort diagnostics: items in or near visible viewport come first, then sort by natural document order
+    visibleDiagnostics.sort((a, b) => {
+        const aVisible = isNearVisible(a) ? 1 : 0;
+        const bVisible = isNearVisible(b) ? 1 : 0;
+        if (aVisible !== bVisible) {
+            return bVisible - aVisible;
+        }
+        if (a.range.start.line !== b.range.start.line) {
+            return a.range.start.line - b.range.start.line;
+        }
+        return a.range.start.character - b.range.start.character;
+    });
+
+    // In very large files (> 500 diagnostics), prioritize all visible diagnostics and cap total
+    // to avoid swamping VS Code's editor decoration pipeline and degrading performance.
+    const MAX_DIAGNOSTICS_PER_FILE = 500;
+    const finalDiagnostics = (visibleDiagnostics.length > MAX_DIAGNOSTICS_PER_FILE && visibleRanges.length > 0)
+        ? visibleDiagnostics.slice(0, MAX_DIAGNOSTICS_PER_FILE)
+        : visibleDiagnostics;
+
+    diagnosticCollection.set(doc.uri, finalDiagnostics);
 }
 
 module.exports = { lintBMLCustom, getStringRanges };
+
