@@ -51,8 +51,9 @@ function getStyleFixes(document, diag, editRange) {
         const name = document.getText(editRange);
         const newName = toCamelCase(name);
         if (newName && newName !== name) {
-            // 1. Line-level Fix: Convert this variable across all occurrences
+            // 1. Line-level Fix: Convert this variable across all occurrences (PREFERRED)
             const action = new vscode.CodeAction(`Convert '${name}' to camelCase '${newName}' (all occurrences)`, vscode.CodeActionKind.QuickFix);
+            action.isPreferred = true;
             action.edit = new vscode.WorkspaceEdit();
             renameIdentifierInDocument(document, name, newName, action.edit);
             action.diagnostics = [diag];
@@ -85,6 +86,7 @@ function getStyleFixes(document, diag, editRange) {
         if (diag.code === 'bml-recordset-naming-suffix') suffix = 'RecordSet';
         const newName = name + suffix;
         const action = new vscode.CodeAction(`Rename '${name}' to '${newName}' (all occurrences)`, vscode.CodeActionKind.QuickFix);
+        action.isPreferred = true;
         action.edit = new vscode.WorkspaceEdit();
         renameIdentifierInDocument(document, name, newName, action.edit);
         action.diagnostics = [diag];
@@ -94,6 +96,7 @@ function getStyleFixes(document, diag, editRange) {
         const name = document.getText(editRange);
         const newName = formatBooleanName(name);
         const action = new vscode.CodeAction(`Rename '${name}' to '${newName}' (all occurrences)`, vscode.CodeActionKind.QuickFix);
+        action.isPreferred = true;
         action.edit = new vscode.WorkspaceEdit();
         renameIdentifierInDocument(document, name, newName, action.edit);
         action.diagnostics = [diag];

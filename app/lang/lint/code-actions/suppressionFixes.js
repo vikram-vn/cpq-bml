@@ -6,9 +6,8 @@ function getSuppressionFixes(document, diag, editRange) {
     if (diag.code && typeof diag.code === 'string' && diag.code.startsWith('bml-')) {
         const codeStr = diag.code;
 
-        // 1. Disable for this line (TOP PREFERRED ACTION)
+        // 1. Disable for this line
         const lineAction = new vscode.CodeAction(`Disable '${codeStr}' for this line`, vscode.CodeActionKind.QuickFix);
-        lineAction.isPreferred = true;
         lineAction.edit = new vscode.WorkspaceEdit();
 
         const lineIndex = editRange.start.line;

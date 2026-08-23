@@ -49,6 +49,65 @@ function withPreservedStrings(text, transformFn) {
 }
 
 /**
+ * Comments out loops whose bodies contain only comments or whitespace (no active statements).
+ */
+function commentOutEmptyLoops(text, eol) {
+    const lines = text.split(/\r?\n/);
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        if (/^(for\s+[a-zA-Z_]\w*\s+in\s+|while\s*\(|for\s*\()/.test(trimmed) && !trimmed.startsWith('//')) {
+            let openBraceLine = -1;
+            let closeBraceLine = -1;
+            let braceDepth = 0;
+            let hasActiveStatements = false;
+
+            for (let j = i; j < lines.length; j++) {
+                const jLine = lines[j];
+                const jTrimmed = jLine.trim();
+
+                if (openBraceLine === -1) {
+                    if (jTrimmed.includes('{')) {
+                        openBraceLine = j;
+                        braceDepth += (jTrimmed.match(/\{/g) || []).length - (jTrimmed.match(/\}/g) || []).length;
+                        if (braceDepth === 0) {
+                            closeBraceLine = j;
+                            break;
+                        }
+                    }
+                } else {
+                    const codePart = jTrimmed.startsWith('//') ? '' : jTrimmed.split('//')[0].trim();
+                    const nonBraceCode = codePart.replace(/[{}\s]/g, '');
+                    if (nonBraceCode.length > 0) {
+                        hasActiveStatements = true;
+                    }
+
+                    braceDepth += (jTrimmed.match(/\{/g) || []).length - (jTrimmed.match(/\}/g) || []).length;
+                    if (braceDepth <= 0) {
+                        closeBraceLine = j;
+                        break;
+                    }
+                }
+            }
+
+            if (openBraceLine !== -1 && closeBraceLine !== -1 && !hasActiveStatements) {
+                for (let k = i; k <= closeBraceLine; k++) {
+                    if (!lines[k].trim().startsWith('//')) {
+                        const indentMatch = lines[k].match(/^\s*/);
+                        const indent = indentMatch ? indentMatch[0] : '';
+                        lines[k] = `${indent}// ${lines[k].trim()}`;
+                    }
+                }
+                i = closeBraceLine;
+            }
+        }
+    }
+
+    return lines.join(eol);
+}
+
+/**
  * Creates a bundled "Fix All Safe Style & Naming Issues in File" CodeAction.
  */
 function buildFixAllText(document, relevantDiags) {
@@ -103,6 +162,9 @@ function buildFixAllText(document, relevantDiags) {
         }
         text = lines.join(eol);
     }
+
+    // 2b. Comment out empty loops / loops whose bodies are entirely commented out
+    text = commentOutEmptyLoops(text, eol);
 
     // 3. String-preserved cleanups (never alters contents inside "quotes")
     text = withPreservedStrings(text, (code) => {

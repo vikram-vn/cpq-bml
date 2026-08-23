@@ -21,12 +21,13 @@ function registerBmlCodeActions(context) {
     context.subscriptions.push(
         vscode.languages.registerCodeActionsProvider('bml', {
             provideCodeActions(document, range, context) {
-                const fixes = [];
+                const constructiveFixes = [];
+                const suppressionFixes = [];
+
                 context.diagnostics.forEach(diag => {
                     const editRange = diag.originalRange ?? diag.range;
 
-                    fixes.push(
-                        ...getSuppressionFixes(document, diag, editRange),
+                    constructiveFixes.push(
                         ...getSyntaxFixes(document, diag, editRange),
                         ...getQualityFixes(document, diag, editRange, extensionPath),
                         ...getStyleFixes(document, diag, editRange),
@@ -37,6 +38,10 @@ function registerBmlCodeActions(context) {
                         ...getSecurityFixes(document, diag, editRange),
                         ...getSpellingFixes(document, diag, editRange, extensionPath)
                     );
+
+                    suppressionFixes.push(
+                        ...getSuppressionFixes(document, diag, editRange)
+                    );
                 });
 
                 const docDiags = (vscode.languages && vscode.languages.getDiagnostics)
@@ -44,11 +49,16 @@ function registerBmlCodeActions(context) {
                     : context.diagnostics;
 
                 const fixAllActions = getFixAllSafeAction(document, docDiags && docDiags.length > 0 ? docDiags : context.diagnostics);
-                if (fixAllActions && fixAllActions.length > 0) {
-                    fixes.push(...fixAllActions);
-                }
 
-                return fixes;
+                // Priority Order:
+                // 1. Constructive Quick Fixes (camelCase, type suffixes, code quality fixes)
+                // 2. File-level & Category-level Safe Refactors
+                // 3. Fallback Suppressions (Disable for line/file)
+                return [
+                    ...constructiveFixes,
+                    ...(fixAllActions || []),
+                    ...suppressionFixes
+                ];
             }
         }, {
             providedCodeActionKinds: [

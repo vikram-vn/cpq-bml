@@ -141,7 +141,7 @@ function runStyleCodeActionTests() {
 
         test('Quick Fix bundled Fix All Safe Style & Naming Issues in File', async () => {
             const content = [
-                'user_name = string("Vikram");',
+                'user_name = string("Sample");',
                 'myItems = string[];',
                 'myAttributes = dict("string");',
                 'if (true) {}',
@@ -167,7 +167,7 @@ function runStyleCodeActionTests() {
             assert.ok(applied, 'Should apply Fix All edit');
 
             const updatedText = doc.getText();
-            assert.ok(updatedText.includes('userName = "Vikram";'), 'Should camelCase variable and remove redundant string cast');
+            assert.ok(updatedText.includes('userName = "Sample";'), 'Should camelCase variable and remove redundant string cast');
             assert.ok(updatedText.includes('myItemsArray = string[];'), 'Should add Array suffix');
             assert.ok(updatedText.includes('myAttributesDict = dict("string");'), 'Should add Dict suffix');
             assert.ok(updatedText.includes('// TODO: implement'), 'Should fill empty block with TODO');
@@ -222,6 +222,7 @@ function runStyleCodeActionTests() {
                 'is_ready_flag = true;',
                 'unused_helper = 99;',
                 'a = 1; b = 2;',
+                'print(a + b);',
                 'return is_ready_flag ? "Y" : "N";'
             ].join('\n');
 
@@ -236,7 +237,7 @@ function runStyleCodeActionTests() {
             const diags = collection.get(doc.uri);
             assert.ok(diags.length >= 2, 'Should have diagnostics');
 
-            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, new vscode.Range(0, 0, 4, 0));
+            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, new vscode.Range(0, 0, 5, 0));
             const fixAllAction = codeActions.find(a => a.title.includes('Fix All Safe Style & Naming Issues in File'));
             assert.ok(fixAllAction, 'Should offer Fix All');
 
@@ -246,13 +247,14 @@ function runStyleCodeActionTests() {
             const updatedText = doc.getText();
             assert.ok(updatedText.includes('isReadyFlag = true;'), 'is_ready_flag should be camelCased');
             assert.ok(updatedText.includes('return isReadyFlag ? "Y" : "N";'), 'return reference should be updated');
+            assert.ok(updatedText.includes('// unusedHelper = 99;') || updatedText.includes('// unused_helper = 99;'), 'unused_helper should be commented out');
             assert.ok(updatedText.includes('a = 1;') && updatedText.includes('b = 2;'), 'Both statements should be present');
             assert.ok(!updatedText.includes('a = 1; b = 2;'), 'Statements should no longer be on same line');
         });
 
         test('Refactor menu action (Ctrl+Shift+R) offers file-level safe refactor', async () => {
             const content = [
-                'user_first_name = "Vikram";',
+                'user_first_name = "Sample";',
                 'return user_first_name;'
             ].join('\n');
 
@@ -281,7 +283,7 @@ function runStyleCodeActionTests() {
 
         test('Fix All cleans up boolean comparisons, literal casts, duplicate semicolons and canonical types', async () => {
             const content = [
-                'user_name = "Vikram";;',
+                'user_name = "Sample";;',
                 'Boolean is_valid_flag = True;',
                 'my_age = integer(25);',
                 'if (is_valid_flag == true) {',
@@ -314,7 +316,7 @@ function runStyleCodeActionTests() {
 
             const updatedText = doc.getText();
             // 1. Duplicate semicolons removed
-            assert.ok(updatedText.includes('userName = "Vikram";'), 'Duplicate semicolon removed & camelCased');
+            assert.ok(updatedText.includes('userName = "Sample";'), 'Duplicate semicolon removed & camelCased');
             assert.ok(!updatedText.includes(';;'), 'No double semicolons should remain');
 
             // 2. Canonical types & literals lowercased
@@ -333,7 +335,7 @@ function runStyleCodeActionTests() {
 
         test('Refactor menu offers distinct category-level options alongside Master Fix-All', async () => {
             const content = [
-                'user_first_name = "Vikram";',
+                'user_first_name = "Sample";',
                 'myItems = string[];',
                 'if (true) {}',
                 'return user_first_name;'
@@ -369,6 +371,43 @@ function runStyleCodeActionTests() {
             // Category 3: Syntax & Formatting
             const syntaxAction = codeActions.find(a => a.title.includes('Format multi-statement lines & fill empty blocks'));
             assert.ok(syntaxAction, 'Should offer Syntax & Formatting category in Refactor menu');
+        });
+
+        test('Fix All comments out empty loops when all statements inside are unused/commented out', async () => {
+            const content = [
+                'sampleRecordSet = recordset();',
+                'for sampleRow in sampleRecordSet {',
+                '    isResGetboolean = getboolean(sampleRow, "active");',
+                '    resGetint = getint(sampleRow, "lead_time");',
+                '    resGetmessage = getmessage(sampleRow);',
+                '    isResHaserror = haserror(sampleRow);',
+                '}',
+                'return "";'
+            ].join('\n');
+
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: content
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const codeActions = await vscode.commands.executeCommand(
+                'vscode.executeCodeActionProvider',
+                doc.uri,
+                new vscode.Range(0, 0, 7, 0)
+            );
+
+            const fixAll = codeActions.find(a => a.title.includes('Fix All Safe Style & Naming Issues in File'));
+            assert.ok(fixAll, 'Should offer Fix All');
+
+            const applied = await vscode.workspace.applyEdit(fixAll.edit);
+            assert.ok(applied, 'Should apply Fix All');
+
+            const updatedText = doc.getText();
+            assert.ok(updatedText.includes('// for sampleRow in sampleRecordSet {'), 'Outer for loop header should be commented out');
+            assert.ok(updatedText.includes('// }'), 'Closing brace of loop should be commented out');
         });
     });
 }

@@ -75,15 +75,15 @@ suite('BML Linter Test Suite - Custom Spellchecker', () => {
     });
 
     test('cleanCommentText strips URLs and contraction suffixes', () => {
-        const cleaned = cleanCommentText("Visit http://test.com or ask Vikram's team who didn't write it's code.");
+        const cleaned = cleanCommentText("Visit http://test.com or ask Alice's team who didn't write it's code.");
         assert.ok(!cleaned.includes('http://test.com'));
-        assert.ok(cleaned.includes('Vikram'));
+        assert.ok(cleaned.includes('Alice'));
         assert.ok(cleaned.includes('who'));
         assert.ok(cleaned.includes('code'));
     });
 
     test('cleanCommentText preserves string length to keep correct offsets', () => {
-        const original = "Visit http://test.com or ask Vikram's team who didn't write it's code.";
+        const original = "Visit http://test.com or ask Alice's team who didn't write it's code.";
         const cleaned = cleanCommentText(original);
         assert.strictEqual(cleaned.length, original.length, 'Cleaned string must have exactly the same length as the original');
     });
