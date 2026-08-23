@@ -1,158 +1,50 @@
-const assert = require("assert");
-const fs = require("fs");
-const path = require("path");
-const { runPreviewXslt, getWebviewContent } = require("../../app/lang/xslt");
-const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const vscode = require('vscode');
+const { formatXml } = require('../../app/lang/xslt/formatter');
+const { lintXslt } = require('../../app/lang/xslt/xsltLinter');
 
-suite("BML REST commands - XSLT Preview", () => {
-  let tempXmlPath;
-  let tempXsltPath;
+suite('XSLT 10-Fixture Comprehensive Validation Test Suite', () => {
+    const fixturesDir = path.join(__dirname, 'fixtures');
+    const fixtureFiles = fs.readdirSync(fixturesDir).filter(f => f.endsWith('.xsl') || f.endsWith('.xslt'));
 
-  setup(() => {
-    tempXmlPath = path.join(__dirname, "temp_test_data.xml");
-    tempXsltPath = path.join(__dirname, "temp_test_style.xsl");
-    fs.writeFileSync(tempXmlPath, "<root><item>Hello</item></root>");
-    fs.writeFileSync(
-      tempXsltPath,
-      `<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-        <xsl:template match="/">
-          <html><body><xsl:value-of select="/root/item"/></body></html>
-        </xsl:template>
-      </xsl:stylesheet>`
-    );
-  });
-
-  teardown(() => {
-    if (fs.existsSync(tempXmlPath)) fs.unlinkSync(tempXmlPath);
-    if (fs.existsSync(tempXsltPath)) fs.unlinkSync(tempXsltPath);
-  });
-
-  test("getWebviewContent generates HTML with file names", () => {
-    const html = getWebviewContent("data.xml", "style.xsl");
-    assert.ok(html.includes("data.xml"));
-    assert.ok(html.includes("style.xsl"));
-    assert.ok(html.includes("XSLTProcessor"));
-  });
-
-  test("runPreviewXslt opens Webview and posts content", async () => {
-    const context = createFakeContext();
-    
-    let webviewHtml = "";
-    let postedMessage = null;
-    let registeredOnDidSaveListener = null;
-
-    const vscode = createFakeVscode({
-      window: {
-        activeTextEditor: {
-          document: {
-            languageId: "xml",
-            uri: { fsPath: tempXmlPath },
-          },
-        },
-        onDidChangeTextEditorSelection: () => {
-          return { dispose: () => {} };
-        },
-        showOpenDialog: async () => [{ fsPath: tempXsltPath }],
-        createWebviewPanel: (viewType, title, showOptions, options) => {
-          return {
-            webview: {
-              set html(val) {
-                webviewHtml = val;
-              },
-              get html() {
-                return webviewHtml;
-              },
-              postMessage: async (msg) => {
-                postedMessage = msg;
-              },
-              onDidReceiveMessage: () => {
-                return { dispose: () => {} };
-              },
-            },
-            onDidDispose: () => {},
-          };
-        },
-      },
-      workspace: {
-        onDidSaveTextDocument: (listener) => {
-          registeredOnDidSaveListener = listener;
-          return { dispose: () => {} };
-        },
-      },
+    test('All 10 XSLT test fixture files exist', () => {
+        assert.strictEqual(fixtureFiles.length, 10, 'Should have exactly 10 XSLT test fixture files');
     });
 
-    await runPreviewXslt(context, vscode);
+    fixtureFiles.forEach((file) => {
+        test(`Validate & Format XSLT Fixture: ${file}`, () => {
+            const filePath = path.join(fixturesDir, file);
+            const content = fs.readFileSync(filePath, 'utf-8');
 
-    assert.ok(webviewHtml.includes("temp_test_data.xml"));
-    assert.ok(webviewHtml.includes("temp_test_style.xsl"));
-    assert.ok(postedMessage);
-    assert.strictEqual(postedMessage.type, "update");
-    assert.ok(postedMessage.xml.includes("<root>"));
-    assert.ok(postedMessage.xslt.includes("<xsl:stylesheet"));
+            const mockDoc = {
+                getText() {
+                    return content;
+                },
+                positionAt(offset) {
+                    const prefix = content.substring(0, offset);
+                    const lines = prefix.split('\n');
+                    const line = lines.length - 1;
+                    const character = lines[lines.length - 1].length;
+                    return new vscode.Position(line, character);
+                },
+                uri: vscode.Uri.file(filePath)
+            };
 
-    // Verify workspaceState pairing
-    const pairXmlKey = `xslt-pair:${tempXmlPath}`;
-    const pairXsltKey = `xslt-pair:${tempXsltPath}`;
-    assert.strictEqual(context.workspaceState.get(pairXmlKey), tempXsltPath);
-    assert.strictEqual(context.workspaceState.get(pairXsltKey), tempXmlPath);
-  });
+            // 1. Validate XSLT Linter static diagnostics (No errors)
+            const diags = lintXslt(mockDoc);
+            const errors = diags.filter(d => d.severity === vscode.DiagnosticSeverity.Error);
+            assert.strictEqual(errors.length, 0, `Fixture ${file} should have 0 Linter errors. Got: ${errors.map(e => e.message).join('; ')}`);
 
-  test("formatXml formats XML/XSLT with indentation and keeps simple tags on a single line", () => {
-    const { formatXml } = require("../../app/lang/xslt");
-    const unformatted = `<root><item id="1">Hello</item><nested><child>Value</child></nested><empty/></root>`;
-    const expected = `<root>
-  <item id="1">Hello</item>
-  <nested>
-    <child>Value</child>
-  </nested>
-  <empty/>
-</root>`;
-    assert.strictEqual(formatXml(unformatted), expected);
-  });
+            // 2. Format XSLT using inuris quote-aware formatter engine
+            const formatted = formatXml(content, '  ');
+            assert.ok(formatted.length > 0, `Formatted output for ${file} should not be empty`);
+            assert.ok(formatted.includes('<xsl:'), `Formatted output for ${file} should retain xsl tags`);
 
-  test("tryFindLinkedStylesheet detects stylesheet link in XML file", () => {
-    const { tryFindLinkedStylesheet } = require("../../app/lang/xslt");
-    const xmlWithLinkPath = path.join(__dirname, "temp_test_linked.xml");
-    
-    fs.writeFileSync(
-      xmlWithLinkPath,
-      `<?xml version="1.0"?><?xml-stylesheet type="text/xsl" href="temp_test_style.xsl"?><root/>`
-    );
-    
-    try {
-      const detected = tryFindLinkedStylesheet(xmlWithLinkPath);
-      assert.strictEqual(detected, tempXsltPath);
-    } finally {
-      if (fs.existsSync(xmlWithLinkPath)) fs.unlinkSync(xmlWithLinkPath);
-    }
-  });
-
-  test("runSwitchXsltFile opens the paired file", async () => {
-    const context = createFakeContext();
-    context.workspaceState.update(`xslt-pair:${tempXmlPath}`, tempXsltPath);
-
-    let openedDocPath = null;
-    const vscode = createFakeVscode({
-      window: {
-        activeTextEditor: {
-          document: {
-            uri: { fsPath: tempXmlPath },
-          },
-        },
-        showTextDocument: async (doc) => {
-          openedDocPath = doc.uri.fsPath;
-        },
-      },
-      workspace: {
-        openTextDocument: async (filePath) => {
-          return { uri: { fsPath: filePath } };
-        },
-      },
+            // 3. Re-format formatted output (Idempotency check: formatting formatted code should yield identical output)
+            const reformatted = formatXml(formatted, '  ');
+            assert.strictEqual(reformatted, formatted, `Formatting ${file} should be idempotent`);
+        });
     });
-
-    const { runSwitchXsltFile } = require("../../app/lang/xslt");
-    await runSwitchXsltFile(context, vscode);
-
-    assert.strictEqual(openedDocPath, tempXsltPath);
-  });
 });

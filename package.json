@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.46.0",
+  "version": "1.47.0",
   "icon": "app/images/logo.png",
   "license": "MIT",
   "repository": {
@@ -208,16 +208,6 @@
         "icon": "app/icons/beautify.svg"
       },
       {
-        "command": "cpqBml.xslt.preview",
-        "title": "CPQ-BML: Preview XSLT",
-        "icon": "app/icons/preview.svg"
-      },
-      {
-        "command": "cpqBml.xslt.switchFile",
-        "title": "CPQ-BML: Switch to Linked XML/XSLT File",
-        "icon": "app/icons/switch-file.svg"
-      },
-      {
         "command": "cpqBml.metrics.openReport",
         "title": "CPQ-BML: Open Code Metrics Report",
         "category": "BML",
@@ -289,16 +279,6 @@
           "command": "cpqBml.rest.deployCurrentFile",
           "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
-        },
-        {
-          "command": "cpqBml.xslt.preview",
-          "when": "resourceLangId == xml || resourceLangId == xsl || resourceExtname == .xsl || resourceExtname == .xslt",
-          "group": "navigation@1"
-        },
-        {
-          "command": "cpqBml.xslt.switchFile",
-          "when": "resourceLangId == xml || resourceLangId == xsl || resourceExtname == .xsl || resourceExtname == .xslt",
-          "group": "navigation@2"
         }
       ]
     },
@@ -425,7 +405,7 @@
         "cpqBml.features.xslt": {
           "type": "boolean",
           "default": true,
-          "description": "Enable XSLT preview and formatting support."
+          "description": "Enable XSLT formatting support."
         },
         "cpqBml.features.metrics": {
           "type": "boolean",
@@ -510,9 +490,6 @@
     "vscode-textmate": "^9.3.2"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "zod": "^4.4.3"
+    "@modelcontextprotocol/sdk": "^1.29.0"
   }
 }

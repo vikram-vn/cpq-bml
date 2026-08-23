@@ -59,6 +59,96 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
         action.diagnostics = [diag];
         fixes.push(action);
     }
+    else if (diag.code === 'bml-unsafe-atoi-atof') {
+        const text = document.getText(editRange);
+        const match = text.match(/\b(atoi|atof)\s*\(\s*([a-zA-Z_]\w*)\s*\)/);
+        if (match) {
+            const funcName = match[1];
+            const varName = match[2];
+            const defaultVal = funcName === 'atoi' ? '0' : '0.0';
+            const action = new vscode.CodeAction(`Guard with isnumber(${varName}) check before ${funcName}`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, `(isnumber(${varName}) ? ${funcName}(${varName}) : ${defaultVal})`);
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
+    }
+    else if (diag.code === 'bml-atoi-atof-empty-string' || diag.code === 'bml-atoi-atof-empty-literal') {
+        const text = document.getText(editRange);
+        const defaultVal = text.includes('atof') ? '0.0' : '0';
+        const action = new vscode.CodeAction(`Replace unsafe empty atoi/atof with default number ${defaultVal}`, vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, defaultVal);
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-replace-empty-search-string' || diag.code === 'bml-replace-empty-pattern') {
+        const action = new vscode.CodeAction("Replace empty search string '' with non-empty pattern \" \"", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, document.getText(editRange).replace(/replace\s*\(\s*([^,]+)\s*,\s*["']["']/, 'replace($1, " "'));
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-isnumber-no-args') {
+        const action = new vscode.CodeAction("Add string argument to isnumber()", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, 'isnumber("0")');
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-sort-invalid-order') {
+        const actionAsc = new vscode.CodeAction('Change sortOrder to "asc"', vscode.CodeActionKind.QuickFix);
+        actionAsc.edit = new vscode.WorkspaceEdit();
+        const text = document.getText(editRange);
+        actionAsc.edit.replace(document.uri, editRange, text.replace(/sort\s*\(\s*([^,]+)\s*,\s*["'][^"']*["']/, 'sort($1, "asc"'));
+        actionAsc.diagnostics = [diag];
+        fixes.push(actionAsc);
+
+        const actionDesc = new vscode.CodeAction('Change sortOrder to "desc"', vscode.CodeActionKind.QuickFix);
+        actionDesc.edit = new vscode.WorkspaceEdit();
+        actionDesc.edit.replace(document.uri, editRange, text.replace(/sort\s*\(\s*([^,]+)\s*,\s*["'][^"']*["']/, 'sort($1, "desc"'));
+        actionDesc.diagnostics = [diag];
+        fixes.push(actionDesc);
+    }
+    else if (diag.code === 'bml-sort-invalid-type') {
+        const types = ['text', 'numeric', 'date'];
+        const text = document.getText(editRange);
+        for (const t of types) {
+            const action = new vscode.CodeAction(`Change sortType to "${t}"`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, text.replace(/(sort\s*\(\s*[^,]+\s*,\s*[^,]+\s*,\s*)["'][^"']*["']/, `$1"${t}"`));
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
+    }
+    else if (diag.code === 'bml-negative-array-size') {
+        const text = document.getText(editRange);
+        const actionZero = new vscode.CodeAction('Change array size to 0', vscode.CodeActionKind.QuickFix);
+        actionZero.edit = new vscode.WorkspaceEdit();
+        actionZero.edit.replace(document.uri, editRange, text.replace(/\[\s*-\d+\s*\]/, '[0]'));
+        actionZero.diagnostics = [diag];
+        fixes.push(actionZero);
+    }
+    else if (diag.code === 'bml-array-negative-index') {
+        const text = document.getText(editRange);
+        const actionZero = new vscode.CodeAction('Change negative index to 0', vscode.CodeActionKind.QuickFix);
+        actionZero.edit = new vscode.WorkspaceEdit();
+        actionZero.edit.replace(document.uri, editRange, text.replace(/\[\s*-\d+\s*\]/, '[0]'));
+        actionZero.diagnostics = [diag];
+        fixes.push(actionZero);
+    }
+    else if (diag.code === 'bml-array-dimension-error' || diag.code === 'bml-sort-array-dimension') {
+        const text = document.getText(editRange);
+        const match = text.match(/\b([a-zA-Z_]\w*)\s*\(/);
+        if (match) {
+            const funcName = match[1];
+            const action = new vscode.CodeAction(`Index 2-D array with [0] for ${funcName}()`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, text.replace(/\(\s*([a-zA-Z_]\w*)/, '($1[0]'));
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
+    }
     else if (diag.code === 'bml-nan-fix') {
         const action = new vscode.CodeAction('Replace NaN with jNaN', vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
@@ -66,12 +156,148 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
         action.diagnostics = [diag];
         fixes.push(action);
     }
+    else if (diag.code === 'bml-jnan-function-call') {
+        const action = new vscode.CodeAction("Remove parentheses: 'jNaN' is a constant, not a function", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, 'jNaN');
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-math-domain-error') {
+        const text = document.getText(editRange);
+        const match = text.match(/\b(acos|asin)\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)/);
+        if (match) {
+            const funcName = match[1];
+            const val = parseFloat(match[2]);
+            const clampedVal = val > 1.0 ? '1.0' : '-1.0';
+            const action = new vscode.CodeAction(`Clamp argument to valid domain [-1, 1]: ${funcName}(${clampedVal})`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, `${funcName}(${clampedVal})`);
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
+    }
     else if (diag.code === 'bml-strtodate-fix') {
         const action = new vscode.CodeAction('Replace strtodate with strtojavadate', vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
         action.edit.replace(document.uri, editRange, 'strtojavadate');
         action.diagnostics = [diag];
         fixes.push(action);
+    }
+    else if (diag.code === 'bml-date-format-year') {
+        const text = document.getText(editRange);
+        const action = new vscode.CodeAction("Fix year format: replace 'YYYY' with 'yyyy'", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, text.replace(/YYYY/g, 'yyyy'));
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-date-format-day') {
+        const text = document.getText(editRange);
+        const action = new vscode.CodeAction("Fix day format: replace 'DD' with 'dd'", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, text.replace(/DD/g, 'dd'));
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-date-format-month') {
+        const text = document.getText(editRange);
+        const action = new vscode.CodeAction("Fix month format: replace 'mm' with 'MM'", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, text.replace(/mm/g, 'MM'));
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-lonelyIf') {
+        const action = new vscode.CodeAction("Convert 'else { if (...)' to 'elif (...)'", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        const startLine = document.lineAt(editRange.start.line).text;
+        action.edit.replace(document.uri, editRange, 'elif');
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-constant-condition') {
+        const msg = diag.message;
+        if (msg.includes('always true')) {
+            const action = new vscode.CodeAction("Replace condition with 'true'", vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, '(true)');
+            action.diagnostics = [diag];
+            fixes.push(action);
+        } else if (msg.includes('always false')) {
+            const action = new vscode.CodeAction("Replace condition with 'false'", vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, '(false)');
+            action.diagnostics = [diag];
+            fixes.push(action);
+        } else if (msg.includes('compares')) {
+            const text = document.getText(editRange);
+            const m = text.match(/^([a-zA-Z_][\w.]*)\s*(==|<>|!=)\s*([a-zA-Z_][\w.]*)$/);
+            if (m) {
+                const varName = m[1];
+                const action = new vscode.CodeAction(`Fix self-comparison of '${varName}'`, vscode.CodeActionKind.QuickFix);
+                action.edit = new vscode.WorkspaceEdit();
+                action.edit.replace(document.uri, editRange, `${varName} == targetVal`);
+                action.diagnostics = [diag];
+                fixes.push(action);
+            }
+        }
+    }
+    else if (diag.code === 'bml-duplicate-branch-condition') {
+        const action = new vscode.CodeAction("Remove duplicate elif branch", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        const lineText = document.lineAt(editRange.start.line).text;
+        action.edit.delete(document.uri, new vscode.Range(editRange.start.line, 0, editRange.start.line + 1, 0));
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-dict-missing-type') {
+        const actionStr = new vscode.CodeAction('Change dict() to dict("string")', vscode.CodeActionKind.QuickFix);
+        actionStr.edit = new vscode.WorkspaceEdit();
+        actionStr.edit.replace(document.uri, editRange, 'dict("string")');
+        actionStr.diagnostics = [diag];
+        fixes.push(actionStr);
+
+        const actionAny = new vscode.CodeAction('Change dict() to dict("anytype")', vscode.CodeActionKind.QuickFix);
+        actionAny.edit = new vscode.WorkspaceEdit();
+        actionAny.edit.replace(document.uri, editRange, 'dict("anytype")');
+        actionAny.diagnostics = [diag];
+        fixes.push(actionAny);
+    }
+    else if (diag.code === 'bml-dict-invalid-type') {
+        const actionStr = new vscode.CodeAction('Replace invalid type with "string"', vscode.CodeActionKind.QuickFix);
+        actionStr.edit = new vscode.WorkspaceEdit();
+        actionStr.edit.replace(document.uri, editRange, 'dict("string")');
+        actionStr.diagnostics = [diag];
+        fixes.push(actionStr);
+
+        const actionAny = new vscode.CodeAction('Replace invalid type with "anytype"', vscode.CodeActionKind.QuickFix);
+        actionAny.edit = new vscode.WorkspaceEdit();
+        actionAny.edit.replace(document.uri, editRange, 'dict("anytype")');
+        actionAny.diagnostics = [diag];
+        fixes.push(actionAny);
+    }
+    else if (diag.code === 'bml-json-get-throws-without-default') {
+        const text = document.getText(editRange);
+        let defaultVal = '0';
+        if (/float/i.test(text)) defaultVal = '0.0';
+        else if (/boolean/i.test(text)) defaultVal = 'false';
+
+        const action = new vscode.CodeAction(`Add default value argument '${defaultVal}' to prevent runtime exception`, vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, text.replace(/\)$/, `, ${defaultVal})`));
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-jsonput-reserved-literal') {
+        const text = document.getText(editRange);
+        if (text.includes('"null"') || text.includes("'null'")) {
+            const action = new vscode.CodeAction('Replace string "null" with jsonnull()', vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, text.replace(/["']null["']/, 'jsonnull()'));
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
     }
     else if (diag.code === 'bml-gettabledata-fix') {
         const action = new vscode.CodeAction('Replace gettabledata with bmql', vscode.CodeActionKind.QuickFix);

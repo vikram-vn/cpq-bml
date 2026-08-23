@@ -72,6 +72,50 @@ function checkDate(cleanText, noStringsText, doc) {
         }
     }
 
+    // Date format pattern checks for formatdate and strtojavadate
+    const dateFuncRegex = /\b(formatdate|strtojavadate|strtodate)\s*\(/g;
+    while ((match = dateFuncRegex.exec(cleanText)) !== null) {
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        if (closeParenIndex === -1) continue;
+        const args = splitTopLevelArgs(cleanText.slice(openParenIndex + 1, closeParenIndex));
+
+        if (args.length >= 2) {
+            const formatArg = args[1].trim();
+            const strMatch = formatArg.match(/^(?:"([^"\\]*)"|'([^'\\]*)')$/);
+            if (strMatch) {
+                const pattern = strMatch[1] !== undefined ? strMatch[1] : strMatch[2];
+                const startPos = doc.positionAt(match.index);
+                const endPos = doc.positionAt(closeParenIndex + 1);
+
+                if (pattern.includes('YYYY')) {
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        "Warning: 'YYYY' is Week Year in Java SimpleDateFormat, which causes wrong year calculations around New Year's Eve. Use lowercase 'yyyy' for calendar year.",
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-date-format-year'
+                    ));
+                }
+                if (pattern.includes('DD')) {
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        "Warning: 'DD' is Day of Year (1-365). Use lowercase 'dd' for Day of Month.",
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-date-format-day'
+                    ));
+                }
+                if (/(?:yyyy|dd)[-/\s]mm|mm[-/\s](?:dd|yyyy)/.test(pattern)) {
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        "Warning: Lowercase 'mm' represents Minutes (0-59). Use uppercase 'MM' for Month.",
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-date-format-month'
+                    ));
+                }
+            }
+        }
+    }
+
     return diagnostics;
 }
 
