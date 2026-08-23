@@ -1,14 +1,15 @@
 const fs = require('fs');
 const { keywords: reservedWords, loadBuiltInFunctions } = require('./functions');
 const { loadSystemVariables } = require('./systemVariables');
+const { getAttributeScope } = require('./commerceAttributes');
 
 // Commerce functions have implicit platform bindings (document attributes, etc.)
-// this rule can't see from the file's text, so it only runs for util functions.
+// this rule can't see from the file's text, so it only runs for util functions
+// or for non-commerce attribute symbols.
 function isCommerceFunction(metadata) {
     return !!(metadata && metadata.commerceDocument);
 }
 
-// Duplicated from metadataTypes.js to keep this rule's gating logic independently testable.
 function readLocalMetadataForGating(bmlFilePath) {
     if (!bmlFilePath) return null;
     try {
@@ -20,32 +21,67 @@ function readLocalMetadataForGating(bmlFilePath) {
     }
 }
 
+/**
+ * Returns the character index immediately following the end of the statement containing declIndex.
+ */
+function getStatementEndIndex(text, declIndex) {
+    let idx = declIndex;
+    let inString = false;
+    let stringChar = '';
+
+    while (idx < text.length) {
+        const ch = text[idx];
+        if (inString) {
+            if (ch === stringChar && text[idx - 1] !== '\\') {
+                inString = false;
+            }
+        } else {
+            if (ch === '"' || ch === "'") {
+                inString = true;
+                stringChar = ch;
+            } else if (ch === ';' || ch === '\n') {
+                return idx + 1;
+            }
+        }
+        idx++;
+    }
+    return text.length;
+}
+
 function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensionPath, cleanText = noStringsText) {
     const diagnostics = [];
 
     const systemVars = loadSystemVariables(extensionPath);
     const builtIns = loadBuiltInFunctions(extensionPath);
 
+    const metadata = readLocalMetadataForGating(doc.uri && doc.uri.fsPath);
+    const isCommerce = isCommerceFunction(metadata);
+
     const isIgnoredSymbol = (nameLower) => {
         if (reservedWords.has(nameLower) || systemVars.has(nameLower) || builtIns.has(nameLower)) return true;
         if (nameLower === 'commerce' || nameLower === 'util' || nameLower === 'transaction' || nameLower === 'line' || nameLower === 'cpqjs' || nameLower === 'cpqjsready' || nameLower === 'nan' || nameLower === 'jnan') return true;
         if (nameLower.startsWith('_') || nameLower.startsWith('bm_') || nameLower.startsWith('_c_') || nameLower.startsWith('_t_') || nameLower.startsWith('_l_')) return true;
         if (nameLower.endsWith('_c') || nameLower.endsWith('_t') || nameLower.endsWith('_l')) return true;
+        
+        if (isCommerce) {
+            const attrScope = getAttributeScope(nameLower, extensionPath);
+            if (attrScope !== 'unknown') return true;
+        }
         return false;
     };
 
     const declaredNames = new Set();
-    const earliestDeclByName = new Map();
+    const earliestAvailableReadByName = new Map();
     const declSitesByName = new Map();
 
     declaredVars.forEach((decls, varName) => {
         declaredNames.add(varName);
-        earliestDeclByName.set(varName, Math.min(...decls.map((d) => d.index)));
         declSitesByName.set(varName, new Set(decls.map((d) => d.index)));
+        
+        // A declaration site only makes the variable available AFTER the assignment statement completes
+        const stmtEnds = decls.map((d) => getStatementEndIndex(noStringsText, d.index));
+        earliestAvailableReadByName.set(varName, Math.min(...stmtEnds));
     });
-
-    const metadata = readLocalMetadataForGating(doc.uri && doc.uri.fsPath);
-    const isCommerce = isCommerceFunction(metadata);
 
     // 1. Bare code identifier references in noStringsText
     const identRegex = /\b([a-zA-Z_]\w*)\b/g;
@@ -67,26 +103,24 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
         while (after < noStringsText.length && /\s/.test(noStringsText[after])) after++;
         if (noStringsText[after] === '(') continue;
 
-        // This occurrence is itself a declaration site, not a use.
+        // This occurrence is itself a declaration site (LHS), not a read.
         const sites = declSitesByName.get(name);
         if (sites && sites.has(idx)) continue;
 
-        const earliest = earliestDeclByName.get(name);
-        if (earliest !== undefined && earliest <= idx) continue;
+        const earliestAvailable = earliestAvailableReadByName.get(name);
+        if (earliestAvailable !== undefined && earliestAvailable <= idx) continue;
 
-        if (earliest !== undefined && earliest > idx) {
-            if (isCommerce) continue;
+        if (earliestAvailable !== undefined && earliestAvailable > idx) {
             const startPos = doc.positionAt(idx);
             const endPos = startPos.translate(0, name.length);
             const diag = new vscode.Diagnostic(
                 new vscode.Range(startPos, endPos),
-                `'${name}' is read here but isn't assigned until later in this file (line ${doc.positionAt(earliest).line + 1}) - this will read an uninitialized value.`,
+                `'${name}' is read here before its initial assignment statement completes - this will read an uninitialized value.`,
                 vscode.DiagnosticSeverity.Warning
             );
             diag.code = 'bml-useBeforeDefine';
             diagnostics.push(diag);
-        } else if (earliest === undefined) {
-            if (isCommerce) continue;
+        } else if (earliestAvailable === undefined) {
             const startPos = doc.positionAt(idx);
             const endPos = startPos.translate(0, name.length);
             const diag = new vscode.Diagnostic(
@@ -106,25 +140,25 @@ function checkUseBeforeDefine(noStringsText, doc, vscode, declaredVars, extensio
         while ((bmqlMatch = bmqlVarRegex.exec(cleanText)) !== null) {
             const name = bmqlMatch[1];
             const nameLower = name.toLowerCase();
-            const idx = bmqlMatch.index + 1; // position after '$'
+            const idx = bmqlMatch.index + 1;
 
             if (isIgnoredSymbol(nameLower)) continue;
 
-            const earliest = earliestDeclByName.get(name);
-            if (earliest !== undefined && earliest <= idx) continue;
+            const earliestAvailable = earliestAvailableReadByName.get(name);
+            if (earliestAvailable !== undefined && earliestAvailable <= idx) continue;
 
             const startPos = doc.positionAt(idx);
             const endPos = startPos.translate(0, name.length);
 
-            if (earliest !== undefined && earliest > idx) {
+            if (earliestAvailable !== undefined && earliestAvailable > idx) {
                 const diag = new vscode.Diagnostic(
                     new vscode.Range(startPos, endPos),
-                    `'${name}' is referenced in BMQL query as '$${name}' here, but isn't assigned until later in this file (line ${doc.positionAt(earliest).line + 1}).`,
+                    `'${name}' is referenced in BMQL query as '$${name}' here, but isn't assigned until later in this file.`,
                     vscode.DiagnosticSeverity.Warning
                 );
                 diag.code = 'bml-useBeforeDefine';
                 diagnostics.push(diag);
-            } else if (earliest === undefined) {
+            } else if (earliestAvailable === undefined) {
                 const diag = new vscode.Diagnostic(
                     new vscode.Range(startPos, endPos),
                     `'${name}' is referenced in BMQL query as '$${name}' here, but variable '${name}' is never defined in this function.`,

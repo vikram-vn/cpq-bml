@@ -12,7 +12,7 @@ const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
 const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
 const { resolveParameterCompletions } = require('./paramCompletions');
 const { registerInlayHintsProvider } = require('./inlayHints');
-const { getBmqlVariableCompletions } = require('./bmqlVariableCompletions');
+const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('./bmqlVariableCompletions');
 
 // Each source file holds a different kind of entry. Tracking that here gives
 // accurate completion icons/hover labels - "does this syntax contain '(' "
@@ -239,6 +239,12 @@ function registerBmlIntelliSense(context) {
                     } else {
                         return cachedAllAttributes;
                     }
+                }
+
+                // General completion: merge local script variables with global API items
+                const localVars = getLocalVariableCompletions(document, position);
+                if (localVars && localVars.length > 0) {
+                    return [...localVars, ...cachedGlobalItems];
                 }
 
                 return cachedGlobalItems;
