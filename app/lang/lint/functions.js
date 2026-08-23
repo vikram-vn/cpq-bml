@@ -160,6 +160,7 @@ function argumentTypeCompatible(expectedType, actualType) {
     if (expected === 'singlearray' && actual.endsWith('[]') && !actual.endsWith('[][]')) return true;
     if (expected === 'doublearray' && actual.endsWith('[][]')) return true;
     if ((expected === 'dictionary' || expected === 'dict') && (actual === 'dict' || actual === 'dictionary')) return true;
+    if (expected === 'function' && (actual === 'string' || actual === 'function')) return true;
     return false;
 }
 
