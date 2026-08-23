@@ -176,7 +176,7 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
     else if (diag.code === 'bml-atoi-atof-empty-string' || diag.code === 'bml-atoi-atof-empty-literal') {
         const text = document.getText(editRange);
         const defaultVal = text.includes('atof') ? '0.0' : '0';
-        const action = new vscode.CodeAction(`Replace unsafe empty atoi/atof with default number ${defaultVal}`, vscode.CodeActionKind.QuickFix);
+        const action = new vscode.CodeAction(`Replace with ${defaultVal}`, vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
         action.edit.replace(document.uri, editRange, defaultVal);
         action.diagnostics = [diag];
@@ -223,9 +223,16 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
     }
     else if (diag.code === 'bml-negative-array-size') {
         const text = document.getText(editRange);
-        const actionZero = new vscode.CodeAction('Change array size to 0', vscode.CodeActionKind.QuickFix);
+        const lineText = document.lineAt(editRange.start.line).text;
+        const match = text.match(/-\d+/) || lineText.match(/\[\s*(-\d+)\s*\]/);
+        const num = match ? (match[1] || match[0]) : '-1';
+        const actionZero = new vscode.CodeAction(`Replace ${num} with 0`, vscode.CodeActionKind.QuickFix);
         actionZero.edit = new vscode.WorkspaceEdit();
-        actionZero.edit.replace(document.uri, editRange, text.replace(/\[\s*-\d+\s*\]/, '[0]'));
+        if (text.includes('[')) {
+            actionZero.edit.replace(document.uri, editRange, text.replace(/\[\s*-\d+\s*\]/, '[0]'));
+        } else {
+            actionZero.edit.replace(document.uri, editRange, '0');
+        }
         actionZero.diagnostics = [diag];
         fixes.push(actionZero);
     }

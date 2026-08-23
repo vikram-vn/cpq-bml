@@ -65,7 +65,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     // Fast keyword pre-checks to skip irrelevant checker passes
     const hasConditions = conditionRanges.length > 0 || cleanText.includes('if') || cleanText.includes('elif');
     const hasLoops = noStringsText.includes('for') || noStringsText.includes('while');
-    const hasCommerce = cleanText.includes('commerce.') || cleanText.includes('line.') || cleanText.includes('transaction.');
+    const hasCommerce = cleanText.includes('commerce') || cleanText.includes('line') || cleanText.includes('transaction') || cleanText.includes('_l') || cleanText.includes('_t');
 
     if (isLintEnabled) {
         const declaredVars = getDeclaredVariables(noStringsText, doc);
@@ -90,16 +90,16 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath, noStringsText, firstTypeByVar, assignmentMismatches));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));
         
+        const conditionalChains = hasConditions ? parseConditionalChains(cleanText) : [];
         if (hasConditions) {
             diagnostics.push(...checkConstantConditions(cleanText, conditionRanges, doc, vscode));
-
-            // Shared parse so duplicateBranches, lonelyIf, and unreachable don't each re-parse the whole file.
-            const conditionalChains = parseConditionalChains(cleanText);
-            diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode, conditionalChains));
             diagnostics.push(...checkDuplicateConditionBranches(conditionalChains, doc, vscode));
             diagnostics.push(...checkLonelyIf(cleanText, conditionalChains, doc, vscode));
-
             diagnostics.push(...checkMixedOperators(cleanText, conditionRanges, doc, vscode));
+        }
+
+        if (noStringsText.includes('return') || noStringsText.includes('throwerror') || noStringsText.includes('break') || noStringsText.includes('continue')) {
+            diagnostics.push(...checkUnreachableCode(noStringsText, doc, vscode, conditionalChains));
         }
 
         diagnostics.push(...checkUnusedExpressions(cleanText, doc, vscode));

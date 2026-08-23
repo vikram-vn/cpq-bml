@@ -111,11 +111,6 @@
   },
   {
     "line": 52,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
-  },
-  {
-    "line": 52,
     "severity": "Error",
     "message": "Use <> in BML"
   },
@@ -128,11 +123,6 @@
     "line": 55,
     "severity": "Error",
     "message": "Assignment '=' inside a condition - did you mean '==' for comparison?"
-  },
-  {
-    "line": 55,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
   },
   {
     "line": 55,
@@ -151,11 +141,6 @@
   },
   {
     "line": 58,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
-  },
-  {
-    "line": 58,
     "severity": "Error",
     "message": "Use >= in BML"
   },
@@ -165,19 +150,9 @@
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 63,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
-  },
-  {
     "line": 64,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 66,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
   },
   {
     "line": 67,
@@ -185,19 +160,9 @@
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 69,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
-  },
-  {
     "line": 70,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 72,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
   },
   {
     "line": 73,

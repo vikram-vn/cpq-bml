@@ -60,6 +60,11 @@
     "message": "Style Info: Array variable 'partsListSafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
   {
+    "line": 30,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
     "line": 32,
     "severity": "Hint",
     "message": "Unused variable: p1"
@@ -68,6 +73,11 @@
     "line": 36,
     "severity": "Information",
     "message": "Style Info: Array variable 'partsListUnsafe' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
+  },
+  {
+    "line": 36,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 37,
@@ -151,11 +161,6 @@
   },
   {
     "line": 51,
-    "severity": "Information",
-    "message": "Design Info: Magic number '10.5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 51,
     "severity": "Warning",
     "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
   },
@@ -163,11 +168,6 @@
     "line": 52,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 54,
-    "severity": "Information",
-    "message": "Design Info: Magic number '20.5' detected. Consider defining a named constant"
   },
   {
     "line": 54,
@@ -183,11 +183,6 @@
     "line": 55,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 57,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30.5' detected. Consider defining a named constant"
   },
   {
     "line": 57,

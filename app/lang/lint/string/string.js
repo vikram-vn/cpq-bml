@@ -4,7 +4,7 @@ const vscode = require('vscode');
 
 const EMPTY_STRING_LITERAL = /^(?:""|'')$/;
 
-function checkString(cleanText, noStringsText, doc) {
+function checkString(cleanText, noStringsText, doc, firstTypeByVar) {
     const diagnostics = [];
     let match;
 
@@ -112,7 +112,8 @@ function checkString(cleanText, noStringsText, doc) {
                 'bml-function-arg-count'
             ));
         } else {
-            const actual = inferExpressionType(args[0]);
+            const argTrimmed = args[0].trim();
+            const actual = inferExpressionType(argTrimmed, firstTypeByVar) || (firstTypeByVar && (firstTypeByVar.get(argTrimmed.toLowerCase()) || firstTypeByVar.get(argTrimmed)) && (firstTypeByVar.get(argTrimmed.toLowerCase()) || firstTypeByVar.get(argTrimmed)).type);
             if (actual) {
                 if (actual === 'String') {
                     const startPos = doc.positionAt(match.index);

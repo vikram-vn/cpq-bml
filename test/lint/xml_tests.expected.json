@@ -206,6 +206,11 @@
   },
   {
     "line": 26,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_applytemplate_neg2"
   },
@@ -263,6 +268,11 @@
     "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_applytemplate_neg5"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Built-in function 'applytemplate' expects 1 to 4 argument(s), but got 0."
   },
   {
     "line": 30,
@@ -336,6 +346,11 @@
   },
   {
     "line": 36,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 36,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_pos1"
   },
@@ -366,6 +381,11 @@
   },
   {
     "line": 40,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 40,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_pos3"
   },
@@ -391,6 +411,11 @@
   },
   {
     "line": 41,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 41,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_pos4"
   },
@@ -408,6 +433,11 @@
     "line": 42,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 42,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 42,
@@ -451,6 +481,11 @@
   },
   {
     "line": 48,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 48,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_pos8"
   },
@@ -461,6 +496,11 @@
   },
   {
     "line": 49,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 49,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_pos9"
   },
@@ -468,6 +508,11 @@
     "line": 50,
     "severity": "Information",
     "message": "Style Info: Variable 'val_transformxml_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_pos10')."
+  },
+  {
+    "line": 50,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 50,
@@ -493,6 +538,11 @@
     "line": 52,
     "severity": "Information",
     "message": "Style Info: Variable 'val_transformxml_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_transformxml_neg2')."
+  },
+  {
+    "line": 52,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 52,
@@ -561,8 +611,18 @@
   },
   {
     "line": 55,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 55,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_neg5"
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Built-in function 'transformxml' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 56,
@@ -578,6 +638,11 @@
     "line": 56,
     "severity": "Hint",
     "message": "Unused variable: val_transformxml_neg6"
+  },
+  {
+    "line": 57,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 58,
@@ -641,6 +706,11 @@
   },
   {
     "line": 62,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 62,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_pos1"
   },
@@ -691,6 +761,11 @@
   },
   {
     "line": 66,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 66,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_pos3"
   },
@@ -726,6 +801,11 @@
   },
   {
     "line": 67,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 67,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_pos4"
   },
@@ -753,6 +833,11 @@
     "line": 68,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 68,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 68,
@@ -826,6 +911,11 @@
   },
   {
     "line": 74,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 74,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_pos8"
   },
@@ -846,6 +936,11 @@
   },
   {
     "line": 75,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 75,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_pos9"
   },
@@ -863,6 +958,11 @@
     "line": 76,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlsingle_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_pos10')."
+  },
+  {
+    "line": 76,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 76,
@@ -903,6 +1003,11 @@
     "line": 78,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlsingle_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlsingle_neg2')."
+  },
+  {
+    "line": 78,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 78,
@@ -986,8 +1091,18 @@
   },
   {
     "line": 81,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 81,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlsingle_neg5"
+  },
+  {
+    "line": 82,
+    "severity": "Error",
+    "message": "Built-in function 'readxmlsingle' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 82,
@@ -1013,6 +1128,11 @@
     "line": 83,
     "severity": "Error",
     "message": "Argument 2 to 'readxmlsingle' should be String[], but got a String value."
+  },
+  {
+    "line": 83,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 84,
@@ -1086,6 +1206,11 @@
   },
   {
     "line": 88,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 88,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_pos1"
   },
@@ -1136,6 +1261,11 @@
   },
   {
     "line": 92,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 92,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_pos3"
   },
@@ -1171,6 +1301,11 @@
   },
   {
     "line": 93,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 93,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_pos4"
   },
@@ -1198,6 +1333,11 @@
     "line": 94,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 94,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 94,
@@ -1271,6 +1411,11 @@
   },
   {
     "line": 100,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 100,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_pos8"
   },
@@ -1291,6 +1436,11 @@
   },
   {
     "line": 101,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 101,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_pos9"
   },
@@ -1308,6 +1458,11 @@
     "line": 102,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlmultiple_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_pos10')."
+  },
+  {
+    "line": 102,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 102,
@@ -1348,6 +1503,11 @@
     "line": 104,
     "severity": "Information",
     "message": "Style Info: Variable 'val_readxmlmultiple_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_readxmlmultiple_neg2')."
+  },
+  {
+    "line": 104,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 104,
@@ -1431,8 +1591,18 @@
   },
   {
     "line": 107,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 107,
     "severity": "Hint",
     "message": "Unused variable: val_readxmlmultiple_neg5"
+  },
+  {
+    "line": 108,
+    "severity": "Error",
+    "message": "Built-in function 'readxmlmultiple' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 108,
@@ -1458,6 +1628,11 @@
     "line": 109,
     "severity": "Error",
     "message": "Argument 2 to 'readxmlmultiple' should be String[], but got a String value."
+  },
+  {
+    "line": 109,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 110,

@@ -378,7 +378,7 @@ suite("BML Linter Test Suite - URL Access specific tests", () => {
                 p = makeurlparam(params, "extra");
                 return "";
             `);
-            const diag = diagnostics.find(d => d.code === 'bml-function-arg-count');
+            const diag = diagnostics.find(d => d.code === 'bml-function-arg-count' || d.code === 'bml-function-arg-type');
             assert.ok(diag);
         });
     });

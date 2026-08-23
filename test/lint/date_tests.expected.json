@@ -47,11 +47,6 @@
   {
     "line": 12,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 12,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_adddays_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos1')."
   },
   {
@@ -87,11 +82,6 @@
   {
     "line": 16,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 16,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_adddays_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos3')."
   },
   {
@@ -103,11 +93,6 @@
     "line": 17,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
-  },
-  {
-    "line": 17,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 17,
@@ -128,11 +113,6 @@
     "line": 17,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos4"
-  },
-  {
-    "line": 18,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 18,
@@ -180,16 +160,6 @@
     "message": "Unused variable: val_adddays_pos7"
   },
   {
-    "line": 22,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 24,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
     "line": 24,
     "severity": "Information",
     "message": "Style Info: Variable 'val_adddays_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_pos8')."
@@ -198,11 +168,6 @@
     "line": 24,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos8"
-  },
-  {
-    "line": 25,
-    "severity": "Information",
-    "message": "Design Info: Magic number '2147483647' detected. Consider defining a named constant"
   },
   {
     "line": 25,
@@ -218,11 +183,6 @@
     "line": 25,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_pos9"
-  },
-  {
-    "line": 26,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 26,
@@ -257,12 +217,12 @@
   {
     "line": 28,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+    "message": "Style Info: Variable 'val_adddays_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg2')."
   },
   {
     "line": 28,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_adddays_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg2')."
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 28,
@@ -286,13 +246,13 @@
   },
   {
     "line": 29,
-    "severity": "Hint",
-    "message": "Unused variable: val_adddays_neg3"
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
-    "line": 30,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+    "line": 29,
+    "severity": "Hint",
+    "message": "Unused variable: val_adddays_neg3"
   },
   {
     "line": 30,
@@ -322,17 +282,17 @@
   {
     "line": 31,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 31,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_adddays_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg5')."
   },
   {
     "line": 31,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg5"
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "Built-in function 'adddays' expects 2 argument(s), but got 1."
   },
   {
     "line": 32,
@@ -348,11 +308,6 @@
     "line": 32,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg6"
-  },
-  {
-    "line": 33,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 34,
@@ -397,22 +352,12 @@
   {
     "line": 36,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 36,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_adddays_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_adddays_neg10')."
   },
   {
     "line": 36,
     "severity": "Hint",
     "message": "Unused variable: val_adddays_neg10"
-  },
-  {
-    "line": 38,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 38,
@@ -452,11 +397,6 @@
   {
     "line": 42,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 42,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_addmonths_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos3')."
   },
   {
@@ -468,11 +408,6 @@
     "line": 43,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
-  },
-  {
-    "line": 43,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 43,
@@ -493,11 +428,6 @@
     "line": 43,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos4"
-  },
-  {
-    "line": 44,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 44,
@@ -540,16 +470,6 @@
     "message": "Unused variable: val_addmonths_pos7"
   },
   {
-    "line": 48,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 50,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
     "line": 50,
     "severity": "Information",
     "message": "Style Info: Variable 'val_addmonths_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_pos8')."
@@ -558,11 +478,6 @@
     "line": 50,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos8"
-  },
-  {
-    "line": 51,
-    "severity": "Information",
-    "message": "Design Info: Magic number '2147483647' detected. Consider defining a named constant"
   },
   {
     "line": 51,
@@ -578,11 +493,6 @@
     "line": 51,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_pos9"
-  },
-  {
-    "line": 52,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 52,
@@ -617,12 +527,12 @@
   {
     "line": 54,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+    "message": "Style Info: Variable 'val_addmonths_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg2')."
   },
   {
     "line": 54,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_addmonths_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg2')."
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 54,
@@ -646,13 +556,13 @@
   },
   {
     "line": 55,
-    "severity": "Hint",
-    "message": "Unused variable: val_addmonths_neg3"
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
-    "line": 56,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+    "line": 55,
+    "severity": "Hint",
+    "message": "Unused variable: val_addmonths_neg3"
   },
   {
     "line": 56,
@@ -682,17 +592,17 @@
   {
     "line": 57,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 57,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_addmonths_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_addmonths_neg5')."
   },
   {
     "line": 57,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg5"
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Built-in function 'addmonths' expects 2 argument(s), but got 1."
   },
   {
     "line": 58,
@@ -708,11 +618,6 @@
     "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg6"
-  },
-  {
-    "line": 59,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 60,
@@ -753,11 +658,6 @@
     "line": 61,
     "severity": "Hint",
     "message": "Unused variable: val_addmonths_neg9"
-  },
-  {
-    "line": 62,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 62,
@@ -921,6 +821,11 @@
   },
   {
     "line": 78,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 78,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_neg2"
   },
@@ -973,6 +878,11 @@
     "line": 81,
     "severity": "Hint",
     "message": "Unused variable: val_datetostr_neg5"
+  },
+  {
+    "line": 82,
+    "severity": "Error",
+    "message": "Built-in function 'datetostr' expects 1 to 3 argument(s), but got 0."
   },
   {
     "line": 82,
@@ -1187,12 +1097,17 @@
   {
     "line": 102,
     "severity": "Error",
-    "message": "Built-in function 'getdate' expects 0 to 1 argument(s), but got 2."
+    "message": "Argument 1 to 'getdate' should be Record, but got a Boolean value."
   },
   {
     "line": 102,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getdate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg2')."
+  },
+  {
+    "line": 102,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 102,
@@ -1202,7 +1117,7 @@
   {
     "line": 103,
     "severity": "Error",
-    "message": "Argument 1 to 'getdate' should be boolean, but got a String value."
+    "message": "Argument 1 to 'getdate' should be Boolean, but got a String value."
   },
   {
     "line": 103,
@@ -1271,11 +1186,6 @@
   },
   {
     "line": 108,
-    "severity": "Error",
-    "message": "Built-in function 'getdate' expects 0 to 1 argument(s), but got 2."
-  },
-  {
-    "line": 108,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getdate_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdate_neg8')."
   },
@@ -1283,11 +1193,6 @@
     "line": 108,
     "severity": "Hint",
     "message": "Unused variable: val_getdate_neg8"
-  },
-  {
-    "line": 109,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 109,
@@ -1481,6 +1386,11 @@
   },
   {
     "line": 128,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 128,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg2"
   },
@@ -1498,6 +1408,11 @@
     "line": 129,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getdiffindays_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getdiffindays_neg3')."
+  },
+  {
+    "line": 129,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 129,
@@ -1538,6 +1453,11 @@
     "line": 131,
     "severity": "Hint",
     "message": "Unused variable: val_getdiffindays_neg5"
+  },
+  {
+    "line": 132,
+    "severity": "Error",
+    "message": "Built-in function 'getdiffindays' expects 2 argument(s), but got 1."
   },
   {
     "line": 132,
@@ -1776,11 +1696,6 @@
   },
   {
     "line": 153,
-    "severity": "Error",
-    "message": "Built-in function 'getstrdate' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 153,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getstrdate_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getstrdate_neg4')."
   },
@@ -1813,11 +1728,6 @@
     "line": 154,
     "severity": "Hint",
     "message": "Unused variable: val_getstrdate_neg5"
-  },
-  {
-    "line": 155,
-    "severity": "Error",
-    "message": "Built-in function 'getstrdate' expects 0 argument(s), but got 1."
   },
   {
     "line": 155,
@@ -2166,6 +2076,11 @@
   },
   {
     "line": 175,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 175,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg2"
   },
@@ -2238,6 +2153,11 @@
     "line": 178,
     "severity": "Hint",
     "message": "Unused variable: val_isleap_neg5"
+  },
+  {
+    "line": 179,
+    "severity": "Error",
+    "message": "Built-in function 'isleap' expects 1 argument(s), but got 0."
   },
   {
     "line": 179,
@@ -2551,6 +2471,11 @@
   },
   {
     "line": 199,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 199,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg2"
   },
@@ -2613,6 +2538,11 @@
     "line": 202,
     "severity": "Hint",
     "message": "Unused variable: val_isweekend_neg5"
+  },
+  {
+    "line": 203,
+    "severity": "Error",
+    "message": "Built-in function 'isweekend' expects 1 argument(s), but got 0."
   },
   {
     "line": 203,
@@ -2702,11 +2632,6 @@
   {
     "line": 209,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 209,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_minusdays_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos1')."
   },
   {
@@ -2742,11 +2667,6 @@
   {
     "line": 213,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 213,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_minusdays_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos3')."
   },
   {
@@ -2758,11 +2678,6 @@
     "line": 214,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
-  },
-  {
-    "line": 214,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 214,
@@ -2783,11 +2698,6 @@
     "line": 214,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos4"
-  },
-  {
-    "line": 215,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 215,
@@ -2830,16 +2740,6 @@
     "message": "Unused variable: val_minusdays_pos7"
   },
   {
-    "line": 219,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 221,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
     "line": 221,
     "severity": "Information",
     "message": "Style Info: Variable 'val_minusdays_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_pos8')."
@@ -2848,11 +2748,6 @@
     "line": 221,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos8"
-  },
-  {
-    "line": 222,
-    "severity": "Information",
-    "message": "Design Info: Magic number '2147483647' detected. Consider defining a named constant"
   },
   {
     "line": 222,
@@ -2868,11 +2763,6 @@
     "line": 222,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_pos9"
-  },
-  {
-    "line": 223,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 223,
@@ -2907,12 +2797,12 @@
   {
     "line": 225,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+    "message": "Style Info: Variable 'val_minusdays_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg2')."
   },
   {
     "line": 225,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_minusdays_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg2')."
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 225,
@@ -2936,13 +2826,13 @@
   },
   {
     "line": 226,
-    "severity": "Hint",
-    "message": "Unused variable: val_minusdays_neg3"
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
-    "line": 227,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+    "line": 226,
+    "severity": "Hint",
+    "message": "Unused variable: val_minusdays_neg3"
   },
   {
     "line": 227,
@@ -2972,17 +2862,17 @@
   {
     "line": 228,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 228,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_minusdays_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg5')."
   },
   {
     "line": 228,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg5"
+  },
+  {
+    "line": 229,
+    "severity": "Error",
+    "message": "Built-in function 'minusdays' expects 2 argument(s), but got 1."
   },
   {
     "line": 229,
@@ -2998,11 +2888,6 @@
     "line": 229,
     "severity": "Hint",
     "message": "Unused variable: val_minusdays_neg6"
-  },
-  {
-    "line": 230,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 231,
@@ -3047,11 +2932,6 @@
   {
     "line": 233,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 233,
-    "severity": "Information",
     "message": "Style Info: Variable 'val_minusdays_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_minusdays_neg10')."
   },
   {
@@ -3068,6 +2948,11 @@
     "line": 235,
     "severity": "Information",
     "message": "Style Info: Variable 'val_strtodate_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos1')."
+  },
+  {
+    "line": 235,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 235,
@@ -3106,6 +2991,11 @@
   },
   {
     "line": 239,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 239,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos3"
   },
@@ -3136,6 +3026,11 @@
   },
   {
     "line": 240,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 240,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos4"
   },
@@ -3158,6 +3053,11 @@
     "line": 241,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 241,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 241,
@@ -3216,6 +3116,11 @@
   },
   {
     "line": 247,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 247,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos8"
   },
@@ -3228,6 +3133,11 @@
     "line": 248,
     "severity": "Information",
     "message": "Style Info: Variable 'val_strtodate_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtodate_pos9')."
+  },
+  {
+    "line": 248,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 248,
@@ -3246,8 +3156,18 @@
   },
   {
     "line": 249,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 249,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_pos10"
+  },
+  {
+    "line": 250,
+    "severity": "Error",
+    "message": "Built-in function 'strtodate' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 250,
@@ -3276,8 +3196,23 @@
   },
   {
     "line": 251,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 251,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg2"
+  },
+  {
+    "line": 252,
+    "severity": "Error",
+    "message": "Argument 1 to 'strtodate' should be String, but got a Integer value."
+  },
+  {
+    "line": 252,
+    "severity": "Error",
+    "message": "Argument 2 to 'strtodate' should be String, but got a Integer value."
   },
   {
     "line": 252,
@@ -3346,8 +3281,18 @@
   },
   {
     "line": 254,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 254,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg5"
+  },
+  {
+    "line": 255,
+    "severity": "Error",
+    "message": "Built-in function 'strtodate' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 255,
@@ -3375,6 +3320,11 @@
     "message": "Deprecated function 'strtodate'. Use 'strtojavadate' instead"
   },
   {
+    "line": 256,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
     "line": 257,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
@@ -3393,6 +3343,11 @@
     "line": 257,
     "severity": "Hint",
     "message": "Unused variable: val_strtodate_neg8"
+  },
+  {
+    "line": 258,
+    "severity": "Error",
+    "message": "Built-in function 'strtodate' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 258,
@@ -3436,6 +3391,11 @@
   },
   {
     "line": 261,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 261,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos1"
   },
@@ -3466,6 +3426,11 @@
   },
   {
     "line": 265,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 265,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos3"
   },
@@ -3491,6 +3456,11 @@
   },
   {
     "line": 266,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 266,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos4"
   },
@@ -3508,6 +3478,11 @@
     "line": 267,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 267,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 267,
@@ -3551,6 +3526,11 @@
   },
   {
     "line": 273,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 273,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos8"
   },
@@ -3561,6 +3541,11 @@
   },
   {
     "line": 274,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 274,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_pos9"
   },
@@ -3568,6 +3553,11 @@
     "line": 275,
     "severity": "Information",
     "message": "Style Info: Variable 'val_strtojavadate_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_pos10')."
+  },
+  {
+    "line": 275,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 275,
@@ -3593,6 +3583,11 @@
     "line": 277,
     "severity": "Information",
     "message": "Style Info: Variable 'val_strtojavadate_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_strtojavadate_neg2')."
+  },
+  {
+    "line": 277,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 277,
@@ -3661,8 +3656,18 @@
   },
   {
     "line": 280,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 280,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg5"
+  },
+  {
+    "line": 281,
+    "severity": "Error",
+    "message": "Built-in function 'strtojavadate' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 281,
@@ -3678,6 +3683,11 @@
     "line": 281,
     "severity": "Hint",
     "message": "Unused variable: val_strtojavadate_neg6"
+  },
+  {
+    "line": 282,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 283,
@@ -3886,6 +3896,11 @@
   },
   {
     "line": 303,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 303,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg2"
   },
@@ -3903,6 +3918,11 @@
     "line": 304,
     "severity": "Information",
     "message": "Style Info: Variable 'val_comparedates_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_comparedates_neg3')."
+  },
+  {
+    "line": 304,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 304,
@@ -3943,6 +3963,11 @@
     "line": 306,
     "severity": "Hint",
     "message": "Unused variable: val_comparedates_neg5"
+  },
+  {
+    "line": 307,
+    "severity": "Error",
+    "message": "Built-in function 'comparedates' expects 2 argument(s), but got 1."
   },
   {
     "line": 307,
@@ -4181,11 +4206,6 @@
   },
   {
     "line": 328,
-    "severity": "Error",
-    "message": "Built-in function 'getcurrenttimeinmillis' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 328,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getcurrenttimeinmillis_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getcurrenttimeinmillis_neg4')."
   },
@@ -4218,11 +4238,6 @@
     "line": 329,
     "severity": "Hint",
     "message": "Unused variable: val_getcurrenttimeinmillis_neg5"
-  },
-  {
-    "line": 330,
-    "severity": "Error",
-    "message": "Built-in function 'getcurrenttimeinmillis' expects 0 argument(s), but got 1."
   },
   {
     "line": 330,
@@ -4300,6 +4315,11 @@
     "message": "Unused variable: val_getcurrenttimeinmillis_neg10"
   },
   {
+    "line": 338,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
     "line": 339,
     "severity": "Hint",
     "message": "Unused variable: dateFeb29"
@@ -4310,9 +4330,19 @@
     "message": "Unused variable: dateMarch1"
   },
   {
+    "line": 341,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
     "line": 342,
     "severity": "Hint",
     "message": "Unused variable: dateNonLeapMarch1"
+  },
+  {
+    "line": 345,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 345,
@@ -4321,8 +4351,18 @@
   },
   {
     "line": 346,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 346,
     "severity": "Hint",
     "message": "Unused variable: parsedDate2"
+  },
+  {
+    "line": 347,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 347,
@@ -4331,18 +4371,8 @@
   },
   {
     "line": 350,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
-  },
-  {
-    "line": 350,
     "severity": "Hint",
     "message": "Unused variable: backwardsDate"
-  },
-  {
-    "line": 351,
-    "severity": "Information",
-    "message": "Design Info: Magic number '12' detected. Consider defining a named constant"
   },
   {
     "line": 351,
@@ -4360,16 +4390,6 @@
     "message": "Unused variable: zeroMonthsAdded"
   },
   {
-    "line": 357,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
-  },
-  {
-    "line": 358,
-    "severity": "Information",
-    "message": "Design Info: Magic number '30' detected. Consider defining a named constant"
-  },
-  {
     "line": 358,
     "severity": "Error",
     "message": "Type mismatch: Cannot compare 'Date' and 'Date' using '>'. both operands must be both numeric or both string."
@@ -4381,8 +4401,18 @@
   },
   {
     "line": 363,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 363,
     "severity": "Hint",
     "message": "Unused variable: dstDate1"
+  },
+  {
+    "line": 364,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 364,

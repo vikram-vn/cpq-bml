@@ -12,6 +12,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
     const diagnostics = [];
     const lines = doc.getText().split(/\r?\n/);
     const noStringsLines = noStringsText.split(/\r?\n/);
+    const cleanLines = cleanText.split(/\r?\n/);
 
     // 2. Line-by-line checks: Semicolons, Trailing Comma, Braces, Line Length
     const bmqlLineRe = /\bbmql\s*\(/i;
@@ -281,8 +282,8 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
             }
         }
     }
-    for (let i = 0; i < noStringsLines.length; i++) {
-        if (printTriggerRegex.test(noStringsLines[i]) && !lineIsDebugControlled[i]) {
+    for (let i = 0; i < cleanLines.length; i++) {
+        if (printTriggerRegex.test(cleanLines[i]) && !lineIsDebugControlled[i]) {
             const startPos = new vscode.Position(i, lines[i].indexOf('print'));
             const endPos = startPos.translate(0, 5);
             diagnostics.push(makeDiagnostic(

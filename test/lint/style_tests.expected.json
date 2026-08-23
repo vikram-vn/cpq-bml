@@ -1,10 +1,5 @@
 [
   {
-    "line": 6,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
     "line": 7,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
@@ -38,6 +33,11 @@
     "line": 20,
     "severity": "Warning",
     "message": "'myDict' is read here but is never defined in this function. Did you mean 'c'?"
+  },
+  {
+    "line": 20,
+    "severity": "Error",
+    "message": "Built-in function 'put' expects 3 argument(s), but got 2."
   },
   {
     "line": 20,

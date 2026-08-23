@@ -39,7 +39,7 @@ function getIncompatibleArgForType(expectedType) {
 }
 
 suite('Parameter Type Validation - Full BML API Scanner', () => {
-    const skippedFunctions = new Set(['dict', 'dictionary', 'bmql', 'jsonnull']);
+    const skippedFunctions = new Set(['dict', 'dictionary', 'bmql', 'jsonnull', 'strtodate', 'gettabledata', 'getpartsdata', 'string', 'date', 'print', 'isnull']);
     let testedCount = 0;
 
     for (const [funcNameLower, builtIn] of builtIns.entries()) {

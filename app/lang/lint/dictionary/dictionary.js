@@ -47,8 +47,8 @@ function checkDictionary(cleanText, noStringsText, doc) {
 
     // dict(dictType) - check if literal type is valid
     const allowedDictTypes = new Set([
-        'string', 'integer', 'float', 'date', 'boolean', 'json', 'jsonarray', 'bytearray',
-        'string[]', 'integer[]', 'float[]', 'date[]', 'boolean[]', 'json[]', 'jsonarray[]', 'bytearray[]',
+        'string', 'integer', 'float', 'date', 'boolean', 'bytearray', 'json', 'jsonarray',
+        'string[]', 'integer[]', 'float[]', 'date[]', 'boolean[]', 'bytearray[]', 'json[]', 'jsonarray[]',
         'string[][]', 'integer[][]', 'float[][]', 'date[][]', 'boolean[][]',
         'anytype', 'dict<string>', 'dict<integer>', 'dict<float>', 'dict<boolean>', 'dict<date>', 'dict<json>', 'dict<jsonarray>', 'dict<anytype>'
     ]);

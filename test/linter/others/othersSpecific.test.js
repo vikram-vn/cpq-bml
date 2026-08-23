@@ -260,7 +260,7 @@ suite("BML Linter Test Suite - General and other specific tests", () => {
     });
 
     test("getuuid() - Valid", () => {
-      const diagnostics = lintText('u = getuuid(true); return "";');
+      const diagnostics = lintText('u = getuuid(); return "";');
       assert.strictEqual(diagnostics.find(d => d.code === 'bml-function-arg-count'), undefined);
     });
 

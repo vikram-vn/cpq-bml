@@ -249,15 +249,15 @@ suite('BML Linter Test Suite - documented per-function constraints', () => {
                 d1 = dict("string"); // OK
                 d2 = dict("anytype"); // OK
                 d3 = dict("string[][]"); // OK
-                d4 = dict("json"); // Error
+                d4 = dict("unknown_custom"); // Error
                 d5 = dict("invalid"); // Error
                 return "";
             `);
             const dictDiags = diagnostics.filter(d => d.code === 'bml-dict-invalid-type');
             assert.strictEqual(dictDiags.length, 2, 'Only d4 and d5 should be flagged');
-            const diagErr1 = dictDiags.find(d => d.message.includes("type 'json'"));
+            const diagErr1 = dictDiags.find(d => d.message.includes("type 'unknown_custom'"));
             const diagErr2 = dictDiags.find(d => d.message.includes("type 'invalid'"));
-            assert.ok(diagErr1, 'Should flag json dict type');
+            assert.ok(diagErr1, 'Should flag unknown_custom dict type');
             assert.ok(diagErr2, 'Should flag invalid dict type');
         });
 

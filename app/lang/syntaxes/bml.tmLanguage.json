@@ -170,7 +170,7 @@
               "name": "variable.other.bmql.bml"
             },
             {
-              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN)(?![\\w-])",
+              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN|IN|AND|OR|LIKE|NOT|IS|NULL|BETWEEN|LIMIT|HAVING)(?![\\w-])",
               "name": "keyword.other.bmql.bml"
             }
           ]
@@ -199,7 +199,7 @@
               "name": "variable.other.bmql.bml"
             },
             {
-              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN)(?![\\w-])",
+              "match": "(?i)(?<![\\w-])(SELECT|DISTINCT|FROM|WHERE|ORDER BY|GROUP BY|INSERT INTO|VALUES|UPDATE|SET|DELETE FROM|MODIFY|ASC|DESC|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN|IN|AND|OR|LIKE|NOT|IS|NULL|BETWEEN|LIMIT|HAVING)(?![\\w-])",
               "name": "keyword.other.bmql.bml"
             }
           ]

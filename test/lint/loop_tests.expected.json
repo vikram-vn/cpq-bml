@@ -10,11 +10,6 @@
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
   },
   {
-    "line": 10,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
     "line": 11,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
@@ -96,11 +91,6 @@
   },
   {
     "line": 42,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
-    "line": 42,
     "severity": "Warning",
     "message": "Design Warning: Loop variable 'shadowVar' shadows an outer variable with the same name. Consider renaming the loop variable to avoid confusion."
   },
@@ -150,16 +140,6 @@
     "message": "BML Syntax Error: 'continue' statement is only allowed inside a loop body."
   },
   {
-    "line": 62,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 71,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
-  },
-  {
     "line": 71,
     "severity": "Information",
     "message": "Unused loop variable: 'pIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
@@ -198,11 +178,6 @@
     "line": 78,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 84,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
   },
   {
     "line": 84,

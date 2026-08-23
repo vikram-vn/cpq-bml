@@ -252,12 +252,22 @@
   {
     "line": 26,
     "severity": "Error",
+    "message": "Argument 1 to 'getarrayattrstring' should be SingleArray, but got a String value."
+  },
+  {
+    "line": 26,
+    "severity": "Error",
     "message": "Built-in function 'getarrayattrstring' expects 1 argument(s), but got 2."
   },
   {
     "line": 26,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getarrayattrstring_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getarrayattrstring_neg2')."
+  },
+  {
+    "line": 26,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 26,
@@ -323,6 +333,11 @@
     "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_getarrayattrstring_neg5"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Built-in function 'getarrayattrstring' expects 1 argument(s), but got 0."
   },
   {
     "line": 30,
@@ -406,6 +421,11 @@
   },
   {
     "line": 36,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 36,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_pos1"
   },
@@ -436,6 +456,11 @@
   },
   {
     "line": 40,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 40,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_pos3"
   },
@@ -461,6 +486,11 @@
   },
   {
     "line": 41,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 41,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_pos4"
   },
@@ -478,6 +508,11 @@
     "line": 42,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 42,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 42,
@@ -521,6 +556,11 @@
   },
   {
     "line": 48,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 48,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_pos8"
   },
@@ -531,6 +571,11 @@
   },
   {
     "line": 49,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 49,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_pos9"
   },
@@ -538,6 +583,11 @@
     "line": 50,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getconfigattrvalue_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_pos10')."
+  },
+  {
+    "line": 50,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 50,
@@ -568,6 +618,11 @@
     "line": 52,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getconfigattrvalue_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigattrvalue_neg2')."
+  },
+  {
+    "line": 52,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 52,
@@ -636,8 +691,18 @@
   },
   {
     "line": 55,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 55,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_neg5"
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Built-in function 'getconfigattrvalue' expects 2 argument(s), but got 1."
   },
   {
     "line": 56,
@@ -653,6 +718,11 @@
     "line": 56,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigattrvalue_neg6"
+  },
+  {
+    "line": 57,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 58,
@@ -916,6 +986,11 @@
   },
   {
     "line": 76,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 76,
     "severity": "Hint",
     "message": "Unused variable: val_print_neg2"
   },
@@ -983,6 +1058,11 @@
     "line": 79,
     "severity": "Hint",
     "message": "Unused variable: val_print_neg5"
+  },
+  {
+    "line": 80,
+    "severity": "Error",
+    "message": "Built-in function 'print' expects 1 argument(s), but got 0."
   },
   {
     "line": 80,
@@ -1301,6 +1381,11 @@
   },
   {
     "line": 100,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 100,
     "severity": "Hint",
     "message": "Unused variable: val_isnull_neg2"
   },
@@ -1368,6 +1453,11 @@
     "line": 103,
     "severity": "Hint",
     "message": "Unused variable: val_isnull_neg5"
+  },
+  {
+    "line": 104,
+    "severity": "Error",
+    "message": "Built-in function 'isnull' expects 1 argument(s), but got 0."
   },
   {
     "line": 104,
@@ -1592,7 +1682,7 @@
   {
     "line": 123,
     "severity": "Error",
-    "message": "Built-in function 'getreasonstatus' expects 1 argument(s), but got 0."
+    "message": "Built-in function 'getreasonstatus' expects 2 or 1 argument(s), but got 0."
   },
   {
     "line": 123,
@@ -1606,18 +1696,23 @@
   },
   {
     "line": 124,
-    "severity": "Error",
-    "message": "Built-in function 'getreasonstatus' expects 1 argument(s), but got 2."
-  },
-  {
-    "line": 124,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getreasonstatus_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_neg2')."
   },
   {
     "line": 124,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 124,
     "severity": "Hint",
     "message": "Unused variable: val_getreasonstatus_neg2"
+  },
+  {
+    "line": 125,
+    "severity": "Error",
+    "message": "Argument 1 to 'getreasonstatus' should be String, but got a Integer value."
   },
   {
     "line": 125,
@@ -1671,6 +1766,11 @@
   },
   {
     "line": 128,
+    "severity": "Error",
+    "message": "Built-in function 'getreasonstatus' expects 2 or 1 argument(s), but got 0."
+  },
+  {
+    "line": 128,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getreasonstatus_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getreasonstatus_neg6')."
   },
@@ -1688,11 +1788,6 @@
     "line": 130,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 130,
-    "severity": "Error",
-    "message": "Built-in function 'getreasonstatus' expects 1 argument(s), but got 2."
   },
   {
     "line": 130,
@@ -1931,11 +2026,6 @@
   },
   {
     "line": 149,
-    "severity": "Error",
-    "message": "Built-in function 'logtime' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 149,
     "severity": "Information",
     "message": "Style Info: Variable 'val_logtime_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_neg1')."
   },
@@ -1947,7 +2037,7 @@
   {
     "line": 150,
     "severity": "Error",
-    "message": "Built-in function 'logtime' expects 2 argument(s), but got 3."
+    "message": "Built-in function 'logtime' expects 1 or 2 argument(s), but got 3."
   },
   {
     "line": 150,
@@ -1958,6 +2048,11 @@
     "line": 150,
     "severity": "Information",
     "message": "Style Info: Variable 'val_logtime_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_neg2')."
+  },
+  {
+    "line": 150,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 150,
@@ -1983,6 +2078,11 @@
     "line": 151,
     "severity": "Information",
     "message": "Style Info: Variable 'val_logtime_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_logtime_neg3')."
+  },
+  {
+    "line": 151,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 151,
@@ -2068,11 +2168,6 @@
     "line": 156,
     "severity": "Hint",
     "message": "Unused variable: val_logtime_neg8"
-  },
-  {
-    "line": 157,
-    "severity": "Error",
-    "message": "Built-in function 'logtime' expects 2 argument(s), but got 1."
   },
   {
     "line": 157,
@@ -2271,6 +2366,11 @@
   },
   {
     "line": 174,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 174,
     "severity": "Hint",
     "message": "Unused variable: val_getoldvalue_neg2"
   },
@@ -2328,6 +2428,11 @@
     "line": 177,
     "severity": "Hint",
     "message": "Unused variable: val_getoldvalue_neg5"
+  },
+  {
+    "line": 178,
+    "severity": "Error",
+    "message": "Built-in function 'getoldvalue' expects 1 to 2 argument(s), but got 0."
   },
   {
     "line": 178,
@@ -2396,6 +2501,16 @@
   },
   {
     "line": 184,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 184,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 184,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2426,6 +2541,16 @@
   },
   {
     "line": 187,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 187,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 187,
     "severity": "Information",
     "message": "Style Info: Variable 'val_savebom_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos2')."
   },
@@ -2433,6 +2558,16 @@
     "line": 187,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos2"
+  },
+  {
+    "line": 188,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 188,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 188,
@@ -2448,6 +2583,16 @@
     "line": 188,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos3"
+  },
+  {
+    "line": 189,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 189,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 189,
@@ -2481,6 +2626,16 @@
   },
   {
     "line": 190,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 190,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 190,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2506,6 +2661,16 @@
   },
   {
     "line": 191,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 191,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 191,
     "severity": "Information",
     "message": "Style Info: Variable 'val_savebom_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos6')."
   },
@@ -2513,6 +2678,16 @@
     "line": 191,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos6"
+  },
+  {
+    "line": 192,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 192,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 192,
@@ -2531,6 +2706,16 @@
   },
   {
     "line": 196,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 196,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 196,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2543,6 +2728,16 @@
     "line": 196,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos8"
+  },
+  {
+    "line": 197,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 197,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 197,
@@ -2566,6 +2761,16 @@
   },
   {
     "line": 198,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 198,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 198,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2582,7 +2787,12 @@
   {
     "line": 199,
     "severity": "Error",
-    "message": "Built-in function 'savebom' expects 2 to 3 argument(s), but got 1."
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 199,
+    "severity": "Error",
+    "message": "Built-in function 'savebom' expects 2 argument(s), but got 1."
   },
   {
     "line": 199,
@@ -2601,6 +2811,21 @@
   },
   {
     "line": 200,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 200,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 200,
+    "severity": "Error",
+    "message": "Built-in function 'savebom' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 200,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2611,18 +2836,18 @@
   },
   {
     "line": 200,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 200,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_neg2"
   },
   {
     "line": 201,
     "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be Integer, but got a String value."
-  },
-  {
-    "line": 201,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Json, but got a String value."
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a String value."
   },
   {
     "line": 201,
@@ -2631,8 +2856,23 @@
   },
   {
     "line": 201,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 201,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_neg3"
+  },
+  {
+    "line": 202,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 202,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 202,
@@ -2681,6 +2921,16 @@
   },
   {
     "line": 204,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 204,
+    "severity": "Error",
+    "message": "Built-in function 'savebom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 204,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2698,6 +2948,16 @@
     "line": 204,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_neg6"
+  },
+  {
+    "line": 205,
+    "severity": "Error",
+    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
+  },
+  {
+    "line": 205,
+    "severity": "Error",
+    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 205,
@@ -2722,7 +2982,7 @@
   {
     "line": 207,
     "severity": "Error",
-    "message": "Built-in function 'savebom' expects 2 to 3 argument(s), but got 1."
+    "message": "Built-in function 'savebom' expects 2 argument(s), but got 1."
   },
   {
     "line": 207,
@@ -2997,7 +3257,7 @@
   {
     "line": 225,
     "severity": "Error",
-    "message": "Built-in function 'getbom' expects 2 to 6 argument(s), but got 1."
+    "message": "Argument 1 to 'getbom' should be String, but got a Integer value."
   },
   {
     "line": 225,
@@ -3036,6 +3296,11 @@
   },
   {
     "line": 226,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 226,
     "severity": "Hint",
     "message": "Unused variable: val_getbom_neg2"
   },
@@ -3053,6 +3318,11 @@
     "line": 227,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getbom_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getbom_neg3')."
+  },
+  {
+    "line": 227,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 227,
@@ -3116,6 +3386,11 @@
   },
   {
     "line": 230,
+    "severity": "Error",
+    "message": "Argument 1 to 'getbom' should be String, but got a Integer value."
+  },
+  {
+    "line": 230,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -3158,11 +3433,6 @@
     "line": 232,
     "severity": "Hint",
     "message": "Unused variable: val_getbom_neg8"
-  },
-  {
-    "line": 233,
-    "severity": "Error",
-    "message": "Built-in function 'getbom' expects 2 to 6 argument(s), but got 1."
   },
   {
     "line": 233,
@@ -3431,6 +3701,11 @@
   },
   {
     "line": 252,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 252,
     "severity": "Hint",
     "message": "Unused variable: val_getconfigbom_neg2"
   },
@@ -3448,6 +3723,11 @@
     "line": 253,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getconfigbom_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getconfigbom_neg3')."
+  },
+  {
+    "line": 253,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 253,
@@ -3722,7 +4002,7 @@
   {
     "line": 277,
     "severity": "Error",
-    "message": "Built-in function 'calculateconfiguration' expects 2 argument(s), but got 1."
+    "message": "Argument 1 to 'calculateconfiguration' should be Dictionary, but got a String value."
   },
   {
     "line": 277,
@@ -3737,12 +4017,17 @@
   {
     "line": 278,
     "severity": "Error",
-    "message": "Built-in function 'calculateconfiguration' expects 2 argument(s), but got 3."
+    "message": "Built-in function 'calculateconfiguration' expects 1 or 2 argument(s), but got 3."
   },
   {
     "line": 278,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculateconfiguration_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg2')."
+  },
+  {
+    "line": 278,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 278,
@@ -3768,6 +4053,11 @@
     "line": 279,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculateconfiguration_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg3')."
+  },
+  {
+    "line": 279,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 279,
@@ -3811,6 +4101,11 @@
   },
   {
     "line": 282,
+    "severity": "Error",
+    "message": "Argument 1 to 'calculateconfiguration' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 282,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculateconfiguration_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg6')."
   },
@@ -3841,11 +4136,6 @@
   },
   {
     "line": 285,
-    "severity": "Error",
-    "message": "Built-in function 'calculateconfiguration' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 285,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculateconfiguration_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg9')."
   },
@@ -3871,6 +4161,16 @@
   },
   {
     "line": 288,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 288,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 288,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos1')."
   },
@@ -3891,6 +4191,16 @@
   },
   {
     "line": 291,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 291,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 291,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos2')."
   },
@@ -3901,6 +4211,16 @@
   },
   {
     "line": 292,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 292,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 292,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos3')."
   },
@@ -3908,6 +4228,16 @@
     "line": 292,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_pos3"
+  },
+  {
+    "line": 293,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 293,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 293,
@@ -3936,6 +4266,16 @@
   },
   {
     "line": 294,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 294,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 294,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos5')."
   },
@@ -3956,6 +4296,16 @@
   },
   {
     "line": 295,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 295,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 295,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos6')."
   },
@@ -3963,6 +4313,16 @@
     "line": 295,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_pos6"
+  },
+  {
+    "line": 296,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 296,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 296,
@@ -3976,6 +4336,16 @@
   },
   {
     "line": 300,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 300,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 300,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos8')."
   },
@@ -3983,6 +4353,16 @@
     "line": 300,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_pos8"
+  },
+  {
+    "line": 301,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 301,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 301,
@@ -3996,6 +4376,16 @@
   },
   {
     "line": 302,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 302,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 302,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos10')."
   },
@@ -4003,11 +4393,6 @@
     "line": 302,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_pos10"
-  },
-  {
-    "line": 303,
-    "severity": "Error",
-    "message": "Built-in function 'applybom' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 303,
@@ -4022,12 +4407,17 @@
   {
     "line": 304,
     "severity": "Error",
-    "message": "Argument 3 to 'applybom' should be Json, but got a String value."
+    "message": "Built-in function 'applybom' expects 2 or 1 argument(s), but got 3."
   },
   {
     "line": 304,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_neg2')."
+  },
+  {
+    "line": 304,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 304,
@@ -4037,12 +4427,7 @@
   {
     "line": 305,
     "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be Json, but got a String value."
-  },
-  {
-    "line": 305,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Json, but got a String value."
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a String value."
   },
   {
     "line": 305,
@@ -4051,8 +4436,23 @@
   },
   {
     "line": 305,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 305,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_neg3"
+  },
+  {
+    "line": 306,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 306,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 306,
@@ -4105,6 +4505,16 @@
     "message": "Unused variable: val_applybom_neg6"
   },
   {
+    "line": 309,
+    "severity": "Error",
+    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
+  },
+  {
+    "line": 309,
+    "severity": "Error",
+    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
+  },
+  {
     "line": 310,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
@@ -4118,11 +4528,6 @@
     "line": 310,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_neg8"
-  },
-  {
-    "line": 311,
-    "severity": "Error",
-    "message": "Built-in function 'applybom' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 311,
@@ -4292,7 +4697,12 @@
   {
     "line": 331,
     "severity": "Error",
-    "message": "Built-in function 'calculatedeltabom' expects 3 to 4 argument(s), but got 2."
+    "message": "Argument 1 to 'calculatedeltabom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 331,
+    "severity": "Error",
+    "message": "Argument 2 to 'calculatedeltabom' should be Dictionary, but got a Json value."
   },
   {
     "line": 331,
@@ -4313,6 +4723,11 @@
     "line": 332,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg2')."
+  },
+  {
+    "line": 332,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 332,
@@ -4338,6 +4753,11 @@
     "line": 333,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg3')."
+  },
+  {
+    "line": 333,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 333,
@@ -4381,6 +4801,11 @@
   },
   {
     "line": 336,
+    "severity": "Error",
+    "message": "Argument 1 to 'calculatedeltabom' should be Dictionary, but got a Json value."
+  },
+  {
+    "line": 336,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg6')."
   },
@@ -4396,11 +4821,6 @@
   },
   {
     "line": 338,
-    "severity": "Error",
-    "message": "Built-in function 'calculatedeltabom' expects 3 to 4 argument(s), but got 2."
-  },
-  {
-    "line": 338,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg8')."
   },
@@ -4412,7 +4832,7 @@
   {
     "line": 339,
     "severity": "Error",
-    "message": "Built-in function 'calculatedeltabom' expects 3 to 4 argument(s), but got 1."
+    "message": "Built-in function 'calculatedeltabom' expects 2 or 3 to 4 argument(s), but got 1."
   },
   {
     "line": 339,
@@ -4441,6 +4861,16 @@
   },
   {
     "line": 342,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 342,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 342,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos1')."
   },
@@ -4456,6 +4886,16 @@
   },
   {
     "line": 344,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 344,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 344,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos2')."
   },
@@ -4466,6 +4906,16 @@
   },
   {
     "line": 345,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 345,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 345,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos3')."
   },
@@ -4473,6 +4923,16 @@
     "line": 345,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_pos3"
+  },
+  {
+    "line": 346,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 346,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 346,
@@ -4501,6 +4961,16 @@
   },
   {
     "line": 347,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 347,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 347,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos5')."
   },
@@ -4521,6 +4991,16 @@
   },
   {
     "line": 348,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 348,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 348,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos6')."
   },
@@ -4528,6 +5008,16 @@
     "line": 348,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_pos6"
+  },
+  {
+    "line": 349,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 349,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 349,
@@ -4541,6 +5031,16 @@
   },
   {
     "line": 352,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 352,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 352,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos8')."
   },
@@ -4551,6 +5051,16 @@
   },
   {
     "line": 353,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 353,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 353,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos9')."
   },
@@ -4558,6 +5068,16 @@
     "line": 353,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_pos9"
+  },
+  {
+    "line": 354,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 354,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 354,
@@ -4572,7 +5092,7 @@
   {
     "line": 355,
     "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 1 to 3 argument(s), but got 0."
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 0."
   },
   {
     "line": 355,
@@ -4587,6 +5107,11 @@
   {
     "line": 356,
     "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 356,
+    "severity": "Error",
     "message": "Argument 2 to 'saveconfigbom' should be Dictionary, but got a String value."
   },
   {
@@ -4596,13 +5121,18 @@
   },
   {
     "line": 356,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 356,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_neg2"
   },
   {
     "line": 357,
     "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be Json, but got a String value."
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 357,
@@ -4613,6 +5143,16 @@
     "line": 357,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_neg3"
+  },
+  {
+    "line": 358,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 358,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 358,
@@ -4651,6 +5191,11 @@
   },
   {
     "line": 360,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 0."
+  },
+  {
+    "line": 360,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_neg6')."
   },
@@ -4663,6 +5208,16 @@
     "line": 360,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_neg6"
+  },
+  {
+    "line": 361,
+    "severity": "Error",
+    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
+  },
+  {
+    "line": 361,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 362,
@@ -4678,6 +5233,11 @@
     "line": 362,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_neg8"
+  },
+  {
+    "line": 363,
+    "severity": "Error",
+    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 363,
@@ -4721,6 +5281,11 @@
   },
   {
     "line": 366,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 366,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_pos1"
   },
@@ -4751,6 +5316,11 @@
   },
   {
     "line": 370,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 370,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_pos3"
   },
@@ -4776,6 +5346,11 @@
   },
   {
     "line": 371,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 371,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_pos4"
   },
@@ -4793,6 +5368,11 @@
     "line": 372,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 372,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 372,
@@ -4836,6 +5416,11 @@
   },
   {
     "line": 378,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 378,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_pos8"
   },
@@ -4846,6 +5431,11 @@
   },
   {
     "line": 379,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 379,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_pos9"
   },
@@ -4853,6 +5443,11 @@
     "line": 380,
     "severity": "Information",
     "message": "Style Info: Variable 'val_usersessionset_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_pos10')."
+  },
+  {
+    "line": 380,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 380,
@@ -4883,6 +5478,11 @@
     "line": 382,
     "severity": "Information",
     "message": "Style Info: Variable 'val_usersessionset_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_usersessionset_neg2')."
+  },
+  {
+    "line": 382,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 382,
@@ -4946,8 +5546,18 @@
   },
   {
     "line": 385,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 385,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_neg5"
+  },
+  {
+    "line": 386,
+    "severity": "Error",
+    "message": "Built-in function 'usersessionset' expects 2 argument(s), but got 1."
   },
   {
     "line": 386,
@@ -4963,6 +5573,11 @@
     "line": 386,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionset_neg6"
+  },
+  {
+    "line": 387,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 388,
@@ -5166,6 +5781,11 @@
   },
   {
     "line": 406,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 406,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionget_neg2"
   },
@@ -5223,6 +5843,11 @@
     "line": 409,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionget_neg5"
+  },
+  {
+    "line": 410,
+    "severity": "Error",
+    "message": "Built-in function 'usersessionget' expects 1 to 2 argument(s), but got 0."
   },
   {
     "line": 410,
@@ -5451,6 +6076,11 @@
   },
   {
     "line": 430,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 430,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictget_neg2"
   },
@@ -5508,6 +6138,11 @@
     "line": 433,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictget_neg5"
+  },
+  {
+    "line": 434,
+    "severity": "Error",
+    "message": "Built-in function 'globaldictget' expects 1 to 2 argument(s), but got 0."
   },
   {
     "line": 434,
@@ -5796,6 +6431,11 @@
   },
   {
     "line": 454,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 454,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionremove_neg2"
   },
@@ -5863,6 +6503,11 @@
     "line": 457,
     "severity": "Hint",
     "message": "Unused variable: val_usersessionremove_neg5"
+  },
+  {
+    "line": 458,
+    "severity": "Error",
+    "message": "Built-in function 'usersessionremove' expects 1 argument(s), but got 0."
   },
   {
     "line": 458,
@@ -6171,6 +6816,11 @@
   },
   {
     "line": 478,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 478,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictremove_neg2"
   },
@@ -6238,6 +6888,11 @@
     "line": 481,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictremove_neg5"
+  },
+  {
+    "line": 482,
+    "severity": "Error",
+    "message": "Built-in function 'globaldictremove' expects 1 argument(s), but got 0."
   },
   {
     "line": 482,
@@ -6491,6 +7146,11 @@
   },
   {
     "line": 502,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 502,
     "severity": "Hint",
     "message": "Unused variable: val_throwerror_neg2"
   },
@@ -6548,6 +7208,11 @@
     "line": 505,
     "severity": "Hint",
     "message": "Unused variable: val_throwerror_neg5"
+  },
+  {
+    "line": 506,
+    "severity": "Error",
+    "message": "Built-in function 'throwerror' expects 1 to 2 argument(s), but got 0."
   },
   {
     "line": 506,
@@ -6616,6 +7281,11 @@
   },
   {
     "line": 512,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 512,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -6646,6 +7316,11 @@
   },
   {
     "line": 514,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 514,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_getuuid_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -6658,6 +7333,11 @@
     "line": 514,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_pos2"
+  },
+  {
+    "line": 515,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 515,
@@ -6678,6 +7358,11 @@
     "line": 515,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_pos3"
+  },
+  {
+    "line": 516,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 516,
@@ -6716,6 +7401,11 @@
   },
   {
     "line": 517,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 517,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -6746,6 +7436,11 @@
   },
   {
     "line": 518,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 518,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_getuuid_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -6758,6 +7453,11 @@
     "line": 518,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_pos6"
+  },
+  {
+    "line": 519,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 519,
@@ -6781,6 +7481,11 @@
   },
   {
     "line": 522,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 522,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -6798,6 +7503,11 @@
     "line": 522,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_pos8"
+  },
+  {
+    "line": 523,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 523,
@@ -6826,6 +7536,11 @@
   },
   {
     "line": 524,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 524,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -6846,11 +7561,6 @@
   },
   {
     "line": 525,
-    "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 1 argument(s), but got 0."
-  },
-  {
-    "line": 525,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_getuuid_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -6867,7 +7577,7 @@
   {
     "line": 526,
     "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 1 argument(s), but got 2."
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 2."
   },
   {
     "line": 526,
@@ -6886,13 +7596,18 @@
   },
   {
     "line": 526,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 526,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_neg2"
   },
   {
     "line": 527,
     "severity": "Error",
-    "message": "Argument 1 to 'getuuid' should be Integer, but got a String value."
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 527,
@@ -6908,6 +7623,11 @@
     "line": 527,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_neg3"
+  },
+  {
+    "line": 528,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 528,
@@ -6981,6 +7701,11 @@
   },
   {
     "line": 531,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
+  },
+  {
+    "line": 531,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -6992,7 +7717,7 @@
   {
     "line": 532,
     "severity": "Error",
-    "message": "Built-in function 'getuuid' expects 1 argument(s), but got 2."
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 2."
   },
   {
     "line": 532,
@@ -7008,6 +7733,11 @@
     "line": 532,
     "severity": "Hint",
     "message": "Unused variable: val_getuuid_neg8"
+  },
+  {
+    "line": 533,
+    "severity": "Error",
+    "message": "Built-in function 'getuuid' expects 0 argument(s), but got 1."
   },
   {
     "line": 533,
@@ -7211,6 +7941,11 @@
   },
   {
     "line": 550,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 550,
     "severity": "Hint",
     "message": "Unused variable: val_convertbomtohier_neg2"
   },
@@ -7263,6 +7998,11 @@
     "line": 553,
     "severity": "Hint",
     "message": "Unused variable: val_convertbomtohier_neg5"
+  },
+  {
+    "line": 554,
+    "severity": "Error",
+    "message": "Built-in function 'convertbomtohier' expects 1 argument(s), but got 0."
   },
   {
     "line": 554,
@@ -7491,6 +8231,11 @@
   },
   {
     "line": 574,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 574,
     "severity": "Hint",
     "message": "Unused variable: val_convertbomtoflat_neg2"
   },
@@ -7543,6 +8288,11 @@
     "line": 577,
     "severity": "Hint",
     "message": "Unused variable: val_convertbomtoflat_neg5"
+  },
+  {
+    "line": 578,
+    "severity": "Error",
+    "message": "Built-in function 'convertbomtoflat' expects 1 argument(s), but got 0."
   },
   {
     "line": 578,
@@ -7836,6 +8586,11 @@
   },
   {
     "line": 598,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 598,
     "severity": "Hint",
     "message": "Unused variable: val_getattachmentdata_neg2"
   },
@@ -7903,6 +8658,11 @@
     "line": 601,
     "severity": "Hint",
     "message": "Unused variable: val_getattachmentdata_neg5"
+  },
+  {
+    "line": 602,
+    "severity": "Error",
+    "message": "Built-in function 'getattachmentdata' expects 1 to 2 argument(s), but got 0."
   },
   {
     "line": 602,
@@ -7991,6 +8751,11 @@
   },
   {
     "line": 608,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 608,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_pos1"
   },
@@ -8021,6 +8786,11 @@
   },
   {
     "line": 612,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 612,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_pos3"
   },
@@ -8046,6 +8816,11 @@
   },
   {
     "line": 613,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 613,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_pos4"
   },
@@ -8063,6 +8838,11 @@
     "line": 614,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 614,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 614,
@@ -8106,6 +8886,11 @@
   },
   {
     "line": 620,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 620,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_pos8"
   },
@@ -8116,6 +8901,11 @@
   },
   {
     "line": 621,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 621,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_pos9"
   },
@@ -8123,6 +8913,11 @@
     "line": 622,
     "severity": "Information",
     "message": "Style Info: Variable 'val_globaldictset_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_pos10')."
+  },
+  {
+    "line": 622,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 622,
@@ -8153,6 +8948,11 @@
     "line": 624,
     "severity": "Information",
     "message": "Style Info: Variable 'val_globaldictset_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_globaldictset_neg2')."
+  },
+  {
+    "line": 624,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 624,
@@ -8221,8 +9021,18 @@
   },
   {
     "line": 627,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 627,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_neg5"
+  },
+  {
+    "line": 628,
+    "severity": "Error",
+    "message": "Built-in function 'globaldictset' expects 2 to 4 argument(s), but got 1."
   },
   {
     "line": 628,
@@ -8238,6 +9048,11 @@
     "line": 628,
     "severity": "Hint",
     "message": "Unused variable: val_globaldictset_neg6"
+  },
+  {
+    "line": 629,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 630,
@@ -8472,7 +9287,7 @@
   {
     "line": 647,
     "severity": "Error",
-    "message": "Built-in function 'addpartstotransaction' expects 1 to 4 argument(s), but got 0."
+    "message": "Built-in function 'addpartstotransaction' expects 1 to 4 or 2 argument(s), but got 0."
   },
   {
     "line": 647,
@@ -8501,13 +9316,18 @@
   },
   {
     "line": 648,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 648,
     "severity": "Hint",
     "message": "Unused variable: val_addpartstotransaction_neg2"
   },
   {
     "line": 649,
     "severity": "Error",
-    "message": "Argument 1 to 'addpartstotransaction' should be JsonArray or Json or gt, but got a String value."
+    "message": "Argument 1 to 'addpartstotransaction' should be JsonArray or Json, but got a String value."
   },
   {
     "line": 649,
@@ -8563,6 +9383,11 @@
     "line": 651,
     "severity": "Hint",
     "message": "Unused variable: val_addpartstotransaction_neg5"
+  },
+  {
+    "line": 652,
+    "severity": "Error",
+    "message": "Built-in function 'addpartstotransaction' expects 1 to 4 or 2 argument(s), but got 0."
   },
   {
     "line": 652,
@@ -8821,11 +9646,6 @@
   },
   {
     "line": 670,
-    "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 670,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_validatequoteforagreement_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -8838,11 +9658,6 @@
     "line": 670,
     "severity": "Hint",
     "message": "Unused variable: val_validatequoteforagreement_neg1"
-  },
-  {
-    "line": 671,
-    "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
   },
   {
     "line": 671,
@@ -8862,7 +9677,7 @@
   {
     "line": 672,
     "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
+    "message": "Argument 1 to 'validatequoteforagreement' should be String, but got a Integer value."
   },
   {
     "line": 672,
@@ -8883,11 +9698,6 @@
     "line": 672,
     "severity": "Hint",
     "message": "Unused variable: val_validatequoteforagreement_neg3"
-  },
-  {
-    "line": 673,
-    "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
   },
   {
     "line": 673,
@@ -8931,11 +9741,6 @@
   },
   {
     "line": 675,
-    "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 675,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_validatequoteforagreement_neg6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -8962,7 +9767,7 @@
   {
     "line": 677,
     "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 2."
+    "message": "Built-in function 'validatequoteforagreement' expects 1 or 0 argument(s), but got 2."
   },
   {
     "line": 677,
@@ -8978,11 +9783,6 @@
     "line": 677,
     "severity": "Hint",
     "message": "Unused variable: val_validatequoteforagreement_neg8"
-  },
-  {
-    "line": 678,
-    "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 0 argument(s), but got 1."
   },
   {
     "line": 678,
@@ -9031,6 +9831,11 @@
   },
   {
     "line": 681,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 681,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_pos1"
   },
@@ -9061,6 +9866,11 @@
   },
   {
     "line": 685,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 685,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_pos3"
   },
@@ -9086,6 +9896,11 @@
   },
   {
     "line": 686,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 686,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_pos4"
   },
@@ -9103,6 +9918,11 @@
     "line": 687,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 687,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 687,
@@ -9146,6 +9966,11 @@
   },
   {
     "line": 693,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 693,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_pos8"
   },
@@ -9156,6 +9981,11 @@
   },
   {
     "line": 694,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 694,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_pos9"
   },
@@ -9163,6 +9993,11 @@
     "line": 695,
     "severity": "Information",
     "message": "Style Info: Variable 'val_generatehmacmessage_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_pos10')."
+  },
+  {
+    "line": 695,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 695,
@@ -9193,6 +10028,11 @@
     "line": 697,
     "severity": "Information",
     "message": "Style Info: Variable 'val_generatehmacmessage_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_generatehmacmessage_neg2')."
+  },
+  {
+    "line": 697,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 697,
@@ -9261,8 +10101,18 @@
   },
   {
     "line": 700,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 700,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_neg5"
+  },
+  {
+    "line": 701,
+    "severity": "Error",
+    "message": "Built-in function 'generatehmacmessage' expects 2 to 3 argument(s), but got 1."
   },
   {
     "line": 701,
@@ -9278,6 +10128,11 @@
     "line": 701,
     "severity": "Hint",
     "message": "Unused variable: val_generatehmacmessage_neg6"
+  },
+  {
+    "line": 702,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 703,
@@ -9512,7 +10367,7 @@
   {
     "line": 720,
     "severity": "Error",
-    "message": "Built-in function 'addtotransaction' expects 1 to 4 argument(s), but got 0."
+    "message": "Built-in function 'addtotransaction' expects 1 to 4 or 2 argument(s), but got 0."
   },
   {
     "line": 720,
@@ -9541,13 +10396,18 @@
   },
   {
     "line": 721,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 721,
     "severity": "Hint",
     "message": "Unused variable: val_addtotransaction_neg2"
   },
   {
     "line": 722,
     "severity": "Error",
-    "message": "Argument 1 to 'addtotransaction' should be JsonArray or Json or gt, but got a String value."
+    "message": "Argument 1 to 'addtotransaction' should be JsonArray or Json, but got a String value."
   },
   {
     "line": 722,
@@ -9603,6 +10463,11 @@
     "line": 724,
     "severity": "Hint",
     "message": "Unused variable: val_addtotransaction_neg5"
+  },
+  {
+    "line": 725,
+    "severity": "Error",
+    "message": "Built-in function 'addtotransaction' expects 1 to 4 or 2 argument(s), but got 0."
   },
   {
     "line": 725,
@@ -9833,6 +10698,11 @@
     "line": 745,
     "severity": "Information",
     "message": "Style Info: Variable 'val_stringbuilder_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_stringbuilder_neg2')."
+  },
+  {
+    "line": 745,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 745,
@@ -10106,8 +10976,18 @@
   },
   {
     "line": 769,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 769,
     "severity": "Hint",
     "message": "Unused variable: val_sbappend_neg2"
+  },
+  {
+    "line": 770,
+    "severity": "Error",
+    "message": "Argument 1 to 'sbappend' should be StringBuilder, but got a String value."
   },
   {
     "line": 770,
@@ -10376,6 +11256,11 @@
   },
   {
     "line": 793,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 793,
     "severity": "Hint",
     "message": "Unused variable: val_sbtostring_neg2"
   },
@@ -10428,6 +11313,11 @@
     "line": 796,
     "severity": "Hint",
     "message": "Unused variable: val_sbtostring_neg5"
+  },
+  {
+    "line": 797,
+    "severity": "Error",
+    "message": "Built-in function 'sbtostring' expects 1 argument(s), but got 0."
   },
   {
     "line": 797,
@@ -10721,6 +11611,11 @@
   },
   {
     "line": 817,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 817,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemattrvalues_neg2"
   },
@@ -10788,6 +11683,11 @@
     "line": 820,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemattrvalues_neg5"
+  },
+  {
+    "line": 821,
+    "severity": "Error",
+    "message": "Built-in function 'getsystemattrvalues' expects 1 argument(s), but got 0."
   },
   {
     "line": 821,
@@ -10876,6 +11776,11 @@
   },
   {
     "line": 827,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 827,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_pos1' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_pos1Dict')."
   },
@@ -10896,6 +11801,11 @@
   },
   {
     "line": 829,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 829,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_pos2' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_pos2Dict')."
   },
@@ -10911,6 +11821,11 @@
   },
   {
     "line": 830,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 830,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_pos3' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_pos3Dict')."
   },
@@ -10923,6 +11838,11 @@
     "line": 830,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemmultipleattrvalues_pos3"
+  },
+  {
+    "line": 831,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
   },
   {
     "line": 831,
@@ -10956,6 +11876,11 @@
   },
   {
     "line": 832,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 832,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_pos5' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_pos5Dict')."
   },
@@ -10981,6 +11906,11 @@
   },
   {
     "line": 833,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 833,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -11001,6 +11931,11 @@
   },
   {
     "line": 834,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 834,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_pos7' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_pos7Dict')."
   },
@@ -11013,6 +11948,11 @@
     "line": 834,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemmultipleattrvalues_pos7"
+  },
+  {
+    "line": 837,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
   },
   {
     "line": 837,
@@ -11031,6 +11971,11 @@
   },
   {
     "line": 838,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 838,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_pos9' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_pos9Dict')."
   },
@@ -11043,6 +11988,11 @@
     "line": 838,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemmultipleattrvalues_pos9"
+  },
+  {
+    "line": 839,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
   },
   {
     "line": 839,
@@ -11082,6 +12032,11 @@
   {
     "line": 841,
     "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
+  },
+  {
+    "line": 841,
+    "severity": "Error",
     "message": "Built-in function 'getsystemmultipleattrvalues' expects 1 argument(s), but got 2."
   },
   {
@@ -11096,8 +12051,18 @@
   },
   {
     "line": 841,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 841,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemmultipleattrvalues_neg2"
+  },
+  {
+    "line": 842,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a Integer value."
   },
   {
     "line": 842,
@@ -11118,6 +12083,11 @@
     "line": 842,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemmultipleattrvalues_neg3"
+  },
+  {
+    "line": 843,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
   },
   {
     "line": 843,
@@ -11161,6 +12131,11 @@
   },
   {
     "line": 845,
+    "severity": "Error",
+    "message": "Built-in function 'getsystemmultipleattrvalues' expects 1 argument(s), but got 0."
+  },
+  {
+    "line": 845,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getsystemmultipleattrvalues_neg6' should have a 'Dict' suffix (e.g. 'val_getsystemmultipleattrvalues_neg6Dict')."
   },
@@ -11178,6 +12153,11 @@
     "line": 845,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemmultipleattrvalues_neg6"
+  },
+  {
+    "line": 846,
+    "severity": "Error",
+    "message": "Argument 1 to 'getsystemmultipleattrvalues' should be Dictionary, but got a String value."
   },
   {
     "line": 847,
@@ -11421,11 +12401,6 @@
   },
   {
     "line": 866,
-    "severity": "Error",
-    "message": "Built-in function 'getsystemdata' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 866,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getsystemdata_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getsystemdata_neg4')."
   },
@@ -11458,11 +12433,6 @@
     "line": 867,
     "severity": "Hint",
     "message": "Unused variable: val_getsystemdata_neg5"
-  },
-  {
-    "line": 868,
-    "severity": "Error",
-    "message": "Built-in function 'getsystemdata' expects 0 argument(s), but got 1."
   },
   {
     "line": 868,
@@ -11727,7 +12697,7 @@
   {
     "line": 887,
     "severity": "Error",
-    "message": "Built-in function 'importtransactiondata' expects 1 argument(s), but got 0."
+    "message": "Built-in function 'importtransactiondata' expects 2 or 1 argument(s), but got 0."
   },
   {
     "line": 887,
@@ -11741,13 +12711,13 @@
   },
   {
     "line": 888,
-    "severity": "Error",
-    "message": "Built-in function 'importtransactiondata' expects 1 argument(s), but got 2."
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_importtransactiondata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_neg2')."
   },
   {
     "line": 888,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_importtransactiondata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_neg2')."
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 888,
@@ -11811,6 +12781,11 @@
   },
   {
     "line": 892,
+    "severity": "Error",
+    "message": "Built-in function 'importtransactiondata' expects 2 or 1 argument(s), but got 0."
+  },
+  {
+    "line": 892,
     "severity": "Information",
     "message": "Style Info: Variable 'val_importtransactiondata_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_importtransactiondata_neg6')."
   },
@@ -11833,11 +12808,6 @@
     "line": 894,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 894,
-    "severity": "Error",
-    "message": "Built-in function 'importtransactiondata' expects 1 argument(s), but got 2."
   },
   {
     "line": 894,
@@ -11887,7 +12857,7 @@
   {
     "line": 898,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 898,
@@ -11898,6 +12868,11 @@
     "line": 898,
     "severity": "Information",
     "message": "Style Info: Variable 'val_setattributevalue_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_setattributevalue_pos1')."
+  },
+  {
+    "line": 898,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 898,
@@ -11937,7 +12912,7 @@
   {
     "line": 904,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 904,
@@ -11952,7 +12927,7 @@
   {
     "line": 905,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 905,
@@ -11966,13 +12941,18 @@
   },
   {
     "line": 905,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 905,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos3"
   },
   {
     "line": 906,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 906,
@@ -12001,13 +12981,18 @@
   },
   {
     "line": 906,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 906,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos4"
   },
   {
     "line": 907,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 907,
@@ -12031,13 +13016,18 @@
   },
   {
     "line": 907,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 907,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos5"
   },
   {
     "line": 908,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 908,
@@ -12072,7 +13062,7 @@
   {
     "line": 909,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 909,
@@ -12092,7 +13082,7 @@
   {
     "line": 916,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 916,
@@ -12106,13 +13096,18 @@
   },
   {
     "line": 916,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 916,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos8"
   },
   {
     "line": 917,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 917,
@@ -12131,13 +13126,18 @@
   },
   {
     "line": 917,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 917,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos9"
   },
   {
     "line": 918,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 918,
@@ -12151,13 +13151,18 @@
   },
   {
     "line": 918,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 918,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_pos10"
   },
   {
     "line": 919,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 4."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 4."
   },
   {
     "line": 919,
@@ -12171,13 +13176,18 @@
   },
   {
     "line": 919,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 919,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg1"
   },
   {
     "line": 920,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 6."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 6."
   },
   {
     "line": 920,
@@ -12191,13 +13201,23 @@
   },
   {
     "line": 920,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 920,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg2"
   },
   {
     "line": 921,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Argument 2 to 'setattributevalue' should be String, but got a Integer value."
+  },
+  {
+    "line": 921,
+    "severity": "Error",
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 921,
@@ -12232,7 +13252,7 @@
   {
     "line": 922,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 922,
@@ -12276,13 +13296,18 @@
   },
   {
     "line": 923,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 923,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg5"
   },
   {
     "line": 924,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 4."
   },
   {
     "line": 924,
@@ -12296,18 +13321,28 @@
   },
   {
     "line": 924,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 924,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg6"
   },
   {
     "line": 925,
     "severity": "Error",
-    "message": "Built-in function 'setattributevalue' expects 1 to 3 argument(s), but got 5."
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 5."
   },
   {
     "line": 925,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 925,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 926,
@@ -12323,6 +13358,11 @@
     "line": 926,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg8"
+  },
+  {
+    "line": 927,
+    "severity": "Error",
+    "message": "Built-in function 'setattributevalue' expects 2 or 3 argument(s), but got 1."
   },
   {
     "line": 927,
@@ -12601,11 +13641,6 @@
   },
   {
     "line": 945,
-    "severity": "Error",
-    "message": "Built-in function 'getcoveragesupportdict' expects 0 argument(s), but got 1."
-  },
-  {
-    "line": 945,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_getcoveragesupportdict_neg4' should have a 'Dict' suffix (e.g. 'val_getcoveragesupportdict_neg4Dict')."
   },
@@ -12643,11 +13678,6 @@
     "line": 946,
     "severity": "Hint",
     "message": "Unused variable: val_getcoveragesupportdict_neg5"
-  },
-  {
-    "line": 947,
-    "severity": "Error",
-    "message": "Built-in function 'getcoveragesupportdict' expects 0 argument(s), but got 1."
   },
   {
     "line": 947,
@@ -12946,6 +13976,11 @@
   },
   {
     "line": 967,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 967,
     "severity": "Hint",
     "message": "Unused variable: val_configureabo_neg2"
   },
@@ -13008,6 +14043,11 @@
     "line": 970,
     "severity": "Hint",
     "message": "Unused variable: val_configureabo_neg5"
+  },
+  {
+    "line": 971,
+    "severity": "Error",
+    "message": "Built-in function 'configureabo' expects 1 to 2 argument(s), but got 0."
   },
   {
     "line": 971,

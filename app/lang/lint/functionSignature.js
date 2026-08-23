@@ -24,11 +24,13 @@ function findOuterParamsText(signature) {
 
 function parseUnionTypes(typeStr) {
     if (!typeStr) return [];
+    const decoded = typeStr.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
     const types = [];
-    const matches = typeStr.match(/[A-Za-z_]\w*(?:\[\])*/g);
+    const matches = decoded.match(/[A-Za-z_]\w*(?:\[\])*/g);
     if (matches) {
         for (const m of matches) {
-            if (m.toLowerCase() !== 'or') {
+            const mLower = m.toLowerCase();
+            if (mLower !== 'or' && mLower !== 'gt' && mLower !== 'lt') {
                 types.push(m);
             }
         }
@@ -55,6 +57,15 @@ function extractTypeAndName(chunkText) {
     
     const lastSpaceIdx = clean.lastIndexOf(' ');
     if (lastSpaceIdx === -1) {
+        if (/^(?:String|Integer|Float|Boolean|Date|Json|JsonArray|Dictionary|dict|RecordSet|StringBuilder|Double|Long)(?:\[\])*$/i.test(clean)) {
+            return { type: clean, name: clean.toLowerCase() };
+        }
+        const hungarianMatch = clean.match(/^(string|integer|float|boolean|date|json|jsonarray|dict|dictionary|function|object)([A-Z]\w*)$/i);
+        if (hungarianMatch) {
+            const rawType = hungarianMatch[1];
+            const type = rawType.charAt(0).toUpperCase() + rawType.slice(1);
+            return { type, name: clean };
+        }
         return { type: null, name: clean };
     }
     

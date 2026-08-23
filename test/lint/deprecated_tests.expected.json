@@ -1,5 +1,10 @@
 [
   {
+    "line": 5,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
     "line": 6,
     "severity": "Hint",
     "message": "Unused variable: nanJava"
@@ -26,13 +31,28 @@
   },
   {
     "line": 11,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 11,
     "severity": "Hint",
     "message": "Unused variable: dOld1"
   },
   {
     "line": 12,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 12,
     "severity": "Hint",
     "message": "Unused variable: dOld2"
+  },
+  {
+    "line": 15,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 15,
@@ -46,8 +66,18 @@
   },
   {
     "line": 15,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 15,
     "severity": "Hint",
     "message": "Unused variable: rOldTable1"
+  },
+  {
+    "line": 16,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 16,
@@ -56,8 +86,18 @@
   },
   {
     "line": 16,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 16,
     "severity": "Hint",
     "message": "Unused variable: rOldTable2"
+  },
+  {
+    "line": 19,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 19,
@@ -73,6 +113,11 @@
     "line": 19,
     "severity": "Hint",
     "message": "Unused variable: rOldParts1"
+  },
+  {
+    "line": 20,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
   },
   {
     "line": 20,
@@ -93,5 +138,10 @@
     "line": 23,
     "severity": "Hint",
     "message": "Unused variable: nanOld"
+  },
+  {
+    "line": 25,
+    "severity": "Error",
+    "message": "Error: Argument 1 to 'string' should be Float, Integer, or Boolean, but got Date."
   }
 ]

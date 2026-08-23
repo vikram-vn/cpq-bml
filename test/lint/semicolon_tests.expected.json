@@ -25,11 +25,6 @@
     "message": "Unused variable: a"
   },
   {
-    "line": 14,
-    "severity": "Information",
-    "message": "Design Info: Magic number '200' detected. Consider defining a named constant"
-  },
-  {
     "line": 15,
     "severity": "Information",
     "message": "Design Info: Magic number '50' detected. Consider defining a named constant"
@@ -98,11 +93,6 @@
     "line": 45,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 47,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
   },
   {
     "line": 49,

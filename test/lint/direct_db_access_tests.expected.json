@@ -51,6 +51,11 @@
   },
   {
     "line": 12,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 12,
     "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -63,6 +68,11 @@
     "line": 12,
     "severity": "Information",
     "message": "Style Info: Variable 'val_gettabledata_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_gettabledata_pos1')."
+  },
+  {
+    "line": 12,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 12,
@@ -86,6 +96,11 @@
   },
   {
     "line": 16,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 16,
     "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -106,6 +121,11 @@
   },
   {
     "line": 17,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 17,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_gettabledata_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -116,8 +136,18 @@
   },
   {
     "line": 17,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 17,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos3"
+  },
+  {
+    "line": 18,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 18,
@@ -151,8 +181,18 @@
   },
   {
     "line": 18,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 18,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos4"
+  },
+  {
+    "line": 19,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 19,
@@ -181,6 +221,11 @@
   },
   {
     "line": 19,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 19,
     "severity": "Information",
     "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
   },
@@ -188,6 +233,11 @@
     "line": 19,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos5"
+  },
+  {
+    "line": 20,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 20,
@@ -226,6 +276,11 @@
   },
   {
     "line": 21,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 21,
     "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -246,6 +301,11 @@
   },
   {
     "line": 26,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
+  },
+  {
+    "line": 26,
     "severity": "Hint",
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -261,8 +321,18 @@
   },
   {
     "line": 26,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos8"
+  },
+  {
+    "line": 27,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 27,
@@ -281,8 +351,18 @@
   },
   {
     "line": 27,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 27,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos9"
+  },
+  {
+    "line": 28,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 28,
@@ -301,8 +381,18 @@
   },
   {
     "line": 28,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_pos10"
+  },
+  {
+    "line": 29,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 2."
   },
   {
     "line": 29,
@@ -321,8 +411,18 @@
   },
   {
     "line": 29,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg1"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 4."
   },
   {
     "line": 30,
@@ -341,8 +441,23 @@
   },
   {
     "line": 30,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 30,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg2"
+  },
+  {
+    "line": 31,
+    "severity": "Error",
+    "message": "Argument 1 to 'gettabledata' should be String, but got a Integer value."
+  },
+  {
+    "line": 31,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 31,
@@ -378,6 +493,11 @@
     "line": 31,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg3"
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 32,
@@ -426,8 +546,18 @@
   },
   {
     "line": 33,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 33,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg5"
+  },
+  {
+    "line": 34,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 2."
   },
   {
     "line": 34,
@@ -446,8 +576,18 @@
   },
   {
     "line": 34,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 34,
     "severity": "Hint",
     "message": "Unused variable: val_gettabledata_neg6"
+  },
+  {
+    "line": 35,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 3."
   },
   {
     "line": 35,
@@ -455,9 +595,19 @@
     "message": "Deprecated function 'gettabledata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
+    "line": 35,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
     "line": 36,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 36,
+    "severity": "Error",
+    "message": "Built-in function 'gettabledata' expects 1 argument(s), but got 2."
   },
   {
     "line": 36,
@@ -521,6 +671,16 @@
   },
   {
     "line": 40,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 40,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+  },
+  {
+    "line": 40,
     "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -533,6 +693,11 @@
     "line": 40,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getpartsdata_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getpartsdata_pos1')."
+  },
+  {
+    "line": 40,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 40,
@@ -561,6 +726,16 @@
   },
   {
     "line": 45,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 45,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+  },
+  {
+    "line": 45,
     "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -581,6 +756,16 @@
   },
   {
     "line": 46,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 46,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+  },
+  {
+    "line": 46,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_getpartsdata_pos3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -591,8 +776,23 @@
   },
   {
     "line": 46,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 46,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos3"
+  },
+  {
+    "line": 47,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 47,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 47,
@@ -626,8 +826,23 @@
   },
   {
     "line": 47,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 47,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos4"
+  },
+  {
+    "line": 48,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 48,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 48,
@@ -656,8 +871,23 @@
   },
   {
     "line": 48,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 48,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos5"
+  },
+  {
+    "line": 49,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 49,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 49,
@@ -701,6 +931,16 @@
   },
   {
     "line": 50,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 50,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+  },
+  {
+    "line": 50,
     "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -721,6 +961,16 @@
   },
   {
     "line": 56,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
+  },
+  {
+    "line": 56,
     "severity": "Hint",
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
@@ -736,8 +986,23 @@
   },
   {
     "line": 56,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 56,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos8"
+  },
+  {
+    "line": 57,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 57,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 57,
@@ -756,8 +1021,23 @@
   },
   {
     "line": 57,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 57,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos9"
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 58,
@@ -776,8 +1056,23 @@
   },
   {
     "line": 58,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_pos10"
+  },
+  {
+    "line": 59,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 59,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 3."
   },
   {
     "line": 59,
@@ -796,8 +1091,23 @@
   },
   {
     "line": 59,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 59,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg1"
+  },
+  {
+    "line": 60,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 60,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 5."
   },
   {
     "line": 60,
@@ -816,8 +1126,23 @@
   },
   {
     "line": 60,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 60,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg2"
+  },
+  {
+    "line": 61,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a Integer value."
+  },
+  {
+    "line": 61,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 61,
@@ -858,6 +1183,16 @@
     "line": 61,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg3"
+  },
+  {
+    "line": 62,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 62,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 62,
@@ -906,8 +1241,23 @@
   },
   {
     "line": 63,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 63,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg5"
+  },
+  {
+    "line": 64,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 64,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 3."
   },
   {
     "line": 64,
@@ -926,8 +1276,23 @@
   },
   {
     "line": 64,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 64,
     "severity": "Hint",
     "message": "Unused variable: val_getpartsdata_neg6"
+  },
+  {
+    "line": 65,
+    "severity": "Error",
+    "message": "Argument 1 to 'getpartsdata' should be String[], but got a String value."
+  },
+  {
+    "line": 65,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 4."
   },
   {
     "line": 65,
@@ -935,9 +1300,19 @@
     "message": "Deprecated function 'getpartsdata'. Use 'bmql' instead to avoid SQL injection vulnerability"
   },
   {
+    "line": 65,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
     "line": 66,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 66,
+    "severity": "Error",
+    "message": "Built-in function 'getpartsdata' expects 1 argument(s), but got 2."
   },
   {
     "line": 66,
@@ -1118,11 +1493,6 @@
     "line": 74,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
-  },
-  {
-    "line": 74,
-    "severity": "Warning",
-    "message": "Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead."
   },
   {
     "line": 74,
@@ -1401,6 +1771,11 @@
   },
   {
     "line": 84,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 84,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_neg2"
   },
@@ -1493,6 +1868,11 @@
     "line": 87,
     "severity": "Hint",
     "message": "Unused variable: val_haserror_neg5"
+  },
+  {
+    "line": 88,
+    "severity": "Error",
+    "message": "Built-in function 'haserror' expects 1 argument(s), but got 0."
   },
   {
     "line": 88,
@@ -1713,11 +2093,6 @@
     "line": 98,
     "severity": "Information",
     "message": "Performance Info: Table 'parts' is queried 31 times. Consider combining queries"
-  },
-  {
-    "line": 98,
-    "severity": "Warning",
-    "message": "Performance Warning: BMQL query inside a loop detected (N+1 query problem). Batch queries outside the loop to avoid database round-trip overhead."
   },
   {
     "line": 98,
@@ -1951,6 +2326,11 @@
   },
   {
     "line": 108,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 108,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_neg2"
   },
@@ -2033,6 +2413,11 @@
     "line": 111,
     "severity": "Hint",
     "message": "Unused variable: val_getmessage_neg5"
+  },
+  {
+    "line": 112,
+    "severity": "Error",
+    "message": "Built-in function 'getmessage' expects 1 argument(s), but got 0."
   },
   {
     "line": 112,
@@ -2146,6 +2531,11 @@
   },
   {
     "line": 118,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 118,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos1"
   },
@@ -2186,6 +2576,11 @@
   },
   {
     "line": 122,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 122,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos3"
   },
@@ -2216,6 +2611,11 @@
   },
   {
     "line": 123,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 123,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos4"
   },
@@ -2238,6 +2638,11 @@
     "line": 124,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 124,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 124,
@@ -2296,6 +2701,11 @@
   },
   {
     "line": 130,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 130,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos8"
   },
@@ -2308,6 +2718,11 @@
     "line": 131,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getint_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_pos9')."
+  },
+  {
+    "line": 131,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 131,
@@ -2326,8 +2741,18 @@
   },
   {
     "line": 132,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 132,
     "severity": "Hint",
     "message": "Unused variable: val_getint_pos10"
+  },
+  {
+    "line": 133,
+    "severity": "Error",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
   },
   {
     "line": 133,
@@ -2347,12 +2772,22 @@
   {
     "line": 134,
     "severity": "Error",
+    "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 134,
+    "severity": "Error",
     "message": "Built-in function 'getint' expects 2 argument(s), but got 3."
   },
   {
     "line": 134,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getint_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getint_neg2')."
+  },
+  {
+    "line": 134,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 134,
@@ -2426,6 +2861,11 @@
   },
   {
     "line": 137,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 137,
     "severity": "Hint",
     "message": "Unused variable: val_getint_neg5"
   },
@@ -2433,6 +2873,11 @@
     "line": 138,
     "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 138,
+    "severity": "Error",
+    "message": "Built-in function 'getint' expects 2 argument(s), but got 1."
   },
   {
     "line": 138,
@@ -2453,6 +2898,11 @@
     "line": 139,
     "severity": "Error",
     "message": "Argument 1 to 'getint' should be Record, but got a String value."
+  },
+  {
+    "line": 139,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 140,
@@ -2511,6 +2961,11 @@
   },
   {
     "line": 144,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 144,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos1"
   },
@@ -2551,6 +3006,11 @@
   },
   {
     "line": 148,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 148,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos3"
   },
@@ -2581,6 +3041,11 @@
   },
   {
     "line": 149,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 149,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos4"
   },
@@ -2603,6 +3068,11 @@
     "line": 150,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 150,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 150,
@@ -2661,6 +3131,11 @@
   },
   {
     "line": 156,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 156,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos8"
   },
@@ -2673,6 +3148,11 @@
     "line": 157,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getfloat_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_pos9')."
+  },
+  {
+    "line": 157,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 157,
@@ -2691,8 +3171,18 @@
   },
   {
     "line": 158,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 158,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_pos10"
+  },
+  {
+    "line": 159,
+    "severity": "Error",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
   },
   {
     "line": 159,
@@ -2712,12 +3202,22 @@
   {
     "line": 160,
     "severity": "Error",
+    "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 160,
+    "severity": "Error",
     "message": "Built-in function 'getfloat' expects 2 argument(s), but got 3."
   },
   {
     "line": 160,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getfloat_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getfloat_neg2')."
+  },
+  {
+    "line": 160,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 160,
@@ -2791,6 +3291,11 @@
   },
   {
     "line": 163,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 163,
     "severity": "Hint",
     "message": "Unused variable: val_getfloat_neg5"
   },
@@ -2798,6 +3303,11 @@
     "line": 164,
     "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 164,
+    "severity": "Error",
+    "message": "Built-in function 'getfloat' expects 2 argument(s), but got 1."
   },
   {
     "line": 164,
@@ -2818,6 +3328,11 @@
     "line": 165,
     "severity": "Error",
     "message": "Argument 1 to 'getfloat' should be Record, but got a String value."
+  },
+  {
+    "line": 165,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 166,
@@ -2881,6 +3396,11 @@
   },
   {
     "line": 170,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 170,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos1"
   },
@@ -2931,6 +3451,11 @@
   },
   {
     "line": 174,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 174,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos3"
   },
@@ -2966,6 +3491,11 @@
   },
   {
     "line": 175,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 175,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos4"
   },
@@ -2993,6 +3523,11 @@
     "line": 176,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 176,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 176,
@@ -3066,6 +3601,11 @@
   },
   {
     "line": 182,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 182,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos8"
   },
@@ -3083,6 +3623,11 @@
     "line": 183,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getboolean_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_pos9')."
+  },
+  {
+    "line": 183,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 183,
@@ -3106,8 +3651,18 @@
   },
   {
     "line": 184,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 184,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_pos10"
+  },
+  {
+    "line": 185,
+    "severity": "Error",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
   },
   {
     "line": 185,
@@ -3132,6 +3687,11 @@
   {
     "line": 186,
     "severity": "Error",
+    "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 186,
+    "severity": "Error",
     "message": "Built-in function 'getboolean' expects 2 argument(s), but got 3."
   },
   {
@@ -3143,6 +3703,11 @@
     "line": 186,
     "severity": "Information",
     "message": "Style Info: Variable 'val_getboolean_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_getboolean_neg2')."
+  },
+  {
+    "line": 186,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 186,
@@ -3226,6 +3791,11 @@
   },
   {
     "line": 189,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 189,
     "severity": "Hint",
     "message": "Unused variable: val_getboolean_neg5"
   },
@@ -3233,6 +3803,11 @@
     "line": 190,
     "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 190,
+    "severity": "Error",
+    "message": "Built-in function 'getboolean' expects 2 argument(s), but got 1."
   },
   {
     "line": 190,
@@ -3258,6 +3833,11 @@
     "line": 191,
     "severity": "Error",
     "message": "Argument 1 to 'getboolean' should be Record, but got a String value."
+  },
+  {
+    "line": 191,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 192,
@@ -3531,6 +4111,11 @@
   },
   {
     "line": 210,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 210,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg2"
   },
@@ -3588,6 +4173,11 @@
     "line": 213,
     "severity": "Hint",
     "message": "Unused variable: val_gettransaction_neg5"
+  },
+  {
+    "line": 214,
+    "severity": "Error",
+    "message": "Built-in function 'gettransaction' expects 1 to 3 argument(s), but got 0."
   },
   {
     "line": 214,

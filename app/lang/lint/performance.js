@@ -9,40 +9,33 @@ function makeDiagnostic(range, message, severity, code) {
 function checkPerformance(cleanText, noStringsText, doc) {
     const diagnostics = [];
 
-    // Fast check: if no loops exist in document, skip all loop performance checks
-    if (!noStringsText.includes('for')) {
-        return diagnostics;
-    }
-
-    // Helper: Find all for-loop ranges in noStringsText
+    // Helper: Find all for-loop ranges in noStringsText if any exist
     const loops = [];
-    const loopRegex = /\bfor\s+([a-zA-Z_]\w*)\s+in\s+/gi;
-    let match;
-    while ((match = loopRegex.exec(noStringsText)) !== null) {
-        const startIndex = match.index;
-        const openBrace = noStringsText.indexOf('{', startIndex);
-        if (openBrace !== -1) {
-            let depth = 1;
-            let endBrace = -1;
-            for (let i = openBrace + 1; i < noStringsText.length; i++) {
-                const c = noStringsText.charCodeAt(i);
-                if (c === 123) depth++;
-                else if (c === 125) {
-                    depth--;
-                    if (depth === 0) {
-                        endBrace = i + 1;
-                        break;
+    if (noStringsText.includes('for')) {
+        const loopRegex = /\bfor\s+([a-zA-Z_]\w*)\s+in\s+/gi;
+        let match;
+        while ((match = loopRegex.exec(noStringsText)) !== null) {
+            const startIndex = match.index;
+            const openBrace = noStringsText.indexOf('{', startIndex);
+            if (openBrace !== -1) {
+                let depth = 1;
+                let endBrace = -1;
+                for (let i = openBrace + 1; i < noStringsText.length; i++) {
+                    const c = noStringsText.charCodeAt(i);
+                    if (c === 123) depth++;
+                    else if (c === 125) {
+                        depth--;
+                        if (depth === 0) {
+                            endBrace = i + 1;
+                            break;
+                        }
                     }
                 }
-            }
-            if (endBrace !== -1) {
-                loops.push({ start: openBrace, end: endBrace, loopVar: match[1], startIndex: startIndex });
+                if (endBrace !== -1) {
+                    loops.push({ start: openBrace, end: endBrace, loopVar: match[1], startIndex: startIndex });
+                }
             }
         }
-    }
-
-    if (loops.length === 0) {
-        return diagnostics;
     }
 
     const isInLoop = (index) => {

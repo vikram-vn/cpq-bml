@@ -58,7 +58,7 @@ function inferLiteralType(rhsText) {
     }
 
     // Fast-path boolean literals
-    if (trimmed === 'true' || trimmed === 'false' || trimmed === 'True' || trimmed === 'False') return 'Boolean';
+    if (/^(true|false)$/i.test(trimmed)) return 'Boolean';
 
     // Fast-path numbers: digits or '-'
     if ((first >= 48 && first <= 57) || first === 45) {
@@ -66,11 +66,12 @@ function inferLiteralType(rhsText) {
         if (/^-?\d+$/.test(trimmed)) return 'Integer';
     }
 
-    // Typed array literal or bare declaration: string[]{"a","b"}, integer[][]{...}, date[];
+    // Typed array literal or bare declaration: string[]{"a","b"}, integer[][]{...}, float[5], date[];
     if (trimmed.includes('[')) {
-        const arrayMatch = trimmed.match(/^(string|integer|float|boolean|date)((?:\[\])+)\s*(?:\{[\s\S]*\})?$/i);
+        const arrayMatch = trimmed.match(/^(string|integer|float|boolean|date)((?:\[\s*\d*\s*\])+)\s*(?:\{[\s\S]*\})?$/i);
         if (arrayMatch) {
-            return `${arrayMatch[1].toLowerCase()}${arrayMatch[2]}`;
+            const dims = arrayMatch[2].replace(/\d+/g, '').replace(/\s+/g, '');
+            return `${arrayMatch[1].toLowerCase()}${dims}`;
         }
     }
 
@@ -169,8 +170,15 @@ function collectVariableTypes(cleanText, doc, declaredTypes) {
 }
 
 function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, extensionPath, noStringsText, precomputedFirstTypes, precomputedDiagnostics) {
-    const diagnostics = precomputedDiagnostics ? [...precomputedDiagnostics] : [];
-    const firstTypeByVar = precomputedFirstTypes || collectVariableTypes(cleanText, doc, declaredTypes);
+    let firstTypeByVar = precomputedFirstTypes;
+    let diagnostics;
+    if (precomputedDiagnostics && precomputedFirstTypes) {
+        diagnostics = [...precomputedDiagnostics];
+    } else {
+        const res = collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode);
+        firstTypeByVar = res.firstTypeByVar;
+        diagnostics = [...res.diagnostics];
+    }
     const returnTypes = getFunctionReturnTypes(extensionPath);
 
     // Binary expressions type checking - run directly on noStringsText to skip string literal operators

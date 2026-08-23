@@ -171,7 +171,10 @@ suite("BML REST commands - deploy", () => {
       const warnings = [];
       const vscode = makeDeployVscode(editor, {
         showErrorMessage: (m) => errors.push(m),
-        showWarningMessage: (m) => warnings.push(m),
+        showWarningMessage: (m, ...items) => {
+          warnings.push(m);
+          return items.includes("Deploy") ? "Deploy" : undefined;
+        },
       });
 
       const context = await makeAuthedContext();
@@ -198,8 +201,9 @@ suite("BML REST commands - deploy", () => {
       });
 
       assert.strictEqual(errors.length, 0, "not reported as a failure");
-      assert.ok(warnings[0].includes("still running"));
-      assert.ok(warnings[0].includes("557"));
+      const timeoutWarning = warnings.find(w => w.includes("still running"));
+      assert.ok(timeoutWarning, "warning shown for running task");
+      assert.ok(timeoutWarning.includes("557"));
     }));
 
   suite("runDeployUtilFunctions (mass deploy)", () => {

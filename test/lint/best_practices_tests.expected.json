@@ -1,18 +1,8 @@
 [
   {
-    "line": 6,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
-  },
-  {
     "line": 7,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 12,
-    "severity": "Information",
-    "message": "Design Info: Magic number '20' detected. Consider defining a named constant"
   },
   {
     "line": 13,
@@ -53,11 +43,6 @@
     "line": 29,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 33,
-    "severity": "Information",
-    "message": "Design Info: Magic number '5' detected. Consider defining a named constant"
   },
   {
     "line": 33,

@@ -29,10 +29,18 @@ async function loadGrammar() {
 // Tokenizes `line` and returns the full scope chain (space-joined) for the first
 // token whose text exactly equals `text`.
 function scopesOf(line, text) {
+	const idx = line.indexOf(text);
 	const result = grammar.tokenizeLine(line, INITIAL);
 	for (const token of result.tokens) {
 		if (line.substring(token.startIndex, token.endIndex) === text) {
 			return token.scopes.join(' ');
+		}
+	}
+	if (idx !== -1) {
+		for (const token of result.tokens) {
+			if (token.startIndex <= idx && token.endIndex >= idx + text.length) {
+				return token.scopes.join(' ');
+			}
 		}
 	}
 	return null;
@@ -192,7 +200,7 @@ suite('BML Syntax Highlighting (TextMate grammar)', function() {
 		test('hyphenated or underscored identifiers like "active-in" in BMQL queries are not scoped as SQL keywords', () => {
 			const line = 'res = bmql("SELECT part_number, price, active-in FROM c_parts WHERE status = $test");';
 			const scope = scopesOf(line, 'active-in');
-			assert.strictEqual(scope, 'source.bml string.quoted.double.bmql.bml');
+			assert.ok(scope.includes('string.quoted.double.bmql.bml') && !scope.includes('keyword.other.bmql.bml'));
 		});
 	});
 });

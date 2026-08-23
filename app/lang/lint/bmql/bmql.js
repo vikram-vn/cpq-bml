@@ -4,6 +4,7 @@ const vscode = require('vscode');
 
 function checkBmql(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    if (!cleanText.includes('bmql') && !cleanText.includes('recordset') && !noStringsText.includes('gettabledata') && !noStringsText.includes('getpartsdata')) return diagnostics;
     let match;
 
     // Deprecated direct DB access methods (run on noStringsText to ignore calls inside strings/comments)

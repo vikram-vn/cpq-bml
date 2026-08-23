@@ -47,6 +47,8 @@ function checkUrlAccess(cleanText, noStringsText, doc) {
         const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
         if (closeParenIndex === -1) continue;
 
+        if (cleanText.indexOf(varName, closeParenIndex) === -1) continue;
+
         const statusCheckPattern = new RegExp(`\\bget\\s*\\(\\s*${varName}\\s*,\\s*["']Status-Code["']\\s*\\)`, 'i');
         if (statusCheckPattern.test(cleanText)) continue;
 

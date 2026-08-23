@@ -2,7 +2,7 @@ const { parseParameterSignature, splitArgumentsList } = require('./functionSigna
 const { levenshtein } = require('./levenshtein');
 const { inferLiteralType, inferExpressionType } = require('./typeCheck');
 const { getWorkspaceFunctionsCached } = require('./workspaceFunctions');
-const { loadBuiltInFunctionsJson } = require('../intellisense/apiDataLoader');
+const { loadBuiltInFunctionsJson, loadCpqJsApiJson } = require('../intellisense/apiDataLoader');
 const { getFunctionReturnTypes } = require('./typeCheckOperands');
 
 function inferArgumentType(argText, firstTypeByVar, returnTypes) {
@@ -27,13 +27,14 @@ function inferArgumentType(argText, firstTypeByVar, returnTypes) {
 }
 
 let builtInFunctions = null;
-// Mirrors the grammar's reserved words/storage-type constructors so they're never flagged as unknown functions.
-const keywords = new Set([
+const controlKeywords = new Set([
     'if', 'elif', 'else', 'for', 'in', 'break', 'continue', 'return',
-    'true', 'false', 'null', 'and', 'or', 'not',
+    'true', 'false', 'null', 'and', 'or', 'not', 'bmql'
+]);
+const keywords = new Set([
+    ...controlKeywords,
     'string', 'integer', 'float', 'boolean', 'date', 'json', 'jsonarray',
-    'jsonnull', 'jnan', 'bytearray', 'record', 'recordset', 'stringbuilder', 'dictionary', 'dict',
-    'bmql',
+    'jsonnull', 'jnan', 'bytearray', 'record', 'recordset', 'stringbuilder', 'dictionary', 'dict'
 ]);
 const deprecated = new Set(['strtodate', 'gettabledata', 'getpartsdata']);
 
@@ -93,30 +94,9 @@ function getArgumentsTextAndEnd(text, startIndex) {
 }
 
 function countArguments(argsText) {
-    let len = argsText.length;
-    while (len > 0 && argsText.charCodeAt(len - 1) <= 32) len--;
-    if (len === 0) return 0;
-    if (argsText.charCodeAt(len - 1) === 44) len--; // ','
-
-    let commas = 0;
-    let parenDepth = 0;
-    let bracketDepth = 0;
-    let braceDepth = 0;
-
-    for (let i = 0; i < len; i++) {
-        const c = argsText.charCodeAt(i);
-        if (c === 40) parenDepth++;
-        else if (c === 41) parenDepth = Math.max(0, parenDepth - 1);
-        else if (c === 91) bracketDepth++;
-        else if (c === 93) bracketDepth = Math.max(0, bracketDepth - 1);
-        else if (c === 123) braceDepth++;
-        else if (c === 125) braceDepth = Math.max(0, braceDepth - 1);
-        else if (c === 44 && parenDepth === 0 && bracketDepth === 0 && braceDepth === 0) {
-            commas++;
-        }
-    }
-
-    return commas + 1;
+    if (!argsText || !argsText.trim()) return 0;
+    const args = splitArgumentsList(argsText);
+    return args.filter(a => a.trim().length > 0).length;
 }
 
 function findClosestBuiltInFunction(name, builtIns) {
@@ -189,10 +169,10 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
     const wsFunctions = getWorkspaceFunctionsCached(vscode);
     const returnTypes = getFunctionReturnTypes(extensionPath);
 
-    // Matches namespaced or bare function calls: [util/commerce.[folder.]]name(
+    // Matches namespaced or bare function calls: [util/commerce/CPQJS.[folder.]]name(
     // The middle "folder" segment covers Oracle CPQ's util library folders/
     // platform namespaces, e.g. util._ORCL_ABO.abo_initializeContext(...).
-    const funcCallRegex = /\b(?:(util|commerce)\.(?:([a-zA-Z_]\w*)\.)?)?([a-zA-Z_]\w*)\s*\(/g;
+    const funcCallRegex = /\b(?:(util|commerce|CPQJS)\.(?:([a-zA-Z_]\w*)\.)?)?([a-zA-Z_]\w*)\s*\(/g;
     let match;
 
     while ((match = funcCallRegex.exec(noStringsText)) !== null) {
@@ -212,7 +192,7 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
         }
 
         if (!namespace && keywords.has(funcNameLower)) {
-            continue; // Skip keywords like if, for, return, dict etc
+            continue; // Skip keywords like if, for, return, dict, string, date etc
         }
 
         const matchStart = match.index;
@@ -228,9 +208,47 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
         const argsResult = getArgumentsTextAndEnd(noStringsText, argsStartOffset);
         if (!argsResult) continue; // Unbalanced call, syntax error
 
-        // Extract clean arguments text (retaining string literals for correct comma and length counting)
+        // Extract clean arguments text
         const argsCleanText = cleanText.substring(argsStartOffset, argsResult.endIndex);
         const argCount = countArguments(argsCleanText);
+
+        if (namespace && namespace.toUpperCase() === 'CPQJS') {
+            const cpqJsData = loadCpqJsApiJson(extensionPath);
+            const cpqKey = `CPQJS.${funcName}`;
+            const target = cpqJsData[cpqKey] || cpqJsData[funcName];
+            if (target && target.syntax) {
+                const parsed = parseParameterSignature(target.syntax);
+                const countMatches = (argCount >= parsed.min && argCount <= parsed.max);
+                if (!countMatches) {
+                    const diag = new vscode.Diagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Function '${cpqKey}' expects ${parsed.min} argument(s), but got ${argCount}.`,
+                        vscode.DiagnosticSeverity.Error
+                    );
+                    diag.code = 'bml-function-arg-count';
+                    diagnostics.push(diag);
+                }
+                if (parsed.params) {
+                    const args = splitArgumentsList(argsCleanText);
+                    for (let i = 0; i < Math.min(args.length, parsed.params.length); i++) {
+                        const param = parsed.params[i];
+                        if (param && param.type) {
+                            const actual = inferArgumentType(args[i], firstTypeByVar, returnTypes);
+                            if (actual && !argumentTypeCompatible(param.type, actual)) {
+                                const diag = new vscode.Diagnostic(
+                                    new vscode.Range(startPos, endPos),
+                                    `Argument ${i + 1} to '${cpqKey}' should be ${Array.isArray(param.type) ? param.type.join(' or ') : param.type}, but got a ${actual} value.`,
+                                    vscode.DiagnosticSeverity.Error
+                                );
+                                diag.code = 'bml-function-arg-type';
+                                diagnostics.push(diag);
+                            }
+                        }
+                    }
+                }
+            }
+            continue;
+        }
 
         if (namespace) {
             // Namespaced call (util.foo, commerce.foo, or util.folder.foo)
@@ -299,10 +317,6 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
             }
         } else {
             // Bare call
-            if (deprecated.has(funcNameLower)) {
-                continue; // Skip deprecated functions to avoid double-flagging and baseline mismatches
-            }
-
             const builtIn = builtIns.get(funcNameLower);
             if (builtIn) {
                 const overloads = builtIn.overloads || [{ min: builtIn.min, max: builtIn.max, params: builtIn.params }];
@@ -318,12 +332,14 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     );
                     diag.code = 'bml-function-arg-count';
                     diagnostics.push(diag);
-                } else {
-                    const typeMatches = [];
-                    const typeErrors = [];
-                    const args = splitArgumentsList(argsCleanText);
+                }
 
-                    for (const ov of countMatches) {
+                const targetOverloads = countMatches.length > 0 ? countMatches : overloads;
+                const typeMatches = [];
+                const typeErrors = [];
+                const args = splitArgumentsList(argsCleanText);
+
+                for (const ov of targetOverloads) {
                         if (!ov.params) {
                             typeMatches.push(ov);
                             continue;
@@ -349,7 +365,6 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                     }
 
                     if (typeMatches.length === 0 && typeErrors.length > 0) {
-                        // Report type error for the first overload that matches the count
                         const bestError = typeErrors[0];
                         for (const err of bestError.errors) {
                             const expectedStr = Array.isArray(err.expected) ? err.expected.join(' or ') : err.expected;
@@ -360,7 +375,6 @@ function checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath
                             );
                             diag.code = 'bml-function-arg-type';
                             diagnostics.push(diag);
-                        }
                     }
                 }
             } else {

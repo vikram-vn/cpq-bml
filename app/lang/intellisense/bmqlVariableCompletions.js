@@ -38,6 +38,9 @@ function sanitizeCodeText(text) {
  * Checks if cursor position is to the right of an assignment '=' or 'in' operator where varName is being defined.
  */
 function isCursorOnRhsOfCurrentLineDecl(lineText, matchIndex, cursorChar) {
+    if (lineText.includes(';')) {
+        return false;
+    }
     const textFromMatch = lineText.substring(matchIndex);
     const opMatch = textFromMatch.match(/=|\bin\b/);
     if (!opMatch) return false;
@@ -89,8 +92,7 @@ function collectLocalVariables(document, position) {
             if (varName && !KEYWORDS_AND_TYPES.has(varName.toLowerCase())) {
                 const varType = match[1] ? codeText.substring(match.index, codeText.indexOf(varName, match.index)).trim() : null;
                 
-                // If on target line, do not suggest the variable if the cursor is on the RHS of this declaration
-                // unless it was ALREADY declared on a prior line before targetLine.
+                // If on target line, do not suggest the variable if the cursor is actively typing the RHS of an incomplete declaration
                 if (isTargetLine && !priorDeclaredVars.has(varName)) {
                     if (isCursorOnRhsOfCurrentLineDecl(fullLineText, match.index, position.character)) {
                         continue;

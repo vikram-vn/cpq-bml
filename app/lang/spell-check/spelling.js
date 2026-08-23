@@ -127,6 +127,7 @@ const extraAllowed = new Set([
   "varname",
   "boms",
   "chd",
+  "capped",
   // ISO Currency Codes
   "usd",
   "eur",

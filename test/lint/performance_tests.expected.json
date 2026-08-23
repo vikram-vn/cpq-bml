@@ -7,12 +7,12 @@
   {
     "line": 6,
     "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
+    "message": "Unused loop variable: 'validIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
   },
   {
-    "line": 6,
-    "severity": "Information",
-    "message": "Unused loop variable: 'validIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+    "line": 7,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 9,
@@ -28,11 +28,6 @@
     "line": 12,
     "severity": "Information",
     "message": "Style Info: RecordSet variable 'cachedRs' should have a 'Records' suffix (e.g. 'cachedRsRecords')."
-  },
-  {
-    "line": 13,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
   },
   {
     "line": 13,
@@ -88,11 +83,6 @@
     "line": 25,
     "severity": "Information",
     "message": "Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... })."
-  },
-  {
-    "line": 31,
-    "severity": "Information",
-    "message": "Design Info: Magic number '3' detected. Consider defining a named constant"
   },
   {
     "line": 31,

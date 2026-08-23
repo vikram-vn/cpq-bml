@@ -77,7 +77,7 @@ suite("BML Linter Test Suite - Math specific tests", () => {
             const diagnostics = lintText(`x = sqrt("4.0"); return "";`);
             const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
             assert.ok(diag);
-            assert.strictEqual(diag.severity, vscode.DiagnosticSeverity.Warning);
+            assert.strictEqual(diag.severity, vscode.DiagnosticSeverity.Error);
         });
 
         test("12. passing string literals to pow() flags type errors on operands", () => {

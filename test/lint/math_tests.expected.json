@@ -281,6 +281,11 @@
   },
   {
     "line": 26,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 26,
     "severity": "Hint",
     "message": "Unused variable: val_acos_neg2"
   },
@@ -348,6 +353,11 @@
     "line": 29,
     "severity": "Warning",
     "message": "Warning: 'acos()' argument is outside the valid domain [-1, 1] - passing '1.23' will return NaN."
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Built-in function 'acos' expects 1 argument(s), but got 0."
   },
   {
     "line": 30,
@@ -666,6 +676,11 @@
   },
   {
     "line": 50,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 50,
     "severity": "Hint",
     "message": "Unused variable: val_asin_neg2"
   },
@@ -733,6 +748,11 @@
     "line": 53,
     "severity": "Warning",
     "message": "Warning: 'asin()' argument is outside the valid domain [-1, 1] - passing '1.23' will return NaN."
+  },
+  {
+    "line": 54,
+    "severity": "Error",
+    "message": "Built-in function 'asin' expects 1 argument(s), but got 0."
   },
   {
     "line": 54,
@@ -1021,6 +1041,11 @@
   },
   {
     "line": 74,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 74,
     "severity": "Hint",
     "message": "Unused variable: val_atan_neg2"
   },
@@ -1083,6 +1108,11 @@
     "line": 77,
     "severity": "Hint",
     "message": "Unused variable: val_atan_neg5"
+  },
+  {
+    "line": 78,
+    "severity": "Error",
+    "message": "Built-in function 'atan' expects 1 argument(s), but got 0."
   },
   {
     "line": 78,
@@ -1366,6 +1396,11 @@
   },
   {
     "line": 98,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 98,
     "severity": "Hint",
     "message": "Unused variable: val_ceil_neg2"
   },
@@ -1428,6 +1463,11 @@
     "line": 101,
     "severity": "Hint",
     "message": "Unused variable: val_ceil_neg5"
+  },
+  {
+    "line": 102,
+    "severity": "Error",
+    "message": "Built-in function 'ceil' expects 1 argument(s), but got 0."
   },
   {
     "line": 102,
@@ -1711,6 +1751,11 @@
   },
   {
     "line": 122,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 122,
     "severity": "Hint",
     "message": "Unused variable: val_cos_neg2"
   },
@@ -1773,6 +1818,11 @@
     "line": 125,
     "severity": "Hint",
     "message": "Unused variable: val_cos_neg5"
+  },
+  {
+    "line": 126,
+    "severity": "Error",
+    "message": "Built-in function 'cos' expects 1 argument(s), but got 0."
   },
   {
     "line": 126,
@@ -2056,6 +2106,11 @@
   },
   {
     "line": 146,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 146,
     "severity": "Hint",
     "message": "Unused variable: val_cosh_neg2"
   },
@@ -2118,6 +2173,11 @@
     "line": 149,
     "severity": "Hint",
     "message": "Unused variable: val_cosh_neg5"
+  },
+  {
+    "line": 150,
+    "severity": "Error",
+    "message": "Built-in function 'cosh' expects 1 argument(s), but got 0."
   },
   {
     "line": 150,
@@ -2401,6 +2461,11 @@
   },
   {
     "line": 170,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 170,
     "severity": "Hint",
     "message": "Unused variable: val_exp_neg2"
   },
@@ -2463,6 +2528,11 @@
     "line": 173,
     "severity": "Hint",
     "message": "Unused variable: val_exp_neg5"
+  },
+  {
+    "line": 174,
+    "severity": "Error",
+    "message": "Built-in function 'exp' expects 1 argument(s), but got 0."
   },
   {
     "line": 174,
@@ -2746,6 +2816,11 @@
   },
   {
     "line": 194,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 194,
     "severity": "Hint",
     "message": "Unused variable: val_fabs_neg2"
   },
@@ -2808,6 +2883,11 @@
     "line": 197,
     "severity": "Hint",
     "message": "Unused variable: val_fabs_neg5"
+  },
+  {
+    "line": 198,
+    "severity": "Error",
+    "message": "Built-in function 'fabs' expects 1 argument(s), but got 0."
   },
   {
     "line": 198,
@@ -3146,6 +3226,11 @@
   },
   {
     "line": 220,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 220,
     "severity": "Hint",
     "message": "Unused variable: val_fmod_neg2"
   },
@@ -3163,6 +3248,11 @@
     "line": 221,
     "severity": "Information",
     "message": "Style Info: Variable 'val_fmod_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_fmod_neg3')."
+  },
+  {
+    "line": 221,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 221,
@@ -3223,6 +3313,11 @@
     "line": 223,
     "severity": "Hint",
     "message": "Unused variable: val_fmod_neg5"
+  },
+  {
+    "line": 224,
+    "severity": "Error",
+    "message": "Built-in function 'fmod' expects 2 argument(s), but got 1."
   },
   {
     "line": 224,
@@ -3576,6 +3671,11 @@
   },
   {
     "line": 246,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 246,
     "severity": "Hint",
     "message": "Unused variable: val_hypot_neg2"
   },
@@ -3593,6 +3693,11 @@
     "line": 247,
     "severity": "Information",
     "message": "Style Info: Variable 'val_hypot_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_hypot_neg3')."
+  },
+  {
+    "line": 247,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 247,
@@ -3653,6 +3758,11 @@
     "line": 249,
     "severity": "Hint",
     "message": "Unused variable: val_hypot_neg5"
+  },
+  {
+    "line": 250,
+    "severity": "Error",
+    "message": "Built-in function 'hypot' expects 2 argument(s), but got 1."
   },
   {
     "line": 250,
@@ -3953,6 +4063,11 @@
     "line": 270,
     "severity": "Information",
     "message": "Style Info: Variable 'val_integer_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_integer_neg2')."
+  },
+  {
+    "line": 270,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 270,
@@ -4311,6 +4426,11 @@
   },
   {
     "line": 294,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 294,
     "severity": "Hint",
     "message": "Unused variable: val_ln_neg2"
   },
@@ -4373,6 +4493,11 @@
     "line": 297,
     "severity": "Hint",
     "message": "Unused variable: val_ln_neg5"
+  },
+  {
+    "line": 298,
+    "severity": "Error",
+    "message": "Built-in function 'ln' expects 1 argument(s), but got 0."
   },
   {
     "line": 298,
@@ -4656,6 +4781,11 @@
   },
   {
     "line": 318,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 318,
     "severity": "Hint",
     "message": "Unused variable: val_log_neg2"
   },
@@ -4718,6 +4848,11 @@
     "line": 321,
     "severity": "Hint",
     "message": "Unused variable: val_log_neg5"
+  },
+  {
+    "line": 322,
+    "severity": "Error",
+    "message": "Built-in function 'log' expects 1 argument(s), but got 0."
   },
   {
     "line": 322,
@@ -5056,6 +5191,11 @@
   },
   {
     "line": 344,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 344,
     "severity": "Hint",
     "message": "Unused variable: val_pow_neg2"
   },
@@ -5073,6 +5213,11 @@
     "line": 345,
     "severity": "Information",
     "message": "Style Info: Variable 'val_pow_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_pow_neg3')."
+  },
+  {
+    "line": 345,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 345,
@@ -5133,6 +5278,11 @@
     "line": 347,
     "severity": "Hint",
     "message": "Unused variable: val_pow_neg5"
+  },
+  {
+    "line": 348,
+    "severity": "Error",
+    "message": "Built-in function 'pow' expects 2 argument(s), but got 1."
   },
   {
     "line": 348,
@@ -5431,6 +5581,11 @@
   },
   {
     "line": 368,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 368,
     "severity": "Hint",
     "message": "Unused variable: val_sin_neg2"
   },
@@ -5493,6 +5648,11 @@
     "line": 371,
     "severity": "Hint",
     "message": "Unused variable: val_sin_neg5"
+  },
+  {
+    "line": 372,
+    "severity": "Error",
+    "message": "Built-in function 'sin' expects 1 argument(s), but got 0."
   },
   {
     "line": 372,
@@ -5776,6 +5936,11 @@
   },
   {
     "line": 392,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 392,
     "severity": "Hint",
     "message": "Unused variable: val_sinh_neg2"
   },
@@ -5838,6 +6003,11 @@
     "line": 395,
     "severity": "Hint",
     "message": "Unused variable: val_sinh_neg5"
+  },
+  {
+    "line": 396,
+    "severity": "Error",
+    "message": "Built-in function 'sinh' expects 1 argument(s), but got 0."
   },
   {
     "line": 396,
@@ -6121,6 +6291,11 @@
   },
   {
     "line": 416,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 416,
     "severity": "Hint",
     "message": "Unused variable: val_sqrt_neg2"
   },
@@ -6183,6 +6358,11 @@
     "line": 419,
     "severity": "Hint",
     "message": "Unused variable: val_sqrt_neg5"
+  },
+  {
+    "line": 420,
+    "severity": "Error",
+    "message": "Built-in function 'sqrt' expects 1 argument(s), but got 0."
   },
   {
     "line": 420,
@@ -6466,6 +6646,11 @@
   },
   {
     "line": 440,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 440,
     "severity": "Hint",
     "message": "Unused variable: val_tan_neg2"
   },
@@ -6528,6 +6713,11 @@
     "line": 443,
     "severity": "Hint",
     "message": "Unused variable: val_tan_neg5"
+  },
+  {
+    "line": 444,
+    "severity": "Error",
+    "message": "Built-in function 'tan' expects 1 argument(s), but got 0."
   },
   {
     "line": 444,
@@ -6811,6 +7001,11 @@
   },
   {
     "line": 464,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 464,
     "severity": "Hint",
     "message": "Unused variable: val_tanh_neg2"
   },
@@ -6873,6 +7068,11 @@
     "line": 467,
     "severity": "Hint",
     "message": "Unused variable: val_tanh_neg5"
+  },
+  {
+    "line": 468,
+    "severity": "Error",
+    "message": "Built-in function 'tanh' expects 1 argument(s), but got 0."
   },
   {
     "line": 468,
@@ -7221,6 +7421,11 @@
   },
   {
     "line": 490,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 490,
     "severity": "Hint",
     "message": "Unused variable: val_round_neg2"
   },
@@ -7238,6 +7443,11 @@
     "line": 491,
     "severity": "Information",
     "message": "Style Info: Variable 'val_round_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_round_neg3')."
+  },
+  {
+    "line": 491,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
     "line": 491,
@@ -7298,6 +7508,11 @@
     "line": 493,
     "severity": "Hint",
     "message": "Unused variable: val_round_neg5"
+  },
+  {
+    "line": 494,
+    "severity": "Error",
+    "message": "Built-in function 'round' expects 2 argument(s), but got 1."
   },
   {
     "line": 494,

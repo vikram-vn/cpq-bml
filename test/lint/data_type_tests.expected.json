@@ -216,11 +216,6 @@
   },
   {
     "line": 46,
-    "severity": "Information",
-    "message": "Design Info: Magic number '10.5' detected. Consider defining a named constant"
-  },
-  {
-    "line": 46,
     "severity": "Warning",
     "message": "Safety Warning: Comparing float values directly with '==' or '!=' can lead to precision errors. Consider using a tolerance threshold."
   },
@@ -258,11 +253,6 @@
     "line": 50,
     "severity": "Hint",
     "message": "Unused variable: errIneq1"
-  },
-  {
-    "line": 51,
-    "severity": "Information",
-    "message": "Design Info: Magic number '20.5' detected. Consider defining a named constant"
   },
   {
     "line": 51,

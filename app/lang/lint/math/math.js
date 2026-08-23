@@ -2,7 +2,7 @@ const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('../
 const { inferExpressionType } = require('../typeCheck');
 const vscode = require('vscode');
 
-function checkMath(cleanText, noStringsText, doc) {
+function checkMath(cleanText, noStringsText, doc, firstTypeByVar) {
     const diagnostics = [];
     let match;
 
@@ -79,7 +79,8 @@ function checkMath(cleanText, noStringsText, doc) {
                     'bml-function-arg-count'
                 ));
             } else {
-                const actual = inferExpressionType(args[0]);
+                const argTrimmed = args[0].trim();
+                const actual = inferExpressionType(argTrimmed, firstTypeByVar) || (firstTypeByVar && (firstTypeByVar.get(argTrimmed.toLowerCase()) || firstTypeByVar.get(argTrimmed)) && (firstTypeByVar.get(argTrimmed.toLowerCase()) || firstTypeByVar.get(argTrimmed)).type);
                 if (actual && !cf.expected.includes(actual)) {
                     const startPos = doc.positionAt(match.index);
                     const endPos = doc.positionAt(closeParenIndex + 1);

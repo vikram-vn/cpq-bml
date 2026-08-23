@@ -2,6 +2,7 @@ const vscode = require('vscode');
 const { lintBMLCustom } = require('../../app/lang/lint/lint');
 
 function lintText(bmlText, filePath = '/mock/test.bml') {
+    const lines = bmlText.split(/\r?\n/);
     const lineOffsets = [0];
     for (let i = 0; i < bmlText.length; i++) {
         if (bmlText[i] === '\n') lineOffsets.push(i + 1);
@@ -9,18 +10,16 @@ function lintText(bmlText, filePath = '/mock/test.bml') {
     const doc = {
         languageId: 'bml',
         getText: () => bmlText,
+        lineCount: lines.length,
+        lineAt: (line) => ({ text: lines[line] || '', range: new vscode.Range(new vscode.Position(line, 0), new vscode.Position(line, (lines[line] || '').length)) }),
         positionAt: (idx) => {
             let low = 0, high = lineOffsets.length - 1;
-            let line = 0;
             while (low <= high) {
                 const mid = (low + high) >> 1;
-                if (lineOffsets[mid] <= idx) {
-                    line = mid;
-                    low = mid + 1;
-                } else {
-                    high = mid - 1;
-                }
+                if (lineOffsets[mid] <= idx) low = mid + 1;
+                else high = mid - 1;
             }
+            const line = high;
             const col = idx - lineOffsets[line];
             return new vscode.Position(line, col);
         },

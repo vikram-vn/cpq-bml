@@ -97,7 +97,10 @@ function createFakeVscode({ config = {}, window = {}, workspace = {}, workspaceF
             showInputBox: async () => undefined,
             showInformationMessage: () => {},
             showErrorMessage: () => {},
-            showWarningMessage: () => {},
+            showWarningMessage: async (msg, ...items) => {
+                const stringItems = items.filter(x => typeof x === 'string');
+                return stringItems.length > 0 ? stringItems[0] : undefined;
+            },
             showQuickPick: async () => undefined,
             activeTextEditor: undefined,
             createOutputChannel: () => ({ appendLine: () => {}, show: () => {} }),
