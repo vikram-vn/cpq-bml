@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const { inferConstantCandidateName } = require('./qualityFixes');
 
 function toCamelCase(name) {
     if (!name) return name;
@@ -113,11 +114,32 @@ function commentOutEmptyLoops(text, eol) {
 function buildFixAllText(document, relevantDiags) {
     let text = document.getText();
 
-    // 1. Identifier renamings
+    // 1. Identifier renamings (Constants take priority over camelCase)
     const renameMap = new Map();
+    const constantVars = new Set();
+
+    for (const diag of relevantDiags) {
+        if (diag.code === 'bml-magic-number') {
+            const editRange = diag.originalRange ?? diag.range;
+            const val = document.getText(editRange);
+            const lineText = document.lineAt(editRange.start.line).text;
+            const prefix = lineText.substring(0, editRange.start.character);
+            const suffix = lineText.substring(editRange.start.character + val.length);
+            const directAssignMatch = prefix.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?([a-zA-Z_]\w*)\s*=\s*$/i);
+            const isPureAssignment = directAssignMatch && (/^[\s;]*$/.test(suffix));
+            if (isPureAssignment) {
+                const varName = directAssignMatch[1];
+                const constName = inferConstantCandidateName(lineText, editRange.start.character, val);
+                renameMap.set(varName, constName);
+                constantVars.add(varName);
+            }
+        }
+    }
+
     for (const diag of relevantDiags) {
         const editRange = diag.originalRange ?? diag.range;
         const name = document.getText(editRange);
+        if (constantVars.has(name)) continue;
 
         if (diag.code === 'bml-variable-camelcase') {
             const newName = toCamelCase(name);
@@ -243,6 +265,7 @@ function getFixAllSafeAction(document, diagnostics) {
         'bml-array-naming-suffix',
         'bml-recordset-naming-suffix',
         'bml-boolean-naming-prefix',
+        'bml-magic-number',
         'bml-unused-variable',
         'bml-unused-loop-var',
         'bml-string-cast-of-string',
@@ -309,7 +332,20 @@ function getFixAllSafeAction(document, diagnostics) {
         actions.push(typeAction);
     }
 
-    // 4. Category: Syntax & Formatting (Multi-statement lines, Empty blocks, Trailing commas)
+    // 4. Category: Direct Magic Number Constants
+    const magicDiags = relevantDiags.filter(d => d.code === 'bml-magic-number');
+    if (magicDiags.length > 0) {
+        const magicTitle = `Convert direct magic number variables to named constants (${magicDiags.length} issue${magicDiags.length > 1 ? 's' : ''})`;
+        const magicText = buildFixAllText(document, magicDiags);
+        const magicEdit = new vscode.WorkspaceEdit();
+        magicEdit.replace(document.uri, fullRange, magicText);
+        const magicAction = new vscode.CodeAction(magicTitle, vscode.CodeActionKind.RefactorRewrite);
+        magicAction.edit = magicEdit;
+        magicAction.diagnostics = magicDiags;
+        actions.push(magicAction);
+    }
+
+    // 5. Category: Syntax & Formatting (Multi-statement lines, Empty blocks, Trailing commas)
     const syntaxDiags = relevantDiags.filter(d => 
         d.code === 'bml-multiple-statements-per-line' || 
         d.code === 'bml-empty-block' || 
@@ -326,7 +362,7 @@ function getFixAllSafeAction(document, diagnostics) {
         actions.push(syntaxAction);
     }
 
-    // 5. Category: Unused Variables
+    // 6. Category: Unused Variables
     const unusedDiags = relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var');
     if (unusedDiags.length > 0) {
         const unusedTitle = `Comment out all unused variable statements (${unusedDiags.length} issue${unusedDiags.length > 1 ? 's' : ''})`;
@@ -339,7 +375,7 @@ function getFixAllSafeAction(document, diagnostics) {
         actions.push(unusedAction);
     }
 
-    // 6. Category: Redundant Casts & Expression Simplification
+    // 7. Category: Redundant Casts & Expression Simplification
     const castDiags = relevantDiags.filter(d => d.code === 'bml-string-cast-of-string');
     if (castDiags.length > 0) {
         const castTitle = `Simplify redundant string casts & boolean expressions (${castDiags.length} issue${castDiags.length > 1 ? 's' : ''})`;

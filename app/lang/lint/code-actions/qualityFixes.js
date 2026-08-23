@@ -530,4 +530,8 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
     return fixes;
 }
 
-module.exports = { getQualityFixes };
+module.exports = {
+    getQualityFixes,
+    toUpperSnakeCase,
+    inferConstantCandidateName
+};

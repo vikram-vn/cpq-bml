@@ -247,7 +247,7 @@ function runStyleCodeActionTests() {
             const updatedText = doc.getText();
             assert.ok(updatedText.includes('isReadyFlag = true;'), 'is_ready_flag should be camelCased');
             assert.ok(updatedText.includes('return isReadyFlag ? "Y" : "N";'), 'return reference should be updated');
-            assert.ok(updatedText.includes('// unusedHelper = 99;') || updatedText.includes('// unused_helper = 99;'), 'unused_helper should be commented out');
+            assert.ok(updatedText.includes('// UNUSED_HELPER') || updatedText.includes('// unusedHelper') || updatedText.includes('// unused_helper'), 'unused_helper should be commented out');
             assert.ok(updatedText.includes('a = 1;') && updatedText.includes('b = 2;'), 'Both statements should be present');
             assert.ok(!updatedText.includes('a = 1; b = 2;'), 'Statements should no longer be on same line');
         });
@@ -408,6 +408,44 @@ function runStyleCodeActionTests() {
             const updatedText = doc.getText();
             assert.ok(updatedText.includes('// for sampleRow in sampleRecordSet {'), 'Outer for loop header should be commented out');
             assert.ok(updatedText.includes('// }'), 'Closing brace of loop should be commented out');
+        });
+
+        test('Fix All converts direct magic number variables to named constants and Refactor menu offers category', async () => {
+            const content = [
+                'mRate_16 = 252.00;',
+                'total_cost = mRate_16 * 2.0;',
+                'return string(total_cost);'
+            ].join('\n');
+
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: content
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const codeActions = await vscode.commands.executeCommand(
+                'vscode.executeCodeActionProvider',
+                doc.uri,
+                new vscode.Range(0, 0, 3, 0),
+                vscode.CodeActionKind.RefactorRewrite.value
+            );
+
+            // Refactor Category Action
+            const magicCategoryAction = codeActions.find(a => a.title.includes('Convert direct magic number variables to named constants'));
+            assert.ok(magicCategoryAction, 'Should offer Magic Numbers category in Refactor menu');
+
+            // Master Fix All
+            const fixAll = codeActions.find(a => a.title.includes('Fix All Safe Style & Naming Issues in File'));
+            assert.ok(fixAll, 'Should offer Fix All');
+
+            const applied = await vscode.workspace.applyEdit(fixAll.edit);
+            assert.ok(applied, 'Should apply Fix All');
+
+            const updatedText = doc.getText();
+            assert.ok(updatedText.includes('M_RATE_16 = 252.00;') || updatedText.includes('M_RATE_16_DEFAULT = 252.00;'), 'mRate_16 should be converted to named constant in-place');
+            assert.ok(!updatedText.includes('mRate_16 = 252.00;'), 'Old variable name should be replaced');
         });
     });
 }
