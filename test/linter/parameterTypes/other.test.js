@@ -92,29 +92,29 @@ suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Se
         assert.ok(err, 'Should flag passing Date to throwerror() arg 1');
     });
 
-    test('validatequoteforagreement() expects String (p1), flags Integer (p1)', () => {
-        const diags = lintText('res = validatequoteforagreement(12345); return "";');
+    test('validatequoteforagreement() expects String (p1), flags Date (p1)', () => {
+        const diags = lintText('dt = getdate(); res = validatequoteforagreement(dt); return "";');
         const err = diags.find(d => d.code === 'bml-function-arg-type');
-        assert.ok(err, 'Should flag passing Integer to validatequoteforagreement() arg 1');
+        assert.ok(err, 'Should flag passing Date to validatequoteforagreement() arg 1');
     });
 
     // BOM Mapping Function Tests
-    test('applybom() expects String (p1) and Dictionary (p2), flags Integer (p1)', () => {
-        const diags = lintText('res = applybom(12345, dict("string")); return "";');
+    test('applybom() expects String (p1) and Dictionary (p2), flags Date (p1)', () => {
+        const diags = lintText('dt = getdate(); res = applybom(dt, dict("string")); return "";');
         const err = diags.find(d => d.code === 'bml-function-arg-type');
-        assert.ok(err, 'Should flag passing Integer to applybom() arg 1');
+        assert.ok(err, 'Should flag passing Date to applybom() arg 1');
     });
 
-    test('calculateconfiguration() expects Dictionary (p1), flags String (p1)', () => {
-        const diags = lintText('res = calculateconfiguration("not_dict"); return "";');
+    test('calculateconfiguration() expects Dictionary (p1), flags Date (p1)', () => {
+        const diags = lintText('dt = getdate(); res = calculateconfiguration(dt); return "";');
         const err = diags.find(d => d.code === 'bml-function-arg-type');
-        assert.ok(err, 'Should flag passing String to calculateconfiguration() arg 1');
+        assert.ok(err, 'Should flag passing Date to calculateconfiguration() arg 1');
     });
 
-    test('calculatedeltabom() expects Dictionary (p1 & p2), flags String (p1)', () => {
-        const diags = lintText('res = calculatedeltabom("not_dict", dict("string")); return "";');
+    test('calculatedeltabom() expects Dictionary (p1 & p2), flags Date (p1)', () => {
+        const diags = lintText('dt = getdate(); res = calculatedeltabom(dt, dict("string")); return "";');
         const err = diags.find(d => d.code === 'bml-function-arg-type');
-        assert.ok(err, 'Should flag passing String to calculatedeltabom() arg 1');
+        assert.ok(err, 'Should flag passing Date to calculatedeltabom() arg 1');
     });
 
     test('convertbomtoflat() expects Dictionary (p1), flags Date (p1)', () => {
@@ -123,10 +123,10 @@ suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Se
         assert.ok(err, 'Should flag passing Date to convertbomtoflat() arg 1');
     });
 
-    test('convertbomtohier() expects Dictionary (p1), flags Integer (p1)', () => {
-        const diags = lintText('res = convertbomtohier(12345); return "";');
+    test('convertbomtohier() expects Dictionary (p1), flags Date (p1)', () => {
+        const diags = lintText('dt = getdate(); res = convertbomtohier(dt); return "";');
         const err = diags.find(d => d.code === 'bml-function-arg-type');
-        assert.ok(err, 'Should flag passing Integer to convertbomtohier() arg 1');
+        assert.ok(err, 'Should flag passing Date to convertbomtohier() arg 1');
     });
 
     test('getbom() expects String (p1), flags Date (p1)', () => {
@@ -135,16 +135,16 @@ suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Se
         assert.ok(err, 'Should flag passing Date to getbom() arg 1');
     });
 
-    test('getconfigurationbom() expects String (p1), flags Integer (p1)', () => {
-        const diags = lintText('res = getconfigurationbom(12345); return "";');
+    test('getconfigurationbom() expects String or Integer (p1), flags Date (p1)', () => {
+        const diags = lintText('dt = getdate(); res = getconfigurationbom(dt); return "";');
         const err = diags.find(d => d.code === 'bml-function-arg-type');
-        assert.ok(err, 'Should flag passing Integer to getconfigurationbom() arg 1');
+        assert.ok(err, 'Should flag passing Date to getconfigurationbom() arg 1');
     });
 
-    test('savebom() expects String (p1) and Dictionary (p2), flags Integer (p1)', () => {
-        const diags = lintText('res = savebom(12345, dict("string")); return "";');
+    test('savebom() expects String or Integer (p1) and Dictionary (p2), flags Date (p1)', () => {
+        const diags = lintText('dt = getdate(); res = savebom(dt, dict("string")); return "";');
         const err = diags.find(d => d.code === 'bml-function-arg-type');
-        assert.ok(err, 'Should flag passing Integer to savebom() arg 1');
+        assert.ok(err, 'Should flag passing Date to savebom() arg 1');
     });
 
     test('saveconfigbom() expects String (p1) and Dictionary (p2), flags Date (p1)', () => {

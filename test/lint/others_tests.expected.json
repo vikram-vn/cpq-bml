@@ -1967,7 +1967,7 @@
   {
     "line": 150,
     "severity": "Error",
-    "message": "Built-in function 'logtime' expects 1 or 2 argument(s), but got 3."
+    "message": "Built-in function 'logtime' expects 1 to 2 argument(s), but got 3."
   },
   {
     "line": 150,
@@ -1988,11 +1988,6 @@
     "line": 151,
     "severity": "Error",
     "message": "Argument 1 to 'logtime' should be String, but got a Integer value."
-  },
-  {
-    "line": 151,
-    "severity": "Error",
-    "message": "Argument 2 to 'logtime' should be Integer, but got a String value."
   },
   {
     "line": 151,
@@ -2416,16 +2411,6 @@
   },
   {
     "line": 184,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 184,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 184,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2456,16 +2441,6 @@
   },
   {
     "line": 187,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 187,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 187,
     "severity": "Information",
     "message": "Style Info: Variable 'val_savebom_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos2')."
   },
@@ -2473,16 +2448,6 @@
     "line": 187,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos2"
-  },
-  {
-    "line": 188,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 188,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 188,
@@ -2498,16 +2463,6 @@
     "line": 188,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos3"
-  },
-  {
-    "line": 189,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 189,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 189,
@@ -2541,16 +2496,6 @@
   },
   {
     "line": 190,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 190,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 190,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2576,16 +2521,6 @@
   },
   {
     "line": 191,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 191,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 191,
     "severity": "Information",
     "message": "Style Info: Variable 'val_savebom_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_savebom_pos6')."
   },
@@ -2593,16 +2528,6 @@
     "line": 191,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos6"
-  },
-  {
-    "line": 192,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 192,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 192,
@@ -2621,16 +2546,6 @@
   },
   {
     "line": 196,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 196,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 196,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2643,16 +2558,6 @@
     "line": 196,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos8"
-  },
-  {
-    "line": 197,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 197,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 197,
@@ -2676,16 +2581,6 @@
   },
   {
     "line": 198,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 198,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 198,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -2698,11 +2593,6 @@
     "line": 198,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_pos10"
-  },
-  {
-    "line": 199,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
   },
   {
     "line": 199,
@@ -2727,16 +2617,6 @@
   {
     "line": 200,
     "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 200,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 200,
-    "severity": "Error",
     "message": "Built-in function 'savebom' expects 2 argument(s), but got 3."
   },
   {
@@ -2757,7 +2637,7 @@
   {
     "line": 201,
     "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a String value."
+    "message": "Argument 2 to 'savebom' should be Dictionary or Json, but got a String value."
   },
   {
     "line": 201,
@@ -2768,16 +2648,6 @@
     "line": 201,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_neg3"
-  },
-  {
-    "line": 202,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 202,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 202,
@@ -2827,11 +2697,6 @@
   {
     "line": 204,
     "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 204,
-    "severity": "Error",
     "message": "Built-in function 'savebom' expects 2 argument(s), but got 1."
   },
   {
@@ -2853,16 +2718,6 @@
     "line": 204,
     "severity": "Hint",
     "message": "Unused variable: val_savebom_neg6"
-  },
-  {
-    "line": 205,
-    "severity": "Error",
-    "message": "Argument 1 to 'savebom' should be String, but got a Integer value."
-  },
-  {
-    "line": 205,
-    "severity": "Error",
-    "message": "Argument 2 to 'savebom' should be Dictionary, but got a Json value."
   },
   {
     "line": 205,
@@ -3161,11 +3016,6 @@
   },
   {
     "line": 225,
-    "severity": "Error",
-    "message": "Argument 1 to 'getbom' should be String, but got a Integer value."
-  },
-  {
-    "line": 225,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -3203,11 +3053,6 @@
     "line": 226,
     "severity": "Hint",
     "message": "Unused variable: val_getbom_neg2"
-  },
-  {
-    "line": 227,
-    "severity": "Error",
-    "message": "Argument 1 to 'getbom' should be Integer, but got a String value."
   },
   {
     "line": 227,
@@ -3278,11 +3123,6 @@
     "line": 229,
     "severity": "Hint",
     "message": "Unused variable: val_getbom_neg5"
-  },
-  {
-    "line": 230,
-    "severity": "Error",
-    "message": "Argument 1 to 'getbom' should be String, but got a Integer value."
   },
   {
     "line": 230,
@@ -3886,11 +3726,6 @@
   },
   {
     "line": 277,
-    "severity": "Error",
-    "message": "Argument 1 to 'calculateconfiguration' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 277,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculateconfiguration_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculateconfiguration_neg1')."
   },
@@ -3902,7 +3737,7 @@
   {
     "line": 278,
     "severity": "Error",
-    "message": "Built-in function 'calculateconfiguration' expects 1 or 2 argument(s), but got 3."
+    "message": "Built-in function 'calculateconfiguration' expects 1 to 2 or 2 argument(s), but got 3."
   },
   {
     "line": 278,
@@ -3917,12 +3752,12 @@
   {
     "line": 279,
     "severity": "Error",
-    "message": "Argument 1 to 'calculateconfiguration' should be String, but got a Integer value."
+    "message": "Argument 1 to 'calculateconfiguration' should be Dictionary or String, but got a Integer value."
   },
   {
     "line": 279,
     "severity": "Error",
-    "message": "Argument 2 to 'calculateconfiguration' should be JsonArray, but got a String value."
+    "message": "Argument 2 to 'calculateconfiguration' should be Dictionary or JsonArray, but got a String value."
   },
   {
     "line": 279,
@@ -3973,11 +3808,6 @@
     "line": 281,
     "severity": "Hint",
     "message": "Unused variable: val_calculateconfiguration_neg5"
-  },
-  {
-    "line": 282,
-    "severity": "Error",
-    "message": "Argument 1 to 'calculateconfiguration' should be Dictionary, but got a String value."
   },
   {
     "line": 282,
@@ -4036,16 +3866,6 @@
   },
   {
     "line": 288,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 288,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 288,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos1')."
   },
@@ -4066,16 +3886,6 @@
   },
   {
     "line": 291,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 291,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 291,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos2')."
   },
@@ -4086,16 +3896,6 @@
   },
   {
     "line": 292,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 292,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 292,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos3')."
   },
@@ -4103,16 +3903,6 @@
     "line": 292,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_pos3"
-  },
-  {
-    "line": 293,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 293,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 293,
@@ -4141,16 +3931,6 @@
   },
   {
     "line": 294,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 294,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 294,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos5')."
   },
@@ -4171,16 +3951,6 @@
   },
   {
     "line": 295,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 295,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 295,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos6')."
   },
@@ -4188,16 +3958,6 @@
     "line": 295,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_pos6"
-  },
-  {
-    "line": 296,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 296,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 296,
@@ -4211,16 +3971,6 @@
   },
   {
     "line": 300,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 300,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 300,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos8')."
   },
@@ -4231,16 +3981,6 @@
   },
   {
     "line": 301,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 301,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 301,
     "severity": "Information",
     "message": "Style Info: Variable 'val_applybom_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_applybom_pos9')."
   },
@@ -4248,16 +3988,6 @@
     "line": 301,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_pos9"
-  },
-  {
-    "line": 302,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 302,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 302,
@@ -4297,7 +4027,7 @@
   {
     "line": 305,
     "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a String value."
+    "message": "Argument 2 to 'applybom' should be Dictionary or Json, but got a String value."
   },
   {
     "line": 305,
@@ -4308,16 +4038,6 @@
     "line": 305,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_neg3"
-  },
-  {
-    "line": 306,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 306,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 306,
@@ -4368,16 +4088,6 @@
     "line": 308,
     "severity": "Hint",
     "message": "Unused variable: val_applybom_neg6"
-  },
-  {
-    "line": 309,
-    "severity": "Error",
-    "message": "Argument 1 to 'applybom' should be String, but got a Json value."
-  },
-  {
-    "line": 309,
-    "severity": "Error",
-    "message": "Argument 2 to 'applybom' should be Dictionary, but got a Json value."
   },
   {
     "line": 310,
@@ -4561,16 +4271,6 @@
   },
   {
     "line": 331,
-    "severity": "Error",
-    "message": "Argument 1 to 'calculatedeltabom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 331,
-    "severity": "Error",
-    "message": "Argument 2 to 'calculatedeltabom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 331,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg1')."
   },
@@ -4597,17 +4297,17 @@
   {
     "line": 333,
     "severity": "Error",
-    "message": "Argument 1 to 'calculatedeltabom' should be Json, but got a String value."
+    "message": "Argument 1 to 'calculatedeltabom' should be Dictionary or Json, but got a String value."
   },
   {
     "line": 333,
     "severity": "Error",
-    "message": "Argument 2 to 'calculatedeltabom' should be Json, but got a String value."
+    "message": "Argument 2 to 'calculatedeltabom' should be Dictionary or Json, but got a String value."
   },
   {
     "line": 333,
     "severity": "Error",
-    "message": "Argument 3 to 'calculatedeltabom' should be Json, but got a String value."
+    "message": "Argument 3 to 'calculatedeltabom' should be Dictionary or Json, but got a String value."
   },
   {
     "line": 333,
@@ -4656,11 +4356,6 @@
   },
   {
     "line": 336,
-    "severity": "Error",
-    "message": "Argument 1 to 'calculatedeltabom' should be Dictionary, but got a Json value."
-  },
-  {
-    "line": 336,
     "severity": "Information",
     "message": "Style Info: Variable 'val_calculatedeltabom_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_calculatedeltabom_neg6')."
   },
@@ -4687,7 +4382,7 @@
   {
     "line": 339,
     "severity": "Error",
-    "message": "Built-in function 'calculatedeltabom' expects 2 or 3 to 4 argument(s), but got 1."
+    "message": "Built-in function 'calculatedeltabom' expects 2 to 4 argument(s), but got 1."
   },
   {
     "line": 339,
@@ -4716,16 +4411,6 @@
   },
   {
     "line": 342,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 342,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 342,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos1')."
   },
@@ -4741,16 +4426,6 @@
   },
   {
     "line": 344,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 344,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 344,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos2')."
   },
@@ -4761,16 +4436,6 @@
   },
   {
     "line": 345,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 345,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 345,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos3')."
   },
@@ -4778,16 +4443,6 @@
     "line": 345,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_pos3"
-  },
-  {
-    "line": 346,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 346,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 346,
@@ -4816,16 +4471,6 @@
   },
   {
     "line": 347,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 347,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 347,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos5')."
   },
@@ -4846,16 +4491,6 @@
   },
   {
     "line": 348,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 348,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 348,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos6')."
   },
@@ -4863,16 +4498,6 @@
     "line": 348,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_pos6"
-  },
-  {
-    "line": 349,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 349,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 349,
@@ -4886,16 +4511,6 @@
   },
   {
     "line": 352,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 352,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 352,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos8')."
   },
@@ -4906,16 +4521,6 @@
   },
   {
     "line": 353,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 353,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
-    "line": 353,
     "severity": "Information",
     "message": "Style Info: Variable 'val_saveconfigbom_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_saveconfigbom_pos9')."
   },
@@ -4923,16 +4528,6 @@
     "line": 353,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_pos9"
-  },
-  {
-    "line": 354,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 354,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 354,
@@ -4947,7 +4542,7 @@
   {
     "line": 355,
     "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 0."
+    "message": "Built-in function 'saveconfigbom' expects 2 or 1 argument(s), but got 0."
   },
   {
     "line": 355,
@@ -4962,12 +4557,7 @@
   {
     "line": 356,
     "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 356,
-    "severity": "Error",
-    "message": "Argument 2 to 'saveconfigbom' should be Dictionary, but got a String value."
+    "message": "Argument 2 to 'saveconfigbom' should be Dictionary or Json, but got a String value."
   },
   {
     "line": 356,
@@ -4982,7 +4572,7 @@
   {
     "line": 357,
     "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
+    "message": "Argument 1 to 'saveconfigbom' should be Json, but got a String value."
   },
   {
     "line": 357,
@@ -4993,16 +4583,6 @@
     "line": 357,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_neg3"
-  },
-  {
-    "line": 358,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 358,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 358,
@@ -5042,7 +4622,7 @@
   {
     "line": 360,
     "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 0."
+    "message": "Built-in function 'saveconfigbom' expects 2 or 1 argument(s), but got 0."
   },
   {
     "line": 360,
@@ -5060,16 +4640,6 @@
     "message": "Unused variable: val_saveconfigbom_neg6"
   },
   {
-    "line": 361,
-    "severity": "Error",
-    "message": "Argument 1 to 'saveconfigbom' should be String or Integer, but got a Json value."
-  },
-  {
-    "line": 361,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
-  },
-  {
     "line": 362,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
@@ -5083,11 +4653,6 @@
     "line": 362,
     "severity": "Hint",
     "message": "Unused variable: val_saveconfigbom_neg8"
-  },
-  {
-    "line": 363,
-    "severity": "Error",
-    "message": "Built-in function 'saveconfigbom' expects 2 argument(s), but got 1."
   },
   {
     "line": 363,
@@ -9376,11 +8941,6 @@
   },
   {
     "line": 672,
-    "severity": "Error",
-    "message": "Argument 1 to 'validatequoteforagreement' should be String, but got a Integer value."
-  },
-  {
-    "line": 672,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
@@ -9467,7 +9027,7 @@
   {
     "line": 677,
     "severity": "Error",
-    "message": "Built-in function 'validatequoteforagreement' expects 1 or 0 argument(s), but got 2."
+    "message": "Built-in function 'validatequoteforagreement' expects 0 to 1 argument(s), but got 2."
   },
   {
     "line": 677,
@@ -12132,7 +11692,7 @@
   {
     "line": 874,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 874,
@@ -12152,7 +11712,7 @@
   {
     "line": 876,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 876,
@@ -12167,7 +11727,7 @@
   {
     "line": 877,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 877,
@@ -12182,7 +11742,7 @@
   {
     "line": 878,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 878,
@@ -12212,7 +11772,7 @@
   {
     "line": 879,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 879,
@@ -12237,7 +11797,7 @@
   {
     "line": 880,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 880,
@@ -12257,7 +11817,7 @@
   {
     "line": 881,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 881,
@@ -12272,7 +11832,7 @@
   {
     "line": 884,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 884,
@@ -12287,7 +11847,7 @@
   {
     "line": 885,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 885,
@@ -12302,7 +11862,7 @@
   {
     "line": 886,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 886,
@@ -12357,7 +11917,7 @@
   {
     "line": 890,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 890,
@@ -12417,7 +11977,7 @@
   {
     "line": 893,
     "severity": "Error",
-    "message": "Argument 1 to 'importtransactiondata' should be Long, but got a String value."
+    "message": "Argument 1 to 'importtransactiondata' should be Integer or Long, but got a String value."
   },
   {
     "line": 894,
@@ -12778,11 +12338,6 @@
     "line": 920,
     "severity": "Hint",
     "message": "Unused variable: val_setattributevalue_neg2"
-  },
-  {
-    "line": 921,
-    "severity": "Error",
-    "message": "Argument 2 to 'setattributevalue' should be String, but got a Integer value."
   },
   {
     "line": 921,
