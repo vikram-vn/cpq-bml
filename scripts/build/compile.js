@@ -23,6 +23,7 @@ async function compileExtension() {
         external: ['vscode'],
         format: 'cjs',
         platform: 'node',
+        nodePaths: [path.join(ROOT, 'node_modules')],
         minify: isProduction,
         legalComments: isProduction ? 'none' : 'inline',
         define: isProduction ? { 'process.env.NODE_ENV': '"production"' } : undefined
@@ -35,6 +36,7 @@ async function compileExtension() {
         format: 'iife',
         platform: 'browser',
         jsx: 'automatic',
+        nodePaths: [path.join(ROOT, 'node_modules')],
         minify: isProduction,
         legalComments: isProduction ? 'none' : 'inline',
         define: isProduction ? { 'process.env.NODE_ENV': '"production"' } : undefined

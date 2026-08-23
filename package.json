@@ -482,10 +482,14 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@types/vscode": "^1.107.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^3.0.0",
     "esbuild": "^0.28.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "vscode-oniguruma": "^2.0.1",
     "vscode-textmate": "^9.3.2"
   },
