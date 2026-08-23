@@ -3956,6 +3956,16 @@
   },
   {
     "line": 262,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 262,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
+  },
+  {
+    "line": 262,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_pos1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -3986,6 +3996,11 @@
   },
   {
     "line": 265,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 265,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_pos2' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -3998,6 +4013,11 @@
     "line": 265,
     "severity": "Hint",
     "message": "Unused variable: val_sort_pos2"
+  },
+  {
+    "line": 265,
+    "severity": "Warning",
+    "message": "Warning: 'sortOrder' argument (argument 2) to 'sort()' must be a string literal (\"asc\" or \"desc\"). Using a variable may cause a runtime error."
   },
   {
     "line": 266,
@@ -4031,6 +4051,16 @@
   },
   {
     "line": 267,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 267,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
+  },
+  {
+    "line": 267,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_pos4' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -4058,6 +4088,16 @@
     "line": 268,
     "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 268,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 268,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
   },
   {
     "line": 268,
@@ -4101,6 +4141,11 @@
   },
   {
     "line": 269,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 269,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_pos6' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -4115,9 +4160,24 @@
     "message": "Unused variable: val_sort_pos6"
   },
   {
+    "line": 269,
+    "severity": "Warning",
+    "message": "Warning: 'sortOrder' argument (argument 2) to 'sort()' must be a string literal (\"asc\" or \"desc\"). Using a variable may cause a runtime error."
+  },
+  {
     "line": 270,
     "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 270,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 270,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
   },
   {
     "line": 270,
@@ -4141,6 +4201,16 @@
   },
   {
     "line": 274,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 274,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
+  },
+  {
+    "line": 274,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_pos8' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -4158,6 +4228,16 @@
     "line": 275,
     "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 275,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 275,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"\"'."
   },
   {
     "line": 275,
@@ -4181,6 +4261,16 @@
   },
   {
     "line": 276,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 276,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
+  },
+  {
+    "line": 276,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_pos10' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -4201,6 +4291,11 @@
   },
   {
     "line": 277,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 277,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_neg1' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -4218,6 +4313,21 @@
     "line": 278,
     "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 278,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 278,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
+  },
+  {
+    "line": 278,
+    "severity": "Error",
+    "message": "Error: 'sortType' argument (argument 3) to 'sort()' must be \"text\", \"numeric\", or \"date\", but got '\"excess_parameter_value\"'."
   },
   {
     "line": 278,
@@ -4256,6 +4366,11 @@
   },
   {
     "line": 279,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'Integer'."
+  },
+  {
+    "line": 279,
     "severity": "Information",
     "message": "Style Info: Array variable 'val_sort_neg3' should have a suffix of 'List', 'Arr', 'Array', or '2D'."
   },
@@ -4270,9 +4385,24 @@
     "message": "Unused variable: val_sort_neg3"
   },
   {
+    "line": 279,
+    "severity": "Warning",
+    "message": "Warning: 'sortOrder' argument (argument 2) to 'sort()' must be a string literal (\"asc\" or \"desc\"). Using a variable may cause a runtime error."
+  },
+  {
     "line": 280,
     "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 280,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 280,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
   },
   {
     "line": 280,
@@ -4306,6 +4436,16 @@
   },
   {
     "line": 281,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 281,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
+  },
+  {
+    "line": 281,
     "severity": "Information",
     "message": "Style Info: Variable 'val_sort_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_sort_neg5')."
   },
@@ -4318,6 +4458,11 @@
     "line": 282,
     "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 282,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
   },
   {
     "line": 282,
@@ -4340,9 +4485,24 @@
     "message": "Unused variable: val_sort_neg6"
   },
   {
+    "line": 282,
+    "severity": "Warning",
+    "message": "Warning: 'sortOrder' argument (argument 2) to 'sort()' must be a string literal (\"asc\" or \"desc\"). Using a variable may cause a runtime error."
+  },
+  {
     "line": 283,
     "severity": "Error",
     "message": "Argument 1 to 'sort' should be Array, but got a String value."
+  },
+  {
+    "line": 283,
+    "severity": "Error",
+    "message": "Error: 'sort()' expects a 1-D array, but argument 1 is scalar type 'String'."
+  },
+  {
+    "line": 283,
+    "severity": "Error",
+    "message": "Error: 'sortOrder' argument (argument 2) to 'sort()' must be \"asc\" or \"desc\", but got '\"abc\"'."
   },
   {
     "line": 284,
@@ -4363,6 +4523,11 @@
     "line": 284,
     "severity": "Hint",
     "message": "Unused variable: val_sort_neg8"
+  },
+  {
+    "line": 284,
+    "severity": "Warning",
+    "message": "Warning: 'sortOrder' argument (argument 2) to 'sort()' must be a string literal (\"asc\" or \"desc\"). Using a variable may cause a runtime error."
   },
   {
     "line": 285,

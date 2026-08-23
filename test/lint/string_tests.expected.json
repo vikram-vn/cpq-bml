@@ -3646,6 +3646,11 @@
   },
   {
     "line": 280,
+    "severity": "Error",
+    "message": "Error: 'join()' expects 1 or 2 arguments (str_array, [delimiter]), but got 3."
+  },
+  {
+    "line": 280,
     "severity": "Information",
     "message": "Style Info: Variable 'val_join_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_join_neg2')."
   },
@@ -3691,6 +3696,11 @@
   },
   {
     "line": 282,
+    "severity": "Error",
+    "message": "Error: 'join()' expects 1 or 2 arguments (str_array, [delimiter]), but got 3."
+  },
+  {
+    "line": 282,
     "severity": "Information",
     "message": "Style Info: Variable 'val_join_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_join_neg4')."
   },
@@ -3728,6 +3738,11 @@
     "line": 284,
     "severity": "Error",
     "message": "Argument 1 to 'join' should be String[], but got a String value."
+  },
+  {
+    "line": 284,
+    "severity": "Error",
+    "message": "Error: 'join()' expects 1 or 2 arguments (str_array, [delimiter]), but got 3."
   },
   {
     "line": 284,

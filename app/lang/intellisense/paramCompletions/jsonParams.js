@@ -15,11 +15,26 @@ const JSON_PATH_TEMPLATES = [
     { name: '$.[\'Special Key\']', insertText: '$.[\'Special Key\']', detail: 'Bracket Notation', doc: 'Access properties with non-alphanumeric or special characters.' }
 ];
 
+const JSON_VALUE_TYPES = [
+    { name: 'string', detail: 'valueType "string" (default)', doc: 'Cast extracted JSON value as String.' },
+    { name: 'integer', detail: 'valueType "integer"', doc: 'Cast extracted JSON value as Integer.' },
+    { name: 'float', detail: 'valueType "float"', doc: 'Cast extracted JSON value as Float.' },
+    { name: 'boolean', detail: 'valueType "boolean"', doc: 'Cast extracted JSON value as Boolean.' },
+    { name: 'json', detail: 'valueType "json"', doc: 'Extract nested object as Json type.' },
+    { name: 'jsonarray', detail: 'valueType "jsonarray"', doc: 'Extract nested array as JsonArray type.' }
+];
+
 function getJsonPathCompletions(document, position) {
     return buildStringParamItems(JSON_PATH_TEMPLATES, document, position);
 }
 
+function getJsonValueTypeCompletions(document, position) {
+    return buildStringParamItems(JSON_VALUE_TYPES, document, position);
+}
+
 module.exports = {
     JSON_PATH_TEMPLATES,
-    getJsonPathCompletions
+    JSON_VALUE_TYPES,
+    getJsonPathCompletions,
+    getJsonValueTypeCompletions
 };

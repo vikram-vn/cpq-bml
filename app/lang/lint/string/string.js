@@ -137,6 +137,26 @@ function checkString(cleanText, noStringsText, doc) {
         }
     }
 
+    // join(str_array, [delimiter]) call validation
+    const joinRegex = /\bjoin\s*\(/g;
+    while ((match = joinRegex.exec(cleanText)) !== null) {
+        const openParenIndex = match.index + match[0].length - 1;
+        const closeParenIndex = findMatchingParenEnd(cleanText, openParenIndex);
+        if (closeParenIndex === -1) continue;
+        const args = splitTopLevelArgs(cleanText.slice(openParenIndex + 1, closeParenIndex));
+
+        if (args.length < 1 || args.length > 2) {
+            const startPos = doc.positionAt(match.index);
+            const endPos = doc.positionAt(closeParenIndex + 1);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                `Error: 'join()' expects 1 or 2 arguments (str_array, [delimiter]), but got ${args.length}.`,
+                vscode.DiagnosticSeverity.Error,
+                'bml-function-arg-count'
+            ));
+        }
+    }
+
     return diagnostics;
 }
 

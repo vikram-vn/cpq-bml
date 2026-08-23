@@ -1,6 +1,6 @@
 const { getQuotedStringRange } = require('./utils');
 const { TIMEZONES, getTimezoneCompletions } = require('./timezones');
-const { DATE_FORMATS, getDateFormatCompletions } = require('./dateFormats');
+const { DATE_FORMATS, GETDATE_BOOLEANS, getDateFormatCompletions, getGetDateIncludeTimeCompletions } = require('./dateParams');
 const { CURRENCY_CODES, getCurrencyCodeCompletions } = require('./currencies');
 const { DELIMITERS, getDelimiterCompletions } = require('./delimiters');
 const {
@@ -22,6 +22,14 @@ const {
 const { BMQL_TEMPLATES, getBmqlQueryCompletions } = require('./bmqlParams');
 const { JSON_PATH_TEMPLATES, getJsonPathCompletions } = require('./jsonParams');
 const { DICT_TYPES, getDictTypeCompletions } = require('./dictParams');
+const {
+    SORT_ORDERS,
+    SORT_TYPES,
+    BYTEARRAY_CHARSETS,
+    getSortOrderCompletions,
+    getSortTypeCompletions,
+    getByteArrayCharsetCompletions
+} = require('./arrayParams');
 
 /**
  * Main dispatcher for Smart Parameter Completions based on active function call and parameter index.
@@ -32,15 +40,27 @@ function resolveParameterCompletions(activeCall, document, position) {
     const fn = activeCall.funcName.toLowerCase();
     const paramIdx = activeCall.paramIndex;
 
+    // Array functions: sort(arrayID, [sortOrder], [sortType]), bytearray(content [, charset])
+    if (['sort'].includes(fn)) {
+        if (paramIdx === 1) return getSortOrderCompletions(document, position);
+        if (paramIdx === 2) return getSortTypeCompletions(document, position);
+    }
+    if (['bytearray'].includes(fn) && paramIdx === 1) {
+        return getByteArrayCharsetCompletions(document, position);
+    }
+
     // Dictionary constructor functions: dict, dictionary
     if (['dict', 'dictionary'].includes(fn) && paramIdx === 0) {
         return getDictTypeCompletions(document, position);
     }
 
-    // Date functions: datetostr, strtojavadate, strtodate
+    // Date functions: datetostr, strtojavadate, strtodate, getdate
     if (['datetostr', 'strtojavadate', 'strtodate'].includes(fn)) {
         if (paramIdx === 2) return getTimezoneCompletions(document, position);
         if (paramIdx === 1) return getDateFormatCompletions(document, position);
+    }
+    if (['getdate'].includes(fn) && paramIdx === 0) {
+        return getGetDateIncludeTimeCompletions(document, position);
     }
 
     // Currency functions: formatascurrency, getcurrencyvalue
@@ -53,17 +73,28 @@ function resolveParameterCompletions(activeCall, document, position) {
         if (paramIdx === 1) return getDelimiterCompletions(document, position);
     }
 
-    // Web / HTTP functions: urldataaccess, sendmail
+    // Web / HTTP functions: urldataaccess, urldata, sendmail
     if (['urldataaccess'].includes(fn) && paramIdx === 0) {
+        return getHttpMethodCompletions(document, position);
+    }
+    if (['urldata'].includes(fn) && paramIdx === 1) {
         return getHttpMethodCompletions(document, position);
     }
     if (['sendmail'].includes(fn) && paramIdx === 3) {
         return getContentTypeCompletions(document, position);
     }
+    if (['generatehmacmessage'].includes(fn) && paramIdx === 2) {
+        const { getHmacAlgorithmCompletions } = require('./httpAndWeb');
+        return getHmacAlgorithmCompletions(document, position);
+    }
 
     // JSONPath functions: jsonpathgetsingle, jsonpathgetmultiple, jsonpathset, jsonpathremove, jsonpathcheck, jsonpathget
     if (['jsonpathgetsingle', 'jsonpathgetmultiple', 'jsonpathset', 'jsonpathremove', 'jsonpathcheck', 'jsonpathget'].includes(fn) && paramIdx === 1) {
         return getJsonPathCompletions(document, position);
+    }
+    if (['jsonget', 'jsonarrayget', 'jsonpathgetsingle'].includes(fn) && paramIdx === 2) {
+        const { getJsonValueTypeCompletions } = require('./jsonParams');
+        return getJsonValueTypeCompletions(document, position);
     }
 
     // BMQL function
@@ -113,5 +144,9 @@ module.exports = {
     getJsonPathCompletions,
     DICT_TYPES,
     getDictTypeCompletions,
+    SORT_ORDERS,
+    SORT_TYPES,
+    getSortOrderCompletions,
+    getSortTypeCompletions,
     resolveParameterCompletions
 };

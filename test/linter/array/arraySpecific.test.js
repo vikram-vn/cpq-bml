@@ -424,4 +424,86 @@ suite("BML Linter Test Suite - Array specific tests", () => {
       assert.strictEqual(err, undefined);
     });
   });
+
+  suite("sort() - array sorting validation", () => {
+    test("sort(a) - valid 1 arg", () => {
+      const diagnostics = lintText('a = string[]{"a", "c", "b"}; res = sort(a); return "";');
+      const err = diagnostics.find((d) => d.code && d.code.startsWith("bml-sort"));
+      assert.strictEqual(err, undefined);
+    });
+
+    test("sort(a, \"desc\") - valid 2 args with valid sortOrder", () => {
+      const diagnostics = lintText('a = string[]{"a", "c", "b"}; res = sort(a, "desc"); return "";');
+      const err = diagnostics.find((d) => d.code && d.code.startsWith("bml-sort"));
+      assert.strictEqual(err, undefined);
+    });
+
+    test("sort(a, \"asc\", \"text\") - valid 3 args with valid sortType", () => {
+      const diagnostics = lintText('a = string[]{"2", "12", "a"}; res = sort(a, "asc", "text"); return "";');
+      const err = diagnostics.find((d) => d.code && d.code.startsWith("bml-sort"));
+      assert.strictEqual(err, undefined);
+    });
+
+    test("sort(a, \"invalid\") - invalid sortOrder flags error", () => {
+      const diagnostics = lintText('a = string[]{"a"}; res = sort(a, "invalid"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-sort-invalid-order");
+      assert.ok(err);
+    });
+
+    test("sort(a, \"asc\", \"invalid\") - invalid sortType flags error", () => {
+      const diagnostics = lintText('a = string[]{"a"}; res = sort(a, "asc", "invalid"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-sort-invalid-type");
+      assert.ok(err);
+    });
+
+    test("sort(a, \"asc\", \"date\") on String[] - date sortType on non-date array flags error", () => {
+      const diagnostics = lintText('a = string[]{"a"}; res = sort(a, "asc", "date"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-sort-date-type-mismatch");
+      assert.ok(err);
+    });
+
+    test("sort(a, \"asc\", \"date\") on Date[] - valid", () => {
+      const diagnostics = lintText('a = date[]{getdate()}; res = sort(a, "asc", "date"); return "";');
+      const err = diagnostics.find((d) => d.code && d.code.startsWith("bml-sort"));
+      assert.strictEqual(err, undefined);
+    });
+
+    test("sort(testArr) on 2D array string[][] - flags bml-sort-array-dimension error", () => {
+      const diagnostics = lintText('testArr = string[][]; res_sort = sort(testArr, "asc", "text"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-sort-array-dimension");
+      assert.ok(err, "Should flag sort() on 2-D array string[][]");
+    });
+
+    test("sort(myStr) on scalar string - flags bml-sort-array-dimension error", () => {
+      const diagnostics = lintText('myStr = "hello"; res_sort = sort(myStr); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-sort-array-dimension");
+      assert.ok(err, "Should flag sort() on scalar string");
+    });
+  });
+
+  suite("1-D Array Dimension Restrictions across Array Functions", () => {
+    test("findinarray() on 2-D array string[][] - flags bml-array-dimension-error", () => {
+      const diagnostics = lintText('arr = string[][]; x = findinarray(arr, "val"); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-array-dimension-error");
+      assert.ok(err);
+    });
+
+    test("append() on 2-D array integer[][] - flags bml-array-dimension-error", () => {
+      const diagnostics = lintText('arr = integer[][]; x = append(arr, 1); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-array-dimension-error");
+      assert.ok(err);
+    });
+
+    test("reverse() on 2-D array float[][] - flags bml-array-dimension-error", () => {
+      const diagnostics = lintText('arr = float[][]; x = reverse(arr); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-array-dimension-error");
+      assert.ok(err);
+    });
+
+    test("sizeofarray() on 2-D array string[][] - valid (no dimension error)", () => {
+      const diagnostics = lintText('arr = string[][]; x = sizeofarray(arr); return "";');
+      const err = diagnostics.find((d) => d.code === "bml-array-dimension-error");
+      assert.strictEqual(err, undefined);
+    });
+  });
 });

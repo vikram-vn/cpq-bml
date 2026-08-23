@@ -15,7 +15,12 @@ const DICT_TYPES = [
     { name: 'string[]', detail: 'dict("string[]")', doc: 'BML String Array Dictionary storing key-value pairs of String[] arrays.' },
     { name: 'integer[]', detail: 'dict("integer[]")', doc: 'BML Integer Array Dictionary storing key-value pairs of Integer[] arrays.' },
     { name: 'float[]', detail: 'dict("float[]")', doc: 'BML Float Array Dictionary storing key-value pairs of Float[] arrays.' },
-    { name: 'boolean[]', detail: 'dict("boolean[]")', doc: 'BML Boolean Array Dictionary storing key-value pairs of Boolean[] arrays.' }
+    { name: 'boolean[]', detail: 'dict("boolean[]")', doc: 'BML Boolean Array Dictionary storing key-value pairs of Boolean[] arrays.' },
+    { name: 'date[]', detail: 'dict("date[]")', doc: 'BML Date Array Dictionary storing key-value pairs of Date[] arrays.' },
+    { name: 'string[][]', detail: 'dict("string[][]")', doc: 'BML 2-D String Array Dictionary.' },
+    { name: 'integer[][]', detail: 'dict("integer[][]")', doc: 'BML 2-D Integer Array Dictionary.' },
+    { name: 'float[][]', detail: 'dict("float[][]")', doc: 'BML 2-D Float Array Dictionary.' },
+    { name: 'date[][]', detail: 'dict("date[][]")', doc: 'BML 2-D Date Array Dictionary.' }
 ];
 
 function getDictTypeCompletions(document, position) {

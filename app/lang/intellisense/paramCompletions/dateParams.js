@@ -1,5 +1,10 @@
 const { buildStringParamItems } = require('./utils');
 
+const GETDATE_BOOLEANS = [
+    { name: 'true', detail: 'getdate(true)', doc: 'Returns current date and system time (default).' },
+    { name: 'false', detail: 'getdate(false)', doc: 'Returns current date with time components set to 00:00:00.' }
+];
+
 const DATE_FORMATS = [
     { name: 'yyyy-MM-dd HH:mm:ss', detail: '24-hour format (e.g. 2010-02-03 15:22:55)', doc: 'Year-Month-Day Hour:Minute:Second (24-hour)' },
     { name: 'yyyy-MM-dd hh:mm:ss a', detail: '12-hour AM/PM format (e.g. 2010-02-03 03:22:55 PM)', doc: 'Year-Month-Day Hour:Minute:Second AM/PM (12-hour)' },
@@ -140,11 +145,22 @@ const DATE_FORMATS = [
     { name: 'yyyy.MMMM.d', detail: 'Dot format (e.g. 2017.April.7)', doc: '4-digit Year.Full Month.Day' }
 ];
 
+function getGetDateIncludeTimeCompletions(document, position) {
+    return GETDATE_BOOLEANS.map(item => ({
+        label: item.name,
+        detail: item.detail,
+        documentation: item.doc,
+        kind: 12 // Keyword
+    }));
+}
+
 function getDateFormatCompletions(document, position) {
     return buildStringParamItems(DATE_FORMATS, document, position);
 }
 
 module.exports = {
+    GETDATE_BOOLEANS,
     DATE_FORMATS,
+    getGetDateIncludeTimeCompletions,
     getDateFormatCompletions
 };
