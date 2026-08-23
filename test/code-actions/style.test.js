@@ -252,6 +252,88 @@ function runStyleCodeActionTests() {
             assert.ok(!updatedText.includes('a = 1; b = 2;'), 'Statements should no longer be on same line');
         });
 
+        test('Quick Fix comments out all assignments to unused variables and their empty if/elif/else blocks', async () => {
+            const content = [
+                'mEval49 = "DEFAULT";',
+                'if (M_ID49_DEFAULT > 40 AND M_RATE49_DEFAULT > 600.0) {',
+                '    mEval49 = "PLATINUM";',
+                '} elif (M_ID49_DEFAULT > 20 OR M_RATE49_DEFAULT > 300.0) {',
+                '    mEval49 = "GOLD";',
+                '} else {',
+                '    mEval49 = "SILVER";',
+                '}',
+                'return "";'
+            ].join('\n');
+
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: content
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const unusedDiag = diags.find(d => d.code === 'bml-unused-variable');
+            assert.ok(unusedDiag, 'Should flag mEval49 as unused variable');
+
+            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, unusedDiag.range);
+            const unusedAction = codeActions.find(a => a.title.includes('Comment out all unused variable statements'));
+            assert.ok(unusedAction, 'Should offer unused variable action');
+
+            const applied = await vscode.workspace.applyEdit(unusedAction.edit);
+            assert.ok(applied, 'Should apply unused variable edit');
+
+            const updatedText = doc.getText();
+            assert.ok(updatedText.includes('// mEval49 = "DEFAULT";'), 'Should comment out initial assignment');
+            assert.ok(updatedText.includes('// if (M_ID49_DEFAULT'), 'Should comment out if statement header');
+            assert.ok(updatedText.includes('// mEval49 = "PLATINUM";'), 'Should comment out PLATINUM assignment');
+            assert.ok(updatedText.includes('// } elif (M_ID49_DEFAULT'), 'Should comment out elif header');
+            assert.ok(updatedText.includes('// } else {'), 'Should comment out else header');
+            assert.ok(updatedText.includes('// mEval49 = "SILVER";'), 'Should comment out SILVER assignment');
+        });
+
+        test('Quick Fix handles transitive unused variable chains and container operations', async () => {
+            const content = [
+                'mEval50 = "DEFAULT";',
+                'if (M_ID_50_DEFAULT > 40) {',
+                '    mEval50 = "PLATINUM";',
+                '    mE = mEval50;',
+                '    test = mE;',
+                '}',
+                'unusedDict = dict("string");',
+                'put(unusedDict, "k", "v");',
+                'return "";'
+            ].join('\n');
+
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: content
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const unusedDiag = diags.find(d => d.code === 'bml-unused-variable');
+            assert.ok(unusedDiag, 'Should flag unused variables');
+
+            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, unusedDiag.range);
+            const unusedAction = codeActions.find(a => a.title.includes('Comment out all unused variable statements'));
+            assert.ok(unusedAction, 'Should offer unused variable action');
+
+            const applied = await vscode.workspace.applyEdit(unusedAction.edit);
+            assert.ok(applied, 'Should apply unused variable edit');
+
+            const updatedText = doc.getText();
+            assert.ok(updatedText.includes('// mEval50 = "DEFAULT";'), 'Should comment out mEval50 assignment');
+            assert.ok(updatedText.includes('// if (M_ID_50_DEFAULT'), 'Should comment out if header');
+            assert.ok(updatedText.includes('// mE = mEval50;'), 'Should comment out mE assignment');
+            assert.ok(updatedText.includes('// test = mE;'), 'Should comment out test assignment');
+            assert.ok(updatedText.includes('// unusedDict = dict("string");'), 'Should comment out unusedDict assignment');
+            assert.ok(updatedText.includes('// put(unusedDict'), 'Should comment out container put call');
+        });
+
         test('Refactor menu action (Ctrl+Shift+R) offers file-level safe refactor', async () => {
             const content = [
                 'user_first_name = "Sample";',
@@ -446,6 +528,103 @@ function runStyleCodeActionTests() {
             const updatedText = doc.getText();
             assert.ok(updatedText.includes('M_RATE_16 = 252.00;') || updatedText.includes('M_RATE_16_DEFAULT = 252.00;'), 'mRate_16 should be converted to named constant in-place');
             assert.ok(!updatedText.includes('mRate_16 = 252.00;'), 'Old variable name should be replaced');
+        });
+
+        test('Quick Fix offers _system_user_token option for hardcoded credentials', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'authToken = "secret1234567890abcdef";\nreturn authToken;'
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const secDiag = diags.find(d => d.code === 'bml-hardcoded-credential' || d.code === 'bml-hardcoded-secret');
+            if (secDiag) {
+                const actions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, secDiag.range);
+                const sysTokenAction = actions.find(a => a.title.includes('_system_user_token'));
+                assert.ok(sysTokenAction, 'Should offer _system_user_token Quick Fix');
+            }
+        });
+
+        test('Quick Fix offers next-line suppression bml-lint-disable-next-line', async () => {
+            const { getSuppressionFixes } = require('../../app/lang/lint/code-actions/suppressionFixes');
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'unusedVar = 100;\nreturn "";'
+            });
+
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(0, 0, 0, 9),
+                "Unused variable 'unusedVar'",
+                vscode.DiagnosticSeverity.Warning
+            );
+            diag.code = 'bml-unused-variable';
+
+            const fixes = getSuppressionFixes(doc, diag, diag.range);
+            const nextLineAction = fixes.find(a => a.title.includes('for next line'));
+            assert.ok(nextLineAction, 'Should offer Disable for next line Quick Fix');
+        });
+
+        test('Quick Fix inserts stringbuilder initialization for string concat in loop', async () => {
+            const { getPerformanceFixes } = require('../../app/lang/lint/code-actions/performanceFixes');
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'for x in items {\n    res = res + x;\n}'
+            });
+
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(1, 4, 1, 17),
+                "Avoid string concatenation inside loop",
+                vscode.DiagnosticSeverity.Warning
+            );
+            diag.code = 'bml-string-concat-in-loop';
+
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.ok(fixes.length > 0, 'Should return performance quick fix');
+            const edit = fixes[0].edit;
+            assert.ok(edit, 'Quick fix should have workspace edit');
+        });
+
+        test('Quick Fix infers typed return statement based on diagnostic message', async () => {
+            const { getQualityFixes } = require('../../app/lang/lint/code-actions/qualityFixes');
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'x = 10;'
+            });
+
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(0, 0, 0, 6),
+                "Missing return statement expecting Integer return type",
+                vscode.DiagnosticSeverity.Error
+            );
+            diag.code = 'bml-missing-return';
+
+            const fixes = getQualityFixes(doc, diag, diag.range);
+            assert.ok(fixes.length > 0, 'Should return quality quick fix');
+            assert.ok(fixes[0].title.includes('return 0;'), 'Should infer return 0; for Integer');
+        });
+
+        test('Quick Fix replaces misspelled words across all occurrences in document', async () => {
+            const path = require('path');
+            const { getSpellingFixes } = require('../../app/lang/lint/code-actions/spellingFixes');
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'caculate = 10;\ntotal = caculate + 5;\nreturn string(caculate);'
+            });
+
+            const diag = new vscode.Diagnostic(
+                new vscode.Range(0, 0, 0, 8),
+                "Misspelled word 'caculate'",
+                vscode.DiagnosticSeverity.Warning
+            );
+            diag.code = 'bml-spelling-error';
+
+            const extPath = path.resolve(__dirname, '../../');
+            const fixes = getSpellingFixes(doc, diag, new vscode.Range(0, 0, 0, 8), extPath);
+            assert.ok(fixes.length > 0, 'Should return spelling quick fixes');
+            assert.ok(fixes[0].title.includes('(all occurrences)'), 'Spelling fix should operate on all occurrences');
         });
     });
 }

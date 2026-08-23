@@ -14,89 +14,13 @@ const { resolveParameterCompletions } = require('./paramCompletions');
 const { registerInlayHintsProvider } = require('./inlayHints');
 const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('./bmqlVariableCompletions');
 
-// Each source file holds a different kind of entry. Tracking that here gives
-// accurate completion icons/hover labels - "does this syntax contain '(' "
-// is not reliable: custom-snippets.json bodies contain calls like print(...)
-// even though the entry itself is a snippet, not a function.
-const API_FILES = [
-    { baseName: 'bml-attributes-api-usage', category: 'attribute' },
-    { baseName: 'bml-util-attributes-api-usage', category: 'attribute' },
-    { baseName: 'bml-variables-api-usage', category: 'variable' },
-    { baseName: 'bml-functions-api-usage', category: 'function' },
-    { baseName: 'bml-cpq-js-api-usage', category: 'function' },
-    { baseName: 'custom-snippets', category: 'snippet' }
-];
-
-let bmlApiData = {};
-let apiDataLoaded = false;
-let cachedGlobalItems = null;
-let cachedTransactionItems = null;
-let cachedLineItems = null;
-let cachedSystemItems = null;
-let cachedCpqjsItems = null;
-let cachedAllAttributes = null;
-
-// Load and merge BML API JSON files, cached in memory per extension host session.
-function loadApiData(context) {
-    if (apiDataLoaded) {
-        return bmlApiData;
-    }
-
-    bmlApiData = {};
-    API_FILES.forEach(({ baseName, category }) => {
-        try {
-            const fileData = loadJson(baseName, context.extensionPath);
-            Object.entries(fileData).forEach(([key, val]) => {
-                bmlApiData[key.toLowerCase()] = { ...val, category, name: key };
-            });
-        } catch (err) {
-            console.error(`Failed to load ${baseName}.json:`, err.message);
-        }
-    });
-
-    apiDataLoaded = true;
-    cachedGlobalItems = null;
-    cachedTransactionItems = null;
-    cachedLineItems = null;
-    cachedSystemItems = null;
-    cachedCpqjsItems = null;
-    cachedAllAttributes = null;
-    return bmlApiData;
-}
-
-/**
- * Drop the cached API data so the next loadApiData() call reloads it from disk.
- */
-function invalidateApiData() {
-    apiDataLoaded = false;
-    invalidateJsonCache();
-}
-
-/**
- * Look up API info for a word under the cursor. Tries the word as-is first
- * (covers dotted keys like "CPQJS.actionExists"), then falls back to the
- * segment after the last "." (covers attribute access like "line.quantity_c",
- * where the data is keyed as "quantity_c" with no object prefix).
- */
-function lookupApiInfo(word) {
-    const lower = word.toLowerCase();
-    if (bmlApiData[lower]) return bmlApiData[lower];
-
-    const lastDot = lower.lastIndexOf('.');
-    if (lastDot !== -1) {
-        return bmlApiData[lower.slice(lastDot + 1)];
-    }
-    return undefined;
-}
-
-const CATEGORY_KIND = {
-    function: vscode.CompletionItemKind.Function,
-    attribute: vscode.CompletionItemKind.Property,
-    variable: vscode.CompletionItemKind.Variable,
-    constant: vscode.CompletionItemKind.Constant,
-    snippet: vscode.CompletionItemKind.Snippet,
-    keyword: vscode.CompletionItemKind.Keyword
-};
+const {
+    loadApiData,
+    invalidateApiData,
+    lookupApiInfo,
+    getBmlApiData,
+    CATEGORY_KIND
+} = require('./apiData');
 
 /**
  * Builds the categorized completion item lists once per data generation.

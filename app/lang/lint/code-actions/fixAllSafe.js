@@ -1,112 +1,13 @@
 const vscode = require('vscode');
-const { inferConstantCandidateName } = require('./qualityFixes');
-
-function toCamelCase(name) {
-    if (!name) return name;
-    const parts = name.split('_').filter(p => p.length > 0);
-    if (parts.length === 0) return name;
-    let result = parts[0].charAt(0).toLowerCase() + parts[0].slice(1);
-    for (let i = 1; i < parts.length; i++) {
-        const part = parts[i];
-        result += part.charAt(0).toUpperCase() + part.slice(1);
-    }
-    return result;
-}
-
-function formatBooleanName(name) {
-    const camel = toCamelCase(name);
-    if (/^(is|has)[A-Z]/.test(camel)) {
-        return camel;
-    }
-    return 'is' + camel.charAt(0).toUpperCase() + camel.slice(1);
-}
-
-function renameIdentifierInDocument(document, oldName, newName, edit) {
-    const text = document.getText();
-    const regex = new RegExp(`\\b${oldName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'g');
-    let match;
-    while ((match = regex.exec(text)) !== null) {
-        const startPos = document.positionAt(match.index);
-        const endPos = document.positionAt(match.index + oldName.length);
-        edit.replace(document.uri, new vscode.Range(startPos, endPos), newName);
-    }
-}
-
-function withPreservedStrings(text, transformFn) {
-    const stringLiterals = [];
-    const noStrings = text.replace(/"(?:[^"\\]|\\.)*"/g, (match) => {
-        const id = stringLiterals.length;
-        stringLiterals.push(match);
-        return `__BML_STR_${id}__`;
-    });
-
-    let transformed = transformFn(noStrings);
-
-    transformed = transformed.replace(/__BML_STR_(\d+)__/g, (_, id) => {
-        return stringLiterals[Number(id)];
-    });
-
-    return transformed;
-}
-
-/**
- * Comments out loops whose bodies contain only comments or whitespace (no active statements).
- */
-function commentOutEmptyLoops(text, eol) {
-    const lines = text.split(/\r?\n/);
-
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const trimmed = line.trim();
-        if (/^(for\s+[a-zA-Z_]\w*\s+in\s+|while\s*\(|for\s*\()/.test(trimmed) && !trimmed.startsWith('//')) {
-            let openBraceLine = -1;
-            let closeBraceLine = -1;
-            let braceDepth = 0;
-            let hasActiveStatements = false;
-
-            for (let j = i; j < lines.length; j++) {
-                const jLine = lines[j];
-                const jTrimmed = jLine.trim();
-
-                if (openBraceLine === -1) {
-                    if (jTrimmed.includes('{')) {
-                        openBraceLine = j;
-                        braceDepth += (jTrimmed.match(/\{/g) || []).length - (jTrimmed.match(/\}/g) || []).length;
-                        if (braceDepth === 0) {
-                            closeBraceLine = j;
-                            break;
-                        }
-                    }
-                } else {
-                    const codePart = jTrimmed.startsWith('//') ? '' : jTrimmed.split('//')[0].trim();
-                    const nonBraceCode = codePart.replace(/[{}\s]/g, '');
-                    if (nonBraceCode.length > 0) {
-                        hasActiveStatements = true;
-                    }
-
-                    braceDepth += (jTrimmed.match(/\{/g) || []).length - (jTrimmed.match(/\}/g) || []).length;
-                    if (braceDepth <= 0) {
-                        closeBraceLine = j;
-                        break;
-                    }
-                }
-            }
-
-            if (openBraceLine !== -1 && closeBraceLine !== -1 && !hasActiveStatements) {
-                for (let k = i; k <= closeBraceLine; k++) {
-                    if (!lines[k].trim().startsWith('//')) {
-                        const indentMatch = lines[k].match(/^\s*/);
-                        const indent = indentMatch ? indentMatch[0] : '';
-                        lines[k] = `${indent}// ${lines[k].trim()}`;
-                    }
-                }
-                i = closeBraceLine;
-            }
-        }
-    }
-
-    return lines.join(eol);
-}
+const { inferConstantCandidateName } = require('./qualityHelpers');
+const {
+    toCamelCase,
+    withPreservedStrings,
+    commentOutEmptyConditionalChains,
+    commentOutEmptyLoops,
+    computeTransitiveUnusedVariables,
+    commentOutUnusedAssignments
+} = require('./cascadingCleanup');
 
 /**
  * Creates a bundled "Fix All Safe Style & Naming Issues in File" CodeAction.
@@ -160,6 +61,47 @@ function buildFixAllText(document, relevantDiags) {
         }
     }
 
+    // Scan all declared variables across the entire document to ensure 100% file-level coverage
+    if (relevantDiags.some(d => d.code === 'bml-variable-camelcase' || d.code === 'bml-dict-naming-suffix' || d.code === 'bml-array-naming-suffix' || d.code === 'bml-recordset-naming-suffix' || d.code === 'bml-boolean-naming-prefix')) {
+        try {
+            const { getDeclaredVariables } = require('../variables');
+            const { getCommentRanges } = require('../comments');
+            const { getStringRanges } = require('../strings');
+
+            const commentRanges = getCommentRanges(text);
+            const buf = Buffer.from(text, 'utf8');
+            for (const [start, end] of commentRanges) {
+                for (let i = start; i < end; i++) {
+                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                }
+            }
+            const cleanText = buf.toString('utf8');
+            const stringRanges = getStringRanges(cleanText);
+            for (const [start, end] of stringRanges) {
+                for (let i = start; i < end; i++) {
+                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                }
+            }
+            const noStringsText = buf.toString('utf8');
+
+            const declaredVars = getDeclaredVariables(noStringsText, document);
+            for (const [varName] of declaredVars.entries()) {
+                if (constantVars.has(varName)) continue;
+                if (/^[A-Z0-9_]+$/.test(varName)) continue; // skip ALL_CAPS constants
+                if (/^_/.test(varName)) continue; // skip system variables
+
+                if (!/^[a-z][a-zA-Z0-9]*$/.test(varName)) {
+                    const newName = toCamelCase(varName);
+                    if (newName && newName !== varName) {
+                        renameMap.set(varName, newName);
+                    }
+                }
+            }
+        } catch (e) {
+            // fallback gracefully
+        }
+    }
+
     for (const [oldName, newName] of renameMap.entries()) {
         const regex = new RegExp(`\\b${oldName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'g');
         text = text.replace(regex, newName);
@@ -167,26 +109,67 @@ function buildFixAllText(document, relevantDiags) {
 
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
 
-    // 2. Comment out unused variable statements
+    // 2. Multi-pass Cascading Unused Variable & Empty Block Cleanups
     const unusedDiags = relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var');
-    if (unusedDiags.length > 0) {
-        const unusedLineIndices = new Set(unusedDiags.map(d => (d.originalRange ?? d.range).start.line));
-        const lines = text.split(/\r?\n/);
-        for (const lineIdx of unusedLineIndices) {
-            if (lineIdx < lines.length) {
-                const line = lines[lineIdx];
-                if (!line.trim().startsWith('//')) {
-                    const indentMatch = line.match(/^\s*/);
-                    const indent = indentMatch ? indentMatch[0] : '';
-                    lines[lineIdx] = `${indent}// ${line.trim()}`;
-                }
-            }
-        }
-        text = lines.join(eol);
+    const initialUnusedNames = new Set();
+
+    for (const diag of unusedDiags) {
+        const editRange = diag.originalRange ?? diag.range;
+        const name = document.getText(editRange).trim();
+        if (name) initialUnusedNames.add(name);
     }
 
-    // 2b. Comment out empty loops / loops whose bodies are entirely commented out
-    text = commentOutEmptyLoops(text, eol);
+    let globalChanged = true;
+    let globalPass = 0;
+    while (globalChanged && globalPass < 5) {
+        const passStartText = text;
+        globalPass++;
+
+        let currentUnusedNames = new Set(initialUnusedNames);
+
+        try {
+            const { getDeclaredVariables } = require('../variables');
+            const { getCommentRanges } = require('../comments');
+            const { getStringRanges } = require('../strings');
+
+            const commentRanges = getCommentRanges(text);
+            const buf = Buffer.from(text, 'utf8');
+            for (const [start, end] of commentRanges) {
+                for (let i = start; i < end; i++) {
+                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                }
+            }
+            const cleanText = buf.toString('utf8');
+            const stringRanges = getStringRanges(cleanText);
+            for (const [start, end] of stringRanges) {
+                for (let i = start; i < end; i++) {
+                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                }
+            }
+            const noStringsText = buf.toString('utf8');
+            const declaredVars = getDeclaredVariables(noStringsText, document);
+
+            currentUnusedNames = computeTransitiveUnusedVariables(noStringsText, declaredVars, document, cleanText, initialUnusedNames);
+        } catch (e) {
+            // Fallback gracefully
+        }
+
+        if (currentUnusedNames.size > 0) {
+            text = commentOutUnusedAssignments(text, currentUnusedNames, renameMap, eol);
+        }
+
+        let blockChanged = true;
+        let collapseIter = 0;
+        while (blockChanged && collapseIter < 5) {
+            const prevBlockText = text;
+            text = commentOutEmptyConditionalChains(text, eol);
+            text = commentOutEmptyLoops(text, eol);
+            blockChanged = text !== prevBlockText;
+            collapseIter++;
+        }
+
+        globalChanged = text !== passStartText;
+    }
 
     // 3. String-preserved cleanups (never alters contents inside "quotes")
     text = withPreservedStrings(text, (code) => {

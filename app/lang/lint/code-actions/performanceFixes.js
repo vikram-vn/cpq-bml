@@ -15,6 +15,16 @@ function getPerformanceFixes(document, diag, editRange) {
             const addedExpr = m[2].trim();
             const replacement = `sbappend(${varName}_sb, ${addedExpr});`;
             action.edit.replace(document.uri, editRange, replacement);
+
+            const fullDocText = document.getText();
+            if (!fullDocText.includes(`${varName}_sb`)) {
+                const lineIndex = editRange.start.line;
+                const lineText = document.lineAt(lineIndex).text;
+                const indentMatch = lineText.match(/^\s*/);
+                const indent = indentMatch ? indentMatch[0] : '';
+                action.edit.insert(document.uri, new vscode.Position(lineIndex, 0), `${indent}${varName}_sb = stringbuilder();\n`);
+            }
+
             action.diagnostics = [diag];
             fixes.push(action);
         }

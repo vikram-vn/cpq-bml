@@ -44,9 +44,27 @@ function registerBmlCodeActions(context) {
                     );
                 });
 
-                const docDiags = (vscode.languages && vscode.languages.getDiagnostics)
-                    ? (vscode.languages.getDiagnostics(document.uri) || context.diagnostics)
-                    : context.diagnostics;
+                let docDiags = (vscode.languages && vscode.languages.getDiagnostics)
+                    ? vscode.languages.getDiagnostics(document.uri)
+                    : null;
+
+                if (!docDiags || docDiags.length === 0) {
+                    try {
+                        const { lintBMLCustom } = require('../lint');
+                        const tempCollection = (vscode.languages && vscode.languages.createDiagnosticCollection)
+                            ? vscode.languages.createDiagnosticCollection('temp_code_actions')
+                            : null;
+                        if (tempCollection) {
+                            lintBMLCustom(document, tempCollection, vscode, extensionPath);
+                            docDiags = tempCollection.get(document.uri) || context.diagnostics;
+                            tempCollection.dispose();
+                        } else {
+                            docDiags = context.diagnostics;
+                        }
+                    } catch (e) {
+                        docDiags = context.diagnostics;
+                    }
+                }
 
                 const fixAllActions = getFixAllSafeAction(document, docDiags && docDiags.length > 0 ? docDiags : context.diagnostics);
 

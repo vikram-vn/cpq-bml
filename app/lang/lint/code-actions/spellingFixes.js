@@ -35,9 +35,16 @@ function getSpellingFixes(document, diag, editRange, extensionPath) {
         const { getSpellingSuggestions } = require('../../spell-check/spelling');
         const suggestions = getSpellingSuggestions(word, extensionPath);
         suggestions.forEach(suggestion => {
-            const action = new vscode.CodeAction(`Spelling suggestion: "${suggestion}"`, vscode.CodeActionKind.QuickFix);
+            const action = new vscode.CodeAction(`Spelling suggestion: "${suggestion}" (all occurrences)`, vscode.CodeActionKind.QuickFix);
             action.edit = new vscode.WorkspaceEdit();
-            action.edit.replace(document.uri, editRange, suggestion);
+            const text = document.getText();
+            const regex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'g');
+            let match;
+            while ((match = regex.exec(text)) !== null) {
+                const startPos = document.positionAt(match.index);
+                const endPos = document.positionAt(match.index + word.length);
+                action.edit.replace(document.uri, new vscode.Range(startPos, endPos), suggestion);
+            }
             action.diagnostics = [diag];
             fixes.push(action);
         });

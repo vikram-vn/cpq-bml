@@ -30,7 +30,17 @@ function getSuppressionFixes(document, diag, editRange) {
         lineAction.diagnostics = [diag];
         fixes.push(lineAction);
 
-        // 2. Disable for entire file
+        // 2. Disable for next line (inserted above line)
+        const nextLineAction = new vscode.CodeAction(`Disable '${codeStr}' for next line`, vscode.CodeActionKind.QuickFix);
+        nextLineAction.edit = new vscode.WorkspaceEdit();
+        const indentMatch = lineText.match(/^\s*/);
+        const indent = indentMatch ? indentMatch[0] : '';
+        const prevLinePos = new vscode.Position(lineIndex, 0);
+        nextLineAction.edit.insert(document.uri, prevLinePos, `${indent}// bml-lint-disable-next-line ${codeStr}\n`);
+        nextLineAction.diagnostics = [diag];
+        fixes.push(nextLineAction);
+
+        // 3. Disable for entire file
         const fileAction = new vscode.CodeAction(`Disable '${codeStr}' for entire file`, vscode.CodeActionKind.QuickFix);
         fileAction.edit = new vscode.WorkspaceEdit();
 

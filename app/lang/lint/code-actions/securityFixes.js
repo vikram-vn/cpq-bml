@@ -4,11 +4,17 @@ function getSecurityFixes(document, diag, editRange) {
     const fixes = [];
 
     if (diag.code === 'bml-hardcoded-credential' || diag.code === 'bml-hardcoded-credentials' || diag.code === 'bml-hardcoded-secret') {
-        const action = new vscode.CodeAction("Replace hardcoded secret with context variable '_BM_USER_TOKEN'", vscode.CodeActionKind.QuickFix);
-        action.edit = new vscode.WorkspaceEdit();
-        action.edit.replace(document.uri, editRange, '_BM_USER_TOKEN');
-        action.diagnostics = [diag];
-        fixes.push(action);
+        const action1 = new vscode.CodeAction("Replace hardcoded secret with context variable '_BM_USER_TOKEN'", vscode.CodeActionKind.QuickFix);
+        action1.edit = new vscode.WorkspaceEdit();
+        action1.edit.replace(document.uri, editRange, '_BM_USER_TOKEN');
+        action1.diagnostics = [diag];
+        fixes.push(action1);
+
+        const action2 = new vscode.CodeAction("Replace hardcoded secret with system variable '_system_user_token'", vscode.CodeActionKind.QuickFix);
+        action2.edit = new vscode.WorkspaceEdit();
+        action2.edit.replace(document.uri, editRange, '_system_user_token');
+        action2.diagnostics = [diag];
+        fixes.push(action2);
     } else if (diag.code === 'bml-hardcoded-url') {
         const action = new vscode.CodeAction("Extract URL to dynamic configuration table lookup", vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
