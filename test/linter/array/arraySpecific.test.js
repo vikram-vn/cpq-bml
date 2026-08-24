@@ -8,14 +8,18 @@ suite('BML Linter Test Suite - Array Functions & Operations Exhaustive 3-Tier Su
     // =========================================================================
     suite('append() - Append element to 1-D array returning new array size', () => {
         suite('Positive', () => {
-            test('Appends element to initialized and uninitialized string, integer, float, boolean arrays', () => {
+            test('Appends element to initialized and uninitialized string, integer, float, boolean arrays and 2D arrays', () => {
                 const diags = lintText(`
                     strArr = string[]{};
                     newSize = append(strArr, "new item");
                     intArr = integer[]{1, 2};
                     append(intArr, 3);
+                    matrix = string[][]{};
+                    row = string[]{"col1", "col2"};
+                    append(matrix, row);
                     return "";
                 `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-type'), undefined);
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
             });
         });
@@ -34,6 +38,16 @@ suite('BML Linter Test Suite - Array Functions & Operations Exhaustive 3-Tier Su
             test('3 arguments (excess) → flags bml-function-arg-count Error', () => {
                 const diags = lintText('arr = string[]{}; append(arr, "val", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('append integer to string[] array → flags bml-function-arg-type Error', () => {
+                const diags = lintText('arr = string[]{}; append(arr, 123); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
+
+            test('append scalar string to string[][] 2D array → flags bml-function-arg-type Error', () => {
+                const diags = lintText('matrix = string[][]{}; append(matrix, "notA1DArray"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
             });
         });
 
@@ -112,6 +126,11 @@ suite('BML Linter Test Suite - Array Functions & Operations Exhaustive 3-Tier Su
                 const diags = lintText('idx = findinarray(string[]{"a"}, "a", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
+
+            test('findinarray with integer target in string[] array → flags bml-function-arg-type Error', () => {
+                const diags = lintText('idx = findinarray(string[]{"a"}, 123); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
         });
 
         suite('Destructive', () => {
@@ -187,6 +206,11 @@ suite('BML Linter Test Suite - Array Functions & Operations Exhaustive 3-Tier Su
             test('min with 3 arguments (excess) → flags bml-function-arg-count Error', () => {
                 const diags = lintText('m = min(1, 2, "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('min on non-numeric array string[] → flags bml-function-arg-type Error', () => {
+                const diags = lintText('m = min(string[]{"a", "b"}); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
             });
         });
 
@@ -265,6 +289,11 @@ suite('BML Linter Test Suite - Array Functions & Operations Exhaustive 3-Tier Su
             test('3 arguments (excess) → flags bml-function-arg-count Error', () => {
                 const diags = lintText('remove(string[]{"a"}, 0, "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('remove with string key on array → flags bml-function-arg-type Error', () => {
+                const diags = lintText('arr = string[]{"a"}; remove(arr, "notAnIndex"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
             });
         });
 
@@ -378,6 +407,16 @@ suite('BML Linter Test Suite - Array Functions & Operations Exhaustive 3-Tier Su
             test('4 arguments (excess) → flags bml-function-arg-count Error', () => {
                 const diags = lintText('s = sort(string[]{"a"}, "asc", "text", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('date sortType on string[] array → flags bml-sort-date-type-mismatch Error', () => {
+                const diags = lintText('s = sort(string[]{"2026-01-01"}, "asc", "date"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-sort-date-type-mismatch'));
+            });
+
+            test('numeric sortType on boolean[] array → flags bml-sort-numeric-type-mismatch Error', () => {
+                const diags = lintText('s = sort(boolean[]{true, false}, "asc", "numeric"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-sort-numeric-type-mismatch'));
             });
         });
 

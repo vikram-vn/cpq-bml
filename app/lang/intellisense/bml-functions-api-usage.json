@@ -984,7 +984,7 @@
   "append": {
     "functionCategory": "array",
     "returnType": "Integer",
-    "fullSignature": "Integer append(Array arrayIdentifier, Float(or Integer, String or Date) newArrayElem)",
+    "fullSignature": "Integer append(Array arrayIdentifier, Any newArrayElem)",
     "syntax": "append(${1:arrayIdentifier}, ${2:appendValue})",
     "examples": [
       "1. Returns new size of array after appending new element.\n\n2. If array max size is reached and a new element is appended to the array, the append will fail.\n\n3. If a null element is added to an array, it should be allowed to be added and the value of the element in the array should be null."
@@ -995,7 +995,7 @@
   "findinarray": {
     "functionCategory": "array",
     "returnType": "Integer",
-    "fullSignature": "Integer findinarray(Array arrayIdentifier, Integer(or Float, String or Date) element)",
+    "fullSignature": "Integer findinarray(Array arrayIdentifier, Any element)",
     "syntax": "findinarray(${1:arrayIdentifier}, ${2:elementToFind})",
     "examples": [
       "1. Returns index of an element in an array if a match is found, if no match is found -1 is returned."

@@ -159,6 +159,11 @@ suite('BML Linter Test Suite - Dictionary Functions Exhaustive 3-Tier Suite (Pos
                 const diags = lintText('d = dict("string"); val = get(d, "k", "default", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
+
+            test('get on dict("anytype") with only 2 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('dAny = dict("anytype"); val = get(dAny, "k1"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
         });
 
         suite('Destructive', () => {
@@ -283,6 +288,16 @@ suite('BML Linter Test Suite - Dictionary Functions Exhaustive 3-Tier Suite (Pos
             test('2 arguments (excess) → flags bml-function-arg-count Error', () => {
                 const diags = lintText('d = dict("string"); v = values(d, "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('values() on dict("boolean") → flags bml-function-arg-type Error', () => {
+                const diags = lintText('d = dict("boolean"); v = values(d); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
+
+            test('values() on dict("anytype") → flags bml-function-arg-type Error', () => {
+                const diags = lintText('d = dict("anytype"); v = values(d); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
             });
         });
 

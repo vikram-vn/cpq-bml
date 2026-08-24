@@ -626,6 +626,115 @@ function checkFunctionCalls(
               }
             }
           }
+        } else if (funcNameLower === "get" && args.length >= 1) {
+          const dictVarName = args[0].trim();
+          const dictEntry = firstTypeByVar
+            ? firstTypeByVar.get(dictVarName.toLowerCase()) || firstTypeByVar.get(dictVarName)
+            : null;
+          if (dictEntry && dictEntry.elementType) {
+            const expectedElemLower = dictEntry.elementType.trim().toLowerCase();
+            if ((expectedElemLower === "anytype" || expectedElemLower === "any") && args.length < 3) {
+              const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `For 'dict("anytype")', 'get()' requires 3 arguments including the valueType parameter, but got ${args.length}.`,
+                vscode.DiagnosticSeverity.Error,
+              );
+              diag.code = "bml-function-arg-count";
+              diagnostics.push(diag);
+            }
+          }
+        } else if (funcNameLower === "values" && args.length >= 1) {
+          const dictVarName = args[0].trim();
+          const dictEntry = firstTypeByVar
+            ? firstTypeByVar.get(dictVarName.toLowerCase()) || firstTypeByVar.get(dictVarName)
+            : null;
+          if (dictEntry && dictEntry.elementType) {
+            const elemType = dictEntry.elementType.trim();
+            const elemLower = elemType.toLowerCase();
+            if (elemLower === "anytype" || elemLower === "any" || elemLower === "boolean" || elemLower.endsWith("[][]")) {
+              const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `Function 'values()' does not support '${elemType}' dictionaries.`,
+                vscode.DiagnosticSeverity.Error,
+              );
+              diag.code = "bml-function-arg-type";
+              diagnostics.push(diag);
+            }
+          }
+        } else if (funcNameLower === "append" && args.length >= 2) {
+          const arrVarName = args[0].trim();
+          const arrEntry = firstTypeByVar
+            ? firstTypeByVar.get(arrVarName.toLowerCase()) || firstTypeByVar.get(arrVarName)
+            : null;
+          const arrType = arrEntry ? arrEntry.type : inferArgumentType(arrVarName, firstTypeByVar, returnTypes);
+          if (arrType && arrType.endsWith("[]")) {
+            const expectedElemType = arrType.slice(0, -2);
+            const actualValType = inferArgumentType(args[1], firstTypeByVar, returnTypes);
+            if (actualValType && !argumentTypeCompatible(expectedElemType, actualValType)) {
+              const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `Argument 2 to 'append' should be ${expectedElemType}, but got a ${actualValType} value.`,
+                vscode.DiagnosticSeverity.Error,
+              );
+              diag.code = "bml-function-arg-type";
+              diagnostics.push(diag);
+            }
+          }
+        } else if (funcNameLower === "findinarray" && args.length >= 2) {
+          const arrVarName = args[0].trim();
+          const arrEntry = firstTypeByVar
+            ? firstTypeByVar.get(arrVarName.toLowerCase()) || firstTypeByVar.get(arrVarName)
+            : null;
+          const arrType = arrEntry ? arrEntry.type : inferArgumentType(arrVarName, firstTypeByVar, returnTypes);
+          if (arrType && arrType.endsWith("[]")) {
+            const expectedElemType = arrType.slice(0, -2);
+            const actualTargetType = inferArgumentType(args[1], firstTypeByVar, returnTypes);
+            if (actualTargetType && !argumentTypeCompatible(expectedElemType, actualTargetType)) {
+              const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `Argument 2 to 'findinarray' should be ${expectedElemType}, but got a ${actualTargetType} value.`,
+                vscode.DiagnosticSeverity.Error,
+              );
+              diag.code = "bml-function-arg-type";
+              diagnostics.push(diag);
+            }
+          }
+        } else if (funcNameLower === "remove" && args.length >= 2) {
+          const containerName = args[0].trim();
+          const containerEntry = firstTypeByVar
+            ? firstTypeByVar.get(containerName.toLowerCase()) || firstTypeByVar.get(containerName)
+            : null;
+          const containerType = containerEntry ? containerEntry.type : inferArgumentType(containerName, firstTypeByVar, returnTypes);
+          if (containerType && containerType.endsWith("[]")) {
+            const actualIdxType = inferArgumentType(args[1], firstTypeByVar, returnTypes);
+            if (actualIdxType && !argumentTypeCompatible("integer", actualIdxType)) {
+              const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `Argument 2 to 'remove' on an array should be Integer, but got a ${actualIdxType} value.`,
+                vscode.DiagnosticSeverity.Error,
+              );
+              diag.code = "bml-function-arg-type";
+              diagnostics.push(diag);
+            }
+          }
+        } else if ((funcNameLower === "min" || funcNameLower === "max") && args.length === 1) {
+          const arrVarName = args[0].trim();
+          const arrEntry = firstTypeByVar
+            ? firstTypeByVar.get(arrVarName.toLowerCase()) || firstTypeByVar.get(arrVarName)
+            : null;
+          const arrType = arrEntry ? arrEntry.type : inferArgumentType(arrVarName, firstTypeByVar, returnTypes);
+          if (arrType && arrType.endsWith("[]")) {
+            const elemType = arrType.slice(0, -2).toLowerCase();
+            if (elemType !== "integer" && elemType !== "float" && elemType !== "long" && elemType !== "double" && elemType !== "date") {
+              const diag = new vscode.Diagnostic(
+                new vscode.Range(startPos, endPos),
+                `Argument 1 to '${builtIn.name}' should be Integer[] or Float[] or Date[], but got a ${arrType} value.`,
+                vscode.DiagnosticSeverity.Error,
+              );
+              diag.code = "bml-function-arg-type";
+              diagnostics.push(diag);
+            }
+          }
         }
       } else {
         // Unknown bare function call

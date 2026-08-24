@@ -66,9 +66,9 @@ function inferLiteralType(rhsText) {
         if (/^-?\d+$/.test(trimmed)) return 'Integer';
     }
 
-    // Typed array literal or bare declaration: string[]{"a","b"}, integer[][]{...}, float[5], date[];
+    // Typed array literal or bare declaration: string[]{"a","b"}, integer[][]{...}, float[5], date[], dict[], json[], etc.
     if (trimmed.includes('[')) {
-        const arrayMatch = trimmed.match(/^(string|integer|float|boolean|date)((?:\[\s*\d*\s*\])+)\s*(?:\{[\s\S]*\})?$/i);
+        const arrayMatch = trimmed.match(/^(string|integer|float|boolean|date|dict|dictionary|json|jsonarray|bytearray|record)((?:\[\s*\d*\s*\])+)\s*(?:\{[\s\S]*\})?$/i);
         if (arrayMatch) {
             const dims = arrayMatch[2].replace(/\d+/g, '').replace(/\s+/g, '');
             return `${arrayMatch[1].toLowerCase()}${dims}`;

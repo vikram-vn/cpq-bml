@@ -368,6 +368,11 @@ suite('BML Linter Test Suite - String Exhaustive 3-Tier Suite (Positive, Negativ
                 const diags = lintText('res = join(string[]{"a"}, "-", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
+
+            test('join with integer[] array → flags bml-function-arg-type Error', () => {
+                const diags = lintText('res = join(integer[]{1, 2}, "-"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
         });
 
         suite('Destructive', () => {

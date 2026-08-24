@@ -148,6 +148,22 @@ function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
                                 'bml-sort-date-type-mismatch'
                             ));
                         }
+                    } else if (typeVal === 'numeric') {
+                        const arg1Trimmed = args[0].trim();
+                        let actual1 = inferExpressionType(arg1Trimmed);
+                        if (!actual1 && firstTypeByVar.has(arg1Trimmed.toLowerCase())) {
+                            actual1 = firstTypeByVar.get(arg1Trimmed.toLowerCase()).type;
+                        }
+                        if (actual1 && actual1.toLowerCase() === 'boolean[]') {
+                            const startPos = doc.positionAt(match.index);
+                            const endPos = doc.positionAt(closeParenIndex + 1);
+                            diagnostics.push(makeDiagnostic(
+                                new vscode.Range(startPos, endPos),
+                                `Error: 'numeric' sortType cannot be used to sort a Boolean array ('boolean[]'), but argument 1 is ${actual1}.`,
+                                vscode.DiagnosticSeverity.Error,
+                                'bml-sort-numeric-type-mismatch'
+                            ));
+                        }
                     }
                 }
             }

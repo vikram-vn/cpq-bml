@@ -155,6 +155,19 @@ function checkString(cleanText, noStringsText, doc, firstTypeByVar) {
                 vscode.DiagnosticSeverity.Error,
                 'bml-function-arg-count'
             ));
+        } else {
+            const arg1 = args[0].trim();
+            const actual1 = inferExpressionType(arg1, firstTypeByVar) || (firstTypeByVar && (firstTypeByVar.get(arg1.toLowerCase()) || firstTypeByVar.get(arg1)) && (firstTypeByVar.get(arg1.toLowerCase()) || firstTypeByVar.get(arg1)).type);
+            if (actual1 && actual1.toLowerCase() !== 'string[]') {
+                const startPos = doc.positionAt(match.index);
+                const endPos = doc.positionAt(closeParenIndex + 1);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Error: Argument 1 to 'join' should be String[], but got ${actual1}.`,
+                    vscode.DiagnosticSeverity.Error,
+                    'bml-function-arg-type'
+                ));
+            }
         }
     }
 
