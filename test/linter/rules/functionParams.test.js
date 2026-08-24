@@ -309,7 +309,7 @@ suite('BML Linter Test Suite - workspace function parameter and spelling checks'
 
     test('Validates union type compatibility (append)', () => {
         let diagnostics = lintText(`
-            arr = string[];
+            arr = integer[];
             x = append(arr, 123);
             return "";
         `);
@@ -321,6 +321,13 @@ suite('BML Linter Test Suite - workspace function parameter and spelling checks'
             return "";
         `);
         assert.strictEqual(diagnostics.filter(d => d.code === 'bml-function-arg-type').length, 0);
+
+        diagnostics = lintText(`
+            arr = string[];
+            x = append(arr, 123);
+            return "";
+        `);
+        assert.strictEqual(diagnostics.filter(d => d.code === 'bml-function-arg-type').length, 1);
     });
 });
 
