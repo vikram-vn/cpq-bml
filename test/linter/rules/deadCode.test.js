@@ -263,7 +263,7 @@ suite('BML Linter Test Suite - duplicate if/elif branch conditions (no-dupe-else
     });
 
     test('findStatementSemicolon utility parses statement semicolons correctly', () => {
-        const { findStatementSemicolon } = require('../../../app/lang/lint/unreachable');
+        const { findStatementSemicolon } = require('../../../app/lang/lint/rules/unreachable');
         assert.strictEqual(findStatementSemicolon('x = 5; y = 6;', 5), 5);
         assert.strictEqual(findStatementSemicolon('x =          ; y = 6;', 5), 13);
         assert.strictEqual(findStatementSemicolon('x = func(1, 2);', 5), 14);
@@ -271,7 +271,7 @@ suite('BML Linter Test Suite - duplicate if/elif branch conditions (no-dupe-else
     });
 
     test('findBlocks parses braces and handles implicit file block', () => {
-        const { findBlocks } = require('../../../app/lang/lint/unreachable');
+        const { findBlocks } = require('../../../app/lang/lint/rules/unreachable');
         const text = 'if (x) { y = 1; }';
         const blocks = findBlocks(text);
         assert.strictEqual(blocks.length, 2); // file-level block and if-body block

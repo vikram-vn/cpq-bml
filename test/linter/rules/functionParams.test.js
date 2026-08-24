@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { lintText } = require('../fixtures');
-const { parseParameterSignature, splitArgumentsList } = require('../../../app/lang/lint/functionSignature');
-const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('../../../app/lang/lint/functions');
+const { parseParameterSignature, splitArgumentsList } = require('../../../app/lang/lint/rules/functionSignature');
+const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('../../../app/lang/lint/rules/functions');
 
 suite('BML Linter Test Suite - function signature parsing (functionSignature.js)', () => {
     test('Parses a simple required parameter', () => {
@@ -221,7 +221,7 @@ suite('BML Linter Test Suite - function-call diagnostic codes', () => {
 
 suite('BML Linter Test Suite - workspace function parameter and spelling checks', () => {
     setup(() => {
-        const { getWorkspaceFunctionsCached } = require('../../../app/lang/lint/functions');
+        const { getWorkspaceFunctionsCached } = require('../../../app/lang/lint/rules/functions');
         const vscode = require('vscode');
         const wsFunctions = getWorkspaceFunctionsCached(vscode);
         wsFunctions.clear();

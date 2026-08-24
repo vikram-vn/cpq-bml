@@ -50,7 +50,7 @@ function registerBmlCodeActions(context) {
 
                 if (!docDiags || docDiags.length === 0) {
                     try {
-                        const { lintBMLCustom } = require('../lint');
+                        const { lintBMLCustom } = require('../core/lint');
                         const tempCollection = (vscode.languages && vscode.languages.createDiagnosticCollection)
                             ? vscode.languages.createDiagnosticCollection('temp_code_actions')
                             : null;

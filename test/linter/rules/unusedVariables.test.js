@@ -108,7 +108,7 @@ suite('BML Linter Test Suite - Unused Variables & Hint Diagnostics', function() 
     test('test/bml/sample.bml - Flags unused variables testName and system variable assignments as Hints with Unnecessary tag', () => {
         const fs = require('fs');
         const path = require('path');
-        const sampleBmlPath = path.join(__dirname, '..', 'bml', 'sample.bml');
+        const sampleBmlPath = path.join(__dirname, '..', 'fixtures', 'sample.bml');
         const bmlContent = fs.readFileSync(sampleBmlPath, 'utf8');
 
         const diagnostics = lintText(bmlContent, sampleBmlPath);

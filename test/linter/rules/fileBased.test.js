@@ -2,16 +2,16 @@ const assert = require('assert');
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
-const { lintBMLCustom } = require('../../../app/lang/lint/lint');
+const { lintBMLCustom } = require('../../../app/lang/lint/core/lint');
 
 // Dynamic file-based tests from test/bml-lint directory: each <name>.bml file
 // is linted and compared against its <name>.expected.json diagnostics list.
 suite('BML Linter Test Suite - file-based fixtures', function() {
     this.timeout(60000);
-    const bmlLintDir = path.join(__dirname, '..', '..', 'lint');
+    const bmlLintDir = path.join(__dirname, '..', 'fixtures');
     if (fs.existsSync(bmlLintDir)) {
         const files = fs.readdirSync(bmlLintDir);
-        const inputFiles = files.filter(f => f.endsWith('.bml'));
+        const inputFiles = files.filter(f => f.endsWith('.bml') && fs.existsSync(path.join(bmlLintDir, `${path.basename(f, '.bml')}.expected.json`)));
 
         for (const file of inputFiles) {
             const testName = path.basename(file, '.bml');

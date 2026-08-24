@@ -65,9 +65,9 @@ function buildFixAllText(document, relevantDiags) {
     // Scan all declared variables across the entire document to ensure 100% file-level coverage
     if (relevantDiags.some(d => d.code === 'bml-variable-camelcase' || d.code === 'bml-dict-naming-suffix' || d.code === 'bml-array-naming-suffix' || d.code === 'bml-recordset-naming-suffix' || d.code === 'bml-boolean-naming-prefix')) {
         try {
-            const { getDeclaredVariables } = require('../variables');
-            const { getCommentRanges } = require('../comments');
-            const { getStringRanges } = require('../strings');
+            const { getDeclaredVariables } = require('../rules/variables');
+            const { getCommentRanges } = require('../rules/comments');
+            const { getStringRanges } = require('../rules/strings');
 
             const commentRanges = getCommentRanges(text);
             const buf = Buffer.from(text, 'utf8');
@@ -129,9 +129,9 @@ function buildFixAllText(document, relevantDiags) {
         let currentUnusedNames = new Set(initialUnusedNames);
 
         try {
-            const { getDeclaredVariables } = require('../variables');
-            const { getCommentRanges } = require('../comments');
-            const { getStringRanges } = require('../strings');
+            const { getDeclaredVariables } = require('../rules/variables');
+            const { getCommentRanges } = require('../rules/comments');
+            const { getStringRanges } = require('../rules/strings');
 
             const commentRanges = getCommentRanges(text);
             const buf = Buffer.from(text, 'utf8');

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { getCommentRanges } = require('../../app/lang/lint/comments');
+const { getCommentRanges } = require('../../app/lang/lint/rules/comments');
 const { findDocHeaderBlocks } = require('../../app/lang/comments/docHeader');
 
 suite('BML Better Comments - doc header detection', () => {

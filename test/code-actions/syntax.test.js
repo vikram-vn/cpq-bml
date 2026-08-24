@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { lintBMLCustom } = require('../../app/lang/lint/lint');
+const { lintBMLCustom } = require('../../app/lang/lint/core/lint');
 const { activateExtension } = require('../extensionHelper');
 
 function runSyntaxCodeActionTests() {

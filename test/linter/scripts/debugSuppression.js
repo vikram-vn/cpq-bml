@@ -1,6 +1,6 @@
 // Debug script - run with: node test/linter/debugSuppression.js
-const { computeSuppressions } = require('../../../app/lang/lint/suppressions');
-const { getCommentRanges } = require('../../../app/lang/lint/comments');
+const { computeSuppressions } = require('../../../app/lang/lint/core/suppressions');
+const { getCommentRanges } = require('../../../app/lang/lint/rules/comments');
 
 function test(label, text, line, code) {
     const ranges = getCommentRanges(text);

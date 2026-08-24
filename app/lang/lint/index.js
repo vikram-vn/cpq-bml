@@ -1,6 +1,6 @@
 const vscode = require('vscode');
-const { lintBMLCustom, reorderVisibleDiagnostics } = require('./lint');
-const { registerBmlCodeActions } = require('./codeActions');
+const { lintBMLCustom, reorderVisibleDiagnostics } = require('./core/lint');
+const { registerBmlCodeActions } = require('./core/codeActions');
 const { loadDictionaries } = require('../spell-check/spelling');
 
 let diagnosticCollection;

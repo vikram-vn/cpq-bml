@@ -42,7 +42,7 @@ suite('BML Linter Optimization Test Suite', () => {
     });
 
     test('Workspace function caching is initialized successfully', () => {
-        const { getWorkspaceFunctionsCached } = require('../../../app/lang/lint/functions');
+        const { getWorkspaceFunctionsCached } = require('../../../app/lang/lint/rules/functions');
         const cache = getWorkspaceFunctionsCached(vscode);
         assert.ok(cache instanceof Map, 'Cache should be a Map instance');
     });

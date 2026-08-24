@@ -1,5 +1,5 @@
 "use strict";
-const { describeLintDirective } = require('../lint/suppressions');
+const { describeLintDirective } = require('../lint/core/suppressions');
 const { get_directives } = require('../beautify/bml/tokenizerHelpers');
 
 // Returns { type: 'beautify-ignore', mode: 'start'|'end' } or null.

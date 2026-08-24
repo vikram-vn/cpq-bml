@@ -39,7 +39,7 @@ suite('BML Linter Test Suite - // bml-lint-disable comment directives', () => {
     });
 
     test('describeLintDirective returns expected output', () => {
-        const { describeLintDirective } = require('../../../app/lang/lint/suppressions');
+        const { describeLintDirective } = require('../../../app/lang/lint/core/suppressions');
         assert.deepStrictEqual(describeLintDirective('// bml-lint-disable-line bml-nan-fix bml-missing-semicolon'), {
             type: 'disable-line',
             codes: ['bml-nan-fix', 'bml-missing-semicolon']

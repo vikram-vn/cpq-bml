@@ -19,10 +19,10 @@ Module.prototype.require = function(p) {
     return origRequire.apply(this, arguments);
 };
 
-const { lintBMLCustom } = require('../../../app/lang/lint/lint');
+const { lintBMLCustom } = require('../../../app/lang/lint/core/lint');
 const { checkSpelling } = require('../../../app/lang/spell-check/spelling');
 const bml_beautify = require('../../../app/lang/beautify/bml');
-const { getDeclaredVariables } = require('../../../app/lang/lint/variables');
+const { getDeclaredVariables } = require('../../../app/lang/lint/rules/variables');
 
 function createMockDoc(text, fsPath = 'test.bml') {
     const lines = text.split(/\r?\n/);
@@ -87,7 +87,7 @@ jsonput(jsonRes, "customer", customerName);
 return jsontostr(jsonRes);
 `.repeat(5); // ~110 lines
 
-const sampleBmlPath = path.join(__dirname, '..', 'bml', 'sample.bml');
+const sampleBmlPath = path.join(__dirname, '..', 'fixtures', 'sample.bml');
 const largeCode = fs.readFileSync(sampleBmlPath, 'utf8'); // 2,771 lines
 
 function benchmark(name, fn, iterations = 20) {
@@ -113,7 +113,7 @@ const results = {};
 // 1. LINTING BENCHMARKS (Full 25+ checkers)
 console.log('\n[1/4] Running Linting Benchmarks (Full 25+ Rules)...');
 const mockCollection = { set: () => {}, delete: () => {} };
-const extPath = path.join(__dirname, '..', '..');
+const extPath = path.join(__dirname, '..', '..', '..');
 
 const smallDoc = createMockDoc(smallCode);
 const medDoc = createMockDoc(mediumCode);

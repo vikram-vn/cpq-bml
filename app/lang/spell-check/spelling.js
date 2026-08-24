@@ -1,6 +1,6 @@
 const vscode = require("vscode");
-const { getCommentRanges } = require("../lint/comments");
-const { getStringRanges } = require("../lint/strings");
+const { getCommentRanges } = require("../lint/rules/comments");
+const { getStringRanges } = require("../lint/rules/strings");
 const {
   extraAllowed,
   loadDictionaries,

@@ -9,8 +9,8 @@ const {
     normalizeTypeLabel,
     getReturnTypeLabels,
     getParamTypeLabels,
-} = require('../../../app/lang/lint/metadataTypes');
-const { inferLiteralType, checkAssignmentTypeConsistency } = require('../../../app/lang/lint/typeCheck');
+} = require('../../../app/lang/lint/rules/metadataTypes');
+const { inferLiteralType, checkAssignmentTypeConsistency } = require('../../../app/lang/lint/rules/typeCheck');
 
 function withTempDir(fn) {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bml-metadataTypes-test-'));
@@ -161,7 +161,7 @@ suite('BML Linter Test Suite - metadata sidecar type validation', () => {
     });
 
     test('readLocalMetadata handles invalid file paths gracefully', () => {
-        const { readLocalMetadata } = require('../../../app/lang/lint/metadataTypes');
+        const { readLocalMetadata } = require('../../../app/lang/lint/rules/metadataTypes');
         assert.strictEqual(readLocalMetadata('nonexistent.bml'), null);
         assert.strictEqual(readLocalMetadata(null), null);
     });

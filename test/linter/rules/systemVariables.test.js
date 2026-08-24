@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('../fixtures');
-const { findClosestSystemVariable, loadSystemVariables } = require('../../../app/lang/lint/systemVariables');
+const { findClosestSystemVariable, loadSystemVariables } = require('../../../app/lang/lint/rules/systemVariables');
 
 suite('BML Linter Test Suite - CPQ system variables', () => {
     test('Flags assignment to a known read-only system variable', () => {

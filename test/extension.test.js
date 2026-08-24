@@ -15,7 +15,7 @@ suite('Extension Test Suite', () => {
 	});
 
 	// Dynamic file-based tests from test/beautify directory
-	const testDir = path.join(__dirname, 'beautify');
+	const testDir = path.join(__dirname, 'beautify', 'fixtures');
 	if (fs.existsSync(testDir)) {
 		const files = fs.readdirSync(testDir);
 		const inputFiles = files.filter(f => f.endsWith('.bml') && !f.endsWith('.expected.bml'));

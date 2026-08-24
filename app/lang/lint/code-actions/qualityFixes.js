@@ -371,7 +371,7 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
     }
     else if (diag.code === 'bml-unknown-function') {
         const word = document.getText(editRange);
-        const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('../functions');
+        const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('../rules/functions');
         const suggestion = findClosestBuiltInFunction(word, loadBuiltInFunctions(extensionPath));
         if (suggestion) {
             const action = new vscode.CodeAction(`Replace with '${suggestion}'`, vscode.CodeActionKind.QuickFix);

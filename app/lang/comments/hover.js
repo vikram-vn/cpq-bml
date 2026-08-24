@@ -1,5 +1,5 @@
 "use strict";
-const { getCommentRanges } = require('../lint/comments');
+const { getCommentRanges } = require('../lint/rules/comments');
 const { describeDirective } = require('./directives');
 
 const LINT_DIRECTIVE_EXPLANATIONS = {

@@ -2,7 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
-const { lintBMLCustom } = require('../../../app/lang/lint/lint');
+const { lintBMLCustom } = require('../../../app/lang/lint/core/lint');
 
 suite('BML Linter Test Suite - full corpus smoke test (no crashes)', function() {
     this.timeout(240000);

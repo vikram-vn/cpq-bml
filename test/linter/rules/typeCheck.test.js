@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('../fixtures');
-const { inferLiteralType, getAssignmentRhsText } = require('../../../app/lang/lint/typeCheck');
+const { inferLiteralType, getAssignmentRhsText } = require('../../../app/lang/lint/rules/typeCheck');
 
 suite('BML Linter Test Suite - variable type consistency', () => {
     test('Flags reassigning an Integer-typed variable to a String literal', () => {

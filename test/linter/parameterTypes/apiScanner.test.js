@@ -1,7 +1,7 @@
 const assert = require('assert');
 const path = require('path');
 const { lintText } = require('../fixtures');
-const { loadBuiltInFunctions } = require('../../../app/lang/lint/functions');
+const { loadBuiltInFunctions } = require('../../../app/lang/lint/rules/functions');
 
 const projectRoot = path.join(__dirname, '..', '..', '..');
 const builtIns = loadBuiltInFunctions(projectRoot);

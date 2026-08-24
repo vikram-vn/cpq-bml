@@ -186,7 +186,7 @@ function computeTransitiveUnusedVariables(noStringsText, declaredVars, document,
     const unusedVarNames = new Set(initialUnusedNames);
 
     try {
-        const { checkVariableDiagnostics } = require('../variables');
+        const { checkVariableDiagnostics } = require('../rules/variables');
         const fullUnusedDiags = checkVariableDiagnostics(noStringsText, declaredVars, document, cleanText);
         for (const diag of fullUnusedDiags) {
             const name = document.getText(diag.range).trim();

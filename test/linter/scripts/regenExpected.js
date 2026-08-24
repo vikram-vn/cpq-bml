@@ -61,10 +61,10 @@ Module.prototype.require = function (id) {
     return originalRequire.apply(this, arguments);
 };
 
-const { lintBMLCustom } = require('../../../app/lang/lint/lint');
+const { lintBMLCustom } = require('../../../app/lang/lint/core/lint');
 
-const lintDir = path.join(__dirname, '..', '..', 'lint');
-const bmlFiles = fs.readdirSync(lintDir).filter(f => f.endsWith('.bml'));
+const lintDir = path.join(__dirname, '..', 'fixtures');
+const bmlFiles = fs.readdirSync(lintDir).filter(f => f.endsWith('.bml') && fs.existsSync(path.join(lintDir, f.replace('.bml', '.expected.json'))));
 
 for (const file of bmlFiles) {
     const inputPath = path.join(lintDir, file);

@@ -1,5 +1,5 @@
 "use strict";
-const { getCommentRanges } = require('../lint/comments');
+const { getCommentRanges } = require('../lint/rules/comments');
 const { matchTag } = require('./tags');
 const { describeDirective } = require('./directives');
 const { findDocHeaderBlocks } = require('./docHeader');

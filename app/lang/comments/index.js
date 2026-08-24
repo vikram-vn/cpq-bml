@@ -48,8 +48,8 @@ function toVscodeRanges(document, offsetRanges) {
     return offsetRanges.map(([start, end]) => new vscode.Range(document.positionAt(start), document.positionAt(end)));
 }
 
-const { getCommentRanges } = require('../lint/comments');
-const { getStringRanges } = require('../lint/strings');
+const { getCommentRanges } = require('../lint/rules/comments');
+const { getStringRanges } = require('../lint/rules/strings');
 
 const DEPRECATED_REGEXES = [
     /\bNaN\b/g,

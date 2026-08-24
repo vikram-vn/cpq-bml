@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.55.0] - 2026-08-24
+
+### Added
+- Add comprehensive test suite for linter rules, completions, and helper scripts.
+- Initialize project structure with BML lookups, intellisense configurations, and linting test expectations.
+- Implement REST command handlers, MCP tools, and quick fix tests for CPQ-BML operations.
+- Implement core BML language service features including REST command handlers, linting, spell-check, and intellisense with associated tests.
+
 ## [1.54.0] - 2026-08-23
 
 ### Added
@@ -85,10 +93,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement intellisense documentation formatting and hover provider for BML script files.
 - Add TextMate syntax grammar for CPQ BML language support.
 - Implement BML intellisense and type-checking utilities for parameter completions.
-- Consolidate build scripts into build_all.py and update package.json commands.
-
-## [1.45.0] - 2026-08-22
-
-### Added
-
 - Consolidate build scripts into build_all.py and update package.json commands.

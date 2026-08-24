@@ -2,7 +2,7 @@
 // Run: node test/linter/debugLint.js
 process.env.VSCODE_CWD = __dirname;
 const vscode = require('vscode');
-const { lintBMLCustom } = require('../../../app/lang/lint/lint');
+const { lintBMLCustom } = require('../../../app/lang/lint/core/lint');
 
 function lintText(bmlText, filePath = '/mock/test.bml') {
     const doc = {

@@ -241,7 +241,7 @@ suite('BML Linter Test Suite - rules', function() {
             url = "http://example.com";
             // real comment here
         `;
-        const { getCommentRanges } = require('../../../app/lang/lint/comments');
+        const { getCommentRanges } = require('../../../app/lang/lint/rules/comments');
         const commentRanges = getCommentRanges(bmlText);
 
         assert.strictEqual(commentRanges.length, 1);
