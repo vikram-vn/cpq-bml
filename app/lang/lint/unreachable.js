@@ -75,8 +75,6 @@ function reportDeadZone(vscode, doc, diagnostics, deadStart, deadEnd, reasonText
 // nested if/elif/else instead of a direct terminator is conservatively
 // treated as "does not terminate" rather than recursing, to avoid false
 // positives from a text-based (non-parsing) analysis.
-const { parseConditionalChains } = require('./duplicateBranches');
-
 function getLastTopLevelStatement(text) {
     let start = 0;
     let parenDepth = 0;

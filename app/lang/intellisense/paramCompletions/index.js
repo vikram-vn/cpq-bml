@@ -1,6 +1,6 @@
 const { getQuotedStringRange } = require('./utils');
 const { TIMEZONES, getTimezoneCompletions } = require('./timezones');
-const { DATE_FORMATS, GETDATE_BOOLEANS, getDateFormatCompletions, getGetDateIncludeTimeCompletions } = require('./dateParams');
+const { DATE_FORMATS, getDateFormatCompletions, getGetDateIncludeTimeCompletions } = require('./dateParams');
 const { CURRENCY_CODES, getCurrencyCodeCompletions } = require('./currencies');
 const { DELIMITERS, getDelimiterCompletions } = require('./delimiters');
 const {
@@ -25,7 +25,6 @@ const { DICT_TYPES, getDictTypeCompletions } = require('./dictParams');
 const {
     SORT_ORDERS,
     SORT_TYPES,
-    BYTEARRAY_CHARSETS,
     getSortOrderCompletions,
     getSortTypeCompletions,
     getByteArrayCharsetCompletions

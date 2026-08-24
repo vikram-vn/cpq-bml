@@ -21,11 +21,8 @@ Module.prototype.require = function(p) {
 
 const { lintBMLCustom } = require('../../app/lang/lint/lint');
 const { checkSpelling } = require('../../app/lang/spell-check/spelling');
-const { getCommentRanges } = require('../../app/lang/lint/comments');
-const { getStringRanges } = require('../../app/lang/lint/strings');
 const bml_beautify = require('../../app/lang/beautify/bml');
 const { getDeclaredVariables } = require('../../app/lang/lint/variables');
-const { getDeclaredParameterTypes } = require('../../app/lang/lint/metadataTypes');
 
 function createMockDoc(text, fsPath = 'test.bml') {
     const lines = text.split(/\r?\n/);

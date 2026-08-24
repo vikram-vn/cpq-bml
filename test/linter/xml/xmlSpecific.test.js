@@ -2,8 +2,6 @@ const assert = require("assert");
 const { lintText } = require("../fixtures");
 
 suite("BML Linter Test Suite - XML specific tests", () => {
-    const vscode = require("vscode");
-
     suite("applytemplate() parameter validation", () => {
         test("1. applytemplate() - missing all arguments → Error", () => {
             const diagnostics = lintText(`

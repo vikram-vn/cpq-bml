@@ -1,4 +1,4 @@
-const { makeDiagnostic, findMatchingParenEnd } = require('../best-practices/shared');
+const { makeDiagnostic } = require('../best-practices/shared');
 const vscode = require('vscode');
 
 function checkDictionary(cleanText, noStringsText, doc) {

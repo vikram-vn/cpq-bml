@@ -2,15 +2,12 @@ const api = require("../api");
 const configLib = require("../config");
 const metadataLib = require("../metadata");
 const {
-  getTimestamp,
   writeTerminalMessage,
   writeRunHeader,
   writeRunningLine,
-  formatElapsed,
   describeError,
   isSuccess,
   parseErrorLine,
-  mergeAttributes,
   resolveMetadataForFile,
   appendDebugOutputToFile,
   appendDebugPrintToFile,

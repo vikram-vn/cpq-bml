@@ -4,12 +4,9 @@ const config = require('../../rest/config');
 const metadataLib = require('../../rest/metadata');
 const {
     isSuccess,
-    describeError,
-    getTimestamp,
     writeRunHeader,
     writeRunningLine,
     writeTerminalMessage,
-    formatElapsed,
     findLibraryFunctionByVariableName,
 } = require('../../rest/commands/shared');
 const { findOrCreateAiCopy } = require('../locate');

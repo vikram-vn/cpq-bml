@@ -2,7 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { collectBmlFiles, collectFolders, beautifyFile } = require('../../app/lang/beautify/commandWorkspace');
+const { collectBmlFiles, collectFolders } = require('../../app/lang/beautify/commandWorkspace');
 
 suite('BML Workspace Beautifier Command Helpers', () => {
     test('collectBmlFiles ignores node_modules, .git, and dist folders', async () => {

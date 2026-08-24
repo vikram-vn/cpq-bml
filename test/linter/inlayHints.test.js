@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { extractParamName } = require('../../app/lang/intellisense/inlayHints');
-const { collectLocalVariables, getLocalVariableCompletions } = require('../../app/lang/intellisense/bmqlVariableCompletions');
+const { collectLocalVariables } = require('../../app/lang/intellisense/bmqlVariableCompletions');
 
 suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
     test('extracts parameter names cleanly from BML signature labels', () => {

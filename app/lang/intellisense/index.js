@@ -5,11 +5,9 @@ const {
     getWorkspaceIndex,
     registerWorkspaceIndexWatcher,
     resolveCallAtPosition,
-    extractDocHeader,
 } = require('./workspaceIndex');
 const { formatAsJsDoc, formatWorkspaceFunctionHover, KEYWORD_HOVERS } = require('./docFormatting');
 const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
-const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
 const { resolveParameterCompletions } = require('./paramCompletions');
 const { registerInlayHintsProvider } = require('./inlayHints');
 const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('./bmqlVariableCompletions');

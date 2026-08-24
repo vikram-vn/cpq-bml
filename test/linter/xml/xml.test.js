@@ -5,8 +5,6 @@ const { runDynamicTestsForCategory } = require("../dynamicHelper");
 runDynamicTestsForCategory("xml", "XML Functions Dynamic Validation");
 
 suite("BML Linter Test Suite - XML specific tests", () => {
-    const vscode = require("vscode");
-
     suite("applytemplate() parameter validation", () => {
         test("1. applytemplate() - missing all arguments → Error", () => {
             const diagnostics = lintText(`

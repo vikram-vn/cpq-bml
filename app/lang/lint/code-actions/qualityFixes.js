@@ -2,8 +2,7 @@ const vscode = require('vscode');
 const {
     toUpperSnakeCase,
     inferConstantCandidateName,
-    renameIdentifierInDocument,
-    renameLiteralNumberInDocument
+    renameIdentifierInDocument
 } = require('./qualityHelpers');
 
 function getQualityFixes(document, diag, editRange, extensionPath) {

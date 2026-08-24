@@ -2,7 +2,6 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const commands = require("../../../app/lang/rest/commands");
-const shared = require("../../../app/lang/rest/commands/shared");
 const metadataLib = require("../../../app/lang/rest/metadata");
 const { createFakeVscode } = require("../testHelpers");
 const { baseVscodeConfig, makeContext, withTempDir } = require("./fixtures");

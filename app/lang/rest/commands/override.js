@@ -1,11 +1,9 @@
 const api = require('../api');
 const metadataLib = require('../metadata');
 const {
-  getTimestamp,
   writeTerminalMessage,
   writeRunHeader,
   writeRunningLine,
-  formatElapsed,
   describeError,
   isSuccess,
   resolveMetadataForFile,

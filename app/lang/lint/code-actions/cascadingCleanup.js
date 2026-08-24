@@ -1,5 +1,3 @@
-const vscode = require('vscode');
-
 function toCamelCase(name) {
     if (!name) return name;
     const parts = name.split('_').filter(p => p.length > 0);

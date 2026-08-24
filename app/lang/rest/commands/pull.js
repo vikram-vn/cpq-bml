@@ -3,12 +3,9 @@ const api = require('../api');
 const config = require('../config');
 const metadataLib = require('../metadata');
 const {
-    getTimestamp,
     writeTerminalMessage,
     writeRunHeader,
     writeRunningLine,
-    formatElapsed,
-    describeError,
     isSuccess,
     ensureCredentials,
 } = require('./shared');

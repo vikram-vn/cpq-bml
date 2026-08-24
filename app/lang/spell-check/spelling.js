@@ -1,14 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const zlib = require("zlib");
 const vscode = require("vscode");
 const { getCommentRanges } = require("../lint/comments");
 const { getStringRanges } = require("../lint/strings");
 const {
   extraAllowed,
   loadDictionaries,
-  getSpellingSuggestions,
-  levenshtein
+  getSpellingSuggestions
 } = require("./spellingDict");
 
 function splitIdentifier(token) {
