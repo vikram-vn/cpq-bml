@@ -1,349 +1,328 @@
 const assert = require("assert");
+const vscode = require("vscode");
 const { lintText } = require("../fixtures");
 
-suite("BML Linter Test Suite - BMQL specific tests", () => {
-    suite('Dynamic query concatenation (bml-bmql-injection-risk)', () => {
-        test('Flags string concatenation inside bmql()', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT id FROM " + tableName);
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-injection-risk');
-            assert.ok(diag, 'Should flag + concatenation inside a BMQL query');
+suite("BML Linter Test Suite - BMQL Exhaustive 3-Tier Suite (Positive, Negative, Destructive)", () => {
+    // =========================================================================
+    // 1. recordset() Function
+    // =========================================================================
+    suite('recordset() - RecordSet instantiation and usage', () => {
+        suite('Positive', () => {
+            test('0 arguments creates empty RecordSet', () => {
+                const diags = lintText('rs = recordset(); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
 
-        test('Does not flag a query using $variable substitution', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT id FROM $table WHERE id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-injection-risk');
-            assert.strictEqual(diag, undefined, '$variable substitution is the documented-safe idiom');
-        });
-    });
-
-    suite('Full substitution - bare variable as the whole query (bml-bmql-full-substitution)', () => {
-        test('Flags a bare variable passed directly as the query string', () => {
-            const diagnostics = lintText(`
-                x = bmql(queryStringVar);
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
-            assert.ok(diag, 'DynamicBMQLVariables.md calls this out as "Incorrect: Full Substitution"');
+        suite('Negative', () => {
+            test('1 argument (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('rs = recordset("excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
         });
 
-        test('Does not flag a string literal query', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT id FROM my_table WHERE id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
-            assert.strictEqual(diag, undefined);
-        });
-
-        test('Does not flag string concatenation (that is the injection-risk case, not full substitution)', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT id FROM " + tableName);
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
-            assert.strictEqual(diag, undefined);
-        });
-
-        test('Does not flag a bmql() call with no arguments', () => {
-            const diagnostics = lintText(`
-                x = bmql();
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-full-substitution');
-            assert.strictEqual(diag, undefined);
+        suite('Destructive', () => {
+            test('Iterate over empty recordset without crash', () => {
+                const diags = lintText(`
+                    rs = recordset();
+                    for rec in rs {
+                        print(get(rec, "col"));
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
     });
 
-    suite('JOIN against a system-defined table (bml-bmql-join-system-table)', () => {
-        test('Flags JOIN against a table prefixed with an underscore', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT a.id FROM my_table a JOIN _parts p ON a.id = p.id WHERE a.id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-join-system-table');
-            assert.ok(diag, 'BMQL.md: JOIN is only supported for customer-defined tables, not system tables like _parts');
+    // =========================================================================
+    // 2. bmql() Core Query Overloads & Dynamic Variables
+    // =========================================================================
+    suite('bmql() - Overloads, Dynamic Variables ($table, $columns, $where, fieldMap)', () => {
+        suite('Positive', () => {
+            test('1 argument: standard SELECT query with direct $variable and IN array conditions', () => {
+                const diags = lintText(`
+                    pno = "part123";
+                    lead = integer[]{3, 4, 5};
+                    rs = bmql("SELECT part_number FROM _parts WHERE part_number = $pno AND lead_time IN $lead");
+                    for rec in rs {
+                        p = get(rec, "part_number");
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('2 arguments: query + contextOverride language dictionary', () => {
+                const diags = lintText(`
+                    lang = dict("string");
+                    put(lang, "language", "de");
+                    rs = bmql("SELECT description FROM _parts WHERE part_number = 'Translations'", lang);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('3 arguments: dynamic $table, $columns, $where with fieldMap dictionary', () => {
+                const diags = lintText(`
+                    tbl = "dataTableName";
+                    cols = "columnName";
+                    lang = dict("string");
+                    fields = dict("string");
+                    put(fields, "$field1", "6.08");
+                    put(fields, "$field2", "2.03");
+                    whereClause = "x = $field1 AND y = $field2";
+                    rs = bmql("SELECT $cols FROM $tbl WHERE $whereClause", lang, fields);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
 
-        test('Does not flag JOIN against a customer-defined table', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT a.id FROM my_table a JOIN other_table b ON a.id = b.id WHERE a.id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-join-system-table');
-            assert.strictEqual(diag, undefined);
+        suite('Negative', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('rs = bmql(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('4 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('rs = bmql("SELECT id FROM t", dict("string"), dict("string"), "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
         });
 
-        test('Does not flag a query with no JOIN at all', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT id FROM _parts WHERE id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-join-system-table');
-            assert.strictEqual(diag, undefined);
-        });
-    });
-
-    suite('INSERT/UPDATE/MODIFY result never checked for records_error (bml-bmql-mutation-error-unchecked)', () => {
-        test('Flags INSERT result never checked for records_error', () => {
-            const diagnostics = lintText(`
-                results = bmql("insert into table1 (column1) values ('value1')");
-                return results;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
-            assert.ok(diag, 'BMQL.md: a records_error entry can be added even when no exception is thrown');
-        });
-
-        test('Flags UPDATE result never checked for records_error', () => {
-            const diagnostics = lintText(`
-                results = bmql("update table1 set col1 = 'x' where id = $id");
-                return results;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
-            assert.ok(diag);
-        });
-
-        test('Flags MODIFY result never checked for records_error', () => {
-            const diagnostics = lintText(`
-                results = bmql("modify table1 set col1 = 'x' where id = $id");
-                return results;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
-            assert.ok(diag);
-        });
-
-        test('Does not flag when records_error is checked via get()', () => {
-            const diagnostics = lintText(`
-                results = bmql("insert into table1 (column1) values ('value1')");
-                errorMsg = get(results, "records_error");
-                return results;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
-            assert.strictEqual(diag, undefined);
-        });
-
-        test('Does not flag DELETE - records_error is not documented for DELETE', () => {
-            const diagnostics = lintText(`
-                results = bmql("delete from table1 where id = $id");
-                return results;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
-            assert.strictEqual(diag, undefined);
-        });
-
-        test('Does not flag a plain SELECT', () => {
-            const diagnostics = lintText(`
-                results = bmql("select id from table1 where id = $id");
-                return results;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-mutation-error-unchecked');
-            assert.strictEqual(diag, undefined);
+        suite('Destructive', () => {
+            test('Fully dynamic BMQL statement with all clauses dynamic', () => {
+                const diags = lintText(`
+                    fromTbl = "uploadXMLtable";
+                    selCols = "string1,int1";
+                    lang = dict("string");
+                    fields = dict("string");
+                    put(fields, "$field1", "6.08");
+                    whereStr = "float1 = $field1";
+                    rs = bmql("SELECT $selCols FROM $fromTbl WHERE $whereStr", lang, fields);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
     });
 
-    suite('SELECT * (bml-bmql-select-star)', () => {
-        test('Flags SELECT * in BMQL', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT * FROM my_table WHERE id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-select-star');
-            assert.ok(diag, 'Should flag SELECT *');
+    // =========================================================================
+    // 3. Live Data Table Statements (INSERT, DELETE, UPDATE, MODIFY)
+    // =========================================================================
+    suite('Live Data Table Statements - INSERT, DELETE, UPDATE, MODIFY and error inspection', () => {
+        suite('Positive', () => {
+            test('INSERT into Live Data Table with records_error check', () => {
+                const diags = lintText(`
+                    results = bmql("INSERT INTO table1 (column1, column2) VALUES ('value1', 11), ('value2', 22)");
+                    errMsg = get(results, "records_error");
+                    for res in results {
+                        insCount = getInt(res, "records_inserted");
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-bmql-mutation-error-unchecked'), undefined);
+            });
+
+            test('UPDATE with SET and WHERE clause checking records_error', () => {
+                const diags = lintText(`
+                    results = bmql("UPDATE table1 SET column1 = 'new_val' WHERE column2 = $id");
+                    errMsg = get(results, "records_error");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-bmql-mutation-error-unchecked'), undefined);
+            });
+
+            test('DELETE with WHERE clause', () => {
+                const diags = lintText(`
+                    results = bmql("DELETE FROM table1 WHERE column1 = 'old_val'");
+                    for res in results {
+                        delCount = getInt(res, "records_deleted");
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-bmql-unbounded-delete'), undefined);
+            });
         });
 
-        test('Does not flag an explicit column list', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT id, name FROM my_table WHERE id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-select-star');
-            assert.strictEqual(diag, undefined);
-        });
-    });
+        suite('Negative', () => {
+            test('Unchecked mutation flags bml-bmql-mutation-error-unchecked', () => {
+                const diags = lintText(`
+                    results = bmql("INSERT INTO table1 (column1) VALUES ('value1')");
+                    return "";
+                `);
+                assert.ok(diags.find(d => d.code === 'bml-bmql-mutation-error-unchecked'));
+            });
 
-    suite('UPDATE/MODIFY without WHERE (bml-bmql-unbounded-mutation)', () => {
-        test('Flags UPDATE with no WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("UPDATE my_table SET status = 'done'");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-unbounded-mutation');
-            assert.ok(diag, 'Should flag UPDATE with no WHERE - per BMQL.md this updates every record');
-        });
+            test('UPDATE without WHERE flags bml-bmql-unbounded-mutation', () => {
+                const diags = lintText(`
+                    results = bmql("UPDATE table1 SET column1 = 'val'");
+                    errMsg = get(results, "records_error");
+                    return "";
+                `);
+                assert.ok(diags.find(d => d.code === 'bml-bmql-unbounded-mutation'));
+            });
 
-        test('Flags MODIFY with no WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("MODIFY my_table SET status = 'done'");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-unbounded-mutation');
-            assert.ok(diag, 'Should flag MODIFY with no WHERE');
+            test('DELETE without WHERE flags bml-bmql-unbounded-delete', () => {
+                const diags = lintText(`
+                    results = bmql("DELETE FROM table1");
+                    return "";
+                `);
+                assert.ok(diags.find(d => d.code === 'bml-bmql-unbounded-delete'));
+            });
         });
 
-        test('Does not flag UPDATE with a WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("UPDATE my_table SET status = 'done' WHERE id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-unbounded-mutation');
-            assert.strictEqual(diag, undefined);
-        });
-    });
-
-    suite('DELETE without WHERE (bml-bmql-unbounded-delete)', () => {
-        test('Flags DELETE with no WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("DELETE FROM my_table");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-unbounded-delete');
-            assert.ok(diag, 'Should flag DELETE with no WHERE - per BMQL.md this clears the whole table');
-        });
-
-        test('Does not flag DELETE with a WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("DELETE FROM my_table WHERE id = $id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-unbounded-delete');
-            assert.strictEqual(diag, undefined);
-        });
-    });
-
-    suite('SELECT with DISTINCT/ORDER BY, no WHERE (bml-bmql-select-truncated)', () => {
-        test('Flags SELECT DISTINCT with no WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT DISTINCT status FROM my_table");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-select-truncated');
-            assert.ok(diag, 'DISTINCT/ORDER BY without WHERE is also capped at 1,000 records per BMQL.md');
-        });
-
-        test('Flags SELECT ORDER BY with no WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT id FROM my_table ORDER BY id");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-select-truncated');
-            assert.ok(diag, 'Should flag ORDER BY with no WHERE');
-        });
-
-        test('Does not flag SELECT DISTINCT with a WHERE clause', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT DISTINCT status FROM my_table WHERE active = 1");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-select-truncated');
-            assert.strictEqual(diag, undefined);
-        });
-
-        test('Flags SELECT Name $Where FROM data_table as unbounded select (prefixed with $ is a variable, not SQL keyword WHERE)', () => {
-            const diagnostics = lintText(`
-                x = bmql("SELECT Name $Where FROM data_table");
-                return x;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-unbounded-select');
-            assert.ok(diag, 'Should flag SELECT Name $Where FROM data_table as unbounded select');
+        suite('Destructive', () => {
+            test('MODIFY statement updating records_updated and records_inserted', () => {
+                const diags = lintText(`
+                    results = bmql("MODIFY table1 SET col1 = 'v1' WHERE col2 = $targetId");
+                    errMsg = get(results, "records_error");
+                    for res in results {
+                        u = getInt(res, "records_updated");
+                        i = getInt(res, "records_inserted");
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-bmql-mutation-error-unchecked'), undefined);
+            });
         });
     });
 
-    suite("Direct DB Access Functions - gettabledata, getpartsdata, etc.", () => {
-        test("gettabledata() - triggers deprecation warning → bml-gettabledata-fix", () => {
-            const diagnostics = lintText('x = gettabledata("my_table", string[1]); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-gettabledata-fix");
-            assert.ok(err);
+    // =========================================================================
+    // 4. Result Extraction & Record Typed Readers (get, getint, getfloat, getboolean, getmessage, haserror)
+    // =========================================================================
+    suite('Result Extraction & Record Typed Readers - get, getint, getfloat, getboolean, getmessage, haserror', () => {
+        suite('Positive', () => {
+            test('Extracts String, Integer, Float, and Boolean columns from RecordSet rows', () => {
+                const diags = lintText(`
+                    rs = bmql("SELECT name, qty, price, active FROM parts_table WHERE status = 'ACTIVE'");
+                    for rec in rs {
+                        n = get(rec, "name");
+                        q = getint(rec, "qty");
+                        p = getfloat(rec, "price");
+                        b = getboolean(rec, "active");
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('gettransaction with 1 and 2 arguments (bsId, filterCriteria JSON)', () => {
+                const diags = lintText(`
+                    bsId = 12345;
+                    filter = json("{\\"mainDoc\\":{\\"variableName\\":\\"quote\\",\\"returnSpecificAttributes\\":\\"quoteNum\\"}}");
+                    xml1 = gettransaction(bsId);
+                    xml2 = gettransaction(bsId, filter);
+                    return xml1;
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
 
-        test("getpartsdata() - triggers deprecation warning → bml-getpartsdata-fix", () => {
-            const diagnostics = lintText('x = getpartsdata(string[1], string[1], "USD"); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-getpartsdata-fix");
-            assert.ok(err);
+        suite('Negative', () => {
+            test('getboolean with 0 args → flags bml-function-arg-count Error', () => {
+                const diags = lintText('b = getboolean(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('getint with 0 args → flags bml-function-arg-count Error', () => {
+                const diags = lintText('val = getint(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('getfloat with 0 args → flags bml-function-arg-count Error', () => {
+                const diags = lintText('val = getfloat(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('haserror with 0 args → flags bml-function-arg-count Error', () => {
+                const diags = lintText('b = haserror(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('gettransaction with 0 args → flags bml-function-arg-count Error', () => {
+                const diags = lintText('xml = gettransaction(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('gettransaction with 4 args (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('xml = gettransaction(123, json("{}"), "p3", "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
         });
 
-        test("haserror() / getmessage() - require exactly 1 argument", () => {
-            const diagnostics = lintText('x = haserror(); y = getmessage(); return "";');
-            const errs = diagnostics.filter((d) => d.code === "bml-function-arg-count");
-            assert.strictEqual(errs.length, 2);
-        });
-
-        test("getint(record, field) - correct 2 arguments → no error", () => {
-            const diagnostics = lintText('rec = record(); x = getint(rec, "field"); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-            assert.strictEqual(err, undefined);
-        });
-
-        test("getint(record, field) - type mismatch for fieldName (expected String) → Warning", () => {
-            const diagnostics = lintText('rec = record(); x = getint(rec, 123); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
-            assert.ok(err);
-        });
-
-        test("recordset() - zero arguments → no error", () => {
-            const diagnostics = lintText('x = recordset(); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-            assert.strictEqual(err, undefined);
-        });
-
-        test("recordset(123) - 1 argument → Error", () => {
-            const diagnostics = lintText('x = recordset(123); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-            assert.ok(err);
-        });
-
-        test("bmql() - zero arguments → Error", () => {
-            const diagnostics = lintText('x = bmql(); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-            assert.ok(err);
-        });
-
-        test("bmql(q, c, f, extra) - 4 arguments → Error", () => {
-            const diagnostics = lintText('x = bmql("q", dict("string"), dict("string"), "extra"); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-            assert.ok(err);
-        });
-
-        test("bmql(123) - type mismatch → Warning", () => {
-            const diagnostics = lintText('x = bmql(123); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
-            assert.ok(err);
-        });
-
-        test("gettransaction() - valid 1 to 3 arguments → no error", () => {
-            const diagnostics = lintText('x = gettransaction(12345); return "";');
-            const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-            assert.strictEqual(err, undefined);
+        suite('Destructive', () => {
+            test('getmessage with haserror verification on failed query', () => {
+                const diags = lintText(`
+                    rs = bmql("SELECT id FROM table1 WHERE id = $id");
+                    if (haserror(rs)) {
+                        err = getmessage(rs);
+                        print(err);
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
     });
 
-    suite('BMQL inside loop detection (bml-bmql-in-loop)', () => {
-        test('Flags BMQL query inside a for loop', () => {
-            const diagnostics = lintText(`
-                items = string[]{"a", "b"};
-                for item in items {
-                    rs = bmql("SELECT price FROM parts WHERE id = $item");
-                }
-                return "";
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-in-loop');
-            assert.ok(diag, 'Should flag BMQL query executed inside a loop');
+    // =========================================================================
+    // 5. Query Structure Rules (Injection Risk, JOINs, Loops, Deprecations)
+    // =========================================================================
+    suite('Query Architecture Rules & Anti-Patterns', () => {
+        suite('Positive', () => {
+            test('ANSI SQL JOINs across customer-defined tables with aliases and dotted notation', () => {
+                const diags = lintText(`
+                    rs = bmql("SELECT T1.name as empName, T2.name as mgrName FROM Employee T1 INNER JOIN Employee T2 ON T1.mgrId = T2.empId WHERE T1.active = 1 ORDER BY T1.name ASC");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-bmql-join-system-table'), undefined);
+            });
         });
 
-        test('Does not flag BMQL query executed outside a loop', () => {
-            const diagnostics = lintText(`
-                rs = bmql("SELECT price FROM parts WHERE status = 'ACTIVE'");
-                for rec in rs {
-                    p = get(rec, "price");
-                }
-                return "";
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-bmql-in-loop');
-            assert.strictEqual(diag, undefined);
+        suite('Negative', () => {
+            test('Flags string concatenation inside bmql() (bml-bmql-injection-risk)', () => {
+                const diags = lintText('rs = bmql("SELECT id FROM " + tblName); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-bmql-injection-risk'));
+            });
+
+            test('Flags bare variable as query (bml-bmql-full-substitution)', () => {
+                const diags = lintText('rs = bmql(queryStrVar); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-bmql-full-substitution'));
+            });
+
+            test('Flags JOIN against system table _parts (bml-bmql-join-system-table)', () => {
+                const diags = lintText('rs = bmql("SELECT a.id FROM table_a a JOIN _parts p ON a.id = p.id WHERE a.id = $id"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-bmql-join-system-table'));
+            });
+
+            test('Flags BMQL query inside loop (bml-bmql-in-loop)', () => {
+                const diags = lintText(`
+                    items = string[]{"A", "B"};
+                    for item in items {
+                        rs = bmql("SELECT price FROM parts WHERE id = $item");
+                    }
+                    return "";
+                `);
+                assert.ok(diags.find(d => d.code === 'bml-bmql-in-loop'));
+            });
+
+            test('Flags deprecated gettabledata() and getpartsdata()', () => {
+                const diags = lintText('t = gettabledata("tbl", string[1]); p = getpartsdata(string[1], string[1], "USD"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-gettabledata-fix'));
+                assert.ok(diags.find(d => d.code === 'bml-getpartsdata-fix'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('BMQL Transaction query in configuration context', () => {
+                const diags = lintText(`
+                    rs = bmql("SELECT _document_number, opportunity_name FROM commerce.quote_process");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
     });
 });

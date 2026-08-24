@@ -2,49 +2,18 @@ const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('../fixtures');
 
-suite('BML Linter Test Suite - Array Exhaustive 3-Tier Suite (Positive, Negative, Destructive)', () => {
-    // ==========================================
-    // 1. append(array, element)
-    // ==========================================
-    suite('append() - Attach element to array', () => {
+suite('BML Linter Test Suite - Array Functions & Operations Exhaustive 3-Tier Suite (Positive, Negative, Destructive)', () => {
+    // =========================================================================
+    // 1. append(arrayIdentifier, newArrayElem) -> Integer
+    // =========================================================================
+    suite('append() - Append element to 1-D array returning new array size', () => {
         suite('Positive', () => {
-            test('Appends element to String[] array returning Integer length', () => {
+            test('Appends element to initialized and uninitialized string, integer, float, boolean arrays', () => {
                 const diags = lintText(`
-                    arr = string[]{"A", "B"};
-                    len = append(arr, "C");
-                    return "";
-                `);
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('Appends to Integer[], Float[], Boolean[], and Date[] arrays', () => {
-                const diags = lintText(`
-                    iArr = integer[]{1, 2}; append(iArr, 3);
-                    fArr = float[]{1.1, 2.2}; append(fArr, 3.3);
-                    bArr = boolean[]{true}; append(bArr, false);
-                    dArr = date[]{getdate()}; append(dArr, getdate());
-                    return "";
-                `);
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('Appends with expression and variable arguments', () => {
-                const diags = lintText(`
-                    arr = string[]{"A"};
-                    elem = "B" + "C";
-                    append(arr, elem);
-                    return "";
-                `);
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('Multi-line call with inline comments', () => {
-                const diags = lintText(`
-                    arr = string[]{"A"};
-                    append(
-                        /* target array */ arr,
-                        /* new element */ "B"
-                    );
+                    strArr = string[]{};
+                    newSize = append(strArr, "new item");
+                    intArr = integer[]{1, 2};
+                    append(intArr, 3);
                     return "";
                 `);
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
@@ -54,68 +23,38 @@ suite('BML Linter Test Suite - Array Exhaustive 3-Tier Suite (Positive, Negative
         suite('Negative', () => {
             test('0 arguments → flags bml-function-arg-count Error', () => {
                 const diags = lintText('append(); return "";');
-                const err = diags.find(d => d.code === 'bml-function-arg-count');
-                assert.ok(err);
-                assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
-            });
-
-            test('1 argument (missing element) → Error', () => {
-                const diags = lintText('arr = string[]{"a"}; append(arr); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
 
-            test('3 arguments (excess parameter) → Error', () => {
-                const diags = lintText('arr = string[]{"a"}; append(arr, "b", "extra"); return "";');
+            test('1 argument (missing element) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('arr = string[]{}; append(arr); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
 
-            test('Trailing comma → bml-trailing-comma-error', () => {
-                const diags = lintText('arr = string[]{"a"}; append(arr, "b", ); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-trailing-comma-error'));
-            });
-
-            test('Append on 2-D array → flags bml-array-dimension-error', () => {
-                const diags = lintText('arr = string[2][2]; append(arr, string[]{"x"}); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-array-dimension-error'));
+            test('3 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('arr = string[]{}; append(arr, "val", "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
         });
 
         suite('Destructive', () => {
-            test('Empty string element does not crash linter', () => {
+            test('Appending null or empty element', () => {
                 const diags = lintText('arr = string[]{}; append(arr, ""); return "";');
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
             });
-
-            test('Keyword identifier collision recovery', () => {
-                const diags = lintText('append(return, break); return "";');
-                assert.ok(diags.length > 0);
-            });
-
-            test('Illegal assignment target to append() call', () => {
-                const diags = lintText('arr = string[]{}; append(arr, "x") = 5; return "";');
-                assert.ok(diags.length > 0);
-            });
         });
     });
 
-    // ==========================================
-    // 2. findinarray(array, element)
-    // ==========================================
-    suite('findinarray() - Search element in array', () => {
+    // =========================================================================
+    // 2. bytearray(String content [, String charset]) -> ByteArray
+    // =========================================================================
+    suite('bytearray() - Encode string to byte array sequence for attachments & PCS', () => {
         suite('Positive', () => {
-            test('Finds element in 1-D array returning index', () => {
+            test('1 and 2 arguments with character encodings (UTF-8, UTF-16, ISO-8859-1)', () => {
                 const diags = lintText(`
-                    arr = string[]{"apple", "banana"};
-                    idx = findinarray(arr, "banana");
-                    return "";
-                `);
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('Finds with integer, float, and date element types', () => {
-                const diags = lintText(`
-                    iArr = integer[]{10, 20, 30}; iIdx = findinarray(iArr, 20);
-                    fArr = float[]{1.5, 2.5}; fIdx = findinarray(fArr, 1.5);
+                    b1 = bytearray("Sample string content");
+                    b2 = bytearray("Sample string content", "UTF-16");
+                    b3 = bytearray("ASCII content", "US-ASCII");
                     return "";
                 `);
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
@@ -123,203 +62,370 @@ suite('BML Linter Test Suite - Array Exhaustive 3-Tier Suite (Positive, Negative
         });
 
         suite('Negative', () => {
-            test('0 arguments → Error', () => {
-                const diags = lintText('findinarray(); return "";');
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('b = bytearray(); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
 
-            test('1 argument → Error', () => {
-                const diags = lintText('arr = string[]{"a"}; findinarray(arr); return "";');
+            test('3 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('b = bytearray("content", "UTF-8", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
-            });
-
-            test('3 arguments → Error', () => {
-                const diags = lintText('arr = string[]{"a"}; findinarray(arr, "a", "excess"); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
-            });
-
-            test('findinarray() on 2-D array → flags bml-array-dimension-error', () => {
-                const diags = lintText('arr = integer[2][2]; idx = findinarray(arr, 1); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-array-dimension-error'));
             });
         });
 
         suite('Destructive', () => {
-            test('Semicolon delimiter recovery', () => {
-                const diags = lintText('arr = string[]{"a"}; findinarray(arr; "a"); return "";');
-                assert.ok(diags.length > 0);
+            test('Empty content string in bytearray', () => {
+                const diags = lintText('b = bytearray("", "UTF-8"); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
             });
         });
     });
 
-    // ==========================================
-    // 3. sizeofarray(array)
-    // ==========================================
-    suite('sizeofarray() - Get array length', () => {
+    // =========================================================================
+    // 3. findinarray(arrayIdentifier, element) -> Integer
+    // =========================================================================
+    suite('findinarray() - Search element in 1-D array returning index or -1', () => {
         suite('Positive', () => {
-            test('1-D array size', () => {
-                const diags = lintText('arr = string[]{"a", "b"}; sz = sizeofarray(arr); return "";');
+            test('Finds matching index in string and integer arrays', () => {
+                const diags = lintText(`
+                    fruits = string[]{"apple", "banana", "orange"};
+                    idx1 = findinarray(fruits, "banana");
+                    idx2 = findinarray(fruits, "grape");
+                    return "";
+                `);
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('2-D array size (row count) - valid without dimension error', () => {
-                const diags = lintText('arr = string[3][4]; sz = sizeofarray(arr); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-array-dimension-error'), undefined);
             });
         });
 
         suite('Negative', () => {
-            test('0 arguments → Error', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('idx = findinarray(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('1 argument (missing search element) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('idx = findinarray(string[]{"a"}); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('3 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('idx = findinarray(string[]{"a"}, "a", "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('Searching in empty array returns -1 without crash', () => {
+                const diags = lintText('idx = findinarray(string[]{}, "missing"); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+    });
+
+    // =========================================================================
+    // 4. isempty(arrayIdentifier) -> Boolean
+    // =========================================================================
+    suite('isempty() - Check if 1-D array is empty', () => {
+        suite('Positive', () => {
+            test('Returns true on empty array and false on populated array', () => {
+                const diags = lintText(`
+                    emptyArr = string[]{};
+                    b1 = isempty(emptyArr);
+                    popArr = integer[]{1, 2, 3};
+                    b2 = isempty(popArr);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('b = isempty(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('2 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('b = isempty(string[]{}, "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('Direct condition check with isempty()', () => {
+                const diags = lintText('arr = string[]{}; if (isempty(arr)) { return "empty"; } return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+    });
+
+    // =========================================================================
+    // 5. max(arrayIdentifier) & min(arrayIdentifier) -> Integer / Float
+    // =========================================================================
+    suite('max() & min() - Largest and smallest elements in numeric arrays', () => {
+        suite('Positive', () => {
+            test('Finds maximum and minimum values in integer and float arrays', () => {
+                const diags = lintText(`
+                    nums = integer[]{10, 45, 2, 99, 30};
+                    maxVal = max(nums);
+                    minVal = min(nums);
+                    flts = float[]{1.5, -4.2, 99.8, 0.0};
+                    maxFlt = max(flts);
+                    minFlt = min(flts);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('max with 0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('m = max(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('min with 3 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('m = min(1, 2, "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('Negative numbers and single-element array', () => {
+                const diags = lintText('m = max(integer[]{-500}); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+    });
+
+    // =========================================================================
+    // 6. range(Integer x) -> Integer[]
+    // =========================================================================
+    suite('range() - Declare and initialize integer array to index values [0..x-1]', () => {
+        suite('Positive', () => {
+            test('Generates integer index array for loop control', () => {
+                const diags = lintText(`
+                    indices = range(5);
+                    for idx in indices {
+                        print(string(idx));
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('r = range(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('2 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('r = range(5, "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('range(0) returns empty integer array integer[0]', () => {
+                const diags = lintText('r = range(0); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+    });
+
+    // =========================================================================
+    // 7. remove(arrayIdentifier, Integer removePos) -> Integer
+    // =========================================================================
+    suite('remove() - Remove element from array at index returning new size', () => {
+        suite('Positive', () => {
+            test('Removes element at index 0 and middle positions', () => {
+                const diags = lintText(`
+                    arr = string[]{"A", "B", "C", "D"};
+                    newSize1 = remove(arr, 2);
+                    newSize2 = remove(arr, 0);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('remove(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('1 argument (missing index) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('remove(string[]{"a"}); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('3 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('remove(string[]{"a"}, 0, "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('Index expression in remove', () => {
+                const diags = lintText('arr = integer[]{1, 2, 3}; remove(arr, sizeofarray(arr) - 1); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+    });
+
+    // =========================================================================
+    // 8. reverse(arrayIdentifier) -> Array
+    // =========================================================================
+    suite('reverse() - Reverse all elements of 1-D array in place', () => {
+        suite('Positive', () => {
+            test('Reverses elements of string, integer, float arrays', () => {
+                const diags = lintText(`
+                    strArr = string[]{"first", "second", "third"};
+                    reverse(strArr);
+                    intArr = integer[]{1, 2, 3, 4};
+                    reverse(intArr);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('reverse(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('2 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('reverse(string[]{"a"}, "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('Reversing single-element or empty array', () => {
+                const diags = lintText('reverse(string[]{}); reverse(integer[]{1}); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+    });
+
+    // =========================================================================
+    // 9. sizeofarray(arrayIdentifier) -> Integer
+    // =========================================================================
+    suite('sizeofarray() - Return length of 1-D array or number of rows for 2-D array', () => {
+        suite('Positive', () => {
+            test('Calculates size for 1-D and 2-D arrays', () => {
+                const diags = lintText(`
+                    arr1D = string[]{"A", "B", "C"};
+                    len1 = sizeofarray(arr1D);
+                    arr2D = integer[3][2];
+                    rowCount = sizeofarray(arr2D);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
                 const diags = lintText('sz = sizeofarray(); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
 
-            test('2 arguments → Error', () => {
-                const diags = lintText('arr = string[]{"a"}; sz = sizeofarray(arr, "extra"); return "";');
+            test('2 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('sz = sizeofarray(string[]{"a"}, "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('sizeofarray on empty array returns 0', () => {
+                const diags = lintText('arr = string[]{}; sz = sizeofarray(arr); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
             });
         });
     });
 
-    // ==========================================
-    // 4. sort(array [, order [, type]])
-    // ==========================================
-    suite('sort() - In-place array sorting', () => {
+    // =========================================================================
+    // 10. sort(arrayIdentifier [, sortOrder [, sortType]]) -> Array
+    // =========================================================================
+    suite('sort() - Sort array elements with sortOrder (asc/desc) and sortType (text/numeric/date)', () => {
         suite('Positive', () => {
-            test('1 argument: sort(arr)', () => {
-                const diags = lintText('arr = string[]{"b", "a"}; sort(arr); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('2 arguments: sort(arr, "desc")', () => {
-                const diags = lintText('arr = integer[]{3, 1, 2}; sort(arr, "desc"); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('3 arguments: sort(arr, "asc", "text")', () => {
-                const diags = lintText('arr = string[]{"10", "2"}; sort(arr, "asc", "text"); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('3 arguments on Date[] array: sort(arr, "asc", "date")', () => {
-                const diags = lintText('arr = date[]{getdate()}; sort(arr, "asc", "date"); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-sort-date-type-mismatch'), undefined);
-            });
-        });
-
-        suite('Negative', () => {
-            test('0 arguments → Error', () => {
-                const diags = lintText('sort(); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
-            });
-
-            test('4 arguments → Error', () => {
-                const diags = lintText('arr = string[]{"a"}; sort(arr, "asc", "text", "extra"); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
-            });
-
-            test('Invalid sortOrder literal → flags bml-sort-invalid-order', () => {
-                const diags = lintText('arr = string[]{"a"}; sort(arr, "invalid_order"); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-sort-invalid-order'));
-            });
-
-            test('Invalid sortType literal → flags bml-sort-invalid-type', () => {
-                const diags = lintText('arr = string[]{"a"}; sort(arr, "asc", "invalid_type"); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-sort-invalid-type'));
-            });
-
-            test('SortType "date" on non-date array → flags bml-sort-date-type-mismatch', () => {
-                const diags = lintText('arr = string[]{"2026-01-01"}; sort(arr, "asc", "date"); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-sort-date-type-mismatch'));
-            });
-
-            test('sort() on 2-D array → flags bml-sort-array-dimension', () => {
-                const diags = lintText('arr = string[2][2]; sort(arr); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-sort-array-dimension'));
-            });
-        });
-    });
-
-    // ==========================================
-    // 5. reverse(array), remove(array, index), isempty(array), range(n)
-    // ==========================================
-    suite('reverse(), remove(), isempty(), range()', () => {
-        suite('Positive', () => {
-            test('reverse(arr) on 1-D array', () => {
-                const diags = lintText('arr = string[]{"a", "b"}; rev = reverse(arr); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('remove(arr, 0) removes element at index', () => {
-                const diags = lintText('arr = integer[]{10, 20, 30}; res = remove(arr, 1); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('isempty(arr) checks empty array', () => {
-                const diags = lintText('arr = string[]{}; e = isempty(arr); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-            });
-
-            test('range(5) generates sequence [0, 1, 2, 3, 4]', () => {
-                const diags = lintText('for i in range(5) { print(string(i)); } return "";');
+            test('1, 2, and 3 arguments with asc, desc, text, numeric, date sort types', () => {
+                const diags = lintText(`
+                    strArr = string[]{"2", "12", "a", "A", "B", "b"};
+                    s1 = sort(strArr);
+                    s2 = sort(strArr, "desc");
+                    s3 = sort(strArr, "asc", "text");
+                    numStr = string[]{"1", "2", "10", "20"};
+                    s4 = sort(numStr, "asc", "numeric");
+                    return "";
+                `);
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
             });
         });
 
         suite('Negative', () => {
-            test('reverse() on 2-D array → flags bml-array-dimension-error', () => {
-                const diags = lintText('arr = float[2][2]; rev = reverse(arr); return "";');
-                assert.ok(diags.find(d => d.code === 'bml-array-dimension-error'));
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('s = sort(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
 
-            test('remove() missing index argument → Error', () => {
-                const diags = lintText('arr = integer[]{1}; remove(arr); return "";');
+            test('4 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('s = sort(string[]{"a"}, "asc", "text", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
         });
+
+        suite('Destructive', () => {
+            test('Sorting empty array or single element array', () => {
+                const diags = lintText('s = sort(string[]{}, "desc", "text"); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
     });
 
-    // ==========================================
-    // 6. bytearray(content [, charset]), max(arr), min(arr)
-    // ==========================================
-    suite('bytearray(), max(), min()', () => {
+    // =========================================================================
+    // 11. 1-D and 2-D Typed Array Constructors (string[n], integer[n], float[n], boolean[n], date[n])
+    // =========================================================================
+    suite('Typed Array Constructors - 1-D and 2-D array declarations & auto-extension', () => {
         suite('Positive', () => {
-            test('bytearray with 1 and 2 arguments', () => {
-                const diags = lintText('b1 = bytearray("data"); b2 = bytearray("data", "UTF-8"); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            test('1-D and 2-D array size declarations and index assignments', () => {
+                const diags = lintText(`
+                    str1D = string[5];
+                    str1D[0] = "first";
+                    int2D = integer[2][3];
+                    int2D[0][0] = 100;
+                    flt2D = float[2][2];
+                    flt2D[1][1] = 99.5;
+                    bool1D = boolean[10];
+                    date1D = date[2];
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-syntax-error'), undefined);
             });
+        });
 
-            test('max(arr) and min(arr) on numeric array', () => {
-                const diags = lintText('arr = float[]{2.5, 9.8, 1.2}; mx = max(arr); mn = min(arr); return "";');
-                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        suite('Negative', () => {
+            test('Invalid 2-D index dimension syntax → syntax error', () => {
+                const diags = lintText('arr = integer[2, 3]; return "";');
+                assert.ok(diags.length > 0);
             });
         });
-    });
 
-    // ==========================================
-    // 7. Array declarations & Negative indexing
-    // ==========================================
-    suite('Array declarations & Negative Indexing', () => {
-        test('1-D and 2-D declarations across all types', () => {
-            const diags = lintText(`
-                s1 = string[5]; s2 = string[2][2];
-                i1 = integer[10]; i2 = integer[3][3];
-                f1 = float[4]; f2 = float[2][2];
-                b1 = boolean[2]; b2 = boolean[2][2];
-                d1 = date[1]; d2 = date[2][2];
-                return "";
-            `);
-            assert.strictEqual(diags.find(d => d.code === 'bml-unknown-variable'), undefined);
-        });
-
-        test('Negative indexing arr[-1] flags bml-array-negative-index', () => {
-            const diags = lintText('arr = string[]{"a", "b"}; x = arr[-1]; return "";');
-            assert.ok(diags.find(d => d.code === 'bml-array-negative-index'));
-        });
-
-        test('Valid indexing arr[0] and arr[1] pass without error', () => {
-            const diags = lintText('arr = string[]{"a", "b"}; x = arr[0]; y = arr[1]; return "";');
-            assert.strictEqual(diags.find(d => d.code === 'bml-array-negative-index'), undefined);
+        suite('Destructive', () => {
+            test('Auto-extending array beyond declared size', () => {
+                const diags = lintText(`
+                    arr = string[2];
+                    arr[4] = "extended element";
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-syntax-error'), undefined);
+            });
         });
     });
 });

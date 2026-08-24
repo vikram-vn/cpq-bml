@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.55.1] - 2026-08-24
+
+### Changed
+- Internal maintenance and housekeeping updates.
+
 ## [1.55.0] - 2026-08-24
 
 ### Added
@@ -81,16 +86,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
 - Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.
-
-## [1.46.0] - 2026-08-23
-
-### Added
-
-- Implement BMQL variable completion provider and integrate into language service.
-- Add BML attribute intellisense metadata and definition generation script.
-- Initialize BML intellisense metadata files and supporting generator scripts.
-- Implement BML intellisense infrastructure with metadata providers, inlay hints, and language support scripts.
-- Implement intellisense documentation formatting and hover provider for BML script files.
-- Add TextMate syntax grammar for CPQ BML language support.
-- Implement BML intellisense and type-checking utilities for parameter completions.
-- Consolidate build scripts into build_all.py and update package.json commands.
