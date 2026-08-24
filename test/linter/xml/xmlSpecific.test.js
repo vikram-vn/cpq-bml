@@ -17,10 +17,12 @@ suite('BML Linter Test Suite - XML Exhaustive 3-Tier Suite (Positive, Negative, 
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
             });
 
-            test('readxmlmultiple(xml, xpath) returns String[] array', () => {
+            test('readxmlmultiple(xml, xpath) returns Dictionary of results (2 and 3 args)', () => {
                 const diags = lintText(`
                     xml = "<root><item>A</item><item>B</item></root>";
-                    items = readxmlmultiple(xml, "/root/item");
+                    xpaths = string[]{"/root/item"};
+                    items1 = readxmlmultiple(xml, xpaths);
+                    items2 = readxmlmultiple(xml, xpaths, "Default Error Message");
                     return "";
                 `);
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
@@ -38,8 +40,12 @@ suite('BML Linter Test Suite - XML Exhaustive 3-Tier Suite (Positive, Negative, 
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
 
-            test('readxmlmultiple with 3 arguments (excess) → flags bml-function-arg-count Error', () => {
-                const diags = lintText('items = readxmlmultiple("<root/>", "/root", "extra"); return "";');
+            test('readxmlmultiple with 4 arguments (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText(`
+                    xpaths = string[]{"/root"};
+                    items = readxmlmultiple("<root/>", xpaths, "default", "excess");
+                    return "";
+                `);
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
             });
 

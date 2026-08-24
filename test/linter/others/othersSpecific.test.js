@@ -2,7 +2,10 @@ const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('../fixtures');
 
-suite('BML Linter Test Suite - Others / BOM / Sessions / SysConfig Specific & Edge Tests', () => {
+suite('BML Linter Test Suite - Others / BOM / Sessions / SysConfig Exhaustive 3-Tier Suite', () => {
+    // =========================================================================
+    // 1. StringBuilder Functions (stringbuilder, sbappend, sbtostring)
+    // =========================================================================
     suite('StringBuilder functions (stringbuilder, sbappend, sbtostring)', () => {
         suite('sbtostring() - Positive, Negative, and Destructive Tests', () => {
             test('Positive: standard 1 argument on StringBuilder instance', () => {
@@ -125,73 +128,174 @@ suite('BML Linter Test Suite - Others / BOM / Sessions / SysConfig Specific & Ed
         });
     });
 
+    // =========================================================================
+    // 2. Global Dictionary & User Session Functions
+    // =========================================================================
     suite('Global Dictionary & User Session functions', () => {
-        test('globaldictset("key", "val") & globaldictget("key") & globaldictremove("key")', () => {
-            const diags = lintText(`
-                s = globaldictset("k1", "v1");
-                v = globaldictget("k1");
-                r = globaldictremove("k1");
-                return "";
-            `);
-            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        suite('Positive', () => {
+            test('globaldictset("key", "val") & globaldictget("key") & globaldictremove("key")', () => {
+                const diags = lintText(`
+                    s = globaldictset("k1", "v1");
+                    v = globaldictget("k1");
+                    r = globaldictremove("k1");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('usersessionset("key", "val") & usersessionget("key") & usersessionremove("key")', () => {
+                const diags = lintText(`
+                    usersessionset("k1", "v1");
+                    v = usersessionget("k1");
+                    r = usersessionremove("k1");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
 
-        test('usersessionset("key", "val") & usersessionget("key") & usersessionremove("key")', () => {
-            const diags = lintText(`
-                usersessionset("k1", "v1");
-                v = usersessionget("k1");
-                r = usersessionremove("k1");
-                return "";
-            `);
-            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-        });
-    });
+        suite('Negative', () => {
+            test('globaldictset with 1 arg (missing value) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('s = globaldictset("k1"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
 
-    suite('BOM Mapping functions (convertbomtohier, convertbomtoflat, applybom)', () => {
-        test('convertbomtohier(j) & convertbomtoflat(j) - valid 1 arg', () => {
-            const diags = lintText(`
-                j = json("{}");
-                h = convertbomtohier(j);
-                f = convertbomtoflat(j);
-                return "";
-            `);
-            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
-        });
-
-        test('applybom(base, one) - valid 2 args', () => {
-            const diags = lintText(`
-                base = json("{}");
-                one = json("{}");
-                res = applybom(base, one);
-                return "";
-            `);
-            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            test('usersessionget with 0 args → flags bml-function-arg-count Error', () => {
+                const diags = lintText('v = usersessionget(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
         });
     });
 
-    suite('General helper functions (print, isnull, throwerror, generateuuid, logtime)', () => {
-        test('print("msg") / isnull("str") / throwerror("error") / generateuuid() / logtime("tag", 100) - valid', () => {
-            const diags = lintText(`
-                print("Logging message");
-                n = isnull("sample");
-                u = generateuuid();
-                logtime("perf_step", 150);
-                return "";
-            `);
-            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+    // =========================================================================
+    // 3. BOM Mapping Functions (convertbomtohier, convertbomtoflat, applybom, getbom, savebom, calculatedeltabom)
+    // =========================================================================
+    suite('BOM Functions (convertbomtohier, convertbomtoflat, applybom, getbom, savebom, calculatedeltabom)', () => {
+        suite('Positive', () => {
+            test('convertbomtohier(j) & convertbomtoflat(j) - valid 1 arg', () => {
+                const diags = lintText(`
+                    j = json("{}");
+                    h = convertbomtohier(j);
+                    f = convertbomtoflat(j);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('applybom(base, one) - valid 2 args', () => {
+                const diags = lintText(`
+                    b = json("{}");
+                    o = json("{}");
+                    res = applybom(b, o);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('getbom(bsId, lineNum [, ...]) - 2 to 6 arguments', () => {
+                const diags = lintText(`
+                    b2 = getbom(12345, 1);
+                    fields = string[]{"partNumber", "quantity"};
+                    b3 = getbom(12345, 1, fields);
+                    b4 = getbom(12345, 1, fields, true);
+                    b5 = getbom(12345, 1, fields, true, false);
+                    b6 = getbom(12345, 1, fields, true, false, true);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('savebom(bsId, bomJson [, configKey]) - 2 to 3 arguments', () => {
+                const diags = lintText(`
+                    s2 = savebom(12345, json("{}"));
+                    s3 = savebom(12345, json("{}"), "rootKey");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('calculatedeltabom(priorBom, currentBom, inputBom [, setting]) - 3 to 4 arguments', () => {
+                const diags = lintText(`
+                    p = json("{}"); c = json("{}"); i = json("{}");
+                    d3 = calculatedeltabom(p, c, i);
+                    d4 = calculatedeltabom(p, c, i, json("{}"));
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
         });
 
-        test('BOM & Commerce functions (getbom, savebom, calculatedeltabom, setattributevalue, getoldvalue)', () => {
-            const diags = lintText(`
-                b = getbom(12345, 1);
-                sb = savebom(12345, json("{}"));
-                delta = calculatedeltabom(json("{}"), json("{}"), json("{}"));
-                setattributevalue(1, "attr", "val");
-                old = getoldvalue("attr", 1);
-                hmac = generatehmacmessage("secret", "message", "HmacSHA256");
-                return "";
-            `);
-            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        suite('Negative', () => {
+            test('getbom with 1 argument → flags bml-function-arg-count Error', () => {
+                const diags = lintText('b = getbom(12345); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('savebom with 1 argument → flags bml-function-arg-count Error', () => {
+                const diags = lintText('s = savebom(12345); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('calculatedeltabom with 2 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('d = calculatedeltabom(json("{}"), json("{}")); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
+    });
+
+    // =========================================================================
+    // 4. Commerce & System Helpers (setattributevalue, getoldvalue, generatehmacmessage, print, isnull, throwerror, generateuuid, logtime)
+    // =========================================================================
+    suite('Commerce & System Helpers (setattributevalue, getoldvalue, generatehmacmessage, print, isnull, throwerror, generateuuid, logtime)', () => {
+        suite('Positive', () => {
+            test('Commerce attribute operations: setattributevalue & getoldvalue', () => {
+                const diags = lintText(`
+                    setattributevalue(1, "price_each", 100.50);
+                    oldVal = getoldvalue("price_each", 1);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('Security & Cryptography: generatehmacmessage(msg, key [, algorithm])', () => {
+                const diags = lintText(`
+                    sig1 = generatehmacmessage("payload", "secretKey");
+                    sig2 = generatehmacmessage("payload", "secretKey", "HmacSHA256");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('System Diagnostics: print, isnull, throwerror, generateuuid, logtime', () => {
+                const diags = lintText(`
+                    print("Debug message");
+                    b = isnull("sample");
+                    uid = generateuuid();
+                    logtime("timestamp_marker", 125);
+                    if (b) {
+                        throwerror("Fatal error message");
+                    }
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('generatehmacmessage with 4 args (excess) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('sig = generatehmacmessage("payload", "key", "SHA256", "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('getoldvalue with 0 args (missing parameter) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('old = getoldvalue(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('getoldvalue with 3 args (excess parameter) → flags bml-function-arg-count Error', () => {
+                const diags = lintText('old = getoldvalue("attr", 1, "excess"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
         });
     });
 });
