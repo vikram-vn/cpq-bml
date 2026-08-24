@@ -754,7 +754,7 @@
     {
       "scope": "keyword.operator.logical.bml",
       "settings": {
-        "foreground": "#8250df",
+        "foreground": "#cf222e",
         "fontStyle": "bold"
       }
     },

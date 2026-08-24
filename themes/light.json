@@ -656,7 +656,7 @@
     {
       "scope": "keyword.operator.logical.bml",
       "settings": {
-        "foreground": "#6f42c1",
+        "foreground": "#d73a49",
         "fontStyle": "bold"
       }
     },

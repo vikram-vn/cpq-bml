@@ -769,7 +769,7 @@
     {
       "scope": "keyword.operator.logical.bml",
       "settings": {
-        "foreground": "#d2a8ff",
+        "foreground": "#ff7b72",
         "fontStyle": "bold"
       }
     },
