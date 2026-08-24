@@ -48,14 +48,14 @@ suite("BML Linter Test Suite - Commerce Attributes Scope tests", () => {
         assert.strictEqual(diag, undefined);
     });
 
-    test("Allows Transaction attribute (_t) on loop variable iterating transactionLines", () => {
+    test("Allows Transaction attribute (_t) on loop variable iterating transactionLine", () => {
         const diagnostics = lintText(`
-            for itm in transactionLines {
+            for itm in transactionLine {
                 val = get(itm, "status_t");
             }
             return "";
         `);
         const diag = diagnostics.find(d => d.code === 'bml-commerce-attribute-scope-mismatch');
-        assert.strictEqual(diag, undefined, "Should allow _t attributes inside transactionLines loop");
+        assert.strictEqual(diag, undefined, "Should allow _t attributes inside transactionLine loop");
     });
 });

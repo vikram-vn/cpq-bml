@@ -63,20 +63,21 @@ function findDeprecatedRanges(documentText, document) {
     }
 
     const commentRanges = getCommentRanges(documentText);
-    const stringRanges = getStringRanges(documentText);
-
-    const buf = Buffer.from(documentText, 'utf8');
+    const chars = documentText.split('');
+    const len = chars.length;
     for (const [start, end] of commentRanges) {
-        for (let i = start; i < end; i++) {
-            if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+        for (let i = start; i < end && i < len; i++) {
+            if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
         }
     }
+    const cleanNoComments = chars.join('');
+    const stringRanges = getStringRanges(cleanNoComments);
     for (const [start, end] of stringRanges) {
-        for (let i = start; i < end; i++) {
-            if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+        for (let i = start; i < end && i < len; i++) {
+            if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
         }
     }
-    const cleanText = buf.toString('utf8');
+    const cleanText = chars.join('');
 
     const ranges = [];
     for (const regex of DEPRECATED_REGEXES) {

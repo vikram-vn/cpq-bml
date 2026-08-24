@@ -29,16 +29,23 @@ const { checkCommerceAttributes } = require('../rules/commerceAttributes');
 
 
 
-function blankBufferRanges(buf, ranges) {
-    if (!ranges || ranges.length === 0) return;
-    for (const [start, end] of ranges) {
-        for (let i = start; i < end; i++) {
-            const b = buf[i];
-            if (b !== 10 && b !== 13) {
-                buf[i] = 32; // ' '
-            }
+function blankRanges(text, ranges) {
+    if (!ranges || ranges.length === 0) return text;
+    let result = '';
+    let lastIndex = 0;
+    for (let i = 0; i < ranges.length; i++) {
+        const [start, end] = ranges[i];
+        if (start > lastIndex) {
+            result += text.slice(lastIndex, start);
         }
+        const slice = text.slice(start, end);
+        result += slice.replace(/[^\r\n]/g, ' ');
+        lastIndex = end;
     }
+    if (lastIndex < text.length) {
+        result += text.slice(lastIndex);
+    }
+    return result;
 }
 
 function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
@@ -51,16 +58,13 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     const isSpellingEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true);
 
     const commentRanges = getCommentRanges(text);
-    const buf = Buffer.from(text, 'utf8');
-    blankBufferRanges(buf, commentRanges);
-    const cleanText = buf.toString('utf8');
+    const cleanText = blankRanges(text, commentRanges);
 
     const conditionRanges = getConditionRanges(cleanText);
 
     // noStringsText additionally blanks strings, for checks that must not match inside string literals.
     const stringRanges = getStringRanges(cleanText);
-    blankBufferRanges(buf, stringRanges);
-    const noStringsText = buf.toString('utf8');
+    const noStringsText = blankRanges(cleanText, stringRanges);
 
     // Fast keyword pre-checks to skip irrelevant checker passes
     const hasConditions = conditionRanges.length > 0 || cleanText.includes('if') || cleanText.includes('elif');

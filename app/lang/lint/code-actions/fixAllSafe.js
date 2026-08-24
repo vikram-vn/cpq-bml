@@ -70,20 +70,21 @@ function buildFixAllText(document, relevantDiags) {
             const { getStringRanges } = require('../rules/strings');
 
             const commentRanges = getCommentRanges(text);
-            const buf = Buffer.from(text, 'utf8');
+            const chars = text.split('');
+            const len = chars.length;
             for (const [start, end] of commentRanges) {
-                for (let i = start; i < end; i++) {
-                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                for (let i = start; i < end && i < len; i++) {
+                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
                 }
             }
-            const cleanText = buf.toString('utf8');
+            const cleanText = chars.join('');
             const stringRanges = getStringRanges(cleanText);
             for (const [start, end] of stringRanges) {
-                for (let i = start; i < end; i++) {
-                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                for (let i = start; i < end && i < len; i++) {
+                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
                 }
             }
-            const noStringsText = buf.toString('utf8');
+            const noStringsText = chars.join('');
 
             const declaredVars = getDeclaredVariables(noStringsText, document);
             for (const [varName] of declaredVars.entries()) {
@@ -134,20 +135,21 @@ function buildFixAllText(document, relevantDiags) {
             const { getStringRanges } = require('../rules/strings');
 
             const commentRanges = getCommentRanges(text);
-            const buf = Buffer.from(text, 'utf8');
+            const chars = text.split('');
+            const len = chars.length;
             for (const [start, end] of commentRanges) {
-                for (let i = start; i < end; i++) {
-                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                for (let i = start; i < end && i < len; i++) {
+                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
                 }
             }
-            const cleanText = buf.toString('utf8');
+            const cleanText = chars.join('');
             const stringRanges = getStringRanges(cleanText);
             for (const [start, end] of stringRanges) {
-                for (let i = start; i < end; i++) {
-                    if (buf[i] !== 10 && buf[i] !== 13) buf[i] = 32;
+                for (let i = start; i < end && i < len; i++) {
+                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
                 }
             }
-            const noStringsText = buf.toString('utf8');
+            const noStringsText = chars.join('');
             const declaredVars = getDeclaredVariables(noStringsText, document);
 
             currentUnusedNames = computeTransitiveUnusedVariables(noStringsText, declaredVars, document, cleanText, initialUnusedNames);

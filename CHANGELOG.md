@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.56.0] - 2026-08-24
+
+### Added
+- Implement BML variable type checking and binary expression validation rules.
+- Add BML function metadata and validation rules for intellisense and linting.
+
 ## [1.55.1] - 2026-08-24
 
 ### Changed
@@ -77,12 +83,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Implement XSLT formatting, and code action support.
-- Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
-- Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.
-
-## [1.47.0] - 2026-08-23
-
-### Added
-
 - Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
 - Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.

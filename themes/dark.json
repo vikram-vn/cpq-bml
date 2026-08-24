@@ -634,7 +634,7 @@
     {
       "scope": "variable.other.transaction.attribute.bml",
       "settings": {
-        "foreground": "#f9826c",
+        "foreground": "#ffab70",
         "fontStyle": "bold"
       }
     },

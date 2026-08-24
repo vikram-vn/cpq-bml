@@ -72,11 +72,24 @@ function registerBmlCodeActions(context) {
                 // 1. Constructive Quick Fixes (camelCase, type suffixes, code quality fixes)
                 // 2. File-level & Category-level Safe Refactors
                 // 3. Fallback Suppressions (Disable for line/file)
-                return [
+                const allActions = [
                     ...constructiveFixes,
                     ...(fixAllActions || []),
                     ...suppressionFixes
                 ];
+
+                const seenKeys = new Set();
+                const uniqueActions = [];
+                for (const action of allActions) {
+                    if (!action || !action.title) continue;
+                    const key = `${action.title}|${action.kind ? action.kind.value : ''}`;
+                    if (!seenKeys.has(key)) {
+                        seenKeys.add(key);
+                        uniqueActions.push(action);
+                    }
+                }
+
+                return uniqueActions;
             }
         }, {
             providedCodeActionKinds: [

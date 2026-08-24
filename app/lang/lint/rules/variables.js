@@ -19,7 +19,7 @@ function getDeclaredVariables(cleanText, doc) {
       idx >= 0 &&
       (cleanText.charCodeAt(idx) === 60 || // '<'
         cleanText.charCodeAt(idx) === 62 || // '>'
-        cleanText.charCodeAt(idx) === 33)   // '!'
+        cleanText.charCodeAt(idx) === 33) // '!'
     ) {
       continue;
     }
@@ -116,6 +116,7 @@ function checkVariableDiagnostics(
         varName.toLowerCase() === "cpqjsready" ||
         varName.toLowerCase() === "transaction" ||
         varName.toLowerCase() === "line" ||
+        varName.toLowerCase() === "transactionline" ||
         varName.toLowerCase().startsWith("_") ||
         varName.toLowerCase().endsWith("_c") ||
         varName.toLowerCase().endsWith("_t") ||

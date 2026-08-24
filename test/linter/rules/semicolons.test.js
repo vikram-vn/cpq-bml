@@ -109,4 +109,16 @@ suite('BML Linter Test Suite - missing semicolons', () => {
         assert.strictEqual(diag.range.start.line, 3);
         assert.strictEqual(diag.range.start.character, 0, 'Should start at column 0 to highlight the full line');
     });
+
+    test('Linter does not flag missing semicolons on comments with multi-byte unicode characters (em-dash, smart quotes)', () => {
+        const diagnostics = lintText(`
+            // apply adjustment — no extendedCost_l override here.
+            // desiredFCValue exceeds totalPrice (cost > revenue at desired GM) – no discount applied
+            // Store the delta so the first child item’s service receives adjustment.
+            finalPrice = 0.0;
+            return finalPrice;
+        `);
+        const semicolonDiags = diagnostics.filter(d => d.message.includes('Missing semicolon'));
+        assert.strictEqual(semicolonDiags.length, 0, 'Should not flag missing semicolons on comments with unicode characters');
+    });
 });

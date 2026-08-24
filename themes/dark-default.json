@@ -743,7 +743,7 @@
     {
       "scope": "variable.other.transaction.attribute.bml",
       "settings": {
-        "foreground": "#f78166",
+        "foreground": "#ffa657",
         "fontStyle": "bold"
       }
     },
