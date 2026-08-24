@@ -40,2202 +40,1292 @@
     "message": "Unused variable: myDate"
   },
   {
-    "line": 12,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 12,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos1' should have a 'Dict' suffix (e.g. 'val_dict_pos1Dict')."
-  },
-  {
-    "line": 12,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos1')."
+    "line": 11,
+    "severity": "Hint",
+    "message": "Unused variable: myStrArr"
   },
   {
     "line": 12,
     "severity": "Hint",
-    "message": "Unused variable: val_dict_pos1"
-  },
-  {
-    "line": 13,
-    "severity": "Information",
-    "message": "Style Info: Variable 'var_dict_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_dict_arg_0')."
-  },
-  {
-    "line": 14,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos2' should have a 'Dict' suffix (e.g. 'val_dict_pos2Dict')."
-  },
-  {
-    "line": 14,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos2')."
-  },
-  {
-    "line": 14,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos2"
+    "message": "Unused variable: myIntArr"
   },
   {
     "line": 15,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos3' should have a 'Dict' suffix (e.g. 'val_dict_pos3Dict')."
-  },
-  {
-    "line": 15,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos3')."
-  },
-  {
-    "line": 15,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos3"
-  },
-  {
-    "line": 16,
-    "severity": "Warning",
-    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
-  },
-  {
-    "line": 16,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 16,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos4' should have a 'Dict' suffix (e.g. 'val_dict_pos4Dict')."
-  },
-  {
-    "line": 16,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos4')."
-  },
-  {
-    "line": 16,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 16,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 16,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos4"
-  },
-  {
-    "line": 17,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 17,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos5' should have a 'Dict' suffix (e.g. 'val_dict_pos5Dict')."
-  },
-  {
-    "line": 17,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos5')."
-  },
-  {
-    "line": 17,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 17,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 17,
-    "severity": "Information",
-    "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
-  },
-  {
-    "line": 17,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos5"
-  },
-  {
-    "line": 18,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 18,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos6' should have a 'Dict' suffix (e.g. 'val_dict_pos6Dict')."
-  },
-  {
-    "line": 18,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos6')."
-  },
-  {
-    "line": 18,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos6"
-  },
-  {
-    "line": 19,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 19,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos7' should have a 'Dict' suffix (e.g. 'val_dict_pos7Dict')."
-  },
-  {
-    "line": 19,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos7')."
-  },
-  {
-    "line": 19,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos7"
-  },
-  {
-    "line": 22,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 22,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos8' should have a 'Dict' suffix (e.g. 'val_dict_pos8Dict')."
-  },
-  {
-    "line": 22,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos8')."
-  },
-  {
-    "line": 22,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos8"
-  },
-  {
-    "line": 23,
-    "severity": "Error",
-    "message": "Error: 'dict()' type '' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 23,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos9' should have a 'Dict' suffix (e.g. 'val_dict_pos9Dict')."
-  },
-  {
-    "line": 23,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos9')."
-  },
-  {
-    "line": 23,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos9"
-  },
-  {
-    "line": 24,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 24,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_pos10' should have a 'Dict' suffix (e.g. 'val_dict_pos10Dict')."
-  },
-  {
-    "line": 24,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_pos10')."
-  },
-  {
-    "line": 24,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_pos10"
-  },
-  {
-    "line": 25,
-    "severity": "Error",
-    "message": "'dict()' requires a type argument (e.g. dict(\"string\"), dict(\"integer[]\"), dict(\"anytype\")) - calling it with none will throw at runtime"
-  },
-  {
-    "line": 25,
-    "severity": "Error",
-    "message": "'dict()' requires a type argument (e.g. dict(\"string\"), dict(\"integer[]\"), dict(\"anytype\")) - calling it with none will throw at runtime"
-  },
-  {
-    "line": 25,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_neg1' should have a 'Dict' suffix (e.g. 'val_dict_neg1Dict')."
-  },
-  {
-    "line": 25,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg1')."
-  },
-  {
-    "line": 25,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg1"
-  },
-  {
-    "line": 26,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_neg2' should have a 'Dict' suffix (e.g. 'val_dict_neg2Dict')."
-  },
-  {
-    "line": 26,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg2')."
-  },
-  {
-    "line": 26,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg2"
-  },
-  {
-    "line": 27,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 27,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_neg3' should have a 'Dict' suffix (e.g. 'val_dict_neg3Dict')."
-  },
-  {
-    "line": 27,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg3')."
-  },
-  {
-    "line": 27,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg3"
-  },
-  {
-    "line": 28,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_neg4' should have a 'Dict' suffix (e.g. 'val_dict_neg4Dict')."
-  },
-  {
-    "line": 28,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg4')."
-  },
-  {
-    "line": 28,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 28,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg4"
-  },
-  {
-    "line": 29,
-    "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
-  },
-  {
-    "line": 29,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.dict(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 29,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 29,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg5')."
-  },
-  {
-    "line": 29,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg5"
-  },
-  {
-    "line": 30,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_neg6' should have a 'Dict' suffix (e.g. 'val_dict_neg6Dict')."
-  },
-  {
-    "line": 30,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg6')."
-  },
-  {
-    "line": 30,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 30,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg6"
-  },
-  {
-    "line": 31,
-    "severity": "Error",
-    "message": "Error: 'dict()' type 'abc' is invalid. Supported types are primitives (string, integer, float, date, boolean, json, jsonarray, bytearray), array suffixes, anytype, or nested dict types like dict<string>, dict<anytype>."
-  },
-  {
-    "line": 32,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 32,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_neg8' should have a 'Dict' suffix (e.g. 'val_dict_neg8Dict')."
-  },
-  {
-    "line": 32,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg8')."
-  },
-  {
-    "line": 32,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg8"
-  },
-  {
-    "line": 33,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 33,
-    "severity": "Information",
-    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
-  },
-  {
-    "line": 33,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_dict_neg9' should have a 'Dict' suffix (e.g. 'val_dict_neg9Dict')."
-  },
-  {
-    "line": 33,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg9')."
-  },
-  {
-    "line": 33,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
-  },
-  {
-    "line": 33,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg9"
-  },
-  {
-    "line": 34,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_dict_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_dict_neg10')."
-  },
-  {
-    "line": 34,
-    "severity": "Hint",
-    "message": "Unused variable: val_dict_neg10"
-  },
-  {
-    "line": 36,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 36,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos1' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos1')."
   },
   {
-    "line": 36,
+    "line": 15,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos1')."
   },
   {
-    "line": 36,
+    "line": 15,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos1"
   },
   {
-    "line": 37,
+    "line": 16,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'var_containskey_arg_0' should have a 'Dict' suffix (e.g. 'var_containskey_arg_0Dict')."
   },
   {
-    "line": 37,
+    "line": 16,
     "severity": "Information",
     "message": "Style Info: Variable 'var_containskey_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_containskey_arg_0')."
   },
   {
-    "line": 38,
+    "line": 17,
     "severity": "Information",
     "message": "Style Info: Variable 'var_containskey_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_containskey_arg_1')."
   },
   {
-    "line": 39,
-    "severity": "Information",
-    "message": "Style Info: Variable 'var_containskey_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_containskey_arg_2')."
-  },
-  {
-    "line": 40,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 40,
+    "line": 18,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos2' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos2')."
   },
   {
-    "line": 40,
+    "line": 18,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos2')."
   },
   {
-    "line": 40,
+    "line": 18,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos2"
   },
   {
-    "line": 41,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 41,
+    "line": 19,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos3' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos3')."
   },
   {
-    "line": 41,
+    "line": 19,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos3')."
   },
   {
-    "line": 41,
+    "line": 19,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos3"
   },
   {
-    "line": 42,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 42,
+    "line": 20,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 42,
+    "line": 20,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos4' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos4')."
   },
   {
-    "line": 42,
+    "line": 20,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos4')."
   },
   {
-    "line": 42,
+    "line": 20,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 42,
+    "line": 20,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 42,
+    "line": 20,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos4"
   },
   {
-    "line": 43,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 43,
+    "line": 21,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos5' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos5')."
   },
   {
-    "line": 43,
+    "line": 21,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos5')."
   },
   {
-    "line": 43,
+    "line": 21,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 43,
+    "line": 21,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 43,
+    "line": 21,
+    "severity": "Information",
+    "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
+  },
+  {
+    "line": 21,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos5"
   },
   {
-    "line": 44,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 44,
+    "line": 22,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 44,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 44,
+    "line": 22,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos6' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos6')."
   },
   {
-    "line": 44,
+    "line": 22,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos6')."
   },
   {
-    "line": 44,
+    "line": 22,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos6"
   },
   {
-    "line": 45,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 45,
+    "line": 23,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos7' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos7')."
   },
   {
-    "line": 45,
+    "line": 23,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos7')."
   },
   {
-    "line": 45,
+    "line": 23,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos7"
   },
   {
-    "line": 50,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 50,
+    "line": 27,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos8' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos8')."
   },
   {
-    "line": 50,
+    "line": 27,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos8')."
   },
   {
-    "line": 50,
+    "line": 27,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos8"
   },
   {
-    "line": 51,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 51,
+    "line": 28,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_pos9' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos9')."
   },
   {
-    "line": 51,
+    "line": 28,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos9')."
   },
   {
-    "line": 51,
+    "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_pos9"
   },
   {
-    "line": 52,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 52,
-    "severity": "Information",
-    "message": "Style Info: Boolean variable 'val_containskey_pos10' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_pos10')."
-  },
-  {
-    "line": 52,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_pos10')."
-  },
-  {
-    "line": 52,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_pos10"
-  },
-  {
-    "line": 53,
-    "severity": "Information",
-    "message": "Style Info: Boolean variable 'val_containskey_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg1')."
-  },
-  {
-    "line": 53,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg1')."
-  },
-  {
-    "line": 53,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_neg1"
-  },
-  {
-    "line": 54,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 4."
-  },
-  {
-    "line": 54,
-    "severity": "Information",
-    "message": "Style Info: Boolean variable 'val_containskey_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg2')."
-  },
-  {
-    "line": 54,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg2')."
-  },
-  {
-    "line": 54,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_neg2"
-  },
-  {
-    "line": 55,
-    "severity": "Error",
-    "message": "Argument 1 to 'containskey' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 55,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 55,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 55,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 55,
-    "severity": "Information",
-    "message": "Style Info: Boolean variable 'val_containskey_neg3' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg3')."
-  },
-  {
-    "line": 55,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg3')."
-  },
-  {
-    "line": 55,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_neg3"
-  },
-  {
-    "line": 56,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 56,
-    "severity": "Information",
-    "message": "Style Info: Boolean variable 'val_containskey_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg4')."
-  },
-  {
-    "line": 56,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg4')."
-  },
-  {
-    "line": 56,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 56,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_neg4"
-  },
-  {
-    "line": 57,
-    "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
-  },
-  {
-    "line": 57,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.containskey(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 57,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg5')."
-  },
-  {
-    "line": 57,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_neg5"
-  },
-  {
-    "line": 58,
-    "severity": "Information",
-    "message": "Style Info: Boolean variable 'val_containskey_neg6' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg6')."
-  },
-  {
-    "line": 58,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg6')."
-  },
-  {
-    "line": 58,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_neg6"
-  },
-  {
-    "line": 59,
-    "severity": "Error",
-    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
-  },
-  {
-    "line": 60,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 60,
-    "severity": "Information",
-    "message": "Style Info: Boolean variable 'val_containskey_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg8')."
-  },
-  {
-    "line": 60,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_containskey_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg8')."
-  },
-  {
-    "line": 60,
-    "severity": "Hint",
-    "message": "Unused variable: val_containskey_neg8"
-  },
-  {
-    "line": 61,
+    "line": 29,
     "severity": "Error",
     "message": "Built-in function 'containskey' expects 2 argument(s), but got 1."
   },
   {
-    "line": 61,
+    "line": 29,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_containskey_neg1' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg1')."
+  },
+  {
+    "line": 29,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_containskey_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg1')."
+  },
+  {
+    "line": 29,
+    "severity": "Hint",
+    "message": "Unused variable: val_containskey_neg1"
+  },
+  {
+    "line": 30,
+    "severity": "Error",
+    "message": "Built-in function 'containskey' expects 2 argument(s), but got 3."
+  },
+  {
+    "line": 30,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_containskey_neg2' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg2')."
+  },
+  {
+    "line": 30,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_containskey_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg2')."
+  },
+  {
+    "line": 30,
+    "severity": "Hint",
+    "message": "Unused variable: val_containskey_neg2"
+  },
+  {
+    "line": 31,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_containskey_neg4' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg4')."
+  },
+  {
+    "line": 31,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_containskey_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg4')."
+  },
+  {
+    "line": 31,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 31,
+    "severity": "Hint",
+    "message": "Unused variable: val_containskey_neg4"
+  },
+  {
+    "line": 32,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 32,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.containskey(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 32,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_containskey_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg5')."
+  },
+  {
+    "line": 32,
+    "severity": "Hint",
+    "message": "Unused variable: val_containskey_neg5"
+  },
+  {
+    "line": 33,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'val_containskey_neg8' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg8')."
+  },
+  {
+    "line": 33,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_containskey_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg8')."
+  },
+  {
+    "line": 33,
+    "severity": "Hint",
+    "message": "Unused variable: val_containskey_neg8"
+  },
+  {
+    "line": 34,
+    "severity": "Error",
+    "message": "Built-in function 'containskey' expects 2 argument(s), but got 1."
+  },
+  {
+    "line": 34,
     "severity": "Information",
     "message": "Style Info: Boolean variable 'val_containskey_neg9' should have an 'is' or 'has' prefix (e.g. 'isVal_containskey_neg9')."
   },
   {
-    "line": 61,
+    "line": 34,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg9')."
   },
   {
-    "line": 61,
+    "line": 34,
     "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
-    "line": 61,
+    "line": 34,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_neg9"
   },
   {
-    "line": 62,
+    "line": 35,
     "severity": "Information",
     "message": "Style Info: Variable 'val_containskey_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_containskey_neg10')."
   },
   {
-    "line": 62,
+    "line": 35,
     "severity": "Hint",
     "message": "Unused variable: val_containskey_neg10"
   },
   {
-    "line": 64,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 64,
+    "line": 38,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos1')."
   },
   {
-    "line": 64,
+    "line": 38,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos1"
   },
   {
-    "line": 65,
+    "line": 39,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'var_put_arg_0' should have a 'Dict' suffix (e.g. 'var_put_arg_0Dict')."
   },
   {
-    "line": 65,
+    "line": 39,
     "severity": "Information",
     "message": "Style Info: Variable 'var_put_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_put_arg_0')."
   },
   {
-    "line": 66,
+    "line": 40,
     "severity": "Information",
     "message": "Style Info: Variable 'var_put_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_put_arg_1')."
   },
   {
-    "line": 67,
+    "line": 41,
     "severity": "Information",
     "message": "Style Info: Variable 'var_put_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_put_arg_2')."
   },
   {
-    "line": 68,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'var_put_arg_3' should have a 'Dict' suffix (e.g. 'var_put_arg_3Dict')."
-  },
-  {
-    "line": 68,
-    "severity": "Information",
-    "message": "Style Info: Variable 'var_put_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_put_arg_3')."
-  },
-  {
-    "line": 69,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 69,
+    "line": 42,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos2')."
   },
   {
-    "line": 69,
+    "line": 42,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos2"
   },
   {
-    "line": 70,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 70,
+    "line": 43,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos3')."
   },
   {
-    "line": 70,
+    "line": 43,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos3"
   },
   {
-    "line": 71,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 71,
+    "line": 44,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 71,
+    "line": 44,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos4')."
   },
   {
-    "line": 71,
+    "line": 44,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 71,
+    "line": 44,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 71,
+    "line": 44,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos4"
   },
   {
-    "line": 72,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 72,
+    "line": 45,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos5')."
   },
   {
-    "line": 72,
+    "line": 45,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 72,
+    "line": 45,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 72,
+    "line": 45,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos5"
   },
   {
-    "line": 73,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 73,
+    "line": 46,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 73,
+    "line": 46,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 73,
+    "line": 46,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos6')."
   },
   {
-    "line": 73,
+    "line": 46,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos6"
   },
   {
-    "line": 74,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 74,
+    "line": 47,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos7')."
   },
   {
-    "line": 74,
+    "line": 47,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos7"
   },
   {
-    "line": 80,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 80,
+    "line": 52,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos8')."
   },
   {
-    "line": 80,
+    "line": 52,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos8"
   },
   {
-    "line": 81,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 81,
+    "line": 53,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos9')."
   },
   {
-    "line": 81,
+    "line": 53,
     "severity": "Hint",
     "message": "Unused variable: val_put_pos9"
   },
   {
-    "line": 82,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 82,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_put_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_pos10')."
-  },
-  {
-    "line": 82,
-    "severity": "Hint",
-    "message": "Unused variable: val_put_pos10"
-  },
-  {
-    "line": 83,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_put_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg1')."
-  },
-  {
-    "line": 83,
-    "severity": "Hint",
-    "message": "Unused variable: val_put_neg1"
-  },
-  {
-    "line": 84,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 5."
-  },
-  {
-    "line": 84,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_put_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg2')."
-  },
-  {
-    "line": 84,
-    "severity": "Hint",
-    "message": "Unused variable: val_put_neg2"
-  },
-  {
-    "line": 85,
-    "severity": "Error",
-    "message": "Argument 1 to 'put' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 85,
-    "severity": "Error",
-    "message": "Argument 3 to 'put' should be String, but got a Integer value."
-  },
-  {
-    "line": 85,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 85,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 85,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 85,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_put_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg3')."
-  },
-  {
-    "line": 85,
-    "severity": "Hint",
-    "message": "Unused variable: val_put_neg3"
-  },
-  {
-    "line": 86,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 86,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_put_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg4')."
-  },
-  {
-    "line": 86,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 86,
-    "severity": "Hint",
-    "message": "Unused variable: val_put_neg4"
-  },
-  {
-    "line": 87,
-    "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
-  },
-  {
-    "line": 87,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.put(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 87,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_put_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg5')."
-  },
-  {
-    "line": 87,
-    "severity": "Hint",
-    "message": "Unused variable: val_put_neg5"
-  },
-  {
-    "line": 88,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_put_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg6')."
-  },
-  {
-    "line": 88,
-    "severity": "Hint",
-    "message": "Unused variable: val_put_neg6"
-  },
-  {
-    "line": 89,
-    "severity": "Error",
-    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
-  },
-  {
-    "line": 90,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 90,
+    "line": 54,
     "severity": "Error",
     "message": "Built-in function 'put' expects 3 argument(s), but got 2."
   },
   {
-    "line": 90,
+    "line": 54,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_put_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg1')."
+  },
+  {
+    "line": 54,
+    "severity": "Hint",
+    "message": "Unused variable: val_put_neg1"
+  },
+  {
+    "line": 55,
+    "severity": "Error",
+    "message": "Built-in function 'put' expects 3 argument(s), but got 4."
+  },
+  {
+    "line": 55,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_put_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg2')."
+  },
+  {
+    "line": 55,
+    "severity": "Hint",
+    "message": "Unused variable: val_put_neg2"
+  },
+  {
+    "line": 56,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_put_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg4')."
+  },
+  {
+    "line": 56,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 56,
+    "severity": "Hint",
+    "message": "Unused variable: val_put_neg4"
+  },
+  {
+    "line": 57,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 57,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.put(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 57,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_put_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg5')."
+  },
+  {
+    "line": 57,
+    "severity": "Hint",
+    "message": "Unused variable: val_put_neg5"
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 58,
+    "severity": "Error",
+    "message": "Built-in function 'put' expects 3 argument(s), but got 2."
+  },
+  {
+    "line": 58,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg8')."
   },
   {
-    "line": 90,
+    "line": 58,
     "severity": "Hint",
     "message": "Unused variable: val_put_neg8"
   },
   {
-    "line": 91,
+    "line": 59,
     "severity": "Error",
     "message": "Built-in function 'put' expects 3 argument(s), but got 1."
   },
   {
-    "line": 91,
+    "line": 59,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg9')."
   },
   {
-    "line": 91,
+    "line": 59,
     "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
-    "line": 91,
+    "line": 59,
     "severity": "Hint",
     "message": "Unused variable: val_put_neg9"
   },
   {
-    "line": 92,
+    "line": 60,
     "severity": "Information",
     "message": "Style Info: Variable 'val_put_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_put_neg10')."
   },
   {
-    "line": 92,
+    "line": 60,
     "severity": "Hint",
     "message": "Unused variable: val_put_neg10"
   },
   {
-    "line": 94,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 94,
+    "line": 63,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos1')."
   },
   {
-    "line": 94,
+    "line": 63,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos1"
   },
   {
-    "line": 95,
+    "line": 64,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'var_get_arg_0' should have a 'Dict' suffix (e.g. 'var_get_arg_0Dict')."
   },
   {
-    "line": 95,
+    "line": 64,
     "severity": "Information",
     "message": "Style Info: Variable 'var_get_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_get_arg_0')."
   },
   {
-    "line": 96,
+    "line": 65,
     "severity": "Information",
     "message": "Style Info: Variable 'var_get_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_get_arg_1')."
   },
   {
-    "line": 97,
-    "severity": "Information",
-    "message": "Style Info: Variable 'var_get_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_get_arg_2')."
-  },
-  {
-    "line": 98,
-    "severity": "Information",
-    "message": "Style Info: Variable 'var_get_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_get_arg_3')."
-  },
-  {
-    "line": 99,
-    "severity": "Information",
-    "message": "Style Info: Variable 'var_get_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_get_arg_4')."
-  },
-  {
-    "line": 100,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 100,
+    "line": 66,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos2')."
   },
   {
-    "line": 100,
+    "line": 66,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos2"
   },
   {
-    "line": 101,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 101,
+    "line": 67,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos3')."
   },
   {
-    "line": 101,
+    "line": 67,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos3"
   },
   {
-    "line": 102,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 102,
+    "line": 68,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 102,
+    "line": 68,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos4')."
   },
   {
-    "line": 102,
+    "line": 68,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 102,
+    "line": 68,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 102,
+    "line": 68,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos4"
   },
   {
-    "line": 103,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 103,
+    "line": 69,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos5')."
   },
   {
-    "line": 103,
+    "line": 69,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 103,
+    "line": 69,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 103,
+    "line": 69,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos5"
   },
   {
-    "line": 104,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 104,
+    "line": 70,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 104,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 104,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 104,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 104,
+    "line": 70,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos6')."
   },
   {
-    "line": 104,
+    "line": 70,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos6"
   },
   {
-    "line": 105,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 105,
+    "line": 71,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos7')."
   },
   {
-    "line": 105,
+    "line": 71,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos7"
   },
   {
-    "line": 112,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 112,
+    "line": 75,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos8')."
   },
   {
-    "line": 112,
+    "line": 75,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos8"
   },
   {
-    "line": 113,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 113,
+    "line": 76,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos9')."
   },
   {
-    "line": 113,
+    "line": 76,
     "severity": "Hint",
     "message": "Unused variable: val_get_pos9"
   },
   {
-    "line": 114,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 114,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_pos10')."
-  },
-  {
-    "line": 114,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_pos10"
-  },
-  {
-    "line": 115,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 4."
-  },
-  {
-    "line": 115,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg1')."
-  },
-  {
-    "line": 115,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_neg1"
-  },
-  {
-    "line": 116,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 6."
-  },
-  {
-    "line": 116,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg2')."
-  },
-  {
-    "line": 116,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_neg2"
-  },
-  {
-    "line": 117,
-    "severity": "Error",
-    "message": "Argument 1 to 'get' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 117,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 117,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg3')."
-  },
-  {
-    "line": 117,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_neg3"
-  },
-  {
-    "line": 118,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 118,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg4')."
-  },
-  {
-    "line": 118,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 118,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_neg4"
-  },
-  {
-    "line": 119,
-    "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
-  },
-  {
-    "line": 119,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.get(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 119,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg5')."
-  },
-  {
-    "line": 119,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_neg5"
-  },
-  {
-    "line": 120,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 4."
-  },
-  {
-    "line": 120,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg6')."
-  },
-  {
-    "line": 120,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_neg6"
-  },
-  {
-    "line": 121,
-    "severity": "Error",
-    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 5."
-  },
-  {
-    "line": 122,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 122,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_get_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg8')."
-  },
-  {
-    "line": 122,
-    "severity": "Hint",
-    "message": "Unused variable: val_get_neg8"
-  },
-  {
-    "line": 123,
+    "line": 77,
     "severity": "Error",
     "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 1."
   },
   {
-    "line": 123,
+    "line": 77,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_get_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg1')."
+  },
+  {
+    "line": 77,
+    "severity": "Hint",
+    "message": "Unused variable: val_get_neg1"
+  },
+  {
+    "line": 78,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_get_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg2')."
+  },
+  {
+    "line": 78,
+    "severity": "Hint",
+    "message": "Unused variable: val_get_neg2"
+  },
+  {
+    "line": 79,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_get_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg4')."
+  },
+  {
+    "line": 79,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 79,
+    "severity": "Hint",
+    "message": "Unused variable: val_get_neg4"
+  },
+  {
+    "line": 80,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 80,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.get(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 80,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_get_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg5')."
+  },
+  {
+    "line": 80,
+    "severity": "Hint",
+    "message": "Unused variable: val_get_neg5"
+  },
+  {
+    "line": 81,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 81,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_get_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg8')."
+  },
+  {
+    "line": 81,
+    "severity": "Hint",
+    "message": "Unused variable: val_get_neg8"
+  },
+  {
+    "line": 82,
+    "severity": "Error",
+    "message": "Built-in function 'get' expects 2 or 3 argument(s), but got 1."
+  },
+  {
+    "line": 82,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg9')."
   },
   {
-    "line": 123,
+    "line": 82,
     "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
-    "line": 123,
+    "line": 82,
     "severity": "Hint",
     "message": "Unused variable: val_get_neg9"
   },
   {
-    "line": 124,
+    "line": 83,
     "severity": "Information",
     "message": "Style Info: Variable 'val_get_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_get_neg10')."
   },
   {
-    "line": 124,
+    "line": 83,
     "severity": "Hint",
     "message": "Unused variable: val_get_neg10"
   },
   {
-    "line": 126,
+    "line": 86,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos1')."
   },
   {
-    "line": 126,
+    "line": 86,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos1"
   },
   {
-    "line": 127,
+    "line": 87,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'var_keys_arg_0' should have a 'Dict' suffix (e.g. 'var_keys_arg_0Dict')."
   },
   {
-    "line": 127,
+    "line": 87,
     "severity": "Information",
     "message": "Style Info: Variable 'var_keys_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_keys_arg_0')."
   },
   {
-    "line": 128,
+    "line": 88,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos2')."
   },
   {
-    "line": 128,
+    "line": 88,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos2"
   },
   {
-    "line": 129,
+    "line": 89,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos3')."
   },
   {
-    "line": 129,
+    "line": 89,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos3"
   },
   {
-    "line": 130,
+    "line": 90,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 130,
+    "line": 90,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos4')."
   },
   {
-    "line": 130,
+    "line": 90,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 130,
+    "line": 90,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 130,
+    "line": 90,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos4"
   },
   {
-    "line": 131,
+    "line": 91,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos5')."
   },
   {
-    "line": 131,
+    "line": 91,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 131,
+    "line": 91,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 131,
+    "line": 91,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos5"
   },
   {
-    "line": 132,
+    "line": 92,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos6')."
   },
   {
-    "line": 132,
+    "line": 92,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos6"
   },
   {
-    "line": 133,
+    "line": 93,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos7')."
   },
   {
-    "line": 133,
+    "line": 93,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos7"
   },
   {
-    "line": 136,
+    "line": 96,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos8')."
   },
   {
-    "line": 136,
+    "line": 96,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos8"
   },
   {
-    "line": 137,
+    "line": 97,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos9')."
   },
   {
-    "line": 137,
+    "line": 97,
     "severity": "Hint",
     "message": "Unused variable: val_keys_pos9"
   },
   {
-    "line": 138,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_keys_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_pos10')."
-  },
-  {
-    "line": 138,
-    "severity": "Hint",
-    "message": "Unused variable: val_keys_pos10"
-  },
-  {
-    "line": 139,
+    "line": 98,
     "severity": "Error",
     "message": "Built-in function 'keys' expects 1 argument(s), but got 0."
   },
   {
-    "line": 139,
+    "line": 98,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg1')."
   },
   {
-    "line": 139,
+    "line": 98,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg1"
   },
   {
-    "line": 140,
+    "line": 99,
     "severity": "Error",
     "message": "Built-in function 'keys' expects 1 argument(s), but got 2."
   },
   {
-    "line": 140,
+    "line": 99,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg2')."
   },
   {
-    "line": 140,
+    "line": 99,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg2"
   },
   {
-    "line": 141,
-    "severity": "Error",
-    "message": "Argument 1 to 'keys' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 141,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_keys_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg3')."
-  },
-  {
-    "line": 141,
-    "severity": "Hint",
-    "message": "Unused variable: val_keys_neg3"
-  },
-  {
-    "line": 142,
+    "line": 100,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg4')."
   },
   {
-    "line": 142,
+    "line": 100,
     "severity": "Error",
     "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
-    "line": 142,
+    "line": 100,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg4"
   },
   {
-    "line": 143,
+    "line": 101,
     "severity": "Warning",
     "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
-    "line": 143,
+    "line": 101,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.keys(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
-    "line": 143,
+    "line": 101,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg5')."
   },
   {
-    "line": 143,
+    "line": 101,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg5"
   },
   {
-    "line": 144,
-    "severity": "Error",
-    "message": "Built-in function 'keys' expects 1 argument(s), but got 0."
-  },
-  {
-    "line": 144,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_keys_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg6')."
-  },
-  {
-    "line": 144,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 144,
-    "severity": "Hint",
-    "message": "Unused variable: val_keys_neg6"
-  },
-  {
-    "line": 146,
+    "line": 102,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
   },
   {
-    "line": 146,
+    "line": 102,
     "severity": "Error",
     "message": "Built-in function 'keys' expects 1 argument(s), but got 2."
   },
   {
-    "line": 146,
+    "line": 102,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg8')."
   },
   {
-    "line": 146,
+    "line": 102,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg8"
   },
   {
-    "line": 147,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 147,
-    "severity": "Information",
-    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
-  },
-  {
-    "line": 147,
+    "line": 103,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg9')."
   },
   {
-    "line": 147,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
-  },
-  {
-    "line": 147,
+    "line": 103,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg9"
   },
   {
-    "line": 148,
+    "line": 104,
     "severity": "Information",
     "message": "Style Info: Variable 'val_keys_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_keys_neg10')."
   },
   {
-    "line": 148,
+    "line": 104,
     "severity": "Hint",
     "message": "Unused variable: val_keys_neg10"
   },
   {
-    "line": 150,
+    "line": 107,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos1')."
   },
   {
-    "line": 150,
+    "line": 107,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos1"
   },
   {
-    "line": 151,
+    "line": 108,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'var_values_arg_0' should have a 'Dict' suffix (e.g. 'var_values_arg_0Dict')."
   },
   {
-    "line": 151,
+    "line": 108,
     "severity": "Information",
     "message": "Style Info: Variable 'var_values_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_values_arg_0')."
   },
   {
-    "line": 152,
+    "line": 109,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos2')."
   },
   {
-    "line": 152,
+    "line": 109,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos2"
   },
   {
-    "line": 153,
+    "line": 110,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos3')."
   },
   {
-    "line": 153,
+    "line": 110,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos3"
   },
   {
-    "line": 154,
+    "line": 111,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 154,
+    "line": 111,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos4')."
   },
   {
-    "line": 154,
+    "line": 111,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 154,
+    "line": 111,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 154,
+    "line": 111,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos4"
   },
   {
-    "line": 155,
+    "line": 112,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos5')."
   },
   {
-    "line": 155,
+    "line": 112,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 155,
+    "line": 112,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 155,
+    "line": 112,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos5"
   },
   {
-    "line": 156,
+    "line": 113,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos6')."
   },
   {
-    "line": 156,
+    "line": 113,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos6"
   },
   {
-    "line": 157,
+    "line": 114,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos7')."
   },
   {
-    "line": 157,
+    "line": 114,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos7"
   },
   {
-    "line": 160,
+    "line": 117,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos8')."
   },
   {
-    "line": 160,
+    "line": 117,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos8"
   },
   {
-    "line": 161,
+    "line": 118,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos9')."
   },
   {
-    "line": 161,
+    "line": 118,
     "severity": "Hint",
     "message": "Unused variable: val_values_pos9"
   },
   {
-    "line": 162,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_values_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_pos10')."
-  },
-  {
-    "line": 162,
-    "severity": "Hint",
-    "message": "Unused variable: val_values_pos10"
-  },
-  {
-    "line": 163,
+    "line": 119,
     "severity": "Error",
     "message": "Built-in function 'values' expects 1 argument(s), but got 0."
   },
   {
-    "line": 163,
+    "line": 119,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg1')."
   },
   {
-    "line": 163,
+    "line": 119,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg1"
   },
   {
-    "line": 164,
+    "line": 120,
     "severity": "Error",
     "message": "Built-in function 'values' expects 1 argument(s), but got 2."
   },
   {
-    "line": 164,
+    "line": 120,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg2')."
   },
   {
-    "line": 164,
+    "line": 120,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg2"
   },
   {
-    "line": 165,
-    "severity": "Error",
-    "message": "Argument 1 to 'values' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 165,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_values_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg3')."
-  },
-  {
-    "line": 165,
-    "severity": "Hint",
-    "message": "Unused variable: val_values_neg3"
-  },
-  {
-    "line": 166,
+    "line": 121,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg4')."
   },
   {
-    "line": 166,
+    "line": 121,
     "severity": "Error",
     "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
-    "line": 166,
+    "line": 121,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg4"
   },
   {
-    "line": 167,
+    "line": 122,
     "severity": "Warning",
     "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
-    "line": 167,
+    "line": 122,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.values(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
-    "line": 167,
+    "line": 122,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg5')."
   },
   {
-    "line": 167,
+    "line": 122,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg5"
   },
   {
-    "line": 168,
-    "severity": "Error",
-    "message": "Built-in function 'values' expects 1 argument(s), but got 0."
-  },
-  {
-    "line": 168,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_values_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg6')."
-  },
-  {
-    "line": 168,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 168,
-    "severity": "Hint",
-    "message": "Unused variable: val_values_neg6"
-  },
-  {
-    "line": 170,
+    "line": 123,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
   },
   {
-    "line": 170,
+    "line": 123,
     "severity": "Error",
     "message": "Built-in function 'values' expects 1 argument(s), but got 2."
   },
   {
-    "line": 170,
+    "line": 123,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg8')."
   },
   {
-    "line": 170,
+    "line": 123,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg8"
   },
   {
-    "line": 171,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 171,
-    "severity": "Information",
-    "message": "Design Info: Magic number '456' detected. Consider defining a named constant"
-  },
-  {
-    "line": 171,
+    "line": 124,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg9')."
   },
   {
-    "line": 171,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
-  },
-  {
-    "line": 171,
+    "line": 124,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg9"
   },
   {
-    "line": 172,
+    "line": 125,
     "severity": "Information",
     "message": "Style Info: Variable 'val_values_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_values_neg10')."
   },
   {
-    "line": 172,
+    "line": 125,
     "severity": "Hint",
     "message": "Unused variable: val_values_neg10"
   }

@@ -40,314 +40,269 @@
     "message": "Unused variable: myDate"
   },
   {
+    "line": 11,
+    "severity": "Hint",
+    "message": "Unused variable: myStrArr"
+  },
+  {
     "line": 12,
+    "severity": "Hint",
+    "message": "Unused variable: myIntArr"
+  },
+  {
+    "line": 15,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos1')."
   },
   {
-    "line": 12,
+    "line": 15,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos1"
   },
   {
-    "line": 13,
+    "line": 16,
     "severity": "Information",
     "message": "Style Info: Variable 'var_makeurlparam_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_makeurlparam_arg_0')."
   },
   {
-    "line": 14,
+    "line": 17,
     "severity": "Information",
     "message": "Style Info: Variable 'var_makeurlparam_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_makeurlparam_arg_1')."
   },
   {
-    "line": 15,
+    "line": 18,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos2')."
   },
   {
-    "line": 15,
+    "line": 18,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos2"
   },
   {
-    "line": 16,
+    "line": 19,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos3')."
   },
   {
-    "line": 16,
+    "line": 19,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos3"
   },
   {
-    "line": 17,
+    "line": 20,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 17,
+    "line": 20,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos4')."
   },
   {
-    "line": 17,
+    "line": 20,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 17,
+    "line": 20,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 17,
+    "line": 20,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos4"
   },
   {
-    "line": 18,
+    "line": 21,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos5')."
   },
   {
-    "line": 18,
+    "line": 21,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 18,
+    "line": 21,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 18,
+    "line": 21,
     "severity": "Information",
     "message": "Unused loop variable: 'loopIdx' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo."
   },
   {
-    "line": 18,
+    "line": 21,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos5"
   },
   {
-    "line": 19,
+    "line": 22,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 19,
+    "line": 22,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 19,
+    "line": 22,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos6')."
   },
   {
-    "line": 19,
+    "line": 22,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos6"
   },
   {
-    "line": 20,
+    "line": 23,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos7')."
   },
   {
-    "line": 20,
+    "line": 23,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos7"
   },
   {
-    "line": 24,
+    "line": 27,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos8')."
   },
   {
-    "line": 24,
+    "line": 27,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos8"
   },
   {
-    "line": 25,
+    "line": 28,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos9')."
   },
   {
-    "line": 25,
+    "line": 28,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_pos9"
   },
   {
-    "line": 26,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_makeurlparam_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_pos10')."
-  },
-  {
-    "line": 26,
-    "severity": "Hint",
-    "message": "Unused variable: val_makeurlparam_pos10"
-  },
-  {
-    "line": 27,
+    "line": 29,
     "severity": "Error",
     "message": "Argument 1 to 'makeurlparam' should be Dictionary, but got a String value."
   },
   {
-    "line": 27,
+    "line": 29,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg1')."
   },
   {
-    "line": 27,
+    "line": 29,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg1"
   },
   {
-    "line": 28,
+    "line": 30,
     "severity": "Error",
     "message": "Built-in function 'makeurlparam' expects 2 or 1 argument(s), but got 3."
   },
   {
-    "line": 28,
+    "line": 30,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg2')."
   },
   {
-    "line": 28,
+    "line": 30,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg2"
   },
   {
-    "line": 29,
-    "severity": "Error",
-    "message": "Argument 1 to 'makeurlparam' should be String, but got a Integer value."
-  },
-  {
-    "line": 29,
-    "severity": "Error",
-    "message": "Argument 2 to 'makeurlparam' should be String, but got a Integer value."
-  },
-  {
-    "line": 29,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 29,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 29,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_makeurlparam_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg3')."
-  },
-  {
-    "line": 29,
-    "severity": "Hint",
-    "message": "Unused variable: val_makeurlparam_neg3"
-  },
-  {
-    "line": 30,
+    "line": 31,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg4')."
   },
   {
-    "line": 30,
+    "line": 31,
     "severity": "Error",
     "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
-    "line": 30,
+    "line": 31,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg4"
   },
   {
-    "line": 31,
+    "line": 32,
     "severity": "Warning",
     "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
-    "line": 31,
+    "line": 32,
     "severity": "Error",
     "message": "BML Syntax Error: Member access or method call ('invalid_ns.makeurlparam(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
-    "line": 31,
+    "line": 32,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg5')."
   },
   {
-    "line": 31,
+    "line": 32,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg5"
   },
   {
-    "line": 32,
-    "severity": "Error",
-    "message": "Argument 1 to 'makeurlparam' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 32,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_makeurlparam_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg6')."
-  },
-  {
-    "line": 32,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 32,
-    "severity": "Hint",
-    "message": "Unused variable: val_makeurlparam_neg6"
-  },
-  {
-    "line": 34,
+    "line": 33,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
   },
   {
-    "line": 34,
+    "line": 33,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg8')."
   },
   {
-    "line": 34,
+    "line": 33,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg8"
   },
   {
-    "line": 35,
+    "line": 34,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg9')."
   },
   {
-    "line": 35,
+    "line": 34,
     "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
-    "line": 35,
+    "line": 34,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg9"
   },
   {
-    "line": 36,
+    "line": 35,
     "severity": "Information",
     "message": "Style Info: Variable 'val_makeurlparam_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_makeurlparam_neg10')."
   },
   {
-    "line": 36,
+    "line": 35,
     "severity": "Hint",
     "message": "Unused variable: val_makeurlparam_neg10"
   },
   {
     "line": 38,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 38,
     "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
   },
   {
     "line": 38,
@@ -387,562 +342,517 @@
   {
     "line": 42,
     "severity": "Information",
+    "message": "Style Info: Variable 'var_urldata_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_3')."
+  },
+  {
+    "line": 43,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 43,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldata_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_4')."
+  },
+  {
+    "line": 44,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urldata_arg_5' should have a 'Dict' suffix (e.g. 'var_urldata_arg_5Dict')."
+  },
+  {
+    "line": 44,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldata_arg_5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_5')."
+  },
+  {
+    "line": 45,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'var_urldata_arg_6' should have an 'is' or 'has' prefix (e.g. 'isVar_urldata_arg_6')."
+  },
+  {
+    "line": 45,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldata_arg_6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldata_arg_6')."
+  },
+  {
+    "line": 46,
+    "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos2' should have a 'Dict' suffix (e.g. 'val_urldata_pos2Dict')."
   },
   {
-    "line": 42,
+    "line": 46,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos2')."
   },
   {
-    "line": 42,
+    "line": 46,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_pos2"
   },
   {
-    "line": 43,
+    "line": 47,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 47,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos3' should have a 'Dict' suffix (e.g. 'val_urldata_pos3Dict')."
   },
   {
-    "line": 43,
+    "line": 47,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos3')."
   },
   {
-    "line": 43,
+    "line": 47,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_pos3"
   },
   {
-    "line": 44,
+    "line": 48,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 44,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+    "line": 48,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 44,
+    "line": 48,
+    "severity": "Error",
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+  },
+  {
+    "line": 48,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos4' should have a 'Dict' suffix (e.g. 'val_urldata_pos4Dict')."
   },
   {
-    "line": 44,
+    "line": 48,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos4')."
   },
   {
-    "line": 44,
+    "line": 48,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 44,
+    "line": 48,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 44,
+    "line": 48,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_pos4"
   },
   {
-    "line": 45,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+    "line": 49,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 45,
+    "line": 49,
+    "severity": "Error",
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+  },
+  {
+    "line": 49,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos5' should have a 'Dict' suffix (e.g. 'val_urldata_pos5Dict')."
   },
   {
-    "line": 45,
+    "line": 49,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos5')."
   },
   {
-    "line": 45,
+    "line": 49,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 45,
+    "line": 49,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 45,
+    "line": 49,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_pos5"
   },
   {
-    "line": 46,
+    "line": 50,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 46,
+    "line": 50,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 46,
+    "line": 50,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 50,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos6' should have a 'Dict' suffix (e.g. 'val_urldata_pos6Dict')."
   },
   {
-    "line": 46,
+    "line": 50,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos6')."
   },
   {
-    "line": 46,
+    "line": 50,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_pos6"
   },
   {
-    "line": 47,
+    "line": 51,
     "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
   },
   {
-    "line": 47,
+    "line": 51,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos7' should have a 'Dict' suffix (e.g. 'val_urldata_pos7Dict')."
   },
   {
-    "line": 47,
+    "line": 51,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos7')."
   },
   {
-    "line": 47,
+    "line": 51,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_pos7"
   },
   {
-    "line": 52,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+    "line": 56,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 52,
+    "line": 60,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 60,
+    "severity": "Error",
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+  },
+  {
+    "line": 60,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'val_urldata_pos8' should have a 'Dict' suffix (e.g. 'val_urldata_pos8Dict')."
   },
   {
-    "line": 52,
+    "line": 60,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldata_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos8')."
   },
   {
-    "line": 52,
+    "line": 60,
     "severity": "Hint",
     "message": "Unused variable: val_urldata_pos8"
   },
   {
-    "line": 53,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method '' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
-  },
-  {
-    "line": 53,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_pos9' should have a 'Dict' suffix (e.g. 'val_urldata_pos9Dict')."
-  },
-  {
-    "line": 53,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos9')."
-  },
-  {
-    "line": 53,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_pos9"
-  },
-  {
-    "line": 54,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
-  },
-  {
-    "line": 54,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_pos10' should have a 'Dict' suffix (e.g. 'val_urldata_pos10Dict')."
-  },
-  {
-    "line": 54,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos10')."
-  },
-  {
-    "line": 54,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_pos10"
-  },
-  {
-    "line": 55,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
-  },
-  {
-    "line": 55,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_neg1' should have a 'Dict' suffix (e.g. 'val_urldata_neg1Dict')."
-  },
-  {
-    "line": 55,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg1')."
-  },
-  {
-    "line": 55,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg1"
-  },
-  {
-    "line": 56,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
-  },
-  {
-    "line": 56,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_neg2' should have a 'Dict' suffix (e.g. 'val_urldata_neg2Dict')."
-  },
-  {
-    "line": 56,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg2')."
-  },
-  {
-    "line": 56,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg2"
-  },
-  {
-    "line": 57,
-    "severity": "Error",
-    "message": "Argument 1 to 'urldata' should be String, but got a Integer value."
-  },
-  {
-    "line": 57,
-    "severity": "Error",
-    "message": "Argument 2 to 'urldata' should be String, but got a Integer value."
-  },
-  {
-    "line": 57,
-    "severity": "Error",
-    "message": "Argument 3 to 'urldata' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 57,
+    "line": 61,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 57,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 57,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_neg3' should have a 'Dict' suffix (e.g. 'val_urldata_neg3Dict')."
-  },
-  {
-    "line": 57,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg3')."
-  },
-  {
-    "line": 57,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg3"
-  },
-  {
-    "line": 58,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
-  },
-  {
-    "line": 58,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_neg4' should have a 'Dict' suffix (e.g. 'val_urldata_neg4Dict')."
-  },
-  {
-    "line": 58,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg4')."
-  },
-  {
-    "line": 58,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 58,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg4"
-  },
-  {
-    "line": 59,
-    "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
-  },
-  {
-    "line": 59,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldata(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 59,
-    "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
-  },
-  {
-    "line": 59,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg5')."
-  },
-  {
-    "line": 59,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg5"
-  },
-  {
-    "line": 60,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_neg6' should have a 'Dict' suffix (e.g. 'val_urldata_neg6Dict')."
-  },
-  {
-    "line": 60,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg6')."
-  },
-  {
-    "line": 60,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg6"
   },
   {
     "line": 61,
     "severity": "Error",
-    "message": "Error: 'urldata()' HTTP method 'abc' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
   },
   {
-    "line": 62,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 62,
+    "line": 61,
     "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_neg8' should have a 'Dict' suffix (e.g. 'val_urldata_neg8Dict')."
+    "message": "Style Info: Dictionary variable 'val_urldata_pos9' should have a 'Dict' suffix (e.g. 'val_urldata_pos9Dict')."
   },
   {
-    "line": 62,
+    "line": 61,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg8')."
+    "message": "Style Info: Variable 'val_urldata_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_pos9')."
   },
   {
-    "line": 62,
+    "line": 61,
     "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg8"
+    "message": "Unused variable: val_urldata_pos9"
   },
   {
-    "line": 63,
+    "line": 62,
     "severity": "Error",
     "message": "Built-in function 'urldata' expects 2 to 7 argument(s), but got 1."
   },
   {
-    "line": 63,
+    "line": 62,
     "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urldata_neg9' should have a 'Dict' suffix (e.g. 'val_urldata_neg9Dict')."
+    "message": "Style Info: Dictionary variable 'val_urldata_neg1' should have a 'Dict' suffix (e.g. 'val_urldata_neg1Dict')."
   },
   {
-    "line": 63,
+    "line": 62,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg9')."
+    "message": "Style Info: Variable 'val_urldata_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg1')."
   },
   {
-    "line": 63,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
-  },
-  {
-    "line": 63,
+    "line": 62,
     "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg9"
+    "message": "Unused variable: val_urldata_neg1"
   },
   {
-    "line": 64,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldata_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg10')."
+    "line": 63,
+    "severity": "Error",
+    "message": "Built-in function 'urldata' expects 2 to 7 argument(s), but got 8."
   },
   {
-    "line": 64,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldata_neg10"
-  },
-  {
-    "line": 66,
+    "line": 63,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
+    "line": 63,
+    "severity": "Error",
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+  },
+  {
+    "line": 63,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg2' should have a 'Dict' suffix (e.g. 'val_urldata_neg2Dict')."
+  },
+  {
+    "line": 63,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg2')."
+  },
+  {
+    "line": 63,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldata_neg2"
+  },
+  {
+    "line": 64,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 64,
+    "severity": "Error",
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+  },
+  {
+    "line": 64,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg4' should have a 'Dict' suffix (e.g. 'val_urldata_neg4Dict')."
+  },
+  {
+    "line": 64,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg4')."
+  },
+  {
+    "line": 64,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 64,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldata_neg4"
+  },
+  {
+    "line": 65,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 65,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldata(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 65,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 65,
+    "severity": "Error",
+    "message": "Error: 'urldata()' HTTP method 'str_1' is not supported. Supported methods are: GET, DELETE, PATCH, POST, or PUT."
+  },
+  {
+    "line": 65,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg5')."
+  },
+  {
+    "line": 65,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldata_neg5"
+  },
+  {
+    "line": 66,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
     "line": 66,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos1')."
+    "message": "Style Info: Dictionary variable 'val_urldata_neg8' should have a 'Dict' suffix (e.g. 'val_urldata_neg8Dict')."
+  },
+  {
+    "line": 66,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg8')."
   },
   {
     "line": 66,
     "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos1"
+    "message": "Unused variable: val_urldata_neg8"
+  },
+  {
+    "line": 67,
+    "severity": "Error",
+    "message": "Built-in function 'urldata' expects 2 to 7 argument(s), but got 1."
   },
   {
     "line": 67,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urldatabyget_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_0')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 67,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urldata_neg9' should have a 'Dict' suffix (e.g. 'val_urldata_neg9Dict')."
+  },
+  {
+    "line": 67,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg9')."
+  },
+  {
+    "line": 67,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 67,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldata_neg9"
   },
   {
     "line": 68,
     "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 68,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldata_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldata_neg10')."
+  },
+  {
+    "line": 68,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldata_neg10"
+  },
+  {
+    "line": 71,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 71,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos1')."
+  },
+  {
+    "line": 71,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_pos1"
+  },
+  {
+    "line": 72,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabyget_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_0')."
+  },
+  {
+    "line": 73,
+    "severity": "Information",
     "message": "Style Info: Variable 'var_urldatabyget_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_1')."
   },
   {
-    "line": 69,
+    "line": 74,
     "severity": "Information",
     "message": "Style Info: Variable 'var_urldatabyget_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_2')."
   },
   {
-    "line": 70,
+    "line": 75,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 70,
+    "line": 75,
     "severity": "Information",
     "message": "Style Info: Variable 'var_urldatabyget_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_3')."
   },
   {
-    "line": 71,
+    "line": 76,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urldatabyget_arg_4' should have a 'Dict' suffix (e.g. 'var_urldatabyget_arg_4Dict')."
+  },
+  {
+    "line": 76,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabyget_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_4')."
+  },
+  {
+    "line": 77,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'var_urldatabyget_arg_5' should have an 'is' or 'has' prefix (e.g. 'isVar_urldatabyget_arg_5')."
+  },
+  {
+    "line": 77,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabyget_arg_5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabyget_arg_5')."
+  },
+  {
+    "line": 78,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabyget_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos2')."
   },
   {
-    "line": 71,
+    "line": 78,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabyget_pos2"
   },
   {
-    "line": 72,
+    "line": 79,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 72,
+    "line": 79,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabyget_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos3')."
   },
   {
-    "line": 72,
+    "line": 79,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabyget_pos3"
   },
   {
-    "line": 73,
+    "line": 80,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
-  },
-  {
-    "line": 73,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 73,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos4')."
-  },
-  {
-    "line": 73,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 73,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 73,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos4"
-  },
-  {
-    "line": 74,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 74,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos5')."
-  },
-  {
-    "line": 74,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 74,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 74,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos5"
-  },
-  {
-    "line": 75,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 75,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 75,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 75,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos6')."
-  },
-  {
-    "line": 75,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos6"
-  },
-  {
-    "line": 76,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos7')."
-  },
-  {
-    "line": 76,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos7"
   },
   {
     "line": 80,
@@ -950,189 +860,89 @@
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 82,
+    "line": 80,
     "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+    "message": "Style Info: Variable 'val_urldatabyget_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos4')."
   },
   {
-    "line": 82,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos8')."
-  },
-  {
-    "line": 82,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos8"
-  },
-  {
-    "line": 83,
-    "severity": "Information",
-    "message": "Design Info: Magic number '2147483647' detected. Consider defining a named constant"
-  },
-  {
-    "line": 83,
+    "line": 80,
     "severity": "Warning",
-    "message": "Integer value exceeds the maximum value of 999,999,999 for a Data Table integer column"
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 83,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos9')."
-  },
-  {
-    "line": 83,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos9"
-  },
-  {
-    "line": 84,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 84,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos10')."
-  },
-  {
-    "line": 84,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_pos10"
-  },
-  {
-    "line": 85,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg1')."
-  },
-  {
-    "line": 85,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg1"
-  },
-  {
-    "line": 86,
-    "severity": "Error",
-    "message": "Argument 5 to 'urldatabyget' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 86,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 86,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg2')."
-  },
-  {
-    "line": 86,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg2"
-  },
-  {
-    "line": 87,
-    "severity": "Error",
-    "message": "Argument 1 to 'urldatabyget' should be String, but got a Integer value."
-  },
-  {
-    "line": 87,
-    "severity": "Error",
-    "message": "Argument 2 to 'urldatabyget' should be String, but got a Integer value."
-  },
-  {
-    "line": 87,
-    "severity": "Error",
-    "message": "Argument 3 to 'urldatabyget' should be String, but got a Integer value."
-  },
-  {
-    "line": 87,
-    "severity": "Error",
-    "message": "Argument 4 to 'urldatabyget' should be Integer, but got a String value."
-  },
-  {
-    "line": 87,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 87,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 87,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 87,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg3')."
-  },
-  {
-    "line": 87,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg3"
-  },
-  {
-    "line": 88,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 88,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg4')."
-  },
-  {
-    "line": 88,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 88,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg4"
-  },
-  {
-    "line": 89,
+    "line": 80,
     "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 89,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldatabyget(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+    "line": 80,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_pos4"
   },
   {
-    "line": 89,
+    "line": 81,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 89,
+    "line": 81,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg5')."
+    "message": "Style Info: Variable 'val_urldatabyget_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos5')."
   },
   {
-    "line": 89,
+    "line": 81,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 81,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 81,
     "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg5"
+    "message": "Unused variable: val_urldatabyget_pos5"
   },
   {
-    "line": 90,
+    "line": 82,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 90,
+    "line": 82,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg6')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 90,
+    "line": 82,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 82,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos6')."
+  },
+  {
+    "line": 82,
     "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg6"
+    "message": "Unused variable: val_urldatabyget_pos6"
+  },
+  {
+    "line": 83,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos7')."
+  },
+  {
+    "line": 83,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_pos7"
+  },
+  {
+    "line": 87,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 91,
@@ -1140,1132 +950,1332 @@
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 92,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+    "line": 91,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos8')."
+  },
+  {
+    "line": 91,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_pos8"
   },
   {
     "line": 92,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 92,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_pos9')."
+  },
+  {
+    "line": 92,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_pos9"
+  },
+  {
+    "line": 93,
     "severity": "Error",
     "message": "Built-in function 'urldatabyget' expects 3 to 6 argument(s), but got 2."
   },
   {
-    "line": 92,
+    "line": 93,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg8')."
-  },
-  {
-    "line": 92,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg8"
+    "message": "Style Info: Variable 'val_urldatabyget_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg1')."
   },
   {
     "line": 93,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_neg1"
+  },
+  {
+    "line": 94,
     "severity": "Error",
-    "message": "Built-in function 'urldatabyget' expects 3 to 6 argument(s), but got 1."
+    "message": "Built-in function 'urldatabyget' expects 3 to 6 argument(s), but got 7."
   },
   {
-    "line": 93,
+    "line": 94,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 93,
+    "line": 94,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg9')."
+    "message": "Style Info: Variable 'val_urldatabyget_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg2')."
   },
   {
-    "line": 93,
+    "line": 94,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_neg2"
+  },
+  {
+    "line": 95,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 95,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg4')."
+  },
+  {
+    "line": 95,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 95,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_neg4"
+  },
+  {
+    "line": 96,
     "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
+    "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
-    "line": 93,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg9"
+    "line": 96,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldatabyget(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
-    "line": 94,
+    "line": 96,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 94,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabyget_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg10')."
-  },
-  {
-    "line": 94,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabyget_neg10"
-  },
-  {
     "line": 96,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos1')."
+    "message": "Style Info: Variable 'val_urldatabyget_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg5')."
   },
   {
     "line": 96,
     "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_pos1"
+    "message": "Unused variable: val_urldatabyget_neg5"
+  },
+  {
+    "line": 97,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 97,
+    "severity": "Error",
+    "message": "Built-in function 'urldatabyget' expects 3 to 6 argument(s), but got 2."
   },
   {
     "line": 97,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urldatabypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_0')."
+    "message": "Style Info: Variable 'val_urldatabyget_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg8')."
+  },
+  {
+    "line": 97,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_neg8"
+  },
+  {
+    "line": 98,
+    "severity": "Error",
+    "message": "Built-in function 'urldatabyget' expects 3 to 6 argument(s), but got 1."
   },
   {
     "line": 98,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urldatabypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_1')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 98,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg9')."
+  },
+  {
+    "line": 98,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 98,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_neg9"
   },
   {
     "line": 99,
     "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 99,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabyget_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabyget_neg10')."
+  },
+  {
+    "line": 99,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabyget_neg10"
+  },
+  {
+    "line": 102,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 102,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos1')."
+  },
+  {
+    "line": 102,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypost_pos1"
+  },
+  {
+    "line": 103,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_0')."
+  },
+  {
+    "line": 104,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_1')."
+  },
+  {
+    "line": 105,
+    "severity": "Information",
     "message": "Style Info: Variable 'var_urldatabypost_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_2')."
   },
   {
-    "line": 100,
+    "line": 106,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'var_urldatabypost_arg_3' should have a 'Dict' suffix (e.g. 'var_urldatabypost_arg_3Dict')."
   },
   {
-    "line": 100,
+    "line": 106,
     "severity": "Information",
     "message": "Style Info: Variable 'var_urldatabypost_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_3')."
   },
   {
-    "line": 101,
+    "line": 107,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'var_urldatabypost_arg_4' should have an 'is' or 'has' prefix (e.g. 'isVar_urldatabypost_arg_4')."
+  },
+  {
+    "line": 107,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_4')."
+  },
+  {
+    "line": 108,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 108,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_5')."
+  },
+  {
+    "line": 109,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'var_urldatabypost_arg_6' should have an 'is' or 'has' prefix (e.g. 'isVar_urldatabypost_arg_6')."
+  },
+  {
+    "line": 109,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypost_arg_6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypost_arg_6')."
+  },
+  {
+    "line": 110,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos2')."
   },
   {
-    "line": 101,
+    "line": 110,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (214 chars). Consider breaking it into multiple lines."
+  },
+  {
+    "line": 110,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos2"
   },
   {
-    "line": 102,
+    "line": 111,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 111,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos3')."
   },
   {
-    "line": 102,
+    "line": 111,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos3"
   },
   {
-    "line": 103,
+    "line": 112,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 103,
+    "line": 112,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 112,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos4')."
   },
   {
-    "line": 103,
+    "line": 112,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 103,
+    "line": 112,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 103,
+    "line": 112,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos4"
   },
   {
-    "line": 104,
+    "line": 113,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 113,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos5')."
   },
   {
-    "line": 104,
+    "line": 113,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 104,
+    "line": 113,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 104,
+    "line": 113,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos5"
   },
   {
-    "line": 105,
+    "line": 114,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 105,
+    "line": 114,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 105,
+    "line": 114,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 105,
+    "line": 114,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos6')."
   },
   {
-    "line": 105,
+    "line": 114,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos6"
   },
   {
-    "line": 106,
+    "line": 115,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos7')."
   },
   {
-    "line": 106,
+    "line": 115,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos7"
   },
   {
-    "line": 112,
+    "line": 121,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 124,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 124,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos8')."
   },
   {
-    "line": 112,
+    "line": 124,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos8"
   },
   {
-    "line": 113,
+    "line": 125,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 125,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypost_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos9')."
   },
   {
-    "line": 113,
+    "line": 125,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypost_pos9"
   },
   {
-    "line": 114,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_pos10')."
-  },
-  {
-    "line": 114,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_pos10"
-  },
-  {
-    "line": 115,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg1')."
-  },
-  {
-    "line": 115,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg1"
-  },
-  {
-    "line": 116,
-    "severity": "Error",
-    "message": "Argument 5 to 'urldatabypost' should be Boolean, but got a String value."
-  },
-  {
-    "line": 116,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg2')."
-  },
-  {
-    "line": 116,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg2"
-  },
-  {
-    "line": 117,
-    "severity": "Error",
-    "message": "Argument 1 to 'urldatabypost' should be String, but got a Integer value."
-  },
-  {
-    "line": 117,
-    "severity": "Error",
-    "message": "Argument 2 to 'urldatabypost' should be String, but got a Integer value."
-  },
-  {
-    "line": 117,
-    "severity": "Error",
-    "message": "Argument 3 to 'urldatabypost' should be String, but got a Integer value."
-  },
-  {
-    "line": 117,
-    "severity": "Error",
-    "message": "Argument 4 to 'urldatabypost' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 117,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 117,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 117,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 117,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg3')."
-  },
-  {
-    "line": 117,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg3"
-  },
-  {
-    "line": 118,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg4')."
-  },
-  {
-    "line": 118,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 118,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg4"
-  },
-  {
-    "line": 119,
-    "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
-  },
-  {
-    "line": 119,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldatabypost(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 119,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg5')."
-  },
-  {
-    "line": 119,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg5"
-  },
-  {
-    "line": 120,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg6')."
-  },
-  {
-    "line": 120,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg6"
-  },
-  {
-    "line": 122,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 122,
+    "line": 126,
     "severity": "Error",
     "message": "Built-in function 'urldatabypost' expects 3 to 7 argument(s), but got 2."
   },
   {
-    "line": 122,
+    "line": 126,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg8')."
+    "message": "Style Info: Variable 'val_urldatabypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg1')."
   },
   {
-    "line": 122,
+    "line": 126,
     "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg8"
+    "message": "Unused variable: val_urldatabypost_neg1"
   },
   {
-    "line": 123,
+    "line": 127,
     "severity": "Error",
-    "message": "Built-in function 'urldatabypost' expects 3 to 7 argument(s), but got 1."
-  },
-  {
-    "line": 123,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg9')."
-  },
-  {
-    "line": 123,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
-  },
-  {
-    "line": 123,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg9"
-  },
-  {
-    "line": 124,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypost_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg10')."
-  },
-  {
-    "line": 124,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypost_neg10"
-  },
-  {
-    "line": 126,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos1')."
-  },
-  {
-    "line": 126,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_pos1"
+    "message": "Built-in function 'urldatabypost' expects 3 to 7 argument(s), but got 8."
   },
   {
     "line": 127,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urldatabypostasync_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_0')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 127,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg2')."
+  },
+  {
+    "line": 127,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypost_neg2"
   },
   {
     "line": 128,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urldatabypostasync_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_1')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 128,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg4')."
+  },
+  {
+    "line": 128,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 128,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypost_neg4"
+  },
+  {
+    "line": 129,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 129,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldatabypost(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
     "line": 129,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urldatabypostasync_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_2')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 129,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg5')."
+  },
+  {
+    "line": 129,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypost_neg5"
+  },
+  {
+    "line": 130,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 130,
+    "severity": "Error",
+    "message": "Built-in function 'urldatabypost' expects 3 to 7 argument(s), but got 2."
   },
   {
     "line": 130,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urldatabypostasync_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_3')."
+    "message": "Style Info: Variable 'val_urldatabypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg8')."
+  },
+  {
+    "line": 130,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypost_neg8"
   },
   {
     "line": 131,
+    "severity": "Error",
+    "message": "Built-in function 'urldatabypost' expects 3 to 7 argument(s), but got 1."
+  },
+  {
+    "line": 131,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 131,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg9')."
+  },
+  {
+    "line": 131,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 131,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypost_neg9"
+  },
+  {
+    "line": 132,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 132,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypost_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypost_neg10')."
+  },
+  {
+    "line": 132,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypost_neg10"
+  },
+  {
+    "line": 135,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 135,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos1')."
+  },
+  {
+    "line": 135,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypostasync_pos1"
+  },
+  {
+    "line": 136,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_0')."
+  },
+  {
+    "line": 137,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_1')."
+  },
+  {
+    "line": 138,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_2')."
+  },
+  {
+    "line": 139,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_3')."
+  },
+  {
+    "line": 140,
     "severity": "Information",
     "message": "Style Info: Dictionary variable 'var_urldatabypostasync_arg_4' should have a 'Dict' suffix (e.g. 'var_urldatabypostasync_arg_4Dict')."
   },
   {
-    "line": 131,
+    "line": 140,
     "severity": "Information",
     "message": "Style Info: Variable 'var_urldatabypostasync_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_4')."
   },
   {
-    "line": 132,
+    "line": 141,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'var_urldatabypostasync_arg_5' should have an 'is' or 'has' prefix (e.g. 'isVar_urldatabypostasync_arg_5')."
+  },
+  {
+    "line": 141,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_5')."
+  },
+  {
+    "line": 142,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 142,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_6')."
+  },
+  {
+    "line": 143,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'var_urldatabypostasync_arg_7' should have an 'is' or 'has' prefix (e.g. 'isVar_urldatabypostasync_arg_7')."
+  },
+  {
+    "line": 143,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urldatabypostasync_arg_7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urldatabypostasync_arg_7')."
+  },
+  {
+    "line": 144,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos2')."
   },
   {
-    "line": 132,
+    "line": 144,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (289 chars). Consider breaking it into multiple lines."
+  },
+  {
+    "line": 144,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_pos2"
   },
   {
-    "line": 133,
+    "line": 145,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 145,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos3')."
   },
   {
-    "line": 133,
+    "line": 145,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_pos3"
   },
   {
-    "line": 134,
+    "line": 146,
     "severity": "Warning",
     "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
   },
   {
-    "line": 134,
+    "line": 146,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 146,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos4')."
   },
   {
-    "line": 134,
+    "line": 146,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 134,
+    "line": 146,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 134,
+    "line": 146,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_pos4"
   },
   {
-    "line": 135,
+    "line": 147,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 147,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos5')."
   },
   {
-    "line": 135,
+    "line": 147,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
   },
   {
-    "line": 135,
+    "line": 147,
     "severity": "Warning",
     "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
   },
   {
-    "line": 135,
+    "line": 147,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_pos5"
   },
   {
-    "line": 136,
+    "line": 148,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 136,
+    "line": 148,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 136,
+    "line": 148,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 136,
+    "line": 148,
     "severity": "Information",
     "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 136,
+    "line": 148,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos6')."
   },
   {
-    "line": 136,
+    "line": 148,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_pos6"
   },
   {
-    "line": 137,
+    "line": 149,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urldatabypostasync_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos7')."
   },
   {
-    "line": 137,
+    "line": 149,
     "severity": "Hint",
     "message": "Unused variable: val_urldatabypostasync_pos7"
   },
   {
-    "line": 144,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos8')."
-  },
-  {
-    "line": 144,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_pos8"
-  },
-  {
-    "line": 145,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos9')."
-  },
-  {
-    "line": 145,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_pos9"
-  },
-  {
-    "line": 146,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos10')."
-  },
-  {
-    "line": 146,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_pos10"
-  },
-  {
-    "line": 147,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg1')."
-  },
-  {
-    "line": 147,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg1"
-  },
-  {
-    "line": 148,
-    "severity": "Error",
-    "message": "Argument 6 to 'urldatabypostasync' should be Boolean, but got a String value."
-  },
-  {
-    "line": 148,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg2')."
-  },
-  {
-    "line": 148,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg2"
-  },
-  {
-    "line": 149,
-    "severity": "Error",
-    "message": "Argument 1 to 'urldatabypostasync' should be String, but got a Integer value."
-  },
-  {
-    "line": 149,
-    "severity": "Error",
-    "message": "Argument 2 to 'urldatabypostasync' should be String, but got a Integer value."
-  },
-  {
-    "line": 149,
-    "severity": "Error",
-    "message": "Argument 3 to 'urldatabypostasync' should be String, but got a Integer value."
-  },
-  {
-    "line": 149,
-    "severity": "Error",
-    "message": "Argument 4 to 'urldatabypostasync' should be String, but got a Integer value."
-  },
-  {
-    "line": 149,
-    "severity": "Error",
-    "message": "Argument 5 to 'urldatabypostasync' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 149,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 149,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 149,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 149,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 149,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg3')."
-  },
-  {
-    "line": 149,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg3"
-  },
-  {
-    "line": 150,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg4')."
-  },
-  {
-    "line": 150,
-    "severity": "Error",
-    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
-  },
-  {
-    "line": 150,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg4"
-  },
-  {
-    "line": 151,
-    "severity": "Warning",
-    "message": "'invalid_ns' is read here but is never defined in this function."
-  },
-  {
-    "line": 151,
-    "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldatabypostasync(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
-  },
-  {
-    "line": 151,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg5')."
-  },
-  {
-    "line": 151,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg5"
-  },
-  {
-    "line": 152,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg6')."
-  },
-  {
-    "line": 152,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg6"
-  },
-  {
-    "line": 154,
-    "severity": "Error",
-    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
-  },
-  {
-    "line": 154,
-    "severity": "Error",
-    "message": "Built-in function 'urldatabypostasync' expects 4 to 8 argument(s), but got 2."
-  },
-  {
-    "line": 154,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg8')."
-  },
-  {
-    "line": 154,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg8"
-  },
-  {
-    "line": 155,
-    "severity": "Error",
-    "message": "Built-in function 'urldatabypostasync' expects 4 to 8 argument(s), but got 1."
-  },
-  {
-    "line": 155,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg9')."
-  },
-  {
-    "line": 155,
-    "severity": "Warning",
-    "message": "Style Warning: There should never be more than one statement on a single line."
-  },
-  {
-    "line": 155,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg9"
-  },
-  {
     "line": 156,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urldatabypostasync_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg10')."
-  },
-  {
-    "line": 156,
-    "severity": "Hint",
-    "message": "Unused variable: val_urldatabypostasync_neg10"
-  },
-  {
-    "line": 158,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos1Dict')."
-  },
-  {
-    "line": 158,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos1')."
-  },
-  {
-    "line": 158,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos1"
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 159,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_0')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 159,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos8')."
+  },
+  {
+    "line": 159,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (209 chars). Consider breaking it into multiple lines."
+  },
+  {
+    "line": 159,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypostasync_pos8"
   },
   {
     "line": 160,
     "severity": "Information",
-    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_1')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 160,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_pos9')."
+  },
+  {
+    "line": 160,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypostasync_pos9"
+  },
+  {
+    "line": 161,
+    "severity": "Error",
+    "message": "Built-in function 'urldatabypostasync' expects 4 to 8 argument(s), but got 3."
   },
   {
     "line": 161,
     "severity": "Information",
-    "message": "Style Info: Dictionary variable 'var_urlmultipartbypost_arg_2' should have a 'Dict' suffix (e.g. 'var_urlmultipartbypost_arg_2Dict')."
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg1')."
   },
   {
     "line": 161,
-    "severity": "Information",
-    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_2')."
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypostasync_neg1"
+  },
+  {
+    "line": 162,
+    "severity": "Error",
+    "message": "Built-in function 'urldatabypostasync' expects 4 to 8 argument(s), but got 9."
   },
   {
     "line": 162,
     "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos2Dict')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 162,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos2')."
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg2')."
   },
   {
     "line": 162,
     "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos2"
+    "message": "Unused variable: val_urldatabypostasync_neg2"
   },
   {
     "line": 163,
     "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos3' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos3Dict')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
     "line": 163,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos3')."
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg4')."
   },
   {
     "line": 163,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos3"
-  },
-  {
-    "line": 164,
-    "severity": "Warning",
-    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
-  },
-  {
-    "line": 164,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos4Dict')."
-  },
-  {
-    "line": 164,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos4')."
-  },
-  {
-    "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 164,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 164,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos4"
-  },
-  {
-    "line": 165,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos5' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos5Dict')."
-  },
-  {
-    "line": 165,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos5')."
-  },
-  {
-    "line": 165,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
-  },
-  {
-    "line": 165,
-    "severity": "Warning",
-    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
-  },
-  {
-    "line": 165,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos5"
-  },
-  {
-    "line": 166,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 166,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 166,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos6' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos6Dict')."
-  },
-  {
-    "line": 166,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos6')."
-  },
-  {
-    "line": 166,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos6"
-  },
-  {
-    "line": 167,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos7' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos7Dict')."
-  },
-  {
-    "line": 167,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos7')."
-  },
-  {
-    "line": 167,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos7"
-  },
-  {
-    "line": 172,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos8Dict')."
-  },
-  {
-    "line": 172,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos8')."
-  },
-  {
-    "line": 172,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos8"
-  },
-  {
-    "line": 173,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos9Dict')."
-  },
-  {
-    "line": 173,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos9')."
-  },
-  {
-    "line": 173,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos9"
-  },
-  {
-    "line": 174,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos10' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos10Dict')."
-  },
-  {
-    "line": 174,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_pos10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos10')."
-  },
-  {
-    "line": 174,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_pos10"
-  },
-  {
-    "line": 175,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg1Dict')."
-  },
-  {
-    "line": 175,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg1')."
-  },
-  {
-    "line": 175,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_neg1"
-  },
-  {
-    "line": 176,
-    "severity": "Error",
-    "message": "Argument 4 to 'urlmultipartbypost' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 176,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg2Dict')."
-  },
-  {
-    "line": 176,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg2')."
-  },
-  {
-    "line": 176,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_neg2"
-  },
-  {
-    "line": 177,
-    "severity": "Error",
-    "message": "Argument 1 to 'urlmultipartbypost' should be String, but got a Integer value."
-  },
-  {
-    "line": 177,
-    "severity": "Error",
-    "message": "Argument 2 to 'urlmultipartbypost' should be String, but got a Integer value."
-  },
-  {
-    "line": 177,
-    "severity": "Error",
-    "message": "Argument 3 to 'urlmultipartbypost' should be Dictionary, but got a String value."
-  },
-  {
-    "line": 177,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 177,
-    "severity": "Information",
-    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
-  },
-  {
-    "line": 177,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg3' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg3Dict')."
-  },
-  {
-    "line": 177,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg3')."
-  },
-  {
-    "line": 177,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_neg3"
-  },
-  {
-    "line": 178,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg4Dict')."
-  },
-  {
-    "line": 178,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg4')."
-  },
-  {
-    "line": 178,
     "severity": "Error",
     "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
   },
   {
-    "line": 178,
+    "line": 163,
     "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_neg4"
+    "message": "Unused variable: val_urldatabypostasync_neg4"
   },
   {
-    "line": 179,
+    "line": 164,
     "severity": "Warning",
     "message": "'invalid_ns' is read here but is never defined in this function."
   },
   {
-    "line": 179,
+    "line": 164,
     "severity": "Error",
-    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urlmultipartbypost(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urldatabypostasync(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
   },
   {
-    "line": 179,
+    "line": 164,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg5')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 179,
+    "line": 164,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg5')."
+  },
+  {
+    "line": 164,
     "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_neg5"
+    "message": "Unused variable: val_urldatabypostasync_neg5"
   },
   {
-    "line": 180,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg6' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg6Dict')."
-  },
-  {
-    "line": 180,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg6')."
-  },
-  {
-    "line": 180,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_neg6"
-  },
-  {
-    "line": 182,
+    "line": 165,
     "severity": "Error",
     "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
   },
   {
-    "line": 182,
-    "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg8Dict')."
-  },
-  {
-    "line": 182,
-    "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg8')."
-  },
-  {
-    "line": 182,
-    "severity": "Hint",
-    "message": "Unused variable: val_urlmultipartbypost_neg8"
-  },
-  {
-    "line": 183,
+    "line": 165,
     "severity": "Error",
-    "message": "Built-in function 'urlmultipartbypost' expects 2 to 6 argument(s), but got 1."
+    "message": "Built-in function 'urldatabypostasync' expects 4 to 8 argument(s), but got 2."
   },
   {
-    "line": 183,
+    "line": 165,
     "severity": "Information",
-    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg9Dict')."
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg8')."
   },
   {
-    "line": 183,
+    "line": 165,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypostasync_neg8"
+  },
+  {
+    "line": 166,
+    "severity": "Error",
+    "message": "Built-in function 'urldatabypostasync' expects 4 to 8 argument(s), but got 1."
+  },
+  {
+    "line": 166,
     "severity": "Information",
-    "message": "Style Info: Variable 'val_urlmultipartbypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg9')."
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
   },
   {
-    "line": 183,
+    "line": 166,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg9')."
+  },
+  {
+    "line": 166,
     "severity": "Warning",
     "message": "Style Warning: There should never be more than one statement on a single line."
   },
   {
-    "line": 183,
+    "line": 166,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypostasync_neg9"
+  },
+  {
+    "line": 167,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 167,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urldatabypostasync_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urldatabypostasync_neg10')."
+  },
+  {
+    "line": 167,
+    "severity": "Hint",
+    "message": "Unused variable: val_urldatabypostasync_neg10"
+  },
+  {
+    "line": 170,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 170,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos1Dict')."
+  },
+  {
+    "line": 170,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos1')."
+  },
+  {
+    "line": 170,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos1"
+  },
+  {
+    "line": 171,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_0' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_0')."
+  },
+  {
+    "line": 172,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_1')."
+  },
+  {
+    "line": 173,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urlmultipartbypost_arg_2' should have a 'Dict' suffix (e.g. 'var_urlmultipartbypost_arg_2Dict')."
+  },
+  {
+    "line": 173,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_2')."
+  },
+  {
+    "line": 174,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'var_urlmultipartbypost_arg_3' should have a 'Dict' suffix (e.g. 'var_urlmultipartbypost_arg_3Dict')."
+  },
+  {
+    "line": 174,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_3')."
+  },
+  {
+    "line": 175,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 175,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_4')."
+  },
+  {
+    "line": 176,
+    "severity": "Information",
+    "message": "Style Info: Boolean variable 'var_urlmultipartbypost_arg_5' should have an 'is' or 'has' prefix (e.g. 'isVar_urlmultipartbypost_arg_5')."
+  },
+  {
+    "line": 176,
+    "severity": "Information",
+    "message": "Style Info: Variable 'var_urlmultipartbypost_arg_5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'var_urlmultipartbypost_arg_5')."
+  },
+  {
+    "line": 177,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos2Dict')."
+  },
+  {
+    "line": 177,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos2')."
+  },
+  {
+    "line": 177,
+    "severity": "Warning",
+    "message": "Style Warning: Line exceeds 200 characters of code (229 chars). Consider breaking it into multiple lines."
+  },
+  {
+    "line": 177,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos2"
+  },
+  {
+    "line": 178,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 178,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos3' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos3Dict')."
+  },
+  {
+    "line": 178,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos3' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos3')."
+  },
+  {
+    "line": 178,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos3"
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "Condition is always true ('true') - if this is leftover debug code, remove the condition; otherwise check for a typo."
+  },
+  {
+    "line": 179,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 179,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos4Dict')."
+  },
+  {
+    "line": 179,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos4')."
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 179,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 179,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos4"
+  },
+  {
+    "line": 180,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 180,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos5' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos5Dict')."
+  },
+  {
+    "line": 180,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos5')."
+  },
+  {
+    "line": 180,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line."
+  },
+  {
+    "line": 180,
+    "severity": "Warning",
+    "message": "Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them."
+  },
+  {
+    "line": 180,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos5"
+  },
+  {
+    "line": 181,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 181,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 181,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos6' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos6Dict')."
+  },
+  {
+    "line": 181,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos6' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos6')."
+  },
+  {
+    "line": 181,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos6"
+  },
+  {
+    "line": 182,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos7' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos7Dict')."
+  },
+  {
+    "line": 182,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos7' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos7')."
+  },
+  {
+    "line": 182,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos7"
+  },
+  {
+    "line": 187,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 190,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 190,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos8Dict')."
+  },
+  {
+    "line": 190,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos8')."
+  },
+  {
+    "line": 190,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos8"
+  },
+  {
+    "line": 191,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 191,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_pos9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_pos9Dict')."
+  },
+  {
+    "line": 191,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_pos9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_pos9')."
+  },
+  {
+    "line": 191,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_pos9"
+  },
+  {
+    "line": 192,
+    "severity": "Error",
+    "message": "Built-in function 'urlmultipartbypost' expects 2 to 6 argument(s), but got 1."
+  },
+  {
+    "line": 192,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg1' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg1Dict')."
+  },
+  {
+    "line": 192,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg1' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg1')."
+  },
+  {
+    "line": 192,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_neg1"
+  },
+  {
+    "line": 193,
+    "severity": "Error",
+    "message": "Built-in function 'urlmultipartbypost' expects 2 to 6 argument(s), but got 7."
+  },
+  {
+    "line": 193,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 193,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg2' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg2Dict')."
+  },
+  {
+    "line": 193,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg2' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg2')."
+  },
+  {
+    "line": 193,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_neg2"
+  },
+  {
+    "line": 194,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 194,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg4' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg4Dict')."
+  },
+  {
+    "line": 194,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg4' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg4')."
+  },
+  {
+    "line": 194,
+    "severity": "Error",
+    "message": "Syntax Error: Trailing comma before closing ')' is not allowed."
+  },
+  {
+    "line": 194,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_neg4"
+  },
+  {
+    "line": 195,
+    "severity": "Warning",
+    "message": "'invalid_ns' is read here but is never defined in this function."
+  },
+  {
+    "line": 195,
+    "severity": "Error",
+    "message": "BML Syntax Error: Member access or method call ('invalid_ns.urlmultipartbypost(') is not supported. BML does not have objects, properties, or methods. Use standard BML functions instead (e.g., 'sizeofarray()', 'jsonget()', 'get()')."
+  },
+  {
+    "line": 195,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 195,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg5' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg5')."
+  },
+  {
+    "line": 195,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_neg5"
+  },
+  {
+    "line": 196,
+    "severity": "Error",
+    "message": "BML Syntax Error: 'break' statement is only allowed inside a loop body."
+  },
+  {
+    "line": 196,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg8' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg8Dict')."
+  },
+  {
+    "line": 196,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg8' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg8')."
+  },
+  {
+    "line": 196,
+    "severity": "Hint",
+    "message": "Unused variable: val_urlmultipartbypost_neg8"
+  },
+  {
+    "line": 197,
+    "severity": "Error",
+    "message": "Built-in function 'urlmultipartbypost' expects 2 to 6 argument(s), but got 1."
+  },
+  {
+    "line": 197,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 197,
+    "severity": "Information",
+    "message": "Style Info: Dictionary variable 'val_urlmultipartbypost_neg9' should have a 'Dict' suffix (e.g. 'val_urlmultipartbypost_neg9Dict')."
+  },
+  {
+    "line": 197,
+    "severity": "Information",
+    "message": "Style Info: Variable 'val_urlmultipartbypost_neg9' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg9')."
+  },
+  {
+    "line": 197,
+    "severity": "Warning",
+    "message": "Style Warning: There should never be more than one statement on a single line."
+  },
+  {
+    "line": 197,
     "severity": "Hint",
     "message": "Unused variable: val_urlmultipartbypost_neg9"
   },
   {
-    "line": 184,
+    "line": 198,
+    "severity": "Information",
+    "message": "Design Info: Magic number '123' detected. Consider defining a named constant"
+  },
+  {
+    "line": 198,
     "severity": "Information",
     "message": "Style Info: Variable 'val_urlmultipartbypost_neg10' should use camelCase and not contain underscores (e.g. 'totalListPrice' instead of 'val_urlmultipartbypost_neg10')."
   },
   {
-    "line": 184,
+    "line": 198,
     "severity": "Hint",
     "message": "Unused variable: val_urlmultipartbypost_neg10"
   }

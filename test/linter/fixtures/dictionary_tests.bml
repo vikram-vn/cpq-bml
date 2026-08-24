@@ -1,129 +1,89 @@
 // ==========================================
-// BML Category: DICTIONARY - Senior QA Regression Suite
+// BML Category: DICTIONARY - Validated Reference QA Suite
 // ==========================================
 
-// Common environment instances
+// Common test instances
 sb = stringbuilder();
 rs = bmql("select id from parts");
 myDict = dict("string");
 myJson = json();
 myJsonArr = jsonarray();
 myDate = getdate();
+myStrArr = string[]{"a", "b"};
+myIntArr = integer[]{1, 2};
 
-val_dict_pos1 = dict("abc");
-var_dict_arg_0 = "abc";
-val_dict_pos2 = dict(var_dict_arg_0);
-val_dict_pos3 = DICT("abc");
-if (true) { val_dict_pos4 = dict("abc"); }
-for loopIdx in range(1) { val_dict_pos5 = dict("abc"); }
-val_dict_pos6 = dict(string(123));
-val_dict_pos7 = dict(   
-  	  "abc" 	
-  );
-val_dict_pos8 = dict(/* comment */ "abc");
-val_dict_pos9 = dict("");
-val_dict_pos10 = dict("abc");
-val_dict_neg1 = dict();
-val_dict_neg2 = dict("abc", "excess_parameter_value");
-val_dict_neg3 = dict(123);
-val_dict_neg4 = dict("abc",);
-val_dict_neg5 = invalid_ns.dict("abc");
-val_dict_neg6 = dict(, );
-dict("abc") = "override_val";
-val_dict_neg8 = dict(return, break);
-val_dict_neg9 = dict(123; 456);
-val_dict_neg10 = dict("abc" 
-
-val_containskey_pos1 = containskey(dict("string"), "abc", "abc");
+// Function: containskey
+val_containskey_pos1 = containskey(dict("string"), "str_1");
 var_containskey_arg_0 = dict("string");
-var_containskey_arg_1 = "abc";
-var_containskey_arg_2 = "abc";
-val_containskey_pos2 = containskey(var_containskey_arg_0, var_containskey_arg_1, var_containskey_arg_2);
-val_containskey_pos3 = CONTAINSKEY(dict("string"), "abc", "abc");
-if (true) { val_containskey_pos4 = containskey(dict("string"), "abc", "abc"); }
-for loopIdx in range(1) { val_containskey_pos5 = containskey(dict("string"), "abc", "abc"); }
-val_containskey_pos6 = containskey(dict("string"), string(123), string(123));
-val_containskey_pos7 = containskey(   
-  	  dict("string"), 	
-  "abc", 	
-  "abc" 	
-  );
-val_containskey_pos8 = containskey(/* comment */ dict("string"), /* next */ "abc", /* next */ "abc");
-val_containskey_pos9 = containskey(dict("string"), "", "");
-val_containskey_pos10 = containskey(dict("string"), "abc", "abc");
-val_containskey_neg1 = containskey(dict("string"), "abc");
-val_containskey_neg2 = containskey(dict("string"), "abc", "abc", "excess_parameter_value");
-val_containskey_neg3 = containskey("not_a_dict", 123, 123);
-val_containskey_neg4 = containskey(dict("string"), "abc", "abc",);
-val_containskey_neg5 = invalid_ns.containskey(dict("string"), "abc", "abc");
-val_containskey_neg6 = containskey(dict("string"), , "abc");
-containskey(dict("string"), "abc", "abc") = "override_val";
+var_containskey_arg_1 = "str_1";
+val_containskey_pos2 = containskey(var_containskey_arg_0, var_containskey_arg_1);
+val_containskey_pos3 = CONTAINSKEY(dict("string"), "str_1");
+if (true) { val_containskey_pos4 = containskey(dict("string"), "str_1"); }
+for loopIdx in range(1) { val_containskey_pos5 = containskey(dict("string"), "str_1"); }
+val_containskey_pos6 = containskey(dict("string"), string(123));
+val_containskey_pos7 = containskey(
+  dict("string"),
+  "str_1"
+);
+val_containskey_pos8 = containskey(/* comment */ dict("string"), /* next */ "str_1");
+val_containskey_pos9 = containskey(dict("string"), "str_1");
+val_containskey_neg1 = containskey(dict("string"));
+val_containskey_neg2 = containskey(dict("string"), "str_1", "excess_parameter_value");
+val_containskey_neg4 = containskey(dict("string"), "str_1",);
+val_containskey_neg5 = invalid_ns.containskey(dict("string"), "str_1");
 val_containskey_neg8 = containskey(return, break);
-val_containskey_neg9 = containskey(dict("string"); "abc"; "abc");
-val_containskey_neg10 = containskey(dict("string"), "abc", "abc" 
+val_containskey_neg9 = containskey(dict("string"); "str_1");
+val_containskey_neg10 = containskey(dict("string"), "str_1"
 
-val_put_pos1 = put(dict("string"), "abc", "abc", dict("string"));
+// Function: put
+val_put_pos1 = put(dict("string"), "str_1", "str_2");
 var_put_arg_0 = dict("string");
-var_put_arg_1 = "abc";
-var_put_arg_2 = "abc";
-var_put_arg_3 = dict("string");
-val_put_pos2 = put(var_put_arg_0, var_put_arg_1, var_put_arg_2, var_put_arg_3);
-val_put_pos3 = PUT(dict("string"), "abc", "abc", dict("string"));
-if (true) { val_put_pos4 = put(dict("string"), "abc", "abc", dict("string")); }
-for loopIdx in range(1) { val_put_pos5 = put(dict("string"), "abc", "abc", dict("string")); }
-val_put_pos6 = put(dict("string"), string(123), string(123), dict("string"));
-val_put_pos7 = put(   
-  	  dict("string"), 	
-  "abc", 	
-  "abc", 	
-  dict("string") 	
-  );
-val_put_pos8 = put(/* comment */ dict("string"), /* next */ "abc", /* next */ "abc", /* next */ dict("string"));
-val_put_pos9 = put(dict("string"), "", "", dict("string"));
-val_put_pos10 = put(dict("string"), "abc", "abc", dict("string"));
-val_put_neg1 = put(dict("string"), "abc", "abc");
-val_put_neg2 = put(dict("string"), "abc", "abc", dict("string"), "excess_parameter_value");
-val_put_neg3 = put("not_a_dict", 123, 123, "not_a_dict");
-val_put_neg4 = put(dict("string"), "abc", "abc", dict("string"),);
-val_put_neg5 = invalid_ns.put(dict("string"), "abc", "abc", dict("string"));
-val_put_neg6 = put(dict("string"), , "abc", dict("string"));
-put(dict("string"), "abc", "abc", dict("string")) = "override_val";
+var_put_arg_1 = "str_1";
+var_put_arg_2 = "str_2";
+val_put_pos2 = put(var_put_arg_0, var_put_arg_1, var_put_arg_2);
+val_put_pos3 = PUT(dict("string"), "str_1", "str_2");
+if (true) { val_put_pos4 = put(dict("string"), "str_1", "str_2"); }
+for loopIdx in range(1) { val_put_pos5 = put(dict("string"), "str_1", "str_2"); }
+val_put_pos6 = put(dict("string"), string(123), string(123));
+val_put_pos7 = put(
+  dict("string"),
+  "str_1",
+  "str_2"
+);
+val_put_pos8 = put(/* comment */ dict("string"), /* next */ "str_1", /* next */ "str_2");
+val_put_pos9 = put(dict("string"), "str_1", "str_2");
+val_put_neg1 = put(dict("string"), "str_1");
+val_put_neg2 = put(dict("string"), "str_1", "str_2", "excess_parameter_value");
+val_put_neg4 = put(dict("string"), "str_1", "str_2",);
+val_put_neg5 = invalid_ns.put(dict("string"), "str_1", "str_2");
 val_put_neg8 = put(return, break);
-val_put_neg9 = put(dict("string"); "abc"; "abc"; dict("string"));
-val_put_neg10 = put(dict("string"), "abc", "abc", dict("string") 
+val_put_neg9 = put(dict("string"); "str_1"; "str_2");
+val_put_neg10 = put(dict("string"), "str_1", "str_2"
 
-val_get_pos1 = get(dict("string"), "abc", "abc", "abc", "abc");
+// Function: get
+val_get_pos1 = get(dict("string"), "str_1");
 var_get_arg_0 = dict("string");
-var_get_arg_1 = "abc";
-var_get_arg_2 = "abc";
-var_get_arg_3 = "abc";
-var_get_arg_4 = "abc";
-val_get_pos2 = get(var_get_arg_0, var_get_arg_1, var_get_arg_2, var_get_arg_3, var_get_arg_4);
-val_get_pos3 = GET(dict("string"), "abc", "abc", "abc", "abc");
-if (true) { val_get_pos4 = get(dict("string"), "abc", "abc", "abc", "abc"); }
-for loopIdx in range(1) { val_get_pos5 = get(dict("string"), "abc", "abc", "abc", "abc"); }
-val_get_pos6 = get(dict("string"), string(123), string(123), string(123), string(123));
-val_get_pos7 = get(   
-  	  dict("string"), 	
-  "abc", 	
-  "abc", 	
-  "abc", 	
-  "abc" 	
-  );
-val_get_pos8 = get(/* comment */ dict("string"), /* next */ "abc", /* next */ "abc", /* next */ "abc", /* next */ "abc");
-val_get_pos9 = get(dict("string"), "", "", "", "");
-val_get_pos10 = get(dict("string"), "abc", "abc", "abc", "abc");
-val_get_neg1 = get(dict("string"), "abc", "abc", "abc");
-val_get_neg2 = get(dict("string"), "abc", "abc", "abc", "abc", "excess_parameter_value");
-val_get_neg3 = get("not_a_dict", 123, 123, 123, 123);
-val_get_neg4 = get(dict("string"), "abc", "abc", "abc", "abc",);
-val_get_neg5 = invalid_ns.get(dict("string"), "abc", "abc", "abc", "abc");
-val_get_neg6 = get(dict("string"), , "abc", "abc", "abc");
-get(dict("string"), "abc", "abc", "abc", "abc") = "override_val";
+var_get_arg_1 = "str_1";
+val_get_pos2 = get(var_get_arg_0, var_get_arg_1);
+val_get_pos3 = GET(dict("string"), "str_1");
+if (true) { val_get_pos4 = get(dict("string"), "str_1"); }
+for loopIdx in range(1) { val_get_pos5 = get(dict("string"), "str_1"); }
+val_get_pos6 = get(dict("string"), string(123));
+val_get_pos7 = get(
+  dict("string"),
+  "str_1"
+);
+val_get_pos8 = get(/* comment */ dict("string"), /* next */ "str_1");
+val_get_pos9 = get(dict("string"), "str_1");
+val_get_neg1 = get(dict("string"));
+val_get_neg2 = get(dict("string"), "str_1", "excess_parameter_value");
+val_get_neg4 = get(dict("string"), "str_1",);
+val_get_neg5 = invalid_ns.get(dict("string"), "str_1");
 val_get_neg8 = get(return, break);
-val_get_neg9 = get(dict("string"); "abc"; "abc"; "abc"; "abc");
-val_get_neg10 = get(dict("string"), "abc", "abc", "abc", "abc" 
+val_get_neg9 = get(dict("string"); "str_1");
+val_get_neg10 = get(dict("string"), "str_1"
 
+// Function: keys
 val_keys_pos1 = keys(dict("string"));
 var_keys_arg_0 = dict("string");
 val_keys_pos2 = keys(var_keys_arg_0);
@@ -131,23 +91,20 @@ val_keys_pos3 = KEYS(dict("string"));
 if (true) { val_keys_pos4 = keys(dict("string")); }
 for loopIdx in range(1) { val_keys_pos5 = keys(dict("string")); }
 val_keys_pos6 = keys(dict("string"));
-val_keys_pos7 = keys(   
-  	  dict("string") 	
-  );
+val_keys_pos7 = keys(
+  dict("string")
+);
 val_keys_pos8 = keys(/* comment */ dict("string"));
 val_keys_pos9 = keys(dict("string"));
-val_keys_pos10 = keys(dict("string"));
 val_keys_neg1 = keys();
 val_keys_neg2 = keys(dict("string"), "excess_parameter_value");
-val_keys_neg3 = keys("not_a_dict");
 val_keys_neg4 = keys(dict("string"),);
 val_keys_neg5 = invalid_ns.keys(dict("string"));
-val_keys_neg6 = keys(, );
-keys(dict("string")) = "override_val";
 val_keys_neg8 = keys(return, break);
-val_keys_neg9 = keys(123; 456);
-val_keys_neg10 = keys(dict("string") 
+val_keys_neg9 = keys(dict("string"));
+val_keys_neg10 = keys(dict("string")
 
+// Function: values
 val_values_pos1 = values(dict("string"));
 var_values_arg_0 = dict("string");
 val_values_pos2 = values(var_values_arg_0);
@@ -155,21 +112,17 @@ val_values_pos3 = VALUES(dict("string"));
 if (true) { val_values_pos4 = values(dict("string")); }
 for loopIdx in range(1) { val_values_pos5 = values(dict("string")); }
 val_values_pos6 = values(dict("string"));
-val_values_pos7 = values(   
-  	  dict("string") 	
-  );
+val_values_pos7 = values(
+  dict("string")
+);
 val_values_pos8 = values(/* comment */ dict("string"));
 val_values_pos9 = values(dict("string"));
-val_values_pos10 = values(dict("string"));
 val_values_neg1 = values();
 val_values_neg2 = values(dict("string"), "excess_parameter_value");
-val_values_neg3 = values("not_a_dict");
 val_values_neg4 = values(dict("string"),);
 val_values_neg5 = invalid_ns.values(dict("string"));
-val_values_neg6 = values(, );
-values(dict("string")) = "override_val";
 val_values_neg8 = values(return, break);
-val_values_neg9 = values(123; 456);
-val_values_neg10 = values(dict("string") 
+val_values_neg9 = values(dict("string"));
+val_values_neg10 = values(dict("string")
 
 return "";

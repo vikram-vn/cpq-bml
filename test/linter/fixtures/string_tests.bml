@@ -1,521 +1,465 @@
 // ==========================================
-// BML Category: STRING - Senior QA Regression Suite
+// BML Category: STRING - Validated Reference QA Suite
 // ==========================================
 
-// Common environment instances
+// Common test instances
 sb = stringbuilder();
 rs = bmql("select id from parts");
 myDict = dict("string");
 myJson = json();
 myJsonArr = jsonarray();
 myDate = getdate();
+myStrArr = string[]{"a", "b"};
+myIntArr = integer[]{1, 2};
 
-val_atof_pos1 = atof("abc");
-var_atof_arg_0 = "abc";
+// Function: atof
+val_atof_pos1 = atof("str_0");
+var_atof_arg_0 = "str_0";
 val_atof_pos2 = atof(var_atof_arg_0);
-val_atof_pos3 = ATOF("abc");
-if (true) { val_atof_pos4 = atof("abc"); }
-for loopIdx in range(1) { val_atof_pos5 = atof("abc"); }
+val_atof_pos3 = ATOF("str_0");
+if (true) { val_atof_pos4 = atof("str_0"); }
+for loopIdx in range(1) { val_atof_pos5 = atof("str_0"); }
 val_atof_pos6 = atof(string(123));
-val_atof_pos7 = atof(   
-  	  "abc" 	
-  );
-val_atof_pos8 = atof(/* comment */ "abc");
-val_atof_pos9 = atof("");
-val_atof_pos10 = atof("abc");
+val_atof_pos7 = atof(
+  "str_0"
+);
+val_atof_pos8 = atof(/* comment */ "str_0");
+val_atof_pos9 = atof("str_0");
 val_atof_neg1 = atof();
-val_atof_neg2 = atof("abc", "excess_parameter_value");
-val_atof_neg3 = atof(123);
-val_atof_neg4 = atof("abc",);
-val_atof_neg5 = invalid_ns.atof("abc");
-val_atof_neg6 = atof(, );
-atof("abc") = "override_val";
+val_atof_neg2 = atof("str_0", "excess_parameter_value");
+val_atof_neg4 = atof("str_0",);
+val_atof_neg5 = invalid_ns.atof("str_0");
 val_atof_neg8 = atof(return, break);
-val_atof_neg9 = atof(123; 456);
-val_atof_neg10 = atof("abc" 
+val_atof_neg9 = atof("str_0");
+val_atof_neg10 = atof("str_0"
 
-val_atoi_pos1 = atoi("abc");
-var_atoi_arg_0 = "abc";
+// Function: atoi
+val_atoi_pos1 = atoi("str_0");
+var_atoi_arg_0 = "str_0";
 val_atoi_pos2 = atoi(var_atoi_arg_0);
-val_atoi_pos3 = ATOI("abc");
-if (true) { val_atoi_pos4 = atoi("abc"); }
-for loopIdx in range(1) { val_atoi_pos5 = atoi("abc"); }
+val_atoi_pos3 = ATOI("str_0");
+if (true) { val_atoi_pos4 = atoi("str_0"); }
+for loopIdx in range(1) { val_atoi_pos5 = atoi("str_0"); }
 val_atoi_pos6 = atoi(string(123));
-val_atoi_pos7 = atoi(   
-  	  "abc" 	
-  );
-val_atoi_pos8 = atoi(/* comment */ "abc");
-val_atoi_pos9 = atoi("");
-val_atoi_pos10 = atoi("abc");
+val_atoi_pos7 = atoi(
+  "str_0"
+);
+val_atoi_pos8 = atoi(/* comment */ "str_0");
+val_atoi_pos9 = atoi("str_0");
 val_atoi_neg1 = atoi();
-val_atoi_neg2 = atoi("abc", "excess_parameter_value");
-val_atoi_neg3 = atoi(123);
-val_atoi_neg4 = atoi("abc",);
-val_atoi_neg5 = invalid_ns.atoi("abc");
-val_atoi_neg6 = atoi(, );
-atoi("abc") = "override_val";
+val_atoi_neg2 = atoi("str_0", "excess_parameter_value");
+val_atoi_neg4 = atoi("str_0",);
+val_atoi_neg5 = invalid_ns.atoi("str_0");
 val_atoi_neg8 = atoi(return, break);
-val_atoi_neg9 = atoi(123; 456);
-val_atoi_neg10 = atoi("abc" 
+val_atoi_neg9 = atoi("str_0");
+val_atoi_neg10 = atoi("str_0"
 
-val_decodebase64_pos1 = decodebase64("abc");
-var_decodebase64_arg_0 = "abc";
+// Function: decodebase64
+val_decodebase64_pos1 = decodebase64("str_0");
+var_decodebase64_arg_0 = "str_0";
 val_decodebase64_pos2 = decodebase64(var_decodebase64_arg_0);
-val_decodebase64_pos3 = DECODEBASE64("abc");
-if (true) { val_decodebase64_pos4 = decodebase64("abc"); }
-for loopIdx in range(1) { val_decodebase64_pos5 = decodebase64("abc"); }
+val_decodebase64_pos3 = DECODEBASE64("str_0");
+if (true) { val_decodebase64_pos4 = decodebase64("str_0"); }
+for loopIdx in range(1) { val_decodebase64_pos5 = decodebase64("str_0"); }
 val_decodebase64_pos6 = decodebase64(string(123));
-val_decodebase64_pos7 = decodebase64(   
-  	  "abc" 	
-  );
-val_decodebase64_pos8 = decodebase64(/* comment */ "abc");
-val_decodebase64_pos9 = decodebase64("");
-val_decodebase64_pos10 = decodebase64("abc");
+val_decodebase64_pos7 = decodebase64(
+  "str_0"
+);
+val_decodebase64_pos8 = decodebase64(/* comment */ "str_0");
+val_decodebase64_pos9 = decodebase64("str_0");
 val_decodebase64_neg1 = decodebase64();
-val_decodebase64_neg2 = decodebase64("abc", "excess_parameter_value");
-val_decodebase64_neg3 = decodebase64(123);
-val_decodebase64_neg4 = decodebase64("abc",);
-val_decodebase64_neg5 = invalid_ns.decodebase64("abc");
-val_decodebase64_neg6 = decodebase64(, );
-decodebase64("abc") = "override_val";
+val_decodebase64_neg2 = decodebase64("str_0", "excess_parameter_value");
+val_decodebase64_neg4 = decodebase64("str_0",);
+val_decodebase64_neg5 = invalid_ns.decodebase64("str_0");
 val_decodebase64_neg8 = decodebase64(return, break);
-val_decodebase64_neg9 = decodebase64(123; 456);
-val_decodebase64_neg10 = decodebase64("abc" 
+val_decodebase64_neg9 = decodebase64("str_0");
+val_decodebase64_neg10 = decodebase64("str_0"
 
-val_encodebase64_pos1 = encodebase64("abc");
-var_encodebase64_arg_0 = "abc";
+// Function: encodebase64
+val_encodebase64_pos1 = encodebase64("str_0");
+var_encodebase64_arg_0 = "str_0";
 val_encodebase64_pos2 = encodebase64(var_encodebase64_arg_0);
-val_encodebase64_pos3 = ENCODEBASE64("abc");
-if (true) { val_encodebase64_pos4 = encodebase64("abc"); }
-for loopIdx in range(1) { val_encodebase64_pos5 = encodebase64("abc"); }
+val_encodebase64_pos3 = ENCODEBASE64("str_0");
+if (true) { val_encodebase64_pos4 = encodebase64("str_0"); }
+for loopIdx in range(1) { val_encodebase64_pos5 = encodebase64("str_0"); }
 val_encodebase64_pos6 = encodebase64(string(123));
-val_encodebase64_pos7 = encodebase64(   
-  	  "abc" 	
-  );
-val_encodebase64_pos8 = encodebase64(/* comment */ "abc");
-val_encodebase64_pos9 = encodebase64("");
-val_encodebase64_pos10 = encodebase64("abc");
+val_encodebase64_pos7 = encodebase64(
+  "str_0"
+);
+val_encodebase64_pos8 = encodebase64(/* comment */ "str_0");
+val_encodebase64_pos9 = encodebase64("str_0");
 val_encodebase64_neg1 = encodebase64();
-val_encodebase64_neg2 = encodebase64("abc", "excess_parameter_value");
-val_encodebase64_neg3 = encodebase64(123);
-val_encodebase64_neg4 = encodebase64("abc",);
-val_encodebase64_neg5 = invalid_ns.encodebase64("abc");
-val_encodebase64_neg6 = encodebase64(, );
-encodebase64("abc") = "override_val";
+val_encodebase64_neg2 = encodebase64("str_0", "excess_parameter_value");
+val_encodebase64_neg4 = encodebase64("str_0",);
+val_encodebase64_neg5 = invalid_ns.encodebase64("str_0");
 val_encodebase64_neg8 = encodebase64(return, break);
-val_encodebase64_neg9 = encodebase64(123; 456);
-val_encodebase64_neg10 = encodebase64("abc" 
+val_encodebase64_neg9 = encodebase64("str_0");
+val_encodebase64_neg10 = encodebase64("str_0"
 
-val_endswith_pos1 = endswith("abc", "abc");
-var_endswith_arg_0 = "abc";
-var_endswith_arg_1 = "abc";
+// Function: endswith
+val_endswith_pos1 = endswith("str_0", "str_1");
+var_endswith_arg_0 = "str_0";
+var_endswith_arg_1 = "str_1";
 val_endswith_pos2 = endswith(var_endswith_arg_0, var_endswith_arg_1);
-val_endswith_pos3 = ENDSWITH("abc", "abc");
-if (true) { val_endswith_pos4 = endswith("abc", "abc"); }
-for loopIdx in range(1) { val_endswith_pos5 = endswith("abc", "abc"); }
+val_endswith_pos3 = ENDSWITH("str_0", "str_1");
+if (true) { val_endswith_pos4 = endswith("str_0", "str_1"); }
+for loopIdx in range(1) { val_endswith_pos5 = endswith("str_0", "str_1"); }
 val_endswith_pos6 = endswith(string(123), string(123));
-val_endswith_pos7 = endswith(   
-  	  "abc", 	
-  "abc" 	
-  );
-val_endswith_pos8 = endswith(/* comment */ "abc", /* next */ "abc");
-val_endswith_pos9 = endswith("", "");
-val_endswith_pos10 = endswith("abc", "abc");
-val_endswith_neg1 = endswith("abc");
-val_endswith_neg2 = endswith("abc", "abc", "excess_parameter_value");
-val_endswith_neg3 = endswith(123, 123);
-val_endswith_neg4 = endswith("abc", "abc",);
-val_endswith_neg5 = invalid_ns.endswith("abc", "abc");
-val_endswith_neg6 = endswith("abc", , );
-endswith("abc", "abc") = "override_val";
+val_endswith_pos7 = endswith(
+  "str_0",
+  "str_1"
+);
+val_endswith_pos8 = endswith(/* comment */ "str_0", /* next */ "str_1");
+val_endswith_pos9 = endswith("str_0", "str_1");
+val_endswith_neg1 = endswith("str_0");
+val_endswith_neg2 = endswith("str_0", "str_1", "excess_parameter_value");
+val_endswith_neg4 = endswith("str_0", "str_1",);
+val_endswith_neg5 = invalid_ns.endswith("str_0", "str_1");
 val_endswith_neg8 = endswith(return, break);
-val_endswith_neg9 = endswith("abc"; "abc");
-val_endswith_neg10 = endswith("abc", "abc" 
+val_endswith_neg9 = endswith("str_0"; "str_1");
+val_endswith_neg10 = endswith("str_0", "str_1"
 
-val_formatascurrency_pos1 = formatascurrency(1.23, "abc");
-var_formatascurrency_arg_0 = 1.23;
-var_formatascurrency_arg_1 = "abc";
+// Function: formatascurrency
+val_formatascurrency_pos1 = formatascurrency(45.67, "str_1");
+var_formatascurrency_arg_0 = 45.67;
+var_formatascurrency_arg_1 = "str_1";
 val_formatascurrency_pos2 = formatascurrency(var_formatascurrency_arg_0, var_formatascurrency_arg_1);
-val_formatascurrency_pos3 = FORMATASCURRENCY(1.23, "abc");
-if (true) { val_formatascurrency_pos4 = formatascurrency(1.23, "abc"); }
-for loopIdx in range(1) { val_formatascurrency_pos5 = formatascurrency(1.23, "abc"); }
-val_formatascurrency_pos6 = formatascurrency(atof("1.2"), string(123));
-val_formatascurrency_pos7 = formatascurrency(   
-  	  1.23, 	
-  "abc" 	
-  );
-val_formatascurrency_pos8 = formatascurrency(/* comment */ 1.23, /* next */ "abc");
-val_formatascurrency_pos9 = formatascurrency(0.0, "");
-val_formatascurrency_pos10 = formatascurrency(123, "abc");
-val_formatascurrency_neg1 = formatascurrency(1.23);
-val_formatascurrency_neg2 = formatascurrency(1.23, "abc", "excess_parameter_value");
-val_formatascurrency_neg3 = formatascurrency("not_a_float", 123);
-val_formatascurrency_neg4 = formatascurrency(1.23, "abc",);
-val_formatascurrency_neg5 = invalid_ns.formatascurrency(1.23, "abc");
-val_formatascurrency_neg6 = formatascurrency(1.23, , );
-formatascurrency(1.23, "abc") = "override_val";
+val_formatascurrency_pos3 = FORMATASCURRENCY(45.67, "str_1");
+if (true) { val_formatascurrency_pos4 = formatascurrency(45.67, "str_1"); }
+for loopIdx in range(1) { val_formatascurrency_pos5 = formatascurrency(45.67, "str_1"); }
+val_formatascurrency_pos6 = formatascurrency(atof("12.34"), string(123));
+val_formatascurrency_pos7 = formatascurrency(
+  45.67,
+  "str_1"
+);
+val_formatascurrency_pos8 = formatascurrency(/* comment */ 45.67, /* next */ "str_1");
+val_formatascurrency_pos9 = formatascurrency(45.67, "str_1");
+val_formatascurrency_neg1 = formatascurrency();
+val_formatascurrency_neg2 = formatascurrency(45.67, "str_1", "excess_parameter_value");
+val_formatascurrency_neg4 = formatascurrency(45.67, "str_1",);
+val_formatascurrency_neg5 = invalid_ns.formatascurrency(45.67, "str_1");
 val_formatascurrency_neg8 = formatascurrency(return, break);
-val_formatascurrency_neg9 = formatascurrency(1.23; "abc");
-val_formatascurrency_neg10 = formatascurrency(1.23, "abc" 
+val_formatascurrency_neg9 = formatascurrency(45.67; "str_1");
+val_formatascurrency_neg10 = formatascurrency(45.67, "str_1"
 
-val_find_pos1 = find("abc", "abc", 123, 123);
-var_find_arg_0 = "abc";
-var_find_arg_1 = "abc";
+// Function: find
+val_find_pos1 = find("str_0", "str_1", 123, 123);
+var_find_arg_0 = "str_0";
+var_find_arg_1 = "str_1";
 var_find_arg_2 = 123;
 var_find_arg_3 = 123;
 val_find_pos2 = find(var_find_arg_0, var_find_arg_1, var_find_arg_2, var_find_arg_3);
-val_find_pos3 = FIND("abc", "abc", 123, 123);
-if (true) { val_find_pos4 = find("abc", "abc", 123, 123); }
-for loopIdx in range(1) { val_find_pos5 = find("abc", "abc", 123, 123); }
-val_find_pos6 = find(string(123), string(123), atoi("12"), atoi("12"));
-val_find_pos7 = find(   
-  	  "abc", 	
-  "abc", 	
-  123, 	
-  123 	
-  );
-val_find_pos8 = find(/* comment */ "abc", /* next */ "abc", /* next */ 123, /* next */ 123);
-val_find_pos9 = find("", "", 2147483647, 2147483647);
-val_find_pos10 = find("abc", "abc", 123, 123);
-val_find_neg1 = find("abc", "abc", 123);
-val_find_neg2 = find("abc", "abc", 123, 123, "excess_parameter_value");
-val_find_neg3 = find(123, 123, "not_an_int", "not_an_int");
-val_find_neg4 = find("abc", "abc", 123, 123,);
-val_find_neg5 = invalid_ns.find("abc", "abc", 123, 123);
-val_find_neg6 = find("abc", , 123, 123);
-find("abc", "abc", 123, 123) = "override_val";
+val_find_pos3 = FIND("str_0", "str_1", 123, 123);
+if (true) { val_find_pos4 = find("str_0", "str_1", 123, 123); }
+for loopIdx in range(1) { val_find_pos5 = find("str_0", "str_1", 123, 123); }
+val_find_pos6 = find(string(123), string(123), atoi("123"), atoi("123"));
+val_find_pos7 = find(
+  "str_0",
+  "str_1",
+  123,
+  123
+);
+val_find_pos8 = find(/* comment */ "str_0", /* next */ "str_1", /* next */ 123, /* next */ 123);
+val_find_pos9 = find("str_0", "str_1", 123, 123);
+val_find_neg1 = find("str_0");
+val_find_neg2 = find("str_0", "str_1", 123, 123, "excess_parameter_value");
+val_find_neg4 = find("str_0", "str_1", 123, 123,);
+val_find_neg5 = invalid_ns.find("str_0", "str_1", 123, 123);
 val_find_neg8 = find(return, break);
-val_find_neg9 = find("abc"; "abc"; 123; 123);
-val_find_neg10 = find("abc", "abc", 123, 123 
+val_find_neg9 = find("str_0"; "str_1"; 123; 123);
+val_find_neg10 = find("str_0", "str_1", 123, 123
 
-val_getcurrencyvalue_pos1 = getcurrencyvalue("abc", "abc");
-var_getcurrencyvalue_arg_0 = "abc";
-var_getcurrencyvalue_arg_1 = "abc";
+// Function: getcurrencyvalue
+val_getcurrencyvalue_pos1 = getcurrencyvalue("str_0", "str_1");
+var_getcurrencyvalue_arg_0 = "str_0";
+var_getcurrencyvalue_arg_1 = "str_1";
 val_getcurrencyvalue_pos2 = getcurrencyvalue(var_getcurrencyvalue_arg_0, var_getcurrencyvalue_arg_1);
-val_getcurrencyvalue_pos3 = GETCURRENCYVALUE("abc", "abc");
-if (true) { val_getcurrencyvalue_pos4 = getcurrencyvalue("abc", "abc"); }
-for loopIdx in range(1) { val_getcurrencyvalue_pos5 = getcurrencyvalue("abc", "abc"); }
+val_getcurrencyvalue_pos3 = GETCURRENCYVALUE("str_0", "str_1");
+if (true) { val_getcurrencyvalue_pos4 = getcurrencyvalue("str_0", "str_1"); }
+for loopIdx in range(1) { val_getcurrencyvalue_pos5 = getcurrencyvalue("str_0", "str_1"); }
 val_getcurrencyvalue_pos6 = getcurrencyvalue(string(123), string(123));
-val_getcurrencyvalue_pos7 = getcurrencyvalue(   
-  	  "abc", 	
-  "abc" 	
-  );
-val_getcurrencyvalue_pos8 = getcurrencyvalue(/* comment */ "abc", /* next */ "abc");
-val_getcurrencyvalue_pos9 = getcurrencyvalue("", "");
-val_getcurrencyvalue_pos10 = getcurrencyvalue("abc", "abc");
-val_getcurrencyvalue_neg1 = getcurrencyvalue("abc");
-val_getcurrencyvalue_neg2 = getcurrencyvalue("abc", "abc", "excess_parameter_value");
-val_getcurrencyvalue_neg3 = getcurrencyvalue(123, 123);
-val_getcurrencyvalue_neg4 = getcurrencyvalue("abc", "abc",);
-val_getcurrencyvalue_neg5 = invalid_ns.getcurrencyvalue("abc", "abc");
-val_getcurrencyvalue_neg6 = getcurrencyvalue("abc", , );
-getcurrencyvalue("abc", "abc") = "override_val";
+val_getcurrencyvalue_pos7 = getcurrencyvalue(
+  "str_0",
+  "str_1"
+);
+val_getcurrencyvalue_pos8 = getcurrencyvalue(/* comment */ "str_0", /* next */ "str_1");
+val_getcurrencyvalue_pos9 = getcurrencyvalue("str_0", "str_1");
+val_getcurrencyvalue_neg1 = getcurrencyvalue();
+val_getcurrencyvalue_neg2 = getcurrencyvalue("str_0", "str_1", "excess_parameter_value");
+val_getcurrencyvalue_neg4 = getcurrencyvalue("str_0", "str_1",);
+val_getcurrencyvalue_neg5 = invalid_ns.getcurrencyvalue("str_0", "str_1");
 val_getcurrencyvalue_neg8 = getcurrencyvalue(return, break);
-val_getcurrencyvalue_neg9 = getcurrencyvalue("abc"; "abc");
-val_getcurrencyvalue_neg10 = getcurrencyvalue("abc", "abc" 
+val_getcurrencyvalue_neg9 = getcurrencyvalue("str_0"; "str_1");
+val_getcurrencyvalue_neg10 = getcurrencyvalue("str_0", "str_1"
 
-val_html_pos1 = html("abc");
-var_html_arg_0 = "abc";
+// Function: html
+val_html_pos1 = html("str_0");
+var_html_arg_0 = "str_0";
 val_html_pos2 = html(var_html_arg_0);
-val_html_pos3 = HTML("abc");
-if (true) { val_html_pos4 = html("abc"); }
-for loopIdx in range(1) { val_html_pos5 = html("abc"); }
+val_html_pos3 = HTML("str_0");
+if (true) { val_html_pos4 = html("str_0"); }
+for loopIdx in range(1) { val_html_pos5 = html("str_0"); }
 val_html_pos6 = html(string(123));
-val_html_pos7 = html(   
-  	  "abc" 	
-  );
-val_html_pos8 = html(/* comment */ "abc");
-val_html_pos9 = html("");
-val_html_pos10 = html("abc");
+val_html_pos7 = html(
+  "str_0"
+);
+val_html_pos8 = html(/* comment */ "str_0");
+val_html_pos9 = html("str_0");
 val_html_neg1 = html();
-val_html_neg2 = html("abc", "excess_parameter_value");
-val_html_neg3 = html(123);
-val_html_neg4 = html("abc",);
-val_html_neg5 = invalid_ns.html("abc");
-val_html_neg6 = html(, );
-html("abc") = "override_val";
+val_html_neg2 = html("str_0", "excess_parameter_value");
+val_html_neg4 = html("str_0",);
+val_html_neg5 = invalid_ns.html("str_0");
 val_html_neg8 = html(return, break);
-val_html_neg9 = html(123; 456);
-val_html_neg10 = html("abc" 
+val_html_neg9 = html("str_0");
+val_html_neg10 = html("str_0"
 
-val_isnumber_pos1 = isnumber("abc");
-var_isnumber_arg_0 = "abc";
+// Function: isnumber
+val_isnumber_pos1 = isnumber("str_0");
+var_isnumber_arg_0 = "str_0";
 val_isnumber_pos2 = isnumber(var_isnumber_arg_0);
-val_isnumber_pos3 = ISNUMBER("abc");
-if (true) { val_isnumber_pos4 = isnumber("abc"); }
-for loopIdx in range(1) { val_isnumber_pos5 = isnumber("abc"); }
+val_isnumber_pos3 = ISNUMBER("str_0");
+if (true) { val_isnumber_pos4 = isnumber("str_0"); }
+for loopIdx in range(1) { val_isnumber_pos5 = isnumber("str_0"); }
 val_isnumber_pos6 = isnumber(string(123));
-val_isnumber_pos7 = isnumber(   
-  	  "abc" 	
-  );
-val_isnumber_pos8 = isnumber(/* comment */ "abc");
-val_isnumber_pos9 = isnumber("");
-val_isnumber_pos10 = isnumber("abc");
+val_isnumber_pos7 = isnumber(
+  "str_0"
+);
+val_isnumber_pos8 = isnumber(/* comment */ "str_0");
+val_isnumber_pos9 = isnumber("str_0");
 val_isnumber_neg1 = isnumber();
-val_isnumber_neg2 = isnumber("abc", "excess_parameter_value");
-val_isnumber_neg3 = isnumber(123);
-val_isnumber_neg4 = isnumber("abc",);
-val_isnumber_neg5 = invalid_ns.isnumber("abc");
-val_isnumber_neg6 = isnumber(, );
-isnumber("abc") = "override_val";
+val_isnumber_neg2 = isnumber("str_0", "excess_parameter_value");
+val_isnumber_neg4 = isnumber("str_0",);
+val_isnumber_neg5 = invalid_ns.isnumber("str_0");
 val_isnumber_neg8 = isnumber(return, break);
-val_isnumber_neg9 = isnumber(123; 456);
-val_isnumber_neg10 = isnumber("abc" 
+val_isnumber_neg9 = isnumber("str_0");
+val_isnumber_neg10 = isnumber("str_0"
 
-val_join_pos1 = join("abc", "abc");
-var_join_arg_0 = "abc";
-var_join_arg_1 = "abc";
+// Function: join
+val_join_pos1 = join(string[]{"item1", "item2"}, "str_1");
+var_join_arg_0 = string[]{"item1", "item2"};
+var_join_arg_1 = "str_1";
 val_join_pos2 = join(var_join_arg_0, var_join_arg_1);
-val_join_pos3 = JOIN("abc", "abc");
-if (true) { val_join_pos4 = join("abc", "abc"); }
-for loopIdx in range(1) { val_join_pos5 = join("abc", "abc"); }
-val_join_pos6 = join(string(123), string(123));
-val_join_pos7 = join(   
-  	  "abc", 	
-  "abc" 	
-  );
-val_join_pos8 = join(/* comment */ "abc", /* next */ "abc");
-val_join_pos9 = join("", "");
-val_join_pos10 = join("abc", "abc");
-val_join_neg1 = join("abc");
-val_join_neg2 = join("abc", "abc", "excess_parameter_value");
-val_join_neg3 = join(123, 123);
-val_join_neg4 = join("abc", "abc",);
-val_join_neg5 = invalid_ns.join("abc", "abc");
-val_join_neg6 = join("abc", , );
-join("abc", "abc") = "override_val";
+val_join_pos3 = JOIN(string[]{"item1", "item2"}, "str_1");
+if (true) { val_join_pos4 = join(string[]{"item1", "item2"}, "str_1"); }
+for loopIdx in range(1) { val_join_pos5 = join(string[]{"item1", "item2"}, "str_1"); }
+val_join_pos6 = join(string[]{"a"}, string(123));
+val_join_pos7 = join(
+  string[]{"item1", "item2"},
+  "str_1"
+);
+val_join_pos8 = join(/* comment */ string[]{"item1", "item2"}, /* next */ "str_1");
+val_join_pos9 = join(string[]{"item1", "item2"}, "str_1");
+val_join_neg1 = join(string[]{"item1", "item2"});
+val_join_neg2 = join(string[]{"item1", "item2"}, "str_1", "excess_parameter_value");
+val_join_neg4 = join(string[]{"item1", "item2"}, "str_1",);
+val_join_neg5 = invalid_ns.join(string[]{"item1", "item2"}, "str_1");
 val_join_neg8 = join(return, break);
-val_join_neg9 = join("abc"; "abc");
-val_join_neg10 = join("abc", "abc" 
+val_join_neg9 = join(string[]{"item1", "item2"}; "str_1");
+val_join_neg10 = join(string[]{"item1", "item2"}, "str_1"
 
-val_len_pos1 = len("abc");
-var_len_arg_0 = "abc";
+// Function: len
+val_len_pos1 = len("str_0");
+var_len_arg_0 = "str_0";
 val_len_pos2 = len(var_len_arg_0);
-val_len_pos3 = LEN("abc");
-if (true) { val_len_pos4 = len("abc"); }
-for loopIdx in range(1) { val_len_pos5 = len("abc"); }
+val_len_pos3 = LEN("str_0");
+if (true) { val_len_pos4 = len("str_0"); }
+for loopIdx in range(1) { val_len_pos5 = len("str_0"); }
 val_len_pos6 = len(string(123));
-val_len_pos7 = len(   
-  	  "abc" 	
-  );
-val_len_pos8 = len(/* comment */ "abc");
-val_len_pos9 = len("");
-val_len_pos10 = len("abc");
+val_len_pos7 = len(
+  "str_0"
+);
+val_len_pos8 = len(/* comment */ "str_0");
+val_len_pos9 = len("str_0");
 val_len_neg1 = len();
-val_len_neg2 = len("abc", "excess_parameter_value");
-val_len_neg3 = len(123);
-val_len_neg4 = len("abc",);
-val_len_neg5 = invalid_ns.len("abc");
-val_len_neg6 = len(, );
-len("abc") = "override_val";
+val_len_neg2 = len("str_0", "excess_parameter_value");
+val_len_neg4 = len("str_0",);
+val_len_neg5 = invalid_ns.len("str_0");
 val_len_neg8 = len(return, break);
-val_len_neg9 = len(123; 456);
-val_len_neg10 = len("abc" 
+val_len_neg9 = len("str_0");
+val_len_neg10 = len("str_0"
 
-val_lower_pos1 = lower("abc");
-var_lower_arg_0 = "abc";
+// Function: lower
+val_lower_pos1 = lower("str_0");
+var_lower_arg_0 = "str_0";
 val_lower_pos2 = lower(var_lower_arg_0);
-val_lower_pos3 = LOWER("abc");
-if (true) { val_lower_pos4 = lower("abc"); }
-for loopIdx in range(1) { val_lower_pos5 = lower("abc"); }
+val_lower_pos3 = LOWER("str_0");
+if (true) { val_lower_pos4 = lower("str_0"); }
+for loopIdx in range(1) { val_lower_pos5 = lower("str_0"); }
 val_lower_pos6 = lower(string(123));
-val_lower_pos7 = lower(   
-  	  "abc" 	
-  );
-val_lower_pos8 = lower(/* comment */ "abc");
-val_lower_pos9 = lower("");
-val_lower_pos10 = lower("abc");
+val_lower_pos7 = lower(
+  "str_0"
+);
+val_lower_pos8 = lower(/* comment */ "str_0");
+val_lower_pos9 = lower("str_0");
 val_lower_neg1 = lower();
-val_lower_neg2 = lower("abc", "excess_parameter_value");
-val_lower_neg3 = lower(123);
-val_lower_neg4 = lower("abc",);
-val_lower_neg5 = invalid_ns.lower("abc");
-val_lower_neg6 = lower(, );
-lower("abc") = "override_val";
+val_lower_neg2 = lower("str_0", "excess_parameter_value");
+val_lower_neg4 = lower("str_0",);
+val_lower_neg5 = invalid_ns.lower("str_0");
 val_lower_neg8 = lower(return, break);
-val_lower_neg9 = lower(123; 456);
-val_lower_neg10 = lower("abc" 
+val_lower_neg9 = lower("str_0");
+val_lower_neg10 = lower("str_0"
 
-val_replace_pos1 = replace("abc", "abc", "abc", 123);
-var_replace_arg_0 = "abc";
-var_replace_arg_1 = "abc";
-var_replace_arg_2 = "abc";
+// Function: replace
+val_replace_pos1 = replace("str_0", "str_1", "str_2", 123);
+var_replace_arg_0 = "str_0";
+var_replace_arg_1 = "str_1";
+var_replace_arg_2 = "str_2";
 var_replace_arg_3 = 123;
 val_replace_pos2 = replace(var_replace_arg_0, var_replace_arg_1, var_replace_arg_2, var_replace_arg_3);
-val_replace_pos3 = REPLACE("abc", "abc", "abc", 123);
-if (true) { val_replace_pos4 = replace("abc", "abc", "abc", 123); }
-for loopIdx in range(1) { val_replace_pos5 = replace("abc", "abc", "abc", 123); }
-val_replace_pos6 = replace(string(123), string(123), string(123), atoi("12"));
-val_replace_pos7 = replace(   
-  	  "abc", 	
-  "abc", 	
-  "abc", 	
-  123 	
-  );
-val_replace_pos8 = replace(/* comment */ "abc", /* next */ "abc", /* next */ "abc", /* next */ 123);
-val_replace_pos9 = replace("", "", "", 2147483647);
-val_replace_pos10 = replace("abc", "abc", "abc", 123);
-val_replace_neg1 = replace("abc", "abc", "abc");
-val_replace_neg2 = replace("abc", "abc", "abc", 123, "excess_parameter_value");
-val_replace_neg3 = replace(123, 123, 123, "not_an_int");
-val_replace_neg4 = replace("abc", "abc", "abc", 123,);
-val_replace_neg5 = invalid_ns.replace("abc", "abc", "abc", 123);
-val_replace_neg6 = replace("abc", , "abc", 123);
-replace("abc", "abc", "abc", 123) = "override_val";
+val_replace_pos3 = REPLACE("str_0", "str_1", "str_2", 123);
+if (true) { val_replace_pos4 = replace("str_0", "str_1", "str_2", 123); }
+for loopIdx in range(1) { val_replace_pos5 = replace("str_0", "str_1", "str_2", 123); }
+val_replace_pos6 = replace(string(123), string(123), string(123), atoi("123"));
+val_replace_pos7 = replace(
+  "str_0",
+  "str_1",
+  "str_2",
+  123
+);
+val_replace_pos8 = replace(/* comment */ "str_0", /* next */ "str_1", /* next */ "str_2", /* next */ 123);
+val_replace_pos9 = replace("str_0", "str_1", "str_2", 123);
+val_replace_neg1 = replace("str_0", "str_1");
+val_replace_neg2 = replace("str_0", "str_1", "str_2", 123, "excess_parameter_value");
+val_replace_neg4 = replace("str_0", "str_1", "str_2", 123,);
+val_replace_neg5 = invalid_ns.replace("str_0", "str_1", "str_2", 123);
 val_replace_neg8 = replace(return, break);
-val_replace_neg9 = replace("abc"; "abc"; "abc"; 123);
-val_replace_neg10 = replace("abc", "abc", "abc", 123 
+val_replace_neg9 = replace("str_0"; "str_1"; "str_2"; 123);
+val_replace_neg10 = replace("str_0", "str_1", "str_2", 123
 
-val_split_pos1 = split("abc", "abc");
-var_split_arg_0 = "abc";
-var_split_arg_1 = "abc";
+// Function: split
+val_split_pos1 = split("str_0", "str_1");
+var_split_arg_0 = "str_0";
+var_split_arg_1 = "str_1";
 val_split_pos2 = split(var_split_arg_0, var_split_arg_1);
-val_split_pos3 = SPLIT("abc", "abc");
-if (true) { val_split_pos4 = split("abc", "abc"); }
-for loopIdx in range(1) { val_split_pos5 = split("abc", "abc"); }
+val_split_pos3 = SPLIT("str_0", "str_1");
+if (true) { val_split_pos4 = split("str_0", "str_1"); }
+for loopIdx in range(1) { val_split_pos5 = split("str_0", "str_1"); }
 val_split_pos6 = split(string(123), string(123));
-val_split_pos7 = split(   
-  	  "abc", 	
-  "abc" 	
-  );
-val_split_pos8 = split(/* comment */ "abc", /* next */ "abc");
-val_split_pos9 = split("", "");
-val_split_pos10 = split("abc", "abc");
-val_split_neg1 = split("abc");
-val_split_neg2 = split("abc", "abc", "excess_parameter_value");
-val_split_neg3 = split(123, 123);
-val_split_neg4 = split("abc", "abc",);
-val_split_neg5 = invalid_ns.split("abc", "abc");
-val_split_neg6 = split("abc", , );
-split("abc", "abc") = "override_val";
+val_split_pos7 = split(
+  "str_0",
+  "str_1"
+);
+val_split_pos8 = split(/* comment */ "str_0", /* next */ "str_1");
+val_split_pos9 = split("str_0", "str_1");
+val_split_neg1 = split("str_0");
+val_split_neg2 = split("str_0", "str_1", "excess_parameter_value");
+val_split_neg4 = split("str_0", "str_1",);
+val_split_neg5 = invalid_ns.split("str_0", "str_1");
 val_split_neg8 = split(return, break);
-val_split_neg9 = split("abc"; "abc");
-val_split_neg10 = split("abc", "abc" 
+val_split_neg9 = split("str_0"; "str_1");
+val_split_neg10 = split("str_0", "str_1"
 
-val_startswith_pos1 = startswith("abc", "abc");
-var_startswith_arg_0 = "abc";
-var_startswith_arg_1 = "abc";
+// Function: startswith
+val_startswith_pos1 = startswith("str_0", "str_1");
+var_startswith_arg_0 = "str_0";
+var_startswith_arg_1 = "str_1";
 val_startswith_pos2 = startswith(var_startswith_arg_0, var_startswith_arg_1);
-val_startswith_pos3 = STARTSWITH("abc", "abc");
-if (true) { val_startswith_pos4 = startswith("abc", "abc"); }
-for loopIdx in range(1) { val_startswith_pos5 = startswith("abc", "abc"); }
+val_startswith_pos3 = STARTSWITH("str_0", "str_1");
+if (true) { val_startswith_pos4 = startswith("str_0", "str_1"); }
+for loopIdx in range(1) { val_startswith_pos5 = startswith("str_0", "str_1"); }
 val_startswith_pos6 = startswith(string(123), string(123));
-val_startswith_pos7 = startswith(   
-  	  "abc", 	
-  "abc" 	
-  );
-val_startswith_pos8 = startswith(/* comment */ "abc", /* next */ "abc");
-val_startswith_pos9 = startswith("", "");
-val_startswith_pos10 = startswith("abc", "abc");
-val_startswith_neg1 = startswith("abc");
-val_startswith_neg2 = startswith("abc", "abc", "excess_parameter_value");
-val_startswith_neg3 = startswith(123, 123);
-val_startswith_neg4 = startswith("abc", "abc",);
-val_startswith_neg5 = invalid_ns.startswith("abc", "abc");
-val_startswith_neg6 = startswith("abc", , );
-startswith("abc", "abc") = "override_val";
+val_startswith_pos7 = startswith(
+  "str_0",
+  "str_1"
+);
+val_startswith_pos8 = startswith(/* comment */ "str_0", /* next */ "str_1");
+val_startswith_pos9 = startswith("str_0", "str_1");
+val_startswith_neg1 = startswith("str_0");
+val_startswith_neg2 = startswith("str_0", "str_1", "excess_parameter_value");
+val_startswith_neg4 = startswith("str_0", "str_1",);
+val_startswith_neg5 = invalid_ns.startswith("str_0", "str_1");
 val_startswith_neg8 = startswith(return, break);
-val_startswith_neg9 = startswith("abc"; "abc");
-val_startswith_neg10 = startswith("abc", "abc" 
+val_startswith_neg9 = startswith("str_0"; "str_1");
+val_startswith_neg10 = startswith("str_0", "str_1"
 
-val_string_pos1 = string("abc");
-var_string_arg_0 = "abc";
-val_string_pos2 = string(var_string_arg_0);
-val_string_pos3 = STRING("abc");
-if (true) { val_string_pos4 = string("abc"); }
-for loopIdx in range(1) { val_string_pos5 = string("abc"); }
-val_string_pos6 = string(string(123));
-val_string_pos7 = string(   
-  	  "abc" 	
-  );
-val_string_pos8 = string(/* comment */ "abc");
-val_string_pos9 = string("");
-val_string_pos10 = string("abc");
-val_string_neg1 = string();
-val_string_neg2 = string("abc", "excess_parameter_value");
-val_string_neg3 = string(123);
-val_string_neg4 = string("abc",);
-val_string_neg5 = invalid_ns.string("abc");
-val_string_neg6 = string(, );
-string("abc") = "override_val";
-val_string_neg8 = string(return, break);
-val_string_neg9 = string(123; 456);
-val_string_neg10 = string("abc" 
-
-val_substring_pos1 = substring("abc", 123, 123);
-var_substring_arg_0 = "abc";
+// Function: substring
+val_substring_pos1 = substring("str_0", 123, 123);
+var_substring_arg_0 = "str_0";
 var_substring_arg_1 = 123;
 var_substring_arg_2 = 123;
 val_substring_pos2 = substring(var_substring_arg_0, var_substring_arg_1, var_substring_arg_2);
-val_substring_pos3 = SUBSTRING("abc", 123, 123);
-if (true) { val_substring_pos4 = substring("abc", 123, 123); }
-for loopIdx in range(1) { val_substring_pos5 = substring("abc", 123, 123); }
-val_substring_pos6 = substring(string(123), atoi("12"), atoi("12"));
-val_substring_pos7 = substring(   
-  	  "abc", 	
-  123, 	
-  123 	
-  );
-val_substring_pos8 = substring(/* comment */ "abc", /* next */ 123, /* next */ 123);
-val_substring_pos9 = substring("", 2147483647, 2147483647);
-val_substring_pos10 = substring("abc", 123, 123);
-val_substring_neg1 = substring("abc", 123);
-val_substring_neg2 = substring("abc", 123, 123, "excess_parameter_value");
-val_substring_neg3 = substring(123, "not_an_int", "not_an_int");
-val_substring_neg4 = substring("abc", 123, 123,);
-val_substring_neg5 = invalid_ns.substring("abc", 123, 123);
-val_substring_neg6 = substring("abc", , 123);
-substring("abc", 123, 123) = "override_val";
+val_substring_pos3 = SUBSTRING("str_0", 123, 123);
+if (true) { val_substring_pos4 = substring("str_0", 123, 123); }
+for loopIdx in range(1) { val_substring_pos5 = substring("str_0", 123, 123); }
+val_substring_pos6 = substring(string(123), atoi("123"), atoi("123"));
+val_substring_pos7 = substring(
+  "str_0",
+  123,
+  123
+);
+val_substring_pos8 = substring(/* comment */ "str_0", /* next */ 123, /* next */ 123);
+val_substring_pos9 = substring("str_0", 123, 123);
+val_substring_neg1 = substring("str_0");
+val_substring_neg2 = substring("str_0", 123, 123, "excess_parameter_value");
+val_substring_neg4 = substring("str_0", 123, 123,);
+val_substring_neg5 = invalid_ns.substring("str_0", 123, 123);
 val_substring_neg8 = substring(return, break);
-val_substring_neg9 = substring("abc"; 123; 123);
-val_substring_neg10 = substring("abc", 123, 123 
+val_substring_neg9 = substring("str_0"; 123; 123);
+val_substring_neg10 = substring("str_0", 123, 123
 
-val_trim_pos1 = trim("abc");
-var_trim_arg_0 = "abc";
+// Function: trim
+val_trim_pos1 = trim("str_0");
+var_trim_arg_0 = "str_0";
 val_trim_pos2 = trim(var_trim_arg_0);
-val_trim_pos3 = TRIM("abc");
-if (true) { val_trim_pos4 = trim("abc"); }
-for loopIdx in range(1) { val_trim_pos5 = trim("abc"); }
+val_trim_pos3 = TRIM("str_0");
+if (true) { val_trim_pos4 = trim("str_0"); }
+for loopIdx in range(1) { val_trim_pos5 = trim("str_0"); }
 val_trim_pos6 = trim(string(123));
-val_trim_pos7 = trim(   
-  	  "abc" 	
-  );
-val_trim_pos8 = trim(/* comment */ "abc");
-val_trim_pos9 = trim("");
-val_trim_pos10 = trim("abc");
+val_trim_pos7 = trim(
+  "str_0"
+);
+val_trim_pos8 = trim(/* comment */ "str_0");
+val_trim_pos9 = trim("str_0");
 val_trim_neg1 = trim();
-val_trim_neg2 = trim("abc", "excess_parameter_value");
-val_trim_neg3 = trim(123);
-val_trim_neg4 = trim("abc",);
-val_trim_neg5 = invalid_ns.trim("abc");
-val_trim_neg6 = trim(, );
-trim("abc") = "override_val";
+val_trim_neg2 = trim("str_0", "excess_parameter_value");
+val_trim_neg4 = trim("str_0",);
+val_trim_neg5 = invalid_ns.trim("str_0");
 val_trim_neg8 = trim(return, break);
-val_trim_neg9 = trim(123; 456);
-val_trim_neg10 = trim("abc" 
+val_trim_neg9 = trim("str_0");
+val_trim_neg10 = trim("str_0"
 
-val_upper_pos1 = upper("abc");
-var_upper_arg_0 = "abc";
+// Function: upper
+val_upper_pos1 = upper("str_0");
+var_upper_arg_0 = "str_0";
 val_upper_pos2 = upper(var_upper_arg_0);
-val_upper_pos3 = UPPER("abc");
-if (true) { val_upper_pos4 = upper("abc"); }
-for loopIdx in range(1) { val_upper_pos5 = upper("abc"); }
+val_upper_pos3 = UPPER("str_0");
+if (true) { val_upper_pos4 = upper("str_0"); }
+for loopIdx in range(1) { val_upper_pos5 = upper("str_0"); }
 val_upper_pos6 = upper(string(123));
-val_upper_pos7 = upper(   
-  	  "abc" 	
-  );
-val_upper_pos8 = upper(/* comment */ "abc");
-val_upper_pos9 = upper("");
-val_upper_pos10 = upper("abc");
+val_upper_pos7 = upper(
+  "str_0"
+);
+val_upper_pos8 = upper(/* comment */ "str_0");
+val_upper_pos9 = upper("str_0");
 val_upper_neg1 = upper();
-val_upper_neg2 = upper("abc", "excess_parameter_value");
-val_upper_neg3 = upper(123);
-val_upper_neg4 = upper("abc",);
-val_upper_neg5 = invalid_ns.upper("abc");
-val_upper_neg6 = upper(, );
-upper("abc") = "override_val";
+val_upper_neg2 = upper("str_0", "excess_parameter_value");
+val_upper_neg4 = upper("str_0",);
+val_upper_neg5 = invalid_ns.upper("str_0");
 val_upper_neg8 = upper(return, break);
-val_upper_neg9 = upper(123; 456);
-val_upper_neg10 = upper("abc" 
+val_upper_neg9 = upper("str_0");
+val_upper_neg10 = upper("str_0"
+
+// Function: format
+val_format_pos1 = format("str_0", "str_1");
+var_format_arg_0 = "str_0";
+var_format_arg_1 = "str_1";
+val_format_pos2 = format(var_format_arg_0, var_format_arg_1);
+val_format_pos3 = FORMAT("str_0", "str_1");
+if (true) { val_format_pos4 = format("str_0", "str_1"); }
+for loopIdx in range(1) { val_format_pos5 = format("str_0", "str_1"); }
+val_format_pos6 = format(string(123), string(123));
+val_format_pos7 = format(
+  "str_0",
+  "str_1"
+);
+val_format_pos8 = format(/* comment */ "str_0", /* next */ "str_1");
+val_format_pos9 = format("str_0", "str_1");
+val_format_neg1 = format("str_0");
+val_format_neg2 = format("str_0", "str_1", "excess_parameter_value");
+val_format_neg4 = format("str_0", "str_1",);
+val_format_neg5 = invalid_ns.format("str_0", "str_1");
+val_format_neg8 = format(return, break);
+val_format_neg9 = format("str_0"; "str_1");
+val_format_neg10 = format("str_0", "str_1"
 
 return "";

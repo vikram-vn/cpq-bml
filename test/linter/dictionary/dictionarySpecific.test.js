@@ -5,30 +5,54 @@ suite("BML Linter Test Suite - Dictionary specific tests", () => {
   const vscode = require("vscode");
 
   suite("put() - always requires exactly 3 arguments (dict, key, value)", () => {
-    test("put(dict, key) - missing value → no bml-function-arg-count (put signature is permissive)", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key");\nreturn "";');
-      assert.ok(Array.isArray(diagnostics));
-    });
-
-    test("put(dict) - only 1 arg → no bml-function-arg-count (put signature is permissive)", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d);\nreturn "";');
-      assert.ok(Array.isArray(diagnostics));
-    });
-
-    test("put() - zero args → no bml-function-arg-count (put signature is permissive)", () => {
+    test("put() - zero args → flags bml-function-arg-count error", () => {
       const diagnostics = lintText('put();\nreturn "";');
-      assert.ok(Array.isArray(diagnostics));
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err, "put with 0 args should flag bml-function-arg-count");
+      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
     });
 
-    test("put(dict, key, value) - correct 3 args → no arg-count error", () => {
+    test("put(dict) - only 1 arg → flags bml-function-arg-count error", () => {
+      const diagnostics = lintText('d = dict("string");\nput(d);\nreturn "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err, "put with 1 arg should flag bml-function-arg-count");
+      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+    });
+
+    test("put(dict, key) - 2 args missing value → flags bml-function-arg-count error", () => {
+      const diagnostics = lintText('d = dict("string");\nput(d, "key");\nreturn "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err, "put with 2 args should flag bml-function-arg-count");
+      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+    });
+
+    test("put(dict, key, value) - correct 3 args with String key → no arg-count error", () => {
       const diagnostics = lintText('d = dict("string");\nput(d, "key", "val");\nreturn "";');
       const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
       assert.strictEqual(err, undefined, "put with 3 args should not flag arg-count error");
     });
 
-    test("put(dict, key, val, extra) - 4 args → no bml-function-arg-count (put signature is permissive)", () => {
+    test("put(dict, key, value) - correct 3 args with Integer key → valid", () => {
+      const diagnostics = lintText('d = dict("string");\nput(d, 123, "val");\nreturn "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+      const typeErr = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.strictEqual(typeErr, undefined);
+    });
+
+    test("put(dict, key, value) - correct 3 args with Float key → valid", () => {
+      const diagnostics = lintText('d = dict("string");\nput(d, 12.34, "val");\nreturn "";');
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.strictEqual(err, undefined);
+      const typeErr = diagnostics.find((d) => d.code === "bml-function-arg-type");
+      assert.strictEqual(typeErr, undefined);
+    });
+
+    test("put(dict, key, val, extra) - 4 args → flags bml-function-arg-count error", () => {
       const diagnostics = lintText('d = dict("string");\nput(d, "key", "val", "extra");\nreturn "";');
-      assert.ok(Array.isArray(diagnostics));
+      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
+      assert.ok(err, "put with 4 args should flag bml-function-arg-count");
+      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
     });
 
     test("put(dict, key, ) - trailing comma → bml-trailing-comma-error", () => {

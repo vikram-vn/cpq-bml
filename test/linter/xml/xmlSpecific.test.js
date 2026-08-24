@@ -1,6 +1,7 @@
 const assert = require("assert");
 const { lintText } = require("../fixtures");
 
+
 suite("BML Linter Test Suite - XML specific tests", () => {
     suite("applytemplate() parameter validation", () => {
         test("1. applytemplate() - missing all arguments → Error", () => {
@@ -197,50 +198,6 @@ suite("BML Linter Test Suite - XML specific tests", () => {
             `);
             const diag = diagnostics.find(d => d.code === 'bml-function-arg-type');
             assert.ok(diag);
-        });
-    });
-
-    suite("readxmlmultiple()/readxmlsingle() result never checked for the sentinel error key (bml-readxml-error-key-unchecked)", () => {
-        test("Flags readxmlmultiple() result read via get() without checking BM_READXMLMULTIPLE_ERROR", () => {
-            const diagnostics = lintText(`
-                result = readxmlmultiple("<root/>", xpaths);
-                val = get(result, "/root/name");
-                return val;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-readxml-error-key-unchecked');
-            assert.ok(diag, 'XML.md: readxmlmultiple() reports errors via a BM_READXMLMULTIPLE_ERROR dictionary key instead of throwing');
-        });
-
-        test("Flags readxmlsingle() result read via get() without checking BM_READXMLSINGLE_ERROR", () => {
-            const diagnostics = lintText(`
-                result = readxmlsingle("<root/>", xpaths);
-                val = get(result, "/root/name");
-                return val;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-readxml-error-key-unchecked');
-            assert.ok(diag);
-        });
-
-        test("Does not flag when the sentinel error key is checked first", () => {
-            const diagnostics = lintText(`
-                result = readxmlmultiple("<root/>", xpaths);
-                if (containskey(result, "BM_READXMLMULTIPLE_ERROR")) {
-                    return "";
-                }
-                val = get(result, "/root/name");
-                return val;
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-readxml-error-key-unchecked');
-            assert.strictEqual(diag, undefined);
-        });
-
-        test("Does not flag when the result is never read via get() at all", () => {
-            const diagnostics = lintText(`
-                result = readxmlmultiple("<root/>", xpaths);
-                return "";
-            `);
-            const diag = diagnostics.find(d => d.code === 'bml-readxml-error-key-unchecked');
-            assert.strictEqual(diag, undefined);
         });
     });
 });

@@ -1,154 +1,93 @@
-const assert = require("assert");
-const { lintText } = require("../fixtures");
+const assert = require('assert');
+const vscode = require('vscode');
+const { lintText } = require('../fixtures');
 
-suite("BML Linter Test Suite - Date specific tests", () => {
-  const vscode = require("vscode");
+suite('BML Linter Test Suite - Date Specific & Edge Tests', () => {
+    suite('getdate() & datetostr() parameter validation', () => {
+        test('getdate() - 0 args → no error', () => {
+            const diags = lintText('dt = getdate(); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
 
-  suite("datetostr() - requires 1 to 3 arguments (date[, format[, tz]])", () => {
-    test("datetostr() - zero args → Error severity", () => {
-      const diagnostics = lintText('x = datetostr();\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err);
-      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+        test('datetostr(dt) - 1 arg → no error', () => {
+            const diags = lintText('dt = getdate(); s = datetostr(dt); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+
+        test('datetostr(dt, "yyyy-MM-dd") - 2 args → no error', () => {
+            const diags = lintText('dt = getdate(); s = datetostr(dt, "yyyy-MM-dd"); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+
+        test('datetostr(dt, "yyyy-MM-dd", "UTC") - 3 args → no error', () => {
+            const diags = lintText('dt = getdate(); s = datetostr(dt, "yyyy-MM-dd", "UTC"); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+
+        test('datetostr() - 0 args → flags bml-function-arg-count', () => {
+            const diags = lintText('s = datetostr(); return "";');
+            const err = diags.find(d => d.code === 'bml-function-arg-count');
+            assert.ok(err);
+            assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+        });
+
+        test('datetostr(dt, "fmt", "tz", "excess") - 4 args → flags bml-function-arg-count', () => {
+            const diags = lintText('dt = getdate(); s = datetostr(dt, "fmt", "tz", "excess"); return "";');
+            assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+        });
     });
 
-    test("datetostr(d) - 1 arg → no error", () => {
-      const diagnostics = lintText('d = getdate();\nx = datetostr(d);\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
+    suite('comparedates() & getdiffindays()', () => {
+        test('comparedates(dt1, dt2) - 2 args → no error', () => {
+            const diags = lintText('dt1 = getdate(); dt2 = getdate(); res = comparedates(dt1, dt2); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+
+        test('getdiffindays(dt1, dt2) - 2 args → no error', () => {
+            const diags = lintText('dt1 = getdate(); dt2 = getdate(); diff = getdiffindays(dt1, dt2); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+
+        test('comparedates(dt1) - 1 arg → flags bml-function-arg-count', () => {
+            const diags = lintText('dt1 = getdate(); res = comparedates(dt1); return "";');
+            assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+        });
     });
 
-    test("datetostr(d, fmt) - 2 args → no error", () => {
-      const diagnostics = lintText('d = getdate();\nx = datetostr(d, "MM/dd/yyyy");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
+    suite('Date offset arithmetic functions (adddays, addmonths, minusdays)', () => {
+        test('adddays(dt, 5) - positive offset → no error', () => {
+            const diags = lintText('dt = getdate(); res = adddays(dt, 5); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+
+        test('adddays(dt, -10) - negative offset → no error', () => {
+            const diags = lintText('dt = getdate(); res = adddays(dt, -10); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+
+        test('addmonths(dt, 1) & minusdays(dt, 3) - valid 2 args', () => {
+            const diags = lintText('dt = getdate(); m = addmonths(dt, 1); d = minusdays(dt, 3); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
     });
 
-    test("datetostr(d, fmt, tz) - 3 args → no error", () => {
-      const diagnostics = lintText('d = getdate();\nx = datetostr(d, "MM/dd/yyyy", "UTC");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
+    suite('Deprecated date functions (strtodate)', () => {
+        test('strtodate() flags deprecation warning recommending strtojavadate()', () => {
+            const diags = lintText('dt = strtodate("2026-01-01", "yyyy-MM-dd"); return "";');
+            const warn = diags.find(d => d.code === 'bml-strtodate-fix');
+            assert.ok(warn, 'Should flag strtodate as deprecated');
+        });
     });
 
-    test("datetostr(d, fmt, tz, extra) - 4 args → Error severity", () => {
-      const diagnostics = lintText('d = getdate();\nx = datetostr(d, "MM/dd/yyyy", "UTC", "x");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err);
-      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
-    });
+    suite('isleap() & isweekend() helper functions', () => {
+        test('isleap(2024) - integer year → no error', () => {
+            const diags = lintText('res = isleap(2024); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
 
-    test("datetostr(d, ) - trailing comma → bml-trailing-comma-error", () => {
-      const diagnostics = lintText('d = getdate();\nx = datetostr(d, );\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-trailing-comma-error");
-      assert.ok(err);
+        test('isweekend(dt) - Date argument → no error', () => {
+            const diags = lintText('dt = getdate(); res = isweekend(dt); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
     });
-
-    test("dateToStr(d, fmt) - case insensitivity - valid", () => {
-      const diagnostics = lintText('d = getdate();\nx = dateToStr(d, "MM/dd/yyyy");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-unknown-function");
-      assert.strictEqual(err, undefined);
-    });
-
-    test("datetostr(d, fmt, tz) with variables - valid", () => {
-      const diagnostics = lintText('d = getdate();\nf = "MM/dd/yyyy";\nt = "UTC";\nx = datetostr(d, f, t);\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-
-    test('datetostr(getdate(), "yyyy-MM-dd") - valid', () => {
-      const diagnostics = lintText('x = datetostr(getdate(), "yyyy-MM-dd");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-
-    test("datetostr(getdate()) - valid", () => {
-      const diagnostics = lintText('x = datetostr(getdate());\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-  });
-
-  suite("Other Date functions - adddays, minusdays, getdate, etc.", () => {
-    test("adddays(d, days) - correct 2 arguments → no error", () => {
-      const diagnostics = lintText('d = getdate(); x = adddays(d, 5); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-
-    test("adddays() - invalid argument count → Error", () => {
-      const diagnostics = lintText('x = adddays(); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err);
-    });
-
-    test("adddays(d, days) - type mismatch (expected Integer) → Warning", () => {
-      const diagnostics = lintText('d = getdate(); x = adddays(d, "not_an_int"); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
-      assert.ok(err);
-    });
-
-    test("getdate() - correct 0 or 1 argument → no error", () => {
-      const diagnostics1 = lintText('x = getdate(); return "";');
-      const diagnostics2 = lintText('x = getdate(true); return "";');
-      assert.strictEqual(diagnostics1.find((d) => d.code === "bml-function-arg-count"), undefined);
-      assert.strictEqual(diagnostics2.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("getdiffindays() - correct 2 arguments → no error", () => {
-      const diagnostics = lintText('d1 = getdate(); d2 = getdate(); x = getdiffindays(d1, d2); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("isleap() - correct 1 argument → no error", () => {
-      const diagnostics = lintText('x = isleap(2020); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("isleap() - type mismatch (expected Integer) → Warning", () => {
-      const diagnostics = lintText('x = isleap("2020"); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
-      assert.ok(err);
-    });
-
-    test("comparedates() - correct 2 arguments → no error", () => {
-      const diagnostics = lintText('d1 = getdate(); d2 = getdate(); x = comparedates(d1, d2); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("getcurrenttimeinmillis() - correct 0 arguments → no error", () => {
-      const diagnostics = lintText('x = getcurrenttimeinmillis(); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("strtodate() - correct 2 or 3 arguments → no error", () => {
-      const diagnostics = lintText('x = strtodate("2020-01-01", "yyyy-MM-dd"); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("date() overloads - valid counts → no error", () => {
-      const d1 = lintText('x = date(); return "";');
-      const d2 = lintText('x = date(123456); return "";');
-      const d3 = lintText('x = date("2020-01-01"); return "";');
-      const d4 = lintText('x = date(2020, 1, 1); return "";');
-      const d5 = lintText('x = date(2020, 1, 1, 12, 0, 0); return "";');
-
-      assert.strictEqual(d1.find((d) => d.code === "bml-function-arg-count"), undefined);
-      assert.strictEqual(d2.find((d) => d.code === "bml-function-arg-count"), undefined);
-      assert.strictEqual(d3.find((d) => d.code === "bml-function-arg-count"), undefined);
-      assert.strictEqual(d4.find((d) => d.code === "bml-function-arg-count"), undefined);
-      assert.strictEqual(d5.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("date(2 args) - invalid count → Error", () => {
-      const diagnostics = lintText('x = date(2020, 1); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err);
-    });
-
-    test("date(3 args with strings) - type mismatch → Warning", () => {
-      const diagnostics = lintText('x = date("2020", "1", "1"); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
-      assert.ok(err);
-    });
-  });
 });

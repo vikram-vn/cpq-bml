@@ -1117,7 +1117,7 @@
   "put": {
     "functionCategory": "dictionary",
     "returnType": null,
-    "fullSignature": "put(Dictionary dictionaryIdentifier, String(or Integer, Float) key, String value)",
+    "fullSignature": "put(Dictionary dictionaryIdentifier, String(or Integer, Float) key, String(or Integer, Float) value)",
     "syntax": "put(${1:dictionaryIdentifier}, ${2:key}, ${3:value})",
     "examples": [
       "1. Puts an entry (key-value pair) into the dictionary.\n2. Dict(\"anytype\") supports multiple datatypes in one dictionary.\nFor example, \nd = dict(\"string\");\nput(d, \"key1\", \"testValue1\");\n\nFor dict : \nd1 = dict(\"anytype\");\njObj = json(\"{\\\"K1\\\":\\\"V1\\\"}\");\nput(d1, \"key1\",\"value1\");\nput(d1, \"key2\", 10);\nput(d1, \"key3\", jObj);"

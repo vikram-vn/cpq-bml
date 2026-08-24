@@ -195,6 +195,22 @@ function runDynamicTestsForCategory(category, suiteTitle) {
                 const err = diagnostics.find(d => d.code === 'bml-unknown-function');
                 assert.strictEqual(err, undefined);
             });
+
+            test('13. handles multi-line arguments with inline block comments', () => {
+                const args = overloads[0].params.map((p, idx) => `/* arg_${idx} */\n  ${getSafeLiteralForType(p.type, idx)}`);
+                const code = `${name}(\n  ${args.join(',\n  ')}\n);\nreturn "";`;
+                const diagnostics = lintText(code);
+                const err = diagnostics.find(d => d.code === 'bml-function-arg-count' || d.code === 'bml-unknown-function');
+                assert.strictEqual(err, undefined);
+            });
+
+            test('14. validates execution inside conditional and loop blocks', () => {
+                const args = overloads[0].params.map((p, idx) => getSafeLiteralForType(p.type, idx));
+                const code = `if (true) { ${name}(${args.join(', ')}); }\nfor loopIdx in range(1) { ${name}(${args.join(', ')}); }\nreturn "";`;
+                const diagnostics = lintText(code);
+                const err = diagnostics.find(d => d.code === 'bml-function-arg-count' || d.code === 'bml-unknown-function');
+                assert.strictEqual(err, undefined);
+            });
         });
     });
 }

@@ -1,187 +1,201 @@
 // ==========================================
-// BML Category: URL - Senior QA Regression Suite
+// BML Category: URL - Validated Reference QA Suite
 // ==========================================
 
-// Common environment instances
+// Common test instances
 sb = stringbuilder();
 rs = bmql("select id from parts");
 myDict = dict("string");
 myJson = json();
 myJsonArr = jsonarray();
 myDate = getdate();
+myStrArr = string[]{"a", "b"};
+myIntArr = integer[]{1, 2};
 
-val_makeurlparam_pos1 = makeurlparam("abc", "abc");
-var_makeurlparam_arg_0 = "abc";
-var_makeurlparam_arg_1 = "abc";
+// Function: makeurlparam
+val_makeurlparam_pos1 = makeurlparam("str_0", "str_1");
+var_makeurlparam_arg_0 = "str_0";
+var_makeurlparam_arg_1 = "str_1";
 val_makeurlparam_pos2 = makeurlparam(var_makeurlparam_arg_0, var_makeurlparam_arg_1);
-val_makeurlparam_pos3 = MAKEURLPARAM("abc", "abc");
-if (true) { val_makeurlparam_pos4 = makeurlparam("abc", "abc"); }
-for loopIdx in range(1) { val_makeurlparam_pos5 = makeurlparam("abc", "abc"); }
+val_makeurlparam_pos3 = MAKEURLPARAM("str_0", "str_1");
+if (true) { val_makeurlparam_pos4 = makeurlparam("str_0", "str_1"); }
+for loopIdx in range(1) { val_makeurlparam_pos5 = makeurlparam("str_0", "str_1"); }
 val_makeurlparam_pos6 = makeurlparam(string(123), string(123));
-val_makeurlparam_pos7 = makeurlparam(   
-  	  "abc", 	
-  "abc" 	
-  );
-val_makeurlparam_pos8 = makeurlparam(/* comment */ "abc", /* next */ "abc");
-val_makeurlparam_pos9 = makeurlparam("", "");
-val_makeurlparam_pos10 = makeurlparam("abc", "abc");
-val_makeurlparam_neg1 = makeurlparam("abc");
-val_makeurlparam_neg2 = makeurlparam("abc", "abc", "excess_parameter_value");
-val_makeurlparam_neg3 = makeurlparam(123, 123);
-val_makeurlparam_neg4 = makeurlparam("abc", "abc",);
-val_makeurlparam_neg5 = invalid_ns.makeurlparam("abc", "abc");
-val_makeurlparam_neg6 = makeurlparam("abc", , );
-makeurlparam("abc", "abc") = "override_val";
+val_makeurlparam_pos7 = makeurlparam(
+  "str_0",
+  "str_1"
+);
+val_makeurlparam_pos8 = makeurlparam(/* comment */ "str_0", /* next */ "str_1");
+val_makeurlparam_pos9 = makeurlparam("str_0", "str_1");
+val_makeurlparam_neg1 = makeurlparam("str_0");
+val_makeurlparam_neg2 = makeurlparam("str_0", "str_1", "excess_parameter_value");
+val_makeurlparam_neg4 = makeurlparam("str_0", "str_1",);
+val_makeurlparam_neg5 = invalid_ns.makeurlparam("str_0", "str_1");
 val_makeurlparam_neg8 = makeurlparam(return, break);
-val_makeurlparam_neg9 = makeurlparam("abc"; "abc");
-val_makeurlparam_neg10 = makeurlparam("abc", "abc" 
+val_makeurlparam_neg9 = makeurlparam("str_0"; "str_1");
+val_makeurlparam_neg10 = makeurlparam("str_0", "str_1"
 
-val_urldata_pos1 = urldata("abc", "abc", dict("string"));
-var_urldata_arg_0 = "abc";
-var_urldata_arg_1 = "abc";
+// Function: urldata
+val_urldata_pos1 = urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true);
+var_urldata_arg_0 = "str_0";
+var_urldata_arg_1 = "str_1";
 var_urldata_arg_2 = dict("string");
-val_urldata_pos2 = urldata(var_urldata_arg_0, var_urldata_arg_1, var_urldata_arg_2);
-val_urldata_pos3 = URLDATA("abc", "abc", dict("string"));
-if (true) { val_urldata_pos4 = urldata("abc", "abc", dict("string")); }
-for loopIdx in range(1) { val_urldata_pos5 = urldata("abc", "abc", dict("string")); }
-val_urldata_pos6 = urldata(string(123), string(123), dict("string"));
-val_urldata_pos7 = urldata(   
-  	  "abc", 	
-  "abc", 	
-  dict("string") 	
-  );
-val_urldata_pos8 = urldata(/* comment */ "abc", /* next */ "abc", /* next */ dict("string"));
-val_urldata_pos9 = urldata("", "", dict("string"));
-val_urldata_pos10 = urldata("abc", "abc", dict("string"));
-val_urldata_neg1 = urldata("abc", "abc");
-val_urldata_neg2 = urldata("abc", "abc", dict("string"), "excess_parameter_value");
-val_urldata_neg3 = urldata(123, 123, "not_a_dict");
-val_urldata_neg4 = urldata("abc", "abc", dict("string"),);
-val_urldata_neg5 = invalid_ns.urldata("abc", "abc", dict("string"));
-val_urldata_neg6 = urldata("abc", , dict("string"));
-urldata("abc", "abc", dict("string")) = "override_val";
+var_urldata_arg_3 = "str_3";
+var_urldata_arg_4 = 123;
+var_urldata_arg_5 = dict("string");
+var_urldata_arg_6 = true;
+val_urldata_pos2 = urldata(var_urldata_arg_0, var_urldata_arg_1, var_urldata_arg_2, var_urldata_arg_3, var_urldata_arg_4, var_urldata_arg_5, var_urldata_arg_6);
+val_urldata_pos3 = URLDATA("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true);
+if (true) { val_urldata_pos4 = urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true); }
+for loopIdx in range(1) { val_urldata_pos5 = urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true); }
+val_urldata_pos6 = urldata(string(123), string(123), dict("string"), string(123), atoi("123"), dict("string"), true);
+val_urldata_pos7 = urldata(
+  "str_0",
+  "str_1",
+  dict("string"),
+  "str_3",
+  123,
+  dict("string"),
+  true
+);
+val_urldata_pos8 = urldata(/* comment */ "str_0", /* next */ "str_1", /* next */ dict("string"), /* next */ "str_3", /* next */ 123, /* next */ dict("string"), /* next */ true);
+val_urldata_pos9 = urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true);
+val_urldata_neg1 = urldata("str_0");
+val_urldata_neg2 = urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true, "excess_parameter_value");
+val_urldata_neg4 = urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true,);
+val_urldata_neg5 = invalid_ns.urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true);
 val_urldata_neg8 = urldata(return, break);
-val_urldata_neg9 = urldata("abc"; "abc"; dict("string"));
-val_urldata_neg10 = urldata("abc", "abc", dict("string") 
+val_urldata_neg9 = urldata("str_0"; "str_1"; dict("string"); "str_3"; 123; dict("string"); true);
+val_urldata_neg10 = urldata("str_0", "str_1", dict("string"), "str_3", 123, dict("string"), true
 
-val_urldatabyget_pos1 = urldatabyget("abc", "abc", "abc", 123);
-var_urldatabyget_arg_0 = "abc";
-var_urldatabyget_arg_1 = "abc";
-var_urldatabyget_arg_2 = "abc";
+// Function: urldatabyget
+val_urldatabyget_pos1 = urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true);
+var_urldatabyget_arg_0 = "str_0";
+var_urldatabyget_arg_1 = "str_1";
+var_urldatabyget_arg_2 = "str_2";
 var_urldatabyget_arg_3 = 123;
-val_urldatabyget_pos2 = urldatabyget(var_urldatabyget_arg_0, var_urldatabyget_arg_1, var_urldatabyget_arg_2, var_urldatabyget_arg_3);
-val_urldatabyget_pos3 = URLDATABYGET("abc", "abc", "abc", 123);
-if (true) { val_urldatabyget_pos4 = urldatabyget("abc", "abc", "abc", 123); }
-for loopIdx in range(1) { val_urldatabyget_pos5 = urldatabyget("abc", "abc", "abc", 123); }
-val_urldatabyget_pos6 = urldatabyget(string(123), string(123), string(123), atoi("12"));
-val_urldatabyget_pos7 = urldatabyget(   
-  	  "abc", 	
-  "abc", 	
-  "abc", 	
-  123 	
-  );
-val_urldatabyget_pos8 = urldatabyget(/* comment */ "abc", /* next */ "abc", /* next */ "abc", /* next */ 123);
-val_urldatabyget_pos9 = urldatabyget("", "", "", 2147483647);
-val_urldatabyget_pos10 = urldatabyget("abc", "abc", "abc", 123);
-val_urldatabyget_neg1 = urldatabyget("abc", "abc", "abc");
-val_urldatabyget_neg2 = urldatabyget("abc", "abc", "abc", 123, "excess_parameter_value");
-val_urldatabyget_neg3 = urldatabyget(123, 123, 123, "not_an_int");
-val_urldatabyget_neg4 = urldatabyget("abc", "abc", "abc", 123,);
-val_urldatabyget_neg5 = invalid_ns.urldatabyget("abc", "abc", "abc", 123);
-val_urldatabyget_neg6 = urldatabyget("abc", , "abc", 123);
-urldatabyget("abc", "abc", "abc", 123) = "override_val";
+var_urldatabyget_arg_4 = dict("string");
+var_urldatabyget_arg_5 = true;
+val_urldatabyget_pos2 = urldatabyget(var_urldatabyget_arg_0, var_urldatabyget_arg_1, var_urldatabyget_arg_2, var_urldatabyget_arg_3, var_urldatabyget_arg_4, var_urldatabyget_arg_5);
+val_urldatabyget_pos3 = URLDATABYGET("str_0", "str_1", "str_2", 123, dict("string"), true);
+if (true) { val_urldatabyget_pos4 = urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true); }
+for loopIdx in range(1) { val_urldatabyget_pos5 = urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true); }
+val_urldatabyget_pos6 = urldatabyget(string(123), string(123), string(123), atoi("123"), dict("string"), true);
+val_urldatabyget_pos7 = urldatabyget(
+  "str_0",
+  "str_1",
+  "str_2",
+  123,
+  dict("string"),
+  true
+);
+val_urldatabyget_pos8 = urldatabyget(/* comment */ "str_0", /* next */ "str_1", /* next */ "str_2", /* next */ 123, /* next */ dict("string"), /* next */ true);
+val_urldatabyget_pos9 = urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true);
+val_urldatabyget_neg1 = urldatabyget("str_0", "str_1");
+val_urldatabyget_neg2 = urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true, "excess_parameter_value");
+val_urldatabyget_neg4 = urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true,);
+val_urldatabyget_neg5 = invalid_ns.urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true);
 val_urldatabyget_neg8 = urldatabyget(return, break);
-val_urldatabyget_neg9 = urldatabyget("abc"; "abc"; "abc"; 123);
-val_urldatabyget_neg10 = urldatabyget("abc", "abc", "abc", 123 
+val_urldatabyget_neg9 = urldatabyget("str_0"; "str_1"; "str_2"; 123; dict("string"); true);
+val_urldatabyget_neg10 = urldatabyget("str_0", "str_1", "str_2", 123, dict("string"), true
 
-val_urldatabypost_pos1 = urldatabypost("abc", "abc", "abc", dict("string"));
-var_urldatabypost_arg_0 = "abc";
-var_urldatabypost_arg_1 = "abc";
-var_urldatabypost_arg_2 = "abc";
+// Function: urldatabypost
+val_urldatabypost_pos1 = urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true);
+var_urldatabypost_arg_0 = "str_0";
+var_urldatabypost_arg_1 = "str_1";
+var_urldatabypost_arg_2 = "str_2";
 var_urldatabypost_arg_3 = dict("string");
-val_urldatabypost_pos2 = urldatabypost(var_urldatabypost_arg_0, var_urldatabypost_arg_1, var_urldatabypost_arg_2, var_urldatabypost_arg_3);
-val_urldatabypost_pos3 = URLDATABYPOST("abc", "abc", "abc", dict("string"));
-if (true) { val_urldatabypost_pos4 = urldatabypost("abc", "abc", "abc", dict("string")); }
-for loopIdx in range(1) { val_urldatabypost_pos5 = urldatabypost("abc", "abc", "abc", dict("string")); }
-val_urldatabypost_pos6 = urldatabypost(string(123), string(123), string(123), dict("string"));
-val_urldatabypost_pos7 = urldatabypost(   
-  	  "abc", 	
-  "abc", 	
-  "abc", 	
-  dict("string") 	
-  );
-val_urldatabypost_pos8 = urldatabypost(/* comment */ "abc", /* next */ "abc", /* next */ "abc", /* next */ dict("string"));
-val_urldatabypost_pos9 = urldatabypost("", "", "", dict("string"));
-val_urldatabypost_pos10 = urldatabypost("abc", "abc", "abc", dict("string"));
-val_urldatabypost_neg1 = urldatabypost("abc", "abc", "abc");
-val_urldatabypost_neg2 = urldatabypost("abc", "abc", "abc", dict("string"), "excess_parameter_value");
-val_urldatabypost_neg3 = urldatabypost(123, 123, 123, "not_a_dict");
-val_urldatabypost_neg4 = urldatabypost("abc", "abc", "abc", dict("string"),);
-val_urldatabypost_neg5 = invalid_ns.urldatabypost("abc", "abc", "abc", dict("string"));
-val_urldatabypost_neg6 = urldatabypost("abc", , "abc", dict("string"));
-urldatabypost("abc", "abc", "abc", dict("string")) = "override_val";
+var_urldatabypost_arg_4 = true;
+var_urldatabypost_arg_5 = 123;
+var_urldatabypost_arg_6 = true;
+val_urldatabypost_pos2 = urldatabypost(var_urldatabypost_arg_0, var_urldatabypost_arg_1, var_urldatabypost_arg_2, var_urldatabypost_arg_3, var_urldatabypost_arg_4, var_urldatabypost_arg_5, var_urldatabypost_arg_6);
+val_urldatabypost_pos3 = URLDATABYPOST("str_0", "str_1", "str_2", dict("string"), true, 123, true);
+if (true) { val_urldatabypost_pos4 = urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true); }
+for loopIdx in range(1) { val_urldatabypost_pos5 = urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true); }
+val_urldatabypost_pos6 = urldatabypost(string(123), string(123), string(123), dict("string"), true, atoi("123"), true);
+val_urldatabypost_pos7 = urldatabypost(
+  "str_0",
+  "str_1",
+  "str_2",
+  dict("string"),
+  true,
+  123,
+  true
+);
+val_urldatabypost_pos8 = urldatabypost(/* comment */ "str_0", /* next */ "str_1", /* next */ "str_2", /* next */ dict("string"), /* next */ true, /* next */ 123, /* next */ true);
+val_urldatabypost_pos9 = urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true);
+val_urldatabypost_neg1 = urldatabypost("str_0", "str_1");
+val_urldatabypost_neg2 = urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true, "excess_parameter_value");
+val_urldatabypost_neg4 = urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true,);
+val_urldatabypost_neg5 = invalid_ns.urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true);
 val_urldatabypost_neg8 = urldatabypost(return, break);
-val_urldatabypost_neg9 = urldatabypost("abc"; "abc"; "abc"; dict("string"));
-val_urldatabypost_neg10 = urldatabypost("abc", "abc", "abc", dict("string") 
+val_urldatabypost_neg9 = urldatabypost("str_0"; "str_1"; "str_2"; dict("string"); true; 123; true);
+val_urldatabypost_neg10 = urldatabypost("str_0", "str_1", "str_2", dict("string"), true, 123, true
 
-val_urldatabypostasync_pos1 = urldatabypostasync("abc", "abc", "abc", "abc", dict("string"));
-var_urldatabypostasync_arg_0 = "abc";
-var_urldatabypostasync_arg_1 = "abc";
-var_urldatabypostasync_arg_2 = "abc";
-var_urldatabypostasync_arg_3 = "abc";
+// Function: urldatabypostasync
+val_urldatabypostasync_pos1 = urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true);
+var_urldatabypostasync_arg_0 = "str_0";
+var_urldatabypostasync_arg_1 = "str_1";
+var_urldatabypostasync_arg_2 = "str_2";
+var_urldatabypostasync_arg_3 = "str_3";
 var_urldatabypostasync_arg_4 = dict("string");
-val_urldatabypostasync_pos2 = urldatabypostasync(var_urldatabypostasync_arg_0, var_urldatabypostasync_arg_1, var_urldatabypostasync_arg_2, var_urldatabypostasync_arg_3, var_urldatabypostasync_arg_4);
-val_urldatabypostasync_pos3 = URLDATABYPOSTASYNC("abc", "abc", "abc", "abc", dict("string"));
-if (true) { val_urldatabypostasync_pos4 = urldatabypostasync("abc", "abc", "abc", "abc", dict("string")); }
-for loopIdx in range(1) { val_urldatabypostasync_pos5 = urldatabypostasync("abc", "abc", "abc", "abc", dict("string")); }
-val_urldatabypostasync_pos6 = urldatabypostasync(string(123), string(123), string(123), string(123), dict("string"));
-val_urldatabypostasync_pos7 = urldatabypostasync(   
-  	  "abc", 	
-  "abc", 	
-  "abc", 	
-  "abc", 	
-  dict("string") 	
-  );
-val_urldatabypostasync_pos8 = urldatabypostasync(/* comment */ "abc", /* next */ "abc", /* next */ "abc", /* next */ "abc", /* next */ dict("string"));
-val_urldatabypostasync_pos9 = urldatabypostasync("", "", "", "", dict("string"));
-val_urldatabypostasync_pos10 = urldatabypostasync("abc", "abc", "abc", "abc", dict("string"));
-val_urldatabypostasync_neg1 = urldatabypostasync("abc", "abc", "abc", "abc");
-val_urldatabypostasync_neg2 = urldatabypostasync("abc", "abc", "abc", "abc", dict("string"), "excess_parameter_value");
-val_urldatabypostasync_neg3 = urldatabypostasync(123, 123, 123, 123, "not_a_dict");
-val_urldatabypostasync_neg4 = urldatabypostasync("abc", "abc", "abc", "abc", dict("string"),);
-val_urldatabypostasync_neg5 = invalid_ns.urldatabypostasync("abc", "abc", "abc", "abc", dict("string"));
-val_urldatabypostasync_neg6 = urldatabypostasync("abc", , "abc", "abc", dict("string"));
-urldatabypostasync("abc", "abc", "abc", "abc", dict("string")) = "override_val";
+var_urldatabypostasync_arg_5 = true;
+var_urldatabypostasync_arg_6 = 123;
+var_urldatabypostasync_arg_7 = true;
+val_urldatabypostasync_pos2 = urldatabypostasync(var_urldatabypostasync_arg_0, var_urldatabypostasync_arg_1, var_urldatabypostasync_arg_2, var_urldatabypostasync_arg_3, var_urldatabypostasync_arg_4, var_urldatabypostasync_arg_5, var_urldatabypostasync_arg_6, var_urldatabypostasync_arg_7);
+val_urldatabypostasync_pos3 = URLDATABYPOSTASYNC("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true);
+if (true) { val_urldatabypostasync_pos4 = urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true); }
+for loopIdx in range(1) { val_urldatabypostasync_pos5 = urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true); }
+val_urldatabypostasync_pos6 = urldatabypostasync(string(123), string(123), string(123), string(123), dict("string"), true, atoi("123"), true);
+val_urldatabypostasync_pos7 = urldatabypostasync(
+  "str_0",
+  "str_1",
+  "str_2",
+  "str_3",
+  dict("string"),
+  true,
+  123,
+  true
+);
+val_urldatabypostasync_pos8 = urldatabypostasync(/* comment */ "str_0", /* next */ "str_1", /* next */ "str_2", /* next */ "str_3", /* next */ dict("string"), /* next */ true, /* next */ 123, /* next */ true);
+val_urldatabypostasync_pos9 = urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true);
+val_urldatabypostasync_neg1 = urldatabypostasync("str_0", "str_1", "str_2");
+val_urldatabypostasync_neg2 = urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true, "excess_parameter_value");
+val_urldatabypostasync_neg4 = urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true,);
+val_urldatabypostasync_neg5 = invalid_ns.urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true);
 val_urldatabypostasync_neg8 = urldatabypostasync(return, break);
-val_urldatabypostasync_neg9 = urldatabypostasync("abc"; "abc"; "abc"; "abc"; dict("string"));
-val_urldatabypostasync_neg10 = urldatabypostasync("abc", "abc", "abc", "abc", dict("string") 
+val_urldatabypostasync_neg9 = urldatabypostasync("str_0"; "str_1"; "str_2"; "str_3"; dict("string"); true; 123; true);
+val_urldatabypostasync_neg10 = urldatabypostasync("str_0", "str_1", "str_2", "str_3", dict("string"), true, 123, true
 
-val_urlmultipartbypost_pos1 = urlmultipartbypost("abc", "abc", dict("string"));
-var_urlmultipartbypost_arg_0 = "abc";
-var_urlmultipartbypost_arg_1 = "abc";
+// Function: urlmultipartbypost
+val_urlmultipartbypost_pos1 = urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true);
+var_urlmultipartbypost_arg_0 = "str_0";
+var_urlmultipartbypost_arg_1 = "str_1";
 var_urlmultipartbypost_arg_2 = dict("string");
-val_urlmultipartbypost_pos2 = urlmultipartbypost(var_urlmultipartbypost_arg_0, var_urlmultipartbypost_arg_1, var_urlmultipartbypost_arg_2);
-val_urlmultipartbypost_pos3 = URLMULTIPARTBYPOST("abc", "abc", dict("string"));
-if (true) { val_urlmultipartbypost_pos4 = urlmultipartbypost("abc", "abc", dict("string")); }
-for loopIdx in range(1) { val_urlmultipartbypost_pos5 = urlmultipartbypost("abc", "abc", dict("string")); }
-val_urlmultipartbypost_pos6 = urlmultipartbypost(string(123), string(123), dict("string"));
-val_urlmultipartbypost_pos7 = urlmultipartbypost(   
-  	  "abc", 	
-  "abc", 	
-  dict("string") 	
-  );
-val_urlmultipartbypost_pos8 = urlmultipartbypost(/* comment */ "abc", /* next */ "abc", /* next */ dict("string"));
-val_urlmultipartbypost_pos9 = urlmultipartbypost("", "", dict("string"));
-val_urlmultipartbypost_pos10 = urlmultipartbypost("abc", "abc", dict("string"));
-val_urlmultipartbypost_neg1 = urlmultipartbypost("abc", "abc");
-val_urlmultipartbypost_neg2 = urlmultipartbypost("abc", "abc", dict("string"), "excess_parameter_value");
-val_urlmultipartbypost_neg3 = urlmultipartbypost(123, 123, "not_a_dict");
-val_urlmultipartbypost_neg4 = urlmultipartbypost("abc", "abc", dict("string"),);
-val_urlmultipartbypost_neg5 = invalid_ns.urlmultipartbypost("abc", "abc", dict("string"));
-val_urlmultipartbypost_neg6 = urlmultipartbypost("abc", , dict("string"));
-urlmultipartbypost("abc", "abc", dict("string")) = "override_val";
+var_urlmultipartbypost_arg_3 = dict("string");
+var_urlmultipartbypost_arg_4 = 123;
+var_urlmultipartbypost_arg_5 = true;
+val_urlmultipartbypost_pos2 = urlmultipartbypost(var_urlmultipartbypost_arg_0, var_urlmultipartbypost_arg_1, var_urlmultipartbypost_arg_2, var_urlmultipartbypost_arg_3, var_urlmultipartbypost_arg_4, var_urlmultipartbypost_arg_5);
+val_urlmultipartbypost_pos3 = URLMULTIPARTBYPOST("str_0", "str_1", dict("string"), dict("string"), 123, true);
+if (true) { val_urlmultipartbypost_pos4 = urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true); }
+for loopIdx in range(1) { val_urlmultipartbypost_pos5 = urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true); }
+val_urlmultipartbypost_pos6 = urlmultipartbypost(string(123), string(123), dict("string"), dict("string"), atoi("123"), true);
+val_urlmultipartbypost_pos7 = urlmultipartbypost(
+  "str_0",
+  "str_1",
+  dict("string"),
+  dict("string"),
+  123,
+  true
+);
+val_urlmultipartbypost_pos8 = urlmultipartbypost(/* comment */ "str_0", /* next */ "str_1", /* next */ dict("string"), /* next */ dict("string"), /* next */ 123, /* next */ true);
+val_urlmultipartbypost_pos9 = urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true);
+val_urlmultipartbypost_neg1 = urlmultipartbypost("str_0");
+val_urlmultipartbypost_neg2 = urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true, "excess_parameter_value");
+val_urlmultipartbypost_neg4 = urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true,);
+val_urlmultipartbypost_neg5 = invalid_ns.urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true);
 val_urlmultipartbypost_neg8 = urlmultipartbypost(return, break);
-val_urlmultipartbypost_neg9 = urlmultipartbypost("abc"; "abc"; dict("string"));
-val_urlmultipartbypost_neg10 = urlmultipartbypost("abc", "abc", dict("string") 
+val_urlmultipartbypost_neg9 = urlmultipartbypost("str_0"; "str_1"; dict("string"); dict("string"); 123; true);
+val_urlmultipartbypost_neg10 = urlmultipartbypost("str_0", "str_1", dict("string"), dict("string"), 123, true
 
 return "";
