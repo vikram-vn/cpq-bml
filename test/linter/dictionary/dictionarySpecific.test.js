@@ -51,13 +51,28 @@ suite('BML Linter Test Suite - Dictionary Functions Exhaustive 3-Tier Suite (Pos
                 const diags = lintText(`
                     d = dict("string");
                     put(d, "key1", "value1");
-                    put(d, "key2", "value2");
                     put(d, 100, "valueWithIntKey");
+
+                    dFloat = dict("float");
+                    put(dFloat, "k1", 12.34);
+                    put(dFloat, "k2", 50);
+
+                    dArr1 = dict("string[]");
+                    put(dArr1, "k1", string[]{"a", "b"});
+
+                    dArr2 = dict("string[][]");
+                    put(dArr2, "k1", string[][]{string[]{"a"}});
+
+                    dDateArr = dict("date[]");
+                    arrDate = date[]{getdate()};
+                    put(dDateArr, "k1", arrDate);
+
                     dAny = dict("anytype");
                     put(dAny, "strKey", "text");
                     put(dAny, "jsonKey", json("{\\"k\\":\\"v\\"}"));
                     return "";
                 `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-type'), undefined);
                 assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
             });
         });
@@ -76,6 +91,31 @@ suite('BML Linter Test Suite - Dictionary Functions Exhaustive 3-Tier Suite (Pos
             test('4 arguments (excess) → flags bml-function-arg-count Error', () => {
                 const diags = lintText('d = dict("string"); put(d, "k", "v", "excess"); return "";');
                 assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('dict("string") with integer value → flags bml-function-arg-type Error', () => {
+                const diags = lintText('d = dict("string"); put(d, "k", 123); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
+
+            test('dict("float") with string value → flags bml-function-arg-type Error', () => {
+                const diags = lintText('d = dict("float"); put(d, "k", "notAFloat"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
+
+            test('dict("string[]") with scalar string → flags bml-function-arg-type Error', () => {
+                const diags = lintText('d = dict("string[]"); put(d, "k", "scalarText"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
+
+            test('dict("string[][]") with 1D array → flags bml-function-arg-type Error', () => {
+                const diags = lintText('d = dict("string[][]"); put(d, "k", string[]{"a"}); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
+
+            test('dict("date[]") with scalar date → flags bml-function-arg-type Error', () => {
+                const diags = lintText('d = dict("date[]"); put(d, "k", getdate()); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
             });
         });
 

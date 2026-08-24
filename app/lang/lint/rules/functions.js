@@ -601,6 +601,31 @@ function checkFunctionCalls(
             diag.code = "bml-function-arg-type";
             diagnostics.push(diag);
           }
+        } else if (funcNameLower === "put" && args.length >= 3) {
+          const dictVarName = args[0].trim();
+          const dictEntry = firstTypeByVar
+            ? firstTypeByVar.get(dictVarName.toLowerCase()) || firstTypeByVar.get(dictVarName)
+            : null;
+          if (dictEntry && dictEntry.elementType) {
+            const expectedElemType = dictEntry.elementType.trim();
+            const expectedElemLower = expectedElemType.toLowerCase();
+            if (expectedElemLower !== "anytype" && expectedElemLower !== "any") {
+              const actualValType = inferArgumentType(
+                args[2],
+                firstTypeByVar,
+                returnTypes,
+              );
+              if (actualValType && !argumentTypeCompatible(expectedElemType, actualValType)) {
+                const diag = new vscode.Diagnostic(
+                  new vscode.Range(startPos, endPos),
+                  `Argument 3 to 'put' should be ${expectedElemType}, but got a ${actualValType} value.`,
+                  vscode.DiagnosticSeverity.Error,
+                );
+                diag.code = "bml-function-arg-type";
+                diagnostics.push(diag);
+              }
+            }
+          }
         }
       } else {
         // Unknown bare function call

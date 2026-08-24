@@ -139,10 +139,16 @@ function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode
         const inferredType = inferExpressionType(rhs.text, extensionPath);
         if (!inferredType) continue;
 
+        let elementType = null;
+        const dictMatch = rhs.text.trim().match(/^dict\s*\(\s*["']([^"']+)["']\s*\)$/i);
+        if (dictMatch) {
+            elementType = dictMatch[1].trim();
+        }
+
         const lookupKey = varName.toLowerCase();
         const prior = firstTypeByVar.get(lookupKey) || firstTypeByVar.get(varName);
         if (!prior) {
-            const entry = { type: inferredType, line: doc ? doc.positionAt(matchIndex).line : 0 };
+            const entry = { type: inferredType, elementType, line: doc ? doc.positionAt(matchIndex).line : 0 };
             firstTypeByVar.set(lookupKey, entry);
             firstTypeByVar.set(varName, entry);
         } else if (vscode && doc) {
