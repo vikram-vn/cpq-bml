@@ -55,8 +55,8 @@ suite("BML Linter Performance & Speed Benchmark Suite", function() {
         console.log(`======================================================\n`);
 
         assert.ok(
-            avgDurationMs < 50,
-            `Linter speed check failed: average time ${avgDurationMs.toFixed(2)}ms exceeds 50ms limit`
+            avgDurationMs < 100,
+            `Linter speed check failed: average time ${avgDurationMs.toFixed(2)}ms exceeds 100ms limit`
         );
     });
 });

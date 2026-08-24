@@ -698,6 +698,25 @@
         "foreground": "#85e89d",
         "fontStyle": "bold"
       }
+    },
+    {
+      "scope": "entity.name.namespace.bml",
+      "settings": {
+        "foreground": "#39c5cf",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": "variable.language.this.bml",
+      "settings": {
+        "foreground": "#79b8ff"
+      }
+    },
+    {
+      "scope": "entity.name.function.member.bml",
+      "settings": {
+        "foreground": "#b392f0"
+      }
     }
   ]
 }

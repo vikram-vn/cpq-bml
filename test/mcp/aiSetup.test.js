@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
 const { autoSetupAiSkills, parseSkillFrontmatter } = require('../../app/ai/setup/index.js');
+const { getExtensionId } = require('../extensionHelper.js');
 
 suite('parseSkillFrontmatter', () => {
     test('extracts an inline scalar description', () => {
@@ -83,7 +84,7 @@ suite('AI Setup Integration Test Suite', () => {
             return;
         }
 
-        const extension = vscode.extensions.getExtension('vikram-n.cpq-bml');
+        const extension = vscode.extensions.getExtension(getExtensionId());
         assert.ok(extension, 'Extension should be present');
 
         // Note: this test requires the extension to be activated, or we can just pass a fake context.
@@ -203,7 +204,7 @@ suite('AI Setup Integration Test Suite', () => {
     // folder name (so tests never see each other's decompressed skills), and
     // returns the paths every native-target assertion needs, plus a cleanup().
     function setupFakeContext(subDirName) {
-        const extension = vscode.extensions.getExtension('vikram-n.cpq-bml');
+        const extension = vscode.extensions.getExtension(getExtensionId());
         const mockGlobalStoragePath = path.join(__dirname, subDirName);
         fs.rmSync(mockGlobalStoragePath, { recursive: true, force: true });
         fs.mkdirSync(mockGlobalStoragePath, { recursive: true });

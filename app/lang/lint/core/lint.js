@@ -39,7 +39,11 @@ function blankRanges(text, ranges) {
             result += text.slice(lastIndex, start);
         }
         const slice = text.slice(start, end);
-        result += slice.replace(/[^\r\n]/g, ' ');
+        if (slice.includes('\n') || slice.includes('\r')) {
+            result += slice.replace(/[^\r\n]/g, ' ');
+        } else {
+            result += ' '.repeat(end - start);
+        }
         lastIndex = end;
     }
     if (lastIndex < text.length) {
@@ -111,12 +115,14 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
 
         // Phase 1 new checkers
         diagnostics.push(...checkNullSafety(cleanText, noStringsText, doc));
-        diagnostics.push(...checkUnclosedStrings(cleanText, doc, vscode));
+        if (cleanText.includes('"') || cleanText.includes("'")) {
+            diagnostics.push(...checkUnclosedStrings(cleanText, doc, vscode));
+        }
         
         if (hasLoops) {
             diagnostics.push(...checkInfiniteLoop(noStringsText, doc));
+            diagnostics.push(...checkShadowedVariables(noStringsText, doc, declaredVars));
         }
-        diagnostics.push(...checkShadowedVariables(noStringsText, doc, declaredVars));
         
         if (hasCommerce) {
             diagnostics.push(...checkCommerceAttributes(cleanText, noStringsText, doc, vscode, extensionPath));

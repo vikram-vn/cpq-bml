@@ -478,6 +478,8 @@
     "release": "python scripts/release/release.py",
     "pretest": "npm run compile",
     "test": "vscode-test",
+    "test:benchmark": "vscode-test test/linter/scripts/benchmark.test.js",
+    "benchmark": "vscode-test test/linter/scripts/benchmark.test.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },

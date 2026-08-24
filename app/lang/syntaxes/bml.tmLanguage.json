@@ -462,12 +462,15 @@
         },
         {
           "name": "meta.method-call.bml",
-          "begin": "(\\.[a-zA-Z_]\\w*)\\s*(\\()",
+          "begin": "(\\.)([a-zA-Z_]\\w*)\\s*(\\()",
           "beginCaptures": {
             "1": {
-              "name": "entity.name.function.bml"
+              "name": "punctuation.accessor.bml"
             },
             "2": {
+              "name": "entity.name.function.member.bml"
+            },
+            "3": {
               "name": "punctuation.section.arguments.begin.bml"
             }
           },
@@ -528,8 +531,15 @@
           "comment": "System attributes and BMQL result keys"
         },
         {
-          "name": "variable.other.property.bml",
-          "match": "(?<=\\.)[a-zA-Z_]\\w*"
+          "match": "(\\.)\\s*([a-zA-Z_]\\w*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.accessor.bml"
+            },
+            "2": {
+              "name": "variable.other.property.bml"
+            }
+          }
         }
       ]
     },
