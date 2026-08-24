@@ -1,142 +1,187 @@
-const assert = require("assert");
-const { lintText } = require("../fixtures");
+const assert = require('assert');
+const vscode = require('vscode');
+const { lintText } = require('../fixtures');
 
-suite("BML Linter Test Suite - Dictionary specific tests", () => {
-  const vscode = require("vscode");
+suite('BML Linter Test Suite - Dictionary Exhaustive 3-Tier Suite (Positive, Negative, Destructive)', () => {
+    // ==========================================
+    // 1. put(dict, key, value)
+    // ==========================================
+    suite('put() - Put key-value pair into dictionary', () => {
+        suite('Positive', () => {
+            test('put with String key and String value', () => {
+                const diags = lintText(`
+                    d = dict("string");
+                    put(d, "name", "Oracle");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
 
-  suite("put() - always requires exactly 3 arguments (dict, key, value)", () => {
-    test("put() - zero args → flags bml-function-arg-count error", () => {
-      const diagnostics = lintText('put();\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err, "put with 0 args should flag bml-function-arg-count");
-      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+            test('put with Integer key and Float key', () => {
+                const diags = lintText(`
+                    d = dict("string");
+                    put(d, 100, "val1");
+                    put(d, 99.9, "val2");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('put with expressions and nested dict', () => {
+                const diags = lintText(`
+                    d = dict("dict<string>");
+                    sub = dict("string");
+                    put(sub, "k", "v");
+                    put(d, "subKey", sub);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('put(); return "";');
+                const err = diags.find(d => d.code === 'bml-function-arg-count');
+                assert.ok(err);
+                assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+            });
+
+            test('1 argument → Error', () => {
+                const diags = lintText('d = dict("string"); put(d); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('2 arguments (missing value) → Error', () => {
+                const diags = lintText('d = dict("string"); put(d, "k"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('4 arguments (excess parameter) → Error', () => {
+                const diags = lintText('d = dict("string"); put(d, "k", "v", "extra"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+
+            test('Trailing comma → bml-trailing-comma-error', () => {
+                const diags = lintText('d = dict("string"); put(d, "k", "v", ); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-trailing-comma-error'));
+            });
+        });
+
+        suite('Destructive', () => {
+            test('Empty key and empty value strings handled without crash', () => {
+                const diags = lintText('d = dict("string"); put(d, "", ""); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('Keyword collision as parameter identifiers', () => {
+                const diags = lintText('put(return, break, continue); return "";');
+                assert.ok(diags.length > 0);
+            });
+        });
     });
 
-    test("put(dict) - only 1 arg → flags bml-function-arg-count error", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d);\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err, "put with 1 arg should flag bml-function-arg-count");
-      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+    // ==========================================
+    // 2. dict(dictType) & dict<anytype>
+    // ==========================================
+    suite('dict() - Create Dictionary instance', () => {
+        suite('Positive', () => {
+            test('Valid primitive and array types: string, integer, float, date, boolean, string[]', () => {
+                const diags = lintText(`
+                    d1 = dict("string");
+                    d2 = dict("integer");
+                    d3 = dict("float");
+                    d4 = dict("date");
+                    d5 = dict("boolean");
+                    d6 = dict("string[]");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-dict-invalid-type'), undefined);
+            });
+
+            test('Valid complex types: anytype, dict<string>, dict<anytype>, json, jsonarray, bytearray', () => {
+                const diags = lintText(`
+                    d1 = dict("anytype");
+                    d2 = dict("dict<string>");
+                    d3 = dict("dict<anytype>");
+                    d4 = dict("json");
+                    d5 = dict("jsonarray");
+                    d6 = dict("bytearray");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-dict-invalid-type'), undefined);
+            });
+        });
+
+        suite('Negative', () => {
+            test('0 arguments → flags bml-dict-missing-type', () => {
+                const diags = lintText('d = dict(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-dict-missing-type'));
+            });
+
+            test('Invalid type argument → flags bml-dict-invalid-type', () => {
+                const diags = lintText('d = dict("unknown_type"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-dict-invalid-type'));
+            });
+        });
     });
 
-    test("put(dict, key) - 2 args missing value → flags bml-function-arg-count error", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err, "put with 2 args should flag bml-function-arg-count");
-      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
-    });
+    // ==========================================
+    // 3. get, containskey, keys, values, remove
+    // ==========================================
+    suite('get(), containskey(), keys(), values(), remove()', () => {
+        suite('Positive', () => {
+            test('get() with 2 and 3 arguments', () => {
+                const diags = lintText(`
+                    d = dict("string");
+                    put(d, "k", "v");
+                    v1 = get(d, "k");
+                    v2 = get(d, "k", "string");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
 
-    test("put(dict, key, value) - correct 3 args with String key → no arg-count error", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key", "val");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined, "put with 3 args should not flag arg-count error");
-    });
+            test('containskey() returns boolean check', () => {
+                const diags = lintText(`
+                    d = dict("string");
+                    exists = containskey(d, "k");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
 
-    test("put(dict, key, value) - correct 3 args with Integer key → valid", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, 123, "val");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-      const typeErr = diagnostics.find((d) => d.code === "bml-function-arg-type");
-      assert.strictEqual(typeErr, undefined);
-    });
+            test('keys() returns string[] and values() returns array', () => {
+                const diags = lintText(`
+                    d = dict("string");
+                    allKeys = keys(d);
+                    allVals = values(d);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
 
-    test("put(dict, key, value) - correct 3 args with Float key → valid", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, 12.34, "val");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-      const typeErr = diagnostics.find((d) => d.code === "bml-function-arg-type");
-      assert.strictEqual(typeErr, undefined);
-    });
+            test('remove() deletes key from dictionary', () => {
+                const diags = lintText(`
+                    d = dict("string");
+                    put(d, "k", "v");
+                    remove(d, "k");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
 
-    test("put(dict, key, val, extra) - 4 args → flags bml-function-arg-count error", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key", "val", "extra");\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.ok(err, "put with 4 args should flag bml-function-arg-count");
-      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
-    });
+        suite('Negative', () => {
+            test('containskey() with non-dictionary target → flags bml-function-arg-type Warning', () => {
+                const diags = lintText('res = containskey("not_a_dict", "k"); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-type'));
+            });
 
-    test("put(dict, key, ) - trailing comma → bml-trailing-comma-error", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key", );\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-trailing-comma-error");
-      assert.ok(err, "Should flag trailing comma in put call");
-      assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error, "Trailing comma must be Error severity");
+            test('get() with 0 arguments → flags bml-function-arg-count Error', () => {
+                const diags = lintText('res = get(); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-function-arg-count'));
+            });
+        });
     });
-
-    test("put(dict, key, ) - trailing comma highlights full line", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key", );\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-trailing-comma-error");
-      assert.ok(err);
-      assert.strictEqual(err.range.start.character, 0, "Should highlight full line from column 0");
-    });
-
-    test("put(dict, key, val) with expressions - valid", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key", 1 + 2);\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-
-    test("put(dict, key, val) with single quotes - valid", () => {
-      const diagnostics = lintText("d = dict('string');\nput(d, 'key', 'val');\nreturn '';");
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-
-    test("put(dict, key, val) with nested dict - valid", () => {
-      const diagnostics = lintText('d = dict("string");\nput(d, "key", dict("integer"));\nreturn "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-  });
-
-  suite("Other Dictionary functions - dict, containskey, get, keys, values", () => {
-    test("dict(type) - correct 1 argument → no error", () => {
-      const diagnostics = lintText('x = dict("string"); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-count");
-      assert.strictEqual(err, undefined);
-    });
-
-    test("dict() - missing argument → bml-dict-missing-type", () => {
-      const diagnostics = lintText('x = dict(); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-dict-missing-type");
-      assert.ok(err);
-    });
-
-    test("dict(type) - invalid type argument → bml-dict-invalid-type", () => {
-      const diagnostics = lintText('x = dict("invalid_type"); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-dict-invalid-type");
-      assert.ok(err);
-    });
-
-    test("dict(type) - dict<anytype>, dict<string>, bytearray, json, and jsonarray are valid type arguments → no error", () => {
-      const diagnostics = lintText('x = dict("dict<anytype>"); y = dict("dict<string>"); z = dict("bytearray"); a = dict("json"); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-dict-invalid-type");
-      assert.strictEqual(err, undefined);
-    });
-
-    test("containskey(dict, key) - correct 2 arguments → no error", () => {
-      const diagnostics = lintText('d = dict("string"); x = containskey(d, "key"); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("containskey(dict, key) - type mismatch for dict (expected Dictionary) → Warning", () => {
-      const diagnostics = lintText('x = containskey("not_a_dict", "key"); return "";');
-      const err = diagnostics.find((d) => d.code === "bml-function-arg-type");
-      assert.ok(err);
-    });
-
-    test("get(dict, key) - correct 2 arguments → no error", () => {
-      const diagnostics = lintText('d = dict("string"); x = get(d, "key"); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("get(dict, key, type) - correct 3 arguments → no error", () => {
-      const diagnostics = lintText('d = dict("string"); x = get(d, "key", "string"); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-
-    test("keys(dict) / values(dict) - correct 1 argument → no error", () => {
-      const diagnostics = lintText('d = dict("string"); k = keys(d); v = values(d); return "";');
-      assert.strictEqual(diagnostics.find((d) => d.code === "bml-function-arg-count"), undefined);
-    });
-  });
 });

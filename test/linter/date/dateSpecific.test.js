@@ -89,5 +89,104 @@ suite('BML Linter Test Suite - Date Specific & Edge Tests', () => {
             const diags = lintText('dt = getdate(); res = isweekend(dt); return "";');
             assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
         });
+
+        test('getcurrenttimeinmillis() & getstrdate() - 0 args → no error', () => {
+            const diags = lintText('t = getcurrenttimeinmillis(); s = getstrdate(); return "";');
+            assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+        });
+    });
+
+    suite('strtojavadate() - Full Positive, Negative, and Destructive Tests', () => {
+        suite('1. Positive Test Cases (Standard & Overload Permutations)', () => {
+            test('US Date Format: MM/dd/yyyy', () => {
+                const diags = lintText('dt = strtojavadate("02/12/2010", "MM/dd/yyyy"); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('European Date Format: dd/MM/yyyy', () => {
+                const diags = lintText('dt = strtojavadate("01/02/2010", "dd/MM/yyyy"); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('European Date with Paris time zone: dd/MM/yyyy HH:mm:ss, Europe/Paris', () => {
+                const diags = lintText(`
+                    parisdate = strtojavadate("01/02/2010 16:30:40", "dd/MM/yyyy HH:mm:ss", "Europe/Paris");
+                    res = datetostr(parisdate, "dd/MM/yyyy HH:mm:ss", "America/Chicago");
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('12-hour AM/PM format: MM/dd/yyyy hh:mm:ss a', () => {
+                const diags = lintText('dt = strtojavadate("02/12/2010 04:30:00 PM", "MM/dd/yyyy hh:mm:ss a"); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('Variable inputs & expressions', () => {
+                const diags = lintText(`
+                    dateStr = "2026-08-24";
+                    fmt = "yyyy-MM-dd";
+                    tz = "UTC";
+                    dt = strtojavadate(dateStr, fmt, tz);
+                    return "";
+                `);
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+        });
+
+        suite('2. Negative Test Cases (Arg Counts, Types, Trailing Commas)', () => {
+            test('0 arguments → Error', () => {
+                const diags = lintText('dt = strtojavadate(); return "";');
+                const err = diags.find(d => d.code === 'bml-function-arg-count');
+                assert.ok(err);
+                assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+            });
+
+            test('1 argument (missing format) → Error', () => {
+                const diags = lintText('dt = strtojavadate("02/12/2010"); return "";');
+                const err = diags.find(d => d.code === 'bml-function-arg-count');
+                assert.ok(err);
+                assert.strictEqual(err.severity, vscode.DiagnosticSeverity.Error);
+            });
+
+            test('4 arguments (excess parameter) → Error', () => {
+                const diags = lintText('dt = strtojavadate("02/12/2010", "MM/dd/yyyy", "UTC", "excess"); return "";');
+                const err = diags.find(d => d.code === 'bml-function-arg-count');
+                assert.ok(err);
+            });
+
+            test('Trailing comma → bml-trailing-comma-error', () => {
+                const diags = lintText('dt = strtojavadate("02/12/2010", "MM/dd/yyyy", ); return "";');
+                assert.ok(diags.find(d => d.code === 'bml-trailing-comma-error'));
+            });
+
+            test('Type mismatch (Integer passed as first arg) → Warning', () => {
+                const diags = lintText('dt = strtojavadate(12345, "MM/dd/yyyy"); return "";');
+                const err = diags.find(d => d.code === 'bml-function-arg-type');
+                assert.ok(err);
+            });
+        });
+
+        suite('3. Destructive / Robustness Edge Cases', () => {
+            test('Empty string values do not crash linter', () => {
+                const diags = lintText('dt = strtojavadate("", ""); return "";');
+                assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-count'), undefined);
+            });
+
+            test('Keyword collision as parameter identifiers handled gracefully', () => {
+                const diags = lintText('dt = strtojavadate(return, break); return "";');
+                assert.ok(diags.length > 0);
+            });
+
+            test('Semicolon separated parameters handled without crash', () => {
+                const diags = lintText('dt = strtojavadate("02/12/2010"; "MM/dd/yyyy"); return "";');
+                assert.ok(diags.length > 0);
+            });
+
+            test('Assignment to function invocation handled gracefully', () => {
+                const diags = lintText('strtojavadate("02/12/2010", "MM/dd/yyyy") = "val"; return "";');
+                assert.ok(diags.length > 0);
+            });
+        });
     });
 });

@@ -1,9 +1,0 @@
-// Variable usage scopes
-print(declaredLate);
-declaredLate = "declared now";
-// Variables defined inside blocks and accessed outside
-if (true) {
-    blockScopeVar = "scoped";
-}
-print(blockScopeVar);
-return "";
