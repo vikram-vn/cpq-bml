@@ -2,6 +2,7 @@ const assert = require('assert');
 const vscode = require('vscode');
 const { getSyntaxFixes } = require('../../app/lang/lint/code-actions/syntaxFixes');
 const { getQualityFixes } = require('../../app/lang/lint/code-actions/qualityFixes');
+const { getApiFixes } = require('../../app/lang/lint/code-actions/apiFixes');
 
 suite('Comprehensive Quick Fixes Test Suite', () => {
     const createMockDocument = (lineText) => ({

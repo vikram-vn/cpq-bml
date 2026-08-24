@@ -2,9 +2,12 @@ const api = require('../../rest/api');
 const metadataLib = require('../../rest/metadata');
 const {
     isSuccess,
+    describeError,
+    getTimestamp,
     writeRunHeader,
     writeRunningLine,
     writeTerminalMessage,
+    formatElapsed,
 } = require('../../rest/commands/shared');
 const {
     runSaveCurrentFile,

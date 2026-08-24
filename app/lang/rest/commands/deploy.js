@@ -2,6 +2,7 @@ const api = require("../api");
 const metadataLib = require("../metadata");
 const { getCommerceProcess } = require("../config");
 const {
+  getTimestamp,
   writeTerminalMessage,
   writeRunHeader,
   writeRunningLine,

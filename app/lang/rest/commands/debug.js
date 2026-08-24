@@ -2,9 +2,11 @@ const api = require("../api");
 const configLib = require("../config");
 const metadataLib = require("../metadata");
 const {
+  getTimestamp,
   writeTerminalMessage,
   writeRunHeader,
   writeRunningLine,
+  formatElapsed,
   describeError,
   isSuccess,
   parseErrorLine,
@@ -13,7 +15,12 @@ const {
   appendDebugPrintToFile,
   ensureCredentials,
 } = require("./shared");
-const { formatAsTable, tableLinesToString, formatDocAttributeDumpTables, parseDocAttributeDump } = require("./debugTableFormat");
+const {
+  formatAsTable,
+  tableLinesToString,
+  formatDocAttributeDumpTables,
+  parseDocAttributeDump,
+} = require("./debugTableFormat");
 
 // Structural elements (borders) are dimmed gray and headers are bold with no forced color, so
 // the table reads clearly and adapts to any terminal theme - not the same green used for plain
@@ -23,8 +30,15 @@ const TABLE_HEADER_STYLE = "\x1b[1m";
 
 function writeTableLines(resultsTerminal, tableLines) {
   for (const line of tableLines) {
-    const style = line.type === "border" ? TABLE_BORDER_COLOR : line.type === "header" ? TABLE_HEADER_STYLE : "";
-    resultsTerminal.writeLine(style ? `${style}${line.text}\x1b[0m` : line.text);
+    const style =
+      line.type === "border"
+        ? TABLE_BORDER_COLOR
+        : line.type === "header"
+          ? TABLE_HEADER_STYLE
+          : "";
+    resultsTerminal.writeLine(
+      style ? `${style}${line.text}\x1b[0m` : line.text,
+    );
   }
 }
 
@@ -39,7 +53,10 @@ async function runDebugCurrentFile(
   let resultsTerminal = null;
   let options = {};
 
-  if (diagnosticCollectionOrTerminal && typeof diagnosticCollectionOrTerminal.writeLine === "function") {
+  if (
+    diagnosticCollectionOrTerminal &&
+    typeof diagnosticCollectionOrTerminal.writeLine === "function"
+  ) {
     resultsTerminal = diagnosticCollectionOrTerminal;
     options = resultsTerminalOrOptions || {};
   } else {
@@ -62,7 +79,10 @@ async function runDebugCurrentFile(
 
   const hasCredentials = await ensureCredentials(context, vscode);
   if (!hasCredentials) {
-    return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
+    return {
+      success: false,
+      errorMessage: "CPQ-BML: credentials are not configured.",
+    };
   }
 
   const doc = editor.document;
@@ -126,7 +146,11 @@ async function runDebugCurrentFile(
         ignoreFocusOut: true,
       });
 
-      if (!selected) return { success: false, errorMessage: "Cancelled: no debug inputs selected." };
+      if (!selected)
+        return {
+          success: false,
+          errorMessage: "Cancelled: no debug inputs selected.",
+        };
 
       if (selected.id === "last") {
         useCached = true;
@@ -153,7 +177,11 @@ async function runDebugCurrentFile(
         value: String(prefill !== undefined && prefill !== null ? prefill : ""),
         ignoreFocusOut: true,
       });
-      if (value === undefined) return { success: false, errorMessage: `Cancelled: no value given for parameter "${param.name}".` };
+      if (value === undefined)
+        return {
+          success: false,
+          errorMessage: `Cancelled: no value given for parameter "${param.name}".`,
+        };
       value = metadataLib.normalizeNumericValue(value, param.dataType);
       parameterValues[param.name] = value;
     }
@@ -171,10 +199,15 @@ async function runDebugCurrentFile(
         value: prefill,
         ignoreFocusOut: true,
       });
-      if (transactionIdStr === undefined) return { success: false, errorMessage: "Cancelled: no transaction ID given." };
+      if (transactionIdStr === undefined)
+        return {
+          success: false,
+          errorMessage: "Cancelled: no transaction ID given.",
+        };
       transactionId = transactionIdStr.trim();
       if (!transactionId) {
-        const errorMessage = "CPQ-BML: Transaction ID is required to debug commerce functions.";
+        const errorMessage =
+          "CPQ-BML: Transaction ID is required to debug commerce functions.";
         vscode.window.showErrorMessage(errorMessage);
         return { success: false, errorMessage };
       }
@@ -228,7 +261,11 @@ async function runDebugCurrentFile(
       resultsTerminal.show();
       const errorMessage = `CPQ-BML: failed to load transaction data (HTTP ${loadResult.statusCode}). ${message}`;
       vscode.window.showErrorMessage(errorMessage);
-      return { success: false, errorMessage, elapsedMs: Date.now() - startedAt };
+      return {
+        success: false,
+        errorMessage,
+        elapsedMs: Date.now() - startedAt,
+      };
     }
 
     const loadedData = loadResult.body || {};
@@ -287,10 +324,10 @@ async function runDebugCurrentFile(
       const diagnostic = new vscode.Diagnostic(
         range,
         `BML Debug Runtime Error: ${message}`,
-        vscode.DiagnosticSeverity.Error
+        vscode.DiagnosticSeverity.Error,
       );
-      diagnostic.source = 'BML Debug';
-      diagnostic.code = 'bml-debug-runtime-error';
+      diagnostic.source = "BML Debug";
+      diagnostic.code = "bml-debug-runtime-error";
 
       diagnosticCollection.set(doc.uri, [diagnostic]);
     }
@@ -311,20 +348,26 @@ async function runDebugCurrentFile(
   // Gated behind the same showResultsAsTable setting as the generic JSON-object table below -
   // table rendering is opt-in, so a documentNumber~variableName~value dump only renders as two
   // tables when the user has turned the setting on; otherwise it falls through to plain output.
-  if (showAsTable && typeof returnVal === 'string') {
+  if (showAsTable && typeof returnVal === "string") {
     const parsedDump = parseDocAttributeDump(returnVal);
     if (parsedDump) dumpTables = formatDocAttributeDumpTables(parsedDump);
   }
 
-  if (!dumpTables && showAsTable && returnVal !== undefined && returnVal !== null && returnVal !== "") {
+  if (
+    !dumpTables &&
+    showAsTable &&
+    returnVal !== undefined &&
+    returnVal !== null &&
+    returnVal !== ""
+  ) {
     try {
       let parsed = null;
-      if (typeof returnVal === 'string') {
+      if (typeof returnVal === "string") {
         parsed = JSON.parse(returnVal);
-      } else if (typeof returnVal === 'object') {
+      } else if (typeof returnVal === "object") {
         parsed = returnVal;
       }
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
         tableOutput = formatAsTable(parsed);
       }
     } catch (e) {
@@ -343,19 +386,29 @@ async function runDebugCurrentFile(
     if (dumpTables.headerTable) {
       resultsTerminal.writeLine(`\x1b[1m\x1b[36mHeader Attributes:\x1b[0m`);
       writeTableLines(resultsTerminal, dumpTables.headerTable);
-      logParts.push('Header Attributes:', tableLinesToString(dumpTables.headerTable));
+      logParts.push(
+        "Header Attributes:",
+        tableLinesToString(dumpTables.headerTable),
+      );
     }
     if (dumpTables.lineTable) {
       resultsTerminal.writeLine(`\x1b[1m\x1b[36mLine Attributes:\x1b[0m`);
       writeTableLines(resultsTerminal, dumpTables.lineTable);
-      logParts.push('Line Attributes:', tableLinesToString(dumpTables.lineTable));
+      logParts.push(
+        "Line Attributes:",
+        tableLinesToString(dumpTables.lineTable),
+      );
     }
-    outputForLog = logParts.join('\n');
+    outputForLog = logParts.join("\n");
   } else if (tableOutput) {
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
     writeTableLines(resultsTerminal, tableOutput);
     outputForLog = tableLinesToString(tableOutput);
-  } else if (returnVal !== undefined && returnVal !== null && returnVal !== "") {
+  } else if (
+    returnVal !== undefined &&
+    returnVal !== null &&
+    returnVal !== ""
+  ) {
     writeTerminalMessage(
       resultsTerminal,
       "Debug output: ",
