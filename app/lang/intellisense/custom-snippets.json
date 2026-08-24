@@ -1,57 +1,58 @@
 {
-     "for...loop": {
-        "syntax": "for line in transactionLine {\n\tprint(line.${3:_document_number});\n}",
-        "examples": [
-             "result=\"\";\ndocNumArr=string[];\ndiscAmt=dict(\"float\");\ndiscType=dict(\"string\"); \n\nfor line in transactionLine{\n\tdocNum=line._document_number;\n\tappend(docNumArr, docNum);\n}\n\nfor each in docNumArr{\n\tresult = result ~ each ~ \"|\";\n}\n\nreturn result;"        ],
-        "notes": "Loop transaction line items."
-    },
-    "transactionLine": {
-        "syntax": "for line in transactionLine {\n\tprint(line.${3:_document_number});\n}",
-        "examples": [
-            "for line in transactionLine {\n\tdocNum = line._document_number;\n}"
-        ],
-        "notes": "Loop transaction line items."
-    },
-    "bmql-safe": {
-        "syntax": "// bmql-safe: parameterized query with null-guard\n${1:rows} = bmql(\"SELECT ${2:col1}, ${3:col2} FROM ${4:table_name} WHERE ${5:field} = '$${6:param}'\", ${6:param});\nif (isnull(${1:rows}) or sizeofarray(${1:rows}) == 0) {\n\t${7:// handle empty result}\n\treturn \"\";\n}\n${8:val} = ${1:rows}[0].${2:col1};",
-        "examples": [
-            "rows = bmql(\"SELECT price FROM products WHERE sku = '$sku'\", sku);\nif (isnull(rows) or sizeofarray(rows) == 0) {\n\treturn \"0.0\";\n}\nreturn rows[0].price;"
-        ],
-        "notes": "Safe parameterized BMQL query with null and size guard. Use $variable placeholders to prevent SQL injection."
-    },
-    "bmql-loop": {
-        "syntax": "// bmql-loop: query result iteration\n${1:rows} = bmql(\"SELECT ${2:col} FROM ${3:table}\");\nif (not(isnull(${1:rows})) and sizeofarray(${1:rows}) > 0) {\n\tfor ${4:row} in ${1:rows} {\n\t\t${5:val} = ${4:row}.${2:col};\n\t\t${6:// process val}\n\t}\n}",
-        "examples": [
-            "rows = bmql(\"SELECT name, price FROM products\");\nif (not(isnull(rows)) and sizeofarray(rows) > 0) {\n\tfor row in rows {\n\t\tname = row.name;\n\t\tprice = row.price;\n\t}\n}"
-        ],
-        "notes": "BMQL query with guarded loop iteration. Prevents null pointer errors on empty result sets."
-    },
-    "sb-concat": {
-        "syntax": "// sb-concat: StringBuilder pattern for efficient string accumulation\n${1:sb} = stringbuilder();\nfor ${2:item} in ${3:arr} {\n\tsbappend(${1:sb}, ${2:item});\n\tsbappend(${1:sb}, \"${4:,}\");\n}\n${5:result} = sbtostring(${1:sb});",
-        "examples": [
-            "sb = stringbuilder();\nfor item in myArray {\n\tsbappend(sb, item);\n\tsbappend(sb, \",\");\n}\nresult = sbtostring(sb);\nreturn result;"
-        ],
-        "notes": "Use StringBuilder (sbappend/sbtostring) instead of string concatenation in loops to avoid O(n²) memory allocation."
-    },
-    "null-guard": {
-        "syntax": "if (isnull(${1:var}) or trim(${1:var}) == \"\") {\n\t${2:// handle null/empty}\n\treturn ${3:\"\"};\n}",
-        "examples": [
-            "if (isnull(inputVal) or trim(inputVal) == \"\") {\n\treturn \"\";\n}"
-        ],
-        "notes": "Guard pattern for null or empty string variables. Combine isnull() with trim() == \"\" for comprehensive null/empty detection."
-    },
-    "split-safe": {
-        "syntax": "// split-safe: split with array boundary check\n${1:parts} = split(${2:inputStr}, \"${3:,}\");\nif (sizeofarray(${1:parts}) > ${4:0}) {\n\t${5:first} = ${1:parts}[0];\n}",
-        "examples": [
-            "parts = split(csvLine, \",\");\nif (sizeofarray(parts) > 1) {\n\tname = parts[0];\n\tvalue = parts[1];\n}"
-        ],
-        "notes": "Always check sizeofarray() before accessing split() array indices to prevent out-of-bounds errors."
-    },
-    "try-atoi": {
-        "syntax": "// try-atoi: safe integer conversion\nif (isnumber(${1:strVal})) {\n\t${2:numVal} = atoi(${1:strVal});\n} else {\n\t${3:// handle non-numeric}\n\t${2:numVal} = ${4:0};\n}",
-        "examples": [
-            "if (isnumber(quantityStr)) {\n\tquantity = atoi(quantityStr);\n} else {\n\tquantity = 0;\n}"
-        ],
-        "notes": "Always guard atoi()/atof() with isnumber() to prevent runtime conversion errors on non-numeric input."
-    }
-}
+  "for...loop": {
+    "syntax": "for line in transactionLine {\n\tprint(line.${3:_document_number});\n}",
+    "examples": [
+      "result=\"\";\ndocNumArr=string[];\ndiscAmt=dict(\"float\");\ndiscType=dict(\"string\"); \n\nfor line in transactionLine{\n\tdocNum=line._document_number;\n\tappend(docNumArr, docNum);\n}\n\nfor each in docNumArr{\n\tresult = result ~ each ~ \"|\";\n}\n\nreturn result;"
+    ],
+    "notes": "Loop transaction line items."
+  },
+  "transactionLine": {
+    "syntax": "for line in transactionLine {\n\tprint(line.${3:_document_number});\n}",
+    "examples": [
+      "for line in transactionLine {\n\tdocNum = line._document_number;\n}"
+    ],
+    "notes": "Loop transaction line items."
+  },
+  "bmql-safe": {
+    "syntax": "// bmql-safe: parameterized query with null-guard\n${1:rows} = bmql(\"SELECT ${2:col1}, ${3:col2} FROM ${4:table_name} WHERE ${5:field} = '$${6:param}'\", ${6:param});\nif (isnull(${1:rows}) or sizeofarray(${1:rows}) == 0) {\n\t${7:// handle empty result}\n\treturn \"\";\n}\n${8:val} = ${1:rows}[0].${2:col1};",
+    "examples": [
+      "rows = bmql(\"SELECT price FROM products WHERE sku = '$sku'\", sku);\nif (isnull(rows) or sizeofarray(rows) == 0) {\n\treturn \"0.0\";\n}\nreturn rows[0].price;"
+    ],
+    "notes": "Safe parameterized BMQL query with null and size guard. Use $variable placeholders to prevent SQL injection."
+  },
+  "bmql-loop": {
+    "syntax": "// bmql-loop: query result iteration\n${1:rows} = bmql(\"SELECT ${2:col} FROM ${3:table}\");\nif (not(isnull(${1:rows})) and sizeofarray(${1:rows}) > 0) {\n\tfor ${4:row} in ${1:rows} {\n\t\t${5:val} = ${4:row}.${2:col};\n\t\t${6:// process val}\n\t}\n}",
+    "examples": [
+      "rows = bmql(\"SELECT name, price FROM products\");\nif (not(isnull(rows)) and sizeofarray(rows) > 0) {\n\tfor row in rows {\n\t\tname = row.name;\n\t\tprice = row.price;\n\t}\n}"
+    ],
+    "notes": "BMQL query with guarded loop iteration. Prevents null pointer errors on empty result sets."
+  },
+  "sb-concat": {
+    "syntax": "// sb-concat: StringBuilder pattern for efficient string accumulation\n${1:sb} = stringbuilder();\nfor ${2:item} in ${3:arr} {\n\tsbappend(${1:sb}, ${2:item});\n\tsbappend(${1:sb}, \"${4:,}\");\n}\n${5:result} = sbtostring(${1:sb});",
+    "examples": [
+      "sb = stringbuilder();\nfor item in myArray {\n\tsbappend(sb, item);\n\tsbappend(sb, \",\");\n}\nresult = sbtostring(sb);\nreturn result;"
+    ],
+    "notes": "Use StringBuilder (sbappend/sbtostring) instead of string concatenation in loops to avoid O(n²) memory allocation."
+  },
+  "null-guard": {
+    "syntax": "if (isnull(${1:var}) or trim(${1:var}) == \"\") {\n\t${2:// handle null/empty}\n\treturn ${3:\"\"};\n}",
+    "examples": [
+      "if (isnull(inputVal) or trim(inputVal) == \"\") {\n\treturn \"\";\n}"
+    ],
+    "notes": "Guard pattern for null or empty string variables. Combine isnull() with trim() == \"\" for comprehensive null/empty detection."
+  },
+  "split-safe": {
+    "syntax": "// split-safe: split with array boundary check\n${1:parts} = split(${2:inputStr}, \"${3:,}\");\nif (sizeofarray(${1:parts}) > ${4:0}) {\n\t${5:first} = ${1:parts}[0];\n}",
+    "examples": [
+      "parts = split(csvLine, \",\");\nif (sizeofarray(parts) > 1) {\n\tname = parts[0];\n\tvalue = parts[1];\n}"
+    ],
+    "notes": "Always check sizeofarray() before accessing split() array indices to prevent out-of-bounds errors."
+  },
+  "try-atoi": {
+    "syntax": "// try-atoi: safe integer conversion\nif (isnumber(${1:strVal})) {\n\t${2:numVal} = atoi(${1:strVal});\n} else {\n\t${3:// handle non-numeric}\n\t${2:numVal} = ${4:0};\n}",
+    "examples": [
+      "if (isnumber(quantityStr)) {\n\tquantity = atoi(quantityStr);\n} else {\n\tquantity = 0;\n}"
+    ],
+    "notes": "Always guard atoi()/atof() with isnumber() to prevent runtime conversion errors on non-numeric input."
+  }
+}

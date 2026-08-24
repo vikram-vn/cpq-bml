@@ -1,606 +1,606 @@
 {
-    "items": [
-        {
-            "name": "_system_date",
-            "description": "Current Date",
-            "dataType": {
-                "value": 10,
-                "displayValue": "String (date)"
-            }
-        },
-        {
-            "name": "_system_user_name",
-            "description": "Current User's Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_login",
-            "description": "Current User's Login",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_email",
-            "description": "Current User's Email",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_company_name",
-            "description": "Current User's Company Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_current_document_number",
-            "description": "Current Document Number",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_currency_pref",
-            "description": "Current User's Currency Pref",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_current_document_currency_pref",
-            "description": "Current Document's Currency Pref",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_buyside_id",
-            "description": "Current Unique Buy-Side ID",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_base_currency",
-            "description": "Supplier's Base Currency",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_currency_conv_rate",
-            "description": "Supplier's Currency Conversion Rate",
-            "dataType": {
-                "value": 9,
-                "displayValue": "Float"
-            }
-        },
-        {
-            "name": "_system_user_groups",
-            "description": "Current User's Groups",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_add_from_catalog_action",
-            "description": "Current Add From Catalog Action",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_supplier_company_name",
-            "description": "Supplier's Company Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_current_document_language",
-            "description": "Current Document's Language",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_current_step_var",
-            "description": "Current Step's Variable Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_type",
-            "description": "Current User's Type",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_first_name",
-            "description": "Current User's First Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_last_name",
-            "description": "Current User's Last Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_job_title",
-            "description": "Current User's Job Title",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_phone",
-            "description": "Current User's Phone",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_fax",
-            "description": "Current User's Fax",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_first_name",
-            "description": "Current User's Billing First Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_last_name",
-            "description": "Current User's Billing Last Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_company",
-            "description": "Current User's Billing Company",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_company_2",
-            "description": "Current User's Billing Company 2",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_address",
-            "description": "Current User's Billing Address",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_address_2",
-            "description": "Current User's Billing Address 2",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_city",
-            "description": "Current User's Billing City",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_state_province",
-            "description": "Current User's Billing State/Province",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_zip",
-            "description": "Current User's Billing Zip",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_country",
-            "description": "Current User's Billing Country",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_phone",
-            "description": "Current User's Billing Phone",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_fax",
-            "description": "Current User's Billing Fax",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_bill_email",
-            "description": "Current User's Billing Email",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_first_name",
-            "description": "Current User's Shipping First Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_last_name",
-            "description": "Current User's Shipping Last Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_company",
-            "description": "Current User's Shipping Company",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_company_2",
-            "description": "Current User's Shipping Company 2",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_address",
-            "description": "Current User's Shipping Address",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_address_2",
-            "description": "Current User's Shipping Address 2",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_city",
-            "description": "Current User's Shipping City",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_state_province",
-            "description": "Current User's Shipping State/Province",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_zip",
-            "description": "Current User's Shipping Zip",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_country",
-            "description": "Current User's Shipping Country",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_phone",
-            "description": "Current User's Shipping Phone",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_fax",
-            "description": "Current User's Shipping Fax",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_ship_email",
-            "description": "Current User's Shipping Email",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_is_notify_email",
-            "description": "Current User's Notify Email",
-            "dataType": {
-                "value": 0,
-                "displayValue": "Boolean"
-            }
-        },
-        {
-            "name": "_system_user_number_format",
-            "description": "Current User's Number Format",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_units",
-            "description": "Current User's Units",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_date_pref",
-            "description": "Current User's Date Preference",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_time_zone",
-            "description": "Current User's Time Zone",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_session_id",
-            "description": "Current User's Session Id",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_user_partner_session_id",
-            "description": "Current User's Partner Session Id",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_transaction_counter_value",
-            "description": "Current Process Transaction Counter",
-            "dataType": {
-                "value": 11,
-                "displayValue": "Integer"
-            }
-        },
-        {
-            "name": "_system_current_user_language",
-            "description": "Current User's Language Preference",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_modify_order",
-            "description": "Current Modify Order - \"1\" for the first modify and \"2\" for the second modify",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_auto_update_triggered_from",
-            "description": "Value available only for autoupdate function of the main document; specifies variable name of the attribute triggering auto update",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_selected_document_number",
-            "description": "Document Number of selected line item",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_filtered_document_numbers",
-            "description": "List of Filtered Document Numbers in line item",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_mobile_device_enabled",
-            "description": "The Boolean value is \"True\" if the user is licensed for mobile, on a recognized mobile device, and on a mobile layout",
-            "dataType": {
-                "value": 0,
-                "displayValue": "Boolean"
-            }
-        },
-        {
-            "name": "_system_async_payload",
-            "description": "Asynchronous Payload from SOAP, transient value, only valid during receiving asynchronous calls",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_transaction_is_locked",
-            "description": "Boolean value is \"true\" when the Transaction is locked for any user",
-            "dataType": {
-                "value": 0,
-                "displayValue": "Boolean"
-            }
-        },
-        {
-            "name": "_system_transaction_lock_user",
-            "description": "Name of user who locked the Transaction; if the Transaction is unlocked, the value is null",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_transaction_locked_date",
-            "description": "Date the Transaction was locked; if the Transaction is unlocked, the value is null",
-            "dataType": {
-                "value": 10,
-                "displayValue": "String (date)"
-            }
-        },
-        {
-            "name": "_system_account_id_field",
-            "description": "Unique Account Id",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_process_name",
-            "description": "Current Process Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_subscription_order_enabled",
-            "description": "Boolean value is \"true\" when the subscription order is enabled",
-            "dataType": {
-                "value": 0,
-                "displayValue": "Boolean"
-            }
-        },
-        {
-            "name": "_system_current_pp_name",
-            "description": "Current Participant Profile's Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_host_company_full_name",
-            "description": "Host Company Full Name",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_valid_stages",
-            "description": "Valid Stages for Current Process",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_system_site_url",
-            "description": "Site url",
-            "dataType": {
-                "value": 2,
-                "displayValue": "String"
-            }
-        },
-        {
-            "name": "_standard_abo_enabled",
-            "description": "Boolean value is \"true\" when the standard ABO is enabled",
-            "dataType": {
-                "value": 0,
-                "displayValue": "Boolean"
-            }
-        }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables/lookupValues"
-        },
-        {
-            "rel": "parent",
-            "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables"
-        }
-    ]
+  "items": [
+    {
+      "name": "_system_date",
+      "description": "Current Date",
+      "dataType": {
+        "value": 10,
+        "displayValue": "String (date)"
+      }
+    },
+    {
+      "name": "_system_user_name",
+      "description": "Current User's Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_login",
+      "description": "Current User's Login",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_email",
+      "description": "Current User's Email",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_company_name",
+      "description": "Current User's Company Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_current_document_number",
+      "description": "Current Document Number",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_currency_pref",
+      "description": "Current User's Currency Pref",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_current_document_currency_pref",
+      "description": "Current Document's Currency Pref",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_buyside_id",
+      "description": "Current Unique Buy-Side ID",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_base_currency",
+      "description": "Supplier's Base Currency",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_currency_conv_rate",
+      "description": "Supplier's Currency Conversion Rate",
+      "dataType": {
+        "value": 9,
+        "displayValue": "Float"
+      }
+    },
+    {
+      "name": "_system_user_groups",
+      "description": "Current User's Groups",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_add_from_catalog_action",
+      "description": "Current Add From Catalog Action",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_supplier_company_name",
+      "description": "Supplier's Company Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_current_document_language",
+      "description": "Current Document's Language",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_current_step_var",
+      "description": "Current Step's Variable Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_type",
+      "description": "Current User's Type",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_first_name",
+      "description": "Current User's First Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_last_name",
+      "description": "Current User's Last Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_job_title",
+      "description": "Current User's Job Title",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_phone",
+      "description": "Current User's Phone",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_fax",
+      "description": "Current User's Fax",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_first_name",
+      "description": "Current User's Billing First Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_last_name",
+      "description": "Current User's Billing Last Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_company",
+      "description": "Current User's Billing Company",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_company_2",
+      "description": "Current User's Billing Company 2",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_address",
+      "description": "Current User's Billing Address",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_address_2",
+      "description": "Current User's Billing Address 2",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_city",
+      "description": "Current User's Billing City",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_state_province",
+      "description": "Current User's Billing State/Province",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_zip",
+      "description": "Current User's Billing Zip",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_country",
+      "description": "Current User's Billing Country",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_phone",
+      "description": "Current User's Billing Phone",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_fax",
+      "description": "Current User's Billing Fax",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_bill_email",
+      "description": "Current User's Billing Email",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_first_name",
+      "description": "Current User's Shipping First Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_last_name",
+      "description": "Current User's Shipping Last Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_company",
+      "description": "Current User's Shipping Company",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_company_2",
+      "description": "Current User's Shipping Company 2",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_address",
+      "description": "Current User's Shipping Address",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_address_2",
+      "description": "Current User's Shipping Address 2",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_city",
+      "description": "Current User's Shipping City",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_state_province",
+      "description": "Current User's Shipping State/Province",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_zip",
+      "description": "Current User's Shipping Zip",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_country",
+      "description": "Current User's Shipping Country",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_phone",
+      "description": "Current User's Shipping Phone",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_fax",
+      "description": "Current User's Shipping Fax",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_ship_email",
+      "description": "Current User's Shipping Email",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_is_notify_email",
+      "description": "Current User's Notify Email",
+      "dataType": {
+        "value": 0,
+        "displayValue": "Boolean"
+      }
+    },
+    {
+      "name": "_system_user_number_format",
+      "description": "Current User's Number Format",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_units",
+      "description": "Current User's Units",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_date_pref",
+      "description": "Current User's Date Preference",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_time_zone",
+      "description": "Current User's Time Zone",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_session_id",
+      "description": "Current User's Session Id",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_user_partner_session_id",
+      "description": "Current User's Partner Session Id",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_transaction_counter_value",
+      "description": "Current Process Transaction Counter",
+      "dataType": {
+        "value": 11,
+        "displayValue": "Integer"
+      }
+    },
+    {
+      "name": "_system_current_user_language",
+      "description": "Current User's Language Preference",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_modify_order",
+      "description": "Current Modify Order - \"1\" for the first modify and \"2\" for the second modify",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_auto_update_triggered_from",
+      "description": "Value available only for autoupdate function of the main document; specifies variable name of the attribute triggering auto update",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_selected_document_number",
+      "description": "Document Number of selected line item",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_filtered_document_numbers",
+      "description": "List of Filtered Document Numbers in line item",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_mobile_device_enabled",
+      "description": "The Boolean value is \"True\" if the user is licensed for mobile, on a recognized mobile device, and on a mobile layout",
+      "dataType": {
+        "value": 0,
+        "displayValue": "Boolean"
+      }
+    },
+    {
+      "name": "_system_async_payload",
+      "description": "Asynchronous Payload from SOAP, transient value, only valid during receiving asynchronous calls",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_transaction_is_locked",
+      "description": "Boolean value is \"true\" when the Transaction is locked for any user",
+      "dataType": {
+        "value": 0,
+        "displayValue": "Boolean"
+      }
+    },
+    {
+      "name": "_system_transaction_lock_user",
+      "description": "Name of user who locked the Transaction; if the Transaction is unlocked, the value is null",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_transaction_locked_date",
+      "description": "Date the Transaction was locked; if the Transaction is unlocked, the value is null",
+      "dataType": {
+        "value": 10,
+        "displayValue": "String (date)"
+      }
+    },
+    {
+      "name": "_system_account_id_field",
+      "description": "Unique Account Id",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_process_name",
+      "description": "Current Process Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_subscription_order_enabled",
+      "description": "Boolean value is \"true\" when the subscription order is enabled",
+      "dataType": {
+        "value": 0,
+        "displayValue": "Boolean"
+      }
+    },
+    {
+      "name": "_system_current_pp_name",
+      "description": "Current Participant Profile's Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_host_company_full_name",
+      "description": "Host Company Full Name",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_valid_stages",
+      "description": "Valid Stages for Current Process",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_system_site_url",
+      "description": "Site url",
+      "dataType": {
+        "value": 2,
+        "displayValue": "String"
+      }
+    },
+    {
+      "name": "_standard_abo_enabled",
+      "description": "Boolean value is \"true\" when the standard ABO is enabled",
+      "dataType": {
+        "value": 0,
+        "displayValue": "Boolean"
+      }
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables/lookupValues"
+    },
+    {
+      "rel": "parent",
+      "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables"
+    }
+  ]
 }

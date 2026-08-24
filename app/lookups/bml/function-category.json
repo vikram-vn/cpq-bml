@@ -1,62 +1,62 @@
 {
-    "items": [
-        {
-            "lookupCode": "XML",
-            "displayLabel": "XML"
-        },
-        {
-            "lookupCode": "MATH",
-            "displayLabel": "Math"
-        },
-        {
-            "lookupCode": "DATE",
-            "displayLabel": "Date"
-        },
-        {
-            "lookupCode": "OTHERS",
-            "displayLabel": "Others"
-        },
-        {
-            "lookupCode": "DICTIONARY",
-            "displayLabel": "Dictionary"
-        },
-        {
-            "lookupCode": "LOGICAL",
-            "displayLabel": "Conditional"
-        },
-        {
-            "lookupCode": "URL",
-            "displayLabel": "URL Access"
-        },
-        {
-            "lookupCode": "ARRAY",
-            "displayLabel": "Array"
-        },
-        {
-            "lookupCode": "STRING",
-            "displayLabel": "String"
-        },
-        {
-            "lookupCode": "JSON",
-            "displayLabel": "Json"
-        },
-        {
-            "lookupCode": "DIRECT_DB_ACCESS",
-            "displayLabel": "Direct DB Access"
-        },
-        {
-            "lookupCode": "ALL",
-            "displayLabel": "All Functions"
-        }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionCategory/lookupValues"
-        },
-        {
-            "rel": "parent",
-            "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionCategory"
-        }
-    ]
+  "items": [
+    {
+      "lookupCode": "XML",
+      "displayLabel": "XML"
+    },
+    {
+      "lookupCode": "MATH",
+      "displayLabel": "Math"
+    },
+    {
+      "lookupCode": "DATE",
+      "displayLabel": "Date"
+    },
+    {
+      "lookupCode": "OTHERS",
+      "displayLabel": "Others"
+    },
+    {
+      "lookupCode": "DICTIONARY",
+      "displayLabel": "Dictionary"
+    },
+    {
+      "lookupCode": "LOGICAL",
+      "displayLabel": "Conditional"
+    },
+    {
+      "lookupCode": "URL",
+      "displayLabel": "URL Access"
+    },
+    {
+      "lookupCode": "ARRAY",
+      "displayLabel": "Array"
+    },
+    {
+      "lookupCode": "STRING",
+      "displayLabel": "String"
+    },
+    {
+      "lookupCode": "JSON",
+      "displayLabel": "Json"
+    },
+    {
+      "lookupCode": "DIRECT_DB_ACCESS",
+      "displayLabel": "Direct DB Access"
+    },
+    {
+      "lookupCode": "ALL",
+      "displayLabel": "All Functions"
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionCategory/lookupValues"
+    },
+    {
+      "rel": "parent",
+      "href": "https://cpq.bigmachines.com/rest/v18/bml/lookups/functionCategory"
+    }
+  ]
 }

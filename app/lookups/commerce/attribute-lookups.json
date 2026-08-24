@@ -1,55 +1,55 @@
 {
-    "items": [
+  "items": [
+    {
+      "lookupType": "transaction",
+      "displayLabel": "Main Doc Variables",
+      "description": "Main Doc Variables",
+      "links": [
         {
-            "lookupType": "transaction",
-            "displayLabel": "Main Doc Variables",
-            "description": "Main Doc Variables",
-            "links": [
-                {
-                    "rel": "self",
-                    "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transaction"
-                },
-                {
-                    "rel": "child",
-                    "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transaction/lookupValues"
-                }
-            ]
+          "rel": "self",
+          "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transaction"
         },
         {
-            "lookupType": "transactionLine",
-            "displayLabel": "Sub Doc Variables",
-            "description": "Sub Doc Variables",
-            "links": [
-                {
-                    "rel": "self",
-                    "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transactionLine"
-                },
-                {
-                    "rel": "child",
-                    "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transactionLine/lookupValues"
-                }
-            ]
+          "rel": "child",
+          "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transaction/lookupValues"
+        }
+      ]
+    },
+    {
+      "lookupType": "transactionLine",
+      "displayLabel": "Sub Doc Variables",
+      "description": "Sub Doc Variables",
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transactionLine"
         },
         {
-            "lookupType": "systemVariables",
-            "displayLabel": "System Variables",
-            "description": "System Variables",
-            "links": [
-                {
-                    "rel": "self",
-                    "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables"
-                },
-                {
-                    "rel": "child",
-                    "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables/lookupValues"
-                }
-            ]
+          "rel": "child",
+          "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/transactionLine/lookupValues"
         }
-    ],
-    "links": [
+      ]
+    },
+    {
+      "lookupType": "systemVariables",
+      "displayLabel": "System Variables",
+      "description": "System Variables",
+      "links": [
         {
-            "rel": "self",
-            "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups"
+          "rel": "self",
+          "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables"
+        },
+        {
+          "rel": "child",
+          "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups/systemVariables/lookupValues"
         }
-    ]
+      ]
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://cpq.bigmachines.com/rest/v18/commerceProcessSetups/oraclecpqo/bml/attributeLookups"
+    }
+  ]
 }

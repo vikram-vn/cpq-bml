@@ -1,148 +1,148 @@
 {
-    "items": [
-        {
-            "lookupCode": 10,
-            "displayLabel": "String[]"
-        },
-        {
-            "lookupCode": 19,
-            "displayLabel": "Integer[] Dictionary"
-        },
-        {
-            "lookupCode": 29,
-            "displayLabel": "Date[][] Dictionary"
-        },
-        {
-            "lookupCode": 3,
-            "displayLabel": "Integer"
-        },
-        {
-            "lookupCode": 36,
-            "displayLabel": "Json"
-        },
-        {
-            "lookupCode": 24,
-            "displayLabel": "Boolean Dictionary"
-        },
-        {
-            "lookupCode": 17,
-            "displayLabel": "Float Dictionary"
-        },
-        {
-            "lookupCode": 12,
-            "displayLabel": "String[][]"
-        },
-        {
-            "lookupCode": 37,
-            "displayLabel": "JsonArray"
-        },
-        {
-            "lookupCode": 9,
-            "displayLabel": "Float[]"
-        },
-        {
-            "lookupCode": 14,
-            "displayLabel": "Float[][]"
-        },
-        {
-            "lookupCode": 27,
-            "displayLabel": "Date[][]"
-        },
-        {
-            "lookupCode": 15,
-            "displayLabel": "String Dictionary"
-        },
-        {
-            "lookupCode": 25,
-            "displayLabel": "Date Dictionary"
-        },
-        {
-            "lookupCode": 20,
-            "displayLabel": "Float[] Dictionary"
-        },
-        {
-            "lookupCode": 26,
-            "displayLabel": "Date[]"
-        },
-        {
-            "lookupCode": 34,
-            "displayLabel": "Boolean[]"
-        },
-        {
-            "lookupCode": 39,
-            "displayLabel": "ByteArray"
-        },
-        {
-            "lookupCode": 33,
-            "displayLabel": "Array of String Dictionaries"
-        },
-        {
-            "lookupCode": 8,
-            "displayLabel": "Integer[]"
-        },
-        {
-            "lookupCode": 42,
-            "displayLabel": "StringBuilder"
-        },
-        {
-            "lookupCode": 22,
-            "displayLabel": "Integer[][] Dictionary"
-        },
-        {
-            "lookupCode": 28,
-            "displayLabel": "Date[] Dictionary"
-        },
-        {
-            "lookupCode": 32,
-            "displayLabel": "Dictionary of String Dictionaries"
-        },
-        {
-            "lookupCode": 41,
-            "displayLabel": "Anytype Dictionary"
-        },
-        {
-            "lookupCode": 13,
-            "displayLabel": "Integer[][]"
-        },
-        {
-            "lookupCode": 4,
-            "displayLabel": "Boolean"
-        },
-        {
-            "lookupCode": 21,
-            "displayLabel": "String[][] Dictionary"
-        },
-        {
-            "lookupCode": 5,
-            "displayLabel": "Date"
-        },
-        {
-            "lookupCode": 35,
-            "displayLabel": "Boolean[][]"
-        },
-        {
-            "lookupCode": 2,
-            "displayLabel": "Float"
-        },
-        {
-            "lookupCode": 23,
-            "displayLabel": "Float[][] Dictionary"
-        },
-        {
-            "lookupCode": 40,
-            "displayLabel": "Dictionary of Anytype Dictionaries"
-        },
-        {
-            "lookupCode": 18,
-            "displayLabel": "String[] Dictionary"
-        },
-        {
-            "lookupCode": 1,
-            "displayLabel": "String"
-        },
-        {
-            "lookupCode": 16,
-            "displayLabel": "Integer Dictionary"
-        }
-    ]
+  "items": [
+    {
+      "lookupCode": 10,
+      "displayLabel": "String[]"
+    },
+    {
+      "lookupCode": 19,
+      "displayLabel": "Integer[] Dictionary"
+    },
+    {
+      "lookupCode": 29,
+      "displayLabel": "Date[][] Dictionary"
+    },
+    {
+      "lookupCode": 3,
+      "displayLabel": "Integer"
+    },
+    {
+      "lookupCode": 36,
+      "displayLabel": "Json"
+    },
+    {
+      "lookupCode": 24,
+      "displayLabel": "Boolean Dictionary"
+    },
+    {
+      "lookupCode": 17,
+      "displayLabel": "Float Dictionary"
+    },
+    {
+      "lookupCode": 12,
+      "displayLabel": "String[][]"
+    },
+    {
+      "lookupCode": 37,
+      "displayLabel": "JsonArray"
+    },
+    {
+      "lookupCode": 9,
+      "displayLabel": "Float[]"
+    },
+    {
+      "lookupCode": 14,
+      "displayLabel": "Float[][]"
+    },
+    {
+      "lookupCode": 27,
+      "displayLabel": "Date[][]"
+    },
+    {
+      "lookupCode": 15,
+      "displayLabel": "String Dictionary"
+    },
+    {
+      "lookupCode": 25,
+      "displayLabel": "Date Dictionary"
+    },
+    {
+      "lookupCode": 20,
+      "displayLabel": "Float[] Dictionary"
+    },
+    {
+      "lookupCode": 26,
+      "displayLabel": "Date[]"
+    },
+    {
+      "lookupCode": 34,
+      "displayLabel": "Boolean[]"
+    },
+    {
+      "lookupCode": 39,
+      "displayLabel": "ByteArray"
+    },
+    {
+      "lookupCode": 33,
+      "displayLabel": "Array of String Dictionaries"
+    },
+    {
+      "lookupCode": 8,
+      "displayLabel": "Integer[]"
+    },
+    {
+      "lookupCode": 42,
+      "displayLabel": "StringBuilder"
+    },
+    {
+      "lookupCode": 22,
+      "displayLabel": "Integer[][] Dictionary"
+    },
+    {
+      "lookupCode": 28,
+      "displayLabel": "Date[] Dictionary"
+    },
+    {
+      "lookupCode": 32,
+      "displayLabel": "Dictionary of String Dictionaries"
+    },
+    {
+      "lookupCode": 41,
+      "displayLabel": "Anytype Dictionary"
+    },
+    {
+      "lookupCode": 13,
+      "displayLabel": "Integer[][]"
+    },
+    {
+      "lookupCode": 4,
+      "displayLabel": "Boolean"
+    },
+    {
+      "lookupCode": 21,
+      "displayLabel": "String[][] Dictionary"
+    },
+    {
+      "lookupCode": 5,
+      "displayLabel": "Date"
+    },
+    {
+      "lookupCode": 35,
+      "displayLabel": "Boolean[][]"
+    },
+    {
+      "lookupCode": 2,
+      "displayLabel": "Float"
+    },
+    {
+      "lookupCode": 23,
+      "displayLabel": "Float[][] Dictionary"
+    },
+    {
+      "lookupCode": 40,
+      "displayLabel": "Dictionary of Anytype Dictionaries"
+    },
+    {
+      "lookupCode": 18,
+      "displayLabel": "String[] Dictionary"
+    },
+    {
+      "lookupCode": 1,
+      "displayLabel": "String"
+    },
+    {
+      "lookupCode": 16,
+      "displayLabel": "Integer Dictionary"
+    }
+  ]
 }
