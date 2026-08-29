@@ -4,6 +4,29 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.57.0] - 2026-08-29
+
+### Added
+- Add local variable intellisense, signature help, code linting, and BML formatting utilities.
+- Add BML snippet documentation, custom IntelliSense configuration, and unit tests for completion triggering.
+- Implement BML IntelliSense infrastructure including utility functions, custom snippet definitions, and comprehensive API usage metadata.
+- Implement BML beautifier configuration provider and add comprehensive test suite.
+- Implement BML spell check engine with Brotli-compressed dictionaries, token segmentation, and Levenshtein suggestion logic.
+- Add get_connection_status tool and documentation for BML MCP server state diagnostics.
+- Initialize comprehensive BML language support, linting rules, AI tooling, and testing framework.
+- Add BML performance linting rules, enhanced intellisense, code beautification, and lifecycle management tools.
+- Add BML syntax highlighting, linting core, benchmarks, and custom theme definitions.
+- Add new light and dark color themes.
+
+### Documentation
+- Add comprehensive knowledge base documentation for BML linter architecture and rules.
+- Add comprehensive knowledge base README for Oracle CPQ BML extension suite.
+- Add architectural and control flow documentation for BML Beautifier and Linter.
+- Add architecture and control flow documentation for BML spell check, XSLT, and metrics subsystems.
+- Add architectural documentation and control flow diagrams for Oracle CPQ BML REST API operations.
+- Add BML Linter architecture and rule documentation.
+- Add technical documentation for Oracle CPQ BML Beautifier architecture and control flow graphs.
+
 ## [1.56.0] - 2026-08-24
 
 ### Added
@@ -75,13 +98,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Add FeaturesTab component to settings panel and update documentation.
 - Release version 1.48.0 with XSLT tooling support, BML quick-fixes, and expanded linting rules.
 - Implement XSLT preview, linting, formatting, and code action support.
-- Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
-- Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.
-
-## [1.48.0] - 2026-08-23
-
-### Added
-
-- Implement XSLT formatting, and code action support.
 - Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
 - Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.
