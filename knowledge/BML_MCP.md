@@ -237,7 +237,6 @@ flowchart TD
 | | `search_functions` | `query`, `searchType` | Full-text / symbol search across all workspace functions. |
 | **Testing & Snapshots** | `run_bml_tests` | `testFilter`, `updateSnapshot` | Executes unit test suites against BML functions. |
 | | `update_snapshot` | `testName` | Updates baseline snapshot fixture for regression testing. |
-| | `compare_snapshot` | `testName`, `actualResult` | Diffs test output against approved snapshot baseline. |
-| **Connection & Status** | `get_connection_status` | _none_ | Verifies active CPQ REST/SOAP connection status. |
+| **Connection & Status** | `get_connection_status` | `testConnection` (optional) | Reports whether CPQ credentials are configured (never exposes secret values or instance URLs). |
 | | `list_util_functions` | `folder` | Lists remote util functions from CPQ instance. |
 | | `list_commerce_functions` | `process` | Lists remote commerce process functions. |

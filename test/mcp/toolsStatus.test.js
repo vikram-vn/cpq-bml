@@ -17,7 +17,8 @@ suite("MCP tools - getConnectionStatus", () => {
     assert.strictEqual(result.success, true);
     assert.strictEqual(result.configured, false);
     assert.ok(result.missingReason.includes("siteUrl"));
-    assert.strictEqual(result.siteUrl, null);
+    assert.strictEqual(result.siteUrl, undefined);
+    assert.strictEqual(result.isSiteConfigured, false);
   });
 
   test("reports not configured when siteUrl/username are set but no password secret exists", async () => {
@@ -32,9 +33,12 @@ suite("MCP tools - getConnectionStatus", () => {
 
     assert.strictEqual(result.configured, false);
     assert.ok(result.missingReason.includes("password"));
+    assert.strictEqual(result.siteUrl, undefined);
+    assert.strictEqual(result.isSiteConfigured, true);
+    assert.ok(!JSON.stringify(result).includes("https://sitename.oracle.com"), "instance URL must never appear in the result");
   });
 
-  test("reports configured once siteUrl/username/password are all present, without ever including the secret", async () => {
+  test("reports configured once siteUrl/username/password are all present, without ever including the secret, username, or instance URL", async () => {
     const context = createFakeContext({ [config.SECRET_PASSWORD]: "super-secret-pw" });
     const vscode = vscodeWith({
       "connection.siteUrl": "https://sitename.oracle.com",
@@ -46,11 +50,16 @@ suite("MCP tools - getConnectionStatus", () => {
 
     assert.strictEqual(result.configured, true);
     assert.strictEqual(result.missingReason, null);
-    assert.strictEqual(result.username, "alice");
+    assert.strictEqual(result.username, undefined);
+    assert.strictEqual(result.isUsernameConfigured, true);
+    assert.strictEqual(result.siteUrl, undefined);
+    assert.strictEqual(result.isSiteConfigured, true);
     assert.ok(!JSON.stringify(result).includes("super-secret-pw"), "secret must never appear in the result");
+    assert.ok(!JSON.stringify(result).includes("https://sitename.oracle.com"), "instance URL must never appear in the result");
+    assert.ok(!JSON.stringify(result).includes("alice"), "username must never appear in the result");
   });
 
-  test("omits username for bearer auth", async () => {
+  test("handles bearer auth and never leaks secrets, username, or instance URL", async () => {
     const context = createFakeContext({ [config.SECRET_TOKEN]: "super-secret-token" });
     const vscode = vscodeWith({
       "connection.siteUrl": "https://sitename.oracle.com",
@@ -60,11 +69,14 @@ suite("MCP tools - getConnectionStatus", () => {
     const result = await tools.getConnectionStatus(context, vscode, {});
 
     assert.strictEqual(result.configured, true);
-    assert.strictEqual(result.username, null);
+    assert.strictEqual(result.username, undefined);
+    assert.strictEqual(result.isUsernameConfigured, true);
     assert.strictEqual(result.authMethod, "bearer");
+    assert.ok(!JSON.stringify(result).includes("super-secret-token"), "token must never appear in the result");
+    assert.ok(!JSON.stringify(result).includes("https://sitename.oracle.com"), "instance URL must never appear in the result");
   });
 
-  test("reports the matching environment name when the active site/username/authMethod matches one", async () => {
+  test("reports the matching environment name without leaking username or instance URL", async () => {
     const context = createFakeContext({ [config.SECRET_PASSWORD]: "pw" });
     const vscode = vscodeWith({
       "connection.siteUrl": "https://sitename.oracle.com",
@@ -79,6 +91,8 @@ suite("MCP tools - getConnectionStatus", () => {
 
     assert.strictEqual(result.activeEnvironmentName, "Production");
     assert.strictEqual(result.environmentCount, 1);
+    assert.strictEqual(result.username, undefined);
+    assert.strictEqual(result.siteUrl, undefined);
   });
 
   test("does not make a network call unless testConnection:true is passed", async () => {

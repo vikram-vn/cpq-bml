@@ -6,8 +6,8 @@ function register(server, context, vscode, tools) {
     "get_connection_status",
     {
       description:
-        "Reports whether CPQ credentials are configured (never the secret values themselves), plus the " +
-        "active site URL/environment/commerce settings - check this before calling a CPQ-backed tool to " +
+        "Reports whether CPQ credentials are configured (never secret values, usernames, or instance URLs), plus the " +
+        "active environment name and commerce settings - check this before calling a CPQ-backed tool to " +
         "avoid discovering a missing credential mid-call. Pass testConnection:true to also ping CPQ live " +
         "and confirm the credentials actually work (slower - a real network round trip).",
       inputSchema: {
