@@ -4,7 +4,8 @@ const { getStringRanges } = require("../lint/rules/strings");
 const {
   extraAllowed,
   loadDictionaries,
-  getSpellingSuggestions
+  getSpellingSuggestions,
+  isMorphologicallyValid,
 } = require("./spellingDict");
 
 function splitIdentifier(token) {
@@ -103,6 +104,10 @@ function checkWord(word, extensionPath, allowCompound = true) {
 
   const dict = loadDictionaries(extensionPath);
   if (dict.has(wordLower)) return true;
+
+  // Morphological validation: check if word is a regular inflection (plurals, -ed, -ing, -ly, -tion, -able, etc.),
+  // prefix derivation (re-, un-, sub-, pre-, multi-, auto-, etc.), or alphanumeric code (line1, field2)
+  if (isMorphologicallyValid(wordLower, dict)) return true;
 
   // Compound fallback: all-lowercase glued identifiers (linejson, orderline,
   // sizeofline) have no camelCase boundary for splitIdentifier to split on,

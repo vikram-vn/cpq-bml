@@ -62,10 +62,13 @@ flowchart TD
     FilterIgnored -->|"Yes"| SkipToken["Skip token without checking"]
     FilterIgnored -->|"No"| SegmentToken["Split token into individual candidate words (camelCase / snake_case)"]
 
-    SegmentToken --> CheckWordInDict{"Is candidate word present in English, BML, or Custom dictionary?"}
-    CheckWordInDict -->|"Yes (Valid Word)"| NextWord["Proceed to next candidate word"]
+    SegmentToken --> CheckWordInDict{"Is candidate word in Dictionary, Extra Allowed, or Custom Words?"}
+    CheckWordInDict -->|"Yes"| NextWord["Proceed to next candidate word"]
     
-    CheckWordInDict -->|"No (Misspelling)"| GenerateSuggestions["Compute closest matches using Levenshtein distance & edit operations"]
+    CheckWordInDict -->|"No"| CheckMorphology{"Matches Morphological Affixation (plurals, -ed, -ing, -ly, -tion, prefixes)?"}
+    CheckMorphology -->|"Yes (Valid Inflection)"| NextWord
+    CheckMorphology -->|"No (Misspelling)"| GenerateSuggestions["Compute closest matches using Levenshtein distance & edit operations"]
+
     GenerateSuggestions --> BuildDiagnostic["Construct vscode.Diagnostic(wordRange, 'Spelling: Misspelled word', Information)"]
     BuildDiagnostic --> AttachCodeActions["Attach QuickFix actions: Suggestion replacements + 'Add to Dictionary'"]
 
