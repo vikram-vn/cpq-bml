@@ -1,0 +1,8 @@
+// 2D Array declarations and indexing
+matrix = String[][] {{"a", "b"}, {"c", "d"}};
+numbers = Integer[][] {{1, 2, 3}, {4, 5, 6}};
+
+val = matrix[0][1];
+num = numbers[i][j];
+
+empty2D = Float[][] {};

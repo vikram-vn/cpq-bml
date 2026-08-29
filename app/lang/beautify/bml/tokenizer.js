@@ -32,6 +32,23 @@ function getBuiltinFunctionsSet() {
   return _builtinFunctionsSet;
 }
 
+const BMQL_START_PATTERN = /^(?:select\s|modify\s|update\s|insert\s+into\s|delete\s+from\s)/i;
+
+function formatBmqlQuery(content) {
+  if (!BMQL_START_PATTERN.test(content.trim())) {
+    return content;
+  }
+  return content.replace(
+    /(\$[_A-Za-z0-9]+|'[^']*'|"[^"]*"|\b(?:select|from|where|order\s+by|group\s+by|having|limit|inner\s+join|left\s+join|join|on|and|or|not|in|like|is\s+null|is\s+not\s+null|modify|update|set|insert\s+into|values|delete\s+from|asc|desc|distinct|as)\b)/gi,
+    (match, group) => {
+      if (group.startsWith("$") || group.startsWith("'") || group.startsWith('"')) {
+        return group;
+      }
+      return group.toUpperCase();
+    }
+  );
+}
+
 function makeStringReaders(input, options) {
   function unescapeString(s) {
     let out = "";
@@ -76,6 +93,13 @@ function makeStringReaders(input, options) {
     }
     if (has_escapes && options.unescape_strings) {
       text = unescapeString(text);
+    }
+    if (options.format_bmql_strings !== false && text.length > 2) {
+      const inner = text.slice(1, -1);
+      const formatted = formatBmqlQuery(inner);
+      if (formatted !== inner) {
+        text = text.charAt(0) + formatted + text.charAt(text.length - 1);
+      }
     }
     return text;
   }
@@ -142,7 +166,8 @@ function Tokenizer(source_text, options) {
         token.text === "[" &&
         last_real_token &&
         (last_real_token.type === TOKEN.WORD ||
-          last_real_token.type === TOKEN.END_EXPR)
+          (last_real_token.type === TOKEN.END_EXPR &&
+            last_real_token.text === "]"))
       ) {
         token.preceded_by_word = true;
       }
@@ -257,10 +282,18 @@ function Tokenizer(source_text, options) {
       const lower = word.toLowerCase();
 
       if (logical_words.indexOf(lower) !== -1) {
-        const text =
-          lower === "not" || options.uppercase_reserved_words === true
-            ? lower.toUpperCase()
-            : word;
+        let text = word;
+        if (options.logical_operator_casing === "lowercase") {
+          text = lower;
+        } else if (options.logical_operator_casing === "preserve") {
+          text = word;
+        } else if (
+          options.logical_operator_casing === "uppercase" ||
+          options.uppercase_reserved_words === true ||
+          lower === "not"
+        ) {
+          text = lower.toUpperCase();
+        }
         return finish(
           Token(TOKEN.RESERVED, text, ws.newlines, ws.whitespace_before),
         );

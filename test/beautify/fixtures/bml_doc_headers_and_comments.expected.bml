@@ -1,0 +1,14 @@
+/// Function: calculateDiscount
+/// Description: Calculates customer tiered discount based on transaction amount
+/// @param amount - Float
+/// @param tier - String
+/// @return Float
+discount = 0.0;
+if (tier == "GOLD" AND amount > 1000.0) {
+	discount = amount * 0.15;
+} elif (tier == "SILVER" AND amount > 500.0) {
+	discount = amount * 0.10;
+} else {
+	discount = 0.0;
+}
+return discount;

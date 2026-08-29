@@ -9,8 +9,8 @@
 const NEWLINE = /\r\n|\n|\r/;
 const ALL_NEWLINES = /\r\n|\n|\r/g;
 
-const IDENTIFIER_START = /[A-Za-z_]/;
-const IDENTIFIER = /[A-Za-z_][A-Za-z0-9_]*/;
+const IDENTIFIER_START = /[A-Za-z_$]/;
+const IDENTIFIER = /[A-Za-z_$][A-Za-z0-9_$]*/;
 const NUMBER = /0[xX][0-9a-fA-F]+|(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?/;
 
 const DIRECTIVE_PATTERN = /beautify\s+(\w+):(\w+)/;

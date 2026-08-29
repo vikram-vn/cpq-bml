@@ -81,7 +81,9 @@ function Options(options) {
     keep_array_indentation: getBoolean(raw, "keep_array_indentation", false),
     unescape_strings: getBoolean(raw, "unescape_strings", false),
     uppercase_reserved_words: getBoolean(raw, "uppercase_reserved_words", true),
+    logical_operator_casing: getString(raw, "logical_operator_casing", "uppercase"),
     correct_builtin_casing: getBoolean(raw, "correct_builtin_casing", true),
+    format_bmql_strings: getBoolean(raw, "format_bmql_strings", false),
     // Inject a semicolon after statement-level expressions that are missing one.
     // Off by default because it is a content-changing transformation.
     enforce_semicolons: getBoolean(raw, "enforce_semicolons", false),

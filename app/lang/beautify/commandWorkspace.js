@@ -1,4 +1,9 @@
-const vscode = require('vscode');
+let vscode = null;
+try {
+  vscode = require('vscode');
+} catch (e) {
+  // Running outside VS Code
+}
 const path = require('path');
 const fs = require('fs');
 const { Beautifier } = require('./bml/beautifier');

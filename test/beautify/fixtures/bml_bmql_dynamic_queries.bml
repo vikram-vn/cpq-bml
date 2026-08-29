@@ -1,0 +1,10 @@
+// Dynamic BMQL Queries with variables
+query = "select partNumber, price, description from parts_table where model = $modelName and status = 'active' order by partNumber asc";
+records = bmql(query);
+
+for row in records {
+part = get(row, "partNumber");
+cost = getfloat(row, "price");
+}
+
+bmql("modify inventory set qty = $newQty where partNumber = $part");
