@@ -769,7 +769,6 @@
         "fullSignature": "for () in () {}",
         "syntax": "for ${1:item} in ${2:array} {\n\t${0}\n}",
         "examples": [
-            "result=\"\";\nfor each in records {\n    result = result + each;\n}",
             "Example to loop through a 1-D array:\n\narr = string[]{\"aaa\", \"bbb\", \"ccc\"};\nfor arrElement in arr {\n  print(arrElement);\n} \n \nExample to loop through a 2-D array:\n\nint2DArr = Integer [] [] { {1,2}, {2,3}};\nfor row in int2DArr {\n for element in row {\n  print(element);\n }\n}",
             "for(variable) in (system_array) {\nstatement(s);\n}",
             "for(row element) in Table_Array{\nprint row element;\n}"

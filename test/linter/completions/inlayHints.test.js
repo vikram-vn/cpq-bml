@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { extractParamName, shouldSuppressHint } = require('../../../app/lang/intellisense/inlayHints');
+const { extractParamName, shouldSuppressHint, resolveParamNames, isInsideCommentOrString } = require('../../../app/lang/intellisense/inlayHints');
 const { collectLocalVariables } = require('../../../app/lang/intellisense/bmqlVariableCompletions');
 
 suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
@@ -10,6 +10,40 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         assert.strictEqual(extractParamName('query'), 'query');
     });
 
+    test('resolves curated, idiomatic BML parameter names', () => {
+        // replace: oldValue, newValue instead of old, new
+        const replaceParams = resolveParamNames('replace', 3, {});
+        assert.deepStrictEqual(replaceParams, ['str', 'oldValue', 'newValue', 'maxCount']);
+
+        // Math functions: dividend, divisor, base, exponent
+        assert.deepStrictEqual(resolveParamNames('fmod', 2, {}), ['dividend', 'divisor']);
+        assert.deepStrictEqual(resolveParamNames('pow', 2, {}), ['base', 'exponent']);
+        assert.deepStrictEqual(resolveParamNames('hypot', 2, {}), ['a', 'b']);
+
+        // Array functions: array, element
+        assert.deepStrictEqual(resolveParamNames('append', 2, {}), ['array', 'element']);
+        assert.deepStrictEqual(resolveParamNames('findinarray', 2, {}), ['array', 'element']);
+
+        // JSON & Dict
+        assert.deepStrictEqual(resolveParamNames('jsonarrayget', 2, {}), ['jsonArray', 'index', 'returnType']);
+        assert.deepStrictEqual(resolveParamNames('getfloat', 2, {}), ['record', 'fieldName']);
+    });
+
+    test('dynamically handles variadic BML functions (sbappend, stringbuilder, gettabledata)', () => {
+        // sbappend with 2 args (sb, val)
+        assert.deepStrictEqual(resolveParamNames('sbappend', 2, {}), ['stringBuilder', 'value']);
+
+        // sbappend with 4 args (sb, val1, val2, val3)
+        assert.deepStrictEqual(resolveParamNames('sbappend', 4, {}), ['stringBuilder', 'value1', 'value2', 'value3']);
+
+        // stringbuilder with 3 args (val1, val2, val3)
+        assert.deepStrictEqual(resolveParamNames('stringbuilder', 3, {}), ['value1', 'value2', 'value3']);
+
+        // gettabledata with table, cols, and where clauses
+        assert.deepStrictEqual(resolveParamNames('gettabledata', 4, {}), ['tableName', 'selectColumns', 'whereColumn', 'whereValue']);
+        assert.deepStrictEqual(resolveParamNames('gettabledata', 6, {}), ['tableName', 'selectColumns', 'whereColumn1', 'whereValue1', 'whereColumn2', 'whereValue2']);
+    });
+
     test('suppresses inlay hint when argument matches parameter name', () => {
         // Suppress matching names
         assert.strictEqual(shouldSuppressHint('record', 'record', true), true);
@@ -18,12 +52,30 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         assert.strictEqual(shouldSuppressHint('headers', '_headers', true), true);
 
         // Do not suppress differing names
-        assert.strictEqual(shouldSuppressHint('arrayIdentifier', 'categories50Array', true), false);
+        assert.strictEqual(shouldSuppressHint('array', 'categories50Array', true), false);
         assert.strictEqual(shouldSuppressHint('fieldName', '"price"', true), false);
         assert.strictEqual(shouldSuppressHint('record', 'rRow_50', true), false);
 
         // Do not suppress if setting is false
         assert.strictEqual(shouldSuppressHint('record', 'record', false), false);
+    });
+
+    test('ignores function calls inside comments and string literals', () => {
+        const text1 = '// resReplace = replace(sampleStr, "BML", "EXT");';
+        const callPos1 = text1.indexOf('replace');
+        assert.strictEqual(isInsideCommentOrString(text1, callPos1), true, 'Single line comment should be detected');
+
+        const text2 = '/* \n resSplit = split(str, " "); \n */';
+        const callPos2 = text2.indexOf('split');
+        assert.strictEqual(isInsideCommentOrString(text2, callPos2), true, 'Block comment should be detected');
+
+        const text3 = 'codeStr = "replace(a, b)";';
+        const callPos3 = text3.indexOf('replace');
+        assert.strictEqual(isInsideCommentOrString(text3, callPos3), true, 'String literal should be detected');
+
+        const text4 = 'resReplace = replace(sampleStr, "BML", "EXT");';
+        const callPos4 = text4.indexOf('replace');
+        assert.strictEqual(isInsideCommentOrString(text4, callPos4), false, 'Normal active code should not be detected as comment');
     });
 
     test('collects local variables in scope and ignores out-of-scope variables', () => {
