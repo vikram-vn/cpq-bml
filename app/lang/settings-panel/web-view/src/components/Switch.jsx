@@ -25,7 +25,7 @@ export default function Switch({ id, label, description, checked, onChange, disa
 
 Switch.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   description: PropTypes.string,
   checked: PropTypes.bool,
   onChange: PropTypes.func.isRequired,

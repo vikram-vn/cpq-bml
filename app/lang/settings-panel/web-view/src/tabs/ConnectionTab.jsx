@@ -4,21 +4,36 @@ import { IconConnection } from '../components/Icons';
 
 const AUTH_METHODS = ['basic', 'bearer'];
 
+function getNormalizedUrlPreview(input) {
+    if (!input || !input.trim()) return null;
+    let url = input.trim();
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        if (!url.includes('.')) {
+            url = `https://${url}.bigmachines.com`;
+        } else {
+            url = `https://${url}`;
+        }
+    }
+    return url.replace(/\/+$/, '');
+}
+
 export default function ConnectionTab({
     active,
     connection = {},
     drafts,
     changeDraft,
     updateField,
-    state,
+    state = {},
     password,
     setPassword,
     savePassword,
+    clearPassword,
     showPassword,
     setShowPassword,
     token,
     setToken,
     saveToken,
+    clearToken,
     showToken,
     setShowToken,
     testing,
@@ -26,6 +41,9 @@ export default function ConnectionTab({
     testResult
 }) {
     if (!active) return null;
+
+    const rawUrl = drafts['connection.siteUrl'] !== undefined ? drafts['connection.siteUrl'] : (connection.siteUrl || '');
+    const normalizedPreview = getNormalizedUrlPreview(rawUrl);
 
     return (
         <div className="tab-content active">
@@ -49,10 +67,18 @@ export default function ConnectionTab({
                     <input
                         id="siteUrl"
                         type="text"
-                        value={drafts['connection.siteUrl'] !== undefined ? drafts['connection.siteUrl'] : connection.siteUrl}
+                        value={rawUrl}
                         placeholder="yourcompany or yourcompany.bigmachines.com"
                         onChange={(e) => changeDraft('connection.siteUrl', e.target.value)}
                     />
+                    {normalizedPreview && (
+                        <div style={{ marginTop: '6px', fontSize: '0.8em', color: 'var(--vscode-descriptionForeground)' }}>
+                            <span>Endpoint: </span>
+                            <code style={{ color: 'var(--vscode-textLink-foreground)', backgroundColor: 'rgba(255,255,255,0.04)', padding: '2px 6px', borderRadius: '3px' }}>
+                                {normalizedPreview}
+                            </code>
+                        </div>
+                    )}
                     <p className="field-hint">Supports sitename, sitename.bigmachines.com, or full https URLs.</p>
                 </div>
 
@@ -75,8 +101,18 @@ export default function ConnectionTab({
                             />
                         </div>
                         <div className="field">
-                            <label htmlFor="password">
-                                Password <Pill tone={state.hasPassword ? 'success' : 'muted'}>{state.hasPassword ? 'set' : 'not set'}</Pill>
+                            <label htmlFor="password" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <span>Password <Pill tone={state.hasPassword ? 'success' : 'muted'}>{state.hasPassword ? 'set' : 'not set'}</Pill></span>
+                                {state.hasPassword && clearPassword && (
+                                    <button
+                                        type="button"
+                                        className="link"
+                                        onClick={clearPassword}
+                                        style={{ fontSize: '0.8em', color: 'var(--vscode-errorForeground, #f48771)', textDecoration: 'underline' }}
+                                    >
+                                        Clear Stored Password
+                                    </button>
+                                )}
                             </label>
                             <div className="inline-field">
                                 <div className="password-container">
@@ -106,8 +142,18 @@ export default function ConnectionTab({
                     </>
                 ) : (
                     <div className="field">
-                        <label htmlFor="token">
-                            Auth Token <Pill tone={state.hasToken ? 'success' : 'muted'}>{state.hasToken ? 'set' : 'not set'}</Pill>
+                        <label htmlFor="token" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span>Auth Token <Pill tone={state.hasToken ? 'success' : 'muted'}>{state.hasToken ? 'set' : 'not set'}</Pill></span>
+                            {state.hasToken && clearToken && (
+                                <button
+                                    type="button"
+                                    className="link"
+                                    onClick={clearToken}
+                                    style={{ fontSize: '0.8em', color: 'var(--vscode-errorForeground, #f48771)', textDecoration: 'underline' }}
+                                >
+                                    Clear Stored Token
+                                </button>
+                            )}
                         </label>
                         <div className="inline-field">
                             <div className="password-container">

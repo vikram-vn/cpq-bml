@@ -1,6 +1,7 @@
 import Switch from '../components/Switch';
 import { IconAdvanced } from '../components/Icons';
 import ImportExportButtons from '../components/ImportExportButtons';
+import ShortcutsCheatSheet from '../components/ShortcutsCheatSheet';
 
 export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi }) {
     if (!active) return null;
@@ -55,6 +56,14 @@ export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi
                     checked={debug.showResultsAsTable}
                     onChange={(v) => updateField('debug.showResultsAsTable', v)}
                 />
+            </section>
+
+            <section className="card">
+                <h2>
+                    Keyboard Shortcuts &amp; Reference Cheat Sheet
+                </h2>
+                <p className="card-desc">Essential shortcuts, commands, and triggers for Oracle CPQ BigMachines Language development.</p>
+                <ShortcutsCheatSheet />
             </section>
 
             <section className="card">

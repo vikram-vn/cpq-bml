@@ -1,14 +1,25 @@
 import { IconOperations } from '../components/Icons';
 
+const PRESETS = [
+    { label: 'Standard (oraclecpqo / transaction)', process: 'oraclecpqo', document: 'transaction' },
+    { label: 'Quotes (quotes_process / quote_document)', process: 'quotes_process', document: 'quote_document' },
+    { label: 'Legacy BM (bm_process / bm_document)', process: 'bm_process', document: 'bm_document' },
+];
+
 export default function OperationsTab({ active, rest = {}, drafts, changeDraft }) {
     if (!active) return null;
+
+    const applyPreset = (process, document) => {
+        changeDraft('rest.commerceProcess', process);
+        changeDraft('rest.commerceDocument', document);
+    };
 
     return (
         <div className="tab-content active">
             <section className="card">
                 <h2>
                     <IconOperations />
-                    REST Configuration
+                    Operations &amp; REST
                 </h2>
                 <p className="card-desc">Configure REST details, library folders, and process paths for operations.</p>
 
@@ -22,6 +33,24 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft }
                     />
                     <p className="field-hint">e.g. v18 {"->"} /rest/v18/bml/library/functions</p>
                 </div>
+
+                <div style={{ margin: '14px 0 16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <span style={{ fontSize: '0.82em', color: 'var(--vscode-descriptionForeground)' }}>Quick Presets:</span>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        {PRESETS.map((p) => (
+                            <button
+                                key={p.process}
+                                type="button"
+                                className="secondary"
+                                style={{ fontSize: '0.78em', padding: '4px 8px' }}
+                                onClick={() => applyPreset(p.process, p.document)}
+                            >
+                                {p.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 <div className="field">
                     <label htmlFor="commerceProcess">Commerce Process</label>
                     <input

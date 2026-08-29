@@ -35,4 +35,29 @@ async function runSetAuthToken(context, vscode) {
     vscode.window.showInformationMessage('CPQ-BML: auth token saved.');
 }
 
-module.exports = { runSetPassword, runSetAuthToken, writePassword, writeAuthToken };
+async function deletePassword(context, vscode) {
+    const { siteUrl, username } = config.getSettings(vscode);
+    if (siteUrl && username) {
+        const key = config.getPasswordSecretKey(siteUrl, username);
+        await context.secrets.delete(key);
+    }
+    await context.secrets.delete(config.SECRET_PASSWORD);
+}
+
+async function deleteAuthToken(context, vscode) {
+    const { siteUrl } = config.getSettings(vscode);
+    if (siteUrl) {
+        const key = config.getTokenSecretKey(siteUrl);
+        await context.secrets.delete(key);
+    }
+    await context.secrets.delete(config.SECRET_TOKEN);
+}
+
+module.exports = {
+    runSetPassword,
+    runSetAuthToken,
+    writePassword,
+    writeAuthToken,
+    deletePassword,
+    deleteAuthToken,
+};

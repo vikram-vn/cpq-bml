@@ -1,5 +1,10 @@
 const config = require("../rest/config");
-const { writePassword, writeAuthToken } = require("../rest/commands/secrets");
+const {
+  writePassword,
+  writeAuthToken,
+  deletePassword,
+  deleteAuthToken,
+} = require("../rest/commands/secrets");
 const { autoSetupAiSkills } = require("../../ai/setup");
 const {
   applyEnvironment,
@@ -105,9 +110,21 @@ async function dispatch(message, context, vscode, panel) {
       await sendState();
       return;
 
+    case "clearPassword":
+      await deletePassword(context, vscode);
+      await sendState();
+      post({ type: "toast", message: "Password cleared successfully" });
+      return;
+
     case "setAuthToken":
       await writeAuthToken(context, vscode, message.value);
       await sendState();
+      return;
+
+    case "clearAuthToken":
+      await deleteAuthToken(context, vscode);
+      await sendState();
+      post({ type: "toast", message: "Auth token cleared successfully" });
       return;
 
     case "testConnection": {

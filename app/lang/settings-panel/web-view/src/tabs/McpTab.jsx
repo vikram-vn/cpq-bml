@@ -9,6 +9,12 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
     const aiSkills = mcp.aiSkills || {};
     const isMcpEnabled = mcp.enable;
 
+    const rawPort = drafts['mcp.port'] !== undefined ? drafts['mcp.port'] : (mcp.port || 47821);
+    const numPort = Number(rawPort);
+    const isDefaultPort = numPort === 47821;
+    const isPrivileged = numPort > 0 && numPort < 1024;
+    const isOutOfRange = numPort < 1 || numPort > 65535;
+
     return (
         <div className="tab-content active">
             <section className="card">
@@ -32,9 +38,26 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     <input
                         id="mcpPort"
                         type="number"
-                        value={drafts['mcp.port'] !== undefined ? drafts['mcp.port'] : mcp.port}
+                        min="1024"
+                        max="65535"
+                        value={rawPort}
                         onChange={(e) => changeDraft('mcp.port', e.target.value)}
                     />
+                    {isPrivileged && (
+                        <p className="field-hint" style={{ color: 'var(--vscode-errorForeground, #f48771)', marginTop: '4px' }}>
+                            Warning: Ports below 1024 are privileged and may require administrator rights to bind.
+                        </p>
+                    )}
+                    {isOutOfRange && (
+                        <p className="field-hint" style={{ color: 'var(--vscode-errorForeground, #f48771)', marginTop: '4px' }}>
+                            Port must be between 1024 and 65535.
+                        </p>
+                    )}
+                    {isDefaultPort && (
+                        <p className="field-hint" style={{ color: 'var(--vscode-terminal-ansiGreen, #6dd17a)', marginTop: '4px' }}>
+                            Standard CPQ-BML port (47821)
+                        </p>
+                    )}
                 </div>
 
                 <Switch

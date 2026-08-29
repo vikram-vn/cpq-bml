@@ -308,6 +308,19 @@ select {
     animation: activeGlow 1.5s ease-in-out infinite alternate;
 }
 
+.shortcut-chip {
+    font-family: var(--vscode-editor-font-family, monospace);
+    font-size: 0.72em;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background-color: var(--vscode-keybindingLabel-background, rgba(128, 128, 128, 0.15));
+    color: var(--vscode-keybindingLabel-foreground, var(--vscode-foreground));
+    border: 1px solid var(--vscode-keybindingLabel-border, rgba(128, 128, 128, 0.3));
+    margin-left: 6px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
 @keyframes activeGlow {
     from {
         box-shadow: 0 0 2px rgba(89,191,84,0.1);
@@ -362,4 +375,40 @@ select {
     padding: 20px;
     border: 1px dashed var(--vscode-widget-border, var(--vscode-panel-border));
     border-radius: var(--cpq-radius-md);
+}
+
+/* Shortcuts Cheat Sheet */
+.shortcuts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.84em;
+}
+
+.shortcuts-table th {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+    color: var(--vscode-descriptionForeground);
+    font-weight: 600;
+}
+
+.shortcuts-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    vertical-align: middle;
+}
+
+.shortcuts-table tr:last-child td {
+    border-bottom: none;
+}
+
+.shortcuts-category-header td {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--vscode-textLink-foreground);
+    font-weight: 700;
+    padding-top: 14px;
+    border-bottom: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
 }

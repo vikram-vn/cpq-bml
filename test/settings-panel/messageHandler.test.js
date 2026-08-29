@@ -260,6 +260,34 @@ suite("settings-panel messageHandler", () => {
     assert.strictEqual(panel.posted[1].message, "Settings reset to defaults");
   });
 
+  test("'clearPassword' deletes stored password and posts state and toast", async () => {
+    const secrets = { [config.SECRET_PASSWORD]: "secret123" };
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: { "connection.siteUrl": "mysite", "connection.username": "myuser" } });
+    const context = createFakeContext(secrets);
+
+    await handleMessage({ type: "clearPassword" }, context, vscode, panel);
+
+    assert.strictEqual(await context.secrets.get(config.SECRET_PASSWORD), undefined);
+    assert.strictEqual(panel.posted[0].type, "state");
+    assert.strictEqual(panel.posted[1].type, "toast");
+    assert.strictEqual(panel.posted[1].message, "Password cleared successfully");
+  });
+
+  test("'clearAuthToken' deletes stored token and posts state and toast", async () => {
+    const secrets = { [config.SECRET_TOKEN]: "token123" };
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: { "connection.siteUrl": "mysite" } });
+    const context = createFakeContext(secrets);
+
+    await handleMessage({ type: "clearAuthToken" }, context, vscode, panel);
+
+    assert.strictEqual(await context.secrets.get(config.SECRET_TOKEN), undefined);
+    assert.strictEqual(panel.posted[0].type, "state");
+    assert.strictEqual(panel.posted[1].type, "toast");
+    assert.strictEqual(panel.posted[1].message, "Auth token cleared successfully");
+  });
+
   test("an unknown message type posts an error instead of throwing", async () => {
     const panel = fakePanel();
     const vscode = createFakeVscode({});

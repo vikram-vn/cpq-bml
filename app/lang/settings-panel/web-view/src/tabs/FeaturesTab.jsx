@@ -23,7 +23,7 @@ export default function FeaturesTab({ active, features = {}, inlayHints = {}, up
 
                 <Switch
                     id="commentsEnable"
-                    label="Enable BML Better Comments"
+                    label={<>Enable BML Better Comments <span className="shortcut-chip">Ctrl+/</span></>}
                     description="Colorizes tagged comments (TODO/FIXME/!/?/* etc), highlights bml-lint-disable and beautify ignore directives, and styles doc-header comment blocks"
                     checked={features.comments}
                     onChange={(v) => updateField('features.comments', v)}
@@ -39,7 +39,7 @@ export default function FeaturesTab({ active, features = {}, inlayHints = {}, up
 
                 <Switch
                     id="beautifierEnable"
-                    label="Enable BML Beautifier"
+                    label={<>Enable BML Beautifier <span className="shortcut-chip">Shift+Alt+F</span></>}
                     description="Formats and cleans up BigMachines Language source files or selections using standard formatting style"
                     checked={features.beautifier}
                     onChange={(v) => updateField('features.beautifier', v)}
@@ -47,7 +47,7 @@ export default function FeaturesTab({ active, features = {}, inlayHints = {}, up
 
                 <Switch
                     id="intellisenseEnable"
-                    label="Enable BML IntelliSense"
+                    label={<>Enable BML IntelliSense <span className="shortcut-chip">Ctrl+Space</span></>}
                     description="Enables autocomplete, hover tips, signature help, go-to-definition, find all references, rename symbol, and document outline/breadcrumbs"
                     checked={features.intellisense}
                     onChange={(v) => updateField('features.intellisense', v)}
@@ -71,7 +71,7 @@ export default function FeaturesTab({ active, features = {}, inlayHints = {}, up
 
                 <Switch
                     id="docHeaderEnable"
-                    label="Enable Auto Doc-Header"
+                    label={<>Enable Auto Doc-Header <span className="shortcut-chip">///</span></>}
                     description="Automatically generates and inserts structured BML function doc-headers when typing '///' at start of line"
                     checked={features.docHeader}
                     onChange={(v) => updateField('features.docHeader', v)}

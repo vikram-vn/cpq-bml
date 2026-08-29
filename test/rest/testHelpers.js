@@ -137,6 +137,9 @@ function createFakeContext(secretValues = {}) {
             store: async (key, value) => {
                 store[key] = value;
             },
+            delete: async (key) => {
+                delete store[key];
+            },
             onDidChange: () => ({ dispose: () => {} }),
             _store: store
         },

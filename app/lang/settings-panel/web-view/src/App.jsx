@@ -159,12 +159,22 @@ export default function App({ vscodeApi }) {
         triggerToast('Password updated successfully');
     };
 
+    const clearPassword = () => {
+        dispatch({ type: 'SET_SAVING', isSaving: true });
+        vscodeApi.postMessage({ type: 'clearPassword' });
+    };
+
     const saveToken = () => {
         if (!state.token) return;
         dispatch({ type: 'SET_SAVING', isSaving: true });
         vscodeApi.postMessage({ type: 'setAuthToken', value: state.token });
         dispatch({ type: 'SET_TOKEN', token: '' });
         triggerToast('Auth token updated successfully');
+    };
+
+    const clearToken = () => {
+        dispatch({ type: 'SET_SAVING', isSaving: true });
+        vscodeApi.postMessage({ type: 'clearAuthToken' });
     };
 
     const testConnection = () => {
@@ -213,6 +223,8 @@ export default function App({ vscodeApi }) {
                 vscodeApi={vscodeApi} 
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+                connection={connection}
+                environments={environments}
             />
 
             <main className="content-area">
@@ -244,11 +256,13 @@ export default function App({ vscodeApi }) {
                             password={password}
                             setPassword={setPassword}
                             savePassword={savePassword}
+                            clearPassword={clearPassword}
                             showPassword={showPassword}
                             setShowPassword={setShowPassword}
                             token={token}
                             setToken={setToken}
                             saveToken={saveToken}
+                            clearToken={clearToken}
                             showToken={showToken}
                             setShowToken={setShowToken}
                             testing={testing}

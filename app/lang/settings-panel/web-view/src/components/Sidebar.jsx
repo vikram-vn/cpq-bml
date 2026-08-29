@@ -18,6 +18,28 @@ const TABS = [
     { id: 'advanced', label: 'Advanced', icon: IconAdvanced },
 ];
 
+function getActiveEnvironmentLabel(connection = {}, environments = []) {
+    if (!connection.siteUrl) return 'Not configured';
+    const cleanUrl = connection.siteUrl.trim().toLowerCase();
+    const cleanUser = (connection.username || '').trim().toLowerCase();
+    const cleanAuth = connection.authMethod || 'basic';
+
+    const match = environments.find((env) => {
+        return (
+            (env.siteUrl || '').trim().toLowerCase() === cleanUrl &&
+            ((env.username || '').trim().toLowerCase() === cleanUser) &&
+            ((env.authMethod || 'basic') === cleanAuth)
+        );
+    });
+
+    if (match) {
+        return match.name;
+    }
+
+    const host = cleanUrl.replace(/^https?:\/\//, '').split('/')[0];
+    return host;
+}
+
 export default function Sidebar({
     activeTab,
     setActiveTab,
@@ -26,8 +48,11 @@ export default function Sidebar({
     vscodeApi,
     searchQuery = '',
     setSearchQuery,
+    connection = {},
+    environments = [],
 }) {
     const searchInputRef = useRef(null);
+    const activeEnvLabel = getActiveEnvironmentLabel(connection, environments);
 
     const handleTabClick = (tab) => {
         if (setSearchQuery) setSearchQuery('');
@@ -126,6 +151,13 @@ export default function Sidebar({
             </nav>
 
             <div className="sidebar-footer">
+                <div style={{ fontSize: '0.78em', marginBottom: '10px', padding: '6px 8px', borderRadius: '4px', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid var(--vscode-widget-border, var(--vscode-panel-border))' }}>
+                    <div style={{ color: 'var(--vscode-descriptionForeground)', fontSize: '0.9em', marginBottom: '2px' }}>Active Target</div>
+                    <div style={{ fontWeight: '600', color: connection.siteUrl ? 'var(--vscode-foreground)' : 'var(--vscode-descriptionForeground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {activeEnvLabel}
+                    </div>
+                </div>
+
                 <div className="row between" style={{ fontSize: '0.78em', color: 'var(--vscode-descriptionForeground)', paddingBottom: '10px' }}>
                     <span>Status</span>
                     <div className="row" style={{ gap: '6px' }}>
