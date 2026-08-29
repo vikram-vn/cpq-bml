@@ -242,3 +242,73 @@ flowchart TD
 | `PUT` | `/rest/v17/admin/commerceProcesses/{proc}/rules` | Deploys updated Commerce Process BML scripts. |
 | `GET` | `/rest/v17/admin/dataTables` | Lists Data Tables, schemas, columns, and primary keys. |
 | `GET` | `/rest/v17/admin/commerceAttributes` | Fetches Commerce Line and Transaction attribute definitions. |
+
+---
+
+## 9. Practical Usage Examples & VS Code Commands
+
+### Configuring Multi-Environment Access (`.env`)
+
+Store credentials securely in a `.env` file in the workspace root or via VS Code Secrets:
+
+```bash
+# Active CPQ Cloud Instance
+CPQ_SITE_URL=https://sitename.oracle.com
+CPQ_USERNAME=admin_user
+CPQ_PASSWORD=SecurePassword123!
+CPQ_AUTH_METHOD=basic
+CPQ_REST_VERSION=v17
+CPQ_COMMERCE_PROCESS=oraclecpqo
+CPQ_COMMERCE_DOCUMENT=transaction
+```
+
+---
+
+### Command 1: Pull BML Function from CPQ Cloud
+1. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS).
+2. Type and select `CPQ: Pull Function`.
+3. Choose the library folder (e.g. `pricing`) and function name (`calcDiscount`).
+4. The extension automatically fetches the live script, saves it to `.cpqdevkit/ai/pricing/calcDiscount.bml`, and opens the editor.
+
+---
+
+### Command 2: Validate BML Against Cloud Compiler
+1. Inside an open `.bml` file, press `Ctrl+Shift+P` &rarr; `CPQ: Validate Current Function`.
+2. The extension sends the buffer to `/rest/v17/admin/bml/validate`.
+3. If syntax errors exist, they appear immediately in the **Problems** panel mapped to line/column ranges.
+
+---
+
+### Command 3: Remote Debug Execution & Terminal Output
+1. Press `Ctrl+Shift+P` &rarr; `CPQ: Debug Function`.
+2. Enter parameter inputs in the prompt or provide a JSON fixture.
+3. The execution results and logs stream live to the **CPQ DevKit** output terminal:
+
+```
+[CPQ DevKit] ----------------------------------------------------
+[CPQ DevKit] Executing Remote Debug: util.pricing.calcDiscount
+[CPQ DevKit] Environment: Development (https://sitename.oracle.com)
+[CPQ DevKit] ----------------------------------------------------
+[PARAMS]
+  • basePrice: 1500.0 (Float)
+  • customerTier: "PLATINUM" (String)
+
+[STDOUT LOGS]
+  [09:20:15] [DEBUG] Starting discount evaluation
+  [09:20:15] [DEBUG] Matched Tier: PLATINUM -> 20% discount
+
+[RETURN VALUE]
+  • Type: Float
+  • Value: 0.20
+  • Execution Time: 38.4ms
+[CPQ DevKit] ----------------------------------------------------
+```
+
+---
+
+### Command 4: Deploy Function to Target Environment
+1. Press `Ctrl+Shift+P` &rarr; `CPQ: Deploy Function`.
+2. Select target environment (`Development`, `Test`, `Production`).
+3. Pre-deploy static analysis verifies 0 fatal errors before committing.
+4. On success, a toast notification confirms deployment.
+

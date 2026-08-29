@@ -185,3 +185,44 @@ flowchart TD
 | **CPQ Environments** | `cpq.environments`, `cpq.activeEnvironment`, `cpq.timeout`, `cpq.retryCount` | Manages CPQ Cloud URLs, OAuth2 credentials, and active deployment targets. |
 | **IntelliSense** | `intellisense.enabled`, `intellisense.inlayHints`, `intellisense.signatureHelp`, `intellisense.bmqlCompletions` | Configures autocomplete providers, hover tooltips, inlay parameter hints, and BMQL `$var` helpers. |
 | **Spell Checker** | `spellcheck.enabled`, `spellcheck.customWords`, `spellcheck.checkComments` | Manages BML keywords, CPQ domain dictionary, and user-customized spelling words. |
+
+---
+
+## 8. Practical Usage Examples & Visual Configuration Walkthrough
+
+### How to Open the Settings Panel
+1. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS).
+2. Type and select `CPQ-BML: Open Settings`.
+3. Or click the **CPQ-BML** status bar item in the bottom right corner.
+
+---
+
+### Step-by-Step UI Configuration Walkthrough
+
+#### 1. Configuring Formatter Tab
+* **Indentation Size**: Adjust between 2, 4, or 8 spaces (default: `4`).
+* **Brace Style**: Choose between `collapse` (1TBS: `if (cond) {`), `expand` (Allman: braces on new lines), or `preserve-inline`.
+* **Preserve Newlines**: Toggle to keep empty lines between logic blocks.
+* Click **Save Beautifier Config** to write directly to `.bmlbeautifyrc`.
+
+---
+
+#### 2. Configuring Linter Rules Tab
+* Toggle individual rules on/off (`bml-semicolon`, `bml-unsupported-operator`, etc.).
+* Adjust severity drop-downs (`Error`, `Warning`, `Information`, `Hint`).
+* Set max loop nesting depth threshold (default: `3`) and max block nesting depth (default: `5`).
+
+---
+
+#### 3. Managing CPQ Cloud Environments Tab
+* Add multiple CPQ environments (e.g. `Dev`, `QA`, `Production`).
+* Provide **Site URL** (e.g. `https://sitename.oracle.com`), **Username**, and **Password / Token**.
+* Click the 🔌 **Test Connection** button to verify network connectivity and permissions.
+* The status badge updates immediately to 🟢 `Connected (42ms)`.
+
+---
+
+#### 4. Customizing Spell Checker Tab
+* Add domain-specific words, acronyms, or product model names to the **Custom Words** list.
+* Toggle comment checking and string literal checking independently.
+

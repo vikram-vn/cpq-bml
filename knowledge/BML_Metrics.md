@@ -230,3 +230,79 @@ $$\text{MI} = 171 - 5.2 \ln(V) - 0.23 \times v(G) - 16.2 \ln(\text{SLOC}) + 50 \
 | **50 &ndash; 64** | **C** | 🟡 Yellow | Moderate complexity; monitor growth. |
 | **35 &ndash; 49** | **D** | 🟠 Orange | High complexity; refactoring recommended. |
 | **0 &ndash; 34** | **F** | 🔴 Red | Critical debt; urgent refactoring required. |
+
+---
+
+## 8. Practical Usage Examples & Report Interpretations
+
+### How to Run Code Metrics in VS Code
+1. Open any `.bml` script in the editor.
+2. Press `Ctrl+Shift+P` &rarr; `BML: Show Code Metrics`.
+3. An interactive visual dashboard opens displaying score gauges and maintainability ratings.
+
+---
+
+### Example: Analyzing a Pricing Calculator Function
+
+#### Source Function:
+```javascript
+/**
+ * Calculates tiered discount with customer and order-size adjustments.
+ */
+discountRate = 0.0;
+
+if (customerTier == "ENTERPRISE" AND baseTotal >= 10000.0) {
+    discountRate = 0.25;
+} elif (customerTier == "MID_MARKET" OR baseTotal >= 5000.0) {
+    discountRate = 0.15;
+} else {
+    discountRate = 0.05;
+}
+
+if (isPromoActive) {
+    discountRate = discountRate + 0.02;
+}
+
+return discountRate;
+```
+
+#### Metrics Calculation Breakdown:
+
+```json
+{
+  "functionName": "calculateTieredDiscount",
+  "sloc": 14,
+  "commentLines": 3,
+  "cyclomaticComplexity": 5,
+  "maxNestingDepth": 2,
+  "halstead": {
+    "vocabulary": 18,
+    "length": 32,
+    "volume": 133.43,
+    "difficulty": 4.5,
+    "effort": 600.43,
+    "estimatedBugs": 0.04
+  },
+  "maintainabilityIndex": 84.6,
+  "grade": "A"
+}
+```
+
+#### Interpretation:
+* **Cyclomatic Complexity (5)**: 🟢 Low Risk (Base path 1 + 2 `if` + 1 `elif` + 1 `AND` + 1 `OR` = 5).
+* **Nesting Depth (2)**: 🟢 Well below the max recommended limit of 5.
+* **Maintainability Index (84.6 - Grade A)**: 🟢 Highly maintainable, clean code ready for production deployment.
+
+---
+
+### Calling Metrics via MCP Tool (`get_function_metrics`)
+
+```json
+{
+  "name": "get_function_metrics",
+  "arguments": {
+    "functionName": "calcDiscount"
+  }
+}
+```
+

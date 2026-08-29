@@ -234,3 +234,75 @@ flowchart TD
 | `not(boolean)` | `Boolean` | Inverts a boolean condition. |
 | `number(expr)` | `Number` | Converts expression into numeric float/integer. |
 | `format-number(n, pattern)` | `String` | Formats a number with a custom decimal pattern. |
+
+---
+
+## 8. Practical Usage Examples & Snippets
+
+### Example 1: Formatting an Oracle CPQ XSLT Template
+
+#### Before Formatting:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:template match="/transaction">
+<table border="1">
+<tr><th>Item</th><th>Price</th></tr>
+<xsl:for-each select="line_items/line">
+<tr><td><xsl:value-of select="_part_number"/></td>
+<td><xsl:value-of select="format-number(_price,'$#,##0.00')"/></td></tr>
+</xsl:for-each>
+</table>
+</xsl:template>
+</xsl:stylesheet>
+```
+
+#### After Formatting (`Shift+Alt+F`):
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:template match="/transaction">
+        <table border="1">
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+            <xsl:for-each select="line_items/line">
+                <tr>
+                    <td>
+                        <xsl:value-of select="_part_number" />
+                    </td>
+                    <td>
+                        <xsl:value-of select="format-number(_price, '$#,##0.00')" />
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </table>
+    </xsl:template>
+</xsl:stylesheet>
+```
+
+---
+
+### Example 2: XSLT Autocompletion & XPath Snippets
+
+* Typing `<xsl:` triggers auto-suggestions for all valid XSL elements with tab-stop snippets:
+  * `<xsl:for-each select="$1">$0</xsl:for-each>`
+  * `<xsl:choose><xsl:when test="$1">$2</xsl:when><xsl:otherwise>$0</xsl:otherwise></xsl:choose>`
+* Inside `select="..."` attributes, typing `format` auto-completes `format-number(value, pattern)`.
+
+---
+
+### Example 3: Integration with BML `transformxml()`
+
+In BML scripts, apply XSL transformations dynamically to convert raw XML transaction payloads:
+
+```javascript
+xmlInput = "<transaction><line_items><line><_part_number>XPS-15</_part_number><_price>1499.00</_price></line></line_items></transaction>";
+xslTemplate = readxml("transaction_table_template");
+
+// Execute XSL transformation in BML
+htmlTableOutput = transformxml(xmlInput, xslTemplate);
+return htmlTableOutput;
+```
+

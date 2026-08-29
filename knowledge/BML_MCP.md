@@ -240,3 +240,157 @@ flowchart TD
 | **Connection & Status** | `get_connection_status` | `testConnection` (optional) | Reports whether CPQ credentials are configured (never exposes secret values or instance URLs). |
 | | `list_util_functions` | `folder` | Lists remote util functions from CPQ instance. |
 | | `list_commerce_functions` | `process` | Lists remote commerce process functions. |
+
+---
+
+## 9. Practical Usage Examples & Complete AI Workflow
+
+### Step 1: Check Connection Status (`get_connection_status`)
+
+Before making CPQ calls, verify that credentials and environment target are active:
+
+```json
+{
+  "name": "get_connection_status",
+  "arguments": {
+    "testConnection": true
+  }
+}
+```
+
+#### Example Output:
+```json
+{
+  "success": true,
+  "configured": true,
+  "isSiteConfigured": true,
+  "isUsernameConfigured": true,
+  "authMethod": "basic",
+  "activeEnvironmentName": "Development",
+  "testResult": {
+    "ok": true,
+    "message": "CPQ-BML: connection successful."
+  }
+}
+```
+
+---
+
+### Step 2: Pull Remote BML Function (`pull_function`)
+
+Pull a function into the local AI working copy (`.cpqdevkit/ai/`):
+
+```json
+{
+  "name": "pull_function",
+  "arguments": {
+    "functionName": "calcDiscount",
+    "type": "util"
+  }
+}
+```
+
+---
+
+### Step 3: Lint & Format BML Script (`lint_function` & `format_bml`)
+
+Run static analysis to verify that the generated code is free of syntax or type errors:
+
+```json
+{
+  "name": "lint_function",
+  "arguments": {
+    "functionName": "calcDiscount"
+  }
+}
+```
+
+Format code cleanly before committing or saving:
+```json
+{
+  "name": "format_bml",
+  "arguments": {
+    "code": "if(basePrice>1000){discount=0.20;}else{discount=0.05;}",
+    "options": {
+      "indent_size": 4,
+      "brace_style": "collapse"
+    }
+  }
+}
+```
+
+---
+
+### Step 4: Remote Debug Execution (`debug_function`)
+
+Execute the function on Oracle CPQ Cloud's debug engine with test parameters:
+
+```json
+{
+  "name": "debug_function",
+  "arguments": {
+    "functionName": "calcDiscount",
+    "params": {
+      "basePrice": 1250.0,
+      "customerTier": "PLATINUM"
+    },
+    "printOnly": false
+  }
+}
+```
+
+#### Example Debug Output:
+```json
+{
+  "success": true,
+  "returnValue": 0.25,
+  "executionTimeMs": 42.6,
+  "stdout": [
+    "[DEBUG] Calculating tier PLATINUM discount for base: 1250.0",
+    "[DEBUG] Applied margin rule: Tier 1 -> 25%"
+  ]
+}
+```
+
+---
+
+### Step 5: Save & Deploy Function (`save_function` & `deploy_function`)
+
+Save working copy and deploy to the target CPQ instance:
+
+```json
+{
+  "name": "save_function",
+  "arguments": {
+    "functionName": "calcDiscount",
+    "code": "/* Updated BML Code */\nif (basePrice > 1000.0) {\n    return 0.25;\n}\nreturn 0.05;"
+  }
+}
+```
+
+Deploy validated function to active environment:
+```json
+{
+  "name": "deploy_function",
+  "arguments": {
+    "functionName": "calcDiscount"
+  }
+}
+```
+
+---
+
+### Step 6: Regression Testing & Snapshots (`run_bml_tests`)
+
+Run test suites and verify outputs against regression baselines:
+
+```json
+{
+  "name": "run_bml_tests",
+  "arguments": {
+    "testFilter": "calcDiscount",
+    "updateSnapshot": false
+  }
+}
+```
+

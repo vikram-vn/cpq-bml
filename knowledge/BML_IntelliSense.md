@@ -233,3 +233,111 @@ flowchart TD
 | **`function-param-data-types.json`** | Fast lookup mapping for function parameter validation. | 1 KB |
 | **`function-return-types.json`** | Fast lookup mapping for return type inference. | 1 KB |
 | **`custom-snippets.json`** | Pre-packaged snippets for BMQL, conditionals, dictionaries, JSON, and web services. | 3.8 KB |
+
+---
+
+## 9. Practical Usage Examples & Snippets
+
+### Triggering IntelliSense in VS Code
+* **Trigger Autocomplete**: Press `Ctrl+Space` (Windows/Linux) or `Cmd+Space` (macOS).
+* **Trigger Signature Help**: Press `Ctrl+Shift+Space` (Windows/Linux) or `Cmd+Shift+Space` (macOS) inside function parentheses `( ... )`.
+* **Go to Definition**: Press `F12` or `Ctrl+Click` on any `util.<folder>.<func>()` call.
+
+---
+
+### Example 1: Workspace Util Library Autocompletion
+
+Type `util.` to see all library folders, then type `.` to see functions:
+
+```javascript
+// Step 1: Type 'util.' -> Suggestions: [pricing, approval, bom, common]
+// Step 2: Type 'util.pricing.' -> Suggestions: [calcDiscount, getTierRate, applyMargin]
+finalDiscount = util.pricing.calcDiscount(line, basePrice);
+```
+
+---
+
+### Example 2: In-Query BMQL Dynamic Variable Autocompletion
+
+Inside a `bmql(...)` query string, type `$` to get intelligent suggestions of local variables in scope:
+
+```javascript
+statusFilter = "ACTIVE";
+minPrice = 50.0;
+
+// Type '$' inside query string -> Auto-suggests: [$statusFilter, $minPrice]
+rs = bmql("SELECT part_number, price FROM Parts WHERE status = $statusFilter AND price >= $minPrice");
+```
+
+---
+
+### Example 3: Function Signature Help Tooltip
+
+When opening parentheses or typing commas, IntelliSense displays the parameter signature and highlights the active parameter:
+
+```javascript
+// Typing '(' or ',' triggers parameter documentation:
+// datetostr(date: Date, [format: String], [timezone: String]) -> String
+resultStr = datetostr(getdate(), "yyyy-MM-dd HH:mm:ss", "America/New_York");
+```
+
+---
+
+### Example 4: Rich Hover Tooltips
+
+Hovering over standard built-in functions displays markdown tables with parameter descriptions and working code examples:
+
+```javascript
+// Hovering over 'urldata' displays:
+/**
+ * urldata(url, method, [headers], [data]) -> String
+ * 
+ * Sends an HTTP/HTTPS REST request to an external web service.
+ * 
+ * Parameters:
+ * - url (String): Target HTTP/HTTPS endpoint
+ * - method (String): "GET", "POST", "PUT", "DELETE"
+ * - headers (dict): Header key-value pairs (e.g. Authorization, Content-Type)
+ * - data (String): Request body payload
+ * 
+ * Returns: String response payload
+ */
+response = urldata("https://api.example.com/v1/orders", "POST", headerDict, jsonPayload);
+```
+
+---
+
+### Example 5: Built-in Code Snippets
+
+Type the snippet prefix and press `Tab` or `Enter` to expand:
+
+#### 1. `bmql` Snippet:
+```javascript
+// Type 'bmql' + Tab expands to:
+records = bmql("SELECT ${1:columns} FROM ${2:table} WHERE ${3:condition}");
+for record in records {
+    ${0}
+}
+```
+
+#### 2. `forin` Snippet:
+```javascript
+// Type 'forin' + Tab expands to:
+for ${1:item} in ${2:arrayOrRecordSet} {
+    ${0}
+}
+```
+
+#### 3. `dict` Snippet:
+```javascript
+// Type 'dict' + Tab expands to:
+${1:myDict} = dict("${2|string,integer,float,boolean|}");
+put(${1:myDict}, "${3:key}", ${4:value});
+```
+
+#### 4. `json` Snippet:
+```javascript
+// Type 'json' + Tab expands to:
+${1:jsonObj} = json();
+jsonput(${1:jsonObj}, "${2:key}", ${3:value});
+```

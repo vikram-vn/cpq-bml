@@ -247,3 +247,178 @@ flowchart TD
 | | `strings.js` | `bml-unescaped-string` | Warning | Validates string escaping and multi-line concatenation safety. | No |
 | | `comments.js` | `bml-comment-formatting` | Hint | Validates JSDoc parameter documentation completeness. | No |
 | | `style.js` | `bml-style-conventions` | Hint | Enforces canonical BML formatting and naming conventions. | Yes |
+
+---
+
+## 9. Practical Usage Examples & Quick Fix Workflows
+
+### How to Apply Quick Fixes in VS Code
+1. Place cursor on the squiggly line under the error or warning.
+2. Press `Ctrl+.` (Windows/Linux) or `Cmd+.` (macOS) or click the 💡 **Lightbulb** icon.
+3. Select the recommended Quick Fix to apply the correction automatically.
+
+---
+
+### Example 1: Unsupported Logical Operators (`bml-unsupported-operator`)
+
+#### Problematic Code:
+```javascript
+// ERROR: && and || and ! are not supported in BML
+if (discount > 0.10 && !isExpired || isManager) {
+    return true;
+}
+```
+
+#### Lightbulb Quick Fix Action:
+* Select `"Replace unsupported logical operators with BML keywords (AND, OR, NOT)"`
+
+#### Fixed Code:
+```javascript
+if (discount > 0.10 AND NOT(isExpired) OR isManager) {
+    return true;
+}
+```
+
+---
+
+### Example 2: JavaScript Declaration Keywords (`bml-var-keyword`)
+
+#### Problematic Code:
+```javascript
+// ERROR: BML does not use var, let, or const
+var customerName = "Acme Corp";
+const discountRate = 0.15;
+let isApproved = true;
+```
+
+#### Lightbulb Quick Fix Action:
+* Select `"Remove JS declaration keyword (var/let/const)"`
+
+#### Fixed Code:
+```javascript
+customerName = "Acme Corp";
+discountRate = 0.15;
+isApproved = true;
+```
+
+---
+
+### Example 3: Missing Statement Delimiter (`bml-semicolon`)
+
+#### Problematic Code:
+```javascript
+// ERROR: Missing semicolon delimiter
+totalPrice = unitPrice * quantity
+return totalPrice
+```
+
+#### Lightbulb Quick Fix Action:
+* Select `"Insert missing semicolon ';'" `
+
+#### Fixed Code:
+```javascript
+totalPrice = unitPrice * quantity;
+return totalPrice;
+```
+
+---
+
+### Example 4: Performance Anti-Pattern: BMQL Inside Loop (`bml-performance-bmql-in-loop`)
+
+#### Anti-Pattern Code (Causes N+1 Database Hits):
+```javascript
+// WARNING: BMQL query inside for-loop degrades performance
+for part in partsList {
+    rs = bmql("SELECT price FROM Parts WHERE part_number = $part");
+    for row in rs {
+        totalPrice = totalPrice + getfloat(row, "price");
+    }
+}
+```
+
+#### Recommended Refactored Pattern (Batch Query Before Loop):
+```javascript
+// Fetch all parts once outside loop
+rs = bmql("SELECT part_number, price FROM Parts WHERE status = 'ACTIVE'");
+priceDict = dict("float");
+
+for row in rs {
+    pNum = get(row, "part_number");
+    pPrice = getfloat(row, "price");
+    put(priceDict, pNum, pPrice);
+}
+
+// In-memory loop with zero database latency
+for part in partsList {
+    if (containskey(priceDict, part)) {
+        totalPrice = totalPrice + get(priceDict, part);
+    }
+}
+```
+
+---
+
+### Example 5: Function Signature & Type Validation (`bml-signature-mismatch`)
+
+#### Problematic Code:
+```javascript
+// ERROR: datetostr expects (Date, String), received (String, Integer)
+formattedDate = datetostr("2026-08-29", 123);
+```
+
+#### Fixed Code:
+```javascript
+currDate = getdate();
+formattedDate = datetostr(currDate, "yyyy-MM-dd");
+```
+
+---
+
+### Example 6: Inline Rule Suppression
+
+Disable specific rules for intentional patterns:
+
+```javascript
+// bml-lint-disable-next-line bml-performance-loop-depth
+for i in level1 {
+    for j in level2 {
+        for k in level3 {
+            for m in level4 {
+                // Nested iteration
+            }
+        }
+    }
+}
+```
+
+---
+
+### Customizing Linter Rules in `.vscode/settings.json`
+
+```json
+{
+  "cpqBml.lint.enabled": true,
+  "cpqBml.lint.maxLoopDepth": 3,
+  "cpqBml.lint.maxBlockDepth": 5,
+  "cpqBml.lint.rules": {
+    "bml-semicolon": "error",
+    "bml-unsupported-operator": "error",
+    "bml-performance-bmql-in-loop": "warning",
+    "bml-unused-variable": "hint"
+  }
+}
+```
+
+---
+
+### Calling Linter via MCP Tool (`lint_function`)
+
+```json
+{
+  "name": "lint_function",
+  "arguments": {
+    "functionName": "calcTieredDiscount"
+  }
+}
+```
+

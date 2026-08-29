@@ -272,3 +272,176 @@ flowchart TD
 | `wrap_line_length` | `Integer` | `0` | Maximum line length before wrapping binary `+` expression chains (`0` = disabled). |
 | `enforce_semicolons` | `Boolean` | `false` | Strictly `false` during formatting to prevent automatic semantic modifications. |
 | `uppercase_reserved_words`| `Boolean` | `true` | Normalizes logical keywords (`AND`, `OR`, `NOT`). |
+
+---
+
+## 10. Practical Usage Examples & Snippets
+
+### How to Format in VS Code
+* **Format Entire Document**: Press `Shift+Alt+F` (Windows/Linux) or `Shift+Option+F` (macOS).
+* **Format Selection**: Select lines and press `Ctrl+K Ctrl+F` (Windows/Linux) or `Cmd+K Cmd+F` (macOS).
+* **Format on Save**: Enable `"editor.formatOnSave": true` in VS Code settings.
+
+---
+
+### Project Configuration File: `.bmlbeautifyrc`
+Create a `.bmlbeautifyrc` file in your workspace root:
+
+```json
+{
+  "indent_size": 4,
+  "indent_char": " ",
+  "brace_style": "collapse",
+  "space_before_conditional": true,
+  "space_in_paren": false,
+  "preserve_newlines": true,
+  "max_preserve_newlines": 2,
+  "end_with_newline": true,
+  "uppercase_reserved_words": true
+}
+```
+
+---
+
+### Example 1: Conditionals, `if/elif/else` Chains & Logical Keywords
+
+#### Before Formatting:
+```javascript
+if(status=="APPROVED"and discount>0.15){
+totalPrice=basePrice*(1.0-discount);
+appliedRate="HIGH";
+}elif(status=="PENDING"or status=="DRAFT"){
+totalPrice=basePrice;
+appliedRate="NONE";
+}else{
+totalPrice=0.0;
+}
+```
+
+#### After Formatting:
+```javascript
+if (status == "APPROVED" AND discount > 0.15) {
+    totalPrice = basePrice * (1.0 - discount);
+    appliedRate = "HIGH";
+} elif (status == "PENDING" OR status == "DRAFT") {
+    totalPrice = basePrice;
+    appliedRate = "NONE";
+} else {
+    totalPrice = 0.0;
+}
+```
+
+---
+
+### Example 2: BMQL Queries & Dynamic String Formatting
+
+#### Before Formatting:
+```javascript
+rs=bmql("SELECT part_number, price, description FROM Parts WHERE category = $cat AND status = 'ACTIVE' ORDER BY price DESC");
+for row in rs{
+partNum=get(row,"part_number");
+priceVal=getfloat(row,"price");
+put(pricesDict,partNum,priceVal);
+}
+```
+
+#### After Formatting:
+```javascript
+rs = bmql("SELECT part_number, price, description FROM Parts WHERE category = $cat AND status = 'ACTIVE' ORDER BY price DESC");
+
+for row in rs {
+    partNum = get(row, "part_number");
+    priceVal = getfloat(row, "price");
+    put(pricesDict, partNum, priceVal);
+}
+```
+
+---
+
+### Example 3: Sized Arrays, Dictionaries & JSON Manipulation
+
+#### Before Formatting:
+```javascript
+matrix=Float[3][3];
+customerData=json();
+jsonput(customerData,"account_id",accountId);
+jsonput(customerData,"is_enterprise",true);
+itemsArray=jsonarray();
+jsonarrayappend(itemsArray,customerData);
+```
+
+#### After Formatting:
+```javascript
+matrix = Float[3][3];
+customerData = json();
+jsonput(customerData, "account_id", accountId);
+jsonput(customerData, "is_enterprise", true);
+
+itemsArray = jsonarray();
+jsonarrayappend(itemsArray, customerData);
+```
+
+---
+
+### Example 4: JSDoc Headers & Multi-Line Star Comments
+
+#### Before Formatting:
+```javascript
+/**
+* Calculates tiered discount rate for enterprise accounts.
+* @param line - Commerce line item dictionary
+* @param customRate - User override percentage
+* @return Calculated decimal discount rate
+*/
+discountRate = 0.0;
+```
+
+#### After Formatting (Star Aligned):
+```javascript
+/**
+ * Calculates tiered discount rate for enterprise accounts.
+ * @param line - Commerce line item dictionary
+ * @param customRate - User override percentage
+ * @return Calculated decimal discount rate
+ */
+discountRate = 0.0;
+```
+
+---
+
+### Example 5: Selective Ignoring via `/* beautify ignore */`
+
+```javascript
+// Normal formatted code
+basePrice = 100.0;
+taxAmount = basePrice * 0.08;
+
+/* beautify ignore:start */
+// Preserves custom raw table layout verbatim
+customMatrix = [
+    1,   0,   0,
+    0, 255,   0,
+    0,   0, 255
+];
+/* beautify ignore:end */
+
+finalTotal = basePrice + taxAmount;
+```
+
+---
+
+### Example 6: Calling via MCP Tool (`format_bml`)
+
+```json
+{
+  "name": "format_bml",
+  "arguments": {
+    "code": "if(x>10){return true;}else{return false;}",
+    "options": {
+      "indent_size": 4,
+      "brace_style": "collapse"
+    }
+  }
+}
+```
+

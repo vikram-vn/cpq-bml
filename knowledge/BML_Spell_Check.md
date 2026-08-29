@@ -202,3 +202,70 @@ flowchart TD
 | `bml.spellcheck.checkIdentifiers` | `Boolean` | `false` | Enables spell checking for variable and function names (split by camelCase/snake_case). |
 | `bml.spellcheck.customWords` | `Array<String>` | `[]` | List of user-approved custom words. |
 | `bml.spellcheck.minWordLength` | `Integer` | `3` | Minimum character length before a word is spell checked. |
+
+---
+
+## 8. Practical Usage Examples & Quick Fix Workflows
+
+### Example 1: Smart Morphology In Action (Zero False Positives)
+
+The spell checker automatically accepts regular inflections and compound prefixes without flagging them:
+
+```javascript
+// Accepted naturally via Smart Morphology (root word derived):
+// • categories (plural of category)
+// • recalculating (prefix 're-' + root 'calculate' + '-ing')
+// • unformatted (prefix 'un-' + root 'format' + '-ed')
+// • configurable (root 'configure' + '-able')
+// • deployment (root 'deploy' + '-ment')
+// • subdocumentKey (prefix 'sub-' + 'document' + 'key')
+categoriesList = ["Enterprise", "MidMarket"];
+recalculatingTotal = true;
+isConfigurableItem = true;
+```
+
+---
+
+### Example 2: Typo Detection & Lightbulb Quick Fix
+
+#### Problematic Code:
+```javascript
+// SQUIGGLE ON: 'calclate', 'servcie', 'struture'
+calclateDiscount = 0.15;
+servcieStatus = "ACTIVE";
+docStruture = dict();
+```
+
+#### Quick Fix Lightbulb Actions (`Ctrl+.` or `Cmd+.`):
+* `calclate` &rarr; Select `"Change to 'calculate'"`
+* `servcie` &rarr; Select `"Change to 'service'"`
+* `struture` &rarr; Select `"Change to 'structure'"`
+
+#### Corrected Code:
+```javascript
+calculateDiscount = 0.15;
+serviceStatus = "ACTIVE";
+docStructure = dict();
+```
+
+---
+
+### Example 3: Adding Custom Workspace Terms
+
+When a project uses custom company terms or model codes (e.g. `XPS9500`, `OptiPlex`, `SaaS`):
+
+1. Put cursor on the flagged word.
+2. Press `Ctrl+.` / `Cmd+.`.
+3. Select `"Add 'SaaS' to workspace dictionary"`.
+4. The term is automatically appended to `.vscode/settings.json`:
+
+```json
+{
+  "cpqBml.spelling.userWords": [
+    "saas",
+    "xps9500",
+    "optiplex"
+  ]
+}
+```
+
