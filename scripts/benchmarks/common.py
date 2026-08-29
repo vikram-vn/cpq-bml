@@ -218,7 +218,7 @@ const vscodeMock = {{
     SignatureHelp: function() {{ this.signatures = []; this.activeSignature = 0; this.activeParameter = 0; }},
     Uri: {{ file: (f) => ({{ fsPath: f, toString: () => f }}) }},
     Location: function(u, p) {{ this.uri = u; this.range = p; }},
-    WorkspaceEdit: function() {{ this.replace = () => {{}}; }},
+    WorkspaceEdit: function() {{ this.replace = () => {{}}; this.insert = () => {{}}; this.delete = () => {{}}; }},
     CodeAction: function(title, kind) {{ this.title = title; this.kind = kind; this.diagnostics = []; }},
     CodeActionKind: {{
         QuickFix: 'quickfix',
