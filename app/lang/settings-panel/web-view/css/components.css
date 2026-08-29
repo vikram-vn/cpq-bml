@@ -111,12 +111,6 @@ button.link:hover {
     background-color: var(--vscode-settings-rowHoverBackground, rgba(128, 128, 128, 0.05));
     border: 1px solid var(--vscode-widget-border, rgba(128, 128, 128, 0.1));
     margin-bottom: 12px;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
-}
-
-.switch:hover {
-    background-color: rgba(128, 128, 128, 0.09);
-    border-color: var(--vscode-focusBorder);
 }
 
 .switch-label-group {

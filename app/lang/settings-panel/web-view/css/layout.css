@@ -74,10 +74,10 @@
     transition: stroke var(--transition-fast);
 }
 
-.sidebar-item:hover {
-    background-color: var(--vscode-list-hoverBackground, rgba(128, 128, 128, 0.1)) !important;
+.sidebar-item:hover:not(.active) {
+    background-color: transparent !important;
     color: var(--vscode-sideBar-foreground, var(--vscode-foreground)) !important;
-    opacity: 1 !important;
+    opacity: 0.9 !important;
 }
 
 .sidebar-item.active {
