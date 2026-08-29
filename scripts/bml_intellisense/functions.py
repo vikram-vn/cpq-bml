@@ -73,11 +73,14 @@ def generate_bml_functions(root_dir):
         if extracted_examples:
             examples_found += 1
 
+        raw_short_syntax = item.get('shortSyntax') or item.get('name')
+        computed_syntax = to_snippet_syntax(raw_short_syntax)
+
         result[key] = {
             "functionCategory": category or existing_entry.get("functionCategory"),
             "returnType": extract_return_type(full_sig) or existing_entry.get("returnType"),
             "fullSignature": full_sig if full_sig else None,
-            "syntax": existing_entry.get("syntax") or to_snippet_syntax(item.get('shortSyntax') or item.get('name')),
+            "syntax": computed_syntax or existing_entry.get("syntax") or to_snippet_syntax(key),
             "examples": extracted_examples,
             "notes": strip_html(item.get('description', '')) or existing_entry.get("notes"),
             "docs": docs,

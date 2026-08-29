@@ -20,6 +20,7 @@ Architecture, Control Flow Graphs (CFGs), configuration options, and real-world 
 | **[BML Spell Check](BML_Spell_Check.md)** | Domain Lexicon | Smart morphological inflection engine, developer/cloud lexicon, zero-disk-IO Brotli dictionaries, and custom workspace dictionaries. |
 | **[BML XSLT & XML](BML_XSLT.md)** | Document Engine | XSL template formatting, XPath 1.0 autocompletion, schema validation, quick fixes, and BML `transformxml()` integration. |
 | **[BML Code Metrics](BML_Metrics.md)** | Quality Assurance | McCabe Cyclomatic Complexity, Halstead Software Science metrics, Maintainability Index (MI) score, and visual dashboard. |
+| **[BML Snippets Catalog](BML_Snippets.md)** | Developer Productivity | 26 production-grade code skeletons, sequential `$1` &rarr; `$2` &rarr; `$0` tab-stops, and variable mirroring. |
 
 ---
 

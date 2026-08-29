@@ -40,6 +40,7 @@ For complete architectural blueprints, Control Flow Graphs (CFGs), and code exam
 | **🔤 Smart Spell Checker** | Morphological inflection analyzer and domain dictionary designed for BML identifiers and comments. | **[Spell Check Guide](knowledge/BML_Spell_Check.md)** |
 | **📄 XSLT & XML Subsystem** | Document Engine XSL template formatting, XPath 1.0 autocompletion, and BML `transformxml()` integration. | **[XSLT Guide](knowledge/BML_XSLT.md)** |
 | **📊 Code Quality & Metrics** | McCabe Cyclomatic Complexity, Halstead Software Science, Maintainability Index (MI), and visual dashboard. | **[Metrics Guide](knowledge/BML_Metrics.md)** |
+| **⚡ BML Snippets Catalog** | 26 production skeletons, chronological tab-stops, and live placeholder synchronization. | **[Snippets Guide](knowledge/BML_Snippets.md)** |
 | **📖 30 Core BML References** | Language fundamentals, BMQL syntax, JSON/Dictionaries, Web Services, Commerce, Configuration, and standard APIs. | **[BML Reference Docs](knowledge/BML/)** |
 
 ---

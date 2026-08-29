@@ -1,58 +1,184 @@
 {
-  "for...loop": {
-    "syntax": "for line in transactionLine {\n\tprint(line.${3:_document_number});\n}",
+  "if": {
+    "syntax": "if (${1:condition}) {\n\t${0}\n}",
     "examples": [
-      "result=\"\";\ndocNumArr=string[];\ndiscAmt=dict(\"float\");\ndiscType=dict(\"string\"); \n\nfor line in transactionLine{\n\tdocNum=line._document_number;\n\tappend(docNumArr, docNum);\n}\n\nfor each in docNumArr{\n\tresult = result ~ each ~ \"|\";\n}\n\nreturn result;"
+      "if (basePrice > 100.0) {\n\tdiscount = 0.15;\n}"
     ],
-    "notes": "Loop transaction line items."
+    "notes": "Simple conditional statement."
   },
-  "transactionLine": {
-    "syntax": "for line in transactionLine {\n\tprint(line.${3:_document_number});\n}",
+  "ifelse": {
+    "syntax": "if (${1:condition}) {\n\t${2}\n} else {\n\t${0}\n}",
     "examples": [
-      "for line in transactionLine {\n\tdocNum = line._document_number;\n}"
+      "if (isValid) {\n\tstatus = \"APPROVED\";\n} else {\n\tstatus = \"REJECTED\";\n}"
     ],
-    "notes": "Loop transaction line items."
+    "notes": "If-else conditional statement."
+  },
+  "ifelseif": {
+    "syntax": "if (${1:condition}) {\n\t${2}\n} elif (${3:condition}) {\n\t${4}\n} else {\n\t${0}\n}",
+    "examples": [
+      "if (tier == \"GOLD\") {\n\tdiscountRate = 0.25;\n} elif (tier == \"SILVER\") {\n\tdiscountRate = 0.15;\n} else {\n\tdiscountRate = 0.05;\n}"
+    ],
+    "notes": "Multi-branch conditional statement."
+  },
+  "forin": {
+    "syntax": "for ${1:item} in ${2:array} {\n\t${0}\n}",
+    "examples": [
+      "for sku in partNumbers {\n\tprint(sku);\n}"
+    ],
+    "notes": "Array iteration loop."
+  },
+  "dict": {
+    "syntax": "${1:dictVar} = dict(\"${2|string,integer,float,string[],integer[],float[]|}\");\n${0}",
+    "examples": [
+      "priceMap = dict(\"float\");\nput(priceMap, \"SKU-100\", 49.99);"
+    ],
+    "notes": "Initialize a typed BML dictionary."
+  },
+  "dict-iter": {
+    "syntax": "for ${1:key} in getkeys(${2:dictVar}) {\n\t${3:val} = get(${2:dictVar}, ${1:key});\n\t${0}\n}",
+    "examples": [
+      "for sku in getkeys(priceMap) {\n\tprice = get(priceMap, sku);\n\tprint(sku ~ \": \" ~ string(price));\n}"
+    ],
+    "notes": "Iterate over dictionary keys and values."
+  },
+  "json-new": {
+    "syntax": "${1:jsonVar} = json();\n${0}",
+    "examples": [
+      "payload = json();\njsonput(payload, \"status\", \"SUCCESS\");"
+    ],
+    "notes": "Create an empty JSON object."
+  },
+  "json-put": {
+    "syntax": "jsonput(${1:jsonVar}, \"${2:key}\", ${3:value});",
+    "examples": [
+      "jsonput(configJson, \"maxUsers\", 50);"
+    ],
+    "notes": "Put a key-value pair into a JSON object."
+  },
+  "json-iter": {
+    "syntax": "for ${1:key} in jsonkeys(${2:jsonVar}) {\n\t${3:val} = jsonget(${2:jsonVar}, ${1:key});\n\t${0}\n}",
+    "examples": [
+      "for field in jsonkeys(responseJson) {\n\tval = jsonget(responseJson, field);\n\tprint(field ~ \" = \" ~ val);\n}"
+    ],
+    "notes": "Iterate over all keys in a JSON object."
+  },
+  "jsonarray-new": {
+    "syntax": "${1:arrayVar} = jsonarray();\n${0}",
+    "examples": [
+      "lineItemsArr = jsonarray();\njsonarrayappend(lineItemsArr, itemJson);"
+    ],
+    "notes": "Create an empty JSON array."
+  },
+  "jsonarray-append": {
+    "syntax": "jsonarrayappend(${1:arrayVar}, ${2:item});",
+    "examples": [
+      "jsonarrayappend(itemsJsonArr, singleItemJson);"
+    ],
+    "notes": "Append an element to a JSON array."
+  },
+  "bmql-select": {
+    "syntax": "${1:records} = bmql(\"SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}\", ${5:param});\nfor ${6:row} in ${1:records} {\n\t${7:val} = get(${6:row}, \"${2:column}\");\n\t${0}\n}",
+    "examples": [
+      "records = bmql(\"SELECT partNumber, price FROM parts WHERE category = $cat\", cat);\nfor row in records {\n\tpart = get(row, \"partNumber\");\n\tprice = get(row, \"price\");\n}"
+    ],
+    "notes": "Parameterized BMQL SELECT query with recordset loop."
   },
   "bmql-safe": {
-    "syntax": "// bmql-safe: parameterized query with null-guard\n${1:rows} = bmql(\"SELECT ${2:col1}, ${3:col2} FROM ${4:table_name} WHERE ${5:field} = '$${6:param}'\", ${6:param});\nif (isnull(${1:rows}) or sizeofarray(${1:rows}) == 0) {\n\t${7:// handle empty result}\n\treturn \"\";\n}\n${8:val} = ${1:rows}[0].${2:col1};",
+    "syntax": "${1:records} = bmql(\"SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}\", ${5:param});\nif (not(isnull(${1:records})) AND sizeofarray(${1:records}) > 0) {\n\tfor ${6:row} in ${1:records} {\n\t\t${7:val} = get(${6:row}, \"${2:column}\");\n\t\t${0}\n\t}\n}",
     "examples": [
-      "rows = bmql(\"SELECT price FROM products WHERE sku = '$sku'\", sku);\nif (isnull(rows) or sizeofarray(rows) == 0) {\n\treturn \"0.0\";\n}\nreturn rows[0].price;"
+      "rows = bmql(\"SELECT price FROM products WHERE sku = '$sku'\", sku);\nif (not(isnull(rows)) AND sizeofarray(rows) > 0) {\n\tfor row in rows {\n\t\tprice = get(row, \"price\");\n\t}\n}"
     ],
-    "notes": "Safe parameterized BMQL query with null and size guard. Use $variable placeholders to prevent SQL injection."
+    "notes": "Guarded parameterized BMQL query with null and size verification."
   },
-  "bmql-loop": {
-    "syntax": "// bmql-loop: query result iteration\n${1:rows} = bmql(\"SELECT ${2:col} FROM ${3:table}\");\nif (not(isnull(${1:rows})) and sizeofarray(${1:rows}) > 0) {\n\tfor ${4:row} in ${1:rows} {\n\t\t${5:val} = ${4:row}.${2:col};\n\t\t${6:// process val}\n\t}\n}",
+  "bmql-update": {
+    "syntax": "bmql(\"UPDATE ${1:table} SET ${2:column} = $${3:value} WHERE ${4:keyColumn} = $${5:keyValue}\", ${3:value}, ${5:keyValue});",
     "examples": [
-      "rows = bmql(\"SELECT name, price FROM products\");\nif (not(isnull(rows)) and sizeofarray(rows) > 0) {\n\tfor row in rows {\n\t\tname = row.name;\n\t\tprice = row.price;\n\t}\n}"
+      "bmql(\"UPDATE inventory SET quantity = $qty WHERE partNumber = $part\", qty, part);"
     ],
-    "notes": "BMQL query with guarded loop iteration. Prevents null pointer errors on empty result sets."
+    "notes": "Update rows in an Oracle CPQ Data Table."
+  },
+  "bmql-insert": {
+    "syntax": "bmql(\"INSERT INTO ${1:table} (${2:column}) VALUES ($${3:value})\", ${3:value});",
+    "examples": [
+      "bmql(\"INSERT INTO audit_log (action) VALUES ($action)\", action);"
+    ],
+    "notes": "Insert a new row into an Oracle CPQ Data Table."
+  },
+  "bmql-delete": {
+    "syntax": "bmql(\"DELETE FROM ${1:table} WHERE ${2:keyColumn} = $${3:keyValue}\", ${3:keyValue});",
+    "examples": [
+      "bmql(\"DELETE FROM staging_quotes WHERE quoteId = $qid\", qid);"
+    ],
+    "notes": "Delete rows from an Oracle CPQ Data Table with a WHERE guard."
+  },
+  "urldata-get": {
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Content-Type\", \"application/json\");\n${2:response} = urldata(${3:url}, \"GET\", ${1:headers});\n${0}",
+    "examples": [
+      "headers = dict(\"string\");\nput(headers, \"Content-Type\", \"application/json\");\nurl = \"https://api.example.com/v1/rates\";\nresponse = urldata(url, \"GET\", headers);"
+    ],
+    "notes": "Perform an HTTP GET request with headers."
+  },
+  "urldata-post": {
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Content-Type\", \"application/json\");\n${2:response} = urldata(${3:url}, \"POST\", ${1:headers}, ${4:payload});\n${0}",
+    "examples": [
+      "headers = dict(\"string\");\nput(headers, \"Content-Type\", \"application/json\");\nurl = \"https://api.example.com/v1/orders\";\npayload = \"{\\\"orderId\\\": 12345}\";\nresponse = urldata(url, \"POST\", headers, payload);"
+    ],
+    "notes": "Perform an HTTP POST request with a JSON payload."
+  },
+  "commerce-return": {
+    "syntax": "${1:returnMap} = dict(\"string\");\nput(${1:returnMap}, \"${2:attribute}\", ${3:value});\nreturn ${1:returnMap};",
+    "examples": [
+      "retMap = dict(\"string\");\nput(retMap, \"totalDiscount_quote\", string(discountAmt));\nreturn retMap;"
+    ],
+    "notes": "Return an attribute dictionary from Commerce BML scripts."
+  },
+  "commerce-line-iter": {
+    "syntax": "for ${1:line} in transactionLine {\n\t${2:docNum} = ${1:line}._document_number;\n\t${0}\n}",
+    "examples": [
+      "for line in transactionLine {\n\tdocNum = line._document_number;\n\tpartNum = line._part_number;\n\tprice = line._price_subtotal;\n}"
+    ],
+    "notes": "Loop through Commerce transactionLine items."
   },
   "sb-concat": {
-    "syntax": "// sb-concat: StringBuilder pattern for efficient string accumulation\n${1:sb} = stringbuilder();\nfor ${2:item} in ${3:arr} {\n\tsbappend(${1:sb}, ${2:item});\n\tsbappend(${1:sb}, \"${4:,}\");\n}\n${5:result} = sbtostring(${1:sb});",
+    "syntax": "${1:sb} = stringbuilder();\nfor ${2:item} in ${3:array} {\n\tsbappend(${1:sb}, ${2:item});\n}\n${4:result} = sbtostring(${1:sb});\n${0}",
     "examples": [
-      "sb = stringbuilder();\nfor item in myArray {\n\tsbappend(sb, item);\n\tsbappend(sb, \",\");\n}\nresult = sbtostring(sb);\nreturn result;"
+      "sb = stringbuilder();\nfor item in skuList {\n\tsbappend(sb, item);\n\tsbappend(sb, \",\");\n}\nresult = sbtostring(sb);\nreturn result;"
     ],
-    "notes": "Use StringBuilder (sbappend/sbtostring) instead of string concatenation in loops to avoid O(n²) memory allocation."
+    "notes": "Use StringBuilder in loops to avoid memory overhead."
   },
   "null-guard": {
-    "syntax": "if (isnull(${1:var}) or trim(${1:var}) == \"\") {\n\t${2:// handle null/empty}\n\treturn ${3:\"\"};\n}",
+    "syntax": "if (isnull(${1:value}) OR trim(${1:value}) == \"\") {\n\t${2:// handle null/empty}\n\treturn ${3:\"\"};\n}",
     "examples": [
-      "if (isnull(inputVal) or trim(inputVal) == \"\") {\n\treturn \"\";\n}"
+      "if (isnull(customerName) OR trim(customerName) == \"\") {\n\treturn \"UNKNOWN\";\n}"
     ],
-    "notes": "Guard pattern for null or empty string variables. Combine isnull() with trim() == \"\" for comprehensive null/empty detection."
+    "notes": "Guard pattern for null or empty string variables."
   },
   "split-safe": {
-    "syntax": "// split-safe: split with array boundary check\n${1:parts} = split(${2:inputStr}, \"${3:,}\");\nif (sizeofarray(${1:parts}) > ${4:0}) {\n\t${5:first} = ${1:parts}[0];\n}",
+    "syntax": "${1:parts} = split(${2:str}, \"${3:,}\");\nif (sizeofarray(${1:parts}) > 0) {\n\t${4:firstPart} = ${1:parts}[0];\n\t${0}\n}",
     "examples": [
-      "parts = split(csvLine, \",\");\nif (sizeofarray(parts) > 1) {\n\tname = parts[0];\n\tvalue = parts[1];\n}"
+      "parts = split(csvLine, \",\");\nif (sizeofarray(parts) > 0) {\n\tfirstCol = parts[0];\n}"
     ],
-    "notes": "Always check sizeofarray() before accessing split() array indices to prevent out-of-bounds errors."
+    "notes": "Array split boundary guard before index access."
   },
   "try-atoi": {
-    "syntax": "// try-atoi: safe integer conversion\nif (isnumber(${1:strVal})) {\n\t${2:numVal} = atoi(${1:strVal});\n} else {\n\t${3:// handle non-numeric}\n\t${2:numVal} = ${4:0};\n}",
+    "syntax": "if (isnumber(${1:str})) {\n\t${2:num} = atoi(${1:str});\n} else {\n\t${2:num} = ${3:0};\n}\n${0}",
     "examples": [
-      "if (isnumber(quantityStr)) {\n\tquantity = atoi(quantityStr);\n} else {\n\tquantity = 0;\n}"
+      "if (isnumber(quantityStr)) {\n\tqty = atoi(quantityStr);\n} else {\n\tqty = 0;\n}"
     ],
-    "notes": "Always guard atoi()/atof() with isnumber() to prevent runtime conversion errors on non-numeric input."
+    "notes": "Safe integer conversion."
+  },
+  "try-atof": {
+    "syntax": "if (isnumber(${1:str})) {\n\t${2:num} = atof(${1:str});\n} else {\n\t${2:num} = ${3:0.0};\n}\n${0}",
+    "examples": [
+      "if (isnumber(priceStr)) {\n\tunitPrice = atof(priceStr);\n} else {\n\tunitPrice = 0.0;\n}"
+    ],
+    "notes": "Safe float conversion."
+  },
+  "doc-func": {
+    "syntax": "/**\n * ${1:description}\n * @param {${2:String}} ${3:param}\n * @return {${4:String}}\n */\n${0}",
+    "examples": [
+      "/**\n * Computes discount rate based on customer tier.\n * @param {String} tier - Customer account tier\n * @return {Float} Applicable discount percentage\n */"
+    ],
+    "notes": "JSDoc documentation block for BML functions."
   }
 }

@@ -90,6 +90,11 @@ function buildCategorizedItems() {
             sortGroup = '1_';
         }
 
+        const isControlFlow = key.startsWith('if') || key.startsWith('for') || key === 'break' || key === 'continue' || key === 'return' || (info.functionCategory && info.functionCategory.toLowerCase() === 'logical');
+        if (isControlFlow) {
+            kind = vscode.CompletionItemKind.Snippet;
+        }
+
         const item = new vscode.CompletionItem(info.name, kind);
         item.detail = syntax;
         item.insertText = new vscode.SnippetString(syntax);
@@ -97,7 +102,7 @@ function buildCategorizedItems() {
         item.sortText = `${sortGroup}${key}`;
         item.documentation = formatAsJsDoc(info);
 
-        if (info.category === 'function') {
+        if (info.category === 'function' && !isControlFlow) {
             item.commitCharacters = ['('];
             item.command = {
                 command: 'editor.action.triggerParameterHints',

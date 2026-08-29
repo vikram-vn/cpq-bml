@@ -19,23 +19,33 @@ def strip_html(text):
 def to_snippet_syntax(short_syntax):
     if not short_syntax:
         return ""
-    match = re.search(r'\(([^)]*)\)', short_syntax)
+    # If already a formatted snippet with tab-stops, preserve as-is
+    if "${1:" in short_syntax or "${0}" in short_syntax:
+        return short_syntax
+
+    match = re.search(r'(\w+)\s*\(([^)]*)\)', short_syntax)
     if not match:
         return short_syntax
         
-    params_str = match.group(1)
+    func_name = match.group(1)
+    params_str = match.group(2)
     if not params_str.strip():
-        return short_syntax.replace(match.group(0), '()')
+        return f"{func_name}()"
         
-    params = params_str.split(',')
-    idx = 1
+    # Clean optional parameter brackets: [, ], etc.
+    cleaned_params_str = params_str.replace('[', '').replace(']', '').strip()
+    if not cleaned_params_str:
+        return f"{func_name}()"
+
+    params = [p.strip() for p in cleaned_params_str.split(',') if p.strip()]
     snippet_params = []
-    for p in params:
-        param_name = p.strip()
+    for idx, p in enumerate(params, start=1):
+        param_parts = p.split()
+        param_name = param_parts[-1] if param_parts else p
+        param_name = re.sub(r'[^a-zA-Z0-9_]', '', param_name) or f"param{idx}"
         snippet_params.append(f"${{{idx}:{param_name}}}")
-        idx += 1
         
-    return short_syntax.replace(match.group(0), f"({', '.join(snippet_params)})")
+    return f"{func_name}({', '.join(snippet_params)})"
 
 def extract_return_type(full_signature):
     if not full_signature:

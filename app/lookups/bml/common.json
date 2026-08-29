@@ -916,7 +916,7 @@
       "description": "Simple conditional statement with one condition.",
       "syntax": "if (&lt;conditional expression&gt;) {&lt;statement(s)&gt;}",
       "example": "1. Example:<br/>if(attr1 > 100){<br/>&nbsp;&nbsp; return true;}",
-      "shortSyntax": "\nif(condition){\nstatement;\n}",
+      "shortSyntax": "if (${1:condition}) {\n\t${0}\n}",
       "links": [
         {
           "rel": "self",
@@ -930,7 +930,7 @@
       "description": "Conditional statement with two conditions.",
       "syntax": "[else {&lt;statement(s)&gt;}]",
       "example": "1. Example:<br/>if(attr1 == 100){<br/>&nbsp;&nbsp; return true;} else {<br/><br/>&nbsp;&nbsp; return false;}",
-      "shortSyntax": "\nif(condition){\nstatement;}else{\nstatement;\n}",
+      "shortSyntax": "if (${1:condition}) {\n\t${2}\n} else {\n\t${0}\n}",
       "links": [
         {
           "rel": "self",
@@ -944,7 +944,7 @@
       "description": "Conditional statement with two or more conditions.",
       "syntax": "[elif (&lt;conditional expression&gt;) {&lt;statement(s)&gt;}]",
       "example": "1. Example:<br/>if(attr1 == 100){<br/>&nbsp;&nbsp; return true;} elif (attr1 == 200){<br/>&nbsp;&nbsp; return false;}",
-      "shortSyntax": "\nif(condition){\nstatement(s);\n}elif(condition){\nstatement(s);\n}else{\nstatement(s);\n}",
+      "shortSyntax": "if (${1:condition}) {\n\t${2}\n} elif (${3:condition}) {\n\t${4}\n} else {\n\t${0}\n}",
       "links": [
         {
           "rel": "self",
@@ -958,7 +958,7 @@
       "description": "Loop statements.",
       "syntax": "for (&lt;variable&gt;) in (&lt;system_array&gt;) {&lt;statement(s)&gt;}",
       "example": "Example to loop through a 1-D array:<br/><br/>arr = string[]{\"aaa\", \"bbb\", \"ccc\"};<br/>for arrElement in arr {<br/>&nbsp;&nbsp;print(arrElement);<br/>} <br/> <br/>Example to loop through a 2-D array:<br/><br/>int2DArr = Integer [] [] { {1,2}, {2,3}};<br/>for row in int2DArr {<br/>&nbsp;for element in row {<br/>&nbsp;&nbsp;print(element);<br/>&nbsp;}<br/>}",
-      "shortSyntax": "\nfor (variable) in (system_array) {\nstatement(s)\n}",
+      "shortSyntax": "for ${1:item} in ${2:array} {\n\t${0}\n}",
       "links": [
         {
           "rel": "self",
