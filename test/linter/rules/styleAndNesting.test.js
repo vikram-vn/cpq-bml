@@ -158,5 +158,57 @@ suite('BML Linter Test Suite - deep nesting and print guard', () => {
             assert.ok(loopDiags[0].message.includes('Loop nesting depth of 4 exceeds recommended limit of 3'));
         });
     });
+
+    suite('bml-for-in-function-call flags direct function calls in for-in loops', () => {
+        test('flags for key in jsonkeys(jsonVar) with error', () => {
+            const diags = lintText(`
+                j = json();
+                for key in jsonkeys(j) {
+                    val = jsonget(j, key);
+                }
+                return "";
+            `);
+            const err = diags.find(d => d.code === 'bml-for-in-function-call');
+            assert.ok(err, 'expected bml-for-in-function-call error');
+            assert.match(err.message, /jsonkeys/i);
+        });
+
+        test('flags for k in getkeys(dictVar) with error', () => {
+            const diags = lintText(`
+                d = dict("string");
+                for k in getkeys(d) {
+                    v = get(d, k);
+                }
+                return "";
+            `);
+            const err = diags.find(d => d.code === 'bml-for-in-function-call');
+            assert.ok(err, 'expected bml-for-in-function-call error');
+            assert.match(err.message, /getkeys/i);
+        });
+
+        test('allows for i in range(0, 10) loop', () => {
+            const diags = lintText(`
+                for i in range(0, 10) {
+                    print(i);
+                }
+                return "";
+            `);
+            const err = diags.find(d => d.code === 'bml-for-in-function-call');
+            assert.strictEqual(err, undefined, 'range() is a valid loop generator');
+        });
+
+        test('allows variable iteration: keys = jsonkeys(j); for key in keys', () => {
+            const diags = lintText(`
+                j = json();
+                keys = jsonkeys(j);
+                for key in keys {
+                    val = jsonget(j, key);
+                }
+                return "";
+            `);
+            const err = diags.find(d => d.code === 'bml-for-in-function-call');
+            assert.strictEqual(err, undefined, 'variable iteration should be clean');
+        });
+    });
 });
 

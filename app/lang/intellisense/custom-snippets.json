@@ -49,9 +49,9 @@
     "notes": "Initialize a typed BML dictionary."
   },
   "dict-iter": {
-    "syntax": "for ${1:key} in getkeys(${2:dictVar}) {\n\t${3:val} = get(${2:dictVar}, ${1:key});\n\t${0}\n}",
+    "syntax": "${1:keys} = getkeys(${2:dictVar});\nfor ${3:key} in ${1:keys} {\n\t${4:val} = get(${2:dictVar}, ${3:key});\n\t${0}\n}",
     "examples": [
-      "for sku in getkeys(priceMap) {\n\tprice = get(priceMap, sku);\n\tprint(sku ~ \": \" ~ string(price));\n}"
+      "keys = getkeys(priceMap);\nfor sku in keys {\n\tprice = get(priceMap, sku);\n\tprint(sku ~ \": \" ~ string(price));\n}"
     ],
     "notes": "Iterate over dictionary keys and values."
   },
@@ -77,9 +77,9 @@
     "notes": "Put a key-value pair into a JSON object."
   },
   "json-iter": {
-    "syntax": "for ${1:key} in jsonkeys(${2:jsonVar}) {\n\t${3:val} = jsonget(${2:jsonVar}, ${1:key});\n\t${0}\n}",
+    "syntax": "${1:keys} = jsonkeys(${2:jsonVar});\nfor ${3:key} in ${1:keys} {\n\t${4:val} = jsonget(${2:jsonVar}, ${3:key});\n\t${0}\n}",
     "examples": [
-      "for field in jsonkeys(responseJson) {\n\tval = jsonget(responseJson, field);\n\tprint(field ~ \" = \" ~ val);\n}"
+      "keys = jsonkeys(responseJson);\nfor field in keys {\n\tval = jsonget(responseJson, field);\n\tprint(field ~ \" = \" ~ val);\n}"
     ],
     "notes": "Iterate over all keys in a JSON object."
   },
