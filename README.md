@@ -112,5 +112,5 @@ Press **F5** in VS Code to launch the Extension Development Host.
 
 ## 📄 License & Disclaimer
 
-* **License:** Licensed under the [MIT License](LICENSE.txt).
+* **License:** Licensed under the [MIT License](LICENSE).
 * **Disclaimer:** This extension is an independent open-source tool and is not affiliated with or endorsed by Oracle Corporation.
