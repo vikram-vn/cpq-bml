@@ -16,7 +16,7 @@
   "ifelseif": {
     "syntax": "if (${1:condition}) {\n\t${2}\n} elif (${3:condition}) {\n\t${4}\n} else {\n\t${0}\n}",
     "examples": [
-      "if (tier == \"GOLD\") {\n\tdiscountRate = 0.25;\n} elif (tier == \"SILVER\") {\n\tdiscountRate = 0.15;\n} else {\n\tdiscountRate = 0.05;\n}"
+      "if (tier == \"ENTERPRISE\") {\n\tdiscountRate = 0.25;\n} elif (tier == \"MID_MARKET\") {\n\tdiscountRate = 0.15;\n} else {\n\tdiscountRate = 0.05;\n}"
     ],
     "notes": "Multi-branch conditional statement."
   },
@@ -26,6 +26,20 @@
       "for sku in partNumbers {\n\tprint(sku);\n}"
     ],
     "notes": "Array iteration loop."
+  },
+  "forin-idx": {
+    "syntax": "${1:idx} = 0;\nfor ${2:item} in ${3:array} {\n\t${0}\n\t${1:idx} = ${1:idx} + 1;\n}",
+    "examples": [
+      "idx = 0;\nfor line in transactionLine {\n\tprint(\"Line \" ~ string(idx) ~ \": \" ~ line._part_number);\n\tidx = idx + 1;\n}"
+    ],
+    "notes": "Array iteration loop with zero-based index counter."
+  },
+  "range": {
+    "syntax": "for ${1:i} in range(${2:0}, ${3:count}) {\n\t${0}\n}",
+    "examples": [
+      "for i in range(0, sizeofarray(items)) {\n\tprint(items[i]);\n}"
+    ],
+    "notes": "Numeric range iteration loop."
   },
   "dict": {
     "syntax": "${1:dictVar} = dict(\"${2|string,integer,float,string[],integer[],float[]|}\");\n${0}",
@@ -40,6 +54,13 @@
       "for sku in getkeys(priceMap) {\n\tprice = get(priceMap, sku);\n\tprint(sku ~ \": \" ~ string(price));\n}"
     ],
     "notes": "Iterate over dictionary keys and values."
+  },
+  "dict-get-default": {
+    "syntax": "if (containskey(${1:dictVar}, ${2:key})) {\n\t${3:val} = get(${1:dictVar}, ${2:key});\n} else {\n\t${3:val} = ${4:defaultValue};\n}\n${0}",
+    "examples": [
+      "if (containskey(configMap, \"taxRate\")) {\n\ttax = get(configMap, \"taxRate\");\n} else {\n\ttax = 0.08;\n}"
+    ],
+    "notes": "Safe dictionary value retrieval with fallback default."
   },
   "json-new": {
     "syntax": "${1:jsonVar} = json();\n${0}",
@@ -62,6 +83,13 @@
     ],
     "notes": "Iterate over all keys in a JSON object."
   },
+  "jsonpath-get": {
+    "syntax": "${1:result} = jsonpathget(${2:jsonVar}, \"${3:$.path.to.field}\");\n${0}",
+    "examples": [
+      "token = jsonpathget(authResponse, \"$.access_token\");"
+    ],
+    "notes": "Extract a nested value from a JSON object using JSONPath."
+  },
   "jsonarray-new": {
     "syntax": "${1:arrayVar} = jsonarray();\n${0}",
     "examples": [
@@ -82,6 +110,13 @@
       "records = bmql(\"SELECT partNumber, price FROM parts WHERE category = $cat\", cat);\nfor row in records {\n\tpart = get(row, \"partNumber\");\n\tprice = get(row, \"price\");\n}"
     ],
     "notes": "Parameterized BMQL SELECT query with recordset loop."
+  },
+  "bmql-select-in": {
+    "syntax": "${1:records} = bmql(\"SELECT ${2:column} FROM ${3:table} WHERE ${4:column} IN ($${5:arrayParam})\", ${5:arrayParam});\nfor ${6:row} in ${1:records} {\n\t${7:val} = get(${6:row}, \"${2:column}\");\n\t${0}\n}",
+    "examples": [
+      "records = bmql(\"SELECT partNumber, price FROM parts WHERE partNumber IN ($partList)\", partList);\nfor row in records {\n\tprice = get(row, \"price\");\n}"
+    ],
+    "notes": "Parameterized BMQL query using an array in an IN clause."
   },
   "bmql-safe": {
     "syntax": "${1:records} = bmql(\"SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}\", ${5:param});\nif (not(isnull(${1:records})) AND sizeofarray(${1:records}) > 0) {\n\tfor ${6:row} in ${1:records} {\n\t\t${7:val} = get(${6:row}, \"${2:column}\");\n\t\t${0}\n\t}\n}",
@@ -125,6 +160,34 @@
     ],
     "notes": "Perform an HTTP POST request with a JSON payload."
   },
+  "urldata-auth-bearer": {
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Authorization\", \"Bearer \" ~ ${2:accessToken});\nput(${1:headers}, \"Content-Type\", \"application/json\");\n${0}",
+    "examples": [
+      "headers = dict(\"string\");\nput(headers, \"Authorization\", \"Bearer \" ~ token);\nput(headers, \"Content-Type\", \"application/json\");"
+    ],
+    "notes": "Setup OAuth2 Bearer token headers for REST API requests."
+  },
+  "urldata-auth-basic": {
+    "syntax": "${1:authStr} = encodebase64(${2:username} ~ \":\" ~ ${3:password});\n${4:headers} = dict(\"string\");\nput(${4:headers}, \"Authorization\", \"Basic \" ~ ${1:authStr});\nput(${4:headers}, \"Content-Type\", \"application/json\");\n${0}",
+    "examples": [
+      "authStr = encodebase64(user ~ \":\" ~ pass);\nheaders = dict(\"string\");\nput(headers, \"Authorization\", \"Basic \" ~ authStr);"
+    ],
+    "notes": "Setup Basic Authentication headers with Base64 encoding."
+  },
+  "xml-read": {
+    "syntax": "${1:xmlDoc} = readxml(${2:xmlString});\n${3:rootNode} = getxmlroottag(${1:xmlDoc});\n${0}",
+    "examples": [
+      "xmlDoc = readxml(responsePayload);\nrootNode = getxmlroottag(xmlDoc);"
+    ],
+    "notes": "Parse an XML string into an XML document object."
+  },
+  "xml-transform": {
+    "syntax": "${1:transformedHtml} = transformxml(${2:xmlData}, ${3:xslTemplate});\n${0}",
+    "examples": [
+      "htmlTable = transformxml(transactionXml, templateXsl);"
+    ],
+    "notes": "Transform XML data using an XSL stylesheet."
+  },
   "commerce-return": {
     "syntax": "${1:returnMap} = dict(\"string\");\nput(${1:returnMap}, \"${2:attribute}\", ${3:value});\nreturn ${1:returnMap};",
     "examples": [
@@ -138,6 +201,13 @@
       "for line in transactionLine {\n\tdocNum = line._document_number;\n\tpartNum = line._part_number;\n\tprice = line._price_subtotal;\n}"
     ],
     "notes": "Loop through Commerce transactionLine items."
+  },
+  "commerce-delimit-return": {
+    "syntax": "${1:returnStr} = \"\";\nfor ${2:line} in transactionLine {\n\t${1:returnStr} = ${1:returnStr} ~ ${2:line}._document_number ~ \"~\" ~ \"${3:attrName}\" ~ \"~\" ~ ${4:value} ~ \"|\";\n}\nreturn ${1:returnStr};",
+    "examples": [
+      "returnStr = \"\";\nfor line in transactionLine {\n\treturnStr = returnStr ~ line._document_number ~ \"~customDiscount_line~\" ~ string(disc) ~ \"|\";\n}\nreturn returnStr;"
+    ],
+    "notes": "Build and return a standard Commerce pipe-delimited line attribute update string."
   },
   "sb-concat": {
     "syntax": "${1:sb} = stringbuilder();\nfor ${2:item} in ${3:array} {\n\tsbappend(${1:sb}, ${2:item});\n}\n${4:result} = sbtostring(${1:sb});\n${0}",
@@ -174,11 +244,39 @@
     ],
     "notes": "Safe float conversion."
   },
+  "round-currency": {
+    "syntax": "${1:roundedAmount} = round(${2:amount}, 2);\n${0}",
+    "examples": [
+      "finalPrice = round(rawTotal, 2);"
+    ],
+    "notes": "Round a float value to 2 decimal places for financial calculations."
+  },
+  "date-format": {
+    "syntax": "${1:dateStr} = datetostr(${2:getdate()}, \"${3:yyyy-MM-dd HH:mm:ss}\");\n${0}",
+    "examples": [
+      "timestamp = datetostr(getdate(), \"yyyy-MM-dd\");"
+    ],
+    "notes": "Format a date object into a formatted string."
+  },
+  "date-parse": {
+    "syntax": "${1:dateObj} = strtojavadate(${2:dateStr}, \"${3:yyyy-MM-dd}\");\n${0}",
+    "examples": [
+      "startDate = strtojavadate(inputStr, \"yyyy-MM-dd\");"
+    ],
+    "notes": "Parse a string into a date object using strtojavadate()."
+  },
   "doc-func": {
     "syntax": "/**\n * ${1:description}\n * @param {${2:String}} ${3:param}\n * @return {${4:String}}\n */\n${0}",
     "examples": [
       "/**\n * Computes discount rate based on customer tier.\n * @param {String} tier - Customer account tier\n * @return {Float} Applicable discount percentage\n */"
     ],
     "notes": "JSDoc documentation block for BML functions."
+  },
+  "doc-file": {
+    "syntax": "/**\n * ============================================================================\n * Function:   ${1:function_name}\n * Purpose:    ${2:description}\n * Author:     ${3:author}\n * Date:       ${4:YYYY-MM-DD}\n * ============================================================================\n */\n${0}",
+    "examples": [
+      "/**\n * ============================================================================\n * Function:   util.pricing.calculateTieredDiscount\n * Purpose:    Applies customer volume discount tiers\n * Author:     CPQ Developer\n * Date:       2026-08-29\n * ============================================================================\n */"
+    ],
+    "notes": "Oracle CPQ standard header comment block."
   }
 }

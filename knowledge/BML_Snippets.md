@@ -3,15 +3,18 @@
 ## Table of Contents
 1. [Overview & High-Level Architecture](#1-overview--high-level-architecture)
 2. [Tab-Stop Navigation & Variable Mirroring (CFG 1)](#2-tab-stop-navigation--variable-mirroring-cfg-1)
-3. [Comprehensive Snippets Catalog](#3-comprehensive-snippets-catalog)
-   - [Control Flow & Logic](#control-flow--logic)
-   - [Dictionaries & Key-Value Stores](#dictionaries--key-value-stores)
-   - [JSON & JSON Arrays](#json--json-arrays)
-   - [BMQL & Database Operations](#bmql--database-operations)
-   - [Web Services & REST APIs](#web-services--rest-apis)
-   - [Commerce & Line Items](#commerce--line-items)
-   - [Safety & Type Conversion Utilities](#safety--type-conversion-utilities)
-   - [Documentation & Headers](#documentation--headers)
+3. [Snippets Catalog by Domain Category](#3-snippets-catalog-by-domain-category)
+   - [Category 1: Control Flow & Loops](#category-1-control-flow--loops)
+   - [Category 2: Dictionaries (`dict`)](#category-2-dictionaries-dict)
+   - [Category 3: JSON & JSON Arrays (`json`, `jsonarray`)](#category-3-json--json-arrays-json-jsonarray)
+   - [Category 4: BMQL & Direct Database Access](#category-4-bmql--direct-database-access)
+   - [Category 5: Web Services & REST Integrations](#category-5-web-services--rest-integrations)
+   - [Category 6: XML & XSL Transformations](#category-6-xml--xsl-transformations)
+   - [Category 7: Commerce & Transaction Line Item BML](#category-7-commerce--transaction-line-item-bml)
+   - [Category 8: Strings & Text Manipulation](#category-8-strings--text-manipulation)
+   - [Category 9: Type Safety, Math & Defensive Guards](#category-9-type-safety-math--defensive-guards)
+   - [Category 10: Date & Time Handling](#category-10-date--time-handling)
+   - [Category 11: JSDoc & Script File Headers](#category-11-jsdoc--script-file-headers)
 4. [Keyboard Shortcuts & Usage Guide](#4-keyboard-shortcuts--usage-guide)
 
 ---
@@ -73,291 +76,122 @@ flowchart TD
 
 ---
 
-## 3. Comprehensive Snippets Catalog
+## 3. Snippets Catalog by Domain Category
 
-### Control Flow & Logic
+### Category 1: Control Flow & Loops
 
-#### 1. `if` &mdash; Simple Condition
-* **Prefix:** `if`
-* **Skeleton Template:**
-  ```javascript
-  if (${1:condition}) {
-      ${0}
-  }
-  ```
-
-#### 2. `ifelse` &mdash; If-Else Branching
-* **Prefix:** `ifelse`
-* **Skeleton Template:**
-  ```javascript
-  if (${1:condition}) {
-      ${2}
-  } else {
-      ${0}
-  }
-  ```
-
-#### 3. `ifelseif` &mdash; Multi-Branch Condition
-* **Prefix:** `ifelseif`
-* **Skeleton Template:**
-  ```javascript
-  if (${1:condition}) {
-      ${2}
-  } elif (${3:condition}) {
-      ${4}
-  } else {
-      ${0}
-  }
-  ```
-
-#### 4. `forin` &mdash; Array Iteration Loop
-* **Prefix:** `forin`
-* **Skeleton Template:**
-  ```javascript
-  for ${1:item} in ${2:array} {
-      ${0}
-  }
-  ```
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`if`** | Simple `if` branch | `if (${1:condition}) {\n\t${0}\n}` |
+| **`ifelse`** | `if...else` branch | `if (${1:condition}) {\n\t${2}\n} else {\n\t${0}\n}` |
+| **`ifelseif`** | Multi-branch `if...elif...else` | `if (${1:condition}) {\n\t${2}\n} elif (${3:condition}) {\n\t${4}\n} else {\n\t${0}\n}` |
+| **`forin`** | Standard array iteration | `for ${1:item} in ${2:array} {\n\t${0}\n}` |
+| **`forin-idx`** | Array iteration with index counter | `${1:idx} = 0;\nfor ${2:item} in ${3:array} {\n\t${0}\n\t${1:idx} = ${1:idx} + 1;\n}` |
+| **`range`** | Numeric range index loop | `for ${1:i} in range(${2:0}, ${3:count}) {\n\t${0}\n}` |
 
 ---
 
-### Dictionaries & Key-Value Stores
+### Category 2: Dictionaries (`dict`)
 
-#### 5. `dict` &mdash; Typed Dictionary Initialization
-* **Prefix:** `dict`
-* **Skeleton Template:**
-  ```javascript
-  ${1:dictVar} = dict("${2|string,integer,float,string[],integer[],float[]|}");
-  ${0}
-  ```
-
-#### 6. `dict-iter` &mdash; Dictionary Key-Value Traversal
-* **Prefix:** `dict-iter`
-* **Skeleton Template:**
-  ```javascript
-  for ${1:key} in getkeys(${2:dictVar}) {
-      ${3:val} = get(${2:dictVar}, ${1:key});
-      ${0}
-  }
-  ```
-  *(Note: `$1` and `$2` mirror automatically across `getkeys()` and `get()`)*.
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`dict`** | Typed dictionary initialization | `${1:dictVar} = dict("${2\|string,integer,float,string[],integer[],float[]\|}");\n${0}` |
+| **`dict-iter`** | Iterate keys with `getkeys()` and fetch values with `get()` | `for ${1:key} in getkeys(${2:dictVar}) {\n\t${3:val} = get(${2:dictVar}, ${1:key});\n\t${0}\n}` |
+| **`dict-get-default`** | Safe dictionary retrieval with `containskey()` fallback | `if (containskey(${1:dictVar}, ${2:key})) {\n\t${3:val} = get(${1:dictVar}, ${2:key});\n} else {\n\t${3:val} = ${4:defaultValue};\n}\n${0}` |
 
 ---
 
-### JSON & JSON Arrays
+### Category 3: JSON & JSON Arrays (`json`, `jsonarray`)
 
-#### 7. `json-new` &mdash; JSON Object Initialization
-* **Prefix:** `json-new`
-* **Skeleton Template:**
-  ```javascript
-  ${1:jsonVar} = json();
-  ${0}
-  ```
-
-#### 8. `json-put` &mdash; JSON Property Assignment
-* **Prefix:** `json-put`
-* **Skeleton Template:**
-  ```javascript
-  jsonput(${1:jsonVar}, "${2:key}", ${3:value});
-  ```
-
-#### 9. `json-iter` &mdash; JSON Object Keys Iteration
-* **Prefix:** `json-iter`
-* **Skeleton Template:**
-  ```javascript
-  for ${1:key} in jsonkeys(${2:jsonVar}) {
-      ${3:val} = jsonget(${2:jsonVar}, ${1:key});
-      ${0}
-  }
-  ```
-
-#### 10. `jsonarray-new` &mdash; JSON Array Initialization
-* **Prefix:** `jsonarray-new`
-* **Skeleton Template:**
-  ```javascript
-  ${1:arrayVar} = jsonarray();
-  ${0}
-  ```
-
-#### 11. `jsonarray-append` &mdash; Append Item to JSON Array
-* **Prefix:** `jsonarray-append`
-* **Skeleton Template:**
-  ```javascript
-  jsonarrayappend(${1:arrayVar}, ${2:item});
-  ```
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`json-new`** | Create empty JSON object | `${1:jsonVar} = json();\n${0}` |
+| **`json-put`** | Assign property to JSON object | `jsonput(${1:jsonVar}, "${2:key}", ${3:value});` |
+| **`json-iter`** | Iterate keys with `jsonkeys()` and fetch values with `jsonget()` | `for ${1:key} in jsonkeys(${2:jsonVar}) {\n\t${3:val} = jsonget(${2:jsonVar}, ${1:key});\n\t${0}\n}` |
+| **`jsonpath-get`** | Extract nested value using JSONPath | `${1:result} = jsonpathget(${2:jsonVar}, "${3:$.path.to.field}");\n${0}` |
+| **`jsonarray-new`** | Create empty JSON array | `${1:arrayVar} = jsonarray();\n${0}` |
+| **`jsonarray-append`**| Append element to JSON array | `jsonarrayappend(${1:arrayVar}, ${2:item});` |
 
 ---
 
-### BMQL & Database Operations
+### Category 4: BMQL & Direct Database Access
 
-#### 12. `bmql-select` &mdash; Parameterized SELECT with Recordset Loop
-* **Prefix:** `bmql-select`
-* **Skeleton Template:**
-  ```javascript
-  ${1:records} = bmql("SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}", ${5:param});
-  for ${6:row} in ${1:records} {
-      ${7:val} = get(${6:row}, "${2:column}");
-      ${0}
-  }
-  ```
-
-#### 13. `bmql-safe` &mdash; Guarded BMQL Query with Null & Size Verification
-* **Prefix:** `bmql-safe`
-* **Skeleton Template:**
-  ```javascript
-  ${1:records} = bmql("SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}", ${5:param});
-  if (not(isnull(${1:records})) AND sizeofarray(${1:records}) > 0) {
-      for ${6:row} in ${1:records} {
-          ${7:val} = get(${6:row}, "${2:column}");
-          ${0}
-      }
-  }
-  ```
-
-#### 14. `bmql-update` &mdash; Data Table Row Update
-* **Prefix:** `bmql-update`
-* **Skeleton Template:**
-  ```javascript
-  bmql("UPDATE ${1:table} SET ${2:column} = $${3:value} WHERE ${4:keyColumn} = $${5:keyValue}", ${3:value}, ${5:keyValue});
-  ```
-
-#### 15. `bmql-insert` &mdash; Data Table Row Insertion
-* **Prefix:** `bmql-insert`
-* **Skeleton Template:**
-  ```javascript
-  bmql("INSERT INTO ${1:table} (${2:column}) VALUES ($${3:value})", ${3:value});
-  ```
-
-#### 16. `bmql-delete` &mdash; Data Table Row Deletion
-* **Prefix:** `bmql-delete`
-* **Skeleton Template:**
-  ```javascript
-  bmql("DELETE FROM ${1:table} WHERE ${2:keyColumn} = $${3:keyValue}", ${3:keyValue});
-  ```
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`bmql-select`** | Parameterized query with loop | `${1:records} = bmql("SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}", ${5:param});\nfor ${6:row} in ${1:records} {\n\t${7:val} = get(${6:row}, "${2:column}");\n\t${0}\n}` |
+| **`bmql-select-in`**| Parameterized query using array `IN ($arr)` | `${1:records} = bmql("SELECT ${2:column} FROM ${3:table} WHERE ${4:column} IN ($${5:arrayParam})", ${5:arrayParam});\nfor ${6:row} in ${1:records} {\n\t${7:val} = get(${6:row}, "${2:column}");\n\t${0}\n}` |
+| **`bmql-safe`** | Guarded query with null and size checks | `${1:records} = bmql("SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}", ${5:param});\nif (not(isnull(${1:records})) AND sizeofarray(${1:records}) > 0) {\n\tfor ${6:row} in ${1:records} {\n\t\t${7:val} = get(${6:row}, "${2:column}");\n\t\t${0}\n\t}\n}` |
+| **`bmql-update`** | Update rows with `$variable` params | `bmql("UPDATE ${1:table} SET ${2:column} = $${3:value} WHERE ${4:keyColumn} = $${5:keyValue}", ${3:value}, ${5:keyValue});` |
+| **`bmql-insert`** | Insert row with `$variable` params | `bmql("INSERT INTO ${1:table} (${2:column}) VALUES ($${3:value})", ${3:value});` |
+| **`bmql-delete`** | Delete row with WHERE guard | `bmql("DELETE FROM ${1:table} WHERE ${2:keyColumn} = $${3:keyValue}", ${3:keyValue});` |
 
 ---
 
-### Web Services & REST APIs
+### Category 5: Web Services & REST Integrations
 
-#### 17. `urldata-get` &mdash; HTTP GET Request
-* **Prefix:** `urldata-get`
-* **Skeleton Template:**
-  ```javascript
-  ${1:headers} = dict("string");
-  put(${1:headers}, "Content-Type", "application/json");
-  ${2:response} = urldata(${3:url}, "GET", ${1:headers});
-  ${0}
-  ```
-
-#### 18. `urldata-post` &mdash; HTTP POST Request with JSON Body
-* **Prefix:** `urldata-post`
-* **Skeleton Template:**
-  ```javascript
-  ${1:headers} = dict("string");
-  put(${1:headers}, "Content-Type", "application/json");
-  ${2:response} = urldata(${3:url}, "POST", ${1:headers}, ${4:payload});
-  ${0}
-  ```
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`urldata-get`** | HTTP GET with headers | `${1:headers} = dict("string");\nput(${1:headers}, "Content-Type", "application/json");\n${2:response} = urldata(${3:url}, "GET", ${1:headers});\n${0}` |
+| **`urldata-post`** | HTTP POST with JSON body | `${1:headers} = dict("string");\nput(${1:headers}, "Content-Type", "application/json");\n${2:response} = urldata(${3:url}, "POST", ${1:headers}, ${4:payload});\n${0}` |
+| **`urldata-auth-bearer`** | OAuth2 Bearer token headers | `${1:headers} = dict("string");\nput(${1:headers}, "Authorization", "Bearer " ~ ${2:accessToken});\nput(${1:headers}, "Content-Type", "application/json");\n${0}` |
+| **`urldata-auth-basic`** | HTTP Basic Auth with Base64 encoding | `${1:authStr} = encodebase64(${2:username} ~ ":" ~ ${3:password});\n${4:headers} = dict("string");\nput(${4:headers}, "Authorization", "Basic " ~ ${1:authStr});\nput(${4:headers}, "Content-Type", "application/json");\n${0}` |
 
 ---
 
-### Commerce & Line Items
+### Category 6: XML & XSL Transformations
 
-#### 19. `commerce-return` &mdash; Return Attribute Dictionary
-* **Prefix:** `commerce-return`
-* **Skeleton Template:**
-  ```javascript
-  ${1:returnMap} = dict("string");
-  put(${1:returnMap}, "${2:attribute}", ${3:value});
-  return ${1:returnMap};
-  ```
-
-#### 20. `commerce-line-iter` &mdash; Transaction Line Items Loop
-* **Prefix:** `commerce-line-iter`
-* **Skeleton Template:**
-  ```javascript
-  for ${1:line} in transactionLine {
-      ${2:docNum} = ${1:line}._document_number;
-      ${0}
-  }
-  ```
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`xml-read`** | Parse XML string to XML document | `${1:xmlDoc} = readxml(${2:xmlString});\n${3:rootNode} = getxmlroottag(${1:xmlDoc});\n${0}` |
+| **`xml-transform`** | Transform XML data via XSL stylesheet | `${1:transformedHtml} = transformxml(${2:xmlData}, ${3:xslTemplate});\n${0}` |
 
 ---
 
-### Safety & Type Conversion Utilities
+### Category 7: Commerce & Transaction Line Item BML
 
-#### 21. `sb-concat` &mdash; StringBuilder Accumulation Loop
-* **Prefix:** `sb-concat`
-* **Skeleton Template:**
-  ```javascript
-  ${1:sb} = stringbuilder();
-  for ${2:item} in ${3:array} {
-      sbappend(${1:sb}, ${2:item});
-  }
-  ${4:result} = sbtostring(${1:sb});
-  ${0}
-  ```
-
-#### 22. `null-guard` &mdash; String Null & Empty Guard
-* **Prefix:** `null-guard`
-* **Skeleton Template:**
-  ```javascript
-  if (isnull(${1:value}) OR trim(${1:value}) == "") {
-      ${2:// handle null/empty}
-      return ${3:""};
-  }
-  ```
-
-#### 23. `split-safe` &mdash; Safe Array Splitting
-* **Prefix:** `split-safe`
-* **Skeleton Template:**
-  ```javascript
-  ${1:parts} = split(${2:str}, "${3:,}");
-  if (sizeofarray(${1:parts}) > 0) {
-      ${4:firstPart} = ${1:parts}[0];
-      ${0}
-  }
-  ```
-
-#### 24. `try-atoi` &mdash; Safe String to Integer Conversion
-* **Prefix:** `try-atoi`
-* **Skeleton Template:**
-  ```javascript
-  if (isnumber(${1:str})) {
-      ${2:num} = atoi(${1:str});
-  } else {
-      ${2:num} = ${3:0};
-  }
-  ${0}
-  ```
-
-#### 25. `try-atof` &mdash; Safe String to Float Conversion
-* **Prefix:** `try-atof`
-* **Skeleton Template:**
-  ```javascript
-  if (isnumber(${1:str})) {
-      ${2:num} = atof(${1:str});
-  } else {
-      ${2:num} = ${3:0.0};
-  }
-  ${0}
-  ```
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`commerce-return`** | Standard attribute dictionary return | `${1:returnMap} = dict("string");\nput(${1:returnMap}, "${2:attribute}", ${3:value});\nreturn ${1:returnMap};` |
+| **`commerce-line-iter`** | Iterate `transactionLine` document array | `for ${1:line} in transactionLine {\n\t${2:docNum} = ${1:line}._document_number;\n\t${0}\n}` |
+| **`commerce-delimit-return`** | Build pipe-delimited line update string | `${1:returnStr} = "";\nfor ${2:line} in transactionLine {\n\t${1:returnStr} = ${1:returnStr} ~ ${2:line}._document_number ~ "~" ~ "${3:attrName}" ~ "~" ~ ${4:value} ~ "|";\n}\nreturn ${1:returnStr};` |
 
 ---
 
-### Documentation & Headers
+### Category 8: Strings & Text Manipulation
 
-#### 26. `doc-func` &mdash; JSDoc Function Comment Block
-* **Prefix:** `doc-func`
-* **Skeleton Template:**
-  ```javascript
-  /**
-   * ${1:description}
-   * @param {${2:String}} ${3:param}
-   * @return {${4:String}}
-   */
-  ${0}
-  ```
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`sb-concat`** | O(n) loop concatenation via `stringbuilder()` | `${1:sb} = stringbuilder();\nfor ${2:item} in ${3:array} {\n\tsbappend(${1:sb}, ${2:item});\n}\n${4:result} = sbtostring(${1:sb});\n${0}` |
+| **`split-safe`** | Safe array splitting with size check | `${1:parts} = split(${2:str}, "${3:,}");\nif (sizeofarray(${1:parts}) > 0) {\n\t${4:firstPart} = ${1:parts}[0];\n\t${0}\n}` |
+
+---
+
+### Category 9: Type Safety, Math & Defensive Guards
+
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`null-guard`** | Null & empty string guard | `if (isnull(${1:value}) OR trim(${1:value}) == "") {\n\t${2:// handle null/empty}\n\treturn ${3:""};\n}` |
+| **`try-atoi`** | `isnumber()` guarded string-to-integer conversion | `if (isnumber(${1:str})) {\n\t${2:num} = atoi(${1:str});\n} else {\n\t${2:num} = ${3:0};\n}\n${0}` |
+| **`try-atof`** | `isnumber()` guarded string-to-float conversion | `if (isnumber(${1:str})) {\n\t${2:num} = atof(${1:str});\n} else {\n\t${2:num} = ${3:0.0};\n}\n${0}` |
+| **`round-currency`** | Currency rounding (2 decimal places) | `${1:roundedAmount} = round(${2:amount}, 2);\n${0}` |
+
+---
+
+### Category 10: Date & Time Handling
+
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`date-format`** | Format date object to string | `${1:dateStr} = datetostr(${2:getdate()}, "${3:yyyy-MM-dd HH:mm:ss}");\n${0}` |
+| **`date-parse`** | Parse string to Date object | `${1:dateObj} = strtojavadate(${2:dateStr}, "${3:yyyy-MM-dd}");\n${0}` |
+
+---
+
+### Category 11: JSDoc & Script File Headers
+
+| Prefix | Purpose | Skeleton Template |
+| :--- | :--- | :--- |
+| **`doc-func`** | Function JSDoc comment | `/**\n * ${1:description}\n * @param {${2:String}} ${3:param}\n * @return {${4:String}}\n */\n${0}` |
+| **`doc-file`** | Standard Oracle CPQ file header | `/**\n * ============================================================================\n * Function:   ${1:function_name}\n * Purpose:    ${2:description}\n * Author:     ${3:author}\n * Date:       ${4:YYYY-MM-DD}\n * ============================================================================\n */\n${0}` |
 
 ---
 

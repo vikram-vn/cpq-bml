@@ -308,37 +308,20 @@ response = urldata("https://api.example.com/v1/orders", "POST", headerDict, json
 
 ---
 
-### Example 5: Built-in Code Snippets
+### Example 5: Built-in Code Snippets (11 Domain Categories)
 
-Type the snippet prefix and press `Tab` or `Enter` to expand:
+Type any snippet prefix and press `Tab` or `Enter` to expand pure skeleton templates with sequential `$1` &rarr; `$2` &rarr; `$0` tab-stops:
 
-#### 1. `bmql` Snippet:
-```javascript
-// Type 'bmql' + Tab expands to:
-records = bmql("SELECT ${1:columns} FROM ${2:table} WHERE ${3:condition}");
-for record in records {
-    ${0}
-}
-```
+* **Control Flow**: `if`, `ifelse`, `ifelseif`, `forin`, `forin-idx`, `range`
+* **Dictionaries**: `dict`, `dict-iter`, `dict-get-default`
+* **JSON**: `json-new`, `json-put`, `json-iter`, `jsonpath-get`, `jsonarray-new`, `jsonarray-append`
+* **BMQL & Database**: `bmql-select`, `bmql-select-in`, `bmql-safe`, `bmql-update`, `bmql-insert`, `bmql-delete`
+* **REST & Web Services**: `urldata-get`, `urldata-post`, `urldata-auth-bearer`, `urldata-auth-basic`
+* **XML & XSLT**: `xml-read`, `xml-transform`
+* **Commerce BML**: `commerce-return`, `commerce-line-iter`, `commerce-delimit-return`
+* **Utilities & Guards**: `sb-concat`, `split-safe`, `null-guard`, `try-atoi`, `try-atof`, `round-currency`
+* **Dates**: `date-format`, `date-parse`
+* **Documentation**: `doc-func`, `doc-file`
 
-#### 2. `forin` Snippet:
-```javascript
-// Type 'forin' + Tab expands to:
-for ${1:item} in ${2:arrayOrRecordSet} {
-    ${0}
-}
-```
+> 📖 For full skeleton templates, variable mirroring flows, and keyboard navigation rules, see the dedicated **[BML Snippets Catalog](BML_Snippets.md)**.
 
-#### 3. `dict` Snippet:
-```javascript
-// Type 'dict' + Tab expands to:
-${1:myDict} = dict("${2|string,integer,float,boolean|}");
-put(${1:myDict}, "${3:key}", ${4:value});
-```
-
-#### 4. `json` Snippet:
-```javascript
-// Type 'json' + Tab expands to:
-${1:jsonObj} = json();
-jsonput(${1:jsonObj}, "${2:key}", ${3:value});
-```
