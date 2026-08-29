@@ -4,6 +4,19 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.59.0] - 2026-08-29
+
+### Added
+- Implement comprehensive linting engine with modular rule sets and performance benchmarking.
+- Implement bulk code action for safe style and naming fixes and add common benchmark scripts.
+- Implement comprehensive Python-based benchmarking suite for extension subsystems.
+- Implement BML comment decorations and extend intellisense with workspace indexing capabilities.
+- Implement BML tokenizer with support for BMQL and JSON string formatting.
+- Implement BML tokenizer with BMQL query formatting and array literal detection support.
+
+### Documentation
+- Update license file reference in README.md.
+
 ## [1.58.0] - 2026-08-29
 
 ### Added
@@ -87,19 +100,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement comprehensive linting framework with code actions, diagnostic rules, and supporting test infrastructure.
 - Implement BML static analysis engine, metrics calculator, and XML/XSLT formatter.
 - Implement linting engine for BML code style, naming conventions, and syntax safety.
-
-## [1.50.0] - 2026-08-23
-
-### Added
-- Add BML sample test file and supplemental configuration for linting and spell-checking.
-- Implement BML linting and spell-check diagnostic engine with configurable feature support.
-- Implement BML linter rules and initialize regression test expectations.
-- Implement automated safe code refactoring and linting fixes for BML files.
-- Add performance benchmark suite for linter, code actions, and complexity analysis.
-- Implement automated quality and style quick fixes for BML linting diagnostics.
-- Implement automated safe code actions for BML style, naming, and formatting fixes.
-- Add FeaturesTab component to settings panel and update documentation.
-- Release version 1.48.0 with XSLT tooling support, BML quick-fixes, and expanded linting rules.
-- Implement XSLT preview, linting, formatting, and code action support.
-- Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
-- Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.
