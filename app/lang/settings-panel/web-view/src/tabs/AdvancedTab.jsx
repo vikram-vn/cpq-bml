@@ -1,11 +1,15 @@
 import Switch from '../components/Switch';
 import { IconAdvanced } from '../components/Icons';
+import ImportExportButtons from '../components/ImportExportButtons';
+import PerformanceMonitor from '../components/PerformanceMonitor';
 
 export default function AdvancedTab({ active, debug = {}, updateField }) {
     if (!active) return null;
 
     return (
         <div className="tab-content active">
+          <ImportExportButtons onImport={() => { window.vscodeApi && window.vscodeApi.postMessage({ type: 'importSettings' }); }} onExport={() => { window.vscodeApi && window.vscodeApi.postMessage({ type: 'exportSettings' }); }} />
+          <PerformanceMonitor />
             <section className="card">
                 <h2>
                     <IconAdvanced />

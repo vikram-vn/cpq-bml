@@ -1,5 +1,7 @@
 import Switch from '../components/Switch';
 import { IconMcp } from '../components/Icons';
+import AiSkillSwitch from '../components/AiSkillSwitch';
+import McpHealthBadge from '../components/McpHealthBadge';
 
 export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateField }) {
     if (!active) return null;
@@ -14,7 +16,8 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     <IconMcp />
                     MCP (Model Context Protocol) Server
                 </h2>
-                <p className="card-desc">Exposes a local interface allowing AI agents like Claude Code to directly interact with your Oracle CPQ operations.</p>
+                <p className="card-desc">Exposes a local Model Context Protocol server on this machine.</p>
+                <McpHealthBadge healthy={mcp.enable} />
 
                 <Switch
                     id="mcpEnable"
@@ -53,7 +56,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     Claude Code is on by default; enable the others only if you use them.
                 </p>
 
-                <Switch
+                <AiSkillSwitch
                     id="aiSkillsClaude"
                     label="Claude Code"
                     description="Native project skills (.claude/skills/) plus a CLAUDE.md summary"
@@ -62,7 +65,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     onChange={(v) => updateField('mcp.aiSkills.claude', v)}
                 />
 
-                <Switch
+                <AiSkillSwitch
                     id="aiSkillsCursor"
                     label="Cursor"
                     description="Native project rules (.cursor/rules/*.mdc) plus a legacy .cursorrules file"
@@ -71,7 +74,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     onChange={(v) => updateField('mcp.aiSkills.cursor', v)}
                 />
 
-                <Switch
+                <AiSkillSwitch
                     id="aiSkillsCopilot"
                     label="GitHub Copilot"
                     description="Native path-scoped instructions (.github/instructions/*.instructions.md) plus a repo-wide copilot-instructions.md"

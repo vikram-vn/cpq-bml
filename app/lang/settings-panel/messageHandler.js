@@ -159,6 +159,44 @@ async function dispatch(message, context, vscode, panel) {
       panel.title = titleForTab(message.tab);
       return;
 
+    case "importSettings": {
+      // Webview requests current settings; send full state snapshot.
+      const state = await buildState(context, vscode);
+      post({ type: "importSettings", payload: state });
+      return;
+    }
+    case "exportSettings": {
+      // Webview wants to export current settings; acknowledge.
+      // Actual file write is performed by the extension host (not implemented here).
+      post({ type: "exportSettings", ok: true });
+      return;
+    }
+    case "requestPerformanceStats": {
+      // Simple performance stats using Node process APIs.
+      const cpu = process.cpuUsage();
+      const memory = process.memoryUsage();
+      const cpuPercent = (cpu.user + cpu.system) / 1000; // Approx ms
+      const memMb = Math.round(memory.rss / (1024 * 1024));
+      post({ type: "performanceStats", cpu: cpuPercent, memory: memMb });
+      return;
+    }
+    case "getMcpHealth": {
+      // Return basic health based on MCP enable flag.
+      post({ type: "mcpHealth", healthy: mcp.enable, port: mcp.port });
+      return;
+    }
+    case "createAiSkill": {
+      const { id, label, description, defaultEnabled } = message;
+      // Add to configuration under mcp.aiSkills.
+      const cfg = vscode.workspace.getConfiguration(CPQ_SECTION);
+      const current = cfg.get("mcp.aiSkills", {});
+      current[id] = defaultEnabled;
+      await cfg.update("mcp.aiSkills", current, vscode.ConfigurationTarget.Global);
+      await sendState();
+      post({ type: "aiSkillCreated", id });
+      return;
+    }
+
     default:
       throw new Error(`CPQ-BML: unknown message type "${message.type}".`);
   }
