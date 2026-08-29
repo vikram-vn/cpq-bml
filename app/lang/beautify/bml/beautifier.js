@@ -223,7 +223,7 @@ function Beautifier(source_text, options) {
 
       // Preserve a source line break inside an expression/condition/array list, but never invent one.
       if (opts.preserve_newlines && token.newlines > 0 && context_stack.length > 0 &&
-        last.type !== TOKEN.START_EXPR && last.type !== TOKEN.START_BLOCK && last.type !== TOKEN.ARRAY_START) {
+        last.type !== TOKEN.START_BLOCK && last.type !== TOKEN.ARRAY_START) {
         output.ensure_newline();
         output.set_indent(indent_level + 1);
         needsSpaceBeforeCurrent = false;
@@ -249,6 +249,11 @@ function Beautifier(source_text, options) {
 
     function handleEndExpr(token) {
       context_stack.pop();
+      if (opts.preserve_newlines && token.newlines > 0) {
+        output.ensure_newline();
+        output.set_indent(indent_level);
+        needsSpaceBeforeCurrent = false;
+      }
       emit(token);
     }
 

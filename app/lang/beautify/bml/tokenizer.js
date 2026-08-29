@@ -49,6 +49,56 @@ function formatBmqlQuery(content) {
   );
 }
 
+function formatJsonValue(val) {
+  if (val === null) return "null";
+  if (typeof val === "boolean") return val ? "true" : "false";
+  if (typeof val === "number") return String(val);
+  if (typeof val === "string") return JSON.stringify(val);
+  if (Array.isArray(val)) {
+    if (val.length === 0) return "[]";
+    return "[" + val.map(formatJsonValue).join(", ") + "]";
+  }
+  if (typeof val === "object") {
+    const keys = Object.keys(val);
+    if (keys.length === 0) return "{}";
+    const entries = keys.map(
+      (k) => JSON.stringify(k) + ": " + formatJsonValue(val[k]),
+    );
+    return "{" + entries.join(", ") + "}";
+  }
+  return JSON.stringify(val);
+}
+
+function formatEscapedJsonString(content) {
+  const trimmed = content.trim();
+  const startsObject = trimmed.startsWith("{") || trimmed.startsWith('{\\"');
+  const startsArray = trimmed.startsWith("[") || trimmed.startsWith('[\\"');
+  if (!startsObject && !startsArray) {
+    return content;
+  }
+
+  let isEscaped = false;
+  let rawJson = content;
+  if (content.includes('\\"')) {
+    isEscaped = true;
+    rawJson = content.replace(/\\"/g, '"');
+  }
+
+  try {
+    const parsed = JSON.parse(rawJson);
+    if (typeof parsed !== "object" || parsed === null) {
+      return content;
+    }
+    let formatted = formatJsonValue(parsed);
+    if (isEscaped) {
+      formatted = formatted.replace(/"/g, '\\"');
+    }
+    return formatted;
+  } catch (e) {
+    return content;
+  }
+}
+
 function makeStringReaders(input, options) {
   function unescapeString(s) {
     let out = "";
@@ -94,12 +144,21 @@ function makeStringReaders(input, options) {
     if (has_escapes && options.unescape_strings) {
       text = unescapeString(text);
     }
-    if (options.format_bmql_strings !== false && text.length > 2) {
-      const inner = text.slice(1, -1);
-      const formatted = formatBmqlQuery(inner);
-      if (formatted !== inner) {
-        text = text.charAt(0) + formatted + text.charAt(text.length - 1);
+    if (text.length > 2) {
+      let inner = text.slice(1, -1);
+      if (options.format_bmql_strings !== false) {
+        const bmqlFormatted = formatBmqlQuery(inner);
+        if (bmqlFormatted !== inner) {
+          inner = bmqlFormatted;
+        }
       }
+      if (options.format_json_strings !== false) {
+        const jsonFormatted = formatEscapedJsonString(inner);
+        if (jsonFormatted !== inner) {
+          inner = jsonFormatted;
+        }
+      }
+      text = text.charAt(0) + inner + text.charAt(text.length - 1);
     }
     return text;
   }

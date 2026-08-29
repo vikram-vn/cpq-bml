@@ -96,5 +96,60 @@ suite('BML Beautifier Unit & Fixture Tests', () => {
             assert.ok(result.includes('$columnName'));
             assert.ok(result.includes('$col'));
         });
+
+        test('formats escaped JSON object string literals with clean spacing and escaped quotes', () => {
+            const source = 'payload = "{\\"name\\":\\"Widget\\",\\"id\\":123,\\"active\\":true}";';
+            const expected = 'payload = "{\\"name\\": \\"Widget\\", \\"id\\": 123, \\"active\\": true}";';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, expected);
+        });
+
+        test('formats nested escaped JSON arrays and objects in string literals', () => {
+            const source = 'arr = "[{\\"sku\\":\\"A\\",\\"qty\\":2},{\\"sku\\":\\"B\\",\\"qty\\":5}]";';
+            const expected = 'arr = "[{\\"sku\\": \\"A\\", \\"qty\\": 2}, {\\"sku\\": \\"B\\", \\"qty\\": 5}]";';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, expected);
+        });
+
+        test('formats JSON strings passed directly to json() constructor', () => {
+            const source = 'j = json("{\\"code\\":200,\\"message\\":\\"OK\\"}");';
+            const expected = 'j = json("{\\"code\\": 200, \\"message\\": \\"OK\\"}");';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, expected);
+        });
+
+        test('leaves non-JSON escaped strings untouched', () => {
+            const source = 'text = "He said \\"Hello, world!\\", then walked away.";';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, source);
+        });
+
+        test('formats multi-line logical chains with clean continuation indentation (Prettier binaryish)', () => {
+            const source = 'if ((status == "ACTIVE" AND totalAmount > 1000.0)\nOR (isVip AND NOT(hasPendingReview))) {\nprint("approved");\n}';
+            const expected = 'if ((status == "ACTIVE" AND totalAmount > 1000.0)\n\tOR (isVip AND NOT(hasPendingReview))) {\n\tprint("approved");\n}';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, expected);
+        });
+
+        test('formats multi-line function call argument lists cleanly (Prettier call-arguments)', () => {
+            const source = 'res = urldata(\n"https://api.example.com",\n"POST",\nheaders,\nbody\n);';
+            const expected = 'res = urldata(\n\t"https://api.example.com",\n\t"POST",\n\theaders,\n\tbody\n);';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, expected);
+        });
+
+        test('preserves trailing inline comments with exact single space separation (Prettier comments)', () => {
+            const source = 'x = 10; // set initial counter\ny = 20; // set upper limit';
+            const expected = 'x = 10; // set initial counter\ny = 20; // set upper limit';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, expected);
+        });
+
+        test('formats Commerce line item attribute dot references without unwanted spaces', () => {
+            const source = 'qty = line.quantity_c;\namount = line.amount_c;';
+            const expected = 'qty = line.quantity_c;\namount = line.amount_c;';
+            const result = bml_beautify(source, opts);
+            assert.strictEqual(result, expected);
+        });
     });
 });

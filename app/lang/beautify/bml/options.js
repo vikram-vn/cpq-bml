@@ -84,6 +84,7 @@ function Options(options) {
     logical_operator_casing: getString(raw, "logical_operator_casing", "uppercase"),
     correct_builtin_casing: getBoolean(raw, "correct_builtin_casing", true),
     format_bmql_strings: getBoolean(raw, "format_bmql_strings", false),
+    format_json_strings: getBoolean(raw, "format_json_strings", true),
     // Inject a semicolon after statement-level expressions that are missing one.
     // Off by default because it is a content-changing transformation.
     enforce_semicolons: getBoolean(raw, "enforce_semicolons", false),
