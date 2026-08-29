@@ -197,29 +197,44 @@ flowchart TD
 
 ---
 
-## 7. Inlay Parameter Hints Provider (CFG 6)
+## 7. Inlay Parameter & Type Hints Provider (CFG 6)
 
-Renders inline parameter names at call sites to clarify arguments at glance:
+Renders inline parameter names at function call sites and inferred data types at variable assignments:
 
 ```mermaid
 flowchart TD
-    RenderView(["Document Rendered in Visible Viewport"]) --> ScanCalls["Scan AST for all CallExpression nodes in viewport"]
-    
-    ScanCalls --> HasArgs{"Function call has 1 or more arguments?"}
-    HasArgs -->|"No"| NextCall["Proceed to next call expression"]
-    HasArgs -->|"Yes"| FetchSignature["Lookup parameter names for target function"]
+    RenderView(["Document Rendered in Visible Viewport"]) --> CheckConfig{"Inlay Hints Enabled in Settings?"}
+    CheckConfig -->|"No"| ReturnEmpty["Return Empty Hints Array"]
+    CheckConfig -->|"Yes"| ScanCalls["Scan Calls and Assignments in Viewport"]
 
-    FetchSignature --> SignatureResolved{"Signature available with parameter names?"}
-    SignatureResolved -->|"No"| NextCall
-    SignatureResolved -->|"Yes"| MapArgPositions["Map each argument token position in editor"]
+    ScanCalls --> IsComment{"Inside Comment (// or /* */) or String Literal?"}
+    IsComment -->|"Yes"| SkipToken["Skip (No Inlay Hint)"]
+    IsComment -->|"No"| TokenType{"Call or Assignment?"}
 
-    MapArgPositions --> BuildInlayHint["Construct vscode.InlayHint(paramName + ':', argStartPos)"]
-    BuildInlayHint --> CollectInlays["Append InlayHint to Viewport Collection"]
-    CollectInlays --> NextCall
+    TokenType -->|"Call Expression"| ResolveParams["Lookup Curated BML Names / Variadic Handlers / WS Index"]
+    ResolveParams --> CheckSuppression{"Argument matches parameter name?"}
+    CheckSuppression -->|"Yes"| SkipArg["Suppress redundant hint"]
+    CheckSuppression -->|"No"| BuildParamHint["Create InlayHint(paramName + ':') with Markdown Doc Tooltip"]
 
-    NextCall --> ViewportComplete{"All visible calls processed?"}
-    ViewportComplete -->|"Yes"| PublishInlays(["Render Inlay Parameter Hints in Editor Buffer"])
+    TokenType -->|"Assignment Expression"| CheckVarTypes{"Variable Types Enabled?"}
+    CheckVarTypes -->|"No"| NextToken["Proceed to next"]
+    CheckVarTypes -->|"Yes"| InferType["Infer RHS Type (BMQL, Dict, Json, Array, Builtin Return)"]
+    InferType --> BuildTypeHint["Create InlayHint(': ' + inferredType)"]
+
+    BuildParamHint --> CollectInlays["Append to Viewport Collection"]
+    BuildTypeHint --> CollectInlays
+    CollectInlays --> NextToken
+    NextToken --> ViewportComplete{"All visible tokens processed?"}
+    ViewportComplete -->|"Yes"| PublishInlays(["Render Inlay Hints in Editor Buffer"])
 ```
+
+### Inlay Hint Features & Capabilities
+* **Curated BML Knowledge Names**: 100% of all standard BML functions mapped (`replace(str, oldValue, newValue)`, `split(str, separator)`, `append(array, element)`, `fmod(dividend, divisor)`).
+* **Dynamic Variadic Overload Support**: Variadic functions like `sbappend` dynamically generate `stringBuilder: sb, value1: "a", value2: "b"`.
+* **Smart Redundancy Suppression**: Redundant hints like `record: record` or `"fieldName": "fieldName"` are automatically hidden.
+* **Comment & String Safety**: Zero hints rendered inside single-line comments (`//`), block comments (`/* */`), or string literals.
+* **Interactive Tooltips**: Hovering over any parameter hint displays its function summary and syntax signature.
+* **Variable Type Inference**: Optional inline type annotations for RHS constructors, BMQL queries, and function returns.
 
 ---
 

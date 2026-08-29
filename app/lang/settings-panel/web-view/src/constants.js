@@ -22,6 +22,11 @@ export const EMPTY_STATE = {
         metrics: true,
         testing: true
     },
+    inlayHints: {
+        enabled: true,
+        suppressWhenArgumentMatchesName: true,
+        variableTypes: false
+    },
     mcp: { enable: false, port: 47821, logToTerminal: false },
     debug: { logOutputToFile: false, logRestDetails: false },
     environments: [],

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { extractParamName, shouldSuppressHint, resolveParamNames, isInsideCommentOrString } = require('../../../app/lang/intellisense/inlayHints');
+const { extractParamName, shouldSuppressHint, resolveParamNames, isInsideCommentOrString, inferVariableType } = require('../../../app/lang/intellisense/inlayHints');
 const { collectLocalVariables } = require('../../../app/lang/intellisense/bmqlVariableCompletions');
 
 suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
@@ -76,6 +76,23 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         const text4 = 'resReplace = replace(sampleStr, "BML", "EXT");';
         const callPos4 = text4.indexOf('replace');
         assert.strictEqual(isInsideCommentOrString(text4, callPos4), false, 'Normal active code should not be detected as comment');
+    });
+
+    test('infers variable types accurately from RHS expressions', () => {
+        assert.strictEqual(inferVariableType('bmql("SELECT price FROM Parts")'), 'RecordSet');
+        assert.strictEqual(inferVariableType('dict("string")'), 'Dictionary');
+        assert.strictEqual(inferVariableType('json()'), 'Json');
+        assert.strictEqual(inferVariableType('jsonarray()'), 'JsonArray');
+        assert.strictEqual(inferVariableType('stringbuilder()'), 'StringBuilder');
+        assert.strictEqual(inferVariableType('string[]'), 'String[]');
+        assert.strictEqual(inferVariableType('integer[]'), 'Integer[]');
+        assert.strictEqual(inferVariableType('"test value"'), 'String');
+        assert.strictEqual(inferVariableType('100'), 'Integer');
+        assert.strictEqual(inferVariableType('10.5'), 'Float');
+        assert.strictEqual(inferVariableType('true'), 'Boolean');
+        assert.strictEqual(inferVariableType('replace(str, "a", "b")'), 'String');
+        assert.strictEqual(inferVariableType('split(str, ",")'), 'String[]');
+        assert.strictEqual(inferVariableType('getfloat(rRow, "price")'), 'Float');
     });
 
     test('collects local variables in scope and ignores out-of-scope variables', () => {

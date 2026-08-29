@@ -44,6 +44,11 @@ async function buildState(context, vscode) {
             metrics: cpqConfig.get('features.metrics', true),
             testing: cpqConfig.get('features.testing', true)
         },
+        inlayHints: {
+            enabled: cpqConfig.get('inlayHints.enabled', true),
+            suppressWhenArgumentMatchesName: cpqConfig.get('inlayHints.suppressWhenArgumentMatchesName', true),
+            variableTypes: cpqConfig.get('inlayHints.variableTypes.enabled', false)
+        },
         mcp: {
             enable: cpqConfig.get('mcp.enable', false),
             port: cpqConfig.get('mcp.port', 47821),

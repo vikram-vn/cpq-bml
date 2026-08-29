@@ -130,6 +130,7 @@ export default function App({ vscodeApi }) {
         connection = {},
         rest = {},
         features = {},
+        inlayHints = {},
         mcp = {},
         debug = {}
     } = state || {};
@@ -191,6 +192,7 @@ export default function App({ vscodeApi }) {
                 <FeaturesTab
                     active={activeTab === 'features'}
                     features={features}
+                    inlayHints={inlayHints}
                     updateField={updateField}
                 />
 

@@ -1,7 +1,7 @@
 import Switch from '../components/Switch';
 import { IconFeatures } from '../components/Icons';
 
-export default function FeaturesTab({ active, features = {}, updateField }) {
+export default function FeaturesTab({ active, features = {}, inlayHints = {}, updateField }) {
     if (!active) return null;
 
     return (
@@ -51,6 +51,22 @@ export default function FeaturesTab({ active, features = {}, updateField }) {
                     description="Enables autocomplete, hover tips, signature help, go-to-definition, find all references, rename symbol, and document outline/breadcrumbs"
                     checked={features.intellisense}
                     onChange={(v) => updateField('features.intellisense', v)}
+                />
+
+                <Switch
+                    id="inlayHintsEnable"
+                    label="Enable Parameter Inlay Hints"
+                    description="Renders inline parameter name labels inside BML function call parentheses"
+                    checked={inlayHints.enabled}
+                    onChange={(v) => updateField('inlayHints.enabled', v)}
+                />
+
+                <Switch
+                    id="inlayVarTypesEnable"
+                    label="Enable Inferred Variable Type Hints"
+                    description="Renders inline data type annotations for variable declarations inferred from BMQL, constructors, or function returns"
+                    checked={inlayHints.variableTypes}
+                    onChange={(v) => updateField('inlayHints.variableTypes.enabled', v)}
                 />
 
                 <Switch

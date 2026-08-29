@@ -99,6 +99,9 @@ const BML_CURATED_PARAMS = {
     'sinh': ['value'],
     'cosh': ['value'],
     'tanh': ['value'],
+    'integer': ['number'],
+    'float': ['number'],
+    'string': ['value'],
     'min': (count) => {
         if (count <= 1) return ['array'];
         if (count === 2) return ['a', 'b'];
@@ -129,6 +132,7 @@ const BML_CURATED_PARAMS = {
     'jsontostr': ['json'],
     'jsoncopy': ['json'],
     'isjsonnull': ['json', 'key'],
+    'jsonnull': [],
     'jsonpathgetsingle': ['json', 'jsonPath', 'returnType'],
     'jsonpathgetmultiple': ['json', 'jsonPath', 'returnType'],
     'jsonpathset': ['json', 'jsonPath', 'value', 'returnType'],
@@ -142,13 +146,19 @@ const BML_CURATED_PARAMS = {
     'jsonarraysize': ['jsonArray'],
     'jsonarraytostr': ['jsonArray'],
     'jsonarraycopy': ['jsonArray'],
+    'jsonarrayrefid': ['jsonArray'],
 
     // Database & BMQL & Data Tables
+    'bmql': ['queryString'],
     'getfloat': ['record', 'fieldName'],
     'getstr': ['record', 'fieldName'],
     'getint': ['record', 'fieldName'],
     'getboolean': ['record', 'fieldName'],
     'getdate': ['record', 'fieldName'],
+    'haserror': ['recordSet'],
+    'getmessage': ['recordSet'],
+    'recordset': [],
+    'gettransaction': ['transactionId'],
     'getpartsdata': ['selectFields', 'partNumbers', 'currencyCode'],
     'gettabledata': (count) => {
         const names = ['tableName', 'selectColumns'];
@@ -182,6 +192,7 @@ const BML_CURATED_PARAMS = {
     'isleap': ['year'],
     'isweekend': ['date'],
     'getstrdate': ['date'],
+    'getcurrenttimeinmillis': [],
 
     // Web Services & REST
     'urldata': ['url', 'method', 'headers', 'payload'],
@@ -201,12 +212,22 @@ const BML_CURATED_PARAMS = {
     'saveconfigbom': ['configBomJson', 'instanceAttributes'],
     'getbom': ['bsId', 'lineNumber'],
     'getconfigurationbom': ['documentNumber'],
+    'getconfigbom': ['documentNumber'],
     'convertbomtoflat': ['bomDict'],
     'convertbomtohier': ['bomDict'],
     'addpartstotransaction': ['parts', 'priceBookVarName'],
     'addtotransaction': ['items', 'priceBookVarName'],
     'validatequoteforagreement': ['transactionId'],
     'setattributevalue': ['docNumber', 'attrVarName', 'value'],
+    'importtransactiondata': ['transactionData'],
+    'configureabo': ['transactionId'],
+    'invoke': ['tableName', 'params'],
+    'getreasonstatus': ['reasonVarName'],
+    'getarrayattrstring': ['arrayAttr'],
+    'getuuid': [],
+    'logtime': ['eventName', 'details'],
+    'throwerror': ['message', 'category'],
+    'print': ['value'],
 
     // Session & Global Storage
     'usersessionset': ['key', 'value'],
@@ -260,6 +281,78 @@ function resolveParamNames(funcLower, argCount, bmlApiData) {
     return paramNames;
 }
 
+/**
+ * Infers variable type from an assignment RHS expression.
+ */
+function inferVariableType(rhs, bmlApiData) {
+    if (!rhs) return null;
+    const trimmed = rhs.trim().replace(/;$/, '').trim();
+
+    // BMQL
+    if (/^bmql\s*\(/i.test(trimmed)) return 'RecordSet';
+
+    // Constructors & Core types
+    if (/^dict\s*\(/i.test(trimmed)) return 'Dictionary';
+    if (/^json\s*\(/i.test(trimmed)) return 'Json';
+    if (/^jsonarray\s*\(/i.test(trimmed)) return 'JsonArray';
+    if (/^stringbuilder\s*\(/i.test(trimmed) || /^sbappend\s*\(/i.test(trimmed)) return 'StringBuilder';
+    if (/^recordset\s*\(/i.test(trimmed)) return 'RecordSet';
+    if (/^bytearray\s*\(/i.test(trimmed)) return 'ByteArray';
+
+    // Arrays: string[], integer[], float[], date[], boolean[], anytype[]
+    const arrMatch = trimmed.match(/^(string|integer|float|date|boolean|anytype)\[\](?:\s*\{|\s*;|$)/i);
+    if (arrMatch) {
+        const base = arrMatch[1].charAt(0).toUpperCase() + arrMatch[1].slice(1).toLowerCase();
+        return `${base}[]`;
+    }
+
+    // Literals
+    if (/^"(?:[^"\\]|\\.)*"$/.test(trimmed) || /^'(?:[^'\\]|\\.)*'$/.test(trimmed)) return 'String';
+    if (/^(?:true|false)$/i.test(trimmed)) return 'Boolean';
+    if (/^-?\d+\.\d+$/.test(trimmed)) return 'Float';
+    if (/^-?\d+$/.test(trimmed)) return 'Integer';
+
+    // Function calls
+    const fnCall = trimmed.match(/^([a-zA-Z_][\w.]*)\s*\(/);
+    if (fnCall) {
+        const fnName = fnCall[1].toLowerCase();
+        const builtinReturns = {
+            'atof': 'Float', 'atoi': 'Integer', 'isnumber': 'Boolean', 'len': 'Integer',
+            'find': 'Integer', 'findinarray': 'Integer', 'sizeofarray': 'Integer',
+            'replace': 'String', 'split': 'String[]', 'substring': 'String', 'lower': 'String',
+            'upper': 'String', 'trim': 'String', 'html': 'String', 'encodebase64': 'String',
+            'decodebase64': 'String', 'join': 'String', 'formatascurrency': 'String',
+            'sbtostring': 'String', 'getstr': 'String', 'getcurrencyvalue': 'Float',
+            'getfloat': 'Float', 'getint': 'Integer', 'getboolean': 'Boolean',
+            'addmonths': 'Date', 'adddays': 'Date', 'minusdays': 'Date', 'getdate': 'Date',
+            'datetostr': 'String', 'strtojavadate': 'Date', 'strtodate': 'Date',
+            'getdiffindays': 'Integer', 'comparedates': 'Integer', 'urldata': 'String',
+            'urldatabyget': 'String', 'urldatabypost': 'String', 'urldatabypostasync': 'String',
+            'fmod': 'Float', 'pow': 'Float', 'hypot': 'Float', 'round': 'Float',
+            'abs': 'Float', 'ceil': 'Float', 'floor': 'Float', 'sqrt': 'Float',
+            'sin': 'Float', 'cos': 'Float', 'tan': 'Float', 'exp': 'Float', 'ln': 'Float', 'log': 'Float',
+            'getpartsdata': 'String[]', 'gettabledata': 'String[]', 'getattachmentdata': 'Dictionary',
+            'getsystemattrvalues': 'String[]', 'getsystemmultipleattrvalues': 'Dictionary',
+            'getsystemdata': 'Json', 'jsonkeys': 'String[]', 'keys': 'String[]', 'values': 'String[]',
+            'jsoncopy': 'Json', 'jsonarraycopy': 'JsonArray', 'slice': 'String[]', 'range': 'Integer[]'
+        };
+
+        if (builtinReturns[fnName]) return builtinReturns[fnName];
+
+        if (bmlApiData && bmlApiData[fnName] && bmlApiData[fnName].returnType) {
+            return bmlApiData[fnName].returnType;
+        }
+
+        const wsIndex = getWorkspaceIndex();
+        const wsInfo = wsIndex ? wsIndex.get(fnName) : null;
+        if (wsInfo && wsInfo.returnType) {
+            return wsInfo.returnType;
+        }
+    }
+
+    return null;
+}
+
 function isInsideCommentOrString(fullText, targetOffset) {
     let inLineComment = false;
     let inBlockComment = false;
@@ -305,7 +398,7 @@ function charIsSingleQuote(ch) {
 }
 
 /**
- * Provides inline parameter name labels for BML function calls.
+ * Provides inline parameter name and variable type labels for BML.
  */
 function registerInlayHintsProvider(context) {
     return vscode.languages.registerInlayHintsProvider('bml', {
@@ -318,8 +411,10 @@ function registerInlayHintsProvider(context) {
                 return [];
             }
 
+            const enableParamHints = config.get('inlayHints.parameterNames.enabled', true);
             const suppressWhenArgumentMatchesName = config.get('inlayHints.suppressWhenArgumentMatchesName', true);
             const minParams = Math.max(1, config.get('inlayHints.minimumParameters', 2));
+            const enableVarTypes = config.get('inlayHints.variableTypes.enabled', false);
 
             const bmlApiData = loadJson('bml-functions-api-usage', context.extensionPath);
             const hints = [];
@@ -327,86 +422,133 @@ function registerInlayHintsProvider(context) {
             const startOffset = document.offsetAt(range.start);
             const fullText = document.getText();
 
-            const callRegex = /\b([a-zA-Z_][\w.]*)\s*\(/g;
-            let match;
+            // 1. Parameter Name Inlay Hints
+            if (enableParamHints) {
+                const callRegex = /\b([a-zA-Z_][\w.]*)\s*\(/g;
+                let match;
 
-            while ((match = callRegex.exec(text)) !== null) {
-                const callStartOffset = startOffset + match.index;
-                if (isInsideCommentOrString(fullText, callStartOffset)) {
-                    continue;
-                }
-
-                const funcName = match[1];
-                const funcLower = funcName.toLowerCase();
-
-                if (['if', 'elif', 'else', 'for', 'while', 'return'].includes(funcLower)) {
-                    continue;
-                }
-
-                const openParenOffset = startOffset + match.index + match[0].length;
-
-                let i = openParenOffset;
-                let parenDepth = 1;
-                let inString = false;
-                let stringChar = '';
-                const argStarts = [openParenOffset];
-                const argEnds = [];
-                const maxLookahead = Math.min(fullText.length, openParenOffset + 2000);
-
-                while (i < maxLookahead && parenDepth > 0) {
-                    const char = fullText[i];
-
-                    if (inString) {
-                        if (char === stringChar && fullText[i - 1] !== '\\') {
-                            inString = false;
-                        }
-                    } else if (char === '"' || char === "'") {
-                        inString = true;
-                        stringChar = char;
-                    } else if (char === '(') {
-                        parenDepth++;
-                    } else if (char === ')') {
-                        parenDepth--;
-                        if (parenDepth === 0) {
-                            argEnds.push(i);
-                        }
-                    } else if (char === ',' && parenDepth === 1) {
-                        argEnds.push(i);
-                        let nextStart = i + 1;
-                        while (nextStart < maxLookahead && /\s/.test(fullText[nextStart])) {
-                            nextStart++;
-                        }
-                        argStarts.push(nextStart);
+                while ((match = callRegex.exec(text)) !== null) {
+                    const callStartOffset = startOffset + match.index;
+                    if (isInsideCommentOrString(fullText, callStartOffset)) {
+                        continue;
                     }
-                    i++;
-                }
 
-                const paramNames = resolveParamNames(funcLower, argStarts.length, bmlApiData);
-                if (!paramNames || paramNames.length < minParams) continue;
+                    const funcName = match[1];
+                    const funcLower = funcName.toLowerCase();
 
-                if (argStarts.length >= minParams) {
-                    argStarts.forEach((argOffset, idx) => {
-                        if (idx < paramNames.length && paramNames[idx]) {
-                            const paramName = paramNames[idx];
-                            const argEnd = argEnds[idx] !== undefined ? argEnds[idx] : argOffset;
-                            const argText = fullText.slice(argOffset, argEnd).trim();
+                    if (['if', 'elif', 'else', 'for', 'while', 'return'].includes(funcLower)) {
+                        continue;
+                    }
 
-                            if (shouldSuppressHint(paramName, argText, suppressWhenArgumentMatchesName)) {
-                                return;
+                    const openParenOffset = startOffset + match.index + match[0].length;
+
+                    let i = openParenOffset;
+                    let parenDepth = 1;
+                    let inString = false;
+                    let stringChar = '';
+                    const argStarts = [openParenOffset];
+                    const argEnds = [];
+                    const maxLookahead = Math.min(fullText.length, openParenOffset + 2000);
+
+                    while (i < maxLookahead && parenDepth > 0) {
+                        const char = fullText[i];
+
+                        if (inString) {
+                            if (char === stringChar && fullText[i - 1] !== '\\') {
+                                inString = false;
                             }
-
-                            const pos = document.positionAt(argOffset);
-                            if (pos.line >= range.start.line && pos.line <= range.end.line) {
-                                const hint = new vscode.InlayHint(
-                                    pos,
-                                    `${paramName}: `,
-                                    vscode.InlayHintKind.Parameter
-                                );
-                                hint.paddingRight = true;
-                                hints.push(hint);
+                        } else if (char === '"' || char === "'") {
+                            inString = true;
+                            stringChar = char;
+                        } else if (char === '(') {
+                            parenDepth++;
+                        } else if (char === ')') {
+                            parenDepth--;
+                            if (parenDepth === 0) {
+                                argEnds.push(i);
                             }
+                        } else if (char === ',' && parenDepth === 1) {
+                            argEnds.push(i);
+                            let nextStart = i + 1;
+                            while (nextStart < maxLookahead && /\s/.test(fullText[nextStart])) {
+                                nextStart++;
+                            }
+                            argStarts.push(nextStart);
                         }
-                    });
+                        i++;
+                    }
+
+                    const paramNames = resolveParamNames(funcLower, argStarts.length, bmlApiData);
+                    if (!paramNames || paramNames.length < minParams) continue;
+
+                    if (argStarts.length >= minParams) {
+                        argStarts.forEach((argOffset, idx) => {
+                            if (idx < paramNames.length && paramNames[idx]) {
+                                const paramName = paramNames[idx];
+                                const argEnd = argEnds[idx] !== undefined ? argEnds[idx] : argOffset;
+                                const argText = fullText.slice(argOffset, argEnd).trim();
+
+                                if (shouldSuppressHint(paramName, argText, suppressWhenArgumentMatchesName)) {
+                                    return;
+                                }
+
+                                const pos = document.positionAt(argOffset);
+                                if (pos.line >= range.start.line && pos.line <= range.end.line) {
+                                    const hint = new vscode.InlayHint(
+                                        pos,
+                                        `${paramName}: `,
+                                        vscode.InlayHintKind.Parameter
+                                    );
+                                    hint.paddingRight = true;
+
+                                    const info = bmlApiData ? bmlApiData[funcLower] : null;
+                                    const tooltip = new vscode.MarkdownString();
+                                    tooltip.appendMarkdown(`**Parameter \`${paramName}\`** *(Function \`${funcName}\`)*\n\n`);
+                                    if (info && info.notes) {
+                                        tooltip.appendMarkdown(`${info.notes}\n\n`);
+                                    }
+                                    if (info && info.fullSignature) {
+                                        tooltip.appendCodeblock(info.fullSignature, 'bml');
+                                    }
+                                    hint.tooltip = tooltip;
+
+                                    hints.push(hint);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            // 2. Inferred Variable Type Inlay Hints
+            if (enableVarTypes) {
+                const assignRegex = /^([ \t]*)([a-zA-Z_]\w*)\s*=\s*([^;\r\n]+);/gm;
+                let assignMatch;
+
+                while ((assignMatch = assignRegex.exec(text)) !== null) {
+                    const varName = assignMatch[2];
+                    const rhs = assignMatch[3];
+                    const leadingWhitespace = assignMatch[1].length;
+                    const varOffset = startOffset + assignMatch.index + leadingWhitespace + varName.length;
+
+                    if (isInsideCommentOrString(fullText, startOffset + assignMatch.index)) {
+                        continue;
+                    }
+
+                    const inferredType = inferVariableType(rhs, bmlApiData);
+                    if (inferredType) {
+                        const pos = document.positionAt(varOffset);
+                        if (pos.line >= range.start.line && pos.line <= range.end.line) {
+                            const hint = new vscode.InlayHint(
+                                pos,
+                                `: ${inferredType}`,
+                                vscode.InlayHintKind.Type
+                            );
+                            hint.paddingLeft = true;
+                            hint.tooltip = new vscode.MarkdownString(`Inferred Variable Type: **\`${inferredType}\`**`);
+                            hints.push(hint);
+                        }
+                    }
                 }
             }
 
@@ -415,4 +557,12 @@ function registerInlayHintsProvider(context) {
     });
 }
 
-module.exports = { registerInlayHintsProvider, extractParamName, shouldSuppressHint, resolveParamNames, isInsideCommentOrString, BML_CURATED_PARAMS };
+module.exports = {
+    registerInlayHintsProvider,
+    extractParamName,
+    shouldSuppressHint,
+    resolveParamNames,
+    inferVariableType,
+    isInsideCommentOrString,
+    BML_CURATED_PARAMS
+};

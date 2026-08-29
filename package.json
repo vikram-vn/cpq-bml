@@ -412,6 +412,11 @@
           "default": 2,
           "description": "Minimum number of parameters a function must accept before inlay hints are shown (default is 2 to keep single-argument calls clean)."
         },
+        "cpqBml.inlayHints.variableTypes.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable inferred variable type inlay hints for BML variable assignment statements."
+        },
         "cpqBml.features.docHeader": {
           "type": "boolean",
           "default": true,
