@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="goldGrad" x1="4.5" y1="3" x2="13" y2="11.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    
+    <g id="single-rocket">
+      <!-- Rocket Body (pointing top-right) -->
+      <path d="M13 3C13 3 10 2.5 7 5.5C5 7.5 4.5 10 4.5 10L3 11.5L4.5 13L6 11.5C6 11.5 8.5 11 10.5 9C13.5 6 13 3 13 3Z" fill="url(#goldGrad)"/>
+      <!-- Fins -->
+      <path d="M4.5 10C3.5 10.5 3 11.5 3 11.5L4.5 13C4.5 13 5.5 12.5 6 11.5" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round"/>
+      <!-- Flame -->
+      <path d="M3 13.5C2.5 13.5 2 14 2 14.5C2 15 2.5 15 2.5 15C3.5 14.5 3.5 14 3.5 14" stroke="#f97316" stroke-width="1.5"/>
+      <!-- Window -->
+      <circle cx="9" cy="7" r="1.2" fill="#ffffff"/>
+    </g>
+  </defs>
+
+  <!-- Rocket 1 (Back left, offset, scaled to 0.75) -->
+  <use href="#single-rocket" xlink:href="#single-rocket" opacity="0.45" transform="translate(-1.8, 2.8) scale(0.75)"/>
+
+  <!-- Rocket 2 (Back right, offset, scaled to 0.75) -->
+  <use href="#single-rocket" xlink:href="#single-rocket" opacity="0.6" transform="translate(1.8, 1.8) scale(0.75)"/>
+
+  <!-- Rocket 3 (Front, Main, scaled to 0.85, centered) -->
+  <use href="#single-rocket" xlink:href="#single-rocket" transform="translate(0.5, 0.5) scale(0.85)"/>
+</svg>

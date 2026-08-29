@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <path d="M13 7.5C13 4.74 10.76 2.5 8 2.5C5.65 2.5 3.7 4.12 3.18 6.3C1.7 6.75 0.5 8.2 0.5 9.8C0.5 11.84 2.16 13.5 4.2 13.5H12C13.93 13.5 15.5 11.93 15.5 10C15.5 8.08 13.93 7.6 13 7.5Z" fill="url(#pullGrad)"/>
+  <path d="M8 5V10.5M8 10.5L5.5 8M8 10.5L10.5 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs><linearGradient id="pullGrad" x1="0.5" y1="2.5" x2="15.5" y2="13.5" gradientUnits="userSpaceOnUse"><stop stop-color="#5eead4"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs>
+</svg>

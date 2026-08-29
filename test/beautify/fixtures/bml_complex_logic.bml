@@ -1,0 +1,23 @@
+// BML Complex Logic Test Case
+x = 5;
+y = 10;
+if (x == 5 and y != 10) {
+	print("hello");
+} else {
+	print("world");
+}
+
+// Dictionary usage
+dictVal = dict("string");
+put(dictVal, "name", "CPQM BML");
+put(dictVal, "version", "23C");
+
+// Built-ins and array initialization
+arr = String[]{"apple", "banana", "cherry"};
+for item in arr {
+	if (item == "banana" or item == "cherry") {
+		print("Found: " + item);
+	}
+}
+
+return get(dictVal, "name");
