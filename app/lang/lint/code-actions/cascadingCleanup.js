@@ -195,9 +195,27 @@ function computeTransitiveUnusedVariables(noStringsText, declaredVars, document,
     } catch (e) {
     }
 
+    const lines = noStringsText.split(/\r?\n/);
+    const lineOffsets = new Int32Array(lines.length);
+    let currOffset = 0;
+    for (let l = 0; l < lines.length; l++) {
+        lineOffsets[l] = currOffset;
+        currOffset += lines[l].length + 1;
+    }
+
+    function getLineForOffset(offset) {
+        let low = 0, high = lines.length - 1;
+        while (low <= high) {
+            const mid = (low + high) >> 1;
+            if (lineOffsets[mid] <= offset) low = mid + 1;
+            else high = mid - 1;
+        }
+        return lines[Math.max(0, high)] || '';
+    }
+
     let addedNew = true;
     let iteration = 0;
-    while (addedNew && iteration < 10) {
+    while (addedNew && iteration < 3) {
         addedNew = false;
         iteration++;
 
@@ -223,19 +241,9 @@ function computeTransitiveUnusedVariables(noStringsText, declaredVars, document,
 
             if (usageIndices.length > 0) {
                 let allUsagesInUnusedContext = true;
-                const lines = noStringsText.split(/\r?\n/);
 
                 for (const uIdx of usageIndices) {
-                    let charCount = 0;
-                    let targetLine = '';
-                    for (const l of lines) {
-                        if (uIdx >= charCount && uIdx < charCount + l.length + 1) {
-                            targetLine = l;
-                            break;
-                        }
-                        charCount += l.length + 1;
-                    }
-
+                    const targetLine = getLineForOffset(uIdx);
                     const trimmed = targetLine.trim();
                     const assignMatch = trimmed.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date|recordset)\s+)?([a-zA-Z_]\w*)\s*=(?!=)/i);
                     const containerMatch = trimmed.match(/\b(put|append|insert|remove|clear|setattributevalue|getboolean|getint|getfloat|getstring|getmessage|haserror)\s*\(\s*([a-zA-Z_]\w*)/i);

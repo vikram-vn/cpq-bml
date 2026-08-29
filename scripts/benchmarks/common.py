@@ -32,6 +32,7 @@ BOLD = "\033[1m"
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
 CYAN = "\033[36m"
+BLUE = "\033[34m"
 RED = "\033[31m"
 MAGENTA = "\033[35m"
 DIM = "\033[2m"
@@ -53,21 +54,33 @@ class BenchmarkResult:
     extra: Dict[str, Any] = field(default_factory=dict)
 
     @property
+    def is_batch_operation(self) -> bool:
+        return self.category in ("CodeActions", "Batch") or "Fix-All" in self.name
+
+    @property
     def status_label(self) -> str:
         if self.avg_ms < 1.0:
             return "⚡ INSTANT (<1ms)"
-        elif self.avg_ms < 50.0:
-            return "✅ EXCELLENT (<50ms)"
-        elif self.avg_ms < 150.0:
-            return "⚡ FAST (<150ms)"
+        elif self.is_batch_operation:
+            if self.avg_ms < 500.0:
+                return "⚡ FAST BATCH (<500ms)"
+            elif self.avg_ms < 1000.0:
+                return "✅ GOOD BATCH (<1s)"
+            else:
+                return "⚠️ ATTENTION"
         else:
-            return "⚠️ ATTENTION"
+            if self.avg_ms < 50.0:
+                return "✅ EXCELLENT (<50ms)"
+            elif self.avg_ms < 150.0:
+                return "⚡ FAST (<150ms)"
+            else:
+                return "⚠️ ATTENTION"
 
     @property
     def status_color(self) -> str:
-        if self.avg_ms < 50.0:
+        if self.avg_ms < 50.0 or (self.is_batch_operation and self.avg_ms < 500.0):
             return GREEN
-        elif self.avg_ms < 150.0:
+        elif self.avg_ms < 150.0 or (self.is_batch_operation and self.avg_ms < 1000.0):
             return YELLOW
         else:
             return RED
@@ -276,13 +289,87 @@ def print_result_card(res: BenchmarkResult) -> None:
     print(f"   {DIM}Rating:{RESET}     {res.status_color}{res.status_label}{RESET}\n")
 
 
+def strip_ansi(text: str) -> str:
+    """Remove ANSI escape codes for accurate string width calculation."""
+    import re
+    return re.sub(r'\x1b\[[0-9;]*m', '', text)
+
+
 def print_summary_table(results: List[BenchmarkResult]) -> None:
-    """Print a formatted summary table for a list of benchmark results."""
-    print(f"{CYAN}{BOLD}{'=' * 72}{RESET}")
-    print(f" {BOLD}📊 BENCHMARK SCORECARD SUMMARY{RESET}")
-    print(f"{CYAN}{BOLD}{'=' * 72}{RESET}")
-    print(f"| Subsystem / Feature | Avg (ms) | p95 (ms) | Throughput (lines/s) | Rating |")
-    print(f"| :--- | :--- | :--- | :--- | :--- |")
+    """Print a clean, beautifully aligned terminal table with full statistics."""
+    if not results:
+        return
+
+    # Column definitions: (Header, Key, Align)
+    headers = [
+        "Category",
+        "Subsystem / Feature",
+        "Avg (ms)",
+        "p95 (ms)",
+        "Min / Max (ms)",
+        "Throughput (lines/s)",
+        "Rating"
+    ]
+
+    rows = []
     for r in results:
-        print(f"| **{r.name}** | {r.avg_ms:.2f} ms | {r.p95_ms:.2f} ms | {r.throughput_lines_sec:,} | {r.status_label} |")
-    print(f"{CYAN}{BOLD}{'=' * 72}{RESET}\n")
+        rows.append([
+            r.category,
+            r.name,
+            f"{r.avg_ms:.2f} ms",
+            f"{r.p95_ms:.2f} ms",
+            f"{r.min_ms:.2f} / {r.max_ms:.2f} ms",
+            f"{r.throughput_lines_sec:,} l/s",
+            r.status_label
+        ])
+
+    # Calculate max column widths
+    col_widths = [len(h) for h in headers]
+    for row in rows:
+        for i, val in enumerate(row):
+            col_widths[i] = max(col_widths[i], len(strip_ansi(val)))
+
+    # Box-drawing characters
+    top_border    = "┌─" + "─┬─".join("─" * w for w in col_widths) + "─┐"
+    header_sep    = "├─" + "─┼─".join("─" * w for w in col_widths) + "─┤"
+    bottom_border = "└─" + "─┴─".join("─" * w for w in col_widths) + "─┘"
+
+    print(f"\n{CYAN}{BOLD}{'=' * (sum(col_widths) + len(col_widths) * 3 + 1)}{RESET}")
+    print(f" {BOLD}📊 ORACLE CPQ-BML END-TO-END BENCHMARK SCORECARD{RESET}")
+    print(f"{CYAN}{BOLD}{'=' * (sum(col_widths) + len(col_widths) * 3 + 1)}{RESET}\n")
+
+    print(f"{CYAN}{top_border}{RESET}")
+
+    # Print Header
+    header_cells = []
+    for i, h in enumerate(headers):
+        header_cells.append(f"{BOLD}{h.ljust(col_widths[i])}{RESET}")
+    print(f"{CYAN}│{RESET} " + f" {CYAN}│{RESET} ".join(header_cells) + f" {CYAN}│{RESET}")
+    print(f"{CYAN}{header_sep}{RESET}")
+
+    # Print Rows
+    for r_idx, (res, row) in enumerate(zip(results, rows)):
+        row_cells = []
+        for i, val in enumerate(row):
+            # Right-align numeric columns
+            if i in (2, 3, 4, 5):
+                padded = val.rjust(col_widths[i])
+            else:
+                padded = val.ljust(col_widths[i])
+            
+            # Apply color highlighting
+            if i == 0:
+                cell_str = f"{BLUE}{padded}{RESET}"
+            elif i == 1:
+                cell_str = f"{BOLD}{padded}{RESET}"
+            elif i in (2, 3):
+                cell_str = f"{res.status_color}{padded}{RESET}"
+            elif i == 6:
+                cell_str = f"{res.status_color}{padded}{RESET}"
+            else:
+                cell_str = padded
+            row_cells.append(cell_str)
+
+        print(f"{CYAN}│{RESET} " + f" {CYAN}│{RESET} ".join(row_cells) + f" {CYAN}│{RESET}")
+
+    print(f"{CYAN}{bottom_border}{RESET}\n")

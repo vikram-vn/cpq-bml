@@ -40,28 +40,21 @@ function extractDocHeader(fileText) {
 }
 
 /**
- * Parse parameters from a -meta.json sidecar.
- * Returns [{ name, dataType }] or [].
+ * Parse parameters and returnType from a -meta.json sidecar in a single disk read.
+ * Returns { parameters, returnType }.
  */
-function parseMetaParams(metaPath) {
+function parseMetaSidecar(metaPath) {
   try {
     const meta = JSON.parse(fs.readFileSync(metaPath, "utf8"));
     const params = meta.params || meta.parameters || [];
-    return params.map((p) => ({
+    const parameters = params.map((p) => ({
       name: p.name || p.variableName || "",
       dataType: p.dataType || p.type || "",
     }));
+    const returnType = meta.returnType || meta.returnDataType || "";
+    return { parameters, returnType };
   } catch {
-    return [];
-  }
-}
-
-function parseMetaReturnType(metaPath) {
-  try {
-    const meta = JSON.parse(fs.readFileSync(metaPath, "utf8"));
-    return meta.returnType || meta.returnDataType || "";
-  } catch {
-    return "";
+    return { parameters: [], returnType: "" };
   }
 }
 
@@ -79,7 +72,12 @@ const IGNORED_FOLDERS = new Set([
   'target',
   'vendor',
   'scratch',
-  'logs'
+  'logs',
+  '.system_generated',
+  'venv',
+  '.venv',
+  '__pycache__',
+  '.pytest_cache'
 ]);
 
 /**
@@ -131,6 +129,13 @@ function scanDir(dir, index) {
 }
 
 function indexBmlFile(filePath, index) {
+  // Determine qualified name from directory structure FIRST before reading file from disk
+  const normalizedPath = filePath.replace(/\\/g, "/");
+  const isUtil = /\/library\/|\/util\//i.test(normalizedPath);
+  const isCommerce = /\/commerce\//i.test(normalizedPath);
+  const prefix = isUtil ? "util" : isCommerce ? "commerce" : null;
+  if (!prefix) return;
+
   let text;
   try {
     text = fs.readFileSync(filePath, "utf8");
@@ -142,19 +147,9 @@ function indexBmlFile(filePath, index) {
   const dir = path.dirname(filePath);
   const metaPath = path.join(dir, baseName + "-meta.json");
 
-  // Determine qualified name from directory structure
-  // Convention: files under /library/ → util.variableName
-  //             files under /commerce/ → commerce.variableName
-  const normalizedPath = filePath.replace(/\\/g, "/");
-  const isUtil = /\/library\/|\/util\//i.test(normalizedPath);
-  const isCommerce = /\/commerce\//i.test(normalizedPath);
-  const prefix = isUtil ? "util" : isCommerce ? "commerce" : null;
-  if (!prefix) return;
-
   const qualifiedName = `${prefix}.${baseName}`;
   const docHeader = extractDocHeader(text);
-  const parameters = parseMetaParams(metaPath);
-  const returnType = parseMetaReturnType(metaPath);
+  const { parameters, returnType } = parseMetaSidecar(metaPath);
 
   // Find the first non-comment, non-empty line as the definition line
   let defLine = 0;

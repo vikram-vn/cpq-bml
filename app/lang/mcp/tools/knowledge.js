@@ -201,17 +201,18 @@ function computeLineDiff(oldLines, newLines) {
         while (i > 0 || j > 0) {
             const rowOffset = i * stride;
             if (i > 0 && j > 0 && trimmedOld[i - 1] === trimmedNew[j - 1]) {
-                diffMiddle.unshift(' ' + trimmedOld[i - 1]);
+                diffMiddle.push(' ' + trimmedOld[i - 1]);
                 i--;
                 j--;
             } else if (j > 0 && (i === 0 || dp[rowOffset + j - 1] >= dp[(i - 1) * stride + j])) {
-                diffMiddle.unshift('+' + trimmedNew[j - 1]);
+                diffMiddle.push('+' + trimmedNew[j - 1]);
                 j--;
             } else {
-                diffMiddle.unshift('-' + trimmedOld[i - 1]);
+                diffMiddle.push('-' + trimmedOld[i - 1]);
                 i--;
             }
         }
+        diffMiddle.reverse();
     } else {
         for (let i = 0; i < tm; i++) diffMiddle.push('-' + trimmedOld[i]);
         for (let j = 0; j < tn; j++) diffMiddle.push('+' + trimmedNew[j]);

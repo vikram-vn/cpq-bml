@@ -42,6 +42,7 @@ const mockVscode = {
         this.severity = severity;
     },
     DiagnosticSeverity: { Information: 2, Error: 0, Warning: 1 },
+    Position: MockPosition,
     Range: function(start, end) { this.start = start; this.end = end; }
 };
 

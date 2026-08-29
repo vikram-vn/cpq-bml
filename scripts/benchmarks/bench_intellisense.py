@@ -105,9 +105,9 @@ collectLocalVariables(mockDoc, pos);
     results.append(res4)
     print_result_card(res4)
 
-    # 5. Workspace Function Indexing (with IGNORED_FOLDERS)
+    # 5. Workspace Function Index (Cold Cache Full Walk)
     res5 = run_node_benchmark(
-        name="Workspace Function Indexing & Resolution",
+        name="Workspace Index Full Directory Walk (Cold)",
         category="IntelliSense",
         setup_code="""
 const { getWorkspaceIndex, invalidateIndex } = require('./app/lang/intellisense/workspaceIndex');
@@ -115,13 +115,29 @@ const { getWorkspaceIndex, invalidateIndex } = require('./app/lang/intellisense/
         run_code="""
 invalidateIndex();
 const idx = getWorkspaceIndex();
-idx.get('util.calculatepricing');
 """,
-        iterations=max(20, iterations // 2),
-        warmup=5,
+        iterations=15,
+        warmup=2,
     )
     results.append(res5)
     print_result_card(res5)
+
+    # 6. Workspace Function Index Query (Warm / In-Memory)
+    res6 = run_node_benchmark(
+        name="Workspace Index Query & Lookup (In-Memory)",
+        category="IntelliSense",
+        setup_code="""
+const { getWorkspaceIndex } = require('./app/lang/intellisense/workspaceIndex');
+const idx = getWorkspaceIndex();
+""",
+        run_code="""
+idx.get('util.calculatepricing');
+""",
+        iterations=iterations,
+        warmup=10,
+    )
+    results.append(res6)
+    print_result_card(res6)
 
     return results
 

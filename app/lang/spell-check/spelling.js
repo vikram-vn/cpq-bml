@@ -187,7 +187,7 @@ function checkSpelling(
 
   const addSpellingDiagnostic = (word, startOffset) => {
     const startPos = doc.positionAt(startOffset);
-    const endPos = doc.positionAt(startOffset + word.length);
+    const endPos = new vscode.Position(startPos.line, startPos.character + word.length);
     const range = new vscode.Range(startPos, endPos);
     const diag = new vscode.Diagnostic(
       range,

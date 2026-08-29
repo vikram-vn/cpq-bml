@@ -10,6 +10,21 @@ const {
     commentOutUnusedAssignments
 } = require('./cascadingCleanup');
 
+function blankRangesFast(text, ranges) {
+    if (!ranges || ranges.length === 0) return text;
+    let res = '';
+    let last = 0;
+    for (let i = 0; i < ranges.length; i++) {
+        const [start, end] = ranges[i];
+        if (start > last) res += text.slice(last, start);
+        const chunk = text.slice(start, end);
+        res += chunk.replace(/[^\r\n]/g, ' ');
+        last = end;
+    }
+    if (last < text.length) res += text.slice(last);
+    return res;
+}
+
 /**
  * Creates a bundled "Fix All Safe Style & Naming Issues in File" CodeAction.
  */
@@ -70,21 +85,9 @@ function buildFixAllText(document, relevantDiags) {
             const { getStringRanges } = require('../rules/strings');
 
             const commentRanges = getCommentRanges(text);
-            const chars = text.split('');
-            const len = chars.length;
-            for (const [start, end] of commentRanges) {
-                for (let i = start; i < end && i < len; i++) {
-                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
-                }
-            }
-            const cleanText = chars.join('');
+            const cleanText = blankRangesFast(text, commentRanges);
             const stringRanges = getStringRanges(cleanText);
-            for (const [start, end] of stringRanges) {
-                for (let i = start; i < end && i < len; i++) {
-                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
-                }
-            }
-            const noStringsText = chars.join('');
+            const noStringsText = blankRangesFast(cleanText, stringRanges);
 
             const declaredVars = getDeclaredVariables(noStringsText, document);
             for (const [varName] of declaredVars.entries()) {
@@ -104,74 +107,67 @@ function buildFixAllText(document, relevantDiags) {
         }
     }
 
-    for (const [oldName, newName] of renameMap.entries()) {
-        const regex = new RegExp(`\\b${oldName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'g');
-        text = text.replace(regex, newName);
+    if (renameMap.size > 0) {
+        const sortedKeys = Array.from(renameMap.keys()).sort((a, b) => b.length - a.length);
+        const escapedKeys = sortedKeys.map(k => k.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&'));
+        const combinedRegex = new RegExp(`\\b(${escapedKeys.join('|')})\\b`, 'g');
+        text = text.replace(combinedRegex, (match) => renameMap.get(match) || match);
     }
 
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
 
     // 2. Multi-pass Cascading Unused Variable & Empty Block Cleanups
     const unusedDiags = relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var');
-    const initialUnusedNames = new Set();
+    if (unusedDiags.length > 0) {
+        const initialUnusedNames = new Set();
+        for (const diag of unusedDiags) {
+            const editRange = diag.originalRange ?? diag.range;
+            const name = document.getText(editRange).trim();
+            if (name) initialUnusedNames.add(name);
+        }
 
-    for (const diag of unusedDiags) {
-        const editRange = diag.originalRange ?? diag.range;
-        const name = document.getText(editRange).trim();
-        if (name) initialUnusedNames.add(name);
-    }
+        let globalChanged = true;
+        let globalPass = 0;
+        while (globalChanged && globalPass < 3) {
+            const passStartText = text;
+            globalPass++;
 
-    let globalChanged = true;
-    let globalPass = 0;
-    while (globalChanged && globalPass < 5) {
-        const passStartText = text;
-        globalPass++;
+            let currentUnusedNames = new Set(initialUnusedNames);
 
-        let currentUnusedNames = new Set(initialUnusedNames);
+            try {
+                const { getDeclaredVariables } = require('../rules/variables');
+                const { getCommentRanges } = require('../rules/comments');
+                const { getStringRanges } = require('../rules/strings');
 
-        try {
-            const { getDeclaredVariables } = require('../rules/variables');
-            const { getCommentRanges } = require('../rules/comments');
-            const { getStringRanges } = require('../rules/strings');
+                const commentRanges = getCommentRanges(text);
+                const cleanText = blankRangesFast(text, commentRanges);
+                const stringRanges = getStringRanges(cleanText);
+                const noStringsText = blankRangesFast(cleanText, stringRanges);
+                const declaredVars = getDeclaredVariables(noStringsText, document);
 
-            const commentRanges = getCommentRanges(text);
-            const chars = text.split('');
-            const len = chars.length;
-            for (const [start, end] of commentRanges) {
-                for (let i = start; i < end && i < len; i++) {
-                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
+                currentUnusedNames = computeTransitiveUnusedVariables(noStringsText, declaredVars, document, cleanText, initialUnusedNames);
+            } catch (e) {
+                // Fallback gracefully
+            }
+
+            if (currentUnusedNames.size > 0) {
+                text = commentOutUnusedAssignments(text, currentUnusedNames, renameMap, eol);
+            }
+
+            if (text.includes('if') || text.includes('for') || text.includes('while')) {
+                let blockChanged = true;
+                let collapseIter = 0;
+                while (blockChanged && collapseIter < 2) {
+                    const prevBlockText = text;
+                    text = commentOutEmptyConditionalChains(text, eol);
+                    text = commentOutEmptyLoops(text, eol);
+                    blockChanged = text !== prevBlockText;
+                    collapseIter++;
                 }
             }
-            const cleanText = chars.join('');
-            const stringRanges = getStringRanges(cleanText);
-            for (const [start, end] of stringRanges) {
-                for (let i = start; i < end && i < len; i++) {
-                    if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
-                }
-            }
-            const noStringsText = chars.join('');
-            const declaredVars = getDeclaredVariables(noStringsText, document);
 
-            currentUnusedNames = computeTransitiveUnusedVariables(noStringsText, declaredVars, document, cleanText, initialUnusedNames);
-        } catch (e) {
-            // Fallback gracefully
+            globalChanged = text !== passStartText;
         }
-
-        if (currentUnusedNames.size > 0) {
-            text = commentOutUnusedAssignments(text, currentUnusedNames, renameMap, eol);
-        }
-
-        let blockChanged = true;
-        let collapseIter = 0;
-        while (blockChanged && collapseIter < 5) {
-            const prevBlockText = text;
-            text = commentOutEmptyConditionalChains(text, eol);
-            text = commentOutEmptyLoops(text, eol);
-            blockChanged = text !== prevBlockText;
-            collapseIter++;
-        }
-
-        globalChanged = text !== passStartText;
     }
 
     // 3. String-preserved cleanups (never alters contents inside "quotes")
@@ -207,12 +203,12 @@ function buildFixAllText(document, relevantDiags) {
         return code;
     });
 
-    // 3. Empty blocks
+    // 4. Empty blocks
     if (relevantDiags.some(d => d.code === 'bml-empty-block')) {
         text = text.replace(/\{\s*\}/g, '{\n    // TODO: implement\n}');
     }
 
-    // 4. Multi-statement lines
+    // 5. Multi-statement lines
     if (relevantDiags.some(d => d.code === 'bml-multiple-statements-per-line')) {
         const lines = text.split(/\r?\n/);
         const transformedLines = lines.map(line => {
@@ -233,7 +229,7 @@ function buildFixAllText(document, relevantDiags) {
         text = transformedLines.join(eol);
     }
 
-    // 5. Trailing commas
+    // 6. Trailing commas
     if (relevantDiags.some(d => d.code === 'bml-trailing-comma-error')) {
         text = text.replace(/,\s*([)}])/g, '$1');
     }
@@ -287,92 +283,63 @@ function getFixAllSafeAction(document, diagnostics) {
     masterRefactor.diagnostics = relevantDiags;
     actions.push(masterRefactor);
 
-    // 2. Category: Variable camelCase
-    const camelDiags = relevantDiags.filter(d => d.code === 'bml-variable-camelcase');
-    if (camelDiags.length > 0) {
-        const camelTitle = `Convert all variables to camelCase (${camelDiags.length} issue${camelDiags.length > 1 ? 's' : ''})`;
-        const camelText = buildFixAllText(document, camelDiags);
-        const camelEdit = new vscode.WorkspaceEdit();
-        camelEdit.replace(document.uri, fullRange, camelText);
-        const camelAction = new vscode.CodeAction(camelTitle, vscode.CodeActionKind.RefactorRewrite);
-        camelAction.edit = camelEdit;
-        camelAction.diagnostics = camelDiags;
-        actions.push(camelAction);
+    function addCategoryAction(categoryDiags, titleGenerator) {
+        if (!categoryDiags || categoryDiags.length === 0) return;
+        const text = (categoryDiags.length === relevantDiags.length)
+            ? masterText
+            : buildFixAllText(document, categoryDiags);
+        const edit = new vscode.WorkspaceEdit();
+        edit.replace(document.uri, fullRange, text);
+        const action = new vscode.CodeAction(titleGenerator(categoryDiags.length), vscode.CodeActionKind.RefactorRewrite);
+        action.edit = edit;
+        action.diagnostics = categoryDiags;
+        actions.push(action);
     }
 
-    // 3. Category: CPQ Type Suffixes & Prefixes (Dict, Array, RecordSet, is/has)
-    const typeDiags = relevantDiags.filter(d => 
-        d.code === 'bml-dict-naming-suffix' || 
-        d.code === 'bml-array-naming-suffix' || 
-        d.code === 'bml-recordset-naming-suffix' || 
-        d.code === 'bml-boolean-naming-prefix'
+    // 2. Category: Variable camelCase
+    addCategoryAction(
+        relevantDiags.filter(d => d.code === 'bml-variable-camelcase'),
+        (count) => `Convert all variables to camelCase (${count} issue${count > 1 ? 's' : ''})`
     );
-    if (typeDiags.length > 0) {
-        const typeTitle = `Apply CPQ type naming conventions (Dict, Array, is/has) (${typeDiags.length} issue${typeDiags.length > 1 ? 's' : ''})`;
-        const typeText = buildFixAllText(document, typeDiags);
-        const typeEdit = new vscode.WorkspaceEdit();
-        typeEdit.replace(document.uri, fullRange, typeText);
-        const typeAction = new vscode.CodeAction(typeTitle, vscode.CodeActionKind.RefactorRewrite);
-        typeAction.edit = typeEdit;
-        typeAction.diagnostics = typeDiags;
-        actions.push(typeAction);
-    }
+
+    // 3. Category: CPQ Type Suffixes & Prefixes
+    addCategoryAction(
+        relevantDiags.filter(d => 
+            d.code === 'bml-dict-naming-suffix' || 
+            d.code === 'bml-array-naming-suffix' || 
+            d.code === 'bml-recordset-naming-suffix' || 
+            d.code === 'bml-boolean-naming-prefix'
+        ),
+        (count) => `Apply CPQ type naming conventions (Dict, Array, is/has) (${count} issue${count > 1 ? 's' : ''})`
+    );
 
     // 4. Category: Direct Magic Number Constants
-    const magicDiags = relevantDiags.filter(d => d.code === 'bml-magic-number');
-    if (magicDiags.length > 0) {
-        const magicTitle = `Convert direct magic number variables to named constants (${magicDiags.length} issue${magicDiags.length > 1 ? 's' : ''})`;
-        const magicText = buildFixAllText(document, magicDiags);
-        const magicEdit = new vscode.WorkspaceEdit();
-        magicEdit.replace(document.uri, fullRange, magicText);
-        const magicAction = new vscode.CodeAction(magicTitle, vscode.CodeActionKind.RefactorRewrite);
-        magicAction.edit = magicEdit;
-        magicAction.diagnostics = magicDiags;
-        actions.push(magicAction);
-    }
-
-    // 5. Category: Syntax & Formatting (Multi-statement lines, Empty blocks, Trailing commas)
-    const syntaxDiags = relevantDiags.filter(d => 
-        d.code === 'bml-multiple-statements-per-line' || 
-        d.code === 'bml-empty-block' || 
-        d.code === 'bml-trailing-comma-error'
+    addCategoryAction(
+        relevantDiags.filter(d => d.code === 'bml-magic-number'),
+        (count) => `Convert direct magic number variables to named constants (${count} issue${count > 1 ? 's' : ''})`
     );
-    if (syntaxDiags.length > 0) {
-        const syntaxTitle = `Format multi-statement lines & fill empty blocks (${syntaxDiags.length} issue${syntaxDiags.length > 1 ? 's' : ''})`;
-        const syntaxText = buildFixAllText(document, syntaxDiags);
-        const syntaxEdit = new vscode.WorkspaceEdit();
-        syntaxEdit.replace(document.uri, fullRange, syntaxText);
-        const syntaxAction = new vscode.CodeAction(syntaxTitle, vscode.CodeActionKind.RefactorRewrite);
-        syntaxAction.edit = syntaxEdit;
-        syntaxAction.diagnostics = syntaxDiags;
-        actions.push(syntaxAction);
-    }
+
+    // 5. Category: Syntax & Formatting
+    addCategoryAction(
+        relevantDiags.filter(d => 
+            d.code === 'bml-multiple-statements-per-line' || 
+            d.code === 'bml-empty-block' || 
+            d.code === 'bml-trailing-comma-error'
+        ),
+        (count) => `Format multi-statement lines & fill empty blocks (${count} issue${count > 1 ? 's' : ''})`
+    );
 
     // 6. Category: Unused Variables
-    const unusedDiags = relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var');
-    if (unusedDiags.length > 0) {
-        const unusedTitle = `Comment out all unused variable statements (${unusedDiags.length} issue${unusedDiags.length > 1 ? 's' : ''})`;
-        const unusedText = buildFixAllText(document, unusedDiags);
-        const unusedEdit = new vscode.WorkspaceEdit();
-        unusedEdit.replace(document.uri, fullRange, unusedText);
-        const unusedAction = new vscode.CodeAction(unusedTitle, vscode.CodeActionKind.RefactorRewrite);
-        unusedAction.edit = unusedEdit;
-        unusedAction.diagnostics = unusedDiags;
-        actions.push(unusedAction);
-    }
+    addCategoryAction(
+        relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var'),
+        (count) => `Comment out all unused variable statements (${count} issue${count > 1 ? 's' : ''})`
+    );
 
     // 7. Category: Redundant Casts & Expression Simplification
-    const castDiags = relevantDiags.filter(d => d.code === 'bml-string-cast-of-string');
-    if (castDiags.length > 0) {
-        const castTitle = `Simplify redundant string casts & boolean expressions (${castDiags.length} issue${castDiags.length > 1 ? 's' : ''})`;
-        const castText = buildFixAllText(document, castDiags);
-        const castEdit = new vscode.WorkspaceEdit();
-        castEdit.replace(document.uri, fullRange, castText);
-        const castAction = new vscode.CodeAction(castTitle, vscode.CodeActionKind.RefactorRewrite);
-        castAction.edit = castEdit;
-        castAction.diagnostics = castDiags;
-        actions.push(castAction);
-    }
+    addCategoryAction(
+        relevantDiags.filter(d => d.code === 'bml-string-cast-of-string'),
+        (count) => `Simplify redundant string casts & boolean expressions (${count} issue${count > 1 ? 's' : ''})`
+    );
 
     return actions;
 }
