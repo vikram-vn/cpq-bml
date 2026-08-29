@@ -177,8 +177,11 @@ function registerBmlComments(context) {
     }, null, context.subscriptions);
 
     const hoverProvider = vscode.languages.registerHoverProvider('bml', {
-        provideHover(document, position) {
+        provideHover(document, position, token) {
+            if (token && token.isCancellationRequested) return null;
             if (!isCommentsEnabled()) return null;
+            const line = document.lineAt(position.line).text;
+            if (!line.includes('//') && !line.includes('/*') && !line.includes('*')) return null;
             const markdown = getHoverMarkdown(document.getText(), document.offsetAt(position));
             return markdown ? new vscode.Hover(new vscode.MarkdownString(markdown)) : null;
         }

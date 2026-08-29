@@ -192,13 +192,14 @@ function registerBmlIntelliSense(context) {
             resolveCompletionItem(item, token) {
                 if (token && token.isCancellationRequested) return item;
                 loadApiData(context);
+                const apiData = getBmlApiData(context);
                 let key = (typeof item.label === 'string' ? item.label : (item.label && item.label.label) || item.filterText || '').toLowerCase();
                 if (item.kind === vscode.CompletionItemKind.Method) {
-                    if (bmlApiData['cpqjs.' + key]) {
+                    if (apiData['cpqjs.' + key]) {
                         key = 'cpqjs.' + key;
                     }
                 }
-                const info = bmlApiData[key] || lookupApiInfo(key);
+                const info = apiData[key] || lookupApiInfo(key);
                 if (info) {
                     item.documentation = formatAsJsDoc(info);
                 }
@@ -231,11 +232,6 @@ function registerBmlIntelliSense(context) {
             const word = document.getText(wordRange);
             const lowerWord = word.toLowerCase();
 
-            const wsIndex = getWorkspaceIndex();
-            if (wsIndex.has(lowerWord)) {
-                return new vscode.Hover(formatWorkspaceFunctionHover(wsIndex.get(lowerWord)));
-            }
-
             const info = lookupApiInfo(word);
             if (info) {
                 return new vscode.Hover(formatAsJsDoc(info));
@@ -243,6 +239,13 @@ function registerBmlIntelliSense(context) {
 
             if (KEYWORD_HOVERS[lowerWord]) {
                 return new vscode.Hover(formatAsJsDoc(KEYWORD_HOVERS[lowerWord]));
+            }
+
+            if (lowerWord.includes('.')) {
+                const wsIndex = getWorkspaceIndex();
+                if (wsIndex.has(lowerWord)) {
+                    return new vscode.Hover(formatWorkspaceFunctionHover(wsIndex.get(lowerWord)));
+                }
             }
 
             return null;
@@ -431,32 +434,6 @@ function registerBmlIntelliSense(context) {
         }
     });
     context.subscriptions.push(symbolProvider);
-
-    // ── Extended hover: workspace functions ──────────────────────────────────
-    // The existing hoverProvider covers built-ins; add a second provider for
-    // workspace util.* / commerce.* functions.
-    const workspaceHoverProvider = vscode.languages.registerHoverProvider('bml', {
-        provideHover(document, position, token) {
-            if (token && token.isCancellationRequested) return null;
-            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
-                return null;
-            }
-            const call = resolveCallAtPosition(document, position);
-            if (!call) return null;
-            const entry = getWorkspaceIndex().get(call.qualifiedName);
-            if (!entry) return null;
-
-            const md = new vscode.MarkdownString();
-            md.isTrusted = true;
-            const paramStr = entry.parameters.map(p => `${p.dataType} ${p.name}`).join(', ');
-            md.appendCodeblock(`(workspace function) ${call.qualifiedName}(${paramStr})`, 'bml');
-            if (entry.returnType) md.appendMarkdown(`*Returns: ${entry.returnType}*\n\n`);
-            if (entry.docHeader) md.appendMarkdown(entry.docHeader + '\n\n');
-            md.appendMarkdown(`[Go to source](${vscode.Uri.file(entry.filePath).toString()})`);
-            return new vscode.Hover(md);
-        }
-    });
-    context.subscriptions.push(workspaceHoverProvider);
 
     // Register workspace index file-system watchers
     registerWorkspaceIndexWatcher(context);

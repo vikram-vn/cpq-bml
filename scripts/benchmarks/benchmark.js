@@ -269,6 +269,34 @@ try {
     console.error('Linter benchmark failed:', e.message);
 }
 
+// 7. IntelliSense Hover Resolution Benchmark
+try {
+    const { lookupApiInfo, getBmlApiData } = require('../../app/lang/intellisense/apiData');
+    const { formatAsJsDoc } = require('../../app/lang/intellisense/docFormatting');
+
+    runBenchmark('IntelliSense Hover Info Resolution', 200, () => {
+        const info = lookupApiInfo('jsonput') || lookupApiInfo('getdate');
+        if (info) {
+            formatAsJsDoc(info);
+        }
+    });
+} catch (e) {
+    console.error('Hover benchmark failed:', e.message);
+}
+
+// 8. Workspace Indexing Scan & Lookup Benchmark
+try {
+    const { getWorkspaceIndex, invalidateIndex } = require('../../app/lang/intellisense/workspaceIndex');
+
+    runBenchmark('Workspace Function Indexing & Lookup', 30, () => {
+        invalidateIndex();
+        const index = getWorkspaceIndex();
+        index.get('util.calculatepricing');
+    });
+} catch (e) {
+    console.error('Workspace index benchmark failed:', e.message);
+}
+
 console.log(`======================================================================`);
 console.log(` 📊 BENCHMARK SUMMARY REPORT`);
 console.log(`======================================================================`);

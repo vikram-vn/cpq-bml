@@ -65,6 +65,23 @@ function parseMetaReturnType(metaPath) {
   }
 }
 
+const IGNORED_FOLDERS = new Set([
+  'node_modules',
+  '.git',
+  '.vscode',
+  '.vscode-test',
+  '.agents',
+  'dist',
+  'out',
+  'build',
+  'coverage',
+  '.gemini',
+  'target',
+  'vendor',
+  'scratch',
+  'logs'
+]);
+
 /**
  * Build / rebuild the full workspace index.
  */
@@ -96,6 +113,9 @@ function scanDir(dir, index) {
 
   for (const entry of entries) {
     if (entry.name.startsWith(".")) continue; // skip hidden dirs
+    const nameLower = entry.name.toLowerCase();
+    if (IGNORED_FOLDERS.has(nameLower)) continue;
+
     const fullPath = path.join(dir, entry.name);
 
     if (entry.isDirectory()) {
