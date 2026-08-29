@@ -4,6 +4,20 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.58.0] - 2026-08-29
+
+### Added
+- Implement multi-environment settings panel with secure secret management and associated UI components.
+- Add environment management UI components and logic for settings panel.
+- Implement settings dashboard UI with sidebar navigation and advanced diagnostics tab.
+- Implement advanced settings and MCP management tabs in the settings panel webview.
+- Add McpTab component to settings panel for configuring MCP server and AI skills.
+- Add modular CSS stylesheets for settings panel web view components and layout.
+- Implement responsive settings panel UI with modern CSS design and component styling.
+- Implement BML inlay hints provider for improved function parameter visibility.
+- Implement BML inlay hint provider for function parameter names.
+- Implement BML parameter name inlay hints with configuration and unit tests.
+
 ## [1.57.0] - 2026-08-29
 
 ### Added
@@ -82,17 +96,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement BML linter rules and initialize regression test expectations.
 - Implement automated safe code refactoring and linting fixes for BML files.
 - Add performance benchmark suite for linter, code actions, and complexity analysis.
-- Implement automated quality and style quick fixes for BML linting diagnostics.
-- Implement automated safe code actions for BML style, naming, and formatting fixes.
-- Add FeaturesTab component to settings panel and update documentation.
-- Release version 1.48.0 with XSLT tooling support, BML quick-fixes, and expanded linting rules.
-- Implement XSLT preview, linting, formatting, and code action support.
-- Implement BML quick-fix provider and add rules for variable definition and linting diagnostics.
-- Add linter rule for use-before-define, implement BMQL variable completion logic, and add comprehensive test suites.
-
-## [1.49.0] - 2026-08-23
-
-### Added
 - Implement automated quality and style quick fixes for BML linting diagnostics.
 - Implement automated safe code actions for BML style, naming, and formatting fixes.
 - Add FeaturesTab component to settings panel and update documentation.

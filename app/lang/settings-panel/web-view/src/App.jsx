@@ -204,6 +204,7 @@ export default function App({ vscodeApi }) {
         inlayHints = {},
         mcp = {},
         debug = {},
+        environments = [],
     } = settings || {};
 
     const setActiveTab = (tab) => dispatch({ type: 'SET_ACTIVE_TAB', tab });
