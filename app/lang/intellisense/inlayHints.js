@@ -12,6 +12,11 @@ function extractParamName(label) {
 /**
  * Provides inline parameter name labels for BML function calls.
  */
+const paramNamesCache = new Map();
+
+/**
+ * Provides inline parameter name labels for BML function calls.
+ */
 function registerInlayHintsProvider(context) {
     return vscode.languages.registerInlayHintsProvider('bml', {
         provideInlayHints(document, range) {
@@ -22,6 +27,7 @@ function registerInlayHintsProvider(context) {
             const hints = [];
             const text = document.getText(range);
             const startOffset = document.offsetAt(range.start);
+            const fullText = document.getText();
 
             const callRegex = /\b([a-zA-Z_][\w.]*)\s*\(/g;
             let match;
@@ -34,16 +40,25 @@ function registerInlayHintsProvider(context) {
                     continue;
                 }
 
-                let paramNames = [];
-                const info = bmlApiData[funcLower];
-                if (info && (info.fullSignature || info.syntax)) {
-                    const parsed = parseParameters(info.fullSignature || info.syntax);
-                    paramNames = parsed.map(p => extractParamName(typeof p.label === 'string' ? p.label : p.label[0]));
+                let paramNames;
+                if (paramNamesCache.has(funcLower)) {
+                    paramNames = paramNamesCache.get(funcLower);
                 } else {
-                    const wsIndex = getWorkspaceIndex();
-                    const wsInfo = wsIndex.get(funcLower);
-                    if (wsInfo && wsInfo.parameters) {
-                        paramNames = wsInfo.parameters.map(p => p.name);
+                    const info = bmlApiData[funcLower];
+                    if (info && (info.fullSignature || info.syntax)) {
+                        const parsed = parseParameters(info.fullSignature || info.syntax);
+                        paramNames = parsed.map(p => extractParamName(typeof p.label === 'string' ? p.label : p.label[0]));
+                    } else {
+                        const wsIndex = getWorkspaceIndex();
+                        const wsInfo = wsIndex.get(funcLower);
+                        if (wsInfo && wsInfo.parameters) {
+                            paramNames = wsInfo.parameters.map(p => p.name);
+                        } else {
+                            paramNames = [];
+                        }
+                    }
+                    if (paramNamesCache.size < 2000) {
+                        paramNamesCache.set(funcLower, paramNames);
                     }
                 }
 
@@ -56,9 +71,9 @@ function registerInlayHintsProvider(context) {
                 let inString = false;
                 let stringChar = '';
                 const argStarts = [openParenOffset];
+                const maxLookahead = Math.min(fullText.length, openParenOffset + 2000);
 
-                const fullText = document.getText();
-                while (i < fullText.length && parenDepth > 0) {
+                while (i < maxLookahead && parenDepth > 0) {
                     const char = fullText[i];
 
                     if (inString) {
@@ -74,7 +89,7 @@ function registerInlayHintsProvider(context) {
                         parenDepth--;
                     } else if (char === ',' && parenDepth === 1) {
                         let nextStart = i + 1;
-                        while (nextStart < fullText.length && /\s/.test(fullText[nextStart])) {
+                        while (nextStart < maxLookahead && /\s/.test(fullText[nextStart])) {
                             nextStart++;
                         }
                         argStarts.push(nextStart);

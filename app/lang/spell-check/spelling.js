@@ -120,6 +120,7 @@ function checkWord(word, extensionPath, allowCompound = true) {
 }
 
 let globalWordCache = new Map();
+let globalTokenCache = new Map();
 
 function checkSpelling(
   text,
@@ -143,26 +144,25 @@ function checkSpelling(
     });
   } catch (e) {}
 
-  const identCache = new Map();
+  const userWordsKey = userWords.size > 0 ? Array.from(userWords).sort().join(',') : '';
 
   const checkWordCached = (word, allowCompound = true) => {
     const wordLower = word.toLowerCase();
     if (userWords.has(wordLower)) return true;
-    const cacheKey = `${wordLower}|${allowCompound}`;
+    const cacheKey = `${wordLower}|${allowCompound}|${userWordsKey}`;
     if (globalWordCache.has(cacheKey)) return globalWordCache.get(cacheKey);
     const res = checkWord(word, extensionPath, allowCompound);
-    if (globalWordCache.size < 15000) {
+    if (globalWordCache.size < 25000) {
       globalWordCache.set(cacheKey, res);
     }
     return res;
   };
 
-  // Walks a token's subWords, returning the misspelled ones with their offset
-  // in the token. A failing subWord is forgiven when merging it with its
-  // neighbor forms a known word: the camelCase splitter breaks acronym+suffix
-  // tokens like "RESTful" into "RES"+"Tful" ("RES" passes the all-caps rule,
-  // "Tful" would be flagged), but "res"+"tful" = "restful" is in the dictionary.
   const collectFlaggedSubWords = (token, minLen, allowCompound = true) => {
+    const cacheKey = `${token}|${minLen}|${allowCompound}|${userWordsKey}`;
+    if (globalTokenCache.has(cacheKey)) {
+      return globalTokenCache.get(cacheKey);
+    }
     const subWords = splitIdentifier(token);
     const flagged = [];
     let offset = 0;
@@ -178,6 +178,9 @@ function checkSpelling(
       const next = i + 1 < subWords.length ? subWords[i + 1] : null;
       if (next && checkWordCached((subWord + next).toLowerCase(), allowCompound)) continue;
       flagged.push({ subWord, relIndex });
+    }
+    if (globalTokenCache.size < 25000) {
+      globalTokenCache.set(cacheKey, flagged);
     }
     return flagged;
   };
@@ -219,15 +222,11 @@ function checkSpelling(
 
     if (/^[0-9_]+$/.test(ident)) continue;
 
-    let errors = identCache.get(ident);
-    if (errors === undefined) {
-      errors = collectFlaggedSubWords(ident, 1);
-      identCache.set(ident, errors);
-    }
-
-    errors.forEach((err) => {
+    const errors = collectFlaggedSubWords(ident, 1, true);
+    for (let i = 0; i < errors.length; i++) {
+      const err = errors[i];
       addSpellingDiagnostic(err.subWord, match.index + err.relIndex);
-    });
+    }
   }
 
   // String literals are split on camelCase/acronym boundaries too, since BML string values are

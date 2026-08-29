@@ -33,7 +33,9 @@ const extraAllowed = new Set([
   // Currency codes
   "usd", "eur", "gbp", "cad", "aud", "jpy", "inr", "chf", "cny", "sgd", "nzd", "hkd", "sek",
   "nok", "mxn", "brl", "zar", "aed", "sar", "krw", "thb", "myr", "idr", "php", "vnd", "pln",
-  "czk", "huf", "ils", "clp", "cop", "pen"
+  "czk", "huf", "ils", "clp", "cop", "pen",
+  // Common formatting terms
+  "pretty", "prettily", "prettier", "prettiest"
 ]);
 
 const PREFIXES = [
@@ -164,10 +166,9 @@ function isInflectionOfKnownWord(word, dict) {
   return false;
 }
 
-function isMorphologicallyValid(word, dict) {
-  if (dict.has(word)) return true;
-  if (extraAllowed.has(word)) return true;
+const morphologyCache = new Map();
 
+function computeMorphologicalValidity(word, dict) {
   // Check prefix derivations
   for (const prefix of PREFIXES) {
     if (word.startsWith(prefix) && word.length - prefix.length >= 3) {
@@ -191,6 +192,17 @@ function isMorphologicallyValid(word, dict) {
   }
 
   return false;
+}
+
+function isMorphologicallyValid(word, dict) {
+  if (morphologyCache.has(word)) return morphologyCache.get(word);
+  if (dict.has(word) || extraAllowed.has(word)) {
+    if (morphologyCache.size < 20000) morphologyCache.set(word, true);
+    return true;
+  }
+  const res = computeMorphologicalValidity(word, dict);
+  if (morphologyCache.size < 20000) morphologyCache.set(word, res);
+  return res;
 }
 
 function resolveSpellCheckDir(extensionPath) {

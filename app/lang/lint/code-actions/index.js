@@ -20,7 +20,8 @@ function registerBmlCodeActions(context) {
     // Register main CodeActionsProvider for BML
     context.subscriptions.push(
         vscode.languages.registerCodeActionsProvider('bml', {
-            provideCodeActions(document, range, context) {
+            provideCodeActions(document, range, context, token) {
+                if (token && token.isCancellationRequested) return [];
                 const constructiveFixes = [];
                 const suppressionFixes = [];
 
@@ -44,26 +45,14 @@ function registerBmlCodeActions(context) {
                     );
                 });
 
+                if (token && token.isCancellationRequested) return [];
+
                 let docDiags = (vscode.languages && vscode.languages.getDiagnostics)
                     ? vscode.languages.getDiagnostics(document.uri)
-                    : null;
+                    : context.diagnostics;
 
                 if (!docDiags || docDiags.length === 0) {
-                    try {
-                        const { lintBMLCustom } = require('../core/lint');
-                        const tempCollection = (vscode.languages && vscode.languages.createDiagnosticCollection)
-                            ? vscode.languages.createDiagnosticCollection('temp_code_actions')
-                            : null;
-                        if (tempCollection) {
-                            lintBMLCustom(document, tempCollection, vscode, extensionPath);
-                            docDiags = tempCollection.get(document.uri) || context.diagnostics;
-                            tempCollection.dispose();
-                        } else {
-                            docDiags = context.diagnostics;
-                        }
-                    } catch (e) {
-                        docDiags = context.diagnostics;
-                    }
+                    docDiags = context.diagnostics;
                 }
 
                 const fixAllActions = getFixAllSafeAction(document, docDiags && docDiags.length > 0 ? docDiags : context.diagnostics);

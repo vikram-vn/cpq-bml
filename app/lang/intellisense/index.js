@@ -136,7 +136,8 @@ function registerBmlIntelliSense(context) {
     const completionProvider = vscode.languages.registerCompletionItemProvider(
         'bml',
         {
-            provideCompletionItems(document, position) {
+            provideCompletionItems(document, position, token) {
+                if (token && token.isCancellationRequested) return null;
                 if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                     return null;
                 }
@@ -150,6 +151,8 @@ function registerBmlIntelliSense(context) {
                 if (bmqlVarItems && bmqlVarItems.length > 0) {
                     return bmqlVarItems;
                 }
+
+                if (token && token.isCancellationRequested) return null;
 
                 // Check if inside a function call expecting parameter completions
                 const activeCall = getActiveFunctionCall(document, position);
@@ -176,6 +179,8 @@ function registerBmlIntelliSense(context) {
                     }
                 }
 
+                if (token && token.isCancellationRequested) return null;
+
                 // General completion: merge local script variables with global API items
                 const localVars = getLocalVariableCompletions(document, position);
                 if (localVars && localVars.length > 0) {
@@ -184,7 +189,8 @@ function registerBmlIntelliSense(context) {
 
                 return cachedGlobalItems;
             },
-            resolveCompletionItem(item) {
+            resolveCompletionItem(item, token) {
+                if (token && token.isCancellationRequested) return item;
                 loadApiData(context);
                 let key = (typeof item.label === 'string' ? item.label : (item.label && item.label.label) || item.filterText || '').toLowerCase();
                 if (item.kind === vscode.CompletionItemKind.Method) {
@@ -199,11 +205,12 @@ function registerBmlIntelliSense(context) {
                 return item;
             }
         },
-        '.', '(', '_', '"', '\'', ',', '+', '-', '/', ':', '$'
+        '.', '(', '_', '$', '"', "'"
     );
 
     const hoverProvider = vscode.languages.registerHoverProvider('bml', {
-        provideHover(document, position) {
+        provideHover(document, position, token) {
+            if (token && token.isCancellationRequested) return null;
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                 return null;
             }
@@ -245,17 +252,18 @@ function registerBmlIntelliSense(context) {
     const signatureProvider = vscode.languages.registerSignatureHelpProvider(
         'bml',
         {
-            provideSignatureHelp(document, position) {
+            provideSignatureHelp(document, position, token) {
+                if (token && token.isCancellationRequested) return null;
                 if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                     return null;
                 }
                 loadApiData(context);
 
                 const activeCall = getActiveFunctionCall(document, position);
-                if (!activeCall) return null;
+                if (!activeCall || !activeCall.funcName) return null;
 
                 const apiData = getBmlApiData(context);
-                const info = apiData[funcName.toLowerCase()] || lookupApiInfo(funcName);
+                const info = apiData[activeCall.funcName.toLowerCase()] || lookupApiInfo(activeCall.funcName);
                 if (!info) return null;
 
                 const signatureHelp = new vscode.SignatureHelp();
@@ -264,7 +272,7 @@ function registerBmlIntelliSense(context) {
                 signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax);
                 signatureHelp.signatures = [signatureInfo];
                 signatureHelp.activeSignature = 0;
-                signatureHelp.activeParameter = paramIndex;
+                signatureHelp.activeParameter = activeCall.paramIndex || 0;
 
                 return signatureHelp;
             }
@@ -276,7 +284,8 @@ function registerBmlIntelliSense(context) {
 
     // ── Go to Definition ─────────────────────────────────────────────────────
     const definitionProvider = vscode.languages.registerDefinitionProvider('bml', {
-        provideDefinition(document, position) {
+        provideDefinition(document, position, token) {
+            if (token && token.isCancellationRequested) return null;
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                 return null;
             }
@@ -293,7 +302,8 @@ function registerBmlIntelliSense(context) {
 
     // ── Find All References ───────────────────────────────────────────────────
     const referenceProvider = vscode.languages.registerReferenceProvider('bml', {
-        async provideReferences(document, position) {
+        async provideReferences(document, position, contextOptions, token) {
+            if (token && token.isCancellationRequested) return [];
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                 return [];
             }
@@ -303,6 +313,7 @@ function registerBmlIntelliSense(context) {
             const uris = await vscode.workspace.findFiles('**/*.bml', '**/node_modules/**');
             const locations = [];
             for (const uri of uris) {
+                if (token && token.isCancellationRequested) return [];
                 let text;
                 try { text = fs.readFileSync(uri.fsPath, 'utf8'); } catch { continue; }
                 const lines = text.split(/\r?\n/);
@@ -324,7 +335,8 @@ function registerBmlIntelliSense(context) {
 
     // ── Rename Symbol ─────────────────────────────────────────────────────────
     const renameProvider = vscode.languages.registerRenameProvider('bml', {
-        async provideRenameEdits(document, position, newName) {
+        async provideRenameEdits(document, position, newName, token) {
+            if (token && token.isCancellationRequested) return null;
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                 return null;
             }
@@ -334,6 +346,7 @@ function registerBmlIntelliSense(context) {
             const uris = await vscode.workspace.findFiles('**/*.bml', '**/node_modules/**');
             const edit = new vscode.WorkspaceEdit();
             for (const uri of uris) {
+                if (token && token.isCancellationRequested) return null;
                 let text;
                 try { text = fs.readFileSync(uri.fsPath, 'utf8'); } catch { continue; }
                 const lines = text.split(/\r?\n/);
@@ -366,7 +379,8 @@ function registerBmlIntelliSense(context) {
 
     // ── Document Symbols (breadcrumb / outline) ───────────────────────────────
     const symbolProvider = vscode.languages.registerDocumentSymbolProvider('bml', {
-        provideDocumentSymbols(document) {
+        provideDocumentSymbols(document, token) {
+            if (token && token.isCancellationRequested) return [];
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                 return [];
             }
@@ -378,6 +392,7 @@ function registerBmlIntelliSense(context) {
 
             const controlRe = /^\s*(if|elif|else|for)\b(.*)?\{\s*$/i;
             for (let i = 0; i < lines.length; i++) {
+                if (token && token.isCancellationRequested) return [];
                 const line = lines[i];
                 const cm = controlRe.exec(line);
                 if (cm) {
@@ -421,7 +436,8 @@ function registerBmlIntelliSense(context) {
     // The existing hoverProvider covers built-ins; add a second provider for
     // workspace util.* / commerce.* functions.
     const workspaceHoverProvider = vscode.languages.registerHoverProvider('bml', {
-        provideHover(document, position) {
+        provideHover(document, position, token) {
+            if (token && token.isCancellationRequested) return null;
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
                 return null;
             }

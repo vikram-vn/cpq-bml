@@ -56,24 +56,28 @@ function registerBeautifier(context) {
 
     // Full document formatting
     const fullDisposable = vscode.languages.registerDocumentFormattingEditProvider(selector, {
-        async provideDocumentFormattingEdits(document, options) {
+        async provideDocumentFormattingEdits(document, options, token) {
+            if (token && token.isCancellationRequested) return [];
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.beautifier', true)) {
                 return [];
             }
             const currentText = document.getText();
             const formatted = await beautifyText(currentText, document, options);
+            if (token && token.isCancellationRequested) return [];
             return computeMinimalEdits(document, formatted);
         }
     });
 
     // Selected range formatting
     const rangeDisposable = vscode.languages.registerDocumentRangeFormattingEditProvider(selector, {
-        async provideDocumentRangeFormattingEdits(document, range, options) {
+        async provideDocumentRangeFormattingEdits(document, range, options, token) {
+            if (token && token.isCancellationRequested) return [];
             if (!vscode.workspace.getConfiguration('cpqBml').get('features.beautifier', true)) {
                 return [];
             }
             const selectedText = document.getText(range);
             const formatted = await beautifyText(selectedText, document, options);
+            if (token && token.isCancellationRequested) return [];
             return computeMinimalEdits(document, formatted, range);
         }
     });

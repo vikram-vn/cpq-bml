@@ -480,6 +480,7 @@
     "test": "vscode-test",
     "test:benchmark": "vscode-test test/linter/scripts/benchmark.test.js",
     "benchmark": "vscode-test test/linter/scripts/benchmark.test.js",
+    "benchmark:run": "node scripts/benchmarks/benchmark.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },

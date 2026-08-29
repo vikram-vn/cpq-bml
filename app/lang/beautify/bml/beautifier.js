@@ -44,7 +44,7 @@ function Beautifier(source_text, options) {
     if (opts.disabled) return source_text || '';
 
     const tokens = Tokenizer(source_text || '', opts).tokenize();
-    const output = Output(opts);
+    const output = Output(opts, source_text);
 
     let indent_level = 0;
     // 'block' | 'array' for matching START_BLOCK/ARRAY_START to their close; 'paren' for ()/[] nesting.
@@ -91,8 +91,11 @@ function Beautifier(source_text, options) {
         return true;
       }
 
-      if (token.type === TOKEN.START_BLOCK || token.type === TOKEN.ARRAY_START) return true;
-      if (last.type === TOKEN.ARRAY_START) return false;
+      if (token.type === TOKEN.START_BLOCK || token.type === TOKEN.ARRAY_START) {
+        if (last && (last.type === TOKEN.ARRAY_START || last.type === TOKEN.START_BLOCK)) return false;
+        return true;
+      }
+      if (last.type === TOKEN.ARRAY_START || last.type === TOKEN.START_BLOCK) return false;
 
       // A unary +/- gets a space before it but not after - the operand after it is handled here too.
       if (last.type === TOKEN.OPERATOR && isUnaryAfterPrint) return false;
@@ -181,12 +184,13 @@ function Beautifier(source_text, options) {
     function beginStatementLine(token) {
       if (!last) return;
 
-      // Opt-in: inject a missing ';' when the previous statement ended with no ';' and a new
-      // statement starts on a new source line. Takes priority over every branch below.
-      if (opts.enforce_semicolons && isStatementLevel() && token.newlines > 0 &&
+      // Handle new statement on a new source line after a statement that ended without ';'
+      if (isStatementLevel() && token.newlines > 0 &&
         endsExpressionAtStatementLevel(last) && isStatementStarter(token)) {
-        output.append(';');
-        last = { type: TOKEN.SEMICOLON, text: ';' };
+        if (opts.enforce_semicolons) {
+          output.append(';');
+          last = { type: TOKEN.SEMICOLON, text: ';' };
+        }
         startNewLine(token);
         return;
       }

@@ -57,27 +57,38 @@ const DEPRECATED_REGEXES = [
     /\b(gettabledata|getpartsdata)\b/gi
 ];
 
+function blankRanges(text, ranges) {
+    if (!ranges || ranges.length === 0) return text;
+    let result = '';
+    let lastIndex = 0;
+    for (let i = 0; i < ranges.length; i++) {
+        const [start, end] = ranges[i];
+        if (start > lastIndex) {
+            result += text.slice(lastIndex, start);
+        }
+        const slice = text.slice(start, end);
+        if (slice.includes('\n') || slice.includes('\r')) {
+            result += slice.replace(/[^\r\n]/g, ' ');
+        } else {
+            result += ' '.repeat(end - start);
+        }
+        lastIndex = end;
+    }
+    if (lastIndex < text.length) {
+        result += text.slice(lastIndex);
+    }
+    return result;
+}
+
 function findDeprecatedRanges(documentText, document) {
     if (!documentText.includes('NaN') && !documentText.includes('strtodate') && !documentText.includes('gettabledata') && !documentText.includes('getpartsdata')) {
         return [];
     }
 
     const commentRanges = getCommentRanges(documentText);
-    const chars = documentText.split('');
-    const len = chars.length;
-    for (const [start, end] of commentRanges) {
-        for (let i = start; i < end && i < len; i++) {
-            if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
-        }
-    }
-    const cleanNoComments = chars.join('');
+    const cleanNoComments = blankRanges(documentText, commentRanges);
     const stringRanges = getStringRanges(cleanNoComments);
-    for (const [start, end] of stringRanges) {
-        for (let i = start; i < end && i < len; i++) {
-            if (chars[i] !== '\n' && chars[i] !== '\r') chars[i] = ' ';
-        }
-    }
-    const cleanText = chars.join('');
+    const cleanText = blankRanges(cleanNoComments, stringRanges);
 
     const ranges = [];
     for (const regex of DEPRECATED_REGEXES) {
@@ -95,7 +106,8 @@ function findDeprecatedRanges(documentText, document) {
 function applyDecorations(editor, decorationTypes) {
     if (!editor || editor.document.languageId !== 'bml') return;
     const document = editor.document;
-    const { tags, directives, docHeaders } = buildCommentDecorations(document.getText());
+    const text = document.getText();
+    const { tags, directives, docHeaders } = buildCommentDecorations(text);
 
     for (const [tagId, type] of decorationTypes.tagTypes) {
         editor.setDecorations(type, toVscodeRanges(document, tags.get(tagId) || []));
@@ -103,7 +115,7 @@ function applyDecorations(editor, decorationTypes) {
     editor.setDecorations(decorationTypes.directiveType, toVscodeRanges(document, directives));
     editor.setDecorations(decorationTypes.docHeaderType, toVscodeRanges(document, docHeaders));
 
-    const deprecatedRanges = findDeprecatedRanges(document.getText(), document);
+    const deprecatedRanges = findDeprecatedRanges(text, document);
     editor.setDecorations(decorationTypes.deprecatedType, deprecatedRanges);
 }
 

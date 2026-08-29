@@ -15,7 +15,7 @@ function buildIndentUnit(options) {
   return options.indent_with_tabs ? '\t' : new Array(options.indent_size + 1).join(options.indent_char);
 }
 
-function Output(options) {
+function Output(options, source_text) {
   const indent_unit = buildIndentUnit(options);
   const indent_cache = [''];
 
@@ -91,9 +91,18 @@ function Output(options) {
   }
 
   function append_block_comment(text) {
+    if (text.includes('beautify ignore:')) {
+      append_raw(text);
+      return;
+    }
     const parts = text.split(/\r\n|\n|\r/);
     if (parts.length === 1) {
       append(parts[0]);
+      return;
+    }
+    const isJsDoc = text.startsWith('/**');
+    if (!isJsDoc) {
+      append_raw(text);
       return;
     }
     const currentIndent = indent_string(line_indent[line_indent.length - 1]);
@@ -127,7 +136,11 @@ function Output(options) {
     get_code(eol) {
       trim_trailing_space();
       while (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
-      if (options.end_with_newline) lines.push('');
+      const shouldEndWithNewline = options.end_with_newline ||
+        (options.raw_options && options.raw_options.end_with_newline === undefined && source_text && (source_text.endsWith('\n') || source_text.endsWith('\r')));
+      if (shouldEndWithNewline) {
+        lines.push('');
+      }
       let code = lines.join('\n');
       if (eol && eol !== '\n') code = code.replace(/\n/g, eol);
       return code;

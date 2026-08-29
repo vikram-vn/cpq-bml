@@ -5,7 +5,8 @@ const vscode = require('vscode');
  * Ignores brackets/commas inside strings and comments.
  */
 function getActiveFunctionCall(document, position) {
-    const text = document.getText(new vscode.Range(new vscode.Position(0, 0), position));
+    const startLine = Math.max(0, position.line - 60);
+    const text = document.getText(new vscode.Range(new vscode.Position(startLine, 0), position));
     const stack = [];
     const KEYWORDS = new Set(['if', 'elif', 'else', 'for', 'while', 'return']);
     let i = 0;

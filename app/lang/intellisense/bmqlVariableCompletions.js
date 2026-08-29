@@ -55,7 +55,20 @@ function isCursorOnRhsOfCurrentLineDecl(lineText, matchIndex, cursorChar) {
  * being defined on the LHS of the active line's assignment statement.
  */
 function collectLocalVariables(document, position) {
-    const lineLimit = Math.min(position.line + 1, document.lineCount);
+    let lines;
+    if (typeof document.getText === 'function') {
+        const textChunk = document.getText(new vscode.Range(0, 0, position.line + 1, 0));
+        lines = textChunk.split(/\r?\n/);
+    } else if (typeof document.lineAt === 'function') {
+        lines = [];
+        const limit = typeof document.lineCount === 'number' ? Math.min(position.line + 1, document.lineCount) : position.line + 1;
+        for (let i = 0; i < limit; i++) {
+            lines.push(document.lineAt(i).text);
+        }
+    } else {
+        lines = [];
+    }
+    const lineLimit = Math.min(position.line + 1, lines.length);
     let nextBlockId = 0;
     
     const activeBlockStack = [{ id: 0, depth: 0, startLine: 0 }];
@@ -66,7 +79,7 @@ function collectLocalVariables(document, position) {
 
     for (let i = 0; i < lineLimit; i++) {
         const isTargetLine = (i === position.line);
-        const fullLineText = document.lineAt(i).text;
+        const fullLineText = lines[i] || '';
         const codeText = sanitizeCodeText(fullLineText);
 
         // Process brace depth changes token by token on the line

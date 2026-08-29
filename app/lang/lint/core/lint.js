@@ -74,6 +74,10 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     const hasConditions = conditionRanges.length > 0 || cleanText.includes('if') || cleanText.includes('elif');
     const hasLoops = noStringsText.includes('for') || noStringsText.includes('while');
     const hasCommerce = cleanText.includes('commerce') || cleanText.includes('line') || cleanText.includes('transaction') || cleanText.includes('_l') || cleanText.includes('_t');
+    const hasFunctionCalls = cleanText.includes('(');
+    const hasBrackets = cleanText.includes('[');
+    const hasSystemVars = noStringsText.includes('_');
+    const hasOperators = cleanText.includes('+') || cleanText.includes('-') || cleanText.includes('*') || cleanText.includes('/') || cleanText.includes('==') || cleanText.includes('!=') || cleanText.includes('>') || cleanText.includes('<');
 
     if (isLintEnabled) {
         const declaredVars = getDeclaredVariables(noStringsText, doc);
@@ -92,8 +96,12 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, firstTypeByVar));
 
         diagnostics.push(...checkBoundaries(cleanText, noStringsText, doc));
-        diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath, firstTypeByVar));
-        diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));
+        if (hasFunctionCalls) {
+            diagnostics.push(...checkFunctionCalls(cleanText, noStringsText, doc, vscode, extensionPath, firstTypeByVar));
+        }
+        if (hasSystemVars) {
+            diagnostics.push(...checkSystemVariables(noStringsText, doc, vscode, extensionPath));
+        }
 
         diagnostics.push(...checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredParamTypes, extensionPath, noStringsText, firstTypeByVar, assignmentMismatches));
         diagnostics.push(...checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, extensionPath));

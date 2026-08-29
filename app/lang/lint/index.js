@@ -85,13 +85,14 @@ function registerBmlLinter(context) {
 
     const isBmlDoc = (doc) => doc && (doc.languageId === 'bml' || (doc.uri && doc.uri.fsPath && doc.uri.fsPath.endsWith('.bml')));
 
+    let visibleRangeTimer = null;
     if (vscode.window && vscode.window.onDidChangeTextEditorVisibleRanges) {
         vscode.window.onDidChangeTextEditorVisibleRanges((e) => {
             if (e.textEditor && isBmlDoc(e.textEditor.document)) {
-                const handled = reorderVisibleDiagnostics(e.textEditor.document, diagnosticCollection, vscode);
-                if (!handled) {
-                    triggerLint(e.textEditor.document);
-                }
+                if (visibleRangeTimer) clearTimeout(visibleRangeTimer);
+                visibleRangeTimer = setTimeout(() => {
+                    reorderVisibleDiagnostics(e.textEditor.document, diagnosticCollection, vscode);
+                }, 200);
             }
         }, null, context.subscriptions);
     }
