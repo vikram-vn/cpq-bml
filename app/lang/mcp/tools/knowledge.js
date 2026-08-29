@@ -185,22 +185,51 @@ function computeLineDiff(oldLines, newLines) {
 
     const diffMiddle = [];
     if (tm > 0 && tn > 0) {
+        // Map unique string lines to integer IDs for lightning fast integer equality checks
+        const stringToId = new Map();
+        let nextId = 1;
+        const oldIds = new Int32Array(tm);
+        for (let i = 0; i < tm; i++) {
+            const line = trimmedOld[i];
+            let id = stringToId.get(line);
+            if (!id) {
+                id = nextId++;
+                stringToId.set(line, id);
+            }
+            oldIds[i] = id;
+        }
+        const newIds = new Int32Array(tn);
+        for (let j = 0; j < tn; j++) {
+            const line = trimmedNew[j];
+            let id = stringToId.get(line);
+            if (!id) {
+                id = nextId++;
+                stringToId.set(line, id);
+            }
+            newIds[j] = id;
+        }
+
         const stride = tn + 1;
         const dp = new Int32Array((tm + 1) * stride);
         for (let i = 1; i <= tm; i++) {
             const rowOffset = i * stride;
             const prevRowOffset = (i - 1) * stride;
+            const oldId = oldIds[i - 1];
             for (let j = 1; j <= tn; j++) {
-                dp[rowOffset + j] = trimmedOld[i - 1] === trimmedNew[j - 1]
-                    ? dp[prevRowOffset + j - 1] + 1
-                    : Math.max(dp[prevRowOffset + j], dp[rowOffset + j - 1]);
+                if (oldId === newIds[j - 1]) {
+                    dp[rowOffset + j] = dp[prevRowOffset + j - 1] + 1;
+                } else {
+                    const top = dp[prevRowOffset + j];
+                    const left = dp[rowOffset + j - 1];
+                    dp[rowOffset + j] = top > left ? top : left;
+                }
             }
         }
 
         let i = tm, j = tn;
         while (i > 0 || j > 0) {
             const rowOffset = i * stride;
-            if (i > 0 && j > 0 && trimmedOld[i - 1] === trimmedNew[j - 1]) {
+            if (i > 0 && j > 0 && oldIds[i - 1] === newIds[j - 1]) {
                 diffMiddle.push(' ' + trimmedOld[i - 1]);
                 i--;
                 j--;

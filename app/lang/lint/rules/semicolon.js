@@ -23,22 +23,23 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
     // Also tracks whether a line is inside an array/dict literal body (e.g.
     // `returnCol = String[] { "name", "value" };`), identified by its opening '{' being
     // preceded by ']' - those element lines don't end in ';' or sit inside ()/[].
-    const lineParenDepths = [];
-    const lineBracketDepths = [];
-    const lineInLiteralBrace = [];
-    const lineBraceDepths = [];
-    const lineClosesLiteralBrace = [];
+    const totalLines = noStringsLines.length;
+    const lineParenDepths = new Int32Array(totalLines);
+    const lineBracketDepths = new Int32Array(totalLines);
+    const lineInLiteralBrace = new Uint8Array(totalLines);
+    const lineBraceDepths = new Int32Array(totalLines);
+    const lineClosesLiteralBrace = new Uint8Array(totalLines);
     let parenDepth = 0;
     let bracketDepth = 0;
     const braceStack = [];
-    for (let lineIndex = 0; lineIndex < noStringsLines.length; lineIndex++) {
+    for (let lineIndex = 0; lineIndex < totalLines; lineIndex++) {
         const line = noStringsLines[lineIndex];
         for (let i = 0; i < line.length; i++) {
             const c = line.charCodeAt(i);
             if (c === 40) parenDepth++; // '('
-            else if (c === 41) parenDepth = Math.max(0, parenDepth - 1); // ')'
+            else if (c === 41) parenDepth = parenDepth > 0 ? parenDepth - 1 : 0; // ')'
             else if (c === 91) bracketDepth++; // '['
-            else if (c === 93) bracketDepth = Math.max(0, bracketDepth - 1); // ']'
+            else if (c === 93) bracketDepth = bracketDepth > 0 ? bracketDepth - 1 : 0; // ']'
             else if (c === 123) { // '{'
                 let j = i - 1;
                 while (j >= 0 && line.charCodeAt(j) <= 32) j--;
@@ -46,13 +47,13 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
             } else if (c === 125) { // '}'
                 const popped = braceStack.pop();
                 if (popped === true) {
-                    lineClosesLiteralBrace[lineIndex] = true;
+                    lineClosesLiteralBrace[lineIndex] = 1;
                 }
             }
         }
         lineParenDepths[lineIndex] = parenDepth;
         lineBracketDepths[lineIndex] = bracketDepth;
-        lineInLiteralBrace[lineIndex] = braceStack.length > 0 && braceStack[braceStack.length - 1] === true;
+        lineInLiteralBrace[lineIndex] = (braceStack.length > 0 && braceStack[braceStack.length - 1] === true) ? 1 : 0;
         lineBraceDepths[lineIndex] = braceStack.length;
     }
 

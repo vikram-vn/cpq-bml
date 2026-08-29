@@ -10,7 +10,6 @@ function makeDiagnostic(range, message, severity, code) {
 
 function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, firstTypeByVar) {
     const diagnostics = [];
-    const lines = doc.getText().split(/\r?\n/);
     const noStringsLines = noStringsText.split(/\r?\n/);
     const cleanLines = cleanText.split(/\r?\n/);
 
@@ -23,7 +22,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
         const firstSemi = line.indexOf(';');
         if (firstSemi !== -1 && line.indexOf(';', firstSemi + 1) !== -1) {
             const startPos = new vscode.Position(i, 0);
-            const endPos = new vscode.Position(i, lines[i].length);
+            const endPos = new vscode.Position(i, cleanLines[i].length);
             diagnostics.push(makeDiagnostic(
                 new vscode.Range(startPos, endPos),
                 'Style Warning: There should never be more than one statement on a single line.',
@@ -39,7 +38,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
             if (trailingCommaMatch) {
                 const char = trailingCommaMatch[1];
                 const startPos = new vscode.Position(i, 0);
-                const endPos = new vscode.Position(i, lines[i].length);
+                const endPos = new vscode.Position(i, cleanLines[i].length);
                 diagnostics.push(makeDiagnostic(
                     new vscode.Range(startPos, endPos),
                     `Syntax Error: Trailing comma before closing '${char}' is not allowed.`,
@@ -50,9 +49,9 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
         }
 
         // Line Length Check (>200 chars)
-        if (line.length > 200 && !bmqlLineRe.test(lines[i])) {
+        if (line.length > 200 && !bmqlLineRe.test(cleanLines[i])) {
             const startPos = new vscode.Position(i, 0);
-            const endPos = new vscode.Position(i, lines[i].length);
+            const endPos = new vscode.Position(i, cleanLines[i].length);
             diagnostics.push(makeDiagnostic(
                 new vscode.Range(startPos, endPos),
                 `Style Warning: Line exceeds 200 characters of code (${line.trim().length} chars). Consider breaking it into multiple lines.`,
@@ -64,24 +63,26 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
         const codeLine = line.trim();
 
         // Skip array literals (e.g. string[]{"a"} or string[5]{"a"})
-        if (codeLine.includes('[]') || codeLine.match(/\w+\s*\[/)) {
+        if (codeLine.includes('[')) {
             continue;
         }
 
         // Opening brace '{' check: must open at the end of the line for control flow blocks (if, for, else, elif)
-        const isControlFlowBlock = /^\b(if|for|else|elif)\b/i.test(codeLine);
-        if (isControlFlowBlock && codeLine.includes('{') && !codeLine.includes('{{')) {
-            const idx = codeLine.lastIndexOf('{');
-            const afterBrace = codeLine.substring(idx + 1).trim();
-            if (afterBrace.length > 0 && !afterBrace.startsWith('}')) {
-                const startPos = new vscode.Position(i, 0);
-                const endPos = new vscode.Position(i, lines[i].length);
-                diagnostics.push(makeDiagnostic(
-                    new vscode.Range(startPos, endPos),
-                    'Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them.',
-                    vscode.DiagnosticSeverity.Warning,
-                    'bml-brace-style-open'
-                ));
+        if (codeLine.includes('{') && !codeLine.includes('{{')) {
+            const isControlFlowBlock = /^\b(if|for|else|elif)\b/i.test(codeLine);
+            if (isControlFlowBlock) {
+                const idx = codeLine.lastIndexOf('{');
+                const afterBrace = codeLine.substring(idx + 1).trim();
+                if (afterBrace.length > 0 && !afterBrace.startsWith('}')) {
+                    const startPos = new vscode.Position(i, 0);
+                    const endPos = new vscode.Position(i, cleanLines[i].length);
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        'Style Warning: Curly brackets should always open at the end of a line of code, and no code should follow them.',
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-brace-style-open'
+                    ));
+                }
             }
         }
 
@@ -103,7 +104,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
 
             if (isViolation) {
                 const startPos = new vscode.Position(i, 0);
-                const endPos = new vscode.Position(i, lines[i].length);
+                const endPos = new vscode.Position(i, cleanLines[i].length);
                 diagnostics.push(makeDiagnostic(
                     new vscode.Range(startPos, endPos),
                     'Style Warning: Curly brackets should always close at the beginning of a line of code, and no code should exist on the same line.',
@@ -266,33 +267,35 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
     // Debug-controlled state is precomputed in ONE forward pass (a stack of
     // open blocks, marking whether each is an `if (...debug...)` block) - the
     // previous per-print upward rescan was O(lines^2) on print-heavy files.
-    const printTriggerRegex = /\bprint\b\s*(?:\(|[^\s;])/;
-    const debugBlockStack = [];
-    const lineIsDebugControlled = new Array(noStringsLines.length);
-    for (let i = 0; i < noStringsLines.length; i++) {
-        lineIsDebugControlled[i] = debugBlockStack.some(Boolean);
-        const trimmed = noStringsLines[i].trim();
-        const lower = trimmed.toLowerCase();
-        for (let c = 0; c < trimmed.length; c++) {
-            if (trimmed[c] === '{') {
-                debugBlockStack.push(lower.includes('if') && lower.includes('debug'));
-                // An `if (debug) {` guards its own line too, not just lines below.
-                if (debugBlockStack[debugBlockStack.length - 1]) lineIsDebugControlled[i] = true;
-            } else if (trimmed[c] === '}') {
-                debugBlockStack.pop();
+    if (cleanText.includes('print')) {
+        const printTriggerRegex = /\bprint\b\s*(?:\(|[^\s;])/;
+        const debugBlockStack = [];
+        const lineIsDebugControlled = new Array(noStringsLines.length);
+        for (let i = 0; i < noStringsLines.length; i++) {
+            lineIsDebugControlled[i] = debugBlockStack.some(Boolean);
+            const trimmed = noStringsLines[i].trim();
+            const lower = trimmed.toLowerCase();
+            for (let c = 0; c < trimmed.length; c++) {
+                if (trimmed[c] === '{') {
+                    debugBlockStack.push(lower.includes('if') && lower.includes('debug'));
+                    // An `if (debug) {` guards its own line too, not just lines below.
+                    if (debugBlockStack[debugBlockStack.length - 1]) lineIsDebugControlled[i] = true;
+                } else if (trimmed[c] === '}') {
+                    debugBlockStack.pop();
+                }
             }
         }
-    }
-    for (let i = 0; i < cleanLines.length; i++) {
-        if (printTriggerRegex.test(cleanLines[i]) && !lineIsDebugControlled[i]) {
-            const startPos = new vscode.Position(i, lines[i].indexOf('print'));
-            const endPos = startPos.translate(0, 5);
-            diagnostics.push(makeDiagnostic(
-                new vscode.Range(startPos, endPos),
-                'Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... }).',
-                vscode.DiagnosticSeverity.Information,
-                'bml-unguarded-print'
-            ));
+        for (let i = 0; i < cleanLines.length; i++) {
+            if (printTriggerRegex.test(cleanLines[i]) && !lineIsDebugControlled[i]) {
+                const startPos = new vscode.Position(i, cleanLines[i].indexOf('print'));
+                const endPos = startPos.translate(0, 5);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    'Style Info: Print statements should be enclosed in a debug-flag controlled if block (e.g. if (debug) { ... }).',
+                    vscode.DiagnosticSeverity.Information,
+                    'bml-unguarded-print'
+                ));
+            }
         }
     }
 

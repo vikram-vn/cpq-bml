@@ -172,9 +172,6 @@ function checkUseBeforeDefine(
       continue;
     }
 
-    const nameLower = name.toLowerCase();
-    if (isIgnoredSymbol(nameLower)) continue;
-
     // Dotted member/attribute access, not a bare variable read.
     let before = idx - 1;
     while (before >= 0 && noStringsText.charCodeAt(before) <= 32) before--;
@@ -189,6 +186,9 @@ function checkUseBeforeDefine(
       after++;
     if (after < noStringsText.length && noStringsText.charCodeAt(after) === 40)
       continue; // '('
+
+    const nameLower = name.toLowerCase();
+    if (isIgnoredSymbol(nameLower)) continue;
 
     // This occurrence is itself a declaration site (LHS), not a read.
     const sites = declSitesByName.get(name);

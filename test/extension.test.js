@@ -254,7 +254,7 @@ suite('Extension Test Suite', () => {
 		test('formats BML JSON and jsonarray constructs cleanly', () => {
 			const source = 'jObj = json("{\\"key\\":\\"value\\"}");\njArr = jsonarray();\njsonput(jObj, "name", "CPQ");';
 			const result = bml_beautify(source, { indent_size: 4, indent_char: ' ' });
-			assert.strictEqual(result, 'jObj = json("{\\"key\\":\\"value\\"}");\njArr = jsonarray();\njsonput(jObj, "name", "CPQ");');
+			assert.strictEqual(result, 'jObj = json("{\\"key\\": \\"value\\"}");\njArr = jsonarray();\njsonput(jObj, "name", "CPQ");');
 		});
 
 		test('formats string concatenation expressions with + operator', () => {

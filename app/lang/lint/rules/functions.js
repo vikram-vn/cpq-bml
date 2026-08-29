@@ -65,6 +65,7 @@ const keywords = new Set([
   "dictionary",
   "dict",
 ]);
+const storageTypeNames = new Set(["float", "boolean", "date", "record", "dictionary", "dict", "stringbuilder", "jsonnull"]);
 const deprecated = new Set(["strtodate", "gettabledata", "getpartsdata"]);
 
 function parseSyntax(syntax) {
@@ -72,7 +73,10 @@ function parseSyntax(syntax) {
   return { min, max };
 }
 
+let cachedBuiltIns = null;
+
 function loadBuiltInFunctions(extensionPath) {
+  if (cachedBuiltIns) return cachedBuiltIns;
   builtInFunctions = new Map();
   try {
     const data = loadJson('bml-functions-api-usage', extensionPath);
@@ -200,6 +204,7 @@ function loadBuiltInFunctions(extensionPath) {
     }
   }
 
+  cachedBuiltIns = builtInFunctions;
   return builtInFunctions;
 }
 
@@ -356,8 +361,8 @@ function checkFunctionCalls(
       }
     }
 
-    if (!namespace && keywords.has(funcNameLower)) {
-      continue; // Skip keywords like if, for, return, dict, string, date etc
+    if (!namespace && (controlKeywords.has(funcNameLower) || storageTypeNames.has(funcNameLower))) {
+      continue; // Skip keywords and storage constructors
     }
 
     const matchStart = match.index;
@@ -369,8 +374,7 @@ function checkFunctionCalls(
       : namespace;
     const callLength = prefix.length + funcName.length;
     const callStartOffset = matchStart;
-    const startPos = doc.positionAt(callStartOffset);
-    const endPos = doc.positionAt(callStartOffset + callLength);
+    const getCallRange = () => new vscode.Range(doc.positionAt(callStartOffset), doc.positionAt(callStartOffset + callLength));
 
     // Find matching closing parenthesis and extract arguments
     const argsStartOffset = matchStart + match[0].length;
@@ -405,7 +409,7 @@ function checkFunctionCalls(
         const countMatches = argCount >= parsed.min && argCount <= parsed.max;
         if (!countMatches) {
           const diag = new vscode.Diagnostic(
-            new vscode.Range(startPos, endPos),
+            getCallRange(),
             `Function '${cpqKey}' expects ${parsed.min} argument(s), but got ${argCount}.`,
             vscode.DiagnosticSeverity.Error,
           );
@@ -428,7 +432,7 @@ function checkFunctionCalls(
               );
               if (actual && !argumentTypeCompatible(param.type, actual)) {
                 const diag = new vscode.Diagnostic(
-                  new vscode.Range(startPos, endPos),
+                  getCallRange(),
                   `Argument ${i + 1} to '${cpqKey}' should be ${Array.isArray(param.type) ? param.type.join(" or ") : param.type}, but got a ${actual} value.`,
                   vscode.DiagnosticSeverity.Error,
                 );
@@ -472,7 +476,7 @@ function checkFunctionCalls(
           wsFunctions,
         );
         const diag = new vscode.Diagnostic(
-          new vscode.Range(startPos, endPos),
+          getCallRange(),
           suggestion
             ? `Function '${displayNamespace}.${funcName}' not found in the workspace library. Did you mean '${suggestion}'?`
             : `Function '${displayNamespace}.${funcName}' not found in the workspace library.`,
@@ -483,7 +487,7 @@ function checkFunctionCalls(
       } else {
         if (argCount !== targetFunc.parameterCount) {
           const diag = new vscode.Diagnostic(
-            new vscode.Range(startPos, endPos),
+            getCallRange(),
             `Function '${displayNamespace}.${targetFunc.name}' expects ${targetFunc.parameterCount} argument(s), but got ${argCount}.`,
             vscode.DiagnosticSeverity.Error,
           );
@@ -508,7 +512,7 @@ function checkFunctionCalls(
             if (!actualType) continue;
             if (!argumentTypeCompatible(expectedType, actualType)) {
               const diag = new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
+                getCallRange(),
                 `Argument ${i + 1} to '${displayNamespace}.${targetFunc.name}' should be ${expectedType}, but got a ${actualType} value.`,
                 vscode.DiagnosticSeverity.Error,
               );
@@ -538,7 +542,7 @@ function checkFunctionCalls(
           );
           const expectedMsg = Array.from(new Set(expectedRanges)).join(" or ");
           const diag = new vscode.Diagnostic(
-            new vscode.Range(startPos, endPos),
+            getCallRange(),
             `Built-in function '${builtIn.name}' expects ${expectedMsg} argument(s), but got ${argCount}.`,
             vscode.DiagnosticSeverity.Error,
           );
@@ -594,7 +598,7 @@ function checkFunctionCalls(
               ? err.expected.join(" or ")
               : err.expected;
             const diag = new vscode.Diagnostic(
-              new vscode.Range(startPos, endPos),
+              getCallRange(),
               `Argument ${err.index + 1} to '${builtIn.name}' should be ${expectedStr}, but got a ${err.actual} value.`,
               vscode.DiagnosticSeverity.Error,
             );
@@ -617,7 +621,7 @@ function checkFunctionCalls(
               );
               if (actualValType && !argumentTypeCompatible(expectedElemType, actualValType)) {
                 const diag = new vscode.Diagnostic(
-                  new vscode.Range(startPos, endPos),
+                  getCallRange(),
                   `Argument 3 to 'put' should be ${expectedElemType}, but got a ${actualValType} value.`,
                   vscode.DiagnosticSeverity.Error,
                 );
@@ -635,7 +639,7 @@ function checkFunctionCalls(
             const expectedElemLower = dictEntry.elementType.trim().toLowerCase();
             if ((expectedElemLower === "anytype" || expectedElemLower === "any") && args.length < 3) {
               const diag = new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
+                getCallRange(),
                 `For 'dict("anytype")', 'get()' requires 3 arguments including the valueType parameter, but got ${args.length}.`,
                 vscode.DiagnosticSeverity.Error,
               );
@@ -653,7 +657,7 @@ function checkFunctionCalls(
             const elemLower = elemType.toLowerCase();
             if (elemLower === "anytype" || elemLower === "any" || elemLower === "boolean" || elemLower.endsWith("[][]")) {
               const diag = new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
+                getCallRange(),
                 `Function 'values()' does not support '${elemType}' dictionaries.`,
                 vscode.DiagnosticSeverity.Error,
               );
@@ -672,7 +676,7 @@ function checkFunctionCalls(
             const actualValType = inferArgumentType(args[1], firstTypeByVar, returnTypes);
             if (actualValType && !argumentTypeCompatible(expectedElemType, actualValType)) {
               const diag = new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
+                getCallRange(),
                 `Argument 2 to 'append' should be ${expectedElemType}, but got a ${actualValType} value.`,
                 vscode.DiagnosticSeverity.Error,
               );
@@ -691,7 +695,7 @@ function checkFunctionCalls(
             const actualTargetType = inferArgumentType(args[1], firstTypeByVar, returnTypes);
             if (actualTargetType && !argumentTypeCompatible(expectedElemType, actualTargetType)) {
               const diag = new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
+                getCallRange(),
                 `Argument 2 to 'findinarray' should be ${expectedElemType}, but got a ${actualTargetType} value.`,
                 vscode.DiagnosticSeverity.Error,
               );
@@ -709,7 +713,7 @@ function checkFunctionCalls(
             const actualIdxType = inferArgumentType(args[1], firstTypeByVar, returnTypes);
             if (actualIdxType && !argumentTypeCompatible("integer", actualIdxType)) {
               const diag = new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
+                getCallRange(),
                 `Argument 2 to 'remove' on an array should be Integer, but got a ${actualIdxType} value.`,
                 vscode.DiagnosticSeverity.Error,
               );
@@ -727,7 +731,7 @@ function checkFunctionCalls(
             const elemType = arrType.slice(0, -2).toLowerCase();
             if (elemType !== "integer" && elemType !== "float" && elemType !== "long" && elemType !== "double" && elemType !== "date") {
               const diag = new vscode.Diagnostic(
-                new vscode.Range(startPos, endPos),
+                getCallRange(),
                 `Argument 1 to '${builtIn.name}' should be Integer[] or Float[] or Date[], but got a ${arrType} value.`,
                 vscode.DiagnosticSeverity.Error,
               );
@@ -740,7 +744,7 @@ function checkFunctionCalls(
         // Unknown bare function call
         const suggestion = findClosestBuiltInFunction(funcName, builtIns);
         const diag = new vscode.Diagnostic(
-          new vscode.Range(startPos, endPos),
+          getCallRange(),
           suggestion
             ? `Unknown built-in function or variable '${funcName}' - did you mean '${suggestion}'?`
             : `Unknown built-in function or variable '${funcName}'.`,

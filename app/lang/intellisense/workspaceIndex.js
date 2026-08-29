@@ -27,10 +27,81 @@ let _watcher = null;
  * Extract the docHeader block comment from the top of a BML file.
  * Looks for a * ... * block containing "Function Name:" or "Description:".
  */
-function extractDocHeader(fileText) {
+const IGNORED_FOLDERS = new Set([
+  'node_modules',
+  '.git',
+  '.vscode',
+  '.vscode-test',
+  '.agents',
+  'dist',
+  'out',
+  'build',
+  'coverage',
+  '.gemini',
+  'target',
+  'vendor',
+  'scratch',
+  'logs',
+  '.system_generated',
+  'venv',
+  '.venv',
+  '__pycache__',
+  '.pytest_cache',
+  'scripts',
+  'docs',
+  'doc',
+  'test',
+  'tests',
+  'images',
+  'media',
+  'assets',
+  'resources',
+  'typings',
+  'schemas',
+  'app',
+  'knowledge',
+  'themes',
+  '.github'
+]);
+
+const sharedBuffer = Buffer.allocUnsafe(2048);
+
+/**
+ * Fast read of the first 2KB of a file for header comments and definition line.
+ */
+function readHeaderSlice(filePath) {
+  let fd = -1;
+  try {
+    fd = fs.openSync(filePath, 'r');
+    const bytesRead = fs.readSync(fd, sharedBuffer, 0, 2048, 0);
+    fs.closeSync(fd);
+    fd = -1;
+    return sharedBuffer.toString('utf8', 0, bytesRead);
+  } catch {
+    if (fd !== -1) {
+      try { fs.closeSync(fd); } catch {}
+    }
+    return '';
+  }
+}
+
+/**
+ * Extract the docHeader block comment from the top of a BML file.
+ * Looks for a * ... * block containing "Function Name:" or "Description:".
+ */
+function extractDocHeader(headerSlice) {
+  if (
+    !headerSlice.includes("/*") ||
+    (!headerSlice.includes("Function Name:") &&
+      !headerSlice.includes("Description:") &&
+      !headerSlice.includes("function name:") &&
+      !headerSlice.includes("description:"))
+  ) {
+    return "";
+  }
   const blockMatch =
-    fileText.match(/\/\*[\s\S]*?Function Name:[\s\S]*?\*\//i) ||
-    fileText.match(/\/\*[\s\S]*?Description:[\s\S]*?\*\//i);
+    headerSlice.match(/\/\*[\s\S]*?Function Name:[\s\S]*?\*\//i) ||
+    headerSlice.match(/\/\*[\s\S]*?Description:[\s\S]*?\*\//i);
   if (!blockMatch) return "";
   return blockMatch[0]
     .replace(/^\/\*+\s*/m, "")
@@ -58,28 +129,6 @@ function parseMetaSidecar(metaPath) {
   }
 }
 
-const IGNORED_FOLDERS = new Set([
-  'node_modules',
-  '.git',
-  '.vscode',
-  '.vscode-test',
-  '.agents',
-  'dist',
-  'out',
-  'build',
-  'coverage',
-  '.gemini',
-  'target',
-  'vendor',
-  'scratch',
-  'logs',
-  '.system_generated',
-  'venv',
-  '.venv',
-  '__pycache__',
-  '.pytest_cache'
-]);
-
 /**
  * Build / rebuild the full workspace index.
  */
@@ -90,11 +139,36 @@ function buildIndex() {
   if (!workspaceFolders) return index;
 
   for (const folder of workspaceFolders) {
-    // Walk the workspace looking for *.bml files
-    try {
-      scanDir(folder.uri.fsPath, index);
-    } catch (e) {
-      // Non-fatal: workspace may not have any .bml files
+    const rootPath = folder.uri.fsPath;
+    let targeted = false;
+
+    const bmlDir = path.join(rootPath, 'bml');
+    if (fs.existsSync(bmlDir)) {
+      scanDir(bmlDir, index);
+      targeted = true;
+    }
+    const libDir = path.join(rootPath, 'library');
+    if (fs.existsSync(libDir)) {
+      scanDir(libDir, index);
+      targeted = true;
+    }
+    const commDir = path.join(rootPath, 'commerce');
+    if (fs.existsSync(commDir)) {
+      scanDir(commDir, index);
+      targeted = true;
+    }
+    const utilDir = path.join(rootPath, 'util');
+    if (fs.existsSync(utilDir)) {
+      scanDir(utilDir, index);
+      targeted = true;
+    }
+
+    if (!targeted) {
+      try {
+        scanDir(rootPath, index);
+      } catch (e) {
+        // Non-fatal
+      }
     }
   }
 
@@ -109,51 +183,78 @@ function scanDir(dir, index) {
     return;
   }
 
-  for (const entry of entries) {
-    if (entry.name.startsWith(".")) continue; // skip hidden dirs
-    const nameLower = entry.name.toLowerCase();
-    if (IGNORED_FOLDERS.has(nameLower)) continue;
+  const normalizedDir = dir.replace(/\\/g, "/");
+  const isUtilRoot = /\/library$|\/util$/i.test(normalizedDir);
+  const isCommerceRoot = /\/commerce$/i.test(normalizedDir);
 
-    const fullPath = path.join(dir, entry.name);
-
-    if (entry.isDirectory()) {
-      scanDir(fullPath, index);
-    } else if (
-      entry.isFile() &&
-      entry.name.endsWith(".bml") &&
-      !/(-AI|_ai)\.bml$/i.test(entry.name)
-    ) {
-      indexBmlFile(fullPath, index);
+  if (isUtilRoot || isCommerceRoot) {
+    const prefix = isUtilRoot ? "util" : "commerce";
+    for (let i = 0; i < entries.length; i++) {
+      const entry = entries[i];
+      if (entry.name.charCodeAt(0) === 46) continue;
+      if (entry.isDirectory()) {
+        const baseName = entry.name;
+        const bmlPath = path.join(dir, baseName, baseName + ".bml");
+        const metaPath = path.join(dir, baseName, baseName + "-meta.json");
+        indexBmlFile(bmlPath, prefix, baseName, metaPath, index);
+      } else if (entry.isFile() && entry.name.endsWith(".bml") && !/(-AI|_ai)\.bml$/i.test(entry.name)) {
+        const baseName = entry.name.slice(0, -4);
+        const metaPath = path.join(dir, baseName + "-meta.json");
+        indexBmlFile(path.join(dir, entry.name), prefix, baseName, metaPath, index);
+      }
     }
-  }
-}
-
-function indexBmlFile(filePath, index) {
-  // Determine qualified name from directory structure FIRST before reading file from disk
-  const normalizedPath = filePath.replace(/\\/g, "/");
-  const isUtil = /\/library\/|\/util\//i.test(normalizedPath);
-  const isCommerce = /\/commerce\//i.test(normalizedPath);
-  const prefix = isUtil ? "util" : isCommerce ? "commerce" : null;
-  if (!prefix) return;
-
-  let text;
-  try {
-    text = fs.readFileSync(filePath, "utf8");
-  } catch {
     return;
   }
 
-  const baseName = path.basename(filePath, ".bml");
-  const dir = path.dirname(filePath);
-  const metaPath = path.join(dir, baseName + "-meta.json");
+  const metaFiles = new Set();
+  const bmlFiles = [];
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+    if (entry.name.charCodeAt(0) === 46) continue; // '.' skip hidden dirs
+    const nameLower = entry.name.toLowerCase();
+    if (IGNORED_FOLDERS.has(nameLower)) continue;
+
+    if (entry.isDirectory()) {
+      scanDir(path.join(dir, entry.name), index);
+    } else if (entry.isFile()) {
+      if (entry.name.endsWith("-meta.json")) {
+        metaFiles.add(entry.name);
+      } else if (
+        entry.name.endsWith(".bml") &&
+        !/(-AI|_ai)\.bml$/i.test(entry.name)
+      ) {
+        bmlFiles.push(entry.name);
+      }
+    }
+  }
+
+  if (bmlFiles.length === 0) return;
+
+  const isUtil = /\/library\/|\/util\//i.test(normalizedDir);
+  const isCommerce = /\/commerce\//i.test(normalizedDir);
+  const prefix = isUtil ? "util" : isCommerce ? "commerce" : null;
+  if (!prefix) return;
+
+  for (let i = 0; i < bmlFiles.length; i++) {
+    const bmlName = bmlFiles[i];
+    const fullPath = path.join(dir, bmlName);
+    const baseName = bmlName.slice(0, -4);
+    const metaPath = metaFiles.has(baseName + "-meta.json") ? path.join(dir, baseName + "-meta.json") : null;
+    indexBmlFile(fullPath, prefix, baseName, metaPath, index);
+  }
+}
+
+function indexBmlFile(filePath, prefix, baseName, metaPath, index) {
+  const headerSlice = readHeaderSlice(filePath);
+  if (!headerSlice) return;
 
   const qualifiedName = `${prefix}.${baseName}`;
-  const docHeader = extractDocHeader(text);
-  const { parameters, returnType } = parseMetaSidecar(metaPath);
+  const docHeader = extractDocHeader(headerSlice);
 
-  // Find the first non-comment, non-empty line as the definition line
+  // Find the first non-comment, non-empty line as the definition line from head slice
   let defLine = 0;
-  const lines = text.split(/\r?\n/);
+  const lines = headerSlice.split(/\r?\n/);
   for (let i = 0; i < lines.length; i++) {
     const trimmed = lines[i].trim();
     if (
@@ -171,9 +272,25 @@ function indexBmlFile(filePath, index) {
     qualifiedName,
     filePath,
     line: defLine,
-    parameters,
-    returnType,
     docHeader,
+    _parameters: null,
+    _returnType: null,
+    get parameters() {
+      if (this._parameters === null) {
+        const sidecar = metaPath ? parseMetaSidecar(metaPath) : { parameters: [], returnType: "" };
+        this._parameters = sidecar.parameters;
+        this._returnType = sidecar.returnType;
+      }
+      return this._parameters;
+    },
+    get returnType() {
+      if (this._returnType === null) {
+        const sidecar = metaPath ? parseMetaSidecar(metaPath) : { parameters: [], returnType: "" };
+        this._parameters = sidecar.parameters;
+        this._returnType = sidecar.returnType;
+      }
+      return this._returnType;
+    },
   });
 }
 

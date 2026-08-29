@@ -49,7 +49,7 @@ const mockDoc = {
 };
 const mockCollection = { set: () => {}, clear: () => {}, delete: () => {} };
 const mockVscode = {
-    workspace: { getConfiguration: () => ({ get: () => true }) },
+    workspace: { getConfiguration: () => ({ get: (k, d) => k === 'features.spelling' ? false : (d !== undefined ? d : true) }) },
     Diagnostic: function(r, m, s) { this.range = r; this.message = m; this.severity = s; this.tags = []; },
     DiagnosticSeverity: { Error: 0, Warning: 1, Information: 2, Hint: 3 },
     DiagnosticTag: { Unnecessary: 1, Deprecated: 2 },

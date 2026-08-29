@@ -65,13 +65,20 @@ function getDeclaredVariables(cleanText, doc) {
   return declaredVars;
 }
 
+const IGNORED_EXACT_NAMES = new Set([
+  "dummy", "temp", "unused", "commerce", "util", "cpqjs", "cpqjsready",
+  "transaction", "line", "transactionline"
+]);
+
 function checkVariableDiagnostics(
   noStringsText,
   declaredVars,
   doc,
   cleanText = noStringsText,
+  passedVscode,
 ) {
   const diagnostics = [];
+  const vs = passedVscode || vscode;
 
   const occurrencesByName = new Map();
   const identRegex = /\b[a-zA-Z_]\w*\b/g;
@@ -98,29 +105,24 @@ function checkVariableDiagnostics(
   }
 
   declaredVars.forEach((decls, varName) => {
-    decls.sort((a, b) => a.index - b.index);
-
-    const declIndices = new Set(decls.map((d) => d.index));
     const occurrences = occurrencesByName.get(varName) || [];
-    const isUsed = occurrences.some((index) => !declIndices.has(index));
+    // Fast path: if occurrences count exceeds declaration count, the variable is definitely referenced
+    let isUsed = occurrences.length > decls.length;
+    if (!isUsed) {
+      decls.sort((a, b) => a.index - b.index);
+      const declIndices = new Set(decls.map((d) => d.index));
+      isUsed = occurrences.some((index) => !declIndices.has(index));
+    }
 
     if (!isUsed) {
+      const lower = varName.toLowerCase();
       const isIgnoredUnused =
-        varName.toLowerCase() === "dummy" ||
-        varName.toLowerCase() === "temp" ||
-        varName.toLowerCase().startsWith("trigger_") ||
-        varName.toLowerCase() === "unused" ||
-        varName.toLowerCase() === "commerce" ||
-        varName.toLowerCase() === "util" ||
-        varName.toLowerCase() === "cpqjs" ||
-        varName.toLowerCase() === "cpqjsready" ||
-        varName.toLowerCase() === "transaction" ||
-        varName.toLowerCase() === "line" ||
-        varName.toLowerCase() === "transactionline" ||
-        varName.toLowerCase().startsWith("_") ||
-        varName.toLowerCase().endsWith("_c") ||
-        varName.toLowerCase().endsWith("_t") ||
-        varName.toLowerCase().endsWith("_l");
+        IGNORED_EXACT_NAMES.has(lower) ||
+        lower.startsWith("trigger_") ||
+        lower.startsWith("_") ||
+        lower.endsWith("_c") ||
+        lower.endsWith("_t") ||
+        lower.endsWith("_l");
       if (isIgnoredUnused) {
         return;
       }
@@ -129,25 +131,25 @@ function checkVariableDiagnostics(
       const isOnlyLoopVar = decls.every((d) => d.isLoopVar);
       const startPos = doc.positionAt(firstDecl.index);
       const endPos = startPos.translate(0, varName.length);
-      const range = new vscode.Range(startPos, endPos);
+      const range = new vs.Range(startPos, endPos);
 
       if (isOnlyLoopVar) {
-        const diag = new vscode.Diagnostic(
+        const diag = new vs.Diagnostic(
           range,
           `Unused loop variable: '${varName}' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo.`,
-          vscode.DiagnosticSeverity.Information,
+          vs.DiagnosticSeverity.Information,
         );
         diag.code = "bml-unused-loop-var";
-        diag.tags = [vscode.DiagnosticTag.Unnecessary];
+        if (vs.DiagnosticTag && vs.DiagnosticTag.Unnecessary) diag.tags = [vs.DiagnosticTag.Unnecessary];
         diagnostics.push(diag);
       } else {
-        const diag = new vscode.Diagnostic(
+        const diag = new vs.Diagnostic(
           range,
           `Unused variable: ${varName}`,
-          vscode.DiagnosticSeverity.Hint,
+          vs.DiagnosticSeverity.Hint,
         );
         diag.code = "bml-unused-variable";
-        diag.tags = [vscode.DiagnosticTag.Unnecessary];
+        if (vs.DiagnosticTag && vs.DiagnosticTag.Unnecessary) diag.tags = [vs.DiagnosticTag.Unnecessary];
         diagnostics.push(diag);
       }
     }

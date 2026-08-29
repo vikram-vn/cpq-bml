@@ -17,14 +17,18 @@ function checkNullSafety(cleanText, noStringsText, doc) {
     if (nullableVars.size === 0) return diagnostics;
 
     const occurrencesByName = new Map();
-    for (const varName of nullableVars) {
-        const varRegex = new RegExp(`\\b${varName}\\b`, 'g');
-        const list = [];
-        let m;
-        while ((m = varRegex.exec(noStringsText)) !== null) {
-            list.push(m.index);
+    const identRegex = /\b[a-zA-Z_]\w*\b/g;
+    let identMatch;
+    while ((identMatch = identRegex.exec(noStringsText)) !== null) {
+        const name = identMatch[0];
+        if (nullableVars.has(name)) {
+            let list = occurrencesByName.get(name);
+            if (!list) {
+                list = [];
+                occurrencesByName.set(name, list);
+            }
+            list.push(identMatch.index);
         }
-        occurrencesByName.set(varName, list);
     }
 
     for (const varName of nullableVars) {

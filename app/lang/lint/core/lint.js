@@ -81,7 +81,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
 
     if (isLintEnabled) {
         const declaredVars = getDeclaredVariables(noStringsText, doc);
-        diagnostics.push(...checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText));
+        diagnostics.push(...checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText, vscode));
 
         diagnostics.push(...checkMissingSemicolons(cleanText, noStringsText, conditionRanges));
         if (hasConditions) {
@@ -90,7 +90,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkOperators(noStringsText, doc));
         diagnostics.push(...checkPerformance(cleanText, noStringsText, doc));
         const declaredParamTypes = getDeclaredParameterTypes(doc.uri && doc.uri.fsPath);
-        const { firstTypeByVar, diagnostics: assignmentMismatches } = collectVariableTypesAndMismatches(cleanText, doc, declaredParamTypes, vscode, extensionPath);
+        const { firstTypeByVar, diagnostics: assignmentMismatches } = collectVariableTypesAndMismatches(cleanText, doc, declaredParamTypes, vscode, extensionPath, declaredVars);
 
         diagnostics.push(...checkBestPractices(cleanText, noStringsText, doc, firstTypeByVar));
         diagnostics.push(...checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, firstTypeByVar));
@@ -147,15 +147,13 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     // This mirrors the established behaviour of bml-trailing-comma-error and means
     // every fatal issue is immediately visible without requiring per-rule changes.
     // originalRange is preserved so code-action providers can still target the precise token.
-    for (const d of diagnostics) {
+    let linesCache = null;
+    for (let i = 0; i < diagnostics.length; i++) {
+        const d = diagnostics[i];
         if (d.severity === vscode.DiagnosticSeverity.Error) {
             const line = d.range.start.line;
-            let lineLength = 0;
-            try {
-                lineLength = doc.lineAt(line).text.length;
-            } catch (e) {
-                lineLength = 0;
-            }
+            if (!linesCache) linesCache = text.split(/\r?\n/);
+            const lineLength = linesCache[line] ? linesCache[line].length : 0;
             d.originalRange = d.range;  // save narrow range for code actions
             d.range = new vscode.Range(
                 new vscode.Position(line, 0),
