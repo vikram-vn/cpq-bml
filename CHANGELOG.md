@@ -4,6 +4,11 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.61.0] - 2026-08-29
+
+### Added
+- Add BML code snippets, linting rules, and corresponding unit tests.
+
 ## [1.60.0] - 2026-08-29
 
 ### Added
@@ -91,11 +96,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Added
 - Add comprehensive BML test suite covering system variables, data types, and built-in functions.
-
-## [1.52.0] - 2026-08-23
-
-### Added
-- Add parameter type validation tests and BML function API usage definitions.
-- Add lint test expectations, parameter type validation tests, and BML function API usage definitions.
-- Implement function call linting and type compatibility checking for BML scripts.
-- Implement BML style and safety linting engine and add expected test outputs.
