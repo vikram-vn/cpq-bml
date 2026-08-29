@@ -245,6 +245,21 @@ suite("settings-panel messageHandler", () => {
     assert.strictEqual(panel.posted.length, 0, "tabChanged should not post anything back to the webview");
   });
 
+  test("'resetSettings' resets settings to factory defaults and posts state and toast", async () => {
+    const configValues = { "connection.siteUrl": "custom-site", "features.lint": false };
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: configValues });
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "resetSettings" }, context, vscode, panel);
+
+    assert.strictEqual(configValues["connection.siteUrl"], "");
+    assert.strictEqual(configValues["features.lint"], true);
+    assert.strictEqual(panel.posted[0].type, "state");
+    assert.strictEqual(panel.posted[1].type, "toast");
+    assert.strictEqual(panel.posted[1].message, "Settings reset to defaults");
+  });
+
   test("an unknown message type posts an error instead of throwing", async () => {
     const panel = fakePanel();
     const vscode = createFakeVscode({});

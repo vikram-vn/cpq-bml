@@ -357,6 +357,48 @@ async function dispatch(message, context, vscode, panel) {
       post({ type: "mcpHealth", healthy: mcp.enable, port: mcp.port });
       return;
     }
+    case "resetSettings": {
+      const cfg = vscode.workspace.getConfiguration(CPQ_SECTION);
+      const defaults = {
+        "connection.siteUrl": "",
+        "connection.authMethod": "basic",
+        "connection.username": "",
+        "connection.enabled": true,
+        "rest.pullFolder": "library",
+        "rest.restVersion": "v18",
+        "rest.commerceProcess": "oraclecpqo",
+        "rest.commerceDocument": "transaction",
+        "features.lint": true,
+        "features.comments": true,
+        "features.spelling": true,
+        "features.beautifier": true,
+        "features.intellisense": true,
+        "features.docHeader": true,
+        "features.xslt": true,
+        "features.metrics": true,
+        "features.testing": true,
+        "inlayHints.enabled": true,
+        "inlayHints.suppressWhenArgumentMatchesName": true,
+        "inlayHints.variableTypes.enabled": false,
+        "mcp.enable": false,
+        "mcp.port": 47821,
+        "mcp.logToTerminal": false,
+        "mcp.aiSkills.claude": true,
+        "mcp.aiSkills.cursor": false,
+        "mcp.aiSkills.copilot": false,
+        "debug.logOutputToFile": false,
+        "debug.logRestDetails": false,
+        "debug.showResultsAsTable": false,
+      };
+
+      for (const [k, v] of Object.entries(defaults)) {
+        await cfg.update(k, v, vscode.ConfigurationTarget.Global);
+      }
+      await sendState();
+      vscode.window.showInformationMessage("CPQ-BML: Settings successfully reset to factory defaults.");
+      post({ type: "toast", message: "Settings reset to defaults" });
+      return;
+    }
     case "createAiSkill": {
       const { id, label, description, defaultEnabled } = message;
       // Add to configuration under mcp.aiSkills.

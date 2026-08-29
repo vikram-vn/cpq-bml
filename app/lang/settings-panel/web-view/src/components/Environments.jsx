@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconPlus, IconEdit, IconDelete, IconCheck } from './Icons';
+import { IconPlus, IconEdit, IconDelete, IconCheck, IconCopy } from './Icons';
 
 const EMPTY_ENV = { name: '', siteUrl: '', username: '', authMethod: 'basic' };
 
@@ -20,6 +20,16 @@ export default function Environments({ environments, connection, vscodeApi }) {
         setDraft({ ...EMPTY_ENV, ...environments[index] });
         setEditingIndex(index);
         setAdding(false);
+    };
+
+    const duplicate = (index) => {
+        const source = environments[index];
+        if (!source) return;
+        const cloned = {
+            ...source,
+            name: `${source.name} (Copy)`
+        };
+        vscodeApi.postMessage({ type: 'addEnvironment', env: cloned });
     };
 
     const cancel = () => {
@@ -79,6 +89,9 @@ export default function Environments({ environments, connection, vscodeApi }) {
                                     )}
                                     <button className="secondary" onClick={() => startEdit(index)} title="Edit profile">
                                         <IconEdit />
+                                    </button>
+                                    <button className="secondary" onClick={() => duplicate(index)} title="Duplicate profile">
+                                        <IconCopy />
                                     </button>
                                     <button className="danger" onClick={() => remove(index)} title="Delete profile">
                                         <IconDelete />

@@ -17,6 +17,12 @@ export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi
         }
     };
 
+    const handleReset = () => {
+        if (vscodeApi && window.confirm('Are you sure you want to reset all CPQ-BML extension settings to factory defaults?')) {
+            vscodeApi.postMessage({ type: 'resetSettings' });
+        }
+    };
+
     return (
         <div className="tab-content active">
             <section className="card">
@@ -56,7 +62,7 @@ export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi
                     Backup &amp; Restore
                 </h2>
                 <p className="card-desc">Export current CPQ-BML extension configuration to a JSON file or import settings from a backup.</p>
-                <ImportExportButtons onImport={handleImport} onExport={handleExport} />
+                <ImportExportButtons onImport={handleImport} onExport={handleExport} onReset={handleReset} />
             </section>
         </div>
     );

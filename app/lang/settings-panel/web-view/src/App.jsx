@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import Pill from './components/Pill';
 import Sidebar from './components/Sidebar';
 import ConnectionTab from './tabs/ConnectionTab';
@@ -7,6 +7,7 @@ import OperationsTab from './tabs/OperationsTab';
 import FeaturesTab from './tabs/FeaturesTab';
 import McpTab from './tabs/McpTab';
 import AdvancedTab from './tabs/AdvancedTab';
+import SearchResultsTab from './components/SearchResultsTab';
 import { EMPTY_STATE } from './constants';
 
 const initialState = {
@@ -80,6 +81,7 @@ function appReducer(state, action) {
 
 export default function App({ vscodeApi }) {
     const [state, dispatch] = useReducer(appReducer, initialState);
+    const [searchQuery, setSearchQuery] = useState('');
     const saveTimeouts = useRef({});
     const toastTimeout = useRef(null);
 
@@ -209,6 +211,8 @@ export default function App({ vscodeApi }) {
                 setError={setError} 
                 isSaving={isSaving} 
                 vscodeApi={vscodeApi} 
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
             />
 
             <main className="content-area">
@@ -218,64 +222,78 @@ export default function App({ vscodeApi }) {
                     </div>
                 )}
 
-                <ConnectionTab
-                    active={activeTab === 'connection'}
-                    connection={connection}
-                    drafts={drafts}
-                    changeDraft={changeDraft}
-                    updateField={updateField}
-                    state={settings}
-                    password={password}
-                    setPassword={setPassword}
-                    savePassword={savePassword}
-                    showPassword={showPassword}
-                    setShowPassword={setShowPassword}
-                    token={token}
-                    setToken={setToken}
-                    saveToken={saveToken}
-                    showToken={showToken}
-                    setShowToken={setShowToken}
-                    testing={testing}
-                    testConnection={testConnection}
-                    testResult={testResult}
-                />
+                {searchQuery ? (
+                    <SearchResultsTab
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
+                        settings={settings}
+                        drafts={drafts}
+                        changeDraft={changeDraft}
+                        updateField={updateField}
+                        onNavigateTab={setActiveTab}
+                    />
+                ) : (
+                    <>
+                        <ConnectionTab
+                            active={activeTab === 'connection'}
+                            connection={connection}
+                            drafts={drafts}
+                            changeDraft={changeDraft}
+                            updateField={updateField}
+                            state={settings}
+                            password={password}
+                            setPassword={setPassword}
+                            savePassword={savePassword}
+                            showPassword={showPassword}
+                            setShowPassword={setShowPassword}
+                            token={token}
+                            setToken={setToken}
+                            saveToken={saveToken}
+                            showToken={showToken}
+                            setShowToken={setShowToken}
+                            testing={testing}
+                            testConnection={testConnection}
+                            testResult={testResult}
+                        />
 
-                <EnvironmentsTab
-                    active={activeTab === 'environments'}
-                    state={settings}
-                    connection={connection}
-                    vscodeApi={vscodeApi}
-                />
+                        <EnvironmentsTab
+                            active={activeTab === 'environments'}
+                            state={settings}
+                            connection={connection}
+                            vscodeApi={vscodeApi}
+                        />
 
-                <OperationsTab
-                    active={activeTab === 'operations'}
-                    rest={rest}
-                    drafts={drafts}
-                    connection={connection}
-                    changeDraft={changeDraft}
-                />
+                        <OperationsTab
+                            active={activeTab === 'operations'}
+                            rest={rest}
+                            drafts={drafts}
+                            connection={connection}
+                            changeDraft={changeDraft}
+                        />
 
-                <FeaturesTab
-                    active={activeTab === 'features'}
-                    features={features}
-                    inlayHints={inlayHints}
-                    updateField={updateField}
-                />
+                        <FeaturesTab
+                            active={activeTab === 'features'}
+                            features={features}
+                            inlayHints={inlayHints}
+                            updateField={updateField}
+                        />
 
-                <McpTab
-                    active={activeTab === 'mcp'}
-                    mcp={mcp}
-                    drafts={drafts}
-                    changeDraft={changeDraft}
-                    updateField={updateField}
-                />
+                        <McpTab
+                            active={activeTab === 'mcp'}
+                            mcp={mcp}
+                            drafts={drafts}
+                            changeDraft={changeDraft}
+                            updateField={updateField}
+                        />
 
-                <AdvancedTab
-                    active={activeTab === 'advanced'}
-                    debug={debug}
-                    updateField={updateField}
-                    vscodeApi={vscodeApi}
-                />
+                        <AdvancedTab
+                            active={activeTab === 'advanced'}
+                            debug={debug}
+                            updateField={updateField}
+                            vscodeApi={vscodeApi}
+                        />
+                    </>
+                )}
             </main>
 
             {/* Toast notifications */}
