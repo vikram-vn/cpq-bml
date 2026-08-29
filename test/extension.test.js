@@ -209,7 +209,13 @@ suite('Extension Test Suite', () => {
 			assert.strictEqual(result, 'if (a)\n{\n    x = 1;\n}');
 		});
 
-		test('supports space_in_empty_paren option', () => {
+		test('defaults to no space inside empty parentheses: json() and dict()', () => {
+			const source = 'sampleJson = json( ); sampleDict = dict( );';
+			const result = bml_beautify(source, { indent_size: 4, indent_char: ' ' });
+			assert.strictEqual(result, 'sampleJson = json();\nsampleDict = dict();');
+		});
+
+		test('supports space_in_empty_paren option when explicitly enabled', () => {
 			const source = 'func();';
 			const result = bml_beautify(source, { indent_size: 4, indent_char: ' ', space_in_empty_paren: true });
 			assert.strictEqual(result, 'func( );');

@@ -19,7 +19,7 @@ module.exports = async function optionsProvider(document, formattingOptions) {
         max_preserve_newlines: 2,
         preserve_newlines: true,
         end_with_newline: true,
-        space_in_empty_paren: true,
+        space_in_empty_paren: false,
         enforce_semicolons: false,
         // Add any other js-beautify options you need
     };
