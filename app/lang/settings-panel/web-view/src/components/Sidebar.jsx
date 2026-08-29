@@ -41,7 +41,7 @@ export default function Sidebar({ activeTab, setActiveTab, setError, isSaving, v
                     onClick={() => handleTabClick('operations')}
                 >
                     <IconOperations />
-                    REST Configuration
+                    Operations &amp; REST
                 </button>
                 <button
                     className={`sidebar-item ${activeTab === 'features' ? 'active' : ''}`}
@@ -55,14 +55,14 @@ export default function Sidebar({ activeTab, setActiveTab, setError, isSaving, v
                     onClick={() => handleTabClick('mcp')}
                 >
                     <IconMcp />
-                    MCP Server (AI)
+                    AI &amp; MCP
                 </button>
                 <button
                     className={`sidebar-item ${activeTab === 'advanced' ? 'active' : ''}`}
                     onClick={() => handleTabClick('advanced')}
                 >
                     <IconAdvanced />
-                    Diagnostics &amp; Logs
+                    Advanced
                 </button>
             </nav>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import Pill from './components/Pill';
 import Sidebar from './components/Sidebar';
 import ConnectionTab from './tabs/ConnectionTab';
@@ -9,24 +9,87 @@ import McpTab from './tabs/McpTab';
 import AdvancedTab from './tabs/AdvancedTab';
 import { EMPTY_STATE } from './constants';
 
+const initialState = {
+    settings: EMPTY_STATE,
+    password: '',
+    token: '',
+    testResult: null,
+    testing: false,
+    error: null,
+    activeTab: 'connection',
+    showPassword: false,
+    showToken: false,
+    isSaving: false,
+    toast: '',
+    drafts: {},
+};
+
+function appReducer(state, action) {
+    switch (action.type) {
+        case 'RECEIVE_STATE': {
+            const { activeTab, ...rest } = action.payload;
+            return {
+                ...state,
+                settings: { ...state.settings, ...rest },
+                isSaving: false,
+                activeTab: activeTab || state.activeTab,
+            };
+        }
+        case 'SWITCH_TAB':
+            return { ...state, activeTab: action.tab };
+        case 'SET_ACTIVE_TAB':
+            return { ...state, activeTab: action.tab, error: null };
+        case 'SET_SAVING':
+            return { ...state, isSaving: action.isSaving };
+        case 'SET_ERROR':
+            return { ...state, error: action.error, testing: false, isSaving: false };
+        case 'SET_PASSWORD':
+            return { ...state, password: action.password };
+        case 'SET_TOKEN':
+            return { ...state, token: action.token };
+        case 'SET_SHOW_PASSWORD':
+            return { ...state, showPassword: typeof action.value === 'function' ? action.value(state.showPassword) : !!action.value };
+        case 'SET_SHOW_TOKEN':
+            return { ...state, showToken: typeof action.value === 'function' ? action.value(state.showToken) : !!action.value };
+        case 'START_TEST_CONNECTION':
+            return { ...state, testing: true, testResult: null };
+        case 'SET_TEST_RESULT':
+            return { ...state, testing: false, testResult: action.result };
+        case 'SET_DRAFT':
+            return {
+                ...state,
+                error: null,
+                isSaving: true,
+                drafts: { ...state.drafts, [action.key]: action.value },
+            };
+        case 'FLUSH_DRAFTS': {
+            const nextDrafts = { ...state.drafts };
+            Object.keys(nextDrafts).forEach((key) => {
+                if (!action.keepKeys.includes(key)) {
+                    delete nextDrafts[key];
+                }
+            });
+            return { ...state, drafts: nextDrafts };
+        }
+        case 'SET_TOAST':
+            return { ...state, toast: action.toast };
+        default:
+            return state;
+    }
+}
+
 export default function App({ vscodeApi }) {
-    const [state, setState] = useState(EMPTY_STATE);
-    const [password, setPassword] = useState('');
-    const [token, setToken] = useState('');
-    const [testResult, setTestResult] = useState(null);
-    const [testing, setTesting] = useState(false);
-    const [error, setError] = useState(null);
-
-    // UX details states
-    const [activeTab, setActiveTab] = useState('connection');
-    const [showPassword, setShowPassword] = useState(false);
-    const [showToken, setShowToken] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-    const [toast, setToast] = useState('');
-
-    // Debounced drafts & timeout tracking
-    const [drafts, setDrafts] = useState({});
+    const [state, dispatch] = useReducer(appReducer, initialState);
     const saveTimeouts = useRef({});
+    const toastTimeout = useRef(null);
+
+    const triggerToast = (msg) => {
+        if (toastTimeout.current) clearTimeout(toastTimeout.current);
+        dispatch({ type: 'SET_TOAST', toast: msg });
+        toastTimeout.current = setTimeout(() => {
+            dispatch({ type: 'SET_TOAST', toast: '' });
+        }, 3000);
+    };
 
     useEffect(() => {
         const onMessage = (event) => {
@@ -34,61 +97,48 @@ export default function App({ vscodeApi }) {
             if (!message) return;
             if (message.type === 'state') {
                 const { type, ...rest } = message;
-                setState(prev => ({ ...prev, ...rest }));
-                setIsSaving(false);
-                if (rest.activeTab) {
-                    setActiveTab(rest.activeTab);
-                }
-                // Flush drafts that are no longer pending saving timeouts
-                setDrafts(prev => {
-                    const next = { ...prev };
-                    Object.keys(next).forEach((key) => {
-                        if (!saveTimeouts.current[key]) {
-                            delete next[key];
-                        }
-                    });
-                    return next;
+                dispatch({ type: 'RECEIVE_STATE', payload: rest });
+                dispatch({
+                    type: 'FLUSH_DRAFTS',
+                    keepKeys: Object.keys(saveTimeouts.current),
                 });
             } else if (message.type === 'switchTab') {
                 if (message.tab) {
-                    setActiveTab(message.tab);
+                    dispatch({ type: 'SWITCH_TAB', tab: message.tab });
                 }
             } else if (message.type === 'testConnectionResult') {
-                setTesting(false);
-                setTestResult(message);
+                dispatch({ type: 'SET_TEST_RESULT', result: message });
             } else if (message.type === 'error') {
-                setTesting(false);
-                setError(message.message);
-                setIsSaving(false);
+                dispatch({ type: 'SET_ERROR', error: message.message });
+            } else if (message.type === 'toast') {
+                triggerToast(message.message);
             }
         };
         window.addEventListener('message', onMessage);
         vscodeApi.postMessage({ type: 'ready' });
-        
+
         return () => {
             window.removeEventListener('message', onMessage);
-            // Cleanup any active timers on component unmount
             Object.values(saveTimeouts.current).forEach(clearTimeout);
+            if (toastTimeout.current) clearTimeout(toastTimeout.current);
         };
     }, [vscodeApi]);
 
     // Fast settings update (e.g. checkbox click, select option) - updates instantly
     const updateField = (key, value) => {
-        setError(null);
-        setIsSaving(true);
+        dispatch({ type: 'SET_ERROR', error: null });
+        dispatch({ type: 'SET_SAVING', isSaving: true });
         vscodeApi.postMessage({ type: 'updateField', key, value });
     };
 
     // Debounced text settings update (e.g. Site URL, Username, Pull Folder)
     const changeDraft = (key, value) => {
-        setError(null);
-        setIsSaving(true);
-        setDrafts(prev => ({ ...prev, [key]: value }));
-        
+        dispatch({ type: 'SET_DRAFT', key, value });
+
         if (saveTimeouts.current[key]) {
             clearTimeout(saveTimeouts.current[key]);
         }
-        
+
         saveTimeouts.current[key] = setTimeout(() => {
             let parsedVal = value;
             if (key === 'mcp.port') {
@@ -100,31 +150,40 @@ export default function App({ vscodeApi }) {
     };
 
     const savePassword = () => {
-        if (!password) return;
-        setIsSaving(true);
-        vscodeApi.postMessage({ type: 'setPassword', value: password });
-        setPassword('');
+        if (!state.password) return;
+        dispatch({ type: 'SET_SAVING', isSaving: true });
+        vscodeApi.postMessage({ type: 'setPassword', value: state.password });
+        dispatch({ type: 'SET_PASSWORD', password: '' });
         triggerToast('Password updated successfully');
     };
 
     const saveToken = () => {
-        if (!token) return;
-        setIsSaving(true);
-        vscodeApi.postMessage({ type: 'setAuthToken', value: token });
-        setToken('');
+        if (!state.token) return;
+        dispatch({ type: 'SET_SAVING', isSaving: true });
+        vscodeApi.postMessage({ type: 'setAuthToken', value: state.token });
+        dispatch({ type: 'SET_TOKEN', token: '' });
         triggerToast('Auth token updated successfully');
     };
 
-    const triggerToast = (msg) => {
-        setToast(msg);
-        setTimeout(() => setToast(''), 3000);
-    };
-
     const testConnection = () => {
-        setTesting(true);
-        setTestResult(null);
+        dispatch({ type: 'START_TEST_CONNECTION' });
         vscodeApi.postMessage({ type: 'testConnection' });
     };
+
+    const {
+        settings,
+        password,
+        token,
+        testResult,
+        testing,
+        error,
+        activeTab,
+        showPassword,
+        showToken,
+        isSaving,
+        toast,
+        drafts,
+    } = state;
 
     const {
         connection = {},
@@ -132,8 +191,15 @@ export default function App({ vscodeApi }) {
         features = {},
         inlayHints = {},
         mcp = {},
-        debug = {}
-    } = state || {};
+        debug = {},
+    } = settings || {};
+
+    const setActiveTab = (tab) => dispatch({ type: 'SET_ACTIVE_TAB', tab });
+    const setError = (err) => dispatch({ type: 'SET_ERROR', error: err });
+    const setPassword = (p) => dispatch({ type: 'SET_PASSWORD', password: p });
+    const setToken = (t) => dispatch({ type: 'SET_TOKEN', token: t });
+    const setShowPassword = (v) => dispatch({ type: 'SET_SHOW_PASSWORD', value: v });
+    const setShowToken = (v) => dispatch({ type: 'SET_SHOW_TOKEN', value: v });
 
     return (
         <div className="layout-container">
@@ -158,7 +224,7 @@ export default function App({ vscodeApi }) {
                     drafts={drafts}
                     changeDraft={changeDraft}
                     updateField={updateField}
-                    state={state}
+                    state={settings}
                     password={password}
                     setPassword={setPassword}
                     savePassword={savePassword}
@@ -176,7 +242,7 @@ export default function App({ vscodeApi }) {
 
                 <EnvironmentsTab
                     active={activeTab === 'environments'}
-                    state={state}
+                    state={settings}
                     connection={connection}
                     vscodeApi={vscodeApi}
                 />
@@ -208,6 +274,7 @@ export default function App({ vscodeApi }) {
                     active={activeTab === 'advanced'}
                     debug={debug}
                     updateField={updateField}
+                    vscodeApi={vscodeApi}
                 />
             </main>
 

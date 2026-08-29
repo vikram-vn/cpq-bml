@@ -1,15 +1,24 @@
 import Switch from '../components/Switch';
 import { IconAdvanced } from '../components/Icons';
 import ImportExportButtons from '../components/ImportExportButtons';
-import PerformanceMonitor from '../components/PerformanceMonitor';
 
-export default function AdvancedTab({ active, debug = {}, updateField }) {
+export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi }) {
     if (!active) return null;
+
+    const handleImport = () => {
+        if (vscodeApi) {
+            vscodeApi.postMessage({ type: 'importSettings' });
+        }
+    };
+
+    const handleExport = () => {
+        if (vscodeApi) {
+            vscodeApi.postMessage({ type: 'exportSettings' });
+        }
+    };
 
     return (
         <div className="tab-content active">
-          <ImportExportButtons onImport={() => { window.vscodeApi && window.vscodeApi.postMessage({ type: 'importSettings' }); }} onExport={() => { window.vscodeApi && window.vscodeApi.postMessage({ type: 'exportSettings' }); }} />
-          <PerformanceMonitor />
             <section className="card">
                 <h2>
                     <IconAdvanced />
@@ -41,6 +50,15 @@ export default function AdvancedTab({ active, debug = {}, updateField }) {
                     onChange={(v) => updateField('debug.showResultsAsTable', v)}
                 />
             </section>
+
+            <section className="card">
+                <h2>
+                    Backup &amp; Restore
+                </h2>
+                <p className="card-desc">Export current CPQ-BML extension configuration to a JSON file or import settings from a backup.</p>
+                <ImportExportButtons onImport={handleImport} onExport={handleExport} />
+            </section>
         </div>
     );
 }
+

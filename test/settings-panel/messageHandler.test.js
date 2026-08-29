@@ -241,7 +241,7 @@ suite("settings-panel messageHandler", () => {
 
     await handleMessage({ type: "tabChanged", tab: "mcp" }, context, vscode, panel);
 
-    assert.strictEqual(panel.title, "CPQ-BML: MCP Server (AI)");
+    assert.strictEqual(panel.title, "CPQ-BML: AI & MCP");
     assert.strictEqual(panel.posted.length, 0, "tabChanged should not post anything back to the webview");
   });
 
