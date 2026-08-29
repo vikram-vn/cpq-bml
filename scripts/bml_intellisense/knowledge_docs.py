@@ -164,8 +164,44 @@ def extract_examples_from_section(section):
     return examples
 
 
+def extract_parameters_from_section(section):
+    """Extracts parameter descriptions from tables in the markdown section."""
+    if not section:
+        return {}
+    params = {}
+    lines = section.split('\n')
+    in_table = False
+    headers = []
+    for line in lines:
+        if '|' in line and not in_table:
+            if 'parameter' in line.lower() or 'data type' in line.lower():
+                in_table = True
+                headers = [h.strip().lower() for h in line.strip().strip('|').split('|')]
+                continue
+        elif in_table:
+            if not line.strip() or not line.strip().startswith('|'):
+                in_table = False
+                continue
+            if _is_table_separator_row(line):
+                continue
+            cells = _parse_table_row(line)
+            if len(cells) >= len(headers):
+                row = dict(zip(headers, cells))
+                pname = row.get('parameter', '').replace('`', '').strip()
+                ptype = row.get('data type', '').replace('`', '').strip()
+                pdesc = row.get('description', '').strip()
+                if pname:
+                    params[pname.lower()] = {
+                        'name': pname,
+                        'type': ptype,
+                        'description': pdesc
+                    }
+    return params
+
+
 def get_docs_excerpt(root_dir, category, name):
     section = get_raw_doc_section(root_dir, category, name)
     if not section:
         return None
     return sanitize_section_for_hover(section)
+

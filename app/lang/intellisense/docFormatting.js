@@ -91,16 +91,30 @@ function formatAsJsDoc(info) {
     }
 
     if (info.notes) {
-        md.appendMarkdown(`${highlightInlineCode(decodeHtmlEntities(info.notes))}\n`);
+        md.appendMarkdown(`${highlightInlineCode(decodeHtmlEntities(info.notes))}\n\n`);
+    }
+
+    if (info.parameters && info.parameters.length) {
+        md.appendMarkdown(`**Parameters:**\n`);
+        info.parameters.forEach(p => {
+            const req = p.required === false ? ' *(optional)*' : '';
+            const desc = p.description ? ` — ${decodeHtmlEntities(p.description)}` : '';
+            md.appendMarkdown(`- \`${p.name}\` \`[${p.type || 'Any'}]\`${req}${desc}\n`);
+        });
+        md.appendMarkdown('\n');
+    }
+
+    if (info.returnType && info.category === 'function') {
+        md.appendMarkdown(`**Returns:** \`${info.returnType}\`\n\n`);
     }
 
     if (info.values?.length) {
-        md.appendMarkdown(`\n**Values:** ${info.values.map(v => `\`${v}\``).join(', ')}\n`);
+        md.appendMarkdown(`**Values:** ${info.values.map(v => `\`${v}\``).join(', ')}\n\n`);
     }
 
     if (info.examples?.length) {
         const heading = info.examples.every(isProseExample) ? 'Usage Notes' : 'Example';
-        md.appendMarkdown(`\n**${heading}${info.examples.length > 1 ? 's' : ''}:**\n`);
+        md.appendMarkdown(`**${heading}${info.examples.length > 1 ? 's' : ''}:**\n`);
         info.examples.forEach(ex => {
             const decoded = decodeHtmlEntities(ex);
             if (isProseExample(decoded)) {
@@ -112,7 +126,15 @@ function formatAsJsDoc(info) {
     }
 
     if (info.docs) {
-        md.appendMarkdown(`\n---\n\n**📚 From the Docs**\n\n${info.docs}\n`);
+        // Clean out image placeholders from rendered hover doc
+        let cleanDocs = info.docs
+            .replace(/\*🖼️[^*]*\*/g, '')
+            .replace(/Example of [^:]*:\s*/gi, '')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+        if (cleanDocs) {
+            md.appendMarkdown(`\n---\n\n**📚 From the Docs**\n\n${cleanDocs}\n`);
+        }
     }
 
     return md;

@@ -96,14 +96,26 @@ function getActiveFunctionCall(document, position) {
 /**
  * Helper to parse ParameterInformation objects from signature string.
  */
-function parseParameters(signature) {
+function parseParameters(signature, info) {
     const match = signature.match(/\((.*)\)/);
     if (!match) return [];
     const paramStr = match[1].trim();
     if (!paramStr) return [];
-    return paramStr.split(',').map(p => {
+    const paramsList = info && info.parameters && Array.isArray(info.parameters) ? info.parameters : [];
+    return paramStr.split(',').map((p, idx) => {
         const label = p.replace(/[\[\]]/g, '').trim();
-        return new vscode.ParameterInformation(label);
+        const paramInfo = new vscode.ParameterInformation(label);
+        const meta = paramsList[idx] || paramsList.find(item => item.name && label.toLowerCase().endsWith(item.name.toLowerCase()));
+        if (meta && (meta.description || meta.type)) {
+            const md = new vscode.MarkdownString();
+            md.isTrusted = true;
+            const typeStr = meta.type ? `\`[${meta.type}]\` ` : '';
+            const reqStr = meta.required === false ? '*(Optional)* ' : '';
+            const desc = meta.description ? meta.description : '';
+            md.appendMarkdown(`${typeStr}${reqStr}${desc}`);
+            paramInfo.documentation = md;
+        }
+        return paramInfo;
     });
 }
 

@@ -272,7 +272,7 @@ function registerBmlIntelliSense(context) {
                 const signatureHelp = new vscode.SignatureHelp();
                 const signatureInfo = new vscode.SignatureInformation(info.fullSignature || info.syntax, formatAsJsDoc(info));
                 
-                signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax);
+                signatureInfo.parameters = parseParameters(info.fullSignature || info.syntax, info);
                 signatureHelp.signatures = [signatureInfo];
                 signatureHelp.activeSignature = 0;
                 signatureHelp.activeParameter = activeCall.paramIndex || 0;
