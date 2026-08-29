@@ -8,6 +8,7 @@
 5. [Typo Detection & Levenshtein Suggestion Flow (CFG 4)](#5-typo-detection--levenshtein-suggestion-flow-cfg-4)
 6. [Quick Fix & Custom Dictionary Addition Flow (CFG 5)](#6-quick-fix--custom-dictionary-addition-flow-cfg-5)
 7. [Lexicons & Configuration Reference](#7-lexicons--configuration-reference)
+8. [Practical Usage Examples & Quick Fix Workflows](#8-practical-usage-examples--quick-fix-workflows)
 
 ---
 

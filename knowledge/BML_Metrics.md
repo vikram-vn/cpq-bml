@@ -8,6 +8,7 @@
 5. [Maintainability Index & Letter Grade Rating (CFG 4)](#5-maintainability-index--letter-grade-rating-cfg-4)
 6. [Interactive Webview Dashboard Rendering (CFG 5)](#6-interactive-webview-dashboard-rendering-cfg-5)
 7. [Mathematical Formulas & Rating Thresholds](#7-mathematical-formulas--rating-thresholds)
+8. [Practical Usage Examples & Report Interpretations](#8-practical-usage-examples--report-interpretations)
 
 ---
 

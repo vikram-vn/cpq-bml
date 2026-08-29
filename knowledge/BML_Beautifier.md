@@ -10,6 +10,7 @@
 7. [Brace Style & Block Hugging Flow (CFG 6)](#7-brace-style--block-hugging-flow-cfg-6)
 8. [Minimal Range Edit Diffing Optimizer (CFG 7)](#8-minimal-range-edit-diffing-optimizer-cfg-7)
 9. [Configuration Options Reference](#9-configuration-options-reference)
+10. [Practical Usage Examples & Snippets](#10-practical-usage-examples--snippets)
 
 ---
 

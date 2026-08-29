@@ -8,6 +8,7 @@
 5. [Connection Testing & Secret Storage Flow (CFG 4)](#5-connection-testing--secret-storage-flow-cfg-4)
 6. [Real-Time Formatter & Linter Settings Sync (CFG 5)](#6-real-time-formatter--linter-settings-sync-cfg-5)
 7. [Settings Tab Catalog & Configuration Matrix](#7-settings-tab-catalog--configuration-matrix)
+8. [Practical Usage Examples & Visual Configuration Walkthrough](#8-practical-usage-examples--visual-configuration-walkthrough)
 
 ---
 

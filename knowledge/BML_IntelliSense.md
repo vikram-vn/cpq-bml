@@ -9,6 +9,7 @@
 6. [Workspace Library Indexing & Cross-File Symbol Resolution (CFG 5)](#6-workspace-library-indexing--cross-file-symbol-resolution-cfg-5)
 7. [Inlay Parameter Hints Provider (CFG 6)](#7-inlay-parameter-hints-provider-cfg-6)
 8. [Lookup Catalogs & Data Sources](#8-lookup-catalogs--data-sources)
+9. [Practical Usage Examples & Snippets](#9-practical-usage-examples--snippets)
 
 ---
 

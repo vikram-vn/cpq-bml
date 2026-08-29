@@ -9,6 +9,7 @@
 6. [Multi-Environment Deployment Pipeline (CFG 5)](#6-multi-environment-deployment-pipeline-cfg-5)
 7. [Workspace Scaffolding & Local Override Flow (CFG 6)](#7-workspace-scaffolding--local-override-flow-cfg-6)
 8. [Oracle CPQ REST Endpoint Catalog](#8-oracle-cpq-rest-endpoint-catalog)
+9. [Practical Usage Examples & VS Code Commands](#9-practical-usage-examples--vs-code-commands)
 
 ---
 

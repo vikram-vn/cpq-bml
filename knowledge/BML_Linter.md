@@ -9,6 +9,7 @@
 6. [Syntax & Operator Enforcement (CFG 5)](#6-syntax--operator-enforcement-cfg-5)
 7. [Diagnostic Pipeline & Quick Fix Provider (CFG 6)](#7-diagnostic-pipeline--quick-fix-provider-cfg-6)
 8. [Comprehensive Rule Catalog (27 Built-in Rules)](#8-comprehensive-rule-catalog-27-built-in-rules)
+9. [Practical Usage Examples & Quick Fix Workflows](#9-practical-usage-examples--quick-fix-workflows)
 
 ---
 

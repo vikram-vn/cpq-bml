@@ -9,6 +9,7 @@
 6. [Static Analysis & Code Quality Pipeline (CFG 5)](#6-static-analysis--code-quality-pipeline-cfg-5)
 7. [Regression Testing & Snapshot Verification (CFG 6)](#7-regression-testing--snapshot-verification-cfg-6)
 8. [Comprehensive MCP Tool Catalog (24 Tools)](#8-comprehensive-mcp-tool-catalog-24-tools)
+9. [Practical Usage Examples & Complete AI Workflow](#9-practical-usage-examples--complete-ai-workflow)
 
 ---
 

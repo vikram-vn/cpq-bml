@@ -8,6 +8,7 @@
 5. [XSLT Tag & XPath Function Completions (CFG 4)](#5-xslt-tag--xpath-function-completions-cfg-4)
 6. [XSLT Diagnostic Quick Fix Provider (CFG 5)](#6-xslt-diagnostic-quick-fix-provider-cfg-5)
 7. [Supported XSL Elements & XPath Functions Catalog](#7-supported-xsl-elements--xpath-functions-catalog)
+8. [Practical Usage Examples & Snippets](#8-practical-usage-examples--snippets)
 
 ---
 
