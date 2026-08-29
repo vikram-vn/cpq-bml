@@ -5,6 +5,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
     if (!active) return null;
 
     const aiSkills = mcp.aiSkills || {};
+    const isMcpEnabled = mcp.enable;
 
     return (
         <div className="tab-content active">
@@ -57,6 +58,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     label="Claude Code"
                     description="Native project skills (.claude/skills/) plus a CLAUDE.md summary"
                     checked={aiSkills.claude}
+                    disabled={!isMcpEnabled}
                     onChange={(v) => updateField('mcp.aiSkills.claude', v)}
                 />
 
@@ -65,6 +67,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     label="Cursor"
                     description="Native project rules (.cursor/rules/*.mdc) plus a legacy .cursorrules file"
                     checked={aiSkills.cursor}
+                    disabled={!isMcpEnabled}
                     onChange={(v) => updateField('mcp.aiSkills.cursor', v)}
                 />
 
@@ -73,6 +76,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     label="GitHub Copilot"
                     description="Native path-scoped instructions (.github/instructions/*.instructions.md) plus a repo-wide copilot-instructions.md"
                     checked={aiSkills.copilot}
+                    disabled={!isMcpEnabled}
                     onChange={(v) => updateField('mcp.aiSkills.copilot', v)}
                 />
 
