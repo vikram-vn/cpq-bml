@@ -9,7 +9,7 @@ A high-performance, feature-rich development environment for **Oracle CPQ BigMac
   <a href="https://github.com/vikram-vn/cpq-bml/releases/latest">
     <img src="https://img.shields.io/github/v/release/vikram-vn/cpq-bml?label=Version&logo=github&color=ff69b4" alt="Latest Release">
   </a>
-  <a href="https://github.com/vikram-vn/cpq-bml/blob/main/LICENSE.txt">
+  <a href="https://github.com/vikram-vn/cpq-bml/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/vikram-vn/cpq-bml?label=License&color=blue" alt="License">
   </a>
 </p>
