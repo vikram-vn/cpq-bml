@@ -1,4 +1,9 @@
-const vscode = require('vscode');
+let vscode;
+try {
+    vscode = require('vscode');
+} catch {
+    vscode = {};
+}
 
 /**
  * Walks forward from start of document to cursor to parse active function call and parameter index.

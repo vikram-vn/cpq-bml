@@ -33,6 +33,7 @@ const ALLOWED_FIELDS = new Set([
   "features.testing",
   "inlayHints.enabled",
   "inlayHints.suppressWhenArgumentMatchesName",
+  "inlayHints.variableTypes",
   "inlayHints.variableTypes.enabled",
   "mcp.enable",
   "mcp.port",
@@ -71,9 +72,12 @@ async function dispatch(message, context, vscode, panel) {
     }
 
     case "updateField": {
-      const { key, value } = message;
+      let { key, value } = message;
       if (!ALLOWED_FIELDS.has(key)) {
         throw new Error(`CPQ-BML: unknown setting "${key}".`);
+      }
+      if (key === "inlayHints.variableTypes") {
+        key = "inlayHints.variableTypes.enabled";
       }
       await vscode.workspace
         .getConfiguration(CPQ_SECTION)

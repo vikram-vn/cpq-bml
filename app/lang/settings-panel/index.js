@@ -1,4 +1,9 @@
-const vscode = require("vscode");
+let vscode;
+try {
+    vscode = require("vscode");
+} catch {
+    vscode = {};
+}
 const { createSettingsPanel } = require("./panel");
 const { getHtml } = require("./html");
 const { handleMessage } = require("./messageHandler");

@@ -1,4 +1,9 @@
-const vscode = require('vscode');
+let vscode;
+try {
+    vscode = require('vscode');
+} catch {
+    vscode = {};
+}
 const { parseParameters } = require('./signatureHelp');
 const { getWorkspaceIndex } = require('./workspaceIndex');
 const { loadJson } = require('./apiDataLoader');

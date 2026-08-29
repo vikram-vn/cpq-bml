@@ -53,6 +53,23 @@ suite("settings-panel messageHandler", () => {
     assert.strictEqual(panel.posted[0].connection.enabled, false);
   });
 
+  test("'updateField' supports updating inlayHints fields", async () => {
+    const configValues = {};
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: configValues });
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "updateField", key: "inlayHints.enabled", value: false }, context, vscode, panel);
+    assert.strictEqual(configValues["inlayHints.enabled"], false);
+    assert.strictEqual(panel.posted[0].type, "state");
+    assert.strictEqual(panel.posted[0].inlayHints.enabled, false);
+
+    await handleMessage({ type: "updateField", key: "inlayHints.variableTypes.enabled", value: true }, context, vscode, panel);
+    assert.strictEqual(configValues["inlayHints.variableTypes.enabled"], true);
+    assert.strictEqual(panel.posted[1].type, "state");
+    assert.strictEqual(panel.posted[1].inlayHints.variableTypes, true);
+  });
+
   test("'updateField' with a key outside the allow-list is rejected with an error message, and writes nothing", async () => {
     const configValues = {};
     const panel = fakePanel();

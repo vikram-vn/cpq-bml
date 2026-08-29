@@ -48,19 +48,20 @@
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
-    padding: 10px 12px;
+    padding: 10px 14px;
     border-radius: var(--cpq-radius-md);
     color: var(--vscode-sideBar-foreground, var(--vscode-foreground));
-    opacity: 0.7;
+    opacity: 0.75;
     font-size: 0.85em;
     font-weight: 500;
     cursor: pointer;
     background: transparent;
-    border: none;
+    border: 1px solid transparent;
     outline: none;
     text-align: left;
-    transition: background-color var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
+    transition: all var(--transition-fast);
     width: 100%;
+    position: relative;
 }
 
 .sidebar-item svg {
@@ -74,16 +75,18 @@
 }
 
 .sidebar-item:hover {
-    background-color: rgba(128, 128, 128, 0.1) !important;
+    background-color: var(--vscode-list-hoverBackground, rgba(128, 128, 128, 0.1)) !important;
     color: var(--vscode-sideBar-foreground, var(--vscode-foreground)) !important;
     opacity: 1 !important;
 }
 
 .sidebar-item.active {
-    background-color: var(--vscode-button-background);
+    background: linear-gradient(135deg, var(--vscode-button-background), var(--vscode-button-hoverBackground, var(--vscode-button-background)));
     color: var(--vscode-button-foreground);
     opacity: 1;
     font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .sidebar-item.active svg {

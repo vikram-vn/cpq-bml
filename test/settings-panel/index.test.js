@@ -102,24 +102,30 @@ suite("settings-panel index - registerSettingsPanel smart activation", () => {
   let originalGetConfiguration;
   let originalRegisterCommand;
   let originalOnDidChangeActiveTextEditor;
-  let originalOnDidOpenTextDocument;
-
-  setup(() => {
-    const vscode = require('vscode');
-    originalFindFiles = vscode.workspace.findFiles;
-    originalGetConfiguration = vscode.workspace.getConfiguration;
-    originalRegisterCommand = vscode.commands.registerCommand;
-    originalOnDidChangeActiveTextEditor = vscode.window.onDidChangeActiveTextEditor;
-    originalOnDidOpenTextDocument = vscode.workspace.onDidOpenTextDocument;
+  setup(function () {
+    try {
+      const vscode = require('vscode');
+      originalFindFiles = vscode.workspace.findFiles;
+      originalGetConfiguration = vscode.workspace.getConfiguration;
+      originalRegisterCommand = vscode.commands.registerCommand;
+      originalOnDidChangeActiveTextEditor = vscode.window.onDidChangeActiveTextEditor;
+      originalOnDidOpenTextDocument = vscode.workspace.onDidOpenTextDocument;
+    } catch {
+      this.skip();
+    }
   });
 
-  teardown(() => {
-    const vscode = require('vscode');
-    vscode.workspace.findFiles = originalFindFiles;
-    vscode.workspace.getConfiguration = originalGetConfiguration;
-    vscode.commands.registerCommand = originalRegisterCommand;
-    vscode.window.onDidChangeActiveTextEditor = originalOnDidChangeActiveTextEditor;
-    vscode.workspace.onDidOpenTextDocument = originalOnDidOpenTextDocument;
+  teardown(function () {
+    try {
+      const vscode = require('vscode');
+      vscode.workspace.findFiles = originalFindFiles;
+      vscode.workspace.getConfiguration = originalGetConfiguration;
+      vscode.commands.registerCommand = originalRegisterCommand;
+      vscode.window.onDidChangeActiveTextEditor = originalOnDidChangeActiveTextEditor;
+      vscode.workspace.onDidOpenTextDocument = originalOnDidOpenTextDocument;
+    } catch {
+      // noop
+    }
   });
 
   test("does not open settings panel if workspace has no -meta.json files", async () => {

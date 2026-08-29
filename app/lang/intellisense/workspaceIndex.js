@@ -1,4 +1,9 @@
-const vscode = require("vscode");
+let vscode;
+try {
+    vscode = require('vscode');
+} catch {
+    vscode = {};
+}
 const fs = require("fs");
 const path = require("path");
 

@@ -54,6 +54,11 @@ suite("settings-panel state", () => {
         metrics: true,
         testing: true
       },
+      inlayHints: {
+        enabled: true,
+        suppressWhenArgumentMatchesName: true,
+        variableTypes: false
+      },
       mcp: {
         enable: true,
         port: 12345,

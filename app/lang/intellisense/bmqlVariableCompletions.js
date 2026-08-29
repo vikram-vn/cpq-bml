@@ -1,4 +1,9 @@
-const vscode = require('vscode');
+let vscode;
+try {
+    vscode = require('vscode');
+} catch {
+    vscode = {};
+}
 
 const KEYWORDS_AND_TYPES = new Set([
     'if', 'elif', 'else', 'for', 'while', 'return', 'print', 'throwerror',

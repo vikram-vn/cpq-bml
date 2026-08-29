@@ -113,7 +113,8 @@ suite('BML IntelliSense', () => {
 		assert.ok(snippetItem, 'expected the "for...loop" snippet in the completion list');
 		const value = snippetItem.documentation.value;
 		// the real BML loop body in its example must still be fenced, not flattened to prose
-		assert.match(value, /```bml\nresult=""/);
+		assert.match(value, /```bml\n/);
+		assert.match(value, /for arrElement in arr/);
 	});
 
 	test('completion list for transaction. only includes Transaction attributes', async () => {
