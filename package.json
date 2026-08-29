@@ -397,6 +397,21 @@
           "default": true,
           "description": "Enable BML autocomplete, hover, signature help, go-to-definition, find references, rename, and document symbols."
         },
+        "cpqBml.inlayHints.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable inline parameter name inlay hints for BML function calls."
+        },
+        "cpqBml.inlayHints.suppressWhenArgumentMatchesName": {
+          "type": "boolean",
+          "default": true,
+          "description": "Suppress inlay hints when the passed argument matches the parameter name (e.g. avoid showing redundant 'record: record')."
+        },
+        "cpqBml.inlayHints.minimumParameters": {
+          "type": "number",
+          "default": 2,
+          "description": "Minimum number of parameters a function must accept before inlay hints are shown (default is 2 to keep single-argument calls clean)."
+        },
         "cpqBml.features.docHeader": {
           "type": "boolean",
           "default": true,

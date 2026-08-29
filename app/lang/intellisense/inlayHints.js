@@ -9,6 +9,14 @@ function extractParamName(label) {
     return parts[parts.length - 1];
 }
 
+function shouldSuppressHint(paramName, argText, suppressWhenMatch) {
+    if (!suppressWhenMatch || !paramName || !argText) return false;
+    const cleanParam = paramName.trim().toLowerCase().replace(/^[_\$]+|[_\$]+$/g, '');
+    const cleanArg = argText.trim().replace(/^['"]|['"]$/g, '').toLowerCase().replace(/^[_\$]+|[_\$]+$/g, '');
+    if (!cleanParam || !cleanArg) return false;
+    return cleanParam === cleanArg;
+}
+
 /**
  * Provides inline parameter name labels for BML function calls.
  */
@@ -20,9 +28,17 @@ const paramNamesCache = new Map();
 function registerInlayHintsProvider(context) {
     return vscode.languages.registerInlayHintsProvider('bml', {
         provideInlayHints(document, range) {
-            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
+            const config = vscode.workspace.getConfiguration('cpqBml');
+            if (!config.get('features.intellisense', true)) {
                 return [];
             }
+            if (!config.get('inlayHints.enabled', true)) {
+                return [];
+            }
+
+            const suppressWhenArgumentMatchesName = config.get('inlayHints.suppressWhenArgumentMatchesName', true);
+            const minParams = Math.max(1, config.get('inlayHints.minimumParameters', 2));
+
             const bmlApiData = loadJson('bml-functions-api-usage', context.extensionPath);
             const hints = [];
             const text = document.getText(range);
@@ -62,7 +78,7 @@ function registerInlayHintsProvider(context) {
                     }
                 }
 
-                if (!paramNames || paramNames.length <= 1) continue;
+                if (!paramNames || paramNames.length < minParams) continue;
 
                 const openParenOffset = startOffset + match.index + match[0].length;
 
@@ -71,6 +87,7 @@ function registerInlayHintsProvider(context) {
                 let inString = false;
                 let stringChar = '';
                 const argStarts = [openParenOffset];
+                const argEnds = [];
                 const maxLookahead = Math.min(fullText.length, openParenOffset + 2000);
 
                 while (i < maxLookahead && parenDepth > 0) {
@@ -87,7 +104,11 @@ function registerInlayHintsProvider(context) {
                         parenDepth++;
                     } else if (char === ')') {
                         parenDepth--;
+                        if (parenDepth === 0) {
+                            argEnds.push(i);
+                        }
                     } else if (char === ',' && parenDepth === 1) {
+                        argEnds.push(i);
                         let nextStart = i + 1;
                         while (nextStart < maxLookahead && /\s/.test(fullText[nextStart])) {
                             nextStart++;
@@ -97,14 +118,22 @@ function registerInlayHintsProvider(context) {
                     i++;
                 }
 
-                if (argStarts.length > 1) {
+                if (argStarts.length >= minParams) {
                     argStarts.forEach((argOffset, idx) => {
                         if (idx < paramNames.length && paramNames[idx]) {
+                            const paramName = paramNames[idx];
+                            const argEnd = argEnds[idx] !== undefined ? argEnds[idx] : argOffset;
+                            const argText = fullText.slice(argOffset, argEnd).trim();
+
+                            if (shouldSuppressHint(paramName, argText, suppressWhenArgumentMatchesName)) {
+                                return;
+                            }
+
                             const pos = document.positionAt(argOffset);
                             if (pos.line >= range.start.line && pos.line <= range.end.line) {
                                 const hint = new vscode.InlayHint(
                                     pos,
-                                    `${paramNames[idx]}: `,
+                                    `${paramName}: `,
                                     vscode.InlayHintKind.Parameter
                                 );
                                 hint.paddingRight = true;
@@ -120,4 +149,4 @@ function registerInlayHintsProvider(context) {
     });
 }
 
-module.exports = { registerInlayHintsProvider, extractParamName };
+module.exports = { registerInlayHintsProvider, extractParamName, shouldSuppressHint };

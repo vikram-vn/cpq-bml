@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { extractParamName } = require('../../../app/lang/intellisense/inlayHints');
+const { extractParamName, shouldSuppressHint } = require('../../../app/lang/intellisense/inlayHints');
 const { collectLocalVariables } = require('../../../app/lang/intellisense/bmqlVariableCompletions');
 
 suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
@@ -8,6 +8,22 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         assert.strictEqual(extractParamName('Dictionary headers'), 'headers');
         assert.strictEqual(extractParamName('[Boolean enableLoopback]'), 'enableLoopback');
         assert.strictEqual(extractParamName('query'), 'query');
+    });
+
+    test('suppresses inlay hint when argument matches parameter name', () => {
+        // Suppress matching names
+        assert.strictEqual(shouldSuppressHint('record', 'record', true), true);
+        assert.strictEqual(shouldSuppressHint('fieldName', '"fieldName"', true), true);
+        assert.strictEqual(shouldSuppressHint('url', 'url', true), true);
+        assert.strictEqual(shouldSuppressHint('headers', '_headers', true), true);
+
+        // Do not suppress differing names
+        assert.strictEqual(shouldSuppressHint('arrayIdentifier', 'categories50Array', true), false);
+        assert.strictEqual(shouldSuppressHint('fieldName', '"price"', true), false);
+        assert.strictEqual(shouldSuppressHint('record', 'rRow_50', true), false);
+
+        // Do not suppress if setting is false
+        assert.strictEqual(shouldSuppressHint('record', 'record', false), false);
     });
 
     test('collects local variables in scope and ignores out-of-scope variables', () => {
