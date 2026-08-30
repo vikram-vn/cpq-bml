@@ -77,20 +77,38 @@ function isPlaceholderParamDesc(desc, paramName, paramType) {
     return false;
 }
 
-function isParamOptional(p, syntax) {
+function cleanParamDescription(desc) {
+    if (!desc) return '';
+    let text = decodeHtmlEntities(desc).trim();
+    // Strip redundant leading "**Optional:**", "*Optional:*", "(Optional)", "Optional -", etc.
+    text = text.replace(/^\s*(?:\*{1,2}|_)?\(?optional(?:\)?:\s*|\)?\s*[-–—:]\s*|\)?\s+)(?:\*{1,2}|_)?\s*/i, '');
+    return text.trim();
+}
+
+function isParamOptional(p, info) {
     if (p.required === false) return true;
-    if (syntax && p.name) {
-        const idx = syntax.indexOf(p.name);
-        if (idx !== -1) {
-            const before = syntax.substring(0, idx);
-            const openBrackets = (before.match(/\[/g) || []).length;
-            const closeBrackets = (before.match(/\]/g) || []).length;
-            if (openBrackets > closeBrackets) {
-                return true;
+    if (p.description && /^\s*(?:\*{1,2}|_)?\(?optional\b/i.test(p.description)) return true;
+    if (p.description && /\b(optional parameter|is optional)\b/i.test(p.description)) return true;
+
+    // Check fullSignature first (which has full bracketed params), then syntax
+    const sigs = typeof info === 'string'
+        ? [info]
+        : [info?.fullSignature, info?.syntax].filter(Boolean);
+
+    for (const sig of sigs) {
+        if (p.name) {
+            const idx = sig.toLowerCase().indexOf(p.name.toLowerCase());
+            if (idx !== -1) {
+                const before = sig.substring(0, idx);
+                const openBrackets = (before.match(/\[/g) || []).length;
+                const closeBrackets = (before.match(/\]/g) || []).length;
+                if (openBrackets > closeBrackets) {
+                    return true;
+                }
             }
         }
     }
-    return p.required === false;
+    return false;
 }
 
 function isProseExample(example) {
@@ -221,10 +239,11 @@ function formatAsJsDoc(info) {
         info.parameters.forEach(p => {
             const name = p.name || 'param';
             const type = p.type || p.dataType || 'Any';
-            const isOpt = isParamOptional(p, info.syntax || info.fullSignature);
+            const isOpt = isParamOptional(p, info);
             const req = isOpt ? 'Optional' : 'Required';
             const hasCustomDesc = p.description && !isPlaceholderParamDesc(p.description, p.name, p.type || p.dataType);
-            const desc = hasCustomDesc ? ` &mdash; ${decodeHtmlEntities(p.description)}` : '';
+            const cleanedDesc = hasCustomDesc ? cleanParamDescription(p.description) : '';
+            const desc = cleanedDesc ? ` &mdash; ${cleanedDesc}` : '';
             md.appendMarkdown(`- \`${name}\` (\`${type}\`, ${req})${desc}\n`);
         });
         md.appendMarkdown('\n');
@@ -329,8 +348,10 @@ function formatWorkspaceFunctionHover(wsInfo) {
         wsInfo.parameters.forEach(p => {
             const name = p.name || 'param';
             const type = p.dataType || 'Any';
-            const req = p.required === false ? 'Optional' : 'Required';
-            const desc = p.description ? ` &mdash; ${decodeHtmlEntities(p.description)}` : '';
+            const isOpt = isParamOptional(p, wsInfo);
+            const req = isOpt ? 'Optional' : 'Required';
+            const cleanedDesc = p.description ? cleanParamDescription(p.description) : '';
+            const desc = cleanedDesc ? ` &mdash; ${cleanedDesc}` : '';
             md.appendMarkdown(`- \`${name}\` (\`${type}\`, ${req})${desc}\n`);
         });
         md.appendMarkdown('\n');
