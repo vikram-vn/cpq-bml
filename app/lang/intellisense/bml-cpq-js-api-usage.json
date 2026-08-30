@@ -1,167 +1,167 @@
 {
-  "CPQJSReady": {
-    "syntax": "CPQJSReady(function)",
-    "examples": [
-      "window.CPQJSReady && CPQJSReady(function() {\n    // Initialize JS in the footer\n});"
-    ],
-    "notes": "Starting with 21B this is the recommended way to call JavaScript code in the footer.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.actionExists": {
-    "syntax": "CPQJS.actionExists(stringVariableName)",
-    "examples": [
-      "CPQJS.actionExists('saveAction')",
-      "if (CPQJS.actionExists('submitQuote')) {\n    // perform logic\n}"
-    ],
-    "notes": "Returns true if the provided action exists.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "Boolean"
-  },
-  "CPQJS.getAttributeVal": {
-    "syntax": "CPQJS.getAttributeVal(stringVariableName, [integerIndex])",
-    "examples": [
-      "CPQJS.getAttributeVal('quantity', 0)",
-      "let price = CPQJS.getAttributeVal('price', 1);"
-    ],
-    "notes": "Gets the specified attribute value.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "String"
-  },
-  "CPQJS.isConfig": {
-    "syntax": "CPQJS.isConfig()",
-    "examples": [
-      "if (CPQJS.isConfig()) {\n    console.log('On config page');\n}"
-    ],
-    "notes": "Returns true on a configuration page.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "Boolean"
-  },
-  "CPQJS.isJet": {
-    "syntax": "CPQJS.isJet()",
-    "examples": [
-      "if (CPQJS.isJet()) {\n    console.log('This is a JET page');\n}"
-    ],
-    "notes": "Returns true on a JET page.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "Boolean"
-  },
-  "CPQJS.onActionComplete": {
-    "syntax": "CPQJS.onActionComplete(stringVariableName, functionHandler)",
-    "examples": [
-      "CPQJS.onActionComplete('saveAction', function() {\n    console.log('Action completed');\n});"
-    ],
-    "notes": "Calls the handler function when the action completes.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.onAttributeChange": {
-    "syntax": "CPQJS.onAttributeChange(stringVariableName, functionHandler)",
-    "examples": [
-      "CPQJS.onAttributeChange('discount', function(newValue) {\n    console.log('Discount changed to', newValue);\n});"
-    ],
-    "notes": "Calls the handler function when the attribute changes.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.openPopup": {
-    "syntax": "CPQJS.openPopup(stringContent, [stringTitle])",
-    "examples": [
-      "CPQJS.openPopup('Hello World', 'My Popup')"
-    ],
-    "notes": "Opens a popup with specified content and title.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.performAction": {
-    "syntax": "CPQJS.performAction(stringVariableName)",
-    "examples": [
-      "CPQJS.performAction('submitQuote')"
-    ],
-    "notes": "Calls the execution of the action.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.setAttributeState": {
-    "syntax": "CPQJS.setAttributeState(stringVariableName, (Json or String) state, [integerIndex])",
-    "examples": [
-      "CPQJS.setAttributeState('discount', { visible: false })",
-      "CPQJS.setAttributeState('price', { updatable: false })"
-    ],
-    "notes": "Sets the state for the attribute to hide ({visible:false}), read-only ({updatable:false}).",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.setAttributeVal": {
-    "syntax": "CPQJS.setAttributeVal(stringVariableName, anyValue, [integerIndex])",
-    "examples": [
-      "CPQJS.setAttributeVal('quantity', 10, 0)",
-      "CPQJS.setAttributeVal('price', 200, 1)"
-    ],
-    "notes": "Sets the attribute value.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.attributeExists": {
-    "syntax": "CPQJS.attributeExists(stringVariableName)",
-    "examples": [
-      "if (CPQJS.attributeExists('discount')) {\n    console.log('Discount exists');\n}"
-    ],
-    "notes": "Checks if the attribute exists and returns true if it does.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "Boolean"
-  },
-  "CPQJS.getTableInfo": {
-    "syntax": "CPQJS.getTableInfo(stringVariableName)",
-    "examples": [
-      "let tableInfo = CPQJS.getTableInfo('lineItemGrid');",
-      "console.log(CPQJS.getTableInfo('myCustomTable'));"
-    ],
-    "notes": "Returns an object containing the listed values in a table or Line Item Grid. `lineItemGrid` returns the line item grid.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "Object"
-  },
-  "CPQJS.isCommerce": {
-    "syntax": "CPQJS.isCommerce()",
-    "examples": [
-      "if (CPQJS.isCommerce()) {\n    console.log('On Commerce page');\n}"
-    ],
-    "notes": "Returns true on the Commerce page.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "Boolean"
-  },
-  "CPQJS.onTableLoaded": {
-    "syntax": "CPQJS.onTableLoaded(stringVariableName, functionHandler)",
-    "examples": [
-      "CPQJS.onTableLoaded('lineItemGrid', function() {\n    console.log('Table loaded');\n});"
-    ],
-    "notes": "Calls the handler function when the table is loaded. 'lineItemGrid' is the variable name for the line item grid.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "void"
-  },
-  "CPQJS.tableExists": {
-    "syntax": "CPQJS.tableExists(stringVariableName)",
-    "examples": [
-      "if (CPQJS.tableExists('lineItemGrid')) {\n    console.log('Table exists');\n}"
-    ],
-    "notes": "Checks if the attribute exists and returns true if it does. 'lineItemGrid' is the variable name for the line item grid.",
-    "category": "function",
-    "functionCategory": "others",
-    "returnType": "Boolean"
-  }
+    "CPQJSReady": {
+        "syntax": "CPQJSReady(function)",
+        "examples": [
+            "window.CPQJSReady && CPQJSReady(function() {\n    // Initialize JS in the footer\n});"
+        ],
+        "notes": "Starting with 21B this is the recommended way to call JavaScript code in the footer.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.actionExists": {
+        "syntax": "CPQJS.actionExists(stringVariableName)",
+        "examples": [
+            "CPQJS.actionExists('saveAction')",
+            "if (CPQJS.actionExists('submitQuote')) {\n    // perform logic\n}"
+        ],
+        "notes": "Returns true if the provided action exists.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "Boolean"
+    },
+    "CPQJS.getAttributeVal": {
+        "syntax": "CPQJS.getAttributeVal(stringVariableName, [integerIndex])",
+        "examples": [
+            "CPQJS.getAttributeVal('quantity', 0)",
+            "let price = CPQJS.getAttributeVal('price', 1);"
+        ],
+        "notes": "Gets the specified attribute value.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "String"
+    },
+    "CPQJS.isConfig": {
+        "syntax": "CPQJS.isConfig()",
+        "examples": [
+            "if (CPQJS.isConfig()) {\n    console.log('On config page');\n}"
+        ],
+        "notes": "Returns true on a configuration page.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "Boolean"
+    },
+    "CPQJS.isJet": {
+        "syntax": "CPQJS.isJet()",
+        "examples": [
+            "if (CPQJS.isJet()) {\n    console.log('This is a JET page');\n}"
+        ],
+        "notes": "Returns true on a JET page.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "Boolean"
+    },
+    "CPQJS.onActionComplete": {
+        "syntax": "CPQJS.onActionComplete(stringVariableName, functionHandler)",
+        "examples": [
+            "CPQJS.onActionComplete('saveAction', function() {\n    console.log('Action completed');\n});"
+        ],
+        "notes": "Calls the handler function when the action completes.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.onAttributeChange": {
+        "syntax": "CPQJS.onAttributeChange(stringVariableName, functionHandler)",
+        "examples": [
+            "CPQJS.onAttributeChange('discount', function(newValue) {\n    console.log('Discount changed to', newValue);\n});"
+        ],
+        "notes": "Calls the handler function when the attribute changes.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.openPopup": {
+        "syntax": "CPQJS.openPopup(stringContent, [stringTitle])",
+        "examples": [
+            "CPQJS.openPopup('Hello World', 'My Popup')"
+        ],
+        "notes": "Opens a popup with specified content and title.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.performAction": {
+        "syntax": "CPQJS.performAction(stringVariableName)",
+        "examples": [
+            "CPQJS.performAction('submitQuote')"
+        ],
+        "notes": "Calls the execution of the action.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.setAttributeState": {
+        "syntax": "CPQJS.setAttributeState(stringVariableName, (Json or String) state, [integerIndex])",
+        "examples": [
+            "CPQJS.setAttributeState('discount', { visible: false })",
+            "CPQJS.setAttributeState('price', { updatable: false })"
+        ],
+        "notes": "Sets the state for the attribute to hide ({visible:false}), read-only ({updatable:false}).",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.setAttributeVal": {
+        "syntax": "CPQJS.setAttributeVal(stringVariableName, anyValue, [integerIndex])",
+        "examples": [
+            "CPQJS.setAttributeVal('quantity', 10, 0)",
+            "CPQJS.setAttributeVal('price', 200, 1)"
+        ],
+        "notes": "Sets the attribute value.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.attributeExists": {
+        "syntax": "CPQJS.attributeExists(stringVariableName)",
+        "examples": [
+            "if (CPQJS.attributeExists('discount')) {\n    console.log('Discount exists');\n}"
+        ],
+        "notes": "Checks if the attribute exists and returns true if it does.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "Boolean"
+    },
+    "CPQJS.getTableInfo": {
+        "syntax": "CPQJS.getTableInfo(stringVariableName)",
+        "examples": [
+            "let tableInfo = CPQJS.getTableInfo('lineItemGrid');",
+            "console.log(CPQJS.getTableInfo('myCustomTable'));"
+        ],
+        "notes": "Returns an object containing the listed values in a table or Line Item Grid. `lineItemGrid` returns the line item grid.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "Object"
+    },
+    "CPQJS.isCommerce": {
+        "syntax": "CPQJS.isCommerce()",
+        "examples": [
+            "if (CPQJS.isCommerce()) {\n    console.log('On Commerce page');\n}"
+        ],
+        "notes": "Returns true on the Commerce page.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "Boolean"
+    },
+    "CPQJS.onTableLoaded": {
+        "syntax": "CPQJS.onTableLoaded(stringVariableName, functionHandler)",
+        "examples": [
+            "CPQJS.onTableLoaded('lineItemGrid', function() {\n    console.log('Table loaded');\n});"
+        ],
+        "notes": "Calls the handler function when the table is loaded. 'lineItemGrid' is the variable name for the line item grid.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "void"
+    },
+    "CPQJS.tableExists": {
+        "syntax": "CPQJS.tableExists(stringVariableName)",
+        "examples": [
+            "if (CPQJS.tableExists('lineItemGrid')) {\n    console.log('Table exists');\n}"
+        ],
+        "notes": "Checks if the attribute exists and returns true if it does. 'lineItemGrid' is the variable name for the line item grid.",
+        "category": "function",
+        "functionCategory": "others",
+        "returnType": "Boolean"
+    }
 }

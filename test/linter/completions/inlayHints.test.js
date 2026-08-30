@@ -11,21 +11,21 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
     });
 
     test('resolves curated, idiomatic BML parameter names', () => {
-        // replace: oldValue, newValue instead of old, new
+        // replace: parameter names from JSON
         const replaceParams = resolveParamNames('replace', 3, {});
-        assert.deepStrictEqual(replaceParams, ['str', 'oldValue', 'newValue', 'maxCount']);
+        assert.deepStrictEqual(replaceParams, ['str', 'old', 'new', 'n']);
 
-        // Math functions: dividend, divisor, base, exponent
-        assert.deepStrictEqual(resolveParamNames('fmod', 2, {}), ['dividend', 'divisor']);
-        assert.deepStrictEqual(resolveParamNames('pow', 2, {}), ['base', 'exponent']);
-        assert.deepStrictEqual(resolveParamNames('hypot', 2, {}), ['a', 'b']);
+        // Math functions: x, y
+        assert.deepStrictEqual(resolveParamNames('fmod', 2, {}), ['x', 'y']);
+        assert.deepStrictEqual(resolveParamNames('pow', 2, {}), ['x', 'y']);
+        assert.deepStrictEqual(resolveParamNames('hypot', 2, {}), ['x', 'y']);
 
-        // Array functions: array, element
-        assert.deepStrictEqual(resolveParamNames('append', 2, {}), ['array', 'element']);
-        assert.deepStrictEqual(resolveParamNames('findinarray', 2, {}), ['array', 'element']);
+        // Array functions
+        assert.deepStrictEqual(resolveParamNames('append', 2, {}), ['arrayIdentifier', 'newArrayElem']);
+        assert.deepStrictEqual(resolveParamNames('findinarray', 2, {}), ['arrayIdentifier', 'element']);
 
         // JSON & Dict
-        assert.deepStrictEqual(resolveParamNames('jsonarrayget', 2, {}), ['jsonArray', 'index', 'returnType']);
+        assert.deepStrictEqual(resolveParamNames('jsonarrayget', 2, {}), ['jsonArrayIdentifier', 'index', 'valueType']);
         assert.deepStrictEqual(resolveParamNames('getfloat', 2, {}), ['record', 'fieldName']);
     });
 
@@ -42,6 +42,26 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         // gettabledata with table, cols, and where clauses
         assert.deepStrictEqual(resolveParamNames('gettabledata', 4, {}), ['tableName', 'selectColumns', 'whereColumn', 'whereValue']);
         assert.deepStrictEqual(resolveParamNames('gettabledata', 6, {}), ['tableName', 'selectColumns', 'whereColumn1', 'whereValue1', 'whereColumn2', 'whereValue2']);
+    });
+
+    test('dynamically extracts parameter names from fullSignature or syntax when not curated', () => {
+        const mockApiData = {
+            'custom_api_call': {
+                syntax: 'custom_api_call(stringVariableName, [integerIndex])'
+            },
+            'customfn': {
+                fullSignature: 'String customfn(String customerId, Integer orderCount)'
+            }
+        };
+
+        assert.deepStrictEqual(
+            resolveParamNames('custom_api_call', 2, mockApiData),
+            ['stringVariableName', 'integerIndex']
+        );
+        assert.deepStrictEqual(
+            resolveParamNames('customfn', 2, mockApiData),
+            ['customerId', 'orderCount']
+        );
     });
 
     test('suppresses inlay hint when argument matches parameter name', () => {

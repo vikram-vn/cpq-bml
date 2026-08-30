@@ -94,6 +94,7 @@ async function compileExtension() {
         path.join(intellisenseDir, 'best-practice-advisories.json'),
         path.join(intellisenseDir, 'keyword-hovers.json'),
         path.join(intellisenseDir, 'category-labels.json'),
+        path.join(intellisenseDir, 'curated-params.json'),
     ];
 
     for (const srcPath of jsonFiles) {

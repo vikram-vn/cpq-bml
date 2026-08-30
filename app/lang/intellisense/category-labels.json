@@ -8,15 +8,16 @@
     "constant": "constant"
   },
   "functionCategories": {
-    "direct_db_access": "database",
+    "xml": "xml",
+    "math": "math",
+    "date": "date",
+    "others": "misc",
+    "dictionary": "dictionary",
+    "logical": "logic",
+    "url_access": "url",
     "arrays": "array",
     "string": "string",
-    "date": "date",
-    "dictionary": "dictionary",
     "json": "json",
-    "math": "math",
-    "url_access": "url",
-    "xml": "xml",
-    "others": "misc"
+    "direct_db_access": "database"
   }
 }

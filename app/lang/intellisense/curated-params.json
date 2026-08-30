@@ -1,0 +1,689 @@
+{
+    "atof": [
+        "str"
+    ],
+    "atoi": [
+        "str"
+    ],
+    "decodebase64": [
+        "str"
+    ],
+    "encodebase64": [
+        "str"
+    ],
+    "endswith": [
+        "str",
+        "substring"
+    ],
+    "formatascurrency": [
+        "x",
+        "currencyCode"
+    ],
+    "find": [
+        "str",
+        "substr",
+        "start",
+        "end"
+    ],
+    "getcurrencyvalue": [
+        "value",
+        "currencyCode"
+    ],
+    "html": [
+        "str"
+    ],
+    "isnumber": [
+        "str"
+    ],
+    "join": [
+        "str_array",
+        "delimiter"
+    ],
+    "len": [
+        "str"
+    ],
+    "lower": [
+        "str"
+    ],
+    "replace": [
+        "str",
+        "old",
+        "new",
+        "n"
+    ],
+    "split": [
+        "str",
+        "separator"
+    ],
+    "startswith": [
+        "str",
+        "substring"
+    ],
+    "string": [
+        "x"
+    ],
+    "substring": [
+        "str",
+        "start",
+        "end"
+    ],
+    "trim": [
+        "str"
+    ],
+    "upper": [
+        "str"
+    ],
+    "acos": [
+        "x"
+    ],
+    "asin": [
+        "x"
+    ],
+    "atan": [
+        "x"
+    ],
+    "ceil": [
+        "x"
+    ],
+    "cos": [
+        "x"
+    ],
+    "cosh": [
+        "x"
+    ],
+    "exp": [
+        "x"
+    ],
+    "fabs": [
+        "x"
+    ],
+    "fmod": [
+        "x",
+        "y"
+    ],
+    "hypot": [
+        "x",
+        "y"
+    ],
+    "integer": [
+        "x"
+    ],
+    "ln": [
+        "x"
+    ],
+    "log": [
+        "x"
+    ],
+    "pow": [
+        "x",
+        "y"
+    ],
+    "sin": [
+        "x"
+    ],
+    "sinh": [
+        "x"
+    ],
+    "sqrt": [
+        "x"
+    ],
+    "tan": [
+        "x"
+    ],
+    "tanh": [
+        "x"
+    ],
+    "round": [
+        "x",
+        "y"
+    ],
+    "adddays": [
+        "date",
+        "num_of_days"
+    ],
+    "addmonths": [
+        "date",
+        "num_of_months"
+    ],
+    "datetostr": [
+        "date",
+        "dateFormat",
+        "timeZone"
+    ],
+    "getdate": [
+        "includeTime"
+    ],
+    "getdiffindays": [
+        "date1",
+        "date2"
+    ],
+    "getstrdate": [],
+    "isleap": [
+        "year_num"
+    ],
+    "isweekend": [
+        "date"
+    ],
+    "minusdays": [
+        "date",
+        "num_of_days"
+    ],
+    "strtodate": [
+        "str",
+        "format",
+        "timeZone"
+    ],
+    "strtojavadate": [
+        "str",
+        "format",
+        "timeZone"
+    ],
+    "comparedates": [
+        "date1",
+        "date2"
+    ],
+    "getcurrenttimeinmillis": [],
+    "gettabledata": [
+        "tableName",
+        "selectColumns",
+        "whereClauseColumns",
+        "whereClauseValues",
+        "whereClauseComps",
+        "whereClauseUseORs"
+    ],
+    "getpartsdata": [
+        "userSelectFields",
+        "partNumbers",
+        "currencyCode",
+        "priceBookVarName"
+    ],
+    "bmql": [
+        "sqlQuery",
+        "contextOverride",
+        "fieldMap"
+    ],
+    "haserror": [
+        "recordSet"
+    ],
+    "getmessage": [
+        "recordSet"
+    ],
+    "getint": [
+        "record",
+        "fieldName"
+    ],
+    "getfloat": [
+        "record",
+        "fieldName"
+    ],
+    "getboolean": [
+        "record",
+        "fieldName"
+    ],
+    "recordset": [],
+    "gettransaction": [
+        "bsId",
+        "filterCriteria",
+        "includeRuleData"
+    ],
+    "makeurlparam": [
+        "name",
+        "dict"
+    ],
+    "urldata": [
+        "url",
+        "httpMethod",
+        "headers",
+        "parameters",
+        "timeout",
+        "formData",
+        "enableLoopback"
+    ],
+    "urldatabyget": [
+        "url",
+        "parameters",
+        "defaultValue",
+        "timeout",
+        "headers",
+        "enableLoopback"
+    ],
+    "urldatabypost": [
+        "url",
+        "parameters",
+        "defaultValue",
+        "headers",
+        "returnErrorResponse",
+        "timeout",
+        "enableLoopback"
+    ],
+    "urldatabypostasync": [
+        "url",
+        "parameters",
+        "defaultValue",
+        "callbackActionVarName",
+        "headers",
+        "returnErrorResponse",
+        "timeout",
+        "enableLoopback"
+    ],
+    "urlmultipartbypost": [
+        "url",
+        "payload",
+        "headers",
+        "attachments",
+        "timeout",
+        "enableLoopback"
+    ],
+    "bytearray": [
+        "content",
+        "charSet"
+    ],
+    "append": [
+        "arrayIdentifier",
+        "newArrayElem"
+    ],
+    "findinarray": [
+        "arrayIdentifier",
+        "element"
+    ],
+    "isempty": [
+        "arrayIdentifier"
+    ],
+    "max": [
+        "arrayIdentifier"
+    ],
+    "min": [
+        "arrayIdentifier"
+    ],
+    "range": [
+        "x"
+    ],
+    "remove": [
+        "arrayIdentifier",
+        "dictionary",
+        "key"
+    ],
+    "reverse": [
+        "arrayIdentifier"
+    ],
+    "sizeofarray": [
+        "arrayIdentifier"
+    ],
+    "sort": [
+        "arrayIdentifier",
+        "sortOrder",
+        "sortType"
+    ],
+    "dict": [
+        "dictType"
+    ],
+    "containskey": [
+        "dictionaryIdentifier",
+        "Integer",
+        "Float)key"
+    ],
+    "put": [
+        "dictionaryIdentifier",
+        "Integer",
+        "key",
+        "value"
+    ],
+    "get": [
+        "dictionaryIdentifier",
+        "Integer",
+        "key"
+    ],
+    "keys": [
+        "dictionaryIdentifier"
+    ],
+    "values": [
+        "dictionaryIdentifier"
+    ],
+    "applytemplate": [
+        "templateFileLocation",
+        "payload",
+        "defaultErrorMessage",
+        "jsonIdentifier"
+    ],
+    "transformxml": [
+        "xml",
+        "xslFileLocation",
+        "defaultErrorMessage"
+    ],
+    "readxmlsingle": [
+        "xmlPayload",
+        "xpaths",
+        "defaultErrorMessage"
+    ],
+    "readxmlmultiple": [
+        "xmlPayload",
+        "xpaths",
+        "defaultErrorMessage"
+    ],
+    "json": [
+        "jsonFormatStr"
+    ],
+    "jsonarray": [
+        "jsonArrStr"
+    ],
+    "jsonnull": [],
+    "jsonkeys": [
+        "jsonIdentifier",
+        "ignoreNullValues"
+    ],
+    "jsontostr": [
+        "jsonIdentifier"
+    ],
+    "jsonget": [
+        "jsonIdentifier",
+        "key",
+        "valueType",
+        "defaultValue"
+    ],
+    "jsonput": [
+        "jsonIdentifier",
+        "key",
+        "value"
+    ],
+    "jsonremove": [
+        "jsonIdentifier",
+        "key"
+    ],
+    "isjsonnull": [
+        "jsonIdentifier",
+        "jsonArrayIdentifier",
+        "index)"
+    ],
+    "jsonarraytostr": [
+        "jsonArrayIdentifier"
+    ],
+    "jsonarrayget": [
+        "jsonArrayIdentifier",
+        "index",
+        "valueType"
+    ],
+    "jsonarraysize": [
+        "jsonarrayIdentifier"
+    ],
+    "jsonarrayappend": [
+        "jsonarrayIdentifier",
+        "value"
+    ],
+    "jsonarrayremove": [
+        "jsonArrayIdentifier",
+        "index"
+    ],
+    "jsonpathremove": [
+        "jsonIdentifier",
+        "jsonPath"
+    ],
+    "jsonpathgetsingle": [
+        "jsonIdentifier",
+        "jsonPath",
+        "valueType",
+        "defaultValue"
+    ],
+    "jsoncopy": [
+        "jsonIdentifier"
+    ],
+    "jsonarraycopy": [
+        "jsonArrayIdentifier"
+    ],
+    "jsonpathcheck": [
+        "jsonIdentifier",
+        "jsonPath"
+    ],
+    "jsonpathset": [
+        "jsonIdentifier",
+        "jsonPath",
+        "value"
+    ],
+    "jsonpathgetmultiple": [
+        "jsonIdentifier",
+        "jsonPath",
+        "asPath"
+    ],
+    "jsonarrayrefid": [
+        "jsonArrayIdentifier"
+    ],
+    "getarrayattrstring": [
+        "arrayIdentifier"
+    ],
+    "getconfigattrvalue": [
+        "documentNumber",
+        "configAttrVarname"
+    ],
+    "print": [
+        "varName"
+    ],
+    "isnull": [
+        "JsonArray)))))"
+    ],
+    "getreasonstatus": [
+        "String"
+    ],
+    "logtime": [
+        "tag",
+        "timeElapsed"
+    ],
+    "getoldvalue": [
+        "variableName",
+        "documentNumber"
+    ],
+    "savebom": [
+        "bsId",
+        "bomJson",
+        "configurationKey"
+    ],
+    "getbom": [
+        "bsId",
+        "lineNumber",
+        "lineFields",
+        "validateBomModel",
+        "flattenChildItems",
+        "isSalesBom"
+    ],
+    "getconfigbom": [
+        "configId",
+        "flattenChildProducts"
+    ],
+    "calculateconfiguration": [
+        "baseConfigurationKey",
+        "linesToApply"
+    ],
+    "applybom": [
+        "baseBom",
+        "oneBomToApply",
+        "setting"
+    ],
+    "calculatedeltabom": [
+        "priorBom",
+        "currentBom",
+        "inputBom",
+        "setting"
+    ],
+    "saveconfigbom": [
+        "configBomJson",
+        "instanceAttributes",
+        "configurationKey"
+    ],
+    "usersessionset": [
+        "key",
+        "value"
+    ],
+    "usersessionget": [
+        "key",
+        "valueType"
+    ],
+    "globaldictget": [
+        "key",
+        "updateTimeToLive"
+    ],
+    "usersessionremove": [
+        "key"
+    ],
+    "globaldictremove": [
+        "key"
+    ],
+    "throwerror": [
+        "errorMessage",
+        "isSystemError"
+    ],
+    "getuuid": [],
+    "convertbomtohier": [
+        "bomJson"
+    ],
+    "convertbomtoflat": [
+        "bomJson"
+    ],
+    "getattachmentdata": [
+        "attachmentId",
+        "asBytes"
+    ],
+    "globaldictset": [
+        "key",
+        "value",
+        "minTimeToLive",
+        "isolate"
+    ],
+    "addpartstotransaction": [
+        "parts",
+        "priceBookVarName",
+        "resultAttributeArray",
+        "pricingTriggerPoint"
+    ],
+    "validatequoteforagreement": [],
+    "generatehmacmessage": [
+        "inputmessage",
+        "key",
+        "algorithm"
+    ],
+    "addtotransaction": [
+        "items",
+        "priceBookVarName",
+        "resultAttributeArray",
+        "pricingTriggerPoint"
+    ],
+    "stringbuilder": [
+        "string",
+        "stringArray",
+        "stringBuilder"
+    ],
+    "sbappend": [
+        "string",
+        "stringArray",
+        "stringBuilder"
+    ],
+    "sbtostring": [
+        "stringBuilder"
+    ],
+    "getsystemattrvalues": [
+        "jsonPath"
+    ],
+    "getsystemmultipleattrvalues": [
+        "Dictionary"
+    ],
+    "getsystemdata": [],
+    "importtransactiondata": [
+        "bsid"
+    ],
+    "setattributevalue": [
+        "documentNumberOrName",
+        "value"
+    ],
+    "getcoveragesupportdict": [],
+    "configureabo": [
+        "bsId",
+        "configurationKey"
+    ],
+    "format": [
+        "pattern",
+        "..."
+    ],
+    "getarraystr": [
+        "arrayIdentifier"
+    ],
+    "float": [
+        "val"
+    ],
+    "abs": [
+        "val"
+    ],
+    "date": [
+        "dateStr",
+        "format"
+    ],
+    "formatdate": [
+        "date",
+        "format"
+    ],
+    "indexof": [
+        "array",
+        "element"
+    ],
+    "slice": [
+        "array",
+        "startIndex",
+        "endIndex"
+    ],
+    "generateuuid": [],
+    "getconfigurationbom": [
+        "configId",
+        "flattenChildProducts"
+    ],
+    "invoke": [
+        "globalTableFunction",
+        "delimitedData",
+        "defaultData"
+    ],
+    "cpqjsready": [
+        "function"
+    ],
+    "cpqjs.actionexists": [
+        "stringVariableName"
+    ],
+    "cpqjs.getattributeval": [
+        "stringVariableName",
+        "integerIndex"
+    ],
+    "cpqjs.isconfig": [],
+    "cpqjs.isjet": [],
+    "cpqjs.onactioncomplete": [
+        "stringVariableName",
+        "functionHandler"
+    ],
+    "cpqjs.onattributechange": [
+        "stringVariableName",
+        "functionHandler"
+    ],
+    "cpqjs.openpopup": [
+        "stringContent",
+        "stringTitle"
+    ],
+    "cpqjs.performaction": [
+        "stringVariableName"
+    ],
+    "cpqjs.setattributestate": [
+        "stringVariableName",
+        "String"
+    ],
+    "cpqjs.setattributeval": [
+        "stringVariableName",
+        "anyValue",
+        "integerIndex"
+    ],
+    "cpqjs.attributeexists": [
+        "stringVariableName"
+    ],
+    "cpqjs.gettableinfo": [
+        "stringVariableName"
+    ],
+    "cpqjs.iscommerce": [],
+    "cpqjs.ontableloaded": [
+        "stringVariableName",
+        "functionHandler"
+    ],
+    "cpqjs.tableexists": [
+        "stringVariableName"
+    ]
+}

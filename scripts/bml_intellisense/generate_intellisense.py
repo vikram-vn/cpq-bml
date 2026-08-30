@@ -12,6 +12,12 @@ from bml_intellisense.variables import generate_bml_variables
 from bml_intellisense.attributes import generate_bml_attributes
 from bml_intellisense.util_attributes import generate_bml_util_attributes
 from bml_intellisense.data_types import generate_bml_data_types
+from bml_intellisense.cpq_js import generate_cpq_js
+from bml_intellisense.category_labels import generate_category_labels
+from bml_intellisense.custom_snippets import generate_custom_snippets
+from bml_intellisense.best_practices import generate_best_practices
+from bml_intellisense.keyword_hovers import generate_keyword_hovers
+from bml_intellisense.curated_params import generate_curated_params
 
 def main():
     start_time = time.time()
@@ -24,7 +30,13 @@ def main():
         {"name": "generateBmlVariables", "func": generate_bml_variables},
         {"name": "generateBmlAttributes", "func": generate_bml_attributes},
         {"name": "generateBmlUtilAttributes", "func": generate_bml_util_attributes},
-        {"name": "generateBmlDataTypes", "func": generate_bml_data_types}
+        {"name": "generateBmlDataTypes", "func": generate_bml_data_types},
+        {"name": "generateCpqJs", "func": generate_cpq_js},
+        {"name": "generateCategoryLabels", "func": generate_category_labels},
+        {"name": "generateCustomSnippets", "func": generate_custom_snippets},
+        {"name": "generateBestPractices", "func": generate_best_practices},
+        {"name": "generateKeywordHovers", "func": generate_keyword_hovers},
+        {"name": "generateCuratedParams", "func": generate_curated_params}
     ]
     
     for g in generators:

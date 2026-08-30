@@ -409,8 +409,8 @@
         },
         "cpqBml.inlayHints.minimumParameters": {
           "type": "number",
-          "default": 2,
-          "description": "Minimum number of parameters a function must accept before inlay hints are shown (default is 2 to keep single-argument calls clean)."
+          "default": 1,
+          "description": "Minimum number of parameters a function must accept before inlay hints are shown."
         },
         "cpqBml.inlayHints.variableTypes.enabled": {
           "type": "boolean",

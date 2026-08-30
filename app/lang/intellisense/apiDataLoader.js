@@ -102,6 +102,11 @@ function loadCategoryLabelsJson(extPath) {
     return loadJson("category-labels", extPath);
 }
 
+// Curated parameter names
+function loadCuratedParamsJson(extPath) {
+    return loadJson("curated-params", extPath);
+}
+
 module.exports = {
     loadJson,
     invalidateCache,
@@ -115,5 +120,6 @@ module.exports = {
     loadFunctionReturnTypesJson,
     loadBestPracticeAdvisoriesJson,
     loadKeywordHoversJson,
-    loadCategoryLabelsJson
+    loadCategoryLabelsJson,
+    loadCuratedParamsJson
 };
