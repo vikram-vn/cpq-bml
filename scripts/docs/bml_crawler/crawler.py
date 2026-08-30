@@ -101,6 +101,13 @@ class BmlDocCrawler:
             
         relative_path = url[len(self.base_url):] if url.startswith(self.base_url) else ""
         module_folder = relative_path.split('/')[0] if relative_path else "BML"
+        
+        # Exclude non-BML topics from BestPractices
+        if module_folder == "BestPractices":
+            excluded = ["ApprovalSequences", "FOtoXLS", "ImageBestPractices", "ParticipantProfile", "EnsurelLtestVersion", "UpgradeJS", "UsejQuery", "Security"]
+            if any(ex.lower() in url.lower() for ex in excluded):
+                return []
+
         print(f"[Depth {depth}] Crawling [{module_folder}]: {url}")
         
         try:
