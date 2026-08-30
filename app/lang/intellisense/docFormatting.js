@@ -68,8 +68,100 @@ function highlightInlineCode(text) {
     return text.replace(INLINE_CALL_RE, match => `\`${match}\``);
 }
 
+function isPlaceholderParamDesc(desc, paramName, paramType) {
+    if (!desc) return true;
+    const clean = desc.replace(/[`']/g, '').trim().toLowerCase();
+    const pName = (paramName || '').trim().toLowerCase();
+    const pType = (paramType || '').trim().toLowerCase();
+    if (clean === `input parameter ${pName} of type ${pType}.` ||
+        clean === `input parameter ${pName} of type ${pType}` ||
+        clean === `input parameter ${pName}.`) {
+        return true;
+    }
+    return false;
+}
+
+function parseExampleItem(rawEx) {
+    if (!rawEx || typeof rawEx !== 'string') return null;
+    const text = decodeHtmlEntities(rawEx).trim();
+    if (!text) return null;
+
+    // Pattern 1: Combined description + Example: <code block>
+    const combinedMatch = text.match(/^\s*(?:(\d+\.\s*)?([^\n]+?))\s*(?:\r?\n+\s*(?:Example|Sample|Usage):\s*|\r?\n\r?\n)([\s\S]+)$/i);
+    if (combinedMatch) {
+        const titleCandidate = combinedMatch[2].trim();
+        const codeCandidate = combinedMatch[3].trim();
+        const isProseExplanation = /\b(will return|is used to|can be|should be|returns the)\b/i.test(codeCandidate) && !codeCandidate.includes('\n');
+        if (!isProseExplanation && codeCandidate && (
+            codeCandidate.includes(';\n') ||
+            codeCandidate.includes('{\n') ||
+            codeCandidate.includes(';\r\n') ||
+            codeCandidate.includes('{\r\n') ||
+            codeCandidate.includes(' = ') ||
+            codeCandidate.includes('bmql(') ||
+            codeCandidate.startsWith('return ') ||
+            (codeCandidate.includes('(') && codeCandidate.includes(')'))
+        )) {
+            return {
+                title: titleCandidate.replace(/^Example:\s*/i, '').trim(),
+                code: codeCandidate
+            };
+        }
+    }
+
+    // Pattern 2: Single-line or pure prose usage note
+    if (/^\s*\d+\.\s/.test(text) && !text.includes(';\n') && !text.includes('{\n') && !text.includes(';\r\n') && !text.includes('{\r\n')) {
+        return {
+            title: text.replace(/^\s*\d+\.\s*/, '').trim(),
+            code: null
+        };
+    }
+
+    // Pattern 3: Pure code snippet
+    return {
+        title: null,
+        code: text
+    };
+}
+
+function normalizeCodeForComparison(code) {
+    if (!code) return '';
+    return code.replace(/\s+/g, '').replace(/;+/g, ';').trim().toLowerCase();
+}
+
 function isProseExample(example) {
-    return /^\s*\d+\.\s/.test(example);
+    if (!example || typeof example !== 'string') return false;
+    return /^\s*\d+\.\s/.test(example) && !example.includes(';\n') && !example.includes('{\n');
+}
+
+function processExamples(examples) {
+    if (!examples || !examples.length) return [];
+    const parsedList = [];
+    const seenCode = new Map();
+
+    for (const ex of examples) {
+        const item = parseExampleItem(ex);
+        if (!item) continue;
+
+        if (item.code) {
+            const norm = normalizeCodeForComparison(item.code);
+            if (seenCode.has(norm)) {
+                const existingIdx = seenCode.get(norm);
+                if (item.title && !parsedList[existingIdx].title) {
+                    parsedList[existingIdx].title = item.title;
+                }
+            } else {
+                seenCode.set(norm, parsedList.length);
+                parsedList.push(item);
+            }
+        } else if (item.title) {
+            const isDupTitle = parsedList.some(p => p.title && p.title.toLowerCase() === item.title.toLowerCase());
+            if (!isDupTitle) {
+                parsedList.push(item);
+            }
+        }
+    }
+    return parsedList;
 }
 
 /**
@@ -98,8 +190,9 @@ function formatAsJsDoc(info) {
         md.appendMarkdown(`**Parameters:**\n`);
         info.parameters.forEach(p => {
             const req = p.required === false ? ' *(optional)*' : '';
-            const desc = p.description ? ` — ${decodeHtmlEntities(p.description)}` : '';
-            md.appendMarkdown(`- \`${p.name}\` \`[${p.type || 'Any'}]\`${req}${desc}\n`);
+            const hasCustomDesc = p.description && !isPlaceholderParamDesc(p.description, p.name, p.type || p.dataType);
+            const desc = hasCustomDesc ? ` — ${decodeHtmlEntities(p.description)}` : '';
+            md.appendMarkdown(`- \`${p.name}\` \`[${p.type || p.dataType || 'Any'}]\`${req}${desc}\n`);
         });
         md.appendMarkdown('\n');
     }
@@ -113,16 +206,34 @@ function formatAsJsDoc(info) {
     }
 
     if (info.examples?.length) {
-        const heading = info.examples.every(isProseExample) ? 'Usage Notes' : 'Example';
-        md.appendMarkdown(`**${heading}${info.examples.length > 1 ? 's' : ''}:**\n`);
-        info.examples.forEach(ex => {
-            const decoded = decodeHtmlEntities(ex);
-            if (isProseExample(decoded)) {
-                md.appendMarkdown(`\n${highlightInlineCode(decoded)}\n`);
+        const parsedExamples = processExamples(info.examples);
+        if (parsedExamples.length > 0) {
+            const heading = parsedExamples.every(e => !e.code) ? 'Usage Note' : 'Example';
+            md.appendMarkdown(`**${heading}${parsedExamples.length > 1 ? 's' : ''}:**\n`);
+
+            if (parsedExamples.length === 1) {
+                const ex = parsedExamples[0];
+                if (ex.title) {
+                    md.appendMarkdown(`\n${highlightInlineCode(ex.title)}:\n`);
+                }
+                if (ex.code) {
+                    md.appendCodeblock(ex.code, 'bml');
+                } else if (!ex.code && !ex.title) {
+                    // fallback
+                }
             } else {
-                md.appendCodeblock(decoded, 'bml');
+                parsedExamples.forEach((ex, idx) => {
+                    if (ex.title && ex.code) {
+                        md.appendMarkdown(`\n${idx + 1}. ${highlightInlineCode(ex.title)}:\n`);
+                        md.appendCodeblock(ex.code, 'bml');
+                    } else if (ex.code) {
+                        md.appendCodeblock(ex.code, 'bml');
+                    } else if (ex.title) {
+                        md.appendMarkdown(`\n${idx + 1}. ${highlightInlineCode(ex.title)}\n`);
+                    }
+                });
             }
-        });
+        }
     }
 
     if (info.docs) {
@@ -132,8 +243,25 @@ function formatAsJsDoc(info) {
             .replace(/Example of [^:]*:\s*/gi, '')
             .replace(/\n{3,}/g, '\n\n')
             .trim();
+
         if (cleanDocs) {
-            md.appendMarkdown(`\n---\n\n**📚 From the Docs**\n\n${cleanDocs}\n`);
+            const normDocs = cleanDocs.replace(/[\s\r\n\t]+/g, ' ').trim().toLowerCase();
+            const normNotes = (info.notes || '').replace(/[\s\r\n\t]+/g, ' ').trim().toLowerCase();
+
+            if (normDocs && normDocs !== normNotes) {
+                let docBody = cleanDocs;
+                if (normNotes && normDocs.startsWith(normNotes)) {
+                    const stripped = cleanDocs.substring(info.notes.trim().length).replace(/^[\s.:\r\n-]+/, '').trim();
+                    if (stripped) {
+                        docBody = stripped;
+                    } else {
+                        docBody = '';
+                    }
+                }
+                if (docBody) {
+                    md.appendMarkdown(`\n---\n\n**📚 From the Docs**\n\n${docBody}\n`);
+                }
+            }
         }
     }
 
@@ -188,6 +316,9 @@ module.exports = {
     decodeHtmlEntities,
     buildMetadataLine,
     highlightInlineCode,
+    isPlaceholderParamDesc,
+    parseExampleItem,
+    processExamples,
     isProseExample,
     formatAsJsDoc,
     formatWorkspaceFunctionHover,

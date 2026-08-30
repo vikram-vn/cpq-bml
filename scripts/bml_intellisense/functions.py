@@ -38,9 +38,15 @@ def parse_parameters_from_syntax(syntax):
             'name': pname,
             'type': ptype,
             'required': '[' not in raw,
-            'description': f"Input parameter `{pname}` of type `{ptype}`."
+            'description': ""
         })
     return parsed
+
+
+def _normalize_for_comparison(s):
+    if not s:
+        return ""
+    return re.sub(r'\s+', '', s).strip().lower()
 
 
 def generate_bml_functions(root_dir):
@@ -97,8 +103,15 @@ def generate_bml_functions(root_dir):
         raw_example = item.get('example')
         if raw_example:
             cleaned = strip_html(raw_example).strip()
-            if cleaned and cleaned not in extracted_examples:
-                extracted_examples.insert(0, cleaned)
+            if cleaned:
+                norm_cleaned = _normalize_for_comparison(cleaned)
+                already_covered = any(
+                    _normalize_for_comparison(ex) == norm_cleaned or
+                    _normalize_for_comparison(ex) in norm_cleaned
+                    for ex in extracted_examples
+                )
+                if not already_covered and cleaned not in extracted_examples:
+                    extracted_examples.insert(0, cleaned)
 
         # Fallback to existing examples if none extracted
         if not extracted_examples and existing_examples.get(key):

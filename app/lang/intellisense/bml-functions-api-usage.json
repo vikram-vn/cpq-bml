@@ -142,19 +142,19 @@
                 "name": "substr",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `substr` of type `String`."
+                "description": ""
             },
             {
                 "name": "start",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `start` of type `Integer`."
+                "description": ""
             },
             {
                 "name": "end",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `end` of type `Integer`."
+                "description": ""
             }
         ],
         "examples": [
@@ -179,7 +179,7 @@
                 "name": "currencyCode",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `currencyCode` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -242,7 +242,7 @@
                 "name": "delimiter",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `delimiter` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -317,7 +317,7 @@
                 "name": "n",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `n` of type `Integer`."
+                "description": ""
             }
         ],
         "examples": [
@@ -386,7 +386,7 @@
                 "name": "x",
                 "type": "Float(or",
                 "required": true,
-                "description": "Input parameter `x` of type `Float(or`."
+                "description": ""
             }
         ],
         "examples": [
@@ -417,7 +417,7 @@
                 "name": "end",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `end` of type `Integer`."
+                "description": ""
             }
         ],
         "examples": [
@@ -859,7 +859,7 @@
                 "name": "y",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `y` of type `Integer`."
+                "description": ""
             }
         ],
         "examples": [
@@ -959,17 +959,16 @@
                 "name": "dateFormat",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `dateFormat` of type `String`."
+                "description": ""
             },
             {
                 "name": "timeZone",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `timeZone` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "Example: \n  1.    datetostr (getdate()) will return today's date in the format MM/dd/yyyy HH:mm:ss if no format is supplied\n\n  2.    testDate = strtojavadate(\"02/03/2010 03-22-55\", \"MM/dd/yyyy HH-mm-ss\");\n         dateStr = datetostr(testDate, \"yyyy-MM-dd HH:mm:ss\");\n         dateStr now holds the string \"2010-02-03 03:22:55\"\n\n         The date & time was stored in the server's time zone by default (For this example, assume GMT-8).\n         To retrieve the data in another time zone, include the third parameters as string. See the editor's help page for valid time zone inputs.\n\n         datestr = datetostr(testDate, \"yyyy-MM-dd HH:mm:ss\", \"GMT-6\")\n         datestr will return \"2010-02-03 01:22:55\"\n\n         twelvehour = datetostr(testDate, \"yyyy-MM-dd hh:mm:ss a\", \"GMT+4\")\n         twelvehour will return \"2010-02-03 03:22:55 PM\"\n\n  3. The components that can be used to make up a valid date format string are:\n      yyyy - Year in long form specifying all digits.\n      MM - Month in numeric format\n      dd - The day of the month in numeric form e.g 24\n      HH - The hour as a number in 24 hour form\n      hh - The hour as a number in 12 hour form\n      mm - Minutes\n      ss - Seconds\n      a  - AM/PM\n      z  - General Time Zone\n      Z  - RFC 822 Time Zone",
             "testDate = strtojavadate(\"02/03/2010 03-22-55\", \"MM/dd/yyyy HH-mm-ss\");\ndateStr = datetostr(testDate, \"yyyy-MM-dd HH:mm:ss\")",
             "datestr = datetostr(testDate, \"yyyy-MM-dd HH:mm:ss\", \"GMT-6\")",
             "twelvehour = datetostr(testDate, \"yyyy-MM-dd hh:mm:ss a\", \"GMT+4\")"
@@ -987,7 +986,7 @@
                 "name": "includeTime",
                 "type": "boolean",
                 "required": true,
-                "description": "Input parameter `includeTime` of type `boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1006,13 +1005,13 @@
                 "name": "date1",
                 "type": "Date",
                 "required": true,
-                "description": "Input parameter `date1` of type `Date`."
+                "description": ""
             },
             {
                 "name": "date2",
                 "type": "Date",
                 "required": true,
-                "description": "Input parameter `date2` of type `Date`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1106,19 +1105,19 @@
                 "name": "str",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `str` of type `String`."
+                "description": ""
             },
             {
                 "name": "format",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `format` of type `String`."
+                "description": ""
             },
             {
                 "name": "timeZone",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `timeZone` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1153,7 +1152,6 @@
             }
         ],
         "examples": [
-            "1. If str is empty string or any string which cannot be parsed using given format, then this method throws an exception, unlike strtodate method.\n\n2. The format strings supported are different from the ones supported by strtodate function.\n\n3. The components that can be used to make up a valid date format string are:\n    yyyy - Year in long form specifying all digits.\n    MM - Month in numeric format\n    dd - The day of the month in numeric form e.g 24\n    HH - The hour as a number in 24 hour form\n    hh - The hour as a number in 12 hour form\n    mm - Minutes\n    ss - Seconds\n    a  - AM/PM\n\n4. By default, the date will save to the server's time zone. The Date can be created with a predefined time zone, provided that the correct time zone id is entered.\n    See the editor's help page for valid time zone inputs.\n    Example: \n\n    To Convert to US Format:\n    strtojavadate(\"02/12/2010\", \"MM/dd/yyyy\") returns a date object representing February 12th, 2010.\n\n    To Convert to European Format:\n    strtojavadate(\"01/02/2010\", \"dd/MM/yyyy\") returns a date object representing February 1st, 2010.\n\n     To Convert to European Format w/ Paris, France time zone\n    parisdate = strtojavadate(\"01/02/2010 16:30:40\", \"dd/MM/yyyy HH:mm:ss\", \"Europe/Paris\") returns a date object representing February 1st, 2010 with a time zone in Paris France.\n\n    When the datetostr method is used, another time zone can be specified and will render with the appropriate time difference.\n    datetostr(parisdate, \"dd/MM/yyyy HH:mm:ss\", \"America/Chicago\") will display \"01/02/2010 09:30:40\"",
             "strtojavadate(\"02/12/2010\", \"MM/dd/yyyy\")"
         ],
         "notes": "Converts String to Date. This is the preferred format for converting Strings to Date objects.",
@@ -1206,37 +1204,37 @@
                 "name": "tableName",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `tableName` of type `String`."
+                "description": ""
             },
             {
                 "name": "selectColumns",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `selectColumns` of type `String`."
+                "description": ""
             },
             {
                 "name": "whereClauseColumns",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `whereClauseColumns` of type `String`."
+                "description": ""
             },
             {
                 "name": "whereClauseValues",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `whereClauseValues` of type `String`."
+                "description": ""
             },
             {
                 "name": "whereClauseComps",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `whereClauseComps` of type `String`."
+                "description": ""
             },
             {
                 "name": "whereClauseUseORs",
                 "type": "boolean",
                 "required": true,
-                "description": "Input parameter `whereClauseUseORs` of type `boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1255,25 +1253,25 @@
                 "name": "userSelectFields",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `userSelectFields` of type `String`."
+                "description": ""
             },
             {
                 "name": "partNumbers",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `partNumbers` of type `String`."
+                "description": ""
             },
             {
                 "name": "currencyCode",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `currencyCode` of type `String`."
+                "description": ""
             },
             {
                 "name": "priceBookVarName",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `priceBookVarName` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1292,19 +1290,19 @@
                 "name": "sqlQuery",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `sqlQuery` of type `String`."
+                "description": ""
             },
             {
                 "name": "contextOverride",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `contextOverride` of type `String`."
+                "description": ""
             },
             {
                 "name": "fieldMap",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `fieldMap` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1323,11 +1321,10 @@
                 "name": "recordSet",
                 "type": "RecordSet",
                 "required": true,
-                "description": "Input parameter `recordSet` of type `RecordSet`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns true if the query execution failed and the RecordSet has errors.\n\nExample: \n\nrows = bmql(\"select col... \");\nif(haserror(rows)) {\n     ... ; // comes in here if the query execution failed\n}",
             "rows = bmql(\"select col... \");\nif(haserror(rows)) {\n... ; // comes in here if the query execution failed\n}"
         ],
         "notes": "Returns true if fetching the given RecordSet failed and has errors with query execution; false otherwise.",
@@ -1343,11 +1340,10 @@
                 "name": "recordSet",
                 "type": "RecordSet",
                 "required": true,
-                "description": "Input parameter `recordSet` of type `RecordSet`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the error message if the query execution failed and the RecordSet has errors.\n2. Returns empty string if there are no errors.\n\nExample: \n\nrows = bmql(\"select col... \");\nif(haserror(rows)) {\n     msg = getmessage(rows); // msg has the error message why the query failed\n}",
             "rows = bmql(\"select col... \");\nif(haserror(rows)) {\nmsg = getmessage(rows); // msg has the error message why the query failed\n}"
         ],
         "notes": "Returns the error message in the given RecordSet if it has errors with query execution; empty otherwise.",
@@ -1363,17 +1359,16 @@
                 "name": "record",
                 "type": "Record",
                 "required": true,
-                "description": "Input parameter `record` of type `Record`."
+                "description": ""
             },
             {
                 "name": "fieldName",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `fieldName` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the integer value in the Record given the field name\n\nExample: \n\nrows = bmql(\"select intcol... \");\nfor row in rows {\n    val = getint(row, \"intcol\");\n    val2 = val + 10; // can do integer operations\n}",
             "rows = bmql(\"select intcol... \");\nfor row in rows {\nval = getint(row, \"intcol\");\nval2 = val + 10; // can do integer operations\n}"
         ],
         "notes": "Returns the integer value in the Record for the provided field name.",
@@ -1389,17 +1384,16 @@
                 "name": "record",
                 "type": "Record",
                 "required": true,
-                "description": "Input parameter `record` of type `Record`."
+                "description": ""
             },
             {
                 "name": "fieldName",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `fieldName` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the float value in the Record given the field name\n\nExample: \n\nrows = bmql(\"select intcol... \");\nfor row in rows {\n    val = getfloat(row, \"intcol\");\n    val2 = val * 0.1; // can do float operations\n}",
             "rows = bmql(\"select intcol... \");\nfor row in rows {\nval = getfloat(row, \"intcol\");\nval2 = val * 0.1; // can do float operations\n}"
         ],
         "notes": "Returns the float value in the Record for the provided field name.",
@@ -1415,17 +1409,16 @@
                 "name": "record",
                 "type": "Record",
                 "required": true,
-                "description": "Input parameter `record` of type `Record`."
+                "description": ""
             },
             {
                 "name": "fieldName",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `fieldName` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the boolean value in the Record given the field name\n\nExample: \n\nrows = bmql(\"select intcol... \");\nfor row in rows {\n    val = getboolean(row, \"intcol\");\n    if(val); // can do boolean operations.Useful in if conditions\n}",
             "rows = bmql(\"select intcol... \");\nfor row in rows {\nval = getboolean(row, \"intcol\");\nif(val); // can do boolean operations. Useful in if conditions\n}"
         ],
         "notes": "Returns the boolean value in the Record for the provided field name.",
@@ -1465,11 +1458,10 @@
                 "name": "includeRuleData",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `includeRuleData` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. First parameter - bsId is a required parameter and refers to a transaction Id. If transaction with given Id doesn't exist, it throws an exception.\n\n2. Second parameter - filterCriteria is an optional parameter in Json format. It can be used to return specific attributes for the main document and sub document respectively under  node. It can also be used to return specific document numbers returned under  node.\nThe sample format of the optional Json parameter filterCriteria is as follows: json(\"{\\\"mainDoc\\\":{\\\"variableName\\\":\\\"quote\\\",\\\"returnSpecificAttributes\\\":\\\"quoteNum,quoteTotal\\\"},\\\"subDoc\\\":{\\\"variableName\\\":\\\"lineItem\\\",\\\"returnSpecificAttributes\\\":\\\"_price_quantity,_price_subtotal\\\",\\\"returnSpecificDocumentNumbers\\\":\\\"4,8,10\\\"}}\").\nIf the optional parameter is passed in, then under mainDoc and subDoc, variableName of the mainDoc and subDoc is required. The specific attributes to be included in the transaction XML should be specified under returnSpecificAttributes. The specific documentNumbers that have to be returned in the transaction XML should be specified under returnSpecificDocumentNumbers.\nIf the optional parameter is not passed in, then the entire transaction is returned in the transaction XML.\n\n3. Third parameter - includeRuleData, is an optional boolean parameter. If set to true, the evaluation data for constraints and access rules will be included in the transaction XML. If the parameter is not specified, its value defaults to false.\n4. Transaction XML will be contained in  node. The result string will look like,\n\nbm_cm_bs_data...5\n\nExample: \n\ntransactionXML = gettransaction(12345); // 12345 is a transaction id (bs id)",
             "transactionXML = gettransaction(12345); // 12345 is a transaction id (bs id)",
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<transaction><category>bm_cm_bs_data</category>...<num_transitions>5</num_transitions></transaction>",
             "bsId = 3022201826;\n//Valid filterCriteria\nfilterCriteria = json(\"{\\\"mainDoc\\\":{\\\"variableName\\\":\\\"quote\\\",\\\"returnSpecificAttributes\\\":\\\"quoteNum,quoteTotal\\\"},\\\"subDoc\\\":{\\\"variableName\\\":\\\"lineItem\\\",\\\"returnSpecificAttributes\\\":\\\"_price_quantity,_price_subtotal\\\",\\\"returnSpecificDocumentNumbers\\\":\\\"2,3\\\"}}\");\ntransactionXML = gettransaction(bsId, filterCriteria);\nprint transactionXML;\nreturn \"\";"
@@ -1509,7 +1501,6 @@
         "syntax": "if (${1:condition}) {\n\t${2}\n} elif (${3:condition}) {\n\t${4}\n} else {\n\t${0}\n}",
         "parameters": [],
         "examples": [
-            "1. Example:\nif(attr1 == 100){\n   return true;} elif (attr1 == 200){\n   return false;}",
             "if(attr1 == 100){\nreturn true;} elif (attr1 == 200){\nreturn false;}"
         ],
         "notes": "Conditional statement with two or more conditions.",
@@ -1525,7 +1516,7 @@
                 "name": "(",
                 "type": ")",
                 "required": true,
-                "description": "Input parameter `(` of type `)`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1546,7 +1537,7 @@
                 "name": "(",
                 "type": ")",
                 "required": true,
-                "description": "Input parameter `(` of type `)`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1565,7 +1556,7 @@
                 "name": "(",
                 "type": ")",
                 "required": true,
-                "description": "Input parameter `(` of type `)`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1584,13 +1575,13 @@
                 "name": "name",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `name` of type `String`."
+                "description": ""
             },
             {
                 "name": "dict",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `dict` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1627,7 +1618,7 @@
                 "name": "parameters",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `parameters` of type `String`."
+                "description": ""
             },
             {
                 "name": "timeout",
@@ -1639,13 +1630,13 @@
                 "name": "formData",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `formData` of type `Dictionary`."
+                "description": ""
             },
             {
                 "name": "enableLoopback",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `enableLoopback` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1688,13 +1679,13 @@
                 "name": "headers",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `headers` of type `Dictionary`."
+                "description": ""
             },
             {
                 "name": "enableLoopback",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `enableLoopback` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1731,13 +1722,13 @@
                 "name": "headers",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `headers` of type `Dictionary`."
+                "description": ""
             },
             {
                 "name": "returnErrorResponse",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `returnErrorResponse` of type `Boolean`."
+                "description": ""
             },
             {
                 "name": "timeout",
@@ -1749,7 +1740,7 @@
                 "name": "enableLoopback",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `enableLoopback` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1811,11 +1802,10 @@
                 "name": "enableLoopback",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `enableLoopback` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Custom HTTP headers can be applied by passing a Dictionary of Strings in the optional headers parameter.\n\n2. On success, returns the response String.\n\n3. If it fails and the optional returnErrorResponse parameter is set to true, returns a specific HTTP error code message.\n\n4. Otherwise, returns the defaultValue.\n\n5. Request Soap Message should contain $_BM_ASYNC_ADDRESSING_TOKEN$ in the header.\n\n6. Optional timeout parameter can be set on urldatabypostasync. This timeout is in milliseconds. This overrides the General site option 'BML URL Function Timeout'. \n\n7. In the event of timeout,if the optional returnErrorResponse parameter is set to true, returns the error code message.\n\nExamples:\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\");\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\", myHeaders); //Uses custom HTTP headers\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", \"callbackActionVarName\", dict(\"string\"), true); //Uses the HTTP error code message (without custom headers)\nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", \"callbackActionVarName\", myHeaders, true); //Uses both custom headers and the error code message \nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), true, 5000); //Uses optional timeout with returnErrorResponse set to true \nSample error message in the event of timeout: \nERROR: Server returned HTTP response code: 408 for URL: http://www.example.com - Read timed out \nurldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", dict(\"string\"), false, 5000); //Uses optional timeout with returnErrorResponse set to false\n8. An optional Boolean parameter can be passed in for enableLoopback , if the request is to the same site, if you want the request to be split among all nodes.",
             "urldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\");",
             "urldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"error message\", \"callbackActionVarName\", myHeaders); //Uses custom HTTP headers",
             "urldatabypostasync(\"http://www.example.com\", \"a1=v1&a2=v2\", \"\", \"callbackActionVarName\", dict(\"string\"), true); //Uses the HTTP error code message (without custom headers)",
@@ -1865,7 +1855,7 @@
                 "name": "enableLoopback",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `enableLoopback` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -1993,13 +1983,13 @@
                 "name": "content",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `content` of type `String`."
+                "description": ""
             },
             {
                 "name": "charSet",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `charSet` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -2043,7 +2033,7 @@
                 "name": "arrayIdentifier",
                 "type": "Array",
                 "required": true,
-                "description": "Input parameter `arrayIdentifier` of type `Array`."
+                "description": ""
             },
             {
                 "name": "element",
@@ -2151,13 +2141,13 @@
                 "name": "dictionary",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `dictionary` of type `Integer`."
+                "description": ""
             },
             {
                 "name": "key",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `key` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -2214,19 +2204,19 @@
                 "name": "arrayIdentifier",
                 "type": "Array",
                 "required": true,
-                "description": "Input parameter `arrayIdentifier` of type `Array`."
+                "description": ""
             },
             {
                 "name": "sortOrder",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `sortOrder` of type `String`."
+                "description": ""
             },
             {
                 "name": "sortType",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `sortType` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -2264,19 +2254,19 @@
                 "name": "dictionaryIdentifier",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `dictionaryIdentifier` of type `Dictionary`."
+                "description": ""
             },
             {
                 "name": "Integer",
                 "type": "String(or",
                 "required": true,
-                "description": "Input parameter `Integer` of type `String(or`."
+                "description": ""
             },
             {
                 "name": "Float)key",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `Float)key` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
@@ -2295,13 +2285,13 @@
                 "name": "dictionaryIdentifier",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `dictionaryIdentifier` of type `Dictionary`."
+                "description": ""
             },
             {
                 "name": "Integer",
                 "type": "String(or",
                 "required": true,
-                "description": "Input parameter `Integer` of type `String(or`."
+                "description": ""
             },
             {
                 "name": "key",
@@ -2332,13 +2322,13 @@
                 "name": "dictionaryIdentifier",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `dictionaryIdentifier` of type `Dictionary`."
+                "description": ""
             },
             {
                 "name": "Integer",
                 "type": "String(or",
                 "required": true,
-                "description": "Input parameter `Integer` of type `String(or`."
+                "description": ""
             },
             {
                 "name": "key",
@@ -2363,11 +2353,10 @@
                 "name": "dictionaryIdentifier",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `dictionaryIdentifier` of type `Dictionary`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Gets the keys of all the entries in the Dictionary.\n\n2. All keys will be cast as a String and returned in an array in no particular order.\n\nFor example,\nd= dict(\"string\");\nput(d, \"1\", \"string1\");\nput(d, \"2\", \"string2\");\nput(d, 1, \"string3\");\nput(d, 2, \"string4\");\nreturn keys(d);\nThis function will return a string array with 4 string elements.",
             "d= dict(\"string\");\nput(d, \"1\", \"string1\");\nput(d, \"2\", \"string2\");\nput(d, 1, \"string3\");\nput(d, 2, \"string4\");\nreturn keys(d);"
         ],
         "notes": "Gets the array of Strings of all the dictionary keys.",
@@ -2383,11 +2372,10 @@
                 "name": "dictionaryIdentifier",
                 "type": "Dictionary",
                 "required": true,
-                "description": "Input parameter `dictionaryIdentifier` of type `Dictionary`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Gets the values of all the entries in the Dictionary.\n\n2. The dictionaries supported are: \n\"string\", \"integer\", \"float\",\n\"string[]\", \"integer[]\", \"float[]\",\n\"date\", \"date[]\", \nNote that double dimensional dictionaries and boolean dictionaries and dictionary anytype  are not supported by the values function.\n\nFor example,\nd= dict(\"string\");\nput(d, \"key1\", \"string1\");\nput(d, \"key2\", \"string2\");\nreturn values(d);\nThis function will return a string array with 2 string elements.",
             "d= dict(\"string\");\nput(d, \"key1\", \"string1\");\nput(d, \"key2\", \"string2\");\nreturn values(d);"
         ],
         "notes": "Gets the array of the values of all the dictionary entries.",
@@ -2442,7 +2430,7 @@
                 "name": "xml",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `xml` of type `String`."
+                "description": ""
             },
             {
                 "name": "xslFileLocation",
@@ -2454,7 +2442,7 @@
                 "name": "defaultErrorMessage",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `defaultErrorMessage` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -2473,19 +2461,19 @@
                 "name": "xmlPayload",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `xmlPayload` of type `String`."
+                "description": ""
             },
             {
                 "name": "xpaths",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `xpaths` of type `String`."
+                "description": ""
             },
             {
                 "name": "defaultErrorMessage",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `defaultErrorMessage` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -2504,19 +2492,19 @@
                 "name": "xmlPayload",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `xmlPayload` of type `String`."
+                "description": ""
             },
             {
                 "name": "xpaths",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `xpaths` of type `String`."
+                "description": ""
             },
             {
                 "name": "defaultErrorMessage",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `defaultErrorMessage` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -2535,11 +2523,10 @@
                 "name": "jsonFormatStr",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonFormatStr` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Creates a JSON object from a given JSON formatted string. \n\n2. An empty JSON object is created if parameters are not provided. \n\nExample: \n\njsonObj1 = json(\"{\\\"key1\\\":\\\"value1\\\"}\"); \nprint jsonObj1; \n//Output: {\"key1\":\"value1\"} \n\njsonObj2 = json(); \nprint jsonObj2; \n//Output: {}",
             "jsonObj1 = json(\"{\\\"key1\\\":\\\"value1\\\"}\");\nprint jsonObj1;\n//Output: {\"key1\":\"value1\"}\n\njsonObj2 = json();\nprint jsonObj2;\n//Output: {}"
         ],
         "notes": "Creates a JSON object.",
@@ -2555,11 +2542,10 @@
                 "name": "jsonArrStr",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonArrStr` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Creates a JSON array object from a given JSON array formatted string. \n\n2. An empty JSON array object is created if parameters are not provided \n\nExample: \n\nstr = \"[1,\\\"val1\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val2\\\"}]\"; \njsonArrObj1 = jsonarray(str); \nprint jsonArrObj1; \n//Output: [1,\"val1\",{\"key1\":10,\"key2\":\"val2\"}] \n\njsonArrobj2 = jsonarray(); \nprint jsonArrObj2; \n//Output: []",
             "str = \"[1,\\\"val1\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val2\\\"}]\";\njsonArrObj1 = jsonarray(str);\nprint jsonArrObj1;\n//Output: [1,\"val1\",{\"key1\":10,\"key2\":\"val2\"}]\n\njsonArrobj2 = jsonarray();\nprint jsonArrObj2;\n//Output: []"
         ],
         "notes": "Creates a JSON array object.",
@@ -2572,7 +2558,6 @@
         "syntax": "jsonnull()",
         "parameters": [],
         "examples": [
-            "1. Creates a null JSON object instance, which represents null in a JSON string. \n\nExample: \n\njnull = jsonnull();\nprint jnull;\n//Output: null",
             "jnull = jsonnull();\nprint jnull;\n//Output: null"
         ],
         "notes": "Creates a null JSON object instance.",
@@ -2588,17 +2573,16 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "ignoreNullValues",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `ignoreNullValues` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Retrieves the first-level keys from a JSON object and returns them in a string array. \n\n2. The ignoreNullValues parameter is optional and its default value is false. \n\n3. Null value keys are ignored if the ignoreNullValues parameter is true. \n\nExample: \n\nstr = \"{\\\"key1\\\":\\\"mystring\\\",\\\"key2\\\":10,\\\"key3\\\":2.9,\\\"key4\\\":[\\\"v1\\\",\\\"v2\\\"],\\\"key5\\\":null}\"; \njsonObj = json(str); \n\nstrArr1 = jsonkeys(jsonObj); \nprint strArr1; \n//Output: [key1,key2,key3,key4,key5] \n\nstrArr2 = jsonkeys(jsonObj,true); \nprint strArr2; \n//Output: [key1,key2,key3,key4]",
             "str = \"{\\\"key1\\\":\\\"mystring\\\",\\\"key2\\\":10,\\\"key3\\\":2.9,\\\"key4\\\":[\\\"v1\\\",\\\"v2\\\"],\\\"key5\\\":null}\";\njsonObj = json(str);\n\nstrArr1 = jsonkeys(jsonObj);\nprint strArr1;\n//Output: [key1,key2,key3,key4,key5]\n\nstrArr2 = jsonkeys(jsonObj,true);\nprint strArr2;\n//Output: [key1,key2,key3,key4]"
         ],
         "notes": "Retrieves first-level keys from a JSON object and returns them in a string array.",
@@ -2614,11 +2598,10 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Converts a JSON object into a JSON formatted string. \n\nExample: \n\nstr = \"{\\\"key1\\\":\\\"mystring\\\",\\\"key2\\\":10,\\\"key3\\\":2.9,\\\"key4\\\":[\\\"v1\\\",\\\"v2\\\"],\\\"key5\\\":true}\"; \njsonObj = json(str); \n\njsonStr = jsontostr(jsonObj); \nprint jsonStr; \n//Output: {\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true}",
             "str = \"{\\\"key1\\\":\\\"mystring\\\",\\\"key2\\\":10,\\\"key3\\\":2.9,\\\"key4\\\":[\\\"v1\\\",\\\"v2\\\"],\\\"key5\\\":true}\";\njsonObj = json(str);\n\njsonStr = jsontostr(jsonObj);\nprint jsonStr;\n//Output: {\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true}"
         ],
         "notes": "Converts a JSON object into a JSON formatted string.",
@@ -2634,29 +2617,28 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "key",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `key` of type `String`."
+                "description": ""
             },
             {
                 "name": "valueType",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `valueType` of type `String`."
+                "description": ""
             },
             {
                 "name": "defaultValue",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `defaultValue` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the value from a JSON object for the given key. \n\n2. The valueType and defaultValue parameters are optional. \n\n3. The returned value is converted to a data type equal to the valueType parameter, which is String by default. \n\n4. The defaultValue parameter is returned if the given key is not available. \n\n5. null is returned if: the given key is not available AND valueType is String, JSON, or JSON array AND defaultValue is not provided. \n\n6. An error is thrown if: \n    (a) the returned value could not be converted to the data type of valueType. \n    (b) the defaultValue parameter's data type is not the same as valueType parameter. \n    (c) the given key is not available AND valueType is Integer, Float, or Boolean AND defaultValue is not provided. \n\nExample: \n\nstr = \"{\\\"key1\\\":\\\"mystring\\\",\\\"key2\\\": 10,\\\"key3\\\":2.9,\\\"key4\\\":[\\\"v1\\\",\\\"v2\\\"],\\\"key5\\\":true,\\\"key6\\\":{\\\"key7\\\":\\\"val7\\\",\\\"key8\\\":\\\"val8\\\"}}\"; \njsonObj = json(str); \n\n/* Get string (two parameters) */ \nvalStr1 = jsonget(jsonObj,\"key2\"); \nprint valStr1;\n//Output: 10 \n\n/* Get string (three parameters) */ \nvalStr2 = jsonget(jsonObj,\"key1\",\"string\"); \nprint valStr2; \n//Output: mystring \n\n/* Get integer */ \nvalInt = jsonget(jsonObj,\"key2\",\"integer\"); \nprint valInt;\n//Output: 10 \n\n/* Get float */ \nvalFloat = jsonget(jsonObj,\"key3\",\"float\"); \nprint valFloat; \n//Output: 2.9 \n\n/* Get boolean */ \nvalBoolean = jsonget(jsonObj,\"key5\",\"boolean\");\nprint valBoolean;\n//Output: true \n\n/* Get jsonarray */ \nvalJsonArray = jsonget(jsonObj,\"key4\",\"jsonarray\");\nprint valJsonArray;\n//Output: [\"v1\",\"v2\"]\n\n/* Get json */ \nvalJson = jsonget(jsonObj,\"key6\",\"json\");\nprint valJson;\n//Output: {\"key7\":\"val7\",\"key8\":\"val8\"} \n\n/* Get default value */ \ndefaultVal1 = jsonget(jsonObj,\"key10\",\"string\",\"defaultValue\");\nprint defaultVal1;\n//Output: defaultValue \n\n/* Get default value */ \ndefaultVal2 = jsonget(jsonObj,\"key10\",\"string\");\nprint defaultVal2;\n//Output: null \n\n/* Get default value */ \ndefaultVal3 = jsonget(jsonObj,\"key10\",\"integer\");\nprint defaultVal3;\n//An error is thrown because key10 is not found and the type is integer.",
             "str = \"{\\\"key1\\\":\\\"mystring\\\",\\\"key2\\\": 10,\\\"key3\\\":2.9,\\\"key4\\\":[\\\"v1\\\",\\\"v2\\\"],\\\"key5\\\":true,\\\"key6\\\":{\\\"key7\\\":\\\"val7\\\",\\\"key8\\\":\\\"val8\\\"}}\";\njsonObj = json(str);\n\n/* Get string (two parameters) */\nvalStr1 = jsonget(jsonObj,\"key2\");\nprint valStr1;\n//Output: 10\n\n/* Get string (three parameters) */\nvalStr2 = jsonget(jsonObj,\"key1\",\"string\");\nprint valStr2;\n//Output: mystring\n\n/* Get integer */\nvalInt = jsonget(jsonObj,\"key2\",\"integer\");\nprint valInt;\n//Output: 10\n\n/* Get float */\nvalFloat = jsonget(jsonObj,\"key3\",\"float\");\nprint valFloat;\n//Output: 2.9\n\n/* Get boolean */\nvalBoolean = jsonget(jsonObj,\"key5\",\"boolean\");\nprint valBoolean;\n//Output: true\n\n/* Get jsonarray */\nvalJsonArray = jsonget(jsonObj,\"key4\",\"jsonarray\");\nprint valJsonArray;\n//Output: [\"v1\",\"v2\"]\n\n/* Get json */\nvalJson = jsonget(jsonObj,\"key6\",\"json\");\nprint valJson;\n//Output: {\"key7\":\"val7\",\"key8\":\"val8\"}\n\n/* Get default value */\ndefaultVal1 = jsonget(jsonObj,\"key10\",\"string\",\"defaultValue\");\nprint defaultVal1;\n//Output: defaultValue\n\n/* Get default value */\ndefaultVal2 = jsonget(jsonObj,\"key10\",\"string\");\nprint defaultVal2;\n//Output: null\n\n/* Get default value */\ndefaultVal3 = jsonget(jsonObj,\"key10\",\"integer\");\nprint defaultVal3;\n//An error is thrown because key10 is not found and the type is integer."
         ],
         "notes": "Returns a JSON object value for a given key.",
@@ -2672,23 +2654,22 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "key",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `key` of type `String`."
+                "description": ""
             },
             {
                 "name": "value",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `value` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Inserts a new key-value entry into a JSON object. \n\n2. If the given key already exists in the JSON object, its corresponding value will be updated to the given value. \n\n3. The inserted/updated value is returned.\nExample: \n\njsonObj = json();\n\nputStrVal = jsonput(jsonObj,\"key1\",\"mystring\"); \nprint putStrVal; \n//Output: mystring \n\nputIntVal = jsonput(jsonObj,\"key2\",10); \nprint putIntVal; \n//Output: 10 \n\nputFloatVal = jsonput(jsonObj,\"key3\",2.9); \nprint putFloatVal; \n//Output: 2.9\n\njsonArrObj = jsonarray(\"[\\\"v1\\\",\\\"v2\\\"]\");\nputArrVal = jsonput(jsonObj,\"key4\",jsonArrObj); \nprint putArrVal; \n//Output: [\"v1\",\"v2\"] \n\nputBooleanVal = jsonput(jsonObj,\"key5\",true); \nprint putBooleanVal; \n//Output: true \n\nputNullVal = jsonput(jsonObj,\"key6\",jsonnull()); \nprint putNullVal; \n//Output: null \n\njsonStr = jsontostr(jsonObj); \nprint jsonStr; \n//Output: {\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true,\"key6\":null}",
             "jsonObj = json();\n\nputStrVal = jsonput(jsonObj,\"key1\",\"mystring\");\nprint putStrVal;\n//Output: mystring\n\nputIntVal = jsonput(jsonObj,\"key2\",10);\nprint putIntVal;\n//Output: 10\n\nputFloatVal = jsonput(jsonObj,\"key3\",2.9);\nprint putFloatVal;\n//Output: 2.9\n\njsonArrObj = jsonarray(\"[\\\"v1\\\",\\\"v2\\\"]\");\nputArrVal = jsonput(jsonObj,\"key4\",jsonArrObj);\nprint putArrVal;\n//Output: [\"v1\",\"v2\"]\n\nputBooleanVal = jsonput(jsonObj,\"key5\",true);\nprint putBooleanVal;\n//Output: true\n\nputNullVal = jsonput(jsonObj,\"key6\",jsonnull());\nprint putNullVal;\n//Output: null\n\njsonStr = jsontostr(jsonObj);\nprint jsonStr;\n//Output: {\"key1\":\"mystring\",\"key2\":10,\"key3\":2.9,\"key4\":[\"v1\",\"v2\"],\"key5\":true,\"key6\":null}"
         ],
         "notes": "Inserts or updates a key-value entry in a JSON object and returns the inserted/updated value.",
@@ -2704,17 +2685,16 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "key",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `key` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Removes the first-level key-value entry from a JSON object for the given key. \n\n2. true is returned if the key-value entry is successfully removed. \n\n3. false is returned if the given key is not found. \n\nExample: \n\nstr = \"{\\\"a\\\":1,\\\"b\\\":\\\"test\\\"}\"; \njsonObj = json(str); \n\nremVal = jsonremove(jsonObj,\"a\"); \nprint remVal; \n//Output: true \n\nprint jsonObj; \n//Output: {\"b\":\"test\"}",
             "str = \"{\\\"a\\\":1,\\\"b\\\":\\\"test\\\"}\";\njsonObj = json(str);\n\nremVal = jsonremove(jsonObj,\"a\");\nprint remVal;\n//Output: true\n\nprint jsonObj;\n//Output: {\"b\":\"test\"}"
         ],
         "notes": "Removes the first-level key-value entry from a JSON object for the given key and returns a boolean value.",
@@ -2730,23 +2710,22 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "jsonArrayIdentifier",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonArrayIdentifier` of type `String`."
+                "description": ""
             },
             {
                 "name": "index)",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `index)` of type `Integer`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Checks for null values in a JSON or JSON array object. \n\n2. true is returned if a null value is found. \n\n3. false is returned if a null value is not found. \n\nExample: \n\nstr1 = \"{\\\"key1\\\":null,\\\"key2\\\":\\\"str\\\",\\\"key3\\\":90}\"; \njsonObj = json(str1); \n\nvalBoolean1 = isjsonnull(jsonObj,\"key1\"); \nprint valBoolean1; \n//Output: true \n\nstr2 = \"[null,false,45,\\\"str\\\"]\"; \njsonArrObj = jsonarray(str2); \nvalBoolean2 = isjsonnull(jsonArrObj,0); \nprint valBoolean2; \n//Output: true",
             "str1 = \"{\\\"key1\\\":null,\\\"key2\\\":\\\"str\\\",\\\"key3\\\":90}\";\njsonObj = json(str1);\n\nvalBoolean1 = isjsonnull(jsonObj,\"key1\");\nprint valBoolean1;\n//Output: true\n\nstr2 = \"[null,false,45,\\\"str\\\"]\";\njsonArrObj = jsonarray(str2);\nvalBoolean2 = isjsonnull(jsonArrObj,0);\nprint valBoolean2;\n//Output: true"
         ],
         "notes": "Checks for null values in a JSON or JSON array object and returns a boolean value.",
@@ -2762,11 +2741,10 @@
                 "name": "jsonArrayIdentifier",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `jsonArrayIdentifier` of type `JsonArray`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Converts a JSON array object into a JSON array formatted string. \n\nExample: \n\nstr = \"[1,\\\"2\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val\\\"}]\"; \njsonArrObj = jsonarray(str); \n\nvalStr = jsonarraytostr(jsonArrObj); \nprint valStr; \n//Output: [1,\"2\",{\"key1\":10,\"key2\":\"val\"}]",
             "str = \"[1,\\\"2\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val\\\"}]\";\njsonArrObj = jsonarray(str);\n\nvalStr = jsonarraytostr(jsonArrObj);\nprint valStr;\n//Output: [1,\"2\",{\"key1\":10,\"key2\":\"val\"}]"
         ],
         "notes": "Converts a JSON array object into a JSON array formatted string.",
@@ -2782,23 +2760,22 @@
                 "name": "jsonArrayIdentifier",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `jsonArrayIdentifier` of type `JsonArray`."
+                "description": ""
             },
             {
                 "name": "index",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `index` of type `Integer`."
+                "description": ""
             },
             {
                 "name": "valueType",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `valueType` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the value from a JSON array object at a given index. \n\n2. The valueType parameter is optional. \n\n3. The returned value is converted to a data type equal to the valueType parameter, which is String by default. \n\n4. An error is thrown if: \n    (a) the given index is not available. \n    (b) the returned value could not be converted to the data type of valueType. \n\nExample: \n\nstr = \"[\\\"mystring\\\",10,2.9,[\\\"v1\\\",\\\"v2\\\"],true,{\\\"key7\\\":\\\"val7\\\",\\\"key8\\\":\\\"val8\\\"}]\"; \njsonArrObj = jsonarray(str); \n\n/* Get string (two parameters) */ \nvalStr1 = jsonarrayget(jsonArrObj,0);\nprint valStr1; \n//Output: mystring \n\n/* Get string (three parameters) */ \nvalStr2 = jsonarrayget(jsonArrObj,0,\"string\"); \nprint valStr2; \n//Output: mystring \n\n/* Get integer */ \nvalInt = jsonarrayget(jsonArrObj,1,\"integer\"); \nprint valInt; \n//Output: 10 \n\n/* Get float */ \nvalFloat = jsonarrayget(jsonArrObj,2,\"float\"); \nprint valfloat; \n//Output: 2.9 \n\n/* Get boolean */ \nvalBool = jsonarrayget(jsonArrObj,4,\"boolean\"); \nprint valBool; \n//Output: true \n\n/* Get jsonarray */ \nvalJsonArr = jsonarrayget(jsonArrObj,3,\"jsonarray\"); \nprint valJsonArr; \n//Output: [\"v1\",\"v2\"] \n\n/* Get json */ \nvalJson = jsonarrayget(jsonArrObj,5,\"json\"); \nprint valJson; \n//Output: {\"key7\":\"val7\",\"key8\":\"val8\"}",
             "str = \"[\\\"mystring\\\",10,2.9,[\\\"v1\\\",\\\"v2\\\"],true,{\\\"key7\\\":\\\"val7\\\",\\\"key8\\\":\\\"val8\\\"}]\";\njsonArrObj = jsonarray(str);\n\n/* Get string (two parameters) */\nvalStr1 = jsonarrayget(jsonArrObj,0);\nprint valStr1;\n//Output: mystring\n\n/* Get string (three parameters) */\nvalStr2 = jsonarrayget(jsonArrObj,0,\"string\");\nprint valStr2;\n//Output: mystring\n\n/* Get integer */\nvalInt = jsonarrayget(jsonArrObj,1,\"integer\");\nprint valInt;\n//Output: 10\n\n/* Get float */\nvalFloat = jsonarrayget(jsonArrObj,2,\"float\");\nprint valfloat;\n//Output: 2.9\n\n/* Get boolean */\nvalBool = jsonarrayget(jsonArrObj,4,\"boolean\");\nprint valBool;\n//Output: true\n\n/* Get jsonarray */\nvalJsonArr = jsonarrayget(jsonArrObj,3,\"jsonarray\");\nprint valJsonArr;\n//Output: [\"v1\",\"v2\"]\n\n/* Get json */\nvalJson = jsonarrayget(jsonArrObj,5,\"json\");\nprint valJson;\n//Output: {\"key7\":\"val7\",\"key8\":\"val8\"}"
         ],
         "notes": "Returns a JSON array object value at a given index.",
@@ -2814,11 +2791,10 @@
                 "name": "jsonarrayIdentifier",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `jsonarrayIdentifier` of type `JsonArray`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the size of a JSON array. \n\nExample: \n\njsonArrObj1 = jsonarray(); \n\narraySize1 = jsonarraysize(jsonArrObj1); \nprint arraySize1; \n//Output: 0 \n\nstr = \"[1,\\\"2\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val\\\"}]\"; \njsonArrObj2 = jsonarray(str); \n\narraySize2 = jsonarraysize(jsonArrObj2); \nprint arraySize2; \n//Output: 3",
             "jsonArrObj1 = jsonarray();\n\narraySize1 = jsonarraysize(jsonArrObj1);\nprint arraySize1;\n//Output: 0\n\nstr = \"[1,\\\"2\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val\\\"}]\";\njsonArrObj2 = jsonarray(str);\n\narraySize2 = jsonarraysize(jsonArrObj2);\nprint arraySize2;\n//Output: 3"
         ],
         "notes": "Returns the size of a JSON array.",
@@ -2834,17 +2810,16 @@
                 "name": "jsonarrayIdentifier",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `jsonarrayIdentifier` of type `JsonArray`."
+                "description": ""
             },
             {
                 "name": "value",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `value` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Appends a given value to the end of a JSON array. \n\n2. The appended value is returned. \n\nExample: \n\njsonArrObj = jsonarray(); \n\nappIntVal = jsonarrayappend(jsonArrObj,1); \nprint appIntVal; \n//Output: 1 \n\nappStrVal = jsonarrayappend(jsonArrObj,\"str\"); \nprint appStrVal; \n//Output: str \n\nprint jsonArrObj; \n//Output: [1,\"str\"]",
             "jsonArrObj = jsonarray();\n\nappIntVal = jsonarrayappend(jsonArrObj,1);\nprint appIntVal;\n//Output: 1\n\nappStrVal = jsonarrayappend(jsonArrObj,\"str\");\nprint appStrVal;\n//Output: str\n\nprint jsonArrObj;\n//Output: [1,\"str\"]"
         ],
         "notes": "Appends a value to the end of a JSON array.",
@@ -2860,17 +2835,16 @@
                 "name": "jsonArrayIdentifier",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `jsonArrayIdentifier` of type `JsonArray`."
+                "description": ""
             },
             {
                 "name": "index",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `index` of type `Integer`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Removes an object from a JSON array object at the given index. \n\n2. The size of the array object after the object is removed is returned. \n\n3. An error is thrown if the given index is not available. \n\nExample: \n\nstr = \"[1,\\\"2\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val\\\"}]\"; \njsonArrObj = jsonarray(str); \n\nremVal = jsonarrayremove(jsonArrObj,2); \nprint remVal; \n//Output: 2 \n\nprint jsonArrObj; \n//Output: [1,\"2\"]",
             "str = \"[1,\\\"2\\\",{\\\"key1\\\":10,\\\"key2\\\":\\\"val\\\"}]\";\njsonArrObj = jsonarray(str);\n\nremVal = jsonarrayremove(jsonArrObj,2);\nprint remVal;\n//Output: 2\n\nprint jsonArrObj;\n//Output: [1,\"2\"]"
         ],
         "notes": "Removes an object from a JSON array object at the given index and returns the size of the updated array object.",
@@ -2886,17 +2860,16 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "jsonPath",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonPath` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Removes the value(s)/object(s) from a JSON object corresponding to a given JSON path. \n\n2. true is returned if the node(s) corresponding to the given path is successfully removed. \n\n3. false is returned if a node corresponding to the given path could not be found. \n\n4. If there are multiple JSON path nodes corresponding to the given path, all corresponding nodes are removed. \n\n5. An exception is thrown if the JSON path syntax is not correct. \n\n6. Because this function supports object references, caution is recommended while removing objects (JSON, JSON array). \n\nExample: \n\nstr = \"{\\\"key1\\\":null,\\\"key2\\\":\\\"str\\\",\\\"key3\\\":90}\"; \njsonObj = json(str); \n\nremVal1 = jsonpathremove(jsonObj,\"$..key1\"); \nprint remVal1; \n//Output: true \n\nprint jsonObj; \n//Output: {\"key2\":\"str\",\"key3\":90} \n\nremVal2 = jsonpathremove(jsonObj,\"$..key999\"); \nprint remVal2; \n//Output: false \n\nprint jsonObj; \n//Output: {\"key2\":\"str\",\"key3\":90}",
             "str = \"{\\\"key1\\\":null,\\\"key2\\\":\\\"str\\\",\\\"key3\\\":90}\";\njsonObj = json(str);\n\nremVal1 = jsonpathremove(jsonObj,\"$..key1\");\nprint remVal1;\n//Output: true\n\nprint jsonObj;\n//Output: {\"key2\":\"str\",\"key3\":90}\n\nremVal2 = jsonpathremove(jsonObj,\"$..key999\");\nprint remVal2;\n//Output: false\n\nprint jsonObj;\n//Output: {\"key2\":\"str\",\"key3\":90}"
         ],
         "notes": "Removes the value(s)/object(s) corresponding to a given JSON path from a JSON object and returns a boolean value.",
@@ -2912,29 +2885,28 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "jsonPath",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonPath` of type `String`."
+                "description": ""
             },
             {
                 "name": "valueType",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `valueType` of type `String`."
+                "description": ""
             },
             {
                 "name": "defaultValue",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `defaultValue` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the value from a JSON object corresponding to a given JSON path. \n\n2. The valueType and defaultValue parameters are optional. \n\n3. The returned value is converted to a data type equal to the valueType parameter, which is String by default. \n\n4. The defaultValue parameter is returned if the given JSON path is not found. \n\n5. null is returned if: the given JSON path is not found AND valueType is String, JSON, or JSON array AND defaultValue is not provided. \n\n6. An error is thrown if: \n    (a) there are multiple values corresponding to the given JSON path. \n    (a) the returned value could not be converted to the data type of valueType. \n    (b) the defaultValue parameter's data type is not the same as valueType parameter. \n    (c) the given JSON path is not found AND valueType is Integer, Float, or Boolean AND defaultValue is not provided. \n\nExample: \n\nstr = \"{\\\"store\\\":{\\\"book\\\":[{\\\"category\\\":\\\"reference\\\",\\\"author\\\":\\\"Nigel Rees\\\"},{\\\"category\\\":\\\"fiction\\\",\\\"author\\\":\\\"Evelyn Waugh\\\"}]},\\\"expensive\\\":10}\"; \njsonObj = json(str); \n\ncatArray = jsonpathgetsingle(jsonObj,\"$.store.book[0]\"); \nprint catArray; \n//Output: {\"category\":\"reference\",\"author\":\"Nigel Rees\"} \n\nexpenseInt = jsonpathgetsingle(jsonObj,\"$.expensive\",\"integer\"); \nprint expenseInt; \n//Output: 10 \n\nexpenseStr = jsonpathgetsingle(jsonObj,\"$.expensive\",\"string\"); \nprint expenseStr; \n//Output: 10 \n\ntitle = jsonpathgetsingle(jsonObj,\"$.store.book[0].title\",\"string\"); \nprint title; \n//Output: null \n\nprice = jsonpathgetsingle(jsonObj,\"$.store.book[0].price\",\"float\"); \nprint price; \n//An error is thrown because the JSON path is not found and valueType is float. \n\nfirstBook = jsonpathgetsingle(jsonObj,\"$.store.book[0]\",\"json\"); \nprint firstBook; //Output: {\"category\":\"reference\",\"author\":\"Nigel Rees\"} \n\ndefaultVal1 = jsonpathgetsingle(jsonObj,\"$.store.book[100]\",\"json\",json()); \nprint defaultVal1; \n//Output: {} \n\ndefaultVal2 = jsonpathgetsingle(jsonObj,\"$.store.book[0].location\",\"string\",\"unknown\"); \nprint defaultVal2; \n//Output: unknown",
             "str = \"{\\\"store\\\":{\\\"book\\\":[{\\\"category\\\":\\\"reference\\\",\\\"author\\\":\\\"Nigel Rees\\\"},{\\\"category\\\":\\\"fiction\\\",\\\"author\\\":\\\"Evelyn Waugh\\\"}]},\\\"expensive\\\":10}\";\njsonObj = json(str);\n\ncatArray = jsonpathgetsingle(jsonObj,\"$.store.book[0]\");\nprint catArray;\n//Output: {\"category\":\"reference\",\"author\":\"Nigel Rees\"}\n\nexpenseInt = jsonpathgetsingle(jsonObj,\"$.expensive\",\"integer\");\nprint expenseInt;\n//Output: 10\n\nexpenseStr = jsonpathgetsingle(jsonObj,\"$.expensive\",\"string\");\nprint expenseStr;\n//Output: 10\n\ntitle = jsonpathgetsingle(jsonObj,\"$.store.book[0].title\",\"string\");\nprint title;\n//Output: null\n\nprice = jsonpathgetsingle(jsonObj,\"$.store.book[0].price\",\"float\");\nprint price;\n//An error is thrown because the JSON path is not found and valueType is float.\n\nfirstBook = jsonpathgetsingle(jsonObj,\"$.store.book[0]\",\"json\");\nprint firstBook;\n//Output: {\"category\":\"reference\",\"author\":\"Nigel Rees\"}\n\ndefaultVal1 = jsonpathgetsingle(jsonObj,\"$.store.book[100]\",\"json\",json());\nprint defaultVal1;\n//Output: {}\n\ndefaultVal2 = jsonpathgetsingle(jsonObj,\"$.store.book[0].location\",\"string\",\"unknown\");\nprint defaultVal2;\n//Output: unknown"
         ],
         "notes": "Returns the value corresponding to a given JSON path from a JSON object.",
@@ -2950,11 +2922,10 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Creates a copy of a JSON object. \n\n2. All child nodes of the JSON object are copied and a similar hierarchy is created. \n\n3. Any changes made to the original JSON object will not impact the copied JSON object. \n\nExample: \n\nstr = \"{\\\"key1\\\":null,\\\"key2\\\":\\\"str\\\",\\\"key3\\\":90}\"; \njsonObj = json(str); \n\ncopyObj = jsoncopy(jsonObj); \nprint copyObj; \n//Output: {\"key1\":null,\"key2\":\"str\",\"key3\":90} \n\njsonremove(jsonObj,\"key1\"); \nprint jsonObj; \n//Output: {\"key2\":\"str\",\"key3\":90} \n\nprint copyObj;\n//Output: {\"key1\":null,\"key2\":\"str\",\"key3\":90}",
             "str = \"{\\\"key1\\\":null,\\\"key2\\\":\\\"str\\\",\\\"key3\\\":90}\";\njsonObj = json(str);\n\ncopyObj = jsoncopy(jsonObj);\nprint copyObj;\n//Output: {\"key1\":null,\"key2\":\"str\",\"key3\":90}\n\njsonremove(jsonObj,\"key1\");\nprint jsonObj;\n//Output: {\"key2\":\"str\",\"key3\":90}\n\nprint copyObj;\n//Output: {\"key1\":null,\"key2\":\"str\",\"key3\":90}"
         ],
         "notes": "Creates a copy of a JSON object.",
@@ -2970,11 +2941,10 @@
                 "name": "jsonArrayIdentifier",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `jsonArrayIdentifier` of type `JsonArray`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Creates a copy of a JSON array object. \n\n2. All objects in the array are copied and a similar hierarchy is created. \n\n3. Any changes made to the original JSON array object will not impact the copied JSON array object. \n\nExample: \n\nstr = \"[\\\"string\\\",1,2.3,{\\\"key1\\\":\\\"val1\\\"},[1,2,3],true,false]\"; \njsonArrObj = jsonarray(str); \n\ncopyObj = jsonarraycopy(jsonArrObj); \nprint copyObj;\n//Output: [\"string\",1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false] \n\njsonarrayappend(jsonArrObj,\"simple\"); \njsonarrayremove(jsonArrObj,0); \nprint jsonArrObj; \n//Output: [1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false,\"simple\"] \n\nprint copyObj; \n//Output: [\"string\",1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false]",
             "str = \"[\\\"string\\\",1,2.3,{\\\"key1\\\":\\\"val1\\\"},[1,2,3],true,false]\";\njsonArrObj = jsonarray(str);\n\ncopyObj = jsonarraycopy(jsonArrObj);\nprint copyObj;\n//Output: [\"string\",1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false]\n\njsonarrayappend(jsonArrObj,\"simple\");\njsonarrayremove(jsonArrObj,0);\nprint jsonArrObj;\n//Output: [1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false,\"simple\"]\n\nprint copyObj;\n//Output: [\"string\",1,2.3,{\"key1\":\"val1\"},[1,2,3],true,false]"
         ],
         "notes": "Creates a copy of a JSON array object.",
@@ -2990,17 +2960,16 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "jsonPath",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonPath` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Checks if a JSON path is found in a JSON object. \n\n2. true is returned if the JSON path is found. \n\n3. false is returned if the JSON path is not found or if the JSON object is null. \n\n4. An error is thrown if the JSON path is invalid. \n\nExample: \n\nstr = \"{\\\"store\\\":{\\\"book\\\":[{\\\"category\\\":\\\"reference\\\",\\\"author\\\":\\\"Nigel Rees\\\"},{\\\"category\\\":\\\"fiction\\\",\\\"author\\\":\\\"Evelyn Waugh\\\"}]},\\\"expensive\\\":10}\"; \njsonObj = json(str); \n\nisCatFound = jsonpathcheck(jsonObj,\"$.store.book[0].category\"); \nprint isCatFound; \n//Output: true \n\nisExpFound = jsonpathcheck(jsonObj,\"$..expensive\"); \nprint isExpFound; \n//Output: true \n\nisPriceFound = jsonpathcheck(jsonObj,\"$..price\"); \nprint isPriceFound; \n//Output: false \n\njsonpathcheck(jsonObj,\"...\"); \n//An error is thrown because the JSON path is invalid.",
             "str = \"{\\\"store\\\":{\\\"book\\\":[{\\\"category\\\":\\\"reference\\\",\\\"author\\\":\\\"Nigel Rees\\\"},{\\\"category\\\":\\\"fiction\\\",\\\"author\\\":\\\"Evelyn Waugh\\\"}]},\\\"expensive\\\":10}\";\njsonObj = json(str);\n\nisCatFound = jsonpathcheck(jsonObj,\"$.store.book[0].category\");\nprint isCatFound;\n//Output: true\n\nisExpFound = jsonpathcheck(jsonObj,\"$..expensive\");\nprint isExpFound;\n//Output: true\n\nisPriceFound = jsonpathcheck(jsonObj,\"$..price\");\nprint isPriceFound;\n//Output: false\n\njsonpathcheck(jsonObj,\"...\");\n//An error is thrown because the JSON path is invalid."
         ],
         "notes": "Checks if a JSON path is found in a JSON object and returns a boolean value.",
@@ -3016,23 +2985,22 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "jsonPath",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonPath` of type `String`."
+                "description": ""
             },
             {
                 "name": "value",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `value` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Updates all nodes corresponding to a given JSON path in a JSON object with a value. \n\n2. A string containing all updated absolute/normalized JSON path nodes is returned. \n\n3. An empty string array is returned if a node corresponding to the JSON path is not found. \n\n4. null is returned if the object at the JSON path node is null or the JSON path is invalid. \n\nExample: \n\nstr = \"{\\\"key1\\\":90,\\\"key2\\\":[{\\\"key1\\\":900}],\\\"key3\\\":{\\\"key1\\\":9000}}\"; \njsonObj1 = json(str); \njsonObj2 = json(\"{\\\"key1\\\":89}\"); \njsonObj3 = json(\"{\\\"key2\\\":\\\"val2\\\"}\"); \njsonObj4 = json(\"{\\\"key1\\\":89}\"); \n\njsonPath1 = jsonpathset(jsonObj1,\"$..key1\",true); \nprint jsonPath1; \n//Output: [$['key1'],$['key2'][0]['key1'],$['key3']['key1']] \n\nprint jsonObj1; \n//Output: {\"key1\":true,\"key2\":[{\"key1\":true}],\"key3\":{\"key1\":true}} \n\njsonPath2 = jsonpathset(jsonObj2,\"$..key1\",jsonObj3); \nprint jsonPath2; \n//Output: [$['key1']] \n\nprint jsonObj2; \n//Output: {\"key1\":{\"key2\":\"val2\"}} \n\njsonput(jsonObj3,\"key3\",\"val2\"); \nprint jsonObj3; \n//Output: {\"key2\":\"val2\",\"key3\":\"val2\"} \n\njsonPath3 = jsonpathset(jsonObj4,\"$..key3\",jsonObj3); \nprint jsonPath3; \n//Output: [] \n\nstr2 = \"{\\\"key\\\":[{\\\"value\\\":9},{\\\"value\\\":90},{\\\"value\\\":900},{\\\"value\\\":9000}]}\"; \njsonObj5 = json(str2); \njsonPath4 = jsonpathset(jsonObj5,\"$.key[1:3].value\",true); \nprint jsonPath4; \n//output: [$['key'][1]['value'], $['key'][2]['value']] \n\nprint jsonObj5; \n//output: {\"key\":[{\"value\":9},{\"value\":true},{\"value\":true},{\"value\":9000}]} \n//$.key[1:3].value    Updates nodes from index 1 (inclusive) until index 3 (exclusive)",
             "str = \"{\\\"key1\\\":90,\\\"key2\\\":[{\\\"key1\\\":900}],\\\"key3\\\":{\\\"key1\\\":9000}}\";\njsonObj1 = json(str);\njsonObj2 = json(\"{\\\"key1\\\":89}\");\njsonObj3 = json(\"{\\\"key2\\\":\\\"val2\\\"}\");\njsonObj4 = json(\"{\\\"key1\\\":89}\");\n\njsonPath1 = jsonpathset(jsonObj1,\"$..key1\",true);\nprint jsonPath1;\n//Output: [$['key1'],$['key2'][0]['key1'],$['key3']['key1']]\n\nprint jsonObj1;\n//Output: {\"key1\":true,\"key2\":[{\"key1\":true}],\"key3\":{\"key1\":true}}\n\njsonPath2 = jsonpathset(jsonObj2,\"$..key1\",jsonObj3);\nprint jsonPath2;\n//Output: [$['key1']]\n\nprint jsonObj2;\n//Output: {\"key1\":{\"key2\":\"val2\"}}\n\njsonput(jsonObj3,\"key3\",\"val2\");\nprint jsonObj3;\n//Output: {\"key2\":\"val2\",\"key3\":\"val2\"}\n\njsonPath3 = jsonpathset(jsonObj4,\"$..key3\",jsonObj3);\nprint jsonPath3;\n//Output: []\n\nstr2 = \"{\\\"key\\\":[{\\\"value\\\":9},{\\\"value\\\":90},{\\\"value\\\":900},{\\\"value\\\":9000}]}\";\njsonObj5 = json(str2);\njsonPath4 = jsonpathset(jsonObj5,\"$.key[1:3].value\",true);\nprint jsonPath4;\n//output: [$['key'][1]['value'], $['key'][2]['value']]\n\nprint jsonObj5;\n//output: {\"key\":[{\"value\":9},{\"value\":true},{\"value\":true},{\"value\":9000}]}\n//$.key[1:3].value Updates nodes from index 1 (inclusive) until index 3 (exclusive)"
         ],
         "notes": "Updates all nodes corresponding to a given JSON path in a JSON object with a value and returns a string array of the nodes that were updated.",
@@ -3048,23 +3016,22 @@
                 "name": "jsonIdentifier",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `jsonIdentifier` of type `Json`."
+                "description": ""
             },
             {
                 "name": "jsonPath",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `jsonPath` of type `String`."
+                "description": ""
             },
             {
                 "name": "asPath",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `asPath` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Returns the value(s)/path(s) from a JSON object corresponding to a given JSON path. \n\n2. The asPath parameter is optional and its default value is false. \n\n3. A JSON array containing all object values corresponding to the given JSON path is returned if the asPath parameter is false. \n\n4. A JSON array containing all nodes corresponding to the give JSON path is returned if the asPath parameter is true. \n\nExample: \n\nstr = \"{\\\"key1\\\":90,\\\"key2\\\":[{\\\"key1\\\":900}],\\\"key3\\\":{\\\"key1\\\":9000}}\"; \njsonObj = json(str); \n\narrayVals = jsonpathgetmultiple(jsonObj,\"$..key1\"); \nprint arrayVals; \n//Output: [90,900,9000] \n\npathVals = jsonpathgetmultiple(jsonObj,\"$..key1\",true); \nprint pathVals; \n //Output: [\"$['key1']\",\"$['key2'][0]['key1']\",\"$['key3']['key1']\"] \n \n\nstr2 = \"{\\\"key\\\":[{\\\"value\\\":9},{\\\"value\\\":90},{\\\"value\\\":900},{\\\"value\\\":9000}]}\"; \njsonObj2 = json(str2); \npathValue = jsonpathgetmultiple(jsonObj2,\"$..key[1:3].value\"); \nprint pathValue; \n //Output: [90,900] \n//$..key[1:3]   All keys from index 1 (inclusive) until index 3 (exclusive)",
             "str = \"{\\\"key1\\\":90,\\\"key2\\\":[{\\\"key1\\\":900}],\\\"key3\\\":{\\\"key1\\\":9000}}\";\njsonObj = json(str);\n\narrayVals = jsonpathgetmultiple(jsonObj,\"$..key1\");\nprint arrayVals;\n//Output: [90,900,9000]\n\npathVals = jsonpathgetmultiple(jsonObj,\"$..key1\",true);\nprint pathVals;\n//Output: [\"$['key1']\",\"$['key2'][0]['key1']\",\"$['key3']['key1']\"]\n\nstr2 = \"{\\\"key\\\":[{\\\"value\\\":9},{\\\"value\\\":90},{\\\"value\\\":900},{\\\"value\\\":9000}]}\";\njsonObj2 = json(str2);\npathValue = jsonpathgetmultiple(jsonObj2,\"$..key[1:3].value\");\nprint pathValue;\n//Output: [90,900]\n//$..key[1:3] All keys from index 1 (inclusive) until index 3 (exclusive)"
         ],
         "notes": "Returns the value(s)/path(s) corresponding to a given JSON path from a JSON object.",
@@ -3080,11 +3047,10 @@
                 "name": "jsonArrayIdentifier",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `jsonArrayIdentifier` of type `JsonArray`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. Can only be invoked by Commerce advanced modify, auto update or advanced default functions. \n2. Provides a more efficient method to pass a JSON array to the BML output to update an array set. \n\nExample: \n\n// feeJsonArray is a JSON array \n// feeArraySet is the main doc array set variable name \n// To update feeArraySet, jsonarrayrefid is more efficient than jsonarraytostr when the JSON array is large \n// return \"1~feeArraySet~\" + jsonarraytostr(feeJsonArray); \nreturn \"1~feeArraySet~\" + jsonarrayrefid(feeJsonArray); \n\n3. When jsonarrayrefid is not used in the return statement of the BML, be aware that the reference ID refers to the JSON array by reference. As a result, any subsequent changes made to the JSON array are included. \n\nExample: \n\nresult = \"1~feeArraySet~\" + jsonarrayrefid(feeJsonArray); \njsonarrayremove(feeJsonArray, 0); \nreturn result; // feeArraySet does not include the removed first row.",
             "// feeJsonArray is a JSON array\n// feeArraySet is the main doc array set variable name\n// To update feeArraySet, jsonarrayrefid is more efficient than jsonarraytostr when the JSON array is large\n// return \"1~feeArraySet~\" + jsonarraytostr(feeJsonArray);\nreturn \"1~feeArraySet~\" + jsonarrayrefid(feeJsonArray);",
             "result = \"1~feeArraySet~\" + jsonarrayrefid(feeJsonArray);\njsonarrayremove(feeJsonArray, 0);\nreturn result; // feeArraySet does not include the removed first row."
         ],
@@ -3101,7 +3067,7 @@
                 "name": "arrayIdentifier",
                 "type": "SingleArray",
                 "required": true,
-                "description": "Input parameter `arrayIdentifier` of type `SingleArray`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3120,7 +3086,7 @@
                 "name": "documentNumber",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `documentNumber` of type `String`."
+                "description": ""
             },
             {
                 "name": "configAttrVarname",
@@ -3149,7 +3115,6 @@
             }
         ],
         "examples": [
-            "Example: \nprint(\"abba\") will display abba in the console window in the Function Editor.\n \nintArray = integer[]{1,2,3,4,5}; \nprint(intArray); //Will display [1,2,3,4,5] in the console window.\n \ntestDict =dict(\"string\");\nput(testDict,\"key1\",\"X\");\nput(testDict,\"key2\",\"Y\");\nprint textDict;//Will display {key1=X, key2=Y} in the console window.",
             "print(\"abba\")",
             "intArray = integer[]{1,2,3,4,5};\nprint(intArray); //",
             "testDict =dict(\"string\");\nput(testDict,\"key1\",\"X\");\nput(testDict,\"key2\",\"Y\");\nprint textDict;//"
@@ -3203,7 +3168,7 @@
                 "name": "JsonArray)))))",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `JsonArray)))))` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3222,7 +3187,7 @@
                 "name": "String",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `String` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3490,7 +3455,7 @@
                 "name": "documentNumber",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `documentNumber` of type `Integer`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3525,7 +3490,6 @@
             }
         ],
         "examples": [
-            "1. First parameter is a bsId which is of Integer datatype.\n2. Second parameter is bomJson which is of Json type.\n3. This function returns document number of the quote where it is saved.\n\nExample: \ntestjson = json(\"{\\\"partNumber\\\":\\\"part49\\\",\\\"quantity\\\":10,\\\"id\\\":\\\"BOM_root\\\",\\\"parentId\\\":\\\"\\\",\\\"attributes\\\":{},\\\"fields\\\":{\\\"_line_bom_level\\\":\\\"0\\\"},\\\"explodedQuantity\\\":10,\\\"category\\\":\\\"sales\\\",\\\"variableName\\\":\\\"root\\\",\\\"definition\\\":{\\\"SequenceNum\\\":814,\\\"ItemId\\\":\\\"814\\\",\\\"ItemType\\\":\\\"Standard Item\\\",\\\"Optional\\\":\\\"Y\\\"},\\\"children\\\":[{\\\"partNumber\\\":\\\"part50\\\",\\\"quantity\\\":5,\\\"id\\\":\\\"BOM_text_bom\\\",\\\"parentId\\\":\\\"BOM_root\\\",\\\"attributes\\\":{},\\\"fields\\\":{\\\"_line_bom_level\\\":\\\"1\\\"},\\\"explodedQuantity\\\":50,\\\"variableName\\\":\\\"text_bom\\\",\\\"definition\\\":{\\\"SequenceNum\\\":815,\\\"ItemId\\\":\\\"815\\\",\\\"ItemType\\\":\\\"Standard Item\\\",\\\"Optional\\\":\\\"Y\\\"}}]} \");\nbsId=18430319; \ndocNum = savebom(bsId, testjson); \nprint docNum;\n//Output: 5",
             "testjson = json(\"{\\\"partNumber\\\":\\\"part49\\\",\\\"quantity\\\":10,\\\"id\\\":\\\"BOM_root\\\",\\\"parentId\\\":\\\"\\\",\\\"attributes\\\":{},\\\"fields\\\":{\\\"_line_bom_level\\\":\\\"0\\\"},\\\"explodedQuantity\\\":10,\\\"category\\\":\\\"sales\\\",\\\"variableName\\\":\\\"root\\\",\\\"definition\\\":{\\\"SequenceNum\\\":814,\\\"ItemId\\\":\\\"814\\\",\\\"ItemType\\\":\\\"Standard Item\\\",\\\"Optional\\\":\\\"Y\\\"},\\\"children\\\":[{\\\"partNumber\\\":\\\"part50\\\",\\\"quantity\\\":5,\\\"id\\\":\\\"BOM_text_bom\\\",\\\"parentId\\\":\\\"BOM_root\\\",\\\"attributes\\\":{},\\\"fields\\\":{\\\"_line_bom_level\\\":\\\"1\\\"},\\\"explodedQuantity\\\":50,\\\"variableName\\\":\\\"text_bom\\\",\\\"definition\\\":{\\\"SequenceNum\\\":815,\\\"ItemId\\\":\\\"815\\\",\\\"ItemType\\\":\\\"Standard Item\\\",\\\"Optional\\\":\\\"Y\\\"}}]} \");\nbsId=18430319;\ndocNum = savebom(bsId, testjson);\nprint docNum;\n//Output: 5"
         ],
         "notes": "Save a BOM into a quote without configurator involved.",
@@ -3565,7 +3529,7 @@
                 "name": "flattenChildItems",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `flattenChildItems` of type `Boolean`."
+                "description": ""
             },
             {
                 "name": "isSalesBom",
@@ -3575,7 +3539,6 @@
             }
         ],
         "examples": [
-            "1. bsId is the commerce transaction ID.\n\n2. lineNumber is the the document number of the model line, also acting as the root BOM line in the quote.\n\n3. lineFields are the additional line attributes to be fetched from the quote lines and stored in the returned BOM instance.\n   It is optional parameter and if it is not provided the default value will be null.\n\n4. validateBomModel is used for whether to validate the returned BOM against the latest BOM item definition.\n   The validation verifies the BOM instance tree against the BOM item definition based on part numbers and hierarchy.\n   It populates the BOM item variable names,may correct the BOM instance hierarchy according to the latest definition, and exclude items that are no longer part of the latest definition.\n   It is optional parameter and if it is not provided the default value will be true.\n\n5. flattenChildItems is used for whether to flatten the children items. If true, all descendant BOM items are  stored as the direct children of the returned root BOM item.\n   It is optional parameter and if it is not provided the default value will be false.\n\n6. isSalesBom is used for whether the returned BOM should be a sales BOM or a manufacturing BOM.\n   It is optional parameter and if it is not provided the default value will be true.\n\nExample: \nbsId=18430319; \njObj = getbom(bsId, 2); \nprint jObj; \n//Output : {\"partNumber\":\"part49\",\"quantity\":10,\"id\":\"BOM_root\",\"parentId\":\"\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"0\"},\"explodedQuantity\":10,\"category\":\"sales\",\"variableName\":\"root\",\"definition\":{\"SequenceNum\":814,\"ItemId\":\"814\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"},\"children\":[{\"partNumber\":\"part50\",\"quantity\":5,\"id\":\"BOM_text_bom\",\"parentId\":\"BOM_root\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"1\"},\"explodedQuantity\":50,\"variableName\":\"text_bom\",\"definition\":{\"SequenceNum\":815,\"ItemId\":\"815\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"}}]}",
             "bsId=18430319;\njObj = getbom(bsId, 2);\nprint jObj;\n//Output : {\"partNumber\":\"part49\",\"quantity\":10,\"id\":\"BOM_root\",\"parentId\":\"\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"0\"},\"explodedQuantity\":10,\"category\":\"sales\",\"variableName\":\"root\",\"definition\":{\"SequenceNum\":814,\"ItemId\":\"814\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"},\"children\":[{\"partNumber\":\"part50\",\"quantity\":5,\"id\":\"BOM_text_bom\",\"parentId\":\"BOM_root\",\"attributes\":{},\"fields\":{\"_line_bom_level\":\"1\"},\"explodedQuantity\":50,\"variableName\":\"text_bom\",\"definition\":{\"SequenceNum\":815,\"ItemId\":\"815\",\"ItemType\":\"Standard Item\",\"Optional\":\"Y\"}}]}"
         ],
         "notes": "Extracts a BOM instance from a commerce transaction.",
@@ -3591,13 +3554,13 @@
                 "name": "configId",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `configId` of type `Integer`."
+                "description": ""
             },
             {
                 "name": "flattenChildProducts",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `flattenChildProducts` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3616,17 +3579,16 @@
                 "name": "baseConfigurationKey",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `baseConfigurationKey` of type `String`."
+                "description": ""
             },
             {
                 "name": "linesToApply",
                 "type": "JsonArray",
                 "required": true,
-                "description": "Input parameter `linesToApply` of type `JsonArray`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. First parameter is baseConfigurationKey which is of String datatype. It can be an empty string \"\" for an initial configuration.\n2. Second parameter is linestoApply which is of JsonArray type. Contains a list of open order lines for which projected configuration has to be calculated.\n3. This function returns configurationKey which is a string. This configuration key can be used to load the projected configurations when a configurator session is launched.\n\nExample: \nline1 = \"{\\\"type\\\":\\\"internalOrder\\\",\\\"_bs_id\\\":21002021,\\\"_document_number\\\": 2}\";\nline2 = \"{\\\"type\\\":\\\"internalOrder\\\",\\\"_bs_id\\\":21002021,\\\"_document_number\\\": 6}\";\nlinesToApply = jsonArray();\nlines = json(line1);\njsonarrayappend(linesToApply, lines);\nlines1 = json(line2);\njsonarrayappend(linesToApply, lines1);\nconfigurationKey = calculateconfiguration(\"\", linesToApply);\nreturn configurationKey;",
             "line1 = \"{\\\"type\\\":\\\"internalOrder\\\",\\\"_bs_id\\\":21002021,\\\"_document_number\\\": 2}\";\nline2 = \"{\\\"type\\\":\\\"internalOrder\\\",\\\"_bs_id\\\":21002021,\\\"_document_number\\\": 6}\";\nlinesToApply = jsonArray();\nlines = json(line1);\njsonarrayappend(linesToApply, lines);\nlines1 = json(line2);\njsonarrayappend(linesToApply, lines1);\nconfigurationKey = calculateconfiguration(\"\", linesToApply);\nreturn configurationKey;"
         ],
         "notes": "This function calculates the projected configuration for a list of open order lines passed as input and returns a configuration key that will be used to load the projected state of the configuration when a configurator session is launched. This function is used in subscription order implementation.",
@@ -3658,7 +3620,6 @@
             }
         ],
         "examples": [
-            "1. First parameter is baseBom in Json format.\n2. Second parameter is oneBomToApply in Json format.\n3. Third parameter is optional parameter which is of Json type.\n4. This function returns resultant bom in Json format.\n\nThis function applies oneBomToApply on top of  baseBom and then returns the resultant bom.\nExample Usage:\nThe following example shows sample input and output for this function.\n// This baseBom contains sample root, sample child and sample grand child.\nbaseBom = json(\"{\\\"children\\\":[{\\\"id\\\":\\\"BOM_ABOSampleChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleRoot\\\",\\\"quantity\\\":1,\\\"partNumber\\\":\\\"part12\\\",\\\"fields\\\":{\\\"itemInstanceName_l\\\":\\\"part12-20983113-2\\\",\\\"itemInstanceId_l\\\":\\\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\\\"},\\\"explodedQuantity\\\":2},{\\\"id\\\":\\\"BOM_ABOSampleGrandChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleChild\\\",\\\"quantity\\\":4,\\\"partNumber\\\":\\\"part14\\\",\\\"fields\\\":{\\\"itemInstanceName_l\\\":\\\"part14-20983113-3\\\",\\\"itemInstanceId_l\\\":\\\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\\\"},\\\"explodedQuantity\\\":8}],\\\"id\\\":\\\"BOM_ABOSampleRoot\\\",\\\"parentId\\\":null,\\\"quantity\\\":2,\\\"partNumber\\\":\\\"part11\\\",\\\"fields\\\":{\\\"itemInstanceName_l\\\":\\\"part11-20983113-1\\\",\\\"itemInstanceId_l\\\":\\\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\\\"},\\\"explodedQuantity\\\":2}\");\n// In oneBomToApply, the grand child is deleted and quantity of root is changed to 5.\noneBomToApply = json(\"{\\\"partNumber\\\":\\\"part11\\\",\\\"quantity\\\":5,\\\"isModel\\\":true,\\\"id\\\":\\\"BOM_ABOSampleRoot\\\",\\\"parentId\\\":\\\"\\\",\\\"fields\\\":{\\\"itemInstanceId_l\\\":\\\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\\\",\\\"itemInstanceName_l\\\":\\\"part11-20983113-1\\\",\\\"requestDate_l\\\":\\\"\\\",\\\"oRCL_ABO_ActionCode_l\\\":\\\"UPDATE\\\"},\\\"explodedQuantity\\\":5,\\\"category\\\":\\\"sales\\\",\\\"currencyCode\\\":\\\"\\\",\\\"children\\\":[{\\\"partNumber\\\":\\\"part14\\\",\\\"quantity\\\":4,\\\"isModel\\\":false,\\\"id\\\":\\\"BOM_ABOSampleGrandChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleChild\\\",\\\"fields\\\":{\\\"itemInstanceId_l\\\":\\\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\\\",\\\"itemInstanceName_l\\\":\\\"part14-20983113-3\\\",\\\"requestDate_l\\\":\\\"\\\",\\\"oRCL_ABO_ActionCode_l\\\":\\\"DELETE\\\"},\\\"explodedQuantity\\\":20,\\\"children\\\":[]},{\\\"partNumber\\\":\\\"part12\\\",\\\"quantity\\\":1,\\\"isModel\\\":false,\\\"id\\\":\\\"BOM_ABOSampleChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleRoot\\\",\\\"fields\\\":{\\\"itemInstanceId_l\\\":\\\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\\\",\\\"itemInstanceName_l\\\":\\\"part12-20983113-2\\\",\\\"requestDate_l\\\":\\\"\\\",\\\"oRCL_ABO_ActionCode_l\\\":\\\"UPDATE\\\"},\\\"explodedQuantity\\\":5,\\\"sequenceIndex\\\":0,\\\"conditionIndex\\\":0,\\\"children\\\":[]}]}\");\nresult = applybom(baseBom, oneBomToApply);\n// The resultant bom contains sample root, sample child.The quantity of root is updated to 5\nreturn jsontostr(result);",
             "// This baseBom contains sample root, sample child and sample grand child.\n\nbaseBom = json(\"{\\\"children\\\":[{\\\"id\\\":\\\"BOM_ABOSampleChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleRoot\\\",\\\"quantity\\\":1,\\\"partNumber\\\":\\\"part12\\\",\\\"fields\\\":{\\\"itemInstanceName_l\\\":\\\"part12-20983113-2\\\",\\\"itemInstanceId_l\\\":\\\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\\\"},\\\"explodedQuantity\\\":2},{\\\"id\\\":\\\"BOM_ABOSampleGrandChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleChild\\\",\\\"quantity\\\":4,\\\"partNumber\\\":\\\"part14\\\",\\\"fields\\\":{\\\"itemInstanceName_l\\\":\\\"part14-20983113-3\\\",\\\"itemInstanceId_l\\\":\\\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\\\"},\\\"explodedQuantity\\\":8}],\\\"id\\\":\\\"BOM_ABOSampleRoot\\\",\\\"parentId\\\":null,\\\"quantity\\\":2,\\\"partNumber\\\":\\\"part11\\\",\\\"fields\\\":{\\\"itemInstanceName_l\\\":\\\"part11-20983113-1\\\",\\\"itemInstanceId_l\\\":\\\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\\\"},\\\"explodedQuantity\\\":2}\");\n\n// In oneBomToApply, the grand child is deleted and quantity of root is changed to 5.\n\noneBomToApply = json(\"{\\\"partNumber\\\":\\\"part11\\\",\\\"quantity\\\":5,\\\"isModel\\\":true,\\\"id\\\":\\\"BOM_ABOSampleRoot\\\",\\\"parentId\\\":\\\"\\\",\\\"fields\\\":{\\\"itemInstanceId_l\\\":\\\"abo_09eecd85-e659-4fdf-bbbc-a6e940f6bf05\\\",\\\"itemInstanceName_l\\\":\\\"part11-20983113-1\\\",\\\"requestDate_l\\\":\\\"\\\",\\\"oRCL_ABO_ActionCode_l\\\":\\\"UPDATE\\\"},\\\"explodedQuantity\\\":5,\\\"category\\\":\\\"sales\\\",\\\"currencyCode\\\":\\\"\\\",\\\"children\\\":[{\\\"partNumber\\\":\\\"part14\\\",\\\"quantity\\\":4,\\\"isModel\\\":false,\\\"id\\\":\\\"BOM_ABOSampleGrandChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleChild\\\",\\\"fields\\\":{\\\"itemInstanceId_l\\\":\\\"abo_72a356b4-f80c-4b23-bb5a-b80a286b4917\\\",\\\"itemInstanceName_l\\\":\\\"part14-20983113-3\\\",\\\"requestDate_l\\\":\\\"\\\",\\\"oRCL_ABO_ActionCode_l\\\":\\\"DELETE\\\"},\\\"explodedQuantity\\\":20,\\\"children\\\":[]},{\\\"partNumber\\\":\\\"part12\\\",\\\"quantity\\\":1,\\\"isModel\\\":false,\\\"id\\\":\\\"BOM_ABOSampleChild\\\",\\\"parentId\\\":\\\"BOM_ABOSampleRoot\\\",\\\"fields\\\":{\\\"itemInstanceId_l\\\":\\\"abo_644cc4ff-7267-4c9a-9c53-70fae13618b0\\\",\\\"itemInstanceName_l\\\":\\\"part12-20983113-2\\\",\\\"requestDate_l\\\":\\\"\\\",\\\"oRCL_ABO_ActionCode_l\\\":\\\"UPDATE\\\"},\\\"explodedQuantity\\\":5,\\\"sequenceIndex\\\":0,\\\"conditionIndex\\\":0,\\\"children\\\":[]}]}\");\n\nresult = applybom(baseBom, oneBomToApply);\n\n// The resultant bom contains sample root, sample child. The quantity of root is updated to 5\n\nreturn jsontostr(result);"
         ],
         "notes": "Apply the passed in bom to the base bom and return the resultant bom.",
@@ -3753,7 +3714,6 @@
             }
         ],
         "examples": [
-            "1. First parameter is a key of String datatype.\n\n2. Second parameter is value which is of type String or JSON.\n\n3. Set key-value pair will be lost once the session gets expired.\n\nExample: \njobj=json();\njsonput(jobj,\"key1\",\"mystring\");\njsonput(jobj,\"key2\",10);\njsonput (jobj ,\"key3\",2.9);\nusersessionset(\"sessionkey1\",jobj);\nusersessionset(\"sessionkey2\",\"Hello\");",
             "jobj=json();\njsonput(jobj,\"key1\",\"mystring\");\njsonput(jobj,\"key2\",10);\njsonput (jobj ,\"key3\",2.9);\nusersessionset(\"sessionkey1\",jobj);\nusersessionset(\"sessionkey2\",\"Hello\");"
         ],
         "notes": "This method sets a key-value pair to the user session.",
@@ -3795,13 +3755,13 @@
                 "name": "key",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `key` of type `String`."
+                "description": ""
             },
             {
                 "name": "updateTimeToLive",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `updateTimeToLive` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3825,7 +3785,6 @@
             }
         ],
         "examples": [
-            "1. The \"key\" parameter is a key of String datatype.\n\nExample: \n//Set data in user session as below\nusersessionset(\"sessionkey1\",\"value\");\n//To remove the key/value pair using a key\nprint usersessionremove(\"sessionkey1\");\n//Output: true \nNote: The method would return false on trying to remove a key that does not exist in the user session.",
             "//Set data in user session as below\nusersessionset(\"sessionkey1\",\"value\");\n\n//To remove the key/value pair using a key\nprint usersessionremove(\"sessionkey1\");\n\n//Output: true"
         ],
         "notes": "Removes key-value pair from the user session. This method returns true if key is removed, false otherwise.",
@@ -3841,7 +3800,7 @@
                 "name": "key",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `key` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3898,7 +3857,7 @@
                 "name": "bomJson",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `bomJson` of type `Json`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3919,7 +3878,7 @@
                 "name": "bomJson",
                 "type": "Json",
                 "required": true,
-                "description": "Input parameter `bomJson` of type `Json`."
+                "description": ""
             }
         ],
         "examples": [
@@ -3950,7 +3909,6 @@
             }
         ],
         "examples": [
-            "1. Returns anytype dictionary containing three keys \"filename\", \"filecontent\" and \"mimetype\".\n2. First parameter is the file attachment ID of type String.\n3. Second parameter is optional and is false by default.\n4. If asBytes is set to true, value of \"filecontent\" would be a bytearray.\n5. If asBytes is set to false, value of \"filecontent\" would be a Base64 encoded String.\n6. Error is thrown if the attachment ID passed is invalid.\n7. If there is no attachment, an empty anytype dictionary would be returned.\n\nExample: \n//consider 'maindocFileAttachment' as main document attachment attribute and 'subdocFileAttachment' as sub document attachment attribute \nmainattachment = getattachmentdata(maindocFileAttachment);\nprint get(mainattachment ,\"filename\", \"string\"); // Prints the file name of main attachment attribute\nprint get(mainattachment ,\"filecontent\", \"string\"); // Prints the file content of main attachment attribute as Base64 encoded String\nprint get(mainattachment ,\"mimetype\", \"string\"); // Prints the mime type of main attachment attribute\n//To access the file attached to sub document attachment attribute\nfor line in lineItems {\n  subdocattachment = getattachmentdata(line.subdocFileAttachment);\n}",
             "//consider 'maindocFileAttachment' as main document attachment attribute and 'subdocFileAttachment' as sub document attachment attribute\nmainattachment = getattachmentdata(maindocFileAttachment);\nprint get(mainattachment ,\"filename\", \"string\"); // Prints the file name of main attachment attribute\nprint get(mainattachment ,\"filecontent\", \"string\"); // Prints the file content of main attachment attribute as Base64 encoded String\nprint get(mainattachment ,\"mimetype\", \"string\"); // Prints the mime type of main attachment attribute\n//To access the file attached to sub document attachment attribute\nfor line in lineItems {\n subdocattachment = getattachmentdata(line.subdocFileAttachment);\n}"
         ],
         "notes": "This function retrieves file name, file content and MIME type of a given file attachment in a commerce context.",
@@ -3984,11 +3942,10 @@
                 "name": "isolate",
                 "type": "Boolean",
                 "required": true,
-                "description": "Input parameter `isolate` of type `Boolean`."
+                "description": ""
             }
         ],
         "examples": [
-            "1. The first parameter is the key which is of type String.\n2. The second parameter is the value which is of type String. \n3. The third parameter specifies the minimum time, in minutes, the key-value pair is guaranteed to exist in the global cache.\n 4. minTimeToLive is optional and default value is 1440 minutes (1 day).\n 5. minTimeToLive should be greater than 0 and less than or equal to 525600 minutes(365 days).\n6. The fourth parameter isolate which is of type Boolean. \n7. isolate parameter, if this has been set to true Transaction boundary will be isolated from other transaction. \n8. If key is null or empty, unique key will be generated and added to global cache.\n9. If key is already present, the provided value will be updated for the corresponding key.\n10. This BML function returns the key added to the global cache.\n11. This function is independent of user session.\n\nExample: \nstoredkey = globaldictset(\"key1\", \"value1\"); //mintimeToLive will be defaulted to 1440 \nprint storedkey; \n//Output: key1 \nstoredkey2 = globaldictset(\"\", \"value2\", 1000); // This record will be removed by the next scheduled batch that runs after 1000 mins\nprint storedkey2; // unique key will be generated and returned.\nstoredkey3 = globaldictset(\"key3\", \"some value\", true); // This record will be added in isolated transaction and mintimeToLive will default to 1440\nprint storedkey3; // Output: key3 \nstoredkey4 = globaldictset(\"key4\", \"some value\", 1000, true); // This record will be added in isolated transaction\nprint storedkey4; // Output: key4",
             "storedkey = globaldictset(\"key1\", \"value1\"); //mintimeToLive will be defaulted to 1440\nprint storedkey;\n//Output: key1\nstoredkey2 = globaldictset(\"\", \"value2\", 1000); // This record will be removed by the next scheduled batch that runs after 1000 mins\nprint storedkey2; // unique key will be generated and returned."
         ],
         "notes": "Adds or updates key-value pair to global cache.",
@@ -4004,7 +3961,7 @@
                 "name": "parts",
                 "type": "JsonArray<Json&gt",
                 "required": true,
-                "description": "Input parameter `parts` of type `JsonArray<Json&gt`."
+                "description": ""
             },
             {
                 "name": "priceBookVarName",
@@ -4022,7 +3979,7 @@
                 "name": "pricingTriggerPoint",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `pricingTriggerPoint` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4054,7 +4011,7 @@
                 "name": "inputmessage",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `inputmessage` of type `String`."
+                "description": ""
             },
             {
                 "name": "key",
@@ -4070,7 +4027,6 @@
             }
         ],
         "examples": [
-            "This function computes a Hash-based message authentication code (HMAC) from a cryptographic hash function using a secret key for given input message. A HMAC is a small set of data that helps authenticate the nature of message. It protects the integrity and the authenticity of the message. \n\nThis function takes 3 arguments: \n\n1. inputmessage - string : Message that needs to be HMAC generated \n\n2. key - string : Secret Key \n\n3. algorithm - (optional) string : Cryptographic hash algorithm for HMAC generation \n\nAvailable algorithms: \n\na. SHA256  (Default)\nb. SHA384 \n\nc. SHA512 \n\nd. SHA1 \n\ne. MD5 \n \nNOTE: This parameter is case-sensitive.\n\nExample: \n\n1. inputmessage = \"This is an input example for HMAC authentication.\";\nkey = \"cfthsnkjsavjiCe=\";\nhmac = generatehmacmessage(inputmessage,key);  //uses Default algorithm- SHA256\nprint(hmac);\n//prints cec5cc9241a2529a0de2b1b4cb250738ef52ae5f8bf6db9034bd4dbf4e37bee6\n\n2. inputmessage = \"This is an input example for HMAC authentication.\";\nkey = \"cfthsnkjsavjiCe=\";\nalgo = \"MD5\";\nhmac = generatehmacmessage(inputmessage, key, algo);\nprint(hmac);\n//prints eaf3702517fef48d3f114f32a3c3394b",
             "key = \"cfthsnkjsavjiCe=\";\nalgo = \"MD5\";\nhmac = generatehmacmessage(inputmessage, key, algo);\nprint(hmac);\n//prints eaf3702517fef48d3f114f32a3c3394b"
         ],
         "notes": "Converts the input message to a HMAC generated string using a secret key.",
@@ -4104,7 +4060,7 @@
                 "name": "pricingTriggerPoint",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `pricingTriggerPoint` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4209,7 +4165,6 @@
             }
         ],
         "examples": [
-            "Parameters:\n1. String value that should be a JsonPath Expression.\nReturns a String[] containing the values of the specified JsonPath Expression.\n\nAdditional Info:\nThis function is intended to be used with System Configuration Implementations. If the JsonPath does not return an array of single values, an empty String[] will be returned.\n\nThe function will also return empty values for any models that are yet to be configured (including the initial creation of the System) and paths that do not return values.\nThe empty array should be handled accordingly.\n\nExample:\nmodelValue = String[];\nmodelValue = getsystemattrvalues(\"$.configAttributes.attributeVarname\");\n\nDebugging:\nTo use the debugger in config, the user must provide a valid transaction id and the document number of the root bom that is contained in the line items of the provided transaction id.\nThe format for the Context Parameters is as follows: bsId=123456,documentNumber=2\n\n*For additional help on JsonPath syntax, please reference the online help.",
             "modelValue = String[];\nmodelValue = getsystemattrvalues(\"$.configAttributes.attributeVarname\");"
         ],
         "notes": "Returns a String[] containing attribute values from a System Configuration.",
@@ -4225,11 +4180,10 @@
                 "name": "Dictionary",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `Dictionary` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
-            "Parameters:\n1. Dictionary with String keys and String values.  The values are expected to be JsonPath Expressions.\nReturns a Dictionary (key: String and value: String[]) *The key is the same string as the input Dictionary key.\n\nAdditional Info:\nThis function is intended to be used with System Configuration Implementations. If a JsonPath does not return an array of single values, that key-value pair\nwill result in an empty array.\n\nThe function will also return empty arrays for any models that are yet to be configured (including the initial creation of the System) and paths that do not return values.\nThe empty arrays should be handled accordingly.\n\nExample:\njsonPaths = dict(\"string\");\nput(jsonPaths, \"attributeVarname\", \"$.configAttributes.attributeVarname\");\nput(jsonPaths, \"childAttributeVarname\", \"$.children[*].configAttributes.childAttributeVarname\");\n\ninterModelValues = dict(\"string[]\");\ninterModelValues = getsystemmultipleattrvalues(jsonPaths);\n\nvalues = String[];\nvalues = get(interModelValues, \"attributeVarname\");\n\nDebugging:\nTo use the debugger in config, the user must provide a valid transaction id and the document number of the root bom that is contained in the line items of the provided transaction id.\nThe format for the Context Parameters is as follows: bsId=123456,documentNumber=2\n\n*For additional help on JsonPath syntax, please reference the online help.",
             "jsonPaths = dict(\"string\");\nput(jsonPaths, \"attributeVarname\", \"$.configAttributes.attributeVarname\");\nput(jsonPaths, \"childAttributeVarname\", \"$.children[*].configAttributes.childAttributeVarname\");\ninterModelValues = dict(\"string[]\");\ninterModelValues = getsystemmultipleattrvalues(jsonPaths);\nvalues = String[];\nvalues = get(interModelValues, \"attributeVarname\");"
         ],
         "notes": "Returns a Dictionary (key: String, value: String[]) containing attribute values from a System Configuration.",
@@ -4242,7 +4196,6 @@
         "syntax": "getsystemdata()",
         "parameters": [],
         "examples": [
-            "Returns a Json object representing the entire System Config Data \n\nAdditional Info:\nThis function is intended to be used with System Configuration Implementations. If System Config Data does not exist, an empty Json is returned.\n\nThe function will also return an empty Json for a System Configuration that has not been configured.  The empty Json should\nbe handled accordingly.\n\nExample:\nsystemJson = json();\nsystemJson = getsystemdata();\n\nDebugging:\nTo use the debugger in config, the user must provide a valid transaction id and the document number of the root bom that is contained in the line items of the provided transaction id.\nThe format for the Context Parameters is as follows: bsId=123456,documentNumber=2",
             "systemJson = json();\nsystemJson = getsystemdata();"
         ],
         "notes": "Returns a Json object containing the entire representation of the System Config Data.",
@@ -4262,7 +4215,6 @@
             }
         ],
         "examples": [
-            "Parameters:\nbsid\nAdditional Info:\nThis function imports the transaction data. If the transaction with the given bsid doesn't exists, then it throws an exception.\nExample: \n\n importtransactiondata(12345); // Where 12345 is the bsid",
             "importtransactiondata(12345); // Where 12345 is the bsid"
         ],
         "notes": "Imports the transaction data.",
@@ -4278,7 +4230,7 @@
                 "name": "documentNumberOrName",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `documentNumberOrName` of type `Integer`."
+                "description": ""
             },
             {
                 "name": "value",
@@ -4316,13 +4268,13 @@
                 "name": "bsId",
                 "type": "Integer",
                 "required": true,
-                "description": "Input parameter `bsId` of type `Integer`."
+                "description": ""
             },
             {
                 "name": "configurationKey",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `configurationKey` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4341,13 +4293,13 @@
                 "name": "pattern",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `pattern` of type `String`."
+                "description": ""
             },
             {
                 "name": "...",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `...` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4385,7 +4337,7 @@
                 "name": "val",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `val` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4404,7 +4356,7 @@
                 "name": "val",
                 "type": "Float",
                 "required": true,
-                "description": "Input parameter `val` of type `Float`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4423,13 +4375,13 @@
                 "name": "dateStr",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `dateStr` of type `String`."
+                "description": ""
             },
             {
                 "name": "format",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `format` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4448,13 +4400,13 @@
                 "name": "date",
                 "type": "Date",
                 "required": true,
-                "description": "Input parameter `date` of type `Date`."
+                "description": ""
             },
             {
                 "name": "format",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `format` of type `String`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4473,13 +4425,13 @@
                 "name": "array",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `array` of type `Any`."
+                "description": ""
             },
             {
                 "name": "element",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `element` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4498,19 +4450,19 @@
                 "name": "array",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `array` of type `Any`."
+                "description": ""
             },
             {
                 "name": "startIndex",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `startIndex` of type `Any`."
+                "description": ""
             },
             {
                 "name": "endIndex",
                 "type": "Any",
                 "required": true,
-                "description": "Input parameter `endIndex` of type `Any`."
+                "description": ""
             }
         ],
         "examples": [
@@ -4572,13 +4524,13 @@
                 "name": "delimitedData",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `delimitedData` of type `String`."
+                "description": ""
             },
             {
                 "name": "defaultData",
                 "type": "String",
                 "required": true,
-                "description": "Input parameter `defaultData` of type `String`."
+                "description": ""
             }
         ],
         "examples": [

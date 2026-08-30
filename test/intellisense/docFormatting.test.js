@@ -82,4 +82,62 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         assert.ok(entry, 'expected a "recordset" entry in bml-functions-api-usage.json');
         assert.strictEqual(entry.docs, null);
     });
+
+    test('getfloat produces a clean hover tooltip without duplication or placeholder parameter noise', () => {
+        const entry = functionsData.getfloat;
+        assert.ok(entry, 'expected a "getfloat" entry in bml-functions-api-usage.json');
+
+        const md = formatAsJsDoc(Object.assign({ category: 'function' }, entry));
+        
+        // 1. Signature and category
+        assert.match(md.value, /Float getfloat\(Record record, String fieldName\)/);
+        assert.match(md.value, /\*database function\*/);
+        
+        // 2. Parameters clean without placeholder text
+        assert.match(md.value, /- `record` `\[Record\]`/);
+        assert.match(md.value, /- `fieldName` `\[String\]`/);
+        assert.doesNotMatch(md.value, /Input parameter/i);
+        
+        // 3. Exactly one Example block with bml code
+        assert.match(md.value, /\*\*Example:\*\*/);
+        assert.match(md.value, /val = getfloat\(row, "intcol"\);/);
+        
+        // 4. No duplicate "From the Docs" section since docs is identical to notes
+        assert.doesNotMatch(md.value, /From the Docs/);
+    });
+
+    test('parameter custom descriptions are preserved while placeholder descriptions are omitted', () => {
+        const info = {
+            category: 'function',
+            name: 'customFunc',
+            syntax: 'customFunc(String name, Integer age)',
+            parameters: [
+                { name: 'name', type: 'String', description: 'Input parameter `name` of type `String`.' },
+                { name: 'age', type: 'Integer', description: 'The customer age in years.' }
+            ]
+        };
+        const md = formatAsJsDoc(info);
+        assert.match(md.value, /- `name` `\[String\]`\n/);
+        assert.match(md.value, /- `age` `\[Integer\]` — The customer age in years\./);
+    });
+
+    test('deduplicates identical code examples when provided with and without titles', () => {
+        const info = {
+            category: 'function',
+            name: 'testFunc',
+            syntax: 'testFunc()',
+            examples: [
+                '1. Query and iterate records\n\nExample:\n\nrows = bmql("select id from table");\nfor r in rows { print r; }',
+                'rows = bmql("select id from table");\nfor r in rows { print r; }'
+            ]
+        };
+        const md = formatAsJsDoc(info);
+        // Only 1 example should be rendered, with title and code block
+        assert.match(md.value, /\*\*Example:\*\*/);
+        assert.match(md.value, /Query and iterate records:/);
+        assert.match(md.value, /rows = bmql\("select id from table"\);/);
+        // Ensure the code block is not repeated
+        const occurrences = (md.value.match(/select id from table/g) || []).length;
+        assert.strictEqual(occurrences, 1, 'code block should only appear once');
+    });
 });
