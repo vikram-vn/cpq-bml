@@ -11,34 +11,108 @@ from bml_intellisense.knowledge_docs import (
 )
 
 
-def parse_parameters_from_syntax(syntax):
+def extract_outer_params_string(first_sig, func_name=None):
+    if func_name:
+        m = re.search(r"\b" + re.escape(func_name) + r"\s*\(", first_sig, re.IGNORECASE)
+        idx = m.end() - 1 if m else first_sig.find("(")
+    else:
+        m = re.search(r"\b[a-zA-Z_]\w*\s*\(", first_sig)
+        idx = m.end() - 1 if m else first_sig.find("(")
+
+    if idx == -1:
+        return ""
+    depth = 0
+    chars = []
+    for c in first_sig[idx:]:
+        if c == "(":
+            depth += 1
+            if depth > 1:
+                chars.append(c)
+        elif c == ")":
+            depth -= 1
+            if depth > 0:
+                chars.append(c)
+            elif depth == 0:
+                break
+        else:
+            if depth >= 1:
+                chars.append(c)
+    return "".join(chars).strip()
+
+
+def split_params_safely(param_str):
+    raw_params = []
+    curr = []
+    depth = 0
+    for char in param_str:
+        if char in "(":
+            depth += 1
+            curr.append(char)
+        elif char in ")":
+            if depth > 0:
+                depth -= 1
+            curr.append(char)
+        elif char == "," and depth == 0:
+            part = "".join(curr).strip()
+            if part:
+                raw_params.append(part)
+            curr = []
+        else:
+            curr.append(char)
+    if curr:
+        part = "".join(curr).strip()
+        if part:
+            raw_params.append(part)
+    return raw_params
+
+
+def parse_parameters_from_syntax(syntax, short_syntax=None, func_name=None):
     if not syntax:
         return []
-    match = re.search(r'\((.*)\)', syntax)
-    if not match:
-        return []
-    params_str = match.group(1).strip()
+    s = syntax.replace("&lt;", "<").replace("&gt;", ">")
+    s = re.sub(r"\)\)\s*", ") ", s)
+    s = re.sub(r"\)(?=[a-zA-Z_])", ") ", s)
+    first_sig = re.split(r"(?:<br\s*/?>|\n\s*(?:OR|\(or\))\s*\n|\n)", s, flags=re.IGNORECASE)[0].strip()
+
+    short_names = []
+    if short_syntax:
+        m_short = re.search(r"\((.*)\)", short_syntax)
+        if m_short:
+            inner_short = m_short.group(1).replace("[", "").replace("]", "").strip()
+            short_names = [p.strip() for p in inner_short.split(",") if p.strip()]
+
+    params_str = extract_outer_params_string(first_sig, func_name)
     if not params_str:
         return []
 
-    cleaned = params_str.replace('[', '').replace(']', '')
-    raw_params = [p.strip() for p in cleaned.split(',') if p.strip()]
+    raw_params = split_params_safely(params_str)
     parsed = []
-    for raw in raw_params:
-        parts = raw.split()
-        if len(parts) >= 2:
-            ptype = parts[0]
-            pname = parts[-1]
-        elif len(parts) == 1:
-            ptype = 'Any'
-            pname = parts[0]
+    for i, raw in enumerate(raw_params):
+        is_optional = "[" in raw
+        cleaned = re.sub(r"[\[\]]", "", raw).strip()
+        tokens = cleaned.split()
+
+        if i < len(short_names) and short_names[i]:
+            pname = short_names[i]
+            if len(tokens) >= 2 and tokens[-1] == pname:
+                ptype = " ".join(tokens[:-1])
+            else:
+                ptype = " ".join(tokens[:-1]) if len(tokens) >= 2 else (tokens[0] if tokens else "Any")
         else:
-            continue
+            if len(tokens) >= 2:
+                pname = tokens[-1].rstrip(");,")
+                ptype = " ".join(tokens[:-1])
+            elif len(tokens) == 1:
+                pname = tokens[0].rstrip(");,")
+                ptype = "Any"
+            else:
+                continue
+
         parsed.append({
-            'name': pname,
-            'type': ptype,
-            'required': '[' not in raw,
-            'description': ""
+            "name": pname,
+            "type": ptype,
+            "required": not is_optional,
+            "description": ""
         })
     return parsed
 
@@ -124,7 +198,7 @@ def generate_bml_functions(root_dir):
         computed_syntax = to_snippet_syntax(raw_short_syntax)
 
         # Parse structured parameters
-        syntax_params = parse_parameters_from_syntax(full_sig)
+        syntax_params = parse_parameters_from_syntax(full_sig, item.get('shortSyntax'), key)
         section_params = extract_parameters_from_section(raw_section) if raw_section else {}
         final_params = []
         for sp in syntax_params:

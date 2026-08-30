@@ -16,17 +16,17 @@
         "substring"
     ],
     "formatascurrency": [
-        "x",
+        "num",
         "currencyCode"
     ],
     "find": [
         "str",
-        "substr",
+        "substring_s",
         "start",
         "end"
     ],
     "getcurrencyvalue": [
-        "value",
+        "str",
         "currencyCode"
     ],
     "html": [
@@ -185,15 +185,15 @@
     "getcurrenttimeinmillis": [],
     "gettabledata": [
         "tableName",
-        "selectColumns",
-        "whereClauseColumns",
-        "whereClauseValues",
+        "selectColumnsArray",
+        "whereClauseColumnsArray",
+        "whereClauseValuesArray",
         "whereClauseComps",
         "whereClauseUseORs"
     ],
     "getpartsdata": [
-        "userSelectFields",
-        "partNumbers",
+        "userSelectFieldsArray",
+        "partNumbersArray",
         "currencyCode",
         "priceBookVarName"
     ],
@@ -227,12 +227,12 @@
         "includeRuleData"
     ],
     "makeurlparam": [
-        "name",
-        "dict"
+        "{'name1':value1",
+        "'name2':value2}"
     ],
     "urldata": [
         "url",
-        "httpMethod",
+        "http_method",
         "headers",
         "parameters",
         "timeout",
@@ -241,16 +241,16 @@
     ],
     "urldatabyget": [
         "url",
-        "parameters",
-        "defaultValue",
+        "url_param",
+        "default_value",
         "timeout",
         "headers",
         "enableLoopback"
     ],
     "urldatabypost": [
         "url",
-        "parameters",
-        "defaultValue",
+        "url_param",
+        "default_value",
         "headers",
         "returnErrorResponse",
         "timeout",
@@ -258,9 +258,9 @@
     ],
     "urldatabypostasync": [
         "url",
-        "parameters",
-        "defaultValue",
-        "callbackActionVarName",
+        "url_param",
+        "default_value",
+        "callback_action_var_name",
         "headers",
         "returnErrorResponse",
         "timeout",
@@ -269,22 +269,22 @@
     "urlmultipartbypost": [
         "url",
         "payload",
-        "headers",
+        "header",
         "attachments",
         "timeout",
         "enableLoopback"
     ],
     "bytearray": [
-        "content",
-        "charSet"
+        "String content",
+        "String charSet"
     ],
     "append": [
         "arrayIdentifier",
-        "newArrayElem"
+        "appendValue"
     ],
     "findinarray": [
         "arrayIdentifier",
-        "element"
+        "elementToFind"
     ],
     "isempty": [
         "arrayIdentifier"
@@ -296,12 +296,11 @@
         "arrayIdentifier"
     ],
     "range": [
-        "x"
+        "int"
     ],
     "remove": [
         "arrayIdentifier",
-        "dictionary",
-        "key"
+        "index"
     ],
     "reverse": [
         "arrayIdentifier"
@@ -319,18 +318,15 @@
     ],
     "containskey": [
         "dictionaryIdentifier",
-        "Integer",
-        "Float)key"
+        "key"
     ],
     "put": [
         "dictionaryIdentifier",
-        "Integer",
         "key",
         "value"
     ],
     "get": [
         "dictionaryIdentifier",
-        "Integer",
         "key"
     ],
     "keys": [
@@ -391,8 +387,7 @@
     ],
     "isjsonnull": [
         "jsonIdentifier",
-        "jsonArrayIdentifier",
-        "index)"
+        "key (or jsonArrayIdentifier"
     ],
     "jsonarraytostr": [
         "jsonArrayIdentifier"
@@ -450,17 +445,16 @@
         "arrayIdentifier"
     ],
     "getconfigattrvalue": [
-        "documentNumber",
-        "configAttrVarname"
+        "documentNumber"
     ],
     "print": [
-        "varName"
+        "variableName"
     ],
     "isnull": [
-        "JsonArray)))))"
+        "obj"
     ],
     "getreasonstatus": [
-        "String"
+        "reasonVarName"
     ],
     "logtime": [
         "tag",
@@ -498,13 +492,13 @@
     ],
     "calculatedeltabom": [
         "priorBom",
-        "currentBom",
+        "curBom",
         "inputBom",
         "setting"
     ],
     "saveconfigbom": [
         "configBomJson",
-        "instanceAttributes",
+        "Dictionary instanceAttributes",
         "configurationKey"
     ],
     "usersessionset": [
@@ -547,7 +541,7 @@
         "isolate"
     ],
     "addpartstotransaction": [
-        "parts",
+        "jsonArray",
         "priceBookVarName",
         "resultAttributeArray",
         "pricingTriggerPoint"
@@ -559,7 +553,7 @@
         "algorithm"
     ],
     "addtotransaction": [
-        "items",
+        "jsonArray",
         "priceBookVarName",
         "resultAttributeArray",
         "pricingTriggerPoint"
@@ -570,9 +564,9 @@
         "stringBuilder"
     ],
     "sbappend": [
+        "stringBuilder",
         "string",
-        "stringArray",
-        "stringBuilder"
+        "stringArray"
     ],
     "sbtostring": [
         "stringBuilder"
@@ -581,15 +575,15 @@
         "jsonPath"
     ],
     "getsystemmultipleattrvalues": [
-        "Dictionary"
+        "dictType"
     ],
     "getsystemdata": [],
     "importtransactiondata": [
         "bsid"
     ],
     "setattributevalue": [
-        "documentNumberOrName",
-        "value"
+        "documentNumber",
+        "stringLiteralVariableName"
     ],
     "getcoveragesupportdict": [],
     "configureabo": [

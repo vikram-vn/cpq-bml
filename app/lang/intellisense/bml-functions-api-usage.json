@@ -108,15 +108,15 @@
         "syntax": "formatascurrency(${1:num})",
         "parameters": [
             {
-                "name": "x",
+                "name": "num",
                 "type": "Float",
                 "required": true,
-                "description": "The number to be formatted as a certain currency."
+                "description": ""
             },
             {
                 "name": "currencyCode",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "**Optional:** The desired currency."
             }
         ],
@@ -139,7 +139,7 @@
                 "description": "Represents the given input string."
             },
             {
-                "name": "substr",
+                "name": "substring_s",
                 "type": "String",
                 "required": true,
                 "description": ""
@@ -147,13 +147,13 @@
             {
                 "name": "start",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "end",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -170,15 +170,15 @@
         "syntax": "getcurrencyvalue(${1:str})",
         "parameters": [
             {
-                "name": "value",
+                "name": "str",
                 "type": "String",
                 "required": true,
-                "description": "The formatted currency string to be converted to a numeric value."
+                "description": ""
             },
             {
                 "name": "currencyCode",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -235,7 +235,7 @@
             {
                 "name": "str_array",
                 "type": "Array",
-                "required": true,
+                "required": false,
                 "description": "The original string array."
             },
             {
@@ -316,7 +316,7 @@
             {
                 "name": "n",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -384,7 +384,7 @@
         "parameters": [
             {
                 "name": "x",
-                "type": "Float(or",
+                "type": "Float(or Integer(or Boolean)",
                 "required": true,
                 "description": ""
             }
@@ -416,7 +416,7 @@
             {
                 "name": "end",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -952,13 +952,13 @@
             {
                 "name": "date",
                 "type": "Date",
-                "required": true,
+                "required": false,
                 "description": "Mandatory date parameter."
             },
             {
                 "name": "dateFormat",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -985,7 +985,7 @@
             {
                 "name": "includeTime",
                 "type": "boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1110,7 +1110,7 @@
             {
                 "name": "format",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -1141,7 +1141,7 @@
             {
                 "name": "format",
                 "type": "Date Format",
-                "required": true,
+                "required": false,
                 "description": "Specifies the format the date will be returned in."
             },
             {
@@ -1207,33 +1207,33 @@
                 "description": ""
             },
             {
-                "name": "selectColumns",
+                "name": "selectColumnsArray",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
-                "name": "whereClauseColumns",
+                "name": "whereClauseColumnsArray",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
-                "name": "whereClauseValues",
+                "name": "whereClauseValuesArray",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "whereClauseComps",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "whereClauseUseORs",
                 "type": "boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1250,15 +1250,15 @@
         "syntax": "getpartsdata(${1:userSelectFieldsArray}, ${2:partNumbersArray}, ${3:currencyCode}, ${4:priceBookVarName})",
         "parameters": [
             {
-                "name": "userSelectFields",
+                "name": "userSelectFieldsArray",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
-                "name": "partNumbers",
+                "name": "partNumbersArray",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -1270,7 +1270,7 @@
             {
                 "name": "priceBookVarName",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1289,18 +1289,18 @@
             {
                 "name": "sqlQuery",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "contextOverride",
-                "type": "String",
+                "type": "String Dictionary",
                 "required": true,
                 "description": ""
             },
             {
                 "name": "fieldMap",
-                "type": "String",
+                "type": "String Dictionary",
                 "required": true,
                 "description": ""
             }
@@ -1445,7 +1445,7 @@
             {
                 "name": "bsId",
                 "type": "Long",
-                "required": true,
+                "required": false,
                 "description": "Transaction ID"
             },
             {
@@ -1572,13 +1572,13 @@
         "syntax": "makeurlparam(${1:name1value1}, ${2:name2value2})",
         "parameters": [
             {
-                "name": "name",
+                "name": "{'name1':value1",
                 "type": "String",
                 "required": true,
                 "description": ""
             },
             {
-                "name": "dict",
+                "name": "'name2':value2}",
                 "type": "String",
                 "required": true,
                 "description": ""
@@ -1603,39 +1603,39 @@
                 "description": "The location of the data you are trying to access. You can add additional query string parameters to the URL as needed. Refer to the `[makeurlparam](makeUrlParam.md)` function for additional details on query string parameters."
             },
             {
-                "name": "httpMethod",
+                "name": "http_method",
                 "type": "String",
                 "required": true,
-                "description": "Supported methods: GET, DELETE, PATCH, POST, or PUT"
+                "description": ""
             },
             {
                 "name": "headers",
                 "type": "Dictionary",
-                "required": true,
+                "required": false,
                 "description": "Headers will commonly specify the content type of the body, the authentication details, and the desired media type of the response."
             },
             {
                 "name": "parameters",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "timeout",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "Optional: Specify a timeout value for the request. Refer to [Timeout Parameter](timeoutParameter.md) for more information."
             },
             {
                 "name": "formData",
                 "type": "Dictionary",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "enableLoopback",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1658,33 +1658,33 @@
                 "description": "The location of the data you are trying to access."
             },
             {
-                "name": "parameters",
+                "name": "url_param",
                 "type": "String",
                 "required": true,
-                "description": "A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](makeUrlParam.md)` function for format details."
+                "description": ""
             },
             {
-                "name": "defaultValue",
+                "name": "default_value",
                 "type": "String",
                 "required": true,
-                "description": "This is the default value (or error message) displayed if the data cannot be accessed."
+                "description": ""
             },
             {
                 "name": "timeout",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "Function timeout value * Refer to the [Timeout Parameter](timeoutParameter.md) section for more information."
             },
             {
                 "name": "headers",
                 "type": "Dictionary",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "enableLoopback",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1707,39 +1707,39 @@
                 "description": "The location of the data you are trying to access."
             },
             {
-                "name": "parameters",
+                "name": "url_param",
                 "type": "String",
                 "required": true,
-                "description": "A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](makeUrlParam.md)` function for format details."
+                "description": ""
             },
             {
-                "name": "defaultValue",
+                "name": "default_value",
                 "type": "String",
                 "required": true,
-                "description": "This is the default value (or error message) displayed if the data cannot be accessed."
+                "description": ""
             },
             {
                 "name": "headers",
                 "type": "Dictionary",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "returnErrorResponse",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "timeout",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "Function timeout value * Refer to the [Timeout Parameter](timeoutParameter.md) section for more information."
             },
             {
                 "name": "enableLoopback",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1763,45 +1763,45 @@
                 "description": "The URL location of the data you are trying to access."
             },
             {
-                "name": "parameters",
+                "name": "url_param",
                 "type": "String",
                 "required": true,
-                "description": "A string function used to extract real-time data from an external system * Refer to the `[makeurlparam](makeUrlParam.md)` function for format details."
+                "description": ""
             },
             {
-                "name": "defaultValue",
+                "name": "default_value",
                 "type": "String",
                 "required": true,
-                "description": "This is the default value (or error message) displayed if the data cannot be accessed."
+                "description": ""
             },
             {
-                "name": "callbackActionVarName",
+                "name": "callback_action_var_name",
                 "type": "String",
                 "required": true,
-                "description": "The variable name of the CPQ action that will be invoked by the external system."
+                "description": ""
             },
             {
                 "name": "headers",
                 "type": "Dictionary",
-                "required": true,
+                "required": false,
                 "description": "The message headers"
             },
             {
                 "name": "returnErrorResponse",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": "**Optional:** The value response, based on the key specified in the dictionary."
             },
             {
                 "name": "timeout",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "Function timeout value * Refer to the [Timeout Parameter](timeoutParameter.md) section for more information."
             },
             {
                 "name": "enableLoopback",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1834,27 +1834,27 @@
                 "description": "The payload"
             },
             {
-                "name": "headers",
+                "name": "header",
                 "type": "Dictionary",
-                "required": true,
-                "description": "The message header"
+                "required": false,
+                "description": ""
             },
             {
                 "name": "attachments",
                 "type": "Dictionary",
-                "required": true,
+                "required": false,
                 "description": "Optional"
             },
             {
                 "name": "timeout",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "Function timeout value * Refer to the [Timeout Parameter](timeoutParameter.md) section for more information."
             },
             {
                 "name": "enableLoopback",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -1980,13 +1980,13 @@
         "syntax": "bytearray(${1:content}, ${2:charSet})",
         "parameters": [
             {
-                "name": "content",
+                "name": "String content",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
-                "name": "charSet",
+                "name": "String charSet",
                 "type": "String",
                 "required": true,
                 "description": ""
@@ -2011,10 +2011,10 @@
                 "description": "This is the given array that you are going to add an element to."
             },
             {
-                "name": "newArrayElem",
-                "type": "float, float[], integer, integer[], string, string[], boolean, boolean[]",
+                "name": "appendValue",
+                "type": "Any",
                 "required": true,
-                "description": "This represents the new element that you are appending to the array."
+                "description": ""
             }
         ],
         "examples": [
@@ -2036,10 +2036,10 @@
                 "description": ""
             },
             {
-                "name": "element",
-                "type": "string, integer, float",
+                "name": "elementToFind",
+                "type": "Any",
                 "required": true,
-                "description": "Represents the element you are looking for in the given array."
+                "description": ""
             }
         ],
         "examples": [
@@ -2076,7 +2076,7 @@
             {
                 "name": "arrayIdentifier",
                 "type": "integer[], float[]",
-                "required": true,
+                "required": false,
                 "description": "This is the given array you will use to find the max value."
             }
         ],
@@ -2095,7 +2095,7 @@
             {
                 "name": "arrayIdentifier",
                 "type": "integer[], float[]",
-                "required": true,
+                "required": false,
                 "description": "This is the given array you will use to find the max value."
             }
         ],
@@ -2112,10 +2112,10 @@
         "syntax": "range(${1:int})",
         "parameters": [
             {
-                "name": "x",
+                "name": "int",
                 "type": "Integer",
                 "required": true,
-                "description": "Denotes the size of the integer array."
+                "description": ""
             }
         ],
         "examples": [
@@ -2138,14 +2138,8 @@
                 "description": "This is the given array from which you will remove an element."
             },
             {
-                "name": "dictionary",
+                "name": "index",
                 "type": "Integer",
-                "required": true,
-                "description": ""
-            },
-            {
-                "name": "key",
-                "type": "String",
                 "required": true,
                 "description": ""
             }
@@ -2209,13 +2203,13 @@
             {
                 "name": "sortOrder",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "sortType",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -2257,16 +2251,10 @@
                 "description": ""
             },
             {
-                "name": "Integer",
-                "type": "String(or",
+                "name": "key",
+                "type": "String, Integer, or Float",
                 "required": true,
-                "description": ""
-            },
-            {
-                "name": "Float)key",
-                "type": "Any",
-                "required": true,
-                "description": ""
+                "description": "Unique identifier for the value parameter."
             }
         ],
         "examples": [
@@ -2284,12 +2272,6 @@
             {
                 "name": "dictionaryIdentifier",
                 "type": "Dictionary",
-                "required": true,
-                "description": ""
-            },
-            {
-                "name": "Integer",
-                "type": "String(or",
                 "required": true,
                 "description": ""
             },
@@ -2321,12 +2303,6 @@
             {
                 "name": "dictionaryIdentifier",
                 "type": "Dictionary",
-                "required": true,
-                "description": ""
-            },
-            {
-                "name": "Integer",
-                "type": "String(or",
                 "required": true,
                 "description": ""
             },
@@ -2390,19 +2366,19 @@
             {
                 "name": "templateFileLocation",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "The location of the template file."
             },
             {
                 "name": "payload",
                 "type": "Dictionary",
-                "required": true,
+                "required": false,
                 "description": "The payload containing values for the defined tokens in the template."
             },
             {
                 "name": "defaultErrorMessage",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "The default error message to be displayed in case any error is encountered."
             },
             {
@@ -2435,7 +2411,7 @@
             {
                 "name": "xslFileLocation",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "Location of the XSL file."
             },
             {
@@ -2466,7 +2442,7 @@
             {
                 "name": "xpaths",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -2497,7 +2473,7 @@
             {
                 "name": "xpaths",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -2522,7 +2498,7 @@
             {
                 "name": "jsonFormatStr",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -2541,7 +2517,7 @@
             {
                 "name": "jsonArrStr",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             }
         ],
@@ -2572,7 +2548,7 @@
             {
                 "name": "jsonIdentifier",
                 "type": "Json",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -2622,18 +2598,18 @@
             {
                 "name": "key",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "valueType",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "defaultValue",
-                "type": "Any",
+                "type": "defaultValue",
                 "required": true,
                 "description": ""
             }
@@ -2664,7 +2640,7 @@
             },
             {
                 "name": "value",
-                "type": "Any",
+                "type": "value",
                 "required": true,
                 "description": ""
             }
@@ -2713,14 +2689,8 @@
                 "description": ""
             },
             {
-                "name": "jsonArrayIdentifier",
-                "type": "String",
-                "required": true,
-                "description": ""
-            },
-            {
-                "name": "index)",
-                "type": "Integer",
+                "name": "key (or jsonArrayIdentifier",
+                "type": "String key (or JsonArray jsonArrayIdentifier, Integer",
                 "required": true,
                 "description": ""
             }
@@ -2765,7 +2735,7 @@
             {
                 "name": "index",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -2814,7 +2784,7 @@
             },
             {
                 "name": "value",
-                "type": "Any",
+                "type": "value",
                 "required": true,
                 "description": ""
             }
@@ -2890,18 +2860,18 @@
             {
                 "name": "jsonPath",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "valueType",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "defaultValue",
-                "type": "Any",
+                "type": "defaultValue",
                 "required": true,
                 "description": ""
             }
@@ -2995,7 +2965,7 @@
             },
             {
                 "name": "value",
-                "type": "Any",
+                "type": "value",
                 "required": true,
                 "description": ""
             }
@@ -3021,7 +2991,7 @@
             {
                 "name": "jsonPath",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -3087,12 +3057,6 @@
                 "type": "String",
                 "required": true,
                 "description": ""
-            },
-            {
-                "name": "configAttrVarname",
-                "type": "String",
-                "required": true,
-                "description": "Variable name of the configuration attribute from which you are retrieving data."
             }
         ],
         "examples": [
@@ -3108,10 +3072,10 @@
         "syntax": "print(${1:variableName})",
         "parameters": [
             {
-                "name": "varName",
-                "type": "String, Array, Dictionary, Numeric, Date, or Boolean",
+                "name": "variableName",
+                "type": "String(or Array(or Dictionary(or Numeric(or Date(or Boolean) ) )",
                 "required": true,
-                "description": "The item to print to the Function Editor console."
+                "description": ""
             }
         ],
         "examples": [
@@ -3165,10 +3129,10 @@
         "syntax": "isnull(${1:obj})",
         "parameters": [
             {
-                "name": "JsonArray)))))",
-                "type": "String",
+                "name": "obj",
+                "type": "String, Date, Array, Dictionary",
                 "required": true,
-                "description": ""
+                "description": "The Object to examine for a null state."
             }
         ],
         "examples": [
@@ -3184,10 +3148,10 @@
         "syntax": "getreasonstatus(${1:reasonVarName})",
         "parameters": [
             {
-                "name": "String",
-                "type": "Any",
+                "name": "reasonVarName",
+                "type": "String",
                 "required": true,
-                "description": ""
+                "description": "This is the variable name of the reason within the approval sequence."
             }
         ],
         "examples": [
@@ -3448,7 +3412,7 @@
             {
                 "name": "variableName",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "Variable name containing old value."
             },
             {
@@ -3479,7 +3443,7 @@
             {
                 "name": "bomJson",
                 "type": "JSON",
-                "required": true,
+                "required": false,
                 "description": "Use this parameter to hold the BOM instance JSON data."
             },
             {
@@ -3510,25 +3474,25 @@
             {
                 "name": "lineNumber",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "Use this parameter to specify the document number of the model line. The line number also represents the root BOM line in the transaction."
             },
             {
                 "name": "lineFields",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "Use this parameter to identify additional line attributes fetched from the transaction line, then stored in the returned BOM instance."
             },
             {
                 "name": "validateBomModel",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": "Use this parameter to validate the returned BOM against the latest BOM item definition. Validation will: * Verify the BOM instance tree (parts and hierarchy) against the BOM item definition. * Populate the BOM item variable names. * Correct the BOM instance hierarchy according to the latest definition. * Exclude items that no longer exist in the latest definition."
             },
             {
                 "name": "flattenChildItems",
                 "type": "Boolean",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -3553,7 +3517,7 @@
             {
                 "name": "configId",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -3609,7 +3573,7 @@
             {
                 "name": "oneBomToApply",
                 "type": "JSON",
-                "required": true,
+                "required": false,
                 "description": "The delta BOM loaded from and open order line from a getBom or getConfigBom call."
             },
             {
@@ -3638,15 +3602,15 @@
                 "description": "(also known as the PacBom) this is the base against which delta calculation will be conducted."
             },
             {
-                "name": "currentBom",
-                "type": "JSON",
+                "name": "curBom",
+                "type": "Json",
                 "required": true,
-                "description": "The currentBom is often called the configBom and it corresponds to the configuration selections when the user exits the configurator."
+                "description": ""
             },
             {
                 "name": "inputBom",
                 "type": "JSON",
-                "required": true,
+                "required": false,
                 "description": "The BOM that is passed to the Configurator to launch the UI."
             },
             {
@@ -3672,14 +3636,14 @@
             {
                 "name": "configBomJson",
                 "type": "JSON",
-                "required": true,
+                "required": false,
                 "description": "The configuration BOM json to save. For actions such as Terminate, Renew, Suspend, and Resume order, RESTful calls generated from the saveBomConfig BML function return the lineId."
             },
             {
-                "name": "instanceAttributes",
-                "type": "JSON",
-                "required": true,
-                "description": "Input attributes (e.g. sourceIdentifer, transactionDate, and transactionId) for the asset REST action initiated by the saveconfigBom call. The instanceAttributes contents are saved into the configBomInstance so the original request context can be used to re-instantiate the session when the returned configId is used in an external reconfiguration process."
+                "name": "Dictionary instanceAttributes",
+                "type": "Dictionary",
+                "required": false,
+                "description": ""
             },
             {
                 "name": "configurationKey",
@@ -3708,7 +3672,7 @@
             },
             {
                 "name": "value",
-                "type": "Any",
+                "type": "value",
                 "required": true,
                 "description": "The value to be stored. The value can be of type String or Json."
             }
@@ -3728,7 +3692,7 @@
             {
                 "name": "key",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "The key corresponding to the stored value."
             },
             {
@@ -3754,7 +3718,7 @@
             {
                 "name": "key",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -3819,7 +3783,7 @@
             {
                 "name": "errorMessage",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "The error to display to the end user."
             },
             {
@@ -3898,7 +3862,7 @@
             {
                 "name": "attachmentId",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "The ID of the attachment returned. This ID is returned in the reference to the attachment attribute in BML."
             },
             {
@@ -3929,13 +3893,13 @@
             {
                 "name": "value",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "If a key is present, the value is updated for the corresponding key."
             },
             {
                 "name": "minTimeToLive",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "The minimum time, in minutes, the key-value pair is guaranteed in the global dictionary. The value should be greater than 0 and less than 525600 minutes (365 days). Optional. The default value is 1440 minutes. :::note The minimum time to live setting does not indicate the a maximum duration for the value to be available. The maximum duration is defendant on the amount of time it takes to clear the expired values for your site. :::"
             },
             {
@@ -3958,21 +3922,21 @@
         "syntax": "addpartstotransaction(${1:jsonArray}, ${2:priceBookVarName}, ${3:resultAttributeArray}, ${4:pricingTriggerPoint})",
         "parameters": [
             {
-                "name": "parts",
-                "type": "JsonArray<Json&gt",
-                "required": true,
-                "description": ""
+                "name": "jsonArray",
+                "type": "Array",
+                "required": false,
+                "description": "An array of JSON objects, used to specify part information. In the following example, \"myAttribute\" is an optional item that represents a custom line level attribute. **Example:** { \"partNumber\": \"part1\", \"quantity\": 1, \"price\": 3.50, \"parentDocNumber\": 2, \"myAttribute\": \"my custom value\" } :::note **Notes:** \"`price`\" and \"`parentDocNumber`\" are optional items. * If \"`price`\" is not included, the price in the price book or catalog will be used. * If \"`parentDocNumber`\" is not included, the part will be added at the root level. :::"
             },
             {
                 "name": "priceBookVarName",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "An optional string value used for setting the Transaction Price Book. For sites with Price Books enabled, this string should be included to prevent failures on empty Transactions where a Price Book is not defined. **Example:** \"_default_price_book\" :::note **Note:** The Price Book parameter will be ignored if a transaction already has a price book defined. :::"
             },
             {
                 "name": "resultAttributeArray",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "An optional string value for providing document attributes in the JSON result. **Example:** [\"_part_quantity\", \"_document_number\", \"_part_number\", \"_price_item_price_each\", \"myAttribute\"] Will produce a response similar to the following when adding one part: [{\"_part_quantity\":\"1\", \"_document_number\":\"2\", \"_part_number\":\"part1\", \"_price_item_price_each\":\"3.50\", \"myAttribute\":\"my custom value\"}] :::note Notes: Sub-document attributes with blank or null values are not returned in the Results Attribute string. :::"
             },
             {
@@ -4016,7 +3980,7 @@
             {
                 "name": "key",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "The secret key that authenticates the message between inbound and outbound web services. This parameter is optional."
             },
             {
@@ -4039,21 +4003,21 @@
         "syntax": "addtotransaction(${1:jsonArray}, ${2:priceBookVarName}, ${3:resultAttributeArray})",
         "parameters": [
             {
-                "name": "items",
-                "type": "JSON Array",
-                "required": true,
-                "description": "An array of JSON objects, used to specify the Model information and associated Configuration fields to add to the Transaction. Each item is a new Configuration Line Item."
+                "name": "jsonArray",
+                "type": "JsonArray<Json&gt",
+                "required": false,
+                "description": ""
             },
             {
                 "name": "priceBookVarName",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "A string value used for setting the Transaction Price Book. For sites with Price Books enabled, this string is required for the Transaction. If Price Books are disabled, this will default to \"`_default_price_book`\". **Example:** \"mycustom_price_book\""
             },
             {
                 "name": "resultAttributeArray",
                 "type": "String Array",
-                "required": true,
+                "required": false,
                 "description": "An optional string array which contains a list sub-document attribute variable names that you want returned after the Line Item is created. **Example:** [\"_part_quantity\", \"_document_number\", \"_price_item_price_each\", \"myAttribute\"] **Default**: _document_number, _part_number, _price_quantity, _price_item_price_each, _parent_doc_number"
             },
             {
@@ -4079,13 +4043,13 @@
             {
                 "name": "string",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "Represents the given input string."
             },
             {
                 "name": "stringArray",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "Represents the given input array."
             },
             {
@@ -4108,9 +4072,15 @@
         "syntax": "sbappend(${1:stringBuilder}, ${2:string}, ${3:stringArray}, ${4:stringBuilder})",
         "parameters": [
             {
+                "name": "stringBuilder",
+                "type": "String",
+                "required": false,
+                "description": "Represents the given input stringbuilder object."
+            },
+            {
                 "name": "string",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "Represents the given input string."
             },
             {
@@ -4118,12 +4088,6 @@
                 "type": "String",
                 "required": true,
                 "description": "Represents the given input array."
-            },
-            {
-                "name": "stringBuilder",
-                "type": "String",
-                "required": true,
-                "description": "Represents the given input stringbuilder object."
             }
         ],
         "examples": [
@@ -4177,8 +4141,8 @@
         "syntax": "getsystemmultipleattrvalues(${1:dictType})",
         "parameters": [
             {
-                "name": "Dictionary",
-                "type": "Any",
+                "name": "dictType",
+                "type": "Dictionary",
                 "required": true,
                 "description": ""
             }
@@ -4227,16 +4191,16 @@
         "syntax": "setattributevalue(${1:documentNumber}, ${2:stringLiteralVariableName}, ${3:value})",
         "parameters": [
             {
-                "name": "documentNumberOrName",
+                "name": "documentNumber",
                 "type": "Integer",
                 "required": true,
-                "description": ""
+                "description": "Unique document number used as an identifier for the Transaction Line Item. This is required when the BML function is used for setting a sub-document value. This parameter can be an Integer or String \"integer\". For example, both \"2\" and 2 are valid entries."
             },
             {
-                "name": "value",
-                "type": "String Float Integer Currency Date Boolean",
+                "name": "stringLiteralVariableName",
+                "type": "String (or Integer or Float or Boolean or Any)",
                 "required": true,
-                "description": "The value you want set for the specified attribute. The type of value must match the type of the Commerce attribute. Array sets are represented by JSON array reference IDs which are created by the `jsonarrayrefid`function. Date attributes can be either BML Date objects or Text values. Currency and Float attributes can be both Float and Integer values."
+                "description": ""
             }
         ],
         "examples": [
@@ -4267,12 +4231,12 @@
             {
                 "name": "bsId",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
                 "name": "configurationKey",
-                "type": "Any",
+                "type": "configurationKey",
                 "required": true,
                 "description": ""
             }
@@ -4297,7 +4261,7 @@
             },
             {
                 "name": "...",
-                "type": "Any",
+                "type": "...",
                 "required": true,
                 "description": ""
             }
@@ -4335,7 +4299,7 @@
         "parameters": [
             {
                 "name": "val",
-                "type": "Any",
+                "type": "val",
                 "required": true,
                 "description": ""
             }
@@ -4374,7 +4338,7 @@
             {
                 "name": "dateStr",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {
@@ -4423,13 +4387,13 @@
         "parameters": [
             {
                 "name": "array",
-                "type": "Any",
+                "type": "array",
                 "required": true,
                 "description": ""
             },
             {
                 "name": "element",
-                "type": "Any",
+                "type": "element",
                 "required": true,
                 "description": ""
             }
@@ -4448,19 +4412,19 @@
         "parameters": [
             {
                 "name": "array",
-                "type": "Any",
+                "type": "array",
                 "required": true,
                 "description": ""
             },
             {
                 "name": "startIndex",
-                "type": "Any",
-                "required": true,
+                "type": "startIndex",
+                "required": false,
                 "description": ""
             },
             {
                 "name": "endIndex",
-                "type": "Any",
+                "type": "endIndex",
                 "required": true,
                 "description": ""
             }
@@ -4492,7 +4456,7 @@
             {
                 "name": "configId",
                 "type": "Integer",
-                "required": true,
+                "required": false,
                 "description": "The Configuration ID for the client side integration action :::note This is not the same as the configuration_id system attribute. ::: * For UI integrations, the client side integration action returns the config_id in the response JSON. * For other actions such as Terminate, Renew, Suspend, and Resume order, RESTful calls generated from the saveBomConfig BML function return the lineId."
             },
             {
@@ -4517,13 +4481,13 @@
             {
                 "name": "globalTableFunction",
                 "type": "Function",
-                "required": true,
+                "required": false,
                 "description": "The table function to invoke."
             },
             {
                 "name": "delimitedData",
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": ""
             },
             {

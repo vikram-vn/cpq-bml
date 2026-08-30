@@ -114,4 +114,58 @@ suite('apiDataLoader', () => {
             assert.deepStrictEqual(apiDataLoader.loadJson(baseName, tmpDir), second);
         });
     });
+
+    test('named loaders retrieve real JSON catalogs correctly', () => {
+        const {
+            loadBuiltInFunctionsJson,
+            loadBuiltInAttributesJson,
+            loadCpqJsApiJson,
+            loadUtilAttributesJson,
+            loadVariablesJson,
+            loadCustomSnippetsJson,
+            loadFunctionParamDataTypesJson,
+            loadFunctionReturnTypesJson,
+            loadBestPracticeAdvisoriesJson,
+            loadKeywordHoversJson,
+            loadCategoryLabelsJson,
+            loadCuratedParamsJson
+        } = loadFresh();
+
+        const funcs = loadBuiltInFunctionsJson();
+        assert.ok(funcs && typeof funcs === 'object' && funcs.atof);
+
+        const attrs = loadBuiltInAttributesJson();
+        assert.ok(attrs && typeof attrs === 'object');
+
+        const cpqjs = loadCpqJsApiJson();
+        assert.ok(cpqjs && typeof cpqjs === 'object' && cpqjs['CPQJS.actionExists']);
+
+        const utilAttrs = loadUtilAttributesJson();
+        assert.ok(utilAttrs && typeof utilAttrs === 'object');
+
+        const vars = loadVariablesJson();
+        assert.ok(vars && typeof vars === 'object' && vars._user_name);
+
+        const snippets = loadCustomSnippetsJson();
+        assert.ok(snippets && typeof snippets === 'object' && snippets.if);
+
+        const paramTypes = loadFunctionParamDataTypesJson();
+        assert.ok(paramTypes && typeof paramTypes === 'object');
+
+        const returnTypes = loadFunctionReturnTypesJson();
+        assert.ok(returnTypes && typeof returnTypes === 'object');
+
+        const advisories = loadBestPracticeAdvisoriesJson();
+        assert.ok(advisories && typeof advisories === 'object' && advisories.bmql);
+
+        const keywordHovers = loadKeywordHoversJson();
+        assert.ok(keywordHovers && typeof keywordHovers === 'object' && keywordHovers.if);
+
+        const categories = loadCategoryLabelsJson();
+        assert.ok(categories && typeof categories === 'object' && categories.categories);
+
+        const curatedParams = loadCuratedParamsJson();
+        assert.ok(curatedParams && typeof curatedParams === 'object' && curatedParams.put);
+        assert.deepStrictEqual(curatedParams.put, ['dictionaryIdentifier', 'key', 'value']);
+    });
 });

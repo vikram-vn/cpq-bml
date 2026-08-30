@@ -21,10 +21,13 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         assert.deepStrictEqual(resolveParamNames('hypot', 2, {}), ['x', 'y']);
 
         // Array functions
-        assert.deepStrictEqual(resolveParamNames('append', 2, {}), ['arrayIdentifier', 'newArrayElem']);
-        assert.deepStrictEqual(resolveParamNames('findinarray', 2, {}), ['arrayIdentifier', 'element']);
+        assert.deepStrictEqual(resolveParamNames('append', 2, {}), ['arrayIdentifier', 'appendValue']);
+        assert.deepStrictEqual(resolveParamNames('findinarray', 2, {}), ['arrayIdentifier', 'elementToFind']);
 
         // JSON & Dict
+        assert.deepStrictEqual(resolveParamNames('put', 3, {}), ['dictionaryIdentifier', 'key', 'value']);
+        assert.deepStrictEqual(resolveParamNames('get', 2, {}), ['dictionaryIdentifier', 'key']);
+        assert.deepStrictEqual(resolveParamNames('containskey', 2, {}), ['dictionaryIdentifier', 'key']);
         assert.deepStrictEqual(resolveParamNames('jsonarrayget', 2, {}), ['jsonArrayIdentifier', 'index', 'valueType']);
         assert.deepStrictEqual(resolveParamNames('getfloat', 2, {}), ['record', 'fieldName']);
     });
@@ -62,6 +65,77 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
             resolveParamNames('customfn', 2, mockApiData),
             ['customerId', 'orderCount']
         );
+    });
+
+    test('resolves CPQJS client-side function parameter signatures accurately', () => {
+        // CPQJS Action and Attribute existence
+        assert.deepStrictEqual(resolveParamNames('cpqjs.actionexists', 1, {}), ['stringVariableName']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.attributeexists', 1, {}), ['stringVariableName']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.tableexists', 1, {}), ['stringVariableName']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.gettableinfo', 1, {}), ['stringVariableName']);
+
+        // CPQJS Event Listeners (action, attribute, table)
+        assert.deepStrictEqual(resolveParamNames('cpqjs.onactioncomplete', 2, {}), ['stringVariableName', 'functionHandler']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.onattributechange', 2, {}), ['stringVariableName', 'functionHandler']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.ontableloaded', 2, {}), ['stringVariableName', 'functionHandler']);
+        assert.deepStrictEqual(resolveParamNames('cpqjsready', 1, {}), ['function']);
+
+        // CPQJS Overloaded methods (1-arg vs 2-arg vs 3-arg)
+        assert.deepStrictEqual(resolveParamNames('cpqjs.getattributeval', 1, {}), ['attributeVarName']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.getattributeval', 2, {}), ['attributeVarName', 'index']);
+
+        assert.deepStrictEqual(resolveParamNames('cpqjs.openpopup', 1, {}), ['content']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.openpopup', 2, {}), ['content', 'title']);
+
+        assert.deepStrictEqual(resolveParamNames('cpqjs.setattributeval', 2, {}), ['attributeVarName', 'value']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.setattributeval', 3, {}), ['attributeVarName', 'value', 'index']);
+
+        assert.deepStrictEqual(resolveParamNames('cpqjs.setattributestate', 2, {}), ['attributeVarName', 'state']);
+        assert.deepStrictEqual(resolveParamNames('cpqjs.setattributestate', 3, {}), ['attributeVarName', 'state', 'index']);
+    });
+
+    test('resolves REST HTTP functions and complex network APIs', () => {
+        const urlParams = resolveParamNames('urldata', 7, {});
+        assert.deepStrictEqual(urlParams, ['url', 'httpMethod', 'headers', 'parameters', 'timeout', 'formData', 'enableLoopback']);
+
+        assert.deepStrictEqual(resolveParamNames('urldatabyget', 6, {}), ['url', 'url_param', 'default_value', 'timeout', 'headers', 'enableLoopback']);
+        assert.deepStrictEqual(resolveParamNames('urldatabypost', 7, {}), ['url', 'url_param', 'default_value', 'headers', 'returnErrorResponse', 'timeout', 'enableLoopback']);
+    });
+
+    test('resolves JSON and XML data manipulation functions', () => {
+        assert.deepStrictEqual(resolveParamNames('jsonput', 3, {}), ['jsonIdentifier', 'key', 'value']);
+        assert.deepStrictEqual(resolveParamNames('jsonget', 4, {}), ['jsonIdentifier', 'key', 'valueType', 'defaultValue']);
+        assert.deepStrictEqual(resolveParamNames('jsonremove', 2, {}), ['jsonIdentifier', 'key']);
+        assert.deepStrictEqual(resolveParamNames('jsonpathgetsingle', 4, {}), ['jsonIdentifier', 'jsonPath', 'valueType', 'defaultValue']);
+        assert.deepStrictEqual(resolveParamNames('jsonpathset', 3, {}), ['jsonIdentifier', 'jsonPath', 'value']);
+        assert.deepStrictEqual(resolveParamNames('readxmlsingle', 3, {}), ['xmlPayload', 'xpaths', 'defaultErrorMessage']);
+        assert.deepStrictEqual(resolveParamNames('transformxml', 3, {}), ['xml', 'xslFileLocation', 'defaultErrorMessage']);
+    });
+
+    test('resolves Date & Time functions accurately', () => {
+        assert.deepStrictEqual(resolveParamNames('datetostr', 3, {}), ['date', 'format', 'timeZone']);
+        assert.deepStrictEqual(resolveParamNames('strtojavadate', 3, {}), ['dateStr', 'format', 'timeZone']);
+        assert.deepStrictEqual(resolveParamNames('getdiffindays', 2, {}), ['date1', 'date2']);
+        assert.deepStrictEqual(resolveParamNames('addmonths', 2, {}), ['date', 'num_of_months']);
+        assert.deepStrictEqual(resolveParamNames('adddays', 2, {}), ['date', 'num_of_days']);
+    });
+
+    test('handles single-parameter functions without truncation', () => {
+        assert.deepStrictEqual(resolveParamNames('len', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('lower', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('upper', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('trim', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('html', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('encodebase64', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('decodebase64', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('atof', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('atoi', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('isnumber', 1, {}), ['str']);
+        assert.deepStrictEqual(resolveParamNames('dict', 1, {}), ['dictType']);
+        assert.deepStrictEqual(resolveParamNames('json', 1, {}), ['jsonFormatStr']);
+        assert.deepStrictEqual(resolveParamNames('sizeofarray', 1, {}), ['arrayIdentifier']);
+        assert.deepStrictEqual(resolveParamNames('keys', 1, {}), ['dictionaryIdentifier']);
+        assert.deepStrictEqual(resolveParamNames('values', 1, {}), ['dictionaryIdentifier']);
     });
 
     test('suppresses inlay hint when argument matches parameter name', () => {
@@ -113,6 +187,8 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         assert.strictEqual(inferVariableType('replace(str, "a", "b")'), 'String');
         assert.strictEqual(inferVariableType('split(str, ",")'), 'String[]');
         assert.strictEqual(inferVariableType('getfloat(rRow, "price")'), 'Float');
+        assert.strictEqual(inferVariableType('atoi("42")'), 'Integer');
+        assert.strictEqual(inferVariableType('isnumber("100")'), 'Boolean');
     });
 
     test('collects local variables in scope and ignores out-of-scope variables', () => {
