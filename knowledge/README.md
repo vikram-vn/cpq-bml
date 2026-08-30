@@ -52,9 +52,13 @@ All 30 standard Oracle CPQ BML reference manuals categorized by topic:
 * **[XML Functions](BML/XML.md)** &mdash; `readxml()`, `transformxml()`, XML parsing, and tag manipulation.
 * **[URL & REST Access](BML/URLAccess.md)** &mdash; `urldata()`, HTTP methods (`GET`, `POST`, `PUT`, `DELETE`), headers, and payloads.
 * **[Use SOAP with BML](BML/UseSOAPwithBML.md)** &mdash; SOAP envelope construction, WSDL endpoints, and XML response handling.
+* **[Use BML to Connect to an External Service](BML/Use_BML_to_Connect_to_an_External_Service.md)** &mdash; Outbound REST/SOAP integration patterns and credential handling.
+* **[Execute BML via REST API](BML/RestAPIs_BML.md)** &mdash; Oracle CPQ REST API endpoints for invoking BML functions externally.
 
 #### 🔷 CPQ Domain, Platform & System Services
 * **[BOM & Configuration Functions](BML/Others-BOM.md)** &mdash; Bill of Materials mapping, BOM hierarchy, and configuration rules.
+* **[BML for Transaction Arrays](BML/TransactionArraysBML.md)** &mdash; Managing and updating Commerce Transaction Array attributes via JSON in BML.
+* **[Pricing BML Calculations](BML/pricingBML.md)** &mdash; Custom pricing scripts and rate calculations in Oracle CPQ Pricing Portal.
 * **[System Configuration](BML/Others-SysConfig.md)** &mdash; System properties, environment constants, and runtime variables.
 * **[Constants Reference](BML/Others-Constants.md)** &mdash; System constants (`BM_*`, `NULL`, `TRUE`, `FALSE`).
 * **[Global Dictionaries](BML/Others-GlobalDict.md)** &mdash; Session-level and transaction-level global cache dictionaries.
@@ -68,6 +72,7 @@ All 30 standard Oracle CPQ BML reference manuals categorized by topic:
 * **[Library Functions Management](BML/Library_Functions.md)** &mdash; Managing reusable util library scripts across folders.
 * **[Function Wizard](BML/FunctionWizard.md)** &mdash; Using the function wizard for automated skeleton generation.
 * **[Debug Util Functions](BML/DebugUtilFunctions.md)** &mdash; Using CPQ debug harness, logging, and parameter testing.
+* **[BML Unit Testing Framework (BMLT)](BML/BMLT.md)** &mdash; Developer Toolkit unit testing conventions and assertion scripts.
 
 ---
 

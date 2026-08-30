@@ -14,8 +14,15 @@ if _package_parent not in sys.path:
 
 from bml_crawler.html2docmd import HtmlToDocusaurus
 
-# Suppress insecure request warnings from urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+EXTRA_BML_PAGES = [
+    "Commerce_Process/Attributes/TransactionArrays/TransactionArraysBML.htm",
+    "DeveloperToolkit/BMLT.htm",
+    "BML/UseSOAPwithBML.htm",
+    "RestAPIs/cpqAPIs/bml.htm",
+    "Manage_Pricing/pricingBML.htm",
+    "Integrating_With_BigMachines/UseCases/Use_BML_to_Connect_to_an_External_Service.htm"
+]
+
 
 class BmlDocCrawler:
     def __init__(self, base_url="https://help-cxsales.oraclecloud.com/cpq/Content/", max_depth=3, output_dir=None):
@@ -61,8 +68,16 @@ class BmlDocCrawler:
         relative_path = url[len(self.base_url):]
         parts = relative_path.split('/')
         module_folder = parts[0] if parts else "BML"
+        
+        if module_folder != "BestPractices":
+            module_folder = "BML"
+            
         filename = os.path.basename(relative_path)
         base_name, _ = os.path.splitext(filename)
+        
+        if "cpqapis/bml" in relative_path.lower():
+            base_name = "RestAPIs_BML"
+            
         out_path = os.path.join(self.output_dir, module_folder, base_name + ".md")
         return os.path.abspath(out_path)
 
@@ -125,14 +140,13 @@ class BmlDocCrawler:
         if not main_content:
             main_content = soup.body if soup.body else soup
             
-        # Instantiate HTML to Docusaurus Markdown converter
-        img_callback = (lambda img_u: self.download_image(img_u, module_folder)) if module_folder != "BestPractices" else False
+        # Instantiate HTML to Docusaurus Markdown converter (no images)
         parser = HtmlToDocusaurus(
             base_url=self.base_url,
             output_dir=self.output_dir,
             current_url=url,
             current_output_path=workspace_path,
-            download_image_callback=img_callback
+            download_image_callback=False
         )
         
         # Convert content to Docusaurus Markdown
@@ -233,6 +247,13 @@ class BmlDocCrawler:
                     if not any(norm == q[0] for q in queue):
                         queue.append((norm, 1))
 
+        if not seed_url and (modules is None or "BML" in modules):
+            for rel_path in EXTRA_BML_PAGES:
+                full_url = urllib.parse.urljoin(self.base_url, rel_path)
+                norm = self.normalize_url(full_url)
+                if not any(norm == q[0] for q in queue):
+                    queue.append((norm, 1))
+
         print(f"Starting crawl with {len(queue)} initial pages in queue...")
         while queue:
             current_url, depth = queue.pop(0)
@@ -280,5 +301,5 @@ if __name__ == '__main__':
     for mod in ["BML", "BestPractices"]:
         mod_dir = os.path.join(crawler.output_dir, mod)
         if os.path.isdir(mod_dir):
-            postprocess_bml_docs(mod_dir, strip_images=(mod == "BestPractices"))
+            postprocess_bml_docs(mod_dir, strip_images=True)
 

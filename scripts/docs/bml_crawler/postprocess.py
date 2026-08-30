@@ -193,7 +193,11 @@ def _docusaurus_format(content):
 def postprocess_bml_docs(bml_dir, known_names=None, strip_images=False):
     if known_names is None:
         known_names = _load_known_function_names(bml_dir)
-    md_files = [os.path.join(bml_dir, f) for f in os.listdir(bml_dir) if f.endswith(".md")]
+    md_files = []
+    for root, _, files in os.walk(bml_dir):
+        for f in files:
+            if f.endswith(".md"):
+                md_files.append(os.path.join(root, f))
     fixed = 0
     for path in md_files:
         with open(path, encoding="utf-8") as f:
