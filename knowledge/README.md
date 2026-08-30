@@ -71,6 +71,36 @@ All 30 standard Oracle CPQ BML reference manuals categorized by topic:
 
 ---
 
+### 3. Oracle CPQ Best Practices Reference (`knowledge/BestPractices/`)
+Official Oracle CPQ best practices and architectural design patterns:
+
+#### 🔷 Architecture, Performance & Data
+* **[Best Practices Overview](BestPractices/BestPracticesOverview.md)** &mdash; High-level CPQ architecture, design rules, and recommendations.
+* **[Performance Best Practices](BestPractices/PerformanceBestPractices.md)** &mdash; Maximizing site performance, caching, loop minimization, and line item optimization.
+* **[Commerce Best Practices](BestPractices/CommerceBestPractices.md)** &mdash; Commerce process design, modify actions, and transactional logic.
+* **[Application Boundaries & Magic Numbers](BestPractices/ApplicationBoundariesMagicNumbers.md)** &mdash; Eliminating hard-coded magic values and setting clean layer boundaries.
+* **[Store Data Delimited Strings](BestPractices/StoreDataDelimitedStrings.md)** &mdash; Patterns and considerations for storing delimited dataset values.
+* **[Parse Strings into Numbers](BestPractices/ParseStringsIntoNumbers.md)** &mdash; Safe numeric conversions and error suppression.
+* **[Naming Conventions](BestPractices/NamingConventions.md)** &mdash; Standard naming conventions for attributes, variables, rules, and functions.
+
+#### 🔷 Error Handling, Security & Administration
+* **[Error Handling](BestPractices/ErrorHandling.md)** &mdash; Robust error handling, validation rules, and transaction recovery.
+* **[Error Messages](BestPractices/ErrorMessages.md)** &mdash; Writing actionable, clear user-facing validation and error messages.
+* **[Approval Sequences](BestPractices/ApprovalSequencesBestPractices.md)** &mdash; Multi-step approval hierarchy architecture and rules design.
+* **[Participant Profile Best Practices](BestPractices/ParticipantProfileBestPractices.md)** &mdash; Managing participant permissions and user group access.
+* **[Source Control & Versioning](BestPractices/SourceControlVersioning.md)** &mdash; Migration packages, deployment sequencing, and version management.
+* **[Identify Site Name](BestPractices/IdentifySiteName.md)** &mdash; Environment detection and domain-aware script branching.
+
+#### 🔷 UI, Documents & Client-Side Scripting
+* **[Image Best Practices](BestPractices/ImageBestPractices.md)** &mdash; Asset compression, responsive layouts, and File Manager optimization.
+* **[FO to XLS](BestPractices/FOtoXLS.md)** &mdash; Document Engine XSL-FO to Excel spreadsheet generation.
+* **[Use JavaScript in CPQ](BestPractices/UseJavaScriptCPQ.md)** &mdash; Guidelines for JET UI extensions and client-side scripts.
+* **[Use jQuery in CPQ](BestPractices/UsejQueryCPQ.md)** &mdash; Safe DOM operations and event handling.
+* **[Ensure Latest JS Version](BestPractices/EnsurelLtestVersion.md)** &mdash; Client-side library lifecycle and deprecation management.
+* **[Upgrade JavaScript v2](BestPractices/UpgradeJSv2.md)** &mdash; Migration guide for CPQ JavaScript Framework 2.0.
+
+---
+
 ## ⚡ Quick Start: Essential Shortcuts
 
 | Action | Shortcut (Windows/Linux) | Shortcut (macOS) |

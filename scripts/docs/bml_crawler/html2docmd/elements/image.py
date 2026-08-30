@@ -1,4 +1,4 @@
-﻿"""
+"""
 elements/image.py - Image element handler.
 
 Features:
@@ -22,6 +22,10 @@ def convert_image(element, context) -> str:
     if "transparent.gif" in src:
         return ""
 
+    # If image downloads are explicitly disabled
+    if context.download_image_callback is False:
+        return ""
+
     # Try to download the image locally
     if context.download_image_callback:
         resolved_url = context.resolve_url(src)
@@ -29,13 +33,7 @@ def convert_image(element, context) -> str:
         if local_path:
             filename = os.path.basename(local_path)
             return f"![{alt}](images/{filename})"
-        # Fallback: use resolved URL if download failed
-        return f"![{alt}]({resolved_url})"
+        return ""
 
-    # No download callback — use flat filename if path-like, else raw src
-    parsed = urllib.parse.urlparse(src)
-    if parsed.scheme in ("http", "https"):
-        return f"![{alt}]({src})"
-
-    filename = os.path.basename(src.split("?")[0])
-    return f"![{alt}](images/{filename})"
+    # No download callback — return empty
+    return ""

@@ -190,7 +190,7 @@ def _docusaurus_format(content):
 # Main
 # ---------------------------------------------------------------------------
 
-def postprocess_bml_docs(bml_dir, known_names=None):
+def postprocess_bml_docs(bml_dir, known_names=None, strip_images=False):
     if known_names is None:
         known_names = _load_known_function_names(bml_dir)
     md_files = [os.path.join(bml_dir, f) for f in os.listdir(bml_dir) if f.endswith(".md")]
@@ -199,7 +199,10 @@ def postprocess_bml_docs(bml_dir, known_names=None):
         with open(path, encoding="utf-8") as f:
             original = f.read()
         content = original.replace("\r\n", "\n").replace("\r", "\n")
-        content = _fix_image_refs(content)
+        if strip_images:
+            content = _IMG_RE.sub("", content)
+        else:
+            content = _fix_image_refs(content)
         content = _promote_function_headers(content, known_names)
         content = _convert_param_tables(content)
         content = _docusaurus_format(content)
@@ -209,7 +212,7 @@ def postprocess_bml_docs(bml_dir, known_names=None):
                 f.write(content)
             print(f"  [postprocess] Fixed: {os.path.basename(path)}")
             fixed += 1
-    print(f"[postprocess] Done: {fixed}/{len(md_files)} files updated.")
+    print(f"[postprocess] Done: {fixed}/{len(md_files)} files updated in {os.path.basename(bml_dir)}.")
 
 
 if __name__ == "__main__":
