@@ -87,6 +87,21 @@ function loadFunctionReturnTypesJson(extPath) {
     return loadJson("function-return-types", extPath);
 }
 
+// Best practice advisories
+function loadBestPracticeAdvisoriesJson(extPath) {
+    return loadJson("best-practice-advisories", extPath);
+}
+
+// Keyword hovers
+function loadKeywordHoversJson(extPath) {
+    return loadJson("keyword-hovers", extPath);
+}
+
+// Category labels
+function loadCategoryLabelsJson(extPath) {
+    return loadJson("category-labels", extPath);
+}
+
 module.exports = {
     loadJson,
     invalidateCache,
@@ -98,4 +113,7 @@ module.exports = {
     loadCustomSnippetsJson,
     loadFunctionParamDataTypesJson,
     loadFunctionReturnTypesJson,
+    loadBestPracticeAdvisoriesJson,
+    loadKeywordHoversJson,
+    loadCategoryLabelsJson
 };

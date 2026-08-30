@@ -1,0 +1,22 @@
+{
+  "categories": {
+    "function": "function",
+    "attribute": "attribute",
+    "variable": "variable",
+    "snippet": "snippet",
+    "keyword": "keyword",
+    "constant": "constant"
+  },
+  "functionCategories": {
+    "direct_db_access": "database",
+    "arrays": "array",
+    "string": "string",
+    "date": "date",
+    "dictionary": "dictionary",
+    "json": "json",
+    "math": "math",
+    "url_access": "url",
+    "xml": "xml",
+    "others": "misc"
+  }
+}

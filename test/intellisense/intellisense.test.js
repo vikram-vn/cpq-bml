@@ -100,7 +100,7 @@ suite('BML IntelliSense', () => {
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = decodebase64("YWJj");' });
 		const hovers = await vscode.commands.executeCommand('vscode.executeHoverProvider', doc.uri, new vscode.Position(0, 6));
 		const value = hovers[0].contents.map(c => c.value).join('\n');
-		assert.match(value, /\*\*Usage Notes?:\*\*/);
+		assert.match(value, /(?:### |\*\*)Usage Notes?:?\*?\*?/);
 		assert.match(value, /`decodebase64\("YWJj"\)`/);
 		// only one fenced code block (the syntax header) - the prose notes aren't fenced
 		assert.strictEqual((value.match(/```/g) || []).length, 2);

@@ -12,7 +12,14 @@ function decodeHtmlEntities(str) {
         .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
 }
 
-const CATEGORY_LABEL = {
+const {
+    loadBestPracticeAdvisoriesJson,
+    loadKeywordHoversJson,
+    loadCategoryLabelsJson
+} = require('./apiDataLoader');
+
+const categoryData = loadCategoryLabelsJson();
+const CATEGORY_LABEL = (categoryData && categoryData.categories) || {
     function: 'function',
     attribute: 'attribute',
     variable: 'variable',
@@ -21,7 +28,7 @@ const CATEGORY_LABEL = {
     constant: 'constant'
 };
 
-const FUNCTION_CATEGORY_LABEL = {
+const FUNCTION_CATEGORY_LABEL = (categoryData && categoryData.functionCategories) || {
     direct_db_access: 'database',
     arrays: 'array',
     string: 'string',
@@ -34,32 +41,8 @@ const FUNCTION_CATEGORY_LABEL = {
     others: 'misc'
 };
 
-const KEYWORD_HOVERS = {
-    'if': { syntax: 'if (condition) { ... }', category: 'keyword', notes: 'Executes block if condition evaluates to true.' },
-    'elif': { syntax: 'elif (condition) { ... }', category: 'keyword', notes: 'Executes block if previous if/elif condition was false and this condition is true.' },
-    'else': { syntax: 'else { ... }', category: 'keyword', notes: 'Executes block if all preceding if/elif conditions were false.' },
-    'for': { syntax: 'for var in array { ... }', category: 'keyword', notes: 'Loops through each element in an array or collection.' },
-    'return': { syntax: 'return value;', category: 'keyword', notes: 'Returns value from the function and terminates execution.' },
-    'bmql': { syntax: 'recordset bmql("SELECT column1, column2 FROM dataTable WHERE condition = $var");', category: 'function', functionCategory: 'direct_db_access', notes: 'BigMachines Query Language (BMQL) - executes direct database SQL queries on CPQ Data Tables.' },
-    'throwerror': { syntax: 'throwerror(errorMessage [, isSystemError]);', category: 'function', functionCategory: 'others', notes: 'Stops script execution and raises a user-facing error message on CPQ UI.' },
-    'print': { syntax: 'print(value);', category: 'function', functionCategory: 'others', notes: 'Prints value to the CPQ BML Function Editor execution log / console.' },
-    'true': { syntax: 'true', category: 'constant', notes: 'Boolean true constant.' },
-    'false': { syntax: 'false', category: 'constant', notes: 'Boolean false constant.' },
-    'null': { syntax: 'null', category: 'constant', notes: 'Null reference or empty object.' }
-};
-
-const BEST_PRACTICE_ADVISORIES = {
-    'bmql': 'Avoid executing BMQL inside loops. For large quotes, query once before loop iteration and cache results in a `dict("string")`.\n*(Source: [Performance Best Practices](BestPractices/PerformanceBestPractices.md))*',
-    'print': 'Remove or comment out `print` statements before go-live to eliminate execution logging overhead during high-concurrency transactions.\n*(Source: [Performance Best Practices](BestPractices/PerformanceBestPractices.md))*',
-    'dict': 'Use `dict("string")` instead of `dict("string[]")` where possible; simpler single-dimensional dictionary structures process significantly faster on large quotes.\n*(Source: [Performance Best Practices](BestPractices/PerformanceBestPractices.md))*',
-    'throwerror': 'Provide clear, actionable error messages specifying the exact missing field or step required so users can resolve the issue without contacting support.\n*(Source: [Error Messages Best Practices](BestPractices/ErrorMessages.md))*',
-    'urldata': 'Always verify HTTP response status codes (`get(res, "status_code") == "200"`) and handle network timeouts gracefully.\n*(Source: [Error Handling Best Practices](BestPractices/ErrorHandling.md))*',
-    'urldatabypost': 'Always verify HTTP response status codes (`get(res, "status_code") == "200"`) and use token-based authentication.\n*(Source: [Error Handling Best Practices](BestPractices/ErrorHandling.md))*',
-    'atoi': 'Validate input strings with `isnumber()` before calling `atoi()` to prevent runtime exceptions on empty or non-numeric inputs.\n*(Source: [Parse Strings into Numbers](BestPractices/ParseStringsIntoNumbers.md))*',
-    'atof': 'Validate input strings with `isnumber()` before calling `atof()` to prevent runtime exceptions on non-numeric inputs.\n*(Source: [Parse Strings into Numbers](BestPractices/ParseStringsIntoNumbers.md))*',
-    'split': 'Avoid repeated unindexed string splitting inside line item loops; store pre-split lists in memory variables.\n*(Source: [Store Data Delimited Strings](BestPractices/StoreDataDelimitedStrings.md))*',
-    'join': 'Avoid nested delimiter joins in loops; consider `stringbuilder` or typed array manipulation.\n*(Source: [Store Data Delimited Strings](BestPractices/StoreDataDelimitedStrings.md))*'
-};
+const KEYWORD_HOVERS = loadKeywordHoversJson();
+const BEST_PRACTICE_ADVISORIES = loadBestPracticeAdvisoriesJson();
 
 /**
  * Builds the "*scope · type*" (or "*category function*") metadata line shown
@@ -94,6 +77,31 @@ function isPlaceholderParamDesc(desc, paramName, paramType) {
     return false;
 }
 
+function isParamOptional(p, syntax) {
+    if (p.required === false) return true;
+    if (syntax && p.name) {
+        const idx = syntax.indexOf(p.name);
+        if (idx !== -1) {
+            const before = syntax.substring(0, idx);
+            const openBrackets = (before.match(/\[/g) || []).length;
+            const closeBrackets = (before.match(/\]/g) || []).length;
+            if (openBrackets > closeBrackets) {
+                return true;
+            }
+        }
+    }
+    return p.required === false;
+}
+
+function isProseExample(example) {
+    if (!example || typeof example !== 'string') return false;
+    const clean = example.trim();
+    if (/\b(will return|is used to|can be|should be|returns the)\b/i.test(clean) && !clean.includes('\n')) {
+        return true;
+    }
+    return /^\s*\d+\.\s/.test(clean) && !clean.includes(';\n') && !clean.includes('{\n');
+}
+
 function parseExampleItem(rawEx) {
     if (!rawEx || typeof rawEx !== 'string') return null;
     const text = decodeHtmlEntities(rawEx).trim();
@@ -104,8 +112,7 @@ function parseExampleItem(rawEx) {
     if (combinedMatch) {
         const titleCandidate = combinedMatch[2].trim();
         const codeCandidate = combinedMatch[3].trim();
-        const isProseExplanation = /\b(will return|is used to|can be|should be|returns the)\b/i.test(codeCandidate) && !codeCandidate.includes('\n');
-        if (!isProseExplanation && codeCandidate && (
+        if (!isProseExample(codeCandidate) && codeCandidate && (
             codeCandidate.includes(';\n') ||
             codeCandidate.includes('{\n') ||
             codeCandidate.includes(';\r\n') ||
@@ -123,16 +130,16 @@ function parseExampleItem(rawEx) {
     }
 
     // Pattern 2: Single-line or pure prose usage note
-    if (/^\s*\d+\.\s/.test(text) && !text.includes(';\n') && !text.includes('{\n') && !text.includes(';\r\n') && !text.includes('{\r\n')) {
+    if (isProseExample(text)) {
         return {
             title: text.replace(/^\s*\d+\.\s*/, '').trim(),
-            code: null
+            code: ''
         };
     }
 
     // Pattern 3: Pure code snippet
     return {
-        title: null,
+        title: '',
         code: text
     };
 }
@@ -142,35 +149,33 @@ function normalizeCodeForComparison(code) {
     return code.replace(/\s+/g, '').replace(/;+/g, ';').trim().toLowerCase();
 }
 
-function isProseExample(example) {
-    if (!example || typeof example !== 'string') return false;
-    return /^\s*\d+\.\s/.test(example) && !example.includes(';\n') && !example.includes('{\n');
-}
-
-function processExamples(examples) {
-    if (!examples || !examples.length) return [];
+function processExamples(rawExamples) {
+    if (!rawExamples || !Array.isArray(rawExamples)) return [];
     const parsedList = [];
-    const seenCode = new Map();
+    const seenCodes = new Set();
 
-    for (const ex of examples) {
-        const item = parseExampleItem(ex);
-        if (!item) continue;
+    for (const item of rawExamples) {
+        const parsed = typeof item === 'string' ? parseExampleItem(item) : item;
+        if (!parsed) continue;
 
-        if (item.code) {
-            const norm = normalizeCodeForComparison(item.code);
-            if (seenCode.has(norm)) {
-                const existingIdx = seenCode.get(norm);
-                if (item.title && !parsedList[existingIdx].title) {
-                    parsedList[existingIdx].title = item.title;
+        if (parsed.code) {
+            const normalizedCode = parsed.code.replace(/[\s\r\n\t]+/g, ' ').trim();
+            if (seenCodes.has(normalizedCode)) {
+                // If this is a duplicate code block with a descriptive title, update the title on the earlier item
+                if (parsed.title) {
+                    const existing = parsedList.find(p => p.code && p.code.replace(/[\s\r\n\t]+/g, ' ').trim() === normalizedCode);
+                    if (existing && !existing.title) {
+                        existing.title = parsed.title;
+                    }
                 }
-            } else {
-                seenCode.set(norm, parsedList.length);
-                parsedList.push(item);
+                continue;
             }
-        } else if (item.title) {
-            const isDupTitle = parsedList.some(p => p.title && p.title.toLowerCase() === item.title.toLowerCase());
+            seenCodes.add(normalizedCode);
+            parsedList.push(parsed);
+        } else if (parsed.title) {
+            const isDupTitle = parsedList.some(p => p.title && p.title.toLowerCase() === parsed.title.toLowerCase());
             if (!isDupTitle) {
-                parsedList.push(item);
+                parsedList.push(parsed);
             }
         }
     }
@@ -202,16 +207,27 @@ function formatAsJsDoc(info) {
     const funcName = (info.name || (info.syntax ? info.syntax.split('(')[0] : '') || '').trim().toLowerCase();
     const advisory = BEST_PRACTICE_ADVISORIES[funcName];
     if (advisory) {
-        md.appendMarkdown(`> 💡 **Best Practice:** ${advisory}\n\n`);
+        md.appendMarkdown(`> 💡 **${advisory.title}**\n`);
+        md.appendMarkdown(`> ${advisory.text}\n`);
+        if (advisory.linkText && advisory.linkUrl) {
+            md.appendMarkdown(`>\n> → *[${advisory.linkText}](${advisory.linkUrl})*\n\n`);
+        } else {
+            md.appendMarkdown(`\n\n`);
+        }
     }
 
     if (info.parameters && info.parameters.length) {
-        md.appendMarkdown(`**Parameters:**\n`);
+        md.appendMarkdown(`### Parameters\n\n`);
+        md.appendMarkdown(`| Parameter | Type | Required | Description |\n`);
+        md.appendMarkdown(`| :--- | :--- | :--- | :--- |\n`);
         info.parameters.forEach(p => {
-            const req = p.required === false ? ' *(optional)*' : '';
+            const name = p.name || 'param';
+            const type = p.type || p.dataType || 'Any';
+            const isOpt = isParamOptional(p, info.syntax || info.fullSignature);
+            const req = isOpt ? 'No' : 'Yes';
             const hasCustomDesc = p.description && !isPlaceholderParamDesc(p.description, p.name, p.type || p.dataType);
-            const desc = hasCustomDesc ? ` — ${decodeHtmlEntities(p.description)}` : '';
-            md.appendMarkdown(`- \`${p.name}\` \`[${p.type || p.dataType || 'Any'}]\`${req}${desc}\n`);
+            const desc = hasCustomDesc ? decodeHtmlEntities(p.description).replace(/\|/g, '\\|') : '-';
+            md.appendMarkdown(`| \`${name}\` | \`${type}\` | ${req} | ${desc} |\n`);
         });
         md.appendMarkdown('\n');
     }
@@ -227,28 +243,28 @@ function formatAsJsDoc(info) {
     if (info.examples?.length) {
         const parsedExamples = processExamples(info.examples);
         if (parsedExamples.length > 0) {
-            const heading = parsedExamples.every(e => !e.code) ? 'Usage Note' : 'Example';
-            md.appendMarkdown(`**${heading}${parsedExamples.length > 1 ? 's' : ''}:**\n`);
+            const isAllProse = parsedExamples.every(e => !e.code);
+            const heading = isAllProse ? `**Usage Note${parsedExamples.length > 1 ? 's' : ''}:**` : `### Example${parsedExamples.length > 1 ? 's' : ''}`;
+            md.appendMarkdown(`${heading}\n\n`);
 
             if (parsedExamples.length === 1) {
                 const ex = parsedExamples[0];
                 if (ex.title) {
-                    md.appendMarkdown(`\n${highlightInlineCode(ex.title)}:\n`);
+                    const colon = ex.code ? ':\n' : '\n\n';
+                    md.appendMarkdown(`${highlightInlineCode(ex.title)}${colon}`);
                 }
                 if (ex.code) {
                     md.appendCodeblock(ex.code, 'bml');
-                } else if (!ex.code && !ex.title) {
-                    // fallback
                 }
             } else {
                 parsedExamples.forEach((ex, idx) => {
                     if (ex.title && ex.code) {
-                        md.appendMarkdown(`\n${idx + 1}. ${highlightInlineCode(ex.title)}:\n`);
+                        md.appendMarkdown(`${idx + 1}. ${highlightInlineCode(ex.title)}:\n`);
                         md.appendCodeblock(ex.code, 'bml');
                     } else if (ex.code) {
                         md.appendCodeblock(ex.code, 'bml');
                     } else if (ex.title) {
-                        md.appendMarkdown(`\n${idx + 1}. ${highlightInlineCode(ex.title)}\n`);
+                        md.appendMarkdown(`${idx + 1}. ${highlightInlineCode(ex.title)}\n\n`);
                     }
                 });
             }
@@ -309,9 +325,15 @@ function formatWorkspaceFunctionHover(wsInfo) {
     }
 
     if (wsInfo.parameters && wsInfo.parameters.length) {
-        md.appendMarkdown(`**Parameters:**\n`);
+        md.appendMarkdown(`### Parameters\n\n`);
+        md.appendMarkdown(`| Parameter | Type | Required | Description |\n`);
+        md.appendMarkdown(`| :--- | :--- | :--- | :--- |\n`);
         wsInfo.parameters.forEach(p => {
-            md.appendMarkdown(`- \`${p.name}\` \`[${p.dataType || 'any'}]\`\n`);
+            const name = p.name || 'param';
+            const type = p.dataType || 'Any';
+            const req = p.required === false ? 'No' : 'Yes';
+            const desc = p.description ? decodeHtmlEntities(p.description).replace(/\|/g, '\\|') : '-';
+            md.appendMarkdown(`| \`${name}\` | \`${type}\` | ${req} | ${desc} |\n`);
         });
         md.appendMarkdown('\n');
     }

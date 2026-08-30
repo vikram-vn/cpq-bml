@@ -1,0 +1,62 @@
+{
+  "bmql": {
+    "title": "Performance Best Practice",
+    "text": "Avoid executing BMQL inside loops. For large quotes, query once before loop iteration and cache results in a `dict(\"string\")`.",
+    "linkText": "Read Oracle CPQ Performance Best Practices",
+    "linkUrl": "BestPractices/PerformanceBestPractices.md"
+  },
+  "print": {
+    "title": "Production Advisory",
+    "text": "Remove or comment out `print` statements before go-live to eliminate execution logging overhead during high-concurrency transactions.",
+    "linkText": "Read Oracle CPQ Performance Best Practices",
+    "linkUrl": "BestPractices/PerformanceBestPractices.md"
+  },
+  "dict": {
+    "title": "Data Structure Performance",
+    "text": "Use `dict(\"string\")` instead of `dict(\"string[]\")` where possible; simpler single-dimensional dictionary structures process significantly faster on large quotes.",
+    "linkText": "Read Oracle CPQ Performance Best Practices",
+    "linkUrl": "BestPractices/PerformanceBestPractices.md"
+  },
+  "throwerror": {
+    "title": "Error Handling Best Practice",
+    "text": "Provide clear, actionable error messages specifying the exact missing field or step required so users can resolve the issue without contacting support.",
+    "linkText": "Read Oracle CPQ Error Messages Best Practices",
+    "linkUrl": "BestPractices/ErrorMessages.md"
+  },
+  "urldata": {
+    "title": "Resilience & Security Best Practice",
+    "text": "Always verify HTTP response status codes (`get(res, \"status_code\") == \"200\"`) and handle network timeouts gracefully.",
+    "linkText": "Read Oracle CPQ Error Handling Best Practices",
+    "linkUrl": "BestPractices/ErrorHandling.md"
+  },
+  "urldatabypost": {
+    "title": "Resilience & Security Best Practice",
+    "text": "Always verify HTTP response status codes (`get(res, \"status_code\") == \"200\"`) and use token-based authentication.",
+    "linkText": "Read Oracle CPQ Error Handling Best Practices",
+    "linkUrl": "BestPractices/ErrorHandling.md"
+  },
+  "atoi": {
+    "title": "Safe Parsing Best Practice",
+    "text": "Validate input strings with `isnumber()` before calling `atoi()` to prevent runtime exceptions on empty or non-numeric inputs.",
+    "linkText": "Read Parsing Strings Into Numbers Best Practices",
+    "linkUrl": "BestPractices/ParseStringsIntoNumbers.md"
+  },
+  "atof": {
+    "title": "Safe Parsing Best Practice",
+    "text": "Validate input strings with `isnumber()` before calling `atof()` to prevent runtime exceptions on non-numeric inputs.",
+    "linkText": "Read Parsing Strings Into Numbers Best Practices",
+    "linkUrl": "BestPractices/ParseStringsIntoNumbers.md"
+  },
+  "split": {
+    "title": "Delimited Strings Best Practice",
+    "text": "Avoid repeated unindexed string splitting inside line item loops; store pre-split lists in memory variables.",
+    "linkText": "Read Storing Data in Delimited Strings Best Practices",
+    "linkUrl": "BestPractices/StoreDataDelimitedStrings.md"
+  },
+  "join": {
+    "title": "String Construction Best Practice",
+    "text": "Avoid nested delimiter joins in loops; consider `stringbuilder` or typed array manipulation.",
+    "linkText": "Read Storing Data in Delimited Strings Best Practices",
+    "linkUrl": "BestPractices/StoreDataDelimitedStrings.md"
+  }
+}

@@ -91,6 +91,9 @@ async function compileExtension() {
         path.join(intellisenseDir, 'custom-snippets.json'),
         path.join(intellisenseDir, 'function-param-data-types.json'),
         path.join(intellisenseDir, 'function-return-types.json'),
+        path.join(intellisenseDir, 'best-practice-advisories.json'),
+        path.join(intellisenseDir, 'keyword-hovers.json'),
+        path.join(intellisenseDir, 'category-labels.json'),
     ];
 
     for (const srcPath of jsonFiles) {

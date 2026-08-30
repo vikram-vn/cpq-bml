@@ -93,13 +93,14 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         assert.match(md.value, /Float getfloat\(Record record, String fieldName\)/);
         assert.match(md.value, /\*database function\*/);
         
-        // 2. Parameters clean without placeholder text
-        assert.match(md.value, /- `record` `\[Record\]`/);
-        assert.match(md.value, /- `fieldName` `\[String\]`/);
+        // 2. Parameters clean table without placeholder text
+        assert.match(md.value, /### Parameters/);
+        assert.match(md.value, /\|\s*`record`\s*\|\s*`Record`\s*\|\s*Yes\s*\|\s*-\s*\|/);
+        assert.match(md.value, /\|\s*`fieldName`\s*\|\s*`String`\s*\|\s*Yes\s*\|\s*-\s*\|/);
         assert.doesNotMatch(md.value, /Input parameter/i);
         
         // 3. Exactly one Example block with bml code
-        assert.match(md.value, /\*\*Example:\*\*/);
+        assert.match(md.value, /### Example/);
         assert.match(md.value, /val = getfloat\(row, "intcol"\);/);
         
         // 4. No duplicate "From the Docs" section since docs is identical to notes
@@ -117,8 +118,9 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
             ]
         };
         const md = formatAsJsDoc(info);
-        assert.match(md.value, /- `name` `\[String\]`\n/);
-        assert.match(md.value, /- `age` `\[Integer\]` — The customer age in years\./);
+        assert.match(md.value, /### Parameters/);
+        assert.match(md.value, /\|\s*`name`\s*\|\s*`String`\s*\|\s*Yes\s*\|\s*-\s*\|/);
+        assert.match(md.value, /\|\s*`age`\s*\|\s*`Integer`\s*\|\s*Yes\s*\|\s*The customer age in years\.\s*\|/);
     });
 
     test('deduplicates identical code examples when provided with and without titles', () => {
@@ -133,7 +135,7 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         };
         const md = formatAsJsDoc(info);
         // Only 1 example should be rendered, with title and code block
-        assert.match(md.value, /\*\*Example:\*\*/);
+        assert.match(md.value, /### Example/);
         assert.match(md.value, /Query and iterate records:/);
         assert.match(md.value, /rows = bmql\("select id from table"\);/);
         // Ensure the code block is not repeated
@@ -143,13 +145,24 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
 
     test('renders Oracle CPQ Best Practice advisory blockquote for core functions', () => {
         const bmqlMd = formatAsJsDoc({ category: 'function', name: 'bmql', syntax: 'bmql(query)' });
-        assert.match(bmqlMd.value, /> 💡 \*\*Best Practice:\*\* Avoid executing BMQL inside loops/);
+        assert.match(bmqlMd.value, /> 💡 \*\*Performance Best Practice\*\*/);
+        assert.match(bmqlMd.value, /> Avoid executing BMQL inside loops/);
         assert.match(bmqlMd.value, /Performance Best Practices/);
 
         const printMd = formatAsJsDoc({ category: 'function', name: 'print', syntax: 'print(val)' });
-        assert.match(printMd.value, /> 💡 \*\*Best Practice:\*\* Remove or comment out `print` statements before go-live/);
+        assert.match(printMd.value, /> 💡 \*\*Production Advisory\*\*/);
+        assert.match(printMd.value, /> Remove or comment out `print` statements/);
 
         const atoiMd = formatAsJsDoc({ category: 'function', name: 'atoi', syntax: 'atoi(str)' });
-        assert.match(atoiMd.value, /> 💡 \*\*Best Practice:\*\* Validate input strings with `isnumber\(\)`/);
+        assert.match(atoiMd.value, /> 💡 \*\*Safe Parsing Best Practice\*\*/);
+        assert.match(atoiMd.value, /> Validate input strings with `isnumber\(\)`/);
+    });
+
+    test('loads BEST_PRACTICE_ADVISORIES and KEYWORD_HOVERS from JSON files', () => {
+        const { KEYWORD_HOVERS, BEST_PRACTICE_ADVISORIES } = require('../../app/lang/intellisense/docFormatting');
+        assert.ok(KEYWORD_HOVERS.if, 'expected keyword hover for if');
+        assert.ok(KEYWORD_HOVERS.bmql, 'expected keyword hover for bmql');
+        assert.ok(BEST_PRACTICE_ADVISORIES.bmql, 'expected best practice advisory for bmql');
+        assert.strictEqual(BEST_PRACTICE_ADVISORIES.bmql.title, 'Performance Best Practice');
     });
 });

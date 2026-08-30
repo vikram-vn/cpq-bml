@@ -1,0 +1,60 @@
+{
+  "if": {
+    "syntax": "if (condition) { ... }",
+    "category": "keyword",
+    "notes": "Executes block if condition evaluates to true."
+  },
+  "elif": {
+    "syntax": "elif (condition) { ... }",
+    "category": "keyword",
+    "notes": "Executes block if previous if/elif condition was false and this condition is true."
+  },
+  "else": {
+    "syntax": "else { ... }",
+    "category": "keyword",
+    "notes": "Executes block if all preceding if/elif conditions were false."
+  },
+  "for": {
+    "syntax": "for var in array { ... }",
+    "category": "keyword",
+    "notes": "Loops through each element in an array or collection."
+  },
+  "return": {
+    "syntax": "return value;",
+    "category": "keyword",
+    "notes": "Returns value from the function and terminates execution."
+  },
+  "bmql": {
+    "syntax": "recordset bmql(\"SELECT column1, column2 FROM dataTable WHERE condition = $var\");",
+    "category": "function",
+    "functionCategory": "direct_db_access",
+    "notes": "BigMachines Query Language (BMQL) - executes direct database SQL queries on CPQ Data Tables."
+  },
+  "throwerror": {
+    "syntax": "throwerror(errorMessage [, isSystemError]);",
+    "category": "function",
+    "functionCategory": "others",
+    "notes": "Stops script execution and raises a user-facing error message on CPQ UI."
+  },
+  "print": {
+    "syntax": "print(value);",
+    "category": "function",
+    "functionCategory": "others",
+    "notes": "Prints value to the CPQ BML Function Editor execution log / console."
+  },
+  "true": {
+    "syntax": "true",
+    "category": "constant",
+    "notes": "Boolean true constant."
+  },
+  "false": {
+    "syntax": "false",
+    "category": "constant",
+    "notes": "Boolean false constant."
+  },
+  "null": {
+    "syntax": "null",
+    "category": "constant",
+    "notes": "Null reference or empty object."
+  }
+}
