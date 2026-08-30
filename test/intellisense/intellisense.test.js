@@ -410,4 +410,14 @@ suite('BML IntelliSense', () => {
 		assert.ok(labels.includes('integer'), 'expected "integer" in dict parameter completions');
 		assert.ok(labels.includes('dict<anytype>'), 'expected "dict<anytype>" in dict parameter completions');
 	});
+
+	test('keyword hovers provide documentation for break, continue, while, and logical operators', () => {
+		const keywordHovers = require('../../app/lang/intellisense/keyword-hovers.json');
+		assert.ok(keywordHovers['break'], 'expected break in keyword hovers');
+		assert.ok(keywordHovers['continue'], 'expected continue in keyword hovers');
+		assert.ok(keywordHovers['while'], 'expected while in keyword hovers');
+		assert.ok(keywordHovers['and'], 'expected and in keyword hovers');
+		assert.ok(keywordHovers['or'], 'expected or in keyword hovers');
+		assert.ok(keywordHovers['not'], 'expected not in keyword hovers');
+	});
 });

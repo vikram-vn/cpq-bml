@@ -19,10 +19,40 @@
     "category": "keyword",
     "notes": "Loops through each element in an array or collection."
   },
+  "while": {
+    "syntax": "while (condition) { ... }",
+    "category": "keyword",
+    "notes": "Repeatedly executes the enclosed block while condition evaluates to true."
+  },
+  "break": {
+    "syntax": "break;",
+    "category": "keyword",
+    "notes": "Terminates the nearest enclosing for-loop immediately."
+  },
+  "continue": {
+    "syntax": "continue;",
+    "category": "keyword",
+    "notes": "Skips the remainder of the current loop iteration and advances to the next element."
+  },
   "return": {
     "syntax": "return value;",
     "category": "keyword",
     "notes": "Returns value from the function and terminates execution."
+  },
+  "and": {
+    "syntax": "condition1 AND condition2",
+    "category": "keyword",
+    "notes": "Logical conjunction operator. Evaluates to true if both conditions are true."
+  },
+  "or": {
+    "syntax": "condition1 OR condition2",
+    "category": "keyword",
+    "notes": "Logical disjunction operator. Evaluates to true if either condition is true."
+  },
+  "not": {
+    "syntax": "NOT(condition)",
+    "category": "keyword",
+    "notes": "Logical negation operator. Inverts the truth value of the enclosed condition."
   },
   "bmql": {
     "syntax": "recordset bmql(\"SELECT column1, column2 FROM dataTable WHERE condition = $var\");",
