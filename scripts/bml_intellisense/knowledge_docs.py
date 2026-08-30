@@ -119,9 +119,10 @@ def sanitize_section_for_hover(section):
     text = re.sub(r'!\[([^\]]*)\]\([^)]*\)', lambda m: f'*🖼️ {m.group(1)}*' if m.group(1) else '', text)
     text = re.sub(r':::(\w+)\s*\r?\n?([\s\S]*?):::', _replace_admonition, text)
     text = re.sub(r'\*\*Example:\*\*[\s\S]*$', '', text, flags=re.IGNORECASE).strip()
-    text = re.sub(r'```(?:bml|json|xml)?[\s\S]*?```', '', text).strip()
+    text = re.sub(r'^\s*[-*•]\s*$', '', text, flags=re.MULTILINE).strip()
     text = re.sub(r'\n{3,}', '\n\n', text)
     text = re.sub(r'^-{3,}\s*|\s*-{3,}$', '', text)
+    text = re.sub(r'[\s\r\n]*[-*•]\s*$', '', text).strip()
     return text.strip()
 
 

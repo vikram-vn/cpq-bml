@@ -218,16 +218,14 @@ function formatAsJsDoc(info) {
 
     if (info.parameters && info.parameters.length) {
         md.appendMarkdown(`### Parameters\n\n`);
-        md.appendMarkdown(`| Parameter | Type | Required | Description |\n`);
-        md.appendMarkdown(`| :--- | :--- | :--- | :--- |\n`);
         info.parameters.forEach(p => {
             const name = p.name || 'param';
             const type = p.type || p.dataType || 'Any';
             const isOpt = isParamOptional(p, info.syntax || info.fullSignature);
-            const req = isOpt ? 'No' : 'Yes';
+            const req = isOpt ? 'Optional' : 'Required';
             const hasCustomDesc = p.description && !isPlaceholderParamDesc(p.description, p.name, p.type || p.dataType);
-            const desc = hasCustomDesc ? decodeHtmlEntities(p.description).replace(/\|/g, '\\|') : '-';
-            md.appendMarkdown(`| \`${name}\` | \`${type}\` | ${req} | ${desc} |\n`);
+            const desc = hasCustomDesc ? ` &mdash; ${decodeHtmlEntities(p.description)}` : '';
+            md.appendMarkdown(`- \`${name}\` (\`${type}\`, ${req})${desc}\n`);
         });
         md.appendMarkdown('\n');
     }
@@ -272,10 +270,11 @@ function formatAsJsDoc(info) {
     }
 
     if (info.docs) {
-        // Clean out image placeholders from rendered hover doc
+        // Clean out image placeholders, empty bullets, and dangling dashes from rendered hover doc
         let cleanDocs = info.docs
             .replace(/\*🖼️[^*]*\*/g, '')
             .replace(/Example of [^:]*:\s*/gi, '')
+            .replace(/^\s*[-*•]\s*$/gm, '')
             .replace(/\n{3,}/g, '\n\n')
             .trim();
 
@@ -293,6 +292,7 @@ function formatAsJsDoc(info) {
                         docBody = '';
                     }
                 }
+                docBody = docBody.replace(/[\s\r\n]*[-*•]\s*$/, '').trim();
                 if (docBody) {
                     md.appendMarkdown(`\n---\n\n**📚 From the Docs**\n\n${docBody}\n`);
                 }
@@ -326,14 +326,12 @@ function formatWorkspaceFunctionHover(wsInfo) {
 
     if (wsInfo.parameters && wsInfo.parameters.length) {
         md.appendMarkdown(`### Parameters\n\n`);
-        md.appendMarkdown(`| Parameter | Type | Required | Description |\n`);
-        md.appendMarkdown(`| :--- | :--- | :--- | :--- |\n`);
         wsInfo.parameters.forEach(p => {
             const name = p.name || 'param';
             const type = p.dataType || 'Any';
-            const req = p.required === false ? 'No' : 'Yes';
-            const desc = p.description ? decodeHtmlEntities(p.description).replace(/\|/g, '\\|') : '-';
-            md.appendMarkdown(`| \`${name}\` | \`${type}\` | ${req} | ${desc} |\n`);
+            const req = p.required === false ? 'Optional' : 'Required';
+            const desc = p.description ? ` &mdash; ${decodeHtmlEntities(p.description)}` : '';
+            md.appendMarkdown(`- \`${name}\` (\`${type}\`, ${req})${desc}\n`);
         });
         md.appendMarkdown('\n');
     }

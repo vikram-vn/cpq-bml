@@ -93,10 +93,10 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         assert.match(md.value, /Float getfloat\(Record record, String fieldName\)/);
         assert.match(md.value, /\*database function\*/);
         
-        // 2. Parameters clean table without placeholder text
+        // 2. Parameters clean list without placeholder text
         assert.match(md.value, /### Parameters/);
-        assert.match(md.value, /\|\s*`record`\s*\|\s*`Record`\s*\|\s*Yes\s*\|\s*-\s*\|/);
-        assert.match(md.value, /\|\s*`fieldName`\s*\|\s*`String`\s*\|\s*Yes\s*\|\s*-\s*\|/);
+        assert.match(md.value, /- `record` \(`Record`, Required\)/);
+        assert.match(md.value, /- `fieldName` \(`String`, Required\)/);
         assert.doesNotMatch(md.value, /Input parameter/i);
         
         // 3. Exactly one Example block with bml code
@@ -119,8 +119,8 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         };
         const md = formatAsJsDoc(info);
         assert.match(md.value, /### Parameters/);
-        assert.match(md.value, /\|\s*`name`\s*\|\s*`String`\s*\|\s*Yes\s*\|\s*-\s*\|/);
-        assert.match(md.value, /\|\s*`age`\s*\|\s*`Integer`\s*\|\s*Yes\s*\|\s*The customer age in years\.\s*\|/);
+        assert.match(md.value, /- `name` \(`String`, Required\)/);
+        assert.match(md.value, /- `age` \(`Integer`, Required\) &mdash; The customer age in years\./);
     });
 
     test('deduplicates identical code examples when provided with and without titles', () => {
