@@ -180,7 +180,7 @@ function checkCodeQuality(cleanText, noStringsText, doc) {
         const endPos = startPos.translate(0, val.length);
         diagnostics.push(makeDiagnostic(
             new vscode.Range(startPos, endPos),
-            `Design Info: Magic number '${val}' detected. Consider defining a named constant`,
+            `Design Best Practice: Magic number '${val}' detected. Define a named constant or lookup table to maintain clear application boundaries`,
             vscode.DiagnosticSeverity.Information,
             'bml-magic-number'
         ));
