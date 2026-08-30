@@ -1,25 +1,24 @@
 const { getWorkspaceIndex } = require('../workspaceIndex');
+const { loadFunctionReturnTypesJson, loadBuiltInFunctionsJson } = require('../apiDataLoader');
 
-const BUILTIN_RETURNS = {
-    'atof': 'Float', 'atoi': 'Integer', 'isnumber': 'Boolean', 'len': 'Integer',
-    'find': 'Integer', 'findinarray': 'Integer', 'sizeofarray': 'Integer',
-    'replace': 'String', 'split': 'String[]', 'substring': 'String', 'lower': 'String',
-    'upper': 'String', 'trim': 'String', 'html': 'String', 'encodebase64': 'String',
-    'decodebase64': 'String', 'join': 'String', 'formatascurrency': 'String',
-    'sbtostring': 'String', 'getstr': 'String', 'getcurrencyvalue': 'Float',
-    'getfloat': 'Float', 'getint': 'Integer', 'getboolean': 'Boolean',
-    'addmonths': 'Date', 'adddays': 'Date', 'minusdays': 'Date', 'getdate': 'Date',
-    'datetostr': 'String', 'strtojavadate': 'Date', 'strtodate': 'Date',
-    'getdiffindays': 'Integer', 'comparedates': 'Integer', 'urldata': 'String',
-    'urldatabyget': 'String', 'urldatabypost': 'String', 'urldatabypostasync': 'String',
-    'fmod': 'Float', 'pow': 'Float', 'hypot': 'Float', 'round': 'Float',
-    'abs': 'Float', 'ceil': 'Float', 'floor': 'Float', 'sqrt': 'Float',
-    'sin': 'Float', 'cos': 'Float', 'tan': 'Float', 'exp': 'Float', 'ln': 'Float', 'log': 'Float',
-    'getpartsdata': 'String[]', 'gettabledata': 'String[]', 'getattachmentdata': 'Dictionary',
-    'getsystemattrvalues': 'String[]', 'getsystemmultipleattrvalues': 'Dictionary',
-    'getsystemdata': 'Json', 'jsonkeys': 'String[]', 'keys': 'String[]', 'values': 'String[]',
-    'jsoncopy': 'Json', 'jsonarraycopy': 'JsonArray', 'slice': 'String[]', 'range': 'Integer[]'
-};
+let cachedReturnTypes = null;
+
+function getReturnTypesMap() {
+    if (!cachedReturnTypes || Object.keys(cachedReturnTypes).length === 0) {
+        const dyn = loadFunctionReturnTypesJson();
+        const fns = loadBuiltInFunctionsJson();
+        cachedReturnTypes = Object.assign({}, dyn);
+        if (fns) {
+            for (const [k, v] of Object.entries(fns)) {
+                const kLower = k.toLowerCase();
+                if (!cachedReturnTypes[kLower] && v && v.returnType) {
+                    cachedReturnTypes[kLower] = v.returnType;
+                }
+            }
+        }
+    }
+    return cachedReturnTypes;
+}
 
 /**
  * Infers variable type from an assignment RHS expression.
@@ -39,7 +38,14 @@ function inferVariableType(rhs, bmlApiData) {
     if (/^recordset\s*\(/i.test(trimmed)) return 'RecordSet';
     if (/^bytearray\s*\(/i.test(trimmed)) return 'ByteArray';
 
-    // Arrays: string[], integer[], float[], date[], boolean[], anytype[]
+    // 2-D Arrays: string[][], integer[][], float[][], date[][], boolean[][], anytype[][]
+    const arr2dMatch = trimmed.match(/^(string|integer|float|date|boolean|anytype)\[\]\[\](?:\s*;|$)/i);
+    if (arr2dMatch) {
+        const base = arr2dMatch[1].charAt(0).toUpperCase() + arr2dMatch[1].slice(1).toLowerCase();
+        return `${base}[][]`;
+    }
+
+    // 1-D Arrays: string[], integer[], float[], date[], boolean[], anytype[]
     const arrMatch = trimmed.match(/^(string|integer|float|date|boolean|anytype)\[\](?:\s*\{|\s*;|$)/i);
     if (arrMatch) {
         const base = arrMatch[1].charAt(0).toUpperCase() + arrMatch[1].slice(1).toLowerCase();
@@ -56,8 +62,11 @@ function inferVariableType(rhs, bmlApiData) {
     const fnCall = trimmed.match(/^([a-zA-Z_][\w.]*)\s*\(/);
     if (fnCall) {
         const fnName = fnCall[1].toLowerCase();
+        const returnTypes = getReturnTypesMap();
 
-        if (BUILTIN_RETURNS[fnName]) return BUILTIN_RETURNS[fnName];
+        if (returnTypes && returnTypes[fnName]) {
+            return returnTypes[fnName];
+        }
 
         if (bmlApiData && bmlApiData[fnName] && bmlApiData[fnName].returnType) {
             return bmlApiData[fnName].returnType;
@@ -79,5 +88,11 @@ function inferVariableType(rhs, bmlApiData) {
 
 module.exports = {
     inferVariableType,
-    BUILTIN_RETURNS
+    getReturnTypesMap,
+    BUILTIN_RETURNS: new Proxy({}, {
+        get: (_, prop) => {
+            const map = getReturnTypesMap();
+            return typeof prop === 'string' ? map[prop.toLowerCase()] : undefined;
+        }
+    })
 };

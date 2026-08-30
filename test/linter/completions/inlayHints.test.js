@@ -178,17 +178,51 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
         assert.strictEqual(inferVariableType('json()'), 'Json');
         assert.strictEqual(inferVariableType('jsonarray()'), 'JsonArray');
         assert.strictEqual(inferVariableType('stringbuilder()'), 'StringBuilder');
+        assert.strictEqual(inferVariableType('recordset()'), 'RecordSet');
+        assert.strictEqual(inferVariableType('bytearray("data", "UTF-8")'), 'ByteArray');
         assert.strictEqual(inferVariableType('string[]'), 'String[]');
         assert.strictEqual(inferVariableType('integer[]'), 'Integer[]');
+        assert.strictEqual(inferVariableType('boolean[]'), 'Boolean[]');
+        assert.strictEqual(inferVariableType('date[]'), 'Date[]');
+        assert.strictEqual(inferVariableType('float[]'), 'Float[]');
+        assert.strictEqual(inferVariableType('string[][]'), 'String[][]');
+        assert.strictEqual(inferVariableType('integer[][]'), 'Integer[][]');
+        assert.strictEqual(inferVariableType('float[][]'), 'Float[][]');
+        assert.strictEqual(inferVariableType('boolean[][]'), 'Boolean[][]');
+        assert.strictEqual(inferVariableType('date[][]'), 'Date[][]');
         assert.strictEqual(inferVariableType('"test value"'), 'String');
         assert.strictEqual(inferVariableType('100'), 'Integer');
         assert.strictEqual(inferVariableType('10.5'), 'Float');
         assert.strictEqual(inferVariableType('true'), 'Boolean');
+        assert.strictEqual(inferVariableType('false'), 'Boolean');
         assert.strictEqual(inferVariableType('replace(str, "a", "b")'), 'String');
         assert.strictEqual(inferVariableType('split(str, ",")'), 'String[]');
         assert.strictEqual(inferVariableType('getfloat(rRow, "price")'), 'Float');
+        assert.strictEqual(inferVariableType('getint(rRow, "qty")'), 'Integer');
+        assert.strictEqual(inferVariableType('getboolean(rRow, "active")'), 'Boolean');
         assert.strictEqual(inferVariableType('atoi("42")'), 'Integer');
         assert.strictEqual(inferVariableType('isnumber("100")'), 'Boolean');
+        assert.strictEqual(inferVariableType('getdate()'), 'Date');
+        assert.strictEqual(inferVariableType('adddays(dt, 5)'), 'Date');
+        assert.strictEqual(inferVariableType('datetostr(dt)'), 'String');
+        assert.strictEqual(inferVariableType('saveconfigbom(jsonObj, dictObj)'), 'Integer');
+        assert.strictEqual(inferVariableType('savebom(123, jsonObj)'), 'Integer');
+        assert.strictEqual(inferVariableType('configureabo(123, "key")'), 'Integer');
+        assert.strictEqual(inferVariableType('getconfigurationbom(123)'), 'Json');
+        assert.strictEqual(inferVariableType('jsoncopy(jsonObj)'), 'Json');
+        assert.strictEqual(inferVariableType('jsonarraycopy(jsonArr)'), 'JsonArray');
+    });
+
+    test('dynamically retrieves return types map from JSON catalogs', () => {
+        const { getReturnTypesMap } = require('../../../app/lang/intellisense/inlayHints/typeInferrer');
+        const returnTypes = getReturnTypesMap();
+        assert.ok(returnTypes, 'Return types map should not be null');
+        assert.strictEqual(returnTypes['saveconfigbom'], 'Integer');
+        assert.strictEqual(returnTypes['savebom'], 'Integer');
+        assert.strictEqual(returnTypes['configureabo'], 'Integer');
+        assert.strictEqual(returnTypes['getdate'], 'Date');
+        assert.strictEqual(returnTypes['datetostr'], 'String');
+        assert.strictEqual(returnTypes['split'], 'String[]');
     });
 
     test('collects local variables in scope and ignores out-of-scope variables', () => {

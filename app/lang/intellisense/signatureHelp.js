@@ -93,6 +93,27 @@ function getActiveFunctionCall(document, position) {
     return null;
 }
 
+function splitParametersWithDepth(paramStr) {
+    if (!paramStr) return [];
+    const chunks = [];
+    let start = 0;
+    let parenDepth = 0;
+    let braceDepth = 0;
+    for (let i = 0; i < paramStr.length; i++) {
+        const ch = paramStr[i];
+        if (ch === '(') parenDepth++;
+        else if (ch === ')') parenDepth = Math.max(0, parenDepth - 1);
+        else if (ch === '{') braceDepth++;
+        else if (ch === '}') braceDepth = Math.max(0, braceDepth - 1);
+        else if (ch === ',' && parenDepth === 0 && braceDepth === 0) {
+            chunks.push(paramStr.slice(start, i));
+            start = i + 1;
+        }
+    }
+    chunks.push(paramStr.slice(start));
+    return chunks.map(c => c.trim()).filter(Boolean);
+}
+
 /**
  * Helper to parse ParameterInformation objects from signature string.
  */
@@ -102,7 +123,8 @@ function parseParameters(signature, info) {
     const paramStr = match[1].trim();
     if (!paramStr) return [];
     const paramsList = info && info.parameters && Array.isArray(info.parameters) ? info.parameters : [];
-    return paramStr.split(',').map((p, idx) => {
+    const rawChunks = splitParametersWithDepth(paramStr);
+    return rawChunks.map((p, idx) => {
         const label = p.replace(/[\[\]]/g, '').trim();
         const paramInfo = new vscode.ParameterInformation(label);
         const meta = paramsList[idx] || paramsList.find(item => item.name && label.toLowerCase().endsWith(item.name.toLowerCase()));
@@ -119,4 +141,4 @@ function parseParameters(signature, info) {
     });
 }
 
-module.exports = { getActiveFunctionCall, parseParameters };
+module.exports = { getActiveFunctionCall, parseParameters, splitParametersWithDepth };

@@ -191,6 +191,29 @@ suite('BML IntelliSense', () => {
 		assert.strictEqual(sigHelp.activeParameter, 1, 'expected active parameter index to be 1');
 	});
 
+	test('signature help parses polymorphic union and cascading parameters with depth awareness', () => {
+		const { splitParametersWithDepth, parseParameters } = require('../../app/lang/intellisense/signatureHelp');
+		
+		// Polymorphic unions inside types: String(or Integer, Float) must not split on commas inside parentheses
+		const putChunks = splitParametersWithDepth('Dictionary dictionaryIdentifier, String(or Integer, Float) key, <DictionaryType> value');
+		assert.strictEqual(putChunks.length, 3, 'put should have exactly 3 parameter chunks');
+		assert.strictEqual(putChunks[1], 'String(or Integer, Float) key');
+
+		const containsChunks = splitParametersWithDepth('Dictionary dictionaryIdentifier, String(or Integer, Float) key');
+		assert.strictEqual(containsChunks.length, 2, 'containskey should have exactly 2 parameter chunks');
+		assert.strictEqual(containsChunks[1], 'String(or Integer, Float) key');
+
+		// Cascading optionals
+		const saveBomChunks = splitParametersWithDepth('Json configBomJson [, Dictionary instanceAttributes [, String configurationKey]]');
+		assert.strictEqual(saveBomChunks.length, 3, 'saveconfigbom should have exactly 3 parameter chunks');
+
+		const putParams = parseParameters('put(Dictionary dictionaryIdentifier, String(or Integer, Float) key, <DictionaryType> value)');
+		assert.strictEqual(putParams.length, 3);
+		assert.strictEqual(putParams[0].label, 'Dictionary dictionaryIdentifier');
+		assert.strictEqual(putParams[1].label, 'String(or Integer, Float) key');
+		assert.strictEqual(putParams[2].label, '<DictionaryType> value');
+	});
+
 	test('completion in 3rd parameter of datetostr suggests timezones including GMT+4', async () => {
 		const content = 'twelvehour = datetostr(testDate, "yyyy-MM-dd hh:mm:ss a", "");';
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });

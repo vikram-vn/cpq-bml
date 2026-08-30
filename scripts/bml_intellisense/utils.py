@@ -5,12 +5,10 @@ def strip_html(text):
         return ""
     # replace <br/?> with \n
     text = re.sub(r'<br\s*/?>', '\n', text, flags=re.IGNORECASE)
-    # replace HTML entities
+    # strip HTML tags like <b>, <i>, <code>, <span>, <div>, <p>, <a>, etc.
+    text = re.sub(r'</?(?:b|strong|i|em|tt|code|p|div|span|table|thead|tbody|tr|td|th|ul|ol|li|a)\b[^>]*>', '', text, flags=re.IGNORECASE)
+    # replace HTML entities so <Type> and other entities are preserved
     text = text.replace('&lt;', '<').replace('&gt;', '>').replace('&amp;', '&').replace('&quot;', '"').replace('&nbsp;', ' ').replace('&euro;', '€')
-    # replace bold/italic/code tags
-    text = re.sub(r'</?(b|strong|i|em|tt|code)>', '', text, flags=re.IGNORECASE)
-    # strip all other HTML tags
-    text = re.sub(r'<[^>]+>', '', text)
     # normalize whitespace
     text = text.replace('\r', '')
     text = re.sub(r'\n{3,}', '\n\n', text)

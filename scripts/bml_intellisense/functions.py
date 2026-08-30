@@ -129,6 +129,17 @@ def parse_parameters_from_syntax(syntax, short_syntax=None, func_name=None):
     return parsed
 
 
+KNOWN_SIGNATURE_FIXES = {
+    "saveconfigbom": "Integer saveconfigbom(Json configBomJson [, Dictionary instanceAttributes [, String configurationKey]])",
+    "savebom": "Integer savebom(Integer bsId, Json bomJson [, String configurationKey])",
+    "configureabo": "Integer configureabo(Integer bsId [, String configurationKey])",
+    "getreasonstatus": "Integer getreasonstatus(String reasonVarName)",
+    "indexof": "Integer indexof(Any[] array, Any element)",
+    "slice": "Any[] slice(Any[] array, Integer startIndex [, Integer endIndex])",
+    "bytearray": "ByteArray bytearray(String content [, String charSet])"
+}
+
+
 def _normalize_for_comparison(s):
     if not s:
         return ""
@@ -174,7 +185,7 @@ def generate_bml_functions(root_dir):
         category = item.get('category').lower() if item.get('category') else None
 
         existing_entry = existing_data.get(key, {})
-        full_sig = existing_entry.get('fullSignature') or item_syntax
+        full_sig = KNOWN_SIGNATURE_FIXES.get(key) or existing_entry.get('fullSignature') or item_syntax
 
         docs = get_docs_excerpt(root_dir, category, key) if have_fresh_source else existing_docs.get(key)
         if docs:
