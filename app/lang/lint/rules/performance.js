@@ -211,6 +211,32 @@ function checkPerformance(cleanText, noStringsText, doc) {
         ));
     }
 
+    // 6. Production Print Statements (Oracle CPQ Best Practice: Remove print statements before go-live)
+    const printRegex = /\bprint\b(?:\s*\(|\s+[^\r\n;]+;)/gi;
+    while ((match = printRegex.exec(noStringsText)) !== null) {
+        const startPos = doc.positionAt(match.index);
+        const endPos = startPos.translate(0, 5);
+        diagnostics.push(makeDiagnostic(
+            new vscode.Range(startPos, endPos),
+            "Best Practice / Performance Advisory: Remove or comment out 'print' statements before deploying to production to avoid logging overhead",
+            vscode.DiagnosticSeverity.Information,
+            'bml-production-print-statement'
+        ));
+    }
+
+    // 7. Hardcoded Environment / Site Domain Names (Oracle CPQ Best Practice: IdentifySiteName.md)
+    const siteDomainRegex = /["'](?:https?:\/\/)?([a-zA-Z0-9_-]+(?:\.bigmachines\.com|\.oraclecloud\.com|\.cpq\.oracle\.com))[^"']*["']/gi;
+    while ((match = siteDomainRegex.exec(cleanText)) !== null) {
+        const startPos = doc.positionAt(match.index);
+        const endPos = startPos.translate(0, match[0].length);
+        diagnostics.push(makeDiagnostic(
+            new vscode.Range(startPos, endPos),
+            "Best Practice Advisory: Hardcoded site domain in string literal. Use '_system_site_name' or system variables for environment-aware scripts",
+            vscode.DiagnosticSeverity.Information,
+            'bml-hardcoded-sitename'
+        ));
+    }
+
     return diagnostics;
 }
 

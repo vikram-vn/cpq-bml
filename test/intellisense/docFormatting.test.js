@@ -140,4 +140,16 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         const occurrences = (md.value.match(/select id from table/g) || []).length;
         assert.strictEqual(occurrences, 1, 'code block should only appear once');
     });
+
+    test('renders Oracle CPQ Best Practice advisory blockquote for core functions', () => {
+        const bmqlMd = formatAsJsDoc({ category: 'function', name: 'bmql', syntax: 'bmql(query)' });
+        assert.match(bmqlMd.value, /> 💡 \*\*Best Practice:\*\* Avoid executing BMQL inside loops/);
+        assert.match(bmqlMd.value, /Performance Best Practices/);
+
+        const printMd = formatAsJsDoc({ category: 'function', name: 'print', syntax: 'print(val)' });
+        assert.match(printMd.value, /> 💡 \*\*Best Practice:\*\* Remove or comment out `print` statements before go-live/);
+
+        const atoiMd = formatAsJsDoc({ category: 'function', name: 'atoi', syntax: 'atoi(str)' });
+        assert.match(atoiMd.value, /> 💡 \*\*Best Practice:\*\* Validate input strings with `isnumber\(\)`/);
+    });
 });

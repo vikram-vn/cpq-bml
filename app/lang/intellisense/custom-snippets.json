@@ -278,5 +278,26 @@
       "/**\n * ============================================================================\n * Function:   util.pricing.calculateTieredDiscount\n * Purpose:    Applies customer volume discount tiers\n * Author:     CPQ Developer\n * Date:       2026-08-29\n * ============================================================================\n */"
     ],
     "notes": "Oracle CPQ standard header comment block."
+  },
+  "bp-bmql-cache": {
+    "syntax": "// Best Practice: Batch query outside loop and cache in dictionary\n${1:cacheDict} = dict(\"string\");\n${2:records} = bmql(\"${3:SELECT key_col, val_col FROM data_table WHERE active = true}\");\nfor row in ${2:records} {\n\tput(${1:cacheDict}, get(row, \"${4:key_col}\"), get(row, \"${5:val_col}\"));\n}\n\nfor ${6:line} in ${7:transactionLine} {\n\t${8:key} = ${6:line}.${9:_part_number};\n\tif (containskey(${1:cacheDict}, ${8:key})) {\n\t\t${10:val} = get(${1:cacheDict}, ${8:key});\n\t\t${0}\n\t}\n}",
+    "examples": [
+      "partPrices = dict(\"string\");\nrecords = bmql(\"SELECT part_number, price FROM parts_table\");\nfor row in records {\n\tput(partPrices, get(row, \"part_number\"), get(row, \"price\"));\n}\nfor line in transactionLine {\n\tif (containskey(partPrices, line._part_number)) {\n\t\tline.price_l = atof(get(partPrices, line._part_number));\n\t}\n}"
+    ],
+    "notes": "Oracle CPQ Best Practice: Pre-fetch and cache BMQL queries before loop execution to eliminate N+1 latency on large quotes."
+  },
+  "bp-safe-rest": {
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Content-Type\", \"application/json\");\nput(${1:headers}, \"Authorization\", \"Bearer \" ~ ${2:authToken});\n\n${3:response} = urldata(${4:endpointUrl}, \"${5|GET,POST,PUT,DELETE|}\", ${1:headers}, ${6:payloadJson}, ${7:5000});\n\nif (containskey(${3:response}, \"Status-Code\") AND startswith(get(${3:response}, \"Status-Code\"), \"200\")) {\n\t${8:body} = get(${3:response}, \"Message-Body\");\n\t${0}\n} else {\n\t${9:errMsg} = \"REST API call failed: \" ~ get(${3:response}, \"Status-Code\");\n\tthrowerror(${9:errMsg});\n}",
+    "examples": [
+      "headers = dict(\"string\");\nput(headers, \"Content-Type\", \"application/json\");\nres = urldata(\"https://api.example.com/v1/data\", \"GET\", headers, \"\", 5000);\nif (containskey(res, \"Status-Code\") and startswith(get(res, \"Status-Code\"), \"200\")) {\n\tbody = get(res, \"Message-Body\");\n}"
+    ],
+    "notes": "Oracle CPQ Best Practice: Safe HTTP REST invocation with headers, timeout, and response status code validation."
+  },
+  "bp-stringbuilder-loop": {
+    "syntax": "${1:sb} = stringbuilder();\nfor ${2:item} in ${3:array} {\n\tsbappend(${1:sb}, ${4:item});\n\tsbappend(${1:sb}, \"${5:,}\");\n}\n${6:resultStr} = sbtostring(${1:sb});\n${0}",
+    "examples": [
+      "sb = stringbuilder();\nfor line in transactionLine {\n\tsbappend(sb, line._part_number);\n\tsbappend(sb, \", \");\n}\nallParts = sbtostring(sb);"
+    ],
+    "notes": "Oracle CPQ Best Practice: High-performance string concatenation in loops using stringbuilder."
   }
 }

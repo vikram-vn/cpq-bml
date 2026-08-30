@@ -48,6 +48,19 @@ const KEYWORD_HOVERS = {
     'null': { syntax: 'null', category: 'constant', notes: 'Null reference or empty object.' }
 };
 
+const BEST_PRACTICE_ADVISORIES = {
+    'bmql': 'Avoid executing BMQL inside loops. For large quotes, query once before loop iteration and cache results in a `dict("string")`.\n*(Source: [Performance Best Practices](BestPractices/PerformanceBestPractices.md))*',
+    'print': 'Remove or comment out `print` statements before go-live to eliminate execution logging overhead during high-concurrency transactions.\n*(Source: [Performance Best Practices](BestPractices/PerformanceBestPractices.md))*',
+    'dict': 'Use `dict("string")` instead of `dict("string[]")` where possible; simpler single-dimensional dictionary structures process significantly faster on large quotes.\n*(Source: [Performance Best Practices](BestPractices/PerformanceBestPractices.md))*',
+    'throwerror': 'Provide clear, actionable error messages specifying the exact missing field or step required so users can resolve the issue without contacting support.\n*(Source: [Error Messages Best Practices](BestPractices/ErrorMessages.md))*',
+    'urldata': 'Always verify HTTP response status codes (`get(res, "status_code") == "200"`) and handle network timeouts gracefully.\n*(Source: [Error Handling Best Practices](BestPractices/ErrorHandling.md))*',
+    'urldatabypost': 'Always verify HTTP response status codes (`get(res, "status_code") == "200"`) and use token-based authentication.\n*(Source: [Error Handling Best Practices](BestPractices/ErrorHandling.md))*',
+    'atoi': 'Validate input strings with `isnumber()` before calling `atoi()` to prevent runtime exceptions on empty or non-numeric inputs.\n*(Source: [Parse Strings into Numbers](BestPractices/ParseStringsIntoNumbers.md))*',
+    'atof': 'Validate input strings with `isnumber()` before calling `atof()` to prevent runtime exceptions on non-numeric inputs.\n*(Source: [Parse Strings into Numbers](BestPractices/ParseStringsIntoNumbers.md))*',
+    'split': 'Avoid repeated unindexed string splitting inside line item loops; store pre-split lists in memory variables.\n*(Source: [Store Data Delimited Strings](BestPractices/StoreDataDelimitedStrings.md))*',
+    'join': 'Avoid nested delimiter joins in loops; consider `stringbuilder` or typed array manipulation.\n*(Source: [Store Data Delimited Strings](BestPractices/StoreDataDelimitedStrings.md))*'
+};
+
 /**
  * Builds the "*scope · type*" (or "*category function*") metadata line shown
  * under the syntax block. Returns '' when there's nothing to show.
@@ -186,6 +199,12 @@ function formatAsJsDoc(info) {
         md.appendMarkdown(`${highlightInlineCode(decodeHtmlEntities(info.notes))}\n\n`);
     }
 
+    const funcName = (info.name || (info.syntax ? info.syntax.split('(')[0] : '') || '').trim().toLowerCase();
+    const advisory = BEST_PRACTICE_ADVISORIES[funcName];
+    if (advisory) {
+        md.appendMarkdown(`> 💡 **Best Practice:** ${advisory}\n\n`);
+    }
+
     if (info.parameters && info.parameters.length) {
         md.appendMarkdown(`**Parameters:**\n`);
         info.parameters.forEach(p => {
@@ -322,5 +341,6 @@ module.exports = {
     isProseExample,
     formatAsJsDoc,
     formatWorkspaceFunctionHover,
-    KEYWORD_HOVERS
+    KEYWORD_HOVERS,
+    BEST_PRACTICE_ADVISORIES
 };
