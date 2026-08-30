@@ -66,6 +66,17 @@ def split_params_safely(param_str):
     return raw_params
 
 
+def clean_param_name(name):
+    if not name:
+        return ""
+    name = re.sub(r"\(or.*?\)", "", name, flags=re.IGNORECASE).strip()
+    name = re.sub(r"[\[\]\(\)]", "", name).strip()
+    tokens = name.split()
+    if tokens:
+        return tokens[-1].rstrip(");,")
+    return name
+
+
 def parse_parameters_from_syntax(syntax, short_syntax=None, func_name=None):
     if not syntax:
         return []
@@ -78,8 +89,9 @@ def parse_parameters_from_syntax(syntax, short_syntax=None, func_name=None):
     if short_syntax:
         m_short = re.search(r"\((.*)\)", short_syntax)
         if m_short:
-            inner_short = m_short.group(1).replace("[", "").replace("]", "").strip()
-            short_names = [p.strip() for p in inner_short.split(",") if p.strip()]
+            inner_short = m_short.group(1).strip()
+            raw_short_parts = split_params_safely(inner_short)
+            short_names = [clean_param_name(p) for p in raw_short_parts if clean_param_name(p)]
 
     params_str = extract_outer_params_string(first_sig, func_name)
     if not params_str:
@@ -100,10 +112,10 @@ def parse_parameters_from_syntax(syntax, short_syntax=None, func_name=None):
                 ptype = " ".join(tokens[:-1]) if len(tokens) >= 2 else (tokens[0] if tokens else "Any")
         else:
             if len(tokens) >= 2:
-                pname = tokens[-1].rstrip(");,")
+                pname = clean_param_name(tokens[-1])
                 ptype = " ".join(tokens[:-1])
             elif len(tokens) == 1:
-                pname = tokens[0].rstrip(");,")
+                pname = clean_param_name(tokens[0])
                 ptype = "Any"
             else:
                 continue

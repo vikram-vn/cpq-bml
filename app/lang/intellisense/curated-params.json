@@ -275,8 +275,8 @@
         "enableLoopback"
     ],
     "bytearray": [
-        "String content",
-        "String charSet"
+        "content",
+        "charSet"
     ],
     "append": [
         "arrayIdentifier",
@@ -387,7 +387,7 @@
     ],
     "isjsonnull": [
         "jsonIdentifier",
-        "key (or jsonArrayIdentifier"
+        "key"
     ],
     "jsonarraytostr": [
         "jsonArrayIdentifier"
@@ -498,7 +498,7 @@
     ],
     "saveconfigbom": [
         "configBomJson",
-        "Dictionary instanceAttributes",
+        "instanceAttributes",
         "configurationKey"
     ],
     "usersessionset": [

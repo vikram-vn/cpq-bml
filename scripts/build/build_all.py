@@ -64,6 +64,10 @@ JSON_FILES = [
     os.path.join(INTELLISENSE_DIR, "custom-snippets.json"),
     os.path.join(INTELLISENSE_DIR, "function-param-data-types.json"),
     os.path.join(INTELLISENSE_DIR, "function-return-types.json"),
+    os.path.join(INTELLISENSE_DIR, "best-practice-advisories.json"),
+    os.path.join(INTELLISENSE_DIR, "keyword-hovers.json"),
+    os.path.join(INTELLISENSE_DIR, "category-labels.json"),
+    os.path.join(INTELLISENSE_DIR, "curated-params.json"),
 ]
 
 def minify_json():

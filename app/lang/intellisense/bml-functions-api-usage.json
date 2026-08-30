@@ -1980,13 +1980,13 @@
         "syntax": "bytearray(${1:content}, ${2:charSet})",
         "parameters": [
             {
-                "name": "String content",
+                "name": "content",
                 "type": "String",
                 "required": false,
                 "description": ""
             },
             {
-                "name": "String charSet",
+                "name": "charSet",
                 "type": "String",
                 "required": true,
                 "description": ""
@@ -2689,7 +2689,7 @@
                 "description": ""
             },
             {
-                "name": "key (or jsonArrayIdentifier",
+                "name": "key",
                 "type": "String key (or JsonArray jsonArrayIdentifier, Integer",
                 "required": true,
                 "description": ""
@@ -3640,10 +3640,10 @@
                 "description": "The configuration BOM json to save. For actions such as Terminate, Renew, Suspend, and Resume order, RESTful calls generated from the saveBomConfig BML function return the lineId."
             },
             {
-                "name": "Dictionary instanceAttributes",
-                "type": "Dictionary",
+                "name": "instanceAttributes",
+                "type": "JSON",
                 "required": false,
-                "description": ""
+                "description": "Input attributes (e.g. sourceIdentifer, transactionDate, and transactionId) for the asset REST action initiated by the saveconfigBom call. The instanceAttributes contents are saved into the configBomInstance so the original request context can be used to re-instantiate the session when the returned configId is used in an external reconfiguration process."
             },
             {
                 "name": "configurationKey",

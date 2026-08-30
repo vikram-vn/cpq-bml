@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.65.0] - 2026-08-30
+
+### Added
+- Implement BML intellisense engine with function metadata and testing infrastructure.
+- Implement BML intellisense generation scripts and metadata configuration.
+- Implement docFormatting utility for generating BML hover tooltips.
+- Implement automated BML documentation extraction and hover-ready formatting pipeline.
+
 ## [1.64.0] - 2026-08-30
 
 ### Added
@@ -100,8 +108,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 - Implement BML variable type checking and binary expression validation rules.
 - Add BML function metadata and validation rules for intellisense and linting.
-
-## [1.55.1] - 2026-08-24
-
-### Changed
-- Internal maintenance and housekeeping updates.

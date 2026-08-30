@@ -3,6 +3,17 @@ import json
 import re
 
 
+def clean_param_name(name):
+    if not name:
+        return ""
+    name = re.sub(r"\(or.*?\)", "", name, flags=re.IGNORECASE).strip()
+    name = re.sub(r"[\[\]\(\)]", "", name).strip()
+    tokens = name.split()
+    if tokens:
+        return tokens[-1].rstrip(");,")
+    return name
+
+
 def extract_params_from_entry(name, data):
     """
     Dynamically extract parameter names from a function entry in JSON data.
@@ -11,7 +22,8 @@ def extract_params_from_entry(name, data):
     # 1. Structured parameters array from JSON
     params = data.get("parameters")
     if params and isinstance(params, list) and len(params) > 0:
-        names = [p.get("name") for p in params if isinstance(p, dict) and p.get("name")]
+        names = [clean_param_name(p.get("name")) for p in params if isinstance(p, dict) and p.get("name")]
+        names = [n for n in names if n]
         if names:
             return names
 
@@ -29,11 +41,11 @@ def extract_params_from_entry(name, data):
             # If snippet format ${1:paramName}
             snip_match = re.search(r"\$\{\d+:([^}]+)\}", clean)
             if snip_match:
-                names.append(snip_match.group(1))
+                names.append(clean_param_name(snip_match.group(1)))
             else:
                 tokens = clean.split()
                 if tokens:
-                    names.append(tokens[-1])
+                    names.append(clean_param_name(tokens[-1]))
         return [n for n in names if n]
 
     return []
