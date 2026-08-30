@@ -328,8 +328,8 @@ response = urldata("https://api.example.com/v1/orders", "POST", headerDict, json
 Type any snippet prefix and press `Tab` or `Enter` to expand pure skeleton templates with sequential `$1` &rarr; `$2` &rarr; `$0` tab-stops:
 
 * **Control Flow**: `if`, `ifelse`, `ifelseif`, `forin`, `forin-idx`, `range`
-* **Dictionaries**: `dict`, `dict-iter`, `dict-get-default`
-* **JSON**: `json-new`, `json-put`, `json-iter`, `jsonpath-get`, `jsonarray-new`, `jsonarray-append`
+* **Dictionaries**: `dict` (with all 20 type choices), `dict-iter`, `dict-get-default`
+* **JSON & JSONPath**: `json-new`, `json-put`, `jsonget-typed`, `json-iter`, `jsonpath-get`, `jsonpath-get-typed`, `jsonarray-new`, `jsonarray-append`, `jsonarray-get-typed`
 * **BMQL & Database**: `bmql-select`, `bmql-select-in`, `bmql-safe`, `bmql-update`, `bmql-insert`, `bmql-delete`
 * **REST & Web Services**: `urldata-get`, `urldata-post`, `urldata-auth-bearer`, `urldata-auth-basic`
 * **XML & XSLT**: `xml-read`, `xml-transform`
@@ -338,5 +338,15 @@ Type any snippet prefix and press `Tab` or `Enter` to expand pure skeleton templ
 * **Dates**: `date-format`, `date-parse`
 * **Documentation**: `doc-func`, `doc-file`
 
+---
+
+### Example 6: JSONPath & BMQL Contextual Parameter Autocompletions
+
+When entering string literals inside specialized BML function calls, IntelliSense suggests tailored templates:
+
+* **`jsonpathget(jsonObj, "")`**: Auto-suggests aggregations (`$.array.min()`, `$.array.max()`, `$.array.sum()`, `$.array.stddev()`), boolean filters (`[?(@.active == true)]`), set filters (`[?(@.field in ['A', 'B'])]`), and slices (`[:2]`, `[1:3]`).
+* **`bmql("")`**: Auto-suggests complete query patterns including `IN ($arrayVar)`, `BETWEEN $min AND $max`, `LIKE $pattern`, and fully dynamic `$columns FROM $table WHERE $where` substitutions.
+
 > 📖 For full skeleton templates, variable mirroring flows, and keyboard navigation rules, see the dedicated **[BML Snippets Catalog](BML_Snippets.md)**.
+
 

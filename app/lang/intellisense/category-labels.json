@@ -18,6 +18,8 @@
     "arrays": "array",
     "string": "string",
     "json": "json",
-    "direct_db_access": "database"
+    "direct_db_access": "database",
+    "constant": "constant",
+    "constants": "constant"
   }
 }

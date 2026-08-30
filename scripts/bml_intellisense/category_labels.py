@@ -49,7 +49,9 @@ def generate_category_labels(root_dir):
         "math": "math",
         "url_access": "url",
         "xml": "xml",
-        "others": "misc"
+        "others": "misc",
+        "constant": "constant",
+        "constants": "constant"
     }
     for k, v in default_mappings.items():
         if k not in function_categories:

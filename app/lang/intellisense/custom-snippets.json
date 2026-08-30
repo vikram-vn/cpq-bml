@@ -42,7 +42,7 @@
     "notes": "Numeric range iteration loop."
   },
   "dict": {
-    "syntax": "${1:dictVar} = dict(\"${2|string,integer,float,string[],integer[],float[]|}\");\n${0}",
+    "syntax": "${1:dictVar} = dict(\"${2|string,integer,float,boolean,date,json,jsonarray,bytearray,anytype,dict<string>,dict<anytype>,string[],integer[],float[],boolean[],date[],string[][],integer[][],float[][],date[][]|}\");\n${0}",
     "examples": [
       "priceMap = dict(\"float\");\nput(priceMap, \"SKU-100\", 49.99);"
     ],
@@ -90,6 +90,20 @@
     ],
     "notes": "Extract a nested value from a JSON object using JSONPath."
   },
+  "jsonget-typed": {
+    "syntax": "${1:val} = jsonget(${2:jsonVar}, \"${3:key}\", \"${4|string,integer,float,boolean,json,jsonarray|}\");\n${0}",
+    "examples": [
+      "count = jsonget(responseJson, \"totalCount\", \"integer\");"
+    ],
+    "notes": "Extract a typed value from a JSON object with explicit target type."
+  },
+  "jsonpath-get-typed": {
+    "syntax": "${1:result} = jsonpathget(${2:jsonVar}, \"${3:$.path.to.field}\", \"${4|string,integer,float,boolean,json,jsonarray|}\");\n${0}",
+    "examples": [
+      "price = jsonpathget(quoteJson, \"$.summary.totalPrice\", \"float\");"
+    ],
+    "notes": "Extract a typed nested value from a JSON object using JSONPath and explicit target type."
+  },
   "jsonarray-new": {
     "syntax": "${1:arrayVar} = jsonarray();\n${0}",
     "examples": [
@@ -103,6 +117,13 @@
       "jsonarrayappend(itemsJsonArr, singleItemJson);"
     ],
     "notes": "Append an element to a JSON array."
+  },
+  "jsonarray-get-typed": {
+    "syntax": "${1:item} = jsonarrayget(${2:arrayVar}, ${3:0}, \"${4|string,integer,float,boolean,json,jsonarray|}\");\n${0}",
+    "examples": [
+      "firstItem = jsonarrayget(lineItems, 0, \"json\");"
+    ],
+    "notes": "Retrieve a typed element from a JSON array by index."
   },
   "bmql-select": {
     "syntax": "${1:records} = bmql(\"SELECT ${2:column} FROM ${3:table} WHERE ${4:column} = $${5:param}\", ${5:param});\nfor ${6:row} in ${1:records} {\n\t${7:val} = get(${6:row}, \"${2:column}\");\n\t${0}\n}",

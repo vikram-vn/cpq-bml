@@ -106,6 +106,14 @@ suite('BML IntelliSense', () => {
 		assert.strictEqual((value.match(/```/g) || []).length, 2);
 	});
 
+	test('hover for a system constant renders (constant) badge and type metadata', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = BM_UNCHANGED_STR;' });
+		const hovers = await vscode.commands.executeCommand('vscode.executeHoverProvider', doc.uri, new vscode.Position(0, 6));
+		const value = hovers[0].contents.map(c => c.value).join('\n');
+		assert.match(value, /\(constant\) \$BM_UNCHANGED_STR\$/);
+		assert.match(value, /\*constant · String\*/);
+	});
+
 	test('hover for a snippet with real multi-line code keeps it as a fenced code block', async () => {
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = 1;' });
 		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, new vscode.Position(0, 0), undefined, 9999);
@@ -115,6 +123,27 @@ suite('BML IntelliSense', () => {
 		// the real BML loop body in its example must still be fenced, not flattened to prose
 		assert.match(value, /```bml\n/);
 		assert.match(value, /for arrElement in arr/);
+	});
+
+	test('custom snippet for dict provides comprehensive type choices', () => {
+		const { loadCustomSnippetsJson } = require('../../app/lang/intellisense/apiDataLoader');
+		const snippets = loadCustomSnippetsJson();
+		assert.ok(snippets.dict, 'expected dict snippet to exist');
+		const syntax = snippets.dict.syntax;
+		assert.match(syntax, /string\[\]\[\]/);
+		assert.match(syntax, /jsonarray/);
+		assert.match(syntax, /dict<string>/);
+		assert.match(syntax, /anytype/);
+	});
+
+	test('custom snippets include typed jsonget, jsonpathget, and jsonarrayget snippets', () => {
+		const customSnippets = require('../../app/lang/intellisense/custom-snippets.json');
+		assert.ok(customSnippets['jsonget-typed'], 'expected jsonget-typed snippet');
+		assert.ok(customSnippets['jsonpath-get-typed'], 'expected jsonpath-get-typed snippet');
+		assert.ok(customSnippets['jsonarray-get-typed'], 'expected jsonarray-get-typed snippet');
+
+		assert.match(customSnippets['jsonget-typed'].syntax, /string,integer,float,boolean,json,jsonarray/);
+		assert.match(customSnippets['jsonpath-get-typed'].syntax, /string,integer,float,boolean,json,jsonarray/);
 	});
 
 	test('completion list for transaction. only includes Transaction attributes', async () => {
@@ -212,6 +241,46 @@ suite('BML IntelliSense', () => {
 		assert.strictEqual(putParams[0].label, 'Dictionary dictionaryIdentifier');
 		assert.strictEqual(putParams[1].label, 'String(or Integer, Float) key');
 		assert.strictEqual(putParams[2].label, '<DictionaryType> value');
+	});
+
+	test('signature help resolves active function across nested sub-calls and array literals', async () => {
+		const { getActiveFunctionCall } = require('../../app/lang/intellisense/signatureHelp');
+		
+		// Nested call inside argument 1: urldata(getendpoint(), "POST", |)
+		const nestedDoc = await vscode.workspace.openTextDocument({
+			language: 'bml',
+			content: 'res = urldata(getendpoint(), "POST", '
+		});
+		const nestedCall = getActiveFunctionCall(nestedDoc, new vscode.Position(0, 37));
+		assert.ok(nestedCall, 'expected activeCall to be resolved');
+		assert.strictEqual(nestedCall.funcName, 'urldata');
+		assert.strictEqual(nestedCall.paramIndex, 2);
+
+		// Array literal inside argument 1: myfunc(String[] {"a", "b", "c"}, |)
+		const arrayLitDoc = await vscode.workspace.openTextDocument({
+			language: 'bml',
+			content: 'x = savebom(123, String[] {"val1", "val2", "val3"}, '
+		});
+		const arrayLitCall = getActiveFunctionCall(arrayLitDoc, new vscode.Position(0, 52));
+		assert.ok(arrayLitCall, 'expected activeCall to be resolved');
+		assert.strictEqual(arrayLitCall.funcName, 'savebom');
+		assert.strictEqual(arrayLitCall.paramIndex, 2);
+	});
+
+	test('completion in 2nd parameter of jsonpathget suggests aggregation, slice and filter templates', async () => {
+		const content = 'res = jsonpathget(jsonObj, "");';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(0, 28); // inside ""
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('$.array.min()'), 'expected $.array.min() in jsonpath completions');
+		assert.ok(labels.includes('$.array.max()'), 'expected $.array.max() in jsonpath completions');
+		assert.ok(labels.includes('$.array.sum()'), 'expected $.array.sum() in jsonpath completions');
+		assert.ok(labels.includes('$.array.stddev()'), 'expected $.array.stddev() in jsonpath completions');
+		assert.ok(labels.includes('$.array[?(@.active == true)]'), 'expected boolean filter in jsonpath completions');
+		assert.ok(labels.includes('$.array[?(@.field in [\'A\', \'B\'])]'), 'expected in filter in jsonpath completions');
+		assert.ok(labels.includes('$.array[:2]'), 'expected slice in jsonpath completions');
 	});
 
 	test('completion in 3rd parameter of datetostr suggests timezones including GMT+4', async () => {

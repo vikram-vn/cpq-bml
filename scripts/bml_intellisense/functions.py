@@ -139,6 +139,30 @@ KNOWN_SIGNATURE_FIXES = {
     "bytearray": "ByteArray bytearray(String content [, String charSet])"
 }
 
+KNOWN_CONSTANT_TYPES = {
+    "BM_UNCHANGED_NUM": "Float",
+    "BM_UNCHANGED_STR": "String",
+    "BM_UNCHANGED_DATE": "Date",
+    "BM_REASON_STATUS_INVALID": "Integer",
+    "BM_REASON_STATUS_INACTIVE": "Integer",
+    "BM_REASON_STATUS_PENDING": "Integer",
+    "BM_REASON_STATUS_APPROVED": "Integer",
+    "BM_REASON_STATUS_REJECTED": "Integer",
+    "BM_CM_RULES_MESSAGE": "String",
+    "BM_CM_RULES_LOCATION": "String",
+    "BM_CM_RULES_OPERATOR": "String",
+    "BM_CM_RULES_VALUES": "String",
+    "BM_PARTNER_SECURITY_TOKEN": "String",
+    "BM_DEFAULT_SOURCE_IDENTIFIER": "String",
+    "BM_REMOTE_APPROVAL_STATUS_APPROVED": "Integer",
+    "BM_REMOTE_APPROVAL_STATUS_REJECTED": "Integer",
+    "BM_REMOTE_APPROVAL_STATUS_CUSTOM": "Integer",
+    "BM_SALES_ROOT_BOM_ITEM": "String",
+    "BM_PRIOR_ROOT_BOM_ITEM": "String",
+    "BM_PRIOR_CONFIGURATION_KEY": "String",
+    "BM_CONFIGURATION_KEY": "String"
+}
+
 
 def _normalize_for_comparison(s):
     if not s:
@@ -183,6 +207,8 @@ def generate_bml_functions(root_dir):
             continue
         item_syntax = strip_html(item.get('syntax', ''))
         category = item.get('category').lower() if item.get('category') else None
+        if key in KNOWN_CONSTANT_TYPES or key.startswith('BM_'):
+            category = 'constant'
 
         existing_entry = existing_data.get(key, {})
         full_sig = KNOWN_SIGNATURE_FIXES.get(key) or existing_entry.get('fullSignature') or item_syntax
@@ -240,7 +266,7 @@ def generate_bml_functions(root_dir):
 
         result[key] = {
             "functionCategory": category or existing_entry.get("functionCategory"),
-            "returnType": extract_return_type(full_sig) or existing_entry.get("returnType"),
+            "returnType": extract_return_type(full_sig) or KNOWN_CONSTANT_TYPES.get(key) or existing_entry.get("returnType"),
             "fullSignature": full_sig if full_sig else None,
             "syntax": computed_syntax or existing_entry.get("syntax") or to_snippet_syntax(key),
             "parameters": final_params if final_params else existing_entry.get("parameters", []),

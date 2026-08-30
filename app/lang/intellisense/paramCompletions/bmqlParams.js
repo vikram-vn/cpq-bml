@@ -42,6 +42,30 @@ const BMQL_TEMPLATES = [
         insertText: 'SELECT T1.col1, T2.col2 FROM Table1 T1 INNER JOIN Table2 T2 ON T1.key = T2.key',
         detail: 'BMQL INNER JOIN Query Template',
         doc: 'BMQL JOIN query between two Data Tables.'
+    },
+    {
+        name: 'SELECT column1 FROM dataTable WHERE column2 IN ($arrayVar)',
+        insertText: 'SELECT column1 FROM dataTable WHERE column2 IN ($arrayVar)',
+        detail: 'BMQL IN Array Query Template',
+        doc: 'BMQL SELECT query using a BML array in an IN clause.'
+    },
+    {
+        name: 'SELECT $columns FROM $table WHERE $where (Dynamic Query)',
+        insertText: 'SELECT $columns FROM $table WHERE $where',
+        detail: 'BMQL Dynamic Query Template',
+        doc: 'Fully dynamic BMQL query using $table, $columns, and $where substitutions with a fieldMap dictionary.'
+    },
+    {
+        name: 'SELECT column1 FROM dataTable WHERE column2 LIKE $pattern',
+        insertText: 'SELECT column1 FROM dataTable WHERE column2 LIKE $pattern',
+        detail: 'BMQL LIKE Query Template',
+        doc: 'BMQL query with wildcard pattern matching (e.g. $pattern = "%term%").'
+    },
+    {
+        name: 'SELECT column1 FROM dataTable WHERE column2 BETWEEN $minVal AND $maxVal',
+        insertText: 'SELECT column1 FROM dataTable WHERE column2 BETWEEN $minVal AND $maxVal',
+        detail: 'BMQL BETWEEN Query Template',
+        doc: 'BMQL query filtering rows within a range of values.'
     }
 ];
 

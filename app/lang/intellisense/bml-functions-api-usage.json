@@ -3088,8 +3088,8 @@
         "docs": "Prints into the console window of the Function Editor. **Example Use Case:**  For debugging.\n\nSyntax:\n\nprint(String(or Array(or Dictionary(or Numeric(or Date(or Boolean))))) varName)\n\n- **Parameter:** varName · **Data Type:** String, Array, Dictionary, Numeric, Date, or Boolean · **Description:** The item to print to the Function Editor console.\n\n> **Return Type:** `Boolean`\n\nExamples:\n\nTo display \"abba\" in the console window in the Function Editor.\n\n```bml\nprint(\"abba\")\n```\n\nTo display [1,2,3,4,5] in the console window.\n\n```bml\nintArray = integer[]{1,2,3,4,5};\nprint(intArray); //\n```\n\nTo display {key1=X, key2=Y} in the console window.\n\n```bml\ntestDict =dict(\"string\");\nput(testDict,\"key1\",\"X\");\nput(testDict,\"key2\",\"Y\");\nprint textDict;//\n```"
     },
     "BM_UNCHANGED_NUM": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Float",
         "fullSignature": "$BM_UNCHANGED_NUM$",
         "syntax": "$BM_UNCHANGED_NUM$",
         "parameters": [],
@@ -3100,8 +3100,8 @@
         "docs": "Constant for 'Leave Value Unchanged' for Number. This is used to specify an array value that should remain unchanged.\n\n**Return Type:**  Numeric\n\nExample of:\n\nConsider an int array`intArr = Integer [] {1,2,3}`.\n\nIf you want to assign new values to `intArr[1]` and `intArr[2]` but keep `intArr[0] = 1`, specify the following:\n\nintArr = Integer [] {$BM_UNCHANGED_NUM$, 21,23};"
     },
     "BM_UNCHANGED_STR": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "$BM_UNCHANGED_STR$",
         "syntax": "$BM_UNCHANGED_STR$",
         "parameters": [],
@@ -3112,8 +3112,8 @@
         "docs": "Constant for 'Leave Value Unchanged' for String.\n\n**Return Type:**  String"
     },
     "BM_UNCHANGED_DATE": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Date",
         "fullSignature": "$BM_UNCHANGED_DATE$",
         "syntax": "$BM_UNCHANGED_DATE$",
         "parameters": [],
@@ -3162,8 +3162,8 @@
         "docs": "This function returns the status of the reason variable name in an approval sequence.\n\nSyntax:\n\nInteger getreasonstatus(String)\n\n- **Parameter:** reasonVarName · **Data Type:** String · **Description:** This is the variable name of the reason within the approval sequence.\n\n**Return Type:** Integer (associated with one of the following statuses):\n\n* **BM_REASON_STATUS_INVALID**: No reason exists in admin reason tree with given variable name.\n\n* **BM_REASON_STATUS_INACTIVE**: Reason exists in admin reason tree but the condition for the reason is not met, therefore no record for it exists in the user-side tree.\n\n* **BM_REASON_STATUS_PENDING**: Reason exists in the user-side reason tree and there are pending approvals.\n\n* **BM_REASON_STATUS_APPROVED**: Reason exists in the user-side tree and it is approved by all approvers, therefore the reason is completely approved.\n\n* **BM_REASON_STATUS_REJECTED**: Reason exits in user-side tree, but has been rejected by at least one approver."
     },
     "BM_REASON_STATUS_INVALID": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REASON_STATUS_INVALID",
         "syntax": "BM_REASON_STATUS_INVALID",
         "parameters": [],
@@ -3174,8 +3174,8 @@
         "docs": "No reason exists in admin reason tree with given variable name."
     },
     "BM_REASON_STATUS_INACTIVE": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REASON_STATUS_INACTIVE",
         "syntax": "BM_REASON_STATUS_INACTIVE",
         "parameters": [],
@@ -3186,8 +3186,8 @@
         "docs": "Reason exists in admin reason tree but the condition for the reason is not met, therefore no record for it exists in the user-side tree."
     },
     "BM_REASON_STATUS_PENDING": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REASON_STATUS_PENDING",
         "syntax": "BM_REASON_STATUS_PENDING",
         "parameters": [],
@@ -3198,8 +3198,8 @@
         "docs": "Reason exists in the user-side reason tree and there are pending approvals."
     },
     "BM_REASON_STATUS_APPROVED": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REASON_STATUS_APPROVED",
         "syntax": "BM_REASON_STATUS_APPROVED",
         "parameters": [],
@@ -3210,8 +3210,8 @@
         "docs": "Reason exists in the user-side tree and it is approved by all approvers, therefore the reason is completely approved."
     },
     "BM_REASON_STATUS_REJECTED": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REASON_STATUS_REJECTED",
         "syntax": "BM_REASON_STATUS_REJECTED",
         "parameters": [],
@@ -3222,8 +3222,8 @@
         "docs": "Reason exits in user-side tree, but has been rejected by at least one approver."
     },
     "BM_CM_RULES_MESSAGE": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_CM_RULES_MESSAGE",
         "syntax": "BM_CM_RULES_MESSAGE",
         "parameters": [],
@@ -3234,8 +3234,8 @@
         "docs": "Dictionary key for the rule's message.\n\nThe message to be displayed for the violated constraint."
     },
     "BM_CM_RULES_LOCATION": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_CM_RULES_LOCATION",
         "syntax": "BM_CM_RULES_LOCATION",
         "parameters": [],
@@ -3246,8 +3246,8 @@
         "docs": "Dictionary key for the rule's message location.\n\nWhere the message will be displayed. Options are attribute (default) and top."
     },
     "BM_CM_RULES_OPERATOR": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_CM_RULES_OPERATOR",
         "syntax": "BM_CM_RULES_OPERATOR",
         "parameters": [],
@@ -3258,8 +3258,8 @@
         "docs": "Dictionary key for the rule's operator.\n\nOperator used to evaluate constraint, as in Simple Constraints."
     },
     "BM_CM_RULES_VALUES": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_CM_RULES_VALUES",
         "syntax": "BM_CM_RULES_VALUES",
         "parameters": [],
@@ -3270,8 +3270,8 @@
         "docs": "Dictionary key for the rule's values.\n\nTilde-delimited values used to evaluate constraint, as in Simple Constraints."
     },
     "BM_PARTNER_SECURITY_TOKEN": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_PARTNER_SECURITY_TOKEN",
         "syntax": "BM_PARTNER_SECURITY_TOKEN",
         "parameters": [],
@@ -3283,8 +3283,8 @@
         "docs": "The BM_PARTNER_SECURITY_TOKEN parameter represents the WSSE security Username Token for SOAP, used for sending stateless SOAP with `UrlDataByPost`."
     },
     "BM_DEFAULT_SOURCE_IDENTIFIER": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_DEFAULT_SOURCE_IDENTIFIER",
         "syntax": "BM_DEFAULT_SOURCE_IDENTIFIER",
         "parameters": [],
@@ -3295,8 +3295,8 @@
         "docs": "The variable name of the commerce process or external application identifier."
     },
     "BM_REMOTE_APPROVAL_STATUS_APPROVED": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REMOTE_APPROVAL_STATUS_APPROVED",
         "syntax": "BM_REMOTE_APPROVAL_STATUS_APPROVED",
         "parameters": [],
@@ -3307,8 +3307,8 @@
         "docs": "Approved Status. This is used in Remote Approvals in the tilde separated approval history to be returned in the BML in Approve/Reject action"
     },
     "BM_REMOTE_APPROVAL_STATUS_REJECTED": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REMOTE_APPROVAL_STATUS_REJECTED",
         "syntax": "BM_REMOTE_APPROVAL_STATUS_REJECTED",
         "parameters": [],
@@ -3319,8 +3319,8 @@
         "docs": "Rejected Status. This is used in Remote Approvals in the tilde separated approval history to be returned in the BML in Approve/Reject action"
     },
     "BM_REMOTE_APPROVAL_STATUS_CUSTOM": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "Integer",
         "fullSignature": "BM_REMOTE_APPROVAL_STATUS_CUSTOM",
         "syntax": "BM_REMOTE_APPROVAL_STATUS_CUSTOM",
         "parameters": [],
@@ -3331,8 +3331,8 @@
         "docs": "Custom Status. This is used in Remote Approvals in the tilde separated approval history to be returned in the BML in Approve/Reject action. This can be used for anything other than Approved/Rejected"
     },
     "BM_SALES_ROOT_BOM_ITEM": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_SALES_ROOT_BOM_ITEM",
         "syntax": "BM_SALES_ROOT_BOM_ITEM",
         "parameters": [],
@@ -3343,8 +3343,8 @@
         "docs": "Sales BOM used for launching configurator."
     },
     "BM_PRIOR_ROOT_BOM_ITEM": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_PRIOR_ROOT_BOM_ITEM",
         "syntax": "BM_PRIOR_ROOT_BOM_ITEM",
         "parameters": [],
@@ -3355,8 +3355,8 @@
         "docs": "Projected state of the asset calculated for a requested date."
     },
     "BM_PRIOR_CONFIGURATION_KEY": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_PRIOR_CONFIGURATION_KEY",
         "syntax": "BM_PRIOR_CONFIGURATION_KEY",
         "parameters": [],
@@ -3367,8 +3367,8 @@
         "docs": "Generic key used to determine prior configuration context."
     },
     "BM_CONFIGURATION_KEY": {
-        "functionCategory": "others",
-        "returnType": null,
+        "functionCategory": "constant",
+        "returnType": "String",
         "fullSignature": "BM_CONFIGURATION_KEY",
         "syntax": "BM_CONFIGURATION_KEY",
         "parameters": [],

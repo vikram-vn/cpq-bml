@@ -19,5 +19,9 @@ suite("BML Intellisense - bmql() Parameter Suggestions", () => {
         assert.ok(labels.some(l => l.includes("MODIFY")), "Should include MODIFY template");
         assert.ok(labels.some(l => l.includes("DELETE")), "Should include DELETE template");
         assert.ok(labels.some(l => l.includes("JOIN")), "Should include JOIN template");
+        assert.ok(labels.some(l => l.includes("IN ($arrayVar)")), "Should include IN template");
+        assert.ok(labels.some(l => l.includes("Dynamic Query")), "Should include Dynamic Query template");
+        assert.ok(labels.some(l => l.includes("LIKE")), "Should include LIKE template");
+        assert.ok(labels.some(l => l.includes("BETWEEN")), "Should include BETWEEN template");
     });
 });

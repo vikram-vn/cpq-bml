@@ -38,7 +38,9 @@ const FUNCTION_CATEGORY_LABEL = (categoryData && categoryData.functionCategories
     math: 'math',
     url_access: 'url',
     xml: 'xml',
-    others: 'misc'
+    others: 'misc',
+    constant: 'constant',
+    constants: 'constant'
 };
 
 const KEYWORD_HOVERS = loadKeywordHoversJson();
@@ -51,6 +53,9 @@ const BEST_PRACTICE_ADVISORIES = loadBestPracticeAdvisoriesJson();
 function buildMetadataLine(info) {
     if (info.category === 'function') {
         if (!info.functionCategory) return '*function*';
+        if (info.functionCategory === 'constant' || info.functionCategory === 'constants') {
+            return info.returnType ? `*constant · ${info.returnType}*` : '*constant*';
+        }
         const label = FUNCTION_CATEGORY_LABEL[info.functionCategory] || info.functionCategory;
         return `*${label} function*`;
     }
@@ -207,7 +212,10 @@ function formatAsJsDoc(info) {
     const md = new vscode.MarkdownString();
     md.isTrusted = true;
 
-    const label = CATEGORY_LABEL[info.category] || 'symbol';
+    let label = CATEGORY_LABEL[info.category] || 'symbol';
+    if (info.functionCategory === 'constant' || info.functionCategory === 'constants') {
+        label = 'constant';
+    }
     const signature = info.fullSignature || info.syntax;
     if (signature) {
         md.appendCodeblock(`(${label}) ${decodeHtmlEntities(signature)}`, 'bml');

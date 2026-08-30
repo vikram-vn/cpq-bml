@@ -313,5 +313,82 @@ suite('BML Linter Test Suite - variable type consistency', () => {
             assert.ok(diag, 'Should flag Integer + String when array element is indexed');
         });
     });
+
+    suite('Typed Dictionary Static Value Type Checking', () => {
+        test('Flags inserting String literal into dict("integer")', () => {
+            const diagnostics = lintText(`
+                intMap = dict("integer");
+                put(intMap, "k1", "not_an_int");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-dict-put-type-mismatch');
+            assert.ok(diag, 'Should flag invalid String value inserted into integer dictionary');
+            assert.ok(diag.message.includes('intMap') && diag.message.includes('integer') && diag.message.includes('String'));
+        });
+
+        test('Flags inserting Date object into dict("string")', () => {
+            const diagnostics = lintText(`
+                strMap = dict("string");
+                put(strMap, "dateKey", getdate());
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-dict-put-type-mismatch');
+            assert.ok(diag, 'Should flag Date value inserted into string dictionary');
+        });
+
+        test('Allows inserting Integer into dict("float") (numeric widening)', () => {
+            const diagnostics = lintText(`
+                floatMap = dict("float");
+                put(floatMap, "price", 100);
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-dict-put-type-mismatch');
+            assert.strictEqual(diag, undefined, 'Integer widening into float dictionary should be allowed');
+        });
+
+        test('Allows inserting any type into dict("anytype")', () => {
+            const diagnostics = lintText(`
+                anyMap = dict("anytype");
+                put(anyMap, "k1", "val");
+                put(anyMap, "k2", 123);
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-dict-put-type-mismatch');
+            assert.strictEqual(diag, undefined, 'anytype dictionary should accept any value');
+        });
+    });
+
+    suite('Array Bounds Static Checking', () => {
+        test('Flags out-of-bounds constant indexing on sized array constructor', () => {
+            const diagnostics = lintText(`
+                myArr = string[2];
+                val = myArr[2];
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-array-bounds-error');
+            assert.ok(diag, 'Should flag index 2 on array of size 2 (valid indices: 0, 1)');
+            assert.ok(diag.message.includes('Index 2') && diag.message.includes('size of 2'));
+        });
+
+        test('Flags out-of-bounds constant indexing on literal array initializer', () => {
+            const diagnostics = lintText(`
+                items = string[]{"first", "second"};
+                outVal = items[5];
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-array-bounds-error');
+            assert.ok(diag, 'Should flag index 5 on array of size 2');
+        });
+
+        test('Does not flag in-bounds indexing', () => {
+            const diagnostics = lintText(`
+                items = string[]{"first", "second"};
+                inVal = items[1];
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-array-bounds-error');
+            assert.strictEqual(diag, undefined, 'In-bounds indexing should not be flagged');
+        });
+    });
 });
 

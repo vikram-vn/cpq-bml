@@ -224,6 +224,8 @@ flowchart TD
 | | `assignment.js` | `bml-var-keyword` | Error | Prohibits JavaScript variable declaration keywords (`var`, `let`, `const`). | Yes |
 | | `mixedOperators.js` | `bml-mixed-operators` | Warning | Requires parentheses when mixing arithmetic and boolean operators. | No |
 | **Type Safety** | `typeCheck.js` | `bml-type-mismatch` | Error | Validates variable assignment and expression type compatibility. | No |
+| | `typeCheck.js` | `bml-dict-put-type-mismatch` | Error | Validates value type inserted via `put()` matches declared `dict("<type>")` element type. | No |
+| | `typeCheck.js` | `bml-array-bounds-error` | Error | Statically flags constant index access exceeding declared or initialized array size. | No |
 | | `typeCheckOperands.js` | `bml-operand-type-mismatch` | Error | Validates operand types for binary operators (`+`, `-`, `*`, `/`). | No |
 | | `metadataTypes.js` | `bml-metadata-type` | Warning | Validates attribute and custom field access against CPQ schema definitions. | No |
 | | `nullSafety.js` | `bml-null-safety` | Warning | Warns on uninitialized scalar/dictionary access without null-checks. | No |

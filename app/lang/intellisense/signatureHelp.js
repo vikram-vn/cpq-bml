@@ -67,17 +67,36 @@ function getActiveFunctionCall(document, position) {
             }
             const funcName = text.substring(startIdx + 1, idEnd).trim();
             if (/^[a-zA-Z_]/.test(funcName) && !KEYWORDS.has(funcName.toLowerCase())) {
-                stack.push({ funcName, paramIndex: 0 });
+                stack.push({ funcName, paramIndex: 0, braceDepth: 0, bracketDepth: 0 });
             } else {
-                stack.push({ funcName: '', paramIndex: 0 });
+                stack.push({ funcName: '', paramIndex: 0, braceDepth: 0, bracketDepth: 0 });
             }
         } else if (char === ')') {
             if (stack.length > 0) {
                 stack.pop();
             }
+        } else if (char === '{') {
+            if (stack.length > 0) {
+                stack[stack.length - 1].braceDepth++;
+            }
+        } else if (char === '}') {
+            if (stack.length > 0) {
+                stack[stack.length - 1].braceDepth = Math.max(0, stack[stack.length - 1].braceDepth - 1);
+            }
+        } else if (char === '[') {
+            if (stack.length > 0) {
+                stack[stack.length - 1].bracketDepth++;
+            }
+        } else if (char === ']') {
+            if (stack.length > 0) {
+                stack[stack.length - 1].bracketDepth = Math.max(0, stack[stack.length - 1].bracketDepth - 1);
+            }
         } else if (char === ',') {
             if (stack.length > 0) {
-                stack[stack.length - 1].paramIndex++;
+                const top = stack[stack.length - 1];
+                if (top.braceDepth === 0 && top.bracketDepth === 0) {
+                    top.paramIndex++;
+                }
             }
         }
 
