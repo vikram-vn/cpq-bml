@@ -125,8 +125,110 @@ function getStyleFixes(document, diag, editRange) {
         removeAction.diagnostics = [diag];
         fixes.push(removeAction);
     }
+    else if (diag.code === 'bml-line-too-long') {
+        const lineIndex = editRange.start.line;
+        const lineText = document.lineAt(lineIndex).text;
+        const splitResult = splitConditionIntoLines(lineText);
+        if (splitResult) {
+            const action = new vscode.CodeAction('Split condition across multiple lines', vscode.CodeActionKind.QuickFix);
+            action.isPreferred = true;
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, document.lineAt(lineIndex).range, splitResult);
+            action.diagnostics = [diag];
+            fixes.push(action);
+        }
+    }
 
     return fixes;
 }
 
-module.exports = { getStyleFixes };
+function splitConditionIntoLines(lineText) {
+    const match = lineText.match(/^(\s*)(if|elif)\s*\(/i);
+    if (!match) return null;
+
+    const baseIndent = match[1];
+    const keyword = match[2];
+    const condStartIndex = match[0].length;
+
+    let depth = 1;
+    let inSingle = false;
+    let inDouble = false;
+    let condEndIndex = -1;
+
+    for (let i = condStartIndex; i < lineText.length; i++) {
+        const ch = lineText[i];
+        if (ch === '\\') { i++; continue; }
+        if (ch === "'" && !inDouble) inSingle = !inSingle;
+        else if (ch === '"' && !inSingle) inDouble = !inDouble;
+        if (inSingle || inDouble) continue;
+
+        if (ch === '(') depth++;
+        else if (ch === ')') {
+            depth--;
+            if (depth === 0) {
+                condEndIndex = i;
+                break;
+            }
+        }
+    }
+
+    if (condEndIndex === -1) return null;
+
+    const condContent = lineText.substring(condStartIndex, condEndIndex);
+    const afterCondition = lineText.substring(condEndIndex + 1).trim();
+
+    depth = 0;
+    inSingle = false;
+    inDouble = false;
+    const parts = [];
+    let currentPart = '';
+
+    for (let i = 0; i < condContent.length; i++) {
+        const ch = condContent[i];
+        if (ch === '\\') {
+            currentPart += ch + (condContent[i + 1] || '');
+            i++;
+            continue;
+        }
+        if (ch === "'" && !inDouble) inSingle = !inSingle;
+        else if (ch === '"' && !inSingle) inDouble = !inDouble;
+
+        if (!inSingle && !inDouble) {
+            if (ch === '(' || ch === '[' || ch === '{') depth++;
+            else if (ch === ')' || ch === ']' || ch === '}') depth = Math.max(0, depth - 1);
+
+            if (depth === 0) {
+                const rest = condContent.substring(i);
+                const opMatch = rest.match(/^\b(AND|OR|and|or)\b/);
+                if (opMatch && currentPart.trim().length > 0) {
+                    parts.push(currentPart.trim());
+                    currentPart = opMatch[1] + ' ';
+                    i += opMatch[0].length;
+                    continue;
+                }
+            }
+        }
+        currentPart += ch;
+    }
+
+    if (currentPart.trim().length > 0) {
+        parts.push(currentPart.trim());
+    }
+
+    if (parts.length <= 1) return null;
+
+    const indentUnit = baseIndent.includes('\t') ? '\t' : '    ';
+    const continuationIndent = baseIndent + indentUnit;
+    const formattedLines = [];
+
+    formattedLines.push(`${baseIndent}${keyword} (${parts[0]}`);
+    for (let i = 1; i < parts.length; i++) {
+        const isLast = (i === parts.length - 1);
+        const closing = isLast ? `)${afterCondition.length > 0 ? ` ${afterCondition}` : ''}` : '';
+        formattedLines.push(`${continuationIndent}${parts[i]}${closing}`);
+    }
+
+    return formattedLines.join('\n');
+}
+
+module.exports = { getStyleFixes, splitConditionIntoLines };

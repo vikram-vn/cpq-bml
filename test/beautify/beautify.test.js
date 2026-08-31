@@ -151,5 +151,12 @@ suite('BML Beautifier Unit & Fixture Tests', () => {
             const result = bml_beautify(source, opts);
             assert.strictEqual(result, expected);
         });
+
+        test('wraps long if conditions across multiple lines when wrap_line_length is exceeded', () => {
+            const source = 'if (totalDaysContract <> 364 AND totalDaysContract <> 365 AND totalDaysContract <> 366) {\n\ttotalYear = totalDaysContract / 365;\n}';
+            const expected = 'if (totalDaysContract <> 364\n\tAND totalDaysContract <> 365\n\tAND totalDaysContract <> 366) {\n\ttotalYear = totalDaysContract / 365;\n}';
+            const result = bml_beautify(source, { indent_char: '\t', indent_size: 1, wrap_line_length: 50 });
+            assert.strictEqual(result, expected);
+        });
     });
 });

@@ -242,9 +242,9 @@ function Beautifier(source_text, options) {
 
     function handleStartExpr(token) {
       beginStatementLine(token);
+      const isCond = token.text === '(' && last && last.type === TOKEN.RESERVED && CONTROL_WITH_CONDITION.indexOf(last.text.toLowerCase()) !== -1;
       emit(token);
-      context_stack.push(token.text === '(' ? 'paren' :
-        (last && last.type === TOKEN.RESERVED && CONTROL_WITH_CONDITION.indexOf(last.text) !== -1 ? 'condition' : 'index'));
+      context_stack.push(isCond ? 'condition' : (token.text === '(' ? 'paren' : 'index'));
     }
 
     function handleEndExpr(token) {
@@ -332,6 +332,40 @@ function Beautifier(source_text, options) {
 
     function handleWord(token) {
       beginStatementLine(token);
+      const lower = token.text.toLowerCase();
+      const isLogical = (lower === 'and' || lower === 'or') && token.type === TOKEN.RESERVED;
+
+      if (isLogical && context_stack.indexOf('condition') !== -1 && opts.wrap_line_length > 0) {
+        const currentLength = output.current_line_length();
+        if (currentLength > opts.wrap_line_length) {
+          output.ensure_newline();
+          output.set_indent(indent_level + 1);
+          needsSpaceBeforeCurrent = false;
+        } else {
+          // Lookahead: estimate if next condition clause pushes past wrap_line_length
+          let estimatedLength = currentLength + 1 + token.text.length;
+          let peekIdx = 0;
+          let peekToken = tokens.peek(peekIdx);
+          while (peekToken && peekToken.type !== TOKEN.EOF) {
+            if (peekToken.type === TOKEN.RESERVED && (peekToken.text.toLowerCase() === 'and' || peekToken.text.toLowerCase() === 'or')) {
+              break;
+            }
+            if (peekToken.type === TOKEN.END_EXPR && peekToken.text === ')') {
+              break;
+            }
+            estimatedLength += 1 + peekToken.text.length;
+            peekIdx++;
+            if (estimatedLength > opts.wrap_line_length) break;
+            peekToken = tokens.peek(peekIdx);
+          }
+          if (estimatedLength > opts.wrap_line_length && currentLength > (indent_level * opts.indent_size + 15)) {
+            output.ensure_newline();
+            output.set_indent(indent_level + 1);
+            needsSpaceBeforeCurrent = false;
+          }
+        }
+      }
+
       emit(token);
     }
 
