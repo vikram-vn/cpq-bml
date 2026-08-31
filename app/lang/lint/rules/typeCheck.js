@@ -424,7 +424,7 @@ function extractPutCalls(cleanText) {
 
 function checkDictPutTypeConsistency(cleanText, doc, vscode, firstTypeByVar, extensionPath, returnTypes) {
     const diagnostics = [];
-    if (!firstTypeByVar || !doc || !vscode) return diagnostics;
+    if (!firstTypeByVar || !doc || !vscode || !cleanText.includes('put')) return diagnostics;
 
     const calls = extractPutCalls(cleanText);
     for (let c = 0; c < calls.length; c++) {

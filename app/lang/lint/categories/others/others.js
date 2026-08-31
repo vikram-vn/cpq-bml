@@ -4,6 +4,9 @@ const vscode = require('vscode');
 
 function checkOthers(cleanText, noStringsText, doc) {
     const diagnostics = [];
+    if (!cleanText.includes('logtime') && !cleanText.includes('globaldictset') && !cleanText.includes('generatehmacmessage') && !cleanText.includes('stringbuilder')) {
+        return diagnostics;
+    }
     let match;
 
     // logtime(tag, timeElapsed) - tag literal longer than 128 chars is silently truncated

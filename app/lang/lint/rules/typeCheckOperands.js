@@ -133,7 +133,7 @@ const { loadBuiltInFunctionsJson } = require('../../intellisense/apiDataLoader')
 let _cachedReturnTypes = null;
 
 function getFunctionReturnTypes(extensionPath) {
-    if (_cachedReturnTypes && Object.keys(_cachedReturnTypes).length > 85) return _cachedReturnTypes;
+    if (_cachedReturnTypes !== null) return _cachedReturnTypes;
     const map = Object.create(null);
     try {
         const data = loadBuiltInFunctionsJson(extensionPath);

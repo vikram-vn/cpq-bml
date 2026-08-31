@@ -236,10 +236,11 @@ function countArguments(argsText) {
 
 function findClosestBuiltInFunction(name, builtIns) {
   const nameLower = name.toLowerCase();
+  const nameLen = nameLower.length;
   let best = null;
   let bestDist = Infinity;
   for (const [lower, info] of builtIns.entries()) {
-    if (Math.abs(lower.length - nameLower.length) > 3) continue;
+    if (Math.abs(lower.length - nameLen) > 2) continue;
     const dist = levenshtein(nameLower, lower);
     if (dist < bestDist) {
       bestDist = dist;
@@ -251,10 +252,11 @@ function findClosestBuiltInFunction(name, builtIns) {
 
 function findClosestWorkspaceFunction(fullName, wsFunctions) {
   const fullNameLower = fullName.toLowerCase();
+  const fullNameLen = fullNameLower.length;
   let best = null;
   let bestDist = Infinity;
   for (const key of wsFunctions.keys()) {
-    if (Math.abs(key.length - fullNameLower.length) > 3) continue;
+    if (Math.abs(key.length - fullNameLen) > 2) continue;
     const dist = levenshtein(fullNameLower, key);
     if (dist < bestDist) {
       bestDist = dist;
@@ -335,12 +337,14 @@ function checkFunctionCalls(
   doc,
   vscode,
   extensionPath,
-  firstTypeByVar,
+  firstTypeByVar = new Map(),
 ) {
   const diagnostics = [];
   const builtIns = loadBuiltInFunctions(extensionPath);
   const wsFunctions = getWorkspaceFunctionsCached(vscode);
   const returnTypes = getFunctionReturnTypes(extensionPath);
+
+  let cpqJsData = null;
 
   // Matches namespaced or bare function calls: [util/commerce/CPQJS.[folder.]]name(
   // The middle "folder" segment covers Oracle CPQ's util library folders/
@@ -393,11 +397,12 @@ function checkFunctionCalls(
     const argCount = countArguments(argsCleanText);
 
     if (namespace && namespace.toUpperCase() === 'CPQJS') {
-      let cpqJsData = {};
-      try {
-        cpqJsData = loadJson('bml-cpq-js-api-usage', extensionPath) || {};
-      } catch (e) {
-        cpqJsData = {};
+      if (cpqJsData === null) {
+        try {
+          cpqJsData = loadJson('bml-cpq-js-api-usage', extensionPath) || {};
+        } catch (e) {
+          cpqJsData = {};
+        }
       }
       const FALLBACK_CPQJS = {
         'CPQJS.getTableInfo': { syntax: 'CPQJS.getTableInfo(String tableName)' },

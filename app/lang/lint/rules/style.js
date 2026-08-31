@@ -167,6 +167,14 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
         // Suffix/Prefix checks based on inferred type
         let inferredType = firstTypeByVar ? (firstTypeByVar.get(varName.toLowerCase())?.type || firstTypeByVar.get(varName)?.type) : null;
         if (!inferredType) {
+            for (let i = 0; i < decls.length; i++) {
+                if (decls[i].type) {
+                    inferredType = decls[i].type;
+                    break;
+                }
+            }
+        }
+        if (!inferredType) {
             for (const decl of decls) {
                 if (decl.isLoopVar) continue;
                 const eqIdx = noStringsText.indexOf('=', decl.index);

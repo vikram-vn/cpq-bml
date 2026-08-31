@@ -67,130 +67,135 @@ function checkPerformance(cleanText, noStringsText, doc) {
     }
 
     // 1. BMQL inside loops detection (run on noStringsText to ignore bmql in comments/strings)
-    const bmqlRegex = /\bbmql\s*\(/gi;
-    while ((match = bmqlRegex.exec(noStringsText)) !== null) {
-        const index = match.index;
-        if (isInLoop(index)) {
-            const startPos = doc.positionAt(index);
-            const endPos = startPos.translate(0, 4); // length of 'bmql'
-            diagnostics.push(makeDiagnostic(
-                new vscode.Range(startPos, endPos),
-                'Performance Warning: BMQL query inside loop. Move query outside the loop for better performance',
-                vscode.DiagnosticSeverity.Warning,
-                'bml-bmql-in-loop'
-            ));
+    if (loops.length > 0 && (noStringsText.includes('bmql') || noStringsText.includes('BMQL'))) {
+        const bmqlRegex = /\bbmql\s*\(/gi;
+        while ((match = bmqlRegex.exec(noStringsText)) !== null) {
+            const index = match.index;
+            if (isInLoop(index)) {
+                const startPos = doc.positionAt(index);
+                const endPos = startPos.translate(0, 4); // length of 'bmql'
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    'Performance Warning: BMQL query inside loop. Move query outside the loop for better performance',
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-bmql-in-loop'
+                ));
+            }
         }
     }
 
     // 2. String concatenation in loops detection
-    // Match self-concatenation in noStringsText
-    const concatRegex = /\b([a-zA-Z_]\w*)\s*=\s*(?:\1\s*\+|\b.*?\+\s*\1\b)/gi;
-    const counters = new Set(['i', 'j', 'k', 'count', 'counter', 'index', 'idx']);
-    loops.forEach(loop => {
-        const loopBodyNoStrings = noStringsText.slice(loop.start, loop.end);
-        const loopBodyWithStrings = cleanText.slice(loop.start, loop.end);
-        let innerMatch;
-        while ((innerMatch = concatRegex.exec(loopBodyNoStrings)) !== null) {
-            const varName = innerMatch[1];
-            if (counters.has(varName.toLowerCase())) {
-                continue; // Skip standard loop counters
+    if (loops.length > 0) {
+        const concatRegex = /\b([a-zA-Z_]\w*)\s*=\s*(?:\1\s*\+|\b.*?\+\s*\1\b)/gi;
+        const counters = new Set(['i', 'j', 'k', 'count', 'counter', 'index', 'idx']);
+        loops.forEach(loop => {
+            const loopBodyNoStrings = noStringsText.slice(loop.start, loop.end);
+            const loopBodyWithStrings = cleanText.slice(loop.start, loop.end);
+            let innerMatch;
+            while ((innerMatch = concatRegex.exec(loopBodyNoStrings)) !== null) {
+                const varName = innerMatch[1];
+                if (counters.has(varName.toLowerCase())) {
+                    continue; // Skip standard loop counters
+                }
+                
+                // Check if the corresponding cleanText block has string literals/concatenations
+                const matchIndex = innerMatch.index;
+                const expressionTextClean = loopBodyWithStrings.slice(matchIndex, matchIndex + innerMatch[0].length);
+                const hasStringIndicators = expressionTextClean.includes('"') || expressionTextClean.includes("'") || expressionTextClean.includes('~') || expressionTextClean.includes('|');
+                
+                if (hasStringIndicators || varName.toLowerCase().includes('str') || varName.toLowerCase().includes('ret')) {
+                    const absoluteIndex = loop.start + matchIndex;
+                    const startPos = doc.positionAt(absoluteIndex);
+                    const endPos = doc.positionAt(absoluteIndex + innerMatch[0].length);
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Performance Warning: String concatenation inside loop for '${varName}'. Use StringBuilder (sbappend/sbtostring) instead`,
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-string-concat-in-loop'
+                    ));
+                }
             }
-            
-            // Check if the corresponding cleanText block has string literals/concatenations
-            const matchIndex = innerMatch.index;
-            const expressionTextClean = loopBodyWithStrings.slice(matchIndex, matchIndex + innerMatch[0].length);
-            const hasStringIndicators = expressionTextClean.includes('"') || expressionTextClean.includes("'") || expressionTextClean.includes('~') || expressionTextClean.includes('|');
-            
-            if (hasStringIndicators || varName.toLowerCase().includes('str') || varName.toLowerCase().includes('ret')) {
-                const absoluteIndex = loop.start + matchIndex;
-                const startPos = doc.positionAt(absoluteIndex);
-                const endPos = doc.positionAt(absoluteIndex + innerMatch[0].length);
-                diagnostics.push(makeDiagnostic(
-                    new vscode.Range(startPos, endPos),
-                    `Performance Warning: String concatenation inside loop for '${varName}'. Use StringBuilder (sbappend/sbtostring) instead`,
-                    vscode.DiagnosticSeverity.Warning,
-                    'bml-string-concat-in-loop'
-                ));
-            }
-        }
-    });
-
-    // 3. Repeated BMQL queries and Table Queries (run on cleanText since we need string literals)
-    const bmqlQueryRegex = /\bbmql\s*\(\s*(["'])([\s\S]*?)\1\s*(?:,|\))/gi;
-    const queryCounts = new Map(); // normalized query string -> positions []
-    const tableCounts = new Map(); // table name -> positions []
-
-    while ((match = bmqlQueryRegex.exec(cleanText)) !== null) {
-        const queryText = match[2];
-        const normalizedQuery = queryText.replace(/\s+/g, ' ').trim().toLowerCase();
-        const startPos = doc.positionAt(match.index);
-        const endPos = startPos.translate(0, match[0].length);
-        const range = new vscode.Range(startPos, endPos);
-
-        if (!queryCounts.has(normalizedQuery)) {
-            queryCounts.set(normalizedQuery, []);
-        }
-        queryCounts.get(normalizedQuery).push(range);
-
-        // Try to extract table name: SELECT ... FROM table_name ...
-        const fromMatch = /\bfrom\s+([_a-zA-Z0-9]+)/i.exec(queryText);
-        if (fromMatch) {
-            const tableName = fromMatch[1].toLowerCase();
-            if (!tableCounts.has(tableName)) {
-                tableCounts.set(tableName, []);
-            }
-            tableCounts.get(tableName).push(range);
-        }
+        });
     }
 
-    // Flag duplicate queries (after the first one)
-    queryCounts.forEach((ranges, query) => {
-        if (ranges.length > 1) {
-            for (let i = 1; i < ranges.length; i++) {
-                diagnostics.push(makeDiagnostic(
-                    ranges[i],
-                    'Performance Info: Repeated identical BMQL query. Consider caching the results',
-                    vscode.DiagnosticSeverity.Information,
-                    'bml-repeated-bmql-query'
-                ));
+    // 3. Repeated BMQL queries and Table Queries (run on cleanText since we need string literals)
+    if (cleanText.includes('bmql') || cleanText.includes('BMQL')) {
+        const bmqlQueryRegex = /\bbmql\s*\(\s*(["'])([\s\S]*?)\1\s*(?:,|\))/gi;
+        const queryCounts = new Map(); // normalized query string -> positions []
+        const tableCounts = new Map(); // table name -> positions []
+
+        while ((match = bmqlQueryRegex.exec(cleanText)) !== null) {
+            const queryText = match[2];
+            const normalizedQuery = queryText.replace(/\s+/g, ' ').trim().toLowerCase();
+            const startPos = doc.positionAt(match.index);
+            const endPos = startPos.translate(0, match[0].length);
+            const range = new vscode.Range(startPos, endPos);
+
+            if (!queryCounts.has(normalizedQuery)) {
+                queryCounts.set(normalizedQuery, []);
+            }
+            queryCounts.get(normalizedQuery).push(range);
+
+            // Try to extract table name: SELECT ... FROM table_name ...
+            const fromMatch = /\bfrom\s+([_a-zA-Z0-9]+)/i.exec(queryText);
+            if (fromMatch) {
+                const tableName = fromMatch[1].toLowerCase();
+                if (!tableCounts.has(tableName)) {
+                    tableCounts.set(tableName, []);
+                }
+                tableCounts.get(tableName).push(range);
             }
         }
-    });
 
-    // Flag excessive table queries (if table queried more than 2 times)
-    tableCounts.forEach((ranges, tableName) => {
-        if (ranges.length > 2) {
-            ranges.forEach(range => {
-                diagnostics.push(makeDiagnostic(
-                    range,
-                    `Performance Info: Table '${tableName}' is queried ${ranges.length} times. Consider combining queries`,
-                    vscode.DiagnosticSeverity.Information,
-                    'bml-excessive-table-queries'
-                ));
-            });
-        }
-    });
+        // Flag duplicate queries (after the first one)
+        queryCounts.forEach((ranges, query) => {
+            if (ranges.length > 1) {
+                for (let i = 1; i < ranges.length; i++) {
+                    diagnostics.push(makeDiagnostic(
+                        ranges[i],
+                        'Performance Info: Repeated identical BMQL query. Consider caching the results',
+                        vscode.DiagnosticSeverity.Information,
+                        'bml-repeated-bmql-query'
+                    ));
+                }
+            }
+        });
+
+        // Flag excessive table queries (if table queried more than 2 times)
+        tableCounts.forEach((ranges, tableName) => {
+            if (ranges.length > 2) {
+                ranges.forEach(range => {
+                    diagnostics.push(makeDiagnostic(
+                        range,
+                        `Performance Info: Table '${tableName}' is queried ${ranges.length} times. Consider combining queries`,
+                        vscode.DiagnosticSeverity.Information,
+                        'bml-excessive-table-queries'
+                    ));
+                });
+            }
+        });
+    }
 
     // 4. Deep Nesting Warning (run on noStringsText to ignore braces inside strings)
-    // Only the brace that CROSSES the threshold (depth 5 -> 6) is flagged, so
-    // one deeply nested region produces one warning at its entry point rather
-    // than a separate duplicate warning for every additional brace inside it.
-    let currentDepth = 0;
-    for (let i = 0; i < noStringsText.length; i++) {
-        if (noStringsText[i] === '{') {
-            currentDepth++;
-            if (currentDepth === 6) {
-                const startPos = doc.positionAt(i);
-                const endPos = startPos.translate(0, 1);
-                diagnostics.push(makeDiagnostic(
-                    new vscode.Range(startPos, endPos),
-                    `Design Warning: Nesting depth of ${currentDepth} exceeds recommended limit of 5`,
-                    vscode.DiagnosticSeverity.Warning,
-                    'bml-deep-nesting'
-                ));
+    if (noStringsText.includes('{')) {
+        let currentDepth = 0;
+        for (let i = 0; i < noStringsText.length; i++) {
+            const code = noStringsText.charCodeAt(i);
+            if (code === 123) { // '{'
+                currentDepth++;
+                if (currentDepth === 6) {
+                    const startPos = doc.positionAt(i);
+                    const endPos = startPos.translate(0, 1);
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Design Warning: Nesting depth of ${currentDepth} exceeds recommended limit of 5`,
+                        vscode.DiagnosticSeverity.Warning,
+                        'bml-deep-nesting'
+                    ));
+                }
+            } else if (code === 125) { // '}'
+                currentDepth--;
             }
-        } else if (noStringsText[i] === '}') {
-            currentDepth--;
         }
     }
 
@@ -212,29 +217,33 @@ function checkPerformance(cleanText, noStringsText, doc) {
     }
 
     // 6. Production Print Statements (Oracle CPQ Best Practice: Remove print statements before go-live)
-    const printRegex = /\bprint\b(?:\s*\(|\s+[^\r\n;]+;)/gi;
-    while ((match = printRegex.exec(noStringsText)) !== null) {
-        const startPos = doc.positionAt(match.index);
-        const endPos = startPos.translate(0, 5);
-        diagnostics.push(makeDiagnostic(
-            new vscode.Range(startPos, endPos),
-            "Best Practice / Performance Advisory: Remove or comment out 'print' statements before deploying to production to avoid logging overhead",
-            vscode.DiagnosticSeverity.Information,
-            'bml-production-print-statement'
-        ));
+    if (noStringsText.includes('print')) {
+        const printRegex = /\bprint\b(?:\s*\(|\s+[^\r\n;]+;)/gi;
+        while ((match = printRegex.exec(noStringsText)) !== null) {
+            const startPos = doc.positionAt(match.index);
+            const endPos = startPos.translate(0, 5);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                "Best Practice / Performance Advisory: Remove or comment out 'print' statements before deploying to production to avoid logging overhead",
+                vscode.DiagnosticSeverity.Information,
+                'bml-production-print-statement'
+            ));
+        }
     }
 
     // 7. Hardcoded Environment / Site Domain Names (Oracle CPQ Best Practice: IdentifySiteName.md)
-    const siteDomainRegex = /["'](?:https?:\/\/)?([a-zA-Z0-9_-]+(?:\.bigmachines\.com|\.oraclecloud\.com|\.cpq\.oracle\.com))[^"']*["']/gi;
-    while ((match = siteDomainRegex.exec(cleanText)) !== null) {
-        const startPos = doc.positionAt(match.index);
-        const endPos = startPos.translate(0, match[0].length);
-        diagnostics.push(makeDiagnostic(
-            new vscode.Range(startPos, endPos),
-            "Best Practice Advisory: Hardcoded site domain in string literal. Use '_system_site_name' or system variables for environment-aware scripts",
-            vscode.DiagnosticSeverity.Information,
-            'bml-hardcoded-sitename'
-        ));
+    if (cleanText.includes('.bigmachines.com') || cleanText.includes('.oraclecloud.com') || cleanText.includes('.cpq.oracle.com')) {
+        const siteDomainRegex = /["'](?:https?:\/\/)?([a-zA-Z0-9_-]+(?:\.bigmachines\.com|\.oraclecloud\.com|\.cpq\.oracle\.com))[^"']*["']/gi;
+        while ((match = siteDomainRegex.exec(cleanText)) !== null) {
+            const startPos = doc.positionAt(match.index);
+            const endPos = startPos.translate(0, match[0].length);
+            diagnostics.push(makeDiagnostic(
+                new vscode.Range(startPos, endPos),
+                "Best Practice Advisory: Hardcoded site domain in string literal. Use '_system_site_name' or system variables for environment-aware scripts",
+                vscode.DiagnosticSeverity.Information,
+                'bml-hardcoded-sitename'
+            ));
+        }
     }
 
     return diagnostics;

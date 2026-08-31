@@ -4,6 +4,9 @@ const vscode = require('vscode');
 
 function checkMath(cleanText, noStringsText, doc, firstTypeByVar) {
     const diagnostics = [];
+    if (!noStringsText.includes('NaN') && !cleanText.includes('jNaN') && !cleanText.includes('acos') && !cleanText.includes('asin') && !cleanText.includes('integer') && !cleanText.includes('float') && !cleanText.includes('boolean')) {
+        return diagnostics;
+    }
     let match;
 
     // Oracle Constants: NaN vs jNaN (run on noStringsText)

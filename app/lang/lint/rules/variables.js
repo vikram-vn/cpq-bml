@@ -84,20 +84,22 @@ function checkVariableDiagnostics(
   const identRegex = /\b[a-zA-Z_]\w*\b/g;
   let identMatch;
   while ((identMatch = identRegex.exec(noStringsText)) !== null) {
+    const name = identMatch[0];
+    if (!declaredVars.has(name)) continue;
     const idx = identMatch.index;
     let before = idx - 1;
     while (before >= 0 && noStringsText.charCodeAt(before) <= 32) before--;
     if (before >= 0 && noStringsText.charCodeAt(before) === 46) continue; // '.'
-    const name = identMatch[0];
     if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
     occurrencesByName.get(name).push(idx);
   }
 
-  if (cleanText) {
+  if (cleanText && (cleanText.includes('$') || cleanText.includes('bmql') || cleanText.includes('BMQL'))) {
     const bmqlVarRegex = /\$([a-zA-Z_]\w*)\b/g;
     let bmqlMatch;
     while ((bmqlMatch = bmqlVarRegex.exec(cleanText)) !== null) {
       const name = bmqlMatch[1];
+      if (!declaredVars.has(name)) continue;
       const idx = bmqlMatch.index + 1;
       if (!occurrencesByName.has(name)) occurrencesByName.set(name, []);
       occurrencesByName.get(name).push(idx);

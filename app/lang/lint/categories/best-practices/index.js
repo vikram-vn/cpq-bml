@@ -25,7 +25,7 @@ function checkBestPractices(cleanText, noStringsText, doc, firstTypeByVar) {
         diagnostics.push(...checkArray(cleanText, noStringsText, doc, firstTypeByVar));
     }
 
-    const hasBmql = cleanText.includes('bmql') || cleanText.includes('SELECT') || cleanText.includes('select') || cleanText.includes('gettabledata');
+    const hasBmql = cleanText.includes('bmql') || cleanText.includes('SELECT') || cleanText.includes('select') || cleanText.includes('gettabledata') || cleanText.includes('getpartsdata');
     if (hasBmql) {
         diagnostics.push(...checkBmql(cleanText, noStringsText, doc));
         diagnostics.push(...checkBmqlSafety(cleanText, noStringsText, doc));

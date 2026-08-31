@@ -6,6 +6,9 @@ const EMPTY_STRING_LITERAL = /^(?:""|'')$/;
 
 function checkString(cleanText, noStringsText, doc, firstTypeByVar) {
     const diagnostics = [];
+    if (!cleanText.includes('atoi') && !cleanText.includes('atof') && !cleanText.includes('isnumber') && !cleanText.includes('startswith') && !cleanText.includes('endswith') && !cleanText.includes('find') && !cleanText.includes('substring') && !cleanText.includes('replace') && !cleanText.includes('split') && !cleanText.includes('trim') && !cleanText.includes('string') && !cleanText.includes('join')) {
+        return diagnostics;
+    }
     let match;
 
     // atof(str) / atoi(str) - empty string literal throws a runtime exception

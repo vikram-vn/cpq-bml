@@ -152,8 +152,18 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         const d = diagnostics[i];
         if (d.severity === vscode.DiagnosticSeverity.Error) {
             const line = d.range.start.line;
-            if (!linesCache) linesCache = text.split(/\r?\n/);
-            const lineLength = linesCache[line] ? linesCache[line].length : 0;
+            let lineLength = 0;
+            if (doc && typeof doc.lineAt === 'function') {
+                try {
+                    lineLength = doc.lineAt(line).text.length;
+                } catch (e) {
+                    if (!linesCache) linesCache = text.split(/\r?\n/);
+                    lineLength = linesCache[line] ? linesCache[line].length : 0;
+                }
+            } else {
+                if (!linesCache) linesCache = text.split(/\r?\n/);
+                lineLength = linesCache[line] ? linesCache[line].length : 0;
+            }
             d.originalRange = d.range;  // save narrow range for code actions
             d.range = new vscode.Range(
                 new vscode.Position(line, 0),
