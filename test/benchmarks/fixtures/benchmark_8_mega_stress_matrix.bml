@@ -1,0 +1,1304 @@
+// ====================================================================================
+// ORACLE CPQ BML BENCHMARK FIXTURE 8: MEGA SCALE STRESS MATRIX
+// File: test/benchmarks/fixtures/benchmark_8_mega_stress_matrix.bml
+// Description: 3,000+ line extreme mega stress test evaluating 2D matrix transformations,
+//              Halstead metrics, deep nested branch evaluation, and high AST node density.
+// ====================================================================================
+
+// --- Section 1: Global Setup and Array Constructors ---
+matrixDim = 25;
+gridValues2D = float[][];
+lookupCacheDict = dict("float");
+summaryBuilder = stringbuilder("MEGA_STRESS_REPORT:");
+runningChecksum = 0.0;
+
+// --- Stage 1: Matrix Processing Pipeline Block ---
+stage1ValuesList = float[];
+stage1LabelsList = string[];
+stage1Sum = 0.0;
+stage1Weight = 0.625;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage1Weight + 1.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage1ValuesList, transformedVal);
+    append(stage1LabelsList, "TAG_" + string(idx) + "_S1");
+    stage1Sum = stage1Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S1_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 1
+if (stage1Sum > 500.0) {
+    stage1Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage1Sum * 0.95);
+} elif (stage1Sum > 200.0) {
+    stage1Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage1Sum;
+} elif (stage1Sum > 50.0) {
+    stage1Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage1Sum * 1.05);
+} else {
+    stage1Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S1:" + stage1Status + ":" + string(round(stage1Sum, 2)) + "]");
+
+// --- Stage 2: Matrix Processing Pipeline Block ---
+stage2ValuesList = float[];
+stage2LabelsList = string[];
+stage2Sum = 0.0;
+stage2Weight = 0.750;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage2Weight + 3.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage2ValuesList, transformedVal);
+    append(stage2LabelsList, "TAG_" + string(idx) + "_S2");
+    stage2Sum = stage2Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S2_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 2
+if (stage2Sum > 500.0) {
+    stage2Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage2Sum * 0.95);
+} elif (stage2Sum > 200.0) {
+    stage2Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage2Sum;
+} elif (stage2Sum > 50.0) {
+    stage2Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage2Sum * 1.05);
+} else {
+    stage2Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S2:" + stage2Status + ":" + string(round(stage2Sum, 2)) + "]");
+
+// --- Stage 3: Matrix Processing Pipeline Block ---
+stage3ValuesList = float[];
+stage3LabelsList = string[];
+stage3Sum = 0.0;
+stage3Weight = 0.875;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage3Weight + 4.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage3ValuesList, transformedVal);
+    append(stage3LabelsList, "TAG_" + string(idx) + "_S3");
+    stage3Sum = stage3Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S3_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 3
+if (stage3Sum > 500.0) {
+    stage3Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage3Sum * 0.95);
+} elif (stage3Sum > 200.0) {
+    stage3Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage3Sum;
+} elif (stage3Sum > 50.0) {
+    stage3Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage3Sum * 1.05);
+} else {
+    stage3Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S3:" + stage3Status + ":" + string(round(stage3Sum, 2)) + "]");
+
+// --- Stage 4: Matrix Processing Pipeline Block ---
+stage4ValuesList = float[];
+stage4LabelsList = string[];
+stage4Sum = 0.0;
+stage4Weight = 1.000;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage4Weight + 6.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage4ValuesList, transformedVal);
+    append(stage4LabelsList, "TAG_" + string(idx) + "_S4");
+    stage4Sum = stage4Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S4_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 4
+if (stage4Sum > 500.0) {
+    stage4Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage4Sum * 0.95);
+} elif (stage4Sum > 200.0) {
+    stage4Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage4Sum;
+} elif (stage4Sum > 50.0) {
+    stage4Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage4Sum * 1.05);
+} else {
+    stage4Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S4:" + stage4Status + ":" + string(round(stage4Sum, 2)) + "]");
+
+// --- Stage 5: Matrix Processing Pipeline Block ---
+stage5ValuesList = float[];
+stage5LabelsList = string[];
+stage5Sum = 0.0;
+stage5Weight = 1.125;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage5Weight + 7.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage5ValuesList, transformedVal);
+    append(stage5LabelsList, "TAG_" + string(idx) + "_S5");
+    stage5Sum = stage5Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S5_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 5
+if (stage5Sum > 500.0) {
+    stage5Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage5Sum * 0.95);
+} elif (stage5Sum > 200.0) {
+    stage5Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage5Sum;
+} elif (stage5Sum > 50.0) {
+    stage5Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage5Sum * 1.05);
+} else {
+    stage5Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S5:" + stage5Status + ":" + string(round(stage5Sum, 2)) + "]");
+
+// --- Stage 6: Matrix Processing Pipeline Block ---
+stage6ValuesList = float[];
+stage6LabelsList = string[];
+stage6Sum = 0.0;
+stage6Weight = 1.250;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage6Weight + 9.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage6ValuesList, transformedVal);
+    append(stage6LabelsList, "TAG_" + string(idx) + "_S6");
+    stage6Sum = stage6Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S6_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 6
+if (stage6Sum > 500.0) {
+    stage6Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage6Sum * 0.95);
+} elif (stage6Sum > 200.0) {
+    stage6Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage6Sum;
+} elif (stage6Sum > 50.0) {
+    stage6Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage6Sum * 1.05);
+} else {
+    stage6Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S6:" + stage6Status + ":" + string(round(stage6Sum, 2)) + "]");
+
+// --- Stage 7: Matrix Processing Pipeline Block ---
+stage7ValuesList = float[];
+stage7LabelsList = string[];
+stage7Sum = 0.0;
+stage7Weight = 1.375;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage7Weight + 10.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage7ValuesList, transformedVal);
+    append(stage7LabelsList, "TAG_" + string(idx) + "_S7");
+    stage7Sum = stage7Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S7_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 7
+if (stage7Sum > 500.0) {
+    stage7Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage7Sum * 0.95);
+} elif (stage7Sum > 200.0) {
+    stage7Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage7Sum;
+} elif (stage7Sum > 50.0) {
+    stage7Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage7Sum * 1.05);
+} else {
+    stage7Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S7:" + stage7Status + ":" + string(round(stage7Sum, 2)) + "]");
+
+// --- Stage 8: Matrix Processing Pipeline Block ---
+stage8ValuesList = float[];
+stage8LabelsList = string[];
+stage8Sum = 0.0;
+stage8Weight = 1.500;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage8Weight + 12.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage8ValuesList, transformedVal);
+    append(stage8LabelsList, "TAG_" + string(idx) + "_S8");
+    stage8Sum = stage8Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S8_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 8
+if (stage8Sum > 500.0) {
+    stage8Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage8Sum * 0.95);
+} elif (stage8Sum > 200.0) {
+    stage8Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage8Sum;
+} elif (stage8Sum > 50.0) {
+    stage8Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage8Sum * 1.05);
+} else {
+    stage8Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S8:" + stage8Status + ":" + string(round(stage8Sum, 2)) + "]");
+
+// --- Stage 9: Matrix Processing Pipeline Block ---
+stage9ValuesList = float[];
+stage9LabelsList = string[];
+stage9Sum = 0.0;
+stage9Weight = 1.625;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage9Weight + 13.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage9ValuesList, transformedVal);
+    append(stage9LabelsList, "TAG_" + string(idx) + "_S9");
+    stage9Sum = stage9Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S9_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 9
+if (stage9Sum > 500.0) {
+    stage9Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage9Sum * 0.95);
+} elif (stage9Sum > 200.0) {
+    stage9Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage9Sum;
+} elif (stage9Sum > 50.0) {
+    stage9Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage9Sum * 1.05);
+} else {
+    stage9Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S9:" + stage9Status + ":" + string(round(stage9Sum, 2)) + "]");
+
+// --- Stage 10: Matrix Processing Pipeline Block ---
+stage10ValuesList = float[];
+stage10LabelsList = string[];
+stage10Sum = 0.0;
+stage10Weight = 1.750;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage10Weight + 15.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage10ValuesList, transformedVal);
+    append(stage10LabelsList, "TAG_" + string(idx) + "_S10");
+    stage10Sum = stage10Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S10_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 10
+if (stage10Sum > 500.0) {
+    stage10Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage10Sum * 0.95);
+} elif (stage10Sum > 200.0) {
+    stage10Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage10Sum;
+} elif (stage10Sum > 50.0) {
+    stage10Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage10Sum * 1.05);
+} else {
+    stage10Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S10:" + stage10Status + ":" + string(round(stage10Sum, 2)) + "]");
+
+// --- Stage 11: Matrix Processing Pipeline Block ---
+stage11ValuesList = float[];
+stage11LabelsList = string[];
+stage11Sum = 0.0;
+stage11Weight = 1.875;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage11Weight + 16.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage11ValuesList, transformedVal);
+    append(stage11LabelsList, "TAG_" + string(idx) + "_S11");
+    stage11Sum = stage11Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S11_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 11
+if (stage11Sum > 500.0) {
+    stage11Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage11Sum * 0.95);
+} elif (stage11Sum > 200.0) {
+    stage11Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage11Sum;
+} elif (stage11Sum > 50.0) {
+    stage11Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage11Sum * 1.05);
+} else {
+    stage11Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S11:" + stage11Status + ":" + string(round(stage11Sum, 2)) + "]");
+
+// --- Stage 12: Matrix Processing Pipeline Block ---
+stage12ValuesList = float[];
+stage12LabelsList = string[];
+stage12Sum = 0.0;
+stage12Weight = 2.000;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage12Weight + 18.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage12ValuesList, transformedVal);
+    append(stage12LabelsList, "TAG_" + string(idx) + "_S12");
+    stage12Sum = stage12Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S12_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 12
+if (stage12Sum > 500.0) {
+    stage12Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage12Sum * 0.95);
+} elif (stage12Sum > 200.0) {
+    stage12Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage12Sum;
+} elif (stage12Sum > 50.0) {
+    stage12Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage12Sum * 1.05);
+} else {
+    stage12Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S12:" + stage12Status + ":" + string(round(stage12Sum, 2)) + "]");
+
+// --- Stage 13: Matrix Processing Pipeline Block ---
+stage13ValuesList = float[];
+stage13LabelsList = string[];
+stage13Sum = 0.0;
+stage13Weight = 2.125;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage13Weight + 19.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage13ValuesList, transformedVal);
+    append(stage13LabelsList, "TAG_" + string(idx) + "_S13");
+    stage13Sum = stage13Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S13_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 13
+if (stage13Sum > 500.0) {
+    stage13Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage13Sum * 0.95);
+} elif (stage13Sum > 200.0) {
+    stage13Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage13Sum;
+} elif (stage13Sum > 50.0) {
+    stage13Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage13Sum * 1.05);
+} else {
+    stage13Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S13:" + stage13Status + ":" + string(round(stage13Sum, 2)) + "]");
+
+// --- Stage 14: Matrix Processing Pipeline Block ---
+stage14ValuesList = float[];
+stage14LabelsList = string[];
+stage14Sum = 0.0;
+stage14Weight = 2.250;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage14Weight + 21.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage14ValuesList, transformedVal);
+    append(stage14LabelsList, "TAG_" + string(idx) + "_S14");
+    stage14Sum = stage14Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S14_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 14
+if (stage14Sum > 500.0) {
+    stage14Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage14Sum * 0.95);
+} elif (stage14Sum > 200.0) {
+    stage14Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage14Sum;
+} elif (stage14Sum > 50.0) {
+    stage14Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage14Sum * 1.05);
+} else {
+    stage14Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S14:" + stage14Status + ":" + string(round(stage14Sum, 2)) + "]");
+
+// --- Stage 15: Matrix Processing Pipeline Block ---
+stage15ValuesList = float[];
+stage15LabelsList = string[];
+stage15Sum = 0.0;
+stage15Weight = 2.375;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage15Weight + 22.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage15ValuesList, transformedVal);
+    append(stage15LabelsList, "TAG_" + string(idx) + "_S15");
+    stage15Sum = stage15Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S15_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 15
+if (stage15Sum > 500.0) {
+    stage15Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage15Sum * 0.95);
+} elif (stage15Sum > 200.0) {
+    stage15Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage15Sum;
+} elif (stage15Sum > 50.0) {
+    stage15Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage15Sum * 1.05);
+} else {
+    stage15Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S15:" + stage15Status + ":" + string(round(stage15Sum, 2)) + "]");
+
+// --- Stage 16: Matrix Processing Pipeline Block ---
+stage16ValuesList = float[];
+stage16LabelsList = string[];
+stage16Sum = 0.0;
+stage16Weight = 2.500;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage16Weight + 24.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage16ValuesList, transformedVal);
+    append(stage16LabelsList, "TAG_" + string(idx) + "_S16");
+    stage16Sum = stage16Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S16_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 16
+if (stage16Sum > 500.0) {
+    stage16Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage16Sum * 0.95);
+} elif (stage16Sum > 200.0) {
+    stage16Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage16Sum;
+} elif (stage16Sum > 50.0) {
+    stage16Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage16Sum * 1.05);
+} else {
+    stage16Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S16:" + stage16Status + ":" + string(round(stage16Sum, 2)) + "]");
+
+// --- Stage 17: Matrix Processing Pipeline Block ---
+stage17ValuesList = float[];
+stage17LabelsList = string[];
+stage17Sum = 0.0;
+stage17Weight = 2.625;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage17Weight + 25.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage17ValuesList, transformedVal);
+    append(stage17LabelsList, "TAG_" + string(idx) + "_S17");
+    stage17Sum = stage17Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S17_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 17
+if (stage17Sum > 500.0) {
+    stage17Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage17Sum * 0.95);
+} elif (stage17Sum > 200.0) {
+    stage17Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage17Sum;
+} elif (stage17Sum > 50.0) {
+    stage17Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage17Sum * 1.05);
+} else {
+    stage17Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S17:" + stage17Status + ":" + string(round(stage17Sum, 2)) + "]");
+
+// --- Stage 18: Matrix Processing Pipeline Block ---
+stage18ValuesList = float[];
+stage18LabelsList = string[];
+stage18Sum = 0.0;
+stage18Weight = 2.750;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage18Weight + 27.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage18ValuesList, transformedVal);
+    append(stage18LabelsList, "TAG_" + string(idx) + "_S18");
+    stage18Sum = stage18Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S18_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 18
+if (stage18Sum > 500.0) {
+    stage18Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage18Sum * 0.95);
+} elif (stage18Sum > 200.0) {
+    stage18Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage18Sum;
+} elif (stage18Sum > 50.0) {
+    stage18Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage18Sum * 1.05);
+} else {
+    stage18Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S18:" + stage18Status + ":" + string(round(stage18Sum, 2)) + "]");
+
+// --- Stage 19: Matrix Processing Pipeline Block ---
+stage19ValuesList = float[];
+stage19LabelsList = string[];
+stage19Sum = 0.0;
+stage19Weight = 2.875;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage19Weight + 28.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage19ValuesList, transformedVal);
+    append(stage19LabelsList, "TAG_" + string(idx) + "_S19");
+    stage19Sum = stage19Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S19_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 19
+if (stage19Sum > 500.0) {
+    stage19Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage19Sum * 0.95);
+} elif (stage19Sum > 200.0) {
+    stage19Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage19Sum;
+} elif (stage19Sum > 50.0) {
+    stage19Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage19Sum * 1.05);
+} else {
+    stage19Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S19:" + stage19Status + ":" + string(round(stage19Sum, 2)) + "]");
+
+// --- Stage 20: Matrix Processing Pipeline Block ---
+stage20ValuesList = float[];
+stage20LabelsList = string[];
+stage20Sum = 0.0;
+stage20Weight = 3.000;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage20Weight + 30.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage20ValuesList, transformedVal);
+    append(stage20LabelsList, "TAG_" + string(idx) + "_S20");
+    stage20Sum = stage20Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S20_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 20
+if (stage20Sum > 500.0) {
+    stage20Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage20Sum * 0.95);
+} elif (stage20Sum > 200.0) {
+    stage20Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage20Sum;
+} elif (stage20Sum > 50.0) {
+    stage20Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage20Sum * 1.05);
+} else {
+    stage20Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S20:" + stage20Status + ":" + string(round(stage20Sum, 2)) + "]");
+
+// --- Stage 21: Matrix Processing Pipeline Block ---
+stage21ValuesList = float[];
+stage21LabelsList = string[];
+stage21Sum = 0.0;
+stage21Weight = 3.125;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage21Weight + 31.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage21ValuesList, transformedVal);
+    append(stage21LabelsList, "TAG_" + string(idx) + "_S21");
+    stage21Sum = stage21Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S21_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 21
+if (stage21Sum > 500.0) {
+    stage21Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage21Sum * 0.95);
+} elif (stage21Sum > 200.0) {
+    stage21Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage21Sum;
+} elif (stage21Sum > 50.0) {
+    stage21Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage21Sum * 1.05);
+} else {
+    stage21Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S21:" + stage21Status + ":" + string(round(stage21Sum, 2)) + "]");
+
+// --- Stage 22: Matrix Processing Pipeline Block ---
+stage22ValuesList = float[];
+stage22LabelsList = string[];
+stage22Sum = 0.0;
+stage22Weight = 3.250;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage22Weight + 33.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage22ValuesList, transformedVal);
+    append(stage22LabelsList, "TAG_" + string(idx) + "_S22");
+    stage22Sum = stage22Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S22_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 22
+if (stage22Sum > 500.0) {
+    stage22Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage22Sum * 0.95);
+} elif (stage22Sum > 200.0) {
+    stage22Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage22Sum;
+} elif (stage22Sum > 50.0) {
+    stage22Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage22Sum * 1.05);
+} else {
+    stage22Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S22:" + stage22Status + ":" + string(round(stage22Sum, 2)) + "]");
+
+// --- Stage 23: Matrix Processing Pipeline Block ---
+stage23ValuesList = float[];
+stage23LabelsList = string[];
+stage23Sum = 0.0;
+stage23Weight = 3.375;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage23Weight + 34.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage23ValuesList, transformedVal);
+    append(stage23LabelsList, "TAG_" + string(idx) + "_S23");
+    stage23Sum = stage23Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S23_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 23
+if (stage23Sum > 500.0) {
+    stage23Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage23Sum * 0.95);
+} elif (stage23Sum > 200.0) {
+    stage23Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage23Sum;
+} elif (stage23Sum > 50.0) {
+    stage23Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage23Sum * 1.05);
+} else {
+    stage23Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S23:" + stage23Status + ":" + string(round(stage23Sum, 2)) + "]");
+
+// --- Stage 24: Matrix Processing Pipeline Block ---
+stage24ValuesList = float[];
+stage24LabelsList = string[];
+stage24Sum = 0.0;
+stage24Weight = 0.500;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage24Weight + 36.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage24ValuesList, transformedVal);
+    append(stage24LabelsList, "TAG_" + string(idx) + "_S24");
+    stage24Sum = stage24Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S24_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 24
+if (stage24Sum > 500.0) {
+    stage24Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage24Sum * 0.95);
+} elif (stage24Sum > 200.0) {
+    stage24Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage24Sum;
+} elif (stage24Sum > 50.0) {
+    stage24Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage24Sum * 1.05);
+} else {
+    stage24Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S24:" + stage24Status + ":" + string(round(stage24Sum, 2)) + "]");
+
+// --- Stage 25: Matrix Processing Pipeline Block ---
+stage25ValuesList = float[];
+stage25LabelsList = string[];
+stage25Sum = 0.0;
+stage25Weight = 0.625;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage25Weight + 37.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage25ValuesList, transformedVal);
+    append(stage25LabelsList, "TAG_" + string(idx) + "_S25");
+    stage25Sum = stage25Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S25_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 25
+if (stage25Sum > 500.0) {
+    stage25Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage25Sum * 0.95);
+} elif (stage25Sum > 200.0) {
+    stage25Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage25Sum;
+} elif (stage25Sum > 50.0) {
+    stage25Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage25Sum * 1.05);
+} else {
+    stage25Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S25:" + stage25Status + ":" + string(round(stage25Sum, 2)) + "]");
+
+// --- Stage 26: Matrix Processing Pipeline Block ---
+stage26ValuesList = float[];
+stage26LabelsList = string[];
+stage26Sum = 0.0;
+stage26Weight = 0.750;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage26Weight + 39.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage26ValuesList, transformedVal);
+    append(stage26LabelsList, "TAG_" + string(idx) + "_S26");
+    stage26Sum = stage26Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S26_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 26
+if (stage26Sum > 500.0) {
+    stage26Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage26Sum * 0.95);
+} elif (stage26Sum > 200.0) {
+    stage26Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage26Sum;
+} elif (stage26Sum > 50.0) {
+    stage26Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage26Sum * 1.05);
+} else {
+    stage26Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S26:" + stage26Status + ":" + string(round(stage26Sum, 2)) + "]");
+
+// --- Stage 27: Matrix Processing Pipeline Block ---
+stage27ValuesList = float[];
+stage27LabelsList = string[];
+stage27Sum = 0.0;
+stage27Weight = 0.875;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage27Weight + 40.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage27ValuesList, transformedVal);
+    append(stage27LabelsList, "TAG_" + string(idx) + "_S27");
+    stage27Sum = stage27Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S27_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 27
+if (stage27Sum > 500.0) {
+    stage27Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage27Sum * 0.95);
+} elif (stage27Sum > 200.0) {
+    stage27Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage27Sum;
+} elif (stage27Sum > 50.0) {
+    stage27Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage27Sum * 1.05);
+} else {
+    stage27Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S27:" + stage27Status + ":" + string(round(stage27Sum, 2)) + "]");
+
+// --- Stage 28: Matrix Processing Pipeline Block ---
+stage28ValuesList = float[];
+stage28LabelsList = string[];
+stage28Sum = 0.0;
+stage28Weight = 1.000;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage28Weight + 42.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage28ValuesList, transformedVal);
+    append(stage28LabelsList, "TAG_" + string(idx) + "_S28");
+    stage28Sum = stage28Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S28_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 28
+if (stage28Sum > 500.0) {
+    stage28Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage28Sum * 0.95);
+} elif (stage28Sum > 200.0) {
+    stage28Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage28Sum;
+} elif (stage28Sum > 50.0) {
+    stage28Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage28Sum * 1.05);
+} else {
+    stage28Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S28:" + stage28Status + ":" + string(round(stage28Sum, 2)) + "]");
+
+// --- Stage 29: Matrix Processing Pipeline Block ---
+stage29ValuesList = float[];
+stage29LabelsList = string[];
+stage29Sum = 0.0;
+stage29Weight = 1.125;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage29Weight + 43.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage29ValuesList, transformedVal);
+    append(stage29LabelsList, "TAG_" + string(idx) + "_S29");
+    stage29Sum = stage29Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S29_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 29
+if (stage29Sum > 500.0) {
+    stage29Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage29Sum * 0.95);
+} elif (stage29Sum > 200.0) {
+    stage29Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage29Sum;
+} elif (stage29Sum > 50.0) {
+    stage29Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage29Sum * 1.05);
+} else {
+    stage29Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S29:" + stage29Status + ":" + string(round(stage29Sum, 2)) + "]");
+
+// --- Stage 30: Matrix Processing Pipeline Block ---
+stage30ValuesList = float[];
+stage30LabelsList = string[];
+stage30Sum = 0.0;
+stage30Weight = 1.250;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage30Weight + 45.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage30ValuesList, transformedVal);
+    append(stage30LabelsList, "TAG_" + string(idx) + "_S30");
+    stage30Sum = stage30Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S30_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 30
+if (stage30Sum > 500.0) {
+    stage30Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage30Sum * 0.95);
+} elif (stage30Sum > 200.0) {
+    stage30Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage30Sum;
+} elif (stage30Sum > 50.0) {
+    stage30Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage30Sum * 1.05);
+} else {
+    stage30Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S30:" + stage30Status + ":" + string(round(stage30Sum, 2)) + "]");
+
+// --- Stage 31: Matrix Processing Pipeline Block ---
+stage31ValuesList = float[];
+stage31LabelsList = string[];
+stage31Sum = 0.0;
+stage31Weight = 1.375;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage31Weight + 46.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage31ValuesList, transformedVal);
+    append(stage31LabelsList, "TAG_" + string(idx) + "_S31");
+    stage31Sum = stage31Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S31_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 31
+if (stage31Sum > 500.0) {
+    stage31Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage31Sum * 0.95);
+} elif (stage31Sum > 200.0) {
+    stage31Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage31Sum;
+} elif (stage31Sum > 50.0) {
+    stage31Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage31Sum * 1.05);
+} else {
+    stage31Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S31:" + stage31Status + ":" + string(round(stage31Sum, 2)) + "]");
+
+// --- Stage 32: Matrix Processing Pipeline Block ---
+stage32ValuesList = float[];
+stage32LabelsList = string[];
+stage32Sum = 0.0;
+stage32Weight = 1.500;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage32Weight + 48.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage32ValuesList, transformedVal);
+    append(stage32LabelsList, "TAG_" + string(idx) + "_S32");
+    stage32Sum = stage32Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S32_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 32
+if (stage32Sum > 500.0) {
+    stage32Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage32Sum * 0.95);
+} elif (stage32Sum > 200.0) {
+    stage32Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage32Sum;
+} elif (stage32Sum > 50.0) {
+    stage32Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage32Sum * 1.05);
+} else {
+    stage32Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S32:" + stage32Status + ":" + string(round(stage32Sum, 2)) + "]");
+
+// --- Stage 33: Matrix Processing Pipeline Block ---
+stage33ValuesList = float[];
+stage33LabelsList = string[];
+stage33Sum = 0.0;
+stage33Weight = 1.625;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage33Weight + 49.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage33ValuesList, transformedVal);
+    append(stage33LabelsList, "TAG_" + string(idx) + "_S33");
+    stage33Sum = stage33Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S33_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 33
+if (stage33Sum > 500.0) {
+    stage33Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage33Sum * 0.95);
+} elif (stage33Sum > 200.0) {
+    stage33Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage33Sum;
+} elif (stage33Sum > 50.0) {
+    stage33Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage33Sum * 1.05);
+} else {
+    stage33Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S33:" + stage33Status + ":" + string(round(stage33Sum, 2)) + "]");
+
+// --- Stage 34: Matrix Processing Pipeline Block ---
+stage34ValuesList = float[];
+stage34LabelsList = string[];
+stage34Sum = 0.0;
+stage34Weight = 1.750;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage34Weight + 51.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage34ValuesList, transformedVal);
+    append(stage34LabelsList, "TAG_" + string(idx) + "_S34");
+    stage34Sum = stage34Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S34_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 34
+if (stage34Sum > 500.0) {
+    stage34Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage34Sum * 0.95);
+} elif (stage34Sum > 200.0) {
+    stage34Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage34Sum;
+} elif (stage34Sum > 50.0) {
+    stage34Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage34Sum * 1.05);
+} else {
+    stage34Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S34:" + stage34Status + ":" + string(round(stage34Sum, 2)) + "]");
+
+// --- Stage 35: Matrix Processing Pipeline Block ---
+stage35ValuesList = float[];
+stage35LabelsList = string[];
+stage35Sum = 0.0;
+stage35Weight = 1.875;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage35Weight + 52.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage35ValuesList, transformedVal);
+    append(stage35LabelsList, "TAG_" + string(idx) + "_S35");
+    stage35Sum = stage35Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S35_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 35
+if (stage35Sum > 500.0) {
+    stage35Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage35Sum * 0.95);
+} elif (stage35Sum > 200.0) {
+    stage35Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage35Sum;
+} elif (stage35Sum > 50.0) {
+    stage35Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage35Sum * 1.05);
+} else {
+    stage35Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S35:" + stage35Status + ":" + string(round(stage35Sum, 2)) + "]");
+
+// --- Stage 36: Matrix Processing Pipeline Block ---
+stage36ValuesList = float[];
+stage36LabelsList = string[];
+stage36Sum = 0.0;
+stage36Weight = 2.000;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage36Weight + 54.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage36ValuesList, transformedVal);
+    append(stage36LabelsList, "TAG_" + string(idx) + "_S36");
+    stage36Sum = stage36Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S36_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 36
+if (stage36Sum > 500.0) {
+    stage36Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage36Sum * 0.95);
+} elif (stage36Sum > 200.0) {
+    stage36Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage36Sum;
+} elif (stage36Sum > 50.0) {
+    stage36Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage36Sum * 1.05);
+} else {
+    stage36Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S36:" + stage36Status + ":" + string(round(stage36Sum, 2)) + "]");
+
+// --- Stage 37: Matrix Processing Pipeline Block ---
+stage37ValuesList = float[];
+stage37LabelsList = string[];
+stage37Sum = 0.0;
+stage37Weight = 2.125;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage37Weight + 55.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage37ValuesList, transformedVal);
+    append(stage37LabelsList, "TAG_" + string(idx) + "_S37");
+    stage37Sum = stage37Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S37_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 37
+if (stage37Sum > 500.0) {
+    stage37Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage37Sum * 0.95);
+} elif (stage37Sum > 200.0) {
+    stage37Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage37Sum;
+} elif (stage37Sum > 50.0) {
+    stage37Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage37Sum * 1.05);
+} else {
+    stage37Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S37:" + stage37Status + ":" + string(round(stage37Sum, 2)) + "]");
+
+// --- Stage 38: Matrix Processing Pipeline Block ---
+stage38ValuesList = float[];
+stage38LabelsList = string[];
+stage38Sum = 0.0;
+stage38Weight = 2.250;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage38Weight + 57.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage38ValuesList, transformedVal);
+    append(stage38LabelsList, "TAG_" + string(idx) + "_S38");
+    stage38Sum = stage38Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S38_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 38
+if (stage38Sum > 500.0) {
+    stage38Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage38Sum * 0.95);
+} elif (stage38Sum > 200.0) {
+    stage38Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage38Sum;
+} elif (stage38Sum > 50.0) {
+    stage38Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage38Sum * 1.05);
+} else {
+    stage38Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S38:" + stage38Status + ":" + string(round(stage38Sum, 2)) + "]");
+
+// --- Stage 39: Matrix Processing Pipeline Block ---
+stage39ValuesList = float[];
+stage39LabelsList = string[];
+stage39Sum = 0.0;
+stage39Weight = 2.375;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage39Weight + 58.5;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage39ValuesList, transformedVal);
+    append(stage39LabelsList, "TAG_" + string(idx) + "_S39");
+    stage39Sum = stage39Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S39_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 39
+if (stage39Sum > 500.0) {
+    stage39Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage39Sum * 0.95);
+} elif (stage39Sum > 200.0) {
+    stage39Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage39Sum;
+} elif (stage39Sum > 50.0) {
+    stage39Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage39Sum * 1.05);
+} else {
+    stage39Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S39:" + stage39Status + ":" + string(round(stage39Sum, 2)) + "]");
+
+// --- Stage 40: Matrix Processing Pipeline Block ---
+stage40ValuesList = float[];
+stage40LabelsList = string[];
+stage40Sum = 0.0;
+stage40Weight = 2.500;
+
+for idx in range(20) {
+    baseVal = float(idx) * stage40Weight + 60.0;
+    transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
+    append(stage40ValuesList, transformedVal);
+    append(stage40LabelsList, "TAG_" + string(idx) + "_S40");
+    stage40Sum = stage40Sum + transformedVal;
+    put(lookupCacheDict, "KEY_S40_" + string(idx), transformedVal);
+}
+
+// Condition and Branch Stress for Stage 40
+if (stage40Sum > 500.0) {
+    stage40Status = "HIGH_CONVERGENCE";
+    runningChecksum = runningChecksum + (stage40Sum * 0.95);
+} elif (stage40Sum > 200.0) {
+    stage40Status = "NOMINAL_STABLE";
+    runningChecksum = runningChecksum + stage40Sum;
+} elif (stage40Sum > 50.0) {
+    stage40Status = "LOW_RANGE";
+    runningChecksum = runningChecksum + (stage40Sum * 1.05);
+} else {
+    stage40Status = "BASELINE";
+    runningChecksum = runningChecksum + 1.0;
+}
+
+sbappend(summaryBuilder, "[S40:" + stage40Status + ":" + string(round(stage40Sum, 2)) + "]");
+
+// --- Section 3: Deep Nested JSON Aggregation ---
+masterOutputJson = json();
+jsonput(masterOutputJson, "benchmarkName", "MEGA_STRESS_MATRIX");
+jsonput(masterOutputJson, "finalChecksum", round(runningChecksum, 4));
+jsonput(masterOutputJson, "cacheEntriesCount", sizeofarray(keys(lookupCacheDict)));
+
+summaryString = sbtostring(summaryBuilder);
+jsonput(masterOutputJson, "summaryText", summaryString);
+
+return jsontostr(masterOutputJson);

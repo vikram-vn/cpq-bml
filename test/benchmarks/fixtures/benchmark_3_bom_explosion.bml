@@ -1,0 +1,149 @@
+// ====================================================================================
+// ORACLE CPQ BML BENCHMARK FIXTURE 3: HIERARCHICAL BOM EXPLOSION & DELTA PROCESSOR
+// File: test/benchmarks/fixtures/benchmark_3_bom_explosion.bml
+// Description: Multi-level hierarchical Bill-of-Materials tree processing, child part recursion,
+//              delta calculation between quote revisions, and structured XML/JSON output.
+// ====================================================================================
+
+MAX_BOM_DEPTH = 10;
+DEFAULT_PART_QTY = 0;
+
+bomRootItem = json();
+jsonput(bomRootItem, "bomItemDefId", "BOM_RACK_SERVER_001");
+jsonput(bomRootItem, "partNumber", "CHASSIS-8U-MOD");
+jsonput(bomRootItem, "quantity", 1);
+jsonput(bomRootItem, "itemType", "MODEL");
+
+// Level 1 Sub-Assemblies
+rootChildrenArr = jsonarray();
+
+// Sub-Assembly A: Compute Nodes
+computeAssembly = json();
+jsonput(computeAssembly, "bomItemDefId", "BOM_BLADE_SLOT_001");
+jsonput(computeAssembly, "partNumber", "BLADE-XEON-DUAL");
+jsonput(computeAssembly, "quantity", 4);
+jsonput(computeAssembly, "itemType", "SUB_ASSEMBLY");
+
+bladeChildrenArr = jsonarray();
+
+cpuPart = json();
+jsonput(cpuPart, "partNumber", "CPU-XEON-8480P");
+jsonput(cpuPart, "quantity", 2);
+jsonput(cpuPart, "itemType", "PART");
+jsonarrayappend(bladeChildrenArr, cpuPart);
+
+ramPart = json();
+jsonput(ramPart, "partNumber", "RAM-DDR5-64GB-ECC");
+jsonput(ramPart, "quantity", 16);
+jsonput(ramPart, "itemType", "PART");
+jsonarrayappend(bladeChildrenArr, ramPart);
+
+nvmePart = json();
+jsonput(nvmePart, "partNumber", "SSD-NVME-3.84TB-U2");
+jsonput(nvmePart, "quantity", 4);
+jsonput(nvmePart, "itemType", "PART");
+jsonarrayappend(bladeChildrenArr, nvmePart);
+
+jsonput(computeAssembly, "children", bladeChildrenArr);
+jsonarrayappend(rootChildrenArr, computeAssembly);
+
+// Sub-Assembly B: Power & Thermal
+powerAssembly = json();
+jsonput(powerAssembly, "bomItemDefId", "BOM_POWER_BAY_001");
+jsonput(powerAssembly, "partNumber", "PSU-TITANIUM-2400W");
+jsonput(powerAssembly, "quantity", 2);
+jsonput(powerAssembly, "itemType", "PART");
+jsonarrayappend(rootChildrenArr, powerAssembly);
+
+jsonput(bomRootItem, "children", rootChildrenArr);
+
+// --- Section 2: Flatten BOM and Aggregate Part Quantities ---
+flatPartInventoryDict = dict("integer");
+flatPartTypesDict = dict("string");
+traversalStackArr = jsonarray();
+jsonarrayappend(traversalStackArr, bomRootItem);
+
+totalPartCount = 0;
+for depthStep in range(MAX_BOM_DEPTH) {
+    stackSize = jsonarraysize(traversalStackArr);
+    if (stackSize > 0) {
+        for sIdx in range(stackSize) {
+            currentNode = jsonarrayget(traversalStackArr, 0, "json");
+            jsonarrayremove(traversalStackArr, 0);
+
+            nodePart = jsonget(currentNode, "partNumber");
+            nodeQty = jsonget(currentNode, "quantity", "integer", DEFAULT_PART_QTY);
+            nodeType = jsonget(currentNode, "itemType");
+
+            if (containskey(flatPartInventoryDict, nodePart)) {
+                currentQty = get(flatPartInventoryDict, nodePart);
+                put(flatPartInventoryDict, nodePart, currentQty + nodeQty);
+            } else {
+                put(flatPartInventoryDict, nodePart, nodeQty);
+                put(flatPartTypesDict, nodePart, nodeType);
+            }
+
+            totalPartCount = totalPartCount + nodeQty;
+
+            // Check for nested children
+            if (jsonpathcheck(currentNode, "$.children")) {
+                childNodesArr = jsonpathgetmultiple(currentNode, "$.children[*]");
+                childSize = jsonarraysize(childNodesArr);
+                for cIdx in range(childSize) {
+                    childNode = jsonarrayget(childNodesArr, cIdx, "json");
+                    jsonarrayappend(traversalStackArr, childNode);
+                }
+            }
+        }
+    }
+}
+
+// --- Section 3: Delta Calculation Against Baseline BOM ---
+baselineInventoryDict = dict("integer");
+put(baselineInventoryDict, "CHASSIS-8U-MOD", 1);
+put(baselineInventoryDict, "BLADE-XEON-DUAL", 2);
+put(baselineInventoryDict, "CPU-XEON-8480P", 4);
+put(baselineInventoryDict, "RAM-DDR5-64GB-ECC", 32);
+put(baselineInventoryDict, "PSU-TITANIUM-2400W", 2);
+
+deltaAddedPartsList = string[];
+deltaModifiedPartsList = string[];
+deltaDeletedPartsList = string[];
+
+baselineKeysList = keys(baselineInventoryDict);
+for basePart in baselineKeysList {
+    if (not(containskey(flatPartInventoryDict, basePart))) {
+        append(deltaDeletedPartsList, basePart);
+    }
+}
+
+currentKeysList = keys(flatPartInventoryDict);
+for curPart in currentKeysList {
+    curQty = get(flatPartInventoryDict, curPart);
+    if (containskey(baselineInventoryDict, curPart)) {
+        baseQty = get(baselineInventoryDict, curPart);
+        if (curQty <> baseQty) {
+            append(deltaModifiedPartsList, curPart + " (Old: " + string(baseQty) + ", New: " + string(curQty) + ")");
+        }
+    } else {
+        append(deltaAddedPartsList, curPart + " (Qty: " + string(curQty) + ")");
+    }
+}
+
+// --- Section 4: Output XML Summary Report ---
+xmlBuilder = stringbuilder("<bomExplosionReport>");
+sbappend(xmlBuilder, "<totalPartsCount>" + string(totalPartCount) + "</totalPartsCount>");
+sbappend(xmlBuilder, "<deltaSummary>");
+sbappend(xmlBuilder, "<addedCount>" + string(sizeofarray(deltaAddedPartsList)) + "</addedCount>");
+sbappend(xmlBuilder, "<modifiedCount>" + string(sizeofarray(deltaModifiedPartsList)) + "</modifiedCount>");
+sbappend(xmlBuilder, "<deletedCount>" + string(sizeofarray(deltaDeletedPartsList)) + "</deletedCount>");
+sbappend(xmlBuilder, "</deltaSummary>");
+sbappend(xmlBuilder, "<inventorySummary>");
+for partKey in currentKeysList {
+    sbappend(xmlBuilder, "<part sku=\"" + partKey + "\" qty=\"" + string(get(flatPartInventoryDict, partKey)) + "\" type=\"" + get(flatPartTypesDict, partKey) + "\"/>");
+}
+sbappend(xmlBuilder, "</inventorySummary>");
+sbappend(xmlBuilder, "</bomExplosionReport>");
+
+xmlOutput = sbtostring(xmlBuilder);
+return xmlOutput;

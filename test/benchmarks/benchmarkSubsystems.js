@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { performance } = require('perf_hooks');
 
-const sampleCode = fs.readFileSync(path.join(__dirname, '..', 'linter', 'fixtures', 'sample.bml'), 'utf8');
+const sampleCode = fs.readFileSync(path.join(__dirname, 'fixtures', 'benchmark_1_full_suite.bml'), 'utf8');
 
 console.log('======================================================================');
 console.log('COMMENTS, MCP, XSLT & METRICS PERFORMANCE BENCHMARK');

@@ -1,0 +1,2770 @@
+// bml-lint-disable-file bml-excessive-table-queries
+// ====================================================================================
+// ORACLE CPQ BML 100% EXHAUSTIVE API & ALL TYPES SUITE
+// File: bml/test.bml
+// Features: 100% Coverage of ALL Dictionary Types (String, Integer, Float, Boolean, Date,
+//           Anytype, Dict<String>, JSON, Arrays), ALL 1D & 2D Array Types,
+//           ALL 194 Built-in Functions, 16 CPQJS Methods, 70 System Variables & Constants
+// ====================================================================================
+
+// ==================================================================================
+// SECTION 1: ALL 70 SYSTEM VARIABLES & CONSTANTS EXERCISER
+// ==================================================================================
+testName = "123";
+user_shipping_country = _user_shipping_country;
+val__user_billing_company_2 = _user_billing_company_2;
+val__site_url = _site_url;
+val__user_shipping_first_name = _user_shipping_first_name;
+val__user_partner_session_Id = _user_partner_session_Id;
+val__user_billing_phone = _user_billing_phone;
+val__user_type = _user_type;
+val__user_shipping_company = _user_shipping_company;
+val__user_name = _user_name;
+val__user_shipping_phone = _user_shipping_phone;
+val__user_date_preference = _user_date_preference;
+val__user_billing_fax = _user_billing_fax;
+val__user_last_name = _user_last_name;
+val__user_billing_company = _user_billing_company;
+val__user_billing_province = _user_billing_province;
+val__supplier_company_name = _supplier_company_name;
+val__user_shipping_province = _user_shipping_province;
+val__user_login = _user_login;
+val__user_billing_last_name = _user_billing_last_name;
+val__current_date = _current_date;
+val__user_billing_country = _user_billing_country;
+val__user_currency_preference = _user_currency_preference;
+val__user_shipping_zip = _user_shipping_zip;
+val__user_session_id = _user_session_id;
+val__user_shipping_address_2 = _user_shipping_address_2;
+val__user_number_format = _user_number_format;
+val__user_shipping_company_2 = _user_shipping_company_2;
+val__user_fax = _user_fax;
+val__user_language_preference = _user_language_preference;
+val__user_shipping_address = _user_shipping_address;
+val__user_job_title = _user_job_title;
+val__user_billing_zip = _user_billing_zip;
+val__user_shipping_last_name = _user_shipping_last_name;
+val__user_phone = _user_phone;
+val__user_shipping_fax = _user_shipping_fax;
+val__user_billing_address = _user_billing_address;
+val__user_billing_city = _user_billing_city;
+val__subscription_order_enabled = _subscription_order_enabled;
+val__user_group = _user_group;
+val__user_billing_address_2 = _user_billing_address_2;
+val__user_first_name = _user_first_name;
+val__user_shipping_email = _user_shipping_email;
+val__user_billing_email = _user_billing_email;
+val__user_timezone = _user_timezone;
+val__user_unit = _user_unit;
+val__company_name = _company_name;
+val__user_billing_first_name = _user_billing_first_name;
+val__user_shipping_city = _user_shipping_city;
+val__user_email = _user_email;
+val_BM_CM_RULES_LOCATION = BM_CM_RULES_LOCATION;
+val_BM_CM_RULES_MESSAGE = BM_CM_RULES_MESSAGE;
+val_BM_CM_RULES_OPERATOR = BM_CM_RULES_OPERATOR;
+val_BM_CM_RULES_VALUES = BM_CM_RULES_VALUES;
+val_BM_CONFIGURATION_KEY = BM_CONFIGURATION_KEY;
+val_BM_DEFAULT_SOURCE_IDENTIFIER = BM_DEFAULT_SOURCE_IDENTIFIER;
+val_BM_PARTNER_SECURITY_TOKEN = BM_PARTNER_SECURITY_TOKEN;
+val_BM_PRIOR_CONFIGURATION_KEY = BM_PRIOR_CONFIGURATION_KEY;
+val_BM_PRIOR_ROOT_BOM_ITEM = BM_PRIOR_ROOT_BOM_ITEM;
+val_BM_REASON_STATUS_APPROVED = BM_REASON_STATUS_APPROVED;
+val_BM_REASON_STATUS_INACTIVE = BM_REASON_STATUS_INACTIVE;
+val_BM_REASON_STATUS_INVALID = BM_REASON_STATUS_INVALID;
+val_BM_REASON_STATUS_PENDING = BM_REASON_STATUS_PENDING;
+val_BM_REASON_STATUS_REJECTED = BM_REASON_STATUS_REJECTED;
+val_BM_REMOTE_APPROVAL_STATUS_APPROVED = BM_REMOTE_APPROVAL_STATUS_APPROVED;
+val_BM_REMOTE_APPROVAL_STATUS_CUSTOM = BM_REMOTE_APPROVAL_STATUS_CUSTOM;
+val_BM_REMOTE_APPROVAL_STATUS_REJECTED = BM_REMOTE_APPROVAL_STATUS_REJECTED;
+val_BM_SALES_ROOT_BOM_ITEM = BM_SALES_ROOT_BOM_ITEM;
+val_BM_UNCHANGED_DATE = BM_UNCHANGED_DATE;
+val_BM_UNCHANGED_NUM = BM_UNCHANGED_NUM;
+val_BM_UNCHANGED_STR = BM_UNCHANGED_STR;
+
+// ==================================================================================
+// SECTION 2: ALL BML DICTIONARY TYPES (STRING, INTEGER, FLOAT, BOOLEAN, DATE, ANYTYPE, ETC.)
+// ==================================================================================
+dictString = dict("string");
+put(dictString, "s_key", "hello_cpq");
+valDictString = get(dictString, "s_key");
+
+print(100);
+
+dictInteger = dict("integer");
+put(dictInteger, "i_key", 100);
+valDictInteger = get(dictInteger, "i_key");
+
+dictFloat = dict("float");
+put(dictFloat, "f_key", 99.95);
+valDictFloat = get(dictFloat, "f_key");
+
+dictBoolean = dict("boolean");
+put(dictBoolean, "b_key", true);
+valDictBoolean = get(dictBoolean, "b_key");
+
+dictDate = dict("date");
+put(dictDate, "d_key", getdate(true));
+valDictDate = get(dictDate, "d_key");
+
+dictAnytype = dict("anytype");
+put(dictAnytype, "any_key1", "mixed_str");
+put(dictAnytype, "any_key2", 123.45);
+valDictAnytype = get(dictAnytype, "any_key1", "float");
+
+dictDict = dict("dict<string>");
+put(dictDict, "sub_dict_key", dictString);
+valDictDict = get(dictDict, "sub_dict_key");
+dictJson = dict("json");
+put(dictJson, "j_key", json());
+valDictJson = get(dictJson, "j_key");
+
+dictStringArray = dict("string[]");
+tempStrArr = String[];
+append(tempStrArr, "arr_item");
+put(dictStringArray, "sa_key", tempStrArr);
+valDictStringArray = get(dictStringArray, "sa_key");
+
+dictIntegerArray = dict("integer[]");
+tempIntArr = Integer[];
+append(tempIntArr, 42);
+put(dictIntegerArray, "ia_key", tempIntArr);
+valDictIntegerArray = get(dictIntegerArray, "ia_key");
+
+dictFloatArray = dict("float[]");
+tempFloatArr = Float[];
+append(tempFloatArr, 10.5);
+put(dictFloatArray, "fa_key", tempFloatArr);
+valDictFloatArray = get(dictFloatArray, "fa_key");
+
+dictBooleanArray = dict("boolean[]");
+tempBoolArr = boolean[5];
+put(dictBooleanArray, "ba_key", tempBoolArr);
+valDictBooleanArray = get(dictBooleanArray, "ba_key");
+
+dictDateArray = dict("date[]");
+tempDateArr = Date[];
+append(tempDateArr, getdate(true));
+put(dictDateArray, "da_key", tempDateArr);
+valDictDateArray = get(dictDateArray, "da_key");
+
+// ==================================================================================
+// SECTION 3: ALL 1D & 2D BML ARRAY TYPES (STRING, INTEGER, FLOAT, BOOLEAN, DATE)
+// ==================================================================================
+arrString1D = String[];
+arrString1D_sized = string[5];
+append(arrString1D, "String_Elem");
+arrString2D = String[][];
+arrString2D_sized = string[3][3];
+
+arrInteger1D = Integer[];
+arrInteger1D_sized = integer[5];
+append(arrInteger1D, 100);
+arrInteger2D = Integer[][];
+arrInteger2D_sized = integer[3][3];
+
+arrFloat1D = Float[];
+arrFloat1D_sized = float[5];
+append(arrFloat1D, 99.9);
+arrFloat2D = Float[][];
+arrFloat2D_sized = float[3][3];
+
+arrBoolean1D = Boolean[];
+arrBoolean1D_sized = boolean[5];
+arrBoolean2D = Boolean[][];
+arrBoolean2D_sized = boolean[3][3];
+
+arrDate1D = Date[];
+arrDate1D_sized = date[5];
+append(arrDate1D, getdate(true));
+arrDate2D = Date[][];
+arrDate2D_sized = date[3][3];
+
+arrBytes = bytearray("Byte Array Payload", "UTF-8");
+
+// ==================================================================================
+// SECTION 4: EXHAUSTIVE BML BUILT-IN FUNCTIONS INVOCATION
+// ==================================================================================
+sampleStr = "Oracle CPQ BML Test Suite";
+SAMPLE_NUM_DEFAULT = 123.456;
+sampleNum = SAMPLE_NUM_DEFAULT;
+sampleInt = 42;
+sampleDate = getdate(true);
+sampleDummyRecordSet = recordset();
+sampleDict = dictString;
+sampleJson = json();
+jsonput(sampleJson, "k", "v");
+sampleJsonArr = jsonarray();
+jsonarrayappend(sampleJsonArr, sampleJson);
+sampleStrArr = arrString1D;
+sampleFloatArr = arrFloat1D;
+sampleIntArr = arrInteger1D;
+sampleXml = "<root><item>test</item></root>";
+sampleSb = stringbuilder("init");
+
+res_atof = atof("12.34");
+res_atoi = atoi("100");
+res_decodebase64 = decodebase64("Q1BR");
+res_encodebase64 = encodebase64("CPQ");
+res_endswith = endswith(sampleStr, "Suite");
+res_formatascurrency = formatascurrency(100.5, "USD");
+res_find = find(sampleStr, "CPQ");
+res_getcurrencyvalue = getcurrencyvalue("$100.50");
+res_html = html("<b>text</b>");
+res_join = join(sampleStrArr, ",");
+res_lower = lower(sampleStr);
+res_replace = replace(sampleStr, "BML", "EXT");
+res_split = split(sampleStr, " ");
+res_substring = substring(sampleStr, 0, 5);
+res_trim = trim("  str  ");
+res_upper = upper(sampleStr);
+res_string = string(123.45);
+res_isnumber = isnumber("123");
+res_len = len(sampleStr);
+res_startswith = startswith(sampleStr, "Oracle");
+res_acos = acos(0.5);
+res_asin = asin(0.5);
+res_atan = atan(0.5);
+res_ceil = ceil(12.3);
+res_cos = cos(0.5);
+res_cosh = cosh(0.5);
+res_exp = exp(1.0);
+res_fabs = fabs(-12.3);
+res_fmod = fmod(10.5, 3.0);
+res_hypot = hypot(3.0, 4.0);
+res_integer = integer(12.8);
+res_ln = ln(10.0);
+res_log = log(100.0);
+res_pow = pow(2.0, 3.0);
+res_sin = sin(0.5);
+res_sinh = sinh(0.5);
+res_sqrt = sqrt(16.0);
+res_tan = tan(0.5);
+res_tanh = tanh(0.5);
+res_round = round(12.345, 2);
+res_NaN = NaN;
+res_jNaN = jNaN;
+res_adddays = adddays(sampleDate, 5);
+res_comparedates = comparedates(sampleDate, sampleDate);
+res_getcurrenttimeinmillis = getcurrenttimeinmillis();
+res_minusdays = minusdays(sampleDate, 3);
+sampleRecordSet = bmql("SELECT active, lead_time FROM _parts");
+for sampleRow in sampleRecordSet {
+    res_getboolean = getboolean(sampleRow, "active");
+    res_getint = getint(sampleRow, "lead_time");
+    res_getmessage = getmessage(sampleRow);
+    res_haserror = haserror(sampleRow);
+}
+// getint tested above
+// getmessage tested above
+// haserror tested above
+res_recordset = recordset();
+res_isnull = isnull(sampleStr);
+sbappend(sampleSb, "append");
+res_sbtostring = sbtostring(sampleSb);
+res_range = range(10);
+res_keys = keys(sampleDict);
+res_jsonnull = json();
+res_jsonget = jsonget(sampleJson, "k");
+res_jsonarrayget = jsonarrayget(sampleJsonArr, 0);
+res_jsonarraysize = jsonarraysize(sampleJsonArr);
+test_k = NaN;
+res_getpartsdata = getpartsdata(sampleStrArr, sampleStrArr, "test");
+res_gettabledata = gettabledata(sampleStrArr, sampleStrArr, sampleStrArr);
+res_gettransaction = gettransaction(12345);
+res_addmonths = addmonths(sampleDate, 2);
+res_datetostr = datetostr(sampleDate);
+res_getdate = getdate(true);
+res_getdiffindays = getdiffindays(sampleDate, sampleDate);
+res_getstrdate = getstrdate();
+res_isleap = isleap(2026);
+res_isweekend = isweekend(sampleDate);
+res_strtodate = strtodate("2026-08-22", "yyyy-MM-dd");
+res_strtojavadate = strtojavadate("2026-08-22", "yyyy-MM-dd");
+res_makeurlparam = makeurlparam(sampleDict);
+res_urldata = urldata("https://api.example.com", "GET");
+res_urldatabyget = urldatabyget("https://api.example.com", "a=1", "default");
+res_urldatabypost = urldatabypost("https://api.example.com", "a=1", "default");
+res_urldatabypostasync = urldatabypostasync("https://api.example.com", "a=1", "default", "callback");
+res_urlmultipartbypost = urlmultipartbypost("https://api.example.com", "payload");
+res_addpartstotransaction = addpartstotransaction(sampleJson, sampleDict);
+res_addtotransaction = addtotransaction(sampleJson, sampleDict);
+res_generatehmacmessage = generatehmacmessage("key", "msg", "SHA256");
+res_getarraystr = getarraystr(sampleStrArr);
+res_getattachmentdata = getattachmentdata("123", true);
+res_getconfigattrvalue = getconfigattrvalue("123", "attr");
+res_getoldvalue = getoldvalue("attr");
+res_getreasonstatus = getreasonstatus("reason");
+res_getuuid = getuuid(100);
+res_importtransactiondata = importtransactiondata(126262651);
+res_invoke = invoke("util.myFunc");
+logtime("Checkpoint", 100);
+setattributevalue(101, "val");
+throwerror("error");
+res_validatequoteforagreement = validatequoteforagreement();
+res_applybom = applybom(sampleJson, sampleDict);
+res_calculateconfiguration = calculateconfiguration(sampleDict, sampleDict);
+res_calculatedeltabom = calculatedeltabom(sampleDict, sampleDict, sampleDict);
+res_convertbomtoflat = convertbomtoflat(sampleDict);
+res_convertbomtohier = convertbomtohier(sampleDict);
+res_getbom = getbom(101, 202);
+res_getconfigurationbom = getconfigurationbom(123);
+res_savebom = savebom(101, sampleDict);
+res_saveconfigbom = saveconfigbom(sampleJson, sampleDict);
+res_bytearray = bytearray("data", "UTF-8");
+res_findinarray = findinarray(sampleStrArr, "elem1");
+res_isempty = isempty(sampleStrArr);
+res_max = max(sampleFloatArr);
+res_min = min(sampleFloatArr);
+res_remove = remove(sampleStrArr, 0);
+res_reverse = reverse(sampleStrArr);
+testArr = string[][];
+res_sort2 = sort(sampleStrArr, "asc", "text");
+res_sizeofarray = sizeofarray(sampleStrArr);
+res_containskey = containskey(sampleDict, "key1");
+res_values = values(sampleDict);
+res_applytemplate = applytemplate("template_id");
+res_transformxml = transformxml(sampleXml, "<xsl:stylesheet/>");
+res_readxmlsingle = readxmlsingle(sampleXml, sampleStrArr);
+res_readxmlmultiple = readxmlmultiple(sampleXml, sampleStrArr);
+res_jsonkeys = jsonkeys(sampleJson);
+res_jsontostr = jsontostr(sampleJson);
+jsonremove(sampleJson, "k");
+res_isjsonnull = isjsonnull(sampleJson, "k");
+res_jsonarraytostr = jsonarraytostr(sampleJsonArr);
+jsonarrayremove(sampleJsonArr, 0);
+res_jsonpathremove = jsonpathremove(sampleJson, "$.a");
+res_jsonpathgetsingle = jsonpathgetsingle(sampleJson, "$.a");
+res_jsoncopy = jsoncopy(sampleJson);
+res_jsonarraycopy = jsonarraycopy(sampleJsonArr);
+res_jsonpathcheck = jsonpathcheck(sampleJson, "$.a");
+res_jsonpathset = jsonpathset(sampleJson, "$.a", "val");
+res_jsonpathgetmultiple = jsonpathgetmultiple(sampleJson, "$.a");
+res_jsonarrayrefid = jsonarrayrefid(sampleJsonArr);
+res_getarrayattrstring = getarrayattrstring(sampleStrArr);
+debug = true;
+if (debug) {
+    print("BML Print Statement Test");
+}
+res_getconfigbom = getconfigbom(101, true);
+usersessionset("sk", "sv");
+res_usersessionget = usersessionget("sk");
+res_globaldictget = globaldictget("gk");
+res_usersessionremove = usersessionremove("sk");
+res_globaldictremove = globaldictremove("gk");
+res_globaldictset = globaldictset("gk", "gv");
+res_getsystemattrvalues = getsystemattrvalues("$.attr");
+res_getsystemmultipleattrvalues = getsystemmultipleattrvalues(sampleDict);
+res_getsystemdata = getsystemdata();
+res_getcoveragesupportdict = getcoveragesupportdict();
+configureabo(12345);
+
+// ==================================================================================
+// SECTION 5: CPQJS FRONT-END INTEGRATION METHODS EXERCISER
+// ==================================================================================
+isReady_cpqjs = CPQJSReady;
+hasAction_cpqjs = CPQJS.actionExists("clean_save");
+hasAttr_cpqjs = CPQJS.attributeExists("quote_number");
+valAttr_cpqjs = CPQJS.getAttributeVal("quote_number");
+isConfig_cpqjs = CPQJS.isConfig();
+isCommerce_cpqjs = CPQJS.isCommerce();
+isJet_cpqjs = CPQJS.isJet();
+CPQJS.onActionComplete("clean_save", "callbackFunc");
+CPQJS.onAttributeChange("discount", "callbackFunc");
+CPQJS.onTableLoaded("line_items", "callbackFunc");
+CPQJS.openPopup("https://example.com");
+CPQJS.performAction("clean_save");
+CPQJS.setAttributeState("discount", "read_only");
+CPQJS.setAttributeVal("discount", 15.0);
+tableInfo_cpqjs = CPQJS.getTableInfo("line_items");
+tableExists_cpqjs = CPQJS.tableExists("line_items");
+
+// ==================================================================================
+// MODULE 01: ADVANCED LOGIC (DICT TYPE: dict("string"))
+// ==================================================================================
+mId_01 = 1;
+mCode_01 = "REF_MOD_" + string(01);
+mRate_01 = 15.75;
+
+modDict_01 = dict("string");
+put(modDict_01, "k1", "v1");
+
+mEval_01 = "DEFAULT";
+if (mId_01 > 40 AND mRate_01 > 600.0) {
+    mEval_01 = "PLATINUM";
+} elif (mId_01 > 20 OR mRate_01 > 300.0) {
+    mEval_01 = "GOLD";
+} else {
+    mEval_01 = "SILVER";
+}
+
+bmqlRecords_01 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_01");
+bmqlSum_01 = 0.0;
+for rRow_01 in bmqlRecords_01 {
+    rPrice_01 = getfloat(rRow_01, "price");
+    if (rPrice_01 > 0.0) {
+        bmqlSum_01 = bmqlSum_01 + rPrice_01;
+    }
+}
+
+categories_01 = String[];
+append(categories_01, "HW");
+append(categories_01, "SW");
+append(categories_01, "SVC");
+
+tiers_01 = Integer[];
+append(tiers_01, 1);
+append(tiers_01, 2);
+
+matchCount_01 = 0;
+for cItem_01 in categories_01 {
+    for tItem_01 in tiers_01 {
+        keyCombo_01 = cItem_01 + "_" + string(tItem_01);
+        if (len(keyCombo_01) > 3) {
+            matchCount_01 = matchCount_01 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 02: ADVANCED LOGIC (DICT TYPE: dict("integer"))
+// ==================================================================================
+mId_02 = 2;
+mCode_02 = "REF_MOD_" + string(02);
+CONST_31_50 = 31.50;
+mRate_02 = CONST_31_50;
+
+modDict_02 = dict("integer");
+put(modDict_02, "k1", 20);
+
+mEval_02 = "DEFAULT";
+if (mId_02 > 40 AND mRate_02 > 600.0) {
+    mEval_02 = "PLATINUM";
+} elif (mId_02 > 20 OR mRate_02 > 300.0) {
+    mEval_02 = "GOLD";
+} else {
+    mEval_02 = "SILVER";
+}
+
+bmqlRecords_02 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_02");
+bmqlSum_02 = 0.0;
+for rRow_02 in bmqlRecords_02 {
+    rPrice_02 = getfloat(rRow_02, "price");
+    if (rPrice_02 > 0.0) {
+        bmqlSum_02 = bmqlSum_02 + rPrice_02;
+    }
+}
+
+categories_02 = String[];
+append(categories_02, "HW");
+append(categories_02, "SW");
+append(categories_02, "SVC");
+
+tiers_02 = Integer[];
+append(tiers_02, 1);
+append(tiers_02, 2);
+
+matchCount_02 = 0;
+for cItem_02 in categories_02 {
+    for tItem_02 in tiers_02 {
+        keyCombo_02 = cItem_02 + "_" + string(tItem_02);
+        if (len(keyCombo_02) > 3) {
+            matchCount_02 = matchCount_02 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 03: ADVANCED LOGIC (DICT TYPE: dict("float"))
+// ==================================================================================
+mId_03 = 3;
+mCode_03 = "REF_MOD_" + string(03);
+mRate_03 = 47.25;
+TEST_RATE = 12;
+
+modDict_03 = dict("float");
+put(modDict_03, "k1", 4.50);
+
+mEval_03 = "DEFAULT";
+if (mId_03 > 40 AND mRate_03 > 600.0) {
+    mEval_03 = "PLATINUM";
+} elif (mId_03 > 20 OR mRate_03 > 300.0) {
+    mEval_03 = "GOLD";
+} else {
+    mEval_03 = "SILVER";
+}
+
+bmqlRecords_03 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_03");
+bmqlSum_03 = 0.0;
+for rRow_03 in bmqlRecords_03 {
+    rPrice_03 = getfloat(rRow_03, "price");
+    if (rPrice_03 > 0.0) {
+        bmqlSum_03 = bmqlSum_03 + rPrice_03;
+    }
+}
+
+categories_03 = String[];
+append(categories_03, "HW");
+append(categories_03, "SW");
+append(categories_03, "SVC");
+
+tiers_03 = Integer[];
+append(tiers_03, 1);
+append(tiers_03, 2);
+
+matchCount_03 = 0;
+for cItem_03 in categories_03 {
+    for tItem_03 in tiers_03 {
+        keyCombo_03 = cItem_03 + "_" + string(tItem_03);
+        if (len(keyCombo_03) > 3) {
+            matchCount_03 = matchCount_03 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 04: ADVANCED LOGIC (DICT TYPE: dict("boolean"))
+// ==================================================================================
+mId_04 = 4;
+mCode_04 = "REF_MOD_" + string(04);
+mRate_04 = 63.00;
+
+modDict_04 = dict("boolean");
+put(modDict_04, "k1", true);
+
+mEval_04 = "DEFAULT";
+if (mId_04 > 40 AND mRate_04 > 600.0) {
+    mEval_04 = "PLATINUM";
+} elif (mId_04 > 20 OR mRate_04 > 300.0) {
+    mEval_04 = "GOLD";
+} else {
+    mEval_04 = "SILVER";
+}
+
+bmqlRecords_04 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_04");
+bmqlSum_04 = 0.0;
+for rRow_04 in bmqlRecords_04 {
+    rPrice_04 = getfloat(rRow_04, "price");
+    if (rPrice_04 > 0.0) {
+        bmqlSum_04 = bmqlSum_04 + rPrice_04;
+    }
+}
+
+categories_04 = String[];
+append(categories_04, "HW");
+append(categories_04, "SW");
+append(categories_04, "SVC");
+
+tiers_04 = Integer[];
+append(tiers_04, 1);
+append(tiers_04, 2);
+
+matchCount_04 = 0;
+for cItem_04 in categories_04 {
+    for tItem_04 in tiers_04 {
+        keyCombo_04 = cItem_04 + "_" + string(tItem_04);
+        if (len(keyCombo_04) > 3) {
+            matchCount_04 = matchCount_04 + 1;
+        }
+        for tItem_04 in tiers_04 {
+            print 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 05: ADVANCED LOGIC (DICT TYPE: dict("date"))
+// ==================================================================================
+mId_05 = 5;
+mCode_05 = "REF_MOD_" + string(05);
+mRate_05 = 78.75;
+
+modDict_05 = dict("date");
+put(modDict_05, "k1", sampleDate);
+
+mEval_05 = "DEFAULT";
+if (mId_05 > 40 AND mRate_05 > 600.0) {
+    mEval_05 = "PLATINUM";
+} elif (mId_05 > 20 OR mRate_05 > 300.0) {
+    mEval_05 = "GOLD";
+} else {
+    mEval_05 = "SILVER";
+}
+
+bmqlRecords_05 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_05");
+bmqlSum_05 = 0.0;
+for rRow_05 in bmqlRecords_05 {
+    rPrice_05 = getfloat(rRow_05, "price");
+    if (rPrice_05 > 0.0) {
+        bmqlSum_05 = bmqlSum_05 + rPrice_05;
+    }
+}
+
+categories_05 = String[];
+append(categories_05, "HW");
+append(categories_05, "SW");
+append(categories_05, "SVC");
+
+tiers_05 = Integer[];
+append(tiers_05, 1);
+append(tiers_05, 2);
+
+matchCount_05 = 0;
+for cItem_05 in categories_05 {
+    for tItem_05 in tiers_05 {
+        keyCombo_05 = cItem_05 + "_" + string(tItem_05);
+        if (len(keyCombo_05) > 3) {
+            matchCount_05 = matchCount_05 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 06: ADVANCED LOGIC (DICT TYPE: dict("anytype"))
+// ==================================================================================
+mId_06 = 6;
+mCode_06 = "REF_MOD_" + string(06);
+mRate_06 = 94.50;
+
+modDict_06 = dict("anytype");
+put(modDict_06, "k1", "any_val");
+
+mEval_06 = "DEFAULT";
+if (mId_06 > 40 AND mRate_06 > 600.0) {
+    mEval_06 = "PLATINUM";
+} elif (mId_06 > 20 OR mRate_06 > 300.0) {
+    mEval_06 = "GOLD";
+} else {
+    mEval_06 = "SILVER";
+}
+
+bmqlRecords_06 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_06");
+bmqlSum_06 = 0.0;
+for rRow_06 in bmqlRecords_06 {
+    rPrice_06 = getfloat(rRow_06, "price");
+    if (rPrice_06 > 0.0) {
+        bmqlSum_06 = bmqlSum_06 + rPrice_06;
+    }
+}
+
+categories_06 = String[];
+append(categories_06, "HW");
+append(categories_06, "SW");
+append(categories_06, "SVC");
+
+tiers_06 = Integer[];
+append(tiers_06, 1);
+append(tiers_06, 2);
+
+matchCount_06 = 0;
+for cItem_06 in categories_06 {
+    for tItem_06 in tiers_06 {
+        keyCombo_06 = cItem_06 + "_" + string(tItem_06);
+        if (len(keyCombo_06) > 3) {
+            matchCount_06 = matchCount_06 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 07: ADVANCED LOGIC (DICT TYPE: dict("dict<string>"))
+// ==================================================================================
+mId_07 = 7;
+mCode_07 = "REF_MOD_" + string(07);
+mRate_07 = 110.25;
+
+modDict_07 = dict("dict<string>");
+put(modDict_07, "k1", dictString);
+
+mEval_07 = "DEFAULT";
+if (mId_07 > 40 AND mRate_07 > 600.0) {
+    mEval_07 = "PLATINUM";
+} elif (mId_07 > 20 OR mRate_07 > 300.0) {
+    mEval_07 = "GOLD";
+} else {
+    mEval_07 = "SILVER";
+}
+
+bmqlRecords_07 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_07");
+bmqlSum_07 = 0.0;
+for rRow_07 in bmqlRecords_07 {
+    rPrice_07 = getfloat(rRow_07, "price");
+    if (rPrice_07 > 0.0) {
+        bmqlSum_07 = bmqlSum_07 + rPrice_07;
+    }
+}
+
+categories_07 = String[];
+append(categories_07, "HW");
+append(categories_07, "SW");
+append(categories_07, "SVC");
+
+tiers_07 = Integer[];
+append(tiers_07, 1);
+append(tiers_07, 2);
+
+matchCount_07 = 0;
+for cItem_07 in categories_07 {
+    for tItem_07 in tiers_07 {
+        keyCombo_07 = cItem_07 + "_" + string(tItem_07);
+        if (len(keyCombo_07) > 3) {
+            matchCount_07 = matchCount_07 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 08: ADVANCED LOGIC (DICT TYPE: dict("json"))
+// ==================================================================================
+mId_08 = 8;
+mCode_08 = "REF_MOD_" + string(08);
+mRate_08 = 126.00;
+
+modDict_08 = dict("json");
+put(modDict_08, "k1", sampleJson);
+
+mEval_08 = "DEFAULT";
+if (mId_08 > 40 AND mRate_08 > 600.0) {
+    mEval_08 = "PLATINUM";
+} elif (mId_08 > 20 OR mRate_08 > 300.0) {
+    mEval_08 = "GOLD";
+} else {
+    mEval_08 = "SILVER";
+}
+
+bmqlRecords_08 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_08");
+bmqlSum_08 = 0.0;
+for rRow_08 in bmqlRecords_08 {
+    rPrice_08 = getfloat(rRow_08, "price");
+    if (rPrice_08 > 0.0) {
+        bmqlSum_08 = bmqlSum_08 + rPrice_08;
+    }
+}
+
+categories_08 = String[];
+append(categories_08, "HW");
+append(categories_08, "SW");
+append(categories_08, "SVC");
+
+tiers_08 = Integer[];
+append(tiers_08, 1);
+append(tiers_08, 2);
+
+matchCount_08 = 0;
+for cItem_08 in categories_08 {
+    for tItem_08 in tiers_08 {
+        keyCombo_08 = cItem_08 + "_" + string(tItem_08);
+        if (len(keyCombo_08) > 3) {
+            matchCount_08 = matchCount_08 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 09: ADVANCED LOGIC (DICT TYPE: dict("string[]"))
+// ==================================================================================
+mId_09 = 9;
+mCode_09 = "REF_MOD_" + string(09);
+mRate_09 = 141.75;
+
+modDict_09 = dict("string[]");
+put(modDict_09, "k1", sampleStrArr);
+
+mEval_09 = "DEFAULT";
+if (mId_09 > 40 AND mRate_09 > 600.0) {
+    mEval_09 = "PLATINUM";
+} elif (mId_09 > 20 OR mRate_09 > 300.0) {
+    mEval_09 = "GOLD";
+} else {
+    mEval_09 = "SILVER";
+}
+
+bmqlRecords_09 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_09");
+bmqlSum_09 = 0.0;
+for rRow_09 in bmqlRecords_09 {
+    rPrice_09 = getfloat(rRow_09, "price");
+    if (rPrice_09 > 0.0) {
+        bmqlSum_09 = bmqlSum_09 + rPrice_09;
+    }
+}
+
+categories_09 = String[];
+append(categories_09, "HW");
+append(categories_09, "SW");
+append(categories_09, "SVC");
+
+tiers_09 = Integer[];
+append(tiers_09, 1);
+append(tiers_09, 2);
+
+matchCount_09 = 0;
+for cItem_09 in categories_09 {
+    for tItem_09 in tiers_09 {
+        keyCombo_09 = cItem_09 + "_" + string(tItem_09);
+        if (len(keyCombo_09) > 3) {
+            matchCount_09 = matchCount_09 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 10: ADVANCED LOGIC (DICT TYPE: dict("integer[]"))
+// ==================================================================================
+mId_10 = 10;
+mCode_10 = "REF_MOD_" + string(10);
+mRate_10 = 157.50;
+
+modDict_10 = dict("integer[]");
+put(modDict_10, "k1", sampleIntArr);
+
+mEval_10 = "DEFAULT";
+if (mId_10 > 40 AND mRate_10 > 600.0) {
+    mEval_10 = "PLATINUM";
+} elif (mId_10 > 20 OR mRate_10 > 300.0) {
+    mEval_10 = "GOLD";
+} else {
+    mEval_10 = "SILVER";
+}
+
+bmqlRecords_10 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_10");
+bmqlSum_10 = 0.0;
+for rRow_10 in bmqlRecords_10 {
+    rPrice_10 = getfloat(rRow_10, "price");
+    if (rPrice_10 > 0.0) {
+        bmqlSum_10 = bmqlSum_10 + rPrice_10;
+    }
+}
+
+categories_10 = String[];
+append(categories_10, "HW");
+append(categories_10, "SW");
+append(categories_10, "SVC");
+
+tiers_10 = Integer[];
+append(tiers_10, 1);
+append(tiers_10, 2);
+
+matchCount_10 = 0;
+for cItem_10 in categories_10 {
+    for tItem_10 in tiers_10 {
+        keyCombo_10 = cItem_10 + "_" + string(tItem_10);
+        if (len(keyCombo_10) > 3) {
+            matchCount_10 = matchCount_10 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 11: ADVANCED LOGIC (DICT TYPE: dict("float[]"))
+// ==================================================================================
+mId_11 = 11;
+mCode_11 = "REF_MOD_" + string(11);
+mRate_11 = 173.25;
+
+modDict_11 = dict("float[]");
+put(modDict_11, "k1", sampleFloatArr);
+
+mEval_11 = "DEFAULT";
+if (mId_11 > 40 AND mRate_11 > 600.0) {
+    mEval_11 = "PLATINUM";
+} elif (mId_11 > 20 OR mRate_11 > 300.0) {
+    mEval_11 = "GOLD";
+} else {
+    mEval_11 = "SILVER";
+}
+
+bmqlRecords_11 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_11");
+bmqlSum_11 = 0.0;
+for rRow_11 in bmqlRecords_11 {
+    rPrice_11 = getfloat(rRow_11, "price");
+    if (rPrice_11 > 0.0) {
+        bmqlSum_11 = bmqlSum_11 + rPrice_11;
+    }
+}
+
+categories_11 = String[];
+append(categories_11, "HW");
+append(categories_11, "SW");
+append(categories_11, "SVC");
+
+tiers_11 = Integer[];
+append(tiers_11, 1);
+append(tiers_11, 2);
+
+matchCount_11 = 0;
+for cItem_11 in categories_11 {
+    for tItem_11 in tiers_11 {
+        keyCombo_11 = cItem_11 + "_" + string(tItem_11);
+        if (len(keyCombo_11) > 3) {
+            matchCount_11 = matchCount_11 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 12: ADVANCED LOGIC (DICT TYPE: dict("boolean[]"))
+// ==================================================================================
+mId_12 = 12;
+mCode_12 = "REF_MOD_" + string(12);
+mRate_12 = 189.00;
+
+modDict_12 = dict("boolean[]");
+put(modDict_12, "k1", arrBoolean1D);
+
+mEval_12 = "DEFAULT";
+if (mId_12 > 40 AND mRate_12 > 600.0) {
+    mEval_12 = "PLATINUM";
+} elif (mId_12 > 20 OR mRate_12 > 300.0) {
+    mEval_12 = "GOLD";
+} else {
+    mEval_12 = "SILVER";
+}
+
+bmqlRecords_12 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_12");
+bmqlSum_12 = 0.0;
+for rRow_12 in bmqlRecords_12 {
+    rPrice_12 = getfloat(rRow_12, "price");
+    if (rPrice_12 > 0.0) {
+        bmqlSum_12 = bmqlSum_12 + rPrice_12;
+    }
+}
+
+categories_12 = String[];
+append(categories_12, "HW");
+append(categories_12, "SW");
+append(categories_12, "SVC");
+
+tiers_12 = Integer[];
+append(tiers_12, 1);
+append(tiers_12, 2);
+
+matchCount_12 = 0;
+for cItem_12 in categories_12 {
+    for tItem_12 in tiers_12 {
+        keyCombo_12 = cItem_12 + "_" + string(tItem_12);
+        if (len(keyCombo_12) > 3) {
+            matchCount_12 = matchCount_12 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 13: ADVANCED LOGIC (DICT TYPE: dict("date[]"))
+// ==================================================================================
+mId_13 = 13;
+mCode_13 = "REF_MOD_" + string(13);
+mRate_13 = 204.75;
+
+modDict_13 = dict("date[]");
+put(modDict_13, "k1", arrDate1D);
+
+mEval_13 = "DEFAULT";
+if (mId_13 > 40 AND mRate_13 > 600.0) {
+    mEval_13 = "PLATINUM";
+} elif (mId_13 > 20 OR mRate_13 > 300.0) {
+    mEval_13 = "GOLD";
+} else {
+    mEval_13 = "SILVER";
+}
+
+bmqlRecords_13 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_13");
+bmqlSum_13 = 0.0;
+for rRow_13 in bmqlRecords_13 {
+    rPrice_13 = getfloat(rRow_13, "price");
+    if (rPrice_13 > 0.0) {
+        bmqlSum_13 = bmqlSum_13 + rPrice_13;
+    }
+}
+
+categories_13 = String[];
+append(categories_13, "HW");
+append(categories_13, "SW");
+append(categories_13, "SVC");
+
+tiers_13 = Integer[];
+append(tiers_13, 1);
+append(tiers_13, 2);
+
+matchCount_13 = 0;
+for cItem_13 in categories_13 {
+    for tItem_13 in tiers_13 {
+        keyCombo_13 = cItem_13 + "_" + string(tItem_13);
+        if (len(keyCombo_13) > 3) {
+            matchCount_13 = matchCount_13 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 14: ADVANCED LOGIC (DICT TYPE: dict("string"))
+// ==================================================================================
+mId_14 = 14;
+mCode_14 = "REF_MOD_" + string(14);
+mRate_14 = 220.50;
+
+modDict_14 = dict("string");
+put(modDict_14, "k1", "v1");
+
+mEval_14 = "DEFAULT";
+if (mId_14 > 40 AND mRate_14 > 600.0) {
+    mEval_14 = "PLATINUM";
+} elif (mId_14 > 20 OR mRate_14 > 300.0) {
+    mEval_14 = "GOLD";
+} else {
+    mEval_14 = "SILVER";
+}
+
+bmqlRecords_14 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_14");
+bmqlSum_14 = 0.0;
+for rRow_14 in bmqlRecords_14 {
+    rPrice_14 = getfloat(rRow_14, "price");
+    if (rPrice_14 > 0.0) {
+        bmqlSum_14 = bmqlSum_14 + rPrice_14;
+    }
+}
+
+categories_14 = String[];
+append(categories_14, "HW");
+append(categories_14, "SW");
+append(categories_14, "SVC");
+
+tiers_14 = Integer[];
+append(tiers_14, 1);
+append(tiers_14, 2);
+
+matchCount_14 = 0;
+for cItem_14 in categories_14 {
+    for tItem_14 in tiers_14 {
+        keyCombo_14 = cItem_14 + "_" + string(tItem_14);
+        if (len(keyCombo_14) > 3) {
+            matchCount_14 = matchCount_14 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 15: ADVANCED LOGIC (DICT TYPE: dict("integer"))
+// ==================================================================================
+mId_15 = 15;
+mCode_15 = "REF_MOD_" + string(15);
+mRate_15 = 236.25;
+
+modDict_15 = dict("integer");
+put(modDict_15, "k1", 150);
+
+mEval_15 = "DEFAULT";
+if (mId_15 > 40 AND mRate_15 > 600.0) {
+    mEval_15 = "PLATINUM";
+} elif (mId_15 > 20 OR mRate_15 > 300.0) {
+    mEval_15 = "GOLD";
+} else {
+    mEval_15 = "SILVER";
+}
+
+bmqlRecords_15 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_15");
+bmqlSum_15 = 0.0;
+for rRow_15 in bmqlRecords_15 {
+    rPrice_15 = getfloat(rRow_15, "price");
+    if (rPrice_15 > 0.0) {
+        bmqlSum_15 = bmqlSum_15 + rPrice_15;
+    }
+}
+
+categories_15 = String[];
+append(categories_15, "HW");
+append(categories_15, "SW");
+append(categories_15, "SVC");
+
+tiers_15 = Integer[];
+append(tiers_15, 1);
+append(tiers_15, 2);
+
+matchCount_15 = 0;
+for cItem_15 in categories_15 {
+    for tItem_15 in tiers_15 {
+        keyCombo_15 = cItem_15 + "_" + string(tItem_15);
+        if (len(keyCombo_15) > 3) {
+            matchCount_15 = matchCount_15 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 16: ADVANCED LOGIC (DICT TYPE: dict("float"))
+// ==================================================================================
+mId_16 = 16;
+mCode_16 = "REF_MOD_" + string(16);
+mRate_16 = 252.00;
+
+modDict_16 = dict("float");
+put(modDict_16, "k1", 24.00);
+
+mEval_16 = "DEFAULT";
+if (mId_16 > 40 AND mRate_16 > 600.0) {
+    mEval_16 = "PLATINUM";
+} elif (mId_16 > 20 OR mRate_16 > 300.0) {
+    mEval_16 = "GOLD";
+} else {
+    mEval_16 = "SILVER";
+}
+
+bmqlRecords_16 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_16");
+bmqlSum_16 = 0.0;
+for rRow_16 in bmqlRecords_16 {
+    rPrice_16 = getfloat(rRow_16, "price");
+    if (rPrice_16 > 0.0) {
+        bmqlSum_16 = bmqlSum_16 + rPrice_16;
+    }
+}
+
+categories_16 = String[];
+append(categories_16, "HW");
+append(categories_16, "SW");
+append(categories_16, "SVC");
+
+tiers_16 = Integer[];
+append(tiers_16, 1);
+append(tiers_16, 2);
+
+matchCount_16 = 0;
+for cItem_16 in categories_16 {
+    for tItem_16 in tiers_16 {
+        keyCombo_16 = cItem_16 + "_" + string(tItem_16);
+        if (len(keyCombo_16) > 3) {
+            matchCount_16 = matchCount_16 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 17: ADVANCED LOGIC (DICT TYPE: dict("boolean"))
+// ==================================================================================
+mId_17 = 17;
+mCode_17 = "REF_MOD_" + string(17);
+mRate_17 = 267.75;
+
+modDict_17 = dict("boolean");
+put(modDict_17, "k1", true);
+
+mEval_17 = "DEFAULT";
+if (mId_17 > 40 AND mRate_17 > 600.0) {
+    mEval_17 = "PLATINUM";
+} elif (mId_17 > 20 OR mRate_17 > 300.0) {
+    mEval_17 = "GOLD";
+} else {
+    mEval_17 = "SILVER";
+}
+
+bmqlRecords_17 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_17");
+bmqlSum_17 = 0.0;
+for rRow_17 in bmqlRecords_17 {
+    rPrice_17 = getfloat(rRow_17, "price");
+    if (rPrice_17 > 0.0) {
+        bmqlSum_17 = bmqlSum_17 + rPrice_17;
+    }
+}
+
+categories_17 = String[];
+append(categories_17, "HW");
+append(categories_17, "SW");
+append(categories_17, "SVC");
+
+tiers_17 = Integer[];
+append(tiers_17, 1);
+append(tiers_17, 2);
+
+matchCount_17 = 0;
+for cItem_17 in categories_17 {
+    for tItem_17 in tiers_17 {
+        keyCombo_17 = cItem_17 + "_" + string(tItem_17);
+        if (len(keyCombo_17) > 3) {
+            matchCount_17 = matchCount_17 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 18: ADVANCED LOGIC (DICT TYPE: dict("date"))
+// ==================================================================================
+mId_18 = 18;
+mCode_18 = "REF_MOD_" + string(18);
+mRate_18 = 283.50;
+
+modDict_18 = dict("date");
+put(modDict_18, "k1", sampleDate);
+
+mEval_18 = "DEFAULT";
+if (mId_18 > 40 AND mRate_18 > 600.0) {
+    mEval_18 = "PLATINUM";
+} elif (mId_18 > 20 OR mRate_18 > 300.0) {
+    mEval_18 = "GOLD";
+} else {
+    mEval_18 = "SILVER";
+}
+
+bmqlRecords_18 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_18");
+bmqlSum_18 = 0.0;
+for rRow_18 in bmqlRecords_18 {
+    rPrice_18 = getfloat(rRow_18, "price");
+    if (rPrice_18 > 0.0) {
+        bmqlSum_18 = bmqlSum_18 + rPrice_18;
+    }
+}
+
+categories_18 = String[];
+append(categories_18, "HW");
+append(categories_18, "SW");
+append(categories_18, "SVC");
+
+tiers_18 = Integer[];
+append(tiers_18, 1);
+append(tiers_18, 2);
+
+matchCount_18 = 0;
+for cItem_18 in categories_18 {
+    for tItem_18 in tiers_18 {
+        keyCombo_18 = cItem_18 + "_" + string(tItem_18);
+        if (len(keyCombo_18) > 3) {
+            matchCount_18 = matchCount_18 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 19: ADVANCED LOGIC (DICT TYPE: dict("anytype"))
+// ==================================================================================
+mId_19 = 19;
+mCode_19 = "REF_MOD_" + string(19);
+mRate_19 = 299.25;
+
+modDict_19 = dict("anytype");
+put(modDict_19, "k1", "any_val");
+
+mEval_19 = "DEFAULT";
+if (mId_19 > 40 AND mRate_19 > 600.0) {
+    mEval_19 = "PLATINUM";
+} elif (mId_19 > 20 OR mRate_19 > 300.0) {
+    mEval_19 = "GOLD";
+} else {
+    mEval_19 = "SILVER";
+}
+
+bmqlRecords_19 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_19");
+bmqlSum_19 = 0.0;
+for rRow_19 in bmqlRecords_19 {
+    rPrice_19 = getfloat(rRow_19, "price");
+    if (rPrice_19 > 0.0) {
+        bmqlSum_19 = bmqlSum_19 + rPrice_19;
+    }
+}
+
+categories_19 = String[];
+append(categories_19, "HW");
+append(categories_19, "SW");
+append(categories_19, "SVC");
+
+tiers_19 = Integer[];
+append(tiers_19, 1);
+append(tiers_19, 2);
+
+matchCount_19 = 0;
+for cItem_19 in categories_19 {
+    for tItem_19 in tiers_19 {
+        keyCombo_19 = cItem_19 + "_" + string(tItem_19);
+        if (len(keyCombo_19) > 3) {
+            matchCount_19 = matchCount_19 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 20: ADVANCED LOGIC (DICT TYPE: dict("dict<string>"))
+// ==================================================================================
+mId_20 = 20;
+mCode_20 = "REF_MOD_" + string(20);
+mRate_20 = 315.00;
+
+modDict_20 = dict("dict<string>");
+put(modDict_20, "k1", dictString);
+
+mEval_20 = "DEFAULT";
+if (mId_20 > 40 AND mRate_20 > 600.0) {
+    mEval_20 = "PLATINUM";
+} elif (mId_20 > 20 OR mRate_20 > 300.0) {
+    mEval_20 = "GOLD";
+} else {
+    mEval_20 = "SILVER";
+}
+
+bmqlRecords_20 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_20");
+bmqlSum_20 = 0.0;
+for rRow_20 in bmqlRecords_20 {
+    rPrice_20 = getfloat(rRow_20, "price");
+    if (rPrice_20 > 0.0) {
+        bmqlSum_20 = bmqlSum_20 + rPrice_20;
+    }
+}
+
+categories_20 = String[];
+append(categories_20, "HW");
+append(categories_20, "SW");
+append(categories_20, "SVC");
+
+tiers_20 = Integer[];
+append(tiers_20, 1);
+append(tiers_20, 2);
+
+matchCount_20 = 0;
+for cItem_20 in categories_20 {
+    for tItem_20 in tiers_20 {
+        keyCombo_20 = cItem_20 + "_" + string(tItem_20);
+        if (len(keyCombo_20) > 3) {
+            matchCount_20 = matchCount_20 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 21: ADVANCED LOGIC (DICT TYPE: dict("json"))
+// ==================================================================================
+mId_21 = 21;
+mCode_21 = "REF_MOD_" + string(21);
+mRate_21 = 330.75;
+
+modDict_21 = dict("json");
+put(modDict_21, "k1", sampleJson);
+
+mEval_21 = "DEFAULT";
+if (mId_21 > 40 AND mRate_21 > 600.0) {
+    mEval_21 = "PLATINUM";
+} elif (mId_21 > 20 OR mRate_21 > 300.0) {
+    mEval_21 = "GOLD";
+} else {
+    mEval_21 = "SILVER";
+}
+
+bmqlRecords_21 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_21");
+bmqlSum_21 = 0.0;
+for rRow_21 in bmqlRecords_21 {
+    rPrice_21 = getfloat(rRow_21, "price");
+    if (rPrice_21 > 0.0) {
+        bmqlSum_21 = bmqlSum_21 + rPrice_21;
+    }
+}
+
+categories_21 = String[];
+append(categories_21, "HW");
+append(categories_21, "SW");
+append(categories_21, "SVC");
+
+tiers_21 = Integer[];
+append(tiers_21, 1);
+append(tiers_21, 2);
+
+matchCount_21 = 0;
+for cItem_21 in categories_21 {
+    for tItem_21 in tiers_21 {
+        keyCombo_21 = cItem_21 + "_" + string(tItem_21);
+        if (len(keyCombo_21) > 3) {
+            matchCount_21 = matchCount_21 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 22: ADVANCED LOGIC (DICT TYPE: dict("string[]"))
+// ==================================================================================
+mId_22 = 22;
+mCode_22 = "REF_MOD_" + string(22);
+mRate_22 = 346.50;
+
+modDict_22 = dict("string[]");
+put(modDict_22, "k1", sampleStrArr);
+
+mEval_22 = "DEFAULT";
+if (mId_22 > 40 AND mRate_22 > 600.0) {
+    mEval_22 = "PLATINUM";
+} elif (mId_22 > 20 OR mRate_22 > 300.0) {
+    mEval_22 = "GOLD";
+} else {
+    mEval_22 = "SILVER";
+}
+
+bmqlRecords_22 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_22");
+bmqlSum_22 = 0.0;
+for rRow_22 in bmqlRecords_22 {
+    rPrice_22 = getfloat(rRow_22, "price");
+    if (rPrice_22 > 0.0) {
+        bmqlSum_22 = bmqlSum_22 + rPrice_22;
+    }
+}
+
+categories_22 = String[];
+append(categories_22, "HW");
+append(categories_22, "SW");
+append(categories_22, "SVC");
+
+tiers_22 = Integer[];
+append(tiers_22, 1);
+append(tiers_22, 2);
+
+matchCount_22 = 0;
+for cItem_22 in categories_22 {
+    for tItem_22 in tiers_22 {
+        keyCombo_22 = cItem_22 + "_" + string(tItem_22);
+        if (len(keyCombo_22) > 3) {
+            matchCount_22 = matchCount_22 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 23: ADVANCED LOGIC (DICT TYPE: dict("integer[]"))
+// ==================================================================================
+mId_23 = 23;
+mCode_23 = "REF_MOD_" + string(23);
+mRate_23 = 362.25;
+
+modDict_23 = dict("integer[]");
+put(modDict_23, "k1", sampleIntArr);
+
+mEval_23 = "DEFAULT";
+if (mId_23 > 40 AND mRate_23 > 600.0) {
+    mEval_23 = "PLATINUM";
+} elif (mId_23 > 20 OR mRate_23 > 300.0) {
+    mEval_23 = "GOLD";
+} else {
+    mEval_23 = "SILVER";
+}
+
+bmqlRecords_23 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_23");
+bmqlSum_23 = 0.0;
+for rRow_23 in bmqlRecords_23 {
+    rPrice_23 = getfloat(rRow_23, "price");
+    if (rPrice_23 > 0.0) {
+        bmqlSum_23 = bmqlSum_23 + rPrice_23;
+    }
+}
+
+categories_23 = String[];
+append(categories_23, "HW");
+append(categories_23, "SW");
+append(categories_23, "SVC");
+
+tiers_23 = Integer[];
+append(tiers_23, 1);
+append(tiers_23, 2);
+
+matchCount_23 = 0;
+for cItem_23 in categories_23 {
+    for tItem_23 in tiers_23 {
+        keyCombo_23 = cItem_23 + "_" + string(tItem_23);
+        if (len(keyCombo_23) > 3) {
+            matchCount_23 = matchCount_23 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 24: ADVANCED LOGIC (DICT TYPE: dict("float[]"))
+// ==================================================================================
+mId_24 = 24;
+mCode_24 = "REF_MOD_" + string(24);
+mRate_24 = 378.00;
+
+modDict_24 = dict("float[]");
+put(modDict_24, "k1", sampleFloatArr);
+
+mEval_24 = "DEFAULT";
+if (mId_24 > 40 AND mRate_24 > 600.0) {
+    mEval_24 = "PLATINUM";
+} elif (mId_24 > 20 OR mRate_24 > 300.0) {
+    mEval_24 = "GOLD";
+} else {
+    mEval_24 = "SILVER";
+}
+
+bmqlRecords_24 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_24");
+bmqlSum_24 = 0.0;
+for rRow_24 in bmqlRecords_24 {
+    rPrice_24 = getfloat(rRow_24, "price");
+    if (rPrice_24 > 0.0) {
+        bmqlSum_24 = bmqlSum_24 + rPrice_24;
+    }
+}
+
+categories_24 = String[];
+append(categories_24, "HW");
+append(categories_24, "SW");
+append(categories_24, "SVC");
+
+tiers_24 = Integer[];
+append(tiers_24, 1);
+append(tiers_24, 2);
+
+matchCount_24 = 0;
+for cItem_24 in categories_24 {
+    for tItem_24 in tiers_24 {
+        keyCombo_24 = cItem_24 + "_" + string(tItem_24);
+        if (len(keyCombo_24) > 3) {
+            matchCount_24 = matchCount_24 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 25: ADVANCED LOGIC (DICT TYPE: dict("boolean[]"))
+// ==================================================================================
+mId_25 = 25;
+mCode_25 = "REF_MOD_" + string(25);
+mRate_25 = 393.75;
+
+modDict_25 = dict("boolean[]");
+put(modDict_25, "k1", arrBoolean1D);
+
+mEval_25 = "DEFAULT";
+if (mId_25 > 40 AND mRate_25 > 600.0) {
+    mEval_25 = "PLATINUM";
+} elif (mId_25 > 20 OR mRate_25 > 300.0) {
+    mEval_25 = "GOLD";
+} else {
+    mEval_25 = "SILVER";
+}
+
+bmqlRecords_25 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_25");
+bmqlSum_25 = 0.0;
+for rRow_25 in bmqlRecords_25 {
+    rPrice_25 = getfloat(rRow_25, "price");
+    if (rPrice_25 > 0.0) {
+        bmqlSum_25 = bmqlSum_25 + rPrice_25;
+    }
+}
+
+categories_25 = String[];
+append(categories_25, "HW");
+append(categories_25, "SW");
+append(categories_25, "SVC");
+
+tiers_25 = Integer[];
+append(tiers_25, 1);
+append(tiers_25, 2);
+
+matchCount_25 = 0;
+for cItem_25 in categories_25 {
+    for tItem_25 in tiers_25 {
+        keyCombo_25 = cItem_25 + "_" + string(tItem_25);
+        if (len(keyCombo_25) > 3) {
+            matchCount_25 = matchCount_25 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 26: ADVANCED LOGIC (DICT TYPE: dict("date[]"))
+// ==================================================================================
+mId_26 = 26;
+mCode_26 = "REF_MOD_" + string(26);
+mRate_26 = 409.50;
+
+modDict_26 = dict("date[]");
+put(modDict_26, "k1", arrDate1D);
+
+mEval_26 = "DEFAULT";
+if (mId_26 > 40 AND mRate_26 > 600.0) {
+    mEval_26 = "PLATINUM";
+} elif (mId_26 > 20 OR mRate_26 > 300.0) {
+    mEval_26 = "GOLD";
+} else {
+    mEval_26 = "SILVER";
+}
+
+bmqlRecords_26 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_26");
+bmqlSum_26 = 0.0;
+for rRow_26 in bmqlRecords_26 {
+    rPrice_26 = getfloat(rRow_26, "price");
+    if (rPrice_26 > 0.0) {
+        bmqlSum_26 = bmqlSum_26 + rPrice_26;
+    }
+}
+
+categories_26 = String[];
+append(categories_26, "HW");
+append(categories_26, "SW");
+append(categories_26, "SVC");
+
+tiers_26 = Integer[];
+append(tiers_26, 1);
+append(tiers_26, 2);
+
+matchCount_26 = 0;
+for cItem_26 in categories_26 {
+    for tItem_26 in tiers_26 {
+        keyCombo_26 = cItem_26 + "_" + string(tItem_26);
+        if (len(keyCombo_26) > 3) {
+            matchCount_26 = matchCount_26 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 27: ADVANCED LOGIC (DICT TYPE: dict("string"))
+// ==================================================================================
+mId_27 = 27;
+mCode_27 = "REF_MOD_" + string(27);
+mRate_27 = 425.25;
+
+modDict_27 = dict("string");
+put(modDict_27, "k1", "v1");
+
+mEval_27 = "DEFAULT";
+if (mId_27 > 40 AND mRate_27 > 600.0) {
+    mEval_27 = "PLATINUM";
+} elif (mId_27 > 20 OR mRate_27 > 300.0) {
+    mEval_27 = "GOLD";
+} else {
+    mEval_27 = "SILVER";
+}
+
+bmqlRecords_27 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_27");
+bmqlSum_27 = 0.0;
+for rRow_27 in bmqlRecords_27 {
+    rPrice_27 = getfloat(rRow_27, "price");
+    if (rPrice_27 > 0.0) {
+        bmqlSum_27 = bmqlSum_27 + rPrice_27;
+    }
+}
+
+categories_27 = String[];
+append(categories_27, "HW");
+append(categories_27, "SW");
+append(categories_27, "SVC");
+
+tiers_27 = Integer[];
+append(tiers_27, 1);
+append(tiers_27, 2);
+
+matchCount_27 = 0;
+for cItem_27 in categories_27 {
+    for tItem_27 in tiers_27 {
+        keyCombo_27 = cItem_27 + "_" + string(tItem_27);
+        if (len(keyCombo_27) > 3) {
+            matchCount_27 = matchCount_27 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 28: ADVANCED LOGIC (DICT TYPE: dict("integer"))
+// ==================================================================================
+mId_28 = 28;
+mCode_28 = "REF_MOD_" + string(28);
+mRate_28 = 441.00;
+
+modDict_28 = dict("integer");
+put(modDict_28, "k1", 280);
+
+mEval_28 = "DEFAULT";
+if (mId_28 > 40 AND mRate_28 > 600.0) {
+    mEval_28 = "PLATINUM";
+} elif (mId_28 > 20 OR mRate_28 > 300.0) {
+    mEval_28 = "GOLD";
+} else {
+    mEval_28 = "SILVER";
+}
+scope0 = "13";
+bmqlRecords_28 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_28");
+bmqlSum_28 = 0.0;
+for rRow_28 in bmqlRecords_28 {
+    rPrice_28 = getfloat(rRow_28, "price");
+    scope1 = rPrice_28;
+    if (rPrice_28 > 0.0) {
+        bmqlSum_28 = bmqlSum_28 + rPrice_28;
+        scope2 = scope1;
+        scope3 = scope2;
+    }
+    scope5 = scope0;
+    scope0 = scope1;
+}
+
+scope6 = scope0;
+scope233 = 100;
+
+testcase11 = 10 + atoi("10");
+testcase12 = 10.0 + atof("15.3");
+
+if ((atoi("test") == 1)) {
+    print 1;
+}
+
+
+if ((atoi("test") == 1)) {
+    print 1;
+}
+
+if (10 == 10.1) {
+    print 1;
+}
+
+categories_28 = String[];
+append(categories_28, "HW");
+append(categories_28, "SW");
+append(categories_28, "SVC");
+test2 = categories_28;
+
+tiers_28 = Integer[];
+append(tiers_28, 1);
+append(tiers_28, 2);
+
+matchCount_28 = 0;
+for cItem_28 in categories_28 {
+    for tItem_28 in tiers_28 {
+        keyCombo_28 = cItem_28 + "_" + string(tItem_28);
+        if (len(keyCombo_28) > 3) {
+            matchCount_28 = matchCount_28 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 29: ADVANCED LOGIC (DICT TYPE: dict("float"))
+// ==================================================================================
+CONST_29 = 29;
+mId_29 = CONST_29;
+mCode_29 = "REF_MOD_" + string(29);
+mRate_29 = 456.75;
+
+modDict_29 = dict("float");
+put(modDict_29, "k1", 43.50);
+
+mEval_29 = "DEFAULT";
+if (mId_29 > 40 AND mRate_29 > 600.0) {
+    mEval_29 = "PLATINUM";
+} elif (mId_29 > 20 OR mRate_29 > 300.0) {
+    mEval_29 = "GOLD";
+} else {
+    mEval_29 = "SILVER";
+}
+
+bmqlRecords_29 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_29");
+bmqlSum_29 = 0.0;
+for rRow_29 in bmqlRecords_29 {
+    rPrice_29 = getfloat(rRow_29, "price");
+    if (abs(rPrice_29) > 0.000001) {
+        bmqlSum_29 = bmqlSum_29 + rPrice_29;
+    }
+}
+
+categories_29 = String[];
+append(categories_29, "HW");
+append(categories_29, "SW");
+append(categories_29, "SVC");
+
+tiers_29 = Integer[];
+append(tiers_29, 1);
+append(tiers_29, 2);
+
+matchCount_29 = 0;
+for cItem_29 in categories_29 {
+    for tItem_29 in tiers_29 {
+        keyCombo_29 = cItem_29 + "_" + string(tItem_29);
+        if (len(keyCombo_29) > 3) {
+            matchCount_29 = matchCount_29 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 30: ADVANCED LOGIC (DICT TYPE: dict("boolean"))
+// ==================================================================================
+mId_30 = 30;
+mCode_30 = "REF_MOD_" + string(30);
+mRate_30 = 472.50;
+
+modDict_30 = dict("boolean");
+put(modDict_30, "k1", true);
+
+mEval_30 = "DEFAULT";
+if (mId_30 > 40 AND mRate_30 > 600.0) {
+    mEval_30 = "PLATINUM";
+} elif (mId_30 > 20 OR mRate_30 > 300.0) {
+    mEval_30 = "GOLD";
+} else {
+    mEval_30 = "SILVER";
+}
+
+bmqlRecords_30 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_30");
+bmqlSum_30 = 0.0;
+for rRow_30 in bmqlRecords_30 {
+    rPrice_30 = getfloat(rRow_30, "price");
+    if (rPrice_30 > 0.0) {
+        bmqlSum_30 = bmqlSum_30 + rPrice_30;
+    }
+}
+
+categories_30 = String[];
+append(categories_30, "HW");
+append(categories_30, "SW");
+append(categories_30, "SVC");
+
+tiers_30 = Integer[];
+append(tiers_30, 1);
+append(tiers_30, 2);
+
+matchCount_30 = 0;
+for cItem_30 in categories_30 {
+    for tItem_30 in tiers_30 {
+        keyCombo_30 = cItem_30 + "_" + string(tItem_30);
+        if (len(keyCombo_30) > 3) {
+            matchCount_30 = matchCount_30 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 31: ADVANCED LOGIC (DICT TYPE: dict("date"))
+// ==================================================================================
+mId_31 = 31;
+mCode_31 = atoi("REF_MOD_") + 31;
+mRate_31 = 488.25;
+
+modDict_31 = dict("date");
+put(modDict_31, "k1", sampleDate);
+
+mEval_31 = "DEFAULT";
+if (mId_31 > 40 AND mRate_31 > 600.0) {
+    mEval_31 = "PLATINUM";
+} elif (mId_31 > 20 OR mRate_31 > 300.0) {
+    mEval_31 = "GOLD";
+} else {
+    mEval_31 = "SILVER";
+}
+
+bmqlRecords_31 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_31");
+bmqlSum_31 = 0.0;
+for rRow_31 in bmqlRecords_31 {
+    rPrice_31 = getfloat(rRow_31, "price");
+    if (rPrice_31 > 0.0) {
+        bmqlSum_31 = bmqlSum_31 + rPrice_31;
+    }
+}
+
+categories_31 = String[];
+append(categories_31, "HW");
+append(categories_31, "SW");
+append(categories_31, "SVC");
+
+tiers_31 = Integer[];
+append(tiers_31, 1);
+append(tiers_31, 2);
+
+matchCount_31 = 0;
+for cItem_31 in categories_31 {
+    for tItem_31 in tiers_31 {
+        keyCombo_31 = cItem_31 + "_" + string(tItem_31);
+        if (len(keyCombo_31) > 3) {
+            matchCount_31 = matchCount_31 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 32: ADVANCED LOGIC (DICT TYPE: dict("anytype"))
+// ==================================================================================
+mId_32 = 32;
+mCode_32 = "REF_MOD_" + string(32);
+mRate_32 = 504.00;
+
+modDict_32 = dict("anytype");
+put(modDict_32, "k1", "any_val");
+
+mEval_32 = "DEFAULT";
+if (mId_32 > 40 AND mRate_32 > 600.0) {
+    mEval_32 = "PLATINUM";
+} elif (mId_32 > 20 OR mRate_32 > 300.0) {
+    mEval_32 = "GOLD";
+} else {
+    mEval_32 = "SILVER";
+}
+
+bmqlRecords_32 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_32");
+bmqlSum_32 = 0.0;
+for rRow_32 in bmqlRecords_32 {
+    rPrice_32 = getfloat(rRow_32, "price");
+    if (rPrice_32 > 0.0) {
+        bmqlSum_32 = bmqlSum_32 + rPrice_32;
+    }
+}
+
+categories_32 = String[];
+append(categories_32, "HW");
+append(categories_32, "SW");
+append(categories_32, "SVC");
+
+tiers_32 = Integer[];
+append(tiers_32, 1);
+append(tiers_32, 2);
+
+matchCount_32 = 0;
+for cItem_32 in categories_32 {
+    for tItem_32 in tiers_32 {
+        keyCombo_32 = cItem_32 + "_" + string(tItem_32);
+        if (len(keyCombo_32) > 3) {
+            matchCount_32 = matchCount_32 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 33: ADVANCED LOGIC (DICT TYPE: dict("dict<string>"))
+// ==================================================================================
+mId_33 = 33;
+mCode_33 = "REF_MOD_" + string(33);
+mRate_33 = 519.75;
+
+modDict_33 = dict("dict<string>");
+put(modDict_33, "k1", dictString);
+
+mEval_33 = "DEFAULT";
+if (mId_33 > 40 AND mRate_33 > 600.0) {
+    mEval_33 = "PLATINUM";
+} elif (mId_33 > 20 OR mRate_33 > 300.0) {
+    mEval_33 = "GOLD";
+} else {
+    mEval_33 = "SILVER";
+}
+
+bmqlRecords_33 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_33");
+bmqlSum_33 = 0.0;
+for rRow_33 in bmqlRecords_33 {
+    rPrice_33 = getfloat(rRow_33, "price");
+    if (rPrice_33 > 0.0) {
+        bmqlSum_33 = bmqlSum_33 + rPrice_33;
+    }
+}
+
+categories_33 = String[];
+append(categories_33, "HW");
+append(categories_33, "SW");
+append(categories_33, "SVC");
+
+tiers_33 = Integer[];
+append(tiers_33, 1);
+append(tiers_33, 2);
+
+matchCount_33 = 0;
+for cItem_33 in categories_33 {
+    for tItem_33 in tiers_33 {
+        keyCombo_33 = cItem_33 + "_" + string(tItem_33);
+        if (len(keyCombo_33) > 3) {
+            matchCount_33 = matchCount_33 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 34: ADVANCED LOGIC (DICT TYPE: dict("json"))
+// ==================================================================================
+mId_34 = 34;
+mCode_34 = "REF_MOD_" + string(34);
+mRate_34 = 535.50;
+
+modDict_34 = dict("json");
+put(modDict_34, "k1", sampleJson);
+
+mEval_34 = "DEFAULT";
+if (mId_34 > 40 AND mRate_34 > 600.0) {
+    mEval_34 = "PLATINUM";
+} elif (mId_34 > 20 OR mRate_34 > 300.0) {
+    mEval_34 = "GOLD";
+} else {
+    mEval_34 = "SILVER";
+}
+
+bmqlRecords_34 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_34");
+bmqlSum_34 = 0.0;
+for rRow_34 in bmqlRecords_34 {
+    rPrice_34 = getfloat(rRow_34, "price");
+    if (rPrice_34 > 0.0) {
+        bmqlSum_34 = bmqlSum_34 + rPrice_34;
+    }
+}
+
+categories_34 = String[];
+append(categories_34, "HW");
+append(categories_34, "SW");
+append(categories_34, "SVC");
+
+tiers_34 = Integer[];
+append(tiers_34, 1);
+append(tiers_34, 2);
+
+matchCount_34 = 0;
+for cItem_34 in categories_34 {
+    for tItem_34 in tiers_34 {
+        keyCombo_34 = cItem_34 + "_" + string(tItem_34);
+        if (len(keyCombo_34) > 3) {
+            matchCount_34 = matchCount_34 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 35: ADVANCED LOGIC (DICT TYPE: dict("string[]"))
+// ==================================================================================
+mId_35 = 35;
+mCode_35 = "REF_MOD_" + string(35);
+mRate_35 = 551.25;
+
+modDict_35 = dict("string[]");
+put(modDict_35, "k1", sampleStrArr);
+
+mEval_35 = "DEFAULT";
+if (mId_35 > 40 AND mRate_35 > 600.0) {
+    mEval_35 = "PLATINUM";
+} elif (mId_35 > 20 OR mRate_35 > 300.0) {
+    mEval_35 = "GOLD";
+} else {
+    mEval_35 = "SILVER";
+}
+
+bmqlRecords_35 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_35");
+bmqlSum_35 = 0.0;
+for rRow_35 in bmqlRecords_35 {
+    rPrice_35 = getfloat(rRow_35, "price");
+    if (rPrice_35 > 0.0) {
+        bmqlSum_35 = bmqlSum_35 + rPrice_35;
+    }
+}
+
+categories_35 = String[];
+append(categories_35, "HW");
+append(categories_35, "SW");
+append(categories_35, "SVC");
+
+tiers_35 = Integer[];
+append(tiers_35, 1);
+append(tiers_35, 2);
+
+matchCount_35 = 0;
+for cItem_35 in categories_35 {
+    for tItem_35 in tiers_35 {
+        keyCombo_35 = cItem_35 + "_" + string(tItem_35);
+        if (len(keyCombo_35) > 3) {
+            matchCount_35 = matchCount_35 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 36: ADVANCED LOGIC (DICT TYPE: dict("integer[]"))
+// ==================================================================================
+mId_36 = 36;
+mCode_36 = "REF_MOD_" + string(36);
+mRate_36 = 567.00;
+
+modDict_36 = dict("integer[]");
+put(modDict_36, "k1", sampleIntArr);
+
+mEval_36 = "DEFAULT";
+if (mId_36 > 40 AND mRate_36 > 600.0) {
+    mEval_36 = "PLATINUM";
+} elif (mId_36 > 20 OR mRate_36 > 300.0) {
+    mEval_36 = "GOLD";
+} else {
+    mEval_36 = "SILVER";
+}
+
+bmqlRecords_36 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_36");
+bmqlSum_36 = 0.0;
+for rRow_36 in bmqlRecords_36 {
+    rPrice_36 = getfloat(rRow_36, "price");
+    if (rPrice_36 > 0.0) {
+        bmqlSum_36 = bmqlSum_36 + rPrice_36;
+    }
+}
+
+categories_36 = String[];
+append(categories_36, "HW");
+append(categories_36, "SW");
+append(categories_36, "SVC");
+
+tiers_36 = Integer[];
+append(tiers_36, 1);
+append(tiers_36, 2);
+
+matchCount_36 = 0;
+for cItem_36 in categories_36 {
+    for tItem_36 in tiers_36 {
+        keyCombo_36 = cItem_36 + "_" + string(tItem_36);
+        if (len(keyCombo_36) > 3) {
+            matchCount_36 = matchCount_36 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 37: ADVANCED LOGIC (DICT TYPE: dict("float[]"))
+// ==================================================================================
+mId_37 = 37;
+mCode_37 = "REF_MOD_" + string(37);
+mRate_37 = 582.75;
+
+modDict_37 = dict("float[]");
+put(modDict_37, "k1", sampleFloatArr);
+
+mEval_37 = "DEFAULT";
+if (mId_37 > 40 AND mRate_37 > 600.0) {
+    mEval_37 = "PLATINUM";
+} elif (mId_37 > 20 OR mRate_37 > 300.0) {
+    mEval_37 = "GOLD";
+} else {
+    mEval_37 = "SILVER";
+}
+
+bmqlRecords_37 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_37");
+bmqlSum_37 = 0.0;
+for rRow_37 in bmqlRecords_37 {
+    rPrice_37 = getfloat(rRow_37, "price");
+    if (rPrice_37 > 0.0) {
+        bmqlSum_37 = bmqlSum_37 + rPrice_37;
+    }
+}
+
+categories_37 = String[];
+append(categories_37, "HW");
+append(categories_37, "SW");
+append(categories_37, "SVC");
+
+tiers_37 = Integer[];
+append(tiers_37, 1);
+append(tiers_37, 2);
+
+matchCount_37 = 0;
+for cItem_37 in categories_37 {
+    for tItem_37 in tiers_37 {
+        keyCombo_37 = cItem_37 + "_" + string(tItem_37);
+        if (len(keyCombo_37) > 3) {
+            matchCount_37 = matchCount_37 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 38: ADVANCED LOGIC (DICT TYPE: dict("boolean[]"))
+// ==================================================================================
+mId_38 = 38;
+mCode_38 = "REF_MOD_" + string(38);
+mRate_38 = 598.50;
+
+modDict_38 = dict("boolean[]");
+put(modDict_38, "k1", arrBoolean1D);
+
+mEval_38 = "DEFAULT";
+if (mId_38 > 40 AND mRate_38 > 600.0) {
+    mEval_38 = "PLATINUM";
+} elif (mId_38 > 20 OR mRate_38 > 300.0) {
+    mEval_38 = "GOLD";
+} else {
+    mEval_38 = "SILVER";
+}
+
+bmqlRecords_38 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_38");
+bmqlSum_38 = 0.0;
+for rRow_38 in bmqlRecords_38 {
+    rPrice_38 = getfloat(rRow_38, "price");
+    if (rPrice_38 > 0.0) {
+        bmqlSum_38 = bmqlSum_38 + rPrice_38;
+    }
+}
+
+categories_38 = String[];
+append(categories_38, "HW");
+append(categories_38, "SW");
+append(categories_38, "SVC");
+
+tiers_38 = Integer[];
+append(tiers_38, 1);
+append(tiers_38, 2);
+
+matchCount_38 = 0;
+for cItem_38 in categories_38 {
+    for tItem_38 in tiers_38 {
+        keyCombo_38 = cItem_38 + "_" + string(tItem_38);
+        if (len(keyCombo_38) > 3) {
+            matchCount_38 = matchCount_38 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 39: ADVANCED LOGIC (DICT TYPE: dict("date[]"))
+// ==================================================================================
+mId_39 = 39;
+mCode_39 = "REF_MOD_" + string(39);
+mRate_39 = 614.25;
+
+modDict_39 = dict("date[]");
+put(modDict_39, "k1", arrDate1D);
+
+mEval_39 = "DEFAULT";
+if (mId_39 > 40 AND mRate_39 > 600.0) {
+    mEval_39 = "PLATINUM";
+} elif (mId_39 > 20 OR mRate_39 > 300.0) {
+    mEval_39 = "GOLD";
+} else {
+    mEval_39 = "SILVER";
+}
+
+bmqlRecords_39 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_39");
+bmqlSum_39 = 0.0;
+for rRow_39 in bmqlRecords_39 {
+    rPrice_39 = getfloat(rRow_39, "price");
+    if (rPrice_39 > 0.0) {
+        bmqlSum_39 = bmqlSum_39 + rPrice_39;
+    }
+}
+
+categories_39 = String[];
+append(categories_39, "HW");
+append(categories_39, "SW");
+append(categories_39, "SVC");
+
+tiers_39 = Integer[];
+append(tiers_39, 1);
+append(tiers_39, 2);
+
+matchCount_39 = 0;
+for cItem_39 in categories_39 {
+    for tItem_39 in tiers_39 {
+        keyCombo_39 = cItem_39 + "_" + string(tItem_39);
+        if (len(keyCombo_39) > 3) {
+            matchCount_39 = matchCount_39 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 40: ADVANCED LOGIC (DICT TYPE: dict("string"))
+// ==================================================================================
+mId_40 = 40;
+mCode_40 = "REF_MOD_" + string(40);
+mRate_40 = 630.00;
+
+modDict_40 = dict("string");
+put(modDict_40, "k1", "v1");
+
+mEval_40 = "DEFAULT";
+if (mId_40 > 40 AND mRate_40 > 600.0) {
+    mEval_40 = "PLATINUM";
+} elif (mId_40 > 20 OR mRate_40 > 300.0) {
+    mEval_40 = "GOLD";
+} else {
+    mEval_40 = "SILVER";
+}
+
+bmqlRecords_40 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_40");
+bmqlSum_40 = 0.0;
+for rRow_40 in bmqlRecords_40 {
+    rPrice_40 = getfloat(rRow_40, "price");
+    if (rPrice_40 > 0.0) {
+        bmqlSum_40 = bmqlSum_40 + rPrice_40;
+    }
+}
+
+categories_40 = String[];
+append(categories_40, "HW");
+append(categories_40, "SW");
+append(categories_40, "SVC");
+
+tiers_40 = Integer[];
+append(tiers_40, 1);
+append(tiers_40, 2);
+
+matchCount_40 = 0;
+for cItem_40 in categories_40 {
+    for tItem_40 in tiers_40 {
+        keyCombo_40 = cItem_40 + "_" + string(tItem_40);
+        if (len(keyCombo_40) > 3) {
+            matchCount_40 = matchCount_40 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 41: ADVANCED LOGIC (DICT TYPE: dict("integer"))
+// ==================================================================================
+mId_41 = 41;
+mCode_41 = "REF_MOD_" + string(41);
+mRate_41 = 645.75;
+
+modDict_41 = dict("integer");
+put(modDict_41, "k1", 410);
+
+mEval_41 = "DEFAULT";
+if (mId_41 > 40 AND mRate_41 > 600.0) {
+    mEval_41 = "PLATINUM";
+} elif (mId_41 > 20 OR mRate_41 > 300.0) {
+    mEval_41 = "GOLD";
+} else {
+    mEval_41 = "SILVER";
+}
+
+bmqlRecords_41 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_41");
+bmqlSum_41 = 0.0;
+for rRow_41 in bmqlRecords_41 {
+    rPrice_41 = getfloat(rRow_41, "price");
+    if (rPrice_41 > 0.0) {
+        bmqlSum_41 = bmqlSum_41 + rPrice_41;
+    }
+}
+
+categories_41 = String[];
+append(categories_41, "HW");
+append(categories_41, "SW");
+append(categories_41, "SVC");
+
+tiers_41 = Integer[];
+append(tiers_41, 1);
+append(tiers_41, 2);
+
+matchCount_41 = 0;
+for cItem_41 in categories_41 {
+    for tItem_41 in tiers_41 {
+        keyCombo_41 = cItem_41 + "_" + string(tItem_41);
+        if (len(keyCombo_41) > 3) {
+            matchCount_41 = matchCount_41 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 42: ADVANCED LOGIC (DICT TYPE: dict("float"))
+// ==================================================================================
+mId_42 = 42;
+mCode_42 = "REF_MOD_" + string(42);
+mRate_42 = 661.50;
+
+modDict_42 = dict("float");
+put(modDict_42, "k1", 63.00);
+
+mEval_42 = "DEFAULT";
+if (mId_42 > 40 AND mRate_42 > 600.0) {
+    mEval_42 = "PLATINUM";
+} elif (mId_42 > 20 OR mRate_42 > 300.0) {
+    mEval_42 = "GOLD";
+} else {
+    mEval_42 = "SILVER";
+}
+
+bmqlRecords_42 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_42");
+bmqlSum_42 = 0.0;
+for rRow_42 in bmqlRecords_42 {
+    rPrice_42 = getfloat(rRow_42, "price");
+    if (rPrice_42 > 0.0) {
+        bmqlSum_42 = bmqlSum_42 + rPrice_42;
+    }
+}
+
+categories_42 = String[];
+append(categories_42, "HW");
+append(categories_42, "SW");
+append(categories_42, "SVC");
+
+tiers_42 = Integer[];
+append(tiers_42, 1);
+append(tiers_42, 2);
+
+matchCount_42 = 0;
+for cItem_42 in categories_42 {
+    for tItem_42 in tiers_42 {
+        keyCombo_42 = cItem_42 + "_" + string(tItem_42);
+        if (len(keyCombo_42) > 3) {
+            matchCount_42 = matchCount_42 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 43: ADVANCED LOGIC (DICT TYPE: dict("boolean"))
+// ==================================================================================
+mId_43 = 43;
+mCode_43 = "REF_MOD_" + string(43);
+mRate_43 = 677.25;
+
+modDict_43 = dict("boolean");
+put(modDict_43, "k1", true);
+
+mEval_43 = "DEFAULT";
+if (mId_43 > 40 AND mRate_43 > 600.0) {
+    mEval_43 = "PLATINUM";
+} elif (mId_43 > 20 OR mRate_43 > 300.0) {
+    mEval_43 = "GOLD";
+} else {
+    mEval_43 = "SILVER";
+}
+
+bmqlRecords_43 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_43");
+bmqlSum_43 = 0.0;
+for rRow_43 in bmqlRecords_43 {
+    rPrice_43 = getfloat(rRow_43, "price");
+    if (rPrice_43 > 0.0) {
+        bmqlSum_43 = bmqlSum_43 + rPrice_43;
+    }
+}
+
+categories_43 = String[];
+append(categories_43, "HW");
+append(categories_43, "SW");
+append(categories_43, "SVC");
+
+tiers_43 = Integer[];
+append(tiers_43, 1);
+append(tiers_43, 2);
+
+matchCount_43 = 0;
+for cItem_43 in categories_43 {
+    for tItem_43 in tiers_43 {
+        keyCombo_43 = cItem_43 + "_" + string(tItem_43);
+        if (len(keyCombo_43) > 3) {
+            matchCount_43 = matchCount_43 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 44: ADVANCED LOGIC (DICT TYPE: dict("date"))
+// ==================================================================================
+mId_44 = 44;
+mCode_44 = "REF_MOD_" + string(44);
+mRate_44 = 693.00;
+
+modDict_44 = dict("date");
+put(modDict_44, "k1", sampleDate);
+
+mEval_44 = "DEFAULT";
+if (mId_44 > 40 AND mRate_44 > 600.0) {
+    mEval_44 = "PLATINUM";
+} elif (mId_44 > 20 OR mRate_44 > 300.0) {
+    mEval_44 = "GOLD";
+} else {
+    mEval_44 = "SILVER";
+}
+
+bmqlRecords_44 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_44");
+bmqlSum_44 = 0.0;
+for rRow_44 in bmqlRecords_44 {
+    rPrice_44 = getfloat(rRow_44, "price");
+    if (rPrice_44 > 0.0) {
+        bmqlSum_44 = bmqlSum_44 + rPrice_44;
+    }
+}
+
+categories_44 = String[];
+append(categories_44, "HW");
+append(categories_44, "SW");
+append(categories_44, "SVC");
+
+tiers_44 = Integer[];
+append(tiers_44, 1);
+append(tiers_44, 2);
+
+matchCount_44 = 0;
+for cItem_44 in categories_44 {
+    for tItem_44 in tiers_44 {
+        keyCombo_44 = cItem_44 + "_" + string(tItem_44);
+        if (len(keyCombo_44) > 3) {
+            matchCount_44 = matchCount_44 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 45: ADVANCED LOGIC (DICT TYPE: dict("anytype"))
+// ==================================================================================
+mId_45 = 45;
+mCode_45 = "REF_MOD_" + string(45);
+mRate_45 = 708.75;
+
+modDict_45 = dict("anytype");
+put(modDict_45, "k1", "any_val");
+
+mEval_45 = "DEFAULT";
+if (mId_45 > 40 AND mRate_45 > 600.0) {
+    mEval_45 = "PLATINUM";
+} elif (mId_45 > 20 OR mRate_45 > 300.0) {
+    mEval_45 = "GOLD";
+} else {
+    mEval_45 = "SILVER";
+}
+
+bmqlRecords_45 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_45");
+bmqlSum_45 = 0.0;
+for rRow_45 in bmqlRecords_45 {
+    rPrice_45 = getfloat(rRow_45, "price");
+    if (rPrice_45 > 0.0) {
+        bmqlSum_45 = bmqlSum_45 + rPrice_45;
+    }
+}
+
+categories_45 = String[];
+append(categories_45, "HW");
+append(categories_45, "SW");
+append(categories_45, "SVC");
+
+tiers_45 = Integer[];
+append(tiers_45, 1);
+append(tiers_45, 2);
+
+matchCount_45 = 0;
+for cItem_45 in categories_45 {
+    for tItem_45 in tiers_45 {
+        keyCombo_45 = cItem_45 + "_" + string(tItem_45);
+        if (len(keyCombo_45) > 3) {
+            matchCount_45 = matchCount_45 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 46: ADVANCED LOGIC (DICT TYPE: dict("dict<string>"))
+// ==================================================================================
+mId_46 = 46;
+mCode_46 = "REF_MOD_" + string(46);
+mRate_46 = 724.50;
+
+modDict_46 = dict("dict<string>");
+put(modDict_46, "k1", dictString);
+
+mEval_46 = "DEFAULT";
+if (mId_46 > 40 AND mRate_46 > 600.0) {
+    mEval_46 = "PLATINUM";
+} elif (mId_46 > 20 OR mRate_46 > 300.0) {
+    mEval_46 = "GOLD";
+} else {
+    mEval_46 = "SILVER";
+}
+
+bmqlRecords_46 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_46");
+bmqlSum_46 = 0.0;
+for rRow_46 in bmqlRecords_46 {
+    rPrice_46 = getfloat(rRow_46, "price");
+    if (rPrice_46 > 0.0) {
+        bmqlSum_46 = bmqlSum_46 + rPrice_46;
+    }
+}
+
+categories_46 = String[];
+append(categories_46, "HW");
+append(categories_46, "SW");
+append(categories_46, "SVC");
+
+tiers_46 = Integer[];
+append(tiers_46, 1);
+append(tiers_46, 2);
+
+matchCount_46 = 0;
+for cItem_46 in categories_46 {
+    for tItem_46 in tiers_46 {
+        keyCombo_46 = cItem_46 + "_" + string(tItem_46);
+        if (len(keyCombo_46) > 3) {
+            matchCount_46 = matchCount_46 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 47: ADVANCED LOGIC (DICT TYPE: dict("json"))
+// ==================================================================================
+mId_47 = 47;
+mCode_47 = "REF_MOD_" + string(47);
+mRate_47 = 740.25;
+
+modDict_47 = dict("json");
+put(modDict_47, "k1", sampleJson);
+
+mEval_47 = "DEFAULT";
+if (mId_47 > 40 AND mRate_47 > 600.0) {
+    mEval_47 = "PLATINUM";
+} elif (mId_47 > 20 OR mRate_47 > 300.0) {
+    mEval_47 = "GOLD";
+} else {
+    mEval_47 = "SILVER";
+}
+
+bmqlRecords_47 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_47");
+bmqlSum_47 = 0.0;
+for rRow_47 in bmqlRecords_47 {
+    rPrice_47 = getfloat(rRow_47, "price");
+    if (rPrice_47 > 0.0) {
+        bmqlSum_47 = bmqlSum_47 + rPrice_47;
+    }
+}
+
+categories_47 = String[];
+append(categories_47, "HW");
+append(categories_47, "SW");
+append(categories_47, "SVC");
+
+tiers_47 = Integer[];
+append(tiers_47, 1);
+append(tiers_47, 2);
+
+matchCount_47 = 0;
+for cItem_47 in categories_47 {
+    for tItem_47 in tiers_47 {
+        keyCombo_47 = cItem_47 + "_" + string(tItem_47);
+        if (len(keyCombo_47) > 3) {
+            matchCount_47 = matchCount_47 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 48: ADVANCED LOGIC (DICT TYPE: dict("string[]"))
+// ==================================================================================
+mId_48 = 48;
+mCode_48 = "REF_MOD_" + string(48);
+mRate_48 = 756.00;
+
+modDict_48 = dict("string[]");
+put(modDict_48, "k1", sampleStrArr);
+
+mEval_48 = "DEFAULT";
+if (mId_48 > 40 AND mRate_48 > 600.0) {
+    mEval_48 = "PLATINUM";
+} elif (mId_48 > 20 OR mRate_48 > 300.0) {
+    mEval_48 = "GOLD";
+} else {
+    mEval_48 = "SILVER";
+}
+
+bmqlRecords_48 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_48");
+bmqlSum_48 = 0.0;
+for rRow_48 in bmqlRecords_48 {
+    rPrice_48 = getfloat(rRow_48, "price");
+    if (rPrice_48 > 0.0) {
+        bmqlSum_48 = bmqlSum_48 + rPrice_48;
+    }
+}
+
+categories_48List = String[];
+append(categories_48List, "HW");
+append(categories_48, "SW");
+append(categories_48, "SVC");
+
+tiers_48 = Integer[];
+append(tiers_48, 1);
+append(tiers_48, 2);
+
+matchCount_48 = 0;
+for cItem_48 in categories_48 {
+    for tItem_48 in tiers_48 {
+        keyCombo_48 = cItem_48 + "_" + string(tItem_48);
+        if (len(keyCombo_48) > 3) {
+            matchCount_48 = matchCount_48 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 49: ADVANCED LOGIC (DICT TYPE: dict("integer[]"))
+// ==================================================================================
+mId_49 = 49;
+mCode_49 = "REF_MOD_" + string(49);
+mRate_49 = 771.75;
+
+modDict_49 = dict("integer[]");
+put(modDict_49, "k1", sampleIntArr);
+
+mEval_49 = "DEFAULT";
+if (mId_49 > 40 AND mRate_49 > 600.0) {
+    mEval_49 = "PLATINUM";
+} elif (mId_49 > 20 OR mRate_49 > 300.0) {
+    mEval_49 = "GOLD";
+} else {
+    mEval_49 = "SILVER";
+}
+
+sample = "this is from a variable";
+
+bmqlRecords_49 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_49");
+bmqlSum_49 = 0.0;
+for rRow_49 in bmqlRecords_49 {
+    rPrice_49 = getfloat(rRow_49, "price");
+    if (rPrice_49 > 0.0) {
+        bmqlSum_49 = bmqlSum_49 + rPrice_49;
+    }
+}
+
+categories_49 = String[];
+append(categories_49, "HW");
+append(categories_49, "SW");
+append(categories_49, "SVC");
+
+tiers_49 = Integer[];
+append(tiers_49, 1);
+append(tiers_49, 2);
+
+matchCount_49 = 0;
+for cItem_49 in categories_49 {
+    for tItem_49 in tiers_49 {
+        keyCombo_49 = cItem_49 + "_" + string(tItem_49);
+        if (len(keyCombo_49) > 3) {
+            matchCount_49 = matchCount_49 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// MODULE 50: ADVANCED LOGIC (DICT TYPE: dict("float[]"))
+// ==================================================================================
+mId_50 = 50;
+mCode_50 = "REF_MOD_" + string(50);
+mRate_50 = 787.50;
+
+modDict_50 = dict("float[]");
+put(modDict_50, "k1", sampleFloatArr);
+
+mEval_50 = "DEFAULT";
+if (mId_50 > 40 AND mRate_50 > 600.0) {
+    mEval_50 = "PLATINUM";
+    mE = mEval_50;
+    test = mE;
+} elif (mId_50 > 20 OR mRate_50 > 300.0) {
+    mEval_50 = "GOLD";
+} else {
+    mEval_50 = "SILVER";
+}
+
+bmqlRecords_50 = bmql("SELECT part_number, price, status_t FROM _parts WHERE status_t = $mCode_50");
+bmqlSum_50 = 0.0;
+for rRow_50 in bmqlRecords_50 {
+    rPrice_50 = getfloat(rRow_50, "price");
+    if (rPrice_50 > 0.0) {
+        bmqlSum_50 = bmqlSum_50 + rPrice_50;
+    }
+}
+
+categories_50 = String[];
+append(categories_50, "HW");
+append(categories_50, "SW");
+append(categories_50, "1");
+
+tiers_50 = Integer[];
+append(tiers_50, 1);
+append(tiers_50, 2);
+
+matchCount_50 = 0;
+for cItem_50 in categories_50 {
+    for tItem_50 in tiers_50 {
+        keyCombo_50 = cItem_50 + "_" + string(tItem_50);
+        if (len(keyCombo_50) > 3) {
+            matchCount_50 = matchCount_50 + 1;
+        }
+    }
+}
+
+// ==================================================================================
+// FINAL CONCLUSION
+// ==================================================================================
+return "Oracle CPQ BML Master Suite Executed 100% All Types & API Coverage";

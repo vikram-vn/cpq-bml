@@ -1,0 +1,194 @@
+// ====================================================================================
+// ORACLE CPQ BML BENCHMARK FIXTURE 2: ADVANCED ENTERPRISE PRICING ENGINE
+// File: test/benchmarks/fixtures/benchmark_2_pricing_engine.bml
+// Description: Enterprise pricing matrix calculations, volume tier evaluations,
+//              contract discount schedules, bundle parent-child allocation, and currency conversions.
+// ====================================================================================
+
+// --- Section 1: Global Context and Pricing Constants ---
+siteCurrency = _user_currency_preference;
+currentDate = _current_date;
+userLogin = _user_login;
+userGroup = _user_group;
+
+DEFAULT_MARGIN_PERCENT = 18.5;
+MAX_DISCOUNT_PERCENT = 45.0;
+APPROVAL_THRESHOLD_AMOUNT = 50000.0;
+HIGH_APPROVAL_THRESHOLD = 150000.0;
+MIN_MARGIN_THRESHOLD = 10.0;
+COST_ESTIMATE_RATIO = 0.65;
+
+// Initialize pricing results structure
+lineItemPricesDict = dict("float");
+lineItemDiscountsDict = dict("float");
+lineItemFinalAmountsDict = dict("float");
+warningMessagesList = string[];
+
+// Sample Transaction Line Items
+lineItemIdsList = string[];
+append(lineItemIdsList, "LINE_101");
+append(lineItemIdsList, "LINE_102");
+append(lineItemIdsList, "LINE_103");
+append(lineItemIdsList, "LINE_104");
+append(lineItemIdsList, "LINE_105");
+
+partNumbersList = string[];
+append(partNumbersList, "HW-SRV-RACK-8U");
+append(partNumbersList, "SW-LIC-ENT-CORE");
+append(partNumbersList, "SVC-MAINT-24X7");
+append(partNumbersList, "HW-MOD-PWR-850W");
+append(partNumbersList, "SW-ADDON-AI-ENG");
+
+quantitiesList = integer[];
+append(quantitiesList, 4);
+append(quantitiesList, 32);
+append(quantitiesList, 1);
+append(quantitiesList, 8);
+append(quantitiesList, 16);
+
+baseListPricesList = float[];
+append(baseListPricesList, 12500.00);
+append(baseListPricesList, 850.00);
+append(baseListPricesList, 4500.00);
+append(baseListPricesList, 320.00);
+append(baseListPricesList, 1200.00);
+
+customerContractTier = "GOLD_PARTNER";
+contractDiscountRate = 0.15;
+
+// --- Section 2: Currency Conversion & Rate Matrix ---
+exchangeRatesDict = dict("float");
+put(exchangeRatesDict, "USD", 1.0);
+put(exchangeRatesDict, "EUR", 0.92);
+put(exchangeRatesDict, "GBP", 0.79);
+put(exchangeRatesDict, "JPY", 154.50);
+put(exchangeRatesDict, "CAD", 1.36);
+put(exchangeRatesDict, "AUD", 1.52);
+
+targetCurrency = "EUR";
+conversionFactor = 1.0;
+if (containskey(exchangeRatesDict, targetCurrency)) {
+    conversionFactor = get(exchangeRatesDict, targetCurrency);
+} else {
+    append(warningMessagesList, "Unknown target currency " + targetCurrency + ", falling back to USD (1.0)");
+}
+
+// --- Section 3: Pricing Calculation & Volume Tier Engine ---
+totalGrossListAmount = 0.0;
+totalNetDiscountAmount = 0.0;
+totalExtendedNetAmount = 0.0;
+
+lineCount = sizeofarray(lineItemIdsList);
+for lineIdx in range(lineCount) {
+    lineId = lineItemIdsList[lineIdx];
+    partNum = partNumbersList[lineIdx];
+    qty = quantitiesList[lineIdx];
+    unitList = baseListPricesList[lineIdx];
+
+    // Compute Extended List
+    extendedList = unitList * float(qty);
+    totalGrossListAmount = totalGrossListAmount + extendedList;
+
+    // Determine Volume Tier Discount Rate
+    tierDiscount = 0.0;
+    if (qty >= 50) {
+        tierDiscount = 0.25;
+    } elif (qty >= 20) {
+        tierDiscount = 0.18;
+    } elif (qty >= 10) {
+        tierDiscount = 0.12;
+    } elif (qty >= 5) {
+        tierDiscount = 0.05;
+    }
+
+    // Cumulative Discount (Contract + Tier)
+    combinedDiscountRate = contractDiscountRate + tierDiscount;
+    maxDiscountRatio = MAX_DISCOUNT_PERCENT / 100.0;
+    if (combinedDiscountRate > maxDiscountRatio) {
+        combinedDiscountRate = maxDiscountRatio;
+        append(warningMessagesList, "Line " + lineId + " discount capped at maximum threshold (" + string(MAX_DISCOUNT_PERCENT) + "%)");
+    }
+
+    unitDiscountAmount = unitList * combinedDiscountRate;
+    unitNetPrice = unitList - unitDiscountAmount;
+    extendedNet = unitNetPrice * float(qty);
+
+    // Apply Currency Conversion
+    convertedUnitNet = unitNetPrice * conversionFactor;
+    convertedExtNet = extendedNet * conversionFactor;
+
+    put(lineItemPricesDict, lineId, convertedUnitNet);
+    put(lineItemDiscountsDict, lineId, combinedDiscountRate * 100.0);
+    put(lineItemFinalAmountsDict, lineId, convertedExtNet);
+
+    totalNetDiscountAmount = totalNetDiscountAmount + (unitDiscountAmount * float(qty));
+    totalExtendedNetAmount = totalExtendedNetAmount + extendedNet;
+}
+
+// --- Section 4: Bundle Parent-Child Pricing Distribution ---
+bundleChildrenList = string[];
+append(bundleChildrenList, "LINE_104");
+append(bundleChildrenList, "LINE_105");
+
+bundleParentId = "LINE_101";
+bundleTotalAllocated = 0.0;
+if (containskey(lineItemFinalAmountsDict, bundleParentId)) {
+    parentAmount = get(lineItemFinalAmountsDict, bundleParentId);
+    for childId in bundleChildrenList {
+        if (containskey(lineItemFinalAmountsDict, childId)) {
+            childVal = get(lineItemFinalAmountsDict, childId);
+            bundleTotalAllocated = bundleTotalAllocated + childVal;
+        }
+    }
+}
+
+// --- Section 5: Profit Margin & Approval Workflow Evaluation ---
+totalEstimatedCost = totalGrossListAmount * COST_ESTIMATE_RATIO;
+realizedMarginPercent = 0.0;
+if (totalExtendedNetAmount > 0.0) {
+    realizedMarginPercent = ((totalExtendedNetAmount - totalEstimatedCost) / totalExtendedNetAmount) * 100.0;
+}
+
+isRequiresVPApproval = false;
+isRequiresDirectorApproval = false;
+
+if (totalExtendedNetAmount >= APPROVAL_THRESHOLD_AMOUNT or realizedMarginPercent < DEFAULT_MARGIN_PERCENT) {
+    isRequiresDirectorApproval = true;
+}
+if (totalExtendedNetAmount >= HIGH_APPROVAL_THRESHOLD or realizedMarginPercent < MIN_MARGIN_THRESHOLD) {
+    isRequiresVPApproval = true;
+}
+
+// --- Section 6: JSON Output Payload Construction ---
+outputPayload = json();
+jsonput(outputPayload, "transactionId", "TXN-2026-98124");
+jsonput(outputPayload, "currency", targetCurrency);
+jsonput(outputPayload, "grossListTotal", round(totalGrossListAmount * conversionFactor, 2));
+jsonput(outputPayload, "totalDiscountAmount", round(totalNetDiscountAmount * conversionFactor, 2));
+jsonput(outputPayload, "netTotal", round(totalExtendedNetAmount * conversionFactor, 2));
+jsonput(outputPayload, "marginPercentage", round(realizedMarginPercent, 2));
+jsonput(outputPayload, "requiresDirectorApproval", isRequiresDirectorApproval);
+jsonput(outputPayload, "requiresVPApproval", isRequiresVPApproval);
+
+linesJsonArray = jsonarray();
+for lineIdx in range(lineCount) {
+    lId = lineItemIdsList[lineIdx];
+    lineJson = json();
+    jsonput(lineJson, "lineId", lId);
+    jsonput(lineJson, "partNumber", partNumbersList[lineIdx]);
+    jsonput(lineJson, "quantity", quantitiesList[lineIdx]);
+    if (containskey(lineItemPricesDict, lId)) {
+        jsonput(lineJson, "unitPrice", round(get(lineItemPricesDict, lId), 2));
+    }
+    if (containskey(lineItemFinalAmountsDict, lId)) {
+        jsonput(lineJson, "extendedNet", round(get(lineItemFinalAmountsDict, lId), 2));
+    }
+    if (containskey(lineItemDiscountsDict, lId)) {
+        jsonput(lineJson, "discountPercent", round(get(lineItemDiscountsDict, lId), 2));
+    }
+    jsonarrayappend(linesJsonArray, lineJson);
+}
+jsonput(outputPayload, "lineItems", linesJsonArray);
+
+resultString = jsontostr(outputPayload);
+return resultString;

@@ -1,0 +1,113 @@
+// ====================================================================================
+// ORACLE CPQ BML BENCHMARK FIXTURE 5: ADVANCED BMQL & DATA TABLE CRUD ENGINE
+// File: test/benchmarks/fixtures/benchmark_5_bmql_datatable_crud.bml
+// Description: Multi-table BMQL joins, batch caching dictionaries outside loops, dynamic $var
+//              substitution, and Live Data Table INSERT/UPDATE/DELETE CRUD mutations with error checking.
+// ====================================================================================
+
+// Transaction line items to process
+productFamily = "EnterpriseStorage";
+targetRegion = "EMEA";
+minLeadDays = 5;
+currencyCode = "EUR";
+
+partNumbersList = string[];
+append(partNumbersList, "SSD-SAS-1.92TB");
+append(partNumbersList, "SSD-NVME-3.84TB");
+append(partNumbersList, "HDD-SATA-18TB");
+append(partNumbersList, "CTRL-SAS-12GB");
+append(partNumbersList, "CBL-SAS-2M");
+
+// Best Practice: Batch Query & Pre-cache data in dictionaries outside loops
+priceCacheDict = dict("float");
+leadTimeCacheDict = dict("integer");
+activeStatusCacheDict = dict("boolean");
+auditLogList = string[];
+
+// 1. BMQL Select with dynamic array filter
+priceRecords = bmql("SELECT part_number, list_price, lead_time_days, is_active FROM StorageCatalog WHERE part_number IN $partNumbersList AND region = $targetRegion");
+
+for rec in priceRecords {
+    pNum = get(rec, "part_number");
+    lPrice = getfloat(rec, "list_price");
+    lTime = getint(rec, "lead_time_days");
+    isActive = getboolean(rec, "is_active");
+
+    put(priceCacheDict, pNum, lPrice);
+    put(leadTimeCacheDict, pNum, lTime);
+    put(activeStatusCacheDict, pNum, isActive);
+}
+
+// 2. Process line items against pre-cached BMQL dictionaries
+totalCatalogValue = 0.0;
+maxLeadTimeFound = 0;
+activePartsCount = 0;
+
+for pNum in partNumbersList {
+    if (containskey(priceCacheDict, pNum)) {
+        itemPrice = get(priceCacheDict, pNum);
+        itemLead = get(leadTimeCacheDict, pNum);
+        isItemActive = get(activeStatusCacheDict, pNum);
+
+        if (isItemActive) {
+            totalCatalogValue = totalCatalogValue + itemPrice;
+            activePartsCount = activePartsCount + 1;
+
+            if (itemLead > maxLeadTimeFound) {
+                maxLeadTimeFound = itemLead;
+            }
+            append(auditLogList, "Part " + pNum + " verified in catalog with price " + string(itemPrice));
+        } else {
+            append(auditLogList, "WARNING: Part " + pNum + " is marked INACTIVE in region " + targetRegion);
+        }
+    } else {
+        append(auditLogList, "ERROR: Part " + pNum + " not found in StorageCatalog table");
+    }
+}
+
+// 3. Live Data Table Mutation: Audit Log Insertion
+auditTableName = "TransactionAuditLogs";
+newAuditId = "AUD-2026-9901";
+logStatus = "SUCCESS";
+timestampStr = "2026-08-31T13:30:00Z";
+
+insertResults = bmql("INSERT INTO $auditTableName (audit_id, status, total_value, log_time) VALUES ($newAuditId, $logStatus, $totalCatalogValue, $timestampStr)");
+
+insertError = "";
+for insRec in insertResults {
+    insertedCount = getint(insRec, "records_inserted");
+    insertError = get(insRec, "records_error");
+}
+
+if (insertError <> "") {
+    append(auditLogList, "Audit DB insert warning: " + insertError);
+}
+
+// 4. Live Data Table Mutation: Update Inventory Thresholds
+updateResults = bmql("UPDATE PartsInventory SET reserved_qty = reserved_qty + 1 WHERE part_number IN $partNumbersList AND region = $targetRegion");
+
+updateError = "";
+for upRec in updateResults {
+    updatedCount = getint(upRec, "records_updated");
+    updateError = get(upRec, "records_error");
+}
+
+if (updateError <> "") {
+    append(auditLogList, "Inventory reservation update warning: " + updateError);
+}
+
+// 5. Output Summary Payload
+responsePayload = json();
+jsonput(responsePayload, "region", targetRegion);
+jsonput(responsePayload, "totalCatalogValue", round(totalCatalogValue, 2));
+jsonput(responsePayload, "activePartsCount", activePartsCount);
+jsonput(responsePayload, "maxLeadTimeDays", maxLeadTimeFound);
+jsonput(responsePayload, "auditLogsCount", sizeofarray(auditLogList));
+
+logsJsonArray = jsonarray();
+for logMsg in auditLogList {
+    jsonarrayappend(logsJsonArray, logMsg);
+}
+jsonput(responsePayload, "logs", logsJsonArray);
+
+return jsontostr(responsePayload);

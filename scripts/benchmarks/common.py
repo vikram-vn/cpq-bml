@@ -24,7 +24,11 @@ if sys.platform == "win32":
 # Root paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
-SAMPLE_BML_PATH = os.path.join(ROOT_DIR, "bml", "sample.bml")
+SAMPLE_BML_PATH = os.path.join(ROOT_DIR, "test", "benchmarks", "fixtures", "benchmark_1_full_suite.bml")
+
+
+
+
 
 # Terminal color constants
 RESET = "\033[0m"
@@ -221,7 +225,7 @@ Module.prototype.require = function(r) {{
 }};
 
 const rootDir = '{escaped_root}';
-const sampleBmlPath = path.join(rootDir, 'bml', 'sample.bml');
+const sampleBmlPath = path.join(rootDir, 'test', 'benchmarks', 'fixtures', 'benchmark_1_full_suite.bml');
 const sampleBml = fs.readFileSync(sampleBmlPath, 'utf8');
 
 {setup_code}
@@ -261,7 +265,7 @@ def print_header(title: str) -> None:
     print(f"\n{CYAN}{BOLD}{'=' * 72}{RESET}")
     print(f" {BOLD}🚀 ORACLE CPQ-BML BENCHMARK — {title.upper()}{RESET}")
     print(f"{CYAN}{BOLD}{'=' * 72}{RESET}")
-    print(f" {DIM}Target Document:{RESET} bml/sample.bml ({metrics['line_count']:,} lines, {metrics['size_kb']:.1f} KB)")
+    print(f" {DIM}Target Document:{RESET} test/benchmarks/fixtures/benchmark_1_full_suite.bml ({metrics['line_count']:,} lines, {metrics['size_kb']:.1f} KB)")
     print(f" {DIM}Python Version:{RESET}  {sys.version.split()[0]}")
     print(f" {DIM}Platform:{RESET}        {sys.platform}")
     print(f"{CYAN}{BOLD}{'=' * 72}{RESET}\n")

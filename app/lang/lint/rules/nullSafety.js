@@ -5,6 +5,10 @@ const vscode = require('vscode');
 function checkNullSafety(cleanText, noStringsText, doc) {
     const diagnostics = [];
 
+    if (!noStringsText.includes('bmql') && !noStringsText.includes('get(') && !noStringsText.includes('dictget') && !noStringsText.includes('jsonget')) {
+        return diagnostics;
+    }
+
     // Find variables assigned from nullable sources (strings blanked so we don't
     // match inside string literals).
     const nullableAssignRegex = /\b([a-zA-Z_]\w*)\s*=\s*(?:bmql|get|dictget|jsonget)\s*\(/g;

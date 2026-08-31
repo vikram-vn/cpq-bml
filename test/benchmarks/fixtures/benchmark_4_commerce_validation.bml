@@ -1,0 +1,128 @@
+// ====================================================================================
+// ORACLE CPQ BML BENCHMARK FIXTURE 4: COMMERCE VALIDATION & APPROVAL RULES ENGINE
+// File: test/benchmarks/fixtures/benchmark_4_commerce_validation.bml
+// Description: Multi-line Commerce transaction validation, cross-attribute constraint checking,
+//              custom approval hierarchy trigger calculation, and diagnostic error builder.
+// ====================================================================================
+
+// Commerce Transaction Context
+transactionStatus = "DRAFT";
+customerType = "COMMERCIAL_ENTERPRISE";
+billingCountry = "US";
+shippingCountry = "DE";
+paymentTerms = "NET_30";
+quoteDiscountPct = 28.5;
+totalQuoteAmount = 87500.0;
+
+validationErrors = string[];
+validationWarnings = string[];
+approvalRequirements = string[];
+
+// Line Item Attributes
+lineIds = string[];
+append(lineIds, "001");
+append(lineIds, "002");
+append(lineIds, "003");
+append(lineIds, "004");
+
+lineTypes = string[];
+append(lineTypes, "HARDWARE");
+append(lineTypes, "SOFTWARE");
+append(lineTypes, "SERVICE");
+append(lineTypes, "SUBSCRIPTION");
+
+lineQuantities = integer[];
+append(lineQuantities, 5);
+append(lineQuantities, 20);
+append(lineQuantities, 1);
+append(lineQuantities, 12);
+
+lineDiscounts = float[];
+append(lineDiscounts, 15.0);
+append(lineDiscounts, 35.0);
+append(lineDiscounts, 0.0);
+append(lineDiscounts, 40.0);
+
+lineExportRestricted = boolean[];
+append(lineExportRestricted, false);
+append(lineExportRestricted, true);
+append(lineExportRestricted, false);
+append(lineExportRestricted, false);
+
+// --- Section 1: Export Compliance & Cross-Border Validation ---
+isCrossBorder = (billingCountry <> shippingCountry);
+if (isCrossBorder) {
+    append(validationWarnings, "Cross-border shipment detected from " + billingCountry + " to " + shippingCountry + ". Customs documentation required.");
+    lineCount = sizeofarray(lineIds);
+    for idx in range(lineCount) {
+        if (lineExportRestricted[idx]) {
+            append(validationErrors, "Line " + lineIds[idx] + " (" + lineTypes[idx] + ") is flagged as EXPORT_RESTRICTED and cannot be shipped to " + shippingCountry + " without EAR license.");
+        }
+    }
+}
+
+// --- Section 2: Line Item Discount Thresholds & Matrix ---
+maxAllowedDiscounts = dict("float");
+put(maxAllowedDiscounts, "HARDWARE", 20.0);
+put(maxAllowedDiscounts, "SOFTWARE", 30.0);
+put(maxAllowedDiscounts, "SERVICE", 15.0);
+put(maxAllowedDiscounts, "SUBSCRIPTION", 25.0);
+
+lineCount = sizeofarray(lineIds);
+for idx in range(lineCount) {
+    lType = lineTypes[idx];
+    lDisc = lineDiscounts[idx];
+    if (containskey(maxAllowedDiscounts, lType)) {
+        maxDisc = get(maxAllowedDiscounts, lType);
+        if (lDisc > maxDisc) {
+            append(approvalRequirements, "Line " + lineIds[idx] + " (" + lType + ") discount of " + string(lDisc) + "% exceeds standard limit of " + string(maxDisc) + "%. Director approval required.");
+        }
+    }
+}
+
+// --- Section 3: Payment Terms & Credit Risk Assessment ---
+restrictedCountries = string[];
+append(restrictedCountries, "CU");
+append(restrictedCountries, "IR");
+append(restrictedCountries, "KP");
+append(restrictedCountries, "SY");
+
+for rCountry in restrictedCountries {
+    if (shippingCountry == rCountry | | billingCountry == rCountry) {
+        append(validationErrors, "Transaction contains a sanctioned destination (" + rCountry + "). Order processing halted.");
+    }
+}
+
+if (totalQuoteAmount > 50000.0 & & paymentTerms == "NET_60") {
+    append(approvalRequirements, "Finance approval required: High-value quote ($" + string(totalQuoteAmount) + ") requested with extended payment terms (" + paymentTerms + ").");
+}
+
+// --- Section 4: Validation Summary Result Payload ---
+hasErrors = sizeofarray(validationErrors) > 0;
+hasWarnings = sizeofarray(validationWarnings) > 0;
+requiresApproval = sizeofarray(approvalRequirements) > 0;
+
+responseJson = json();
+jsonput(responseJson, "isValid", NOT(hasErrors));
+jsonput(responseJson, "hasWarnings", hasWarnings);
+jsonput(responseJson, "requiresApproval", requiresApproval);
+
+errorsArray = jsonarray();
+for err in validationErrors {
+    jsonarrayappend(errorsArray, err);
+}
+jsonput(responseJson, "errors", errorsArray);
+
+warningsArray = jsonarray();
+for warn in validationWarnings {
+    jsonarrayappend(warningsArray, warn);
+}
+jsonput(responseJson, "warnings", warningsArray);
+
+approvalsArray = jsonarray();
+for app in approvalRequirements {
+    jsonarrayappend(approvalsArray, app);
+}
+jsonput(responseJson, "approvalsRequired", approvalsArray);
+
+return jsontostr(responseJson);

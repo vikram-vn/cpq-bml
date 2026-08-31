@@ -1,0 +1,143 @@
+// ====================================================================================
+// ORACLE CPQ BML BENCHMARK FIXTURE 7: CONFIGURATION RECOMMENDATIONS & CONSTRAINT RULES
+// File: test/benchmarks/fixtures/benchmark_7_config_recommendations.bml
+// Description: Interactive Product Configuration engine, recommended item evaluation,
+//              hardware compatibility rules, power budget limits, and constraint validation.
+// ====================================================================================
+
+// Configuration User Selections
+selectedChassisModel = "CHASSIS-4U-MODULAR";
+selectedProcessorCount = 2;
+selectedRamCapacityGB = 256;
+selectedDriveType = "NVME";
+selectedDriveCount = 12;
+isRedundantPowerRequired = true;
+environmentAmbientTemp = "EXTREME_45C";
+
+// System Thresholds & Capacity Constraints
+MAX_CHASSIS_POWER_WATTS = 2400.0;
+MAX_DRIVE_SLOTS = 24;
+MAX_RAM_SLOTS = 32;
+MAX_CPU_COUNT = 2;
+
+// Output Recommendation Containers
+recommendedPartsList = string[];
+recommendedQuantitiesList = integer[];
+recommendedTypesList = string[];
+configurationWarningsList = string[];
+isConfigurationValid = true;
+
+// --- Section 1: Hardware Slot & Capacity Validation ---
+if (selectedProcessorCount > MAX_CPU_COUNT) {
+    append(configurationWarningsList, "Selected CPU count (" + string(selectedProcessorCount) + ") exceeds chassis limit (" + string(MAX_CPU_COUNT) + ")");
+    isConfigurationValid = false;
+}
+
+if (selectedDriveCount > MAX_DRIVE_SLOTS) {
+    append(configurationWarningsList, "Selected drive count (" + string(selectedDriveCount) + ") exceeds available drive bays (" + string(MAX_DRIVE_SLOTS) + ")");
+    isConfigurationValid = false;
+}
+
+// --- Section 2: Power Budget Calculation & PSU Recommendation ---
+baseSystemWatts = 180.0;
+wattsPerCpu = 350.0;
+wattsPerRamModule = 15.0;
+wattsPerDrive = 25.0;
+
+totalCpuWatts = float(selectedProcessorCount) * wattsPerCpu;
+totalRamModules = selectedRamCapacityGB / 32;
+totalRamWatts = float(totalRamModules) * wattsPerRamModule;
+totalDriveWatts = float(selectedDriveCount) * wattsPerDrive;
+
+totalEstimatedPowerWatts = baseSystemWatts + totalCpuWatts + totalRamWatts + totalDriveWatts;
+
+// Safety headroom (20%)
+powerWithHeadroomWatts = totalEstimatedPowerWatts * 1.20;
+
+if (powerWithHeadroomWatts > MAX_CHASSIS_POWER_WATTS) {
+    append(configurationWarningsList, "Total power demand (" + string(round(powerWithHeadroomWatts, 1)) + "W) exceeds maximum chassis rating (" + string(MAX_CHASSIS_POWER_WATTS) + "W)");
+    isConfigurationValid = false;
+}
+
+// PSU Selection Rules
+if (powerWithHeadroomWatts <= 800.0) {
+    append(recommendedPartsList, "PSU-PLATINUM-850W");
+} elif (powerWithHeadroomWatts <= 1500.0) {
+    append(recommendedPartsList, "PSU-TITANIUM-1600W");
+} else {
+    append(recommendedPartsList, "PSU-TITANIUM-2400W");
+}
+
+if (isRedundantPowerRequired) {
+    append(recommendedQuantitiesList, 2);
+    append(recommendedTypesList, "POWER_SUPPLY_REDUNDANT");
+} else {
+    append(recommendedQuantitiesList, 1);
+    append(recommendedTypesList, "POWER_SUPPLY_PRIMARY");
+}
+
+// --- Section 3: Processor & Memory Allocation ---
+for cpuIdx in range(selectedProcessorCount) {
+    append(recommendedPartsList, "CPU-XEON-PLATINUM-8480");
+    append(recommendedQuantitiesList, 1);
+    append(recommendedTypesList, "PROCESSOR");
+}
+
+for ramIdx in range(totalRamModules) {
+    append(recommendedPartsList, "RAM-DDR5-32GB-ECC-REG");
+    append(recommendedQuantitiesList, 1);
+    append(recommendedTypesList, "MEMORY");
+}
+
+// --- Section 4: Storage Drives Recommendation ---
+drivePartNumber = "SSD-SATA-960GB";
+if (selectedDriveType == "NVME") {
+    drivePartNumber = "SSD-NVME-3.84TB-GEN4";
+} elif (selectedDriveType == "SAS") {
+    drivePartNumber = "HDD-SAS-12TB-10K";
+}
+
+append(recommendedPartsList, drivePartNumber);
+append(recommendedQuantitiesList, selectedDriveCount);
+append(recommendedTypesList, "STORAGE_DRIVE");
+
+// Mandatory Storage Controller for SAS/NVMe Arrays
+if (selectedDriveCount > 4) {
+    append(recommendedPartsList, "CTRL-RAID-TRI-MODE-8GB");
+    append(recommendedQuantitiesList, 1);
+    append(recommendedTypesList, "STORAGE_CONTROLLER");
+}
+
+// --- Section 5: Extreme Environment Cooling Kit ---
+if (environmentAmbientTemp == "EXTREME_45C") {
+    append(recommendedPartsList, "FAN-HIGH-AIRFLOW-KIT-4U");
+    append(recommendedQuantitiesList, 1);
+    append(recommendedTypesList, "COOLING_OPTION");
+    append(configurationWarningsList, "High ambient temperature mode enabled: High-RPM fan module kit added");
+}
+
+// --- Section 6: Build BOM Output JSON Structure ---
+configSummaryPayload = json();
+jsonput(configSummaryPayload, "isValid", isConfigurationValid);
+jsonput(configSummaryPayload, "chassisModel", selectedChassisModel);
+jsonput(configSummaryPayload, "totalEstimatedPowerWatts", round(totalEstimatedPowerWatts, 1));
+jsonput(configSummaryPayload, "recommendedPartsCount", sizeofarray(recommendedPartsList));
+
+partsJsonArray = jsonarray();
+recCount = sizeofarray(recommendedPartsList);
+for idx in range(recCount) {
+    pJson = json();
+    jsonput(pJson, "partNumber", recommendedPartsList[idx]);
+    jsonput(pJson, "quantity", recommendedQuantitiesList[idx]);
+    jsonput(pJson, "itemCategory", recommendedTypesList[idx]);
+    jsonarrayappend(partsJsonArray, pJson);
+}
+jsonput(configSummaryPayload, "recommendedItems", partsJsonArray);
+
+warningsArray = jsonarray();
+for wMsg in configurationWarningsList {
+    jsonarrayappend(warningsArray, wMsg);
+}
+jsonput(configSummaryPayload, "warnings", warningsArray);
+
+return jsontostr(configSummaryPayload);

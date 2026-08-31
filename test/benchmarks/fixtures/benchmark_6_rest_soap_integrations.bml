@@ -1,0 +1,114 @@
+// ====================================================================================
+// ORACLE CPQ BML BENCHMARK FIXTURE 6: REST & SOAP WEB SERVICES INTEGRATION ENGINE
+// File: test/benchmarks/fixtures/benchmark_6_rest_soap_integrations.bml
+// Description: Outbound HTTP REST and SOAP web services integration via urldata(), headers manipulation,
+//              Base64 auth encoding, status-code inspection, JSON & XML payload parsing.
+// ====================================================================================
+
+apiBaseUrl = "https://api.enterpriseservices.example.com/v2";
+authEndpoint = apiBaseUrl + "/oauth/token";
+creditCheckEndpoint = apiBaseUrl + "/finance/credit-check";
+taxServiceEndpoint = apiBaseUrl + "/tax/calculate";
+
+customerId = "CUST-98412";
+requestedAmount = 145000.00;
+apiTimeoutMs = 5000;
+
+integrationLogsList = string[];
+
+// --- Section 1: REST API Authentication Header Construction ---
+authHeadersDict = dict("string");
+put(authHeadersDict, "Content-Type", "application/json");
+put(authHeadersDict, "Accept", "application/json");
+
+rawCredentials = "integration_user:SecretApiKey2026";
+encodedAuthToken = encodebase64(rawCredentials);
+put(authHeadersDict, "Authorization", "Basic " + encodedAuthToken);
+
+// Request body for Credit Verification
+creditRequestBody = json();
+jsonput(creditRequestBody, "customerId", customerId);
+jsonput(creditRequestBody, "requestedCreditAmount", requestedAmount);
+jsonput(creditRequestBody, "currency", "USD");
+creditPayloadStr = jsontostr(creditRequestBody);
+
+// Execute Outbound REST Call
+creditResponseDict = urldata(creditCheckEndpoint, "POST", authHeadersDict, creditPayloadStr, apiTimeoutMs);
+
+isCreditApproved = false;
+creditLimitGranted = 0.0;
+riskRating = "UNKNOWN";
+
+if (containskey(creditResponseDict, "Status-Code")) {
+    statusCode = get(creditResponseDict, "Status-Code");
+    if (startswith(statusCode, "200")) {
+        responseBody = get(creditResponseDict, "Message-Body");
+        if (jsonpathcheck(responseBody, "$.isApproved")) {
+            isCreditApproved = jsonpathget(responseBody, "$.isApproved", "boolean");
+            creditLimitGranted = jsonpathget(responseBody, "$.approvedLimit", "float");
+            riskRating = jsonpathget(responseBody, "$.riskRating");
+            append(integrationLogsList, "Credit check passed: approved limit " + string(creditLimitGranted) + ", risk: " + riskRating);
+        }
+    } else {
+        append(integrationLogsList, "Credit API returned non-200 status code: " + statusCode);
+    }
+} else {
+    append(integrationLogsList, "Credit API call timed out or failed to reach host");
+}
+
+// --- Section 2: SOAP / XML Tax Calculation Integration ---
+xmlPayloadBuilder = stringbuilder("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">");
+sbappend(xmlPayloadBuilder, "<soapenv:Header/>");
+sbappend(xmlPayloadBuilder, "<soapenv:Body>");
+sbappend(xmlPayloadBuilder, "<CalculateTaxRequest>");
+sbappend(xmlPayloadBuilder, "<CustomerId>" + customerId + "</CustomerId>");
+sbappend(xmlPayloadBuilder, "<TaxableAmount>" + string(requestedAmount) + "</TaxableAmount>");
+sbappend(xmlPayloadBuilder, "</CalculateTaxRequest>");
+sbappend(xmlPayloadBuilder, "</soapenv:Body>");
+sbappend(xmlPayloadBuilder, "</soapenv:Envelope>");
+
+soapRequestStr = sbtostring(xmlPayloadBuilder);
+
+soapHeadersDict = dict("string");
+put(soapHeadersDict, "Content-Type", "text/xml; charset=utf-8");
+put(soapHeadersDict, "SOAPAction", "CalculateTax");
+
+taxResponseStr = urldatabypost(taxServiceEndpoint, soapRequestStr, "", soapHeadersDict, true, apiTimeoutMs);
+
+computedTaxAmount = 0.0;
+effectiveTaxRate = 0.0;
+
+if (taxResponseStr <> "") {
+    // Check for XML parsing error safety key
+    parsedXmlDict = readxml(taxResponseStr);
+    if (containskey(parsedXmlDict, "error")) {
+        append(integrationLogsList, "Tax XML parse error: " + get(parsedXmlDict, "error"));
+    } else {
+        if (containskey(parsedXmlDict, "TaxAmount")) {
+            computedTaxAmount = atof(get(parsedXmlDict, "TaxAmount"));
+            if (requestedAmount > 0.0) {
+                effectiveTaxRate = (computedTaxAmount / requestedAmount) * 100.0;
+            }
+            append(integrationLogsList, "Tax calculated successfully: " + string(computedTaxAmount) + " (" + string(round(effectiveTaxRate, 2)) + "%)");
+        }
+    }
+} else {
+    append(integrationLogsList, "Tax calculation endpoint failed or returned empty response");
+}
+
+// --- Section 3: Final Integration Results Payload ---
+resultPayload = json();
+jsonput(resultPayload, "customerId", customerId);
+jsonput(resultPayload, "isCreditApproved", isCreditApproved);
+jsonput(resultPayload, "creditLimitGranted", round(creditLimitGranted, 2));
+jsonput(resultPayload, "riskRating", riskRating);
+jsonput(resultPayload, "computedTaxAmount", round(computedTaxAmount, 2));
+jsonput(resultPayload, "effectiveTaxRate", round(effectiveTaxRate, 2));
+
+logsArr = jsonarray();
+for lMsg in integrationLogsList {
+    jsonarrayappend(logsArr, lMsg);
+}
+jsonput(resultPayload, "integrationLogs", logsArr);
+
+return jsontostr(resultPayload);

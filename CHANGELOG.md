@@ -4,15 +4,24 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.70.0] - 2026-08-31
+
+### Added
+
+- Implement linting aggregation logic for CPQ BML best practices and language-specific rules.
+- Implement linting engine with performance benchmarks and core static analysis rules.
+
 ## [1.68.0] - 2026-08-31
 
 ### Added
+
 - Implement BML style code actions and add initial beautifier infrastructure with tests.
 - Implement BML static type checking for variable reassignments and binary expressions.
 
 ## [1.67.0] - 2026-08-30
 
 ### Added
+
 - Add BML language keyword and constant hovers with supporting tests.
 
 ## [1.66.0] - 2026-08-30
@@ -82,18 +91,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Add automated BML function documentation parser and intellisense support scripts.
 - Introduce automated benchmarking suite for code actions and fix-all subsystems.
-
-## [1.59.0] - 2026-08-29
-
-### Added
-
-- Implement comprehensive linting engine with modular rule sets and performance benchmarking.
-- Implement bulk code action for safe style and naming fixes and add common benchmark scripts.
-- Implement comprehensive Python-based benchmarking suite for extension subsystems.
-- Implement BML comment decorations and extend intellisense with workspace indexing capabilities.
-- Implement BML tokenizer with support for BMQL and JSON string formatting.
-- Implement BML tokenizer with BMQL query formatting and array literal detection support.
-
-### Documentation
-
-- Update license file reference in README.md.

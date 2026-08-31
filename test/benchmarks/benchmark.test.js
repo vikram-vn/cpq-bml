@@ -41,7 +41,7 @@ suite('Extension Speed Metrics Benchmark', () => {
         console.log(`1. Full Document Linting (1,000 lines): ${avgDuration.toFixed(2)} ms / run`);
         console.log(`   Throughput: ${(1000 / avgDuration * 1000).toFixed(0)} lines / second`);
 
-        assert.ok(avgDuration < 250, `Linter must complete 1,000 lines in < 250ms (actual: ${avgDuration.toFixed(2)}ms)`);
+        assert.ok(avgDuration < 100, `Linter must complete 1,000 lines in < 100ms (actual: ${avgDuration.toFixed(2)}ms)`);
     });
 
     test('Benchmark: CodeActions & Fix-All Execution across 1,000 lines', async () => {
@@ -85,7 +85,7 @@ suite('Extension Speed Metrics Benchmark', () => {
         console.log(`   Diagnostics Processed: ${diags.length}`);
 
         assert.ok(queryDuration < 1000, `CodeActions query must return in < 1000ms (actual: ${queryDuration.toFixed(2)}ms)`);
-        assert.ok(fixAllDuration < 250, `FixAll must process 1,000 lines in < 250ms (actual: ${fixAllDuration.toFixed(2)}ms)`);
+        assert.ok(fixAllDuration < 100, `FixAll must process 1,000 lines in < 100ms (actual: ${fixAllDuration.toFixed(2)}ms)`);
     });
 
     test('Benchmark: Complexity Analysis Engine across 2,000 lines', async () => {
@@ -115,6 +115,6 @@ return res;
         console.log(`   Cyclomatic Complexity: ${res.cyclomaticComplexity}, Lines: ${res.lineCount}`);
         console.log(`===============================================\n`);
 
-        assert.ok(avgDuration < 100, `Complexity engine must compute 2,000 lines in < 100ms (actual: ${avgDuration.toFixed(2)}ms)`);
+        assert.ok(avgDuration < 50, `Complexity engine must compute 2,000 lines in < 50ms (actual: ${avgDuration.toFixed(2)}ms)`);
     });
 });
