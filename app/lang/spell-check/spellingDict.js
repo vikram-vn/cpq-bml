@@ -1,7 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
-const vscode = require("vscode");
+let vscode;
+try {
+  vscode = require("vscode");
+} catch (e) {}
 
 let combinedDictionary = null;
 
@@ -19,6 +22,15 @@ const extraAllowed = new Set([
   "transactionid", "transactionname", "oraclecpqo", "customdiscountvalue", "opportunitynumber",
   "histry", "encodebase", "claz", "qval", "bomflat", "iterationquantity", "jsonin", "itemsjson",
   "basebom", "varname", "boms", "chd", "capped",
+  // Requested words & common business/calendar lexicon
+  "gantt", "season", "soft", "partial", "contract", "assemble", "keys", "month", "prior",
+  "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "sept", "oct", "nov", "dec",
+  "mon", "tue", "wed", "thu", "thur", "thurs", "fri", "sat", "sun",
+  "cogs", "mrr", "arr", "acv", "tcv", "sku", "upc", "ean", "isbn", "edi", "rfq", "rfp", "rfi",
+  "nre", "eop", "eom", "eoy", "ytd", "qtd", "mtd", "fy", "b2b", "b2c", "d2c", "oem", "isv",
+  "cadence", "forecast", "tier", "subscription", "schedule", "workflow", "depreciation",
+  "amortization", "accrual", "reconciliation", "provisioning", "escalation", "contingency",
+  "subtotal", "grandtotal", "netprice", "listprice", "extprice", "unitprice", "lineitem", "datatable",
   // Common programming, cloud, and developer lexicon
   "async", "sync", "oauth", "jwt", "bearer", "token", "payload", "dto", "vo", "dao", "crud",
   "guid", "hex", "ascii", "ansi", "regex", "eval", "lint", "beautify", "minify", "serialize",
@@ -26,10 +38,13 @@ const extraAllowed = new Set([
   "wildcard", "debounce", "throttle", "callback", "promise", "closure", "schema", "lookup",
   "cache", "flush", "retry", "backoff", "benchmark", "latency", "timeout", "endpoint",
   "webhook", "session", "cookie", "proxy", "middleware", "devkit", "ide", "vsix", "mcp",
-  "sdk", "cli", "stdout", "stderr", "stdin", "posix", "utf", "utf8", "unicode",
+  "sdk", "cli", "stdout", "stderr", "stdin", "posix", "utf", "utf8", "utf16", "unicode",
   "camelcase", "snakecase", "pascalcase", "kebabcase", "boolean", "integer", "float", "string",
   "recordset", "dict", "jsonarray", "jsonpath", "urldata", "readxml", "applytemplate",
   "transformxml", "redwood", "allman", "xpath", "xslt", "metadata", "nullsafe", "refactor",
+  "sbappend", "isnumber", "substring", "startswith", "endswith", "grpc", "cors", "tls", "ssl", "ssh",
+  "ftp", "sftp", "smtp", "imap", "ldap", "saml", "sso", "rbac", "iam", "acl", "dag", "fifo",
+  "lifo", "lru", "mru", "dfs", "bfs", "mutex", "semaphore", "glob", "blob", "clob", "upsert", "truncate",
   // Currency codes
   "usd", "eur", "gbp", "cad", "aud", "jpy", "inr", "chf", "cny", "sgd", "nzd", "hkd", "sek",
   "nok", "mxn", "brl", "zar", "aed", "sar", "krw", "thb", "myr", "idr", "php", "vnd", "pln",
@@ -41,13 +56,20 @@ const extraAllowed = new Set([
 const PREFIXES = [
   "un", "re", "de", "pre", "post", "sub", "multi", "auto", "non", "co",
   "mis", "over", "under", "cross", "inter", "intra", "super", "semi", "anti",
-  "meta", "micro", "macro", "mini", "maxi", "pseudo", "hyper", "in", "im", "dis"
+  "meta", "micro", "macro", "mini", "maxi", "pseudo", "hyper", "in", "im", "dis",
+  "out", "mid", "bi", "tri", "il", "ir"
 ];
 
 function isInflectionOfKnownWord(word, dict) {
   if (word.length <= 3) return false;
 
-  // 1. Plural / 3rd person singular: -s, -es, -ies
+  // 1. Plural / 3rd person singular: -s, -es, -ies, -ves
+  if (word.endsWith("ves") && word.length > 4) {
+    const rootF = word.slice(0, -3) + "f";
+    if (dict.has(rootF)) return true;
+    const rootFe = word.slice(0, -3) + "fe";
+    if (dict.has(rootFe)) return true;
+  }
   if (word.endsWith("ies") && word.length > 4) {
     const root = word.slice(0, -3) + "y";
     if (dict.has(root)) return true;
@@ -79,7 +101,11 @@ function isInflectionOfKnownWord(word, dict) {
     }
   }
 
-  // 3. Present participle / gerund: -ing
+  // 3. Present participle / gerund: -ing, -ying
+  if (word.endsWith("ying") && word.length > 4) {
+    const rootIe = word.slice(0, -4) + "ie";
+    if (dict.has(rootIe)) return true;
+  }
   if (word.endsWith("ing") && word.length > 4) {
     const root = word.slice(0, -3);
     if (dict.has(root)) return true;
@@ -91,7 +117,7 @@ function isInflectionOfKnownWord(word, dict) {
     }
   }
 
-  // 4. Adverbs: -ly, -ally
+  // 4. Adverbs: -ly, -ily, -ally
   if (word.endsWith("ally") && word.length > 5) {
     const root = word.slice(0, -4) + "ic";
     if (dict.has(root)) return true;
@@ -104,7 +130,7 @@ function isInflectionOfKnownWord(word, dict) {
     if (word.endsWith("ily") && dict.has(word.slice(0, -3) + "y")) return true;
   }
 
-  // 5. Nouns / Nominals: -tion, -ation, -ition, -sion, -ment, -ness, -ity
+  // 5. Nouns / Nominals: -tion, -ation, -ition, -sion, -ment, -ness, -ity, -ship, -hood, -ism, -ist
   if (word.endsWith("tion") && word.length > 5) {
     const root = word.slice(0, -4);
     if (dict.has(root)) return true;
@@ -126,8 +152,12 @@ function isInflectionOfKnownWord(word, dict) {
     const root = word.slice(0, -3);
     if (dict.has(root) || dict.has(root + "e") || dict.has(root + "able") || dict.has(root + "ible")) return true;
   }
+  if ((word.endsWith("ship") || word.endsWith("hood") || word.endsWith("ism") || word.endsWith("ist")) && word.length > 5) {
+    const root = word.slice(0, -4);
+    if (dict.has(root) || dict.has(root + "e")) return true;
+  }
 
-  // 6. Adjectives / Agents: -able, -ible, -er, -or
+  // 6. Adjectives / Agents: -able, -ible, -er, -or, -ful, -less, -ive, -ous, -ious, -al, -ial
   if (word.endsWith("able") && word.length > 5) {
     const root = word.slice(0, -4);
     if (dict.has(root) || dict.has(root + "e")) return true;
@@ -136,7 +166,13 @@ function isInflectionOfKnownWord(word, dict) {
     const root = word.slice(0, -4);
     if (dict.has(root) || dict.has(root + "e")) return true;
   }
-  if ((word.endsWith("er") || word.endsWith("or")) && word.length > 4) {
+  if ((word.endsWith("ful") || word.endsWith("less") || word.endsWith("ive") || word.endsWith("ous")) && word.length > 5) {
+    const root = word.slice(0, -3);
+    if (dict.has(root) || dict.has(root + "e")) return true;
+    const root4 = word.slice(0, -4);
+    if (dict.has(root4) || dict.has(root4 + "e")) return true;
+  }
+  if ((word.endsWith("er") || word.endsWith("or") || word.endsWith("ar")) && word.length > 4) {
     const root = word.slice(0, -2);
     if (dict.has(root) || dict.has(root + "e")) return true;
     if (root.length > 2 && root[root.length - 1] === root[root.length - 2]) {
@@ -145,7 +181,7 @@ function isInflectionOfKnownWord(word, dict) {
     }
   }
 
-  // 7. Suffixes: -ize / -ise / -ized / -ised / -izing / -ising / -ization / -isation
+  // 7. Suffixes: -ize / -ise / -ized / -ised / -izing / -ising / -ization / -isation / -fy / -fied
   if (word.endsWith("ized") || word.endsWith("ised")) {
     const root = word.slice(0, -4);
     if (dict.has(root) || dict.has(root + "e")) return true;
@@ -162,6 +198,10 @@ function isInflectionOfKnownWord(word, dict) {
     const root = word.slice(0, -3);
     if (dict.has(root) || dict.has(root + "e")) return true;
   }
+  if (word.endsWith("fied") && word.length > 5) {
+    const root = word.slice(0, -4) + "fy";
+    if (dict.has(root)) return true;
+  }
 
   return false;
 }
@@ -169,11 +209,11 @@ function isInflectionOfKnownWord(word, dict) {
 const morphologyCache = new Map();
 
 function computeMorphologicalValidity(word, dict) {
-  // Check prefix derivations
+  // Check prefix derivations against root dictionary words
   for (const prefix of PREFIXES) {
     if (word.startsWith(prefix) && word.length - prefix.length >= 3) {
       const remainder = word.slice(prefix.length);
-      if (dict.has(remainder) || extraAllowed.has(remainder) || isInflectionOfKnownWord(remainder, dict)) {
+      if (dict.has(remainder) || extraAllowed.has(remainder)) {
         return true;
       }
     }
@@ -181,6 +221,7 @@ function computeMorphologicalValidity(word, dict) {
 
   // Check suffix inflections
   if (isInflectionOfKnownWord(word, dict)) return true;
+
 
   // Check trailing numbers (e.g. line1, field2, sha256)
   const trailingNumMatch = word.match(/^([a-zA-Z]+)[0-9]+$/);
@@ -214,10 +255,20 @@ function resolveSpellCheckDir(extensionPath) {
 
 function readWordListFile(baseDir, fileName) {
   const brPath = path.join(baseDir, `${fileName}.br`);
+  const plainPath = path.join(baseDir, fileName);
+
+  if (fs.existsSync(plainPath) && fs.existsSync(brPath)) {
+    const plainMtime = fs.statSync(plainPath).mtimeMs;
+    const brMtime = fs.statSync(brPath).mtimeMs;
+    if (plainMtime > brMtime) {
+      return fs.readFileSync(plainPath, "utf8");
+    }
+    return zlib.brotliDecompressSync(fs.readFileSync(brPath)).toString("utf8");
+  }
+
   if (fs.existsSync(brPath)) {
     return zlib.brotliDecompressSync(fs.readFileSync(brPath)).toString("utf8");
   }
-  const plainPath = path.join(baseDir, fileName);
   if (fs.existsSync(plainPath)) {
     return fs.readFileSync(plainPath, "utf8");
   }

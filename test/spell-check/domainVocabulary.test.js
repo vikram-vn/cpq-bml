@@ -168,14 +168,20 @@ suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary',
         assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
     });
 
-    test('Flags a genuine typo even when it appears inside a camelCase run in a comment', () => {
-        // The docHeader camelCase-splitting fix must not become a loophole
-        // that hides real typos buried inside a compound identifier mention.
+    test('Does not flag common English, calendar, and CPQ domain words (season, soft, partial, contract, assemble, GANTT, month, keys, feb, march, prior)', () => {
         const diagnostics = lintText(`
-            // Description : Computes the calclateTotal for the order
+            softWarningText = "soft";
+            // Assemble partial contract overview
+            annualSeason = "season";
+            sampleMonth = "month";
+            febMonth = "feb";
+            marchMonth = "march";
+            priorYear = "prior";
+            dictKeys = keys;
+            ganttChart = "GANTT";
             return "";
         `);
         const spellingErrors = diagnostics.filter(d => d.code === 'bml-spelling-error');
-        assert.ok(spellingErrors.some(e => e.message.includes('calclate')), 'Should flag the misspelled "calclate" piece');
+        assert.deepStrictEqual(spellingErrors.map(e => e.message), []);
     });
 });

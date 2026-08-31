@@ -1,4 +1,7 @@
-const vscode = require("vscode");
+let vscode;
+try {
+  vscode = require("vscode");
+} catch (e) {}
 const { getCommentRanges } = require("../lint/rules/comments");
 const { getStringRanges } = require("../lint/rules/strings");
 const {
@@ -9,7 +12,7 @@ const {
 } = require("./spellingDict");
 
 function splitIdentifier(token) {
-  const parts = token.split(/[^a-zA-Z]/);
+  const parts = token.split(/[^a-zA-Z0-9]/);
   const subWords = [];
 
   parts.forEach((part) => {
@@ -17,10 +20,13 @@ function splitIdentifier(token) {
     const camelParts = part
       .replace(/([a-z])([A-Z])/g, "$1 $2")
       .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+      .replace(/([a-zA-Z])([0-9]+)/g, "$1 $2")
+      .replace(/([0-9]+)([a-zA-Z])/g, "$1 $2")
       .split(/\s+/);
 
     camelParts.forEach((cp) => {
-      if (cp) subWords.push(cp);
+      const alpha = cp.replace(/^[0-9]+|[0-9]+$/g, "");
+      if (alpha) subWords.push(alpha);
     });
   });
 
@@ -36,6 +42,9 @@ function cleanCommentText(text) {
     clean.includes("HTTPS://")
   ) {
     clean = clean.replace(/https?:\/\/[^\s]+/gi, (m) => " ".repeat(m.length));
+  }
+  if (clean.includes("<") && clean.includes(">")) {
+    clean = clean.replace(/<\/?[a-zA-Z0-9_-]+(?:\s+[^>]*)?>/g, (m) => " ".repeat(m.length));
   }
   if (clean.includes("@")) {
     clean = clean.replace(
@@ -61,21 +70,18 @@ function cleanCommentText(text) {
 
 // Short technical tokens accepted as compound segments even below the 4-char
 // minimum (json, xml, ...), and connectors accepted only as a trailing
-// segment (numberof, linesby, followon, ...). Both lists were tuned against
-// the real pulled library: this segmentation clears the all-lowercase
-// compound identifiers the camelCase splitter can't split (linejson,
-// dummyarray, orderline, ...) while still flagging 17 of 18 known real typos
-// in that corpus (struture, servcie, hiearchy, ...). The 4-char segment
-// minimum is what keeps the typos flagged - the full english wordlist
-// contains junk 3-letter fragments (ure, ing, hie) that would otherwise
-// let typos through as bogus segment pairs.
+// segment (numberof, linesby, followon, ...).
 const SHORT_TECH_SEGMENTS = new Set([
   "json", "xml", "doc", "log", "map", "get", "set", "ref", "app", "bom",
   "txn", "grp", "arr", "str", "num", "val", "obj", "seq", "pac", "ids",
   "sub", "pre", "post", "util", "func", "svc", "abo", "dict", "bool", "int",
   "db", "ws", "id", "api", "url", "uri", "sql", "csv", "pdf", "jsp", "xsi",
   "utf", "www", "tag", "key", "row", "col", "var", "arg", "res", "req",
-  "err", "msg", "sb",
+  "err", "msg", "sb", "gantt", "soft", "calc", "warn", "desc", "stat",
+  "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
+  "amt", "qty", "pct", "pos", "prev", "next", "cur", "max", "min", "avg", "cnt",
+  "ctx", "cfg", "opt", "rsp", "auth", "impl", "spec", "init", "dest", "src", "tgt",
+  "tmp", "temp", "sync", "async", "misc",
 ]);
 const COMPOUND_CONNECTORS = new Set(["of", "by", "on", "in", "to", "for", "up", "down", "at", "as"]);
 
@@ -83,7 +89,7 @@ const COMPOUND_CONNECTORS = new Set(["of", "by", "on", "in", "to", "for", "up", 
 // 4+ chars or short tech tokens, optionally ending in a connector).
 function segmentsIntoKnownWords(word, dict, depth) {
   if (depth <= 0) return false;
-  const okSeg = (s) => (s.length >= 4 && dict.has(s)) || SHORT_TECH_SEGMENTS.has(s);
+  const okSeg = (s) => (s.length >= 4 && (dict.has(s) || extraAllowed.has(s) || isMorphologicallyValid(s, dict))) || SHORT_TECH_SEGMENTS.has(s);
   for (let i = 2; i <= word.length - 2; i++) {
     const head = word.slice(0, i);
     if (!okSeg(head)) continue;

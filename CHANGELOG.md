@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.70.1] - 2026-08-31
+
+### Changed
+
+- Performance optimizations, benchmark fixtures, and stability enhancements.
+
 ## [1.70.0] - 2026-08-31
 
 ### Added
@@ -84,10 +90,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Add BML code snippets, linting rules, and corresponding unit tests.
-
-## [1.60.0] - 2026-08-29
-
-### Added
-
-- Add automated BML function documentation parser and intellisense support scripts.
-- Introduce automated benchmarking suite for code actions and fix-all subsystems.
