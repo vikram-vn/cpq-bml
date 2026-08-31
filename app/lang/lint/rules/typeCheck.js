@@ -108,6 +108,20 @@ function inferExpressionType(rhsText, extensionPath, preloadedReturnTypes) {
     return null;
 }
 
+function isTypeReassignmentMismatch(priorType, literalType) {
+    if (!priorType || !literalType) return false;
+    if (priorType === literalType) return false;
+    const priorLower = priorType.toLowerCase();
+    const literalLower = literalType.toLowerCase();
+    if (priorLower === literalLower) return false;
+    // Numeric widening / compatibility: Float, Number, Double, Currency, Percent accept Integer and Float literals
+    if (['float', 'number', 'numeric', 'double', 'currency', 'percent'].includes(priorLower) &&
+        (literalLower === 'integer' || literalLower === 'float')) {
+        return false;
+    }
+    return true;
+}
+
 function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode, extensionPath, precomputedDeclaredVars) {
     const diagnostics = [];
     const firstTypeByVar = new Map();
@@ -148,7 +162,7 @@ function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode
                     firstTypeByVar.set(varName, entry);
                 } else if (vscode && doc) {
                     const literalType = inferLiteralType(rhs.text);
-                    if (literalType && prior.type !== literalType) {
+                    if (literalType && isTypeReassignmentMismatch(prior.type, literalType)) {
                         const currentLine = doc.positionAt(matchIndex).line;
                         if (prior.line !== currentLine) {
                             const startPos = doc.positionAt(matchIndex);
@@ -207,7 +221,7 @@ function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode
         } else if (vscode && doc) {
             const currentLine = doc.positionAt(matchIndex).line;
             const literalType = inferLiteralType(rhs.text);
-            if (literalType && prior.line !== currentLine && prior.type !== literalType) {
+            if (literalType && prior.line !== currentLine && isTypeReassignmentMismatch(prior.type, literalType)) {
                 const startPos = doc.positionAt(matchIndex);
                 const endPos = startPos.translate(0, varName.length);
                 const range = new vscode.Range(startPos, endPos);
@@ -261,9 +275,17 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
 
         if (!leftType || !rightType) continue;
 
-        const isNumeric = (type) => ['Integer', 'Float', 'Long', 'Double', 'integer', 'float', 'long', 'double'].includes(type);
-        const isString = (type) => type === 'String' || type === 'string';
-        const isNullType = (type) => ['Null', 'JsonNull'].includes(type);
+        const isNumeric = (type) => {
+            if (!type || typeof type !== 'string') return false;
+            const lower = type.toLowerCase();
+            return ['integer', 'float', 'long', 'double', 'number', 'numeric', 'currency', 'percent'].includes(lower);
+        };
+        const isString = (type) => {
+            if (!type || typeof type !== 'string') return false;
+            const lower = type.toLowerCase();
+            return lower === 'string' || lower === 'text';
+        };
+        const isNullType = (type) => ['Null', 'JsonNull', 'null', 'jsonnull'].includes(typeof type === 'string' ? type.toLowerCase() : '');
 
         let mismatch = false;
         let msg = '';
@@ -301,7 +323,7 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
                     // (String, Boolean, Dictionary, Json, RecordSet, ...),
                     // not just the primitives singled out below.
                 } else if (isLeftNumeric && isRightNumeric) {
-                    // valid: numeric widening (Integer vs Float, etc.)
+                    // valid: numeric widening / cross-comparison (Integer vs Float vs Number vs Currency etc.)
                 } else {
                     mismatch = true;
                     msg = `Type mismatch: Cannot compare '${leftType}' and '${rightType}' using '${op}'.`;
@@ -432,12 +454,12 @@ function checkDictPutTypeConsistency(cleanText, doc, vscode, firstTypeByVar, ext
         const valTypeLower = valType.toLowerCase();
         let compatible = false;
 
-        if (expectedElem === 'string') {
-            compatible = valTypeLower === 'string';
+        if (expectedElem === 'string' || expectedElem === 'text') {
+            compatible = valTypeLower === 'string' || valTypeLower === 'text';
         } else if (expectedElem === 'integer') {
             compatible = valTypeLower === 'integer';
-        } else if (expectedElem === 'float') {
-            compatible = valTypeLower === 'float' || valTypeLower === 'integer';
+        } else if (expectedElem === 'float' || expectedElem === 'number' || expectedElem === 'numeric' || expectedElem === 'double' || expectedElem === 'currency' || expectedElem === 'percent') {
+            compatible = ['float', 'integer', 'number', 'numeric', 'double', 'currency', 'percent', 'long'].includes(valTypeLower);
         } else if (expectedElem === 'boolean') {
             compatible = valTypeLower === 'boolean';
         } else if (expectedElem === 'date') {

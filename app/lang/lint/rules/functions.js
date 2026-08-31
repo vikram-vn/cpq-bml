@@ -281,7 +281,7 @@ function normalizeType(type) {
   return `${match[1]}${match[2]}`;
 }
 
-// Integer literals are accepted for a Float parameter (numeric widening); everything else must match.
+// Numeric types (Integer, Float, Number, Long, Double, Currency, Percent) are accepted for Float/Number/Numeric parameters; everything else must match.
 function argumentTypeCompatible(expectedType, actualType) {
   if (!expectedType || !actualType) return true;
   if (Array.isArray(expectedType)) {
@@ -299,14 +299,18 @@ function argumentTypeCompatible(expectedType, actualType) {
   if (actual === "any" || actual === "anytype" || actual === "object")
     return true;
   if (expected === actual) return true;
-  if (expected === "float" && actual === "integer") return true;
-  if (expected === "long" && actual === "integer") return true;
-  if (expected === "float" && actual === "long") return true;
   if (
-    (expected === "numeric" || expected === "number") &&
-    (actual === "integer" || actual === "float" || actual === "long")
+    (expected === "string" || expected === "text") &&
+    (actual === "string" || actual === "text")
   )
     return true;
+
+  const NUMERIC_TYPES = new Set(['integer', 'float', 'long', 'double', 'number', 'numeric', 'currency', 'percent']);
+  const FLOAT_LIKE = new Set(['float', 'double', 'number', 'numeric', 'currency', 'percent', 'long']);
+  if (FLOAT_LIKE.has(expected) && NUMERIC_TYPES.has(actual)) return true;
+  if (expected === "integer" && (actual === "integer" || actual === "number")) return true;
+  if (expected === "long" && (actual === "integer" || actual === "long" || actual === "number")) return true;
+
   if (expected === "array" && actual.endsWith("[]")) return true;
   if (
     expected === "singlearray" &&

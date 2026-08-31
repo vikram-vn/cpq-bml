@@ -118,6 +118,7 @@ function checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, 
         }
 
         const expectedType = normalizeTypeLabel(metadata.returnType.displayValue);
+        const expectedLower = expectedType ? expectedType.toLowerCase() : '';
         const returnRegex = /\breturn\b\s*/g;
         let match;
         while ((match = returnRegex.exec(cleanText)) !== null) {
@@ -125,6 +126,13 @@ function checkMetadataTypeConsistency(cleanText, doc, vscode, inferLiteralType, 
             if (!rhs || !rhs.text.trim()) continue;
             const inferredType = inferLiteralType(rhs.text);
             if (!inferredType || inferredType === expectedType) continue;
+
+            const inferredLower = inferredType.toLowerCase();
+            if (expectedLower === inferredLower) continue;
+            if (['float', 'number', 'numeric', 'double', 'currency', 'percent'].includes(expectedLower) &&
+                (inferredLower === 'integer' || inferredLower === 'float')) {
+                continue;
+            }
 
             const startPos = doc.positionAt(match.index);
             const endPos = startPos.translate(0, 'return'.length);

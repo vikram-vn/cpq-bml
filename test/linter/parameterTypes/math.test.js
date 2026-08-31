@@ -143,6 +143,7 @@ suite('Parameter Type Validation - All Math Functions & Constants', () => {
             fl = integer(99.9);
             val1 = jNaN;
             val2 = NaN;
+            m = fmod(365, 27);
             return "";
         `);
         assert.strictEqual(diags.find(d => d.code === 'bml-function-arg-type'), undefined);

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('../fixtures');
-const { inferLiteralType, getAssignmentRhsText } = require('../../../app/lang/lint/rules/typeCheck');
+const { inferLiteralType, getAssignmentRhsText, checkAssignmentTypeConsistency } = require('../../../app/lang/lint/rules/typeCheck');
 
 suite('BML Linter Test Suite - variable type consistency', () => {
     test('Flags reassigning an Integer-typed variable to a String literal', () => {
@@ -311,6 +311,31 @@ suite('BML Linter Test Suite - variable type consistency', () => {
             `);
             const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
             assert.ok(diag, 'Should flag Integer + String when array element is indexed');
+        });
+
+        test('Does not flag comparisons (<>, ==, !=, <, >, <=, >=) or arithmetic between Number, Float, and Integer', () => {
+            const declaredTypes = new Map();
+            declaredTypes.set('totaldayscontract', 'Number');
+            declaredTypes.set('price', 'Float');
+
+            const text = `
+                if (totalDaysContract <> 364 AND totalDaysContract <> 365) {
+                    totalYear = totalDaysContract / 365;
+                }
+                if (price > 100 AND price == 200.5) {
+                    diff = price - 50;
+                }
+                return "";
+            `;
+            const doc = {
+                positionAt: (idx) => {
+                    const lines = text.slice(0, idx).split(/\r?\n/);
+                    return new vscode.Position(lines.length - 1, lines[lines.length - 1].length);
+                }
+            };
+            const diagnostics = checkAssignmentTypeConsistency(text, doc, vscode, declaredTypes);
+            const binaryDiags = diagnostics.filter(d => d.code === 'bml-binary-type-mismatch');
+            assert.strictEqual(binaryDiags.length, 0, 'Comparing Number/Float with Integer should not be flagged as a type mismatch');
         });
     });
 
