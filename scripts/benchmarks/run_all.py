@@ -79,11 +79,11 @@ def generate_markdown_report(results: List[BenchmarkResult], metadata: Dict[str,
         )
 
     md.append("\n---\n")
-    md.append("### Rating Thresholds")
-    md.append("- **⚡ INSTANT**: < 1 ms")
-    md.append("- **✅ EXCELLENT**: < 50 ms")
-    md.append("- **⚡ FAST**: < 150 ms")
-    md.append("- **⚠️ ATTENTION**: >= 150 ms")
+    md.append("### Rating Thresholds (Gold Standard)")
+    md.append("- **🚀 INSTANT**: < 1 ms")
+    md.append("- **✨ EXCELLENT**: < 50 ms")
+    md.append("- **⚡ FAST**: < 100 ms")
+    md.append("- **⚠️ ATTENTION**: >= 100 ms")
     return "\n".join(md)
 
 

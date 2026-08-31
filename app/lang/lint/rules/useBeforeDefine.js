@@ -55,9 +55,13 @@ function findClosestDeclaredVariable(name, declaredNames) {
   let minDistance = Infinity;
   let closest = null;
   const nameLower = name.toLowerCase();
+  const nameLen = nameLower.length;
 
-  declaredNames.forEach((declName) => {
+  for (const declName of declaredNames) {
     const declLower = declName.toLowerCase();
+    const declLen = declLower.length;
+    if (Math.abs(nameLen - declLen) > 3) continue;
+
     if (
       declLower.startsWith(nameLower) ||
       nameLower.startsWith(declLower) ||
@@ -76,7 +80,7 @@ function findClosestDeclaredVariable(name, declaredNames) {
         closest = declName;
       }
     }
-  });
+  }
 
   return closest;
 }
@@ -103,7 +107,10 @@ function checkUseBeforeDefine(
     if (cached !== undefined) return cached;
 
     let result = false;
-    if (
+    const c0 = nameLower.charCodeAt(0);
+    if (c0 === 95 || (c0 >= 48 && c0 <= 57)) { // '_' or digits
+      result = true;
+    } else if (
       reservedWords.has(nameLower) ||
       systemVars.has(nameLower) ||
       builtIns.has(nameLower)
@@ -122,7 +129,6 @@ function checkUseBeforeDefine(
     ) {
       result = true;
     } else if (
-      nameLower.startsWith("_") ||
       nameLower.startsWith("bm_") ||
       nameLower.startsWith("_c_") ||
       nameLower.startsWith("_t_") ||
@@ -146,18 +152,20 @@ function checkUseBeforeDefine(
 
   const declaredNames = new Set();
   const earliestAvailableReadByName = new Map();
-  const declSitesByName = new Map();
+  const allDeclSites = new Set();
   const suggestionCache = new Map();
 
-  declaredVars.forEach((decls, varName) => {
+  for (const [varName, decls] of declaredVars.entries()) {
     declaredNames.add(varName);
-    declSitesByName.set(varName, new Set(decls.map((d) => d.index)));
-
-    const stmtEnds = decls.map((d) =>
-      getStatementEndIndex(noStringsText, d.index),
-    );
-    earliestAvailableReadByName.set(varName, Math.min(...stmtEnds));
-  });
+    let earliest = Infinity;
+    for (let i = 0; i < decls.length; i++) {
+      const d = decls[i];
+      allDeclSites.add(d.index);
+      const end = getStatementEndIndex(noStringsText, d.index);
+      if (end < earliest) earliest = end;
+    }
+    earliestAvailableReadByName.set(varName, earliest === Infinity ? noStringsText.length : earliest);
+  }
 
   // 1. Bare code identifier references in noStringsText
   const identRegex = /\b([a-zA-Z_]\w*)\b/g;
@@ -171,6 +179,9 @@ function checkUseBeforeDefine(
     if (earliestAvailable !== undefined && earliestAvailable <= idx) {
       continue;
     }
+
+    // This occurrence is itself a declaration site (LHS), not a read.
+    if (allDeclSites.has(idx)) continue;
 
     // Dotted member/attribute access, not a bare variable read.
     let before = idx - 1;
@@ -189,10 +200,6 @@ function checkUseBeforeDefine(
 
     const nameLower = name.toLowerCase();
     if (isIgnoredSymbol(nameLower)) continue;
-
-    // This occurrence is itself a declaration site (LHS), not a read.
-    const sites = declSitesByName.get(name);
-    if (sites && sites.has(idx)) continue;
 
     if (earliestAvailable !== undefined && earliestAvailable > idx) {
       const startPos = doc.positionAt(idx);

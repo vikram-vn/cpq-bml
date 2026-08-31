@@ -185,16 +185,6 @@ function commentOutEmptyLoops(text, eol) {
 function computeTransitiveUnusedVariables(noStringsText, declaredVars, document, cleanText, initialUnusedNames) {
     const unusedVarNames = new Set(initialUnusedNames);
 
-    try {
-        const { checkVariableDiagnostics } = require('../rules/variables');
-        const fullUnusedDiags = checkVariableDiagnostics(noStringsText, declaredVars, document, cleanText);
-        for (const diag of fullUnusedDiags) {
-            const name = document.getText(diag.range).trim();
-            if (name) unusedVarNames.add(name);
-        }
-    } catch (e) {
-    }
-
     const lines = noStringsText.split(/\r?\n/);
     const lineOffsets = new Int32Array(lines.length);
     let currOffset = 0;
@@ -213,6 +203,20 @@ function computeTransitiveUnusedVariables(noStringsText, declaredVars, document,
         return lines[Math.max(0, high)] || '';
     }
 
+    // Single linear pass to collect all identifier offsets in document
+    const identifierOffsets = new Map();
+    const identRegex = /\b([a-zA-Z_]\w*)\b/g;
+    let match;
+    while ((match = identRegex.exec(noStringsText)) !== null) {
+        const ident = match[1];
+        let arr = identifierOffsets.get(ident);
+        if (!arr) {
+            arr = [];
+            identifierOffsets.set(ident, arr);
+        }
+        arr.push(match.index);
+    }
+
     let addedNew = true;
     let iteration = 0;
     while (addedNew && iteration < 3) {
@@ -229,12 +233,8 @@ function computeTransitiveUnusedVariables(noStringsText, declaredVars, document,
             if (unusedVarNames.has(varName)) continue;
             if (/^_/.test(varName)) continue;
 
-            const occurrences = [];
-            const regex = new RegExp(`\\b${varName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'g');
-            let m;
-            while ((m = regex.exec(noStringsText)) !== null) {
-                occurrences.push(m.index);
-            }
+            const occurrences = identifierOffsets.get(varName);
+            if (!occurrences || occurrences.length === 0) continue;
 
             const declIndices = new Set(decls.map(d => d.index));
             const usageIndices = occurrences.filter(idx => !declIndices.has(idx));

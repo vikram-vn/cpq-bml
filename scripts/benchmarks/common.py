@@ -54,33 +54,21 @@ class BenchmarkResult:
     extra: Dict[str, Any] = field(default_factory=dict)
 
     @property
-    def is_batch_operation(self) -> bool:
-        return self.category in ("CodeActions", "Batch") or "Fix-All" in self.name
-
-    @property
     def status_label(self) -> str:
         if self.avg_ms < 1.0:
-            return "⚡ INSTANT (<1ms)"
-        elif self.is_batch_operation:
-            if self.avg_ms < 500.0:
-                return "⚡ FAST BATCH (<500ms)"
-            elif self.avg_ms < 1000.0:
-                return "✅ GOOD BATCH (<1s)"
-            else:
-                return "⚠️ ATTENTION"
+            return "🚀 INSTANT (<1ms)"
+        elif self.avg_ms < 50.0:
+            return "✨ EXCELLENT (<50ms)"
+        elif self.avg_ms < 100.0:
+            return "⚡ FAST (<100ms)"
         else:
-            if self.avg_ms < 50.0:
-                return "✅ EXCELLENT (<50ms)"
-            elif self.avg_ms < 150.0:
-                return "⚡ FAST (<150ms)"
-            else:
-                return "⚠️ ATTENTION"
+            return "⚠️ ATTENTION"
 
     @property
     def status_color(self) -> str:
-        if self.avg_ms < 50.0 or (self.is_batch_operation and self.avg_ms < 500.0):
+        if self.avg_ms < 50.0:
             return GREEN
-        elif self.avg_ms < 150.0 or (self.is_batch_operation and self.avg_ms < 1000.0):
+        elif self.avg_ms < 100.0:
             return YELLOW
         else:
             return RED

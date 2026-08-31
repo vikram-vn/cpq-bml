@@ -10,6 +10,10 @@ const {
     commentOutUnusedAssignments
 } = require('./cascadingCleanup');
 
+const { getDeclaredVariables } = require('../rules/variables');
+const { getCommentRanges } = require('../rules/comments');
+const { getStringRanges } = require('../rules/strings');
+
 function blankRangesFast(text, ranges) {
     if (!ranges || ranges.length === 0) return text;
     let res = '';
@@ -28,68 +32,82 @@ function blankRangesFast(text, ranges) {
 /**
  * Creates a bundled "Fix All Safe Style & Naming Issues in File" CodeAction.
  */
-function buildFixAllText(document, relevantDiags) {
+function buildFixAllText(document, relevantDiags, initialAst, isCategory = false) {
     let text = document.getText();
+    if (!relevantDiags || relevantDiags.length === 0) return text;
+
+    let astContext = initialAst || null;
+    function getAst() {
+        if (astContext) return astContext;
+        const commentRanges = getCommentRanges(text);
+        const cleanText = blankRangesFast(text, commentRanges);
+        const stringRanges = getStringRanges(cleanText);
+        const noStringsText = blankRangesFast(cleanText, stringRanges);
+        const declaredVars = getDeclaredVariables(noStringsText, document);
+        astContext = { commentRanges, cleanText, stringRanges, noStringsText, declaredVars };
+        return astContext;
+    }
+
+    const hasMagic = relevantDiags.some(d => d.code === 'bml-magic-number');
+    const hasCamel = relevantDiags.some(d => d.code === 'bml-variable-camelcase');
+    const hasDictSuffix = relevantDiags.some(d => d.code === 'bml-dict-naming-suffix');
+    const hasArraySuffix = relevantDiags.some(d => d.code === 'bml-array-naming-suffix');
+    const hasRecordSetSuffix = relevantDiags.some(d => d.code === 'bml-recordset-naming-suffix');
+    const hasBoolPrefix = relevantDiags.some(d => d.code === 'bml-boolean-naming-prefix');
+    const hasNaming = hasCamel || hasDictSuffix || hasArraySuffix || hasRecordSetSuffix || hasBoolPrefix;
 
     // 1. Identifier renamings (Constants take priority over camelCase)
     const renameMap = new Map();
     const constantVars = new Set();
 
-    for (const diag of relevantDiags) {
-        if (diag.code === 'bml-magic-number') {
+    if (hasMagic) {
+        for (const diag of relevantDiags) {
+            if (diag.code === 'bml-magic-number') {
+                const editRange = diag.originalRange ?? diag.range;
+                const val = document.getText(editRange);
+                const lineText = document.lineAt(editRange.start.line).text;
+                const prefix = lineText.substring(0, editRange.start.character);
+                const suffix = lineText.substring(editRange.start.character + val.length);
+                const directAssignMatch = prefix.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?([a-zA-Z_]\w*)\s*=\s*$/i);
+                const isPureAssignment = directAssignMatch && (/^[\s;]*$/.test(suffix));
+                if (isPureAssignment) {
+                    const varName = directAssignMatch[1];
+                    const constName = inferConstantCandidateName(lineText, editRange.start.character, val);
+                    renameMap.set(varName, constName);
+                    constantVars.add(varName);
+                }
+            }
+        }
+    }
+
+    if (hasNaming) {
+        for (const diag of relevantDiags) {
             const editRange = diag.originalRange ?? diag.range;
-            const val = document.getText(editRange);
-            const lineText = document.lineAt(editRange.start.line).text;
-            const prefix = lineText.substring(0, editRange.start.character);
-            const suffix = lineText.substring(editRange.start.character + val.length);
-            const directAssignMatch = prefix.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?([a-zA-Z_]\w*)\s*=\s*$/i);
-            const isPureAssignment = directAssignMatch && (/^[\s;]*$/.test(suffix));
-            if (isPureAssignment) {
-                const varName = directAssignMatch[1];
-                const constName = inferConstantCandidateName(lineText, editRange.start.character, val);
-                renameMap.set(varName, constName);
-                constantVars.add(varName);
+            const name = document.getText(editRange);
+            if (constantVars.has(name)) continue;
+
+            if (diag.code === 'bml-variable-camelcase') {
+                const newName = toCamelCase(name);
+                if (newName && newName !== name) {
+                    renameMap.set(name, newName);
+                }
+            } else if (diag.code === 'bml-dict-naming-suffix') {
+                const base = toCamelCase(name);
+                renameMap.set(name, base.endsWith('Dict') ? base : base + 'Dict');
+            } else if (diag.code === 'bml-array-naming-suffix') {
+                const base = toCamelCase(name);
+                renameMap.set(name, base.endsWith('Array') ? base : base + 'Array');
+            } else if (diag.code === 'bml-recordset-naming-suffix') {
+                const base = toCamelCase(name);
+                renameMap.set(name, base.endsWith('RecordSet') ? base : base + 'RecordSet');
+            } else if (diag.code === 'bml-boolean-naming-prefix') {
+                renameMap.set(name, formatBooleanName(name));
             }
         }
-    }
 
-    for (const diag of relevantDiags) {
-        const editRange = diag.originalRange ?? diag.range;
-        const name = document.getText(editRange);
-        if (constantVars.has(name)) continue;
-
-        if (diag.code === 'bml-variable-camelcase') {
-            const newName = toCamelCase(name);
-            if (newName && newName !== name) {
-                renameMap.set(name, newName);
-            }
-        } else if (diag.code === 'bml-dict-naming-suffix') {
-            const base = toCamelCase(name);
-            renameMap.set(name, base.endsWith('Dict') ? base : base + 'Dict');
-        } else if (diag.code === 'bml-array-naming-suffix') {
-            const base = toCamelCase(name);
-            renameMap.set(name, base.endsWith('Array') ? base : base + 'Array');
-        } else if (diag.code === 'bml-recordset-naming-suffix') {
-            const base = toCamelCase(name);
-            renameMap.set(name, base.endsWith('RecordSet') ? base : base + 'RecordSet');
-        } else if (diag.code === 'bml-boolean-naming-prefix') {
-            renameMap.set(name, formatBooleanName(name));
-        }
-    }
-
-    // Scan all declared variables across the entire document to ensure 100% file-level coverage
-    if (relevantDiags.some(d => d.code === 'bml-variable-camelcase' || d.code === 'bml-dict-naming-suffix' || d.code === 'bml-array-naming-suffix' || d.code === 'bml-recordset-naming-suffix' || d.code === 'bml-boolean-naming-prefix')) {
+        // Scan all declared variables across the entire document to ensure 100% file-level coverage
         try {
-            const { getDeclaredVariables } = require('../rules/variables');
-            const { getCommentRanges } = require('../rules/comments');
-            const { getStringRanges } = require('../rules/strings');
-
-            const commentRanges = getCommentRanges(text);
-            const cleanText = blankRangesFast(text, commentRanges);
-            const stringRanges = getStringRanges(cleanText);
-            const noStringsText = blankRangesFast(cleanText, stringRanges);
-
-            const declaredVars = getDeclaredVariables(noStringsText, document);
+            const { declaredVars } = getAst();
             for (const [varName] of declaredVars.entries()) {
                 if (constantVars.has(varName)) continue;
                 if (/^[A-Z0-9_]+$/.test(varName)) continue; // skip ALL_CAPS constants
@@ -116,7 +134,7 @@ function buildFixAllText(document, relevantDiags) {
 
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
 
-    // 2. Multi-pass Cascading Unused Variable & Empty Block Cleanups
+    // 2. Cascading Unused Variable & Empty Block Cleanups
     const unusedDiags = relevantDiags.filter(d => d.code === 'bml-unused-variable' || d.code === 'bml-unused-loop-var');
     if (unusedDiags.length > 0) {
         const initialUnusedNames = new Set();
@@ -126,82 +144,47 @@ function buildFixAllText(document, relevantDiags) {
             if (name) initialUnusedNames.add(name);
         }
 
-        let globalChanged = true;
-        let globalPass = 0;
-        while (globalChanged && globalPass < 3) {
-            const passStartText = text;
-            globalPass++;
+        let currentUnusedNames = new Set(initialUnusedNames);
+        try {
+            const { noStringsText, declaredVars, cleanText } = getAst();
+            currentUnusedNames = computeTransitiveUnusedVariables(noStringsText, declaredVars, document, cleanText, initialUnusedNames);
+        } catch (e) {
+            // Fallback gracefully
+        }
 
-            let currentUnusedNames = new Set(initialUnusedNames);
+        if (currentUnusedNames.size > 0) {
+            text = commentOutUnusedAssignments(text, currentUnusedNames, renameMap, eol);
+        }
 
-            try {
-                const { getDeclaredVariables } = require('../rules/variables');
-                const { getCommentRanges } = require('../rules/comments');
-                const { getStringRanges } = require('../rules/strings');
-
-                const commentRanges = getCommentRanges(text);
-                const cleanText = blankRangesFast(text, commentRanges);
-                const stringRanges = getStringRanges(cleanText);
-                const noStringsText = blankRangesFast(cleanText, stringRanges);
-                const declaredVars = getDeclaredVariables(noStringsText, document);
-
-                currentUnusedNames = computeTransitiveUnusedVariables(noStringsText, declaredVars, document, cleanText, initialUnusedNames);
-            } catch (e) {
-                // Fallback gracefully
-            }
-
-            if (currentUnusedNames.size > 0) {
-                text = commentOutUnusedAssignments(text, currentUnusedNames, renameMap, eol);
-            }
-
-            if (text.includes('if') || text.includes('for') || text.includes('while')) {
-                let blockChanged = true;
-                let collapseIter = 0;
-                while (blockChanged && collapseIter < 2) {
-                    const prevBlockText = text;
-                    text = commentOutEmptyConditionalChains(text, eol);
-                    text = commentOutEmptyLoops(text, eol);
-                    blockChanged = text !== prevBlockText;
-                    collapseIter++;
-                }
-            }
-
-            globalChanged = text !== passStartText;
+        if (text.includes('if') || text.includes('for') || text.includes('while')) {
+            text = commentOutEmptyConditionalChains(text, eol);
+            text = commentOutEmptyLoops(text, eol);
         }
     }
 
     // 3. String-preserved cleanups (never alters contents inside "quotes")
-    text = withPreservedStrings(text, (code) => {
-        // Redundant literal type casts
-        code = code.replace(/\binteger\s*\(\s*(\d+)\s*\)/g, '$1');
-        code = code.replace(/\bfloat\s*\(\s*(\d+(?:\.\d+)?)\s*\)/g, '$1');
-        code = code.replace(/\bboolean\s*\(\s*(true|false)\s*\)/g, '$1');
-        code = code.replace(/\bstring\s*\(\s*(__BML_STR_\d+__|[a-zA-Z_]\w*)\s*\)/g, '$1');
-
-        // Redundant boolean comparisons
-        code = code.replace(/\b([a-zA-Z_]\w*)\s*==\s*true\b/g, '$1');
-        code = code.replace(/\b([a-zA-Z_]\w*)\s*==\s*false\b/g, '!$1');
-        code = code.replace(/\b([a-zA-Z_]\w*)\s*!=\s*true\b/g, '!$1');
-        code = code.replace(/\b([a-zA-Z_]\w*)\s*!=\s*false\b/g, '$1');
-        code = code.replace(/\btrue\s*==\s*([a-zA-Z_]\w*)\b/g, '$1');
-        code = code.replace(/\bfalse\s*==\s*([a-zA-Z_]\w*)\b/g, '!$1');
-
-        // Canonical type declaration lowercasing
-        code = code.replace(/\b(String|Integer|Float|Boolean|Date|Dict|Json|JsonArray)\b(?=\s+[a-zA-Z_]\w*|\s*\[\])/g, (m) => m.toLowerCase());
-
-        // Canonical boolean literal lowercasing
-        code = code.replace(/\b(True|TRUE)\b/g, 'true');
-        code = code.replace(/\b(False|FALSE)\b/g, 'false');
-
-        // Empty string concatenation cleanups
-        code = code.replace(/__BML_STR_EMPTY__\s*\+\s*([a-zA-Z_]\w*)/g, '$1');
-        code = code.replace(/([a-zA-Z_]\w*)\s*\+\s*__BML_STR_EMPTY__/g, '$1');
-
-        // Double semicolons
-        code = code.replace(/;\s*;+/g, ';');
-
-        return code;
-    });
+    const hasCastDiag = relevantDiags.some(d => d.code === 'bml-string-cast-of-string');
+    if (!isCategory || hasCastDiag) {
+        text = withPreservedStrings(text, (code) => {
+            code = code.replace(/\binteger\s*\(\s*(\d+)\s*\)/g, '$1');
+            code = code.replace(/\bfloat\s*\(\s*(\d+(?:\.\d+)?)\s*\)/g, '$1');
+            code = code.replace(/\bboolean\s*\(\s*(true|false)\s*\)/g, '$1');
+            code = code.replace(/\bstring\s*\(\s*(__BML_STR_\d+__|[a-zA-Z_]\w*)\s*\)/g, '$1');
+            code = code.replace(/\b([a-zA-Z_]\w*)\s*==\s*true\b/g, '$1');
+            code = code.replace(/\b([a-zA-Z_]\w*)\s*==\s*false\b/g, '!$1');
+            code = code.replace(/\b([a-zA-Z_]\w*)\s*!=\s*true\b/g, '!$1');
+            code = code.replace(/\b([a-zA-Z_]\w*)\s*!=\s*false\b/g, '$1');
+            code = code.replace(/\btrue\s*==\s*([a-zA-Z_]\w*)\b/g, '$1');
+            code = code.replace(/\bfalse\s*==\s*([a-zA-Z_]\w*)\b/g, '!$1');
+            code = code.replace(/\b(String|Integer|Float|Boolean|Date|Dict|Json|JsonArray)\b(?=\s+[a-zA-Z_]\w*|\s*\[\])/g, (m) => m.toLowerCase());
+            code = code.replace(/\b(True|TRUE)\b/g, 'true');
+            code = code.replace(/\b(False|FALSE)\b/g, 'false');
+            code = code.replace(/__BML_STR_EMPTY__\s*\+\s*([a-zA-Z_]\w*)/g, '$1');
+            code = code.replace(/([a-zA-Z_]\w*)\s*\+\s*__BML_STR_EMPTY__/g, '$1');
+            code = code.replace(/;\s*;+/g, ';');
+            return code;
+        });
+    }
 
     // 4. Empty blocks
     if (relevantDiags.some(d => d.code === 'bml-empty-block')) {
@@ -261,15 +244,23 @@ function getFixAllSafeAction(document, diagnostics) {
         return [];
     }
 
+    const baseText = document.getText();
+    const commentRanges = getCommentRanges(baseText);
+    const cleanText = blankRangesFast(baseText, commentRanges);
+    const stringRanges = getStringRanges(cleanText);
+    const noStringsText = blankRangesFast(cleanText, stringRanges);
+    const declaredVars = getDeclaredVariables(noStringsText, document);
+    const sharedAst = { commentRanges, cleanText, stringRanges, noStringsText, declaredVars };
+
     const actions = [];
     const fullRange = new vscode.Range(
         document.positionAt(0),
-        document.positionAt(document.getText().length)
+        document.positionAt(baseText.length)
     );
 
     // 1. Master Fix-All Action (Available in QuickFix & RefactorRewrite)
     const masterTitle = `Fix All Safe Style & Naming Issues in File (${relevantDiags.length} issue${relevantDiags.length > 1 ? 's' : ''})`;
-    const masterText = buildFixAllText(document, relevantDiags);
+    const masterText = buildFixAllText(document, relevantDiags, sharedAst, false);
     const masterEdit = new vscode.WorkspaceEdit();
     masterEdit.replace(document.uri, fullRange, masterText);
 
@@ -287,7 +278,7 @@ function getFixAllSafeAction(document, diagnostics) {
         if (!categoryDiags || categoryDiags.length === 0) return;
         const text = (categoryDiags.length === relevantDiags.length)
             ? masterText
-            : buildFixAllText(document, categoryDiags);
+            : buildFixAllText(document, categoryDiags, sharedAst, true);
         const edit = new vscode.WorkspaceEdit();
         edit.replace(document.uri, fullRange, text);
         const action = new vscode.CodeAction(titleGenerator(categoryDiags.length), vscode.CodeActionKind.RefactorRewrite);
@@ -344,4 +335,4 @@ function getFixAllSafeAction(document, diagnostics) {
     return actions;
 }
 
-module.exports = { getFixAllSafeAction };
+module.exports = { getFixAllSafeAction, buildFixAllText };

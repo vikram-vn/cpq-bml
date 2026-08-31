@@ -224,74 +224,139 @@ function readWordListFile(baseDir, fileName) {
   return null;
 }
 
+let wordsByLength = null;
+const suggestionsCache = new Map();
+
 function loadDictionaries(extensionPath) {
   if (combinedDictionary && combinedDictionary.size > 0) return combinedDictionary;
   combinedDictionary = new Set();
+  wordsByLength = new Map();
+
+  const addWord = (raw) => {
+    const w = raw.trim().toLowerCase();
+    if (!w) return;
+    combinedDictionary.add(w);
+    const len = w.length;
+    let list = wordsByLength.get(len);
+    if (!list) {
+      list = [];
+      wordsByLength.set(len, list);
+    }
+    list.push(w);
+  };
 
   const baseDir = resolveSpellCheckDir(extensionPath);
 
   try {
     const content = readWordListFile(baseDir, "bml-words.txt");
     if (content) {
-      content.split(/\r?\n/).forEach((line) => {
-        const w = line.trim().toLowerCase();
-        if (w) combinedDictionary.add(w);
-      });
+      content.split(/\r?\n/).forEach(addWord);
     }
   } catch (e) {}
 
   try {
     const content = readWordListFile(baseDir, "english-words.txt");
     if (content) {
-      content.split(/\r?\n/).forEach((line) => {
-        const w = line.trim().toLowerCase();
-        if (w) combinedDictionary.add(w);
-      });
+      content.split(/\r?\n/).forEach(addWord);
     }
   } catch (e) {}
 
   return combinedDictionary;
 }
 
-function levenshtein(a, b) {
-  const m = a.length;
-  const n = b.length;
-  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
-  for (let i = 0; i <= m; i++) dp[i][0] = i;
-  for (let j = 0; j <= n; j++) dp[0][j] = j;
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      dp[i][j] =
-        a[i - 1] === b[j - 1]
-          ? dp[i - 1][j - 1]
-          : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+let rowPrev = new Uint8Array(64);
+let rowCurr = new Uint8Array(64);
+
+function boundedLevenshtein(a, b, maxDist) {
+  const la = a.length;
+  const lb = b.length;
+  if (Math.abs(la - lb) > maxDist) return maxDist + 1;
+
+  if (lb + 1 > rowPrev.length) {
+    rowPrev = new Uint8Array(lb + 32);
+    rowCurr = new Uint8Array(lb + 32);
+  }
+
+  for (let j = 0; j <= lb; j++) rowPrev[j] = j;
+
+  for (let i = 1; i <= la; i++) {
+    rowCurr[0] = i;
+    let minVal = i;
+    const aChar = a.charCodeAt(i - 1);
+
+    for (let j = 1; j <= lb; j++) {
+      const cost = aChar === b.charCodeAt(j - 1) ? 0 : 1;
+      const val = Math.min(
+        rowPrev[j] + 1,       // deletion
+        rowCurr[j - 1] + 1,   // insertion
+        rowPrev[j - 1] + cost // substitution
+      );
+      rowCurr[j] = val;
+      if (val < minVal) minVal = val;
+    }
+
+    if (minVal > maxDist) return maxDist + 1;
+
+    for (let j = 0; j <= lb; j++) {
+      rowPrev[j] = rowCurr[j];
     }
   }
-  return dp[m][n];
+  return rowPrev[lb];
 }
 
 function getSpellingSuggestions(word, extensionPath) {
-  const dict = loadDictionaries(extensionPath);
+  if (!word || typeof word !== 'string') return [];
+  const target = word.toLowerCase();
+
+  const cached = suggestionsCache.get(target);
+  if (cached) {
+    const isFirstUpper = word[0] === word[0].toUpperCase() && word[0] !== word[0].toLowerCase();
+    const isAllUpper = word === word.toUpperCase() && word !== word.toLowerCase();
+    return cached.map((m) => {
+      if (isAllUpper) return m.toUpperCase();
+      if (isFirstUpper) return m.charAt(0).toUpperCase() + m.slice(1);
+      return m;
+    });
+  }
+
+  loadDictionaries(extensionPath);
+
   let userWords = [];
   try {
     const config = vscode.workspace.getConfiguration("cpqBml");
     userWords = config.get("spelling.userWords") || [];
   } catch (e) {}
 
-  const candidates = new Set(dict);
-  for (const w of userWords) {
-    const wLower = w.trim().toLowerCase();
-    if (wLower) candidates.add(wLower);
+  const matches = [];
+  const targetLen = target.length;
+  const minLen = Math.max(1, targetLen - 2);
+  const maxLen = targetLen + 2;
+
+  // Search length-bucketed dictionary words
+  if (wordsByLength) {
+    for (let len = minLen; len <= maxLen; len++) {
+      const bucket = wordsByLength.get(len);
+      if (!bucket) continue;
+      for (let i = 0; i < bucket.length; i++) {
+        const cand = bucket[i];
+        const dist = boundedLevenshtein(target, cand, 2);
+        if (dist <= 2) {
+          matches.push({ word: cand, dist });
+        }
+      }
+    }
   }
 
-  const target = word.toLowerCase();
-  const matches = [];
-
-  for (const cand of candidates) {
-    if (Math.abs(cand.length - target.length) > 3) continue;
-    const dist = levenshtein(target, cand);
-    if (dist <= 2) {
-      matches.push({ word: cand, dist });
+  // Check user words
+  for (let i = 0; i < userWords.length; i++) {
+    const w = userWords[i];
+    if (!w) continue;
+    const cand = w.trim().toLowerCase();
+    if (Math.abs(cand.length - targetLen) <= 2) {
+      const dist = boundedLevenshtein(target, cand, 2);
+      if (dist <= 2) {
+        matches.push({ word: cand, dist });
+      }
     }
   }
 
@@ -300,15 +365,24 @@ function getSpellingSuggestions(word, extensionPath) {
     return a.word.localeCompare(b.word);
   });
 
+  const rawResults = matches.slice(0, 5).map(m => m.word);
+  if (suggestionsCache.size < 10000) {
+    suggestionsCache.set(target, rawResults);
+  }
+
   const isFirstUpper =
     word[0] === word[0].toUpperCase() && word[0] !== word[0].toLowerCase();
   const isAllUpper = word === word.toUpperCase() && word !== word.toLowerCase();
 
-  return matches.slice(0, 5).map((m) => {
-    if (isAllUpper) return m.word.toUpperCase();
-    if (isFirstUpper) return m.word.charAt(0).toUpperCase() + m.word.slice(1);
-    return m.word;
+  return rawResults.map((w) => {
+    if (isAllUpper) return w.toUpperCase();
+    if (isFirstUpper) return w.charAt(0).toUpperCase() + w.slice(1);
+    return w;
   });
+}
+
+function levenshtein(a, b) {
+  return boundedLevenshtein(a, b, Math.max(a.length, b.length));
 }
 
 module.exports = {
@@ -316,5 +390,6 @@ module.exports = {
   loadDictionaries,
   getSpellingSuggestions,
   levenshtein,
+  boundedLevenshtein,
   isMorphologicallyValid,
 };

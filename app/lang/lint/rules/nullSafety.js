@@ -52,11 +52,13 @@ function checkNullSafety(cleanText, noStringsText, doc) {
             'i'
         );
 
-        const hasPrevInit = prevInitRegex.test(noStringsText);
+        const initMatch = prevInitRegex.exec(noStringsText);
+        const firstInitIdx = initMatch ? initMatch.index : -1;
 
         const occurrences = occurrencesByName.get(varName) || [];
-        for (const useIndex of occurrences) {
-            if (hasPrevInit && prevInitRegex.test(noStringsText.slice(0, useIndex))) break;
+        for (let oIdx = 0; oIdx < occurrences.length; oIdx++) {
+            const useIndex = occurrences[oIdx];
+            if (firstInitIdx !== -1 && firstInitIdx < useIndex) break;
 
             const tail = noStringsText.slice(useIndex, useIndex + varName.length + 30);
             if (/^\w+\s*=\s*(?:bmql|get|dictget|jsonget)\s*\(/.test(tail)) continue;
