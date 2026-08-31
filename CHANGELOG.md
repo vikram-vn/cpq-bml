@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.68.0] - 2026-08-31
+
+### Added
+- Implement BML style code actions and add initial beautifier infrastructure with tests.
+- Implement BML static type checking for variable reassignments and binary expressions.
+
 ## [1.67.0] - 2026-08-30
 
 ### Added
@@ -91,18 +97,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Documentation
 
 - Update license file reference in README.md.
-
-## [1.58.0] - 2026-08-29
-
-### Added
-
-- Implement multi-environment settings panel with secure secret management and associated UI components.
-- Add environment management UI components and logic for settings panel.
-- Implement settings dashboard UI with sidebar navigation and advanced diagnostics tab.
-- Implement advanced settings and MCP management tabs in the settings panel webview.
-- Add McpTab component to settings panel for configuring MCP server and AI skills.
-- Add modular CSS stylesheets for settings panel web view components and layout.
-- Implement responsive settings panel UI with modern CSS design and component styling.
-- Implement BML inlay hints provider for improved function parameter visibility.
-- Implement BML inlay hint provider for function parameter names.
-- Implement BML parameter name inlay hints with configuration and unit tests.
