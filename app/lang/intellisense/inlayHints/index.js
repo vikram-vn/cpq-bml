@@ -222,9 +222,9 @@ function registerInlayHintsProvider(context) {
                             const baseType = inferredType.replace(/\[\]/g, '').trim();
                             const TYPE_DOCS = {
                                 'Date': 'BML Date object. Manipulate with `getdate()`, `adddays()`, `datetostr()`, `comparedates()`.',
-                                'Json': 'Oracle CPQ JSON Object. Manipulate with `jsonget()`, `jsonput()`, `jsonpathget()`, `jsontostr()`.',
+                                'Json': 'Oracle CPQ JSON Object. Manipulate with `jsonget()`, `jsonput()`, `jsonpathgetsingle()`, `jsontostr()`.',
                                 'JsonArray': 'Oracle CPQ JSON Array. Manipulate with `jsonarrayget()`, `jsonarrayappend()`, `jsonarraytostr()`.',
-                                'Dictionary': 'BML Key-Value Dictionary. Manipulate with `get()`, `put()`, `getkeys()`, `containskey()`.',
+                                'Dictionary': 'BML Key-Value Dictionary. Manipulate with `get()`, `put()`, `keys()`, `containskey()`.',
                                 'RecordSet': 'BMQL Database RecordSet. Iterate with `for row in rs` and read typed columns with `get()`, `getint()`, `getfloat()`.',
                                 'ByteArray': 'BML Binary data container. Create with `bytearray()` and serialize with `decodebase64()`.',
                                 'StringBuilder': 'High-performance string buffer for loops. Manipulate with `sbappend()`, `sbtostring()`.'

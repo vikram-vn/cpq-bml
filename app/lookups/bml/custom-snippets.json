@@ -49,9 +49,9 @@
     "notes": "Initialize a typed BML dictionary."
   },
   "dict-iter": {
-    "syntax": "${1:keys} = getkeys(${2:dictVar});\nfor ${3:key} in ${1:keys} {\n\t${4:val} = get(${2:dictVar}, ${3:key});\n\t${0}\n}",
+    "syntax": "${1:keys} = keys(${2:dictVar});\nfor ${3:key} in ${1:keys} {\n\t${4:val} = get(${2:dictVar}, ${3:key});\n\t${0}\n}",
     "examples": [
-      "keys = getkeys(priceMap);\nfor sku in keys {\n\tprice = get(priceMap, sku);\n\tprint(sku ~ \": \" ~ string(price));\n}"
+      "keys = keys(priceMap);\nfor sku in keys {\n\tprice = get(priceMap, sku);\n\tprint(sku ~ \": \" ~ string(price));\n}"
     ],
     "notes": "Iterate over dictionary keys and values."
   },
@@ -84,11 +84,11 @@
     "notes": "Iterate over all keys in a JSON object."
   },
   "jsonpath-get": {
-    "syntax": "${1:result} = jsonpathget(${2:jsonVar}, \"${3:$.path.to.field}\");\n${0}",
+    "syntax": "${1:result} = jsonpathgetsingle(${2:jsonVar}, \"${3:$.path.to.field}\");\n${0}",
     "examples": [
-      "token = jsonpathget(authResponse, \"$.access_token\");"
+      "token = jsonpathgetsingle(authResponse, \"$.access_token\");"
     ],
-    "notes": "Extract a nested value from a JSON object using JSONPath."
+    "notes": "Extract a single nested value from a JSON object using JSONPath."
   },
   "jsonget-typed": {
     "syntax": "${1:val} = jsonget(${2:jsonVar}, \"${3:key}\", \"${4|string,integer,float,boolean,json,jsonarray|}\");\n${0}",
@@ -98,11 +98,18 @@
     "notes": "Extract a typed value from a JSON object with explicit target type."
   },
   "jsonpath-get-typed": {
-    "syntax": "${1:result} = jsonpathget(${2:jsonVar}, \"${3:$.path.to.field}\", \"${4|string,integer,float,boolean,json,jsonarray|}\");\n${0}",
+    "syntax": "${1:result} = jsonpathgetsingle(${2:jsonVar}, \"${3:$.path.to.field}\", \"${4|string,integer,float,boolean,json,jsonarray|}\");\n${0}",
     "examples": [
-      "price = jsonpathget(quoteJson, \"$.summary.totalPrice\", \"float\");"
+      "price = jsonpathgetsingle(quoteJson, \"$.summary.totalPrice\", \"float\");"
     ],
-    "notes": "Extract a typed nested value from a JSON object using JSONPath and explicit target type."
+    "notes": "Extract a typed single nested value from a JSON object using JSONPath and explicit target type."
+  },
+  "jsonpath-get-multiple": {
+    "syntax": "${1:resultArray} = jsonpathgetmultiple(${2:jsonVar}, \"${3:$.path.to.array[*]}\");\n${0}",
+    "examples": [
+      "pricesArray = jsonpathgetmultiple(quoteJson, \"$..price\");"
+    ],
+    "notes": "Extract multiple matching values or paths from a JSON object using JSONPath."
   },
   "jsonarray-new": {
     "syntax": "${1:arrayVar} = jsonarray();\n${0}",
@@ -196,11 +203,11 @@
     "notes": "Setup Basic Authentication headers with Base64 encoding."
   },
   "xml-read": {
-    "syntax": "${1:xmlDoc} = readxml(${2:xmlString});\n${3:rootNode} = getxmlroottag(${1:xmlDoc});\n${0}",
+    "syntax": "${1:xpaths} = string[]{\"${2://node}\"};\n${3:parsedXmlDict} = readxmlsingle(${4:xmlPayload}, ${1:xpaths});\n${5:val} = get(${3:parsedXmlDict}, \"${2://node}\");\n${0}",
     "examples": [
-      "xmlDoc = readxml(responsePayload);\nrootNode = getxmlroottag(xmlDoc);"
+      "xpaths = string[]{\"/Envelope/Body/Response/Status\"};\nresDict = readxmlsingle(xmlString, xpaths);\nstatus = get(resDict, \"/Envelope/Body/Response/Status\");"
     ],
-    "notes": "Parse an XML string into an XML document object."
+    "notes": "Parse an XML payload and extract single element contents using readxmlsingle."
   },
   "xml-transform": {
     "syntax": "${1:transformedHtml} = transformxml(${2:xmlData}, ${3:xslTemplate});\n${0}",

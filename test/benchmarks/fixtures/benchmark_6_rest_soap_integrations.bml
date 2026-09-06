@@ -11,8 +11,8 @@ creditCheckEndpoint = apiBaseUrl + "/finance/credit-check";
 taxServiceEndpoint = apiBaseUrl + "/tax/calculate";
 
 customerId = "CUST-98412";
-requestedAmount = 145000.00;
-apiTimeoutMs = 5000;
+REQUESTED_AMOUNT = 145000.00;
+API_TIMEOUT_MS = 5000;
 
 integrationLogsList = string[];
 
@@ -28,12 +28,12 @@ put(authHeadersDict, "Authorization", "Basic " + encodedAuthToken);
 // Request body for Credit Verification
 creditRequestBody = json();
 jsonput(creditRequestBody, "customerId", customerId);
-jsonput(creditRequestBody, "requestedCreditAmount", requestedAmount);
+jsonput(creditRequestBody, "requestedCreditAmount", REQUESTED_AMOUNT);
 jsonput(creditRequestBody, "currency", "USD");
 creditPayloadStr = jsontostr(creditRequestBody);
 
 // Execute Outbound REST Call
-creditResponseDict = urldata(creditCheckEndpoint, "POST", authHeadersDict, creditPayloadStr, apiTimeoutMs);
+creditResponseDict = urldata(creditCheckEndpoint, "POST", authHeadersDict, creditPayloadStr, API_TIMEOUT_MS);
 
 isCreditApproved = false;
 creditLimitGranted = 0.0;
@@ -42,11 +42,11 @@ riskRating = "UNKNOWN";
 if (containskey(creditResponseDict, "Status-Code")) {
     statusCode = get(creditResponseDict, "Status-Code");
     if (startswith(statusCode, "200")) {
-        responseBody = get(creditResponseDict, "Message-Body");
+        responseBody = json(get(creditResponseDict, "Message-Body"));
         if (jsonpathcheck(responseBody, "$.isApproved")) {
-            isCreditApproved = jsonpathget(responseBody, "$.isApproved", "boolean");
-            creditLimitGranted = jsonpathget(responseBody, "$.approvedLimit", "float");
-            riskRating = jsonpathget(responseBody, "$.riskRating");
+            isCreditApproved = jsonpathgetsingle(responseBody, "$.isApproved", "boolean");
+            creditLimitGranted = jsonpathgetsingle(responseBody, "$.approvedLimit", "float");
+            riskRating = jsonpathgetsingle(responseBody, "$.riskRating");
             append(integrationLogsList, "Credit check passed: approved limit " + string(creditLimitGranted) + ", risk: " + riskRating);
         }
     } else {
@@ -62,7 +62,7 @@ sbappend(xmlPayloadBuilder, "<soapenv:Header/>");
 sbappend(xmlPayloadBuilder, "<soapenv:Body>");
 sbappend(xmlPayloadBuilder, "<CalculateTaxRequest>");
 sbappend(xmlPayloadBuilder, "<CustomerId>" + customerId + "</CustomerId>");
-sbappend(xmlPayloadBuilder, "<TaxableAmount>" + string(requestedAmount) + "</TaxableAmount>");
+sbappend(xmlPayloadBuilder, "<TaxableAmount>" + string(REQUESTED_AMOUNT) + "</TaxableAmount>");
 sbappend(xmlPayloadBuilder, "</CalculateTaxRequest>");
 sbappend(xmlPayloadBuilder, "</soapenv:Body>");
 sbappend(xmlPayloadBuilder, "</soapenv:Envelope>");
@@ -73,21 +73,22 @@ soapHeadersDict = dict("string");
 put(soapHeadersDict, "Content-Type", "text/xml; charset=utf-8");
 put(soapHeadersDict, "SOAPAction", "CalculateTax");
 
-taxResponseStr = urldatabypost(taxServiceEndpoint, soapRequestStr, "", soapHeadersDict, true, apiTimeoutMs);
+taxResponseStr = urldatabypost(taxServiceEndpoint, soapRequestStr, "", soapHeadersDict, true, API_TIMEOUT_MS);
 
 computedTaxAmount = 0.0;
 effectiveTaxRate = 0.0;
 
 if (taxResponseStr <> "") {
     // Check for XML parsing error safety key
-    parsedXmlDict = readxml(taxResponseStr);
-    if (containskey(parsedXmlDict, "error")) {
-        append(integrationLogsList, "Tax XML parse error: " + get(parsedXmlDict, "error"));
+    taxXpathsArr = string[]{"//TaxAmount"};
+    parsedXmlDict = readxmlsingle(taxResponseStr, taxXpathsArr);
+    if (containskey(parsedXmlDict, "BM_READXMLSINGLE_ERROR")) {
+        append(integrationLogsList, "Tax XML parse error: " + get(parsedXmlDict, "BM_READXMLSINGLE_ERROR"));
     } else {
-        if (containskey(parsedXmlDict, "TaxAmount")) {
-            computedTaxAmount = atof(get(parsedXmlDict, "TaxAmount"));
-            if (requestedAmount > 0.0) {
-                effectiveTaxRate = (computedTaxAmount / requestedAmount) * 100.0;
+        if (containskey(parsedXmlDict, "//TaxAmount")) {
+            computedTaxAmount = atof(get(parsedXmlDict, "//TaxAmount"));
+            if (REQUESTED_AMOUNT > 0.0) {
+                effectiveTaxRate = (computedTaxAmount / REQUESTED_AMOUNT) * 100.0;
             }
             append(integrationLogsList, "Tax calculated successfully: " + string(computedTaxAmount) + " (" + string(round(effectiveTaxRate, 2)) + "%)");
         }

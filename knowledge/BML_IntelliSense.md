@@ -344,7 +344,7 @@ Type any snippet prefix and press `Tab` or `Enter` to expand pure skeleton templ
 
 When entering string literals inside specialized BML function calls, IntelliSense suggests tailored templates:
 
-* **`jsonpathget(jsonObj, "")`**: Auto-suggests aggregations (`$.array.min()`, `$.array.max()`, `$.array.sum()`, `$.array.stddev()`), boolean filters (`[?(@.active == true)]`), set filters (`[?(@.field in ['A', 'B'])]`), and slices (`[:2]`, `[1:3]`).
+* **`jsonpathgetsingle(jsonObj, "")` / `jsonpathgetmultiple(jsonObj, "")`**: Auto-suggests aggregations (`$.array.min()`, `$.array.max()`, `$.array.sum()`, `$.array.stddev()`), boolean filters (`[?(@.active == true)]`), set filters (`[?(@.field in ['A', 'B'])]`), and slices (`[:2]`, `[1:3]`).
 * **`bmql("")`**: Auto-suggests complete query patterns including `IN ($arrayVar)`, `BETWEEN $min AND $max`, `LIKE $pattern`, and fully dynamic `$columns FROM $table WHERE $where` substitutions.
 
 > 📖 For full skeleton templates, variable mirroring flows, and keyboard navigation rules, see the dedicated **[BML Snippets Catalog](BML_Snippets.md)**.

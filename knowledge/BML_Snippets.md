@@ -96,7 +96,7 @@ flowchart TD
 | Prefix | Purpose | Skeleton Template |
 | :--- | :--- | :--- |
 | **`dict`** | Typed dictionary initialization | `${1:dictVar} = dict("${2\|string,integer,float,string[],integer[],float[]\|}");\n${0}` |
-| **`dict-iter`** | Iterate keys with `getkeys()` and fetch values with `get()` | `for ${1:key} in getkeys(${2:dictVar}) {\n\t${3:val} = get(${2:dictVar}, ${1:key});\n\t${0}\n}` |
+| **`dict-iter`** | Iterate keys with `keys()` and fetch values with `get()` | `for ${1:key} in keys(${2:dictVar}) {\n\t${3:val} = get(${2:dictVar}, ${1:key});\n\t${0}\n}` |
 | **`dict-get-default`** | Safe dictionary retrieval with `containskey()` fallback | `if (containskey(${1:dictVar}, ${2:key})) {\n\t${3:val} = get(${1:dictVar}, ${2:key});\n} else {\n\t${3:val} = ${4:defaultValue};\n}\n${0}` |
 
 ---
@@ -108,7 +108,8 @@ flowchart TD
 | **`json-new`** | Create empty JSON object | `${1:jsonVar} = json();\n${0}` |
 | **`json-put`** | Assign property to JSON object | `jsonput(${1:jsonVar}, "${2:key}", ${3:value});` |
 | **`json-iter`** | Iterate keys with `jsonkeys()` and fetch values with `jsonget()` | `for ${1:key} in jsonkeys(${2:jsonVar}) {\n\t${3:val} = jsonget(${2:jsonVar}, ${1:key});\n\t${0}\n}` |
-| **`jsonpath-get`** | Extract nested value using JSONPath | `${1:result} = jsonpathget(${2:jsonVar}, "${3:$.path.to.field}");\n${0}` |
+| **`jsonpath-get`** | Extract single nested value using JSONPath | `${1:result} = jsonpathgetsingle(${2:jsonVar}, "${3:$.path.to.field}");\n${0}` |
+| **`jsonpath-get-multiple`** | Extract multiple values using JSONPath | `${1:resultArray} = jsonpathgetmultiple(${2:jsonVar}, "${3:$.path.to.array[*]}");\n${0}` |
 | **`jsonarray-new`** | Create empty JSON array | `${1:arrayVar} = jsonarray();\n${0}` |
 | **`jsonarray-append`**| Append element to JSON array | `jsonarrayappend(${1:arrayVar}, ${2:item});` |
 
@@ -142,7 +143,7 @@ flowchart TD
 
 | Prefix | Purpose | Skeleton Template |
 | :--- | :--- | :--- |
-| **`xml-read`** | Parse XML string to XML document | `${1:xmlDoc} = readxml(${2:xmlString});\n${3:rootNode} = getxmlroottag(${1:xmlDoc});\n${0}` |
+| **`xml-read`** | Extract XML element using XPath and `readxmlsingle()` | `${1:xpaths} = string[]{"${2://node}"};\n${3:parsedXmlDict} = readxmlsingle(${4:xmlPayload}, ${1:xpaths});\n${5:val} = get(${3:parsedXmlDict}, "${2://node}");\n${0}` |
 | **`xml-transform`** | Transform XML data via XSL stylesheet | `${1:transformedHtml} = transformxml(${2:xmlData}, ${3:xslTemplate});\n${0}` |
 
 ---

@@ -1,6 +1,6 @@
 const { vscode, makeDiagnostic } = require('./shared');
 
-const STANDARD_NUMBERS = new Set(['0', '1', '2', '10', '100', '0.0', '1.0', '2.0', '-1', '-1.0']);
+const STANDARD_NUMBERS = new Set(['0', '1', '2', '10', '100', '0.0', '1.0', '2.0', '10.0', '100.0', '-1', '-1.0']);
 const HTTP_STATUS_CODES = new Set([
     '200', '201', '202', '204',
     '301', '302', '304',
@@ -14,7 +14,8 @@ const SAFE_CONTEXT_FUNCTIONS = new Set([
     'range', 'subarray', 'insert', 'remove', 'get', 'set', 'sizeofarray',
     'adddays', 'addmonths', 'addyears', 'addweeks', 'addhours', 'addminutes', 'addseconds',
     'minusdays', 'minusmonths', 'minusyears', 'minusweeks', 'minushours', 'minusminutes', 'minusseconds',
-    'getdate', 'time', 'getyear', 'getmonth', 'getday'
+    'getdate', 'time', 'getyear', 'getmonth', 'getday',
+    'round', 'urldata', 'urldatabyget', 'urldatabypost', 'urldatabypostasync', 'urlmultipartbypost', 'logtime'
 ]);
 
 function isInsideSquareBrackets(linePrefix) {

@@ -175,4 +175,16 @@ suite('BML Linter - Magic Numbers Test Suite', () => {
         const magicDiags = diagnostics.filter(d => d.code === 'bml-magic-number');
         assert.strictEqual(magicDiags.length, 0, 'Comparison thresholds must be exempt from magic number warnings');
     });
+
+    test('Exempts web service timeouts and round precision arguments', () => {
+        const diagnostics = lintText(`
+            res1 = urldata("https://example.com", "GET", headers, "", 5000);
+            res2 = urldatabypost("https://example.com", payload, "", headers, true, 3000);
+            rounded = round(amount, 4);
+            return "";
+        `);
+
+        const magicDiags = diagnostics.filter(d => d.code === 'bml-magic-number');
+        assert.strictEqual(magicDiags.length, 0, 'Web service timeouts and rounding precision should not be flagged');
+    });
 });
