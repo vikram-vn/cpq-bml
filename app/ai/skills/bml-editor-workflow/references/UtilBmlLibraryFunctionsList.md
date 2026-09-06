@@ -26,9 +26,6 @@ The Util BML Library Functions List page displays a list of available BML funct
 To access the Util BML Library Functions List, navigate to: **Admin Home > Developer Tools & Utilities > BML Library**
 
 
-![Util BML Library Functions Page](images/utilBmlLibFunctionList.png)
-
-
 | Item | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1    | Enter search criteria to filter BML library functions. Select the **Folder** button to filter by folder.                                                                                                                                                                                                                                                                                                                                                                            |

@@ -183,13 +183,7 @@ A programming language is an artificial language that is used to write instructi
 **1. Compiled programming:** this is a language that must be converted into machine language, after it’s been written by the programmer, so that a computer can understand and execute the instructions. These languages require the use of special software (called a compiler) prior to being executed.
 
 
-![Compiled programming](images/programminglanguagev1.png)
-
-
 **2. Interpretive programming:** this language do not have to be compiled. The computer understands and executes the instructions while the program is running. See examples below.
-
-
-![Interpretive programming](images/programminglanguagev2.png)
 
 
 :::note
@@ -257,9 +251,6 @@ You may also see the element `return "";`. This will return an empty String if t
 
 
 The basic structure includes statements that comprise the source code and ends with a return statement. The example below shows variables, print statements, and a return statement.
-
-
-![Basic BML syntax](images/basicBmlStringSyntax.png)
 
 
 :::tip

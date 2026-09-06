@@ -218,10 +218,6 @@ getarrayattrstring(SingleArray arrayIdentifier)
 Example of getarraystr:
 
 
-![getarrayattrstring example](images/getarraystr.bmp)
-![getarrayattrstring output example](images/getarraystr_console.png)
-
-
 ---
 
 
@@ -299,9 +295,6 @@ In case of menu attributes, the returned value is the menu item variable name.
 
 
 **Example:**
-
-
-![getconfigattrvalue example](images/getconfigattrvalue__example.png)
 
 
 :::note
@@ -515,9 +508,6 @@ isnull(String (or Date (or Array or (dict))))
 
 
 **Example:**
-
-
-![isnull example](images/isnull.bmp)
 
 
 This evaluates to false.

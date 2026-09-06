@@ -33,9 +33,6 @@ To access the Util Function Editor, navigate to: **Admin Home > Developer Tools
 * To copy an existing function, click on the Actions ellipsis and select **Copy**for the appropriate function in the [Util BML Library Functions List](UtilBmlLibraryFunctionsList.md) page.
 
 
-![image](images/utilFunction_redwood_overview.png)
-
-
 | Item | Description                                                                                                                                                                                  |
 | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1    | The function name.                                                                                                                                                                           |
@@ -58,9 +55,6 @@ The box on the left defines the position of the character based on its line and 
 
 
 The  code is displayed in different colors. For example:
-
-
-![Code sample with syntax colors](images/scriptSample_redwood.png)
 
 
 | Color | Definition                                                     |
@@ -101,9 +95,6 @@ Complete the following steps to create a library function.
 4. Click **Function Editor Properties** to select and enter Parameters, Attributes, Library Functions or Standard Functions for the function script.
 
 
-![Function Editor Properties](images/functionEditorProperties_redwood.png)
-
-
 ## Parameters
 
 
@@ -116,9 +107,9 @@ insert pic
 
   2. Enter the **Name** and select the **Type**.  Navigate through the Type drop-down list to find the desired function category or start typing the parameter name. The type list will filter for you.
 
-  3. Click the **Submit** ![Insert icon](images/ico-arrow-down-left.svg) icon to enter the parameter into the Function Script.
+  3. Click the **Submit**  icon to enter the parameter into the Function Script.
 
-  4. Click the **Delete** ![Trash icon](images/ico-trash.svg) icon to remove a parameter from the properties list.
+  4. Click the **Delete**  icon to remove a parameter from the properties list.
 
 
 ---
@@ -135,9 +126,9 @@ To enter an attribute:
 
   2. Enter the **Name** of the  attribute. Navigate through the drop-down list to find the desired attribute or start typing the attribute name. The attribute list will filter for you.
 
-  3. Click the **Submit**![Insert icon](images/ico-arrow-down-left.svg) icon to enter the attribute into the Function Script.
+  3. Click the **Submit** icon to enter the attribute into the Function Script.
 
-  4. Click the **Delete**![Trash icon](images/ico-trash.svg) icon to remove an attribute from the properties list.
+  4. Click the **Delete** icon to remove an attribute from the properties list.
 
 
 ---
@@ -156,9 +147,9 @@ To enter a Library  function:
 
   2. Select the applicable library function from the **Name** menu. Navigate through the Util Library folder to find the desired library function or start typing the function name. The library function list will filter for you.
 
-  3. Click the **Submit**![Insert icon](images/ico-arrow-down-left.svg) icon to enter the library function into the Function Script.
+  3. Click the **Submit** icon to enter the library function into the Function Script.
 
-  4. Click the **Delete**![Trash icon](images/ico-trash.svg) icon to remove a library function from the properties list.
+  4. Click the **Delete** icon to remove a library function from the properties list.
 
 
 ---
@@ -181,7 +172,7 @@ To enter a standard function:
 
 A description, the syntax, and an example of the standard function displays.
 
-  4. Click  ![Move arrow icon](images/ico-arrow-down-left.png)**Insert into editor** to enter the standard function into the Function Script.
+  4. Click  **Insert into editor** to enter the standard function into the Function Script.
 
 
 ---
@@ -206,7 +197,7 @@ The test script provides a way to test a BML Library function when array type at
 
   7. The results of the test are displayed in the Console section. If the script has errors, a message indicating the error displays.
 
-  8. Click  ![Move arrow icon](images/ico-arrow-down-left.png)**Insert into editor** to enter the standard function into the Function Script.
+  8. Click  **Insert into editor** to enter the standard function into the Function Script.
 
 6. To test your Function Script, click **Validate**. A "Validation Successful" message or error message displays at the bottom of the page.
 

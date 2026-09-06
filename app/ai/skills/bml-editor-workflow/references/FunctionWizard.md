@@ -34,12 +34,8 @@ The only difference between the Configuration Function Editor and that in the Ut
 2. Choose a **Function Category** and a **Function** name.  *You will see syntax help appear just below the toolbar.*
 
 
-![Syntax help tex](images/FxnWizHideTools.png)
-
 3. Select **Insert into BML** to insert the function into your Script Definition Area.
 
-
-![Script definition area](images/FxnWizHideToolsString.png)
 
 4. Review the function populated in the script definition area.
 
@@ -53,9 +49,6 @@ The only difference between the Configuration Function Editor and that in the Ut
 The commerce library function editor looks similar to the one in Configuration, however, you will notice that the Attributes section is quite different.  It allows you to select attributes for the main document, sub-document, and system attributes.
 
 
-![Commerce Library Function Editor](images/CommerceLibFxnEditor.png)
-
-
 ---
 
 
@@ -63,9 +56,6 @@ The commerce library function editor looks similar to the one in Configuration, 
 
 
 You may come across a BML editor in Commerce that looks like this:
-
-
-![Function editor with operators located on a toolbar across the top](images/CommerceFxnEditor.png)
 
 
 :::note

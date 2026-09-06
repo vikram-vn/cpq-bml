@@ -38,12 +38,6 @@ This function returns the arc cosine of the number or angle in the range of 0 th
 **Example:**
 
 
-![acos example](images/acos__BML.png)
-
-
-![acos output example](images/acos__console.png)
-
-
 :::note
 A float variable > 1 returns NaN.
 :::
@@ -78,12 +72,6 @@ The usual notation of the inverse trig function arcsine is `y = arcsine(x)`, whi
 If you enter your float variable as (-1), which is the lowest number in the domain, it will return the lowest number in the range, which is -π/2.
 
 
-![asin example](images/asin_x_BML.png)
-
-
-![asin output example](images/asin_x_console.png)
-
-
 :::note
 A float variable > 1 returns NaN.
 :::
@@ -115,12 +103,6 @@ This function returns the arctangent of the number or angle, the range of which 
 **Example:**
 
 
-![atan example](images/atan__BML.png)
-
-
-![atan output example](images/atan__console.png)
-
-
 ---
 
 
@@ -145,12 +127,6 @@ This function converts a float into the next highest whole number.
 
 
 **Example:**
-
-
-![ceil example](images/ciel__BML.png)
-
-
-![ceil output example](images/ceil__console.png)
 
 
 :::note
@@ -184,12 +160,6 @@ This function returns the cosine of the number/angle.
 Example :
 
 
-![cos example](images/cos__BML.png)
-
-
-![cos output example](images/cos__console.png)
-
-
 ---
 
 
@@ -211,12 +181,6 @@ This function returns the hyperbolic cosine of a number or angle.
 
 
 **Example:**
-
-
-![cosh example](images/cosh__BML.png)
-
-
-![cosh output example](images/cosh__console.png)
 
 
 :::tip
@@ -250,12 +214,6 @@ This function returns Euler's number e raised to the power of the number passed 
 **Example:**
 
 
-![exp example](images/exp__BML.png)
-
-
-![exp output example](images/exp__console.png)
-
-
 ---
 
 
@@ -282,12 +240,6 @@ This function returns the absolute value of a number.
 **Example:**
 
 
-![fabs example](images/fabs__BML.png)
-
-
-![fabs output example](images/fabs__console.png)
-
-
 ---
 
 
@@ -310,12 +262,6 @@ This function returns the remainder of the division operation x, y.
 
 
 **Example:**
-
-
-![fmod example](images/fmod__BML.png)
-
-
-![fmod output example](images/fmod__console.png)
 
 
 If you were to use long division, the answer is 5 with a remainder of 2.  If you plus this operation into your calculator, you will see the answer is 5.6667, because the remained is being divided by the divisor.
@@ -348,12 +294,6 @@ This function returns the `sqrt(x2 + y2)` without intermediaries.
 **Example:**
 
 
-![hypot example](images/hypot__BML.png)
-
-
-![hypot output example](images/hypot__console.png)
-
-
 As you can see, we have declared three variables.  The two that were required for this function to work, as well as a third variable so we can round the results of the `hypot` function. The result of this function return a rather large number.  Using the `round` function, we were able to round to the third decimal place.
 
 
@@ -383,12 +323,6 @@ This function returns the integer portion of a float number.  For example, this 
 
 
 **Example:**
-
-
-![integer example](images/integer__BML.png)
-
-
-![integer output example](images/integer__console.png)
 
 
 ---
@@ -424,12 +358,6 @@ This function returns the natural logarithm (base e) of the number.
 
 
 **Example:**
-
-
-![ln example](images/ln__BML.png)
-
-
-![ln output example](images/ln__console.png)
 
 
 :::tip
@@ -473,12 +401,6 @@ This function returns the base-10 logarithm of the number.
 
 
 **Example:**
-
-
-![jNaN example](images/log__BML.png)
-
-
-![jNaN output example](images/log__console.png)
 
 
 :::tip
@@ -530,12 +452,6 @@ This function returns the value of the first argument raised to the power of the
 **Example:**
 
 
-![pow example](images/pow__BML.png)
-
-
-![pow output example](images/pos__console.png)
-
-
 ---
 
 
@@ -561,12 +477,6 @@ This function returns the rounded value of a number up to a certain decimal poin
 
 
 **Example:**
-
-
-![round example](images/round__BML.png)
-
-
-![round output example](images/round__console.png)
 
 
 ---
@@ -595,12 +505,6 @@ This function returns the trigonometric sine of the number/angle.
 **Example:**
 
 
-![sin example](images/sin__BML.png)
-
-
-![sin output example](images/sin__console.png)
-
-
 ---
 
 
@@ -622,12 +526,6 @@ This function returns the hyperbolic sine of a number or angle.
 
 
 Example :
-
-
-![sinh example](images/sinh__BML.png)
-
-
-![sinh output example](images/sinh__console.png)
 
 
 :::tip
@@ -658,9 +556,6 @@ This function returns the positive square root of a number.
 **Example:**
 
 
-![sqrt example](images/sqrt__BML.png)
-
-
 ---
 
 
@@ -687,12 +582,6 @@ This function returns the tangent of the number/angle.
 **Example:**
 
 
-![tan example](images/tan__BML.png)
-
-
-![tan output example](images/tan__console.png)
-
-
 ---
 
 
@@ -714,12 +603,6 @@ This function returns the hyperbolic tangent of a number or angle.
 
 
 **Example:**
-
-
-![tanh example](images/tanh__BML.png)
-
-
-![tanh output example](images/tanh__console.png)
 
 
 :::tip

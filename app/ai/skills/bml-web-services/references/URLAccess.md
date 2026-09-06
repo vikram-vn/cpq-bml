@@ -39,12 +39,6 @@ String makeurlparam( {String 'name1' : String "value1", [String 'name2' : String
 **Example:**
 
 
-![Example of makeurlparam](images/params.png)
-
-
-![makeurlparam output example](images/Result.png)
-
-
 ---
 
 
@@ -236,12 +230,6 @@ String urldatabyget(String url, String parameters, String defaultValue,[Integer 
 **Example:**
 
 
-![urldatabyget example](images/urldatabypost_657x140.bmp)
-
-
-![urldatabyget output example](images/urldatabypost_console.png)
-
-
 ---
 
 
@@ -302,19 +290,10 @@ return urldatabypost("https://cpluto.oracle.com/httpreceiver", "", "", headers);
 Example of urldatabypost:
 
 
-![urldatabypost example](images/urldatabypost_660x141.bmp)
-
-
-![urldatabypost output example](images/urldatabypost_console.png)
-
-
 As the function suggests, this information is not available.
 
 
 Sample Request
-
-
-![urldatabypost sample request](images/urldatabypost_samplereq.png)
 
 
 ---

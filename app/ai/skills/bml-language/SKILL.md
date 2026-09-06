@@ -32,7 +32,7 @@ if (condition) {
     statement;
 }
 
-// For Loop (Iterating Arrays / RecordSets - MUST be a variable identifier, never an inline function call like range())
+// For Loop (Iterating Arrays / RecordSets)
 for item in itemArray {
     print item;
 }

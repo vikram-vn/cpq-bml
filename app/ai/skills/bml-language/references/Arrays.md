@@ -46,12 +46,6 @@ If array max size is reached and you try to append a new element, it will fail.
 **Example:**
 
 
-![append example](images/appendBML.png)
-
-
-![append output example](images/append_console.png)
-
-
 :::note
 If a null element is added to an array, it should be allowed to be added and the value of the element in the array should be null.
 :::
@@ -282,12 +276,6 @@ This function is used to check whether a certain element exists in an array.  If
 **Example:**
 
 
-![findinarray example](images/findinarrayBML.bmp)
-
-
-![findinarray output example](images/findinarray_console.png)
-
-
 ---
 
 
@@ -334,12 +322,6 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![float example](images/floatBML.bmp)
-
-
-![Float Array output example](images/2Dfloat_console.png)
-
-
 ---
 
 
@@ -377,12 +359,6 @@ These arrays are dynamic in nature and the length can be increased.
 
 
 **Example:**
-
-
-![float example](images/2DfloatBML.bmp)
-
-
-![float output example](images/2Dfloat_console.png)
 
 
 ---
@@ -428,13 +404,7 @@ This parameter only works with 1-D arrays.
 Example):
 
 
-![Interger Array example](images/integerBML.bmp)
-
-
 In contrast to `string[]`, if you define an array size without initializing array fields, you will see a 0 instead of null.
-
-
-![Integer Array output example](images/1Dinteger_console.png)
 
 
 ---
@@ -473,13 +443,7 @@ These arrays are dynamic in nature and the length can be increased.
 **Example:**
 
 
-![integer examples](images/2DintegerBML.bmp)
-
-
 Notice the multiple print statements being used in the code above. We are printing a specific element index and value index.  Since there are two elements, the element indexes are 0 and 1 respectively.  Each element has two values, so the value indexes are also 0 and 1.  The syntax used in the code will print each value in the console.
-
-
-![integer output example](images/2Dinteger_console.png)
 
 
 ---
@@ -508,9 +472,6 @@ This parameter only works with 1-D arrays.
 
 
 **Example:**
-
-
-![isempty example](images/isempty.bmp)
 
 
 The string array above is empty, therefore True is returned.
@@ -544,12 +505,6 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![max example](images/maxBML.png)
-
-
-![max output example](images/maxBML_console.png)
-
-
 ---
 
 
@@ -576,12 +531,6 @@ This parameter only works with 1-D arrays.
 
 
 **Example:**
-
-
-![max example](images/minBML.bmp)
-
-
-![max output example](images/minBML_console.png)
 
 
 ---
@@ -672,12 +621,6 @@ Only integers are allowed to be passed in for the index of the element to be rem
 **Example:**
 
 
-![remove example](images/removeBML.bmp)
-
-
-![remove output example](images/removeBML_console.png)
-
-
 You can see the new array that is being returned once the element at `index[2]` is removed.
 
 
@@ -714,12 +657,6 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![reverse example](images/reverseBML.bmp)
-
-
-![reverse output example](images/reverseBML_console.png)
-
-
 ---
 
 
@@ -746,19 +683,7 @@ Examples:
 1-D Array: sizeofarray(arrayIdentifier)
 
 
-![sizeofarray 1-D example](images/sizeofarray_1D.bmp)
-
-
-![sizeofarray 1-D output example](images/sizeofarray_1D_console.png)
-
-
 2-D Array: sizeofarray(arrayIdentifier)
-
-
-![sizeofarray 2-D example](images/sizeofarray_2D.bmp)
-
-
-![sizeofarray 2-D output example](images/sizefoarray_2D_console.png)
 
 
 While there are 6 separate values in this array, there are only three elements.  Remember that `sizeOfArray`for a 2-D array will return the number of rows.
@@ -792,12 +717,6 @@ This parameter only works with 1-D arrays.
 
 
 **Example:**
-
-
-![sort example](images/sortBML_example-corrected.png)
-
-
-![sort output example](images/sortBML_console.png)
 
 
 ---
@@ -846,12 +765,6 @@ This parameter only works with 1-D arrays.
 **Example:**
 
 
-![String Array example](images/stringBMLex.bmp)
-
-
-![String Array output example](images/1Dstring_console.png)
-
-
 ---
 
 
@@ -878,12 +791,6 @@ For a 2-D String array, the value in each field of the array after array declara
 
 
 **Example:**
-
-
-![string example](images/2DstringBML.bmp)
-
-
-![string output example](images/2Dstringconsole.png)
 
 
 ---

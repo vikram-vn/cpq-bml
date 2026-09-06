@@ -100,9 +100,6 @@ The `sqlQuery` must be written as a String.
 :::
 
 
-![bmql SELECT example](images/bmqlSyntaxRecordSetBasics.bmp)
-
-
 ---
 
 
@@ -139,13 +136,7 @@ Oracle CPQ allows the Select * function for columns in BMQL Data Table queries. 
 The following example shows a SELECT statement for all columns in the "customer" Data Table.
 
 
-![SELECT statement for all columns in the "customer" Data Table](images/selectAllexample1.png)
-
-
 By using SELECT *, this statement can be greatly simplified as shown in the following example.
-
-
-![SELECT * example](images/selectAllexample2.png)
 
 
 :::note
@@ -169,13 +160,7 @@ Oracle CPQ supports the Select * function for columns in BMQL JOIN clauses for 
 The following example shows a SELECT statement for joining two tables.
 
 
-![SELECT statement example for joining two tables](images/bmql_join_datatable1.png)
-
-
 By using SELECT *, this statement can be greatly simplified as shown in the following example.
-
-
-![SELECT * statement example for joining two tables.](images/bmql_join_datatable2.png)
 
 
 ---
@@ -944,9 +929,6 @@ Approval Comments, History, RTE, HTML, and File Attachment attributes are not av
 For all of the use cases below, we'll be using a user-created Data Table named `sammie`.
 
 
-![Data Table example](images/sammie_table.png)
-
-
 ## Sample Use Case 1: Using BMQL function
 
 
@@ -960,25 +942,13 @@ In this example, let's say you'd like to run a query to return the **Price** and
 3. In this example, we are using the print statement to show the results of the query.
 
 
-![Use BMQL example](images/1_bmql1.png)
-
-
 Now, you can compare the results of the query to what is on the table and see that it pulled the correct **Type** and **Price** from the table.
-
-
-![Use BMQL output example](images/1_bmql1_console.png)
 
 
 In this example, we are using the same sample case, but adding the "distinct" keyword. Remember, using distinct will only return distinct values, essentially removing any duplicates.
 
 
-![BMQL 'distinct' example](images/1_bmql2.png)
-
-
 As you can see, where there were multiple sets that were the same in the first example, now those have been removed.
-
-
-![BMQL 'distinct' output example](images/1_bmql2_console.png)
 
 
 ---
@@ -997,13 +967,7 @@ This example takes Sample Use Case 1 a step further by adding a `WHERE`clause to
 3. Use the `get()` function with record being used like a dictionary and **Price** being the data to be returned.
 
 
-![BMQL 'get' example](images/2_bmql.png)
-
-
 As you can see below, "record" acts like a dictionary and returns the columns and data you requested. You should also notice the `get()`function at work, returning the price for each of the records.
-
-
-![BMQL 'get' output example](images/2_bmql_console.png)
 
 
 ---
@@ -1015,15 +979,7 @@ As you can see below, "record" acts like a dictionary and returns the columns an
 In this example, we are going to add a condition. So, the first screen show we'll say that if the condition is true, that the predicate will query for the part number "HS001". When adding a `WHERE` condition, the syntax is `$eval AND field = value`. In this case, we are searching for part number "HS001" when the condition is True.
 
 
-![WHERE example](images/3_bmql1.png)
-![WHERE output example](images/3_bmql1console.png)
-
-
 In the console, you'll notice that when the part number is "HS001", the **Price** and **Type** have been returned. We'll then evaluate what happens if the condition is False:
-
-
-![False condition example](images/3_bmql2.png)
-![False condition output example](images/3_bmql2console.png)
 
 
 In the console, you'll notice that when the condition is False, the predicate (`Part = 'HS001`') is ignored and all other results are returned.
@@ -1038,16 +994,10 @@ In the console, you'll notice that when the condition is False, the predicate (`
 The user can retrieve errors or warnings using the `getMessage`function.
 
 
-![getMessage example](images/4_bmql_658x141.png)
-
-
 ---
 
 
 ## Sample Use Case 5: Recommended Item Rule
-
-
-![Recommended Item Rule example](images/5_img.png)
 
 
 ---
@@ -1059,13 +1009,7 @@ The user can retrieve errors or warnings using the `getMessage`function.
 In this example, we'll show you how to return commerce transaction data back to configuration. The attribute Opportunity Name has been set with the value Toni's Pizza.
 
 
-![Use BMQL Transaction example](images/pizza_selections.png)
-
-
 This was set through a recommendation rule using BMQL Transaction. Notice the use of `commerce.quote_process` after the `FROM` statement.  This is the variable name of the quote document from where you're querying data.  You can also use the variable name of the sub-document (for example, `line_process`).
-
-
-![commerce.quote_process FROM statement example](images/commerceQuote_process.bmp)
 
 
 :::note

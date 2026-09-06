@@ -23,9 +23,6 @@ While there are notable differences between the function editors found in the Or
 ## Button Definitions
 
 
-![Button definitions](images/buttons.png)
-
-
 You will see the buttons at the bottom of the **Editor** pane:
 
 
@@ -49,9 +46,6 @@ You will see the buttons at the bottom of the **Editor** pane:
 The following code is displayed in different colors:
 
 
-![Code sample with syntax colors](images/syntax_color.bmp)
-
-
 | Color | Definition                                                          |
 | ----- | ------------------------------------------------------------------- |
 | Black | Variable names, float and integer variables                         |
@@ -71,19 +65,13 @@ The following code is displayed in different colors:
 BML can be typed directly into the Script Definition Area.  Save your changes after writing/editing the script. **Example:**
 
 
-![Script definition area](images/script_area.png)
-
-
-The bar across the bottom represents the character position in the code and the total number of characters. ![Bottom information bar](images/position.png)
+The bar across the bottom represents the character position in the code and the total number of characters. 
 
 
 The box on the left defines the position of the character based on its line and index.  The box to the right gives you the actual number of characters in each line.
 
 
-Clicking the **Binoculars** ![Top toolbar](images/topToolbar.png) will open a **Search and Replace** dialog box, to find and/or replace part of the script.
-
-
-![Search and replace dialog](images/searchReplace.png)
+Clicking the **Binoculars**  will open a **Search and Replace** dialog box, to find and/or replace part of the script.
 
 
 :::tip
@@ -111,9 +99,6 @@ In the function editor, you can select attributes to include within your code.  
 1. Select **Add Attributes** in the **Attributes** tab.  *This adds an editable row to the Attributes list.*
 
 2. Navigate through the drop-down attributes menu to find the desired attribute, or start typing. The attribute list will filter for you.
-
-
-![Steps to add an attribute](images/EditBMLAdvActionFxn.png)
 
 
 The proper **Variable Name** will automatically populate.
@@ -145,9 +130,6 @@ The action attribute values you select will determine the return type of your co
 Util and Commerce Library Function Editors use Function to Function calls. Function to Function calls allow admins to compartmentalize BML when dealing with complicated configuration or quoting scenarios. This feature will assist with the organization of BML and provides a solution to the compiled Java class size-limit issue. *Function to function calls mimic the behavior of a Modify function calling a Library function.*
 
 
-![Function Editor - Function to Function Calls](images/LibFxn_over.png)
-
-
 ## Adding a Function to Function Call
 
 
@@ -160,9 +142,6 @@ Util and Commerce Library Function Editors use Function to Function calls. Funct
 3. Once the function is viewed using the **Preview Function**, click the **Insert into BML** blue arrow button.
 
 4. When finished, click one of the following buttons:
-
-
-![Button settings](images/buttons.png)
 
 
 ---

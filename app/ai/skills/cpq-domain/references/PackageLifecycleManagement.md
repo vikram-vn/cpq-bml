@@ -30,9 +30,6 @@ To enable the Package Lifecycle Management feature, open a Service Request (SR) 
 Administrators can open a Service Request (SR) on [My Oracle Support](https://support.oracle.com/) to set a site namespace. When this occurs, the namespace displays in the **Namespace** field on the **Util BML Library Function Editor: Properties and Parameters** page for imported functions. The use of a namespace prevents a naming conflict when migrating the util library function from a source to a target site.
 
 
-![Namespace property](images/namespaceField.png)
-
-
 When migrated, namespaced util library functions appear in folders based on the namespace of the site from which they were migrated.
 
 

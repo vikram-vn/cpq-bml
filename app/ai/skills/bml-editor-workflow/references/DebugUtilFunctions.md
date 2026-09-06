@@ -253,12 +253,7 @@ return result;
   2. Add a print statement for the function you wish to debug.
 
 
-![Add a print statment](images/usecase_lib1.png)
-
   3. Click **Run** to debug the function.
-
-
-![Run debug function](images/usecase_lib2.png)
 
 
 ---
@@ -274,21 +269,21 @@ return result;
 >
 >
 >
-> ![Test script](images/usecase_lib3.png)
+> 
 >
 > 3. Populate the variables with the information obtained in Step 1. *This is mainly for dictionaries and arrays; they are populated using BMLs the standard way.*
 >
 >
 >
 >
-> ![Populate variables](images/usecase_lib4.png)
+> 
 >
 > 4. Return the Util Function holding its parameters.
 >
 >
 >
 >
-> ![Return util](images/usecase_lib5.png)
+> 
 
 
 ---
@@ -304,7 +299,7 @@ return result;
 >
 >
 >
-> ![Use Test Script option](images/usecase_lib6.png)
+> 
 >
 > 3. Click **Run** to ensure that there are no errors in the test script. The return string will be generated here.
 >

@@ -215,32 +215,32 @@ flowchart TD
 
 | Category | Tool Name | Parameters | Description |
 | :--- | :--- | :--- | :--- |
-| **Lifecycle** | `pull_function` | `functionName`, `type` | Pulls a single BML function from CPQ into local working copy. |
-| | `pull_functions` | `functionNames` | Batch-pulls multiple functions simultaneously. |
-| | `save_function` | `functionName`, `code` | Saves the working copy to the CPQ environment. |
-| | `validate_function` | `functionName`, `code` | Compiles and validates syntax remotely on CPQ. |
-| | `debug_function` | `functionName`, `params`, `printOnly` | Executes function in remote debug harness with inputs. |
-| | `deploy_function` | `functionName` | Deploys validated function to target CPQ environment. |
-| | `mass_deploy_util_functions`| `folderName` | Deploys all util library functions in bulk. |
-| | `deploy_commerce_process` | `processName` | Deploys commerce process definitions and scripts. |
-| | `create_util_function` | `name`, `folder`, `returnType` | Creates a new util function skeleton in CPQ. |
-| | `create_override` | `functionName`, `code` | Creates a local developer override file. |
-| | `remove_override` | `functionName` | Removes local override, reverting to base. |
-| | `reset_ai_copy` | `functionName` | Discards AI modifications and restores original copy. |
-| | `list_local_functions` | `filter` | Lists all local BML functions in workspace. |
-| **Formatting & Quality** | `format_bml` | `code`, `options` | Formats BML code with deterministic beautifier. |
-| | `lint_function` | `functionName` | Runs 27 static analysis rules on single function. |
-| | `lint_all_functions` | `severityThreshold` | Runs static analysis across entire workspace. |
-| | `get_function_metrics` | `functionName` | Computes Cyclomatic complexity, Halstead, nesting depth. |
+| **Lifecycle** | `pull_function` | `variableName`, `type`? | Pulls a single BML function from CPQ into local working copy. |
+| | `pull_functions` | `items` | Batch-pulls multiple functions simultaneously. |
+| | `save_function` | `variableName` | Saves the working copy to the CPQ environment. |
+| | `validate_function` | `variableName` | Compiles and validates syntax remotely on CPQ without saving. |
+| | `debug_function` | `variableName`, `parameters`?, `printOnly`? | Executes function in remote debug harness with inputs. |
+| | `deploy_function` | `variableName`, `confirm` | Deploys function to live CPQ (requires human approval + confirm:true). |
+| | `mass_deploy_util_functions`| `variableNames`, `confirm` | Deploys util library functions in bulk (requires human approval + confirm:true). |
+| | `deploy_commerce_process` | `processVarName`?, `confirm` | Deploys commerce process setup (requires human approval + confirm:true). |
+| | `create_util_function` | `variableName`, `description`?, `returnType`, `parameters`? | Creates a new util function skeleton in CPQ. |
+| | `create_override` | `variableName` | Creates a local developer override file. |
+| | `remove_override` | `variableName` | Removes local override, reverting to base. |
+| | `reset_ai_copy` | `variableName` | Discards AI modifications and restores original copy. |
+| | `list_local_functions` | _none_ | Lists all local BML functions in workspace. |
+| **Formatting & Quality** | `format_bml` | `code`, `options`? | Formats BML code with deterministic beautifier. |
+| | `lint_function` | `variableName` | Runs 27 static analysis rules on single function. |
+| | `lint_all_functions` | `severityThreshold`? | Runs static analysis across entire workspace. |
+| | `get_function_metrics` | `variableName` | Computes Cyclomatic complexity, Halstead, nesting depth. |
 | **Lookups & Diff** | `lookup_bml_reference` | `query` | Searches standard built-ins, attributes, and variables. |
-| | `explain_function` | `functionName` | Provides structured explanation of function purpose. |
-| | `diff_function` | `functionName`, `target` | Computes diff between working copy and remote base. |
-| | `search_functions` | `query`, `searchType` | Full-text / symbol search across all workspace functions. |
-| **Testing & Snapshots** | `run_bml_tests` | `testFilter`, `updateSnapshot` | Executes unit test suites against BML functions. |
+| | `explain_function` | `variableName` | Provides structured explanation of function purpose. |
+| | `diff_function` | `variableName`, `compareWith`? | Computes diff between working copy and remote base. |
+| | `search_functions` | `query`, `searchType`? | Full-text / symbol search across all workspace functions. |
+| **Testing & Snapshots** | `run_bml_tests` | `testFilter`?, `updateSnapshot`? | Executes unit test suites against BML functions. |
 | | `update_snapshot` | `testName` | Updates baseline snapshot fixture for regression testing. |
-| **Connection & Status** | `get_connection_status` | `testConnection` (optional) | Reports whether CPQ credentials are configured (never exposes secret values or instance URLs). |
-| | `list_util_functions` | `folder` | Lists remote util functions from CPQ instance. |
-| | `list_commerce_functions` | `process` | Lists remote commerce process functions. |
+| **Connection & Status** | `get_connection_status` | `testConnection`? | Reports CPQ credentials & connection status without exposing secrets. |
+| | `list_util_functions` | _none_ | Lists remote util functions from CPQ instance. |
+| | `list_commerce_functions` | `commerceProcess`?, `commerceDocument`? | Lists remote commerce process functions. |
 
 ---
 
@@ -285,7 +285,7 @@ Pull a function into the local AI working copy (`.cpqdevkit/ai/`):
 {
   "name": "pull_function",
   "arguments": {
-    "functionName": "calcDiscount",
+    "variableName": "calcDiscount",
     "type": "util"
   }
 }
@@ -301,7 +301,7 @@ Run static analysis to verify that the generated code is free of syntax or type 
 {
   "name": "lint_function",
   "arguments": {
-    "functionName": "calcDiscount"
+    "variableName": "calcDiscount"
   }
 }
 ```
@@ -330,9 +330,9 @@ Execute the function on Oracle CPQ Cloud's debug engine with test parameters:
 {
   "name": "debug_function",
   "arguments": {
-    "functionName": "calcDiscount",
-    "params": {
-      "basePrice": 1250.0,
+    "variableName": "calcDiscount",
+    "parameters": {
+      "basePrice": "1250.0",
       "customerTier": "PLATINUM"
     },
     "printOnly": false
@@ -344,9 +344,9 @@ Execute the function on Oracle CPQ Cloud's debug engine with test parameters:
 ```json
 {
   "success": true,
-  "returnValue": 0.25,
-  "executionTimeMs": 42.6,
-  "stdout": [
+  "returnValue": "0.25",
+  "elapsedMs": 42,
+  "printOutput": [
     "[DEBUG] Calculating tier PLATINUM discount for base: 1250.0",
     "[DEBUG] Applied margin rule: Tier 1 -> 25%"
   ]
@@ -357,24 +357,30 @@ Execute the function on Oracle CPQ Cloud's debug engine with test parameters:
 
 ### Step 5: Save & Deploy Function (`save_function` & `deploy_function`)
 
-Save working copy and deploy to the target CPQ instance:
+1. Save the local working copy to the CPQ environment:
 
 ```json
 {
   "name": "save_function",
   "arguments": {
-    "functionName": "calcDiscount",
-    "code": "/* Updated BML Code */\nif (basePrice > 1000.0) {\n    return 0.25;\n}\nreturn 0.05;"
+    "variableName": "calcDiscount"
   }
 }
 ```
 
-Deploy validated function to active environment:
+2. **Mandatory Human-in-the-Loop Approval for Deployment**:
+   Deploying directly updates the live CPQ environment. Calling `deploy_function` without `confirm: true` returns an error requiring human permission:
+   ```
+   Deploying a function to the live CPQ environment requires human permission. Re-call with confirm:true to proceed.
+   ```
+   The AI agent **must ask the user in chat for confirmation first**. Once the user explicitly approves, the AI re-calls the tool with `confirm: true`:
+
 ```json
 {
   "name": "deploy_function",
   "arguments": {
-    "functionName": "calcDiscount"
+    "variableName": "calcDiscount",
+    "confirm": true
   }
 }
 ```

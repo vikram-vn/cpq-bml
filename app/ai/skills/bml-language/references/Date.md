@@ -46,9 +46,6 @@ This function returns the date which is obtained after adding X number of days t
 * Remove the `hours:minutes:seconds` from the return.
 
 
-![adddays example](images/adddaysBML.png)
-
-
 ---
 
 
@@ -251,19 +248,7 @@ This function returns the current date/time based on the base time zone you have
 Example getdate:
 
 
-![getdate example](images/getdate__.png)
-
-
-![getdate output example](images/getdate__console.png)
-
-
 Example getdate(false):
-
-
-![getdate example](images/getdate_false_.png)
-
-
-![getdate output example](images/getdate_false_console.png)
 
 
 ---
@@ -288,12 +273,6 @@ This function calculates the number of days between two different dates. **Examp
 
 
 **Example:**
-
-
-![getdiffindays example](images/getdiffindaysBML.png)
-
-
-![getdiffindays output example](images/getdiffindays_console.png)
 
 
 :::note
@@ -342,9 +321,6 @@ Using this function will determine whether the date falls within a leap year.  T
 **Example:**
 
 
-![isleap example](images/isleapBML.png)
-
-
 Since the year 2008 was a leap year, the function returns True.
 
 
@@ -374,9 +350,6 @@ This function determines whether a date falls within a weekend (Saturday or Sund
 **Example:**
 
 
-![isweekend example](images/isweekendBML.bmp)
-
-
 The console will return either True or False.
 
 
@@ -402,9 +375,6 @@ This function returns a date that is x days before the base date. **Example Use 
 
 
 **Example:**
-
-
-![minusdays example](images/minusdays__BML.bmp)
 
 
 ---
