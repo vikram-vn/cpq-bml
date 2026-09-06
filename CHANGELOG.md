@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.75.0] - 2026-09-06
+
+### Added
+
+- Implement dynamic folder icon synchronization and optimize build pipeline with native Node.js compilation.
+- Add bml-icons.json icon definitions file.
+- Add custom folder icons for beautify, metrics, bml, and xml to icon theme definitions.
+
 ## [1.74.0] - 2026-09-06
 
 ### Added
@@ -84,12 +92,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - **Depth-Aware Signature Help**: Enhanced parameter tracking across nested sub-calls and isolated commas inside inline array literals (`String[]{"a", "b"}`) and bracket indices.
 - **System Constant Categorization & Hover Badges**: Reclassified all 21 `BM_*` system constants to `"constant"`, rendering `(constant)` and typed metadata (`*constant · String*`, `*constant · Float*`, `*constant · Integer*`).
 - **Rich Inlay Hint Tooltips**: Added Markdown tooltips to inferred type inlay labels detailing manipulation methods and iteration semantics.
-
-## [1.65.0] - 2026-08-30
-
-### Added
-
-- Implement BML intellisense engine with function metadata and testing infrastructure.
-- Implement BML intellisense generation scripts and metadata configuration.
-- Implement docFormatting utility for generating BML hover tooltips.
-- Implement automated BML documentation extraction and hover-ready formatting pipeline.
