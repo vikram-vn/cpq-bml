@@ -4,6 +4,24 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.71.0] - 2026-09-06
+
+### Added
+
+- Add BML language reference guide and custom IDE intellisense snippets.
+- Add linter rule to detect unused BML expressions and include corresponding tests.
+- Implement BML static type checking and linting rules for variables and expressions.
+- Support `Dict`, `Map`, and `Set` suffixes for dictionary variable naming convention (`bml-dict-naming-suffix`).
+- Support `Items` and `Entries` suffixes for array variable naming convention (`bml-array-naming-suffix`).
+- Add variable naming convention rules for `json` (`bml-json-naming-suffix`), `jsonarray` (`bml-jsonarray-naming-suffix`), `date` (`bml-date-naming-suffix`), and `stringbuilder` (`bml-stringbuilder-naming-suffix`) with Quick Fix support.
+
+### Fixed
+
+- Elevate consecutive semicolons (`;;`) to a syntax error.
+- Disallow direct invocation of `range(...)` in `for..in` loops, requiring collection assignment first.
+- Resolve double-parentheses insertion when autocompleting functions in the editor.
+- Update custom snippets with valid delimiter formats.
+
 ## [1.70.1] - 2026-08-31
 
 ### Changed
@@ -84,9 +102,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement performance linting rules, diagnostic code actions, and custom snippets for BML optimization.
 - Add BML documentation crawler and comprehensive knowledge base reference.
 - Add BML function metadata and documentation formatting utilities for intellisense support.
-
-## [1.61.0] - 2026-08-29
-
-### Added
-
-- Add BML code snippets, linting rules, and corresponding unit tests.

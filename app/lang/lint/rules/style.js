@@ -189,7 +189,7 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
                     }
                     const rhs = getAssignmentRhsText(noStringsText, eqIdx + 1);
                     if (rhs && rhs.text) {
-                        const t = inferExpressionType(rhs.text);
+                        const t = inferExpressionType(rhs.text, extensionPath, returnTypes);
                         if (t) {
                             inferredType = t;
                             break;
@@ -218,12 +218,34 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
             decls.forEach((decl) => {
                 if (decl.isLoopVar) return;
 
-                // Array Check
-                if (inferredLower.endsWith('[]') || inferredLower.includes('array')) {
-                    if (!/(List|Arr|Array|2d)$/i.test(varName)) {
+                // JsonArray Check
+                if (inferredLower === 'jsonarray') {
+                    if (!/(JsonArray|JsonArr|List|Arr|Array|Items|Entries)$/i.test(varName)) {
                         diagnostics.push(makeDiagnostic(
                             decl.range,
-                            `Style Info: Array variable '${varName}' should have a suffix of 'List', 'Arr', 'Array', or '2D'.`,
+                            `Style Info: JsonArray variable '${varName}' should have a suffix of 'JsonArray', 'JsonArr', 'List', 'Arr', 'Array', 'Items', or 'Entries'.`,
+                            vscode.DiagnosticSeverity.Information,
+                            'bml-jsonarray-naming-suffix'
+                        ));
+                    }
+                }
+                // JSON Object Check
+                else if (inferredLower === 'json') {
+                    if (!/(Json|Obj|Payload|Response|Request|Body)$/i.test(varName)) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Info: JSON variable '${varName}' should have a suffix of 'Json', 'Obj', 'Payload', 'Response', 'Request', or 'Body'.`,
+                            vscode.DiagnosticSeverity.Information,
+                            'bml-json-naming-suffix'
+                        ));
+                    }
+                }
+                // Array Check (native arrays like string[], integer[], etc.)
+                else if (inferredLower.endsWith('[]') || (inferredLower.includes('array') && inferredLower !== 'bytearray')) {
+                    if (!/(List|Arr|Array|2d|Items|Entries)$/i.test(varName)) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Info: Array variable '${varName}' should have a suffix of 'List', 'Arr', 'Array', '2D', 'Items', or 'Entries'.`,
                             vscode.DiagnosticSeverity.Information,
                             'bml-array-naming-suffix'
                         ));
@@ -231,10 +253,10 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
                 }
                 // Dictionary Check
                 else if (inferredLower.includes('dictionary') || inferredLower === 'dict') {
-                    if (!/Dict$/i.test(varName)) {
+                    if (!/(Dict|Map|Set)$/i.test(varName)) {
                         diagnostics.push(makeDiagnostic(
                             decl.range,
-                            `Style Info: Dictionary variable '${varName}' should have a 'Dict' suffix (e.g. '${varName}Dict').`,
+                            `Style Info: Dictionary variable '${varName}' should have a suffix of 'Dict', 'Map', or 'Set' (e.g. '${varName}Dict', '${varName}Map').`,
                             vscode.DiagnosticSeverity.Information,
                             'bml-dict-naming-suffix'
                         ));
@@ -248,6 +270,28 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
                             `Style Info: RecordSet variable '${varName}' should have a 'Records' suffix (e.g. '${varName}Records').`,
                             vscode.DiagnosticSeverity.Information,
                             'bml-recordset-naming-suffix'
+                        ));
+                    }
+                }
+                // Date Check
+                else if (inferredLower === 'date') {
+                    if (!/(Date|Time|Timestamp|Dt)$/i.test(varName)) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Info: Date variable '${varName}' should have a suffix of 'Date', 'Time', 'Timestamp', or 'Dt'.`,
+                            vscode.DiagnosticSeverity.Information,
+                            'bml-date-naming-suffix'
+                        ));
+                    }
+                }
+                // StringBuilder Check
+                else if (inferredLower === 'stringbuilder') {
+                    if (!/(Sb|Builder)$/i.test(varName)) {
+                        diagnostics.push(makeDiagnostic(
+                            decl.range,
+                            `Style Info: StringBuilder variable '${varName}' should have a suffix of 'Sb' or 'Builder'.`,
+                            vscode.DiagnosticSeverity.Information,
+                            'bml-stringbuilder-naming-suffix'
                         ));
                     }
                 }

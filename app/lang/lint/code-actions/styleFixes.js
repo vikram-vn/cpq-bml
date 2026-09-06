@@ -79,11 +79,23 @@ function getStyleFixes(document, diag, editRange) {
             fixes.push(fileAction);
         }
     }
-    else if (diag.code === 'bml-array-naming-suffix' || diag.code === 'bml-dict-naming-suffix' || diag.code === 'bml-recordset-naming-suffix') {
+    else if (
+        diag.code === 'bml-array-naming-suffix' ||
+        diag.code === 'bml-dict-naming-suffix' ||
+        diag.code === 'bml-recordset-naming-suffix' ||
+        diag.code === 'bml-json-naming-suffix' ||
+        diag.code === 'bml-jsonarray-naming-suffix' ||
+        diag.code === 'bml-date-naming-suffix' ||
+        diag.code === 'bml-stringbuilder-naming-suffix'
+    ) {
         const name = document.getText(editRange);
         let suffix = 'Array';
         if (diag.code === 'bml-dict-naming-suffix') suffix = 'Dict';
         if (diag.code === 'bml-recordset-naming-suffix') suffix = 'RecordSet';
+        if (diag.code === 'bml-json-naming-suffix') suffix = 'Json';
+        if (diag.code === 'bml-jsonarray-naming-suffix') suffix = 'Array';
+        if (diag.code === 'bml-date-naming-suffix') suffix = 'Date';
+        if (diag.code === 'bml-stringbuilder-naming-suffix') suffix = 'Sb';
         const newName = name + suffix;
         const action = new vscode.CodeAction(`Rename '${name}' to '${newName}' (all occurrences)`, vscode.CodeActionKind.QuickFix);
         action.isPreferred = true;

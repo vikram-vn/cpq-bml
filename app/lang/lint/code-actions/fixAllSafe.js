@@ -54,7 +54,11 @@ function buildFixAllText(document, relevantDiags, initialAst, isCategory = false
     const hasArraySuffix = relevantDiags.some(d => d.code === 'bml-array-naming-suffix');
     const hasRecordSetSuffix = relevantDiags.some(d => d.code === 'bml-recordset-naming-suffix');
     const hasBoolPrefix = relevantDiags.some(d => d.code === 'bml-boolean-naming-prefix');
-    const hasNaming = hasCamel || hasDictSuffix || hasArraySuffix || hasRecordSetSuffix || hasBoolPrefix;
+    const hasJsonSuffix = relevantDiags.some(d => d.code === 'bml-json-naming-suffix');
+    const hasJsonArraySuffix = relevantDiags.some(d => d.code === 'bml-jsonarray-naming-suffix');
+    const hasDateSuffix = relevantDiags.some(d => d.code === 'bml-date-naming-suffix');
+    const hasStringBuilderSuffix = relevantDiags.some(d => d.code === 'bml-stringbuilder-naming-suffix');
+    const hasNaming = hasCamel || hasDictSuffix || hasArraySuffix || hasRecordSetSuffix || hasBoolPrefix || hasJsonSuffix || hasJsonArraySuffix || hasDateSuffix || hasStringBuilderSuffix;
 
     // 1. Identifier renamings (Constants take priority over camelCase)
     const renameMap = new Map();
@@ -102,6 +106,18 @@ function buildFixAllText(document, relevantDiags, initialAst, isCategory = false
                 renameMap.set(name, base.endsWith('RecordSet') ? base : base + 'RecordSet');
             } else if (diag.code === 'bml-boolean-naming-prefix') {
                 renameMap.set(name, formatBooleanName(name));
+            } else if (diag.code === 'bml-json-naming-suffix') {
+                const base = toCamelCase(name);
+                renameMap.set(name, base.endsWith('Json') ? base : base + 'Json');
+            } else if (diag.code === 'bml-jsonarray-naming-suffix') {
+                const base = toCamelCase(name);
+                renameMap.set(name, base.endsWith('Array') ? base : base + 'Array');
+            } else if (diag.code === 'bml-date-naming-suffix') {
+                const base = toCamelCase(name);
+                renameMap.set(name, base.endsWith('Date') ? base : base + 'Date');
+            } else if (diag.code === 'bml-stringbuilder-naming-suffix') {
+                const base = toCamelCase(name);
+                renameMap.set(name, base.endsWith('Sb') ? base : base + 'Sb');
             }
         }
 
@@ -230,6 +246,10 @@ function getFixAllSafeAction(document, diagnostics) {
         'bml-array-naming-suffix',
         'bml-recordset-naming-suffix',
         'bml-boolean-naming-prefix',
+        'bml-json-naming-suffix',
+        'bml-jsonarray-naming-suffix',
+        'bml-date-naming-suffix',
+        'bml-stringbuilder-naming-suffix',
         'bml-magic-number',
         'bml-unused-variable',
         'bml-unused-loop-var',
@@ -299,9 +319,13 @@ function getFixAllSafeAction(document, diagnostics) {
             d.code === 'bml-dict-naming-suffix' || 
             d.code === 'bml-array-naming-suffix' || 
             d.code === 'bml-recordset-naming-suffix' || 
-            d.code === 'bml-boolean-naming-prefix'
+            d.code === 'bml-boolean-naming-prefix' ||
+            d.code === 'bml-json-naming-suffix' ||
+            d.code === 'bml-jsonarray-naming-suffix' ||
+            d.code === 'bml-date-naming-suffix' ||
+            d.code === 'bml-stringbuilder-naming-suffix'
         ),
-        (count) => `Apply CPQ type naming conventions (Dict, Array, is/has) (${count} issue${count > 1 ? 's' : ''})`
+        (count) => `Apply CPQ type naming conventions (Dict, Array, Json, Date, Sb, is/has) (${count} issue${count > 1 ? 's' : ''})`
     );
 
     // 4. Category: Direct Magic Number Constants

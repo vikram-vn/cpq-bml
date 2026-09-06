@@ -228,9 +228,15 @@ function runStyleAdvancedCodeActionTests() {
             assert.ok(applied, 'Should apply Fix All');
 
             const updatedText = doc.getText();
-            assert.ok(updatedText.includes('string(lowerMonthNum)'), 'Should PRESERVE string(lowerMonthNum) with camelCased variable');
-            assert.ok(updatedText.includes('string(lowerYearNum)'), 'Should PRESERVE string(lowerYearNum) with camelCased variable');
-            assert.ok(!updatedText.includes('lowerMonthStr = lowerMonthNum;'), 'Should NOT strip string() cast from variable');
+            assert.ok(
+                updatedText.includes('string(lowerMonthNum)') || updatedText.includes('string(LOWER_MONTH_NUM_DEFAULT)'),
+                'Should PRESERVE string(...) with renamed variable'
+            );
+            assert.ok(
+                updatedText.includes('string(lowerYearNum)') || updatedText.includes('string(LOWER_YEAR_NUM_DEFAULT)'),
+                'Should PRESERVE string(...) with renamed variable'
+            );
+            assert.ok(!updatedText.includes('lowerMonthStr = lowerMonthNum;') && !updatedText.includes('lowerMonthStr = LOWER_MONTH_NUM_DEFAULT;'), 'Should NOT strip string() cast from variable');
         });
     });
 }

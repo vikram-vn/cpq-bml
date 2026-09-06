@@ -38,7 +38,7 @@ function runStyleCodeActionTests() {
         test('Quick Fix for unused variables and naming conventions', async () => {
             const doc = await vscode.workspace.openTextDocument({
                 language: 'bml',
-                content: 'unusedVar = 10;\nmyItems = String[];\nreturn "";'
+                content: 'unusedVar = 10;\nmyTokens = String[];\nreturn "";'
             });
 
             const collection = vscode.languages.createDiagnosticCollection('bml');
@@ -57,7 +57,7 @@ function runStyleCodeActionTests() {
             const arrayNamingDiag = diags.find(d => d.code === 'bml-array-naming-suffix');
             if (arrayNamingDiag) {
                 const arrayCodeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, arrayNamingDiag.range);
-                const arrayAction = arrayCodeActions.find(a => a.title.includes("Rename 'myItems' to 'myItemsArray'"));
+                const arrayAction = arrayCodeActions.find(a => a.title.includes("Rename 'myTokens' to 'myTokensArray'"));
                 assert.ok(arrayAction, 'Should offer array naming suffix Quick Fix');
             }
         });
@@ -143,7 +143,7 @@ function runStyleCodeActionTests() {
         test('Quick Fix bundled Fix All Safe Style & Naming Issues in File', async () => {
             const content = [
                 'user_name = string("Sample");',
-                'myItems = string[];',
+                'myTokens = string[];',
                 'myAttributes = dict("string");',
                 'if (true) {}',
                 'return "";'
@@ -169,7 +169,7 @@ function runStyleCodeActionTests() {
 
             const updatedText = doc.getText();
             assert.ok(updatedText.includes('userName = "Sample";'), 'Should camelCase variable and remove redundant string cast');
-            assert.ok(updatedText.includes('myItemsArray = string[];'), 'Should add Array suffix');
+            assert.ok(updatedText.includes('myTokensArray = string[];'), 'Should add Array suffix');
             assert.ok(updatedText.includes('myAttributesDict = dict("string");'), 'Should add Dict suffix');
             assert.ok(updatedText.includes('// TODO: implement'), 'Should fill empty block with TODO');
         });

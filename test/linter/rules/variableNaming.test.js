@@ -38,6 +38,8 @@ suite('BML Linter Test Suite - Variable Naming Styles', () => {
             numbersArr = integer[]{1};
             valuesArray = float[]{1.0};
             table2D = string[][]{{"A"}};
+            lineItems = string[]{"SKU-1"};
+            logEntries = string[]{"LOG-1"};
             return "";
         `);
         assert.strictEqual(diags1.filter(d => d.code === 'bml-array-naming-suffix').length, 0);
@@ -49,13 +51,15 @@ suite('BML Linter Test Suite - Variable Naming Styles', () => {
         `);
         const arrayErrors = diags2.filter(d => d.code === 'bml-array-naming-suffix');
         assert.strictEqual(arrayErrors.length, 1);
-        assert.ok(arrayErrors[0].message.includes("suffix of 'List', 'Arr', 'Array', or '2D'"));
+        assert.ok(arrayErrors[0].message.includes("suffix of 'List', 'Arr', 'Array', '2D', 'Items', or 'Entries'"));
     });
 
     test('Dictionary suffix checks', () => {
-        // Valid dict names
+        // Valid dict names (Dict, Map, Set)
         const diags1 = lintText(`
             myDict = dict("string");
+            priceMap = dict("float");
+            idSet = dict("boolean");
             return "";
         `);
         assert.strictEqual(diags1.filter(d => d.code === 'bml-dict-naming-suffix').length, 0);
@@ -67,7 +71,7 @@ suite('BML Linter Test Suite - Variable Naming Styles', () => {
         `);
         const dictErrors = diags2.filter(d => d.code === 'bml-dict-naming-suffix');
         assert.strictEqual(dictErrors.length, 1);
-        assert.ok(dictErrors[0].message.includes("should have a 'Dict' suffix"));
+        assert.ok(dictErrors[0].message.includes("suffix of 'Dict', 'Map', or 'Set'"));
     });
 
     test('RecordSet suffix checks', () => {
@@ -107,5 +111,92 @@ suite('BML Linter Test Suite - Variable Naming Styles', () => {
         const booleanErrors = diags2.filter(d => d.code === 'bml-boolean-naming-prefix');
         assert.strictEqual(booleanErrors.length, 1);
         assert.ok(booleanErrors[0].message.includes("should have an 'is' or 'has' prefix"));
+    });
+
+    test('JSON object suffix checks', () => {
+        // Valid JSON object names (Json, Obj, Payload, Response, Request, Body)
+        const diags1 = lintText(`
+            resultJson = json();
+            userObj = json();
+            requestPayload = json();
+            serverRespResponse = json();
+            authRequest = json();
+            reqBody = json();
+            return "";
+        `);
+        assert.strictEqual(diags1.filter(d => d.code === 'bml-json-naming-suffix').length, 0);
+
+        // Invalid JSON object name
+        const diags2 = lintText(`
+            userData = json();
+            return "";
+        `);
+        const jsonErrors = diags2.filter(d => d.code === 'bml-json-naming-suffix');
+        assert.strictEqual(jsonErrors.length, 1);
+        assert.ok(jsonErrors[0].message.includes("suffix of 'Json', 'Obj', 'Payload', 'Response', 'Request', or 'Body'"));
+    });
+
+    test('JsonArray suffix checks', () => {
+        // Valid JsonArray names (JsonArray, JsonArr, List, Arr, Array, Items, Entries)
+        const diags1 = lintText(`
+            dataJsonArray = jsonarray();
+            itemJsonArr = jsonarray();
+            partsList = jsonarray();
+            lineArr = jsonarray();
+            valuesArray = jsonarray();
+            orderItems = jsonarray();
+            logEntries = jsonarray();
+            return "";
+        `);
+        assert.strictEqual(diags1.filter(d => d.code === 'bml-jsonarray-naming-suffix').length, 0);
+
+        // Invalid JsonArray name
+        const diags2 = lintText(`
+            itemsData = jsonarray();
+            return "";
+        `);
+        const jsonArrayErrors = diags2.filter(d => d.code === 'bml-jsonarray-naming-suffix');
+        assert.strictEqual(jsonArrayErrors.length, 1);
+        assert.ok(jsonArrayErrors[0].message.includes("suffix of 'JsonArray', 'JsonArr', 'List', 'Arr', 'Array', 'Items', or 'Entries'"));
+    });
+
+    test('Date suffix checks', () => {
+        // Valid Date names (Date, Time, Timestamp, Dt)
+        const diags1 = lintText(`
+            createdDate = getdate();
+            expiryTime = getdate();
+            eventTimestamp = getdate();
+            startDt = getdate();
+            return "";
+        `);
+        assert.strictEqual(diags1.filter(d => d.code === 'bml-date-naming-suffix').length, 0);
+
+        // Invalid Date name
+        const diags2 = lintText(`
+            today = getdate();
+            return "";
+        `);
+        const dateErrors = diags2.filter(d => d.code === 'bml-date-naming-suffix');
+        assert.strictEqual(dateErrors.length, 1);
+        assert.ok(dateErrors[0].message.includes("suffix of 'Date', 'Time', 'Timestamp', or 'Dt'"));
+    });
+
+    test('StringBuilder suffix checks', () => {
+        // Valid StringBuilder names (Sb, Builder)
+        const diags1 = lintText(`
+            bufferSb = stringbuilder();
+            queryBuilder = stringbuilder();
+            return "";
+        `);
+        assert.strictEqual(diags1.filter(d => d.code === 'bml-stringbuilder-naming-suffix').length, 0);
+
+        // Invalid StringBuilder name
+        const diags2 = lintText(`
+            queryBuffer = stringbuilder();
+            return "";
+        `);
+        const sbErrors = diags2.filter(d => d.code === 'bml-stringbuilder-naming-suffix');
+        assert.strictEqual(sbErrors.length, 1);
+        assert.ok(sbErrors[0].message.includes("suffix of 'Sb' or 'Builder'"));
     });
 });
