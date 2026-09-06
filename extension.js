@@ -13,6 +13,7 @@ const { registerMcp } = require("./app/lang/mcp");
 const { registerXslt } = require("./app/lang/xslt");
 const { registerMetrics } = require("./app/lang/metrics");
 const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
+const { syncRuntimeWorkspaceFolders } = require("./app/lang/icons/dynamicFolderIcons");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -85,6 +86,19 @@ function activate(context) {
     },
   );
   context.subscriptions.push(activateIconsCmd);
+
+  // ── Runtime Dynamic Folder Icon Sync ────────────────────────────────────────
+  try {
+    syncRuntimeWorkspaceFolders(context, vscode.workspace.workspaceFolders);
+  } catch (_) {}
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeWorkspaceFolders((e) => {
+      try {
+        syncRuntimeWorkspaceFolders(context, e.added);
+      } catch (_) {}
+    })
+  );
 }
 
 function deactivate() {}

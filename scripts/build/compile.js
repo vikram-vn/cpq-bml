@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { performance } = require('perf_hooks');
+const { generateDynamicIcons } = require('../../app/lang/icons/dynamicFolderIcons');
 
 const ROOT = path.join(__dirname, '..', '..');
 const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
@@ -74,7 +75,14 @@ async function compileExtension() {
         }
     }
 
-    // 4. JSON minification (.json -> .min.json)
+    // 4. Dynamic folder icon sync (pure Node.js)
+    try {
+        generateDynamicIcons(ROOT);
+    } catch (err) {
+        console.warn('Dynamic icons warning:', err.message);
+    }
+
+    // 5. JSON minification (.json -> .min.json)
     const intellisenseDir = path.join(ROOT, 'app', 'lang', 'intellisense');
     const jsonFiles = [
         path.join(ROOT, 'themes', 'dark-default.json'),

@@ -514,6 +514,7 @@
     "crawl:docs": "python scripts/docs/bml_crawler/crawler.py",
     "generate:intellisense": "python scripts/bml_intellisense/generate_intellisense.py",
     "generate:docs": "npm run crawl:docs && npm run generate:intellisense",
+    "generate:icons": "node scripts/generate/generate_dynamic_icons.js",
     "build": "npm run package",
     "release": "python scripts/release/release.py",
     "pretest": "npm run compile",
