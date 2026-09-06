@@ -154,4 +154,4 @@ os.makedirs(os.path.dirname(OUTPUT_SVG), exist_ok=True)
 with open(OUTPUT_SVG, 'w', encoding='utf-8') as f:
     f.write(svg)
 
-print(f'✓ Written {OUTPUT_SVG}  ({os.path.getsize(OUTPUT_SVG):,} bytes)')
+print(f'[OK] Written {OUTPUT_SVG}  ({os.path.getsize(OUTPUT_SVG):,} bytes)')
