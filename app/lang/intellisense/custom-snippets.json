@@ -30,7 +30,7 @@
   "forin-idx": {
     "syntax": "${1:idx} = 0;\nfor ${2:item} in ${3:array} {\n\t${0}\n\t${1:idx} = ${1:idx} + 1;\n}",
     "examples": [
-      "idx = 0;\nfor line in transactionLine {\n\tprint(\"Line \" ~ string(idx) ~ \": \" ~ line._part_number);\n\tidx = idx + 1;\n}"
+      "idx = 0;\nfor line in transactionLine {\n\tprint(\"Line \" + string(idx) + \": \" + line._part_number);\n\tidx = idx + 1;\n}"
     ],
     "notes": "Array iteration loop with zero-based index counter."
   },
@@ -51,7 +51,7 @@
   "dict-iter": {
     "syntax": "${1:keys} = getkeys(${2:dictVar});\nfor ${3:key} in ${1:keys} {\n\t${4:val} = get(${2:dictVar}, ${3:key});\n\t${0}\n}",
     "examples": [
-      "keys = getkeys(priceMap);\nfor sku in keys {\n\tprice = get(priceMap, sku);\n\tprint(sku ~ \": \" ~ string(price));\n}"
+      "keys = getkeys(priceMap);\nfor sku in keys {\n\tprice = get(priceMap, sku);\n\tprint(sku + \": \" + string(price));\n}"
     ],
     "notes": "Iterate over dictionary keys and values."
   },
@@ -79,7 +79,7 @@
   "json-iter": {
     "syntax": "${1:keys} = jsonkeys(${2:jsonVar});\nfor ${3:key} in ${1:keys} {\n\t${4:val} = jsonget(${2:jsonVar}, ${3:key});\n\t${0}\n}",
     "examples": [
-      "keys = jsonkeys(responseJson);\nfor field in keys {\n\tval = jsonget(responseJson, field);\n\tprint(field ~ \" = \" ~ val);\n}"
+      "keys = jsonkeys(responseJson);\nfor field in keys {\n\tval = jsonget(responseJson, field);\n\tprint(field + \" = \" + val);\n}"
     ],
     "notes": "Iterate over all keys in a JSON object."
   },
@@ -182,25 +182,25 @@
     "notes": "Perform an HTTP POST request with a JSON payload."
   },
   "urldata-auth-bearer": {
-    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Authorization\", \"Bearer \" ~ ${2:accessToken});\nput(${1:headers}, \"Content-Type\", \"application/json\");\n${0}",
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Authorization\", \"Bearer \" + ${2:accessToken});\nput(${1:headers}, \"Content-Type\", \"application/json\");\n${0}",
     "examples": [
-      "headers = dict(\"string\");\nput(headers, \"Authorization\", \"Bearer \" ~ token);\nput(headers, \"Content-Type\", \"application/json\");"
+      "headers = dict(\"string\");\nput(headers, \"Authorization\", \"Bearer \" + token);\nput(headers, \"Content-Type\", \"application/json\");"
     ],
     "notes": "Setup OAuth2 Bearer token headers for REST API requests."
   },
   "urldata-auth-basic": {
-    "syntax": "${1:authStr} = encodebase64(${2:username} ~ \":\" ~ ${3:password});\n${4:headers} = dict(\"string\");\nput(${4:headers}, \"Authorization\", \"Basic \" ~ ${1:authStr});\nput(${4:headers}, \"Content-Type\", \"application/json\");\n${0}",
+    "syntax": "${1:authStr} = encodebase64(${2:username} + \":\" + ${3:password});\n${4:headers} = dict(\"string\");\nput(${4:headers}, \"Authorization\", \"Basic \" + ${1:authStr});\nput(${4:headers}, \"Content-Type\", \"application/json\");\n${0}",
     "examples": [
-      "authStr = encodebase64(user ~ \":\" ~ pass);\nheaders = dict(\"string\");\nput(headers, \"Authorization\", \"Basic \" ~ authStr);"
+      "authStr = encodebase64(user + \":\" + pass);\nheaders = dict(\"string\");\nput(headers, \"Authorization\", \"Basic \" + authStr);"
     ],
     "notes": "Setup Basic Authentication headers with Base64 encoding."
   },
   "xml-read": {
-    "syntax": "${1:xmlDoc} = readxml(${2:xmlString});\n${3:rootNode} = getxmlroottag(${1:xmlDoc});\n${0}",
+    "syntax": "${1:xmlDoc} = readxmlsingle(${2:xmlString}, \"${3://root}\");\n${0}",
     "examples": [
-      "xmlDoc = readxml(responsePayload);\nrootNode = getxmlroottag(xmlDoc);"
+      "xmlDoc = readxmlsingle(responsePayload, \"//order\");"
     ],
-    "notes": "Parse an XML string into an XML document object."
+    "notes": "Parse an XML string into an XML document object using XPath."
   },
   "xml-transform": {
     "syntax": "${1:transformedHtml} = transformxml(${2:xmlData}, ${3:xslTemplate});\n${0}",
@@ -224,9 +224,9 @@
     "notes": "Loop through Commerce transactionLine items."
   },
   "commerce-delimit-return": {
-    "syntax": "${1:returnStr} = \"\";\nfor ${2:line} in transactionLine {\n\t${1:returnStr} = ${1:returnStr} ~ ${2:line}._document_number ~ \"~\" ~ \"${3:attrName}\" ~ \"~\" ~ ${4:value} ~ \"|\";\n}\nreturn ${1:returnStr};",
+    "syntax": "${1:returnStr} = \"\";\nfor ${2:line} in transactionLine {\n\t${1:returnStr} = ${1:returnStr} + ${2:line}._document_number + \"~\" + \"${3:attrName}\" + \"~\" + ${4:value} + \"|\";\n}\nreturn ${1:returnStr};",
     "examples": [
-      "returnStr = \"\";\nfor line in transactionLine {\n\treturnStr = returnStr ~ line._document_number ~ \"~customDiscount_line~\" ~ string(disc) ~ \"|\";\n}\nreturn returnStr;"
+      "returnStr = \"\";\nfor line in transactionLine {\n\treturnStr = returnStr + line._document_number + \"~customDiscount_line~\" + string(disc) + \"|\";\n}\nreturn returnStr;"
     ],
     "notes": "Build and return a standard Commerce pipe-delimited line attribute update string."
   },
@@ -308,7 +308,7 @@
     "notes": "Oracle CPQ Best Practice: Pre-fetch and cache BMQL queries before loop execution to eliminate N+1 latency on large quotes."
   },
   "bp-safe-rest": {
-    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Content-Type\", \"application/json\");\nput(${1:headers}, \"Authorization\", \"Bearer \" ~ ${2:authToken});\n\n${3:response} = urldata(${4:endpointUrl}, \"${5|GET,POST,PUT,DELETE|}\", ${1:headers}, ${6:payloadJson}, ${7:5000});\n\nif (containskey(${3:response}, \"Status-Code\") AND startswith(get(${3:response}, \"Status-Code\"), \"200\")) {\n\t${8:body} = get(${3:response}, \"Message-Body\");\n\t${0}\n} else {\n\t${9:errMsg} = \"REST API call failed: \" ~ get(${3:response}, \"Status-Code\");\n\tthrowerror(${9:errMsg});\n}",
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Content-Type\", \"application/json\");\nput(${1:headers}, \"Authorization\", \"Bearer \" + ${2:authToken});\n\n${3:response} = urldata(${4:endpointUrl}, \"${5|GET,POST,PUT,DELETE|}\", ${1:headers}, ${6:payloadJson}, ${7:5000});\n\nif (containskey(${3:response}, \"Status-Code\") AND startswith(get(${3:response}, \"Status-Code\"), \"200\")) {\n\t${8:body} = get(${3:response}, \"Message-Body\");\n\t${0}\n} else {\n\t${9:errMsg} = \"REST API call failed: \" + get(${3:response}, \"Status-Code\");\n\tthrowerror(${9:errMsg});\n}",
     "examples": [
       "headers = dict(\"string\");\nput(headers, \"Content-Type\", \"application/json\");\nres = urldata(\"https://api.example.com/v1/data\", \"GET\", headers, \"\", 5000);\nif (containskey(res, \"Status-Code\") and startswith(get(res, \"Status-Code\"), \"200\")) {\n\tbody = get(res, \"Message-Body\");\n}"
     ],
