@@ -79,7 +79,8 @@ totalNetDiscountAmount = 0.0;
 totalExtendedNetAmount = 0.0;
 
 lineCount = sizeofarray(lineItemIdsList);
-for lineIdx in range(lineCount) {
+lineIndicesList = range(lineCount);
+for lineIdx in lineIndicesList {
     lineId = lineItemIdsList[lineIdx];
     partNum = partNumbersList[lineIdx];
     qty = quantitiesList[lineIdx];
@@ -171,7 +172,7 @@ jsonput(outputPayload, "requiresDirectorApproval", isRequiresDirectorApproval);
 jsonput(outputPayload, "requiresVPApproval", isRequiresVPApproval);
 
 linesJsonArray = jsonarray();
-for lineIdx in range(lineCount) {
+for lineIdx in lineIndicesList {
     lId = lineItemIdsList[lineIdx];
     lineJson = json();
     jsonput(lineJson, "lineId", lId);

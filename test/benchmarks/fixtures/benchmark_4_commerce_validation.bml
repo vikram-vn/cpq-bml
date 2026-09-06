@@ -54,7 +54,8 @@ isCrossBorder = (billingCountry <> shippingCountry);
 if (isCrossBorder) {
     append(validationWarnings, "Cross-border shipment detected from " + billingCountry + " to " + shippingCountry + ". Customs documentation required.");
     lineCount = sizeofarray(lineIds);
-    for idx in range(lineCount) {
+    lineIndicesList = range(lineCount);
+    for idx in lineIndicesList {
         if (lineExportRestricted[idx]) {
             append(validationErrors, "Line " + lineIds[idx] + " (" + lineTypes[idx] + ") is flagged as EXPORT_RESTRICTED and cannot be shipped to " + shippingCountry + " without EAR license.");
         }
@@ -69,7 +70,8 @@ put(maxAllowedDiscounts, "SERVICE", 15.0);
 put(maxAllowedDiscounts, "SUBSCRIPTION", 25.0);
 
 lineCount = sizeofarray(lineIds);
-for idx in range(lineCount) {
+lineIndicesList = range(lineCount);
+for idx in lineIndicesList {
     lType = lineTypes[idx];
     lDisc = lineDiscounts[idx];
     if (containskey(maxAllowedDiscounts, lType)) {

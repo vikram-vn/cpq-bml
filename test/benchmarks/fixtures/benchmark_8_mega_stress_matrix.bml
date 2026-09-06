@@ -11,6 +11,7 @@ gridValues2D = float[][];
 lookupCacheDict = dict("float");
 summaryBuilder = stringbuilder("MEGA_STRESS_REPORT:");
 runningChecksum = 0.0;
+stepIndicesList = range(20);
 
 // --- Stage 1: Matrix Processing Pipeline Block ---
 stage1ValuesList = float[];
@@ -18,7 +19,7 @@ stage1LabelsList = string[];
 stage1Sum = 0.0;
 stage1Weight = 0.625;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage1Weight + 1.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage1ValuesList, transformedVal);
@@ -50,7 +51,7 @@ stage2LabelsList = string[];
 stage2Sum = 0.0;
 stage2Weight = 0.750;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage2Weight + 3.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage2ValuesList, transformedVal);
@@ -82,7 +83,7 @@ stage3LabelsList = string[];
 stage3Sum = 0.0;
 stage3Weight = 0.875;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage3Weight + 4.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage3ValuesList, transformedVal);
@@ -114,7 +115,7 @@ stage4LabelsList = string[];
 stage4Sum = 0.0;
 stage4Weight = 1.000;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage4Weight + 6.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage4ValuesList, transformedVal);
@@ -146,7 +147,7 @@ stage5LabelsList = string[];
 stage5Sum = 0.0;
 stage5Weight = 1.125;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage5Weight + 7.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage5ValuesList, transformedVal);
@@ -178,7 +179,7 @@ stage6LabelsList = string[];
 stage6Sum = 0.0;
 stage6Weight = 1.250;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage6Weight + 9.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage6ValuesList, transformedVal);
@@ -210,7 +211,7 @@ stage7LabelsList = string[];
 stage7Sum = 0.0;
 stage7Weight = 1.375;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage7Weight + 10.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage7ValuesList, transformedVal);
@@ -242,7 +243,7 @@ stage8LabelsList = string[];
 stage8Sum = 0.0;
 stage8Weight = 1.500;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage8Weight + 12.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage8ValuesList, transformedVal);
@@ -274,7 +275,7 @@ stage9LabelsList = string[];
 stage9Sum = 0.0;
 stage9Weight = 1.625;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage9Weight + 13.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage9ValuesList, transformedVal);
@@ -306,7 +307,7 @@ stage10LabelsList = string[];
 stage10Sum = 0.0;
 stage10Weight = 1.750;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage10Weight + 15.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage10ValuesList, transformedVal);
@@ -338,7 +339,7 @@ stage11LabelsList = string[];
 stage11Sum = 0.0;
 stage11Weight = 1.875;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage11Weight + 16.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage11ValuesList, transformedVal);
@@ -370,7 +371,7 @@ stage12LabelsList = string[];
 stage12Sum = 0.0;
 stage12Weight = 2.000;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage12Weight + 18.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage12ValuesList, transformedVal);
@@ -402,7 +403,7 @@ stage13LabelsList = string[];
 stage13Sum = 0.0;
 stage13Weight = 2.125;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage13Weight + 19.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage13ValuesList, transformedVal);
@@ -434,7 +435,7 @@ stage14LabelsList = string[];
 stage14Sum = 0.0;
 stage14Weight = 2.250;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage14Weight + 21.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage14ValuesList, transformedVal);
@@ -466,7 +467,7 @@ stage15LabelsList = string[];
 stage15Sum = 0.0;
 stage15Weight = 2.375;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage15Weight + 22.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage15ValuesList, transformedVal);
@@ -498,7 +499,7 @@ stage16LabelsList = string[];
 stage16Sum = 0.0;
 stage16Weight = 2.500;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage16Weight + 24.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage16ValuesList, transformedVal);
@@ -530,7 +531,7 @@ stage17LabelsList = string[];
 stage17Sum = 0.0;
 stage17Weight = 2.625;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage17Weight + 25.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage17ValuesList, transformedVal);
@@ -562,7 +563,7 @@ stage18LabelsList = string[];
 stage18Sum = 0.0;
 stage18Weight = 2.750;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage18Weight + 27.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage18ValuesList, transformedVal);
@@ -594,7 +595,7 @@ stage19LabelsList = string[];
 stage19Sum = 0.0;
 stage19Weight = 2.875;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage19Weight + 28.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage19ValuesList, transformedVal);
@@ -626,7 +627,7 @@ stage20LabelsList = string[];
 stage20Sum = 0.0;
 stage20Weight = 3.000;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage20Weight + 30.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage20ValuesList, transformedVal);
@@ -658,7 +659,7 @@ stage21LabelsList = string[];
 stage21Sum = 0.0;
 stage21Weight = 3.125;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage21Weight + 31.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage21ValuesList, transformedVal);
@@ -690,7 +691,7 @@ stage22LabelsList = string[];
 stage22Sum = 0.0;
 stage22Weight = 3.250;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage22Weight + 33.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage22ValuesList, transformedVal);
@@ -722,7 +723,7 @@ stage23LabelsList = string[];
 stage23Sum = 0.0;
 stage23Weight = 3.375;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage23Weight + 34.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage23ValuesList, transformedVal);
@@ -754,7 +755,7 @@ stage24LabelsList = string[];
 stage24Sum = 0.0;
 stage24Weight = 0.500;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage24Weight + 36.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage24ValuesList, transformedVal);
@@ -786,7 +787,7 @@ stage25LabelsList = string[];
 stage25Sum = 0.0;
 stage25Weight = 0.625;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage25Weight + 37.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage25ValuesList, transformedVal);
@@ -818,7 +819,7 @@ stage26LabelsList = string[];
 stage26Sum = 0.0;
 stage26Weight = 0.750;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage26Weight + 39.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage26ValuesList, transformedVal);
@@ -850,7 +851,7 @@ stage27LabelsList = string[];
 stage27Sum = 0.0;
 stage27Weight = 0.875;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage27Weight + 40.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage27ValuesList, transformedVal);
@@ -882,7 +883,7 @@ stage28LabelsList = string[];
 stage28Sum = 0.0;
 stage28Weight = 1.000;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage28Weight + 42.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage28ValuesList, transformedVal);
@@ -914,7 +915,7 @@ stage29LabelsList = string[];
 stage29Sum = 0.0;
 stage29Weight = 1.125;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage29Weight + 43.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage29ValuesList, transformedVal);
@@ -946,7 +947,7 @@ stage30LabelsList = string[];
 stage30Sum = 0.0;
 stage30Weight = 1.250;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage30Weight + 45.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage30ValuesList, transformedVal);
@@ -978,7 +979,7 @@ stage31LabelsList = string[];
 stage31Sum = 0.0;
 stage31Weight = 1.375;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage31Weight + 46.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage31ValuesList, transformedVal);
@@ -1010,7 +1011,7 @@ stage32LabelsList = string[];
 stage32Sum = 0.0;
 stage32Weight = 1.500;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage32Weight + 48.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage32ValuesList, transformedVal);
@@ -1042,7 +1043,7 @@ stage33LabelsList = string[];
 stage33Sum = 0.0;
 stage33Weight = 1.625;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage33Weight + 49.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage33ValuesList, transformedVal);
@@ -1074,7 +1075,7 @@ stage34LabelsList = string[];
 stage34Sum = 0.0;
 stage34Weight = 1.750;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage34Weight + 51.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage34ValuesList, transformedVal);
@@ -1106,7 +1107,7 @@ stage35LabelsList = string[];
 stage35Sum = 0.0;
 stage35Weight = 1.875;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage35Weight + 52.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage35ValuesList, transformedVal);
@@ -1138,7 +1139,7 @@ stage36LabelsList = string[];
 stage36Sum = 0.0;
 stage36Weight = 2.000;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage36Weight + 54.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage36ValuesList, transformedVal);
@@ -1170,7 +1171,7 @@ stage37LabelsList = string[];
 stage37Sum = 0.0;
 stage37Weight = 2.125;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage37Weight + 55.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage37ValuesList, transformedVal);
@@ -1202,7 +1203,7 @@ stage38LabelsList = string[];
 stage38Sum = 0.0;
 stage38Weight = 2.250;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage38Weight + 57.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage38ValuesList, transformedVal);
@@ -1234,7 +1235,7 @@ stage39LabelsList = string[];
 stage39Sum = 0.0;
 stage39Weight = 2.375;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage39Weight + 58.5;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage39ValuesList, transformedVal);
@@ -1266,7 +1267,7 @@ stage40LabelsList = string[];
 stage40Sum = 0.0;
 stage40Weight = 2.500;
 
-for idx in range(20) {
+for idx in stepIndicesList {
     baseVal = float(idx) * stage40Weight + 60.0;
     transformedVal = sqrt(abs(baseVal)) * log(baseVal + 2.0);
     append(stage40ValuesList, transformedVal);

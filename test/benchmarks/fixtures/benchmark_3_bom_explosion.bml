@@ -64,10 +64,12 @@ traversalStackArr = jsonarray();
 jsonarrayappend(traversalStackArr, bomRootItem);
 
 totalPartCount = 0;
-for depthStep in range(MAX_BOM_DEPTH) {
+depthStepsList = range(MAX_BOM_DEPTH);
+for depthStep in depthStepsList {
     stackSize = jsonarraysize(traversalStackArr);
     if (stackSize > 0) {
-        for sIdx in range(stackSize) {
+        stackIndicesList = range(stackSize);
+        for sIdx in stackIndicesList {
             currentNode = jsonarrayget(traversalStackArr, 0, "json");
             jsonarrayremove(traversalStackArr, 0);
 
@@ -89,7 +91,8 @@ for depthStep in range(MAX_BOM_DEPTH) {
             if (jsonpathcheck(currentNode, "$.children")) {
                 childNodesArr = jsonpathgetmultiple(currentNode, "$.children[*]");
                 childSize = jsonarraysize(childNodesArr);
-                for cIdx in range(childSize) {
+                childIndicesList = range(childSize);
+                for cIdx in childIndicesList {
                     childNode = jsonarrayget(childNodesArr, cIdx, "json");
                     jsonarrayappend(traversalStackArr, childNode);
                 }

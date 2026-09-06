@@ -77,13 +77,15 @@ if (isRedundantPowerRequired) {
 }
 
 // --- Section 3: Processor & Memory Allocation ---
-for cpuIdx in range(selectedProcessorCount) {
+cpuIndicesList = range(selectedProcessorCount);
+for cpuIdx in cpuIndicesList {
     append(recommendedPartsList, "CPU-XEON-PLATINUM-8480");
     append(recommendedQuantitiesList, 1);
     append(recommendedTypesList, "PROCESSOR");
 }
 
-for ramIdx in range(totalRamModules) {
+ramIndicesList = range(totalRamModules);
+for ramIdx in ramIndicesList {
     append(recommendedPartsList, "RAM-DDR5-32GB-ECC-REG");
     append(recommendedQuantitiesList, 1);
     append(recommendedTypesList, "MEMORY");
@@ -125,7 +127,8 @@ jsonput(configSummaryPayload, "recommendedPartsCount", sizeofarray(recommendedPa
 
 partsJsonArray = jsonarray();
 recCount = sizeofarray(recommendedPartsList);
-for idx in range(recCount) {
+recIndicesList = range(recCount);
+for idx in recIndicesList {
     pJson = json();
     jsonput(pJson, "partNumber", recommendedPartsList[idx]);
     jsonput(pJson, "quantity", recommendedQuantitiesList[idx]);
