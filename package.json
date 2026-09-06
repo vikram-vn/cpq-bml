@@ -191,6 +191,11 @@
         "icon": "app/icons/change-env.svg"
       },
       {
+        "command": "cpqBml.rest.globalSearchBml",
+        "title": "CPQ-BML: Global Search BML Scripts on CPQ",
+        "icon": "$(search)"
+      },
+      {
         "command": "cpqBml.mcp.showInfo",
         "title": "CPQ-BML: Show MCP Server Connection Info",
         "icon": "$(info)"

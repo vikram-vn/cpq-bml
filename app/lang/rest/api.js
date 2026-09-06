@@ -1,12 +1,19 @@
 const fs = require("fs");
 const pathLib = require("path");
 const { request } = require("./client");
-const { getBaseUrl, getRestVersion, getCommerceProcess, getAuthHeader, getSettings } = require("./config");
+const {
+  getBaseUrl,
+  getRestVersion,
+  getCommerceProcess,
+  getAuthHeader,
+  getSettings,
+} = require("./config");
 
 function functionsPath(vscode, metadata) {
   const version = getRestVersion(vscode);
   if (metadata && metadata.commerceDocument) {
-    const process = metadata.commerceProcess || getCommerceProcess(vscode) || 'oraclecpqo';
+    const process =
+      metadata.commerceProcess || getCommerceProcess(vscode) || "oraclecpqo";
     return `/rest/${version}/commerceProcessSetups/${process}/documents/${metadata.commerceDocument}/bml/library/functions`;
   }
   return `/rest/${version}/bml/library/functions`;
@@ -15,7 +22,7 @@ function functionsPath(vscode, metadata) {
 // transport lets tests intercept the call instead of making a real HTTPS request.
 async function call(context, vscode, { path, method, query, body }, transport) {
   let cleanedBody = body;
-  if (body && typeof body === 'object') {
+  if (body && typeof body === "object") {
     const { commerceProcess, commerceDocument, ...rest } = body;
     cleanedBody = rest;
   }
@@ -23,29 +30,41 @@ async function call(context, vscode, { path, method, query, body }, transport) {
   const authHeader = await getAuthHeader(context, vscode);
   const settings = getSettings(vscode);
   let logFilePath;
-  if (settings.debugLog && vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
-    const logsDir = pathLib.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'logs', 'rest-api-logs');
+  if (
+    settings.debugLog &&
+    vscode.workspace.workspaceFolders &&
+    vscode.workspace.workspaceFolders.length > 0
+  ) {
+    const logsDir = pathLib.join(
+      vscode.workspace.workspaceFolders[0].uri.fsPath,
+      "logs",
+      "rest-api-logs",
+    );
     try {
       fs.mkdirSync(logsDir, { recursive: true });
     } catch (e) {}
-    
-    let txnId = '';
-    if (body && typeof body === 'object') {
+
+    let txnId = "";
+    if (body && typeof body === "object") {
       if (body.transactionId) txnId = String(body.transactionId);
       else if (body.transactionID) txnId = String(body.transactionID);
       else if (body.transactionID_t) txnId = String(body.transactionID_t);
     }
-    if (!txnId && query && typeof query === 'object') {
+    if (!txnId && query && typeof query === "object") {
       if (query.transactionId) txnId = String(query.transactionId);
       else if (query.transactionID) txnId = String(query.transactionID);
       else if (query.transactionID_t) txnId = String(query.transactionID_t);
     }
-    if (!txnId && path && typeof path === 'string') {
-      const match = path.match(/\/(?:documents|transaction(?:Setup)?s?)\/(\d+)/i);
+    if (!txnId && path && typeof path === "string") {
+      const match = path.match(
+        /\/(?:documents|transaction(?:Setup)?s?)\/(\d+)/i,
+      );
       if (match) txnId = match[1];
     }
-    
-    const logFileName = txnId ? `bml_rest_api_${txnId}.log` : 'bml_rest_api.log';
+
+    const logFileName = txnId
+      ? `bml_rest_api_${txnId}.log`
+      : "bml_rest_api.log";
     logFilePath = pathLib.join(logsDir, logFileName);
   }
 
@@ -72,7 +91,11 @@ function listLibraryFunctions(
   return call(
     context,
     vscode,
-    { path: functionsPath(vscode, metadata), method: "GET", query: { offset, limit } },
+    {
+      path: functionsPath(vscode, metadata),
+      method: "GET",
+      query: { offset, limit },
+    },
     transport,
   );
 }
@@ -89,11 +112,20 @@ function listLibraryFolders(context, vscode, transport) {
 }
 
 // GET /rest/<version>/bml/library/functions/{namespace.variableName} -> full function object (scriptText, parameters, ...)
-function getLibraryFunction(context, vscode, namespaceVariableName, transport, metadata) {
+function getLibraryFunction(
+  context,
+  vscode,
+  namespaceVariableName,
+  transport,
+  metadata,
+) {
   return call(
     context,
     vscode,
-    { path: `${functionsPath(vscode, metadata)}/${namespaceVariableName}`, method: "GET" },
+    {
+      path: `${functionsPath(vscode, metadata)}/${namespaceVariableName}`,
+      method: "GET",
+    },
     transport,
   );
 }
@@ -119,12 +151,7 @@ function updateLibraryFunction(
 }
 
 // POST /rest/<version>/bml/library/functions
-function createLibraryFunction(
-  context,
-  vscode,
-  payload,
-  transport,
-) {
+function createLibraryFunction(context, vscode, payload, transport) {
   return call(
     context,
     vscode,
@@ -171,7 +198,11 @@ function debugLibraryFunction(context, vscode, payload, transport) {
   return call(
     context,
     vscode,
-    { path: `${functionsPath(vscode, payload)}/actions/debug`, method: "POST", body: payload },
+    {
+      path: `${functionsPath(vscode, payload)}/actions/debug`,
+      method: "POST",
+      body: payload,
+    },
     transport,
   );
 }
@@ -185,7 +216,7 @@ function loadTransactionData(context, vscode, payload, queryParams, transport) {
       path: `${functionsPath(vscode, payload)}/actions/loadTransactionData`,
       method: "POST",
       body: payload,
-      query: queryParams
+      query: queryParams,
     },
     transport,
   );
@@ -199,14 +230,21 @@ function getDependentAttributes(context, vscode, payload, transport) {
     {
       path: `${functionsPath(vscode, payload)}/actions/dependentAttributes`,
       method: "POST",
-      body: payload
+      body: payload,
     },
     transport,
   );
 }
 
 // Commerce: PATCH { isOverridden }. Util: POST to .../actions/override or removeOverride instead.
-function setOverride(context, vscode, namespaceVariableName, isOverridden, metadata, transport) {
+function setOverride(
+  context,
+  vscode,
+  namespaceVariableName,
+  isOverridden,
+  metadata,
+  transport,
+) {
   const isCommerce = metadata && metadata.commerceDocument;
   if (isCommerce) {
     return call(
@@ -216,7 +254,11 @@ function setOverride(context, vscode, namespaceVariableName, isOverridden, metad
         path: `${functionsPath(vscode, metadata)}/${namespaceVariableName}`,
         method: "PATCH",
         // call() strips commerceProcess/commerceDocument from the body, they're only used for routing.
-        body: { isOverridden, commerceProcess: metadata.commerceProcess, commerceDocument: metadata.commerceDocument },
+        body: {
+          isOverridden,
+          commerceProcess: metadata.commerceProcess,
+          commerceDocument: metadata.commerceDocument,
+        },
       },
       transport,
     );
@@ -267,6 +309,52 @@ function getTask(context, vscode, taskId, transport) {
   );
 }
 
+// GET /rest/<version>/bml/scripts?q={'scriptText':{$contains:'<query>', $options:'I'}}
+// BML Global Search introduced in Oracle CPQ 26A (/rest/v19/bml/scripts).
+function searchBmlScripts(
+  context,
+  vscode,
+  {
+    query,
+    caseSensitive = false,
+    offset = 0,
+    limit = 100,
+    fields,
+    orderby,
+    totalResults = true,
+    q: rawQ,
+  } = {},
+  transport,
+) {
+  const version = getRestVersion(vscode);
+  const verNum = parseInt((version || "").replace(/^v/i, ""), 10);
+  const effectiveVersion = !isNaN(verNum) && verNum >= 19 ? version : "v19";
+
+  let q = rawQ;
+  if (!q && query) {
+    const escaped = String(query).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    q = caseSensitive
+      ? `{'scriptText':{$contains:'${escaped}'}}`
+      : `{'scriptText':{$contains:'${escaped}',$options:'I'}}`;
+  }
+
+  const queryParams = { offset, limit, totalResults };
+  if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
+  if (orderby) queryParams.orderby = orderby;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/bml/scripts`,
+      method: "GET",
+      query: queryParams,
+    },
+    transport,
+  );
+}
+
 module.exports = {
   functionsPath,
   listLibraryFunctions,
@@ -282,4 +370,5 @@ module.exports = {
   setOverride,
   deployCommerceProcess,
   getTask,
+  searchBmlScripts,
 };

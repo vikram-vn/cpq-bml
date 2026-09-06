@@ -36,9 +36,7 @@ Once a Util Library Function has been defined, it's available for use in the **L
 
 1. Click **Add Functions** to choose from a list of Util Functions. *A pop-up dialog will open.*
 
-
 2. Click one or multiple Util Functions.
-
 
 3. Return to the Util functions area and make sure you've deployed your function(s) if desired function does not appear.
 
@@ -85,7 +83,6 @@ You can add Util and Commerce Library Functions by clicking the **Reselect** but
 
 2. Select **Library Functions** for the appropriated document, and then click **List**.
 
-
 3. Select **Add** to create a new commerce library function.
 
 4. Create a **Name**, **Variable Name**, **Description** and choose a **Return Type**.
@@ -97,9 +94,7 @@ The **Variable Name** field populates automatically. Variable names can only con
 
 6. Reference the parameter in the library function with the name that you specify here.
 
-
 7. Select **Add Attributes** to access the main document attributes in the **Main Document Attribute** section.
-
 
 8. Select **Add Attributes** to access the sub-document and the system attributes in the **Sub-Document Attribute** and **System Attributes** sections.
 
@@ -126,9 +121,7 @@ The **Variable Name** field populates automatically. Variable names can only con
 
 4. Add the necessary parameters.
 
-
 5. Create your script, adding attributes as necessary.
-
 
 6. Select **Add** to make your new library function available for use.
 
@@ -143,7 +136,6 @@ Util and Commerce Library Function Editors use Function to Function calls. Funct
 
 
 1. Open the **Function** drop-down.
-
 
 2. Select a Library Function to **Insert into BML**. The options are:
   * **Commerce Library functions:** Only available in Commerce Library Function Editors. Commerce Library functions may only be called by Commerce Library functions.
@@ -181,7 +173,6 @@ A **Copy** action button is available in Util and Commerce Libraries so that BML
   * **Commerce Library Functions**:Admin > Process Definition > Documents > List > Transaction Level > Library Functions > List
 
 2. Select the BML function you wish to copy by clicking its corresponding checkbox.
-
 
 3. Click **Copy** at the bottom of the page.
 

@@ -69,6 +69,50 @@ function register(server, context, vscode, tools) {
     },
     async (args) => jsonResult(await tools.pullFunctions(context, vscode, args)),
   );
+
+  server.registerTool(
+    "global_search_bml",
+    {
+      description:
+        "BML Global Search across all remote BML scripts in the Oracle CPQ instance (GET /rest/v19/bml/scripts). " +
+        "Searches across util library functions, commerce process scripts, and product attributes for matching script text and returns exact location metadata and script snippets.",
+      inputSchema: {
+        query: z.string().describe("Text string to search for across all remote BML scripts in CPQ."),
+        caseSensitive: z
+          .boolean()
+          .optional()
+          .default(false)
+          .describe("If true, performs case-sensitive search. Default is false (case-insensitive)."),
+        offset: z.number().int().min(0).optional().default(0).describe("Pagination offset (default 0)."),
+        limit: z.number().int().min(1).max(1000).optional().default(100).describe("Maximum results to return (default 100)."),
+        fields: z.string().optional().describe("Optional comma-delimited fields to restrict the response."),
+        orderby: z.string().optional().describe("Optional comma-separated list of pairs for ordering results."),
+      },
+    },
+    async (args) => jsonResult(await tools.globalSearchBml(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "search_bml_scripts",
+    {
+      description:
+        "Alias for global_search_bml: BML Global Search across all remote BML scripts in Oracle CPQ via GET /rest/v19/bml/scripts.",
+      inputSchema: {
+        query: z.string().describe("Text string to search for across all remote BML scripts in CPQ."),
+        caseSensitive: z
+          .boolean()
+          .optional()
+          .default(false)
+          .describe("If true, performs case-sensitive search. Default is false (case-insensitive)."),
+        offset: z.number().int().min(0).optional().default(0),
+        limit: z.number().int().min(1).max(1000).optional().default(100),
+        fields: z.string().optional(),
+        orderby: z.string().optional(),
+      },
+    },
+    async (args) => jsonResult(await tools.globalSearchBml(context, vscode, args)),
+  );
 }
 
 module.exports = { register };
+

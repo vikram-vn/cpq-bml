@@ -252,7 +252,6 @@ return result;
 
   2. Add a print statement for the function you wish to debug.
 
-
   3. Click **Run** to debug the function.
 
 
@@ -266,24 +265,9 @@ return result;
 >
 > 2. Create and initialize variables that are the same type as those passed through the Util Function. For stings, integers, of floats, the initialization can be the actual value produced in **Step 1**.
 >
->
->
->
-> 
->
 > 3. Populate the variables with the information obtained in Step 1. *This is mainly for dictionaries and arrays; they are populated using BMLs the standard way.*
 >
->
->
->
-> 
->
 > 4. Return the Util Function holding its parameters.
->
->
->
->
-> 
 
 
 ---
@@ -295,11 +279,6 @@ return result;
 > 1. Copy and paste the test script produced in **Step 2** into the Test Script area of the Debugger.
 >
 > 2. Select the **Use Test Script** checkbox.
->
->
->
->
-> 
 >
 > 3. Click **Run** to ensure that there are no errors in the test script. The return string will be generated here.
 >

@@ -49,7 +49,6 @@ There are also 2-dimensional arrays.  These arrays can be thought of as a grid o
 
 * **Example of an array attribute (user-side):** In the example below, the user had selected that three floors needed to have their elevators configured. From this one screen, you can individually configure each elevator. As you can see, each one has a different combination of door type, door trim and buttons.
 
-
 * **Control Attribute:** This size of arrays are defined by the control attribute. When creating a control attribute, the attribute itself must have a Data Type of integer and you must make sure that the Array Type box is not checked. In the case below, the user wants to configure 27 floors. Number Of Floors is the control attribute.
 
 
@@ -115,7 +114,6 @@ Examples of how to populate 1-D and 2-D arrays using a `for...loop`.
 
 
 Create a 1-D array of values equal to the sum of each array element:
-
 
 * 2-D Arrays
 

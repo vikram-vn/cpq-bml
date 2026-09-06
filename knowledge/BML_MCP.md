@@ -241,6 +241,7 @@ flowchart TD
 | **Connection & Status** | `get_connection_status` | `testConnection`? | Reports CPQ credentials & connection status without exposing secrets. |
 | | `list_util_functions` | _none_ | Lists remote util functions from CPQ instance. |
 | | `list_commerce_functions` | `commerceProcess`?, `commerceDocument`? | Lists remote commerce process functions. |
+| | `global_search_bml` | `query`, `caseSensitive`?, `limit`?, `offset`? | Remote BML Global Search across all scripts on CPQ (/rest/v19/bml/scripts). |
 
 ---
 
@@ -272,6 +273,47 @@ Before making CPQ calls, verify that credentials and environment target are acti
     "ok": true,
     "message": "CPQ-BML: connection successful."
   }
+}
+```
+
+---
+
+### Step 1b: Remote BML Global Search (`global_search_bml`)
+
+Search for code snippets or variables across all remote BML scripts in Oracle CPQ (via `/rest/v19/bml/scripts`):
+
+```json
+{
+  "name": "global_search_bml",
+  "arguments": {
+    "query": "calcDiscount",
+    "caseSensitive": false,
+    "limit": 50
+  }
+}
+```
+
+#### Example Search Output:
+```json
+{
+  "success": true,
+  "query": "calcDiscount",
+  "count": 1,
+  "totalResults": 1,
+  "hasMore": false,
+  "items": [
+    {
+      "scriptText": "discount = calcDiscount(basePrice, customerTier);\nreturn discount;",
+      "locations": [
+        {
+          "type": "Rule",
+          "name": "Discount Pricing Rule",
+          "variableName": "pricingRule",
+          "path": "commerce/oraclecpqo/rules"
+        }
+      ]
+    }
+  ]
 }
 ```
 

@@ -152,4 +152,64 @@ async function pullFunctions(context, vscode, args, transport) {
     };
 }
 
-module.exports = { listUtilFunctions, listCommerceFunctions, pullFunction, pullFunctions };
+// BML Global Search across all remote BML scripts in Oracle CPQ via GET /rest/v19/bml/scripts
+async function globalSearchBml(context, vscode, args, transport) {
+    const query = args && (args.query || args.q);
+    if (!query) return { success: false, error: 'query is required.' };
+
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    writeRunHeader(terminal, 'BML Global Search', query);
+    writeRunningLine(terminal, 'BML Global Search', query);
+    terminal.show();
+
+    const startedAt = Date.now();
+    const result = await api.searchBmlScripts(
+        context,
+        vscode,
+        {
+            query,
+            caseSensitive: args.caseSensitive,
+            offset: args.offset,
+            limit: args.limit,
+            fields: args.fields,
+            orderby: args.orderby,
+            totalResults: args.totalResults !== false,
+            q: args.q,
+        },
+        transport,
+    );
+
+    if (!isSuccess(result.statusCode)) {
+        const message = `BML global search failed (HTTP ${result.statusCode}). ${describeError(result.body)}`;
+        writeTerminalMessage(terminal, 'Search failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');
+        return { success: false, query, error: message, statusCode: result.statusCode, log: getLines() };
+    }
+
+    const body = result.body || {};
+    const items = body.items || [];
+    const count = body.count !== undefined ? body.count : items.length;
+    const totalResults = body.totalResults !== undefined ? body.totalResults : count;
+
+    terminal.writeLine(`\x1b[32m${getTimestamp()} Found ${count} match(es) (${formatElapsed(startedAt)})\x1b[0m`);
+    return {
+        success: true,
+        query,
+        count,
+        totalResults,
+        hasMore: !!body.hasMore,
+        offset: body.offset || args.offset || 0,
+        limit: body.limit || args.limit || items.length,
+        items,
+        log: getLines(),
+    };
+}
+
+module.exports = {
+    listUtilFunctions,
+    listCommerceFunctions,
+    pullFunction,
+    pullFunctions,
+    globalSearchBml,
+    searchBmlScripts: globalSearchBml,
+};
+

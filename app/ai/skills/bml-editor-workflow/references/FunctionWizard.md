@@ -33,9 +33,7 @@ The only difference between the Configuration Function Editor and that in the Ut
 
 2. Choose a **Function Category** and a **Function** name.  *You will see syntax help appear just below the toolbar.*
 
-
 3. Select **Insert into BML** to insert the function into your Script Definition Area.
-
 
 4. Review the function populated in the script definition area.
 

@@ -65,7 +65,7 @@ The following code is displayed in different colors:
 BML can be typed directly into the Script Definition Area.  Save your changes after writing/editing the script. **Example:**
 
 
-The bar across the bottom represents the character position in the code and the total number of characters. 
+The bar across the bottom represents the character position in the code and the total number of characters.
 
 
 The box on the left defines the position of the character based on its line and index.  The box to the right gives you the actual number of characters in each line.

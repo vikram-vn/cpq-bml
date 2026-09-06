@@ -13,6 +13,7 @@ const {
 } = require("./deploy");
 const { runCreateBmlFunction } = require("./scaffold");
 const { runChangeEnvironment } = require("./env");
+const { runGlobalSearchBml } = require("./globalSearch");
 const {
   describeError,
   findLibraryFunctionByVariableName,
@@ -244,6 +245,9 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.changeEnvironment", () =>
       runChangeEnvironment(context, vscode),
     ),
+    vscode.commands.registerCommand("cpqBml.rest.globalSearchBml", () =>
+      runGlobalSearchBml(context, vscode, resultsTerminal),
+    ),
     vscode.commands.registerCommand("cpqBml.rest.clearResults", () =>
       resultsTerminal.clear(),
     ),
@@ -275,6 +279,7 @@ module.exports = {
   runDeployUtilFunctions,
   runCreateBmlFunction,
   runChangeEnvironment,
+  runGlobalSearchBml,
   describeError,
   findLibraryFunctionByVariableName,
   resolveMetadataForFile,

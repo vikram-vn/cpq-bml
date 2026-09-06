@@ -316,4 +316,65 @@ suite("BML REST api", () => {
       );
     });
   });
+
+  suite("searchBmlScripts (BML Global Search)", () => {
+    test("defaults to /rest/v19/bml/scripts when configured version is v18", async () => {
+      const vscode = createFakeVscode({ config: baseConfig({ "rest.restVersion": "v18" }) });
+      const sink = {};
+      await api.searchBmlScripts(fakeContext(), vscode, { query: "calcDiscount" }, capturingTransport(sink));
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(sink.captured.path.startsWith("/rest/v19/bml/scripts?"));
+      assert.ok(sink.captured.path.includes("offset=0"));
+      assert.ok(sink.captured.path.includes("limit=100"));
+      assert.ok(sink.captured.path.includes("totalResults=true"));
+      assert.ok(decodeURIComponent(sink.captured.path).includes("{'scriptText':{$contains:'calcDiscount',$options:'I'}}"));
+    });
+
+    test("respects higher configured restVersion such as v20", async () => {
+      const vscode = createFakeVscode({ config: baseConfig({ "rest.restVersion": "v20" }) });
+      const sink = {};
+      await api.searchBmlScripts(fakeContext(), vscode, { query: "counter" }, capturingTransport(sink));
+      assert.ok(sink.captured.path.startsWith("/rest/v20/bml/scripts?"));
+    });
+
+    test("omits $options:'I' when caseSensitive is true", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.searchBmlScripts(fakeContext(), vscode, { query: "ExactMatch", caseSensitive: true }, capturingTransport(sink));
+      assert.ok(decodeURIComponent(sink.captured.path).includes("{'scriptText':{$contains:'ExactMatch'}}"));
+      assert.ok(!decodeURIComponent(sink.captured.path).includes("$options"));
+    });
+
+    test("escapes quotes and backslashes in query string", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.searchBmlScripts(fakeContext(), vscode, { query: "it's \\ test" }, capturingTransport(sink));
+      assert.ok(decodeURIComponent(sink.captured.path).includes("{'scriptText':{$contains:'it\\'s \\\\ test',$options:'I'}}"));
+    });
+
+    test("passes custom pagination, fields, orderby, and raw q", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.searchBmlScripts(
+        fakeContext(),
+        vscode,
+        {
+          q: "{'scriptText':{$regex:'foo.*'}}",
+          offset: 20,
+          limit: 50,
+          fields: "scriptText,locations",
+          orderby: "locations.name:asc",
+          totalResults: false,
+        },
+        capturingTransport(sink),
+      );
+      assert.ok(sink.captured.path.includes("offset=20"));
+      assert.ok(sink.captured.path.includes("limit=50"));
+      assert.ok(sink.captured.path.includes("totalResults=false"));
+      assert.ok(sink.captured.path.includes("fields=scriptText%2Clocations"));
+      assert.ok(sink.captured.path.includes("orderby=locations.name%3Aasc"));
+      assert.ok(decodeURIComponent(sink.captured.path).includes("{'scriptText':{$regex:'foo.*'}}"));
+    });
+  });
 });
+

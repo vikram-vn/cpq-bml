@@ -184,4 +184,75 @@ suite("MCP tools - lookup", () => {
         assert.strictEqual(result.failureCount, 0);
       }));
   });
+
+  suite("globalSearchBml", () => {
+    test("rejects call when query is missing", async () => {
+      const result = await tools.globalSearchBml(makeContext(), createFakeVscode(), {});
+      assert.strictEqual(result.success, false);
+      assert.ok(result.error.includes("query is required"));
+    });
+
+    test("executes search and returns items, locations, counts, and log", () =>
+      withTempDir(async (tmpDir) => {
+        const mockResponse = {
+          items: [
+            {
+              scriptText: "recordset = bmql(\"SELECT Part FROM RAM\");\nquantity = 0;\ncounter = 0;",
+              locations: [
+                {
+                  type: "Attribute",
+                  name: "price_attr",
+                  variableName: "price_attr",
+                  path: "oraclecpq/products/models/default",
+                },
+              ],
+            },
+          ],
+          count: 1,
+          totalResults: 1,
+          hasMore: false,
+        };
+
+        const transport = async (opts) => {
+          assert.ok(opts.path.startsWith("/rest/v19/bml/scripts?"));
+          assert.strictEqual(opts.method, "GET");
+          return jsonResponse(200, mockResponse);
+        };
+
+        const result = await tools.globalSearchBml(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { query: "counter" },
+          transport,
+        );
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(result.query, "counter");
+        assert.strictEqual(result.count, 1);
+        assert.strictEqual(result.totalResults, 1);
+        assert.strictEqual(result.items.length, 1);
+        assert.strictEqual(result.items[0].locations[0].variableName, "price_attr");
+        assert.ok(result.log.some((l) => l.includes("Found 1 match")));
+      }));
+
+    test("handles API errors gracefully", () =>
+      withTempDir(async (tmpDir) => {
+        const transport = async () => jsonResponse(400, { error: "Invalid query syntax" });
+        const result = await tools.globalSearchBml(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { query: "badQuery" },
+          transport,
+        );
+        assert.strictEqual(result.success, false);
+        assert.strictEqual(result.statusCode, 400);
+        assert.ok(result.error.includes("Invalid query syntax") || result.error.includes("400"));
+        assert.ok(result.log.some((l) => l.includes("Search failed")));
+      }));
+
+    test("alias searchBmlScripts invokes same handler", async () => {
+      assert.strictEqual(tools.searchBmlScripts, tools.globalSearchBml);
+    });
+  });
 });
+
