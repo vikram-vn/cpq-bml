@@ -81,6 +81,7 @@ async function compileExtension() {
         path.join(ROOT, 'themes', 'dark.json'),
         path.join(ROOT, 'themes', 'light-default.json'),
         path.join(ROOT, 'themes', 'light.json'),
+        path.join(ROOT, 'themes', 'bml-icons.json'),
         path.join(ROOT, 'app', 'lang', 'syntaxes', 'bml.tmLanguage.json'),
         path.join(ROOT, 'app', 'lang', 'syntaxes', 'xslt.tmLanguage.json'),
         path.join(intellisenseDir, 'bml-functions-api-usage.json'),

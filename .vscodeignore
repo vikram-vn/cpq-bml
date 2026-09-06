@@ -89,6 +89,7 @@ app/lang/settings-panel/web-view/css/components.css
 # (package.json's contributes.themes/grammars paths point at these directly)
 themes/*.json
 !themes/*.min.json
+themes/bml-icons.json
 themes/dark-default.json
 themes/dark.json
 themes/light-default.json

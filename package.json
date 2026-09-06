@@ -97,7 +97,7 @@
       {
         "id": "bml-icon-theme",
         "label": "BML Icon Theme",
-        "path": "./themes/bml-icons.json"
+        "path": "./themes/bml-icons.min.json"
       }
     ],
     "themes": [
