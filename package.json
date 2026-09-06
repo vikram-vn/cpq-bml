@@ -17,7 +17,8 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "workspaceContains:**/*.bml"
+    "workspaceContains:**/*.bml",
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -100,6 +101,9 @@
         "path": "./themes/bml-icons.min.json"
       }
     ],
+    "configurationDefaults": {
+      "workbench.iconTheme": "bml-icon-theme"
+    },
     "themes": [
       {
         "label": "BML Dark Default",
@@ -124,6 +128,10 @@
     ],
     "snippets": [],
     "commands": [
+      {
+        "command": "cpqBml.activateIconTheme",
+        "title": "CPQ-BML: Activate BML Material Icon Theme"
+      },
       {
         "command": "cpqBml.rest.setPassword",
         "title": "CPQ-BML: Set CPQ Password"
