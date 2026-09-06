@@ -14,7 +14,7 @@ function createSettingsPanel(context, vscode) {
         }
     );
 
-    panel.iconPath = vscode.Uri.joinPath(context.extensionUri, 'app', 'images', 'logo.png');
+    panel.iconPath = vscode.Uri.joinPath(context.extensionUri, 'app', 'icons', 'logo.svg');
     return panel;
 }
 
