@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.73.0] - 2026-09-06
+
+### Added
+
+- Implement MCP tools for BML script management and global search with documentation support.
+
 ## [1.72.0] - 2026-09-06
 
 ### Added
@@ -80,17 +86,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement automated BML documentation extraction and hover-ready formatting pipeline.
 
 ## [1.64.0] - 2026-08-30
-
-### Added
-
-- Implement BML documentation crawler and post-processing scripts to sync CPQ help content into knowledge directory.
-- Implement BML documentation crawler and create directory for knowledge assets.
-- Add BML code quality linter for empty blocks, magic numbers, and missing returns.
-- Implement performance linting rules, diagnostic code actions, and custom snippets for BML optimization.
-- Add BML documentation crawler and comprehensive knowledge base reference.
-- Add BML function metadata and documentation formatting utilities for intellisense support.
-
-## [1.63.0] - 2026-08-30
 
 ### Added
 
