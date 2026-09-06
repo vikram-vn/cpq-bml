@@ -4,6 +4,15 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.74.0] - 2026-09-06
+
+### Added
+
+- Auto-activate BML icon theme on startup and provide manual activation command.
+- Implement native Node.js build script and configure minified icon theme usage.
+- Add logo assets and SVG generation scripts.
+- Add new material icons for various file types and folders.
+
 ## [1.73.0] - 2026-09-06
 
 ### Added
@@ -84,14 +93,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement BML intellisense generation scripts and metadata configuration.
 - Implement docFormatting utility for generating BML hover tooltips.
 - Implement automated BML documentation extraction and hover-ready formatting pipeline.
-
-## [1.64.0] - 2026-08-30
-
-### Added
-
-- Implement BML documentation crawler and post-processing scripts to sync CPQ help content into knowledge directory.
-- Implement BML documentation crawler and create directory for knowledge assets.
-- Add BML code quality linter for empty blocks, magic numbers, and missing returns.
-- Implement performance linting rules, diagnostic code actions, and custom snippets for BML optimization.
-- Add BML documentation crawler and comprehensive knowledge base reference.
-- Add BML function metadata and documentation formatting utilities for intellisense support.

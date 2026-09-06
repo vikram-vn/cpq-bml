@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.73.0",
+  "version": "1.74.0",
   "icon": "app/icons/logo.png",
   "license": "MIT",
   "repository": {
