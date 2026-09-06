@@ -219,10 +219,10 @@ suite('BML Linter Test Suite - rules (functions & syntax)', function() {
         assert.strictEqual(divDiags.length, 2, 'Should flag division by 0.0 and 0.00');
     });
 
-    test('Linter flags BML syntax errors: array element assignment, break/continue outside loops, invalid member access', () => {
+    test('Linter flags BML syntax errors: break/continue outside loops, invalid member access', () => {
         const diagnostics = lintText(`
             arr = string[]{"a"};
-            arr[0] = "b"; // Error
+            arr[0] = "b"; // OK: index-based array assignment is valid in BML
 
             for x in arr {
                 if (x == "a") {
@@ -246,8 +246,7 @@ suite('BML Linter Test Suite - rules (functions & syntax)', function() {
         `);
 
         const arrayAssignDiag = diagnostics.find(d => d.message.includes("Array element assignment"));
-        assert.ok(arrayAssignDiag, 'Should flag array element assignment');
-        assert.strictEqual(arrayAssignDiag.severity, require('vscode').DiagnosticSeverity.Error);
+        assert.strictEqual(arrayAssignDiag, undefined, 'Array element assignment (arr[index] = val) is valid in BML and should NOT be flagged');
 
         const breakDiags = diagnostics.filter(d => d.message.includes("'break' statement is only allowed"));
         assert.strictEqual(breakDiags.length, 1, 'Should flag one break statement outside loop');

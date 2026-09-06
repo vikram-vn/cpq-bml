@@ -10,6 +10,13 @@ function getSyntaxFixes(document, diag, editRange) {
         action.diagnostics = [diag];
         fixes.push(action);
     }
+    else if (diag.code === 'bml-consecutive-semicolon') {
+        const action = new vscode.CodeAction('Remove duplicate semicolon', vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, editRange, ';');
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
     else if (diag.code === 'bml-assignment-in-condition') {
         const action = new vscode.CodeAction('Replace = with ==', vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();

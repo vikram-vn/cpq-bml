@@ -103,7 +103,6 @@ function buildCategorizedItems() {
         item.documentation = formatAsJsDoc(info);
 
         if (info.category === 'function' && !isControlFlow) {
-            item.commitCharacters = ['('];
             item.command = {
                 command: 'editor.action.triggerParameterHints',
                 title: 'Trigger Parameter Hints'

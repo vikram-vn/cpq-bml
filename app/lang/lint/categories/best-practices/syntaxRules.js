@@ -1,30 +1,14 @@
 const { vscode, makeDiagnostic } = require('./shared');
 
 /**
- * Constructs that look plausible but aren't valid BML: array element
- * assignment, break/continue outside a loop, object-style member access.
+ * Constructs that look plausible but aren't valid BML:
+ * break/continue outside a loop, object-style member access.
  *
- * Codes: bml-array-element-assignment, bml-loop-control-outside-loop,
+ * Codes: bml-loop-control-outside-loop,
  *        bml-invalid-member-access
  */
 function checkSyntaxRules(cleanText, noStringsText, doc) {
     const diagnostics = [];
-
-    // Array Element Assignment Check (run on noStringsText)
-    if (noStringsText.includes('[')) {
-        const arrayAssignRegex = /\b([a-zA-Z_]\w*)\s*\[[^\]]+\]\s*=(?!=)/g;
-        let match;
-        while ((match = arrayAssignRegex.exec(noStringsText)) !== null) {
-            const startPos = doc.positionAt(match.index);
-            const endPos = doc.positionAt(match.index + match[0].length);
-            diagnostics.push(makeDiagnostic(
-                new vscode.Range(startPos, endPos),
-                "BML Syntax Error: Array element assignment (e.g. 'arr[index] = value') is not supported in BML. Use array functions like 'append()', 'insert()', or construct a new array instead.",
-                vscode.DiagnosticSeverity.Error,
-                'bml-array-element-assignment'
-            ));
-        }
-    }
 
     // Loop Control Statement Check (break/continue outside of loops, run on noStringsText)
     if (noStringsText.includes('break') || noStringsText.includes('continue')) {

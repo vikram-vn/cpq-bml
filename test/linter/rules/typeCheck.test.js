@@ -313,6 +313,18 @@ suite('BML Linter Test Suite - variable type consistency', () => {
             assert.ok(diag, 'Should flag Integer + String when array element is indexed');
         });
 
+        test('Infers Integer from arithmetic expression like atoi(...) - 1 and flags string concatenation without string()', () => {
+            const diagnostics = lintText(`
+                activeCycleEndDate = "2026-09-06";
+                priorYear = atoi(datetostr(activeCycleEndDate, "yyyy", "America/Chicago")) - 1;
+                lowerLimitJavaDate = strtojavadate(priorYear + "-" + "02-28", "yyyy-MM-dd", "America/Chicago");
+                return "";
+            `);
+            const diag = diagnostics.find(d => d.code === 'bml-binary-type-mismatch');
+            assert.ok(diag, 'Should flag priorYear + "-" as type mismatch');
+            assert.ok(diag.message.includes("Convert Integer to String using 'string()'"), 'Message should specifically guide converting Integer to String');
+        });
+
         test('Does not flag comparisons (<>, ==, !=, <, >, <=, >=) or arithmetic between Number, Float, and Integer', () => {
             const declaredTypes = new Map();
             declaredTypes.set('totaldayscontract', 'Number');

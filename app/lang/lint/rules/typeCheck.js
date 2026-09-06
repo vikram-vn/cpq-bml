@@ -194,7 +194,8 @@ function checkAssignmentTypeConsistency(cleanText, doc, vscode, declaredTypes, e
             } else {
                 mismatch = true;
                 if ((isLeftStr && isRightNumeric) || (isLeftNumeric && isRightStr)) {
-                    msg = `Type mismatch: Cannot combine 'String' and '${isLeftStr ? rightType : leftType}' using '${op}'. Convert ${isLeftStr ? 'the number' : 'the other operand'} to String using 'string()' or vice versa.`;
+                    const numType = isLeftStr ? rightType : leftType;
+                    msg = `Type mismatch: Cannot combine 'String' and '${numType}' using '${op}'. Convert ${numType} to String using 'string()'.`;
                 } else {
                     msg = `Type mismatch: Operator '${op}' cannot be applied to '${leftType}' and '${rightType}'.`;
                 }

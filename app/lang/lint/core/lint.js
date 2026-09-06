@@ -1,7 +1,7 @@
 const { getCommentRanges } = require('../rules/comments');
 const { getConditionRanges } = require('../rules/conditions');
 const { getDeclaredVariables, checkVariableDiagnostics } = require('../rules/variables');
-const { checkMissingSemicolons } = require('../rules/semicolon');
+const { checkMissingSemicolons, checkConsecutiveSemicolons } = require('../rules/semicolon');
 const { checkAssignmentInCondition } = require('../rules/assignment');
 const { checkOperators } = require('../rules/operators');
 const { checkPerformance } = require('../rules/performance');
@@ -84,6 +84,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         diagnostics.push(...checkVariableDiagnostics(noStringsText, declaredVars, doc, cleanText, vscode));
 
         diagnostics.push(...checkMissingSemicolons(cleanText, noStringsText, conditionRanges));
+        diagnostics.push(...checkConsecutiveSemicolons(noStringsText, doc, vscode));
         if (hasConditions) {
             diagnostics.push(...checkAssignmentInCondition(noStringsText, conditionRanges, doc));
         }

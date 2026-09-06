@@ -197,6 +197,41 @@ function runStyleAdvancedCodeActionTests() {
             const stringAction = fixes.find(a => a.title.includes('Split long string literal across multiple lines'));
             assert.ok(stringAction, 'Should offer split long string literal quick fix');
         });
+
+        test('Fix All preserves string(variable) when variable is not a string literal', async () => {
+            const content = [
+                'lower_month_num = 5;',
+                'lower_month_str = string(lower_month_num);',
+                'lower_year_num = 2026;',
+                'start_date = lower_month_str + "/01/" + string(lower_year_num);',
+                'return start_date;'
+            ].join('\n');
+
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: content
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const codeActions = await vscode.commands.executeCommand(
+                'vscode.executeCodeActionProvider',
+                doc.uri,
+                new vscode.Range(0, 0, 5, 0)
+            );
+
+            const fixAll = codeActions.find(a => a.title.includes('Fix All Safe Style & Naming Issues in File'));
+            assert.ok(fixAll, 'Should offer Fix All');
+
+            const applied = await vscode.workspace.applyEdit(fixAll.edit);
+            assert.ok(applied, 'Should apply Fix All');
+
+            const updatedText = doc.getText();
+            assert.ok(updatedText.includes('string(lowerMonthNum)'), 'Should PRESERVE string(lowerMonthNum) with camelCased variable');
+            assert.ok(updatedText.includes('string(lowerYearNum)'), 'Should PRESERVE string(lowerYearNum) with camelCased variable');
+            assert.ok(!updatedText.includes('lowerMonthStr = lowerMonthNum;'), 'Should NOT strip string() cast from variable');
+        });
     });
 }
 

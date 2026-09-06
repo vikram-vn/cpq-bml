@@ -169,13 +169,13 @@ function buildFixAllText(document, relevantDiags, initialAst, isCategory = false
             code = code.replace(/\binteger\s*\(\s*(\d+)\s*\)/g, '$1');
             code = code.replace(/\bfloat\s*\(\s*(\d+(?:\.\d+)?)\s*\)/g, '$1');
             code = code.replace(/\bboolean\s*\(\s*(true|false)\s*\)/g, '$1');
-            code = code.replace(/\bstring\s*\(\s*(__BML_STR_\d+__|[a-zA-Z_]\w*)\s*\)/g, '$1');
+            code = code.replace(/\bstring\s*\(\s*(__BML_STR_\d+__)\s*\)/g, '$1');
             code = code.replace(/\b([a-zA-Z_]\w*)\s*==\s*true\b/g, '$1');
-            code = code.replace(/\b([a-zA-Z_]\w*)\s*==\s*false\b/g, '!$1');
-            code = code.replace(/\b([a-zA-Z_]\w*)\s*!=\s*true\b/g, '!$1');
+            code = code.replace(/\b([a-zA-Z_]\w*)\s*==\s*false\b/g, 'NOT($1)');
+            code = code.replace(/\b([a-zA-Z_]\w*)\s*!=\s*true\b/g, 'NOT($1)');
             code = code.replace(/\b([a-zA-Z_]\w*)\s*!=\s*false\b/g, '$1');
             code = code.replace(/\btrue\s*==\s*([a-zA-Z_]\w*)\b/g, '$1');
-            code = code.replace(/\bfalse\s*==\s*([a-zA-Z_]\w*)\b/g, '!$1');
+            code = code.replace(/\bfalse\s*==\s*([a-zA-Z_]\w*)\b/g, 'NOT($1)');
             code = code.replace(/\b(String|Integer|Float|Boolean|Date|Dict|Json|JsonArray)\b(?=\s+[a-zA-Z_]\w*|\s*\[\])/g, (m) => m.toLowerCase());
             code = code.replace(/\b(True|TRUE)\b/g, 'true');
             code = code.replace(/\b(False|FALSE)\b/g, 'false');

@@ -121,4 +121,34 @@ suite('BML Linter Test Suite - missing semicolons', () => {
         const semicolonDiags = diagnostics.filter(d => d.message.includes('Missing semicolon'));
         assert.strictEqual(semicolonDiags.length, 0, 'Should not flag missing semicolons on comments with unicode characters');
     });
+
+    test('Linter flags consecutive semicolons ;; as an Error, not a warning', () => {
+        const vscode = require('vscode');
+        const diagnostics = lintText(`
+            contractStartJavaDate = "2026-09-06";
+            formatdate(d, "yyyy-MM-dd", "America/New_York", contractStartJavaDate);;
+            if (daysContract <> 366) {
+                print("test");
+            }
+            return "";
+        `);
+
+        const consecutiveDiags = diagnostics.filter(d => d.code === 'bml-consecutive-semicolon');
+        assert.strictEqual(consecutiveDiags.length, 1, 'Should flag consecutive semicolons ;;');
+        assert.strictEqual(consecutiveDiags[0].severity, vscode.DiagnosticSeverity.Error, 'Consecutive semicolons must be an Error');
+        assert.ok(consecutiveDiags[0].message.includes('consecutive semicolon'), 'Message should indicate consecutive semicolon');
+
+        // Verify that multiple-statements-per-line style warning is NOT triggered for ;;
+        const multiStmtDiags = diagnostics.filter(d => d.code === 'bml-multiple-statements-per-line');
+        assert.strictEqual(multiStmtDiags.length, 0, 'Should not flag multiple statements warning when extra semicolon is just ;;');
+    });
+
+    test('Linter does not flag consecutive semicolons inside string literals', () => {
+        const diagnostics = lintText(`
+            str = "a;;b";
+            return str;
+        `);
+        const consecutiveDiags = diagnostics.filter(d => d.code === 'bml-consecutive-semicolon');
+        assert.strictEqual(consecutiveDiags.length, 0, 'Should not flag ;; inside string literals');
+    });
 });

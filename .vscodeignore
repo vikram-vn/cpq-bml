@@ -60,16 +60,20 @@ app/lang/spell-check/english-words.txt
 
 # Intellisense JSON: ship only the minified .min.json variants
 # (apiDataLoader.js reads them directly, same pattern as the themes/grammars below).
-# Exact filenames, not a "*.json" wildcard - that would also match "*.min.json".
-app/lang/intellisense/bml-functions-api-usage.json
+app/lang/intellisense/*.json
+!app/lang/intellisense/*.min.json
+app/lang/intellisense/best-practice-advisories.json
 app/lang/intellisense/bml-attributes-api-usage.json
 app/lang/intellisense/bml-cpq-js-api-usage.json
+app/lang/intellisense/bml-functions-api-usage.json
 app/lang/intellisense/bml-util-attributes-api-usage.json
 app/lang/intellisense/bml-variables-api-usage.json
+app/lang/intellisense/category-labels.json
+app/lang/intellisense/curated-params.json
 app/lang/intellisense/custom-snippets.json
 app/lang/intellisense/function-param-data-types.json
 app/lang/intellisense/function-return-types.json
-
+app/lang/intellisense/keyword-hovers.json
 
 # Exclude lookups and scripts that are only used in development
 app/lookups/**
@@ -83,9 +87,13 @@ app/lang/settings-panel/web-view/css/components.css
 
 # Themes/grammars: ship only the minified .min.json variants
 # (package.json's contributes.themes/grammars paths point at these directly)
+themes/*.json
+!themes/*.min.json
 themes/dark-default.json
 themes/dark.json
 themes/light-default.json
 themes/light.json
+app/lang/syntaxes/*.json
+!app/lang/syntaxes/*.min.json
 app/lang/syntaxes/bml.tmLanguage.json
 app/lang/syntaxes/xslt.tmLanguage.json

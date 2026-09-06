@@ -85,22 +85,74 @@ function inferLiteralType(rhsText) {
     return null;
 }
 
-function inferExpressionType(rhsText, extensionPath, preloadedReturnTypes) {
+function inferExpressionType(rhsText, extensionPath, preloadedReturnTypes, varTypes) {
     const literalType = inferLiteralType(rhsText);
     if (literalType) return literalType;
 
     const trimmed = rhsText.trim();
+    if (!trimmed) return null;
+
+    const returnTypes = preloadedReturnTypes || getFunctionReturnTypes(extensionPath);
+
+    // 1. Direct function or constructor call: func(...)
     if (trimmed.endsWith(')')) {
-        const ctorMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(([^()]*)\)$/);
+        const ctorMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*\(([\s\S]*)\)$/);
         if (ctorMatch) {
             const nameLower = ctorMatch[1].toLowerCase();
             if (nameLower === 'bmql') return null;
             const ctorType = TYPE_CONSTRUCTORS[nameLower];
             if (ctorType) return ctorType;
-            const returnTypes = preloadedReturnTypes || getFunctionReturnTypes(extensionPath);
             const returnType = returnTypes[nameLower] || FUNCTION_RETURN_TYPES[nameLower];
             if (returnType) return returnType;
         }
+    }
+
+    // 2. Binary expressions: e.g. atoi(...) - 1, count + 1, price * 1.5
+    let depth = 0;
+    let inSingle = false;
+    let inDouble = false;
+    let lastOpIndex = -1;
+    let lastOp = '';
+
+    for (let i = 0; i < trimmed.length; i++) {
+        const ch = trimmed[i];
+        if (ch === '\\') { i++; continue; }
+        if (ch === "'" && !inDouble) { inSingle = !inSingle; continue; }
+        if (ch === '"' && !inSingle) { inDouble = !inDouble; continue; }
+        if (inSingle || inDouble) continue;
+
+        if (ch === '(' || ch === '[' || ch === '{') depth++;
+        else if (ch === ')' || ch === ']' || ch === '}') depth = Math.max(0, depth - 1);
+        else if (depth === 0) {
+            if (ch === '+' || ch === '-' || ch === '*' || ch === '/' || ch === '%') {
+                lastOpIndex = i;
+                lastOp = ch;
+            }
+        }
+    }
+
+    if (lastOpIndex > 0 && lastOpIndex < trimmed.length - 1) {
+        const leftExpr = trimmed.slice(0, lastOpIndex).trim();
+        const rightExpr = trimmed.slice(lastOpIndex + 1).trim();
+        const leftType = inferExpressionType(leftExpr, extensionPath, returnTypes, varTypes);
+        const rightType = inferExpressionType(rightExpr, extensionPath, returnTypes, varTypes);
+
+        if (lastOp === '-' || lastOp === '*' || lastOp === '/' || lastOp === '%') {
+            if (leftType === 'Float' || rightType === 'Float') return 'Float';
+            if (leftType === 'Integer' && rightType === 'Integer') return 'Integer';
+            if (leftType === 'Integer' || rightType === 'Integer') return 'Integer';
+            if (leftType || rightType) return 'Float';
+        } else if (lastOp === '+') {
+            if (leftType === 'String' || rightType === 'String') return 'String';
+            if (leftType === 'Float' || rightType === 'Float') return 'Float';
+            if (leftType === 'Integer' && rightType === 'Integer') return 'Integer';
+        }
+    }
+
+    // 3. Variable lookup if varTypes is available
+    if (varTypes && /^[a-zA-Z_]\w*$/.test(trimmed)) {
+        const v = varTypes.get(trimmed.toLowerCase()) || varTypes.get(trimmed);
+        if (v && v.type) return v.type;
     }
 
     return null;

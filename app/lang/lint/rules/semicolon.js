@@ -159,4 +159,26 @@ function checkMissingSemicolons(cleanText, noStringsText, conditionRanges) {
     return diagnostics;
 }
 
-module.exports = { checkMissingSemicolons };
+function checkConsecutiveSemicolons(noStringsText, doc, passedVscode) {
+    const vs = passedVscode || vscode;
+    const diagnostics = [];
+    if (!noStringsText || !noStringsText.includes(';')) return diagnostics;
+
+    const consecutiveSemiRegex = /;([ \t\r\n]*;)+/g;
+    let match;
+    while ((match = consecutiveSemiRegex.exec(noStringsText)) !== null) {
+        const startPos = doc ? doc.positionAt(match.index) : new vs.Position(0, 0);
+        const endPos = doc ? doc.positionAt(match.index + match[0].length) : startPos;
+        const diag = new vs.Diagnostic(
+            new vs.Range(startPos, endPos),
+            "Syntax Error: Unexpected consecutive semicolon ';;' (empty statements are not allowed in BML).",
+            vs.DiagnosticSeverity.Error
+        );
+        diag.code = 'bml-consecutive-semicolon';
+        diagnostics.push(diag);
+    }
+
+    return diagnostics;
+}
+
+module.exports = { checkMissingSemicolons, checkConsecutiveSemicolons };

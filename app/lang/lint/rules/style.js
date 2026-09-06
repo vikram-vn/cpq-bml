@@ -21,14 +21,19 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
         // Fast semicolon count check: check if there's more than one ';'
         const firstSemi = line.indexOf(';');
         if (firstSemi !== -1 && line.indexOf(';', firstSemi + 1) !== -1) {
-            const startPos = new vscode.Position(i, 0);
-            const endPos = new vscode.Position(i, cleanLines[i].length);
-            diagnostics.push(makeDiagnostic(
-                new vscode.Range(startPos, endPos),
-                'Style Warning: There should never be more than one statement on a single line.',
-                vscode.DiagnosticSeverity.Warning,
-                'bml-multiple-statements-per-line'
-            ));
+            // Ignore consecutive duplicate semicolons (';;' or '; ;') which are reported as Syntax Errors (bml-consecutive-semicolon)
+            const withoutConsecutive = line.replace(/;[ \t]*;/g, ';');
+            const firstCleanSemi = withoutConsecutive.indexOf(';');
+            if (firstCleanSemi !== -1 && withoutConsecutive.indexOf(';', firstCleanSemi + 1) !== -1) {
+                const startPos = new vscode.Position(i, 0);
+                const endPos = new vscode.Position(i, cleanLines[i].length);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    'Style Warning: There should never be more than one statement on a single line.',
+                    vscode.DiagnosticSeverity.Warning,
+                    'bml-multiple-statements-per-line'
+                ));
+            }
         }
 
         // Trailing comma check on cleanLines (strings intact so trailing string literals are not mistaken for empty args): e.g. put(fancyStepDict, "x", );
