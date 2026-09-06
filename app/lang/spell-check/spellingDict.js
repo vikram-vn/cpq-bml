@@ -40,7 +40,7 @@ const extraAllowed = new Set([
   "webhook", "session", "cookie", "proxy", "middleware", "devkit", "ide", "vsix", "mcp",
   "sdk", "cli", "stdout", "stderr", "stdin", "posix", "utf", "utf8", "utf16", "unicode",
   "camelcase", "snakecase", "pascalcase", "kebabcase", "boolean", "integer", "float", "string",
-  "recordset", "dict", "jsonarray", "jsonpath", "urldata", "readxml", "applytemplate",
+  "recordset", "dict", "jsonarray", "jsonarrayremove", "jsonarrayrefid", "jsonpath", "urldata", "readxml", "applytemplate",
   "transformxml", "redwood", "allman", "xpath", "xslt", "metadata", "nullsafe", "refactor",
   "sbappend", "isnumber", "substring", "startswith", "endswith", "grpc", "cors", "tls", "ssl", "ssh",
   "ftp", "sftp", "smtp", "imap", "ldap", "saml", "sso", "rbac", "iam", "acl", "dag", "fifo",
