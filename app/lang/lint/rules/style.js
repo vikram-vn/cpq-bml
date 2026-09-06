@@ -53,21 +53,19 @@ function checkStyle(cleanText, noStringsText, doc, declaredVars, extensionPath, 
             }
         }
 
-        // For-in inline function call check (e.g. for key in jsonkeys(json) {)
+        // For-in inline function call check (e.g. for key in jsonkeys(json) {, for idx in range(20) {)
         if (line.includes('for') && line.includes('in')) {
             const forInFuncMatch = line.match(/\bfor\s+([a-zA-Z_]\w*)\s+in\s+([a-zA-Z_][\w.]*)\s*\(/i);
             if (forInFuncMatch) {
                 const calledFunc = forInFuncMatch[2];
-                if (calledFunc.toLowerCase() !== 'range') {
-                    const startPos = new vscode.Position(i, 0);
-                    const endPos = new vscode.Position(i, cleanLines[i].length);
-                    diagnostics.push(makeDiagnostic(
-                        new vscode.Range(startPos, endPos),
-                        `Syntax Error: BML for-in loop cannot iterate directly over '${calledFunc}(...)'. Assign the result of '${calledFunc}(...)' to an intermediate array variable before the loop.`,
-                        vscode.DiagnosticSeverity.Error,
-                        'bml-for-in-function-call'
-                    ));
-                }
+                const startPos = new vscode.Position(i, 0);
+                const endPos = new vscode.Position(i, cleanLines[i].length);
+                diagnostics.push(makeDiagnostic(
+                    new vscode.Range(startPos, endPos),
+                    `Syntax Error: BML for-in loop cannot iterate directly over '${calledFunc}(...)'. Assign the result of '${calledFunc}(...)' to an intermediate array variable before the loop.`,
+                    vscode.DiagnosticSeverity.Error,
+                    'bml-for-in-function-call'
+                ));
             }
         }
 

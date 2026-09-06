@@ -123,6 +123,49 @@ suite('BML Linter Test Suite - unused expression statements (no-unusedExpression
         const diag = diagnostics.find(d => d.code === 'bml-unused-expression');
         assert.strictEqual(diag, undefined);
     });
+
+    test('Flags standalone function call without assignment (integer(12.2);) as error', () => {
+        const diagnostics = lintText(`
+            integer(12.2);
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unused-expression');
+        assert.ok(diag, 'Should flag integer(12.2); as error');
+        assert.strictEqual(diag.severity, vscode.DiagnosticSeverity.Error);
+    });
+
+    test('Does not flag function call assigned to a variable (test = integer(12.2);)', () => {
+        const diagnostics = lintText(`
+            test = integer(12.2);
+            return test;
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unused-expression');
+        assert.strictEqual(diag, undefined);
+    });
+
+    test('Does not flag allowed procedure calls', () => {
+        const diagnostics = lintText(`
+            arr = string[];
+            append(arr, "val");
+            d = dict("string");
+            put(d, "key", "val");
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unused-expression');
+        assert.strictEqual(diag, undefined);
+    });
+
+    test('Flags standalone function call inside an if block', () => {
+        const diagnostics = lintText(`
+            if (true) {
+                integer(12.2);
+            }
+            return "";
+        `);
+        const diag = diagnostics.find(d => d.code === 'bml-unused-expression');
+        assert.ok(diag, 'Should flag integer(12.2); inside block as error');
+        assert.strictEqual(diag.severity, vscode.DiagnosticSeverity.Error);
+    });
 });
 
 suite('BML Linter Test Suite - use before define (no-undef-ish, util functions only)', () => {

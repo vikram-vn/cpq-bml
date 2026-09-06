@@ -186,7 +186,7 @@ suite('BML Linter Test Suite - deep nesting and print guard', () => {
             assert.match(err.message, /getkeys/i);
         });
 
-        test('allows for i in range(0, 10) loop', () => {
+        test('flags for i in range(0, 10) loop with error', () => {
             const diags = lintText(`
                 for i in range(0, 10) {
                     print(i);
@@ -194,7 +194,20 @@ suite('BML Linter Test Suite - deep nesting and print guard', () => {
                 return "";
             `);
             const err = diags.find(d => d.code === 'bml-for-in-function-call');
-            assert.strictEqual(err, undefined, 'range() is a valid loop generator');
+            assert.ok(err, 'expected bml-for-in-function-call error for range()');
+            assert.match(err.message, /range/i);
+        });
+
+        test('allows loop over range assigned to an array variable: list = range(20); for idx in list', () => {
+            const diags = lintText(`
+                list = range(20);
+                for idx in list {
+                    print(idx);
+                }
+                return "";
+            `);
+            const err = diags.find(d => d.code === 'bml-for-in-function-call');
+            assert.strictEqual(err, undefined, 'variable iteration should be clean');
         });
 
         test('allows variable iteration: keys = jsonkeys(j); for key in keys', () => {

@@ -35,11 +35,11 @@
     "notes": "Array iteration loop with zero-based index counter."
   },
   "range": {
-    "syntax": "for ${1:i} in range(${2:0}, ${3:count}) {\n\t${0}\n}",
+    "syntax": "${1:rangeList} = range(${2:count});\nfor ${3:i} in ${1:rangeList} {\n\t${0}\n}",
     "examples": [
-      "for i in range(0, sizeofarray(items)) {\n\tprint(items[i]);\n}"
+      "indices = range(sizeofarray(items));\nfor i in indices {\n\tprint(items[i]);\n}"
     ],
-    "notes": "Numeric range iteration loop."
+    "notes": "Numeric range iteration loop via range() array."
   },
   "dict": {
     "syntax": "${1:dictVar} = dict(\"${2|string,integer,float,boolean,date,json,jsonarray,bytearray,anytype,dict<string>,dict<anytype>,string[],integer[],float[],boolean[],date[],string[][],integer[][],float[][],date[][]|}\");\n${0}",
