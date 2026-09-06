@@ -154,4 +154,9 @@ os.makedirs(os.path.dirname(OUTPUT_SVG), exist_ok=True)
 with open(OUTPUT_SVG, 'w', encoding='utf-8') as f:
     f.write(svg)
 
-print(f'[OK] Written {OUTPUT_SVG}  ({os.path.getsize(OUTPUT_SVG):,} bytes)')
+material_path = 'app/icons/material/bml.svg'
+os.makedirs(os.path.dirname(material_path), exist_ok=True)
+with open(material_path, 'w', encoding='utf-8') as f:
+    f.write(svg)
+
+print(f'[OK] Written {OUTPUT_SVG} and {material_path} ({os.path.getsize(OUTPUT_SVG):,} bytes)')

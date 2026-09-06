@@ -3754,7 +3754,7 @@
       "iconPath": "./../app/icons/material/folder-root-open.svg"
     },
     "bml": {
-      "iconPath": "./../app/icons/material/bml.svg"
+      "iconPath": "./../app/icons/bml.svg"
     },
     "folder-bml": {
       "iconPath": "./../app/icons/material/folder-bml.svg"
