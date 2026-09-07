@@ -3,3 +3,4 @@ requests==2.33.0
 urllib3==2.6.3
 brotli==1.2.0
 rcssmin==1.2.2
+playwright==1.60.0
