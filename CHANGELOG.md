@@ -4,6 +4,15 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.82.0] - 2026-09-07
+
+### Added
+
+- Implement REST-based commands, commerce metadata syncing, and associated unit tests.
+- Implement BML library REST API client with corresponding commerce attribute support and integration tests.
+- Implement documentation build system with automation scripts and reference content for Oracle CPQ REST APIs.
+- Implement AI skill documentation and build scripts for CPQ and BML modules.
+
 ## [1.81.0] - 2026-09-07
 
 ### Added
@@ -79,9 +88,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement native Node.js build script and configure minified icon theme usage.
 - Add logo assets and SVG generation scripts.
 - Add new material icons for various file types and folders.
-
-## [1.73.0] - 2026-09-06
-
-### Added
-
-- Implement MCP tools for BML script management and global search with documentation support.
