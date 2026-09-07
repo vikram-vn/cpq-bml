@@ -456,8 +456,188 @@ suite("BML REST api", () => {
       assert.ok(decodeURIComponent(sink.captured.path).includes("{status_t:'CREATED'}"));
     });
 
+    test("automatically resolves human labels in fields, orderby, and q filter", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.getTransactions(
+        fakeContext(),
+        vscode,
+        {
+          fields: "Status,Grand Total",
+          orderby: "Status:desc",
+          q: { Status: "CREATED" },
+        },
+        capturingTransport(sink),
+      );
+      assert.ok(sink.captured.path.includes("fields=status_t%2CtotalAmount_t"));
+      assert.ok(sink.captured.path.includes("orderby=status_t%3Adesc"));
+      assert.ok(decodeURIComponent(sink.captured.path).includes('"status_t":"CREATED"'));
+    });
+
     test("alias listTransactions points to getTransactions", () => {
       assert.strictEqual(api.listTransactions, api.getTransactions);
+    });
+  });
+
+  suite("Commerce Attributes & Menu Items", () => {
+    test("listCommerceAttributes dispatches GET to /commerceProcesses/<proc>/documents/<doc>/attributes", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceAttributes(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", document: "transaction" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(sink.captured.path.startsWith("/rest/v19/commerceProcesses/oraclecpqo/documents/transaction/attributes"));
+    });
+
+    test("listCommerceAttributeMenuItems dispatches GET to /attributes/<varName>/menuItems", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceAttributeMenuItems(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", document: "transaction", attributeVarName: "status_t" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(
+        sink.captured.path.startsWith(
+          "/rest/v19/commerceProcesses/oraclecpqo/documents/transaction/attributes/status_t/menuItems",
+        ),
+      );
+    });
+
+    test("listCommerceArraySets dispatches GET to /commerceProcesses/<proc>/documents/<doc>/arraySets", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceArraySets(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", document: "transaction" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(
+        sink.captured.path.startsWith(
+          "/rest/v19/commerceProcesses/oraclecpqo/documents/transaction/arraySets",
+        ),
+      );
+    });
+
+    test("listCommerceActionDefs dispatches GET to /commerceProcesses/<proc>/documents/<doc>/actionDefs", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceActionDefs(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", document: "transaction" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(
+        sink.captured.path.startsWith(
+          "/rest/v19/commerceProcesses/oraclecpqo/documents/transaction/actionDefs",
+        ),
+      );
+    });
+
+    test("listCommerceSystemAttributes dispatches GET to /commerceProcessSetups/systemAttributes", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceSystemAttributes(
+        fakeContext(),
+        vscode,
+        {},
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(
+        sink.captured.path.startsWith(
+          "/rest/v19/commerceProcessSetups/systemAttributes",
+        ),
+      );
+    });
+
+    test("syncCommerceAttributes aggregates attributes, arraySets, actionDefs, and systemAttributes", async () => {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-test-"));
+      const vscode = createFakeVscode({
+        config: baseConfig(),
+        workspaceFolders: [{ uri: { fsPath: tempDir } }],
+      });
+
+      const mockTransport = async (opts) => {
+        if (opts.path.includes("/attributes/status_t/menuItems")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({ items: [{ id: "val1", value: "val1", label: "Open" }] }),
+          };
+        }
+        if (opts.path.includes("/attributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                { variableName: "status_t", name: "Status", dataType: "Single Select Menu" },
+              ],
+            }),
+          };
+        }
+        if (opts.path.includes("/arraySets")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [{ variableName: "lineItems", name: "Line Items" }],
+            }),
+          };
+        }
+        if (opts.path.includes("/actionDefs")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [{ variableName: "submit_t", name: "Submit Quote", actionType: "modify" }],
+            }),
+          };
+        }
+        if (opts.path.includes("/systemAttributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [{ variableName: "_transaction_id", name: "Transaction ID" }],
+            }),
+          };
+        }
+        return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+      };
+
+      const result = await api.syncCommerceAttributes(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", document: "transaction", fetchMenuItems: true },
+        mockTransport,
+      );
+
+      assert.strictEqual(result.attributes.length, 1);
+      assert.strictEqual(result.attributes[0].variableName, "status_t");
+      assert.strictEqual(result.attributes[0].menuItems.length, 1);
+      assert.strictEqual(result.arraySets.length, 1);
+      assert.strictEqual(result.arraySets[0].variableName, "lineItems");
+      assert.strictEqual(result.actionDefs.length, 1);
+      assert.strictEqual(result.actionDefs[0].variableName, "submit_t");
+      assert.strictEqual(result.systemAttributes.length, 1);
+      assert.strictEqual(result.systemAttributes[0].variableName, "_transaction_id");
+
+      // Verify written to disk cache
+      const cacheFile = path.join(tempDir, ".cpq", "cache", "commerce-attributes.json");
+      assert.ok(fs.existsSync(cacheFile));
+      fs.rmSync(tempDir, { recursive: true, force: true });
     });
   });
 

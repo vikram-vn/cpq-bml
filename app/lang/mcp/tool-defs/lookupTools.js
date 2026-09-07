@@ -166,6 +166,42 @@ function register(server, context, vscode, tools) {
     },
     async (args) => jsonResult(await tools.getTransactions(context, vscode, args)),
   );
+
+  server.registerTool(
+    "lookup_commerce_attribute",
+    {
+      description:
+        "Look up commerce attributes by name or human-readable label (e.g. 'Status', 'Grand Total', 'status_t'). " +
+        "Returns matching attributes, their data types, and dropdown menu items (if any). Reads from local workspace cache and bundled CPQ catalog with zero network calls.",
+      inputSchema: {
+        query: z
+          .string()
+          .optional()
+          .describe("Attribute label or variable name to look up (case-insensitive)."),
+      },
+    },
+    async (args) => jsonResult(await tools.lookupCommerceAttribute(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "sync_commerce_attributes",
+    {
+      description:
+        "Pull and cache commerce attributes and dropdown menu options from Oracle CPQ for the active process/document into the local workspace (.cpq/cache/commerce-attributes.json). " +
+        "Enables the smart query resolver and lookup_commerce_attribute to resolve custom fields without runtime API calls.",
+      inputSchema: {
+        commerceProcess: z
+          .string()
+          .optional()
+          .describe("Commerce process name (defaults to configured process, e.g. 'oraclecpqo')."),
+        commerceDocument: z
+          .string()
+          .optional()
+          .describe("Commerce document name (defaults to configured document, e.g. 'transaction')."),
+      },
+    },
+    async (args) => jsonResult(await tools.syncCommerceAttributes(context, vscode, args)),
+  );
 }
 
 module.exports = { register };

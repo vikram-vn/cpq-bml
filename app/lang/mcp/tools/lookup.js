@@ -2,6 +2,7 @@ const path = require('path');
 const api = require('../../rest/api');
 const config = require('../../rest/config');
 const metadataLib = require('../../rest/metadata');
+const commerceAttributes = require('../../rest/commerceAttributes');
 const {
     isSuccess,
     describeError,
@@ -286,6 +287,37 @@ async function getTransactions(context, vscode, args, transport) {
     };
 }
 
+async function lookupCommerceAttribute(context, vscode, args) {
+    const wsRoot = commerceAttributes.getWorkspaceRoot(vscode);
+    const query = (args && (args.query || args.name || args.label)) || '';
+    const results = commerceAttributes.searchAttributes(query, wsRoot);
+    return {
+        success: true,
+        count: results.length,
+        query,
+        attributes: results,
+    };
+}
+
+async function syncCommerceAttributes(context, vscode, args, transport) {
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const startedAt = Date.now();
+    terminal.writeLine(`\x1b[36m${getTimestamp()} Syncing commerce attributes and menu options from CPQ...\x1b[0m`);
+
+    const result = await api.syncCommerceAttributes(context, vscode, args, transport);
+    const count = result.count || (result.attributes ? result.attributes.length : 0);
+    terminal.writeLine(`\x1b[32m${getTimestamp()} Synced ${count} commerce attributes into local cache (${formatElapsed(startedAt)})\x1b[0m`);
+
+    return {
+        success: true,
+        process: result.process,
+        document: result.document,
+        count,
+        updatedAt: result.updatedAt,
+        log: getLines(),
+    };
+}
+
 module.exports = {
     listUtilFunctions,
     listCommerceFunctions,
@@ -295,5 +327,7 @@ module.exports = {
     searchBmlScripts: globalSearchBml,
     getTransactions,
     listTransactions: getTransactions,
+    lookupCommerceAttribute,
+    syncCommerceAttributes,
 };
 

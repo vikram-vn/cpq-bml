@@ -15,6 +15,8 @@ const { runCreateBmlFunction } = require("./scaffold");
 const { runChangeEnvironment } = require("./env");
 const { runGlobalSearchBml } = require("./globalSearch");
 const { runGetTransactions } = require("./transactions");
+const { runSyncCommerceMetadata } = require("./sync");
+const { isCommerceSynced } = require("../commerceAttributes");
 const {
   describeError,
   findLibraryFunctionByVariableName,
@@ -37,6 +39,27 @@ async function refreshConnectionConfiguredContext(context, vscode) {
     "cpqBml.connection.configured",
     !missing,
   );
+}
+
+function refreshCommerceSyncContext(vscode) {
+  let wsRoot = null;
+  if (
+    vscode &&
+    vscode.workspace &&
+    vscode.workspace.workspaceFolders &&
+    vscode.workspace.workspaceFolders.length > 0
+  ) {
+    wsRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+  }
+  const synced = isCommerceSynced(wsRoot);
+  if (vscode && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+    vscode.commands.executeCommand(
+      "setContext",
+      "cpqBml.commerceMetadataSynced",
+      synced,
+    );
+  }
+  return synced;
 }
 
 const pendingFetches = new Set();
@@ -371,7 +394,19 @@ function registerBmlRestCommands(context) {
     metaWatcher.onDidChange(onMetaChange);
     metaWatcher.onDidDelete(onMetaChange);
     context.subscriptions.push(metaWatcher);
+
+    const syncWatcher =
+      vscode.workspace.createFileSystemWatcher("**/.cpq/cache/commerce-attributes.json");
+    const onSyncChange = () => {
+      refreshCommerceSyncContext(vscode);
+    };
+    syncWatcher.onDidCreate(onSyncChange);
+    syncWatcher.onDidChange(onSyncChange);
+    syncWatcher.onDidDelete(onSyncChange);
+    context.subscriptions.push(syncWatcher);
   }
+
+  refreshCommerceSyncContext(vscode);
 
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.rest.setPassword", () =>
@@ -427,6 +462,9 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.getTransactions", () =>
       runGetTransactions(context, vscode, resultsTerminal),
     ),
+    vscode.commands.registerCommand("cpqBml.rest.syncCommerceMetadata", () =>
+      runSyncCommerceMetadata(context, vscode, resultsTerminal),
+    ),
     vscode.commands.registerCommand("cpqBml.rest.clearResults", () =>
       resultsTerminal.clear(),
     ),
@@ -462,6 +500,8 @@ module.exports = {
   runChangeEnvironment,
   runGlobalSearchBml,
   runGetTransactions,
+  runSyncCommerceMetadata,
+  refreshCommerceSyncContext,
   describeError,
   findLibraryFunctionByVariableName,
   resolveMetadataForFile,

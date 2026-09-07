@@ -1,128 +1,11 @@
-const fs = require("fs");
-const pathLib = require("path");
-const { request } = require("./client");
 const {
-  getBaseUrl,
-  getRestVersion,
+  call,
+  sanitizeRestResponse,
+  functionsPath,
   getEffectiveRestVersion,
-  getCommerceProcess,
-  getCommerceDocument,
-  getAuthHeader,
-  getSettings,
-} = require("./config");
-
-// Never emit instance links, hypermedia links (hrefs), or user credentials in REST API responses
-const SENSITIVE_KEY_REGEX = /^(?:password|token|authHeader|authorization|cookie|set-cookie|sessionId|_user_session_id|webSvcsPassword)$/i;
-
-function sanitizeRestResponse(data, baseUrl) {
-  if (data === null || data === undefined) return data;
-
-  if (typeof data === "string") {
-    let text = data;
-    if (baseUrl) {
-      text = text.split(baseUrl).join("");
-    }
-    text = text.replace(/https?:\/\/[a-zA-Z0-9.-]+(?:\.bigmachines|\.oracle(?:cloud)?)\.com(?::\d+)?/gi, "");
-    return text;
-  }
-
-  if (Array.isArray(data)) {
-    return data.map((item) => sanitizeRestResponse(item, baseUrl));
-  }
-
-  if (typeof data === "object") {
-    const cleaned = {};
-    for (const [key, value] of Object.entries(data)) {
-      if (key === "links" || key === "href" || key === "referencesUrl") {
-        continue;
-      }
-      if (SENSITIVE_KEY_REGEX.test(key)) {
-        continue;
-      }
-      cleaned[key] = sanitizeRestResponse(value, baseUrl);
-    }
-    return cleaned;
-  }
-
-  return data;
-}
-
-function functionsPath(vscode, metadata) {
-  const version = getRestVersion(vscode);
-  if (metadata && metadata.commerceDocument) {
-    const process =
-      metadata.commerceProcess || getCommerceProcess(vscode) || "oraclecpqo";
-    return `/rest/${version}/commerceProcessSetups/${process}/documents/${metadata.commerceDocument}/bml/library/functions`;
-  }
-  return `/rest/${version}/bml/library/functions`;
-}
-
-// transport lets tests intercept the call instead of making a real HTTPS request.
-async function call(context, vscode, { path, method, query, body }, transport) {
-  let cleanedBody = body;
-  if (body && typeof body === "object") {
-    const { commerceProcess, commerceDocument, ...rest } = body;
-    cleanedBody = rest;
-  }
-  const baseUrl = getBaseUrl(vscode);
-  const authHeader = await getAuthHeader(context, vscode);
-  const settings = getSettings(vscode);
-  let logFilePath;
-  if (
-    settings.debugLog &&
-    vscode.workspace.workspaceFolders &&
-    vscode.workspace.workspaceFolders.length > 0
-  ) {
-    const logsDir = pathLib.join(
-      vscode.workspace.workspaceFolders[0].uri.fsPath,
-      "logs",
-      "rest-api-logs",
-    );
-    try {
-      fs.mkdirSync(logsDir, { recursive: true });
-    } catch (e) {}
-
-    let txnId = "";
-    if (body && typeof body === "object") {
-      if (body.transactionId) txnId = String(body.transactionId);
-      else if (body.transactionID) txnId = String(body.transactionID);
-      else if (body.transactionID_t) txnId = String(body.transactionID_t);
-    }
-    if (!txnId && query && typeof query === "object") {
-      if (query.transactionId) txnId = String(query.transactionId);
-      else if (query.transactionID) txnId = String(query.transactionID);
-      else if (query.transactionID_t) txnId = String(query.transactionID_t);
-    }
-    if (!txnId && path && typeof path === "string") {
-      const match = path.match(
-        /\/(?:documents|transaction(?:Setup)?s?)\/(\d+)/i,
-      );
-      if (match) txnId = match[1];
-    }
-
-    const logFileName = txnId
-      ? `bml_rest_api_${txnId}.log`
-      : "bml_rest_api.log";
-    logFilePath = pathLib.join(logsDir, logFileName);
-  }
-
-  const response = await request({
-    baseUrl,
-    path,
-    method,
-    query,
-    body: cleanedBody,
-    authHeader,
-    logFilePath,
-    ...(transport ? { transport } : {}),
-  });
-
-  if (response && response.body) {
-    response.body = sanitizeRestResponse(response.body, baseUrl);
-  }
-
-  return response;
-}
+} = require("./apiCore");
+const { getRestVersion } = require("./config");
+const apiCommerce = require("./apiCommerce");
 
 // GET /rest/<version>/bml/library/functions?offset=&limit= -> { items, offset, limit, count, hasMore }
 function listLibraryFunctions(
@@ -397,93 +280,9 @@ function searchBmlScripts(
   );
 }
 
-function commerceDocumentsPath(vscode, process = "oraclecpqo", document = "transaction") {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const proc = process ? process.charAt(0).toUpperCase() + process.slice(1) : "Oraclecpqo";
-  const doc = document ? document.charAt(0).toUpperCase() + document.slice(1) : "Transaction";
-  return `/rest/${effectiveVersion}/commerceDocuments${proc}${doc}`;
-}
-
-// GET /rest/<version>/commerceDocuments<Process><Document>
-// Minimal response for transaction filtering and debugging: _id, transactionID_t, no href links.
-async function getTransactions(
-  context,
-  vscode,
-  {
-    process,
-    document,
-    q,
-    query,
-    offset = 25,
-    limit = 25,
-    fields = "_id,transactionID_t",
-    excludeFieldTypes = "yes",
-    orderby,
-    totalResults = true,
-  } = {},
-  transport,
-) {
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-
-  let queryFilter = q;
-  if (!queryFilter && query) {
-    queryFilter = query;
-  }
-  if (queryFilter && typeof queryFilter === "object") {
-    queryFilter = JSON.stringify(queryFilter);
-  }
-
-  const queryParams = {};
-  if (offset !== undefined) queryParams.offset = offset;
-  if (limit !== undefined) queryParams.limit = limit;
-  if (fields) queryParams.fields = fields;
-  if (excludeFieldTypes !== undefined && excludeFieldTypes !== false && excludeFieldTypes !== null) {
-    queryParams.excludeFieldTypes = excludeFieldTypes === true ? "yes" : String(excludeFieldTypes);
-  }
-  if (queryFilter) queryParams.q = queryFilter;
-  if (orderby) queryParams.orderby = orderby;
-  if (totalResults !== undefined) queryParams.totalResults = totalResults;
-
-  const result = await call(
-    context,
-    vscode,
-    {
-      path: commerceDocumentsPath(vscode, effectiveProcess, effectiveDocument),
-      method: "GET",
-      query: queryParams,
-    },
-    transport,
-  );
-
-  // Sanitize items so no href links are ever returned, keeping minimal _id and transactionID_t
-  if (result && result.body && typeof result.body === "object") {
-    delete result.body.links;
-    if (Array.isArray(result.body.items)) {
-      result.body.items = result.body.items.map((item) => {
-        const clean = {
-          _id: item._id !== undefined ? String(item._id) : undefined,
-          transactionID_t:
-            item.transactionID_t !== undefined
-              ? String(item.transactionID_t)
-              : (item.transactionId !== undefined ? String(item.transactionId) : undefined),
-        };
-        for (const [k, v] of Object.entries(item)) {
-          if (k !== "links" && k !== "href" && clean[k] === undefined) {
-            clean[k] = v;
-          }
-        }
-        return clean;
-      });
-    }
-  }
-
-  return result;
-}
-
 module.exports = {
+  call,
   functionsPath,
-  commerceDocumentsPath,
   listLibraryFunctions,
   listLibraryFolders,
   getLibraryFunction,
@@ -498,8 +297,7 @@ module.exports = {
   deployCommerceProcess,
   getTask,
   searchBmlScripts,
-  getTransactions,
-  listTransactions: getTransactions,
   getEffectiveRestVersion,
   sanitizeRestResponse,
+  ...apiCommerce,
 };

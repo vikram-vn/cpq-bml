@@ -216,6 +216,11 @@
         "icon": "$(list-unordered)"
       },
       {
+        "command": "cpqBml.rest.syncCommerceMetadata",
+        "title": "CPQ-BML: Sync Commerce Schema & Metadata",
+        "icon": "app/icons/pull.svg"
+      },
+      {
         "command": "cpqBml.mcp.showInfo",
         "title": "CPQ-BML: Show MCP Server Connection Info",
         "icon": "$(info)"
@@ -265,6 +270,11 @@
     ],
     "menus": {
       "editor/title": [
+        {
+          "command": "cpqBml.rest.syncCommerceMetadata",
+          "when": "resourceLangId == bml && !cpqBml.commerceMetadataSynced && config.cpqBml.connection.enabled && cpqBml.connection.configured",
+          "group": "navigation@0"
+        },
         {
           "command": "cpqBml.rest.createOverride",
           "when": "resourceLangId == bml && cpqBml.activeFileIsStandard && !cpqBml.activeFileIsOverridden && config.cpqBml.connection.enabled && cpqBml.connection.configured",
