@@ -153,32 +153,53 @@ const DEFAULT_IGNORED = new Set([
 
 /**
  * Scans directories in a root path recursively (skipping build/cache folders).
+ * Supports contextual hierarchy detection (e.g. catalog-definition -> all-product-families -> [family] -> [model]).
  * 
  * @param {string} rootDir - Root directory to scan
- * @param {number} maxDepth - Maximum recursion depth (default 4)
+ * @param {number} maxDepth - Maximum recursion depth (default 8)
  * @param {Set<string>|string[]} customIgnores - Optional custom directories to ignore
+ * @param {Map<string, string>} contextualAssignments - Optional map to record contextual icon mappings
  * @returns {string[]} - Discovered folder names
  */
-function scanDirFolders(rootDir, maxDepth = 4, customIgnores = null) {
+function scanDirFolders(rootDir, maxDepth = 8, customIgnores = null, contextualAssignments = null) {
   const dirs = new Set();
   const ignored = customIgnores
     ? new Set([...DEFAULT_IGNORED, ...customIgnores])
     : DEFAULT_IGNORED;
 
-  function walk(current, depth) {
+  function walk(current, depth, parentName = '', grandParentName = '') {
     if (depth > maxDepth) return;
     try {
       const entries = fs.readdirSync(current, { withFileTypes: true });
       for (const e of entries) {
         if (e.isDirectory() && !ignored.has(e.name) && !e.name.startsWith('.git')) {
           dirs.add(e.name);
-          walk(path.join(current, e.name), depth + 1);
+
+          // Contextual CPQ catalog hierarchy detection:
+          // e.g. catalog-definition / all-product-families / [product-family] / [model] / ...
+          if (contextualAssignments && typeof contextualAssignments.set === 'function') {
+            const p = parentName.toLowerCase();
+            const gp = grandParentName.toLowerCase();
+            if (p === 'all-product-families' || p === 'product-families') {
+              // Direct child of all-product-families is a Product Family
+              if (!matchFolderIcon(e.name)) {
+                contextualAssignments.set(e.name, 'folder-cluster');
+              }
+            } else if (gp === 'all-product-families' || gp === 'product-families') {
+              // Child of a product family is a Model / Product Line
+              if (!matchFolderIcon(e.name)) {
+                contextualAssignments.set(e.name, 'folder-cluster');
+              }
+            }
+          }
+
+          walk(path.join(current, e.name), depth + 1, e.name, parentName);
         }
       }
     } catch (err) {}
   }
 
-  walk(rootDir, 0);
+  walk(rootDir, 0, path.basename(rootDir));
   return Array.from(dirs);
 }
 
@@ -189,7 +210,7 @@ function scanDirFolders(rootDir, maxDepth = 4, customIgnores = null) {
  * Synchronizes discovered folder names into a VS Code Material theme object.
  * 
  * @param {object} theme - The theme object (from bml-icons.json)
- * @param {Iterable<string>} folderCandidates - Collection of folder names to classify
+ * @param {Iterable<string>|Map<string, string>} folderCandidates - Collection of folder names or map of explicit icons
  * @param {object} [options] - Optional configuration
  * @param {boolean} [options.sortKeys=true] - Whether to sort keys alphabetically
  * @returns {number} - Number of new folder mappings added
@@ -200,14 +221,33 @@ function syncFoldersIntoTheme(theme, folderCandidates, options = { sortKeys: tru
   const folderNamesExp = theme.folderNamesExpanded || (theme.folderNamesExpanded = {});
   const iconDefs = theme.iconDefinitions || {};
 
-  for (const candidate of folderCandidates) {
-    const iconId = matchFolderIcon(candidate);
+  const isMap = folderCandidates instanceof Map;
+  const entries = isMap ? Array.from(folderCandidates.entries()) : folderCandidates;
+
+  for (const item of entries) {
+    let candidate;
+    let explicitIcon = null;
+
+    if (isMap || (Array.isArray(item) && item.length === 2)) {
+      candidate = item[0];
+      explicitIcon = item[1];
+    } else if (typeof item === 'object' && item !== null && item.name) {
+      candidate = item.name;
+      explicitIcon = item.icon;
+    } else {
+      candidate = item;
+    }
+
+    if (!candidate || typeof candidate !== 'string') continue;
+
+    const iconId = explicitIcon || matchFolderIcon(candidate);
     if (!iconId) continue;
 
     const openIconId = iconId + '-open';
     if (!iconDefs[iconId] || !iconDefs[openIconId]) continue;
 
-    for (const variant of expandVariations(candidate)) {
+    const variants = new Set([candidate, ...expandVariations(candidate)]);
+    for (const variant of variants) {
       if (!folderNames[variant]) {
         folderNames[variant] = iconId;
         folderNamesExp[variant] = openIconId;
@@ -245,13 +285,14 @@ function generateDynamicIcons(projectRoot, options = {}) {
 
   const theme = JSON.parse(fs.readFileSync(themePath, 'utf8'));
 
-  // 1. Scan actual project directories
-  const scanRoots = ['app', '.agents', 'knowledge', 'scripts', 'themes', 'test', 'tests', 'docs', '.gemini'];
+  // 1. Scan actual project directories with deep hierarchy and contextual detection
+  const scanRoots = ['app', '.agents', 'knowledge', 'scripts', 'themes', 'test', 'tests', 'docs', '.gemini', 'modified'];
   let discovered = [];
+  const contextualAssignments = new Map();
   for (const r of scanRoots) {
     const target = path.join(root, r);
     if (fs.existsSync(target)) {
-      discovered = discovered.concat(scanDirFolders(target, 4));
+      discovered = discovered.concat(scanDirFolders(target, 8, null, contextualAssignments));
     }
   }
 
@@ -285,7 +326,10 @@ function generateDynamicIcons(projectRoot, options = {}) {
     }
   }
 
-  const added = syncFoldersIntoTheme(theme, candidates, { sortKeys: true });
+  let added = syncFoldersIntoTheme(theme, candidates, { sortKeys: true });
+  if (contextualAssignments.size > 0) {
+    added += syncFoldersIntoTheme(theme, contextualAssignments, { sortKeys: true });
+  }
 
   // Write updated theme files
   if (added > 0 || options.forceWrite) {
@@ -315,18 +359,22 @@ function syncRuntimeWorkspaceFolders(extensionContext, workspaceFolders) {
 
     const theme = JSON.parse(fs.readFileSync(minThemePath, 'utf8'));
     const folderNames = new Set();
+    const contextualAssignments = new Map();
 
     for (const folder of workspaceFolders) {
       const fsPath = folder.uri ? folder.uri.fsPath : folder;
       if (fs.existsSync(fsPath)) {
         folderNames.add(path.basename(fsPath));
-        for (const name of scanDirFolders(fsPath, 2)) {
+        for (const name of scanDirFolders(fsPath, 8, null, contextualAssignments)) {
           folderNames.add(name);
         }
       }
     }
 
-    const added = syncFoldersIntoTheme(theme, folderNames, { sortKeys: false });
+    let added = syncFoldersIntoTheme(theme, folderNames, { sortKeys: false });
+    if (contextualAssignments.size > 0) {
+      added += syncFoldersIntoTheme(theme, contextualAssignments, { sortKeys: false });
+    }
     if (added > 0) {
       fs.writeFileSync(minThemePath, JSON.stringify(theme) + '\n', 'utf8');
     }

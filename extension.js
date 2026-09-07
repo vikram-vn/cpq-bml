@@ -88,16 +88,22 @@ function activate(context) {
   context.subscriptions.push(activateIconsCmd);
 
   // ── Runtime Dynamic Folder Icon Sync ────────────────────────────────────────
-  try {
-    syncRuntimeWorkspaceFolders(context, vscode.workspace.workspaceFolders);
-  } catch (_) {}
+  let syncTimeout = null;
+  const triggerFolderSync = () => {
+    if (syncTimeout) clearTimeout(syncTimeout);
+    syncTimeout = setTimeout(() => {
+      try {
+        syncRuntimeWorkspaceFolders(context, vscode.workspace.workspaceFolders);
+      } catch (_) {}
+    }, 150);
+  };
+
+  triggerFolderSync();
 
   context.subscriptions.push(
-    vscode.workspace.onDidChangeWorkspaceFolders((e) => {
-      try {
-        syncRuntimeWorkspaceFolders(context, e.added);
-      } catch (_) {}
-    })
+    vscode.workspace.onDidChangeWorkspaceFolders(triggerFolderSync),
+    vscode.workspace.onDidCreateFiles(triggerFolderSync),
+    vscode.workspace.onDidRenameFiles(triggerFolderSync)
   );
 }
 

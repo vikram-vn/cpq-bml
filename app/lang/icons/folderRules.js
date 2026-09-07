@@ -12,13 +12,13 @@ const RULE_MATCHERS = [
   // 1. Modifications / Updates / Overrides / Migrations / Patches
   {
     id: 'modifications-updates', icon: 'folder-update',
-    regex: /(?:^|[-_./])(modify|updates?|edits?|changes?|overrides?|diffs?|delta|patch(?:es)?|upgrades?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(modif(?:y|ied|ications?)|updates?|edits?|changes?|overrides?|diffs?|delta|patch(?:es)?|upgrades?)(?:[-_./]|$)/i,
     description: 'Modification scripts, override functions, and incremental patches'
   },
   // 2. Database, BMQL, Data Tables, System Lookups, SQL & Queries
   {
     id: 'database-bmql-tables', icon: 'folder-database',
-    regex: /(?:^|[-_./])(db|database|bmql|lookups?|datatables?|data[-_]tables?|sql|queries|query|tables?|records?|dal|repository|repositories|schema|schemas|models?|entities|entity|migrations?|seeders?|fixtures?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(db|database|bmql|lookups?|datatables?|data[-_]tables?|sql|queries|query|tables?|records?|dal|repository|repositories|schema|schemas|models?|entities|entity|migrations?|seeders?|fixtures?|bulk[-_]?(?:downloads?|uploads?|imports?|exports?)|downloads?|uploads?|data[-_]?cube[-_]?export|cube)(?:[-_./]|$)/i,
     description: 'BMQL queries, CPQ Data Tables, schema models, and database access'
   },
   // 3. Workflows, Lifecycles, Pipelines & Processes
@@ -48,13 +48,13 @@ const RULE_MATCHERS = [
   // 7. Model Context Protocol (MCP), Remote Integrations & Connectors
   {
     id: 'mcp-integrations-connections', icon: 'folder-connection',
-    regex: /(?:^|[-_./])(mcp|connections?|integrations?|rpc|grpc|sockets?|connectors?|adapters?|webhooks?|proxy|proxies|remote|links?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(mcp|connections?|integrations?|rpc|grpc|sockets?|connectors?|adapters?|webhooks?|proxy|proxies|remote|links?|crm|salesforce|dynamics|fusion|e[-_]?business[-_]?suite|docusign|esignature)(?:[-_./]|$)/i,
     description: 'Model Context Protocol (MCP) servers, connectors, and remote integrations'
   },
   // 8. Commerce Processes, Cart, Pricing, Quotes, Transactions & Orders
   {
     id: 'commerce-cart-pricing-quotes', icon: 'folder-cart',
-    regex: /(?:^|[-_./])(commerce[-_]?libraries|commerce[-_]?library|commerce[-_]?processes?|commerce|e[-_]?commerce|cart|shop|pricing|prices?|pricer|transactions?|orders?|quotes?|discounts?|charges?|tax|currencies|currency|invoices?|billing)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(commerce[-_]?libraries|commerce[-_]?library|commerce[-_]?processes?|commerce|e[-_]?commerce|carts?|shop|pricing|prices?|pricer|transactions?|orders?|quotes?|quoting|collaborative[-_]?quoting|discounts?|charges?|tax|currencies|currency|invoices?|billing|abo|standard[-_]?abo|package[-_]?abo|rate[-_]?cards?|rate[-_]?plans?|shopping[-_]?carts?|subscription[-_]?workbench|workbench(?:es)?)(?:[-_./]|$)/i,
     description: 'Commerce processes, quoting, pricing calculations, and transaction rules'
   },
   // 9. Configuration, Setup, Admin Settings, Options & Preferences
@@ -66,13 +66,13 @@ const RULE_MATCHERS = [
   // 10. Administration & Management
   {
     id: 'admin-management', icon: 'folder-admin',
-    regex: /(?:^|[-_./])(admin|administration|mgmt|management|manager|superadmin|cpq[-_]?admin)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(admin|administration|mgmt|management|manager|superadmin|cpq[-_]?admin|host[-_]?company|partner[-_]?organizations?|participant[-_]?profiles?)(?:[-_./]|$)/i,
     description: 'Administration consoles, user management, and system setup'
   },
   // 11. Rules, Business Logic, Policies & Best Practices
   {
     id: 'rules-policies-governance', icon: 'folder-rules',
-    regex: /(?:^|[-_./])(rules?|policies|policy|approvals?|best[-_]?practices?|governance|compliance)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(rules?|bom[-_]?rules?|policies|policy|approv(?:als?|ers?|ing)|best[-_]?practices?|governance|compliance|delegated[-_]?approvers?)(?:[-_./]|$)/i,
     description: 'Business rules, approval matrices, policy enforcement, and best practices'
   },
   // 12. Constraints, Guardrails & Input Restrictions
@@ -90,7 +90,7 @@ const RULE_MATCHERS = [
   // 14. Access Control, Security, User Rights & Permissions
   {
     id: 'security-access-permissions', icon: 'folder-secure',
-    regex: /(?:^|[-_./])(access(?:[-_]?rights)?|security|auth|authentication|authorization|permissions?|roles?|rbac|usersession|sessions?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(access(?:[-_]?rights)?|security|auth|authentication|authorization|permissions?|roles?|rbac|usersession|sessions?|single[-_]?sign[-_]?on|sso)(?:[-_./]|$)/i,
     description: 'Access rights, role permissions, authentication tokens, and user sessions'
   },
   // 15. Secrets, Keys, Passwords & Credentials
@@ -102,7 +102,7 @@ const RULE_MATCHERS = [
   // 16. Attributes, Variables, Inlay Hints & Parameter Completions
   {
     id: 'attributes-variables-elements', icon: 'folder-element',
-    regex: /(?:^|[-_./])(attributes?|variables?|elements?|params?|parameters?|param[-_]?completions?|inlay[-_]?hints?|fields?|props|properties)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(attributes?|variables?|elements?|params?|parameters?|param[-_]?completions?|inlay[-_]?hints?|fields?|props|properties|serial[-_]?numbers?|question[-_]?sets?)(?:[-_./]|$)/i,
     description: 'BML attributes, system variables, parameters, and inlay hint metadata'
   },
   // 17. Constants, Enums, Literals, Strings & Static Values
@@ -165,10 +165,10 @@ const RULE_MATCHERS = [
     regex: /(?:^|[-_./])(libraries|library|libs?|packages?|pkgs?|modules?|vendor|node_modules|external)(?:[-_./]|$)/i,
     description: 'BML Library functions, external vendor modules, and package bundles'
   },
-  // 27. Utilities, Tools, Tool-defs & Helpers
+  // 27. Utilities, Tools, Handlers & Helpers
   {
     id: 'utilities-tools-helpers', icon: 'folder-utils',
-    regex: /(?:^|[-_./])(util[-_]?libraries|util[-_]?library|utils?|utilities|helpers?|tool[-_]?defs?|tools?|handlers?|wrappers?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(util[-_]?libraries|util[-_]?library|utils?|utilities|helpers?|tool[-_]?defs?|tools?|toolkits?|handlers?|wrappers?)(?:[-_./]|$)/i,
     description: 'General utilities, BML util libraries, tool definitions, and helper routines'
   },
   // 28. Categories, Filters, Groupings & Classifications
@@ -198,7 +198,7 @@ const RULE_MATCHERS = [
   // 32. Webviews, Layouts, UI Panels, Tabs & Screens
   {
     id: 'webviews-layouts-ui', icon: 'folder-layout',
-    regex: /(?:^|[-_./])(web[-_]?views?|layouts?|views?|ui|screens?|windows?|tabs?|panels?|pages?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(web[-_]?views?|layouts?|views?|ui|screens?|windows?|tabs?|panels?|pages?|designers?)(?:[-_./]|$)/i,
     description: 'VS Code webviews, CPQ layout editors, UI panels, and screen definitions'
   },
   // 33. Themes, Material Icons & Appearance
@@ -210,7 +210,7 @@ const RULE_MATCHERS = [
   // 34. Actions, Triggers, Events & Handlers
   {
     id: 'actions-triggers-events', icon: 'folder-trigger',
-    regex: /(?:^|[-_./])(actions?|triggers?|commands?|events?|listeners?|signals?|hooks?|interceptors?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(actions?|triggers?|commands?|events?|listeners?|signals?|hooks?|interceptors?|punch[-_]?in|punchin[-_]?actions?)(?:[-_./]|$)/i,
     description: 'Action scripts, trigger functions, event listeners, and hook handlers'
   },
   // 35. Comments, Annotations, Messages & Discussions
@@ -252,7 +252,7 @@ const RULE_MATCHERS = [
   // 41. Mathematics & Mathematical Formulas
   {
     id: 'math-formulas-calculations', icon: 'folder-functions',
-    regex: /(?:^|[-_./])(math|formulas?|calculations?|algorithms?|arithmetic)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(math|formulas?|calculat(?:or|ors|ions?|ed?)|algorithms?|arithmetic|win[-_]?probability)(?:[-_./]|$)/i,
     description: 'Mathematical formulas, calculation engines, and numerical functions'
   },
   // 42. Dates, DateTime & Event Calendars
@@ -270,7 +270,7 @@ const RULE_MATCHERS = [
   // 44. BOM (Bill of Materials), Products, Hierarchy Trees & Clusters
   {
     id: 'bom-hierarchy-trees-clusters', icon: 'folder-cluster',
-    regex: /(?:^|[-_./])(bom|bill[-_]?of[-_]?materials?|hierarchy|trees?|clusters?|parts?|catalog|products?|product[-_]?lines?|product[-_]?families?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(bom|bill[-_]?of[-_]?materials?|hierarchy|trees?|clusters?|parts?|catalog|catalog[-_]?definition|all[-_]?product[-_]?families?|products?|product[-_]?lines?|product[-_]?line|product[-_]?families?|product[-_]?family|models?|manage[-_]?boms?)(?:[-_./]|$)/i,
     description: 'BOM hierarchies, product lines/families, part catalogs, and clusters'
   },
   // 45. Web Links & Hyperlinks
@@ -309,10 +309,10 @@ const RULE_MATCHERS = [
     regex: /(?:^|[-_./])(commands?|cmds?|cli[-_]?tools?)(?:[-_./]|$)/i,
     description: 'Command palettes, CLI subcommands, and operational commands'
   },
-  // 51. Source Code Roots
+  // 52. Source Code Roots
   {
     id: 'source-code-roots', icon: 'folder-src',
-    regex: /(?:^|[-_./])(src|sources?|app|code|core)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(src|sources?|app|apps?|applications?|code|core)(?:[-_./]|$)/i,
     description: 'Main source code and application roots'
   },
   // 52. Distribution, Build Output & Target Artifacts
@@ -356,6 +356,12 @@ const RULE_MATCHERS = [
     id: 'images-media-graphics', icon: 'folder-images',
     regex: /(?:^|[-_./])(images?|img|media|assets?|graphics?|svgs?|drawings?|photos?)(?:[-_./]|$)/i,
     description: 'Images, SVG icons, media assets, and graphic resources'
+  },
+  // 59. Stylesheets, CSS & Visual Themes
+  {
+    id: 'styles-css-themes', icon: 'folder-css',
+    regex: /(?:^|[-_./])(css|styles?|stylesheets?|themes?|sass|scss|less|styling)(?:[-_./]|$)/i,
+    description: 'CSS, stylesheets, style themes, and styling resources'
   },
   // 59. Code Generators & Scaffolding
   {
@@ -417,25 +423,55 @@ const RULE_MATCHERS = [
 // Oracle CPQ & BML Domain Lexicon
 // ─────────────────────────────────────────────────────────────────────────────
 const CPQ_BML_DOMAIN_CONCEPTS = [
-  'modify', 'rules', 'configuration', 'recommendation', 'recommended-item',
-  'constraint', 'access', 'attributes', 'libraries', 'util-libraries',
-  'commerce-libraries', 'validation', 'approvals', 'pricing', 'bom',
-  'integrations', 'transactions', 'line-items', 'bmql', 'variables',
-  'constants', 'dictionary', 'arrays', 'math', 'date', 'datetime', 'strings',
-  'urldata', 'debug', 'testing', 'snapshots', 'hiding', 'web-services',
-  'tool-defs', 'categories', 'material', 'web-view', 'database', 'sql',
-  'rest', 'soap', 'json', 'xml', 'xslt', 'helpers', 'utils', 'services',
-  'security', 'auth', 'tokens', 'git', 'github', 'docs', 'docmd',
-  'bml-scripts', 'commerce-process', 'commerce-processes', 'util-functions',
-  'commerce-functions', 'config-rules', 'pricing-rules', 'quote-actions',
-  'approval-matrix', 'cache', 'temp', 'dist', 'build', 'scripts', 'assets',
-  'icons', 'themes', 'syntaxes', 'intellisense', 'snippets', 'lint',
-  'beautify', 'metrics', 'inlay-hints', 'param-completions', 'data-tables',
-  'doc-engine', 'model-mapping', 'product-lines', 'product-families',
-  'subcomponents', 'override-functions', 'ai-functions', 'agents', 'skills',
-  'mcp-servers', 'mcp-tools', 'crawler', 'crawler-docs', 'benchmarks',
-  'quality', 'advisories', 'profiling', 'coverage', 'audit-log', 'telemetry',
-  'orders', 'proposals', 'contracts', 'claude', 'gemini', 'copilot'
+  "abo-external-orders", "abo-workbench", "access", "advisories", "agents",
+  "ai-functions", "all-product-families", "approval-matrix", "approval-notifications", "approval-sequences",
+  "approvals", "array-sets", "arrays", "asset-based-ordering", "assets",
+  "attributes", "audit-log", "auth", "beautify", "benchmarks",
+  "bill-of-materials", "bml-scripts", "bml-unit-tests", "bmlt", "bmql",
+  "bom", "bom-attribute-definition", "bom-instance", "bom-item-definition", "bom-item-tree",
+  "bom-items", "bom-mapping", "bom-panel", "bom-pricing", "bom-root-items",
+  "bom-rules", "bom-tables", "build", "bulk-downloads", "bulk-uploads",
+  "business-metrics", "cache", "calculators", "catalog-definition", "categories",
+  "charge-definitions", "claude", "collaborative-quoting", "commerce-cloud", "commerce-functions",
+  "commerce-libraries", "commerce-process", "commerce-processes", "components", "config-rules",
+  "configurable-attributes", "configuration", "configuration-flows", "constants", "constraint",
+  "constraint-rules", "contract-negotiations", "contracts", "copilot", "coverage",
+  "crawler", "crawler-docs", "custom-actions", "custom-asset-fields", "custom-xsl",
+  "data-cube-export", "data-table-validation", "data-tables", "database", "date",
+  "datetime", "deal-management", "debug", "delegated-approvers", "developer-toolkit",
+  "dictionary", "digital-assistant", "dist", "doc-engine", "docmd",
+  "docs", "document-designer", "document-views", "docusign-esignature", "dynamics-crm",
+  "e-business-suite", "eligibility-rules", "email-authentication", "email-designer", "enterprise-contracts",
+  "external-configurator", "external-email", "file-manager", "formula-management", "forwarding-rules",
+  "ftp-automation", "fusion-crm", "gemini", "general-settings", "git",
+  "github", "heading-styles", "help-icons", "helpers", "hiding",
+  "hiding-rules", "host-company", "icons", "inlay-hints", "integration-center",
+  "integrations", "intellisense", "jet-transaction-ui", "json", "layout-editor",
+  "libraries", "line-item-grid", "line-items", "lint", "manage-boms",
+  "manage-parts", "material", "math", "mcp-servers", "mcp-tools",
+  "menu-attributes", "metrics", "migration-activities", "migration-center", "migration-packages",
+  "model", "model-mapping", "models", "modified", "modify",
+  "order-management", "order-of-operations", "orders", "override-functions", "package-abo",
+  "param-completions", "part-associations", "part-custom-fields", "part-filters", "participant-profiles",
+  "partner-organizations", "parts-management", "parts-search", "price-agreements", "price-books",
+  "price-guidance", "price-models", "price-optimization", "price-score", "price-waterfall",
+  "pricing", "pricing-engine", "pricing-lookups", "pricing-matrices", "pricing-options",
+  "pricing-portal", "pricing-preview", "pricing-rules", "print-documents", "product-configuration",
+  "product-families", "product-family", "product-line", "product-lines", "profiling",
+  "proposals", "proxy-login", "punch-in", "punchin-actions", "quality",
+  "question-sets", "quote-actions", "quote-designer", "rate-cards", "rate-plans",
+  "recommendation", "recommendation-rules", "recommended-item", "recommended-items", "redwood-admin",
+  "redwood-quote-ui", "reference-application", "report-templates", "rest", "rules",
+  "salesforce-crm", "scripts", "security", "serial-numbers", "services",
+  "shopping-carts", "single-sign-on", "site-metrics", "skills", "snapshots",
+  "snippets", "soap", "sql", "standard-abo", "strings",
+  "style-sets", "stylesheet-manager", "subcomponents", "submit-actions", "subscription-management",
+  "subscription-workbench", "syntaxes", "telemetry", "temp", "testing",
+  "themes", "tokens", "tool-defs", "transaction-line-grid", "transaction-lines",
+  "transaction-locking", "transactions", "transition-rules", "ui-designer", "urldata",
+  "user-access-rights", "user-permissions", "util-functions", "util-libraries", "utils",
+  "validation", "variables", "web-services", "web-view", "win-probability",
+  "workflow-interaction", "xml", "xslt"
 ];
 
 module.exports = {

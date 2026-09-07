@@ -91,8 +91,8 @@ TARGET_H  = 230.0
 scale     = TARGET_H / orig_h
 MAX_DX    = 18.0
 MAX_DY    = 22.0
-FINAL_TX  = 22.0
-FINAL_TY  = 65.0
+FINAL_TX  = 54.783
+FINAL_TY  = 34.000
 
 # ── Build extrusion slices ────────────────────────────────────────────────────
 NUM_SLICES = 64
@@ -115,7 +115,7 @@ for i in range(NUM_SLICES, 0, -1):
 slices_str = '\n'.join(slices)
 
 # ── Compose SVG ───────────────────────────────────────────────────────────────
-svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 384" width="256" height="384">
+svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
   <defs>
     <linearGradient id="front-grad" x1="5%" y1="0%" x2="95%" y2="100%">
       <stop offset="0%"   stop-color="#FF3D30"/>

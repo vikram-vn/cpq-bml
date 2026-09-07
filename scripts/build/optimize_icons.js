@@ -118,7 +118,12 @@ function optimizeIcons() {
     'dist': 'folder-dist',
     'scripts': 'folder-scripts',
     'themes': 'folder-theme',
-    '.github': 'folder-github'
+    '.github': 'folder-github',
+    'modified': 'folder-update',
+    'catalog-definition': 'folder-cluster',
+    'all-product-families': 'folder-cluster',
+    'bom-rules': 'folder-rules',
+    'stylesheet': 'folder-css'
   };
   for (const [k, v] of Object.entries(customFolders)) {
     if (availableIcons.has(v) && availableIcons.has(v + '-open')) {
