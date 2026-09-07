@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.79.0] - 2026-09-07
+
+### Added
+
+- Add bug icon SVG for debugging functionality.
+- Add debug icon SVG to assets.
+- Add debug icon as SVG asset.
+
 ## [1.78.0] - 2026-09-07
 
 ### Added
@@ -87,10 +95,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Changed
 
 - Performance optimizations, benchmark fixtures, and stability enhancements.
-
-## [1.70.0] - 2026-08-31
-
-### Added
-
-- Implement linting aggregation logic for CPQ BML best practices and language-specific rules.
-- Implement linting engine with performance benchmarks and core static analysis rules.
