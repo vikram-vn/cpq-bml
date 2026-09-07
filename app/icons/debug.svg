@@ -24,7 +24,7 @@
   <defs>
     <linearGradient id="orangeGrad" x1="4.2" y1="5" x2="11.8" y2="13" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="1" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#ea580c"/>
     </linearGradient>
   </defs>
 </svg>
