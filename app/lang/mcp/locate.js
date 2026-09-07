@@ -27,8 +27,10 @@ function searchDir(dir, variableName, depthLeft) {
     for (const entry of entries) {
         if (!entry.isDirectory()) continue;
         const full = path.join(dir, entry.name);
-        if (entry.name === variableName) {
-            const candidate = path.join(full, `${variableName}.bml`);
+        if (entry.name === variableName || entry.name.toLowerCase() === variableName.toLowerCase()) {
+            let candidate = path.join(full, `${variableName}.bml`);
+            if (fs.existsSync(candidate)) return candidate;
+            candidate = path.join(full, `${entry.name}.bml`);
             if (fs.existsSync(candidate)) return candidate;
         }
         const nested = searchDir(full, variableName, depthLeft - 1);

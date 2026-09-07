@@ -93,7 +93,18 @@ async function pullFunction(context, vscode, args, transport) {
     if (!match) return fail(`Function "${variableName}" was not found on CPQ.`);
 
     const nsVarName = metadataLib.namespaceVariableNameFor(match);
-    const result = await api.getLibraryFunction(context, vscode, nsVarName, transport, target);
+    let result = await api.getLibraryFunction(context, vscode, nsVarName, transport, target);
+    if (!isSuccess(result.statusCode) && match.folderName && !nsVarName.includes('.')) {
+        const altResult = await api.getLibraryFunction(context, vscode, `${match.folderName}.${match.variableName}`, transport, target);
+        if (isSuccess(altResult.statusCode)) {
+            result = altResult;
+        }
+    } else if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
+        const altResult = await api.getLibraryFunction(context, vscode, match.variableName, transport, target);
+        if (isSuccess(altResult.statusCode)) {
+            result = altResult;
+        }
+    }
     if (!isSuccess(result.statusCode)) {
         return fail(`Failed to fetch "${variableName}" (HTTP ${result.statusCode}). ${describeError(result.body)}`);
     }
@@ -103,6 +114,9 @@ async function pullFunction(context, vscode, args, transport) {
         metadata.commerceProcess = commerceProcess;
         metadata.commerceDocument = commerceDocument;
     }
+    metadata.variableName = metadata.variableName || match.variableName || variableName;
+    metadata.folderName = metadata.folderName || match.folderName || metadataLib.namespaceOf(metadata) || '';
+    metadata.name = metadata.name || match.name || metadata.variableName;
 
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
@@ -113,7 +127,7 @@ async function pullFunction(context, vscode, args, transport) {
 
     const bmlPath = isCommerce
         ? path.join(workspaceRoot, settings.pullFolder, commerceProcess, commerceDocument, 'libraries', metadata.variableName, `${metadata.variableName}.bml`)
-        : path.join(workspaceRoot, settings.pullFolder, metadata.folderName || metadataLib.namespaceOf(metadata) || '', metadata.variableName, `${metadata.variableName}.bml`);
+        : path.join(workspaceRoot, settings.pullFolder, metadata.folderName || '', metadata.variableName, `${metadata.variableName}.bml`);
 
     const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
     metadataLib.writeBmlFile(bmlPath, scriptText);

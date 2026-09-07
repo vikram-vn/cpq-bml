@@ -42,9 +42,21 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
             vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
             return;
         }
-        allItems = allItems.concat(body.items || []);
-        if (!body.hasMore) break;
-        offset += limit;
+        let parsedBody = body;
+        if (typeof parsedBody === 'string') {
+            try { parsedBody = JSON.parse(parsedBody); } catch (e) { parsedBody = {}; }
+        }
+        const items = Array.isArray(parsedBody)
+            ? parsedBody
+            : ((parsedBody && parsedBody.items) || []);
+        allItems = allItems.concat(items);
+        const hasMore = parsedBody && (
+            parsedBody.hasMore === true ||
+            (parsedBody.hasMore === undefined && items.length > 0 && parsedBody.totalResults !== undefined && offset + items.length < parsedBody.totalResults) ||
+            (parsedBody.hasMore === undefined && items.length === limit)
+        );
+        if (!hasMore || items.length === 0) break;
+        offset += items.length;
     }
 
     if (allItems.length === 0) {
@@ -71,32 +83,51 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
 
     let pulledCount = 0;
     for (const pick of selected) {
-        const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
-        const result = await api.getLibraryFunction(context, vscode, nsVarName, transport);
-        if (!isSuccess(result.statusCode)) {
-            const message = `failed to fetch ${nsVarName} (HTTP ${result.statusCode}). ${describeError(result.body)}`;
-            writeTerminalMessage(resultsTerminal, 'Pull failed: ', message, '\x1b[31m');
-            vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
-            continue;
-        }
-        const { scriptText, metadata } = metadataLib.splitFunctionResponse(result.body);
-        const folder = metadata.folderName || metadataLib.namespaceOf(metadata) || '';
+        try {
+            const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
+            let result = await api.getLibraryFunction(context, vscode, nsVarName, transport);
+            if (!isSuccess(result.statusCode) && pick.item.folderName && !nsVarName.includes('.')) {
+                const altResult = await api.getLibraryFunction(context, vscode, `${pick.item.folderName}.${pick.item.variableName}`, transport);
+                if (isSuccess(altResult.statusCode)) {
+                    result = altResult;
+                }
+            } else if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
+                const altResult = await api.getLibraryFunction(context, vscode, pick.item.variableName, transport);
+                if (isSuccess(altResult.statusCode)) {
+                    result = altResult;
+                }
+            }
+            if (!isSuccess(result.statusCode)) {
+                const message = `failed to fetch ${nsVarName} (HTTP ${result.statusCode}). ${describeError(result.body)}`;
+                writeTerminalMessage(resultsTerminal, 'Pull failed: ', message, '\x1b[31m');
+                vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
+                continue;
+            }
+            const { scriptText, metadata } = metadataLib.splitFunctionResponse(result.body);
+            metadata.variableName = metadata.variableName || pick.item.variableName || pick.item.name || '';
+            metadata.folderName = metadata.folderName || pick.item.folderName || metadataLib.namespaceOf(metadata) || '';
+            metadata.name = metadata.name || pick.item.name || metadata.variableName;
+            const folder = metadata.folderName || '';
 
-        // Same per-function folder convention as the commerce pull, so every
-        // pulled function gets its own folder holding both its .bml and
-        // -meta.json sidecar: <pullFolder>/<folder>/<variableName>/<variableName>.bml
-        const bmlPath = path.join(
-            workspaceRoot,
-            settings.pullFolder,
-            folder,
-            metadata.variableName,
-            `${metadata.variableName}.bml`
-        );
-        const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
-        metadataLib.writeBmlFile(bmlPath, scriptText);
-        metadataLib.writeMetadata(metaPath, metadata);
-        resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
-        pulledCount++;
+            // Same per-function folder convention as the commerce pull, so every
+            // pulled function gets its own folder holding both its .bml and
+            // -meta.json sidecar: <pullFolder>/<folder>/<variableName>/<variableName>.bml
+            const bmlPath = path.join(
+                workspaceRoot,
+                settings.pullFolder,
+                folder,
+                metadata.variableName,
+                `${metadata.variableName}.bml`
+            );
+            const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
+            metadataLib.writeBmlFile(bmlPath, scriptText);
+            metadataLib.writeMetadata(metaPath, metadata);
+            resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
+            pulledCount++;
+        } catch (err) {
+            writeTerminalMessage(resultsTerminal, 'Pull failed: ', err.message, '\x1b[31m');
+            vscode.window.showErrorMessage(`CPQ-BML: failed to pull ${pick.label}: ${err.message}`);
+        }
     }
 
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Pulled ${pulledCount} function(s) (${formatElapsed(startedAt)})\x1b[0m`);
@@ -141,9 +172,21 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
             vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
             return;
         }
-        allItems = allItems.concat(body.items || []);
-        if (!body.hasMore) break;
-        offset += limit;
+        let parsedBody = body;
+        if (typeof parsedBody === 'string') {
+            try { parsedBody = JSON.parse(parsedBody); } catch (e) { parsedBody = {}; }
+        }
+        const items = Array.isArray(parsedBody)
+            ? parsedBody
+            : ((parsedBody && parsedBody.items) || []);
+        allItems = allItems.concat(items);
+        const hasMore = parsedBody && (
+            parsedBody.hasMore === true ||
+            (parsedBody.hasMore === undefined && items.length > 0 && parsedBody.totalResults !== undefined && offset + items.length < parsedBody.totalResults) ||
+            (parsedBody.hasMore === undefined && items.length === limit)
+        );
+        if (!hasMore || items.length === 0) break;
+        offset += items.length;
     }
 
     if (allItems.length === 0) {
@@ -170,35 +213,48 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
 
     let pulledCount = 0;
     for (const pick of selected) {
-        const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
-        const result = await api.getLibraryFunction(context, vscode, nsVarName, transport, commerceMetadata);
-        if (!isSuccess(result.statusCode)) {
-            const message = `failed to fetch ${nsVarName} (HTTP ${result.statusCode}). ${describeError(result.body)}`;
-            writeTerminalMessage(resultsTerminal, 'Pull failed: ', message, '\x1b[31m');
-            vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
-            continue;
-        }
-        const { scriptText, metadata } = metadataLib.splitFunctionResponse(result.body);
-        metadata.commerceProcess = commerceProcess;
-        metadata.commerceDocument = commerceDocument;
+        try {
+            const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
+            let result = await api.getLibraryFunction(context, vscode, nsVarName, transport, commerceMetadata);
+            if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
+                const altResult = await api.getLibraryFunction(context, vscode, pick.item.variableName, transport, commerceMetadata);
+                if (isSuccess(altResult.statusCode)) {
+                    result = altResult;
+                }
+            }
+            if (!isSuccess(result.statusCode)) {
+                const message = `failed to fetch ${nsVarName} (HTTP ${result.statusCode}). ${describeError(result.body)}`;
+                writeTerminalMessage(resultsTerminal, 'Pull failed: ', message, '\x1b[31m');
+                vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
+                continue;
+            }
+            const { scriptText, metadata } = metadataLib.splitFunctionResponse(result.body);
+            metadata.commerceProcess = commerceProcess;
+            metadata.commerceDocument = commerceDocument;
+            metadata.variableName = metadata.variableName || pick.item.variableName || pick.item.name || '';
+            metadata.name = metadata.name || pick.item.name || metadata.variableName;
 
-        // Matches the folder convention inferCommerceFromPath() relies on, so
-        // these functions are still recognized as commerce-scoped even if the
-        // -meta.json sidecar is ever lost: <process>/<document>/libraries/<variableName>/<variableName>.bml
-        const bmlPath = path.join(
-            workspaceRoot,
-            settings.pullFolder,
-            commerceProcess,
-            commerceDocument,
-            'libraries',
-            metadata.variableName,
-            `${metadata.variableName}.bml`
-        );
-        const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
-        metadataLib.writeBmlFile(bmlPath, scriptText);
-        metadataLib.writeMetadata(metaPath, metadata);
-        resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
-        pulledCount++;
+            // Matches the folder convention inferCommerceFromPath() relies on, so
+            // these functions are still recognized as commerce-scoped even if the
+            // -meta.json sidecar is ever lost: <process>/<document>/libraries/<variableName>/<variableName>.bml
+            const bmlPath = path.join(
+                workspaceRoot,
+                settings.pullFolder,
+                commerceProcess,
+                commerceDocument,
+                'libraries',
+                metadata.variableName,
+                `${metadata.variableName}.bml`
+            );
+            const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
+            metadataLib.writeBmlFile(bmlPath, scriptText);
+            metadataLib.writeMetadata(metaPath, metadata);
+            resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
+            pulledCount++;
+        } catch (err) {
+            writeTerminalMessage(resultsTerminal, 'Pull failed: ', err.message, '\x1b[31m');
+            vscode.window.showErrorMessage(`CPQ-BML: failed to pull ${pick.label}: ${err.message}`);
+        }
     }
 
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Pulled ${pulledCount} function(s) (${formatElapsed(startedAt)})\x1b[0m`);

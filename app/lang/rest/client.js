@@ -120,8 +120,11 @@ async function request({
 
   let parsedBody = response.text;
   const contentType =
-    (response.headers && response.headers["content-type"]) || "";
-  if (response.text && contentType.includes("application/json")) {
+    ((response.headers && response.headers["content-type"]) || "").toLowerCase();
+  const looksLikeJson =
+    typeof response.text === "string" &&
+    (response.text.trim().startsWith("{") || response.text.trim().startsWith("["));
+  if (response.text && (contentType.includes("json") || looksLikeJson)) {
     try {
       parsedBody = JSON.parse(response.text);
     } catch (e) {

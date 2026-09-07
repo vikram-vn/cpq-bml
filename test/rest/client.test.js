@@ -87,6 +87,40 @@ suite("BML REST client", () => {
     assert.deepStrictEqual(result, { statusCode: 204, body: "" });
   });
 
+  test("request() parses body when Content-Type is vendor-specific ADF json", async () => {
+    const fakeTransport = async () => ({
+      statusCode: 200,
+      headers: { "content-type": "application/vnd.oracle.adf.resourceitem+json;charset=UTF-8" },
+      text: '{"variableName":"calcTax","scriptText":"return 0.0;"}',
+    });
+
+    const result = await request({
+      baseUrl: "https://sitename.bigmachines.com",
+      path: "/rest/v18/bml/library/functions/calcTax",
+      transport: fakeTransport,
+    });
+
+    assert.strictEqual(result.statusCode, 200);
+    assert.deepStrictEqual(result.body, { variableName: "calcTax", scriptText: "return 0.0;" });
+  });
+
+  test("request() parses body when response text starts with { even if Content-Type is missing", async () => {
+    const fakeTransport = async () => ({
+      statusCode: 200,
+      headers: {},
+      text: '{"items":[{"variableName":"fn1"}]}',
+    });
+
+    const result = await request({
+      baseUrl: "https://sitename.bigmachines.com",
+      path: "/rest/v18/bml/library/functions",
+      transport: fakeTransport,
+    });
+
+    assert.strictEqual(result.statusCode, 200);
+    assert.deepStrictEqual(result.body, { items: [{ variableName: "fn1" }] });
+  });
+
   test("request() leaves a non-JSON response body as raw text", async () => {
     const fakeTransport = async () => ({
       statusCode: 500,

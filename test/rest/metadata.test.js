@@ -96,6 +96,20 @@ suite("BML REST metadata", () => {
     assert.strictEqual(meta.scriptText, undefined);
   });
 
+  test("splitFunctionResponse safely parses JSON string input", () => {
+    const jsonStr = JSON.stringify(SAMPLE_RESPONSE);
+    const { scriptText, metadata: meta } = metadata.splitFunctionResponse(jsonStr);
+    assert.strictEqual(scriptText, SAMPLE_RESPONSE.scriptText);
+    assert.strictEqual(meta.variableName, "concatString");
+  });
+
+  test("splitFunctionResponse unwraps envelope with items array", () => {
+    const wrapped = { items: [SAMPLE_RESPONSE] };
+    const { scriptText, metadata: meta } = metadata.splitFunctionResponse(wrapped);
+    assert.strictEqual(scriptText, SAMPLE_RESPONSE.scriptText);
+    assert.strictEqual(meta.variableName, "concatString");
+  });
+
   test("buildFunctionPayload reconstructs the full object shape needed by validate/update/debug, using a NEW scriptText", () => {
     const { metadata: meta } = metadata.splitFunctionResponse(SAMPLE_RESPONSE);
     const payload = metadata.buildFunctionPayload(meta, 'return "edited";');

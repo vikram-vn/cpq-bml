@@ -157,6 +157,55 @@ suite("BML REST commands - pull", () => {
 
         assert.ok(lines.some((l) => l.includes("Pull failed")));
       }));
+
+    test("successfully pulls when server returns Oracle ADF content types and uses fallback path if needed", () =>
+      withTempDir(async (tmpDir) => {
+        const transport = async (opts) => {
+          if (opts.path.startsWith("/rest/v18/bml/library/functions?")) {
+            return {
+              statusCode: 200,
+              headers: { "content-type": "application/vnd.oracle.adf.resourcecollection+json;charset=UTF-8" },
+              text: JSON.stringify({
+                items: [{ variableName: "calcTax", folderName: "pricing", name: "Calculate Tax" }],
+                hasMore: false,
+              }),
+            };
+          }
+          if (opts.path === "/rest/v18/bml/library/functions/calcTax") {
+            // First attempt with bare variableName 404s
+            return { statusCode: 404, headers: {}, text: '{"detail":"Not Found"}' };
+          }
+          if (opts.path === "/rest/v18/bml/library/functions/pricing.calcTax") {
+            // Fallback attempt succeeds
+            return {
+              statusCode: 200,
+              headers: { "content-type": "application/vnd.oracle.adf.resourceitem+json;charset=UTF-8" },
+              text: JSON.stringify({
+                variableName: "calcTax",
+                folderName: "pricing",
+                scriptText: "return 0.0;",
+              }),
+            };
+          }
+          return { statusCode: 500, headers: {}, text: "Unexpected" };
+        };
+
+        const vscode = createFakeVscode({
+          config: baseVscodeConfig(),
+          workspaceFolders: [{ uri: { fsPath: tmpDir } }],
+          window: {
+            showQuickPick: async (items) => [items[0]],
+          },
+        });
+
+        const lines = [];
+        await commands.runPullLibraryFunctions(makeContext(), vscode, fakeResultsTerminal(lines), { transport });
+
+        const bmlPath = path.join(tmpDir, "library", "pricing", "calcTax", "calcTax.bml");
+        assert.ok(fs.existsSync(bmlPath));
+        assert.strictEqual(fs.readFileSync(bmlPath, "utf8"), "return 0.0;");
+        assert.ok(lines.some((l) => l.includes("Pulled calcTax")));
+      }));
   });
 
   suite("runPullCommerceFunctions", () => {

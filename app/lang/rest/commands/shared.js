@@ -92,17 +92,68 @@ function mergeAttributes(existing, dependent) {
     return merged;
 }
 
-// Paginates the full library looking for an exact variableName match (util and commerce share the same collection).
+// Paginates the full library looking for a variableName match (util and commerce share the same collection).
 async function findLibraryFunctionByVariableName(context, vscode, variableName, transport, metadata) {
+    if (!variableName) return null;
+    const cleanVarName = variableName.includes('.') ? variableName.split('.').pop() : variableName;
+    const targetFolder = variableName.includes('.') ? variableName.split('.')[0] : null;
+    const lowerVar = variableName.toLowerCase();
+    const lowerClean = cleanVarName.toLowerCase();
+
     let offset = 0;
     const limit = 1000;
     for (;;) {
         const { statusCode, body } = await api.listLibraryFunctions(context, vscode, { offset, limit }, transport, metadata);
         if (!isSuccess(statusCode)) return null;
-        const found = (body.items || []).find((item) => item.variableName === variableName);
+
+        let parsedBody = body;
+        if (typeof parsedBody === 'string') {
+            try { parsedBody = JSON.parse(parsedBody); } catch (e) { parsedBody = {}; }
+        }
+        const items = Array.isArray(parsedBody)
+            ? parsedBody
+            : ((parsedBody && parsedBody.items) || []);
+
+        // Priority 1: exact variableName match
+        let found = items.find((item) => item && (item.variableName === variableName || item.variableName === cleanVarName));
+
+        // Priority 2: case-insensitive variableName match
+        if (!found) {
+            found = items.find((item) => item && item.variableName && (
+                item.variableName.toLowerCase() === lowerVar ||
+                item.variableName.toLowerCase() === lowerClean
+            ));
+        }
+
+        // Priority 3: matching folder + variableName
+        if (!found && targetFolder) {
+            const lowerFolder = targetFolder.toLowerCase();
+            found = items.find((item) => item &&
+                item.folderName && item.folderName.toLowerCase() === lowerFolder &&
+                item.variableName && (
+                    item.variableName.toLowerCase() === lowerClean ||
+                    item.variableName.toLowerCase() === lowerVar
+                )
+            );
+        }
+
+        // Priority 4: name / displayName match (case-insensitive)
+        if (!found) {
+            found = items.find((item) => item && item.name && (
+                item.name.toLowerCase() === lowerVar ||
+                item.name.toLowerCase() === lowerClean
+            ));
+        }
+
         if (found) return found;
-        if (!body.hasMore) return null;
-        offset += limit;
+
+        const hasMore = parsedBody && (
+            parsedBody.hasMore === true ||
+            (parsedBody.hasMore === undefined && items.length > 0 && parsedBody.totalResults !== undefined && offset + items.length < parsedBody.totalResults) ||
+            (parsedBody.hasMore === undefined && items.length === limit)
+        );
+        if (!hasMore || items.length === 0) return null;
+        offset += items.length;
     }
 }
 
@@ -262,10 +313,24 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
 
         if (match && (!selection || selection.id !== 'create')) {
             const nsVarName = metadataLib.namespaceVariableNameFor(match);
-            const result = await api.getLibraryFunction(context, vscode, nsVarName, transport, matchedTarget || undefined);
+            let result = await api.getLibraryFunction(context, vscode, nsVarName, transport, matchedTarget || undefined);
+            if (!isSuccess(result.statusCode) && match.folderName && !nsVarName.includes('.')) {
+                const altResult = await api.getLibraryFunction(context, vscode, `${match.folderName}.${match.variableName}`, transport, matchedTarget || undefined);
+                if (isSuccess(altResult.statusCode)) {
+                    result = altResult;
+                }
+            } else if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
+                const altResult = await api.getLibraryFunction(context, vscode, match.variableName, transport, matchedTarget || undefined);
+                if (isSuccess(altResult.statusCode)) {
+                    result = altResult;
+                }
+            }
             if (!isSuccess(result.statusCode)) return null;
 
             const { metadata: fetchedMetadata } = metadataLib.splitFunctionResponse(result.body);
+            fetchedMetadata.variableName = fetchedMetadata.variableName || match.variableName || variableName;
+            fetchedMetadata.name = fetchedMetadata.name || match.name || fetchedMetadata.variableName;
+            fetchedMetadata.folderName = fetchedMetadata.folderName || match.folderName || '';
             if (matchedTarget) {
                 fetchedMetadata.commerceProcess = matchedTarget.commerceProcess;
                 fetchedMetadata.commerceDocument = matchedTarget.commerceDocument;

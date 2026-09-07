@@ -24,8 +24,32 @@ function namespaceVariableNameFor(metadata) {
 }
 
 function splitFunctionResponse(functionResponse) {
-    const { scriptText, links, referencesUrl, ...metadata } = functionResponse;
-    return { scriptText: scriptText || '', metadata };
+    if (!functionResponse) {
+        return { scriptText: '', metadata: {} };
+    }
+    let data = functionResponse;
+    if (typeof data === 'string') {
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            return { scriptText: data, metadata: {} };
+        }
+    }
+    if (!data || typeof data !== 'object') {
+        return { scriptText: '', metadata: {} };
+    }
+    if (Array.isArray(data.items) && data.items.length > 0 && !data.scriptText) {
+        data = data.items[0];
+    } else if (data.result && typeof data.result === 'object' && !data.scriptText) {
+        data = data.result;
+    }
+    const script = data.scriptText !== undefined
+        ? data.scriptText
+        : (data.script !== undefined
+            ? data.script
+            : (data.bml !== undefined ? data.bml : ''));
+    const { scriptText, script: _s, bml: _b, links, referencesUrl, ...metadata } = data;
+    return { scriptText: script || '', metadata: metadata || {} };
 }
 
 function readMetadata(metaFilePath) {
