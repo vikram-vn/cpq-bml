@@ -4,6 +4,15 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.80.0] - 2026-09-07
+
+### Added
+
+- Add clear, save, and validate SVG icons for BML functionality.
+- Add bug icon SVG for debugging functionality.
+- Add debug icon SVG to assets.
+- Add debug icon as SVG asset.
+
 ## [1.79.0] - 2026-09-07
 
 ### Added
@@ -89,9 +98,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Disallow direct invocation of `range(...)` in `for..in` loops, requiring collection assignment first.
 - Resolve double-parentheses insertion when autocompleting functions in the editor.
 - Update custom snippets with valid delimiter formats.
-
-## [1.70.1] - 2026-08-31
-
-### Changed
-
-- Performance optimizations, benchmark fixtures, and stability enhancements.
