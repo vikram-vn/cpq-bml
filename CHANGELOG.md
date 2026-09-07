@@ -4,6 +4,14 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.81.0] - 2026-09-07
+
+### Added
+
+- Implement BML library REST API client with corresponding commerce attribute support and integration tests.
+- Implement documentation build system with automation scripts and reference content for Oracle CPQ REST APIs.
+- Implement AI skill documentation and build scripts for CPQ and BML modules.
+
 ## [1.80.1] - 2026-09-07
 
 ### Changed
@@ -77,12 +85,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Implement MCP tools for BML script management and global search with documentation support.
-
-## [1.72.0] - 2026-09-06
-
-### Added
-
-- Add build script for AI skill directory and initialize knowledge base documentation.
-- Implement BML snippets for IntelliSense and add linting rules for magic numbers.
-- Add spelling dictionary module and custom configuration for VS Code spell checker.
-- Add new BML benchmark fixture files for stress and performance testing.

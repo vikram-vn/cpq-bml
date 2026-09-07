@@ -82,15 +82,6 @@ suite("BML REST commands - syncCommerceMetadata", () => {
             }),
           };
         }
-        if (opts.path.includes("/actionDefs")) {
-          return {
-            statusCode: 200,
-            headers: { "content-type": "application/json" },
-            text: JSON.stringify({
-              items: [{ variableName: "modify_t", name: "Modify" }],
-            }),
-          };
-        }
         if (opts.path.includes("/systemAttributes")) {
           return {
             statusCode: 200,
@@ -113,15 +104,13 @@ suite("BML REST commands - syncCommerceMetadata", () => {
       assert.strictEqual(result.success, true);
       assert.ok(calls.some(([cmd, key, val]) => cmd === "setContext" && key === "cpqBml.commerceMetadataSynced" && val === true));
       assert.ok(lines.some((l) => l.includes("Sync complete:")));
-      assert.ok(infoMessages.some((m) => m.includes("Synced 1 attributes, 1 arraySets, 1 actionDefs, 1 systemAttributes")));
+      assert.ok(infoMessages.some((m) => m.includes("Synced 1 attributes, 1 systemAttributes")));
 
       // Verify file written to .cpq/cache/commerce-attributes.json
       const cachePath = path.join(tmpDir, ".cpq", "cache", "commerce-attributes.json");
       assert.ok(fs.existsSync(cachePath));
       const saved = JSON.parse(fs.readFileSync(cachePath, "utf8"));
       assert.strictEqual(saved.attributes.length, 1);
-      assert.strictEqual(saved.arraySets.length, 1);
-      assert.strictEqual(saved.actionDefs.length, 1);
       assert.strictEqual(saved.systemAttributes.length, 1);
     }));
 });

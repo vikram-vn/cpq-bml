@@ -27,7 +27,7 @@ async function getTransactions(
     document,
     q,
     query,
-    offset = 25,
+    offset = 0,
     limit = 25,
     fields = "_id,transactionID_t",
     excludeFieldTypes = "yes",
@@ -121,6 +121,32 @@ async function getTransactions(
   return result;
 }
 
+// POST /rest/<version>/commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer
+// Executes the CPQ Commerce Pipeline Viewer for a transaction (rules sequence, attribute changes, timings).
+async function runPipelineViewer(
+  context,
+  vscode,
+  { id, process, document } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  const proc = effectiveProcess ? effectiveProcess.charAt(0).toUpperCase() + effectiveProcess.slice(1) : "Oraclecpqo";
+  const doc = effectiveDocument ? effectiveDocument.charAt(0).toUpperCase() + effectiveDocument.slice(1) : "Transaction";
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceDocuments${proc}${doc}/${id}/actions/_pipelineViewer`,
+      method: "POST",
+      body: {},
+    },
+    transport,
+  );
+}
+
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes
 async function listCommerceAttributes(
   context,
@@ -199,32 +225,6 @@ async function listCommerceArraySets(
   );
 }
 
-// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/actionDefs
-async function listCommerceActionDefs(
-  context,
-  vscode,
-  { process, document, offset = 0, limit = 1000, q } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-
-  const queryParams = { offset, limit };
-  if (q) queryParams.q = q;
-
-  return call(
-    context,
-    vscode,
-    {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actionDefs`,
-      method: "GET",
-      query: queryParams,
-    },
-    transport,
-  );
-}
-
 // GET /rest/<version>/commerceProcessSetups/systemAttributes
 async function listCommerceSystemAttributes(
   context,
@@ -249,7 +249,7 @@ async function listCommerceSystemAttributes(
   );
 }
 
-// Pulls and caches remote attributes, menu items, arraySets, actionDefs, and systemAttributes into local cache
+// Pulls and caches remote attributes, menu items, and systemAttributes into local cache
 async function syncCommerceAttributes(
   context,
   vscode,
@@ -312,47 +312,6 @@ async function syncCommerceAttributes(
     }
   }
 
-  // Fetch arraySets
-  const arraySets = [];
-  try {
-    const arrayRes = await listCommerceArraySets(
-      context,
-      vscode,
-      { process: effectiveProcess, document: effectiveDocument, limit: 1000 },
-      transport,
-    );
-    if (arrayRes && arrayRes.body && Array.isArray(arrayRes.body.items)) {
-      for (const item of arrayRes.body.items) {
-        arraySets.push({
-          variableName: item.variableName || item.id,
-          name: item.name || item.label || item.variableName || item.id,
-          description: item.description || "",
-        });
-      }
-    }
-  } catch (e) {}
-
-  // Fetch actionDefs
-  const actionDefs = [];
-  try {
-    const actionRes = await listCommerceActionDefs(
-      context,
-      vscode,
-      { process: effectiveProcess, document: effectiveDocument, limit: 1000 },
-      transport,
-    );
-    if (actionRes && actionRes.body && Array.isArray(actionRes.body.items)) {
-      for (const item of actionRes.body.items) {
-        actionDefs.push({
-          variableName: item.variableName || item.id,
-          name: item.name || item.label || item.variableName || item.id,
-          description: item.description || "",
-          actionType: item.actionType || item.type || "",
-        });
-      }
-    }
-  } catch (e) {}
-
   // Fetch systemAttributes
   const systemAttributes = [];
   try {
@@ -380,8 +339,6 @@ async function syncCommerceAttributes(
     updatedAt: new Date().toISOString(),
     count: attributes.length,
     attributes,
-    arraySets,
-    actionDefs,
     systemAttributes,
   };
 
@@ -396,10 +353,10 @@ module.exports = {
   commerceDocumentsPath,
   getTransactions,
   listTransactions: getTransactions,
+  runPipelineViewer,
   listCommerceAttributes,
   listCommerceAttributeMenuItems,
   listCommerceArraySets,
-  listCommerceActionDefs,
   listCommerceSystemAttributes,
   syncCommerceAttributes,
 };

@@ -136,8 +136,6 @@ function loadWorkspaceAttributes(workspaceRoot) {
 
       const collections = [
         data.attributes,
-        data.arraySets,
-        data.actionDefs,
         data.systemAttributes,
       ];
       for (const coll of collections) {

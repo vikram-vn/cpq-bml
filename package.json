@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.80.1",
+  "version": "1.81.0",
   "icon": "app/icons/logo.png",
   "license": "MIT",
   "repository": {
@@ -219,6 +219,11 @@
         "command": "cpqBml.rest.syncCommerceMetadata",
         "title": "CPQ-BML: Sync Commerce Schema & Metadata",
         "icon": "app/icons/pull.svg"
+      },
+      {
+        "command": "cpqBml.rest.pipelineViewer",
+        "title": "CPQ-BML: Run Pipeline Viewer on Transaction",
+        "icon": "$(debug-console)"
       },
       {
         "command": "cpqBml.mcp.showInfo",

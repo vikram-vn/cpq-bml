@@ -73,7 +73,7 @@ suite("commerceAttributes Unit Tests", () => {
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
-  test("loadWorkspaceAttributes indexes arraySets, actionDefs, and systemAttributes", () => {
+  test("loadWorkspaceAttributes indexes attributes and systemAttributes", () => {
     const fs = require("fs");
     const os = require("os");
     const path = require("path");
@@ -81,15 +81,12 @@ suite("commerceAttributes Unit Tests", () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-ws-idx-test-"));
     const cacheData = {
       attributes: [{ variableName: "customAttr_t", name: "Custom Attr" }],
-      arraySets: [{ variableName: "lineItems", name: "Line Items" }],
-      actionDefs: [{ variableName: "submitQuote", name: "Submit Quote" }],
-      systemAttributes: [{ variableName: "_transaction_id", name: "Transaction ID" }],
+      systemAttributes: [{ variableName: "customer_t", name: "Customer" }],
     };
 
     commerceAttributes.saveWorkspaceAttributes(tempDir, cacheData);
 
-    assert.strictEqual(commerceAttributes.resolveAttributeName("Line Items", tempDir), "lineItems");
-    assert.strictEqual(commerceAttributes.resolveAttributeName("Submit Quote", tempDir), "submitQuote");
+    assert.strictEqual(commerceAttributes.resolveAttributeName("Customer", tempDir), "customer_t");
     assert.strictEqual(commerceAttributes.resolveAttributeName("Custom Attr", tempDir), "customAttr_t");
 
     fs.rmSync(tempDir, { recursive: true, force: true });

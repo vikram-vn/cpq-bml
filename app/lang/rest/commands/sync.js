@@ -54,8 +54,6 @@ async function runSyncCommerceMetadata(
     );
 
     const attrCount = Array.isArray(data.attributes) ? data.attributes.length : 0;
-    const arrayCount = Array.isArray(data.arraySets) ? data.arraySets.length : 0;
-    const actionCount = Array.isArray(data.actionDefs) ? data.actionDefs.length : 0;
     const sysCount = Array.isArray(data.systemAttributes)
       ? data.systemAttributes.length
       : 0;
@@ -68,7 +66,7 @@ async function runSyncCommerceMetadata(
       );
     }
 
-    const msg = `Synced ${attrCount} attributes, ${arrayCount} arraySets, ${actionCount} actionDefs, ${sysCount} systemAttributes (${formatElapsed(startedAt)})`;
+    const msg = `Synced ${attrCount} attributes, ${sysCount} systemAttributes (${formatElapsed(startedAt)})`;
     if (resultsTerminal) {
       writeTerminalMessage(
         resultsTerminal,

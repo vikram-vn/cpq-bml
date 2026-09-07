@@ -425,7 +425,7 @@ suite("BML REST api", () => {
       const result = await api.getTransactions(fakeContext(), vscode, {}, transport);
       assert.strictEqual(sink.captured.method, "GET");
       assert.ok(sink.captured.path.startsWith("/rest/v19/commerceDocumentsOraclecpqoTransaction?"));
-      assert.ok(sink.captured.path.includes("offset=25"));
+      assert.ok(sink.captured.path.includes("offset=0"));
       assert.ok(sink.captured.path.includes("limit=25"));
       assert.ok(sink.captured.path.includes("excludeFieldTypes=yes"));
       assert.ok(sink.captured.path.includes("fields=_id%2CtransactionID_t"));
@@ -527,23 +527,6 @@ suite("BML REST api", () => {
       );
     });
 
-    test("listCommerceActionDefs dispatches GET to /commerceProcesses/<proc>/documents/<doc>/actionDefs", async () => {
-      const vscode = createFakeVscode({ config: baseConfig() });
-      const sink = {};
-      await api.listCommerceActionDefs(
-        fakeContext(),
-        vscode,
-        { process: "oraclecpqo", document: "transaction" },
-        capturingTransport(sink),
-      );
-      assert.strictEqual(sink.captured.method, "GET");
-      assert.ok(
-        sink.captured.path.startsWith(
-          "/rest/v19/commerceProcesses/oraclecpqo/documents/transaction/actionDefs",
-        ),
-      );
-    });
-
     test("listCommerceSystemAttributes dispatches GET to /commerceProcessSetups/systemAttributes", async () => {
       const vscode = createFakeVscode({ config: baseConfig() });
       const sink = {};
@@ -561,7 +544,35 @@ suite("BML REST api", () => {
       );
     });
 
-    test("syncCommerceAttributes aggregates attributes, arraySets, actionDefs, and systemAttributes", async () => {
+    test("runPipelineViewer dispatches POST to /commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.runPipelineViewer(
+        fakeContext(),
+        vscode,
+        { id: "12345", process: "oraclecpqo", document: "transaction" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "POST");
+      assert.strictEqual(
+        sink.captured.path,
+        "/rest/v19/commerceDocumentsOraclecpqoTransaction/12345/actions/_pipelineViewer",
+      );
+    });
+
+    test("getTransactions defaults offset to 0", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.getTransactions(
+        fakeContext(),
+        vscode,
+        {},
+        capturingTransport(sink),
+      );
+      assert.ok(sink.captured.path.includes("offset=0"));
+    });
+
+    test("syncCommerceAttributes aggregates attributes and systemAttributes", async () => {
       const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-test-"));
       const vscode = createFakeVscode({
         config: baseConfig(),
@@ -587,24 +598,6 @@ suite("BML REST api", () => {
             }),
           };
         }
-        if (opts.path.includes("/arraySets")) {
-          return {
-            statusCode: 200,
-            headers: { "content-type": "application/json" },
-            text: JSON.stringify({
-              items: [{ variableName: "lineItems", name: "Line Items" }],
-            }),
-          };
-        }
-        if (opts.path.includes("/actionDefs")) {
-          return {
-            statusCode: 200,
-            headers: { "content-type": "application/json" },
-            text: JSON.stringify({
-              items: [{ variableName: "submit_t", name: "Submit Quote", actionType: "modify" }],
-            }),
-          };
-        }
         if (opts.path.includes("/systemAttributes")) {
           return {
             statusCode: 200,
@@ -627,10 +620,6 @@ suite("BML REST api", () => {
       assert.strictEqual(result.attributes.length, 1);
       assert.strictEqual(result.attributes[0].variableName, "status_t");
       assert.strictEqual(result.attributes[0].menuItems.length, 1);
-      assert.strictEqual(result.arraySets.length, 1);
-      assert.strictEqual(result.arraySets[0].variableName, "lineItems");
-      assert.strictEqual(result.actionDefs.length, 1);
-      assert.strictEqual(result.actionDefs[0].variableName, "submit_t");
       assert.strictEqual(result.systemAttributes.length, 1);
       assert.strictEqual(result.systemAttributes[0].variableName, "_transaction_id");
 
