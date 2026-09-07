@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M3 2.5C3 1.67 3.67 1 4.5 1H9.5L13 4.5V13.5C13 14.33 12.33 15 11.5 15H4.5C3.67 15 3 14.33 3 13.5V2.5Z" fill="url(#bmlGrad)"/>
-  <path d="M9.5 1V4.5H13L9.5 1Z" fill="#fca5a5"/>
-  <path d="M8 6.5V11.5M5.5 9H10.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-  <defs><linearGradient id="bmlGrad" x1="3" y1="1" x2="13" y2="15" gradientUnits="userSpaceOnUse"><stop stop-color="#f87171"/><stop offset="1" stop-color="#dc2626"/></linearGradient></defs>
+  <path d="M2 2C2 1.2 2.6 0.8 3.5 0.8H10.5L14 4.3V14C14 14.8 13.4 15.2 12.5 15.2H3.5C2.6 15.2 2 14.8 2 14V2Z" fill="url(#bmlGrad)"/>
+  <path d="M10.5 0.8V4.3H14L10.5 0.8Z" fill="#fca5a5"/>
+  <path d="M8 6.5V11.5M5.5 9H10.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="bmlGrad" x1="2" y1="0.8" x2="14" y2="15.2" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f87171"/>
+      <stop offset="1" stop-color="#dc2626"/>
+    </linearGradient>
+  </defs>
 </svg>

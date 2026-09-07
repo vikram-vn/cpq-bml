@@ -44,6 +44,10 @@ async function runSaveCurrentFile(
     return { success: false, errorMessage };
   }
 
+  if (vscode.commands && typeof vscode.commands.executeCommand === "function") {
+    vscode.commands.executeCommand("cpqBml.internal.refreshStatus");
+  }
+
   // Standard (system-supplied) functions that have not been overridden yet
   // cannot be saved directly - CPQ rejects the PATCH with 400 "Invalid payload."
   // The user must click "Create Override" in the CPQ UI first to get a custom
@@ -112,6 +116,9 @@ async function runSaveCurrentFile(
   // no documented "deploy" action under the commerceProcessSetups path, and
   // it does not apply to the Util Library's sandbox/production lifecycle.
   if (metadata.commerceDocument) {
+    if (vscode.commands && typeof vscode.commands.executeCommand === "function") {
+      vscode.commands.executeCommand("cpqBml.internal.refreshStatus");
+    }
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Saved (${formatElapsed(startedAt)})\x1b[0m`);
     resultsTerminal.show();
     const message = `CPQ-BML: ${metadata.variableName} saved.`;
@@ -140,6 +147,9 @@ async function runSaveCurrentFile(
     return { success: false, errorMessage, statusCode: deployResult.statusCode, elapsedMs: Date.now() - startedAt };
   }
 
+  if (vscode.commands && typeof vscode.commands.executeCommand === "function") {
+    vscode.commands.executeCommand("cpqBml.internal.refreshStatus");
+  }
   resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Saved (${formatElapsed(startedAt)})\x1b[0m`);
   resultsTerminal.show();
   const message = `CPQ-BML: ${metadata.variableName} saved.`;

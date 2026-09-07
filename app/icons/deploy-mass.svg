@@ -1,28 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
-    <linearGradient id="goldGrad" x1="4.5" y1="3" x2="13" y2="11.5" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#f59e0b"/>
+    <linearGradient id="goldGrad" x1="4" y1="2" x2="15" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbbf24"/>
       <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
     
     <g id="single-rocket">
-      <!-- Rocket Body (pointing top-right) -->
-      <path d="M13 3C13 3 10 2.5 7 5.5C5 7.5 4.5 10 4.5 10L3 11.5L4.5 13L6 11.5C6 11.5 8.5 11 10.5 9C13.5 6 13 3 13 3Z" fill="url(#goldGrad)"/>
-      <!-- Fins -->
-      <path d="M4.5 10C3.5 10.5 3 11.5 3 11.5L4.5 13C4.5 13 5.5 12.5 6 11.5" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round"/>
-      <!-- Flame -->
-      <path d="M3 13.5C2.5 13.5 2 14 2 14.5C2 15 2.5 15 2.5 15C3.5 14.5 3.5 14 3.5 14" stroke="#f97316" stroke-width="1.5"/>
+      <!-- Left Fin -->
+      <path d="M5.0 7.0 L1.5 8.5 L2.2 11.5 L3.8 10.0 Z" fill="#ef4444"/>
+      <!-- Right Fin -->
+      <path d="M9.0 11.0 L7.5 14.5 L4.5 13.8 L6.0 12.2 Z" fill="#ef4444"/>
+      <!-- Exhaust Flame -->
+      <path d="M4.0 10.4 C3.2 11.5 2.2 12.5 0.8 15.2 C3.5 13.8 4.5 12.8 5.6 12.0 Z" fill="#f97316"/>
+      <!-- Rocket Body -->
+      <path d="M15.2 0.8 C11.5 1.5 6.0 5.0 3.8 10.0 L6.0 12.2 C11.0 10.0 14.5 4.5 15.2 0.8 Z" fill="url(#goldGrad)"/>
       <!-- Window -->
-      <circle cx="9" cy="7" r="1.2" fill="#ffffff"/>
+      <circle cx="10" cy="6" r="1.6" fill="#ffffff"/>
     </g>
   </defs>
 
-  <!-- Rocket 1 (Back left, offset, scaled to 0.75) -->
-  <use href="#single-rocket" xlink:href="#single-rocket" opacity="0.45" transform="translate(-1.8, 2.8) scale(0.75)"/>
+  <!-- Rocket 1 (Back left) -->
+  <use href="#single-rocket" xlink:href="#single-rocket" opacity="0.45" transform="translate(-2, 2.5) scale(0.72)"/>
 
-  <!-- Rocket 2 (Back right, offset, scaled to 0.75) -->
-  <use href="#single-rocket" xlink:href="#single-rocket" opacity="0.6" transform="translate(1.8, 1.8) scale(0.75)"/>
+  <!-- Rocket 2 (Back right) -->
+  <use href="#single-rocket" xlink:href="#single-rocket" opacity="0.65" transform="translate(2.5, -2) scale(0.72)"/>
 
-  <!-- Rocket 3 (Front, Main, scaled to 0.85, centered) -->
+  <!-- Rocket 3 (Front, Main) -->
   <use href="#single-rocket" xlink:href="#single-rocket" transform="translate(0.5, 0.5) scale(0.85)"/>
 </svg>

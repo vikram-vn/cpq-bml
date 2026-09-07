@@ -308,6 +308,9 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
 
                 vscode.window.showInformationMessage(`CPQ-BML: created metadata for "${variableName}" successfully.`);
                 metadata = createdMetadata;
+                if (vscode && vscode.commands && typeof vscode.commands.executeCommand === 'function') {
+                    vscode.commands.executeCommand('cpqBml.internal.refreshStatus');
+                }
             }
         }
 
@@ -337,6 +340,9 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
             }
             metadataLib.writeMetadata(metaPath, fetchedMetadata);
             metadata = fetchedMetadata;
+            if (vscode && vscode.commands && typeof vscode.commands.executeCommand === 'function') {
+                vscode.commands.executeCommand('cpqBml.internal.refreshStatus');
+            }
         }
     }
 

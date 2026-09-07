@@ -334,11 +334,50 @@ suite("BML REST commands - deploy", () => {
         });
       }));
 
-    test("shows an error and makes no API call for a commerce function - directs to the commerce deploy command instead", () =>
+    test("delegates seamlessly to commerce process deploy when invoked on a commerce function", () =>
+      withTempDir(async (tmpDir) => {
+        const { editor } = makeCommerceEditor(tmpDir);
+        const infos = [];
+        const errors = [];
+        const vscode = makeDeployVscode(editor, {
+          showInformationMessage: (m) => infos.push(m),
+          showErrorMessage: (m) => errors.push(m),
+        });
+
+        const context = await makeAuthedContext();
+        const calls = [];
+        const transport = async (opts) => {
+          calls.push({ method: opts.method, path: opts.path });
+          if (opts.path.includes("/deploymentCenter/actions")) {
+            return {
+              statusCode: 200,
+              headers: { "content-type": "application/json" },
+              text: JSON.stringify({ taskId: 999 }),
+            };
+          }
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({ id: 999, status: "Completed" }),
+          };
+        };
+
+        await commands.runDeployCurrentFile(context, vscode, fakeResultsTerminal(), { transport });
+
+        assert.strictEqual(errors.length, 0);
+        assert.ok(calls.length >= 1);
+        assert.ok(calls[0].path.includes("/deploymentCenter/actions"));
+        assert.ok(infos[0].includes("deployed"));
+      }));
+
+    test("aborts commerce deployment cleanly if user cancels confirmation dialog", () =>
       withTempDir(async (tmpDir) => {
         const { editor } = makeCommerceEditor(tmpDir);
         const errors = [];
-        const vscode = makeDeployVscode(editor, { showErrorMessage: (m) => errors.push(m) });
+        const vscode = makeDeployVscode(editor, {
+          showWarningMessage: async () => undefined,
+          showErrorMessage: (m) => errors.push(m),
+        });
 
         const context = await makeAuthedContext();
         let called = false;
@@ -350,7 +389,7 @@ suite("BML REST commands - deploy", () => {
         await commands.runDeployCurrentFile(context, vscode, fakeResultsTerminal(), { transport });
 
         assert.strictEqual(called, false);
-        assert.ok(errors[0].includes("Deploy Commerce Process Setup"));
+        assert.strictEqual(errors.length, 0);
       }));
 
     test("shows an error when there is no local metadata or matching server function", () =>

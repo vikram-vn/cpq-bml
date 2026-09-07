@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M13 7.8 C13 5.3 10.9 3.2 8.3 3.2 C6.2 3.2 4.4 4.6 3.8 6.6 C2.4 7.0 1.2 8.3 1.2 9.9 C1.2 11.8 2.7 13.3 4.6 13.3 H12 C13.7 13.3 15.0 12.0 15.0 10.3 C15.0 8.8 14.1 8.0 13 7.8 Z" fill="url(#saveGrad)"/>
-  <path d="M8.1 11.2 V6.4 M8.1 6.4 L5.8 8.7 M8.1 6.4 L10.4 8.7" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12.8 7.2C12.8 4.3 10.5 2 7.7 2C5.4 2 3.4 3.5 2.8 5.7C1.2 6.2 0 7.7 0 9.5C0 11.8 1.8 13.7 4.1 13.7H12.5C14.4 13.7 16 12.1 16 10.2C16 8.5 14.7 7.4 12.8 7.2Z" fill="url(#saveGrad)"/>
+  <path d="M8 11.5V5.5M8 5.5L5.2 8.3M8 5.5L10.8 8.3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <defs>
-    <linearGradient id="saveGrad" x1="1" y1="3" x2="15" y2="13.5" gradientUnits="userSpaceOnUse">
+    <linearGradient id="saveGrad" x1="0" y1="2" x2="16" y2="14" gradientUnits="userSpaceOnUse">
       <stop stop-color="#60a5fa"/>
       <stop offset="1" stop-color="#2563eb"/>
     </linearGradient>

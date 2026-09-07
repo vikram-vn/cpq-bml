@@ -96,6 +96,16 @@ async function deployFunction(context, vscode, args, transport) {
     const located = requireLocalFile(vscode, variableName);
     if (located.error) return { success: false, variableName, error: located.error };
 
+    const metaPath = metadataLib.bmlPathToMetaPath(located.bmlPath);
+    const metadata = metadataLib.readMetadata(metaPath);
+    if (metadata && (metadata.commerceDocument || metadata.commerceProcess)) {
+        return {
+            success: false,
+            variableName,
+            error: `"${variableName}" is a commerce function - use "deploy_commerce_process" (Deploy Commerce Process) instead.`,
+        };
+    }
+
     const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath, warningConfirm: 'Deploy' });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const result = await runDeployCurrentFile(context, vscodeProxy, terminal, { transport });

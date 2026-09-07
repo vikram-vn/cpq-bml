@@ -19,9 +19,15 @@ const {
   describeError,
   findLibraryFunctionByVariableName,
   resolveMetadataForFile,
+  isSuccess,
 } = require("./shared");
 const metadataLib = require("../metadata");
-const { hasMissingCredentials } = require("../config");
+const api = require("../api");
+const {
+  hasMissingCredentials,
+  getCommerceProcess,
+  getCommerceDocument,
+} = require("../config");
 
 // Gates the editor/title toolbar icons on a fully usable connection (siteUrl + username/token + matching secret), not just the enabled toggle.
 async function refreshConnectionConfiguredContext(context, vscode) {
@@ -33,7 +39,120 @@ async function refreshConnectionConfiguredContext(context, vscode) {
   );
 }
 
-function refreshBmlStatus(vscode, statusBarItem, filePath) {
+const pendingFetches = new Set();
+
+async function triggerSmartMetadataFetch(context, vscode, statusBarItem, filePath, options = {}) {
+  if (!filePath || !filePath.endsWith(".bml")) return;
+  if (pendingFetches.has(filePath)) return;
+  pendingFetches.add(filePath);
+
+  try {
+    const metaPath = metadataLib.bmlPathToMetaPath(filePath);
+    const variableName = metadataLib.variableNameFromBmlPath(filePath);
+
+    // 1. Check workspace files: did the user pull or have -meta.json in another folder?
+    if (vscode && vscode.workspace && typeof vscode.workspace.findFiles === "function") {
+      try {
+        const matches = await vscode.workspace.findFiles(`**/${variableName}-meta.json`, "**/node_modules/**", 1);
+        if (matches && matches.length > 0) {
+          const foundMeta = metadataLib.readMetadata(matches[0].fsPath);
+          if (foundMeta) {
+            try {
+              metadataLib.writeMetadata(metaPath, foundMeta);
+            } catch (e) {}
+            const activePath = vscode.window && vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.fsPath;
+            if (activePath === filePath) {
+              refreshBmlStatus(vscode, statusBarItem, filePath, context, options);
+            }
+            return;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 2. If context provided, check CPQ in the background
+    if (context) {
+      const missing = await hasMissingCredentials(context, vscode);
+      if (missing) return;
+
+      const commerceProcess = getCommerceProcess(vscode) || "oraclecpqo";
+      const commerceDocument = getCommerceDocument(vscode) || "transaction";
+      const transport = options.transport;
+
+      // Check commerce library functions first
+      const commerceMatch = await findLibraryFunctionByVariableName(
+        context,
+        vscode,
+        variableName,
+        transport,
+        { commerceProcess, commerceDocument },
+      );
+      if (commerceMatch) {
+        const result = await api.getLibraryFunction(
+          context,
+          vscode,
+          commerceMatch.variableName,
+          transport,
+          { commerceProcess, commerceDocument },
+        );
+        if (isSuccess(result.statusCode)) {
+          const { metadata } = metadataLib.splitFunctionResponse(result.body);
+          metadata.commerceProcess = commerceProcess;
+          metadata.commerceDocument = commerceDocument;
+          metadata.variableName = metadata.variableName || commerceMatch.variableName || variableName;
+          metadata.name = metadata.name || commerceMatch.name || metadata.variableName;
+          metadata.folderName = metadata.folderName || commerceMatch.folderName || "";
+          try {
+            metadataLib.writeMetadata(metaPath, metadata);
+          } catch (e) {}
+          const activePath = vscode.window && vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.fsPath;
+          if (activePath === filePath) {
+            refreshBmlStatus(vscode, statusBarItem, filePath, context, options);
+          }
+          return;
+        }
+      }
+
+      // Check utility library functions next
+      const utilMatch = await findLibraryFunctionByVariableName(
+        context,
+        vscode,
+        variableName,
+        transport,
+        undefined,
+      );
+      if (utilMatch) {
+        const result = await api.getLibraryFunction(
+          context,
+          vscode,
+          utilMatch.variableName,
+          transport,
+          undefined,
+        );
+        if (isSuccess(result.statusCode)) {
+          const { metadata } = metadataLib.splitFunctionResponse(result.body);
+          metadata.variableName = metadata.variableName || utilMatch.variableName || variableName;
+          metadata.name = metadata.name || utilMatch.name || metadata.variableName;
+          metadata.folderName = metadata.folderName || utilMatch.folderName || "";
+          try {
+            metadataLib.writeMetadata(metaPath, metadata);
+          } catch (e) {}
+          const activePath = vscode.window && vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.fsPath;
+          if (activePath === filePath) {
+            refreshBmlStatus(vscode, statusBarItem, filePath, context, options);
+          }
+          return;
+        }
+      }
+    }
+  } catch (err) {
+    // Non-blocking background fetch; silently ignore
+  } finally {
+    pendingFetches.delete(filePath);
+  }
+}
+
+function refreshBmlStatus(vscode, statusBarItem, filePath, context, options) {
   const hide = () => {
     statusBarItem.hide();
     vscode.commands.executeCommand(
@@ -74,8 +193,9 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
 
   const inferred = metadataLib.inferCommerceFromPath(filePath);
   const isCommerce = meta ? !!meta.commerceDocument : !!inferred;
-  const isUtil = !isCommerce;
 
+  // Track whether the active file is commerce vs util so the Deploy button
+  // in the editor title bar can show the right icon and invoke the right command.
   vscode.commands.executeCommand(
     "setContext",
     "cpqBml.activeFileIsCommerce",
@@ -84,8 +204,14 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
   vscode.commands.executeCommand(
     "setContext",
     "cpqBml.activeFileIsUtil",
-    isUtil,
+    !isCommerce,
   );
+
+  // If local metadata is not yet present and cannot be inferred from path,
+  // trigger non-blocking smart fetch to discover whether it's commerce vs util.
+  if (!meta && !inferred) {
+    triggerSmartMetadataFetch(context, vscode, statusBarItem, filePath, options);
+  }
 
   if (isCommerce) {
     const isStandard = meta ? !!meta.isStandardFunction : false;
@@ -204,6 +330,7 @@ function registerBmlRestCommands(context) {
     statusBarItem,
     vscode.window.activeTextEditor &&
       vscode.window.activeTextEditor.document.uri.fsPath,
+    context,
   );
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor((editor) => {
@@ -211,9 +338,40 @@ function registerBmlRestCommands(context) {
         vscode,
         statusBarItem,
         editor && editor.document.uri.fsPath,
+        context,
       );
     }),
   );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidSaveTextDocument((doc) => {
+      const fsPath = doc && doc.uri && doc.uri.fsPath;
+      if (fsPath && (fsPath.endsWith(".bml") || fsPath.endsWith("-meta.json"))) {
+        const activePath =
+          vscode.window.activeTextEditor &&
+          vscode.window.activeTextEditor.document.uri.fsPath;
+        refreshBmlStatus(vscode, statusBarItem, activePath, context);
+      }
+    }),
+  );
+
+  if (
+    vscode.workspace &&
+    typeof vscode.workspace.createFileSystemWatcher === "function"
+  ) {
+    const metaWatcher =
+      vscode.workspace.createFileSystemWatcher("**/*-meta.json");
+    const onMetaChange = () => {
+      const activePath =
+        vscode.window.activeTextEditor &&
+        vscode.window.activeTextEditor.document.uri.fsPath;
+      refreshBmlStatus(vscode, statusBarItem, activePath, context);
+    };
+    metaWatcher.onDidCreate(onMetaChange);
+    metaWatcher.onDidChange(onMetaChange);
+    metaWatcher.onDidDelete(onMetaChange);
+    context.subscriptions.push(metaWatcher);
+  }
 
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.rest.setPassword", () =>
@@ -278,6 +436,7 @@ function registerBmlRestCommands(context) {
         statusBarItem,
         vscode.window.activeTextEditor &&
           vscode.window.activeTextEditor.document.uri.fsPath,
+        context,
       );
     }),
   );
@@ -306,4 +465,5 @@ module.exports = {
   describeError,
   findLibraryFunctionByVariableName,
   resolveMetadataForFile,
+  triggerSmartMetadataFetch,
 };

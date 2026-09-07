@@ -181,9 +181,10 @@ async function runDeployCurrentFile(
   }
 
   if (metadata.commerceDocument) {
-    const errorMessage = `CPQ-BML: "${metadata.variableName}" is a commerce function - use "CPQ-BML: Deploy Commerce Process Setup" instead.`;
-    vscode.window.showErrorMessage(errorMessage);
-    return { success: false, errorMessage };
+    if (vscode.commands && typeof vscode.commands.executeCommand === "function") {
+      vscode.commands.executeCommand("cpqBml.internal.refreshStatus");
+    }
+    return runDeployCommerceProcess(context, vscode, resultsTerminal, { transport });
   }
 
   const confirm = await vscode.window.showWarningMessage(

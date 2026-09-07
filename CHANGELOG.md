@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.80.1] - 2026-09-07
+
+### Changed
+
+- Performance optimizations, benchmark fixtures, and stability enhancements.
+
 ## [1.80.0] - 2026-09-07
 
 ### Added
@@ -80,21 +86,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement BML snippets for IntelliSense and add linting rules for magic numbers.
 - Add spelling dictionary module and custom configuration for VS Code spell checker.
 - Add new BML benchmark fixture files for stress and performance testing.
-
-## [1.71.0] - 2026-09-06
-
-### Added
-
-- Add BML language reference guide and custom IDE intellisense snippets.
-- Add linter rule to detect unused BML expressions and include corresponding tests.
-- Implement BML static type checking and linting rules for variables and expressions.
-- Support `Dict`, `Map`, and `Set` suffixes for dictionary variable naming convention (`bml-dict-naming-suffix`).
-- Support `Items` and `Entries` suffixes for array variable naming convention (`bml-array-naming-suffix`).
-- Add variable naming convention rules for `json` (`bml-json-naming-suffix`), `jsonarray` (`bml-jsonarray-naming-suffix`), `date` (`bml-date-naming-suffix`), and `stringbuilder` (`bml-stringbuilder-naming-suffix`) with Quick Fix support.
-
-### Fixed
-
-- Elevate consecutive semicolons (`;;`) to a syntax error.
-- Disallow direct invocation of `range(...)` in `for..in` loops, requiring collection assignment first.
-- Resolve double-parentheses insertion when autocompleting functions in the editor.
-- Update custom snippets with valid delimiter formats.

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <circle cx="8" cy="8" r="6.8" fill="url(#valGrad)"/>
-  <path d="M5 8.2 L7.2 10.4 L11.2 5.8" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="8" cy="8" r="7.4" fill="url(#valGrad)"/>
+  <path d="M4.5 8.2L6.9 10.6L11.5 5.5" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
   <defs>
     <linearGradient id="valGrad" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
       <stop stop-color="#34d399"/>
