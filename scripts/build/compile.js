@@ -24,6 +24,9 @@ async function compileExtension() {
         external: ['vscode'],
         format: 'cjs',
         platform: 'node',
+        target: 'node18',
+        treeShaking: true,
+        drop: isProduction ? ['debugger'] : [],
         nodePaths: [path.join(ROOT, 'node_modules')],
         minify: isProduction,
         legalComments: isProduction ? 'none' : 'inline',
@@ -36,6 +39,9 @@ async function compileExtension() {
         bundle: true,
         format: 'iife',
         platform: 'browser',
+        target: 'es2022',
+        treeShaking: true,
+        drop: isProduction ? ['debugger'] : [],
         jsx: 'automatic',
         nodePaths: [path.join(ROOT, 'node_modules')],
         minify: isProduction,
@@ -49,10 +55,10 @@ async function compileExtension() {
     for (const file of dictFiles) {
         const srcPath = path.join(spellCheckDir, file);
         const outPath = srcPath + '.br';
-        if (!fs.existsSync(outPath) || fs.statSync(outPath).mtimeMs < fs.statSync(srcPath).mtimeMs) {
+        if (!fs.existsSync(outPath) || fs.statSync(outPath).mtimeMs < fs.statSync(srcPath).mtimeMs || isProduction) {
             const data = fs.readFileSync(srcPath);
             const compressed = zlib.brotliCompressSync(data, {
-                params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 6 }
+                params: { [zlib.constants.BROTLI_PARAM_QUALITY]: isProduction ? 11 : 6 }
             });
             fs.writeFileSync(outPath, compressed);
         }

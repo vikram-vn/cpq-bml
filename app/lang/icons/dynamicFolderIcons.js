@@ -5,184 +5,165 @@
  * Analyzes folder names and assigns Material icons dynamically based on semantic
  * rules for BML language features, CPQ domain concepts, workflows, and tools.
  * 
- * Works both at build time (Node.js) and runtime (VS Code extension host on install/activation).
+ * Works both at build time (Node.js) and runtime (VS Code extension host).
  */
 
 const fs = require('fs');
 const path = require('path');
+const { RULE_MATCHERS, CPQ_BML_DOMAIN_CONCEPTS } = require('./folderRules');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Semantic Decision Engine: Ordered Rules & Classifiers
+// High-Speed Matcher & LRU Cache
 // ─────────────────────────────────────────────────────────────────────────────
-const RULE_MATCHERS = [
-  // 1. Modifications / Updates
-  { regex: /(?:^|[-_])(modify|updates?|edits?|changes?)(?:[-_]|$)/i, icon: 'folder-update' },
+const matchCache = new Map();
 
-  // 2. Database, BMQL, Data Tables, System Lookups & Queries
-  { regex: /(?:^|[-_])(db|database|bmql|lookups?|datatables?|data[-_]tables?|sql|queries|query|tables?|records?)(?:[-_]|$)/i, icon: 'folder-database' },
-
-  // 3. Workflows, Processes, Steps, Lifecycles
-  { regex: /(?:^|[-_])(workflow|workflows|flow|flows|steps?|process|pipeline|lifecycle)(?:[-_]|$)/i, icon: 'folder-flow' },
-
-  // 4. JSON & Dictionary Data Structures
-  { regex: /(?:^|[-_])(json|dicts?|dictionary|dictionaries|globaldict|hash)(?:[-_]|$)/i, icon: 'folder-json' },
-
-  // 5. XML, XSL, XSLT, and Templates
-  { regex: /(?:^|[-_])(xslt?|xml|markup|template|templates)(?:[-_]|$)/i, icon: 'folder-xml' },
-
-  // 6. Web Services, REST, APIs, Endpoints, SOAP & Urldata
-  { regex: /(?:^|[-_])(rest|apis?|web[-_]?services?|webservices?|soap|http|urldata|endpoints?)(?:[-_]|$)/i, icon: 'folder-api' },
-
-  // 7. Model Context Protocol (MCP), Integrations & Remote Connections
-  { regex: /(?:^|[-_])(mcp|connections?|integrations?|rpc|client|server)(?:[-_]|$)/i, icon: 'folder-connection' },
-
-  // 8. Utilities, Tools, Tool-defs & Helpers
-  { regex: /(?:^|[-_])(util[-_]?libraries|util[-_]?library|utils?|utilities|helpers?|tool[-_]?defs?|tools?)(?:[-_]|$)/i, icon: 'folder-utils' },
-
-  // 9. Commerce Processes, Cart, Pricing, Quotes, Transactions & Orders
-  { regex: /(?:^|[-_])(commerce[-_]?libraries|commerce[-_]?library|commerce|e[-_]?commerce|cart|shop|pricing|prices?|transactions?|orders?|quotes?)(?:[-_]|$)/i, icon: 'folder-cart' },
-
-  // 10. Configuration, Setup, Admin Settings, Preferences
-  { regex: /(?:^|[-_])(config|configuration|setup|setups|settings?[-_]?panel|settings?|options?|preferences?|prefs?)(?:[-_]|$)/i, icon: 'folder-config' },
-
-  // 11. Rules, Policies, Approvals & Best Practices
-  { regex: /(?:^|[-_])(rules?|policies|policy|approvals?|best[-_]?practices?)(?:[-_]|$)/i, icon: 'folder-rules' },
-
-  // 12. Constraints, Guardrails & Input Restrictions
-  { regex: /(?:^|[-_])(constraints?|guards?|restrictions?|limits?)(?:[-_]|$)/i, icon: 'folder-guard' },
-
-  // 13. Recommendations, Recommended Items, Starred Items
-  { regex: /(?:^|[-_])(recommendations?|recommended[-_]?items?|recommended[-_]?item|favorites?|stars?|featured)(?:[-_]|$)/i, icon: 'folder-favicon' },
-
-  // 14. Access Control, Security, User Rights & Permissions
-  { regex: /(?:^|[-_])(access(?:[-_]?rights)?|security|auth|permissions?|roles?|usersession)(?:[-_]|$)/i, icon: 'folder-secure' },
-
-  // 15. Attributes, Variables, Inlay Hints & Parameter Completions
-  { regex: /(?:^|[-_])(attributes?|variables?|elements?|params?|parameters?|param[-_]?completions?|inlay[-_]?hints?)(?:[-_]|$)/i, icon: 'folder-element' },
-
-  // 16. Constants, Enums, Literals & Strings
-  { regex: /(?:^|[-_])(constants?|enums?|strings?|literals?)(?:[-_]|$)/i, icon: 'folder-constant' },
-
-  // 17. Pitfalls, Errors, Warnings & Deprecations
-  { regex: /(?:^|[-_])(pitfalls?|errors?|warnings?|bugs?|deprecated|issues?)(?:[-_]|$)/i, icon: 'folder-error' },
-
-  // 18. Linters, Code Review & Diagnostic Inspections
-  { regex: /(?:^|[-_])(linters?|lint|reviews?|inspections?|quality|advisories)(?:[-_]|$)/i, icon: 'folder-review' },
-
-  // 19. Beautifier, Code Formatter & Prettifier
-  { regex: /(?:^|[-_])(beautify|formatters?|formatting|pretty|prettify|cleanup)(?:[-_]|$)/i, icon: 'folder-beautify' },
-
-  // 20. Code Metrics, Benchmarks, Analytics & Coverage
-  { regex: /(?:^|[-_])(metrics?|benchmarks?|analytics|stats|measurements?|coverage)(?:[-_]|$)/i, icon: 'folder-metrics' },
-
-  // 21. Artificial Intelligence, LLMs, Agents, Crawlers & IntelliSense
-  { regex: /(?:^|[-_])(ai|agents?|gemini|llm|copilot|bots?|prompts?|crawlers?|intellisense)(?:[-_]|$)/i, icon: 'folder-gemini-ai' },
-
-  // 22. Library Modules & Packages
-  { regex: /(?:^|[-_])(libraries|library|libs?)(?:[-_]|$)/i, icon: 'folder-lib' },
-
-  // 23. Categories, Filters, Groupings & Types
-  { regex: /(?:^|[-_])(categories|category|filters?|types?|classes|groupings?)(?:[-_]|$)/i, icon: 'folder-filter' },
-
-  // 24. Webviews, Layouts, UI Panels & Tabs
-  { regex: /(?:^|[-_])(web[-_]?views?|layouts?|views?|ui|screens?|windows?|tabs?)(?:[-_]|$)/i, icon: 'folder-layout' },
-
-  // 25. Themes, Material Icons & Appearance
-  { regex: /(?:^|[-_])(material|themes?|styles?|css|icons?|appearance)(?:[-_]|$)/i, icon: 'folder-theme' },
-
-  // 26. Actions, Triggers & Commands
-  { regex: /(?:^|[-_])(actions?|triggers?|commands?|events?)(?:[-_]|$)/i, icon: 'folder-trigger' },
-
-  // 27. Comments, Annotations, Messages & Discussions
-  { regex: /(?:^|[-_])(comments?|messages?|chat|discussions?|notes?)(?:[-_]|$)/i, icon: 'folder-messages' },
-
-  // 28. Tests, Testing Suites & Runners
-  { regex: /(?:^|[-_])(tests?|testing|specs?|suites?)(?:[-_]|$)/i, icon: 'folder-test' },
-
-  // 29. Snapshots, Backups & History
-  { regex: /(?:^|[-_])(snapshots?|backups?|history|archives?)(?:[-_]|$)/i, icon: 'folder-backup' },
-
-  // 30. Syntaxes, Grammars, Spell Checking & Spelling
-  { regex: /(?:^|[-_])(syntaxes?|syntax|spell[-_]?check|spelling|grammar)(?:[-_]|$)/i, icon: 'folder-syntax' },
-
-  // 31. Mathematics & Mathematical Formulas
-  { regex: /(?:^|[-_])(math|formulas?|calculations?)(?:[-_]|$)/i, icon: 'folder-functions' },
-
-  // 32. Dates, DateTime & Event Calendars
-  { regex: /(?:^|[-_])(dates?|datetime|time|events?|calendar)(?:[-_]|$)/i, icon: 'folder-event' },
-
-  // 33. Arrays, Queues & Line Items
-  { regex: /(?:^|[-_])(arrays?|queues?|lists?|line[-_]?items?)(?:[-_]|$)/i, icon: 'folder-queue' },
-
-  // 34. BOM (Bill of Materials) & Hierarchy Trees
-  { regex: /(?:^|[-_])(bom|bill[-_]?of[-_]?materials?|hierarchy|trees?|clusters?)(?:[-_]|$)/i, icon: 'folder-cluster' },
-
-  // 35. Web Links & Hyperlinks
-  { regex: /(?:^|[-_])(urls?|links?|href)(?:[-_]|$)/i, icon: 'folder-link' },
-
-  // 36. Documentation, Markdown & DocMD
-  { regex: /(?:^|[-_])(docs?|documentations?|markdown|docmd|html2docmd)(?:[-_]|$)/i, icon: 'folder-docs' },
-
-  // 37. Skills & Capabilities
-  { regex: /(?:^|[-_])(skills?)(?:[-_]|$)/i, icon: 'folder-skills' },
-
-  // 38. Privacy & Hiding Rules
-  { regex: /(?:^|[-_])(hiding|hidden|privates?)(?:[-_]|$)/i, icon: 'folder-private' },
-
-  // 39. Language Fallbacks: Any unclassified BML folder gets BML icon
-  { regex: /bml/i, icon: 'folder-bml' },
-
-  // 40. Domain Fallbacks: Any unclassified CPQ folder gets CPQ Cart icon
-  { regex: /cpq/i, icon: 'folder-cart' }
-];
-
+/**
+ * Matches a folder name to its corresponding Material folder icon identifier.
+ * Uses an internal LRU cache for high-speed repetitive lookups.
+ * 
+ * @param {string} name - The folder name or relative path segment
+ * @returns {string|null} - Icon identifier (e.g. 'folder-database') or null
+ */
 function matchFolderIcon(name) {
+  if (!name || typeof name !== 'string') return null;
+  const cleanName = name.trim();
+  if (!cleanName) return null;
+
+  if (matchCache.has(cleanName)) {
+    return matchCache.get(cleanName);
+  }
+
+  let matchedIcon = null;
+
+  // 1. Direct Regex Rule Matching
   for (const rule of RULE_MATCHERS) {
-    if (rule.regex.test(name)) return rule.icon;
-  }
-  return null;
-}
-
-function expandVariations(name) {
-  const vars = new Set();
-  vars.add(name);
-  vars.add(name.toLowerCase());
-
-  const addAffixes = (n) => {
-    vars.add(n);
-    vars.add('.' + n);
-    vars.add('_' + n);
-    vars.add('-' + n);
-    vars.add('__' + n + '__');
-  };
-
-  for (const base of Array.from(vars)) {
-    addAffixes(base);
+    if (rule.regex.test(cleanName)) {
+      matchedIcon = rule.icon;
+      break;
+    }
   }
 
-  if (name.includes('-')) {
-    const camel = name.replace(/-([a-zA-Z])/g, (_, g) => g.toUpperCase());
-    const snake = name.replace(/-/g, '_');
-    const pascal = camel.charAt(0).toUpperCase() + camel.slice(1);
-    for (const form of [camel, snake, pascal]) addAffixes(form);
+  // 2. Token-Based Substring Matching (for compound words like 'bmlCommercePricingRules')
+  if (!matchedIcon) {
+    const tokens = cleanName
+      .replace(/([a-z])([A-Z])/g, '$1-$2')
+      .toLowerCase()
+      .split(/[-_./\s]+/);
+
+    for (const token of tokens) {
+      if (!token) continue;
+      for (const rule of RULE_MATCHERS) {
+        if (rule.regex.test(token)) {
+          matchedIcon = rule.icon;
+          break;
+        }
+      }
+      if (matchedIcon) break;
+    }
   }
 
-  if (name.includes('_')) {
-    const kebab = name.replace(/_/g, '-');
-    const camel = kebab.replace(/-([a-zA-Z])/g, (_, g) => g.toUpperCase());
-    const pascal = camel.charAt(0).toUpperCase() + camel.slice(1);
-    for (const form of [kebab, camel, pascal]) addAffixes(form);
+  if (matchCache.size > 5000) {
+    matchCache.clear();
   }
+  matchCache.set(cleanName, matchedIcon);
 
-  return Array.from(vars);
+  return matchedIcon;
 }
 
 /**
- * Scans directories in a root path (skipping build/cache folders)
+ * Returns full metadata of the rule that matches the folder name.
+ * 
+ * @param {string} name - Folder name
+ * @returns {object|null} - The matched rule definition or null
  */
-function scanDirFolders(rootDir, maxDepth = 4) {
+function getMatchingRule(name) {
+  if (!name || typeof name !== 'string') return null;
+  const cleanName = name.trim();
+
+  for (const rule of RULE_MATCHERS) {
+    if (rule.regex.test(cleanName)) return rule;
+  }
+
+  const tokens = cleanName
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .toLowerCase()
+    .split(/[-_./\s]+/);
+
+  for (const token of tokens) {
+    if (!token) continue;
+    for (const rule of RULE_MATCHERS) {
+      if (rule.regex.test(token)) return rule;
+    }
+  }
+
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Casing, Affix & Morphological Variation Generator
+// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Expands a candidate folder name into multiple casing, affix, and plural/singular forms.
+ * 
+ * @param {string} name - Base folder name (e.g. 'commerce-libraries')
+ * @returns {string[]} - Array of variations
+ */
+function expandVariations(name) {
+  if (!name || typeof name !== 'string') return [];
+  const baseName = name.trim();
+  if (!baseName) return [];
+
+  const rawForms = new Set([baseName, baseName.toLowerCase()]);
+
+  // Plural / Singular inflections
+  if (baseName.endsWith('ies')) rawForms.add(baseName.slice(0, -3) + 'y');
+  else if (baseName.endsWith('y') && !/[aeiou]y$/i.test(baseName)) rawForms.add(baseName.slice(0, -1) + 'ies');
+  else if (baseName.endsWith('es') && /(?:s|sh|ch|x|z)es$/i.test(baseName)) rawForms.add(baseName.slice(0, -2));
+  else if (baseName.endsWith('s') && !baseName.endsWith('ss')) rawForms.add(baseName.slice(0, -1));
+  else if (!baseName.endsWith('s')) rawForms.add(baseName + 's');
+
+  const toCamel = (s) => s.replace(/[-_./](\w)/g, (_, c) => c.toUpperCase());
+  const toPascal = (s) => { const c = toCamel(s); return c.charAt(0).toUpperCase() + c.slice(1); };
+  const toKebab = (s) => s.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/[_\s.]+/g, '-').toLowerCase();
+  const toSnake = (s) => s.replace(/([a-z])([A-Z])/g, '$1_$2').replace(/[-\s.]+/g, '_').toLowerCase();
+
+  const result = new Set();
+  for (const form of rawForms) {
+    const k = toKebab(form);
+    const s = toSnake(form);
+    const c = toCamel(form);
+    const p = toPascal(form);
+    result.add(k);
+    result.add(s);
+    result.add(c);
+    result.add(p);
+    result.add('.' + k);
+  }
+
+  return Array.from(result);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Workspace & Directory Discovery Scanner
+// ─────────────────────────────────────────────────────────────────────────────
+const DEFAULT_IGNORED = new Set([
+  'node_modules', '.git', '.vscode-test', 'dist', 'logs', 'scratch',
+  '__pycache__', '.nyc_output', '.coverage', 'coverage', 'build', 'out'
+]);
+
+/**
+ * Scans directories in a root path recursively (skipping build/cache folders).
+ * 
+ * @param {string} rootDir - Root directory to scan
+ * @param {number} maxDepth - Maximum recursion depth (default 4)
+ * @param {Set<string>|string[]} customIgnores - Optional custom directories to ignore
+ * @returns {string[]} - Discovered folder names
+ */
+function scanDirFolders(rootDir, maxDepth = 4, customIgnores = null) {
   const dirs = new Set();
-  const ignored = new Set(['node_modules', '.git', '.vscode-test', 'dist', 'logs', 'scratch', '__pycache__']);
+  const ignored = customIgnores
+    ? new Set([...DEFAULT_IGNORED, ...customIgnores])
+    : DEFAULT_IGNORED;
 
   function walk(current, depth) {
     if (depth > maxDepth) return;
@@ -201,10 +182,19 @@ function scanDirFolders(rootDir, maxDepth = 4) {
   return Array.from(dirs);
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Theme Synchronization & JSON Generation
+// ─────────────────────────────────────────────────────────────────────────────
 /**
- * Synchronizes discovered folder names into a theme object and returns count added
+ * Synchronizes discovered folder names into a VS Code Material theme object.
+ * 
+ * @param {object} theme - The theme object (from bml-icons.json)
+ * @param {Iterable<string>} folderCandidates - Collection of folder names to classify
+ * @param {object} [options] - Optional configuration
+ * @param {boolean} [options.sortKeys=true] - Whether to sort keys alphabetically
+ * @returns {number} - Number of new folder mappings added
  */
-function syncFoldersIntoTheme(theme, folderCandidates) {
+function syncFoldersIntoTheme(theme, folderCandidates, options = { sortKeys: true }) {
   let added = 0;
   const folderNames = theme.folderNames || (theme.folderNames = {});
   const folderNamesExp = theme.folderNamesExpanded || (theme.folderNamesExpanded = {});
@@ -226,13 +216,27 @@ function syncFoldersIntoTheme(theme, folderCandidates) {
     }
   }
 
+  if (options.sortKeys && added > 0) {
+    const sortObj = (obj) => {
+      const sorted = {};
+      for (const k of Object.keys(obj).sort()) sorted[k] = obj[k];
+      return sorted;
+    };
+    theme.folderNames = sortObj(theme.folderNames);
+    theme.folderNamesExpanded = sortObj(theme.folderNamesExpanded);
+  }
+
   return added;
 }
 
 /**
- * Main build-time execution: updates themes/bml-icons.json and bml-icons.min.json
+ * Main build-time execution: updates themes/bml-icons.json and bml-icons.min.json.
+ * 
+ * @param {string} [projectRoot] - Path to CPQ-BML workspace root
+ * @param {object} [options] - Optional settings
+ * @returns {number} - Number of new folder mappings synced
  */
-function generateDynamicIcons(projectRoot) {
+function generateDynamicIcons(projectRoot, options = {}) {
   const root = projectRoot || path.join(__dirname, '..', '..', '..');
   const themePath = path.join(root, 'themes', 'bml-icons.json');
   const minThemePath = path.join(root, 'themes', 'bml-icons.min.json');
@@ -242,7 +246,7 @@ function generateDynamicIcons(projectRoot) {
   const theme = JSON.parse(fs.readFileSync(themePath, 'utf8'));
 
   // 1. Scan actual project directories
-  const scanRoots = ['app', '.agents', 'knowledge', 'scripts', 'themes'];
+  const scanRoots = ['app', '.agents', 'knowledge', 'scripts', 'themes', 'test', 'tests', 'docs', '.gemini'];
   let discovered = [];
   for (const r of scanRoots) {
     const target = path.join(root, r);
@@ -251,7 +255,7 @@ function generateDynamicIcons(projectRoot) {
     }
   }
 
-  // 2. Scan IntelliSense terms if available
+  // 2. Scan IntelliSense & Metadata terms
   const intelDir = path.join(root, 'app', 'lang', 'intellisense');
   const intelTerms = [];
   try {
@@ -265,42 +269,42 @@ function generateDynamicIcons(projectRoot) {
       if (catData.categories) intelTerms.push(...Object.keys(catData.categories));
       if (catData.functionCategories) intelTerms.push(...Object.keys(catData.functionCategories));
     }
+    const params = path.join(intelDir, 'param-completions.json');
+    if (fs.existsSync(params)) {
+      intelTerms.push(...Object.keys(JSON.parse(fs.readFileSync(params, 'utf8'))));
+    }
   } catch (err) {}
 
-  // 3. Known CPQ and BML domain concepts
-  const domainConcepts = [
-    'modify', 'rules', 'configuration', 'recommendation', 'recommended-item',
-    'constraint', 'access', 'attributes', 'libraries', 'util-libraries',
-    'commerce-libraries', 'validation', 'approvals', 'pricing', 'bom',
-    'integrations', 'transactions', 'line-items', 'bmql', 'variables',
-    'constants', 'dictionary', 'arrays', 'math', 'date', 'strings',
-    'urldata', 'debug', 'testing', 'snapshots', 'hiding', 'web-services',
-    'tool-defs', 'categories', 'material', 'web-view'
-  ];
-
-  const candidates = new Set([...discovered, ...intelTerms, ...domainConcepts]);
-
-  // Prefix combinations
-  const prefixes = ['bml', 'cpq', 'util', 'commerce', 'bmql'];
+  // 3. Assemble candidate pool with practical BML & CPQ prefixes
+  const candidates = new Set([...discovered, ...intelTerms, ...CPQ_BML_DOMAIN_CONCEPTS]);
+  const prefixes = ['bml', 'cpq'];
   for (const prefix of prefixes) {
-    for (const concept of domainConcepts) {
+    for (const concept of CPQ_BML_DOMAIN_CONCEPTS) {
       candidates.add(`${prefix}-${concept}`);
       candidates.add(`${concept}-${prefix}`);
     }
   }
 
-  const added = syncFoldersIntoTheme(theme, candidates);
+  const added = syncFoldersIntoTheme(theme, candidates, { sortKeys: true });
 
   // Write updated theme files
-  fs.writeFileSync(themePath, JSON.stringify(theme, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(minThemePath, JSON.stringify(theme) + '\n', 'utf8');
+  if (added > 0 || options.forceWrite) {
+    fs.writeFileSync(themePath, JSON.stringify(theme, null, 2) + '\n', 'utf8');
+    fs.writeFileSync(minThemePath, JSON.stringify(theme) + '\n', 'utf8');
+  }
 
-  console.log(`Dynamic folder generator (JavaScript): synced ${added} new folder mappings.`);
+  if (!options.silent) {
+    console.log(`Dynamic folder generator (JavaScript): synced ${added} new folder mappings.`);
+  }
+
   return added;
 }
 
 /**
- * Runtime execution for VS Code extension host (called on activation/workspace open)
+ * Runtime execution for VS Code extension host (called on activation/workspace open).
+ * 
+ * @param {object} extensionContext - VS Code ExtensionContext
+ * @param {Array<object|string>} workspaceFolders - VS Code workspace folders
  */
 function syncRuntimeWorkspaceFolders(extensionContext, workspaceFolders) {
   if (!extensionContext || !workspaceFolders || !workspaceFolders.length) return;
@@ -322,21 +326,62 @@ function syncRuntimeWorkspaceFolders(extensionContext, workspaceFolders) {
       }
     }
 
-    const added = syncFoldersIntoTheme(theme, folderNames);
+    const added = syncFoldersIntoTheme(theme, folderNames, { sortKeys: false });
     if (added > 0) {
       fs.writeFileSync(minThemePath, JSON.stringify(theme) + '\n', 'utf8');
     }
-  } catch (err) {
-    // Non-fatal if filesystem is read-only in some environments
+  } catch (err) {}
+}
+
+/**
+ * Calculates classification coverage against a list of sample folder names.
+ * 
+ * @param {object} theme - Theme object
+ * @param {string[]} sampleList - List of folder names
+ * @returns {object} - Statistics
+ */
+function getFolderIconCoverage(theme, sampleList) {
+  const samples = sampleList || CPQ_BML_DOMAIN_CONCEPTS;
+  let matched = 0;
+  const unmatched = [];
+
+  for (const sample of samples) {
+    const icon = matchFolderIcon(sample);
+    if (icon) matched++;
+    else unmatched.push(sample);
+  }
+
+  return {
+    total: samples.length,
+    matched,
+    unmatched,
+    coveragePercent: ((matched / samples.length) * 100).toFixed(1) + '%'
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Direct CLI Execution
+// ─────────────────────────────────────────────────────────────────────────────
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  const root = path.join(__dirname, '..', '..', '..');
+
+  if (args.includes('--coverage') || args.includes('-c')) {
+    console.log('CPQ-BML Folder Icon Coverage:', getFolderIconCoverage(null, CPQ_BML_DOMAIN_CONCEPTS));
+  } else {
+    generateDynamicIcons(root, { forceWrite: args.includes('--force') });
   }
 }
 
 module.exports = {
   RULE_MATCHERS,
+  CPQ_BML_DOMAIN_CONCEPTS,
   matchFolderIcon,
+  getMatchingRule,
   expandVariations,
   scanDirFolders,
   syncFoldersIntoTheme,
   generateDynamicIcons,
-  syncRuntimeWorkspaceFolders
+  syncRuntimeWorkspaceFolders,
+  getFolderIconCoverage
 };

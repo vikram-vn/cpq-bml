@@ -545,9 +545,7 @@
     "react-dom": "^19.2.8",
     "vscode-oniguruma": "^2.0.1",
     "vscode-textmate": "^9.3.2",
-    "prop-types": "^15.8.1"
-  },
-  "dependencies": {
+    "prop-types": "^15.8.1",
     "@modelcontextprotocol/sdk": "^1.30.0"
   }
 }
