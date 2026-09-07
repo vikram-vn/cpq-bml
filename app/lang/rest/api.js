@@ -5,6 +5,7 @@ const {
   getBaseUrl,
   getRestVersion,
   getCommerceProcess,
+  getCommerceDocument,
   getAuthHeader,
   getSettings,
 } = require("./config");
@@ -355,8 +356,95 @@ function searchBmlScripts(
   );
 }
 
+function commerceDocumentsPath(vscode, process = "oraclecpqo", document = "transaction") {
+  const version = getRestVersion(vscode);
+  const verNum = parseInt((version || "").replace(/^v/i, ""), 10);
+  const effectiveVersion = !isNaN(verNum) && verNum >= 19 ? version : "v19";
+  const proc = process ? process.charAt(0).toUpperCase() + process.slice(1) : "Oraclecpqo";
+  const doc = document ? document.charAt(0).toUpperCase() + document.slice(1) : "Transaction";
+  return `/rest/${effectiveVersion}/commerceDocuments${proc}${doc}`;
+}
+
+// GET /rest/<version>/commerceDocuments<Process><Document>
+// Minimal response for transaction filtering and debugging: _id, transactionID_t, no href links.
+async function getTransactions(
+  context,
+  vscode,
+  {
+    process,
+    document,
+    q,
+    query,
+    offset = 25,
+    limit = 25,
+    fields = "_id,transactionID_t",
+    excludeFieldTypes = "yes",
+    orderby,
+    totalResults = true,
+  } = {},
+  transport,
+) {
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+
+  let queryFilter = q;
+  if (!queryFilter && query) {
+    queryFilter = query;
+  }
+  if (queryFilter && typeof queryFilter === "object") {
+    queryFilter = JSON.stringify(queryFilter);
+  }
+
+  const queryParams = {};
+  if (offset !== undefined) queryParams.offset = offset;
+  if (limit !== undefined) queryParams.limit = limit;
+  if (fields) queryParams.fields = fields;
+  if (excludeFieldTypes !== undefined && excludeFieldTypes !== false && excludeFieldTypes !== null) {
+    queryParams.excludeFieldTypes = excludeFieldTypes === true ? "yes" : String(excludeFieldTypes);
+  }
+  if (queryFilter) queryParams.q = queryFilter;
+  if (orderby) queryParams.orderby = orderby;
+  if (totalResults !== undefined) queryParams.totalResults = totalResults;
+
+  const result = await call(
+    context,
+    vscode,
+    {
+      path: commerceDocumentsPath(vscode, effectiveProcess, effectiveDocument),
+      method: "GET",
+      query: queryParams,
+    },
+    transport,
+  );
+
+  // Sanitize items so no href links are ever returned, keeping minimal _id and transactionID_t
+  if (result && result.body && typeof result.body === "object") {
+    delete result.body.links;
+    if (Array.isArray(result.body.items)) {
+      result.body.items = result.body.items.map((item) => {
+        const clean = {
+          _id: item._id !== undefined ? String(item._id) : undefined,
+          transactionID_t:
+            item.transactionID_t !== undefined
+              ? String(item.transactionID_t)
+              : (item.transactionId !== undefined ? String(item.transactionId) : undefined),
+        };
+        for (const [k, v] of Object.entries(item)) {
+          if (k !== "links" && k !== "href" && clean[k] === undefined) {
+            clean[k] = v;
+          }
+        }
+        return clean;
+      });
+    }
+  }
+
+  return result;
+}
+
 module.exports = {
   functionsPath,
+  commerceDocumentsPath,
   listLibraryFunctions,
   listLibraryFolders,
   getLibraryFunction,
@@ -371,4 +459,6 @@ module.exports = {
   deployCommerceProcess,
   getTask,
   searchBmlScripts,
+  getTransactions,
+  listTransactions: getTransactions,
 };

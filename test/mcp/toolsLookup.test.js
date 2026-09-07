@@ -254,5 +254,109 @@ suite("MCP tools - lookup", () => {
       assert.strictEqual(tools.searchBmlScripts, tools.globalSearchBml);
     });
   });
+
+  suite("getTransactions", () => {
+    test("retrieves transactions with minimal fields (_id, transactionID_t) and no href links", () =>
+      withTempDir(async (tmpDir) => {
+        const mockResponse = {
+          items: [
+            {
+              _id: "36365138",
+              transactionID_t: "CPQ-3",
+              totalContractValue_t: "236133.32",
+              links: [
+                { rel: "self", href: "https://sitename.oracle.com/rest/v19/commerceDocumentsOraclecpqoTransaction/36365138" },
+              ],
+            },
+            {
+              _id: "36312277",
+              transactionID_t: "CPQ-4",
+              totalContractValue_t: "0",
+              links: [
+                { rel: "self", href: "https://sitename.oracle.com/rest/v19/commerceDocumentsOraclecpqoTransaction/36312277" },
+              ],
+            },
+          ],
+          links: [
+            { rel: "canonical", href: "https://sitename.oracle.com/rest/v19/commerceDocumentsOraclecpqoTransaction" },
+          ],
+          count: 2,
+          totalResults: 2,
+          hasMore: false,
+          offset: 25,
+          limit: 25,
+        };
+
+        const transport = async (opts) => {
+          assert.ok(opts.path.startsWith("/rest/v19/commerceDocumentsOraclecpqoTransaction?"));
+          assert.strictEqual(opts.method, "GET");
+          assert.ok(opts.path.includes("offset=25"));
+          assert.ok(opts.path.includes("limit=25"));
+          assert.ok(opts.path.includes("excludeFieldTypes=yes"));
+          assert.ok(opts.path.includes("fields=_id%2CtransactionID_t"));
+          return jsonResponse(200, mockResponse);
+        };
+
+        const result = await tools.getTransactions(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          {},
+          transport,
+        );
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(result.count, 2);
+        assert.strictEqual(result.offset, 25);
+        assert.strictEqual(result.limit, 25);
+        assert.strictEqual(result.items.length, 2);
+        // Verify minimal response: only _id and transactionID_t, no links
+        assert.deepStrictEqual(result.items[0], { _id: "36365138", transactionID_t: "CPQ-3" });
+        assert.deepStrictEqual(result.items[1], { _id: "36312277", transactionID_t: "CPQ-4" });
+        assert.strictEqual(result.links, undefined);
+        assert.ok(result.log.some((l) => l.includes("Found 2 transaction")));
+      }));
+
+    test("applies user filter query and custom pagination", () =>
+      withTempDir(async (tmpDir) => {
+        let capturedPath = "";
+        const transport = async (opts) => {
+          capturedPath = opts.path;
+          return jsonResponse(200, { items: [], count: 0, totalResults: 0, hasMore: false });
+        };
+
+        const result = await tools.getTransactions(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          { q: "{status_t:'CREATED'}", offset: 0, limit: 10 },
+          transport,
+        );
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(result.count, 0);
+        assert.ok(capturedPath.includes("offset=0"));
+        assert.ok(capturedPath.includes("limit=10"));
+        assert.ok(decodeURIComponent(capturedPath).includes("{status_t:'CREATED'}"));
+      }));
+
+    test("handles API errors gracefully", () =>
+      withTempDir(async (tmpDir) => {
+        const transport = async () => jsonResponse(500, { error: "Internal Server Error" });
+        const result = await tools.getTransactions(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          {},
+          transport,
+        );
+        assert.strictEqual(result.success, false);
+        assert.strictEqual(result.statusCode, 500);
+        assert.ok(result.error.includes("Internal Server Error") || result.error.includes("500"));
+        assert.ok(result.log.some((l) => l.includes("Transactions failed")));
+      }));
+
+    test("alias listTransactions invokes same handler", async () => {
+      assert.strictEqual(tools.listTransactions, tools.getTransactions);
+    });
+  });
 });
+
 

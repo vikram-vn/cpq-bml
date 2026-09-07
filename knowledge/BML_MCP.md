@@ -242,6 +242,7 @@ flowchart TD
 | | `list_util_functions` | _none_ | Lists remote util functions from CPQ instance. |
 | | `list_commerce_functions` | `commerceProcess`?, `commerceDocument`? | Lists remote commerce process functions. |
 | | `global_search_bml` | `query`, `caseSensitive`?, `limit`?, `offset`? | Remote BML Global Search across all scripts on CPQ (/rest/v19/bml/scripts). |
+| | `get_transactions` | `q`?, `query`?, `offset`?, `limit`?, `fields`? | Retrieve transactions from CPQ (/rest/v19/commerceDocuments<Process><Document>) with minimal fields (_id, transactionID_t) for debugging. |
 
 ---
 

@@ -14,6 +14,7 @@ const {
 const { runCreateBmlFunction } = require("./scaffold");
 const { runChangeEnvironment } = require("./env");
 const { runGlobalSearchBml } = require("./globalSearch");
+const { runGetTransactions } = require("./transactions");
 const {
   describeError,
   findLibraryFunctionByVariableName,
@@ -265,6 +266,9 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.globalSearchBml", () =>
       runGlobalSearchBml(context, vscode, resultsTerminal),
     ),
+    vscode.commands.registerCommand("cpqBml.rest.getTransactions", () =>
+      runGetTransactions(context, vscode, resultsTerminal),
+    ),
     vscode.commands.registerCommand("cpqBml.rest.clearResults", () =>
       resultsTerminal.clear(),
     ),
@@ -298,6 +302,7 @@ module.exports = {
   runCreateBmlFunction,
   runChangeEnvironment,
   runGlobalSearchBml,
+  runGetTransactions,
   describeError,
   findLibraryFunctionByVariableName,
   resolveMetadataForFile,

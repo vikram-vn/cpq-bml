@@ -195,7 +195,7 @@ async function runDebugCurrentFile(
         cached && cached.transactionId ? String(cached.transactionId) : "";
 
       const transactionIdStr = await vscode.window.showInputBox({
-        prompt: "Transaction ID for debugging (e.g. 48420727)",
+        prompt: "Transaction ID for debugging (e.g. 48420727) - leave blank to pick from CPQ transactions",
         value: prefill,
         ignoreFocusOut: true,
       });
@@ -205,6 +205,34 @@ async function runDebugCurrentFile(
           errorMessage: "Cancelled: no transaction ID given.",
         };
       transactionId = transactionIdStr.trim();
+      if (!transactionId) {
+        try {
+          const res = await api.getTransactions(
+            context,
+            vscode,
+            {
+              process: metadata.commerceProcess,
+              document: metadata.commerceDocument,
+              limit: 25,
+            },
+            transport,
+          );
+          if (res && res.body && Array.isArray(res.body.items) && res.body.items.length > 0) {
+            const picks = res.body.items.map((it) => ({
+              label: String(it.transactionID_t || it._id),
+              description: `_id: ${it._id}${it.transactionID_t ? ` (${it.transactionID_t})` : ""}`,
+              id: String(it._id || it.transactionID_t),
+            }));
+            const picked = await vscode.window.showQuickPick(picks, {
+              placeHolder: "Select a transaction from CPQ to use for debugging",
+              ignoreFocusOut: true,
+            });
+            if (picked) {
+              transactionId = picked.id;
+            }
+          }
+        } catch (e) {}
+      }
       if (!transactionId) {
         const errorMessage =
           "CPQ-BML: Transaction ID is required to debug commerce functions.";

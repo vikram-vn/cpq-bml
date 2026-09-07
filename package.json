@@ -211,6 +211,11 @@
         "icon": "$(search)"
       },
       {
+        "command": "cpqBml.rest.getTransactions",
+        "title": "CPQ-BML: Pull Transactions from CPQ",
+        "icon": "$(list-unordered)"
+      },
+      {
         "command": "cpqBml.mcp.showInfo",
         "title": "CPQ-BML: Show MCP Server Connection Info",
         "icon": "$(info)"
@@ -286,19 +291,24 @@
           "group": "navigation@4"
         },
         {
-          "command": "cpqBml.rest.clearResults",
-          "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
-          "group": "navigation@5"
-        },
-        {
           "command": "cpqBml.rest.deployCommerceProcess",
           "when": "resourceLangId == bml && cpqBml.activeFileIsCommerce && config.cpqBml.connection.enabled && cpqBml.connection.configured",
-          "group": "navigation@6"
+          "group": "navigation@5"
         },
         {
           "command": "cpqBml.rest.deployCurrentFile",
           "when": "resourceLangId == bml && cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
+          "group": "navigation@5"
+        },
+        {
+          "command": "cpqBml.rest.clearResults",
+          "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
+        },
+        {
+          "command": "cpqBml.settings.open",
+          "when": "resourceLangId == bml",
+          "group": "navigation@7"
         }
       ]
     },

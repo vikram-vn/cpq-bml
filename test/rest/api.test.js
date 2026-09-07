@@ -376,5 +376,90 @@ suite("BML REST api", () => {
       assert.ok(decodeURIComponent(sink.captured.path).includes("{'scriptText':{$regex:'foo.*'}}"));
     });
   });
+
+  suite("commerceDocumentsPath", () => {
+    test("constructs path with default process and document capitalized", () => {
+      const vscode = createFakeVscode({ config: baseConfig({ "rest.restVersion": "v18" }) });
+      assert.strictEqual(
+        api.commerceDocumentsPath(vscode, "oraclecpqo", "transaction"),
+        "/rest/v19/commerceDocumentsOraclecpqoTransaction",
+      );
+    });
+
+    test("constructs path with custom process and document capitalized", () => {
+      const vscode = createFakeVscode({ config: baseConfig({ "rest.restVersion": "v19" }) });
+      assert.strictEqual(
+        api.commerceDocumentsPath(vscode, "custom_process", "quote"),
+        "/rest/v19/commerceDocumentsCustom_processQuote",
+      );
+    });
+  });
+
+  suite("getTransactions", () => {
+    test("uses default offset=25, limit=25, fields=_id,transactionID_t, excludeFieldTypes=yes", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      const cannedResponse = {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({
+          items: [
+            {
+              _id: "36365138",
+              transactionID_t: "CPQ-3",
+              totalContractValue_t: "236133.32",
+              links: [{ rel: "self", href: "https://sitename.oracle.com/rest/v19/commerceDocumentsOraclecpqoTransaction/36365138" }],
+            },
+          ],
+          links: [{ rel: "canonical", href: "https://sitename.oracle.com/rest/v19/commerceDocumentsOraclecpqoTransaction" }],
+          offset: 25,
+          limit: 25,
+          hasMore: false,
+        }),
+      };
+      const transport = async (opts) => {
+        sink.captured = opts;
+        return cannedResponse;
+      };
+
+      const result = await api.getTransactions(fakeContext(), vscode, {}, transport);
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(sink.captured.path.startsWith("/rest/v19/commerceDocumentsOraclecpqoTransaction?"));
+      assert.ok(sink.captured.path.includes("offset=25"));
+      assert.ok(sink.captured.path.includes("limit=25"));
+      assert.ok(sink.captured.path.includes("excludeFieldTypes=yes"));
+      assert.ok(sink.captured.path.includes("fields=_id%2CtransactionID_t"));
+
+      // Verify minimal response: no links at root or in items
+      assert.strictEqual(result.body.links, undefined);
+      assert.strictEqual(result.body.items.length, 1);
+      assert.strictEqual(result.body.items[0]._id, "36365138");
+      assert.strictEqual(result.body.items[0].transactionID_t, "CPQ-3");
+      assert.strictEqual(result.body.items[0].links, undefined);
+    });
+
+    test("passes custom q filter and honors custom pagination", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.getTransactions(
+        fakeContext(),
+        vscode,
+        {
+          q: "{status_t:'CREATED'}",
+          offset: 0,
+          limit: 10,
+        },
+        capturingTransport(sink),
+      );
+      assert.ok(sink.captured.path.includes("offset=0"));
+      assert.ok(sink.captured.path.includes("limit=10"));
+      assert.ok(decodeURIComponent(sink.captured.path).includes("{status_t:'CREATED'}"));
+    });
+
+    test("alias listTransactions points to getTransactions", () => {
+      assert.strictEqual(api.listTransactions, api.getTransactions);
+    });
+  });
 });
+
 

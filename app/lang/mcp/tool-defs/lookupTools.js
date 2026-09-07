@@ -112,6 +112,60 @@ function register(server, context, vscode, tools) {
     },
     async (args) => jsonResult(await tools.globalSearchBml(context, vscode, args)),
   );
+
+  const transactionInputSchema = {
+    q: z
+      .string()
+      .optional()
+      .describe("Filtering criteria query, e.g. \"{status_t:'CREATED'}\" or \"{_customer_t_company_name:'TestCo1'}\"."),
+    query: z.string().optional().describe("Alias for q filter criteria."),
+    offset: z.number().int().min(0).optional().default(25).describe("Pagination offset (default 25)."),
+    limit: z.number().int().min(1).max(1000).optional().default(25).describe("Maximum transactions to return (default 25)."),
+    fields: z
+      .string()
+      .optional()
+      .default("_id,transactionID_t")
+      .describe("Comma-delimited fields to return. Defaults to '_id,transactionID_t'."),
+    excludeFieldTypes: z
+      .union([z.boolean(), z.string()])
+      .optional()
+      .default(true)
+      .describe("Exclude field types to minimize payload size (default true/yes)."),
+    commerceProcess: z
+      .string()
+      .optional()
+      .describe("Commerce process name (defaults to configured process, e.g. 'oraclecpqo')."),
+    commerceDocument: z
+      .string()
+      .optional()
+      .describe("Commerce document name (defaults to configured document, e.g. 'transaction')."),
+    orderby: z
+      .string()
+      .optional()
+      .describe("Optional comma-separated list of pairs for ordering results."),
+  };
+
+  server.registerTool(
+    "get_transactions",
+    {
+      description:
+        "Retrieve commerce transactions from Oracle CPQ (GET /rest/v19/commerceDocuments<Process><Document>). " +
+        "Returns a minimal response containing only _id and transactionID_t (no href links) for use in debugging commerce functions. " +
+        "Supports user filters via q/query, offset (default 25), limit (default 25), and excludeFieldTypes (default yes).",
+      inputSchema: transactionInputSchema,
+    },
+    async (args) => jsonResult(await tools.getTransactions(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "list_transactions",
+    {
+      description:
+        "Alias for get_transactions: Retrieve commerce transactions from Oracle CPQ for debugging.",
+      inputSchema: transactionInputSchema,
+    },
+    async (args) => jsonResult(await tools.getTransactions(context, vscode, args)),
+  );
 }
 
 module.exports = { register };

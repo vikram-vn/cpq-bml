@@ -218,6 +218,74 @@ async function globalSearchBml(context, vscode, args, transport) {
     };
 }
 
+async function getTransactions(context, vscode, args, transport) {
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const startedAt = Date.now();
+
+    const offset = (args && args.offset !== undefined) ? args.offset : 25;
+    const limit = (args && args.limit !== undefined) ? args.limit : 25;
+    const q = (args && (args.q || args.query)) || undefined;
+    const fields = (args && args.fields) || "_id,transactionID_t";
+    const excludeFieldTypes = (args && args.excludeFieldTypes !== undefined) ? args.excludeFieldTypes : "yes";
+    const process = (args && (args.commerceProcess || args.process)) || undefined;
+    const document = (args && (args.commerceDocument || args.document)) || undefined;
+    const orderby = (args && args.orderby) || undefined;
+    const totalResults = args ? args.totalResults !== false : true;
+
+    terminal.writeLine(`\x1b[36m${getTimestamp()} Pulling commerce transactions...\x1b[0m`);
+
+    const result = await api.getTransactions(
+        context,
+        vscode,
+        {
+            process,
+            document,
+            q,
+            offset,
+            limit,
+            fields,
+            excludeFieldTypes,
+            orderby,
+            totalResults,
+        },
+        transport,
+    );
+
+    if (!isSuccess(result.statusCode)) {
+        const message = `Get transactions failed (HTTP ${result.statusCode}). ${describeError(result.body)}`;
+        writeTerminalMessage(terminal, 'Transactions failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');
+        return { success: false, error: message, statusCode: result.statusCode, log: getLines() };
+    }
+
+    const body = result.body || {};
+    const rawItems = Array.isArray(body.items) ? body.items : [];
+    const items = rawItems.map((item) => {
+        // Minimal response: strictly _id and transactionID_t, no href links
+        const clean = {};
+        if (item._id !== undefined) clean._id = String(item._id);
+        if (item.transactionID_t !== undefined) {
+            clean.transactionID_t = String(item.transactionID_t);
+        } else if (item.transactionId !== undefined) {
+            clean.transactionID_t = String(item.transactionId);
+        }
+        return clean;
+    });
+
+    const count = items.length;
+    terminal.writeLine(`\x1b[32m${getTimestamp()} Found ${count} transaction(s) (${formatElapsed(startedAt)})\x1b[0m`);
+
+    return {
+        success: true,
+        count,
+        totalResults: body.totalResults !== undefined ? body.totalResults : count,
+        hasMore: !!body.hasMore,
+        offset: body.offset !== undefined ? body.offset : offset,
+        limit: body.limit !== undefined ? body.limit : limit,
+        items,
+        log: getLines(),
+    };
+}
+
 module.exports = {
     listUtilFunctions,
     listCommerceFunctions,
@@ -225,5 +293,7 @@ module.exports = {
     pullFunctions,
     globalSearchBml,
     searchBmlScripts: globalSearchBml,
+    getTransactions,
+    listTransactions: getTransactions,
 };
 
