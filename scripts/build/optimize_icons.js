@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const { RULE_MATCHERS, CPQ_BML_DOMAIN_CONCEPTS } = require('../../app/lang/icons/folderRules');
 const { expandVariations, matchFolderIcon } = require('../../app/lang/icons/dynamicFolderIcons');
 
@@ -8,28 +9,27 @@ const MATERIAL_DIR = path.join(ROOT, 'app', 'icons', 'material');
 const THEME_PATH = path.join(ROOT, 'themes', 'bml-icons.json');
 const MIN_THEME_PATH = path.join(ROOT, 'themes', 'bml-icons.min.json');
 
-// 1. Collect all folder icon names needed by rules and common CPQ/web development
+// 1. Precise set of folder categories to keep (covers all CPQ rules + all common dev & workspace folders)
+const KEEP_FOLDER_CATS = new Set([
+  // Workspace root folders
+  'app', 'node', 'vscode', 'test', 'docs', 'log', 'temp', 'dist', 'scripts', 'theme', 'git', 'github', 'skills', 'gemini-ai', 'sandbox',
+  // Common dev folders
+  'src', 'lib', 'config', 'server', 'client', 'build', 'env', 'package',
+  'models', 'views', 'controllers', 'services', 'resources', 'assets',
+  'sass', 'css', 'html', 'svg', 'docker', 'gitlab', 'shared', 'public', 'core'
+]);
+
+// Add all categories from RULE_MATCHERS
+for (const r of RULE_MATCHERS) {
+  KEEP_FOLDER_CATS.add(r.icon.replace(/^folder-/, ''));
+}
+
 const KEEP_FOLDER_ICONS = new Set([
   'folder', 'folder-open', 'folder-root', 'folder-root-open'
 ]);
-
-for (const r of RULE_MATCHERS) {
-  KEEP_FOLDER_ICONS.add(r.icon);
-  KEEP_FOLDER_ICONS.add(r.icon + '-open');
-}
-
-const COMMON_DEV_FOLDERS = [
-  'folder-oracle', 'folder-plugin', 'folder-shared', 'folder-public', 'folder-sass', 'folder-css',
-  'folder-html', 'folder-svg', 'folder-swagger', 'folder-project', 'folder-policy', 'folder-postgres',
-  'folder-mysql', 'folder-mariadb', 'folder-mongodb', 'folder-docker', 'folder-github', 'folder-gitlab',
-  'folder-npm', 'folder-yarn', 'folder-ci', 'folder-build', 'folder-env', 'folder-package',
-  'folder-server', 'folder-client', 'folder-node', 'folder-graphql', 'folder-rest', 'folder-auth',
-  'folder-views', 'folder-models', 'folder-controllers', 'folder-services', 'folder-resources', 'folder-assets',
-  'folder-core', 'folder-base', 'folder-common', 'folder-global', 'folder-custom'
-];
-for (const f of COMMON_DEV_FOLDERS) {
-  KEEP_FOLDER_ICONS.add(f);
-  KEEP_FOLDER_ICONS.add(f + '-open');
+for (const cat of KEEP_FOLDER_CATS) {
+  KEEP_FOLDER_ICONS.add('folder-' + cat);
+  KEEP_FOLDER_ICONS.add('folder-' + cat + '-open');
 }
 
 // 2. Core file icons needed for CPQ BML and web/scripts development
@@ -37,8 +37,7 @@ const KEEP_FILE_BASE = new Set([
   'bml', 'xml', 'xsl', 'xslt', 'html', 'css', 'sass', 'less', 'svg',
   'json', 'yaml', 'toml', 'ini', 'table', 'csv', 'database', 'sql',
   'javascript', 'typescript', 'nodejs', 'js', 'ts', 'jsconfig', 'tsconfig',
-  'python',
-  'shell', 'powershell', 'console', 'command', 'bat',
+  'python', 'shell', 'powershell', 'console', 'command', 'bat',
   'git', 'github', 'diff',
   'markdown', 'document', 'readme', 'license', 'settings', 'tune', 'url', 'log', 'pdf', 'text',
   'docker', 'npm', 'yarn', 'vscode', 'test-js', 'test-jsx', 'test-ts', 'test-tsx', 'eslint', 'prettier',
@@ -48,13 +47,13 @@ const KEEP_FILE_BASE = new Set([
 
 function shouldKeep(filename) {
   if (filename.endsWith('.clone.svg')) return false;
-  const name = filename.replace(/\.svg$/, '');
-  const base = name.replace(/_light$/, '');
+  const id = filename.replace(/\.svg$/, '');
+  const base = id.replace(/_light$/, '');
 
   if (filename.startsWith('folder')) {
-    return KEEP_FOLDER_ICONS.has(name) || KEEP_FOLDER_ICONS.has(base);
+    return KEEP_FOLDER_ICONS.has(id);
   }
-  return KEEP_FILE_BASE.has(base) || KEEP_FILE_BASE.has(name);
+  return KEEP_FILE_BASE.has(id) || KEEP_FILE_BASE.has(base);
 }
 
 function optimizeIcons() {
@@ -70,23 +69,65 @@ function optimizeIcons() {
       deleted++;
     }
   }
-  console.log(`Optimized SVG icons: kept ${kept}, pruned ${deleted}`);
+  console.log(`SVG icons in material directory: kept ${kept}, pruned ${deleted}`);
 
-  // Update themes/bml-icons.json
-  const theme = JSON.parse(fs.readFileSync(THEME_PATH, 'utf8'));
-  const keptIconDefs = new Set();
+  // Base theme from dcecf53
+  let baseTheme;
+  try {
+    const raw = execSync('git show dcecf53:themes/bml-icons.json', { cwd: ROOT, maxBuffer: 30 * 1024 * 1024 }).toString('utf8');
+    baseTheme = JSON.parse(raw);
+  } catch (e) {
+    baseTheme = JSON.parse(fs.readFileSync(THEME_PATH, 'utf8'));
+  }
 
-  for (const [key, val] of Object.entries(theme.iconDefinitions)) {
-    const iconName = path.basename(val.iconPath || '');
-    if (shouldKeep(iconName)) {
-      keptIconDefs.add(key);
+  const currentFiles = fs.readdirSync(MATERIAL_DIR);
+  const availableIcons = new Set(currentFiles.map(f => f.replace(/\.svg$/, '')));
+
+  // 1. Build iconDefinitions
+  const iconDefinitions = {};
+  for (const iconId of availableIcons) {
+    iconDefinitions[iconId] = {
+      iconPath: './../app/icons/material/' + iconId + '.svg'
+    };
+  }
+
+  // 2. Base folder mappings (filtered by kept icons)
+  const folderNames = {};
+  const folderNamesExpanded = {};
+  for (const [k, v] of Object.entries(baseTheme.folderNames || {})) {
+    if (availableIcons.has(v) && availableIcons.has(v + '-open')) {
+      folderNames[k] = v;
+      folderNamesExpanded[k] = v + '-open';
     }
   }
 
-  // Generate clean folder names
-  const cleanFolderNames = {};
-  const cleanFolderNamesExp = {};
+  // 3. Workspace explicit overrides
+  const customFolders = {
+    'knowledge': 'folder-docs',
+    '.knowledge': 'folder-docs',
+    'scratch': 'folder-temp',
+    '.scratch': 'folder-temp',
+    '.agents': 'folder-skills',
+    '.vscode': 'folder-vscode',
+    '.vscode-test': 'folder-vscode',
+    'app': 'folder-app',
+    'test': 'folder-test',
+    'tests': 'folder-test',
+    'logs': 'folder-log',
+    'node_modules': 'folder-node',
+    'dist': 'folder-dist',
+    'scripts': 'folder-scripts',
+    'themes': 'folder-theme',
+    '.github': 'folder-github'
+  };
+  for (const [k, v] of Object.entries(customFolders)) {
+    if (availableIcons.has(v) && availableIcons.has(v + '-open')) {
+      folderNames[k] = v;
+      folderNamesExpanded[k] = v + '-open';
+    }
+  }
 
+  // 4. Dynamic CPQ/BML domain concepts
   for (const concept of CPQ_BML_DOMAIN_CONCEPTS) {
     const variations = expandVariations(concept);
     for (const prefix of ['bml', 'cpq']) {
@@ -95,48 +136,49 @@ function optimizeIcons() {
     }
     for (const v of variations) {
       const icon = matchFolderIcon(v);
-      if (icon && keptIconDefs.has(icon)) {
-        cleanFolderNames[v] = icon;
-        cleanFolderNamesExp[v] = icon + '-open';
+      if (icon && availableIcons.has(icon) && availableIcons.has(icon + '-open')) {
+        folderNames[v] = icon;
+        folderNamesExpanded[v] = icon + '-open';
       }
     }
   }
 
-  const newTheme = {
-    iconDefinitions: {},
-    folderNames: cleanFolderNames,
-    folderNamesExpanded: cleanFolderNamesExp,
-    rootFolderNames: theme.rootFolderNames || {},
-    rootFolderNamesExpanded: theme.rootFolderNamesExpanded || {},
-    fileExtensions: {},
-    fileNames: {},
-    languageIds: {},
-    light: theme.light || {},
-    highContrast: theme.highContrast || {},
-    file: theme.file || 'file',
-    hidesExplorerArrows: theme.hidesExplorerArrows || false,
-    folder: theme.folder || 'folder',
-    folderExpanded: theme.folderExpanded || 'folder-open',
-    rootFolder: theme.rootFolder || 'folder-root',
-    rootFolderExpanded: theme.rootFolderExpanded || 'folder-root-open'
-  };
+  // 5. File extensions and names
+  const fileExtensions = {};
+  for (const [k, v] of Object.entries(baseTheme.fileExtensions || {})) {
+    if (availableIcons.has(v)) fileExtensions[k] = v;
+  }
+  const fileNames = {};
+  for (const [k, v] of Object.entries(baseTheme.fileNames || {})) {
+    if (availableIcons.has(v)) fileNames[k] = v;
+  }
+  const languageIds = {};
+  for (const [k, v] of Object.entries(baseTheme.languageIds || {})) {
+    if (availableIcons.has(v)) languageIds[k] = v;
+  }
 
-  for (const [k, v] of Object.entries(theme.iconDefinitions)) {
-    if (keptIconDefs.has(k)) newTheme.iconDefinitions[k] = v;
-  }
-  for (const [k, v] of Object.entries(theme.fileExtensions || {})) {
-    if (keptIconDefs.has(v)) newTheme.fileExtensions[k] = v;
-  }
-  for (const [k, v] of Object.entries(theme.fileNames || {})) {
-    if (keptIconDefs.has(v)) newTheme.fileNames[k] = v;
-  }
-  for (const [k, v] of Object.entries(theme.languageIds || {})) {
-    if (keptIconDefs.has(v)) newTheme.languageIds[k] = v;
-  }
+  const newTheme = {
+    iconDefinitions,
+    folderNames,
+    folderNamesExpanded,
+    rootFolderNames: baseTheme.rootFolderNames || {},
+    rootFolderNamesExpanded: baseTheme.rootFolderNamesExpanded || {},
+    fileExtensions,
+    fileNames,
+    languageIds,
+    light: baseTheme.light || {},
+    highContrast: baseTheme.highContrast || {},
+    file: 'file',
+    hidesExplorerArrows: false,
+    folder: 'folder',
+    folderExpanded: 'folder-open',
+    rootFolder: 'folder-root',
+    rootFolderExpanded: 'folder-root-open'
+  };
 
   fs.writeFileSync(THEME_PATH, JSON.stringify(newTheme, null, 2) + '\n', 'utf8');
   fs.writeFileSync(MIN_THEME_PATH, JSON.stringify(newTheme) + '\n', 'utf8');
-  console.log(`Cleaned bml-icons.json: ${Object.keys(newTheme.iconDefinitions).length} icons, ${Object.keys(newTheme.folderNames).length} folder mappings.`);
+  console.log(`Generated complete bml-icons.json: ${Object.keys(iconDefinitions).length} icons, ${Object.keys(folderNames).length} folder mappings.`);
 }
 
 optimizeIcons();
