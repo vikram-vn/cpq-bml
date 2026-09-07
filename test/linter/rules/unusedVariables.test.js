@@ -64,23 +64,18 @@ suite('BML Linter Test Suite - Unused Variables & Hint Diagnostics', function() 
         assert.strictEqual(unusedDiags.length, 0, 'Exempt prefixes/suffixes/names should not produce unused warnings');
     });
 
-    test('Unused loop variable produces Information severity and bml-unused-loop-var code', () => {
+    test('Loop variable in for-in loop is treated as used and not flagged as unused', () => {
         const diagnostics = lintText(`
             items = string[]{"a", "b", "c"};
             count = 0;
-            for loopItem in items {
+            for each in items {
                 count = count + 1;
             }
             return string(count);
         `);
 
-        const loopDiag = diagnostics.find(d => d.code === 'bml-unused-loop-var');
-        assert.ok(loopDiag, 'Should flag unused loop variable with dedicated code');
-        assert.strictEqual(loopDiag.severity, vscode.DiagnosticSeverity.Information, 'Loop var should be Information severity');
-        assert.ok(loopDiag.tags && loopDiag.tags.includes(vscode.DiagnosticTag.Unnecessary), 'Loop var must have Unnecessary tag');
-
-        const normalUnused = diagnostics.find(d => d.code === 'bml-unused-variable' && d.message.includes('loopItem'));
-        assert.strictEqual(normalUnused, undefined, 'Should not duplicate as regular bml-unused-variable');
+        const loopDiag = diagnostics.find(d => (d.code === 'bml-unused-loop-var' || d.code === 'bml-unused-variable') && d.message.includes('each'));
+        assert.strictEqual(loopDiag, undefined, 'Loop variable each should be treated as used and not flagged as unused');
     });
 
     test('Property access does not count as variable usage', () => {

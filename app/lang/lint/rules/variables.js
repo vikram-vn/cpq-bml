@@ -67,8 +67,14 @@ function getDeclaredVariables(cleanText, doc) {
 
 const IGNORED_EXACT_NAMES = new Set([
   "dummy", "temp", "unused", "commerce", "util", "cpqjs", "cpqjsready",
-  "transaction", "line", "transactionline"
+  "transaction", "line", "transactionline", "each", "item", "record", "rec", "row", "key"
 ]);
+
+function isActionBmqlAssignment(cleanText, declIndex) {
+  if (!cleanText || declIndex < 0) return false;
+  const rhs = cleanText.slice(declIndex, Math.min(cleanText.length, declIndex + 200));
+  return /=\s*bmql\s*\(\s*["']\s*(?:UPDATE|MODIFY|INSERT|DELETE)\b/i.test(rhs);
+}
 
 function checkVariableDiagnostics(
   noStringsText,
@@ -94,8 +100,8 @@ function checkVariableDiagnostics(
     occurrencesByName.get(name).push(idx);
   }
 
-  if (cleanText && (cleanText.includes('$') || cleanText.includes('bmql') || cleanText.includes('BMQL'))) {
-    const bmqlVarRegex = /\$([a-zA-Z_]\w*)\b/g;
+  if (cleanText && (cleanText.includes('$') || /bmql/i.test(cleanText))) {
+    const bmqlVarRegex = /\$\{?([a-zA-Z_]\w*)\}?\b/g;
     let bmqlMatch;
     while ((bmqlMatch = bmqlVarRegex.exec(cleanText)) !== null) {
       const name = bmqlMatch[1];
@@ -117,6 +123,20 @@ function checkVariableDiagnostics(
     }
 
     if (!isUsed) {
+      const isOnlyLoopVar = decls.every((d) => d.isLoopVar);
+      if (isOnlyLoopVar) {
+        // Loop variables in for-in loops (e.g. for each in rangeArray) are part of
+        // loop iteration syntax and are treated as used even if unreferenced in body.
+        return;
+      }
+
+      const firstDecl = decls[0];
+      if (isActionBmqlAssignment(cleanText, firstDecl.index)) {
+        // Action BMQL queries (UPDATE, MODIFY, INSERT, DELETE) require assignment in BML syntax
+        // but their return value is rarely consumed.
+        return;
+      }
+
       const lower = varName.toLowerCase();
       const isIgnoredUnused =
         IGNORED_EXACT_NAMES.has(lower) ||
@@ -129,31 +149,18 @@ function checkVariableDiagnostics(
         return;
       }
 
-      const firstDecl = decls[0];
-      const isOnlyLoopVar = decls.every((d) => d.isLoopVar);
       const startPos = doc.positionAt(firstDecl.index);
       const endPos = startPos.translate(0, varName.length);
       const range = new vs.Range(startPos, endPos);
 
-      if (isOnlyLoopVar) {
-        const diag = new vs.Diagnostic(
-          range,
-          `Unused loop variable: '${varName}' is never referenced inside its loop body. This is fine if you only need to repeat the loop once per item - otherwise check for a typo.`,
-          vs.DiagnosticSeverity.Information,
-        );
-        diag.code = "bml-unused-loop-var";
-        if (vs.DiagnosticTag && vs.DiagnosticTag.Unnecessary) diag.tags = [vs.DiagnosticTag.Unnecessary];
-        diagnostics.push(diag);
-      } else {
-        const diag = new vs.Diagnostic(
-          range,
-          `Unused variable: ${varName}`,
-          vs.DiagnosticSeverity.Hint,
-        );
-        diag.code = "bml-unused-variable";
-        if (vs.DiagnosticTag && vs.DiagnosticTag.Unnecessary) diag.tags = [vs.DiagnosticTag.Unnecessary];
-        diagnostics.push(diag);
-      }
+      const diag = new vs.Diagnostic(
+        range,
+        `Unused variable: ${varName}`,
+        vs.DiagnosticSeverity.Hint,
+      );
+      diag.code = "bml-unused-variable";
+      if (vs.DiagnosticTag && vs.DiagnosticTag.Unnecessary) diag.tags = [vs.DiagnosticTag.Unnecessary];
+      diagnostics.push(diag);
     }
   });
 

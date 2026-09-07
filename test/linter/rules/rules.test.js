@@ -161,7 +161,7 @@ suite('BML Linter Test Suite - rules', function() {
         assert.strictEqual(errorDiag.range.start.character, 0, 'Should highlight the full line starting from 0');
     });
 
-    test('Linter softens an unused for-loop variable to an informational notice, distinct from a forgotten assignment', () => {
+    test('Linter treats for-loop variables as used when iterating', () => {
         const diagnostics = lintText(`
             count = 0;
             for i in someArray {
@@ -171,13 +171,8 @@ suite('BML Linter Test Suite - rules', function() {
             return "";
         `);
 
-        const loopDiag = diagnostics.find(d => d.code === 'bml-unused-loop-var');
-        assert.ok(loopDiag, 'Should flag the unused loop variable with the dedicated code');
-        assert.strictEqual(loopDiag.severity, require('vscode').DiagnosticSeverity.Information);
-        assert.ok(loopDiag.message.includes("'i'"));
-
-        const warningDiag = diagnostics.find(d => d.message === 'Unused variable: i');
-        assert.strictEqual(warningDiag, undefined, 'Should not also flag it as a plain Warning-level unused variable');
+        const loopDiag = diagnostics.find(d => (d.code === 'bml-unused-loop-var' || d.code === 'bml-unused-variable') && d.message.includes('i'));
+        assert.strictEqual(loopDiag, undefined, 'Should not flag loop variable i as unused');
     });
 
     test('Linter recognizes isnull()/empty-string checks as valid numericality validation before atof/atoi', () => {
