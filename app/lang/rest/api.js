@@ -4,11 +4,48 @@ const { request } = require("./client");
 const {
   getBaseUrl,
   getRestVersion,
+  getEffectiveRestVersion,
   getCommerceProcess,
   getCommerceDocument,
   getAuthHeader,
   getSettings,
 } = require("./config");
+
+// Never emit instance links, hypermedia links (hrefs), or user credentials in REST API responses
+const SENSITIVE_KEY_REGEX = /^(?:password|token|authHeader|authorization|cookie|set-cookie|sessionId|_user_session_id|webSvcsPassword)$/i;
+
+function sanitizeRestResponse(data, baseUrl) {
+  if (data === null || data === undefined) return data;
+
+  if (typeof data === "string") {
+    let text = data;
+    if (baseUrl) {
+      text = text.split(baseUrl).join("");
+    }
+    text = text.replace(/https?:\/\/[a-zA-Z0-9.-]+(?:\.bigmachines|\.oracle(?:cloud)?)\.com(?::\d+)?/gi, "");
+    return text;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map((item) => sanitizeRestResponse(item, baseUrl));
+  }
+
+  if (typeof data === "object") {
+    const cleaned = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (key === "links" || key === "href" || key === "referencesUrl") {
+        continue;
+      }
+      if (SENSITIVE_KEY_REGEX.test(key)) {
+        continue;
+      }
+      cleaned[key] = sanitizeRestResponse(value, baseUrl);
+    }
+    return cleaned;
+  }
+
+  return data;
+}
 
 function functionsPath(vscode, metadata) {
   const version = getRestVersion(vscode);
@@ -69,7 +106,7 @@ async function call(context, vscode, { path, method, query, body }, transport) {
     logFilePath = pathLib.join(logsDir, logFileName);
   }
 
-  return request({
+  const response = await request({
     baseUrl,
     path,
     method,
@@ -79,6 +116,12 @@ async function call(context, vscode, { path, method, query, body }, transport) {
     logFilePath,
     ...(transport ? { transport } : {}),
   });
+
+  if (response && response.body) {
+    response.body = sanitizeRestResponse(response.body, baseUrl);
+  }
+
+  return response;
 }
 
 // GET /rest/<version>/bml/library/functions?offset=&limit= -> { items, offset, limit, count, hasMore }
@@ -327,9 +370,7 @@ function searchBmlScripts(
   } = {},
   transport,
 ) {
-  const version = getRestVersion(vscode);
-  const verNum = parseInt((version || "").replace(/^v/i, ""), 10);
-  const effectiveVersion = !isNaN(verNum) && verNum >= 19 ? version : "v19";
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
 
   let q = rawQ;
   if (!q && query) {
@@ -357,9 +398,7 @@ function searchBmlScripts(
 }
 
 function commerceDocumentsPath(vscode, process = "oraclecpqo", document = "transaction") {
-  const version = getRestVersion(vscode);
-  const verNum = parseInt((version || "").replace(/^v/i, ""), 10);
-  const effectiveVersion = !isNaN(verNum) && verNum >= 19 ? version : "v19";
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
   const proc = process ? process.charAt(0).toUpperCase() + process.slice(1) : "Oraclecpqo";
   const doc = document ? document.charAt(0).toUpperCase() + document.slice(1) : "Transaction";
   return `/rest/${effectiveVersion}/commerceDocuments${proc}${doc}`;
@@ -461,4 +500,6 @@ module.exports = {
   searchBmlScripts,
   getTransactions,
   listTransactions: getTransactions,
+  getEffectiveRestVersion,
+  sanitizeRestResponse,
 };

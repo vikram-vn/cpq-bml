@@ -34,4 +34,57 @@ suite("MCP proxy - createCapturingTerminal", () => {
     terminal.writeLine("\x1b[32mok\x1b[0m");
     assert.deepStrictEqual(getLines(), ["ok"]);
   });
+
+  test("scrubs instance URLs from captured lines returned to MCP", () => {
+    const { terminal, getLines } = createCapturingTerminal(undefined);
+    terminal.writeLine("Connecting to https://myinstance.bigmachines.com/rest/v18/currentUser");
+    terminal.writeLine("Calling https://prod.oracle.com/rest/v19/commerce");
+    assert.deepStrictEqual(getLines(), [
+      "Connecting to [INSTANCE_URL]/rest/v18/currentUser",
+      "Calling [INSTANCE_URL]/rest/v19/commerce",
+    ]);
+  });
 });
+
+const { jsonResult, scrubForMcp } = require("../../app/lang/mcp/jsonResult");
+
+suite("MCP jsonResult - privacy sanitization", () => {
+  test("scrubs instance URLs, hypermedia links, and credentials from MCP tool output", () => {
+    const payload = {
+      success: true,
+      site: "https://myinstance.bigmachines.com",
+      links: [{ rel: "self", href: "https://myinstance.bigmachines.com/rest" }],
+      href: "https://myinstance.bigmachines.com/rest",
+      password: "secretPassword",
+      token: "secretToken",
+      authHeader: "Bearer secret",
+      cookie: "session=123",
+      items: [
+        {
+          id: 1,
+          endpoint: "https://myinstance.oracle.com/rest/v19/bml",
+          links: [{ rel: "self", href: "https://myinstance.oracle.com" }],
+          token: "bad",
+        },
+      ],
+    };
+
+    const clean = scrubForMcp(payload);
+    assert.strictEqual(clean.site, "[INSTANCE_URL]");
+    assert.strictEqual(clean.links, undefined);
+    assert.strictEqual(clean.href, undefined);
+    assert.strictEqual(clean.password, undefined);
+    assert.strictEqual(clean.token, undefined);
+    assert.strictEqual(clean.authHeader, undefined);
+    assert.strictEqual(clean.cookie, undefined);
+    assert.strictEqual(clean.items[0].links, undefined);
+    assert.strictEqual(clean.items[0].token, undefined);
+    assert.strictEqual(clean.items[0].endpoint, "[INSTANCE_URL]/rest/v19/bml");
+
+    const result = jsonResult(payload);
+    const content = JSON.parse(result.content[0].text);
+    assert.strictEqual(content.site, "[INSTANCE_URL]");
+    assert.strictEqual(content.password, undefined);
+  });
+});
+

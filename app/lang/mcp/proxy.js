@@ -92,9 +92,13 @@ function createToolVscodeContext(vscode, { bmlPath, quickPickSelector, warningCo
     return { vscodeProxy, messages };
 }
 
-// Strips ANSI color codes so the tool result's log text is plain.
+const INSTANCE_URL_REGEX = /https?:\/\/[a-zA-Z0-9.-]+(?:\.bigmachines|\.oracle(?:cloud)?)\.com(?::\d+)?/gi;
+
+// Strips ANSI color codes and scrubs instance URLs so the tool result's log text is clean.
 function stripAnsi(text) {
-    return String(text).replace(/\x1b\[[0-9;]*m/g, '');
+    return String(text)
+        .replace(/\x1b\[[0-9;]*m/g, '')
+        .replace(INSTANCE_URL_REGEX, '[INSTANCE_URL]');
 }
 
 // Captures every line for the tool result, and forwards live to realTerminal if provided.

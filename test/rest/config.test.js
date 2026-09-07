@@ -255,4 +255,33 @@ suite("BML REST config", () => {
       assert.strictEqual(result.reason, "config");
     });
   });
+
+  suite("getEffectiveRestVersion", () => {
+    test("returns configured version if >= minVersion (19)", () => {
+      assert.strictEqual(config.getEffectiveRestVersion("v19"), "v19");
+      assert.strictEqual(config.getEffectiveRestVersion("v20"), "v20");
+      assert.strictEqual(config.getEffectiveRestVersion("V21"), "V21");
+    });
+
+    test("defaults to v19 if configured version is lower than minVersion", () => {
+      assert.strictEqual(config.getEffectiveRestVersion("v18"), "v19");
+      assert.strictEqual(config.getEffectiveRestVersion("v12"), "v19");
+      assert.strictEqual(config.getEffectiveRestVersion(""), "v19");
+      assert.strictEqual(config.getEffectiveRestVersion(null), "v19");
+    });
+
+    test("reads from vscode configuration object", () => {
+      const vscodeV18 = createFakeVscode({ config: { "rest.restVersion": "v18" } });
+      assert.strictEqual(config.getEffectiveRestVersion(vscodeV18), "v19");
+
+      const vscodeV22 = createFakeVscode({ config: { "rest.restVersion": "v22" } });
+      assert.strictEqual(config.getEffectiveRestVersion(vscodeV22), "v22");
+    });
+
+    test("honors custom minVersion argument", () => {
+      assert.strictEqual(config.getEffectiveRestVersion("v18", 16), "v18");
+      assert.strictEqual(config.getEffectiveRestVersion("v15", 16), "v16");
+    });
+  });
 });
+

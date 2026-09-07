@@ -460,6 +460,64 @@ suite("BML REST api", () => {
       assert.strictEqual(api.listTransactions, api.getTransactions);
     });
   });
+
+  suite("sanitizeRestResponse", () => {
+    test("strips links, href, referencesUrl, credentials, and instance URL from REST responses", () => {
+      const baseUrl = "https://sitename.bigmachines.com";
+      const dirty = {
+        links: [{ rel: "canonical", href: `${baseUrl}/rest/v19/bml/scripts` }],
+        referencesUrl: `${baseUrl}/rest/v19/references`,
+        password: "secretPassword",
+        token: "secretToken",
+        _user_session_id: "xyz123",
+        detail: `Failed on ${baseUrl}/rest/v18/endpoint`,
+        items: [
+          {
+            variableName: "myFunc",
+            links: [{ rel: "self", href: `${baseUrl}/rest/v18/bml/library/functions/myFunc` }],
+            href: `${baseUrl}/rest/v18/bml/library/functions/myFunc`,
+            token: "leak",
+          },
+        ],
+      };
+
+      const clean = api.sanitizeRestResponse(dirty, baseUrl);
+      assert.strictEqual(clean.links, undefined);
+      assert.strictEqual(clean.referencesUrl, undefined);
+      assert.strictEqual(clean.password, undefined);
+      assert.strictEqual(clean.token, undefined);
+      assert.strictEqual(clean._user_session_id, undefined);
+      assert.strictEqual(clean.items[0].links, undefined);
+      assert.strictEqual(clean.items[0].href, undefined);
+      assert.strictEqual(clean.items[0].token, undefined);
+      assert.strictEqual(clean.items[0].variableName, "myFunc");
+      assert.ok(!clean.detail.includes(baseUrl));
+    });
+
+    test("call() automatically sanitizes response body", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      const cannedResponse = {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({
+          variableName: "testFunc",
+          links: [{ rel: "self", href: "https://sitename.bigmachines.com/rest/v18/testFunc" }],
+          password: "plainPassword",
+        }),
+      };
+      const transport = async (opts) => {
+        sink.captured = opts;
+        return cannedResponse;
+      };
+
+      const result = await api.getLibraryFunction(fakeContext(), vscode, "testFunc", transport);
+      assert.strictEqual(result.body.links, undefined);
+      assert.strictEqual(result.body.password, undefined);
+      assert.strictEqual(result.body.variableName, "testFunc");
+    });
+  });
 });
+
 
 

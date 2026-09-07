@@ -78,6 +78,17 @@ function getRestVersion(vscode) {
     return getSettings(vscode).restVersion;
 }
 
+function getEffectiveRestVersion(vscodeOrVersion, minVersion = 19) {
+    let version = '';
+    if (typeof vscodeOrVersion === 'string') {
+        version = vscodeOrVersion;
+    } else if (vscodeOrVersion && typeof vscodeOrVersion === 'object') {
+        version = getRestVersion(vscodeOrVersion);
+    }
+    const verNum = parseInt((version || '').replace(/^v/i, ''), 10);
+    return !isNaN(verNum) && verNum >= minVersion ? version : `v${minVersion}`;
+}
+
 function getCommerceProcess(vscode) {
     return getSettings(vscode).commerceProcess;
 }
@@ -293,6 +304,7 @@ module.exports = {
     getSettings,
     getBaseUrl,
     getRestVersion,
+    getEffectiveRestVersion,
     getCommerceProcess,
     getCommerceDocument,
     getAuthHeader,
