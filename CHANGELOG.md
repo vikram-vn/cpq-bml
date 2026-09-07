@@ -4,6 +4,18 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.77.0] - 2026-09-07
+
+### Added
+
+- Add BML web crawler utility to fetch and convert documentation to markdown.
+- Introduce dynamic folder icons, CPQ documentation crawler, and project spelling dictionary support.
+- Add BML logo assets and generation script.
+- Add icon definitions and icon optimization script.
+- Add new material folder icons to library.
+- Implement icon set management with new configuration, optimization script, and packaging workflow.
+- Introduce BML icon set with build script, language definitions, and folder rules.
+
 ## [1.76.0] - 2026-09-06
 
 ### Added
@@ -79,9 +91,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Implement BML style code actions and add initial beautifier infrastructure with tests.
 - Implement BML static type checking for variable reassignments and binary expressions.
-
-## [1.67.0] - 2026-08-30
-
-### Added
-
-- Add BML language keyword and constant hovers with supporting tests.
