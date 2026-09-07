@@ -14,7 +14,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 # ── 1. Dictionary Compression ───────────────────────────────────────────────
 SPELLCHECK_DIR = os.path.join(ROOT, "app", "lang", "spell-check")
-DICT_FILES = ["bml-words.txt", "english-words.txt"]
+DICT_FILES = ["bml-words.txt", "cpq-words.txt", "english-words.txt"]
 
 def build_dictionaries():
     for file_name in DICT_FILES:

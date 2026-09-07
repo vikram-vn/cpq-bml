@@ -14,6 +14,7 @@ SPELLCHECK_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "app", "lan
 
 FILES_TO_COMPRESS = [
     "bml-words.txt",
+    "cpq-words.txt",
     "english-words.txt",
 ]
 

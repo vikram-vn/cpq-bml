@@ -51,7 +51,7 @@ async function compileExtension() {
 
     // 2. Dictionaries (.txt -> .txt.br)
     const spellCheckDir = path.join(ROOT, 'app', 'lang', 'spell-check');
-    const dictFiles = ['bml-words.txt', 'english-words.txt'];
+    const dictFiles = ['bml-words.txt', 'cpq-words.txt', 'english-words.txt'];
     for (const file of dictFiles) {
         const srcPath = path.join(spellCheckDir, file);
         const outPath = srcPath + '.br';

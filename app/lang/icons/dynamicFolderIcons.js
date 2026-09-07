@@ -176,18 +176,17 @@ function scanDirFolders(rootDir, maxDepth = 8, customIgnores = null, contextualA
           dirs.add(e.name);
 
           // Contextual CPQ catalog hierarchy detection:
-          // e.g. catalog-definition / all-product-families / [product-family] / [model] / ...
+          // e.g. catalog-definition / all-product-families / <product-family> / <model> / ...
           if (contextualAssignments && typeof contextualAssignments.set === 'function') {
             const p = parentName.toLowerCase();
             const gp = grandParentName.toLowerCase();
             if (p === 'all-product-families' || p === 'product-families') {
-              // Direct child of all-product-families is a Product Family
-              if (!matchFolderIcon(e.name)) {
-                contextualAssignments.set(e.name, 'folder-cluster');
-              }
+              // Any direct child of all-product-families is a Product Family (arbitrary name)
+              contextualAssignments.set(e.name, 'folder-cluster');
             } else if (gp === 'all-product-families' || gp === 'product-families') {
-              // Child of a product family is a Model / Product Line
-              if (!matchFolderIcon(e.name)) {
+              // Any child of a Product Family is a Model (arbitrary name, unless it is a rules/actions subfolder)
+              const matched = matchFolderIcon(e.name);
+              if (!matched || matched === 'folder-cluster' || matched === 'folder-container') {
                 contextualAssignments.set(e.name, 'folder-cluster');
               }
             }
