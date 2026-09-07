@@ -5,6 +5,7 @@ building, and AI skills compression in a single Python process with smart
 mtime checks so unchanged assets are skipped instantaneously.
 """
 import os
+import sys
 import json
 import shutil
 import brotli
@@ -109,18 +110,40 @@ def is_ai_up_to_date():
 
     return True
 
-def process_ai_skills():
-    if is_ai_up_to_date():
+import argparse
+import subprocess
+
+def process_ai_skills(force_rebuild=False):
+    if not force_rebuild and is_ai_up_to_date():
         return
     build_skills()
     compress_ai_main()
 
 # ── Main Entry Point ────────────────────────────────────────────────────────
 def main():
+    parser = argparse.ArgumentParser(description="Consolidated fast build runner for packaging assets.")
+    parser.add_argument(
+        "--fetch-docs",
+        action="store_true",
+        help="Fetch online Oracle CPQ REST documentation pages before building AI skills."
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Force rebuild and recompression of all assets regardless of mtime."
+    )
+    args = parser.parse_args()
+
+    if args.fetch_docs:
+        crawler_path = os.path.join(ROOT, "scripts", "docs", "generate_cpq_rest_knowledge.py")
+        print("Fetching online Oracle CPQ REST documentation...")
+        subprocess.run([sys.executable, crawler_path, "--all"], check=True)
+
     build_dictionaries()
     minify_css()
     minify_json()
-    process_ai_skills()
+    process_ai_skills(force_rebuild=args.force or args.fetch_docs)
 
 if __name__ == "__main__":
     main()
+

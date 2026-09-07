@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-crawl_playwright_cpq.py
+crawl_cpq_words.py
 
 Crawls the entire Oracle CPQ documentation web application using Playwright
 in a real headless browser. Extracts the visible rendered innerText from

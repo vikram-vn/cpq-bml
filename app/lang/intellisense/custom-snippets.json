@@ -327,5 +327,19 @@
       "sb = stringbuilder();\nfor line in transactionLine {\n\tsbappend(sb, line._part_number);\n\tsbappend(sb, \", \");\n}\nallParts = sbtostring(sb);"
     ],
     "notes": "Oracle CPQ Best Practice: High-performance string concatenation in loops using stringbuilder."
+  },
+  "rest-collection-query": {
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Accept\", \"application/json\");\nput(${1:headers}, \"Authorization\", \"Bearer \" ~ ${2:accessToken});\n\n// Query collection with filter (q), order, and pagination\n${3:queryParams} = dict(\"string\");\nput(${3:queryParams}, \"q\", \"{${4:status_t}:{\\\"$eq\\\":\\\"${5:CREATED}\\\"}}\");\nput(${3:queryParams}, \"orderBy\", \"${6:dateModified_t}:desc\");\nput(${3:queryParams}, \"limit\", \"${7:25}\");\nput(${3:queryParams}, \"offset\", \"${8:0}\");\n\n${9:url} = ${10:baseUrl} ~ \"/rest/v19/commerceDocumentsOraclecpqoTransaction?\" ~ makeurlparam(${3:queryParams});\n${11:res} = urldata(${9:url}, \"GET\", ${1:headers});\n\nif (containskey(${11:res}, \"Status-Code\") AND startswith(get(${11:res}, \"Status-Code\"), \"200\")) {\n\t${12:resJson} = json(get(${11:res}, \"Message-Body\"));\n\t${13:items} = jsonget(${12:resJson}, \"items\", \"jsonarray\");\n\t${0}\n} else {\n\tthrowerror(\"CPQ REST query failed: \" ~ get(${11:res}, \"Status-Code\"));\n}",
+    "examples": [
+      "headers = dict(\"string\");\nput(headers, \"Accept\", \"application/json\");\nput(headers, \"Authorization\", \"Bearer \" ~ token);\nparams = dict(\"string\");\nput(params, \"q\", \"{status_t:{\\\"$eq\\\":\\\"CREATED\\\"}}\");\nput(params, \"limit\", \"25\");\nurl = baseUrl ~ \"/rest/v19/commerceDocumentsOraclecpqoTransaction?\" ~ makeurlparam(params);\nres = urldata(url, \"GET\", headers);"
+    ],
+    "notes": "Query an Oracle CPQ REST collection with MongoDB-style filter (q), sorting (orderBy), and pagination."
+  },
+  "rest-post-transaction": {
+    "syntax": "${1:headers} = dict(\"string\");\nput(${1:headers}, \"Content-Type\", \"application/json\");\nput(${1:headers}, \"Accept\", \"application/json\");\nput(${1:headers}, \"Authorization\", \"Bearer \" ~ ${2:accessToken});\n\n${3:payload} = json();\njsonput(${3:payload}, \"${4:processVarName}\", \"${5:oraclecpqo}\");\n\n${6:url} = ${7:baseUrl} ~ \"/rest/v19/commerceDocumentsOraclecpqoTransaction\";\n${8:res} = urldata(${6:url}, \"POST\", ${1:headers}, jsontostr(${3:payload}));\n\n${9:status} = get(${8:res}, \"Status-Code\");\nif (startswith(${9:status}, \"200\") OR startswith(${9:status}, \"201\")) {\n\t${10:resBody} = json(get(${8:res}, \"Message-Body\"));\n\t${0}\n} else {\n\tthrowerror(\"Failed to create CPQ transaction: \" ~ ${9:status});\n}",
+    "examples": [
+      "headers = dict(\"string\");\nput(headers, \"Content-Type\", \"application/json\");\nput(headers, \"Authorization\", \"Bearer \" ~ token);\npayload = json();\nres = urldata(baseUrl ~ \"/rest/v19/commerceDocumentsOraclecpqoTransaction\", \"POST\", headers, jsontostr(payload));"
+    ],
+    "notes": "Create an Oracle CPQ transaction or child resource via REST POST with status code validation."
   }
 }

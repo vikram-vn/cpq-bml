@@ -522,7 +522,7 @@
     "package": "node scripts/build/package.js",
     "publish": "npx @vscode/vsce publish --no-yarn --no-dependencies --allow-missing-repository --skip-license",
     "crawl:docs": "python scripts/docs/bml_crawler/crawler.py",
-    "crawl:cpq": "python scripts/docs/crawl_playwright_cpq.py",
+    "crawl:cpq": "python scripts/docs/crawl_cpq_words.py",
     "generate:intellisense": "python scripts/bml_intellisense/generate_intellisense.py",
     "generate:docs": "npm run crawl:docs && npm run generate:intellisense",
     "generate:icons": "node scripts/generate/generate_dynamic_icons.js",
