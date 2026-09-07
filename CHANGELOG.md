@@ -4,6 +4,16 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.78.0] - 2026-09-07
+
+### Added
+
+- Implement MCP tool integration with secure output scrubbing and headless VS Code proxying.
+- Add transaction retrieval module and register MCP tools for BML search and commerce lookups.
+- Add commerce deployment icon and context tracking to distinguish between commerce and utility BML files.
+- Implement REST pull command for library and commerce functions.
+- Add unused variable linter rule with comprehensive test coverage.
+
 ## [1.77.0] - 2026-09-07
 
 ### Added
@@ -84,10 +94,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Implement linting aggregation logic for CPQ BML best practices and language-specific rules.
 - Implement linting engine with performance benchmarks and core static analysis rules.
-
-## [1.68.0] - 2026-08-31
-
-### Added
-
-- Implement BML style code actions and add initial beautifier infrastructure with tests.
-- Implement BML static type checking for variable reassignments and binary expressions.
