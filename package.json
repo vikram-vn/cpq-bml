@@ -183,7 +183,7 @@
       {
         "command": "cpqBml.rest.deployCommerceProcess",
         "title": "CPQ-BML: Deploy Commerce Process Setup",
-        "icon": "app/icons/deploy.svg"
+        "icon": "app/icons/deploy-commerce.svg"
       },
       {
         "command": "cpqBml.rest.deployCurrentFile",
@@ -292,7 +292,7 @@
         },
         {
           "command": "cpqBml.rest.deployCommerceProcess",
-          "when": "resourceLangId == bml && !cpqBml.activeFileIsUtil && config.cpqBml.connection.enabled && cpqBml.connection.configured",
+          "when": "resourceLangId == bml && cpqBml.activeFileIsCommerce && config.cpqBml.connection.enabled && cpqBml.connection.configured",
           "group": "navigation@6"
         },
         {

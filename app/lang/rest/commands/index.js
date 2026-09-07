@@ -50,23 +50,36 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
       "cpqBml.activeFileIsUtil",
       false,
     );
+    vscode.commands.executeCommand(
+      "setContext",
+      "cpqBml.activeFileIsCommerce",
+      false,
+    );
   };
 
   if (!filePath || !filePath.endsWith(".bml")) {
     hide();
     return;
   }
-  const meta = metadataLib.readMetadata(
+  let meta = metadataLib.readMetadata(
     metadataLib.bmlPathToMetaPath(filePath),
   );
-  if (!meta) {
-    hide();
-    return;
+  if (!meta && filePath.endsWith("_ai.bml")) {
+    const canonicalPath = filePath.replace(/_ai\.bml$/i, ".bml");
+    meta = metadataLib.readMetadata(
+      metadataLib.bmlPathToMetaPath(canonicalPath),
+    );
   }
 
-  const isCommerce = !!meta.commerceDocument;
+  const inferred = metadataLib.inferCommerceFromPath(filePath);
+  const isCommerce = meta ? !!meta.commerceDocument : !!inferred;
   const isUtil = !isCommerce;
 
+  vscode.commands.executeCommand(
+    "setContext",
+    "cpqBml.activeFileIsCommerce",
+    isCommerce,
+  );
   vscode.commands.executeCommand(
     "setContext",
     "cpqBml.activeFileIsUtil",
@@ -74,16 +87,13 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
   );
 
   if (isCommerce) {
-    if (!meta.isStandardFunction) {
-      hide();
-      return;
-    }
+    const isStandard = meta ? !!meta.isStandardFunction : false;
+    const isOverridden = meta ? !!meta.isOverridden : false;
 
-    const isOverridden = !!meta.isOverridden;
     vscode.commands.executeCommand(
       "setContext",
       "cpqBml.activeFileIsStandard",
-      true,
+      isStandard,
     );
     vscode.commands.executeCommand(
       "setContext",
@@ -91,25 +101,29 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
       isOverridden,
     );
 
-    if (isOverridden) {
-      statusBarItem.text = "$(gear) Override";
-      statusBarItem.tooltip = `${meta.variableName} — standard function with your custom override. Click to remove override.`;
-      statusBarItem.backgroundColor = new vscode.ThemeColor(
-        "statusBarItem.warningBackground",
-      );
-      statusBarItem.command = "cpqBml.rest.removeOverride";
+    if (isStandard) {
+      if (isOverridden) {
+        statusBarItem.text = "$(gear) Override";
+        statusBarItem.tooltip = `${(meta && meta.variableName) || "Function"} — standard function with your custom override. Click to remove override.`;
+        statusBarItem.backgroundColor = new vscode.ThemeColor(
+          "statusBarItem.warningBackground",
+        );
+        statusBarItem.command = "cpqBml.rest.removeOverride";
+      } else {
+        statusBarItem.text = "$(gear) System";
+        statusBarItem.tooltip = `${(meta && meta.variableName) || "Function"} — read-only system function. Click to create an override.`;
+        statusBarItem.backgroundColor = new vscode.ThemeColor(
+          "statusBarItem.errorBackground",
+        );
+        statusBarItem.command = "cpqBml.rest.createOverride";
+      }
+      statusBarItem.show();
     } else {
-      statusBarItem.text = "$(gear) System";
-      statusBarItem.tooltip = `${meta.variableName} — read-only system function. Click to create an override.`;
-      statusBarItem.backgroundColor = new vscode.ThemeColor(
-        "statusBarItem.errorBackground",
-      );
-      statusBarItem.command = "cpqBml.rest.createOverride";
+      statusBarItem.hide();
     }
-    statusBarItem.show();
   } else {
-    const isStandard = !!meta.isStandardFunction;
-    const isOverridden = !!meta.isOverridden;
+    const isStandard = meta ? !!meta.isStandardFunction : false;
+    const isOverridden = meta ? !!meta.isOverridden : false;
 
     vscode.commands.executeCommand(
       "setContext",
@@ -125,26 +139,29 @@ function refreshBmlStatus(vscode, statusBarItem, filePath) {
     if (isStandard) {
       if (isOverridden) {
         statusBarItem.text = "$(gear) Overridden";
-        statusBarItem.tooltip = `${meta.variableName} — standard util function with your custom override. Click to remove override.`;
+        statusBarItem.tooltip = `${(meta && meta.variableName) || "Function"} — standard util function with your custom override. Click to remove override.`;
         statusBarItem.backgroundColor = new vscode.ThemeColor(
           "statusBarItem.warningBackground",
         );
         statusBarItem.command = "cpqBml.rest.removeOverride";
       } else {
         statusBarItem.text = "$(gear) System";
-        statusBarItem.tooltip = `${meta.variableName} — read-only system function. Click to create an override.`;
+        statusBarItem.tooltip = `${(meta && meta.variableName) || "Function"} — read-only system function. Click to create an override.`;
         statusBarItem.backgroundColor = new vscode.ThemeColor(
           "statusBarItem.errorBackground",
         );
         statusBarItem.command = "cpqBml.rest.createOverride";
       }
-    } else {
+      statusBarItem.show();
+    } else if (meta) {
       statusBarItem.text = "$(gear) Custom";
       statusBarItem.tooltip = `${meta.variableName} — custom BML utility function.`;
       statusBarItem.backgroundColor = undefined;
       statusBarItem.command = undefined;
+      statusBarItem.show();
+    } else {
+      statusBarItem.hide();
     }
-    statusBarItem.show();
   }
 }
 
@@ -265,6 +282,7 @@ function registerBmlRestCommands(context) {
 module.exports = {
   registerBmlRestCommands,
   refreshConnectionConfiguredContext,
+  refreshBmlStatus,
   runSetPassword,
   runSetAuthToken,
   runPullLibraryFunctions,

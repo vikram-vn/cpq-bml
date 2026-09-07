@@ -289,9 +289,22 @@ function inferCommerceFromPath(bmlFilePath) {
     const normalizedPath = (bmlFilePath || '').replace(/\\/g, '/');
     const segments = normalizedPath.split('/');
     const librariesIndex = segments.lastIndexOf('libraries');
-    if (librariesIndex >= 2 && librariesIndex < segments.length - 2) {
+    if (librariesIndex >= 2 && librariesIndex <= segments.length - 2) {
         const commerceDocument = segments[librariesIndex - 1];
         const commerceProcess = segments[librariesIndex - 2];
+        return { commerceProcess, commerceDocument };
+    }
+    const procIndex = segments.indexOf('commerceProcessSetups');
+    if (procIndex !== -1 && segments.length > procIndex + 4) {
+        const commerceProcess = segments[procIndex + 1];
+        const docIndex = segments.indexOf('documents', procIndex);
+        const commerceDocument = docIndex !== -1 && segments.length > docIndex + 1 ? segments[docIndex + 1] : 'transaction';
+        return { commerceProcess, commerceDocument };
+    }
+    const commerceIndex = segments.lastIndexOf('commerce');
+    if (commerceIndex !== -1 && segments.length > commerceIndex + 2) {
+        const commerceProcess = segments[commerceIndex + 1];
+        const commerceDocument = segments[commerceIndex + 2];
         return { commerceProcess, commerceDocument };
     }
     return null;
