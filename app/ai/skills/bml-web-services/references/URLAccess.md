@@ -109,7 +109,7 @@ print(get(response, "Message-Body")); // print the message body
 ---
 
 
-**Examples using urldata:**
+**Examples using urldata:**[CDATA[  ]]
 
 
 ## Send a GET request without a header

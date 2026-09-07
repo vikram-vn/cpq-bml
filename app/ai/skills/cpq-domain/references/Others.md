@@ -332,6 +332,8 @@ getoldvalue(variableName [, documentNumber])
 
 
 It will return empty string for the following cases:
+
+
 * When it is called from debugger
 * If the document with the given document number does not exist
 * If the variable with the given variable name does not exist in the document

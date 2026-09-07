@@ -333,16 +333,95 @@ metadata:
 You have access to tools to interact directly with CPQ BML code via the MCP Server:
 1. `get_connection_status`: Check if credentials and CPQ connection are configured and working (`testConnection: true`).
 2. `global_search_bml`: Search text across all remote BML scripts (libraries, rules, attributes) on CPQ.
-3. `pull_function`: Pull remote BML into the local AI working copy (`<variableName>_ai.bml`).
-4. `edit`: Modify the local working copy.
-5. `lint_function` / `validate_function`: Verify syntax locally and compile remotely on CPQ without saving.
-6. `debug_function`: Run remote tests with input parameters (`parameters: { ... }`, `printOnly: true`).
-7. `save_function`: Save the working copy changes to CPQ (`variableName: "..."`).
-8. `deploy_function` / `mass_deploy_util_functions` / `deploy_commerce_process`:
+3. `get_transactions`: Pull commerce transactions with filters (minimal `_id` and `transactionID_t`, no href links) to use in debugging commerce functions.
+4. `pull_function`: Pull remote BML into the local AI working copy (`<variableName>_ai.bml`).
+5. `edit`: Modify the local working copy.
+6. `lint_function` / `validate_function`: Verify syntax locally and compile remotely on CPQ without saving.
+7. `debug_function`: Run remote tests with input parameters (`parameters: { ... }`, `transactionId: "..."`, `printOnly: true`).
+8. `save_function`: Save the working copy changes to CPQ (`variableName: "..."`).
+9. `deploy_function` / `mass_deploy_util_functions` / `deploy_commerce_process`:
    - **MANDATORY HUMAN APPROVAL**: Deploying pushes changes directly to the live CPQ environment.
    - Calling deployment tools without `confirm: true` returns an error requiring human permission.
    - **Protocol**: You MUST ask the human user for explicit approval in chat first (e.g. "Do you approve deploying <function> to the live CPQ environment?").
    - Once the user explicitly approves in chat, re-invoke the tool with `confirm: true` (e.g. `{"variableName": "...", "confirm": true}`).
+""",
+    "cpq-rest-api": """---
+name: cpq-rest-api
+description: >-
+  Oracle CPQ REST API services, collection query filters (q parameter), sorting (orderBy),
+  pagination (limit, offset), hierarchical expansion (expand), and HTTP status codes.
+compatibility: Designed for VS Code with CPQ-BML extension
+metadata:
+  author: cpq-bml
+  version: "1.0"
+---
+# Oracle CPQ REST API Standards & Collection Operations
+
+### Query Filtering with `q` Parameter
+Oracle CPQ REST collections use MongoDB-style JSON syntax for filtering:
+```http
+GET /rest/v19/commerceDocumentsOraclecpqoTransaction?q={"status_t":{"$eq":"CREATED"}}
+```
+
+#### Comparison Operators:
+- `$eq` / `$ne`: Equality / inequality (`{"status_t":{"$eq":"CREATED"}}`)
+- `$gt` / `$gte`: Greater than / greater than or equal (`{"totalAmount_t":{"$gte":1000}}`)
+- `$lt` / `$lte`: Less than / less than or equal (`{"quantity":{"$lt":50}}`)
+- `$exists`: Field existence check (`{"createdBy":{"$exists":true}}`)
+
+#### Logical Operators:
+- `$and`: Conjunction of conditions
+  `?q={"$and":[{"status_t":{"$eq":"PENDING"}},{"totalAmount_t":{"$gt":500}}]}`
+- `$or`: Disjunction of conditions
+  `?q={"$or":[{"status_t":{"$eq":"CREATED"}},{"status_t":{"$eq":"DRAFT"}}]}`
+
+### Sorting with `orderBy`
+Order results using `orderBy=attributeName:[asc|desc]`. Comma-separated for multiple fields:
+```http
+GET /rest/v19/commerceDocumentsOraclecpqoTransaction?orderBy=dateModified_t:desc,transactionID_t:asc
+```
+
+### Pagination
+Control page windows using `limit`, `offset`, and request total counts:
+- `limit`: Maximum records per response (1 to 1000, default 25).
+- `offset`: Starting record index (0-based).
+- `totalResults`: Set `?totalResults=true` to include the total record count.
+
+Response metadata structure:
+```json
+{
+  "items": [...],
+  "hasMore": true,
+  "limit": 25,
+  "offset": 0,
+  "count": 25,
+  "totalResults": 142,
+  "links": [{"rel": "next", "href": "..."}]
+}
+```
+
+### Hierarchical Expansion with `expand`
+Retrieve child objects/subdocuments inline in a single request:
+```http
+GET /rest/v19/commerceDocumentsOraclecpqoTransaction/{id}?expand=items,lineItems
+```
+
+### Standard HTTP Status Codes & Error Handling
+- `200 OK`: Request succeeded.
+- `201 Created`: Resource created successfully.
+- `204 No Content`: Successful execution with empty body (DELETE / Actions).
+- `400 Bad Request`: Validation error or malformed query `q` syntax.
+- `401 Unauthorized` / `403 Forbidden`: Authentication / Permission failure.
+- `404 Not Found`: Resource or URI does not exist.
+- `409 Conflict`: Optimistic locking or concurrent modification conflict.
+- `500 Internal Server Error`: Unhandled CPQ server or BML exception.
+
+### MCP Tools Integration
+When interacting with CPQ Commerce via MCP tools:
+- `get_transactions(q="{status_t:'CREATED'}", orderby="dateModified_t:desc", limit=25, offset=0)`
+- `list_transactions(q="{_customer_t_company_name:'Oracle'}", fields="_id,transactionID_t,status_t")`
+
+*For detailed reference docs, refer to the `references/` directory.*
 """
 }
 
@@ -356,7 +435,8 @@ SKILL_REFERENCES = {
         "BMQL.md", "DynamicBMQLVariables.md", "DirectDBAccess.md"
     ],
     "bml-web-services": [
-        "URLAccess.md", "XML.md", "UseSOAPwithBML.md"
+        "URLAccess.md", "XML.md", "UseSOAPwithBML.md",
+        "REST_Query_Collections.md", "REST_Status_Codes.md"
     ],
     "bml-json-dict": [
         "Json.md", "Dictionary.md"
@@ -371,7 +451,11 @@ SKILL_REFERENCES = {
         "UtilBmlLibraryFunctionsList.md", "DebugUtilFunctions.md"
     ],
     "bml-pitfalls": [],
-    "cpq-mcp-workflow": []
+    "cpq-mcp-workflow": [],
+    "cpq-rest-api": [
+        "REST_Query_Collections.md", "REST_Sort_Collections.md",
+        "REST_Pagination.md", "REST_Expand_Objects.md", "REST_Status_Codes.md"
+    ]
 }
 
 def generate_skills_into(dest_dir, copy_images=False):

@@ -27,7 +27,7 @@ Before using SOAP as a solution, confirm there isn't another way to implement th
 The **Web Services Test** page opens.
 
 
-* Record the Receiver URL (SOAP URL)
+  * Record the Receiver URL (SOAP URL)
 
   * Generate a Sample SOAP Call and copy the sample data into a text editor
 

@@ -107,7 +107,7 @@ insert pic
 
   2. Enter the **Name** and select the **Type**.  Navigate through the Type drop-down list to find the desired function category or start typing the parameter name. The type list will filter for you.
 
-  3. Click the **Submit**  icon to enter the parameter into the Function Script.
+  3. Click the **Submit**[CDATA[  ]] icon to enter the parameter into the Function Script.
 
   4. Click the **Delete**  icon to remove a parameter from the properties list.
 

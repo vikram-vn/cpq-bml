@@ -1166,6 +1166,7 @@ Given the following:
 
 ```bml
 jsonString="{\"asset-101\":{\"lines\":[{\"documentNumber\":\"33\",\"quantity\":\"1\",
+
 \"price\":8.9 },{\"documentNumber\":\"40\",\"quantity\":\"20\",\"price\":50}], \"finalDate\":null,\"finalAction\":\"UPDATE\",\"available\":true}}";
 ```
 
@@ -1233,6 +1234,7 @@ Given the following:
 
 ```bml
 jsonString="{\"asset-101\":{\"lines\":[{\"documentNumber\":\"33\",\"quantity\":\"1\",
+
 \"price\":8.9 },{\"documentNumber\":\"40\",\"quantity\":\"20\",\"price\":50}], \"finalDate\":null,\"finalAction\":\"UPDATE\",\"available\":true}}";
 ```
 
@@ -1275,6 +1277,7 @@ Given the following:
 
 ```bml
 jsonString="{\"asset-101\":{\"lines\":[{\"documentNumber\":\"33\",\"quantity\":\"1\",
+
 \"price\":8.9 },{\"documentNumber\":\"40\",\"quantity\":\"20\",\"price\":50}], \"finalDate\":null,\"finalAction\":\"UPDATE\",\"available\":true}}";
 ```
 
