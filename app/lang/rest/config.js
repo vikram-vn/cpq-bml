@@ -26,20 +26,72 @@ function normalizeSiteUrl(rawSiteUrl) {
     return value;
 }
 
+function getWorkspaceRoot(vscode) {
+    if (
+        vscode &&
+        vscode.workspace &&
+        vscode.workspace.workspaceFolders &&
+        vscode.workspace.workspaceFolders.length > 0
+    ) {
+        const folder = vscode.workspace.workspaceFolders[0];
+        return folder.uri ? folder.uri.fsPath : (typeof folder === "string" ? folder : null);
+    }
+    return null;
+}
+
 function getSettings(vscode) {
-    const config = vscode.workspace.getConfiguration('cpqBml');
-    return {
-        siteUrl: normalizeSiteUrl(config.get('connection.siteUrl', '')),
-        authMethod: config.get('connection.authMethod', 'basic'),
-        username: config.get('connection.username', ''),
-        restVersion: config.get('rest.restVersion', DEFAULT_REST_VERSION),
-        commerceProcess: config.get('rest.commerceProcess', 'oraclecpqo'),
-        commerceDocument: config.get('rest.commerceDocument', 'transaction'),
-        pullFolder: config.get('rest.pullFolder', 'library'),
-        debugLog: config.get('debug.logRestDetails', false),
-        logOutputToFile: config.get('debug.logOutputToFile', false),
-        showResultsAsTable: config.get('debug.showResultsAsTable', false)
+    const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === "function"
+        ? vscode.workspace.getConfiguration("cpqBml")
+        : null;
+
+    const getVal = (configKey, defaultVal) => {
+        if (config) {
+            const val = config.get(configKey);
+            if (val !== undefined && val !== null) {
+                return val;
+            }
+        }
+        return defaultVal;
     };
+
+    return {
+        siteUrl: normalizeSiteUrl(getVal("connection.siteUrl", "")),
+        authMethod: getVal("connection.authMethod", "basic"),
+        username: getVal("connection.username", ""),
+        restVersion: getVal("rest.restVersion", DEFAULT_REST_VERSION),
+        commerceProcess: getVal("rest.commerceProcess", "oraclecpqo"),
+        commerceDocument: getVal("rest.commerceDocument", "transaction"),
+        pullFolder: getVal("rest.pullFolder", "library"),
+        debugLog: Boolean(getVal("debug.logRestDetails", false)),
+        logOutputToFile: Boolean(getVal("debug.logOutputToFile", false)),
+        showResultsAsTable: Boolean(getVal("debug.showResultsAsTable", false)),
+    };
+}
+
+async function saveWorkspaceConfig(vscode, settings) {
+    if (!vscode || !vscode.workspace || !settings) return;
+    const config = vscode.workspace.getConfiguration("cpqBml");
+    if (!config || typeof config.update !== "function") return;
+    if (settings.siteUrl !== undefined) await config.update("connection.siteUrl", settings.siteUrl, false);
+    if (settings.username !== undefined) await config.update("connection.username", settings.username, false);
+    if (settings.authMethod !== undefined) await config.update("connection.authMethod", settings.authMethod, false);
+    if (settings.restVersion !== undefined) await config.update("rest.restVersion", settings.restVersion, false);
+    if (settings.commerceProcess !== undefined) await config.update("rest.commerceProcess", settings.commerceProcess, false);
+    if (settings.commerceDocument !== undefined) await config.update("rest.commerceDocument", settings.commerceDocument, false);
+    if (settings.pullFolder !== undefined) await config.update("rest.pullFolder", settings.pullFolder, false);
+
+    // Ensure connection settings are never left in .cpq/config
+    const root = getWorkspaceRoot(vscode);
+    if (root) {
+        const obsoleteConfigMin = pathLib.join(root, ".cpq", "config", "config.min.json");
+        if (fs.existsSync(obsoleteConfigMin)) {
+            try { fs.unlinkSync(obsoleteConfigMin); } catch (e) {}
+        }
+        const obsoleteConfigJson = pathLib.join(root, ".cpq", "config", "config.json");
+        if (fs.existsSync(obsoleteConfigJson)) {
+            try { fs.unlinkSync(obsoleteConfigJson); } catch (e) {}
+        }
+    }
 }
 
 function getDebugOutputLogPath(vscode) {
@@ -313,5 +365,6 @@ module.exports = {
     getShowDebugResultsAsTable,
     hasMissingCredentials,
     runTestConnection,
-    ensureCredentials
+    ensureCredentials,
+    saveWorkspaceConfig
 };

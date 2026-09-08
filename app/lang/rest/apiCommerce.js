@@ -2,6 +2,7 @@ const { call, getEffectiveRestVersion } = require("./apiCore");
 const {
   getCommerceProcess,
   getCommerceDocument,
+  getSettings,
 } = require("./config");
 const {
   resolveAttributeName,
@@ -148,11 +149,81 @@ async function runPipelineViewer(
   );
 }
 
+function formatCommerceAttribute(item, menuOptions = null) {
+  if (!item) return null;
+  const varName = item.variableName || item.name || item.id || "";
+  const label = item.label || item.name || varName;
+
+  // type:displayValue
+  let typeDisplay = "";
+  if (item.type && typeof item.type === "object") {
+    typeDisplay =
+      item.type.displayValue ||
+      item.type.displayLabel ||
+      item.type.name ||
+      (item.type.value !== undefined ? String(item.type.value) : "");
+  } else if (typeof item.type === "string") {
+    typeDisplay = item.type;
+  } else if (item.dataType && typeof item.dataType === "object") {
+    typeDisplay =
+      item.dataType.displayValue ||
+      item.dataType.displayLabel ||
+      item.dataType.name ||
+      (item.dataType.value !== undefined ? String(item.dataType.value) : "");
+  } else if (typeof item.dataType === "string") {
+    typeDisplay = item.dataType;
+  }
+  if (!typeDisplay) {
+    typeDisplay = normalizeAttributeDataType(item.type || item.dataType);
+  }
+
+  const attr = {
+    label,
+    variableName: varName,
+    type: typeDisplay,
+    required: item.required !== undefined ? !!item.required : false,
+    userDefault: item.userDefault !== undefined ? item.userDefault : null,
+    description: item.description || "",
+    additional: item.additional !== undefined ? item.additional : null,
+    defaultDataType: item.defaultDataType !== undefined ? item.defaultDataType : null,
+    // Backwards-compatibility aliases
+    name: label,
+    dataType: typeDisplay,
+  };
+
+  if (Array.isArray(menuOptions) && menuOptions.length > 0) {
+    const formattedOptions = menuOptions.map((m) => ({
+      displayValue:
+        m.displayValue ||
+        m.label ||
+        m.name ||
+        (m.value !== undefined ? String(m.value) : "") ||
+        (m.id !== undefined ? String(m.id) : ""),
+      value: m.value !== undefined ? m.value : (m.id !== undefined ? m.id : ""),
+    }));
+    attr.menuOptions = formattedOptions;
+    attr.menuItems = formattedOptions.map((m) => ({
+      id: m.value,
+      value: m.value,
+      name: m.displayValue,
+    }));
+  }
+
+  return attr;
+}
+
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes
 async function listCommerceAttributes(
   context,
   vscode,
-  { process, document, offset = 0, limit = 1000, q, fields } = {},
+  {
+    process,
+    document,
+    offset = 0,
+    limit = 1000,
+    q,
+    fields = "label,variableName,type,required,userDefault,description,additional,defaultDataType",
+  } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
@@ -175,11 +246,105 @@ async function listCommerceAttributes(
   );
 }
 
+// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes/<attributeVarName>
+async function getCommerceAttribute(
+  context,
+  vscode,
+  {
+    process,
+    document,
+    attributeVarName,
+    fields = "label,variableName,type,required,userDefault,description,additional,defaultDataType",
+    fetchMenuOptions = true,
+  } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+
+  const queryParams = {};
+  if (fields) queryParams.fields = fields;
+
+  const res = await call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes/${attributeVarName}`,
+      method: "GET",
+      query: queryParams,
+    },
+    transport,
+  );
+
+  if (!res || !res.body) {
+    return res;
+  }
+
+  const rawItem = res.body;
+  let menuOptions = null;
+
+  const typeStr = (
+    rawItem.type && typeof rawItem.type === "object"
+      ? rawItem.type.displayValue || rawItem.type.value || ""
+      : typeof rawItem.type === "string"
+        ? rawItem.type
+        : ""
+  ).toLowerCase();
+
+  const isMenu =
+    typeStr.includes("menu") ||
+    typeStr.includes("select") ||
+    (typeof rawItem.displayType === "string" && rawItem.displayType.toLowerCase().includes("menu"));
+
+  if (fetchMenuOptions && isMenu) {
+    try {
+      const menuRes = await listCommerceAttributeMenuItems(
+        context,
+        vscode,
+        {
+          process: effectiveProcess,
+          document: effectiveDocument,
+          attributeVarName,
+          limit: 500,
+          fields: "value,displayValue,label,name,id",
+        },
+        transport,
+      );
+      const rawMenuItems =
+        menuRes && menuRes.body
+          ? Array.isArray(menuRes.body)
+            ? menuRes.body
+            : Array.isArray(menuRes.body.items)
+              ? menuRes.body.items
+              : []
+          : [];
+      if (rawMenuItems.length > 0) {
+        menuOptions = rawMenuItems;
+      }
+    } catch (e) {}
+  }
+
+  const formatted = formatCommerceAttribute(rawItem, menuOptions);
+  return {
+    ...res,
+    body: formatted,
+  };
+}
+
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes/<attributeVarName>/menuItems
 async function listCommerceAttributeMenuItems(
   context,
   vscode,
-  { process, document, attributeVarName, offset = 0, limit = 1000, q, fields } = {},
+  {
+    process,
+    document,
+    attributeVarName,
+    offset = 0,
+    limit = 1000,
+    q,
+    fields = "value,displayValue,label,name,id",
+  } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
@@ -202,11 +367,19 @@ async function listCommerceAttributeMenuItems(
   );
 }
 
+
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets
 async function listCommerceArraySets(
   context,
   vscode,
-  { process, document, offset = 0, limit = 1000, q } = {},
+  {
+    process,
+    document,
+    offset = 0,
+    limit = 1000,
+    q,
+    fields = "variableName,name,label,description",
+  } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
@@ -215,6 +388,7 @@ async function listCommerceArraySets(
 
   const queryParams = { offset, limit };
   if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
 
   return call(
     context,
@@ -257,7 +431,7 @@ async function listCommerceSystemAttributes(
 async function listCommerceAttributeLookups(
   context,
   vscode,
-  { process, offset = 0, limit = 100, fields = "lookupType,name,links" } = {},
+  { process, offset = 0, limit = 100, fields = "lookupType,name" } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 18);
@@ -336,7 +510,7 @@ async function syncCommerceAttributes(
       process: effectiveProcess,
       document: effectiveDocument,
       limit: 1000,
-      fields: "variableName,name,label,dataType,type,description,displayType",
+      fields: "label,variableName,type,required,userDefault,description,additional,defaultDataType",
     },
     transport,
   );
@@ -353,25 +527,26 @@ async function syncCommerceAttributes(
 
   for (const item of rawAttrItems) {
     const varName = item.variableName || item.name || item.id;
-    const attr = {
-      variableName: varName,
-      name: item.label || item.name || varName,
-      dataType: normalizeAttributeDataType(item.type || item.dataType),
-      description: item.description || "",
-    };
-
-    const dtLower = (typeof attr.dataType === "string" ? attr.dataType : "").toLowerCase();
-    const typeLower = typeof item.type === "string" ? item.type.toLowerCase() : "";
+    const typeStr = (
+      item.type && typeof item.type === "object"
+        ? item.type.displayValue || item.type.displayLabel || item.type.name || (item.type.value !== undefined ? String(item.type.value) : "")
+        : typeof item.type === "string"
+          ? item.type
+          : item.dataType && typeof item.dataType === "object"
+            ? item.dataType.displayValue || item.dataType.displayLabel || item.dataType.name || (item.dataType.value !== undefined ? String(item.dataType.value) : "")
+            : typeof item.dataType === "string"
+              ? item.dataType
+              : ""
+    ).toLowerCase();
     const displayTypeLower =
       typeof item.displayType === "string" ? item.displayType.toLowerCase() : "";
     const isMenu =
-      dtLower.includes("menu") ||
-      dtLower.includes("select") ||
-      typeLower.includes("menu") ||
-      typeLower.includes("select") ||
+      typeStr.includes("menu") ||
+      typeStr.includes("select") ||
       displayTypeLower.includes("menu") ||
       displayTypeLower.includes("select");
 
+    let menuOptions = null;
     if (fetchMenuItems && isMenu) {
       try {
         const menuRes = await listCommerceAttributeMenuItems(
@@ -382,7 +557,7 @@ async function syncCommerceAttributes(
             document: effectiveDocument,
             attributeVarName: varName,
             limit: 500,
-            fields: "id,value,name,label",
+            fields: "value,displayValue,label,name,id",
           },
           transport,
         );
@@ -395,18 +570,14 @@ async function syncCommerceAttributes(
                 : []
             : [];
         if (rawMenuItems.length > 0) {
-          attr.menuItems = rawMenuItems.map((m) => ({
-            id: m.id || m.value,
-            value: m.value || m.id,
-            name: m.label || m.name || m.value || m.id,
-          }));
+          menuOptions = rawMenuItems;
         }
       } catch (e) {
         // Ignore individual menu fetch error and continue
       }
     }
 
-    attributes.push(attr);
+    attributes.push(formatCommerceAttribute(item, menuOptions));
   }
 
   // Fetch systemAttributes
@@ -440,6 +611,43 @@ async function syncCommerceAttributes(
     }
   } catch (e) {}
 
+  // Fetch arraySets
+  const arraySets = [];
+  try {
+    const arrayRes = await listCommerceArraySets(
+      context,
+      vscode,
+      {
+        process: effectiveProcess,
+        document: effectiveDocument,
+        limit: 1000,
+        fields: "variableName,name,label,description",
+      },
+      transport,
+    );
+    const rawArrayItems =
+      arrayRes && arrayRes.body
+        ? Array.isArray(arrayRes.body)
+          ? arrayRes.body
+          : Array.isArray(arrayRes.body.items)
+            ? arrayRes.body.items
+            : []
+        : [];
+
+    for (const item of rawArrayItems) {
+      const varName = item.variableName || item.name || item.id;
+      arraySets.push({
+        variableName: varName,
+        name: item.label || item.name || varName,
+        label: item.label || item.name || varName,
+        dataType: "Array Set",
+        type: "Array Set",
+        description: item.description || "",
+        scope: "Array Set",
+      });
+    }
+  } catch (e) {}
+
   // Fetch BML attributeLookups (transaction, transactionLine, systemVariables)
   const lookups = {};
   if (fetchLookups) {
@@ -447,7 +655,7 @@ async function syncCommerceAttributes(
       const lookupsRes = await listCommerceAttributeLookups(
         context,
         vscode,
-        { process: effectiveProcess, fields: "lookupType,name,links" },
+        { process: effectiveProcess, fields: "lookupType,name" },
         transport,
       );
       const rawLookups =
@@ -459,24 +667,15 @@ async function syncCommerceAttributes(
               : []
           : [];
 
-      const lookupTypes = new Map();
-      const standardTypes = ["transaction", "transactionLine", "systemVariables"];
-      for (const t of standardTypes) {
-        lookupTypes.set(t, null);
-      }
+      const lookupTypes = new Set(["transaction", "transactionLine", "systemVariables"]);
       for (const item of rawLookups) {
         const type = item.lookupType || item.id || item.name;
         if (type) {
-          let childHref = null;
-          if (Array.isArray(item.links)) {
-            const childLink = item.links.find((l) => l.rel === "child" || (l.href && l.href.includes("lookupValues")));
-            if (childLink && childLink.href) childHref = childLink.href;
-          }
-          lookupTypes.set(type, childHref);
+          lookupTypes.add(type);
         }
       }
 
-      for (const [type, childHref] of lookupTypes.entries()) {
+      for (const type of lookupTypes) {
         try {
           const valRes = await listCommerceAttributeLookupValues(
             context,
@@ -484,7 +683,6 @@ async function syncCommerceAttributes(
             {
               process: effectiveProcess,
               lookupType: type,
-              href: childHref,
               limit: 1000,
               fields: "name,variableName,displayLabel,label,dataType,type,description,isMenuType,availableElements",
             },
@@ -531,11 +729,13 @@ async function syncCommerceAttributes(
     count: attributes.length,
     attributes,
     systemAttributes,
+    arraySets,
     lookups,
   };
 
   if (wsRoot) {
-    saveWorkspaceAttributes(wsRoot, cacheData);
+    const configSettings = typeof getSettings === "function" ? getSettings(vscode) : null;
+    saveWorkspaceAttributes(wsRoot, cacheData, configSettings);
   }
 
   return cacheData;
@@ -546,6 +746,8 @@ module.exports = {
   getTransactions,
   listTransactions: getTransactions,
   runPipelineViewer,
+  formatCommerceAttribute,
+  getCommerceAttribute,
   listCommerceAttributes,
   listCommerceAttributeMenuItems,
   listCommerceArraySets,
@@ -554,3 +756,4 @@ module.exports = {
   listCommerceAttributeLookupValues,
   syncCommerceAttributes,
 };
+

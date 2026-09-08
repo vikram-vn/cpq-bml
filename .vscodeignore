@@ -2,6 +2,7 @@ node_modules/**
 .vscode/**
 .vscode-test/**
 .claude/**
+.cpq/**
 test/**
 logs/**
 scratch/**

@@ -261,7 +261,18 @@ function formatAsJsDoc(info) {
         md.appendMarkdown(`**Returns:** \`${info.returnType}\`\n\n`);
     }
 
-    if (info.values?.length) {
+    if (Array.isArray(info.menuOptions) && info.menuOptions.length > 0) {
+        md.appendMarkdown(`**Menu Options:**\n`);
+        for (const opt of info.menuOptions.slice(0, 15)) {
+            const val = opt.value !== undefined ? opt.value : opt.id;
+            const label = opt.displayValue || opt.name || opt.label || val;
+            md.appendMarkdown(`- \`${val}\`${label && label !== val ? ` (${label})` : ''}\n`);
+        }
+        if (info.menuOptions.length > 15) {
+            md.appendMarkdown(`- *(+ ${info.menuOptions.length - 15} more)*\n`);
+        }
+        md.appendMarkdown('\n');
+    } else if (info.values?.length) {
         md.appendMarkdown(`**Values:** ${info.values.map(v => `\`${v}\``).join(', ')}\n\n`);
     }
 

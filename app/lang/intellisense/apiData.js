@@ -1,4 +1,7 @@
-const vscode = require('vscode');
+let vscode;
+try {
+    vscode = require('vscode');
+} catch (_) {}
 const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
 
 const API_FILES = [
@@ -31,6 +34,8 @@ function loadApiData(context) {
 
     bmlApiData = {};
     const extPath = (context && context.extensionPath) || (savedContext && savedContext.extensionPath) || undefined;
+
+    // 1. Load extension bundled baseline/fallback JSON files
     API_FILES.forEach(({ baseName, category }) => {
         try {
             const fileData = loadJson(baseName, extPath);
@@ -41,6 +46,66 @@ function loadApiData(context) {
             console.error(`Failed to load ${baseName}.json:`, err.message);
         }
     });
+
+    // 2. Prefer user workspace .cpq/cache first if present
+    try {
+        const { loadWorkspaceAttributes } = require('../rest/commerceAttributes');
+        const roots = [];
+        if (context && context.workspaceRoot) {
+            roots.push(context.workspaceRoot);
+        }
+        if (context && Array.isArray(context.workspaceFolders)) {
+            for (const f of context.workspaceFolders) {
+                const p = f.uri ? f.uri.fsPath : (typeof f === 'string' ? f : null);
+                if (p) roots.push(p);
+            }
+        }
+        if (vscode && vscode.workspace && Array.isArray(vscode.workspace.workspaceFolders)) {
+            for (const f of vscode.workspace.workspaceFolders) {
+                const p = f.uri ? f.uri.fsPath : (typeof f === 'string' ? f : null);
+                if (p) roots.push(p);
+            }
+        }
+
+        for (const wsRoot of roots) {
+            const wsIndex = loadWorkspaceAttributes(wsRoot);
+            if (wsIndex && wsIndex.varNameToMeta) {
+                for (const [varName, meta] of wsIndex.varNameToMeta.entries()) {
+                    const key = varName.toLowerCase();
+                    const isArraySet = meta.scope === 'Array Set' || meta.dataType === 'Array Set';
+                    const isSystem = meta.scope === 'System';
+                    const category = isArraySet ? 'attribute' : isSystem ? 'variable' : 'attribute';
+
+                    const menuVals = Array.isArray(meta.menuOptions)
+                        ? meta.menuOptions.map((m) => m.value || m.id)
+                        : Array.isArray(meta.menuItems)
+                          ? meta.menuItems.map((m) => m.value || m.id)
+                          : null;
+
+                    // Overwrite bundled entry with instance-specific workspace entry
+                    bmlApiData[key] = {
+                        name: varName,
+                        label: meta.label || meta.name || varName,
+                        syntax: varName,
+                        category,
+                        scope: meta.scope || (isArraySet ? 'Array Set' : 'Transaction'),
+                        dataType: meta.dataType || meta.type || (isArraySet ? 'Array Set' : 'String'),
+                        description: meta.description || meta.notes || '',
+                        notes: meta.description || meta.notes || '',
+                        menuOptions: meta.menuOptions || null,
+                        values: menuVals || meta.values || null,
+                        source: 'workspace-cache',
+                        required: meta.required,
+                        userDefault: meta.userDefault,
+                        additional: meta.additional,
+                        defaultDataType: meta.defaultDataType,
+                    };
+                }
+            }
+        }
+    } catch (err) {
+        // Fallback gracefully if workspace loading fails
+    }
 
     apiDataLoaded = true;
     cachedGlobalItems = null;
@@ -72,12 +137,12 @@ function lookupApiInfo(word) {
 }
 
 const CATEGORY_KIND = {
-    function: vscode.CompletionItemKind.Function,
-    attribute: vscode.CompletionItemKind.Property,
-    variable: vscode.CompletionItemKind.Variable,
-    constant: vscode.CompletionItemKind.Constant,
-    snippet: vscode.CompletionItemKind.Snippet,
-    keyword: vscode.CompletionItemKind.Keyword
+    function: (vscode && vscode.CompletionItemKind && vscode.CompletionItemKind.Function) || 2,
+    attribute: (vscode && vscode.CompletionItemKind && vscode.CompletionItemKind.Property) || 9,
+    variable: (vscode && vscode.CompletionItemKind && vscode.CompletionItemKind.Variable) || 5,
+    constant: (vscode && vscode.CompletionItemKind && vscode.CompletionItemKind.Constant) || 20,
+    snippet: (vscode && vscode.CompletionItemKind && vscode.CompletionItemKind.Snippet) || 14,
+    keyword: (vscode && vscode.CompletionItemKind && vscode.CompletionItemKind.Keyword) || 13,
 };
 
 function getBmlApiData(context) {

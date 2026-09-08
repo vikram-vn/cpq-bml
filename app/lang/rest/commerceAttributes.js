@@ -1,9 +1,24 @@
 const fs = require("fs");
 const path = require("path");
 
-const CACHE_DIR = ".cpq";
-const CACHE_SUBDIR = "cache";
-const CACHE_FILE = "commerce-attributes.json";
+const CPQ_DIR = ".cpq";
+const COMMERCE_DIR = "commerce";
+const SYSTEM_DIR = "system";
+const CONFIG_DIR = "config";
+
+const README_CPQ = `# Oracle CPQ Workspace Directory (.cpq)
+
+This directory contains metadata, configuration, and schemas synchronized from your Oracle CPQ instance.
+
+> **DO NOT REMOVE**
+> This directory and its contents are used by **MCP** and **IntelliSense (preferred)**. Do not remove.
+> Removing this folder will cause IntelliSense and MCP to lose instance-specific Commerce and Configuration attribute definitions, dropdown menus, and array sets.
+
+## Structure
+- \`commerce/\`: Minified JSON schemas for Commerce attributes, transactions, line items, and array sets (\`*.min.json\`).
+- \`config/\`: Minified JSON schemas for Configuration domain metadata: attributes (\`attributes.min.json\`), product families (\`product-families.min.json\`), and models (\`models.min.json\`).
+- \`system/\`: Minified JSON schemas for system attributes and variables (\`*.min.json\`).
+`;
 
 // In-memory cache singleton
 let bundledAttributesIndex = null;
@@ -137,7 +152,13 @@ function loadBundledAttributes() {
 
 function getCacheFilePath(workspaceRoot) {
   if (!workspaceRoot) return null;
-  return path.join(workspaceRoot, CACHE_DIR, CACHE_SUBDIR, CACHE_FILE);
+  const commerceMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "attributes.min.json");
+  if (fs.existsSync(commerceMin)) return commerceMin;
+  const legacyMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
+  if (fs.existsSync(legacyMin)) return legacyMin;
+  const legacyJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
+  if (fs.existsSync(legacyJson)) return legacyJson;
+  return commerceMin;
 }
 
 function loadWorkspaceAttributes(workspaceRoot) {
@@ -146,131 +167,340 @@ function loadWorkspaceAttributes(workspaceRoot) {
     return workspaceAttributesCache[workspaceRoot];
   }
 
-  const cachePath = getCacheFilePath(workspaceRoot);
-  if (cachePath && fs.existsSync(cachePath)) {
+  const cpqDir = path.join(workspaceRoot, CPQ_DIR);
+  const commerceDir = path.join(cpqDir, COMMERCE_DIR);
+  const systemDir = path.join(cpqDir, SYSTEM_DIR);
+  const configDir = path.join(cpqDir, CONFIG_DIR);
+
+  const index = {
+    data: {},
+    varNameToMeta: new Map(),
+    labelToVarName: new Map(),
+  };
+
+  const addItems = (items, defaultScope) => {
+    if (!Array.isArray(items)) return;
+    for (const item of items) {
+      const varName = item.variableName || item.name || item.id;
+      if (!varName) continue;
+
+      const scope = item.scope || defaultScope;
+      const entry = {
+        ...item,
+        variableName: varName,
+        name: item.name || item.label || item.displayLabel || varName,
+        label: item.label || item.displayLabel || item.name || varName,
+        scope,
+        dataType: normalizeAttributeDataType(item.dataType || item.type),
+        source: "workspace-cache",
+      };
+
+      index.varNameToMeta.set(varName, entry);
+      index.labelToVarName.set(normalizeKey(varName), varName);
+
+      const label = entry.label;
+      if (label) {
+        index.labelToVarName.set(normalizeKey(label), varName);
+      }
+
+      if (varName.endsWith("_t")) {
+        index.labelToVarName.set(normalizeKey(varName.slice(0, -2)), varName);
+      }
+    }
+  };
+
+  const hasNewCommerce = fs.existsSync(commerceDir);
+  const hasNewSystem = fs.existsSync(systemDir);
+
+  if (hasNewCommerce || hasNewSystem) {
     try {
-      const data = JSON.parse(fs.readFileSync(cachePath, "utf8"));
-      const index = {
-        data,
-        varNameToMeta: new Map(),
-        labelToVarName: new Map(),
-      };
-
-      const addItems = (items, defaultScope) => {
-        if (!Array.isArray(items)) return;
-        for (const item of items) {
-          const varName = item.variableName || item.name || item.id;
-          if (!varName) continue;
-
-          const scope = item.scope || defaultScope;
-          const entry = {
-            ...item,
-            variableName: varName,
-            name: item.name || item.label || item.displayLabel || varName,
-            label: item.label || item.displayLabel || item.name || varName,
-            scope,
-            dataType: normalizeAttributeDataType(item.dataType || item.type),
-            source: "workspace-cache",
-          };
-
-          index.varNameToMeta.set(varName, entry);
-          index.labelToVarName.set(normalizeKey(varName), varName);
-
-          const label = entry.label;
-          if (label) {
-            index.labelToVarName.set(normalizeKey(label), varName);
-          }
-
-          if (varName.endsWith("_t")) {
-            index.labelToVarName.set(normalizeKey(varName.slice(0, -2)), varName);
-          }
+      if (hasNewCommerce) {
+        const files = fs.readdirSync(commerceDir);
+        for (const file of files) {
+          if (!file.endsWith(".min.json")) continue;
+          try {
+            const raw = JSON.parse(fs.readFileSync(path.join(commerceDir, file), "utf8"));
+            const items = Array.isArray(raw)
+              ? raw
+              : Array.isArray(raw.attributes)
+                ? raw.attributes
+                : Array.isArray(raw.items)
+                  ? raw.items
+                  : [];
+            const scope = file.includes("line")
+              ? "Line Item"
+              : file.includes("array")
+                ? "Array Set"
+                : "Transaction";
+            addItems(items, scope);
+          } catch (e) {}
         }
-      };
+      }
 
-      // 1. Process document attributes
+      if (hasNewSystem) {
+        const files = fs.readdirSync(systemDir);
+        for (const file of files) {
+          if (!file.endsWith(".min.json")) continue;
+          try {
+            const raw = JSON.parse(fs.readFileSync(path.join(systemDir, file), "utf8"));
+            const items = Array.isArray(raw)
+              ? raw
+              : Array.isArray(raw.attributes)
+                ? raw.attributes
+                : Array.isArray(raw.items)
+                  ? raw.items
+                  : [];
+            addItems(items, "System");
+          } catch (e) {}
+        }
+      }
+
+      if (fs.existsSync(configDir)) {
+        const files = fs.readdirSync(configDir);
+        for (const file of files) {
+          if (!file.endsWith(".min.json") || file === "config.min.json") continue;
+          try {
+            const raw = JSON.parse(fs.readFileSync(path.join(configDir, file), "utf8"));
+            const items = Array.isArray(raw)
+              ? raw
+              : Array.isArray(raw.attributes)
+                ? raw.attributes
+                : Array.isArray(raw.items)
+                  ? raw.items
+                  : [];
+            const scope = file.includes("model") ? "Model" : "Configuration";
+            addItems(items, scope);
+          } catch (e) {}
+        }
+      }
+
+      if (index.varNameToMeta.size > 0) {
+        workspaceAttributesCache[workspaceRoot] = index;
+        return index;
+      }
+    } catch (e) {}
+  }
+
+  // Fallback: Legacy .cpq/cache/ structure
+  const legacyCacheMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
+  const legacyCacheJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
+  const legacyPath = fs.existsSync(legacyCacheMin)
+    ? legacyCacheMin
+    : (fs.existsSync(legacyCacheJson) ? legacyCacheJson : null);
+
+  if (legacyPath && fs.existsSync(legacyPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(legacyPath, "utf8"));
+      index.data = data;
       addItems(data.attributes, "Transaction");
-
-      // 2. Process systemAttributes
       addItems(data.systemAttributes, "System");
-
-      // 3. Process lookups embedded in cacheData
+      addItems(data.arraySets, "Array Set");
       if (data.lookups && typeof data.lookups === "object") {
         addItems(data.lookups.transaction, "Transaction");
         addItems(data.lookups.transactionLine, "Line Item");
         addItems(data.lookups.systemVariables, "System");
-        for (const [type, items] of Object.entries(data.lookups)) {
-          if (type !== "transaction" && type !== "transactionLine" && type !== "systemVariables") {
-            addItems(items, type);
-          }
-        }
+        addItems(data.lookups.arraySets, "Array Set");
       }
-
-      // 4. Also check for .cpq/cache/lookups/*.json files on disk
-      const lookupsDir = path.join(path.dirname(cachePath), "lookups");
-      if (fs.existsSync(lookupsDir)) {
-        try {
-          const files = fs.readdirSync(lookupsDir);
-          for (const file of files) {
-            if (file.endsWith(".json")) {
-              const content = JSON.parse(fs.readFileSync(path.join(lookupsDir, file), "utf8"));
-              const items = Array.isArray(content) ? content : (Array.isArray(content.items) ? content.items : []);
-              const fileScope = file.includes("line") ? "Line Item" :
-                                file.includes("system") ? "System" : "Transaction";
-              addItems(items, fileScope);
-            }
-          }
-        } catch (e) {}
-      }
-
       workspaceAttributesCache[workspaceRoot] = index;
       return index;
-    } catch (e) {
-      // Return null on corrupt cache
-    }
+    } catch (e) {}
   }
 
   return null;
 }
 
 function isCommerceSynced(workspaceRoot) {
-  const cachePath = getCacheFilePath(workspaceRoot);
+  if (!workspaceRoot) return false;
+  const commerceMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "attributes.min.json");
+  const legacyMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
+  const legacyJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
   try {
-    return !!(cachePath && fs.existsSync(cachePath) && fs.statSync(cachePath).size > 0);
+    return (
+      (fs.existsSync(commerceMin) && fs.statSync(commerceMin).size > 0) ||
+      (fs.existsSync(legacyMin) && fs.statSync(legacyMin).size > 0) ||
+      (fs.existsSync(legacyJson) && fs.statSync(legacyJson).size > 0)
+    );
   } catch (e) {
     return false;
   }
 }
 
-function saveWorkspaceAttributes(workspaceRoot, data) {
+function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
   if (!workspaceRoot || !data) return;
-  const cachePath = getCacheFilePath(workspaceRoot);
-  if (!cachePath) return;
 
   try {
-    const cacheDir = path.dirname(cachePath);
-    fs.mkdirSync(cacheDir, { recursive: true });
-    fs.writeFileSync(cachePath, JSON.stringify(data, null, 2), "utf8");
+    const cpqDir = path.join(workspaceRoot, CPQ_DIR);
+    const commerceDir = path.join(cpqDir, COMMERCE_DIR);
+    const systemDir = path.join(cpqDir, SYSTEM_DIR);
+    const configDir = path.join(cpqDir, CONFIG_DIR);
 
-    // Write individual lookup files to .cpq/cache/lookups/
+    fs.mkdirSync(commerceDir, { recursive: true });
+    fs.mkdirSync(systemDir, { recursive: true });
+    fs.mkdirSync(configDir, { recursive: true });
+
+    // Write .cpq/README.md
+    fs.writeFileSync(path.join(cpqDir, "README.md"), README_CPQ, "utf8");
+
+    // 1. Save .cpq/commerce/attributes.min.json
+    const commercePayload = {
+      process: data.process || "oraclecpqo",
+      document: data.document || "transaction",
+      updatedAt: data.updatedAt || new Date().toISOString(),
+      count: Array.isArray(data.attributes) ? data.attributes.length : 0,
+      attributes: Array.isArray(data.attributes) ? data.attributes : [],
+    };
+    fs.writeFileSync(
+      path.join(commerceDir, "attributes.min.json"),
+      JSON.stringify(commercePayload),
+      "utf8",
+    );
+
+    // 2. Save .cpq/commerce/array-sets.min.json
+    if (Array.isArray(data.arraySets) && data.arraySets.length > 0) {
+      fs.writeFileSync(
+        path.join(commerceDir, "array-sets.min.json"),
+        JSON.stringify({
+          lookupType: "arraySets",
+          count: data.arraySets.length,
+          items: data.arraySets,
+        }),
+        "utf8",
+      );
+    }
+
+    // 3. Save commerce lookups (transaction.min.json, transaction-line.min.json)
     if (data.lookups && typeof data.lookups === "object") {
-      const lookupsDir = path.join(cacheDir, "lookups");
-      fs.mkdirSync(lookupsDir, { recursive: true });
+      if (Array.isArray(data.lookups.transaction)) {
+        fs.writeFileSync(
+          path.join(commerceDir, "transaction.min.json"),
+          JSON.stringify({
+            lookupType: "transaction",
+            count: data.lookups.transaction.length,
+            items: data.lookups.transaction,
+          }),
+          "utf8",
+        );
+      }
+      if (Array.isArray(data.lookups.transactionLine)) {
+        fs.writeFileSync(
+          path.join(commerceDir, "transaction-line.min.json"),
+          JSON.stringify({
+            lookupType: "transactionLine",
+            count: data.lookups.transactionLine.length,
+            items: data.lookups.transactionLine,
+          }),
+          "utf8",
+        );
+      }
+      if (Array.isArray(data.lookups.arraySets) && (!data.arraySets || data.arraySets.length === 0)) {
+        fs.writeFileSync(
+          path.join(commerceDir, "array-sets.min.json"),
+          JSON.stringify({
+            lookupType: "arraySets",
+            count: data.lookups.arraySets.length,
+            items: data.lookups.arraySets,
+          }),
+          "utf8",
+        );
+      }
       for (const [type, items] of Object.entries(data.lookups)) {
-        if (Array.isArray(items)) {
-          const fileName =
-            type === "transactionLine"
-              ? "transaction-line.json"
-              : type === "systemVariables"
-                ? "system-variables.json"
-                : `${type}.json`;
+        if (
+          type !== "transaction" &&
+          type !== "transactionLine" &&
+          type !== "systemVariables" &&
+          type !== "arraySets" &&
+          Array.isArray(items)
+        ) {
           fs.writeFileSync(
-            path.join(lookupsDir, fileName),
-            JSON.stringify({ lookupType: type, count: items.length, items }, null, 2),
+            path.join(commerceDir, `${type}.min.json`),
+            JSON.stringify({ lookupType: type, count: items.length, items }),
             "utf8",
           );
         }
       }
     }
+
+    // 4. Save system attributes in .cpq/system/attributes.min.json
+    const sysAttrs = Array.isArray(data.systemAttributes) ? data.systemAttributes : [];
+    fs.writeFileSync(
+      path.join(systemDir, "attributes.min.json"),
+      JSON.stringify({
+        count: sysAttrs.length,
+        attributes: sysAttrs,
+      }),
+      "utf8",
+    );
+
+    // 5. Save system variables in .cpq/system/variables.min.json
+    if (data.lookups && Array.isArray(data.lookups.systemVariables)) {
+      fs.writeFileSync(
+        path.join(systemDir, "variables.min.json"),
+        JSON.stringify({
+          lookupType: "systemVariables",
+          count: data.lookups.systemVariables.length,
+          items: data.lookups.systemVariables,
+        }),
+        "utf8",
+      );
+    }
+
+    // 6. Save configuration attributes in .cpq/config/attributes.min.json
+    if (Array.isArray(data.configAttributes) && data.configAttributes.length > 0) {
+      fs.writeFileSync(
+        path.join(configDir, "attributes.min.json"),
+        JSON.stringify({
+          count: data.configAttributes.length,
+          attributes: data.configAttributes,
+        }),
+        "utf8",
+      );
+    }
+    if (Array.isArray(data.productFamilies) && data.productFamilies.length > 0) {
+      fs.writeFileSync(
+        path.join(configDir, "product-families.min.json"),
+        JSON.stringify({
+          count: data.productFamilies.length,
+          items: data.productFamilies,
+        }),
+        "utf8",
+      );
+    }
+    if (Array.isArray(data.models) && data.models.length > 0) {
+      fs.writeFileSync(
+        path.join(configDir, "models.min.json"),
+        JSON.stringify({
+          count: data.models.length,
+          items: data.models,
+        }),
+        "utf8",
+      );
+    }
+
+    // Remove obsolete connection settings from .cpq/config if present
+    const obsoleteConfigMin = path.join(configDir, "config.min.json");
+    if (fs.existsSync(obsoleteConfigMin)) {
+      try { fs.unlinkSync(obsoleteConfigMin); } catch (e) {}
+    }
+    const obsoleteConfigJson = path.join(configDir, "config.json");
+    if (fs.existsSync(obsoleteConfigJson)) {
+      try { fs.unlinkSync(obsoleteConfigJson); } catch (e) {}
+    }
+
+    // Clean up any non-minified .json files in .cpq/commerce, .cpq/system, .cpq/config
+    const cleanNonMinJson = (dir) => {
+      if (!fs.existsSync(dir)) return;
+      try {
+        const entries = fs.readdirSync(dir);
+        for (const entry of entries) {
+          if (entry.endsWith(".json") && !entry.endsWith(".min.json")) {
+            fs.unlinkSync(path.join(dir, entry));
+          }
+        }
+      } catch (e) {}
+    };
+    cleanNonMinJson(commerceDir);
+    cleanNonMinJson(systemDir);
+    cleanNonMinJson(configDir);
 
     delete workspaceAttributesCache[workspaceRoot];
   } catch (e) {
@@ -318,11 +548,13 @@ function resolveMenuValue(variableName, inputValue, workspaceRoot) {
   const wsIndex = loadWorkspaceAttributes(workspaceRoot);
   if (wsIndex && wsIndex.varNameToMeta.has(variableName)) {
     const attr = wsIndex.varNameToMeta.get(variableName);
-    if (attr && Array.isArray(attr.menuItems)) {
+    const menuList =
+      attr && (Array.isArray(attr.menuOptions) ? attr.menuOptions : Array.isArray(attr.menuItems) ? attr.menuItems : null);
+    if (menuList) {
       const normVal = normalizeKey(inputValue);
-      for (const item of attr.menuItems) {
+      for (const item of menuList) {
         const itemVal = item.value || item.id;
-        const itemLabel = item.name || item.label;
+        const itemLabel = item.displayValue || item.name || item.label;
         if (itemVal && normalizeKey(itemVal) === normVal) {
           return itemVal;
         }

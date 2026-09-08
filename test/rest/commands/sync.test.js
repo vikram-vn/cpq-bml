@@ -106,11 +106,10 @@ suite("BML REST commands - syncCommerceMetadata", () => {
       assert.ok(lines.some((l) => l.includes("Sync complete:")));
       assert.ok(infoMessages.some((m) => m.includes("Synced 1 attributes, 1 systemAttributes")));
 
-      // Verify file written to .cpq/cache/commerce-attributes.json
-      const cachePath = path.join(tmpDir, ".cpq", "cache", "commerce-attributes.json");
+      // Verify file written to .cpq/commerce/attributes.min.json
+      const cachePath = path.join(tmpDir, ".cpq", "commerce", "attributes.min.json");
       assert.ok(fs.existsSync(cachePath));
       const saved = JSON.parse(fs.readFileSync(cachePath, "utf8"));
       assert.strictEqual(saved.attributes.length, 1);
-      assert.strictEqual(saved.systemAttributes.length, 1);
     }));
 });

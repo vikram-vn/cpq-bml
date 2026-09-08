@@ -65,9 +65,9 @@ suite("commerceAttributes Unit Tests", () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-synced-test-"));
     assert.strictEqual(commerceAttributes.isCommerceSynced(tempDir), false);
 
-    const cacheDir = path.join(tempDir, ".cpq", "cache");
-    fs.mkdirSync(cacheDir, { recursive: true });
-    fs.writeFileSync(path.join(cacheDir, "commerce-attributes.json"), JSON.stringify({ attributes: [] }), "utf8");
+    const commerceDir = path.join(tempDir, ".cpq", "commerce");
+    fs.mkdirSync(commerceDir, { recursive: true });
+    fs.writeFileSync(path.join(commerceDir, "attributes.min.json"), JSON.stringify({ attributes: [] }), "utf8");
 
     assert.strictEqual(commerceAttributes.isCommerceSynced(tempDir), true);
     fs.rmSync(tempDir, { recursive: true, force: true });
@@ -112,6 +112,9 @@ suite("commerceAttributes Unit Tests", () => {
     const cacheData = {
       attributes: [{ variableName: "status_t", name: "Status" }],
       systemAttributes: [{ variableName: "_sys_user", name: "System User" }],
+      arraySets: [{ variableName: "lineItems_set", name: "Line Items" }],
+      configAttributes: [{ variableName: "_config_memory_size", name: "Memory Size", scope: "Configuration" }],
+      models: [{ variableName: "serverModelA", name: "Server Model A", label: "Server Model A" }],
       lookups: {
         transaction: [{ variableName: "mainDocField_t", name: "Main Doc Field" }],
         transactionLine: [{ variableName: "lineItemPrice_l", name: "Line Price" }],
@@ -121,15 +124,55 @@ suite("commerceAttributes Unit Tests", () => {
 
     commerceAttributes.saveWorkspaceAttributes(tempDir, cacheData);
 
-    // Verify .cpq/cache/lookups files created
-    const lookupsDir = path.join(tempDir, ".cpq", "cache", "lookups");
-    assert.ok(fs.existsSync(path.join(lookupsDir, "transaction.json")));
-    assert.ok(fs.existsSync(path.join(lookupsDir, "transaction-line.json")));
-    assert.ok(fs.existsSync(path.join(lookupsDir, "system-variables.json")));
+    // Verify README.md file created in .cpq/
+    const cpqDir = path.join(tempDir, ".cpq");
+    const commerceDir = path.join(cpqDir, "commerce");
+    const systemDir = path.join(cpqDir, "system");
+    const configDir = path.join(cpqDir, "config");
 
-    // Verify name resolution across lookups
+    assert.ok(fs.existsSync(path.join(cpqDir, "README.md")));
+    const cpqReadme = fs.readFileSync(path.join(cpqDir, "README.md"), "utf8");
+    assert.ok(cpqReadme.includes("DO NOT REMOVE"));
+    assert.ok(cpqReadme.includes("MCP"));
+    assert.ok(cpqReadme.includes("IntelliSense (preferred)"));
+    assert.ok(cpqReadme.includes("commerce/"));
+    assert.ok(cpqReadme.includes("system/"));
+    assert.ok(cpqReadme.includes("config/"));
+
+    // Verify minified files created in .cpq/commerce/
+    assert.ok(fs.existsSync(path.join(commerceDir, "attributes.min.json")));
+    assert.ok(fs.existsSync(path.join(commerceDir, "transaction.min.json")));
+    assert.ok(fs.existsSync(path.join(commerceDir, "transaction-line.min.json")));
+    assert.ok(fs.existsSync(path.join(commerceDir, "array-sets.min.json")));
+
+    // Verify minified files created in .cpq/system/
+    assert.ok(fs.existsSync(path.join(systemDir, "attributes.min.json")));
+    assert.ok(fs.existsSync(path.join(systemDir, "variables.min.json")));
+
+    // Verify minified configuration attributes and models in .cpq/config/
+    assert.ok(fs.existsSync(path.join(configDir, "attributes.min.json")));
+    assert.ok(fs.existsSync(path.join(configDir, "models.min.json")));
+    assert.ok(fs.existsSync(path.join(configDir, "config.min.json")));
+
+    // Verify STRICTLY ONLY .min.json files exist (no unminified .json)
+    const checkOnlyMin = (dir) => {
+      const files = fs.readdirSync(dir);
+      for (const file of files) {
+        if (file.endsWith(".json")) {
+          assert.ok(file.endsWith(".min.json"), `File ${file} should end with .min.json`);
+        }
+      }
+    };
+    checkOnlyMin(commerceDir);
+    checkOnlyMin(systemDir);
+    checkOnlyMin(configDir);
+
+    // Verify name resolution across lookups, array sets, models, and configuration
     assert.strictEqual(commerceAttributes.resolveAttributeName("Main Doc Field", tempDir), "mainDocField_t");
     assert.strictEqual(commerceAttributes.resolveAttributeName("Line Price", tempDir), "lineItemPrice_l");
+    assert.strictEqual(commerceAttributes.resolveAttributeName("Line Items", tempDir), "lineItems_set");
+    assert.strictEqual(commerceAttributes.resolveAttributeName("Memory Size", tempDir), "_config_memory_size");
+    assert.strictEqual(commerceAttributes.resolveAttributeName("Server Model A", tempDir), "serverModelA");
 
     // Verify searchAttributes includes scope and source
     const searchResults = commerceAttributes.searchAttributes("Line Price", tempDir);
@@ -137,6 +180,121 @@ suite("commerceAttributes Unit Tests", () => {
     assert.strictEqual(searchResults[0].variableName, "lineItemPrice_l");
     assert.strictEqual(searchResults[0].scope, "Line Item");
     assert.strictEqual(searchResults[0].source, "workspace-cache");
+
+    const configResults = commerceAttributes.searchAttributes("Memory Size", tempDir);
+    assert.ok(configResults.length > 0);
+    assert.strictEqual(configResults[0].variableName, "_config_memory_size");
+    assert.strictEqual(configResults[0].scope, "Configuration");
+    assert.strictEqual(searchResults[0].source, "workspace-cache");
+
+    const modelResults = commerceAttributes.searchAttributes("Server Model A", tempDir);
+    assert.ok(modelResults.length > 0);
+    assert.strictEqual(modelResults[0].variableName, "serverModelA");
+    assert.strictEqual(modelResults[0].scope, "Model");
+    assert.strictEqual(modelResults[0].source, "workspace-cache");
+
+    const arrayResults = commerceAttributes.searchAttributes("Line Items", tempDir);
+    assert.ok(arrayResults.length > 0);
+    assert.strictEqual(arrayResults[0].variableName, "lineItems_set");
+    assert.strictEqual(arrayResults[0].scope, "Array Set");
+    assert.strictEqual(arrayResults[0].source, "workspace-cache");
+
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  test("apiData prefers user .cpq cache attributes over bundled JSON fallback", () => {
+    const fs = require("fs");
+    const os = require("os");
+    const path = require("path");
+    const { loadApiData, invalidateApiData, lookupApiInfo } = require("../../app/lang/intellisense/apiData");
+
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-pref-test-"));
+    const cacheData = {
+      attributes: [
+        {
+          variableName: "status_t",
+          label: "Instance Specific Status",
+          dataType: "Single Select Menu",
+          description: "Overridden from instance",
+          menuOptions: [
+            { displayValue: "Under Review", value: "under_review" },
+          ],
+        },
+        {
+          variableName: "customTenantField_t",
+          label: "Custom Tenant Field",
+          dataType: "String",
+          description: "Exists only in instance",
+        },
+      ],
+      arraySets: [
+        {
+          variableName: "myArraySet_set",
+          label: "My Custom Array Set",
+          description: "Instance array set",
+        },
+      ],
+    };
+
+    commerceAttributes.saveWorkspaceAttributes(tempDir, cacheData);
+
+    const fakeVscode = {
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: tempDir } }],
+      },
+    };
+
+    invalidateApiData();
+    try {
+      const data = loadApiData({ workspaceRoot: tempDir });
+      assert.ok(data["status_t"]);
+      assert.strictEqual(data["status_t"].description, "Overridden from instance");
+      assert.strictEqual(data["status_t"].label, "Instance Specific Status");
+      assert.ok(data["myarrayset_set"]);
+      assert.strictEqual(data["myarrayset_set"].scope, "Array Set");
+      assert.ok(data["customtenantfield_t"]);
+      assert.strictEqual(data["customtenantfield_t"].description, "Exists only in instance");
+
+      // Verify that bundled items (like atof) still exist as fallback
+      assert.ok(data["atof"]);
+    } finally {
+      invalidateApiData();
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("config.js reads and writes .cpq/config/config.min.json", () => {
+    const fs = require("fs");
+    const os = require("os");
+    const path = require("path");
+    const configLib = require("../../app/lang/rest/config");
+
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-config-test-"));
+    const fakeVscode = {
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: tempDir } }],
+        getConfiguration: () => ({
+          get: (key, defaultVal) => defaultVal,
+        }),
+      },
+    };
+
+    configLib.saveWorkspaceConfig(fakeVscode, {
+      siteUrl: "https://myinstance.bigmachines.com",
+      username: "admin_user",
+      commerceProcess: "oraclecpqo",
+      commerceDocument: "transaction",
+    });
+
+    const configFilePath = path.join(tempDir, ".cpq", "config", "config.min.json");
+    assert.ok(fs.existsSync(configFilePath));
+    const saved = JSON.parse(fs.readFileSync(configFilePath, "utf8"));
+    assert.strictEqual(saved.siteUrl, "https://myinstance.bigmachines.com");
+    assert.strictEqual(saved.username, "admin_user");
+
+    const settings = configLib.getSettings(fakeVscode);
+    assert.strictEqual(settings.siteUrl, "https://myinstance.bigmachines.com");
+    assert.strictEqual(settings.username, "admin_user");
 
     fs.rmSync(tempDir, { recursive: true, force: true });
   });

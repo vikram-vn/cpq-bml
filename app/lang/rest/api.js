@@ -6,6 +6,7 @@ const {
 } = require("./apiCore");
 const { getRestVersion } = require("./config");
 const apiCommerce = require("./apiCommerce");
+const apiConfig = require("./apiConfig");
 
 // GET /rest/<version>/bml/library/functions?offset=&limit= -> { items, offset, limit, count, hasMore }
 function listLibraryFunctions(
@@ -300,4 +301,7 @@ module.exports = {
   getEffectiveRestVersion,
   sanitizeRestResponse,
   ...apiCommerce,
+  ...apiConfig,
+  apiCommerce,
+  apiConfig,
 };

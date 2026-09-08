@@ -24,6 +24,7 @@ let cachedGlobalItems = null;
 let cachedTransactionItems = null;
 let cachedLineItems = null;
 let cachedSystemItems = null;
+let cachedArraySetItems = null;
 let cachedCpqjsItems = null;
 let cachedAllAttributes = null;
 
@@ -35,6 +36,7 @@ function buildCategorizedItems() {
     cachedTransactionItems = [];
     cachedLineItems = [];
     cachedSystemItems = [];
+    cachedArraySetItems = [];
     cachedCpqjsItems = [];
     cachedAllAttributes = [];
 
@@ -75,6 +77,8 @@ function buildCategorizedItems() {
                 cachedLineItems.push(item);
             } else if (info.scope === 'System') {
                 cachedSystemItems.push(item);
+            } else if (info.scope === 'Array Set' || info.dataType === 'Array Set') {
+                cachedArraySetItems.push(item);
             } else {
                 cachedGlobalItems.push(item);
             }
@@ -132,6 +136,13 @@ function registerBmlIntelliSense(context) {
     apiFilesWatcher.onDidDelete(invalidateApiData);
     context.subscriptions.push(apiFilesWatcher);
 
+    // Watch workspace .cpq cache files to immediately reflect synced metadata
+    const cpqCacheWatcher = vscode.workspace.createFileSystemWatcher('**/.cpq/cache/**');
+    cpqCacheWatcher.onDidChange(invalidateApiData);
+    cpqCacheWatcher.onDidCreate(invalidateApiData);
+    cpqCacheWatcher.onDidDelete(invalidateApiData);
+    context.subscriptions.push(cpqCacheWatcher);
+
     const completionProvider = vscode.languages.registerCompletionItemProvider(
         'bml',
         {
@@ -173,6 +184,8 @@ function registerBmlIntelliSense(context) {
                         return cachedTransactionItems;
                     } else if (objName === 'line' || objName === 'each' || objName === 'item' || objName === 'l') {
                         return cachedLineItems;
+                    } else if (objName === 'arrayset' || objName === 'arraysets' || objName === 'arr' || objName === 'a') {
+                        return cachedArraySetItems;
                     } else {
                         return cachedAllAttributes;
                     }

@@ -510,6 +510,7 @@ suite("BML REST api", () => {
       );
     });
 
+
     test("listCommerceArraySets dispatches GET to /commerceProcesses/<proc>/documents/<doc>/arraySets", async () => {
       const vscode = createFakeVscode({ config: baseConfig() });
       const sink = {};
@@ -559,6 +560,68 @@ suite("BML REST api", () => {
           "/commerceProcessSetups/oraclecpqo/bml/attributeLookups",
         ),
       );
+      assert.ok(sink.captured.path.includes("fields=lookupType") && !sink.captured.path.includes("links"));
+    });
+
+    test("getCommerceAttribute fetches specific attribute, extracts type:displayValue, and attaches menuOptions", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const mockTransport = async (opts) => {
+        if (opts.path.includes("/menuItems")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                { displayValue: "Draft", value: "draft_val" },
+                { displayValue: "Submitted", value: "submitted_val" },
+              ],
+            }),
+          };
+        }
+        if (opts.path.includes("/attributes/status_t")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              variableName: "status_t",
+              label: "Status",
+              type: { value: 1, displayValue: "Single Select Menu" },
+              required: true,
+              userDefault: "draft_val",
+              description: "Quote status",
+              additional: "Extra info",
+              defaultDataType: "String",
+            }),
+          };
+        }
+        return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+      };
+
+      const result = await api.getCommerceAttribute(
+        fakeContext(),
+        vscode,
+        {
+          process: "oraclecpqo",
+          document: "transaction",
+          attributeVarName: "status_t",
+        },
+        mockTransport,
+      );
+
+      assert.strictEqual(result.statusCode, 200);
+      const attr = result.body;
+      assert.strictEqual(attr.variableName, "status_t");
+      assert.strictEqual(attr.label, "Status");
+      assert.strictEqual(attr.type, "Single Select Menu");
+      assert.strictEqual(attr.required, true);
+      assert.strictEqual(attr.userDefault, "draft_val");
+      assert.strictEqual(attr.description, "Quote status");
+      assert.strictEqual(attr.additional, "Extra info");
+      assert.strictEqual(attr.defaultDataType, "String");
+      assert.ok(Array.isArray(attr.menuOptions));
+      assert.strictEqual(attr.menuOptions.length, 2);
+      assert.deepStrictEqual(attr.menuOptions[0], { displayValue: "Draft", value: "draft_val" });
+      assert.deepStrictEqual(attr.menuOptions[1], { displayValue: "Submitted", value: "submitted_val" });
     });
 
     test("listCommerceAttributeLookupValues dispatches GET to /attributeLookups/<lookupType>/lookupValues", async () => {
@@ -658,7 +721,7 @@ suite("BML REST api", () => {
       assert.strictEqual(result.systemAttributes[0].variableName, "_transaction_id");
 
       // Verify written to disk cache
-      const cacheFile = path.join(tempDir, ".cpq", "cache", "commerce-attributes.json");
+      const cacheFile = path.join(tempDir, ".cpq", "commerce", "attributes.min.json");
       assert.ok(fs.existsSync(cacheFile));
       fs.rmSync(tempDir, { recursive: true, force: true });
     });
@@ -803,6 +866,13 @@ suite("BML REST api", () => {
             text: JSON.stringify([]),
           };
         }
+        if (opts.path.includes("/arraySets")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({ items: [{ variableName: "feeItems_set", name: "Fee Items", description: "Array of fee items" }] }),
+          };
+        }
         return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
       };
 
@@ -821,11 +891,17 @@ suite("BML REST api", () => {
       assert.strictEqual(result.lookups.systemVariables.length, 1);
       assert.strictEqual(result.lookups.systemVariables[0].variableName, "_system_date");
 
-      // Verify files written to .cpq/cache/lookups/
-      const lookupsDir = path.join(tempDir, ".cpq", "cache", "lookups");
-      assert.ok(fs.existsSync(path.join(lookupsDir, "transaction.json")));
-      assert.ok(fs.existsSync(path.join(lookupsDir, "transaction-line.json")));
-      assert.ok(fs.existsSync(path.join(lookupsDir, "system-variables.json")));
+      assert.ok(result.arraySets);
+      assert.strictEqual(result.arraySets.length, 1);
+      assert.strictEqual(result.arraySets[0].variableName, "feeItems_set");
+
+      // Verify files written to .cpq/commerce/ and .cpq/system/
+      const commerceDir = path.join(tempDir, ".cpq", "commerce");
+      const systemDir = path.join(tempDir, ".cpq", "system");
+      assert.ok(fs.existsSync(path.join(commerceDir, "transaction.min.json")));
+      assert.ok(fs.existsSync(path.join(commerceDir, "transaction-line.min.json")));
+      assert.ok(fs.existsSync(path.join(systemDir, "variables.min.json")));
+      assert.ok(fs.existsSync(path.join(commerceDir, "array-sets.min.json")));
 
       fs.rmSync(tempDir, { recursive: true, force: true });
     });
@@ -885,6 +961,159 @@ suite("BML REST api", () => {
       assert.strictEqual(result.body.links, undefined);
       assert.strictEqual(result.body.password, undefined);
       assert.strictEqual(result.body.variableName, "testFunc");
+    });
+  });
+
+  suite("Configuration Attributes & Product Families (apiConfig)", () => {
+    test("listConfigurationAttributes dispatches GET to /allProductFamilySetups/_allProductFamilies/attributes", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      const transport = async (opts) => {
+        sink.captured = opts;
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            items: [
+              {
+                variableName: "_config_memory_size",
+                label: "Memory Size",
+                dataType: { displayValue: "Integer" },
+                required: false,
+                defaultValue: 16,
+              },
+            ],
+          }),
+        };
+      };
+
+      const result = await api.listConfigurationAttributes(fakeContext(), vscode, {}, transport);
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(sink.captured.path.includes("/allProductFamilySetups/_allProductFamilies/attributes"));
+      assert.strictEqual(result.body.items.length, 1);
+      assert.strictEqual(result.body.items[0].variableName, "_config_memory_size");
+    });
+
+    test("listProductFamilies dispatches GET to /allProductFamilySetups", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      const transport = async (opts) => {
+        sink.captured = opts;
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            items: [{ variableName: "servers", label: "Servers" }],
+          }),
+        };
+      };
+
+      const result = await api.listProductFamilies(fakeContext(), vscode, {}, transport);
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(sink.captured.path.includes("/allProductFamilySetups"));
+      assert.strictEqual(result.body.items.length, 1);
+      assert.strictEqual(result.body.items[0].variableName, "servers");
+    });
+
+    test("formatConfigurationAttribute normalizes object and string dataTypes cleanly", () => {
+      const formatted = api.formatConfigurationAttribute({
+        variableName: "processor_speed",
+        label: "Processor Speed",
+        dataType: { displayValue: "Float" },
+        required: true,
+        category: { displayValue: "System" },
+        description: "Speed in GHz",
+      });
+      assert.strictEqual(formatted.variableName, "processor_speed");
+      assert.strictEqual(formatted.label, "Processor Speed");
+      assert.strictEqual(formatted.dataType, "Float");
+      assert.strictEqual(formatted.type, "Float");
+      assert.strictEqual(formatted.required, true);
+      assert.strictEqual(formatted.scope, "Configuration");
+      assert.strictEqual(formatted.category, "System");
+    });
+
+    test("syncConfigurationAttributes fetches configuration attributes and product families", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const transport = async (opts) => {
+        if (opts.path.includes("/attributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                {
+                  variableName: "_config_cpu_type",
+                  label: "CPU Type",
+                  dataType: { displayValue: "Text" },
+                  required: true,
+                },
+              ],
+            }),
+          };
+        }
+        if (opts.path.includes("/productLines") && opts.path.includes("/models")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [{ variableName: "storageModelX", label: "Storage Model X" }],
+            }),
+          };
+        }
+        if (opts.path.includes("/productLines")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [{ variableName: "diskLine", label: "Disk Line" }],
+            }),
+          };
+        }
+        if (opts.path.includes("/allProductFamilySetups")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [{ variableName: "storageFamily", label: "Storage Family" }],
+            }),
+          };
+        }
+        return { statusCode: 200, headers: {}, text: "{}" };
+      };
+
+      const result = await api.syncConfigurationAttributes(fakeContext(), vscode, {}, transport);
+      assert.strictEqual(result.count, 1);
+      assert.strictEqual(result.attributes[0].variableName, "_config_cpu_type");
+      assert.strictEqual(result.attributes[0].scope, "Configuration");
+      assert.strictEqual(result.productFamilies.length, 1);
+      assert.strictEqual(result.productFamilies[0].variableName, "storageFamily");
+      assert.strictEqual(result.models.length, 1);
+      assert.strictEqual(result.models[0].variableName, "storageModelX");
+      assert.strictEqual(result.models[0].productLine, "diskLine");
+      assert.strictEqual(result.models[0].productFamily, "storageFamily");
+    });
+
+    test("listProductLines, listModels, listModelAttributes dispatch to proper REST endpoints", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const calls = [];
+      const transport = async (opts) => {
+        calls.push(opts.path);
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ items: [] }),
+        };
+      };
+
+      await api.listProductLines(fakeContext(), vscode, { productFamily: "famA" }, transport);
+      assert.ok(calls[0].includes("/productFamilies/famA/productLines"));
+
+      await api.listModels(fakeContext(), vscode, { productFamily: "famA", productLine: "lineB" }, transport);
+      assert.ok(calls[1].includes("/productLines/lineB/models"));
+
+      await api.listModelAttributes(fakeContext(), vscode, { productFamily: "famA", productLine: "lineB", model: "modC" }, transport);
+      assert.ok(calls[2].includes("/models/modC/attributes"));
     });
   });
 });
