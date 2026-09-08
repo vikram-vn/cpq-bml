@@ -93,7 +93,10 @@ function loadBundledAttributes() {
         bundledAttributesIndex.varNameToMeta.set(varName, entry);
 
         // Normalize variable name itself (e.g. "status_t" -> "statust", "status")
-        bundledAttributesIndex.labelToVarName.set(normalizeKey(varName), varName);
+        bundledAttributesIndex.labelToVarName.set(
+          normalizeKey(varName),
+          varName,
+        );
         if (varName.endsWith("_t")) {
           bundledAttributesIndex.labelToVarName.set(
             normalizeKey(varName.slice(0, -2)),
@@ -103,7 +106,10 @@ function loadBundledAttributes() {
 
         // Extract human readable labels from notes
         if (meta.notes) {
-          bundledAttributesIndex.labelToVarName.set(normalizeKey(meta.notes), varName);
+          bundledAttributesIndex.labelToVarName.set(
+            normalizeKey(meta.notes),
+            varName,
+          );
           // If notes start with a concise label like "Status of the transaction" -> "status"
           const firstWord = meta.notes.split(/\s+/)[0];
           if (firstWord && firstWord.length > 2) {
@@ -152,13 +158,33 @@ function loadBundledAttributes() {
 
 function getCacheFilePath(workspaceRoot) {
   if (!workspaceRoot) return null;
-  const txnMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "transaction.min.json");
+  const txnMin = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    COMMERCE_DIR,
+    "transaction.min.json",
+  );
   if (fs.existsSync(txnMin)) return txnMin;
-  const commerceMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "attributes.min.json");
+  const commerceMin = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    COMMERCE_DIR,
+    "attributes.min.json",
+  );
   if (fs.existsSync(commerceMin)) return commerceMin;
-  const legacyMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
+  const legacyMin = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    "cache",
+    "commerce-attributes.min.json",
+  );
   if (fs.existsSync(legacyMin)) return legacyMin;
-  const legacyJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
+  const legacyJson = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    "cache",
+    "commerce-attributes.json",
+  );
   if (fs.existsSync(legacyJson)) return legacyJson;
   return txnMin;
 }
@@ -222,7 +248,9 @@ function loadWorkspaceAttributes(workspaceRoot) {
         for (const file of files) {
           if (!file.endsWith(".min.json")) continue;
           try {
-            const raw = JSON.parse(fs.readFileSync(path.join(commerceDir, file), "utf8"));
+            const raw = JSON.parse(
+              fs.readFileSync(path.join(commerceDir, file), "utf8"),
+            );
             const items = Array.isArray(raw)
               ? raw
               : Array.isArray(raw.attributes)
@@ -245,7 +273,9 @@ function loadWorkspaceAttributes(workspaceRoot) {
         for (const file of files) {
           if (!file.endsWith(".min.json")) continue;
           try {
-            const raw = JSON.parse(fs.readFileSync(path.join(systemDir, file), "utf8"));
+            const raw = JSON.parse(
+              fs.readFileSync(path.join(systemDir, file), "utf8"),
+            );
             const items = Array.isArray(raw)
               ? raw
               : Array.isArray(raw.attributes)
@@ -261,9 +291,12 @@ function loadWorkspaceAttributes(workspaceRoot) {
       if (fs.existsSync(configDir)) {
         const files = fs.readdirSync(configDir);
         for (const file of files) {
-          if (!file.endsWith(".min.json") || file === "config.min.json") continue;
+          if (!file.endsWith(".min.json") || file === "config.min.json")
+            continue;
           try {
-            const raw = JSON.parse(fs.readFileSync(path.join(configDir, file), "utf8"));
+            const raw = JSON.parse(
+              fs.readFileSync(path.join(configDir, file), "utf8"),
+            );
             const items = Array.isArray(raw)
               ? raw
               : Array.isArray(raw.attributes)
@@ -285,11 +318,23 @@ function loadWorkspaceAttributes(workspaceRoot) {
   }
 
   // Fallback: Legacy .cpq/cache/ structure
-  const legacyCacheMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
-  const legacyCacheJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
+  const legacyCacheMin = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    "cache",
+    "commerce-attributes.min.json",
+  );
+  const legacyCacheJson = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    "cache",
+    "commerce-attributes.json",
+  );
   const legacyPath = fs.existsSync(legacyCacheMin)
     ? legacyCacheMin
-    : (fs.existsSync(legacyCacheJson) ? legacyCacheJson : null);
+    : fs.existsSync(legacyCacheJson)
+      ? legacyCacheJson
+      : null;
 
   if (legacyPath && fs.existsSync(legacyPath)) {
     try {
@@ -314,10 +359,30 @@ function loadWorkspaceAttributes(workspaceRoot) {
 
 function isCommerceSynced(workspaceRoot) {
   if (!workspaceRoot) return false;
-  const txnMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "transaction.min.json");
-  const commerceMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "attributes.min.json");
-  const legacyMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
-  const legacyJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
+  const txnMin = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    COMMERCE_DIR,
+    "transaction.min.json",
+  );
+  const commerceMin = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    COMMERCE_DIR,
+    "attributes.min.json",
+  );
+  const legacyMin = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    "cache",
+    "commerce-attributes.min.json",
+  );
+  const legacyJson = path.join(
+    workspaceRoot,
+    CPQ_DIR,
+    "cache",
+    "commerce-attributes.json",
+  );
   try {
     return (
       (fs.existsSync(txnMin) && fs.statSync(txnMin).size > 0) ||
@@ -348,7 +413,9 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
 
     // 1. Save .cpq/commerce/transaction.min.json
     const txnItems =
-      data.lookups && Array.isArray(data.lookups.transaction) && data.lookups.transaction.length > 0
+      data.lookups &&
+      Array.isArray(data.lookups.transaction) &&
+      data.lookups.transaction.length > 0
         ? data.lookups.transaction
         : Array.isArray(data.attributes) && data.attributes.length > 0
           ? data.attributes
@@ -371,11 +438,17 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
     // Clean up obsolete commerce/attributes.min.json if present
     const obsoleteCommerceAttr = path.join(commerceDir, "attributes.min.json");
     if (fs.existsSync(obsoleteCommerceAttr)) {
-      try { fs.unlinkSync(obsoleteCommerceAttr); } catch (e) {}
+      try {
+        fs.unlinkSync(obsoleteCommerceAttr);
+      } catch (e) {}
     }
 
     // 2. Save .cpq/commerce/transaction-line.min.json
-    if (data.lookups && Array.isArray(data.lookups.transactionLine) && data.lookups.transactionLine.length > 0) {
+    if (
+      data.lookups &&
+      Array.isArray(data.lookups.transactionLine) &&
+      data.lookups.transactionLine.length > 0
+    ) {
       fs.writeFileSync(
         path.join(commerceDir, "transaction-line.min.json"),
         JSON.stringify({
@@ -388,11 +461,12 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
     }
 
     // 3. Save .cpq/commerce/array-sets.min.json
-    const arrSets = Array.isArray(data.arraySets) && data.arraySets.length > 0
-      ? data.arraySets
-      : data.lookups && Array.isArray(data.lookups.arraySets)
-        ? data.lookups.arraySets
-        : [];
+    const arrSets =
+      Array.isArray(data.arraySets) && data.arraySets.length > 0
+        ? data.arraySets
+        : data.lookups && Array.isArray(data.lookups.arraySets)
+          ? data.lookups.arraySets
+          : [];
     if (arrSets.length > 0) {
       fs.writeFileSync(
         path.join(commerceDir, "array-sets.min.json"),
@@ -423,9 +497,12 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
 
     // 4. Save system variables in .cpq/system/variables.min.json
     const sysItems =
-      data.lookups && Array.isArray(data.lookups.systemVariables) && data.lookups.systemVariables.length > 0
+      data.lookups &&
+      Array.isArray(data.lookups.systemVariables) &&
+      data.lookups.systemVariables.length > 0
         ? data.lookups.systemVariables
-        : Array.isArray(data.systemAttributes) && data.systemAttributes.length > 0
+        : Array.isArray(data.systemAttributes) &&
+            data.systemAttributes.length > 0
           ? data.systemAttributes
           : [];
     if (sysItems.length > 0) {
@@ -443,11 +520,16 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
     // Clean up obsolete system/attributes.min.json if present
     const obsoleteSysAttr = path.join(systemDir, "attributes.min.json");
     if (fs.existsSync(obsoleteSysAttr)) {
-      try { fs.unlinkSync(obsoleteSysAttr); } catch (e) {}
+      try {
+        fs.unlinkSync(obsoleteSysAttr);
+      } catch (e) {}
     }
 
     // 6. Save configuration attributes in .cpq/config/attributes.min.json
-    if (Array.isArray(data.configAttributes) && data.configAttributes.length > 0) {
+    if (
+      Array.isArray(data.configAttributes) &&
+      data.configAttributes.length > 0
+    ) {
       fs.writeFileSync(
         path.join(configDir, "attributes.min.json"),
         JSON.stringify({
@@ -457,7 +539,10 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
         "utf8",
       );
     }
-    if (Array.isArray(data.productFamilies) && data.productFamilies.length > 0) {
+    if (
+      Array.isArray(data.productFamilies) &&
+      data.productFamilies.length > 0
+    ) {
       fs.writeFileSync(
         path.join(configDir, "product-families.min.json"),
         JSON.stringify({
@@ -481,11 +566,15 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
     // Remove obsolete connection settings from .cpq/config if present
     const obsoleteConfigMin = path.join(configDir, "config.min.json");
     if (fs.existsSync(obsoleteConfigMin)) {
-      try { fs.unlinkSync(obsoleteConfigMin); } catch (e) {}
+      try {
+        fs.unlinkSync(obsoleteConfigMin);
+      } catch (e) {}
     }
     const obsoleteConfigJson = path.join(configDir, "config.json");
     if (fs.existsSync(obsoleteConfigJson)) {
-      try { fs.unlinkSync(obsoleteConfigJson); } catch (e) {}
+      try {
+        fs.unlinkSync(obsoleteConfigJson);
+      } catch (e) {}
     }
 
     // Clean up any non-minified .json files in .cpq/commerce, .cpq/system, .cpq/config
@@ -551,7 +640,12 @@ function resolveMenuValue(variableName, inputValue, workspaceRoot) {
   if (wsIndex && wsIndex.varNameToMeta.has(variableName)) {
     const attr = wsIndex.varNameToMeta.get(variableName);
     const menuList =
-      attr && (Array.isArray(attr.menuOptions) ? attr.menuOptions : Array.isArray(attr.menuItems) ? attr.menuItems : null);
+      attr &&
+      (Array.isArray(attr.menuOptions)
+        ? attr.menuOptions
+        : Array.isArray(attr.menuItems)
+          ? attr.menuItems
+          : null);
     if (menuList) {
       const normVal = normalizeKey(inputValue);
       for (const item of menuList) {
@@ -630,7 +724,11 @@ function resolveQueryFilter(queryInput, workspaceRoot) {
             const operatorObj = {};
             for (const [op, opVal] of Object.entries(val)) {
               if (op.startsWith("$")) {
-                const resolvedVal = resolveMenuValue(resolvedKey, opVal, workspaceRoot);
+                const resolvedVal = resolveMenuValue(
+                  resolvedKey,
+                  opVal,
+                  workspaceRoot,
+                );
                 if (resolvedVal !== opVal) changed = true;
                 operatorObj[op] = resolvedVal;
               } else {
@@ -640,7 +738,11 @@ function resolveQueryFilter(queryInput, workspaceRoot) {
             result[resolvedKey] = operatorObj;
           } else if (typeof val === "string") {
             // Direct equality like { status: "Approved" }
-            const resolvedVal = resolveMenuValue(resolvedKey, val, workspaceRoot);
+            const resolvedVal = resolveMenuValue(
+              resolvedKey,
+              val,
+              workspaceRoot,
+            );
             if (resolvedVal !== val) changed = true;
             result[resolvedKey] = resolvedVal;
           } else {

@@ -13,6 +13,7 @@ logs/
 *.vsix
 .env
 .agents
+.cpq
 .claude/skills
 .cpqdevkit
 .cursor/rules

@@ -179,7 +179,7 @@ suite('BML IntelliSense', () => {
 		assert.ok(!labels.includes('atof'), 'did not expect atof in CPQJS completions');
 	});
 
-	test('global completion list does not include attributes', async () => {
+	test('global completion list includes transaction attributes directly without dot notation', async () => {
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = ' });
 		const position = new vscode.Position(0, 4);
 		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
@@ -187,8 +187,8 @@ suite('BML IntelliSense', () => {
 		
 		assert.ok(labels.includes('atof'), 'expected atof in global completions');
 		assert.ok(labels.includes('_site_url'), 'expected _site_url in global completions');
-		assert.ok(!labels.includes('createdBy_t'), 'did not expect createdBy_t in global completions');
-		assert.ok(!labels.includes('priceType_l'), 'did not expect priceType_l in global completions');
+		assert.ok(labels.includes('createdBy_t'), 'expected createdBy_t directly in global completions without dot notation');
+		assert.ok(!labels.includes('priceType_l'), 'did not expect line item attribute priceType_l in global completions');
 	});
 
 	test('signature help resolves active BML function and parameter highlights', async () => {

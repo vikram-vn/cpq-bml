@@ -71,14 +71,18 @@ function buildCategorizedItems() {
             item.filterText = key;
             item.sortText = `4_${key}`;
 
+            item.documentation = formatAsJsDoc(info);
+
             cachedAllAttributes.push(item);
 
             if (info.scope === 'Transaction') {
                 cachedTransactionItems.push(item);
+                cachedGlobalItems.push(item);
             } else if (info.scope === 'Line Item') {
                 cachedLineItems.push(item);
             } else if (info.scope === 'System') {
                 cachedSystemItems.push(item);
+                cachedGlobalItems.push(item);
             } else if (info.scope === 'Array Set' || info.dataType === 'Array Set') {
                 cachedArraySetItems.push(item);
             } else if (info.scope === 'Configuration' || info.scope === 'Model') {
