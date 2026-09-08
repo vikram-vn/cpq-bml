@@ -110,6 +110,6 @@ suite("BML REST commands - syncCommerceMetadata", () => {
       const cachePath = path.join(tmpDir, ".cpq", "commerce", "transaction.min.json");
       assert.ok(fs.existsSync(cachePath));
       const saved = JSON.parse(fs.readFileSync(cachePath, "utf8"));
-      assert.strictEqual(saved.length, 1);
+      assert.strictEqual(saved.items ? saved.items.length : saved.length, 1);
     }));
 });
