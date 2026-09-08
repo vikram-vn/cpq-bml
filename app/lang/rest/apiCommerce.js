@@ -163,7 +163,7 @@ async function listCommerceAttributes(
     offset = 0,
     limit = 1000,
     q,
-    fields = "label,variableName,type,required,userDefault,description,additional,defaultDataType",
+    fields,
   } = {},
   transport,
 ) {

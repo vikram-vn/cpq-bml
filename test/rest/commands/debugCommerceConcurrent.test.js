@@ -126,7 +126,7 @@ suite("BML REST commands - debug concurrency (commerce functions)", () => {
         const twelveTransactions = Array.from({ length: 12 }, (_, i) => String(90001 + i)).join(", ");
 
         const vscode = createFakeVscode({
-          config: baseVscodeConfig(),
+          config: baseVscodeConfig({ "debug.concurrency": 10 }),
           window: {
             activeTextEditor: editor,
             showInputBox: async ({ prompt }) => {

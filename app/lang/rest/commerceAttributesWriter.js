@@ -63,6 +63,7 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
             document: "transaction",
             count: txnAttrs.length,
             attributes: txnAttrs,
+            items: txnAttrs,
           }),
           "utf8",
         );

@@ -65,7 +65,7 @@ suite("settings-panel state", () => {
         logToTerminal: true,
         aiSkills: { claude: true, cursor: false, copilot: false }
       },
-      debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false },
+      debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, concurrency: 2 },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],
       hasPassword: true,
       hasToken: false,
