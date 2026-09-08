@@ -66,6 +66,15 @@ suite("settings-panel state", () => {
         aiSkills: { claude: true, cursor: false, copilot: false }
       },
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, concurrency: 2 },
+      metadata: {
+        isSynced: false,
+        updatedAt: null,
+        commerceCount: 0,
+        configCount: 0,
+        systemCount: 0,
+        canSync: true,
+        storagePath: "",
+      },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],
       hasPassword: true,
       hasToken: false,

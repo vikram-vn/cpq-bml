@@ -55,12 +55,15 @@ async function listConfigurationAttributes(
   {
     offset = 0,
     limit = 1000,
+    q,
     fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
+    signal,
   } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
   const queryParams = { offset, limit };
+  if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -70,6 +73,7 @@ async function listConfigurationAttributes(
       path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/attributes`,
       method: "GET",
       query: queryParams,
+      signal,
     },
     transport,
   );
@@ -79,11 +83,12 @@ async function listConfigurationAttributes(
 async function listProductFamilies(
   context,
   vscode,
-  { offset = 0, limit = 100, fields = "variableName,label" } = {},
+  { offset = 0, limit = 100, q, fields = "variableName,label", signal } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
   const queryParams = { offset, limit };
+  if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -93,6 +98,7 @@ async function listProductFamilies(
       path: `/rest/${version}/allProductFamilySetups`,
       method: "GET",
       query: queryParams,
+      signal,
     },
     transport,
   );
@@ -106,12 +112,15 @@ async function listProductFamilyAttributes(
     productFamily = "defaultFamily",
     offset = 0,
     limit = 1000,
+    q,
     fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
+    signal,
   } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
   const queryParams = { offset, limit };
+  if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -121,6 +130,7 @@ async function listProductFamilyAttributes(
       path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/attributes`,
       method: "GET",
       query: queryParams,
+      signal,
     },
     transport,
   );
@@ -130,11 +140,12 @@ async function listProductFamilyAttributes(
 async function listProductLines(
   context,
   vscode,
-  { productFamily, offset = 0, limit = 100, fields = "variableName,label,name" } = {},
+  { productFamily, offset = 0, limit = 100, q, fields = "variableName,label,name", signal } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
   const queryParams = { offset, limit };
+  if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -144,6 +155,7 @@ async function listProductLines(
       path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines`,
       method: "GET",
       query: queryParams,
+      signal,
     },
     transport,
   );
@@ -153,11 +165,12 @@ async function listProductLines(
 async function listModels(
   context,
   vscode,
-  { productFamily, productLine, offset = 0, limit = 100, fields = "variableName,label,name" } = {},
+  { productFamily, productLine, offset = 0, limit = 100, q, fields = "variableName,label,name", signal } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
   const queryParams = { offset, limit };
+  if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -167,6 +180,7 @@ async function listModels(
       path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models`,
       method: "GET",
       query: queryParams,
+      signal,
     },
     transport,
   );
@@ -182,12 +196,15 @@ async function listModelAttributes(
     model,
     offset = 0,
     limit = 1000,
+    q,
     fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
+    signal,
   } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
   const queryParams = { offset, limit };
+  if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -197,35 +214,66 @@ async function listModelAttributes(
       path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/attributes`,
       method: "GET",
       query: queryParams,
+      signal,
     },
     transport,
   );
 }
 
-// Pulls and caches remote configuration attributes into .cpq/config/attributes.min.json, product-families, and models
+// Pulls and caches remote configuration attributes into .cpq/config.attributes.min.json
 async function syncConfigurationAttributes(
   context,
   vscode,
-  { limit = 1000, fetchProductFamilies = true, fetchModels = true } = {},
+  {
+    limit = 1000,
+    fetchProductFamilies = true,
+    fetchModels = true,
+    signal,
+    onProgress,
+  } = {},
   transport,
 ) {
   const wsRoot = getWorkspaceRoot(vscode);
 
-  const res = await listConfigurationAttributes(
-    context,
-    vscode,
-    { limit },
-    transport,
-  );
+  let offset = 0;
+  const pageSize = limit || 1000;
+  const rawItems = [];
 
-  const rawItems =
-    res && res.body
-      ? Array.isArray(res.body)
-        ? res.body
-        : Array.isArray(res.body.items)
-          ? res.body.items
-          : []
-      : [];
+  while (true) {
+    if (signal && signal.aborted) throw new Error("Request aborted");
+    const res = await listConfigurationAttributes(
+      context,
+      vscode,
+      { offset, limit: pageSize, signal },
+      transport,
+    );
+
+    const pageItems =
+      res && res.body
+        ? Array.isArray(res.body)
+          ? res.body
+          : Array.isArray(res.body.items)
+            ? res.body.items
+            : []
+        : [];
+    rawItems.push(...pageItems);
+
+    if (onProgress && typeof onProgress === "function") {
+      onProgress({ message: `Fetched ${rawItems.length} configuration attributes...` });
+    }
+
+    const hasMore =
+      res &&
+      res.body &&
+      (res.body.hasMore !== undefined
+        ? res.body.hasMore === true
+        : Array.isArray(res.body.items) && res.body.items.length === pageSize);
+
+    if (!hasMore || pageItems.length === 0 || rawItems.length >= 50000) {
+      break;
+    }
+    offset += pageSize;
+  }
 
   const attributes = rawItems.map(formatConfigurationAttribute);
 
@@ -234,7 +282,8 @@ async function syncConfigurationAttributes(
 
   if (fetchProductFamilies) {
     try {
-      const famRes = await listProductFamilies(context, vscode, { limit: 100 }, transport);
+      if (signal && signal.aborted) throw new Error("Request aborted");
+      const famRes = await listProductFamilies(context, vscode, { limit: 100, signal }, transport);
       const rawFam =
         famRes && famRes.body
           ? Array.isArray(famRes.body)
@@ -248,85 +297,90 @@ async function syncConfigurationAttributes(
         label: f.label || f.name || f.variableName,
       }));
 
-      for (const fam of productFamilies) {
-        // Fetch family-specific attributes
-        try {
-          const famAttrRes = await listProductFamilyAttributes(
-            context,
-            vscode,
-            { productFamily: fam.variableName, limit: 1000 },
-            transport,
-          );
-          const rawFamAttrs =
-            famAttrRes && famAttrRes.body
-              ? Array.isArray(famAttrRes.body)
-                ? famAttrRes.body
-                : Array.isArray(famAttrRes.body.items)
-                  ? famAttrRes.body.items
-                  : []
-              : [];
-
-          for (const item of rawFamAttrs) {
-            const formatted = formatConfigurationAttribute(item, fam.variableName);
-            const existingIdx = attributes.findIndex((a) => a.variableName === formatted.variableName);
-            if (existingIdx >= 0) {
-              if (!attributes[existingIdx].productFamily) {
-                attributes[existingIdx].productFamily = fam.variableName;
-              }
-            } else {
-              attributes.push(formatted);
-            }
-          }
-        } catch (e) {}
-
-        if (fetchModels) {
+      await Promise.all(
+        productFamilies.map(async (fam) => {
+          if (signal && signal.aborted) throw new Error("Request aborted");
           try {
-            const lineRes = await listProductLines(
+            const famAttrRes = await listProductFamilyAttributes(
               context,
               vscode,
-              { productFamily: fam.variableName, limit: 50 },
+              { productFamily: fam.variableName, limit: 1000, signal },
               transport,
             );
-            const rawLines =
-              lineRes && lineRes.body
-                ? Array.isArray(lineRes.body)
-                  ? lineRes.body
-                  : Array.isArray(lineRes.body.items)
-                    ? lineRes.body.items
+            const rawFamAttrs =
+              famAttrRes && famAttrRes.body
+                ? Array.isArray(famAttrRes.body)
+                  ? famAttrRes.body
+                  : Array.isArray(famAttrRes.body.items)
+                    ? famAttrRes.body.items
                     : []
                 : [];
 
-            for (const line of rawLines) {
-              const lineVar = line.variableName || line.id || line.name;
-              try {
-                const modRes = await listModels(
-                  context,
-                  vscode,
-                  { productFamily: fam.variableName, productLine: lineVar, limit: 50 },
-                  transport,
-                );
-                const rawMods =
-                  modRes && modRes.body
-                    ? Array.isArray(modRes.body)
-                      ? modRes.body
-                      : Array.isArray(modRes.body.items)
-                        ? modRes.body.items
-                        : []
-                    : [];
-
-                for (const m of rawMods) {
-                  models.push({
-                    variableName: m.variableName || m.id || m.name,
-                    label: m.label || m.name || m.variableName,
-                    productLine: lineVar,
-                    productFamily: fam.variableName,
-                  });
+            for (const item of rawFamAttrs) {
+              const formatted = formatConfigurationAttribute(item, fam.variableName);
+              const existingIdx = attributes.findIndex((a) => a.variableName === formatted.variableName);
+              if (existingIdx >= 0) {
+                if (!attributes[existingIdx].productFamily) {
+                  attributes[existingIdx].productFamily = fam.variableName;
                 }
-              } catch (e) {}
+              } else {
+                attributes.push(formatted);
+              }
             }
           } catch (e) {}
-        }
-      }
+
+          if (fetchModels) {
+            try {
+              const lineRes = await listProductLines(
+                context,
+                vscode,
+                { productFamily: fam.variableName, limit: 50, signal },
+                transport,
+              );
+              const rawLines =
+                lineRes && lineRes.body
+                  ? Array.isArray(lineRes.body)
+                    ? lineRes.body
+                    : Array.isArray(lineRes.body.items)
+                      ? lineRes.body.items
+                      : []
+                  : [];
+
+              await Promise.all(
+                rawLines.map(async (line) => {
+                  if (signal && signal.aborted) throw new Error("Request aborted");
+                  const lineVar = line.variableName || line.id || line.name;
+                  try {
+                    const modRes = await listModels(
+                      context,
+                      vscode,
+                      { productFamily: fam.variableName, productLine: lineVar, limit: 50, signal },
+                      transport,
+                    );
+                    const rawMods =
+                      modRes && modRes.body
+                        ? Array.isArray(modRes.body)
+                          ? modRes.body
+                          : Array.isArray(modRes.body.items)
+                            ? modRes.body.items
+                            : []
+                        : [];
+
+                    for (const m of rawMods) {
+                      models.push({
+                        variableName: m.variableName || m.id || m.name,
+                        label: m.label || m.name || m.variableName,
+                        productLine: lineVar,
+                        productFamily: fam.variableName,
+                      });
+                    }
+                  } catch (e) {}
+                }),
+              );
+            } catch (e) {}
+          }
+        }),
+      );
     } catch (e) {}
   }
 

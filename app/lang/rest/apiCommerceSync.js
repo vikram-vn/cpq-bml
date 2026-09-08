@@ -77,7 +77,14 @@ function formatCommerceAttribute(item, menuOptions = null) {
 async function syncCommerceAttributes(
   context,
   vscode,
-  { process, document, fetchMenuItems = true, fetchLookups = true } = {},
+  {
+    process,
+    document,
+    fetchMenuItems = true,
+    fetchLookups = true,
+    signal,
+    onProgress,
+  } = {},
   transport,
   apiEndpoints,
 ) {
@@ -94,29 +101,60 @@ async function syncCommerceAttributes(
     listCommerceAttributeLookupValues,
   } = apiEndpoints;
 
-  const res = await listCommerceAttributes(
-    context,
-    vscode,
-    {
-      process: effectiveProcess,
-      document: effectiveDocument,
-      limit: 1000,
-      fields: "label,variableName,type,required,userDefault,description,additional,defaultDataType",
-    },
-    transport,
-  );
+  let offset = 0;
+  const pageSize = 1000;
+  const rawAttrItems = [];
 
-  const attributes = [];
-  const rawAttrItems =
-    res && res.body
-      ? Array.isArray(res.body)
-        ? res.body
-        : Array.isArray(res.body.items)
-          ? res.body.items
-          : []
-      : [];
+  while (true) {
+    if (signal && signal.aborted) throw new Error("Request aborted");
+    const res = await listCommerceAttributes(
+      context,
+      vscode,
+      {
+        process: effectiveProcess,
+        document: effectiveDocument,
+        offset,
+        limit: pageSize,
+        fields: "label,variableName,type,required,userDefault,description,additional,defaultDataType",
+        signal,
+      },
+      transport,
+    );
 
-  for (const item of rawAttrItems) {
+    const pageItems =
+      res && res.body
+        ? Array.isArray(res.body)
+          ? res.body
+          : Array.isArray(res.body.items)
+            ? res.body.items
+            : []
+        : [];
+    rawAttrItems.push(...pageItems);
+
+    if (onProgress && typeof onProgress === "function") {
+      onProgress({ message: `Fetched ${rawAttrItems.length} commerce attributes...` });
+    }
+
+    const hasMore =
+      res &&
+      res.body &&
+      (res.body.hasMore !== undefined
+        ? res.body.hasMore === true
+        : Array.isArray(res.body.items) && res.body.items.length === pageSize);
+
+    if (!hasMore || pageItems.length === 0 || rawAttrItems.length >= 50000) {
+      break;
+    }
+    offset += pageSize;
+  }
+
+  if (onProgress && typeof onProgress === "function") {
+    onProgress({ message: "Syncing menu items in parallel..." });
+  }
+
+  let completedMenus = 0;
+  const menuFetchPromises = rawAttrItems.map(async (item) => {
+    if (signal && signal.aborted) throw new Error("Request aborted");
     const varName = item.variableName || item.name || item.id;
     const typeStr = (
       item.type && typeof item.type === "object"
@@ -149,6 +187,7 @@ async function syncCommerceAttributes(
             attributeVarName: varName,
             limit: 500,
             fields: "value,displayValue,label,name,id",
+            signal,
           },
           transport,
         );
@@ -166,39 +205,60 @@ async function syncCommerceAttributes(
       } catch (e) {
         // Ignore individual menu fetch error
       }
+      completedMenus++;
+      if (onProgress && typeof onProgress === "function" && completedMenus % 10 === 0) {
+        onProgress({ message: `Synced ${completedMenus} menu attributes...` });
+      }
     }
 
-    attributes.push(formatCommerceAttribute(item, menuOptions));
-  }
+    return formatCommerceAttribute(item, menuOptions);
+  });
+
+  const attributes = await Promise.all(menuFetchPromises);
 
   // Fetch systemAttributes
   const systemAttributes = [];
   try {
-    const sysRes = await listCommerceSystemAttributes(
-      context,
-      vscode,
-      {
-        limit: 1000,
-        fields: "variableName,name,label,type,dataType,description",
-      },
-      transport,
-    );
-    const rawSysItems =
-      sysRes && sysRes.body
-        ? Array.isArray(sysRes.body)
-          ? sysRes.body
-          : Array.isArray(sysRes.body.items)
-            ? sysRes.body.items
-            : []
-        : [];
+    let sysOffset = 0;
+    while (true) {
+      if (signal && signal.aborted) throw new Error("Request aborted");
+      const sysRes = await listCommerceSystemAttributes(
+        context,
+        vscode,
+        {
+          offset: sysOffset,
+          limit: 1000,
+          fields: "variableName,name,label,type,dataType,description",
+          signal,
+        },
+        transport,
+      );
+      const rawSysItems =
+        sysRes && sysRes.body
+          ? Array.isArray(sysRes.body)
+            ? sysRes.body
+            : Array.isArray(sysRes.body.items)
+              ? sysRes.body.items
+              : []
+          : [];
 
-    for (const item of rawSysItems) {
-      systemAttributes.push({
-        variableName: item.variableName || item.name || item.id,
-        name: item.label || item.name || item.variableName || item.id,
-        dataType: normalizeAttributeDataType(item.type || item.dataType),
-        description: item.description || "",
-      });
+      for (const item of rawSysItems) {
+        systemAttributes.push({
+          variableName: item.variableName || item.name || item.id,
+          name: item.label || item.name || item.variableName || item.id,
+          dataType: normalizeAttributeDataType(item.type || item.dataType),
+          description: item.description || "",
+        });
+      }
+
+      const sysHasMore =
+        sysRes &&
+        sysRes.body &&
+        (sysRes.body.hasMore === true || (sysRes.body.items && sysRes.body.items.length === 1000));
+      if (!sysHasMore || rawSysItems.length === 0 || systemAttributes.length >= 10000) {
+        break;
+      }
+      sysOffset += 1000;
     }
   } catch (e) {}
 

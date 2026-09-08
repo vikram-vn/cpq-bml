@@ -5,14 +5,31 @@ const {
   COMMERCE_DIR,
   SYSTEM_DIR,
   CONFIG_DIR,
+  COMMERCE_ATTRS_FILE,
+  CONFIG_ATTRS_FILE,
+  SYSTEM_ATTRS_FILE,
   README_CPQ,
   saveWorkspaceAttributes: writeWorkspaceAttributes,
 } = require("./commerceAttributesWriter");
 const { createResolver } = require("./commerceAttributesResolver");
+const {
+  loadAttributesFromDir,
+  inspectMetadataStatus,
+  removeMetadataFromDirs,
+} = require("./commerceMetadataLoader");
 
 // In-memory cache singleton
+let extensionContext = null;
 let bundledAttributesIndex = null;
 let workspaceAttributesCache = {};
+
+function setExtensionContext(ctx) {
+  extensionContext = ctx;
+}
+
+function getExtensionContext() {
+  return extensionContext;
+}
 
 function clearAttributesCache(workspaceRoot) {
   if (workspaceRoot) {
@@ -35,21 +52,36 @@ function getWorkspaceRoot(vscode) {
   return null;
 }
 
+function getMetadataStorageDir(context, workspaceRoot) {
+  const ctx = context || extensionContext;
+  if (ctx && ctx.storageUri && ctx.storageUri.fsPath) {
+    return ctx.storageUri.fsPath;
+  }
+  if (ctx && ctx.globalStorageUri && ctx.globalStorageUri.fsPath) {
+    return path.join(ctx.globalStorageUri.fsPath, "metadata");
+  }
+  if (workspaceRoot) {
+    return path.join(workspaceRoot, CPQ_DIR);
+  }
+  return null;
+}
+
 function normalizeKey(str) {
-  if (!str || typeof str !== "string") return "";
-  return str.toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (!str) return "";
+  return String(str)
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
 }
 
 function normalizeAttributeDataType(raw) {
-  if (typeof raw === "string") {
-    return raw;
-  }
+  if (typeof raw === "string") return raw;
   if (raw && typeof raw === "object") {
     const val =
       raw.displayValue ||
       raw.displayLabel ||
       raw.name ||
       raw.label ||
+      raw.dataType ||
       raw.type ||
       raw.value;
     if (val !== undefined && val !== null) {
@@ -143,7 +175,6 @@ function loadBundledAttributes() {
     datemodified: "dateModified_t",
     lastmodifieddate: "dateModified_t",
   };
-
   for (const [alias, varName] of Object.entries(commonAliases)) {
     bundledAttributesIndex.labelToVarName.set(alias, varName);
   }
@@ -151,49 +182,35 @@ function loadBundledAttributes() {
   return bundledAttributesIndex;
 }
 
-function getCacheFilePath(workspaceRoot) {
-  if (!workspaceRoot) return null;
-  const txnMin = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    COMMERCE_DIR,
-    "transaction.min.json",
-  );
-  if (fs.existsSync(txnMin)) return txnMin;
-  const commerceMin = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    COMMERCE_DIR,
-    "attributes.min.json",
-  );
-  if (fs.existsSync(commerceMin)) return commerceMin;
-  const legacyMin = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    "cache",
-    "commerce-attributes.min.json",
-  );
-  if (fs.existsSync(legacyMin)) return legacyMin;
-  const legacyJson = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    "cache",
-    "commerce-attributes.json",
-  );
-  if (fs.existsSync(legacyJson)) return legacyJson;
-  return txnMin;
-}
-
-function loadWorkspaceAttributes(workspaceRoot) {
-  if (!workspaceRoot) return null;
-  if (workspaceAttributesCache[workspaceRoot]) {
-    return workspaceAttributesCache[workspaceRoot];
+function getCacheFilePath(workspaceRoot, context) {
+  const backendDir = getMetadataStorageDir(context, workspaceRoot);
+  const dirs = [];
+  if (backendDir) dirs.push(backendDir);
+  if (workspaceRoot) {
+    const wsCpq = path.join(workspaceRoot, CPQ_DIR);
+    if (wsCpq !== backendDir) dirs.push(wsCpq);
   }
 
-  const cpqDir = path.join(workspaceRoot, CPQ_DIR);
-  const commerceDir = path.join(cpqDir, COMMERCE_DIR);
-  const systemDir = path.join(cpqDir, SYSTEM_DIR);
-  const configDir = path.join(cpqDir, CONFIG_DIR);
+  for (const dir of dirs) {
+    const flatCommerce = path.join(dir, COMMERCE_ATTRS_FILE);
+    if (fs.existsSync(flatCommerce)) return flatCommerce;
+    const txnMin = path.join(dir, COMMERCE_DIR, "transaction.min.json");
+    if (fs.existsSync(txnMin)) return txnMin;
+    const commerceMin = path.join(dir, COMMERCE_DIR, "attributes.min.json");
+    if (fs.existsSync(commerceMin)) return commerceMin;
+    const legacyMin = path.join(dir, "cache", "commerce-attributes.min.json");
+    if (fs.existsSync(legacyMin)) return legacyMin;
+    const legacyJson = path.join(dir, "cache", "commerce-attributes.json");
+    if (fs.existsSync(legacyJson)) return legacyJson;
+  }
+  return backendDir ? path.join(backendDir, COMMERCE_ATTRS_FILE) : null;
+}
+
+function loadWorkspaceAttributes(workspaceRoot, context) {
+  const cacheKey = workspaceRoot || "global";
+  if (workspaceAttributesCache[cacheKey]) {
+    return workspaceAttributesCache[cacheKey];
+  }
 
   const index = {
     data: {},
@@ -220,214 +237,115 @@ function loadWorkspaceAttributes(workspaceRoot) {
 
       index.varNameToMeta.set(varName, entry);
       index.labelToVarName.set(normalizeKey(varName), varName);
-
-      const label = entry.label;
-      if (label) {
-        index.labelToVarName.set(normalizeKey(label), varName);
-      }
-
-      if (varName.endsWith("_t")) {
-        index.labelToVarName.set(normalizeKey(varName.slice(0, -2)), varName);
-      }
+      if (entry.label) index.labelToVarName.set(normalizeKey(entry.label), varName);
+      if (varName.endsWith("_t")) index.labelToVarName.set(normalizeKey(varName.slice(0, -2)), varName);
     }
   };
 
-  const hasNewCommerce = fs.existsSync(commerceDir);
-  const hasNewSystem = fs.existsSync(systemDir);
-  const hasNewConfig = fs.existsSync(configDir);
+  const backendDir = getMetadataStorageDir(context, workspaceRoot);
+  const dirs = [];
+  if (backendDir) dirs.push(backendDir);
+  if (workspaceRoot) {
+    const wsCpq = path.join(workspaceRoot, CPQ_DIR);
+    if (wsCpq !== backendDir) dirs.push(wsCpq);
+  }
 
-  if (hasNewCommerce || hasNewSystem || hasNewConfig) {
-    try {
-      if (hasNewCommerce) {
-        const files = fs.readdirSync(commerceDir);
-        for (const file of files) {
-          if (!file.endsWith(".min.json")) continue;
-          try {
-            const raw = JSON.parse(
-              fs.readFileSync(path.join(commerceDir, file), "utf8"),
-            );
-            if (file === "transaction.min.json") {
-              if (raw.standardProcess && raw.standardProcess.attributes) {
-                addItems(raw.standardProcess.attributes, "Transaction");
-              }
-              if (raw.processes && typeof raw.processes === "object") {
-                for (const procData of Object.values(raw.processes)) {
-                  if (procData && procData.attributes) {
-                    addItems(procData.attributes, "Transaction");
-                  }
-                }
-              }
-              if (raw.lookups) {
-                if (Array.isArray(raw.lookups.transaction)) {
-                  addItems(raw.lookups.transaction, "Transaction");
-                }
-                if (Array.isArray(raw.lookups.transactionLine)) {
-                  addItems(raw.lookups.transactionLine, "Line Item");
-                }
-                if (Array.isArray(raw.lookups.arraySets)) {
-                  addItems(raw.lookups.arraySets, "Array Set");
-                }
-                if (raw.lookups.custom && typeof raw.lookups.custom === "object") {
-                  for (const cAttrs of Object.values(raw.lookups.custom)) {
-                    if (Array.isArray(cAttrs)) addItems(cAttrs, "Transaction");
-                  }
-                }
-              }
-              if (Array.isArray(raw.attributes)) {
-                addItems(raw.attributes, "Transaction");
-              }
-              if (Array.isArray(raw.items)) {
-                addItems(raw.items, "Transaction");
-              }
-            } else if (file === "transaction-line.min.json") {
-              const lineItems = Array.isArray(raw)
-                ? raw
-                : Array.isArray(raw.attributes)
-                  ? raw.attributes
-                  : [];
-              addItems(lineItems, "Line Item");
-            } else if (file === "array-sets.min.json") {
-              const arrayItems = Array.isArray(raw)
-                ? raw
-                : Array.isArray(raw.items)
-                  ? raw.items
-                  : [];
-              addItems(arrayItems, "Array Set");
-            }
-          } catch (e) {}
-        }
-      }
-
-      if (hasNewSystem) {
-        const varsFile = path.join(systemDir, "variables.min.json");
-        if (fs.existsSync(varsFile)) {
-          try {
-            const raw = JSON.parse(fs.readFileSync(varsFile, "utf8"));
-            const items = Array.isArray(raw)
-              ? raw
-              : Array.isArray(raw.items)
-                ? raw.items
-                : [];
-            addItems(items, "System");
-          } catch (e) {}
-        }
-      }
-
-      if (hasNewConfig) {
-        const files = fs.readdirSync(configDir);
-        for (const file of files) {
-          if (!file.endsWith(".min.json")) continue;
-          try {
-            const raw = JSON.parse(
-              fs.readFileSync(path.join(configDir, file), "utf8"),
-            );
-            const items = Array.isArray(raw)
-              ? raw
-              : Array.isArray(raw.attributes)
-                ? raw.attributes
-                : Array.isArray(raw.items)
-                  ? raw.items
-                  : [];
-            const scope = file.includes("model") ? "Model" : "Configuration";
-            addItems(items, scope);
-          } catch (e) {}
-        }
-      }
-
+  for (const dir of dirs) {
+    if (loadAttributesFromDir(dir, index, addItems)) {
       if (index.varNameToMeta.size > 0) {
-        workspaceAttributesCache[workspaceRoot] = index;
+        workspaceAttributesCache[cacheKey] = index;
         return index;
       }
-    } catch (e) {}
+    }
   }
 
   // Fallback: Legacy .cpq/cache/ structure
-  const legacyCacheMin = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    "cache",
-    "commerce-attributes.min.json",
-  );
-  const legacyCacheJson = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    "cache",
-    "commerce-attributes.json",
-  );
-  const legacyPath = fs.existsSync(legacyCacheMin)
-    ? legacyCacheMin
-    : fs.existsSync(legacyCacheJson)
-      ? legacyCacheJson
-      : null;
-
-  if (legacyPath && fs.existsSync(legacyPath)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(legacyPath, "utf8"));
-      index.data = data;
-      addItems(data.attributes, "Transaction");
-      addItems(data.systemAttributes, "System");
-      addItems(data.arraySets, "Array Set");
-      if (data.lookups && typeof data.lookups === "object") {
-        addItems(data.lookups.transaction, "Transaction");
-        addItems(data.lookups.transactionLine, "Line Item");
-        addItems(data.lookups.systemVariables, "System");
-        addItems(data.lookups.arraySets, "Array Set");
-      }
-      workspaceAttributesCache[workspaceRoot] = index;
-      return index;
-    } catch (e) {}
+  for (const dir of dirs) {
+    const legacyMin = path.join(dir, "cache", "commerce-attributes.min.json");
+    const legacyJson = path.join(dir, "cache", "commerce-attributes.json");
+    const legacyPath = fs.existsSync(legacyMin) ? legacyMin : fs.existsSync(legacyJson) ? legacyJson : null;
+    if (legacyPath) {
+      try {
+        const data = JSON.parse(fs.readFileSync(legacyPath, "utf8"));
+        index.data = data;
+        addItems(data.attributes, "Transaction");
+        addItems(data.systemAttributes, "System");
+        addItems(data.arraySets, "Array Set");
+        if (data.lookups && typeof data.lookups === "object") {
+          addItems(data.lookups.transaction, "Transaction");
+          addItems(data.lookups.transactionLine, "Line Item");
+          addItems(data.lookups.systemVariables, "System");
+          addItems(data.lookups.arraySets, "Array Set");
+        }
+        workspaceAttributesCache[cacheKey] = index;
+        return index;
+      } catch (e) {}
+    }
   }
 
   return null;
 }
 
-function isCommerceSynced(workspaceRoot) {
-  if (!workspaceRoot) return false;
-  const txnMin = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    COMMERCE_DIR,
-    "transaction.min.json",
-  );
-  const commerceMin = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    COMMERCE_DIR,
-    "attributes.min.json",
-  );
-  const legacyMin = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    "cache",
-    "commerce-attributes.min.json",
-  );
-  const legacyJson = path.join(
-    workspaceRoot,
-    CPQ_DIR,
-    "cache",
-    "commerce-attributes.json",
-  );
-  try {
-    return (
-      (fs.existsSync(txnMin) && fs.statSync(txnMin).size > 0) ||
-      (fs.existsSync(commerceMin) && fs.statSync(commerceMin).size > 0) ||
-      (fs.existsSync(legacyMin) && fs.statSync(legacyMin).size > 0) ||
-      (fs.existsSync(legacyJson) && fs.statSync(legacyJson).size > 0)
-    );
-  } catch (e) {
-    return false;
+function isCommerceSynced(workspaceRoot, context) {
+  const backendDir = getMetadataStorageDir(context, workspaceRoot);
+  const dirs = [];
+  if (backendDir) dirs.push(backendDir);
+  if (workspaceRoot) {
+    const wsCpq = path.join(workspaceRoot, CPQ_DIR);
+    if (wsCpq !== backendDir) dirs.push(wsCpq);
   }
+
+  for (const dir of dirs) {
+    const flatCommerce = path.join(dir, COMMERCE_ATTRS_FILE);
+    if (fs.existsSync(flatCommerce) && fs.statSync(flatCommerce).size > 0) return true;
+    const txnMin = path.join(dir, COMMERCE_DIR, "transaction.min.json");
+    if (fs.existsSync(txnMin) && fs.statSync(txnMin).size > 0) return true;
+    const commMin = path.join(dir, COMMERCE_DIR, "attributes.min.json");
+    if (fs.existsSync(commMin) && fs.statSync(commMin).size > 0) return true;
+    const legacyMin = path.join(dir, "cache", "commerce-attributes.min.json");
+    if (fs.existsSync(legacyMin) && fs.statSync(legacyMin).size > 0) return true;
+    const legacyJson = path.join(dir, "cache", "commerce-attributes.json");
+    if (fs.existsSync(legacyJson) && fs.statSync(legacyJson).size > 0) return true;
+  }
+  return false;
 }
 
-function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
+function saveWorkspaceAttributes(workspaceRoot, data, configSettings, context) {
+  const targetDir = getMetadataStorageDir(context, workspaceRoot);
   return writeWorkspaceAttributes(
-    workspaceRoot,
+    targetDir || workspaceRoot,
     data,
     configSettings,
-    (root) => {
-      delete workspaceAttributesCache[root];
+    (dir) => {
+      clearAttributesCache(dir);
+      if (workspaceRoot) clearAttributesCache(workspaceRoot);
+      clearAttributesCache("global");
     },
+    workspaceRoot,
   );
+}
+
+function removeMetadata(context, workspaceRoot) {
+  const backendDir = getMetadataStorageDir(context, workspaceRoot);
+  const dirs = [];
+  if (backendDir) dirs.push(backendDir);
+  if (workspaceRoot) {
+    const wsCpq = path.join(workspaceRoot, CPQ_DIR);
+    if (wsCpq !== backendDir) dirs.push(wsCpq);
+  }
+  removeMetadataFromDirs(dirs, CPQ_DIR);
+  clearAttributesCache();
+}
+
+function getMetadataStatus(context, workspaceRoot, vscode) {
+  const backendDir = getMetadataStorageDir(context, workspaceRoot);
+  const dirs = [];
+  if (backendDir && fs.existsSync(backendDir)) dirs.push(backendDir);
+  if (workspaceRoot) {
+    const wsCpq = path.join(workspaceRoot, CPQ_DIR);
+    if (wsCpq !== backendDir && fs.existsSync(wsCpq)) dirs.push(wsCpq);
+  }
+  return inspectMetadataStatus(dirs, vscode, backendDir);
 }
 
 const resolver = createResolver({
@@ -442,7 +360,14 @@ module.exports = {
   COMMERCE_DIR,
   SYSTEM_DIR,
   CONFIG_DIR,
+  COMMERCE_ATTRS_FILE,
+  CONFIG_ATTRS_FILE,
+  SYSTEM_ATTRS_FILE,
   README_CPQ,
+  setExtensionContext,
+  getExtensionContext,
+  getMetadataStorageDir,
+  getCacheFilePath,
   normalizeKey,
   normalizeAttributeDataType,
   getWorkspaceRoot,
@@ -451,6 +376,8 @@ module.exports = {
   saveWorkspaceAttributes,
   clearAttributesCache,
   isCommerceSynced,
+  removeMetadata,
+  getMetadataStatus,
   resolveAttributeName: resolver.resolveAttributeName,
   resolveMenuValue: resolver.resolveMenuValue,
   resolveQueryFilter: resolver.resolveQueryFilter,

@@ -56,10 +56,10 @@ suite("MCP tools - lookupBmlReference", () => {
     const os = require("os");
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-mcp-ref-"));
     try {
-      const configDir = path.join(tmpDir, ".cpq", "config");
-      fs.mkdirSync(configDir, { recursive: true });
+      const cpqDir = path.join(tmpDir, ".cpq");
+      fs.mkdirSync(cpqDir, { recursive: true });
       fs.writeFileSync(
-        path.join(configDir, "attributes.min.json"),
+        path.join(cpqDir, "config.attributes.min.json"),
         JSON.stringify([{ variableName: "screen_size", name: "Screen Size", dataType: "FLOAT", productFamily: "monitors" }]),
         "utf8"
       );

@@ -8,6 +8,7 @@ const { registerBmlIntelliSense } = require("./app/lang/intellisense");
 const { registerBmlLinter } = require("./app/lang/lint");
 const { registerBmlComments } = require("./app/lang/comments");
 const { registerBmlRest } = require("./app/lang/rest");
+const { setExtensionContext } = require("./app/lang/rest/commerceAttributes");
 const { registerSettingsPanel } = require("./app/lang/settings-panel");
 const { registerMcp } = require("./app/lang/mcp");
 const { registerXslt } = require("./app/lang/xslt");
@@ -22,6 +23,7 @@ const DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT_MS = 1000;
 
 // Main activation entry point for CPQ-BML extension host
 function activate(context) {
+  setExtensionContext(context);
   const output = vscode.window.createOutputChannel("CPQ-BML");
   context.subscriptions.push(output);
   output.appendLine("CPQ-BML extension is now active!");

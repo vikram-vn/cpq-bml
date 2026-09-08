@@ -106,10 +106,49 @@ suite("BML REST commands - syncCommerceMetadata", () => {
       assert.ok(lines.some((l) => l.includes("Sync complete:")));
       assert.ok(infoMessages.some((m) => m.includes("Synced 1 attributes, 1 systemAttributes")));
 
-      // Verify file written to .cpq/commerce/transaction.min.json
-      const cachePath = path.join(tmpDir, ".cpq", "commerce", "transaction.min.json");
+      // Verify file written to .cpq/commerce.attributes.min.json
+      const cachePath = path.join(tmpDir, ".cpq", "commerce.attributes.min.json");
       assert.ok(fs.existsSync(cachePath));
       const saved = JSON.parse(fs.readFileSync(cachePath, "utf8"));
       assert.strictEqual(saved.items ? saved.items.length : saved.length, 1);
+    }));
+
+  test("runSyncCommerceMetadata integrates with withProgress and handles cancellation", () =>
+    withTempDir(async (tmpDir) => {
+      let withProgressCalled = false;
+      const warningMessages = [];
+      const vscode = createFakeVscode({
+        config: baseVscodeConfig(),
+        workspaceFolders: [{ uri: { fsPath: tmpDir } }],
+        window: {
+          withProgress: async (opts, task) => {
+            withProgressCalled = true;
+            assert.strictEqual(opts.cancellable, true);
+            const token = {
+              isCancellationRequested: true,
+              onCancellationRequested: (cb) => cb(),
+            };
+            return task({ report: () => {} }, token);
+          },
+          showWarningMessage: (msg) => warningMessages.push(msg),
+        },
+      });
+
+      const terminal = fakeResultsTerminal();
+      const result = await commands.runSyncCommerceMetadata(
+        makeContext(),
+        vscode,
+        terminal,
+        {
+          transport: async () => {
+            throw new Error("Request aborted");
+          },
+        },
+      );
+
+      assert.strictEqual(withProgressCalled, true);
+      assert.strictEqual(result.success, false);
+      assert.ok(result.errorMessage.includes("cancelled"));
+      assert.ok(warningMessages.some((m) => m.includes("cancelled")));
     }));
 });

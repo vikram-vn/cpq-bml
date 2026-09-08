@@ -205,6 +205,7 @@ export default function App({ vscodeApi }) {
         mcp = {},
         debug = {},
         environments = [],
+        metadata = {},
     } = settings || {};
 
     const setActiveTab = (tab) => dispatch({ type: 'SET_ACTIVE_TAB', tab });
@@ -284,6 +285,8 @@ export default function App({ vscodeApi }) {
                             drafts={drafts}
                             connection={connection}
                             changeDraft={changeDraft}
+                            metadata={metadata}
+                            vscodeApi={vscodeApi}
                         />
 
                         <FeaturesTab

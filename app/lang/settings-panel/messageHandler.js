@@ -141,6 +141,33 @@ async function dispatch(message, context, vscode, panel) {
       return;
     }
 
+    case "syncMetadata": {
+      const { runSyncAllMetadata } = require("../rest/commands/sync");
+      try {
+        const res = await runSyncAllMetadata(context, vscode);
+        await sendState();
+        if (res && res.success) {
+          post({
+            type: "toast",
+            message: `Metadata synced: ${res.commerceCount || 0} Commerce, ${res.configCount || 0} Config attributes.`,
+          });
+        } else {
+          post({ type: "toast", message: "Metadata sync completed." });
+        }
+      } catch (err) {
+        post({ type: "error", message: `Sync failed: ${err.message}` });
+      }
+      return;
+    }
+
+    case "removeMetadata": {
+      const { removeMetadata, getWorkspaceRoot } = require("../rest/commerceAttributes");
+      removeMetadata(context, getWorkspaceRoot(vscode));
+      await sendState();
+      post({ type: "toast", message: "Metadata cache removed successfully." });
+      return;
+    }
+
     case "activateEnvironment": {
       const environments =
         vscode.workspace

@@ -13,8 +13,12 @@ function buildPath(path, query) {
   return `${path}?${params.join("&")}`;
 }
 
-function defaultTransport({ hostname, port, path, method, headers, body }) {
+function defaultTransport({ hostname, port, path, method, headers, body, signal }) {
   return new Promise((resolve, reject) => {
+    if (signal && signal.aborted) {
+      return reject(new Error("Request aborted"));
+    }
+
     const req = https.request(
       { hostname, port, path, method, headers },
       (res) => {
@@ -29,10 +33,23 @@ function defaultTransport({ hostname, port, path, method, headers, body }) {
         });
       },
     );
+
+    let onAbort;
+    if (signal) {
+      onAbort = () => {
+        req.destroy(new Error("Request aborted"));
+        reject(new Error("Request aborted"));
+      };
+      signal.addEventListener("abort", onAbort, { once: true });
+    }
+
     req.setTimeout(30000, () => {
       req.destroy(new Error("Request timeout after 30 seconds"));
     });
-    req.on("error", reject);
+    req.on("error", (err) => {
+      if (signal && onAbort) signal.removeEventListener("abort", onAbort);
+      reject(err);
+    });
     if (body !== undefined) req.write(body);
     req.end();
   });
@@ -52,13 +69,30 @@ const MAX_CONCURRENT_REST_REQUESTS = 10;
 let activeRestRequests = 0;
 const restWaitingQueue = [];
 
-function acquireRestSlot() {
+function acquireRestSlot(signal) {
+  if (signal && signal.aborted) {
+    return Promise.reject(new Error("Request aborted"));
+  }
   if (activeRestRequests < MAX_CONCURRENT_REST_REQUESTS) {
     activeRestRequests++;
     return Promise.resolve();
   }
-  return new Promise((resolve) => {
-    restWaitingQueue.push(resolve);
+  return new Promise((resolve, reject) => {
+    let queueEntry;
+    let onAbort;
+    if (signal) {
+      onAbort = () => {
+        const idx = restWaitingQueue.indexOf(queueEntry);
+        if (idx !== -1) restWaitingQueue.splice(idx, 1);
+        reject(new Error("Request aborted"));
+      };
+      signal.addEventListener("abort", onAbort, { once: true });
+    }
+    queueEntry = () => {
+      if (signal && onAbort) signal.removeEventListener("abort", onAbort);
+      resolve();
+    };
+    restWaitingQueue.push(queueEntry);
   });
 }
 
@@ -69,6 +103,25 @@ function releaseRestSlot() {
     const next = restWaitingQueue.shift();
     next();
   }
+}
+
+function sleep(ms, signal) {
+  return new Promise((resolve, reject) => {
+    if (signal && signal.aborted) return reject(new Error("Request aborted"));
+    let timer;
+    let onAbort;
+    if (signal) {
+      onAbort = () => {
+        clearTimeout(timer);
+        reject(new Error("Request aborted"));
+      };
+      signal.addEventListener("abort", onAbort, { once: true });
+    }
+    timer = setTimeout(() => {
+      if (signal && onAbort) signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+  });
 }
 
 // Never throws on an HTTP 4xx/5xx response — callers decide what a status code means for their endpoint. Only rejects on a transport/network failure.
@@ -82,82 +135,104 @@ async function request({
   headers: extraHeaders,
   includeHeaders = false,
   logFilePath,
+  signal,
+  maxRetries = 2,
   transport = defaultTransport,
 }) {
   if (!baseUrl) {
     throw new Error("CPQ-BML: cpqBml.connection.siteUrl is not configured.");
   }
 
-  await acquireRestSlot();
+  await acquireRestSlot(signal);
   try {
+    const url = new URL(baseUrl);
+    const fullPath = buildPath(path, query);
 
-  const url = new URL(baseUrl);
-  const fullPath = buildPath(path, query);
-
-  // Content-Type only makes sense when a body is actually sent - stamping it
-  // on body-less GETs is incorrect HTTP and confuses non-REST endpoints.
-  // Both defaults are still overridable per call via extraHeaders, which is
-  // spread last.
-  const headers = {
-    Accept: "application/json",
-    ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
-    ...extraHeaders,
-  };
-  if (authHeader) headers.Authorization = authHeader;
-
-  let serializedBody;
-  if (body !== undefined) {
-    serializedBody = JSON.stringify(body);
-    headers["Content-Length"] = Buffer.byteLength(serializedBody);
-  }
-
-  if (logFilePath) {
-    const requestInfo = {
-      url: `${baseUrl}${fullPath}`,
-      method,
-      headers: redactHeadersForLog(headers),
-      body: body,
+    const headers = {
+      Accept: "application/json",
+      ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+      ...extraHeaders,
     };
-    try {
-      const timestamp = new Date().toISOString();
-      fs.appendFileSync(logFilePath, `[${timestamp}] REQUEST:\n${JSON.stringify(requestInfo, null, 2)}\n\n`);
-    } catch (e) {}
-  }
+    if (authHeader) headers.Authorization = authHeader;
 
-  const response = await transport({
-    hostname: url.hostname,
-    port: url.port || 443,
-    path: fullPath,
-    method,
-    headers,
-    body: serializedBody,
-  });
-
-  if (logFilePath) {
-    const responseInfo = {
-      statusCode: response.statusCode,
-      headers: redactHeadersForLog(response.headers),
-      text: response.text,
-    };
-    try {
-      const timestamp = new Date().toISOString();
-      fs.appendFileSync(logFilePath, `[${timestamp}] RESPONSE:\n${JSON.stringify(responseInfo, null, 2)}\n\n-------------------------\n\n`);
-    } catch (e) {}
-  }
-
-  let parsedBody = response.text;
-  const contentType =
-    ((response.headers && response.headers["content-type"]) || "").toLowerCase();
-  const looksLikeJson =
-    typeof response.text === "string" &&
-    (response.text.trim().startsWith("{") || response.text.trim().startsWith("["));
-  if (response.text && (contentType.includes("json") || looksLikeJson)) {
-    try {
-      parsedBody = JSON.parse(response.text);
-    } catch (e) {
-      // Leave parsedBody as the raw text if it claims to be JSON but isn't.
+    let serializedBody;
+    if (body !== undefined) {
+      serializedBody = JSON.stringify(body);
+      headers["Content-Length"] = Buffer.byteLength(serializedBody);
     }
-  }
+
+    if (logFilePath) {
+      const requestInfo = {
+        url: `${baseUrl}${fullPath}`,
+        method,
+        headers: redactHeadersForLog(headers),
+        body: body,
+      };
+      try {
+        const timestamp = new Date().toISOString();
+        fs.appendFileSync(logFilePath, `[${timestamp}] REQUEST:\n${JSON.stringify(requestInfo, null, 2)}\n\n`);
+      } catch (e) {}
+    }
+
+    let response;
+    let attempt = 0;
+    while (true) {
+      if (signal && signal.aborted) {
+        throw new Error("Request aborted");
+      }
+
+      response = await transport({
+        hostname: url.hostname,
+        port: url.port || 443,
+        path: fullPath,
+        method,
+        headers,
+        body: serializedBody,
+        signal,
+      });
+
+      // Handle 429 Too Many Requests and 503 Service Unavailable with backoff retry
+      const status = response ? response.statusCode : 0;
+      if ((status === 429 || status === 503) && attempt < maxRetries) {
+        attempt++;
+        let retryDelayMs = 500 * Math.pow(2, attempt) + Math.floor(Math.random() * 200);
+        if (response.headers && response.headers["retry-after"]) {
+          const parsedSec = parseInt(response.headers["retry-after"], 10);
+          if (!isNaN(parsedSec) && parsedSec > 0) {
+            retryDelayMs = Math.min(parsedSec * 1000, 5000);
+          }
+        }
+        await sleep(retryDelayMs, signal);
+        continue;
+      }
+      break;
+    }
+
+    if (logFilePath) {
+      const responseInfo = {
+        statusCode: response.statusCode,
+        headers: redactHeadersForLog(response.headers),
+        text: response.text,
+      };
+      try {
+        const timestamp = new Date().toISOString();
+        fs.appendFileSync(logFilePath, `[${timestamp}] RESPONSE:\n${JSON.stringify(responseInfo, null, 2)}\n\n-------------------------\n\n`);
+      } catch (e) {}
+    }
+
+    let parsedBody = response.text;
+    const contentType =
+      ((response.headers && response.headers["content-type"]) || "").toLowerCase();
+    const looksLikeJson =
+      typeof response.text === "string" &&
+      (response.text.trim().startsWith("{") || response.text.trim().startsWith("["));
+    if (response.text && (contentType.includes("json") || looksLikeJson)) {
+      try {
+        parsedBody = JSON.parse(response.text);
+      } catch (e) {
+        // Leave parsedBody as the raw text if it claims to be JSON but isn't.
+      }
+    }
 
     if (includeHeaders) {
       return { statusCode: response.statusCode, headers: response.headers, body: parsedBody };

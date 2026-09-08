@@ -185,4 +185,65 @@ suite("Configuration Attributes & Product Families (apiConfig)", () => {
     await api.listModelAttributes(fakeContext(), vscode, { productFamily: "famA", productLine: "lineB", model: "modC" }, transport);
     assert.ok(calls[2].includes("/models/modC/attributes"));
   });
+
+  test("listConfigurationAttributes forwards q filter and signal in query", async () => {
+    const vscode = createFakeVscode({ config: baseConfig() });
+    let captured;
+    const transport = async (opts) => {
+      captured = opts;
+      return { statusCode: 200, headers: {}, text: JSON.stringify({ items: [] }) };
+    };
+
+    await api.listConfigurationAttributes(
+      fakeContext(),
+      vscode,
+      { q: "variableName LIKE 'o_%'" },
+      transport,
+    );
+    assert.ok(decodeURIComponent(captured.path).includes("q=variableName LIKE 'o_%'"));
+  });
+
+  test("syncConfigurationAttributes auto-paginates when hasMore is true", async () => {
+    const vscode = createFakeVscode({ config: baseConfig() });
+    const pageCalls = [];
+    const transport = async (opts) => {
+      pageCalls.push(opts.path);
+      if (opts.path.includes("offset=0")) {
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            hasMore: true,
+            items: [{ variableName: "attr_p1", label: "P1" }],
+          }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({
+          hasMore: false,
+          items: [{ variableName: "attr_p2", label: "P2" }],
+        }),
+      };
+    };
+
+    const progressReports = [];
+    const result = await api.syncConfigurationAttributes(
+      fakeContext(),
+      vscode,
+      {
+        limit: 1,
+        fetchProductFamilies: false,
+        onProgress: (p) => progressReports.push(p.message),
+      },
+      transport,
+    );
+
+    assert.strictEqual(result.count, 2);
+    assert.strictEqual(pageCalls.length, 2);
+    assert.ok(pageCalls[0].includes("offset=0"));
+    assert.ok(pageCalls[1].includes("offset=1"));
+    assert.ok(progressReports.length >= 2);
+  });
 });

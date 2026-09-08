@@ -65,9 +65,9 @@ suite("commerceAttributes Unit Tests", () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-synced-test-"));
     assert.strictEqual(commerceAttributes.isCommerceSynced(tempDir), false);
 
-    const commerceDir = path.join(tempDir, ".cpq", "commerce");
-    fs.mkdirSync(commerceDir, { recursive: true });
-    fs.writeFileSync(path.join(commerceDir, "transaction.min.json"), JSON.stringify({ items: [] }), "utf8");
+    const cpqDir = path.join(tempDir, ".cpq");
+    fs.mkdirSync(cpqDir, { recursive: true });
+    fs.writeFileSync(path.join(cpqDir, "commerce.attributes.min.json"), JSON.stringify({ items: [] }), "utf8");
 
     assert.strictEqual(commerceAttributes.isCommerceSynced(tempDir), true);
     fs.rmSync(tempDir, { recursive: true, force: true });
@@ -126,46 +126,38 @@ suite("commerceAttributes Unit Tests", () => {
 
     // Verify README.md file created in .cpq/
     const cpqDir = path.join(tempDir, ".cpq");
-    const commerceDir = path.join(cpqDir, "commerce");
-    const systemDir = path.join(cpqDir, "system");
-    const configDir = path.join(cpqDir, "config");
 
     assert.ok(fs.existsSync(path.join(cpqDir, "README.md")));
     const cpqReadme = fs.readFileSync(path.join(cpqDir, "README.md"), "utf8");
     assert.ok(cpqReadme.includes("DO NOT REMOVE"));
     assert.ok(cpqReadme.includes("MCP"));
     assert.ok(cpqReadme.includes("IntelliSense (preferred)"));
-    assert.ok(cpqReadme.includes("commerce/"));
-    assert.ok(cpqReadme.includes("system/"));
-    assert.ok(cpqReadme.includes("config/"));
+    assert.ok(cpqReadme.includes("commerce.attributes.min.json"));
+    assert.ok(cpqReadme.includes("config.attributes.min.json"));
+    assert.ok(cpqReadme.includes("system.attributes.min.json"));
 
-    // Verify minified files created in .cpq/commerce/
-    assert.ok(fs.existsSync(path.join(commerceDir, "transaction.min.json")));
-    assert.ok(fs.existsSync(path.join(commerceDir, "transaction-line.min.json")));
-    assert.ok(fs.existsSync(path.join(commerceDir, "array-sets.min.json")));
-    assert.ok(!fs.existsSync(path.join(commerceDir, "attributes.min.json")), "commerce/attributes.min.json must NOT exist");
+    // Verify flat minified files created directly in .cpq/
+    assert.ok(fs.existsSync(path.join(cpqDir, "commerce.attributes.min.json")));
+    assert.ok(fs.existsSync(path.join(cpqDir, "system.attributes.min.json")));
+    assert.ok(fs.existsSync(path.join(cpqDir, "config.attributes.min.json")));
 
-    // Verify minified files created in .cpq/system/
-    assert.ok(fs.existsSync(path.join(systemDir, "variables.min.json")));
-    assert.ok(!fs.existsSync(path.join(systemDir, "attributes.min.json")), "system/attributes.min.json must NOT exist");
+    // Verify obsolete subfolders do NOT exist
+    assert.ok(!fs.existsSync(path.join(cpqDir, "commerce")), "commerce folder must NOT exist");
+    assert.ok(!fs.existsSync(path.join(cpqDir, "system")), "system folder must NOT exist");
+    assert.ok(!fs.existsSync(path.join(cpqDir, "config")), "config folder must NOT exist");
+    assert.ok(!fs.existsSync(path.join(cpqDir, "cache")), "cache folder must NOT exist");
 
-    // Verify minified configuration attributes and models in .cpq/config/
-    assert.ok(fs.existsSync(path.join(configDir, "attributes.min.json")));
-    assert.ok(fs.existsSync(path.join(configDir, "models.min.json")));
-    assert.ok(!fs.existsSync(path.join(configDir, "config.min.json")), "Connection settings must NOT be kept in .cpq/config");
+    const configJson = JSON.parse(fs.readFileSync(path.join(cpqDir, "config.attributes.min.json"), "utf8"));
+    assert.ok(Array.isArray(configJson.models), "models should be embedded in config.attributes.min.json");
+    assert.strictEqual(configJson.models[0].variableName, "serverModelA");
 
     // Verify STRICTLY ONLY .min.json files exist (no unminified .json)
-    const checkOnlyMin = (dir) => {
-      const files = fs.readdirSync(dir);
-      for (const file of files) {
-        if (file.endsWith(".json")) {
-          assert.ok(file.endsWith(".min.json"), `File ${file} should end with .min.json`);
-        }
+    const files = fs.readdirSync(cpqDir);
+    for (const file of files) {
+      if (file.endsWith(".json")) {
+        assert.ok(file.endsWith(".min.json"), `File ${file} should end with .min.json`);
       }
-    };
-    checkOnlyMin(commerceDir);
-    checkOnlyMin(systemDir);
-    checkOnlyMin(configDir);
+    }
 
     // Verify name resolution across lookups, array sets, models, and configuration
     assert.strictEqual(commerceAttributes.resolveAttributeName("Main Doc Field", tempDir), "mainDocField_t");

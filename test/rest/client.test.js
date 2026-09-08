@@ -299,5 +299,107 @@ suite("BML REST client", () => {
     assert.ok(maxActive <= 10, `Expected max active requests <= 10, got ${maxActive}`);
     assert.strictEqual(active, 0);
   });
+
+  test("request() throws immediately when passed an already aborted signal", async () => {
+    const controller = new AbortController();
+    controller.abort();
+
+    await assert.rejects(
+      request({
+        baseUrl: "https://sitename.bigmachines.com",
+        path: "/rest/v18/bml/library/functions",
+        signal: controller.signal,
+        transport: async () => ({ statusCode: 200, headers: {}, text: "{}" }),
+      }),
+      /aborted/i,
+    );
+  });
+
+  test("request() aborts an in-flight request when signal is triggered", async () => {
+    const controller = new AbortController();
+    let abortedAtTransport = false;
+
+    const fakeTransport = ({ signal }) =>
+      new Promise((resolve, reject) => {
+        if (signal) {
+          signal.addEventListener("abort", () => {
+            abortedAtTransport = true;
+            reject(new Error("Request aborted"));
+          });
+        }
+        setTimeout(() => resolve({ statusCode: 200, headers: {}, text: "{}" }), 100);
+      });
+
+    const promise = request({
+      baseUrl: "https://sitename.bigmachines.com",
+      path: "/rest/v18/bml/library/functions",
+      signal: controller.signal,
+      transport: fakeTransport,
+    });
+
+    setTimeout(() => controller.abort(), 10);
+    await assert.rejects(promise, /aborted/i);
+    assert.strictEqual(abortedAtTransport, true);
+  });
+
+  test("request() retries on 429 Too Many Requests and honors Retry-After header", async () => {
+    let callCount = 0;
+    const fakeTransport = async () => {
+      callCount++;
+      if (callCount === 1) {
+        return {
+          statusCode: 429,
+          headers: { "retry-after": "0", "content-type": "application/json" },
+          text: JSON.stringify({ message: "Rate limit exceeded" }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({ success: true }),
+      };
+    };
+
+    const res = await request({
+      baseUrl: "https://sitename.bigmachines.com",
+      path: "/rest/v18/bml/library/functions",
+      maxRetries: 2,
+      transport: fakeTransport,
+    });
+
+    assert.strictEqual(callCount, 2);
+    assert.strictEqual(res.statusCode, 200);
+    assert.deepStrictEqual(res.body, { success: true });
+  });
+
+  test("request() retries on 503 Service Unavailable and recovers", async () => {
+    let callCount = 0;
+    const fakeTransport = async () => {
+      callCount++;
+      if (callCount === 1) {
+        return {
+          statusCode: 503,
+          headers: { "retry-after": "0" },
+          text: "Service Unavailable",
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({ restored: true }),
+      };
+    };
+
+    const res = await request({
+      baseUrl: "https://sitename.bigmachines.com",
+      path: "/rest/v18/bml/library/functions",
+      maxRetries: 2,
+      transport: fakeTransport,
+    });
+
+    assert.strictEqual(callCount, 2);
+    assert.strictEqual(res.statusCode, 200);
+    assert.deepStrictEqual(res.body, { restored: true });
+  });
 });
 

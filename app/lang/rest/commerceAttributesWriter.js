@@ -6,7 +6,12 @@ const COMMERCE_DIR = "commerce";
 const SYSTEM_DIR = "system";
 const CONFIG_DIR = "config";
 
-const README_CPQ = `# Oracle CPQ Workspace Directory (.cpq)
+const COMMERCE_ATTRS_FILE = "commerce.attributes.min.json";
+const CONFIG_ATTRS_FILE = "config.attributes.min.json";
+const SYSTEM_ATTRS_FILE = "system.attributes.min.json";
+const OBSOLETE_DIRS = ["commerce", "system", "config", "cache"];
+
+const README_CPQ = `# Oracle CPQ Backend Metadata Directory
 
 This directory contains metadata, configuration, and schemas synchronized from your Oracle CPQ instance.
 
@@ -15,9 +20,9 @@ This directory contains metadata, configuration, and schemas synchronized from y
 > Removing this folder will cause IntelliSense and MCP to lose instance-specific Commerce and Configuration attribute definitions, dropdown menus, and array sets.
 
 ## Structure
-- \`commerce/\`: Minified JSON schemas for Commerce transactions (\`transaction.min.json\`), line items (\`transaction-line.min.json\`), and array sets (\`array-sets.min.json\`).
-- \`system/\`: Minified JSON schema for system variables (\`variables.min.json\`).
-- \`config/\`: Minified JSON schemas for Configuration domain metadata: attributes (\`attributes.min.json\`), product families (\`product-families.min.json\`), and models (\`models.min.json\`).
+- \`commerce.attributes.min.json\`: Unified Commerce metadata (transactions, line items, array sets, and custom processes).
+- \`config.attributes.min.json\`: Unified Configuration metadata (attributes, product families, and models).
+- \`system.attributes.min.json\`: Unified System variables metadata.
 `;
 
 function pruneAttribute(attr, defaultScope) {
@@ -56,24 +61,32 @@ function pruneAttribute(attr, defaultScope) {
   return clean;
 }
 
-function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInvalidated) {
-  if (!workspaceRoot || !data) return;
+function resolveStorageDirectory(targetDir) {
+  if (!targetDir) return null;
+  if (
+    targetDir.endsWith(CPQ_DIR) ||
+    targetDir.includes("metadata") ||
+    targetDir.includes("storage") ||
+    targetDir.includes("globalStorage") ||
+    targetDir.includes("workspaceStorage")
+  ) {
+    return targetDir;
+  }
+  return path.join(targetDir, CPQ_DIR);
+}
+
+function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalidated, workspaceRoot) {
+  if (!targetDir || !data) return;
 
   try {
-    const cpqDir = path.join(workspaceRoot, CPQ_DIR);
-    const commerceDir = path.join(cpqDir, COMMERCE_DIR);
-    const systemDir = path.join(cpqDir, SYSTEM_DIR);
-    const configDir = path.join(cpqDir, CONFIG_DIR);
-
-    fs.mkdirSync(commerceDir, { recursive: true });
-    fs.mkdirSync(systemDir, { recursive: true });
-    fs.mkdirSync(configDir, { recursive: true });
+    const storageDir = resolveStorageDirectory(targetDir);
+    fs.mkdirSync(storageDir, { recursive: true });
 
     // Always write and keep README.md fresh on sync
-    const readmePath = path.join(cpqDir, "README.md");
+    const readmePath = path.join(storageDir, "README.md");
     fs.writeFileSync(readmePath, README_CPQ, "utf8");
 
-    // 1. Save consolidated single transaction JSON in .cpq/commerce/transaction.min.json
+    // 1. Save consolidated commerce metadata in commerce.attributes.min.json
     if (data.consolidatedTransaction) {
       const ct = data.consolidatedTransaction;
       const prunedLookups = {};
@@ -99,15 +112,17 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
       const prunedCT = {
         lookupType: ct.lookupType || "commerce",
         process: ct.process || (configSettings && configSettings.commerceProcess) || "oraclecpqo",
-        updatedAt: ct.updatedAt,
+        updatedAt: ct.updatedAt || new Date().toISOString(),
         processes: ct.processes,
         standardCounts: ct.standardCounts,
         customCounts: ct.customCounts,
         count: ct.count || ((prunedLookups.transaction?.length || 0) + (prunedLookups.transactionLine?.length || 0)),
-        lookups: prunedLookups
+        attributes: prunedLookups.transaction || [],
+        items: prunedLookups.transaction || [],
+        lookups: prunedLookups,
       };
       fs.writeFileSync(
-        path.join(commerceDir, "transaction.min.json"),
+        path.join(storageDir, COMMERCE_ATTRS_FILE),
         JSON.stringify(prunedCT),
         "utf8",
       );
@@ -121,85 +136,48 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
             ? data.attributes
             : [];
       const txnAttrs = rawTxnAttrs.map(a => pruneAttribute(a, "Transaction"));
-      if (txnAttrs.length > 0) {
+
+      const rawLineAttrs =
+        data.lookups &&
+        Array.isArray(data.lookups.transactionLine) &&
+        data.lookups.transactionLine.length > 0
+          ? data.lookups.transactionLine
+          : [];
+      const lineAttrs = rawLineAttrs.map(a => pruneAttribute(a, "Line Item"));
+
+      const rawArraySets =
+        Array.isArray(data.arraySets) && data.arraySets.length > 0
+          ? data.arraySets
+          : data.lookups &&
+              Array.isArray(data.lookups.arraySets) &&
+              data.lookups.arraySets.length > 0
+            ? data.lookups.arraySets
+            : [];
+      const arraySets = rawArraySets.map(a => pruneAttribute(a, "Array Set"));
+
+      if (txnAttrs.length > 0 || lineAttrs.length > 0 || arraySets.length > 0) {
         fs.writeFileSync(
-          path.join(commerceDir, "transaction.min.json"),
+          path.join(storageDir, COMMERCE_ATTRS_FILE),
           JSON.stringify({
+            updatedAt: new Date().toISOString(),
             process: (configSettings && configSettings.commerceProcess) || "oraclecpqo",
-            document: "transaction",
-            count: txnAttrs.length,
+            count: txnAttrs.length + lineAttrs.length,
             attributes: txnAttrs,
             items: txnAttrs,
+            lookups: {
+              transaction: txnAttrs,
+              transactionLine: lineAttrs,
+              arraySets: arraySets,
+            },
+            arraySets: arraySets,
+            processes: Array.isArray(data.processes) ? data.processes : [],
           }),
           "utf8",
         );
       }
     }
 
-    // Clean up obsolete commerce/attributes.min.json if present
-    const obsoleteAttr = path.join(commerceDir, "attributes.min.json");
-    if (fs.existsSync(obsoleteAttr)) {
-      try {
-        fs.unlinkSync(obsoleteAttr);
-      } catch (e) {}
-    }
-
-    // 2. Save line item attributes in .cpq/commerce/transaction-line.min.json
-    const rawLineAttrs =
-      data.lookups &&
-      Array.isArray(data.lookups.transactionLine) &&
-      data.lookups.transactionLine.length > 0
-        ? data.lookups.transactionLine
-        : [];
-    const lineAttrs = rawLineAttrs.map(a => pruneAttribute(a, "Line Item"));
-    if (lineAttrs.length > 0) {
-      fs.writeFileSync(
-        path.join(commerceDir, "transaction-line.min.json"),
-        JSON.stringify({
-          process: (configSettings && configSettings.commerceProcess) || "oraclecpqo",
-          document: "transactionLine",
-          count: lineAttrs.length,
-          attributes: lineAttrs,
-        }),
-        "utf8",
-      );
-    }
-
-    // 3. Save array sets in .cpq/commerce/array-sets.min.json
-    const rawArraySets =
-      Array.isArray(data.arraySets) && data.arraySets.length > 0
-        ? data.arraySets
-        : data.lookups &&
-            Array.isArray(data.lookups.arraySets) &&
-            data.lookups.arraySets.length > 0
-          ? data.lookups.arraySets
-          : [];
-    const arraySets = rawArraySets.map(a => pruneAttribute(a, "Array Set"));
-    if (arraySets.length > 0) {
-      fs.writeFileSync(
-        path.join(commerceDir, "array-sets.min.json"),
-        JSON.stringify({
-          process: (configSettings && configSettings.commerceProcess) || "oraclecpqo",
-          count: arraySets.length,
-          items: arraySets,
-        }),
-        "utf8",
-      );
-    }
-
-    // 4. Save processes list in .cpq/commerce/processes.min.json if available
-    if (Array.isArray(data.processes) && data.processes.length > 0) {
-      fs.writeFileSync(
-        path.join(commerceDir, "processes.min.json"),
-        JSON.stringify({
-          count: data.processes.length,
-          items: data.processes,
-        }),
-        "utf8",
-      );
-    }
-
-    // 5. Save system variables in .cpq/system/variables.min.json
+    // 2. Save system variables in system.attributes.min.json
     const sysItems =
       data.lookups &&
       Array.isArray(data.lookups.systemVariables) &&
@@ -211,95 +189,77 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
           : [];
     if (sysItems.length > 0) {
       fs.writeFileSync(
-        path.join(systemDir, "variables.min.json"),
+        path.join(storageDir, SYSTEM_ATTRS_FILE),
         JSON.stringify({
           lookupType: "systemVariables",
           count: sysItems.length,
           items: sysItems,
+          attributes: sysItems,
         }),
         "utf8",
       );
     }
 
-    // Clean up obsolete system/attributes.min.json if present
-    const obsoleteSysAttr = path.join(systemDir, "attributes.min.json");
-    if (fs.existsSync(obsoleteSysAttr)) {
-      try {
-        fs.unlinkSync(obsoleteSysAttr);
-      } catch (e) {}
-    }
+    // 3. Save unified configuration metadata in config.attributes.min.json
+    const hasConfigAttrs =
+      Array.isArray(data.configAttributes) && data.configAttributes.length > 0;
+    const hasProductFamilies =
+      Array.isArray(data.productFamilies) && data.productFamilies.length > 0;
+    const hasModels =
+      Array.isArray(data.models) && data.models.length > 0;
 
-    // 6. Save configuration attributes in .cpq/config/attributes.min.json
-    if (
-      Array.isArray(data.configAttributes) &&
-      data.configAttributes.length > 0
-    ) {
-      const configAttrs = data.configAttributes.map(a => pruneAttribute(a, "Configuration"));
+    if (hasConfigAttrs || hasProductFamilies || hasModels) {
+      const configAttrs = hasConfigAttrs
+        ? data.configAttributes.map(a => pruneAttribute(a, "Configuration"))
+        : [];
+      const configPayload = {
+        updatedAt: new Date().toISOString(),
+        count: configAttrs.length,
+        productFamilies: hasProductFamilies ? data.productFamilies : [],
+        models: hasModels ? data.models : [],
+        items: configAttrs,
+        attributes: configAttrs,
+      };
       fs.writeFileSync(
-        path.join(configDir, "attributes.min.json"),
-        JSON.stringify({
-          count: configAttrs.length,
-          attributes: configAttrs,
-        }),
-        "utf8",
-      );
-    }
-    if (
-      Array.isArray(data.productFamilies) &&
-      data.productFamilies.length > 0
-    ) {
-      fs.writeFileSync(
-        path.join(configDir, "product-families.min.json"),
-        JSON.stringify({
-          count: data.productFamilies.length,
-          items: data.productFamilies,
-        }),
-        "utf8",
-      );
-    }
-    if (Array.isArray(data.models) && data.models.length > 0) {
-      fs.writeFileSync(
-        path.join(configDir, "models.min.json"),
-        JSON.stringify({
-          count: data.models.length,
-          items: data.models,
-        }),
+        path.join(storageDir, CONFIG_ATTRS_FILE),
+        JSON.stringify(configPayload),
         "utf8",
       );
     }
 
-    // Remove obsolete connection settings from .cpq/config if present
-    const obsoleteConfigMin = path.join(configDir, "config.min.json");
-    if (fs.existsSync(obsoleteConfigMin)) {
-      try {
-        fs.unlinkSync(obsoleteConfigMin);
-      } catch (e) {}
-    }
-    const obsoleteConfigJson = path.join(configDir, "config.json");
-    if (fs.existsSync(obsoleteConfigJson)) {
-      try {
-        fs.unlinkSync(obsoleteConfigJson);
-      } catch (e) {}
+    // Clean up obsolete subfolders if present in storageDir
+    for (const sub of OBSOLETE_DIRS) {
+      const subPath = path.join(storageDir, sub);
+      if (fs.existsSync(subPath)) {
+        try {
+          fs.rmSync(subPath, { recursive: true, force: true });
+        } catch (e) {}
+      }
     }
 
-    // Clean up any non-minified .json files in .cpq/commerce, .cpq/system, .cpq/config
-    const cleanNonMinJson = (dir) => {
-      if (!fs.existsSync(dir)) return;
-      try {
-        const entries = fs.readdirSync(dir);
-        for (const entry of entries) {
-          if (entry.endsWith(".json") && !entry.endsWith(".min.json")) {
-            fs.unlinkSync(path.join(dir, entry));
-          }
+    // Clean up any non-minified .json files directly in storageDir
+    try {
+      const entries = fs.readdirSync(storageDir);
+      for (const entry of entries) {
+        if (entry.endsWith(".json") && !entry.endsWith(".min.json")) {
+          fs.unlinkSync(path.join(storageDir, entry));
         }
-      } catch (e) {}
-    };
-    cleanNonMinJson(commerceDir);
-    cleanNonMinJson(systemDir);
-    cleanNonMinJson(configDir);
+      }
+    } catch (e) {}
+
+    // Clean up legacy .cpq folder from user workspace if storageDir is outside workspace
+    if (workspaceRoot) {
+      const wsCpq = path.join(workspaceRoot, CPQ_DIR);
+      if (wsCpq !== storageDir && fs.existsSync(wsCpq)) {
+        try {
+          fs.rmSync(wsCpq, { recursive: true, force: true });
+        } catch (e) {}
+      }
+    }
 
     if (typeof onCacheInvalidated === "function") {
-      onCacheInvalidated(workspaceRoot);
+      onCacheInvalidated(storageDir);
+      if (workspaceRoot) onCacheInvalidated(workspaceRoot);
     }
   } catch (e) {
     console.error("CPQ-BML: Failed to write commerce attribute cache:", e);
@@ -311,6 +271,9 @@ module.exports = {
   COMMERCE_DIR,
   SYSTEM_DIR,
   CONFIG_DIR,
+  COMMERCE_ATTRS_FILE,
+  CONFIG_ATTRS_FILE,
+  SYSTEM_ATTRS_FILE,
   README_CPQ,
   saveWorkspaceAttributes,
 };

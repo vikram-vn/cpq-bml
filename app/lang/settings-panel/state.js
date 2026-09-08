@@ -1,11 +1,13 @@
 const config = require('../rest/config');
 const { getEnvironments } = require('../rest/commands/env');
+const { getMetadataStatus, getWorkspaceRoot } = require('../rest/commerceAttributes');
 
 // Only sends hasPassword/hasToken booleans - actual secret values never leave VS Code Secret Storage.
 async function buildState(context, vscode) {
     const settings = config.getSettings(vscode);
     const cpqConfig = vscode.workspace.getConfiguration('cpqBml');
     const environments = getEnvironments(vscode);
+    const wsRoot = getWorkspaceRoot(vscode);
 
     const passwordKey = settings.username ? config.getPasswordSecretKey(settings.siteUrl, settings.username) : null;
     const tokenKey = settings.siteUrl ? config.getTokenSecretKey(settings.siteUrl) : null;
@@ -19,9 +21,16 @@ async function buildState(context, vscode) {
         await context.secrets.get(config.SECRET_TOKEN)
     );
 
+    const metaStatus = getMetadataStatus(context, wsRoot, vscode);
+    const isConnActive = Boolean(
+        cpqConfig.get('connection.enabled', true) &&
+        (settings.siteUrl || '').trim() &&
+        (hasPassword || hasToken)
+    );
+    metaStatus.canSync = isConnActive;
+
     return {
         connection: {
-            // Raw value as typed, not config.js's normalized https:// form.
             siteUrl: cpqConfig.get('connection.siteUrl', ''),
             authMethod: settings.authMethod,
             username: settings.username,
@@ -65,6 +74,7 @@ async function buildState(context, vscode) {
             showResultsAsTable: settings.showResultsAsTable,
             concurrency: settings.debugConcurrency || config.getDebugConcurrency(vscode)
         },
+        metadata: metaStatus,
         environments,
         hasPassword,
         hasToken

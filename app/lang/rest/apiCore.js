@@ -60,8 +60,32 @@ function functionsPath(vscode, metadata) {
   return `/rest/${version}/bml/library/functions`;
 }
 
+let last401NotificationTime = 0;
+
+function notifyUnauthorized(vscode) {
+  const now = Date.now();
+  if (now - last401NotificationTime < 10000) return;
+  last401NotificationTime = now;
+  if (vscode && vscode.window && typeof vscode.window.showErrorMessage === "function") {
+    vscode.window
+      .showErrorMessage(
+        "CPQ-BML: Authentication failed (401 Unauthorized). Check your credentials or active environment.",
+        "Open Settings",
+      )
+      .then((selection) => {
+        if (
+          selection === "Open Settings" &&
+          vscode.commands &&
+          typeof vscode.commands.executeCommand === "function"
+        ) {
+          vscode.commands.executeCommand("workbench.action.openSettings", "cpqBml");
+        }
+      });
+  }
+}
+
 // transport lets tests intercept the call instead of making a real HTTPS request.
-async function call(context, vscode, { path, method, query, body }, transport) {
+async function call(context, vscode, { path, method, query, body, signal }, transport) {
   let cleanedBody = body;
   if (body && typeof body === "object") {
     const { commerceProcess, commerceDocument, ...rest } = body;
@@ -117,9 +141,14 @@ async function call(context, vscode, { path, method, query, body }, transport) {
     body: cleanedBody,
     authHeader,
     timeoutMs: settings.requestTimeoutMs,
+    signal,
     transport,
     logFilePath,
   });
+
+  if (response && response.statusCode === 401) {
+    notifyUnauthorized(vscode);
+  }
 
   const cleanedBodyResp = sanitizeRestResponse(response.body, baseUrl);
 

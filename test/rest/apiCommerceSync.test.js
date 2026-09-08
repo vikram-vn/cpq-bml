@@ -72,7 +72,7 @@ suite("BML REST apiCommerceSync - syncCommerceAttributes", () => {
     assert.strictEqual(result.systemAttributes[0].variableName, "_transaction_id");
 
     // Verify written to disk cache
-    const cacheFile = path.join(tempDir, ".cpq", "commerce", "transaction.min.json");
+    const cacheFile = path.join(tempDir, ".cpq", "commerce.attributes.min.json");
     assert.ok(fs.existsSync(cacheFile));
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
@@ -246,14 +246,107 @@ suite("BML REST apiCommerceSync - syncCommerceAttributes", () => {
     assert.strictEqual(result.arraySets.length, 1);
     assert.strictEqual(result.arraySets[0].variableName, "feeItems_set");
 
-    // Verify files written to .cpq/commerce/ and .cpq/system/
-    const commerceDir = path.join(tempDir, ".cpq", "commerce");
-    const systemDir = path.join(tempDir, ".cpq", "system");
-    assert.ok(fs.existsSync(path.join(commerceDir, "transaction.min.json")));
-    assert.ok(fs.existsSync(path.join(commerceDir, "transaction-line.min.json")));
-    assert.ok(fs.existsSync(path.join(systemDir, "variables.min.json")));
-    assert.ok(fs.existsSync(path.join(commerceDir, "array-sets.min.json")));
+    // Verify files written to .cpq/
+    assert.ok(fs.existsSync(path.join(tempDir, ".cpq", "commerce.attributes.min.json")));
+    assert.ok(fs.existsSync(path.join(tempDir, ".cpq", "system.attributes.min.json")));
 
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  test("syncCommerceAttributes auto-paginates when hasMore is true", async () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-page-"));
+    const vscode = createFakeVscode({
+      config: baseConfig(),
+      workspaceFolders: [{ uri: { fsPath: tempDir } }],
+    });
+
+    const pageCalls = [];
+    const mockTransport = async (opts) => {
+      if (opts.path.includes("/attributes")) {
+        pageCalls.push(opts.path);
+        if (opts.path.includes("offset=0")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              hasMore: true,
+              items: [{ variableName: "page1_attr", name: "P1", dataType: "Text" }],
+            }),
+          };
+        }
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            hasMore: false,
+            items: [{ variableName: "page2_attr", name: "P2", dataType: "Text" }],
+          }),
+        };
+      }
+      return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+    };
+
+    const result = await api.syncCommerceAttributes(
+      fakeContext(),
+      vscode,
+      { process: "oraclecpqo", document: "transaction", fetchMenuItems: false },
+      mockTransport,
+    );
+
+    assert.strictEqual(result.attributes.length, 2);
+    assert.strictEqual(pageCalls.length, 2);
+    assert.ok(pageCalls[0].includes("offset=0"));
+    assert.ok(pageCalls[1].includes("offset=1000"));
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  test("syncCommerceAttributes fetches menu items concurrently", async () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-menu-"));
+    const vscode = createFakeVscode({
+      config: baseConfig(),
+      workspaceFolders: [{ uri: { fsPath: tempDir } }],
+    });
+
+    let activeMenuFetches = 0;
+    let maxParallelMenuFetches = 0;
+
+    const mockTransport = async (opts) => {
+      if (opts.path.includes("/menuItems")) {
+        activeMenuFetches++;
+        maxParallelMenuFetches = Math.max(maxParallelMenuFetches, activeMenuFetches);
+        await new Promise((r) => setTimeout(r, 10));
+        activeMenuFetches--;
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ items: [{ id: "1", value: "A", label: "Option A" }] }),
+        };
+      }
+      if (opts.path.includes("/attributes")) {
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            items: [
+              { variableName: "menu1", name: "Menu 1", dataType: "Single Select Menu" },
+              { variableName: "menu2", name: "Menu 2", dataType: "Single Select Menu" },
+              { variableName: "menu3", name: "Menu 3", dataType: "Single Select Menu" },
+            ],
+          }),
+        };
+      }
+      return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+    };
+
+    const result = await api.syncCommerceAttributes(
+      fakeContext(),
+      vscode,
+      { process: "oraclecpqo", document: "transaction", fetchMenuItems: true },
+      mockTransport,
+    );
+
+    assert.strictEqual(result.attributes.length, 3);
+    assert.ok(maxParallelMenuFetches > 1, `Expected parallel menu fetches > 1, got ${maxParallelMenuFetches}`);
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 });

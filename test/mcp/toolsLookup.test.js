@@ -361,18 +361,16 @@ suite("MCP tools - lookup", () => {
   suite("lookupCommerceAttribute & lookupAttribute", () => {
     test("looks up attributes across commerce, system, and configuration from workspace .cpq", () =>
       withTempDir(async (tmpDir) => {
-        const commerceDir = path.join(tmpDir, ".cpq", "commerce");
-        const configDir = path.join(tmpDir, ".cpq", "config");
-        fs.mkdirSync(commerceDir, { recursive: true });
-        fs.mkdirSync(configDir, { recursive: true });
+        const cpqDir = path.join(tmpDir, ".cpq");
+        fs.mkdirSync(cpqDir, { recursive: true });
 
         fs.writeFileSync(
-          path.join(commerceDir, "transaction.min.json"),
+          path.join(cpqDir, "commerce.attributes.min.json"),
           JSON.stringify([{ variableName: "status_t", name: "Status", dataType: "TEXT" }]),
           "utf8"
         );
         fs.writeFileSync(
-          path.join(configDir, "attributes.min.json"),
+          path.join(cpqDir, "config.attributes.min.json"),
           JSON.stringify([{ variableName: "cpu_speed", name: "CPU Speed", dataType: "FLOAT", productFamily: "laptops" }]),
           "utf8"
         );

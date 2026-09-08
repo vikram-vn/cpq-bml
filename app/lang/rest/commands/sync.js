@@ -45,82 +45,135 @@ async function runSyncCommerceMetadata(
 
   const startedAt = Date.now();
 
-  try {
-    const data = await api.syncCommerceAttributes(
-      context,
-      vscode,
-      { process, document, fetchMenuItems },
-      transport,
-    );
+  const withProgress =
+    vscode &&
+    vscode.window &&
+    typeof vscode.window.withProgress === "function"
+      ? (task) =>
+          vscode.window.withProgress(
+            {
+              location:
+                (vscode.ProgressLocation && vscode.ProgressLocation.Notification) ||
+                15,
+              title: "CPQ-BML: Syncing Metadata",
+              cancellable: true,
+            },
+            task,
+          )
+      : (task) =>
+          task(
+            { report: () => {} },
+            { isCancellationRequested: false, onCancellationRequested: () => {} },
+          );
 
-    let configData = null;
-    try {
-      if (typeof api.syncConfigurationAttributes === "function") {
-        configData = await api.syncConfigurationAttributes(
-          context,
-          vscode,
-          {},
-          transport,
+  try {
+    return await withProgress(async (progress, token) => {
+      const controller =
+        typeof AbortController !== "undefined" ? new AbortController() : null;
+      const signal = controller ? controller.signal : null;
+      if (token && typeof token.onCancellationRequested === "function" && controller) {
+        token.onCancellationRequested(() => controller.abort());
+      }
+
+      const onProgress = (info) => {
+        if (progress && typeof progress.report === "function") {
+          progress.report(info);
+        }
+      };
+
+      onProgress({ message: "Syncing commerce attributes..." });
+
+      const data = await api.syncCommerceAttributes(
+        context,
+        vscode,
+        { process, document, fetchMenuItems, signal, onProgress },
+        transport,
+      );
+
+      let configData = null;
+      try {
+        if (typeof api.syncConfigurationAttributes === "function") {
+          onProgress({ message: "Syncing configuration attributes & models..." });
+          configData = await api.syncConfigurationAttributes(
+            context,
+            vscode,
+            { signal, onProgress },
+            transport,
+          );
+        }
+      } catch (cfgErr) {
+        if (signal && signal.aborted) throw cfgErr;
+        // Configuration module is optional; fail gracefully if not configured
+      }
+
+      const attrCount = Array.isArray(data.attributes) ? data.attributes.length : 0;
+      const sysCount = Array.isArray(data.systemAttributes)
+        ? data.systemAttributes.length
+        : 0;
+      const cfgCount =
+        configData && Array.isArray(configData.attributes)
+          ? configData.attributes.length
+          : 0;
+
+      if (vscode && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+        vscode.commands.executeCommand(
+          "setContext",
+          "cpqBml.commerceMetadataSynced",
+          true,
         );
       }
-    } catch (cfgErr) {
-      // Configuration module is optional; fail gracefully if not configured
-    }
 
-    const attrCount = Array.isArray(data.attributes) ? data.attributes.length : 0;
-    const sysCount = Array.isArray(data.systemAttributes)
-      ? data.systemAttributes.length
-      : 0;
-    const cfgCount =
-      configData && Array.isArray(configData.attributes)
-        ? configData.attributes.length
-        : 0;
+      let msg = `Synced ${attrCount} attributes, ${sysCount} systemAttributes`;
+      if (cfgCount > 0) {
+        msg += `, ${cfgCount} configAttributes`;
+      }
+      msg += ` (${formatElapsed(startedAt)})`;
+      if (resultsTerminal) {
+        writeTerminalMessage(
+          resultsTerminal,
+          "Sync complete: ",
+          msg,
+          "\x1b[32m",
+        );
+        resultsTerminal.show();
+      }
 
-    if (vscode && vscode.commands && typeof vscode.commands.executeCommand === "function") {
-      vscode.commands.executeCommand(
-        "setContext",
-        "cpqBml.commerceMetadataSynced",
-        true,
-      );
-    }
+      if (vscode && vscode.window) {
+        vscode.window.showInformationMessage(`CPQ-BML: ${msg}`);
+      }
 
-    let msg = `Synced ${attrCount} attributes, ${sysCount} systemAttributes`;
-    if (cfgCount > 0) {
-      msg += `, ${cfgCount} configAttributes`;
-    }
-    msg += ` (${formatElapsed(startedAt)})`;
-    if (resultsTerminal) {
-      writeTerminalMessage(
-        resultsTerminal,
-        "Sync complete: ",
-        msg,
-        "\x1b[32m",
-      );
-      resultsTerminal.show();
-    }
-
-    if (vscode && vscode.window) {
-      vscode.window.showInformationMessage(`CPQ-BML: ${msg}`);
-    }
-
-    return {
-      success: true,
-      data,
-      configData,
-    };
+      return {
+        success: true,
+        data,
+        configData,
+      };
+    });
   } catch (err) {
-    const message = `failed to sync commerce metadata. ${err.message || describeError(err)}`;
+    const isCancelled =
+      err &&
+      (err.message === "Request aborted" ||
+        err.message === "Sync cancelled" ||
+        err.name === "AbortError");
+    const message = isCancelled
+      ? "Sync cancelled by user."
+      : `failed to sync commerce metadata. ${err.message || describeError(err)}`;
     if (resultsTerminal) {
       writeTerminalMessage(
         resultsTerminal,
-        "Sync failed: ",
+        isCancelled ? "Sync cancelled: " : "Sync failed: ",
         `${message} (${formatElapsed(startedAt)})`,
-        "\x1b[31m",
+        isCancelled ? "\x1b[33m" : "\x1b[31m",
       );
       resultsTerminal.show();
     }
     if (vscode && vscode.window) {
-      vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
+      if (isCancelled) {
+        if (typeof vscode.window.showWarningMessage === "function") {
+          vscode.window.showWarningMessage(`CPQ-BML: ${message}`);
+        }
+      } else {
+        vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
+      }
     }
     return {
       success: false,
@@ -129,6 +182,22 @@ async function runSyncCommerceMetadata(
   }
 }
 
+async function runSyncAllMetadata(context, vscode, terminal) {
+  const { syncConfigurationAttributes } = require("../apiConfig");
+  const commRes = await runSyncCommerceMetadata(context, vscode, terminal, { fetchMenuItems: false });
+  let configCount = 0;
+  try {
+    const cfgRes = await syncConfigurationAttributes(context, vscode, { limit: 1000 }, null);
+    configCount = cfgRes ? cfgRes.count : 0;
+  } catch (e) {}
+  return {
+    success: commRes ? commRes.success : true,
+    commerceCount: commRes && commRes.data && commRes.data.attributes ? commRes.data.attributes.length : 0,
+    configCount,
+  };
+}
+
 module.exports = {
   runSyncCommerceMetadata,
+  runSyncAllMetadata,
 };

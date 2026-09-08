@@ -1,0 +1,197 @@
+const fs = require("fs");
+const path = require("path");
+const {
+  COMMERCE_DIR,
+  SYSTEM_DIR,
+  CONFIG_DIR,
+  COMMERCE_ATTRS_FILE,
+  CONFIG_ATTRS_FILE,
+  SYSTEM_ATTRS_FILE,
+} = require("./commerceAttributesWriter");
+
+function processCommercePayload(raw, addItems, defaultScope = "Transaction") {
+  if (!raw) return;
+  if (raw.standardProcess && raw.standardProcess.attributes) {
+    addItems(raw.standardProcess.attributes, "Transaction");
+  }
+  if (raw.processes && typeof raw.processes === "object") {
+    for (const p of Object.values(raw.processes)) {
+      if (p && p.attributes) addItems(p.attributes, "Transaction");
+    }
+  }
+  if (raw.lookups) {
+    if (Array.isArray(raw.lookups.transaction)) addItems(raw.lookups.transaction, "Transaction");
+    if (Array.isArray(raw.lookups.transactionLine)) addItems(raw.lookups.transactionLine, "Line Item");
+    if (Array.isArray(raw.lookups.arraySets)) addItems(raw.lookups.arraySets, "Array Set");
+    if (raw.lookups.custom && typeof raw.lookups.custom === "object") {
+      for (const ca of Object.values(raw.lookups.custom)) {
+        if (Array.isArray(ca)) addItems(ca, "Transaction");
+      }
+    }
+  }
+  if (Array.isArray(raw.attributes)) addItems(raw.attributes, defaultScope);
+  if (Array.isArray(raw.items)) addItems(raw.items, defaultScope);
+  if (Array.isArray(raw.arraySets)) addItems(raw.arraySets, "Array Set");
+  if (Array.isArray(raw)) addItems(raw, defaultScope);
+}
+
+function loadAttributesFromDir(dir, index, addItems) {
+  if (!dir || !fs.existsSync(dir)) return false;
+
+  const flatCommerce = path.join(dir, COMMERCE_ATTRS_FILE);
+  const flatConfig = path.join(dir, CONFIG_ATTRS_FILE);
+  const flatSystem = path.join(dir, SYSTEM_ATTRS_FILE);
+
+  let loadedAny = false;
+  if (fs.existsSync(flatCommerce)) {
+    try {
+      processCommercePayload(JSON.parse(fs.readFileSync(flatCommerce, "utf8")), addItems);
+      loadedAny = true;
+    } catch (e) {}
+  }
+  if (fs.existsSync(flatSystem)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(flatSystem, "utf8"));
+      addItems(raw.items || raw.attributes || (Array.isArray(raw) ? raw : []), "System");
+      loadedAny = true;
+    } catch (e) {}
+  }
+  if (fs.existsSync(flatConfig)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(flatConfig, "utf8"));
+      addItems(raw.attributes || raw.items || (Array.isArray(raw) ? raw : []), "Configuration");
+      if (Array.isArray(raw.models)) addItems(raw.models, "Model");
+      if (Array.isArray(raw.productFamilies)) addItems(raw.productFamilies, "Configuration");
+      loadedAny = true;
+    } catch (e) {}
+  }
+  if (loadedAny) return true;
+
+  // Subfolders fallback
+  const commDir = path.join(dir, COMMERCE_DIR);
+  const cfgDir = path.join(dir, CONFIG_DIR);
+  const sysDir = path.join(dir, SYSTEM_DIR);
+
+  if (fs.existsSync(commDir)) {
+    try {
+      for (const f of fs.readdirSync(commDir)) {
+        if (!f.endsWith(".min.json")) continue;
+        const raw = JSON.parse(fs.readFileSync(path.join(commDir, f), "utf8"));
+        const scope = f.includes("line") ? "Line Item" : f.includes("array") ? "Array Set" : "Transaction";
+        processCommercePayload(raw, addItems, scope);
+        loadedAny = true;
+      }
+    } catch (e) {}
+  }
+  if (fs.existsSync(sysDir)) {
+    const vf = path.join(sysDir, "variables.min.json");
+    if (fs.existsSync(vf)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(vf, "utf8"));
+        addItems(raw.items || raw.attributes || (Array.isArray(raw) ? raw : []), "System");
+        loadedAny = true;
+      } catch (e) {}
+    }
+  }
+  if (fs.existsSync(cfgDir)) {
+    try {
+      for (const f of fs.readdirSync(cfgDir)) {
+        if (!f.endsWith(".min.json")) continue;
+        const raw = JSON.parse(fs.readFileSync(path.join(cfgDir, f), "utf8"));
+        const items = Array.isArray(raw) ? raw : Array.isArray(raw.attributes) ? raw.attributes : Array.isArray(raw.items) ? raw.items : [];
+        const scope = f.includes("model") ? "Model" : "Configuration";
+        addItems(items, scope);
+        if (Array.isArray(raw.models)) addItems(raw.models, "Model");
+        if (Array.isArray(raw.productFamilies)) addItems(raw.productFamilies, "Configuration");
+        loadedAny = true;
+      }
+    } catch (e) {}
+  }
+
+  return loadedAny;
+}
+
+function inspectMetadataStatus(dirs, vscode, backendDir) {
+  let isSynced = false;
+  let updatedAt = null;
+  let commerceCount = 0;
+  let configCount = 0;
+  let systemCount = 0;
+
+  for (const dir of dirs) {
+    const commFile = path.join(dir, COMMERCE_ATTRS_FILE);
+    if (fs.existsSync(commFile)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(commFile, "utf8"));
+        isSynced = true;
+        updatedAt = raw.updatedAt || updatedAt;
+        commerceCount = raw.count || (Array.isArray(raw.attributes) ? raw.attributes.length : 0);
+      } catch (e) {}
+    }
+    const cfgFile = path.join(dir, CONFIG_ATTRS_FILE);
+    if (fs.existsSync(cfgFile)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(cfgFile, "utf8"));
+        isSynced = true;
+        updatedAt = raw.updatedAt || updatedAt;
+        configCount = raw.count || (Array.isArray(raw.attributes) ? raw.attributes.length : 0);
+      } catch (e) {}
+    }
+    const sysFile = path.join(dir, SYSTEM_ATTRS_FILE);
+    if (fs.existsSync(sysFile)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(sysFile, "utf8"));
+        systemCount = raw.count || (Array.isArray(raw.items) ? raw.items.length : 0);
+      } catch (e) {}
+    }
+    if (isSynced) break;
+  }
+
+  let canSync = false;
+  if (vscode) {
+    const cpqConfig = vscode.workspace.getConfiguration("cpqBml");
+    const enabled = cpqConfig.get("connection.enabled", true);
+    const siteUrl = (cpqConfig.get("connection.siteUrl", "") || "").trim();
+    canSync = Boolean(enabled && siteUrl);
+  }
+
+  return {
+    isSynced,
+    updatedAt,
+    commerceCount,
+    configCount,
+    systemCount,
+    canSync,
+    storagePath: backendDir || "",
+  };
+}
+
+function removeMetadataFromDirs(dirs, cpqDirName) {
+  for (const dir of dirs) {
+    if (!fs.existsSync(dir)) continue;
+    for (const f of [COMMERCE_ATTRS_FILE, CONFIG_ATTRS_FILE, SYSTEM_ATTRS_FILE, "README.md"]) {
+      const p = path.join(dir, f);
+      if (fs.existsSync(p)) {
+        try { fs.unlinkSync(p); } catch (e) {}
+      }
+    }
+    for (const sub of ["commerce", "config", "system", "cache"]) {
+      const p = path.join(dir, sub);
+      if (fs.existsSync(p)) {
+        try { fs.rmSync(p, { recursive: true, force: true }); } catch (e) {}
+      }
+    }
+    if (dir.endsWith(cpqDirName)) {
+      try {
+        const remaining = fs.readdirSync(dir);
+        if (remaining.length === 0) fs.rmSync(dir, { recursive: true, force: true });
+      } catch (e) {}
+    }
+  }
+}
+
+module.exports = {
+  loadAttributesFromDir,
+  inspectMetadataStatus,
+  removeMetadataFromDirs,
+};

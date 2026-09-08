@@ -433,5 +433,27 @@ suite("BML REST api", () => {
       assert.strictEqual(result.body.password, undefined);
       assert.strictEqual(result.body.variableName, "testFunc");
     });
+
+    test("call() notifies user when receiving 401 Unauthorized", async () => {
+      const errorMessages = [];
+      const vscode = createFakeVscode({
+        config: baseConfig(),
+        window: {
+          showErrorMessage: async (msg) => {
+            errorMessages.push(msg);
+            return undefined;
+          },
+        },
+      });
+      const transport = async () => ({
+        statusCode: 401,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({ message: "Invalid session" }),
+      });
+
+      const result = await api.getLibraryFunction(fakeContext(), vscode, "anyFunc", transport);
+      assert.strictEqual(result.statusCode, 401);
+      assert.ok(errorMessages.some((m) => m.includes("401 Unauthorized")));
+    });
   });
 });
