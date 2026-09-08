@@ -56,6 +56,26 @@ export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi
                     checked={debug.showResultsAsTable}
                     onChange={(v) => updateField('debug.showResultsAsTable', v)}
                 />
+
+                <div className="field field-spaced" style={{ marginTop: '16px' }}>
+                    <label htmlFor="debugConcurrency">Debug Concurrency (Parallel Transactions)</label>
+                    <input
+                        id="debugConcurrency"
+                        type="number"
+                        min="2"
+                        max="10"
+                        value={debug.concurrency !== undefined ? debug.concurrency : 2}
+                        onChange={(e) => {
+                            const val = parseInt(e.target.value, 10);
+                            if (!isNaN(val)) {
+                                updateField('debug.concurrency', Math.max(2, Math.min(10, val)));
+                            }
+                        }}
+                    />
+                    <p className="field-hint" style={{ marginTop: '4px' }}>
+                        Number of transactions to debug simultaneously in parallel (min 2, max 10). Default is 2.
+                    </p>
+                </div>
             </section>
 
             <section className="card">

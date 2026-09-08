@@ -65,6 +65,7 @@ function getSettings(vscode) {
         debugLog: Boolean(getVal("debug.logRestDetails", false)),
         logOutputToFile: Boolean(getVal("debug.logOutputToFile", false)),
         showResultsAsTable: Boolean(getVal("debug.showResultsAsTable", false)),
+        debugConcurrency: getDebugConcurrency(vscode),
     };
 }
 
@@ -74,9 +75,9 @@ function getDebugConcurrency(vscode) {
         : null;
     const val = config ? config.get("debug.concurrency") : undefined;
     if (val !== undefined && val !== null && !isNaN(Number(val))) {
-        return Math.max(2, Math.min(10, Number(val)));
+        return Math.max(2, Math.min(10, Math.round(Number(val))));
     }
-    return 10;
+    return 2;
 }
 
 async function saveWorkspaceConfig(vscode, settings) {
@@ -90,6 +91,7 @@ async function saveWorkspaceConfig(vscode, settings) {
     if (settings.commerceProcess !== undefined) await config.update("rest.commerceProcess", settings.commerceProcess, false);
     if (settings.commerceDocument !== undefined) await config.update("rest.commerceDocument", settings.commerceDocument, false);
     if (settings.pullFolder !== undefined) await config.update("rest.pullFolder", settings.pullFolder, false);
+    if (settings.debugConcurrency !== undefined) await config.update("debug.concurrency", Math.max(2, Math.min(10, Math.round(Number(settings.debugConcurrency)) || 2)), false);
 
     // Ensure connection settings are never left in .cpq/config
     const root = getWorkspaceRoot(vscode);

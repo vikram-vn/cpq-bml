@@ -28,7 +28,7 @@ export const EMPTY_STATE = {
         variableTypes: false
     },
     mcp: { enable: false, port: 47821, logToTerminal: false },
-    debug: { logOutputToFile: false, logRestDetails: false },
+    debug: { logOutputToFile: false, logRestDetails: false, showResultsAsTable: false, concurrency: 2 },
     environments: [],
     hasPassword: false,
     hasToken: false

@@ -49,6 +49,7 @@ const ALLOWED_FIELDS = new Set([
   "debug.logRestDetails",
   "debug.logOutputToFile",
   "debug.showResultsAsTable",
+  "debug.concurrency",
 ]);
 
 // Every mutating case re-sends a fresh 'state' snapshot so the webview never relies on stale state.
@@ -83,6 +84,9 @@ async function dispatch(message, context, vscode, panel) {
       }
       if (key === "inlayHints.variableTypes") {
         key = "inlayHints.variableTypes.enabled";
+      }
+      if (key === "debug.concurrency") {
+        value = Math.max(2, Math.min(10, Math.round(Number(value)) || 2));
       }
       await vscode.workspace
         .getConfiguration(CPQ_SECTION)

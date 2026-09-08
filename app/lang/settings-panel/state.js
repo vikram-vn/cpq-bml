@@ -62,7 +62,8 @@ async function buildState(context, vscode) {
         debug: {
             logOutputToFile: settings.logOutputToFile,
             logRestDetails: settings.debugLog,
-            showResultsAsTable: settings.showResultsAsTable
+            showResultsAsTable: settings.showResultsAsTable,
+            concurrency: settings.debugConcurrency || config.getDebugConcurrency(vscode)
         },
         environments,
         hasPassword,

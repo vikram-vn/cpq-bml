@@ -526,6 +526,13 @@
           "type": "boolean",
           "default": false,
           "description": "When enabled, formats JSON or dictionary return values in BML debug output as a key-value table. Disabled by default."
+        },
+        "cpqBml.debug.concurrency": {
+          "type": "integer",
+          "default": 2,
+          "minimum": 2,
+          "maximum": 10,
+          "description": "Number of transactions to debug simultaneously in parallel (min 2, max 10). Default is 2."
         }
       }
     }
