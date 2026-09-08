@@ -628,6 +628,79 @@ suite("BML REST api", () => {
       assert.ok(fs.existsSync(cacheFile));
       fs.rmSync(tempDir, { recursive: true, force: true });
     });
+
+    test("syncCommerceAttributes handles object dataType and normalizes to string without error", async () => {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-obj-type-test-"));
+      const vscode = createFakeVscode({
+        config: baseConfig(),
+        workspaceFolders: [{ uri: { fsPath: tempDir } }],
+      });
+
+      const mockTransport = async (opts) => {
+        if (opts.path.includes("/attributes/status_t/menuItems")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({ items: [{ id: "val1", value: "val1", label: "Open" }] }),
+          };
+        }
+        if (opts.path.includes("/attributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                {
+                  variableName: "status_t",
+                  name: "Status",
+                  dataType: { value: 1, displayValue: "Single Select Menu" },
+                },
+                {
+                  variableName: "doc_num",
+                  name: "Document Number",
+                  dataType: { value: 5, displayValue: "String" },
+                },
+              ],
+            }),
+          };
+        }
+        if (opts.path.includes("/systemAttributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                {
+                  variableName: "_system_user_name",
+                  name: "User Name",
+                  dataType: { value: 2, displayValue: "String" },
+                },
+              ],
+            }),
+          };
+        }
+        return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+      };
+
+      const result = await api.syncCommerceAttributes(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", document: "transaction", fetchMenuItems: true },
+        mockTransport,
+      );
+
+      assert.strictEqual(result.attributes.length, 2);
+      assert.strictEqual(result.attributes[0].variableName, "status_t");
+      assert.strictEqual(result.attributes[0].dataType, "Single Select Menu");
+      assert.strictEqual(result.attributes[0].menuItems.length, 1);
+      assert.strictEqual(result.attributes[1].variableName, "doc_num");
+      assert.strictEqual(result.attributes[1].dataType, "String");
+      assert.strictEqual(result.systemAttributes.length, 1);
+      assert.strictEqual(result.systemAttributes[0].variableName, "_system_user_name");
+      assert.strictEqual(result.systemAttributes[0].dataType, "String");
+
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    });
   });
 
   suite("sanitizeRestResponse", () => {

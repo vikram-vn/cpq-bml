@@ -8,6 +8,7 @@ const {
   resolveQueryFilter,
   getWorkspaceRoot,
   saveWorkspaceAttributes,
+  normalizeAttributeDataType,
 } = require("./commerceAttributes");
 
 function commerceDocumentsPath(vscode, process = "oraclecpqo", document = "transaction") {
@@ -274,14 +275,21 @@ async function syncCommerceAttributes(
       const attr = {
         variableName: varName,
         name: item.name || item.label || varName,
-        dataType: item.dataType || item.type || "String",
+        dataType: normalizeAttributeDataType(item.dataType || item.type),
         description: item.description || "",
       };
 
+      const dtLower = (typeof attr.dataType === "string" ? attr.dataType : "").toLowerCase();
+      const typeLower = typeof item.type === "string" ? item.type.toLowerCase() : "";
+      const displayTypeLower =
+        typeof item.displayType === "string" ? item.displayType.toLowerCase() : "";
       const isMenu =
-        attr.dataType &&
-        (attr.dataType.toLowerCase().includes("menu") ||
-          attr.dataType.toLowerCase().includes("select"));
+        dtLower.includes("menu") ||
+        dtLower.includes("select") ||
+        typeLower.includes("menu") ||
+        typeLower.includes("select") ||
+        displayTypeLower.includes("menu") ||
+        displayTypeLower.includes("select");
 
       if (fetchMenuItems && isMenu) {
         try {
@@ -326,7 +334,7 @@ async function syncCommerceAttributes(
         systemAttributes.push({
           variableName: item.variableName || item.id,
           name: item.name || item.label || item.variableName || item.id,
-          dataType: item.dataType || item.type || "String",
+          dataType: normalizeAttributeDataType(item.dataType || item.type),
           description: item.description || "",
         });
       }

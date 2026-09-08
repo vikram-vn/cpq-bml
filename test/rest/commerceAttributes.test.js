@@ -91,4 +91,15 @@ suite("commerceAttributes Unit Tests", () => {
 
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
+
+  test("normalizeAttributeDataType handles string, object, and primitive types", () => {
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType("String"), "String");
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType("Single Select Menu"), "Single Select Menu");
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType({ value: 1, displayValue: "Single Select Menu" }), "Single Select Menu");
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType({ displayLabel: "Currency" }), "Currency");
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType({ name: "Date" }), "Date");
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType({ value: 5 }), "5");
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType(null), "String");
+    assert.strictEqual(commerceAttributes.normalizeAttributeDataType(undefined), "String");
+  });
 });

@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.82.1] - 2026-09-08
+
+### Changed
+
+- Performance optimizations, benchmark fixtures, and stability enhancements.
+
 ## [1.82.0] - 2026-09-07
 
 ### Added
@@ -79,12 +85,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement dynamic folder icon synchronization and optimize build pipeline with native Node.js compilation.
 - Add bml-icons.json icon definitions file.
 - Add custom folder icons for beautify, metrics, bml, and xml to icon theme definitions.
-
-## [1.74.0] - 2026-09-06
-
-### Added
-
-- Auto-activate BML icon theme on startup and provide manual activation command.
-- Implement native Node.js build script and configure minified icon theme usage.
-- Add logo assets and SVG generation scripts.
-- Add new material icons for various file types and folders.

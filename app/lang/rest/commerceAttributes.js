@@ -26,6 +26,28 @@ function normalizeKey(str) {
   return str.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+function normalizeAttributeDataType(raw) {
+  if (typeof raw === "string") {
+    return raw;
+  }
+  if (raw && typeof raw === "object") {
+    const val =
+      raw.displayValue ||
+      raw.displayLabel ||
+      raw.name ||
+      raw.label ||
+      raw.type ||
+      raw.value;
+    if (val !== undefined && val !== null) {
+      return String(val);
+    }
+  }
+  if (raw !== undefined && raw !== null) {
+    return String(raw);
+  }
+  return "String";
+}
+
 function loadBundledAttributes() {
   if (bundledAttributesIndex) return bundledAttributesIndex;
 
@@ -361,7 +383,7 @@ function searchAttributes(query, workspaceRoot) {
         results.push({
           variableName: varName,
           label: label || varName,
-          dataType: meta.dataType || meta.type || "String",
+          dataType: normalizeAttributeDataType(meta.dataType || meta.type),
           menuItems: meta.menuItems || null,
           source: "remote-cache",
         });
@@ -383,7 +405,7 @@ function searchAttributes(query, workspaceRoot) {
       results.push({
         variableName: varName,
         label: label || varName,
-        dataType: meta.dataType || "String",
+        dataType: normalizeAttributeDataType(meta.dataType),
         scope: meta.scope,
         notes: meta.notes,
         source: "bundled",
@@ -397,6 +419,7 @@ function searchAttributes(query, workspaceRoot) {
 
 module.exports = {
   normalizeKey,
+  normalizeAttributeDataType,
   getWorkspaceRoot,
   loadBundledAttributes,
   loadWorkspaceAttributes,
