@@ -33,6 +33,8 @@ const DEFAULT_LIMIT = 20;
  * AI agent can check real syntax/return types/valid attributes instead of
  * guessing.
  */
+const commerceAttributes = require('../../rest/commerceAttributes');
+
 async function lookupBmlReference(context, vscode, args) {
     const { name, category, scope, limit } = args || {};
 
@@ -49,8 +51,33 @@ async function lookupBmlReference(context, vscode, args) {
     const cappedLimit = Math.max(1, Math.min(limit || DEFAULT_LIMIT, MAX_LIMIT));
     const nameLower = name ? name.toLowerCase() : null;
     const results = [];
+    const seenNames = new Set();
     let truncated = false;
 
+    // 1. Workspace-cached live attributes (highest priority)
+    const wsRoot = commerceAttributes.getWorkspaceRoot(vscode);
+    if ((!category || category === 'attribute') && wsRoot) {
+        const wsAttrs = commerceAttributes.searchAttributes(name || '', wsRoot);
+        for (const attr of wsAttrs) {
+            if (scope && attr.scope !== scope) continue;
+            if (nameLower && attr.variableName.toLowerCase() !== nameLower && (!attr.label || attr.label.toLowerCase() !== nameLower)) continue;
+            if (results.length >= cappedLimit) {
+                truncated = true;
+                break;
+            }
+            results.push({
+                name: attr.variableName,
+                category: 'attribute',
+                scope: attr.scope || 'Transaction',
+                dataType: attr.dataType,
+                notes: attr.description || attr.label || '',
+                source: attr.source || 'workspace-cache',
+            });
+            seenNames.add(attr.variableName.toLowerCase());
+        }
+    }
+
+    // 2. Bundled reference data (offline baseline)
     for (const { category: cat, load } of CATEGORIES) {
         if (category && category !== cat) continue;
 
@@ -62,6 +89,7 @@ async function lookupBmlReference(context, vscode, args) {
         }
 
         for (const [key, info] of Object.entries(data)) {
+            if (seenNames.has(key.toLowerCase())) continue;
             if (nameLower && key.toLowerCase() !== nameLower) continue;
             if (scope && info.scope !== scope) continue;
 
@@ -70,6 +98,7 @@ async function lookupBmlReference(context, vscode, args) {
                 break;
             }
             results.push({ name: key, category: cat, ...info });
+            seenNames.add(key.toLowerCase());
         }
         if (truncated) break;
     }

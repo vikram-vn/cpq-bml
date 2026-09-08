@@ -544,6 +544,40 @@ suite("BML REST api", () => {
       );
     });
 
+    test("listCommerceAttributeLookups dispatches GET to /commerceProcessSetups/<process>/bml/attributeLookups", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceAttributeLookups(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(
+        sink.captured.path.includes(
+          "/commerceProcessSetups/oraclecpqo/bml/attributeLookups",
+        ),
+      );
+    });
+
+    test("listCommerceAttributeLookupValues dispatches GET to /attributeLookups/<lookupType>/lookupValues", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceAttributeLookupValues(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", lookupType: "transaction" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(
+        sink.captured.path.includes(
+          "/attributeLookups/transaction/lookupValues",
+        ),
+      );
+    });
+
     test("runPipelineViewer dispatches POST to /commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer", async () => {
       const vscode = createFakeVscode({ config: baseConfig() });
       const sink = {};
@@ -668,15 +702,14 @@ suite("BML REST api", () => {
           return {
             statusCode: 200,
             headers: { "content-type": "application/json" },
-            text: JSON.stringify({
-              items: [
-                {
-                  variableName: "_system_user_name",
-                  name: "User Name",
-                  dataType: { value: 2, displayValue: "String" },
-                },
-              ],
-            }),
+            text: JSON.stringify([
+              {
+                label: "Current User's Name",
+                variableName: "_system_user_name",
+                type: "String",
+                description: "Current User's Name",
+              },
+            ]),
           };
         }
         return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
@@ -698,6 +731,101 @@ suite("BML REST api", () => {
       assert.strictEqual(result.systemAttributes.length, 1);
       assert.strictEqual(result.systemAttributes[0].variableName, "_system_user_name");
       assert.strictEqual(result.systemAttributes[0].dataType, "String");
+
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    });
+
+    test("syncCommerceAttributes fetches attributeLookups and populates lookups in result and cache", async () => {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-lookups-test-"));
+      const vscode = createFakeVscode({
+        config: baseConfig(),
+        workspaceFolders: [{ uri: { fsPath: tempDir } }],
+      });
+
+      const mockTransport = async (opts) => {
+        if (opts.path.includes("/bml/attributeLookups/transaction/lookupValues")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                { name: "totalAmount_t", displayLabel: "Grand Total", dataType: { value: 2, displayValue: "Float" } },
+              ],
+            }),
+          };
+        }
+        if (opts.path.includes("/bml/attributeLookups/transactionLine/lookupValues")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                { name: "_part_number", displayLabel: "Part Number", dataType: { value: 5, displayValue: "String" } },
+              ],
+            }),
+          };
+        }
+        if (opts.path.includes("/bml/attributeLookups/systemVariables/lookupValues")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                { name: "_system_date", displayLabel: "System Date", dataType: "String (date)" },
+              ],
+            }),
+          };
+        }
+        if (opts.path.endsWith("/bml/attributeLookups")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                { lookupType: "transaction" },
+                { lookupType: "transactionLine" },
+                { lookupType: "systemVariables" },
+              ],
+            }),
+          };
+        }
+        if (opts.path.includes("/attributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({ items: [] }),
+          };
+        }
+        if (opts.path.includes("/systemAttributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify([]),
+          };
+        }
+        return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+      };
+
+      const result = await api.syncCommerceAttributes(
+        fakeContext(),
+        vscode,
+        { process: "oraclecpqo", document: "transaction", fetchLookups: true },
+        mockTransport,
+      );
+
+      assert.ok(result.lookups);
+      assert.strictEqual(result.lookups.transaction.length, 1);
+      assert.strictEqual(result.lookups.transaction[0].variableName, "totalAmount_t");
+      assert.strictEqual(result.lookups.transactionLine.length, 1);
+      assert.strictEqual(result.lookups.transactionLine[0].variableName, "_part_number");
+      assert.strictEqual(result.lookups.systemVariables.length, 1);
+      assert.strictEqual(result.lookups.systemVariables[0].variableName, "_system_date");
+
+      // Verify files written to .cpq/cache/lookups/
+      const lookupsDir = path.join(tempDir, ".cpq", "cache", "lookups");
+      assert.ok(fs.existsSync(path.join(lookupsDir, "transaction.json")));
+      assert.ok(fs.existsSync(path.join(lookupsDir, "transaction-line.json")));
+      assert.ok(fs.existsSync(path.join(lookupsDir, "system-variables.json")));
 
       fs.rmSync(tempDir, { recursive: true, force: true });
     });

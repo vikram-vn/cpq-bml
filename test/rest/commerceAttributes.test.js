@@ -102,4 +102,42 @@ suite("commerceAttributes Unit Tests", () => {
     assert.strictEqual(commerceAttributes.normalizeAttributeDataType(null), "String");
     assert.strictEqual(commerceAttributes.normalizeAttributeDataType(undefined), "String");
   });
+
+  test("saveWorkspaceAttributes writes lookups directory and loadWorkspaceAttributes indexes lookups with scopes", () => {
+    const fs = require("fs");
+    const os = require("os");
+    const path = require("path");
+
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-lookups-test-"));
+    const cacheData = {
+      attributes: [{ variableName: "status_t", name: "Status" }],
+      systemAttributes: [{ variableName: "_sys_user", name: "System User" }],
+      lookups: {
+        transaction: [{ variableName: "mainDocField_t", name: "Main Doc Field" }],
+        transactionLine: [{ variableName: "lineItemPrice_l", name: "Line Price" }],
+        systemVariables: [{ variableName: "_sys_date", name: "System Date" }],
+      },
+    };
+
+    commerceAttributes.saveWorkspaceAttributes(tempDir, cacheData);
+
+    // Verify .cpq/cache/lookups files created
+    const lookupsDir = path.join(tempDir, ".cpq", "cache", "lookups");
+    assert.ok(fs.existsSync(path.join(lookupsDir, "transaction.json")));
+    assert.ok(fs.existsSync(path.join(lookupsDir, "transaction-line.json")));
+    assert.ok(fs.existsSync(path.join(lookupsDir, "system-variables.json")));
+
+    // Verify name resolution across lookups
+    assert.strictEqual(commerceAttributes.resolveAttributeName("Main Doc Field", tempDir), "mainDocField_t");
+    assert.strictEqual(commerceAttributes.resolveAttributeName("Line Price", tempDir), "lineItemPrice_l");
+
+    // Verify searchAttributes includes scope and source
+    const searchResults = commerceAttributes.searchAttributes("Line Price", tempDir);
+    assert.ok(searchResults.length > 0);
+    assert.strictEqual(searchResults[0].variableName, "lineItemPrice_l");
+    assert.strictEqual(searchResults[0].scope, "Line Item");
+    assert.strictEqual(searchResults[0].source, "workspace-cache");
+
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
 });

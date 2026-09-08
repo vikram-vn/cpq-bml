@@ -156,29 +156,70 @@ function loadWorkspaceAttributes(workspaceRoot) {
         labelToVarName: new Map(),
       };
 
-      const collections = [
-        data.attributes,
-        data.systemAttributes,
-      ];
-      for (const coll of collections) {
-        if (Array.isArray(coll)) {
-          for (const item of coll) {
-            const varName = item.variableName || item.id;
-            if (!varName) continue;
+      const addItems = (items, defaultScope) => {
+        if (!Array.isArray(items)) return;
+        for (const item of items) {
+          const varName = item.variableName || item.name || item.id;
+          if (!varName) continue;
 
-            index.varNameToMeta.set(varName, item);
-            index.labelToVarName.set(normalizeKey(varName), varName);
+          const scope = item.scope || defaultScope;
+          const entry = {
+            ...item,
+            variableName: varName,
+            name: item.name || item.label || item.displayLabel || varName,
+            label: item.label || item.displayLabel || item.name || varName,
+            scope,
+            dataType: normalizeAttributeDataType(item.dataType || item.type),
+            source: "workspace-cache",
+          };
 
-            const label = item.name || item.label;
-            if (label) {
-              index.labelToVarName.set(normalizeKey(label), varName);
-            }
+          index.varNameToMeta.set(varName, entry);
+          index.labelToVarName.set(normalizeKey(varName), varName);
 
-            if (varName.endsWith("_t")) {
-              index.labelToVarName.set(normalizeKey(varName.slice(0, -2)), varName);
-            }
+          const label = entry.label;
+          if (label) {
+            index.labelToVarName.set(normalizeKey(label), varName);
+          }
+
+          if (varName.endsWith("_t")) {
+            index.labelToVarName.set(normalizeKey(varName.slice(0, -2)), varName);
           }
         }
+      };
+
+      // 1. Process document attributes
+      addItems(data.attributes, "Transaction");
+
+      // 2. Process systemAttributes
+      addItems(data.systemAttributes, "System");
+
+      // 3. Process lookups embedded in cacheData
+      if (data.lookups && typeof data.lookups === "object") {
+        addItems(data.lookups.transaction, "Transaction");
+        addItems(data.lookups.transactionLine, "Line Item");
+        addItems(data.lookups.systemVariables, "System");
+        for (const [type, items] of Object.entries(data.lookups)) {
+          if (type !== "transaction" && type !== "transactionLine" && type !== "systemVariables") {
+            addItems(items, type);
+          }
+        }
+      }
+
+      // 4. Also check for .cpq/cache/lookups/*.json files on disk
+      const lookupsDir = path.join(path.dirname(cachePath), "lookups");
+      if (fs.existsSync(lookupsDir)) {
+        try {
+          const files = fs.readdirSync(lookupsDir);
+          for (const file of files) {
+            if (file.endsWith(".json")) {
+              const content = JSON.parse(fs.readFileSync(path.join(lookupsDir, file), "utf8"));
+              const items = Array.isArray(content) ? content : (Array.isArray(content.items) ? content.items : []);
+              const fileScope = file.includes("line") ? "Line Item" :
+                                file.includes("system") ? "System" : "Transaction";
+              addItems(items, fileScope);
+            }
+          }
+        } catch (e) {}
       }
 
       workspaceAttributesCache[workspaceRoot] = index;
@@ -206,8 +247,31 @@ function saveWorkspaceAttributes(workspaceRoot, data) {
   if (!cachePath) return;
 
   try {
-    fs.mkdirSync(path.dirname(cachePath), { recursive: true });
+    const cacheDir = path.dirname(cachePath);
+    fs.mkdirSync(cacheDir, { recursive: true });
     fs.writeFileSync(cachePath, JSON.stringify(data, null, 2), "utf8");
+
+    // Write individual lookup files to .cpq/cache/lookups/
+    if (data.lookups && typeof data.lookups === "object") {
+      const lookupsDir = path.join(cacheDir, "lookups");
+      fs.mkdirSync(lookupsDir, { recursive: true });
+      for (const [type, items] of Object.entries(data.lookups)) {
+        if (Array.isArray(items)) {
+          const fileName =
+            type === "transactionLine"
+              ? "transaction-line.json"
+              : type === "systemVariables"
+                ? "system-variables.json"
+                : `${type}.json`;
+          fs.writeFileSync(
+            path.join(lookupsDir, fileName),
+            JSON.stringify({ lookupType: type, count: items.length, items }, null, 2),
+            "utf8",
+          );
+        }
+      }
+    }
+
     delete workspaceAttributesCache[workspaceRoot];
   } catch (e) {
     console.error("CPQ-BML: Failed to write commerce attribute cache:", e);
@@ -384,8 +448,10 @@ function searchAttributes(query, workspaceRoot) {
           variableName: varName,
           label: label || varName,
           dataType: normalizeAttributeDataType(meta.dataType || meta.type),
-          menuItems: meta.menuItems || null,
-          source: "remote-cache",
+          scope: meta.scope || "Transaction",
+          description: meta.description || "",
+          menuItems: meta.menuItems || meta.availableElements || null,
+          source: "workspace-cache",
         });
         seen.add(varName);
       }

@@ -29,6 +29,8 @@ function loadJson(baseName, extPath) {
         path.join(process.cwd(), relDir, jsonFile),
         path.join(__dirname, jsonFile),
         path.join(__dirname, "..", relDir, jsonFile),
+        extPath && path.join(extPath, "app", "lang", "snippets", jsonFile),
+        path.join(process.cwd(), "app", "lang", "snippets", jsonFile),
     ].filter(Boolean);
 
     for (const candidate of candidates) {

@@ -90,6 +90,14 @@ async function compileExtension() {
 
     // 5. JSON minification (.json -> .min.json)
     const intellisenseDir = path.join(ROOT, 'app', 'lang', 'intellisense');
+    const snippetsSrc = path.join(ROOT, 'app', 'lang', 'snippets', 'custom-snippets.json');
+    const snippetsDest = path.join(intellisenseDir, 'custom-snippets.json');
+    if (fs.existsSync(snippetsSrc)) {
+        if (!fs.existsSync(snippetsDest) || fs.statSync(snippetsDest).mtimeMs < fs.statSync(snippetsSrc).mtimeMs) {
+            fs.copyFileSync(snippetsSrc, snippetsDest);
+        }
+    }
+
     const jsonFiles = [
         path.join(ROOT, 'themes', 'dark-default.json'),
         path.join(ROOT, 'themes', 'dark.json'),

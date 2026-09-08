@@ -3,7 +3,7 @@ import json
 
 
 def generate_custom_snippets(root_dir):
-    input_path = os.path.join(root_dir, 'app', 'lookups', 'bml', 'custom-snippets.json')
+    input_path = os.path.join(root_dir, 'app', 'lang', 'snippets', 'custom-snippets.json')
     output_path = os.path.join(root_dir, 'app', 'lang', 'intellisense', 'custom-snippets.json')
 
     if not os.path.exists(input_path):

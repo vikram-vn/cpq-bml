@@ -250,11 +250,63 @@ async function listCommerceSystemAttributes(
   );
 }
 
-// Pulls and caches remote attributes, menu items, and systemAttributes into local cache
+// GET /rest/<version>/commerceProcessSetups/<process>/bml/attributeLookups
+async function listCommerceAttributeLookups(
+  context,
+  vscode,
+  { process, offset = 0, limit = 100 } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/bml/attributeLookups`,
+      method: "GET",
+      query: { offset, limit },
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/commerceProcessSetups/<process>/bml/attributeLookups/<lookupType>/lookupValues
+async function listCommerceAttributeLookupValues(
+  context,
+  vscode,
+  { process, lookupType, offset = 0, limit = 1000, href } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+
+  let path = `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/bml/attributeLookups/${lookupType}/lookupValues`;
+  if (href && typeof href === "string") {
+    const match = href.match(/\/rest\/.*$/i);
+    if (match) {
+      path = match[0];
+    }
+  }
+
+  return call(
+    context,
+    vscode,
+    {
+      path,
+      method: "GET",
+      query: { offset, limit },
+    },
+    transport,
+  );
+}
+
+// Pulls and caches remote attributes, menu items, systemAttributes, and attributeLookups into local cache
 async function syncCommerceAttributes(
   context,
   vscode,
-  { process, document, fetchMenuItems = true } = {},
+  { process, document, fetchMenuItems = true, fetchLookups = true } = {},
   transport,
 ) {
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
@@ -269,55 +321,70 @@ async function syncCommerceAttributes(
   );
 
   const attributes = [];
-  if (res && res.body && Array.isArray(res.body.items)) {
-    for (const item of res.body.items) {
-      const varName = item.variableName || item.id;
-      const attr = {
-        variableName: varName,
-        name: item.name || item.label || varName,
-        dataType: normalizeAttributeDataType(item.dataType || item.type),
-        description: item.description || "",
-      };
+  const rawAttrItems =
+    res && res.body
+      ? Array.isArray(res.body)
+        ? res.body
+        : Array.isArray(res.body.items)
+          ? res.body.items
+          : []
+      : [];
 
-      const dtLower = (typeof attr.dataType === "string" ? attr.dataType : "").toLowerCase();
-      const typeLower = typeof item.type === "string" ? item.type.toLowerCase() : "";
-      const displayTypeLower =
-        typeof item.displayType === "string" ? item.displayType.toLowerCase() : "";
-      const isMenu =
-        dtLower.includes("menu") ||
-        dtLower.includes("select") ||
-        typeLower.includes("menu") ||
-        typeLower.includes("select") ||
-        displayTypeLower.includes("menu") ||
-        displayTypeLower.includes("select");
+  for (const item of rawAttrItems) {
+    const varName = item.variableName || item.name || item.id;
+    const attr = {
+      variableName: varName,
+      name: item.label || item.name || varName,
+      dataType: normalizeAttributeDataType(item.type || item.dataType),
+      description: item.description || "",
+    };
 
-      if (fetchMenuItems && isMenu) {
-        try {
-          const menuRes = await listCommerceAttributeMenuItems(
-            context,
-            vscode,
-            {
-              process: effectiveProcess,
-              document: effectiveDocument,
-              attributeVarName: varName,
-              limit: 500,
-            },
-            transport,
-          );
-          if (menuRes && menuRes.body && Array.isArray(menuRes.body.items)) {
-            attr.menuItems = menuRes.body.items.map((m) => ({
-              id: m.id || m.value,
-              value: m.value || m.id,
-              name: m.name || m.label || m.value || m.id,
-            }));
-          }
-        } catch (e) {
-          // Ignore individual menu fetch error and continue
+    const dtLower = (typeof attr.dataType === "string" ? attr.dataType : "").toLowerCase();
+    const typeLower = typeof item.type === "string" ? item.type.toLowerCase() : "";
+    const displayTypeLower =
+      typeof item.displayType === "string" ? item.displayType.toLowerCase() : "";
+    const isMenu =
+      dtLower.includes("menu") ||
+      dtLower.includes("select") ||
+      typeLower.includes("menu") ||
+      typeLower.includes("select") ||
+      displayTypeLower.includes("menu") ||
+      displayTypeLower.includes("select");
+
+    if (fetchMenuItems && isMenu) {
+      try {
+        const menuRes = await listCommerceAttributeMenuItems(
+          context,
+          vscode,
+          {
+            process: effectiveProcess,
+            document: effectiveDocument,
+            attributeVarName: varName,
+            limit: 500,
+          },
+          transport,
+        );
+        const rawMenuItems =
+          menuRes && menuRes.body
+            ? Array.isArray(menuRes.body)
+              ? menuRes.body
+              : Array.isArray(menuRes.body.items)
+                ? menuRes.body.items
+                : []
+            : [];
+        if (rawMenuItems.length > 0) {
+          attr.menuItems = rawMenuItems.map((m) => ({
+            id: m.id || m.value,
+            value: m.value || m.id,
+            name: m.label || m.name || m.value || m.id,
+          }));
         }
+      } catch (e) {
+        // Ignore individual menu fetch error and continue
       }
-
-      attributes.push(attr);
     }
+
+    attributes.push(attr);
   }
 
   // Fetch systemAttributes
@@ -329,17 +396,96 @@ async function syncCommerceAttributes(
       { limit: 1000 },
       transport,
     );
-    if (sysRes && sysRes.body && Array.isArray(sysRes.body.items)) {
-      for (const item of sysRes.body.items) {
-        systemAttributes.push({
-          variableName: item.variableName || item.id,
-          name: item.name || item.label || item.variableName || item.id,
-          dataType: normalizeAttributeDataType(item.dataType || item.type),
-          description: item.description || "",
-        });
-      }
+    const rawSysItems =
+      sysRes && sysRes.body
+        ? Array.isArray(sysRes.body)
+          ? sysRes.body
+          : Array.isArray(sysRes.body.items)
+            ? sysRes.body.items
+            : []
+        : [];
+
+    for (const item of rawSysItems) {
+      systemAttributes.push({
+        variableName: item.variableName || item.name || item.id,
+        name: item.label || item.name || item.variableName || item.id,
+        dataType: normalizeAttributeDataType(item.type || item.dataType),
+        description: item.description || "",
+      });
     }
   } catch (e) {}
+
+  // Fetch BML attributeLookups (transaction, transactionLine, systemVariables)
+  const lookups = {};
+  if (fetchLookups) {
+    try {
+      const lookupsRes = await listCommerceAttributeLookups(
+        context,
+        vscode,
+        { process: effectiveProcess },
+        transport,
+      );
+      const rawLookups =
+        lookupsRes && lookupsRes.body
+          ? Array.isArray(lookupsRes.body)
+            ? lookupsRes.body
+            : Array.isArray(lookupsRes.body.items)
+              ? lookupsRes.body.items
+              : []
+          : [];
+
+      const lookupTypes = new Map();
+      const standardTypes = ["transaction", "transactionLine", "systemVariables"];
+      for (const t of standardTypes) {
+        lookupTypes.set(t, null);
+      }
+      for (const item of rawLookups) {
+        const type = item.lookupType || item.id || item.name;
+        if (type) {
+          let childHref = null;
+          if (Array.isArray(item.links)) {
+            const childLink = item.links.find((l) => l.rel === "child" || (l.href && l.href.includes("lookupValues")));
+            if (childLink && childLink.href) childHref = childLink.href;
+          }
+          lookupTypes.set(type, childHref);
+        }
+      }
+
+      for (const [type, childHref] of lookupTypes.entries()) {
+        try {
+          const valRes = await listCommerceAttributeLookupValues(
+            context,
+            vscode,
+            { process: effectiveProcess, lookupType: type, href: childHref, limit: 1000 },
+            transport,
+          );
+          const rawVals =
+            valRes && valRes.body
+              ? Array.isArray(valRes.body)
+                ? valRes.body
+                : Array.isArray(valRes.body.items)
+                  ? valRes.body.items
+                  : []
+              : [];
+          if (rawVals.length > 0) {
+            lookups[type] = rawVals.map((v) => ({
+              variableName: v.name || v.variableName || v.id,
+              name: v.displayLabel || v.label || v.name || v.variableName || v.id,
+              displayLabel: v.displayLabel || v.label || v.name || v.variableName || v.id,
+              dataType: normalizeAttributeDataType(v.dataType || v.type),
+              description: v.description || "",
+              isMenuType: !!v.isMenuType,
+              availableElements: Array.isArray(v.availableElements) ? v.availableElements : null,
+            }));
+          }
+        } catch (e) {
+          // Ignore individual lookup type failure
+        }
+      }
+    } catch (e) {
+      // Ignore lookups failure and continue with attributes
+    }
+  }
 
   const cacheData = {
     process: effectiveProcess,
@@ -348,6 +494,7 @@ async function syncCommerceAttributes(
     count: attributes.length,
     attributes,
     systemAttributes,
+    lookups,
   };
 
   if (wsRoot) {
@@ -366,5 +513,7 @@ module.exports = {
   listCommerceAttributeMenuItems,
   listCommerceArraySets,
   listCommerceSystemAttributes,
+  listCommerceAttributeLookups,
+  listCommerceAttributeLookupValues,
   syncCommerceAttributes,
 };
