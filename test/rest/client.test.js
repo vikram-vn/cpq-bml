@@ -272,4 +272,32 @@ suite("BML REST client", () => {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
   });
+
+  test("request() enforces maximum concurrency of 10 for simultaneous outgoing calls", async () => {
+    let active = 0;
+    let maxActive = 0;
+
+    const fakeTransport = async () => {
+      active++;
+      maxActive = Math.max(maxActive, active);
+      await new Promise((r) => setTimeout(r, 15));
+      active--;
+      return { statusCode: 200, headers: {}, text: "{}" };
+    };
+
+    // Fire 25 concurrent requests
+    const promises = Array.from({ length: 25 }, () =>
+      request({
+        baseUrl: "https://sitename.bigmachines.com",
+        path: "/rest/v18/bml/library/functions",
+        transport: fakeTransport,
+      }),
+    );
+
+    await Promise.all(promises);
+
+    assert.ok(maxActive <= 10, `Expected max active requests <= 10, got ${maxActive}`);
+    assert.strictEqual(active, 0);
+  });
 });
+

@@ -44,9 +44,26 @@ function register(server, context, vscode, tools) {
             "Parameter name -> value, for util functions that take parameters.",
           ),
         transactionId: z
-          .string()
+          .union([z.string(), z.number()])
           .optional()
-          .describe("Required to debug a commerce function."),
+          .describe(
+            "Transaction ID for debugging a commerce function. Can be a single ID or comma-separated list of 2 to 10 IDs.",
+          ),
+        transactionIds: z
+          .array(z.union([z.string(), z.number()]))
+          .optional()
+          .describe(
+            "Array of 2 to 10 transaction IDs for concurrent debugging (max 10).",
+          ),
+        concurrency: z
+          .number()
+          .int()
+          .min(2)
+          .max(10)
+          .optional()
+          .describe(
+            "Max concurrent transaction debug executions (between 2 and 10, default is min(10, number of transactions)).",
+          ),
         printOnly: z
           .boolean()
           .optional()

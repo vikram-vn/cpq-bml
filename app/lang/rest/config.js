@@ -68,6 +68,17 @@ function getSettings(vscode) {
     };
 }
 
+function getDebugConcurrency(vscode) {
+    const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === "function"
+        ? vscode.workspace.getConfiguration("cpqBml")
+        : null;
+    const val = config ? config.get("debug.concurrency") : undefined;
+    if (val !== undefined && val !== null && !isNaN(Number(val))) {
+        return Math.max(2, Math.min(10, Number(val)));
+    }
+    return 10;
+}
+
 async function saveWorkspaceConfig(vscode, settings) {
     if (!vscode || !vscode.workspace || !settings) return;
     const config = vscode.workspace.getConfiguration("cpqBml");
@@ -366,5 +377,6 @@ module.exports = {
     hasMissingCredentials,
     runTestConnection,
     ensureCredentials,
-    saveWorkspaceConfig
+    saveWorkspaceConfig,
+    getDebugConcurrency,
 };

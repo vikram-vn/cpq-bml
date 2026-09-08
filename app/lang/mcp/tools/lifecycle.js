@@ -124,19 +124,45 @@ async function debugFunction(context, vscode, args, transport) {
     if (!metadata) return { success: false, variableName, error: `No local metadata found for "${variableName}". Run pull_function first.` };
 
     const isCommerce = !!metadata.commerceDocument;
-    const transactionId = args && args.transactionId;
-    if (isCommerce && !transactionId) {
-        return { success: false, variableName, error: 'transactionId is required to debug a commerce function.' };
+    const rawTx = args && (args.transactionIds || args.transactionId);
+    if (isCommerce && !rawTx) {
+        return { success: false, variableName, error: 'transactionId (or transactionIds) is required to debug a commerce function.' };
     }
+
+    let transactionIds = [];
+    if (Array.isArray(rawTx)) {
+        transactionIds = rawTx.map((t) => String(t).trim()).filter(Boolean);
+    } else if (typeof rawTx === 'string' && rawTx.includes(',')) {
+        transactionIds = rawTx.split(/[\s,]+/).map((t) => t.trim()).filter(Boolean);
+    } else if (rawTx !== undefined && rawTx !== null && String(rawTx).trim()) {
+        transactionIds = [String(rawTx).trim()];
+    }
+
+    if (transactionIds.length > 10) {
+        transactionIds = transactionIds.slice(0, 10);
+    }
+
     const parameterValues = (args && args.parameters) || {};
 
     const hasInputs = (metadata.parameters && metadata.parameters.length > 0) || isCommerce;
     if (hasInputs && context.workspaceState) {
-        await context.workspaceState.update(`debugCache:${variableName}`, { transactionId, parameterValues });
+        await context.workspaceState.update(`debugCache:${variableName}`, {
+            transactionId: transactionIds.join(', '),
+            parameterValues,
+        });
+    }
+
+    const configOverrides = {};
+    if (args && args.concurrency !== undefined) {
+        configOverrides['debug.concurrency'] = Math.max(2, Math.min(10, Number(args.concurrency)));
     }
 
     const quickPickSelector = (items) => items.find((i) => i.id === 'last');
-    const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath, quickPickSelector });
+    const { vscodeProxy } = createToolVscodeContext(vscode, {
+        bmlPath: located.bmlPath,
+        quickPickSelector,
+        configOverrides,
+    });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport });
 
@@ -146,6 +172,7 @@ async function debugFunction(context, vscode, args, transport) {
             variableName,
             error: (result && result.errorMessage) || 'Debug failed for an unknown reason.',
             errorLine: result && result.errorLine,
+            results: result && result.results,
             log: getLines(),
         };
     }
@@ -161,6 +188,27 @@ async function debugFunction(context, vscode, args, transport) {
             args.printResultsOnly ||
             args.showDebugPrintResultsOnly)
     );
+
+    if (result.results && result.results.length > 1) {
+        return {
+            success: result.success,
+            variableName,
+            transactionCount: result.transactionCount,
+            concurrency: result.concurrency,
+            results: result.results.map((r) => ({
+                transactionId: r.transactionId,
+                success: r.success,
+                returnValue: isPrintOnly ? undefined : r.returnValue,
+                table: isPrintOnly ? undefined : r.table,
+                printOutput: r.printOutput,
+                error: r.errorMessage,
+                elapsedMs: r.elapsedMs,
+            })),
+            printOutput: result.printOutput,
+            elapsedMs: result.elapsedMs,
+            log: getLines(),
+        };
+    }
 
     if (isPrintOnly) {
         return {

@@ -308,6 +308,39 @@ suite("MCP tools - lifecycle", () => {
         assert.strictEqual(result.success, false);
         assert.ok(result.error.includes("transactionId"));
       }));
+
+    test("supports concurrent debugging of multiple transactionIds (min 2, max 10)", () =>
+      withTempDir(async (tmpDir) => {
+        writeLocalUtilFunction(tmpDir, { commerceProcess: "oraclecpqo", commerceDocument: "transaction" });
+        const transport = async (opts) => {
+          if (opts.path.includes("/actions/loadTransactionData")) {
+            return jsonResponse(200, {});
+          }
+          const body = JSON.parse(opts.body);
+          return jsonResponse(200, { returnData: `res_${body.transactionId}` });
+        };
+
+        const result = await tools.debugFunction(
+          makeContext(),
+          vscodeRootedAt(tmpDir),
+          {
+            variableName: "concatString",
+            transactionIds: ["7001", "7002", "7003"],
+          },
+          transport,
+        );
+
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(result.transactionCount, 3);
+        assert.strictEqual(result.results.length, 3);
+        assert.strictEqual(result.results[0].transactionId, "7001");
+        assert.strictEqual(result.results[0].returnValue, "res_7001");
+        assert.strictEqual(result.results[1].transactionId, "7002");
+        assert.strictEqual(result.results[1].returnValue, "res_7002");
+        assert.strictEqual(result.results[2].transactionId, "7003");
+        assert.strictEqual(result.results[2].returnValue, "res_7003");
+      }));
   });
 });
+
 

@@ -4,7 +4,7 @@ const { runSetPassword, runSetAuthToken } = require("./secrets");
 const { runPullLibraryFunctions, runPullCommerceFunctions } = require("./pull");
 const { runValidateCurrentFile } = require("./validate");
 const { runSaveCurrentFile } = require("./save");
-const { runDebugCurrentFile } = require("./debug");
+const { runDebugCurrentFile, runConcurrentPool } = require("./debug");
 const { runCreateOverride, runRemoveOverride } = require("./override");
 const {
   runDeployCommerceProcess,
@@ -240,6 +240,7 @@ module.exports = {
   runValidateCurrentFile,
   runSaveCurrentFile,
   runDebugCurrentFile,
+  runConcurrentPool,
   runCreateOverride,
   runRemoveOverride,
   runDeployCommerceProcess,

@@ -47,6 +47,30 @@ function redactHeadersForLog(headers) {
   return redacted;
 }
 
+// Global REST API concurrency limiter: at most 10 requests in flight concurrently.
+const MAX_CONCURRENT_REST_REQUESTS = 10;
+let activeRestRequests = 0;
+const restWaitingQueue = [];
+
+function acquireRestSlot() {
+  if (activeRestRequests < MAX_CONCURRENT_REST_REQUESTS) {
+    activeRestRequests++;
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    restWaitingQueue.push(resolve);
+  });
+}
+
+function releaseRestSlot() {
+  activeRestRequests--;
+  if (restWaitingQueue.length > 0) {
+    activeRestRequests++;
+    const next = restWaitingQueue.shift();
+    next();
+  }
+}
+
 // Never throws on an HTTP 4xx/5xx response — callers decide what a status code means for their endpoint. Only rejects on a transport/network failure.
 async function request({
   baseUrl,
@@ -63,6 +87,9 @@ async function request({
   if (!baseUrl) {
     throw new Error("CPQ-BML: cpqBml.connection.siteUrl is not configured.");
   }
+
+  await acquireRestSlot();
+  try {
 
   const url = new URL(baseUrl);
   const fullPath = buildPath(path, query);
@@ -132,10 +159,13 @@ async function request({
     }
   }
 
-  if (includeHeaders) {
-    return { statusCode: response.statusCode, headers: response.headers, body: parsedBody };
+    if (includeHeaders) {
+      return { statusCode: response.statusCode, headers: response.headers, body: parsedBody };
+    }
+    return { statusCode: response.statusCode, body: parsedBody };
+  } finally {
+    releaseRestSlot();
   }
-  return { statusCode: response.statusCode, body: parsedBody };
 }
 
 module.exports = { request, buildPath, defaultTransport };
