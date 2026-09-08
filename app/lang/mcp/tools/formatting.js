@@ -43,4 +43,7 @@ async function formatBmlFunction(context, vscode, args) {
     return { success: true, variableName, filePath: bmlPath, changed, formattedText };
 }
 
-module.exports = { formatBmlFunction };
+module.exports = {
+    formatBmlFunction,
+    formatBml: formatBmlFunction,
+};

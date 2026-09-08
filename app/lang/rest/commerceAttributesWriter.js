@@ -20,6 +20,42 @@ This directory contains metadata, configuration, and schemas synchronized from y
 - \`config/\`: Minified JSON schemas for Configuration domain metadata: attributes (\`attributes.min.json\`), product families (\`product-families.min.json\`), and models (\`models.min.json\`).
 `;
 
+function pruneAttribute(attr, defaultScope) {
+  if (!attr) return null;
+  const varName = attr.variableName || attr.name || attr.id;
+  const label = attr.label || attr.name || varName || '';
+  const clean = {
+    variableName: varName,
+    label,
+    name: label,
+    dataType: attr.dataType || attr.type || 'String',
+    scope: attr.scope || defaultScope || 'Transaction'
+  };
+  if (attr.required) clean.required = true;
+  if (attr.description && typeof attr.description === 'string' && attr.description.trim()) {
+    clean.description = attr.description.trim();
+  }
+  if (Array.isArray(attr.menuOptions) && attr.menuOptions.length > 0) {
+    clean.menuOptions = attr.menuOptions.map(m => ({
+      value: m.value !== undefined ? m.value : (m.id !== undefined ? m.id : ''),
+      label: m.displayValue || m.label || m.name || String(m.value || m.id || '')
+    }));
+  } else if (Array.isArray(attr.menuItems) && attr.menuItems.length > 0) {
+    clean.menuOptions = attr.menuItems.map(m => ({
+      value: m.value !== undefined ? m.value : (m.id !== undefined ? m.id : ''),
+      label: m.displayValue || m.label || m.name || String(m.value || m.id || '')
+    }));
+  }
+  if (attr.productFamily) clean.productFamily = attr.productFamily;
+  if (attr.category && typeof attr.category === 'string' && attr.category.trim()) {
+    clean.category = attr.category.trim();
+  }
+  if (attr.process && attr.process !== 'oraclecpqo') {
+    clean.process = attr.process;
+  }
+  return clean;
+}
+
 function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInvalidated) {
   if (!workspaceRoot || !data) return;
 
@@ -33,21 +69,50 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
     fs.mkdirSync(systemDir, { recursive: true });
     fs.mkdirSync(configDir, { recursive: true });
 
-    // Write README.md if not exists
+    // Always write and keep README.md fresh on sync
     const readmePath = path.join(cpqDir, "README.md");
-    if (!fs.existsSync(readmePath)) {
-      fs.writeFileSync(readmePath, README_CPQ, "utf8");
-    }
+    fs.writeFileSync(readmePath, README_CPQ, "utf8");
 
     // 1. Save consolidated single transaction JSON in .cpq/commerce/transaction.min.json
     if (data.consolidatedTransaction) {
+      const ct = data.consolidatedTransaction;
+      const prunedLookups = {};
+      if (ct.lookups) {
+        if (Array.isArray(ct.lookups.transaction)) {
+          prunedLookups.transaction = ct.lookups.transaction.map(a => pruneAttribute(a, "Transaction"));
+        }
+        if (Array.isArray(ct.lookups.transactionLine)) {
+          prunedLookups.transactionLine = ct.lookups.transactionLine.map(a => pruneAttribute(a, "Line Item"));
+        }
+        if (Array.isArray(ct.lookups.arraySets)) {
+          prunedLookups.arraySets = ct.lookups.arraySets.map(a => pruneAttribute(a, "Array Set"));
+        }
+        if (ct.lookups.custom && typeof ct.lookups.custom === "object") {
+          prunedLookups.custom = {};
+          for (const [proc, cAttrs] of Object.entries(ct.lookups.custom)) {
+            if (Array.isArray(cAttrs)) {
+              prunedLookups.custom[proc] = cAttrs.map(a => pruneAttribute(a, "Transaction"));
+            }
+          }
+        }
+      }
+      const prunedCT = {
+        lookupType: ct.lookupType || "commerce",
+        process: ct.process || (configSettings && configSettings.commerceProcess) || "oraclecpqo",
+        updatedAt: ct.updatedAt,
+        processes: ct.processes,
+        standardCounts: ct.standardCounts,
+        customCounts: ct.customCounts,
+        count: ct.count || ((prunedLookups.transaction?.length || 0) + (prunedLookups.transactionLine?.length || 0)),
+        lookups: prunedLookups
+      };
       fs.writeFileSync(
         path.join(commerceDir, "transaction.min.json"),
-        JSON.stringify(data.consolidatedTransaction),
+        JSON.stringify(prunedCT),
         "utf8",
       );
     } else {
-      const txnAttrs =
+      const rawTxnAttrs =
         data.lookups &&
         Array.isArray(data.lookups.transaction) &&
         data.lookups.transaction.length > 0
@@ -55,6 +120,7 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
           : Array.isArray(data.attributes) && data.attributes.length > 0
             ? data.attributes
             : [];
+      const txnAttrs = rawTxnAttrs.map(a => pruneAttribute(a, "Transaction"));
       if (txnAttrs.length > 0) {
         fs.writeFileSync(
           path.join(commerceDir, "transaction.min.json"),
@@ -79,12 +145,13 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
     }
 
     // 2. Save line item attributes in .cpq/commerce/transaction-line.min.json
-    const lineAttrs =
+    const rawLineAttrs =
       data.lookups &&
       Array.isArray(data.lookups.transactionLine) &&
       data.lookups.transactionLine.length > 0
         ? data.lookups.transactionLine
         : [];
+    const lineAttrs = rawLineAttrs.map(a => pruneAttribute(a, "Line Item"));
     if (lineAttrs.length > 0) {
       fs.writeFileSync(
         path.join(commerceDir, "transaction-line.min.json"),
@@ -99,7 +166,7 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
     }
 
     // 3. Save array sets in .cpq/commerce/array-sets.min.json
-    const arraySets =
+    const rawArraySets =
       Array.isArray(data.arraySets) && data.arraySets.length > 0
         ? data.arraySets
         : data.lookups &&
@@ -107,6 +174,7 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
             data.lookups.arraySets.length > 0
           ? data.lookups.arraySets
           : [];
+    const arraySets = rawArraySets.map(a => pruneAttribute(a, "Array Set"));
     if (arraySets.length > 0) {
       fs.writeFileSync(
         path.join(commerceDir, "array-sets.min.json"),
@@ -166,11 +234,12 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, onCacheInv
       Array.isArray(data.configAttributes) &&
       data.configAttributes.length > 0
     ) {
+      const configAttrs = data.configAttributes.map(a => pruneAttribute(a, "Configuration"));
       fs.writeFileSync(
         path.join(configDir, "attributes.min.json"),
         JSON.stringify({
-          count: data.configAttributes.length,
-          attributes: data.configAttributes,
+          count: configAttrs.length,
+          attributes: configAttrs,
         }),
         "utf8",
       );

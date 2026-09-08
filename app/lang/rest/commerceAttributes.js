@@ -257,8 +257,27 @@ function loadWorkspaceAttributes(workspaceRoot) {
                   }
                 }
               }
+              if (raw.lookups) {
+                if (Array.isArray(raw.lookups.transaction)) {
+                  addItems(raw.lookups.transaction, "Transaction");
+                }
+                if (Array.isArray(raw.lookups.transactionLine)) {
+                  addItems(raw.lookups.transactionLine, "Line Item");
+                }
+                if (Array.isArray(raw.lookups.arraySets)) {
+                  addItems(raw.lookups.arraySets, "Array Set");
+                }
+                if (raw.lookups.custom && typeof raw.lookups.custom === "object") {
+                  for (const cAttrs of Object.values(raw.lookups.custom)) {
+                    if (Array.isArray(cAttrs)) addItems(cAttrs, "Transaction");
+                  }
+                }
+              }
               if (Array.isArray(raw.attributes)) {
                 addItems(raw.attributes, "Transaction");
+              }
+              if (Array.isArray(raw.items)) {
+                addItems(raw.items, "Transaction");
               }
             } else if (file === "transaction-line.min.json") {
               const lineItems = Array.isArray(raw)

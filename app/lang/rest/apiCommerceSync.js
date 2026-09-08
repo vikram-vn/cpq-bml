@@ -37,17 +37,18 @@ function formatCommerceAttribute(item, menuOptions = null) {
   }
 
   const attr = {
-    label,
     variableName: varName,
-    type: typeDisplay,
-    required: item.required !== undefined ? !!item.required : false,
-    userDefault: item.userDefault !== undefined ? item.userDefault : null,
-    description: item.description || "",
-    additional: item.additional !== undefined ? item.additional : null,
-    defaultDataType: item.defaultDataType !== undefined ? item.defaultDataType : null,
+    label,
     name: label,
     dataType: typeDisplay,
+    type: typeDisplay,
   };
+  if (item.required) {
+    attr.required = true;
+  }
+  if (item.description && typeof item.description === "string" && item.description.trim()) {
+    attr.description = item.description.trim();
+  }
 
   if (Array.isArray(menuOptions) && menuOptions.length > 0) {
     const formattedOptions = menuOptions.map((m) => ({

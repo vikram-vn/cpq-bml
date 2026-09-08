@@ -53,10 +53,28 @@ async function runSyncCommerceMetadata(
       transport,
     );
 
+    let configData = null;
+    try {
+      if (typeof api.syncConfigurationAttributes === "function") {
+        configData = await api.syncConfigurationAttributes(
+          context,
+          vscode,
+          {},
+          transport,
+        );
+      }
+    } catch (cfgErr) {
+      // Configuration module is optional; fail gracefully if not configured
+    }
+
     const attrCount = Array.isArray(data.attributes) ? data.attributes.length : 0;
     const sysCount = Array.isArray(data.systemAttributes)
       ? data.systemAttributes.length
       : 0;
+    const cfgCount =
+      configData && Array.isArray(configData.attributes)
+        ? configData.attributes.length
+        : 0;
 
     if (vscode && vscode.commands && typeof vscode.commands.executeCommand === "function") {
       vscode.commands.executeCommand(
@@ -66,7 +84,11 @@ async function runSyncCommerceMetadata(
       );
     }
 
-    const msg = `Synced ${attrCount} attributes, ${sysCount} systemAttributes (${formatElapsed(startedAt)})`;
+    let msg = `Synced ${attrCount} attributes, ${sysCount} systemAttributes`;
+    if (cfgCount > 0) {
+      msg += `, ${cfgCount} configAttributes`;
+    }
+    msg += ` (${formatElapsed(startedAt)})`;
     if (resultsTerminal) {
       writeTerminalMessage(
         resultsTerminal,
@@ -84,6 +106,7 @@ async function runSyncCommerceMetadata(
     return {
       success: true,
       data,
+      configData,
     };
   } catch (err) {
     const message = `failed to sync commerce metadata. ${err.message || describeError(err)}`;

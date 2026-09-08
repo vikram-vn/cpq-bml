@@ -25,14 +25,20 @@ function formatConfigurationAttribute(raw, productFamily = null) {
     variableName: varName,
     label: raw.label || raw.displayLabel || raw.name || varName,
     name: raw.name || raw.label || varName,
-    type: dataType,
     dataType,
-    required: Boolean(raw.required),
-    defaultValue: raw.defaultValue !== undefined ? raw.defaultValue : null,
-    description: raw.description || "",
-    category: categoryStr,
+    type: dataType,
     scope: "Configuration",
   };
+  if (raw.required) attr.required = true;
+  if (raw.defaultValue !== undefined && raw.defaultValue !== null && raw.defaultValue !== "") {
+    attr.defaultValue = raw.defaultValue;
+  }
+  if (raw.description && typeof raw.description === "string" && raw.description.trim()) {
+    attr.description = raw.description.trim();
+  }
+  if (categoryStr && categoryStr.trim()) {
+    attr.category = categoryStr.trim();
+  }
 
   const fam = productFamily || raw.productFamily;
   if (fam) {
