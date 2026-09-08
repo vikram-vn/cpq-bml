@@ -721,7 +721,7 @@ suite("BML REST api", () => {
       assert.strictEqual(result.systemAttributes[0].variableName, "_transaction_id");
 
       // Verify written to disk cache
-      const cacheFile = path.join(tempDir, ".cpq", "commerce", "attributes.min.json");
+      const cacheFile = path.join(tempDir, ".cpq", "commerce", "transaction.min.json");
       assert.ok(fs.existsSync(cacheFile));
       fs.rmSync(tempDir, { recursive: true, force: true });
     });
@@ -1036,6 +1036,22 @@ suite("BML REST api", () => {
     test("syncConfigurationAttributes fetches configuration attributes and product families", async () => {
       const vscode = createFakeVscode({ config: baseConfig() });
       const transport = async (opts) => {
+        if (opts.path.includes("/productFamilies/") && opts.path.includes("/attributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [
+                {
+                  variableName: "_storage_raid_level",
+                  label: "RAID Level",
+                  dataType: { displayValue: "Text" },
+                  required: false,
+                },
+              ],
+            }),
+          };
+        }
         if (opts.path.includes("/attributes")) {
           return {
             statusCode: 200,
@@ -1083,9 +1099,11 @@ suite("BML REST api", () => {
       };
 
       const result = await api.syncConfigurationAttributes(fakeContext(), vscode, {}, transport);
-      assert.strictEqual(result.count, 1);
+      assert.strictEqual(result.count, 2);
       assert.strictEqual(result.attributes[0].variableName, "_config_cpu_type");
       assert.strictEqual(result.attributes[0].scope, "Configuration");
+      assert.strictEqual(result.attributes[1].variableName, "_storage_raid_level");
+      assert.strictEqual(result.attributes[1].productFamily, "storageFamily");
       assert.strictEqual(result.productFamilies.length, 1);
       assert.strictEqual(result.productFamilies[0].variableName, "storageFamily");
       assert.strictEqual(result.models.length, 1);

@@ -15,9 +15,9 @@ This directory contains metadata, configuration, and schemas synchronized from y
 > Removing this folder will cause IntelliSense and MCP to lose instance-specific Commerce and Configuration attribute definitions, dropdown menus, and array sets.
 
 ## Structure
-- \`commerce/\`: Minified JSON schemas for Commerce attributes, transactions, line items, and array sets (\`*.min.json\`).
+- \`commerce/\`: Minified JSON schemas for Commerce transactions (\`transaction.min.json\`), line items (\`transaction-line.min.json\`), and array sets (\`array-sets.min.json\`).
+- \`system/\`: Minified JSON schema for system variables (\`variables.min.json\`).
 - \`config/\`: Minified JSON schemas for Configuration domain metadata: attributes (\`attributes.min.json\`), product families (\`product-families.min.json\`), and models (\`models.min.json\`).
-- \`system/\`: Minified JSON schemas for system attributes and variables (\`*.min.json\`).
 `;
 
 // In-memory cache singleton
@@ -152,13 +152,15 @@ function loadBundledAttributes() {
 
 function getCacheFilePath(workspaceRoot) {
   if (!workspaceRoot) return null;
+  const txnMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "transaction.min.json");
+  if (fs.existsSync(txnMin)) return txnMin;
   const commerceMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "attributes.min.json");
   if (fs.existsSync(commerceMin)) return commerceMin;
   const legacyMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
   if (fs.existsSync(legacyMin)) return legacyMin;
   const legacyJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
   if (fs.existsSync(legacyJson)) return legacyJson;
-  return commerceMin;
+  return txnMin;
 }
 
 function loadWorkspaceAttributes(workspaceRoot) {
@@ -211,8 +213,9 @@ function loadWorkspaceAttributes(workspaceRoot) {
 
   const hasNewCommerce = fs.existsSync(commerceDir);
   const hasNewSystem = fs.existsSync(systemDir);
+  const hasNewConfig = fs.existsSync(configDir);
 
-  if (hasNewCommerce || hasNewSystem) {
+  if (hasNewCommerce || hasNewSystem || hasNewConfig) {
     try {
       if (hasNewCommerce) {
         const files = fs.readdirSync(commerceDir);
@@ -311,11 +314,13 @@ function loadWorkspaceAttributes(workspaceRoot) {
 
 function isCommerceSynced(workspaceRoot) {
   if (!workspaceRoot) return false;
+  const txnMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "transaction.min.json");
   const commerceMin = path.join(workspaceRoot, CPQ_DIR, COMMERCE_DIR, "attributes.min.json");
   const legacyMin = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.min.json");
   const legacyJson = path.join(workspaceRoot, CPQ_DIR, "cache", "commerce-attributes.json");
   try {
     return (
+      (fs.existsSync(txnMin) && fs.statSync(txnMin).size > 0) ||
       (fs.existsSync(commerceMin) && fs.statSync(commerceMin).size > 0) ||
       (fs.existsSync(legacyMin) && fs.statSync(legacyMin).size > 0) ||
       (fs.existsSync(legacyJson) && fs.statSync(legacyJson).size > 0)
@@ -341,107 +346,104 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings) {
     // Write .cpq/README.md
     fs.writeFileSync(path.join(cpqDir, "README.md"), README_CPQ, "utf8");
 
-    // 1. Save .cpq/commerce/attributes.min.json
-    const commercePayload = {
-      process: data.process || "oraclecpqo",
-      document: data.document || "transaction",
-      updatedAt: data.updatedAt || new Date().toISOString(),
-      count: Array.isArray(data.attributes) ? data.attributes.length : 0,
-      attributes: Array.isArray(data.attributes) ? data.attributes : [],
-    };
-    fs.writeFileSync(
-      path.join(commerceDir, "attributes.min.json"),
-      JSON.stringify(commercePayload),
-      "utf8",
-    );
+    // 1. Save .cpq/commerce/transaction.min.json
+    const txnItems =
+      data.lookups && Array.isArray(data.lookups.transaction) && data.lookups.transaction.length > 0
+        ? data.lookups.transaction
+        : Array.isArray(data.attributes) && data.attributes.length > 0
+          ? data.attributes
+          : [];
+    if (txnItems.length > 0) {
+      fs.writeFileSync(
+        path.join(commerceDir, "transaction.min.json"),
+        JSON.stringify({
+          lookupType: "transaction",
+          process: data.process || "oraclecpqo",
+          document: data.document || "transaction",
+          updatedAt: data.updatedAt || new Date().toISOString(),
+          count: txnItems.length,
+          items: txnItems,
+        }),
+        "utf8",
+      );
+    }
 
-    // 2. Save .cpq/commerce/array-sets.min.json
-    if (Array.isArray(data.arraySets) && data.arraySets.length > 0) {
+    // Clean up obsolete commerce/attributes.min.json if present
+    const obsoleteCommerceAttr = path.join(commerceDir, "attributes.min.json");
+    if (fs.existsSync(obsoleteCommerceAttr)) {
+      try { fs.unlinkSync(obsoleteCommerceAttr); } catch (e) {}
+    }
+
+    // 2. Save .cpq/commerce/transaction-line.min.json
+    if (data.lookups && Array.isArray(data.lookups.transactionLine) && data.lookups.transactionLine.length > 0) {
+      fs.writeFileSync(
+        path.join(commerceDir, "transaction-line.min.json"),
+        JSON.stringify({
+          lookupType: "transactionLine",
+          count: data.lookups.transactionLine.length,
+          items: data.lookups.transactionLine,
+        }),
+        "utf8",
+      );
+    }
+
+    // 3. Save .cpq/commerce/array-sets.min.json
+    const arrSets = Array.isArray(data.arraySets) && data.arraySets.length > 0
+      ? data.arraySets
+      : data.lookups && Array.isArray(data.lookups.arraySets)
+        ? data.lookups.arraySets
+        : [];
+    if (arrSets.length > 0) {
       fs.writeFileSync(
         path.join(commerceDir, "array-sets.min.json"),
         JSON.stringify({
           lookupType: "arraySets",
-          count: data.arraySets.length,
-          items: data.arraySets,
+          count: arrSets.length,
+          items: arrSets,
         }),
         "utf8",
       );
     }
 
-    // 3. Save commerce lookups (transaction.min.json, transaction-line.min.json)
-    if (data.lookups && typeof data.lookups === "object") {
-      if (Array.isArray(data.lookups.transaction)) {
+    for (const [type, items] of Object.entries(data.lookups || {})) {
+      if (
+        type !== "transaction" &&
+        type !== "transactionLine" &&
+        type !== "systemVariables" &&
+        type !== "arraySets" &&
+        Array.isArray(items)
+      ) {
         fs.writeFileSync(
-          path.join(commerceDir, "transaction.min.json"),
-          JSON.stringify({
-            lookupType: "transaction",
-            count: data.lookups.transaction.length,
-            items: data.lookups.transaction,
-          }),
+          path.join(commerceDir, `${type}.min.json`),
+          JSON.stringify({ lookupType: type, count: items.length, items }),
           "utf8",
         );
-      }
-      if (Array.isArray(data.lookups.transactionLine)) {
-        fs.writeFileSync(
-          path.join(commerceDir, "transaction-line.min.json"),
-          JSON.stringify({
-            lookupType: "transactionLine",
-            count: data.lookups.transactionLine.length,
-            items: data.lookups.transactionLine,
-          }),
-          "utf8",
-        );
-      }
-      if (Array.isArray(data.lookups.arraySets) && (!data.arraySets || data.arraySets.length === 0)) {
-        fs.writeFileSync(
-          path.join(commerceDir, "array-sets.min.json"),
-          JSON.stringify({
-            lookupType: "arraySets",
-            count: data.lookups.arraySets.length,
-            items: data.lookups.arraySets,
-          }),
-          "utf8",
-        );
-      }
-      for (const [type, items] of Object.entries(data.lookups)) {
-        if (
-          type !== "transaction" &&
-          type !== "transactionLine" &&
-          type !== "systemVariables" &&
-          type !== "arraySets" &&
-          Array.isArray(items)
-        ) {
-          fs.writeFileSync(
-            path.join(commerceDir, `${type}.min.json`),
-            JSON.stringify({ lookupType: type, count: items.length, items }),
-            "utf8",
-          );
-        }
       }
     }
 
-    // 4. Save system attributes in .cpq/system/attributes.min.json
-    const sysAttrs = Array.isArray(data.systemAttributes) ? data.systemAttributes : [];
-    fs.writeFileSync(
-      path.join(systemDir, "attributes.min.json"),
-      JSON.stringify({
-        count: sysAttrs.length,
-        attributes: sysAttrs,
-      }),
-      "utf8",
-    );
-
-    // 5. Save system variables in .cpq/system/variables.min.json
-    if (data.lookups && Array.isArray(data.lookups.systemVariables)) {
+    // 4. Save system variables in .cpq/system/variables.min.json
+    const sysItems =
+      data.lookups && Array.isArray(data.lookups.systemVariables) && data.lookups.systemVariables.length > 0
+        ? data.lookups.systemVariables
+        : Array.isArray(data.systemAttributes) && data.systemAttributes.length > 0
+          ? data.systemAttributes
+          : [];
+    if (sysItems.length > 0) {
       fs.writeFileSync(
         path.join(systemDir, "variables.min.json"),
         JSON.stringify({
           lookupType: "systemVariables",
-          count: data.lookups.systemVariables.length,
-          items: data.lookups.systemVariables,
+          count: sysItems.length,
+          items: sysItems,
         }),
         "utf8",
       );
+    }
+
+    // Clean up obsolete system/attributes.min.json if present
+    const obsoleteSysAttr = path.join(systemDir, "attributes.min.json");
+    if (fs.existsSync(obsoleteSysAttr)) {
+      try { fs.unlinkSync(obsoleteSysAttr); } catch (e) {}
     }
 
     // 6. Save configuration attributes in .cpq/config/attributes.min.json
@@ -683,6 +685,9 @@ function searchAttributes(query, workspaceRoot) {
           scope: meta.scope || "Transaction",
           description: meta.description || "",
           menuItems: meta.menuItems || meta.availableElements || null,
+          productFamily: meta.productFamily || undefined,
+          productLine: meta.productLine || undefined,
+          model: meta.model || undefined,
           source: "workspace-cache",
         });
         seen.add(varName);

@@ -171,8 +171,23 @@ function register(server, context, vscode, tools) {
     "lookup_commerce_attribute",
     {
       description:
-        "Look up commerce attributes by name or human-readable label (e.g. 'Status', 'Grand Total', 'status_t'). " +
-        "Returns matching attributes, their data types, and dropdown menu items (if any). Reads from local workspace cache and bundled CPQ catalog with zero network calls.",
+        "Look up commerce, system, or configuration attributes by name or human-readable label (e.g. 'Status', 'Grand Total', 'status_t', 'ram_size'). " +
+        "Returns matching attributes, data types, product families, models, and dropdown menu items (if any). Reads from local workspace metadata (.cpq/) and bundled CPQ catalog with zero network calls.",
+      inputSchema: {
+        query: z
+          .string()
+          .optional()
+          .describe("Attribute label or variable name to look up (case-insensitive)."),
+      },
+    },
+    async (args) => jsonResult(await tools.lookupCommerceAttribute(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "lookup_attribute",
+    {
+      description:
+        "Alias for lookup_commerce_attribute: Search attributes across Commerce, System, and Configuration domains from local workspace (.cpq/).",
       inputSchema: {
         query: z
           .string()
@@ -187,8 +202,8 @@ function register(server, context, vscode, tools) {
     "sync_commerce_attributes",
     {
       description:
-        "Pull and cache commerce attributes and dropdown menu options from Oracle CPQ for the active process/document into the local workspace (.cpq/cache/commerce-attributes.json). " +
-        "Enables the smart query resolver and lookup_commerce_attribute to resolve custom fields without runtime API calls.",
+        "Pull and cache commerce attributes, transaction line attributes, and dropdown menu options from Oracle CPQ for the active process/document into the local workspace (.cpq/commerce/). " +
+        "Enables smart query resolution and offline attribute lookups with zero network calls.",
       inputSchema: {
         commerceProcess: z
           .string()
@@ -201,6 +216,17 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) => jsonResult(await tools.syncCommerceAttributes(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "sync_configuration_attributes",
+    {
+      description:
+        "Pull and cache Configuration attributes, product families, product lines, and models dynamically from Oracle CPQ into the local workspace (.cpq/config/). " +
+        "Enables offline intellisense and AI attribute lookups for Configuration BML scripts.",
+      inputSchema: {},
+    },
+    async (args) => jsonResult(await tools.syncConfigurationAttributes(context, vscode, args)),
   );
 }
 

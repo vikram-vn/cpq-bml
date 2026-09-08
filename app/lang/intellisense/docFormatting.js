@@ -59,7 +59,7 @@ function buildMetadataLine(info) {
         const label = FUNCTION_CATEGORY_LABEL[info.functionCategory] || info.functionCategory;
         return `*${label} function*`;
     }
-    const parts = [info.scope, info.dataType].filter(Boolean);
+    const parts = [info.scope, info.productFamily, info.dataType].filter(Boolean);
     return parts.length ? `*${parts.join(' · ')}*` : '';
 }
 

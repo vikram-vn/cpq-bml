@@ -318,6 +318,25 @@ async function syncCommerceAttributes(context, vscode, args, transport) {
     };
 }
 
+async function syncConfigurationAttributes(context, vscode, args, transport) {
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const startedAt = Date.now();
+    terminal.writeLine(`\x1b[36m${getTimestamp()} Syncing configuration attributes, product families, lines, and models from CPQ...\x1b[0m`);
+
+    const result = await api.syncConfigurationAttributes(context, vscode, args || {}, transport);
+    const count = result.count || (result.attributes ? result.attributes.length : 0);
+    terminal.writeLine(`\x1b[32m${getTimestamp()} Synced ${count} configuration attributes into local workspace (${formatElapsed(startedAt)})\x1b[0m`);
+
+    return {
+        success: true,
+        count,
+        productFamiliesCount: result.productFamilies ? result.productFamilies.length : 0,
+        modelsCount: result.models ? result.models.length : 0,
+        updatedAt: result.updatedAt,
+        log: getLines(),
+    };
+}
+
 module.exports = {
     listUtilFunctions,
     listCommerceFunctions,
@@ -328,6 +347,8 @@ module.exports = {
     getTransactions,
     listTransactions: getTransactions,
     lookupCommerceAttribute,
+    lookupAttribute: lookupCommerceAttribute,
     syncCommerceAttributes,
+    syncConfigurationAttributes,
 };
 

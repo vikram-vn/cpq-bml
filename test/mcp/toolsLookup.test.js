@@ -357,6 +357,63 @@ suite("MCP tools - lookup", () => {
       assert.strictEqual(tools.listTransactions, tools.getTransactions);
     });
   });
+
+  suite("lookupCommerceAttribute & lookupAttribute", () => {
+    test("looks up attributes across commerce, system, and configuration from workspace .cpq", () =>
+      withTempDir(async (tmpDir) => {
+        const commerceDir = path.join(tmpDir, ".cpq", "commerce");
+        const configDir = path.join(tmpDir, ".cpq", "config");
+        fs.mkdirSync(commerceDir, { recursive: true });
+        fs.mkdirSync(configDir, { recursive: true });
+
+        fs.writeFileSync(
+          path.join(commerceDir, "transaction.min.json"),
+          JSON.stringify([{ variableName: "status_t", name: "Status", dataType: "TEXT" }]),
+          "utf8"
+        );
+        fs.writeFileSync(
+          path.join(configDir, "attributes.min.json"),
+          JSON.stringify([{ variableName: "cpu_speed", name: "CPU Speed", dataType: "FLOAT", productFamily: "laptops" }]),
+          "utf8"
+        );
+
+        const fakeVscode = vscodeRootedAt(tmpDir);
+        const resComm = await tools.lookupCommerceAttribute(makeContext(), fakeVscode, { query: "status_t" });
+        assert.strictEqual(resComm.success, true);
+        assert.ok(resComm.attributes.some((a) => a.variableName === "status_t" && a.scope === "Transaction"));
+
+        const resConfig = await tools.lookupAttribute(makeContext(), fakeVscode, { query: "cpu" });
+        assert.strictEqual(resConfig.success, true);
+        assert.strictEqual(resConfig.count, 1);
+        assert.strictEqual(resConfig.attributes[0].variableName, "cpu_speed");
+        assert.strictEqual(resConfig.attributes[0].scope, "Configuration");
+        assert.strictEqual(resConfig.attributes[0].productFamily, "laptops");
+      }));
+  });
+
+  suite("syncConfigurationAttributes", () => {
+    test("invokes API sync and returns counts", () =>
+      withTempDir(async (tmpDir) => {
+        const transport = async (opts) => {
+          if (opts.path.includes("allProductFamilySetups/_allProductFamilies/attributes")) {
+            return jsonResponse(200, { items: [{ variableName: "global_attr", name: "Global Attr", dataType: "TEXT" }] });
+          }
+          if (opts.path.includes("allProductFamilySetups/_allProductFamilies/productFamilies")) {
+            return jsonResponse(200, { items: [] });
+          }
+          if (opts.path.includes("allProductFamilySetups")) {
+            return jsonResponse(200, { items: [{ variableName: "pf_laptops", name: "Laptops" }] });
+          }
+          return jsonResponse(200, { items: [] });
+        };
+
+        const fakeVscode = vscodeRootedAt(tmpDir);
+        const result = await tools.syncConfigurationAttributes(makeContext(), fakeVscode, {}, transport);
+        assert.strictEqual(result.success, true);
+        assert.strictEqual(result.count, 1);
+        assert.strictEqual(result.productFamiliesCount, 1);
+      }));
+  });
 });
 
 

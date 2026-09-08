@@ -71,6 +71,9 @@ async function lookupBmlReference(context, vscode, args) {
                 scope: attr.scope || 'Transaction',
                 dataType: attr.dataType,
                 notes: attr.description || attr.label || '',
+                productFamily: attr.productFamily || undefined,
+                productLine: attr.productLine || undefined,
+                model: attr.model || undefined,
                 source: attr.source || 'workspace-cache',
             });
             seenNames.add(attr.variableName.toLowerCase());

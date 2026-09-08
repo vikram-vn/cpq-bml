@@ -49,4 +49,34 @@ suite("MCP tools - lookupBmlReference", () => {
     assert.strictEqual(result.count, 0);
     assert.deepStrictEqual(result.results, []);
   });
+
+  test("finds workspace Configuration attribute and includes productFamily", async () => {
+    const fs = require("fs");
+    const path = require("path");
+    const os = require("os");
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-mcp-ref-"));
+    try {
+      const configDir = path.join(tmpDir, ".cpq", "config");
+      fs.mkdirSync(configDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(configDir, "attributes.min.json"),
+        JSON.stringify([{ variableName: "screen_size", name: "Screen Size", dataType: "FLOAT", productFamily: "monitors" }]),
+        "utf8"
+      );
+
+      const fakeVscode = createFakeVscode({
+        workspaceFolders: [{ uri: { fsPath: tmpDir } }],
+      });
+      const result = await tools.lookupBmlReference(makeContext(), fakeVscode, {
+        name: "screen_size",
+      });
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.count, 1);
+      assert.strictEqual(result.results[0].name, "screen_size");
+      assert.strictEqual(result.results[0].scope, "Configuration");
+      assert.strictEqual(result.results[0].productFamily, "monitors");
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
 });

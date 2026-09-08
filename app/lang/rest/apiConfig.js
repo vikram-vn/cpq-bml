@@ -1,7 +1,7 @@
 const { call, getEffectiveRestVersion } = require("./apiCore");
 const { getWorkspaceRoot, saveWorkspaceAttributes } = require("./commerceAttributes");
 
-function formatConfigurationAttribute(raw) {
+function formatConfigurationAttribute(raw, productFamily = null) {
   if (!raw || typeof raw !== "object") return raw;
   const varName = raw.variableName || raw.name || raw.id;
   let dataType = "Text";
@@ -21,7 +21,7 @@ function formatConfigurationAttribute(raw) {
         ? raw.category
         : "";
 
-  return {
+  const attr = {
     variableName: varName,
     label: raw.label || raw.displayLabel || raw.name || varName,
     name: raw.name || raw.label || varName,
@@ -33,6 +33,13 @@ function formatConfigurationAttribute(raw) {
     category: categoryStr,
     scope: "Configuration",
   };
+
+  const fam = productFamily || raw.productFamily;
+  if (fam) {
+    attr.productFamily = fam;
+  }
+
+  return attr;
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/attributes
@@ -235,8 +242,38 @@ async function syncConfigurationAttributes(
         label: f.label || f.name || f.variableName,
       }));
 
-      if (fetchModels) {
-        for (const fam of productFamilies) {
+      for (const fam of productFamilies) {
+        // Fetch family-specific attributes
+        try {
+          const famAttrRes = await listProductFamilyAttributes(
+            context,
+            vscode,
+            { productFamily: fam.variableName, limit: 1000 },
+            transport,
+          );
+          const rawFamAttrs =
+            famAttrRes && famAttrRes.body
+              ? Array.isArray(famAttrRes.body)
+                ? famAttrRes.body
+                : Array.isArray(famAttrRes.body.items)
+                  ? famAttrRes.body.items
+                  : []
+              : [];
+
+          for (const item of rawFamAttrs) {
+            const formatted = formatConfigurationAttribute(item, fam.variableName);
+            const existingIdx = attributes.findIndex((a) => a.variableName === formatted.variableName);
+            if (existingIdx >= 0) {
+              if (!attributes[existingIdx].productFamily) {
+                attributes[existingIdx].productFamily = fam.variableName;
+              }
+            } else {
+              attributes.push(formatted);
+            }
+          }
+        } catch (e) {}
+
+        if (fetchModels) {
           try {
             const lineRes = await listProductLines(
               context,

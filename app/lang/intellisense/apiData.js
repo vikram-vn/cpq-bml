@@ -99,6 +99,8 @@ function loadApiData(context) {
                         userDefault: meta.userDefault,
                         additional: meta.additional,
                         defaultDataType: meta.defaultDataType,
+                        productFamily: meta.productFamily,
+                        productLine: meta.productLine,
                     };
                 }
             }

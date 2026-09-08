@@ -26,6 +26,7 @@ let cachedLineItems = null;
 let cachedSystemItems = null;
 let cachedArraySetItems = null;
 let cachedCpqjsItems = null;
+let cachedConfigItems = null;
 let cachedAllAttributes = null;
 
 /**
@@ -37,6 +38,7 @@ function buildCategorizedItems() {
     cachedLineItems = [];
     cachedSystemItems = [];
     cachedArraySetItems = [];
+    cachedConfigItems = [];
     cachedCpqjsItems = [];
     cachedAllAttributes = [];
 
@@ -79,6 +81,9 @@ function buildCategorizedItems() {
                 cachedSystemItems.push(item);
             } else if (info.scope === 'Array Set' || info.dataType === 'Array Set') {
                 cachedArraySetItems.push(item);
+            } else if (info.scope === 'Configuration' || info.scope === 'Model') {
+                cachedConfigItems.push(item);
+                cachedGlobalItems.push(item);
             } else {
                 cachedGlobalItems.push(item);
             }
@@ -137,7 +142,7 @@ function registerBmlIntelliSense(context) {
     context.subscriptions.push(apiFilesWatcher);
 
     // Watch workspace .cpq cache files to immediately reflect synced metadata
-    const cpqCacheWatcher = vscode.workspace.createFileSystemWatcher('**/.cpq/cache/**');
+    const cpqCacheWatcher = vscode.workspace.createFileSystemWatcher('**/.cpq/**');
     cpqCacheWatcher.onDidChange(invalidateApiData);
     cpqCacheWatcher.onDidCreate(invalidateApiData);
     cpqCacheWatcher.onDidDelete(invalidateApiData);
@@ -186,6 +191,8 @@ function registerBmlIntelliSense(context) {
                         return cachedLineItems;
                     } else if (objName === 'arrayset' || objName === 'arraysets' || objName === 'arr' || objName === 'a') {
                         return cachedArraySetItems;
+                    } else if (objName === 'config' || objName === 'cfg' || objName === 'model') {
+                        return cachedConfigItems;
                     } else {
                         return cachedAllAttributes;
                     }

@@ -19,7 +19,7 @@ function register(server, context, vscode, tools) {
         scope: z
           .string()
           .optional()
-          .describe('For attributes: e.g. "Transaction", "Line Item", "System".'),
+          .describe('For attributes: e.g. "Transaction", "Line Item", "Array Set", "System", "Configuration", "Model".'),
         limit: z
           .number()
           .optional()

@@ -67,7 +67,7 @@ suite("commerceAttributes Unit Tests", () => {
 
     const commerceDir = path.join(tempDir, ".cpq", "commerce");
     fs.mkdirSync(commerceDir, { recursive: true });
-    fs.writeFileSync(path.join(commerceDir, "attributes.min.json"), JSON.stringify({ attributes: [] }), "utf8");
+    fs.writeFileSync(path.join(commerceDir, "transaction.min.json"), JSON.stringify({ items: [] }), "utf8");
 
     assert.strictEqual(commerceAttributes.isCommerceSynced(tempDir), true);
     fs.rmSync(tempDir, { recursive: true, force: true });
@@ -140,19 +140,19 @@ suite("commerceAttributes Unit Tests", () => {
     assert.ok(cpqReadme.includes("config/"));
 
     // Verify minified files created in .cpq/commerce/
-    assert.ok(fs.existsSync(path.join(commerceDir, "attributes.min.json")));
     assert.ok(fs.existsSync(path.join(commerceDir, "transaction.min.json")));
     assert.ok(fs.existsSync(path.join(commerceDir, "transaction-line.min.json")));
     assert.ok(fs.existsSync(path.join(commerceDir, "array-sets.min.json")));
+    assert.ok(!fs.existsSync(path.join(commerceDir, "attributes.min.json")), "commerce/attributes.min.json must NOT exist");
 
     // Verify minified files created in .cpq/system/
-    assert.ok(fs.existsSync(path.join(systemDir, "attributes.min.json")));
     assert.ok(fs.existsSync(path.join(systemDir, "variables.min.json")));
+    assert.ok(!fs.existsSync(path.join(systemDir, "attributes.min.json")), "system/attributes.min.json must NOT exist");
 
     // Verify minified configuration attributes and models in .cpq/config/
     assert.ok(fs.existsSync(path.join(configDir, "attributes.min.json")));
     assert.ok(fs.existsSync(path.join(configDir, "models.min.json")));
-    assert.ok(fs.existsSync(path.join(configDir, "config.min.json")));
+    assert.ok(!fs.existsSync(path.join(configDir, "config.min.json")), "Connection settings must NOT be kept in .cpq/config");
 
     // Verify STRICTLY ONLY .min.json files exist (no unminified .json)
     const checkOnlyMin = (dir) => {
@@ -263,38 +263,39 @@ suite("commerceAttributes Unit Tests", () => {
     }
   });
 
-  test("config.js reads and writes .cpq/config/config.min.json", () => {
+  test("config.js relies strictly on VS Code settings and keeps connection settings out of .cpq/config", async () => {
     const fs = require("fs");
     const os = require("os");
     const path = require("path");
     const configLib = require("../../app/lang/rest/config");
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-config-test-"));
+    const updated = {};
     const fakeVscode = {
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
-          get: (key, defaultVal) => defaultVal,
+          get: (key, defaultVal) => (key === "connection.siteUrl" ? "https://myinstance.bigmachines.com" : defaultVal),
+          update: async (key, val) => {
+            updated[key] = val;
+          },
         }),
       },
     };
 
-    configLib.saveWorkspaceConfig(fakeVscode, {
-      siteUrl: "https://myinstance.bigmachines.com",
+    await configLib.saveWorkspaceConfig(fakeVscode, {
+      siteUrl: "https://updated.bigmachines.com",
       username: "admin_user",
-      commerceProcess: "oraclecpqo",
-      commerceDocument: "transaction",
     });
 
+    assert.strictEqual(updated["connection.siteUrl"], "https://updated.bigmachines.com");
+    assert.strictEqual(updated["connection.username"], "admin_user");
+
     const configFilePath = path.join(tempDir, ".cpq", "config", "config.min.json");
-    assert.ok(fs.existsSync(configFilePath));
-    const saved = JSON.parse(fs.readFileSync(configFilePath, "utf8"));
-    assert.strictEqual(saved.siteUrl, "https://myinstance.bigmachines.com");
-    assert.strictEqual(saved.username, "admin_user");
+    assert.ok(!fs.existsSync(configFilePath), "config.min.json must NOT exist in .cpq/config");
 
     const settings = configLib.getSettings(fakeVscode);
     assert.strictEqual(settings.siteUrl, "https://myinstance.bigmachines.com");
-    assert.strictEqual(settings.username, "admin_user");
 
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
