@@ -5,7 +5,6 @@ const {
   deletePassword,
   deleteAuthToken,
 } = require("../rest/commands/secrets");
-const { autoSetupAiSkills } = require("../../ai/setup");
 const {
   applyEnvironment,
   addEnvironment,
@@ -43,9 +42,6 @@ const ALLOWED_FIELDS = new Set([
   "mcp.enable",
   "mcp.port",
   "mcp.logToTerminal",
-  "mcp.aiSkills.claude",
-  "mcp.aiSkills.cursor",
-  "mcp.aiSkills.copilot",
   "debug.logRestDetails",
   "debug.logOutputToFile",
   "debug.showResultsAsTable",
@@ -91,20 +87,6 @@ async function dispatch(message, context, vscode, panel) {
       await vscode.workspace
         .getConfiguration(CPQ_SECTION)
         .update(key, value, vscode.ConfigurationTarget.Global);
-        
-      // Re-sync on the initial MCP enable, or whenever a specific tool's AI
-      // skills toggle changes after MCP is already enabled - autoSetupAiSkills
-      // scaffolds newly-enabled tools AND removes the native folder for any
-      // tool just switched off, so the workspace always matches the toggles.
-      // Toggling an aiSkills.* setting while MCP itself is off has no effect
-      // until MCP is enabled.
-      const isInitialMcpEnable = key === "mcp.enable" && value === true;
-      const isAiSkillsToggleChange = key.startsWith("mcp.aiSkills.") &&
-        vscode.workspace.getConfiguration(CPQ_SECTION).get("mcp.enable", false);
-      if (isInitialMcpEnable || isAiSkillsToggleChange) {
-        await autoSetupAiSkills(context);
-      }
-
       await sendState();
       return;
     }
@@ -288,9 +270,6 @@ async function dispatch(message, context, vscode, panel) {
           if (typeof settingsObj.mcp.logToTerminal === "boolean") {
             await cfg.update("mcp.logToTerminal", settingsObj.mcp.logToTerminal, vscode.ConfigurationTarget.Global);
           }
-          if (settingsObj.mcp.aiSkills && typeof settingsObj.mcp.aiSkills === "object") {
-            await cfg.update("mcp.aiSkills", settingsObj.mcp.aiSkills, vscode.ConfigurationTarget.Global);
-          }
         }
         if (settingsObj.debug) {
           if (typeof settingsObj.debug.logOutputToFile === "boolean") {
@@ -431,9 +410,6 @@ async function dispatch(message, context, vscode, panel) {
         "mcp.enable": false,
         "mcp.port": 47821,
         "mcp.logToTerminal": false,
-        "mcp.aiSkills.claude": true,
-        "mcp.aiSkills.cursor": false,
-        "mcp.aiSkills.copilot": false,
         "debug.logOutputToFile": false,
         "debug.logRestDetails": false,
         "debug.showResultsAsTable": false,
@@ -447,15 +423,15 @@ async function dispatch(message, context, vscode, panel) {
       post({ type: "toast", message: "Settings reset to defaults" });
       return;
     }
-    case "createAiSkill": {
-      const { id, label, description, defaultEnabled } = message;
-      // Add to configuration under mcp.aiSkills.
-      const cfg = vscode.workspace.getConfiguration(CPQ_SECTION);
-      const current = cfg.get("mcp.aiSkills", {});
-      current[id] = defaultEnabled;
-      await cfg.update("mcp.aiSkills", current, vscode.ConfigurationTarget.Global);
+    case "cleanAiWorkspaceFiles": {
+      const { cleanAllAiWorkspaceFiles } = require("../../ai/setup/workspaceAiCleaner");
+      const wsFolders = vscode.workspace && vscode.workspace.workspaceFolders;
+      if (wsFolders && wsFolders.length > 0) {
+        const removed = cleanAllAiWorkspaceFiles(wsFolders[0].uri.fsPath);
+        vscode.window.showInformationMessage(`CPQ-BML: Removed AI workspace files: ${removed.join(", ") || "None found"}`);
+        post({ type: "toast", message: "AI files removed from workspace" });
+      }
       await sendState();
-      post({ type: "aiSkillCreated", id });
       return;
     }
 

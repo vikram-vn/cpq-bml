@@ -63,7 +63,8 @@ suite("settings-panel state", () => {
         enable: true,
         port: 12345,
         logToTerminal: true,
-        aiSkills: { claude: true, cursor: false, copilot: false }
+        aiSkills: { claude: true, cursor: false, copilot: false, agents: false },
+        hideAiFromExplorer: true
       },
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, concurrency: 2 },
       metadata: {

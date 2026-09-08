@@ -35,9 +35,6 @@ export const ALL_SETTINGS_REGISTRY = [
     { id: 'mcpEnable', tab: 'mcp', tabName: 'AI & MCP', label: 'Enable MCP Server', desc: 'Starts a local Model Context Protocol server on this machine', type: 'switch', key: 'mcp.enable' },
     { id: 'mcpPort', tab: 'mcp', tabName: 'AI & MCP', label: 'MCP Server Port', desc: 'Local TCP port where the MCP server listens for AI connections (default 47821)', type: 'number', key: 'mcp.port' },
     { id: 'mcpLog', tab: 'mcp', tabName: 'AI & MCP', label: 'Log MCP Operations to Terminal', desc: 'Stream AI-driven tool operations directly into VS Code integrated terminals', type: 'switch', key: 'mcp.logToTerminal' },
-    { id: 'aiSkillsClaude', tab: 'mcp', tabName: 'AI & MCP', label: 'Claude Code AI Skill', desc: 'Native project skills (.claude/skills/) plus a CLAUDE.md summary', type: 'switch', key: 'mcp.aiSkills.claude' },
-    { id: 'aiSkillsCursor', tab: 'mcp', tabName: 'AI & MCP', label: 'Cursor AI Skill', desc: 'Native project rules (.cursor/rules/*.mdc) plus a legacy .cursorrules file', type: 'switch', key: 'mcp.aiSkills.cursor' },
-    { id: 'aiSkillsCopilot', tab: 'mcp', tabName: 'AI & MCP', label: 'GitHub Copilot AI Skill', desc: 'Native path-scoped instructions (.github/instructions/*.instructions.md)', type: 'switch', key: 'mcp.aiSkills.copilot' },
 
     // Advanced
     { id: 'debugLog', tab: 'advanced', tabName: 'Advanced', label: 'Log REST Details to File', desc: 'Save detailed API request/response structures inside bml_rest_api.log', type: 'switch', key: 'debug.logRestDetails' },

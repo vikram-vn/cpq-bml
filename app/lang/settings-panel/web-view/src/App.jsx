@@ -302,6 +302,7 @@ export default function App({ vscodeApi }) {
                             drafts={drafts}
                             changeDraft={changeDraft}
                             updateField={updateField}
+                            vscodeApi={vscodeApi}
                         />
 
                         <AdvancedTab

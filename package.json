@@ -497,21 +497,6 @@
           "default": false,
           "description": "When enabled, every MCP tool call (list/pull/save/validate/debug/deploy/create) streams its progress into a dedicated 'CPQ-BML (AI)' integrated terminal, so you can watch what an AI agent is doing to your CPQ instance in real time. Off by default; the same log is always included in each tool's result regardless of this setting."
         },
-        "cpqBml.mcp.aiSkills.claude": {
-          "type": "boolean",
-          "default": true,
-          "description": "When the MCP server is enabled, scaffold native Claude Code project skills (.claude/skills/) plus a CLAUDE.md summary in the workspace root."
-        },
-        "cpqBml.mcp.aiSkills.cursor": {
-          "type": "boolean",
-          "default": false,
-          "description": "When the MCP server is enabled, scaffold native Cursor project rules (.cursor/rules/*.mdc) plus a legacy .cursorrules file in the workspace root."
-        },
-        "cpqBml.mcp.aiSkills.copilot": {
-          "type": "boolean",
-          "default": false,
-          "description": "When the MCP server is enabled, scaffold native GitHub Copilot path-scoped instructions (.github/instructions/*.instructions.md) plus a repo-wide .github/copilot-instructions.md in the workspace root."
-        },
         "cpqBml.debug.logRestDetails": {
           "type": "boolean",
           "default": false,

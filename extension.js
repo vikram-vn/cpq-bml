@@ -15,6 +15,7 @@ const { registerXslt } = require("./app/lang/xslt");
 const { registerMetrics } = require("./app/lang/metrics");
 const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
 const { syncRuntimeWorkspaceFolders } = require("./app/lang/icons/dynamicFolderIcons");
+const { syncGlobalAgySkills } = require("./app/ai/setup/globalSkillSync");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -61,6 +62,21 @@ function activate(context) {
   registerMetrics(context);
   registerBmlTestRunner(context);
   registerBmlSnapshot(context);
+
+  // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
+  // so Antigravity IDE can discover them natively (on-demand, by name). Other AI
+  // tools (Claude, Cursor, Copilot, Codex) receive skills via the MCP instructions
+  // payload when they connect to the CPQ-BML MCP server — no files needed for them.
+  try {
+    const { synced, errors } = syncGlobalAgySkills(context.extensionPath);
+    if (errors.length > 0) {
+      console.warn('CPQ-BML: Antigravity skill sync warnings:', errors);
+    } else {
+      output.appendLine(`CPQ-BML: Synced ${synced} BML skills to Antigravity global config.`);
+    }
+  } catch (e) {
+    console.warn('CPQ-BML: Antigravity skill sync failed (non-fatal):', e);
+  }
 
   // ── Icon Theme: activate by default on first run ────────────────────────────
   const ICON_THEME_ID = "bml-icon-theme";

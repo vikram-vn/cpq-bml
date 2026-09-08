@@ -61,12 +61,7 @@ async function buildState(context, vscode) {
         mcp: {
             enable: cpqConfig.get('mcp.enable', false),
             port: cpqConfig.get('mcp.port', 47821),
-            logToTerminal: cpqConfig.get('mcp.logToTerminal', false),
-            aiSkills: {
-                claude: cpqConfig.get('mcp.aiSkills.claude', true),
-                cursor: cpqConfig.get('mcp.aiSkills.cursor', false),
-                copilot: cpqConfig.get('mcp.aiSkills.copilot', false)
-            }
+            logToTerminal: cpqConfig.get('mcp.logToTerminal', false)
         },
         debug: {
             logOutputToFile: settings.logOutputToFile,

@@ -1,19 +1,23 @@
 import Switch from '../components/Switch';
-import { IconMcp } from '../components/Icons';
-import AiSkillSwitch from '../components/AiSkillSwitch';
+import { IconMcp, IconDelete } from '../components/Icons';
 import McpHealthBadge from '../components/McpHealthBadge';
 
-export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateField }) {
+export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateField, vscodeApi }) {
     if (!active) return null;
-
-    const aiSkills = mcp.aiSkills || {};
-    const isMcpEnabled = mcp.enable;
 
     const rawPort = drafts['mcp.port'] !== undefined ? drafts['mcp.port'] : (mcp.port || 47821);
     const numPort = Number(rawPort);
     const isDefaultPort = numPort === 47821;
     const isPrivileged = numPort > 0 && numPort < 1024;
     const isOutOfRange = numPort < 1 || numPort > 65535;
+
+    const handleCleanAiWorkspace = () => {
+        if (window.confirm('Remove any legacy AI skill folders (.agents, .claude, .cursor, etc.) from the workspace root?')) {
+            if (vscodeApi) {
+                vscodeApi.postMessage({ type: 'cleanAiWorkspaceFiles' });
+            }
+        }
+    };
 
     return (
         <div className="tab-content active">
@@ -69,52 +73,32 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                 />
             </section>
 
-            <section className="card">
+            <section className="card" style={{ marginTop: '20px' }}>
                 <h2>
                     <IconMcp />
-                    AI Skills
+                    Universal AI Assistant Support
                 </h2>
                 <p className="card-desc">
-                    While the MCP server is enabled, scaffolds BML/CPQ knowledge as native skills or rules for the AI tools you use.
-                    Claude Code is on by default; enable the others only if you use them.
+                    All AI coding assistants (Claude Code, Cursor, GitHub Copilot, Codex CLI, Antigravity) connect dynamically to this MCP server.
+                    BML syntax definitions, BMQL rules, pitfalls, and CPQ domain knowledge are delivered directly in memory over the MCP protocol without creating any files or folders in your workspace.
                 </p>
 
-                <AiSkillSwitch
-                    id="aiSkillsClaude"
-                    label="Claude Code"
-                    description="Native project skills (.claude/skills/) plus a CLAUDE.md summary"
-                    checked={aiSkills.claude}
-                    disabled={!isMcpEnabled}
-                    onChange={(v) => updateField('mcp.aiSkills.claude', v)}
-                />
-
-                <AiSkillSwitch
-                    id="aiSkillsCursor"
-                    label="Cursor"
-                    description="Native project rules (.cursor/rules/*.mdc) plus a legacy .cursorrules file"
-                    checked={aiSkills.cursor}
-                    disabled={!isMcpEnabled}
-                    onChange={(v) => updateField('mcp.aiSkills.cursor', v)}
-                />
-
-                <AiSkillSwitch
-                    id="aiSkillsCopilot"
-                    label="GitHub Copilot"
-                    description="Native path-scoped instructions (.github/instructions/*.instructions.md) plus a repo-wide copilot-instructions.md"
-                    checked={aiSkills.copilot}
-                    disabled={!isMcpEnabled}
-                    onChange={(v) => updateField('mcp.aiSkills.copilot', v)}
-                />
-
-                <Switch
-                    id="aiSkillsCodexAntigravity"
-                    label="Codex CLI (OpenAI) & Antigravity IDE (Google)"
-                    description="Native project skills (.agents/skills/) - always enabled, both tools share this convention"
-                    checked={true}
-                    disabled={true}
-                    onChange={() => {}}
-                />
+                <div style={{ marginTop: '16px', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <button
+                        type="button"
+                        className="secondary"
+                        onClick={handleCleanAiWorkspace}
+                        title="Remove any legacy AI skill folders (.agents, .claude, .cursor, etc.) from project root"
+                    >
+                        <IconDelete />
+                        Clean Legacy AI Workspace Files
+                    </button>
+                    <span style={{ fontSize: '0.8em', color: 'var(--vscode-descriptionForeground)' }}>
+                        Safely cleans any legacy .agents, .claude, .cursor, CLAUDE.md, or .cursorrules from your workspace.
+                    </span>
+                </div>
             </section>
         </div>
     );
 }
+
