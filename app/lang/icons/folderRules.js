@@ -60,7 +60,7 @@ const RULE_MATCHERS = [
   // 9. Configuration, Setup, Admin Settings, Options & Preferences
   {
     id: 'config-setup-settings', icon: 'folder-config',
-    regex: /(?:^|[-_./])(config|configuration|setup|setups|settings?[-_]?panel|settings?|options?|preferences?|prefs?|environment|environments|env|properties|props|dotenv)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(config|configuration|setup|setups|settings?[-_]?panel|settings?|options?|preferences?|prefs?|environment|environments|env|properties|props|dotenv|terraform|tf)(?:[-_./]|$)/i,
     description: 'Configuration rules, extension settings, environment properties, and options'
   },
   // 10. Administration & Management
@@ -108,7 +108,7 @@ const RULE_MATCHERS = [
   // 17. Constants, Enums, Literals, Strings & Static Values
   {
     id: 'constants-enums-literals', icon: 'folder-constant',
-    regex: /(?:^|[-_./])(constants?|enums?|strings?|literals?|types?|typedefs?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(constants?|enums?|strings?|literals?|types?|typedefs?|interfaces?|typings?)(?:[-_./]|$)/i,
     description: 'Constants, string literals, enumeration types, and literal value tables'
   },
   // 18. Debugging, Traces & Diagnostics
@@ -198,7 +198,7 @@ const RULE_MATCHERS = [
   // 32. Webviews, Layouts, UI Panels, Tabs & Screens
   {
     id: 'webviews-layouts-ui', icon: 'folder-layout',
-    regex: /(?:^|[-_./])(web[-_]?views?|layouts?|views?|ui|screens?|windows?|tabs?|panels?|pages?|designers?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(web[-_]?views?|layouts?|views?|ui|screens?|windows?|tabs?|panels?|pages?|designers?|storybook)(?:[-_./]|$)/i,
     description: 'VS Code webviews, CPQ layout editors, UI panels, and screen definitions'
   },
   // 33. Themes, Material Icons & Appearance
@@ -222,7 +222,7 @@ const RULE_MATCHERS = [
   // 36. Tests, Testing Suites, Specs & Runners
   {
     id: 'tests-specs-runners', icon: 'folder-test',
-    regex: /(?:^|[-_./])(tests?|testing|specs?|suites?|unit|integration|e2e|benchmarks?[-_]?tests?)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(tests?|testing|specs?|suites?|unit|integration|e2e|benchmarks?[-_]?tests?|cypress|playwright|jest|vitest)(?:[-_./]|$)/i,
     description: 'BML unit tests, regression suites, test runners, and test fixtures'
   },
   // 37. Mocks, Stubs, Fixtures & Fakes
@@ -351,9 +351,15 @@ const RULE_MATCHERS = [
     regex: /(?:^|[-_./])(i18n|l10n|locales?|languages?|translations?|messages[-_]?(?:en|fr|de|es|ja|zh))(?:[-_./]|$)/i,
     description: 'Internationalization bundles, locale dictionaries, and translations'
   },
-  // 58. Images, Media & Vector Graphics
+  // 58. Images, Media, Static Assets & Public
   {
-    id: 'images-media-graphics', icon: 'folder-images',
+    id: 'images-media-graphics', icon: 'folder-public',
+    regex: /(?:^|[-_./])(public|static|wwwroot)(?:[-_./]|$)/i,
+    description: 'Public web assets and static resource folders'
+  },
+  // 58b. Media & Vector Graphics
+  {
+    id: 'media-graphics', icon: 'folder-images',
     regex: /(?:^|[-_./])(images?|img|media|assets?|graphics?|svgs?|drawings?|photos?)(?:[-_./]|$)/i,
     description: 'Images, SVG icons, media assets, and graphic resources'
   },
@@ -363,7 +369,7 @@ const RULE_MATCHERS = [
     regex: /(?:^|[-_./])(css|styles?|stylesheets?|themes?|sass|scss|less|styling)(?:[-_./]|$)/i,
     description: 'CSS, stylesheets, style themes, and styling resources'
   },
-  // 59. Code Generators & Scaffolding
+  // 59b. Code Generators & Scaffolding
   {
     id: 'generators-scaffolding', icon: 'folder-generator',
     regex: /(?:^|[-_./])(generators?|generate|scaffolding|codegen|builders?)(?:[-_./]|$)/i,
@@ -384,7 +390,7 @@ const RULE_MATCHERS = [
   // 62. State Management, Stores & Caching
   {
     id: 'stores-state-cache', icon: 'folder-store',
-    regex: /(?:^|[-_./])(stores?|state|storage|cache|caching|memento)(?:[-_./]|$)/i,
+    regex: /(?:^|[-_./])(stores?|state|storage|cache|caching|memento|reducers?|dispatchers?)(?:[-_./]|$)/i,
     description: 'State management stores, runtime caches, and storage drivers'
   },
   // 63. Python Scripts & Modules
