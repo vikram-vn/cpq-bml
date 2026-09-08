@@ -2,6 +2,7 @@ const vscode = require('vscode');
 const pathLib = require('path');
 const fs = require('fs');
 const { startMcpServer, stopMcpServer, getMcpServerStatus } = require('./server');
+const { registerMcpWithAllTools, deregisterMcpFromAllTools } = require('../../ai/setup/mcpAutoRegister');
 
 function logMcpServerEvent(message) {
     try {
@@ -32,17 +33,47 @@ function registerMcp(context) {
         try {
             const result = await startMcpServer(context, vscode, port);
             logMcpServerEvent(`MCP server started on port ${result.port}`);
+
+            // Auto-register with all AI tools (idempotent — safe to call on every start)
+            try {
+                const { registered, errors } = registerMcpWithAllTools(result.port);
+                if (registered.length > 0) {
+                    console.log(`CPQ-BML: MCP auto-registered with: ${registered.join(', ')}`);
+                    logMcpServerEvent(`MCP auto-registered with: ${registered.join(', ')}`);
+                }
+                if (errors.length > 0) {
+                    console.warn('CPQ-BML: MCP auto-registration warnings:', errors);
+                }
+            } catch (regErr) {
+                console.warn('CPQ-BML: MCP auto-registration failed (non-fatal):', regErr);
+            }
+
             return { started: true, port: result.port };
         } catch (err) {
-            console.error("MCP SERVER START ERROR:", err);
+            console.error('MCP SERVER START ERROR:', err);
             logMcpServerEvent(`MCP server failed to start: ${err && err.message ? err.message : String(err)}`);
             return { started: false, reason: err && err.message ? err.message : String(err) };
         }
     };
 
+    const ensureStopped = () => {
+        stopMcpServer();
+        logMcpServerEvent('MCP server stopped');
+
+        // Remove cpq-bml entry from all AI tool global configs
+        try {
+            const { deregistered } = deregisterMcpFromAllTools();
+            if (deregistered.length > 0) {
+                logMcpServerEvent(`MCP deregistered from: ${deregistered.join(', ')}`);
+            }
+        } catch (deregErr) {
+            console.warn('CPQ-BML: MCP deregistration failed (non-fatal):', deregErr);
+        }
+    };
+
     context.subscriptions.push({ dispose: () => {
         stopMcpServer();
-        logMcpServerEvent("MCP server stopped");
+        logMcpServerEvent('MCP server stopped');
     }});
 
     // Auto-start on activation if the user has already opted in.
@@ -54,13 +85,11 @@ function registerMcp(context) {
         const { enable, port } = getSettings();
         if (!enable) {
             if (status.running) {
-                stopMcpServer();
-                logMcpServerEvent("MCP server stopped via configuration change");
+                ensureStopped();
             }
         } else {
             if (status.running && status.port !== port) {
-                stopMcpServer();
-                logMcpServerEvent("MCP server stopped for port reconfiguration");
+                ensureStopped();
                 await ensureStarted();
             } else if (!status.running) {
                 await ensureStarted();
