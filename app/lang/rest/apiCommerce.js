@@ -152,7 +152,7 @@ async function runPipelineViewer(
 async function listCommerceAttributes(
   context,
   vscode,
-  { process, document, offset = 0, limit = 1000, q } = {},
+  { process, document, offset = 0, limit = 1000, q, fields } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
@@ -161,6 +161,7 @@ async function listCommerceAttributes(
 
   const queryParams = { offset, limit };
   if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
 
   return call(
     context,
@@ -178,7 +179,7 @@ async function listCommerceAttributes(
 async function listCommerceAttributeMenuItems(
   context,
   vscode,
-  { process, document, attributeVarName, offset = 0, limit = 1000, q } = {},
+  { process, document, attributeVarName, offset = 0, limit = 1000, q, fields } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
@@ -187,6 +188,7 @@ async function listCommerceAttributeMenuItems(
 
   const queryParams = { offset, limit };
   if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
 
   return call(
     context,
@@ -230,13 +232,14 @@ async function listCommerceArraySets(
 async function listCommerceSystemAttributes(
   context,
   vscode,
-  { offset = 0, limit = 1000, q } = {},
+  { offset = 0, limit = 1000, q, fields } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
 
   const queryParams = { offset, limit };
   if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
 
   return call(
     context,
@@ -254,11 +257,14 @@ async function listCommerceSystemAttributes(
 async function listCommerceAttributeLookups(
   context,
   vscode,
-  { process, offset = 0, limit = 100 } = {},
+  { process, offset = 0, limit = 100, fields = "lookupType,name,links" } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 18);
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+
+  const queryParams = { offset, limit };
+  if (fields) queryParams.fields = fields;
 
   return call(
     context,
@@ -266,7 +272,7 @@ async function listCommerceAttributeLookups(
     {
       path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/bml/attributeLookups`,
       method: "GET",
-      query: { offset, limit },
+      query: queryParams,
     },
     transport,
   );
@@ -276,7 +282,14 @@ async function listCommerceAttributeLookups(
 async function listCommerceAttributeLookupValues(
   context,
   vscode,
-  { process, lookupType, offset = 0, limit = 1000, href } = {},
+  {
+    process,
+    lookupType,
+    offset = 0,
+    limit = 1000,
+    href,
+    fields = "name,displayLabel,dataType,description,isMenuType,availableElements",
+  } = {},
   transport,
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 18);
@@ -290,13 +303,16 @@ async function listCommerceAttributeLookupValues(
     }
   }
 
+  const queryParams = { offset, limit };
+  if (fields) queryParams.fields = fields;
+
   return call(
     context,
     vscode,
     {
       path,
       method: "GET",
-      query: { offset, limit },
+      query: queryParams,
     },
     transport,
   );
@@ -316,7 +332,12 @@ async function syncCommerceAttributes(
   const res = await listCommerceAttributes(
     context,
     vscode,
-    { process: effectiveProcess, document: effectiveDocument, limit: 1000 },
+    {
+      process: effectiveProcess,
+      document: effectiveDocument,
+      limit: 1000,
+      fields: "variableName,name,label,dataType,type,description,displayType",
+    },
     transport,
   );
 
@@ -361,6 +382,7 @@ async function syncCommerceAttributes(
             document: effectiveDocument,
             attributeVarName: varName,
             limit: 500,
+            fields: "id,value,name,label",
           },
           transport,
         );
@@ -393,7 +415,10 @@ async function syncCommerceAttributes(
     const sysRes = await listCommerceSystemAttributes(
       context,
       vscode,
-      { limit: 1000 },
+      {
+        limit: 1000,
+        fields: "variableName,name,label,type,dataType,description",
+      },
       transport,
     );
     const rawSysItems =
@@ -422,7 +447,7 @@ async function syncCommerceAttributes(
       const lookupsRes = await listCommerceAttributeLookups(
         context,
         vscode,
-        { process: effectiveProcess },
+        { process: effectiveProcess, fields: "lookupType,name,links" },
         transport,
       );
       const rawLookups =
@@ -456,7 +481,13 @@ async function syncCommerceAttributes(
           const valRes = await listCommerceAttributeLookupValues(
             context,
             vscode,
-            { process: effectiveProcess, lookupType: type, href: childHref, limit: 1000 },
+            {
+              process: effectiveProcess,
+              lookupType: type,
+              href: childHref,
+              limit: 1000,
+              fields: "name,variableName,displayLabel,label,dataType,type,description,isMenuType,availableElements",
+            },
             transport,
           );
           const rawVals =
@@ -468,15 +499,21 @@ async function syncCommerceAttributes(
                   : []
               : [];
           if (rawVals.length > 0) {
-            lookups[type] = rawVals.map((v) => ({
-              variableName: v.name || v.variableName || v.id,
-              name: v.displayLabel || v.label || v.name || v.variableName || v.id,
-              displayLabel: v.displayLabel || v.label || v.name || v.variableName || v.id,
-              dataType: normalizeAttributeDataType(v.dataType || v.type),
-              description: v.description || "",
-              isMenuType: !!v.isMenuType,
-              availableElements: Array.isArray(v.availableElements) ? v.availableElements : null,
-            }));
+            lookups[type] = rawVals.map((v) => {
+              const item = {
+                variableName: v.name || v.variableName || v.id,
+                name: v.displayLabel || v.label || v.name || v.variableName || v.id,
+                dataType: normalizeAttributeDataType(v.dataType || v.type),
+                description: v.description || "",
+              };
+              if (v.isMenuType) {
+                item.isMenuType = true;
+              }
+              if (Array.isArray(v.availableElements) && v.availableElements.length > 0) {
+                item.availableElements = v.availableElements;
+              }
+              return item;
+            });
           }
         } catch (e) {
           // Ignore individual lookup type failure

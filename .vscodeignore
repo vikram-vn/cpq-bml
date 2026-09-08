@@ -77,8 +77,7 @@ app/lang/intellisense/function-param-data-types.json
 app/lang/intellisense/function-return-types.json
 app/lang/intellisense/keyword-hovers.json
 
-# Exclude lookups and scripts that are only used in development
-app/lookups/**
+# Exclude development scripts
 scripts/**
 
 # Settings webview CSS: ship only the minified .min.css variants
