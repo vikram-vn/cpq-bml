@@ -13,6 +13,12 @@ Comprehensive technical architecture reference for the advanced subsystems intro
 6. [Safe Synchronization & 3-Way Diff Architecture](#6-safe-synchronization--3-way-diff-architecture)
 7. [Automated BML Function & Sidecar Scaffolding](#7-automated-bml-function--sidecar-scaffolding)
 8. [Standalone CI/CD Quality Gate CLI](#8-standalone-cicd-quality-gate-cli)
+9. [BML Debug Adapter Protocol (DAP) Engine](#9-bml-debug-adapter-protocol-dap-engine)
+10. [Native VS Code Test Explorer (`vscode.TestController`)](#10-native-vs-code-test-explorer-vscodetestcontroller)
+11. [Interactive Data Table Grid Editor (`vscode.CustomTextEditorProvider`)](#11-interactive-data-table-grid-editor-vscodecustomtexteditorprovider)
+12. [AST Parser, Semantic Tokens & F2 Symbol Rename](#12-ast-parser-semantic-tokens--f2-symbol-rename)
+13. [Dynamic Instance Type Definitions (`cpq.d.bml`)](#13-dynamic-instance-type-definitions-cpqdbml)
+14. [Static Performance & Timeout Profiler](#14-static-performance--timeout-profiler)
 
 ---
 
@@ -212,3 +218,90 @@ npx cpq-bml validate "SELECT partNumber FROM Parts WHERE active = $isActive"
 
 - **Exit Code 0**: Clean audit, all files pass threshold.
 - **Exit Code 1**: Critical security risks, BMQL injections, or failing audit scores detected.
+
+---
+
+## 9. BML Debug Adapter Protocol (DAP) Engine
+
+The extension implements the native VS Code Debug Adapter Protocol via `app/lang/debug/bmlDebugAdapter.js`:
+
+```mermaid
+sequenceDiagram
+    participant VS as VS Code Debugger UI
+    participant DAP as BmlDebugAdapter
+    participant VM as Node.js VM Context
+
+    VS->>DAP: initialize, launch { program }
+    DAP->>VS: initialized event
+    VS->>DAP: setBreakPoints { lines: [10, 24] }
+    DAP->>VS: configurationDone
+    DAP->>VM: runUntilStop()
+    alt Breakpoint Hit
+        DAP->>VS: stopped event (reason: 'breakpoint')
+        VS->>DAP: stackTrace, scopes, variables
+        DAP->>VS: Locals (variables) + CPQ Context
+    end
+    VS->>DAP: next (Step Over F10)
+    DAP->>VM: stepSingleLine()
+    DAP->>VS: stopped event (reason: 'step')
+    VS->>DAP: evaluate (from Debug Console)
+    DAP->>VM: runInContext(expression)
+    DAP->>VS: evaluate response { result }
+```
+
+- **Zero Heavy Dependencies**: Implemented natively via `vscode.DebugAdapterInlineImplementation` without heavy external adapter runtimes.
+- **Scope Inspector**: Inspects primitives, collections, BML `dict`, and `json` structures live in the VS Code Variables pane.
+
+---
+
+## 10. Native VS Code Test Explorer (`vscode.TestController`)
+
+Seamless BML unit test discovery and execution directly in the native VS Code Testing sidebar (`app/lang/test/`):
+- **Test File Convention**: Any file named `*.test.bml`.
+- **Inline Annotations**: Identifies individual test cases using `// @test "description"`.
+- **BML Assertions**: Native support for `assert.equals(actual, expected)`, `assert.isTrue(condition)`, and `assert.notNull(value)`.
+- **Test Results**: Visual green/red pass/fail indicators, failure diffs, and test duration metrics.
+
+---
+
+## 11. Interactive Data Table Grid Editor (`vscode.CustomTextEditorProvider`)
+
+Full spreadsheet-style editor for Oracle CPQ Data Table files (`*.dt.json`, `*.dt.csv`):
+- **Live Spreadsheet View**: Filter, search, and edit cells inline with keyboard navigation.
+- **Schema Enforcement**: Visual validation against CPQ column definitions.
+- **Dual Format Support**: Synchronous read/write for both JSON and standard CSV tabular exports.
+- **Direct Actions**: "Push to CPQ" button for immediate REST API upload.
+
+---
+
+## 12. AST Parser, Semantic Tokens & F2 Symbol Rename
+
+High-speed recursive descent AST parser (`app/lang/ast/`):
+- **Strict BML Compliance**: Models BML statements (`for`, `if`, `elif`, `else`, `return`, `print`, `bmql`), sized arrays (`String[10]`, `String[]{...}`), and logical operators (`AND`, `OR`, `NOT`).
+- **Semantic Highlighting**: Distinguishes built-in CPQ functions (`put`, `get`, `urldata`, `recordset`), library calls (`util.myFunc`), and local variables.
+- **F2 Symbol Rename**: Scope-safe variable and parameter renaming across entire BML files.
+
+---
+
+## 13. Dynamic Instance Type Definitions (`cpq.d.bml`)
+
+Auto-introspects connected Oracle CPQ environments via `app/lang/intellisense/schemaIntrospector.js`:
+- **Discovers**:
+  - Document 1 (Transaction / Header) attributes.
+  - Document 2 (Line Item / SubDoc) attributes.
+  - Configuration attributes and Data Table schemas.
+- **Outputs**:
+  - `.cpq/schema.json` (machine-readable schema cache).
+  - `cpq.d.bml` (typed comments and stubs for developer reference).
+- **IntelliSense Integration**: Automatically enriches autocomplete suggestions with the client's live custom attributes.
+
+---
+
+## 14. Static Performance & Timeout Profiler
+
+Real-time diagnostic analyzer (`app/lang/profiler/bmlProfiler.js`) protecting against CPQ 5-second commerce script timeouts:
+- **Unsupported 'while' Detection**: Flags `while` loops as fatal errors since Oracle CPQ BML only supports `for item in array`.
+- **BMQL in Loops ($O(N)$ Antipattern)**: Detects repeated database lookups inside loops.
+- **String Concatenation in Loops**: Recommends `stringbuilder` or array joining to prevent memory thrashing.
+- **Nesting Limits**: Flags loop nesting $> 3$ and block nesting $> 5$.
+- **CLI Command**: `cpq-bml profile [path]`.
