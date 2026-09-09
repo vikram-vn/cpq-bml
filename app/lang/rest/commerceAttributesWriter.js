@@ -127,33 +127,87 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
         "utf8",
       );
     } else {
-      const rawTxnAttrs =
-        data.lookups &&
-        Array.isArray(data.lookups.transaction) &&
-        data.lookups.transaction.length > 0
-          ? data.lookups.transaction
-          : Array.isArray(data.attributes) && data.attributes.length > 0
-            ? data.attributes
-            : [];
-      const txnAttrs = rawTxnAttrs.map(a => pruneAttribute(a, "Transaction"));
+      // 1. Transaction attributes: Merge data.attributes and data.lookups.transaction
+      const txnMap = new Map();
+      if (Array.isArray(data.attributes)) {
+        for (const a of data.attributes) {
+          if (!a) continue;
+          const varName = a.variableName || a.name || a.id;
+          if (varName) txnMap.set(varName, { ...a });
+        }
+      }
+      if (data.lookups && Array.isArray(data.lookups.transaction)) {
+        for (const a of data.lookups.transaction) {
+          if (!a) continue;
+          const varName = a.variableName || a.name || a.id;
+          if (!varName) continue;
+          if (txnMap.has(varName)) {
+            const existing = txnMap.get(varName);
+            txnMap.set(varName, {
+              ...existing,
+              ...a,
+              menuOptions: existing.menuOptions || existing.menuItems || a.menuOptions || a.availableElements,
+              description: existing.description || a.description,
+            });
+          } else {
+            txnMap.set(varName, { ...a });
+          }
+        }
+      }
+      const txnAttrs = Array.from(txnMap.values()).map(a => pruneAttribute(a, "Transaction"));
 
-      const rawLineAttrs =
-        data.lookups &&
-        Array.isArray(data.lookups.transactionLine) &&
-        data.lookups.transactionLine.length > 0
-          ? data.lookups.transactionLine
-          : [];
-      const lineAttrs = rawLineAttrs.map(a => pruneAttribute(a, "Line Item"));
+      // 2. Line Item attributes: Merge data.lineAttributes and data.lookups.transactionLine
+      const lineMap = new Map();
+      if (Array.isArray(data.lineAttributes)) {
+        for (const a of data.lineAttributes) {
+          if (!a) continue;
+          const varName = a.variableName || a.name || a.id;
+          if (varName) lineMap.set(varName, { ...a });
+        }
+      }
+      if (data.lookups && Array.isArray(data.lookups.transactionLine)) {
+        for (const a of data.lookups.transactionLine) {
+          if (!a) continue;
+          const varName = a.variableName || a.name || a.id;
+          if (!varName) continue;
+          if (lineMap.has(varName)) {
+            const existing = lineMap.get(varName);
+            lineMap.set(varName, {
+              ...existing,
+              ...a,
+              menuOptions: existing.menuOptions || existing.menuItems || a.menuOptions || a.availableElements,
+              description: existing.description || a.description,
+            });
+          } else {
+            lineMap.set(varName, { ...a });
+          }
+        }
+      }
+      const lineAttrs = Array.from(lineMap.values()).map(a => pruneAttribute(a, "Line Item"));
 
-      const rawArraySets =
-        Array.isArray(data.arraySets) && data.arraySets.length > 0
-          ? data.arraySets
-          : data.lookups &&
-              Array.isArray(data.lookups.arraySets) &&
-              data.lookups.arraySets.length > 0
-            ? data.lookups.arraySets
-            : [];
-      const arraySets = rawArraySets.map(a => pruneAttribute(a, "Array Set"));
+      // 3. Array sets: Merge data.arraySets and data.lookups.arraySets
+      const arraySetMap = new Map();
+      if (Array.isArray(data.arraySets)) {
+        for (const a of data.arraySets) {
+          if (!a) continue;
+          const varName = a.variableName || a.name || a.id;
+          if (varName) arraySetMap.set(varName, { ...a });
+        }
+      }
+      if (data.lookups && Array.isArray(data.lookups.arraySets)) {
+        for (const a of data.lookups.arraySets) {
+          if (!a) continue;
+          const varName = a.variableName || a.name || a.id;
+          if (!varName) continue;
+          if (arraySetMap.has(varName)) {
+            const existing = arraySetMap.get(varName);
+            arraySetMap.set(varName, { ...existing, ...a });
+          } else {
+            arraySetMap.set(varName, { ...a });
+          }
+        }
+      }
+      const arraySets = Array.from(arraySetMap.values()).map(a => pruneAttribute(a, "Array Set"));
 
       if (txnAttrs.length > 0 || lineAttrs.length > 0 || arraySets.length > 0) {
         fs.writeFileSync(
@@ -164,6 +218,7 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
             count: txnAttrs.length + lineAttrs.length,
             attributes: txnAttrs,
             items: txnAttrs,
+            lineAttributes: lineAttrs,
             lookups: {
               transaction: txnAttrs,
               transactionLine: lineAttrs,
@@ -178,15 +233,32 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
     }
 
     // 2. Save system variables in system.attributes.min.json
-    const sysItems =
-      data.lookups &&
-      Array.isArray(data.lookups.systemVariables) &&
-      data.lookups.systemVariables.length > 0
-        ? data.lookups.systemVariables
-        : Array.isArray(data.systemAttributes) &&
-            data.systemAttributes.length > 0
-          ? data.systemAttributes
-          : [];
+    const sysMap = new Map();
+    if (Array.isArray(data.systemAttributes)) {
+      for (const a of data.systemAttributes) {
+        if (!a) continue;
+        const varName = a.variableName || a.name || a.id;
+        if (varName) sysMap.set(varName, { ...a });
+      }
+    }
+    if (data.lookups && Array.isArray(data.lookups.systemVariables)) {
+      for (const a of data.lookups.systemVariables) {
+        if (!a) continue;
+        const varName = a.variableName || a.name || a.id;
+        if (!varName) continue;
+        if (sysMap.has(varName)) {
+          const existing = sysMap.get(varName);
+          sysMap.set(varName, {
+            ...existing,
+            ...a,
+            description: existing.description || a.description,
+          });
+        } else {
+          sysMap.set(varName, { ...a });
+        }
+      }
+    }
+    const sysItems = Array.from(sysMap.values()).map(a => pruneAttribute(a, "System"));
     if (sysItems.length > 0) {
       fs.writeFileSync(
         path.join(storageDir, SYSTEM_ATTRS_FILE),

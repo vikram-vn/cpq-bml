@@ -62,9 +62,7 @@ suite("settings-panel state", () => {
       mcp: {
         enable: true,
         port: 12345,
-        logToTerminal: true,
-        aiSkills: { claude: true, cursor: false, copilot: false, agents: false },
-        hideAiFromExplorer: true
+        logToTerminal: true
       },
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, concurrency: 2 },
       metadata: {

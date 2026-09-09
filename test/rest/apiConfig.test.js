@@ -246,4 +246,63 @@ suite("Configuration Attributes & Product Families (apiConfig)", () => {
     assert.ok(pageCalls[1].includes("offset=1"));
     assert.ok(progressReports.length >= 2);
   });
+
+  test("syncConfigurationAttributes paginates product families and family attributes", async () => {
+    const vscode = createFakeVscode({ config: baseConfig() });
+    const transport = async (opts) => {
+      // Configuration attributes endpoint
+      if (opts.path.includes("/allProductFamilySetups/_allProductFamilies/attributes")) {
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ items: [] }),
+        };
+      }
+      // Product family attributes
+      if (opts.path.includes("/productFamilies/fam1/attributes")) {
+        if (opts.path.includes("offset=0")) {
+          const items = [];
+          for (let i = 0; i < 1000; i++) {
+            items.push({ variableName: `fam_attr_${i}`, label: `Attr ${i}` });
+          }
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({ hasMore: true, items }),
+          };
+        }
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            hasMore: false,
+            items: [{ variableName: "fam_attr_1000", label: "Attr 1000" }],
+          }),
+        };
+      }
+      // Product families list
+      if (opts.path.includes("/allProductFamilySetups")) {
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            items: [{ variableName: "fam1", label: "Family 1" }],
+          }),
+        };
+      }
+      return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+    };
+
+    const result = await api.syncConfigurationAttributes(
+      fakeContext(),
+      vscode,
+      { fetchProductFamilies: true, fetchModels: false },
+      transport,
+    );
+
+    assert.strictEqual(result.productFamilies.length, 1);
+    assert.strictEqual(result.attributes.length, 1001);
+    assert.strictEqual(result.attributes[0].variableName, "fam_attr_0");
+    assert.strictEqual(result.attributes[1000].variableName, "fam_attr_1000");
+  });
 });

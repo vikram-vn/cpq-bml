@@ -99,7 +99,7 @@ async function runSyncCommerceMetadata(
       const data = await api.syncCommerceAttributes(
         context,
         vscode,
-        { process, document, fetchMenuItems, signal, onProgress },
+        { process, document, includeSubDocuments: true, fetchMenuItems, signal, onProgress },
         transport,
       );
 
@@ -120,6 +120,9 @@ async function runSyncCommerceMetadata(
       }
 
       const attrCount = Array.isArray(data.attributes) ? data.attributes.length : 0;
+      const lineCount = Array.isArray(data.lineAttributes)
+        ? data.lineAttributes.length
+        : (data.lookups && Array.isArray(data.lookups.transactionLine) ? data.lookups.transactionLine.length : 0);
       const sysCount = Array.isArray(data.systemAttributes)
         ? data.systemAttributes.length
         : 0;
@@ -136,7 +139,9 @@ async function runSyncCommerceMetadata(
         );
       }
 
-      let msg = `Synced ${attrCount} attributes, ${sysCount} systemAttributes`;
+      let msg = lineCount > 0
+        ? `Synced ${attrCount} header attributes, ${lineCount} line attributes, ${sysCount} systemAttributes`
+        : `Synced ${attrCount} attributes, ${sysCount} systemAttributes`;
       if (cfgCount > 0) {
         msg += `, ${cfgCount} configAttributes`;
       }

@@ -31,6 +31,7 @@ function processCommercePayload(raw, addItems, defaultScope = "Transaction") {
   }
   if (Array.isArray(raw.attributes)) addItems(raw.attributes, defaultScope);
   if (Array.isArray(raw.items)) addItems(raw.items, defaultScope);
+  if (Array.isArray(raw.lineAttributes)) addItems(raw.lineAttributes, "Line Item");
   if (Array.isArray(raw.arraySets)) addItems(raw.arraySets, "Array Set");
   if (Array.isArray(raw)) addItems(raw, defaultScope);
 }

@@ -171,7 +171,7 @@ async function listCommerceAttributes(
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
   const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
 
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -182,6 +182,28 @@ async function listCommerceAttributes(
       path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes`,
       method: "GET",
       query: queryParams,
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/commerceProcesses/<process>/documents
+async function listCommerceDocuments(
+  context,
+  vscode,
+  { process, offset = 0, limit = 100, signal } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents`,
+      method: "GET",
+      query: { offset, limit, totalResults: true },
+      signal,
     },
     transport,
   );
@@ -292,7 +314,7 @@ async function listCommerceAttributeMenuItems(
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
   const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
 
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -327,7 +349,7 @@ async function listCommerceArraySets(
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
   const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
 
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -352,7 +374,7 @@ async function listCommerceSystemAttributes(
 ) {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
 
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -378,7 +400,7 @@ async function listCommerceAttributeLookups(
   const effectiveVersion = getEffectiveRestVersion(vscode, 18);
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
 
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -418,7 +440,7 @@ async function listCommerceAttributeLookupValues(
     }
   }
 
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (fields) queryParams.fields = fields;
 
   return call(
@@ -440,6 +462,7 @@ async function syncCommerceAttributes(
   transport,
 ) {
   return syncCommerceAttributesImpl(context, vscode, options, transport, {
+    listCommerceDocuments,
     listCommerceAttributes,
     listCommerceAttributeMenuItems,
     listCommerceSystemAttributes,
@@ -456,6 +479,7 @@ module.exports = {
   runPipelineViewer,
   formatCommerceAttribute,
   getCommerceAttribute,
+  listCommerceDocuments,
   listCommerceAttributes,
   listCommerceAttributeMenuItems,
   listCommerceArraySets,

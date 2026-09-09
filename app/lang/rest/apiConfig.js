@@ -62,7 +62,7 @@ async function listConfigurationAttributes(
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -87,7 +87,7 @@ async function listProductFamilies(
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -119,7 +119,7 @@ async function listProductFamilyAttributes(
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -144,7 +144,7 @@ async function listProductLines(
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -169,7 +169,7 @@ async function listModels(
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -203,7 +203,7 @@ async function listModelAttributes(
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
-  const queryParams = { offset, limit };
+  const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
@@ -302,16 +302,39 @@ async function syncConfigurationAttributes(
 
   if (fetchProductFamilies) {
     try {
-      if (signal && signal.aborted) throw new Error("Request aborted");
-      const famRes = await listProductFamilies(context, vscode, { limit: 100, signal }, transport);
-      const rawFam =
-        famRes && famRes.body
-          ? Array.isArray(famRes.body)
-            ? famRes.body
-            : Array.isArray(famRes.body.items)
-              ? famRes.body.items
-              : []
-          : [];
+      let famOffset = 0;
+      const famPageSize = 100;
+      const rawFam = [];
+      while (true) {
+        if (signal && signal.aborted) throw new Error("Request aborted");
+        const famRes = await listProductFamilies(
+          context,
+          vscode,
+          { offset: famOffset, limit: famPageSize, signal },
+          transport,
+        );
+        const pageItems =
+          famRes && famRes.body
+            ? Array.isArray(famRes.body)
+              ? famRes.body
+              : Array.isArray(famRes.body.items)
+                ? famRes.body.items
+                : []
+            : [];
+        rawFam.push(...pageItems);
+
+        const hasMore =
+          famRes &&
+          famRes.body &&
+          (famRes.body.hasMore !== undefined
+            ? famRes.body.hasMore === true
+            : Array.isArray(famRes.body.items) && famRes.body.items.length === famPageSize);
+        if (!hasMore || pageItems.length === 0 || rawFam.length >= 10000) {
+          break;
+        }
+        famOffset += famPageSize;
+      }
+
       productFamilies = rawFam.map((f) => ({
         variableName: f.variableName || f.id || f.name,
         label: f.label || f.name || f.variableName,
@@ -321,20 +344,38 @@ async function syncConfigurationAttributes(
         productFamilies.map(async (fam) => {
           if (signal && signal.aborted) throw new Error("Request aborted");
           try {
-            const famAttrRes = await listProductFamilyAttributes(
-              context,
-              vscode,
-              { productFamily: fam.variableName, limit: 1000, signal },
-              transport,
-            );
-            const rawFamAttrs =
-              famAttrRes && famAttrRes.body
-                ? Array.isArray(famAttrRes.body)
-                  ? famAttrRes.body
-                  : Array.isArray(famAttrRes.body.items)
-                    ? famAttrRes.body.items
-                    : []
-                : [];
+            let attrOffset = 0;
+            const attrPageSize = 1000;
+            const rawFamAttrs = [];
+            while (true) {
+              if (signal && signal.aborted) throw new Error("Request aborted");
+              const famAttrRes = await listProductFamilyAttributes(
+                context,
+                vscode,
+                { productFamily: fam.variableName, offset: attrOffset, limit: attrPageSize, signal },
+                transport,
+              );
+              const pageItems =
+                famAttrRes && famAttrRes.body
+                  ? Array.isArray(famAttrRes.body)
+                    ? famAttrRes.body
+                    : Array.isArray(famAttrRes.body.items)
+                      ? famAttrRes.body.items
+                      : []
+                  : [];
+              rawFamAttrs.push(...pageItems);
+
+              const hasMore =
+                famAttrRes &&
+                famAttrRes.body &&
+                (famAttrRes.body.hasMore !== undefined
+                  ? famAttrRes.body.hasMore === true
+                  : Array.isArray(famAttrRes.body.items) && famAttrRes.body.items.length === attrPageSize);
+              if (!hasMore || pageItems.length === 0 || rawFamAttrs.length >= 50000) {
+                break;
+              }
+              attrOffset += attrPageSize;
+            }
 
             for (const item of rawFamAttrs) {
               const formatted = formatConfigurationAttribute(item, fam.variableName);
@@ -351,40 +392,76 @@ async function syncConfigurationAttributes(
 
           if (fetchModels) {
             try {
-              const lineRes = await listProductLines(
-                context,
-                vscode,
-                { productFamily: fam.variableName, limit: 50, signal },
-                transport,
-              );
-              const rawLines =
-                lineRes && lineRes.body
-                  ? Array.isArray(lineRes.body)
-                    ? lineRes.body
-                    : Array.isArray(lineRes.body.items)
-                      ? lineRes.body.items
-                      : []
-                  : [];
+              let lineOffset = 0;
+              const linePageSize = 100;
+              const rawLines = [];
+              while (true) {
+                if (signal && signal.aborted) throw new Error("Request aborted");
+                const lineRes = await listProductLines(
+                  context,
+                  vscode,
+                  { productFamily: fam.variableName, offset: lineOffset, limit: linePageSize, signal },
+                  transport,
+                );
+                const pageItems =
+                  lineRes && lineRes.body
+                    ? Array.isArray(lineRes.body)
+                      ? lineRes.body
+                      : Array.isArray(lineRes.body.items)
+                        ? lineRes.body.items
+                        : []
+                    : [];
+                rawLines.push(...pageItems);
+
+                const hasMore =
+                  lineRes &&
+                  lineRes.body &&
+                  (lineRes.body.hasMore !== undefined
+                    ? lineRes.body.hasMore === true
+                    : Array.isArray(lineRes.body.items) && lineRes.body.items.length === linePageSize);
+                if (!hasMore || pageItems.length === 0 || rawLines.length >= 10000) {
+                  break;
+                }
+                lineOffset += linePageSize;
+              }
 
               await Promise.all(
                 rawLines.map(async (line) => {
                   if (signal && signal.aborted) throw new Error("Request aborted");
                   const lineVar = line.variableName || line.id || line.name;
                   try {
-                    const modRes = await listModels(
-                      context,
-                      vscode,
-                      { productFamily: fam.variableName, productLine: lineVar, limit: 50, signal },
-                      transport,
-                    );
-                    const rawMods =
-                      modRes && modRes.body
-                        ? Array.isArray(modRes.body)
-                          ? modRes.body
-                          : Array.isArray(modRes.body.items)
-                            ? modRes.body.items
-                            : []
-                        : [];
+                    let modOffset = 0;
+                    const modPageSize = 100;
+                    const rawMods = [];
+                    while (true) {
+                      if (signal && signal.aborted) throw new Error("Request aborted");
+                      const modRes = await listModels(
+                        context,
+                        vscode,
+                        { productFamily: fam.variableName, productLine: lineVar, offset: modOffset, limit: modPageSize, signal },
+                        transport,
+                      );
+                      const pageItems =
+                        modRes && modRes.body
+                          ? Array.isArray(modRes.body)
+                            ? modRes.body
+                            : Array.isArray(modRes.body.items)
+                              ? modRes.body.items
+                              : []
+                          : [];
+                      rawMods.push(...pageItems);
+
+                      const hasMore =
+                        modRes &&
+                        modRes.body &&
+                        (modRes.body.hasMore !== undefined
+                          ? modRes.body.hasMore === true
+                          : Array.isArray(modRes.body.items) && modRes.body.items.length === modPageSize);
+                      if (!hasMore || pageItems.length === 0 || rawMods.length >= 10000) {
+                        break;
+                      }
+                      modOffset += modPageSize;
+                    }
 
                     for (const m of rawMods) {
                       models.push({
