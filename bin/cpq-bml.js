@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { auditBmlCode } = require('../app/lang/mcp/tools/audit');
 const { validateBmqlQuery } = require('../app/lang/mcp/tools/bmqlValidator');
+const { BmlProfiler } = require('../app/lang/profiler/bmlProfiler');
 const packageJson = require('../package.json');
 
 const IGNORED_DIRS = new Set([
@@ -26,6 +27,9 @@ Commands:
                        --format=pretty|json   Output format (default: pretty)
                        --min-score=<0-100>    Minimum passing audit score (default: 70)
                        --fail-on=error|warn   Fail on warnings or only critical/error (default: error)
+
+  profile [path]     Scan BML file(s) for execution bottlenecks, while loops, and timeout risks.
+                     Path defaults to current directory.
 
   validate <query>   Validate a BMQL query offline against CPQ syntax standards.
                      Example: cpq-bml validate "SELECT sku, price FROM Parts WHERE active = $isActive"
@@ -192,6 +196,46 @@ function runValidate(args) {
     process.exit(result.isValid ? 0 : 1);
 }
 
+function runProfile(args) {
+    const targetPath = args.length > 0 && !args[0].startsWith('--') ? args[0] : '.';
+    const files = collectBmlFiles(path.resolve(process.cwd(), targetPath));
+    if (files.length === 0) {
+        console.log(`No .bml or .util files found to profile in: ${targetPath}`);
+        process.exit(0);
+    }
+
+    console.log(`Profiling ${files.length} file(s) for performance & timeout bottlenecks...\n`);
+    let hasCriticalIssues = false;
+
+    for (const filePath of files) {
+        try {
+            const code = fs.readFileSync(filePath, 'utf8');
+            const issues = BmlProfiler.profile(code);
+            const rel = path.relative(process.cwd(), filePath);
+
+            if (issues.length > 0) {
+                console.log(`[PROFILE] ${rel} (${issues.length} issue(s)):`);
+                for (const issue of issues) {
+                    const tag = issue.severity.toUpperCase();
+                    console.log(`  - [${tag}] Line ${issue.line}: ${issue.message}`);
+                    if (issue.severity === 'error') hasCriticalIssues = true;
+                }
+                console.log('');
+            }
+        } catch {
+            // Ignored
+        }
+    }
+
+    if (!hasCriticalIssues) {
+        console.log('Profile passed: No critical BML timeout antipatterns found.');
+        process.exit(0);
+    } else {
+        console.error('Profile failed: Critical performance/timeout antipatterns detected.');
+        process.exit(1);
+    }
+}
+
 function main() {
     const rawArgs = process.argv.slice(2);
     if (rawArgs.length === 0 || rawArgs.includes('--help') || rawArgs.includes('-h') || rawArgs[0] === 'help') {
@@ -210,6 +254,9 @@ function main() {
     switch (command) {
         case 'audit':
             runAudit(subArgs);
+            break;
+        case 'profile':
+            runProfile(subArgs);
             break;
         case 'validate':
             runValidate(subArgs);

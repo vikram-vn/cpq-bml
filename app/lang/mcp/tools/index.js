@@ -7,6 +7,9 @@ const testing = require('./testing');
 const formatting = require('./formatting');
 const audit = require('./audit');
 const bmqlValidator = require('./bmqlValidator');
+const profilerTools = require('./profilerTools');
+const testTools = require('./testTools');
+const schemaTools = require('./schemaTools');
 const { evaluateBmlLogic } = require('../../evaluator/bmlEvaluator');
 
 module.exports = {
@@ -19,5 +22,8 @@ module.exports = {
     ...formatting,
     ...audit,
     ...bmqlValidator,
+    ...profilerTools,
+    ...testTools,
+    ...schemaTools,
     evaluateBmlLogic,
 };

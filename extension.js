@@ -17,9 +17,15 @@ const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testi
 const { registerEnvironmentSwitcher } = require("./app/lang/statusBar/environmentSwitcher");
 const { registerScaffolder } = require("./app/lang/scaffold/bmlScaffolder");
 const { registerScratchpad } = require("./app/lang/evaluator/scratchpadPanel");
-const { syncRuntimeWorkspaceFolders } = require("./app/lang/icons/dynamicFolderIcons");
 const { syncGlobalAgySkills } = require("./app/ai/setup/globalSkillSync");
 const { registerChatParticipant } = require("./app/ai/chatParticipant");
+const { registerSemanticTokens } = require("./app/lang/ast/bmlSemanticTokens");
+const { registerRenameProvider } = require("./app/lang/ast/bmlRenameProvider");
+const { registerProfilerDiagnostics } = require("./app/lang/profiler/profilerDiagnostics");
+const { registerBmlDebugger } = require("./app/lang/debug/bmlDebugAdapter");
+const { registerTestController } = require("./app/lang/test/bmlTestController");
+const { registerDatatableEditor } = require("./app/lang/datatable/datatableEditorProvider");
+const { registerSchemaIntrospector } = require("./app/lang/intellisense/schemaIntrospector");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -70,6 +76,13 @@ function activate(context) {
   registerEnvironmentSwitcher(context);
   registerScaffolder(context);
   registerScratchpad(context);
+  registerSemanticTokens(context);
+  registerRenameProvider(context);
+  registerProfilerDiagnostics(context);
+  registerBmlDebugger(context);
+  registerTestController(context);
+  registerDatatableEditor(context);
+  registerSchemaIntrospector(context);
 
   // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
   // so Antigravity IDE can discover them natively (on-demand, by name). Other AI

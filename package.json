@@ -25,6 +25,29 @@
     "cpq-bml": "./bin/cpq-bml.js"
   },
   "contributes": {
+    "debuggers": [
+      {
+        "type": "bml",
+        "label": "BML Debugger",
+        "languages": [
+          "bml"
+        ]
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "cpqBml.dataTableEditor",
+        "displayName": "CPQ Data Table Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.dt.json"
+          },
+          {
+            "filenamePattern": "*.dt.csv"
+          }
+        ]
+      }
+    ],
     "mcpServerDefinitionProviders": [
       {
         "id": "cpqBml.mcpServers",
@@ -131,6 +154,10 @@
     ],
     "snippets": [],
     "commands": [
+      {
+        "command": "cpqBml.introspectSchema",
+        "title": "CPQ-BML: Introspect Instance Schema & Custom Attributes"
+      },
       {
         "command": "cpqBml.openScratchpad",
         "title": "CPQ-BML: Open BML Logic Scratchpad (Offline Sandbox)"
