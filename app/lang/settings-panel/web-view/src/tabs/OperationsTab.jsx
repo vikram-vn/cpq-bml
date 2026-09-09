@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { IconOperations, IconDatabase, IconSync, IconDelete } from '../components/Icons';
 import Pill from '../components/Pill';
 
@@ -25,13 +25,35 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
         }
     };
 
+    const [confirmingRemove, setConfirmingRemove] = useState(false);
+    const removeTimerRef = useRef(null);
+
     const handleRemove = () => {
         if (!metadata.isSynced || isSyncing) return;
-        if (window.confirm('Delete offline cached metadata? Autocomplete will fall back to standard built-in attributes.')) {
-            if (vscodeApi) {
-                vscodeApi.postMessage({ type: 'removeMetadata' });
-            }
+        if (!confirmingRemove) {
+            setConfirmingRemove(true);
+            if (removeTimerRef.current) clearTimeout(removeTimerRef.current);
+            removeTimerRef.current = setTimeout(() => {
+                setConfirmingRemove(false);
+            }, 4000);
+            return;
         }
+        if (removeTimerRef.current) {
+            clearTimeout(removeTimerRef.current);
+            removeTimerRef.current = null;
+        }
+        setConfirmingRemove(false);
+        if (vscodeApi) {
+            vscodeApi.postMessage({ type: 'removeMetadata' });
+        }
+    };
+
+    const handleCancelRemove = () => {
+        if (removeTimerRef.current) {
+            clearTimeout(removeTimerRef.current);
+            removeTimerRef.current = null;
+        }
+        setConfirmingRemove(false);
     };
 
     const commerceCount = metadata.commerceCount || 0;
@@ -239,11 +261,22 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
                         className="danger"
                         onClick={handleRemove}
                         disabled={!metadata.isSynced || isSyncing}
-                        title={!metadata.isSynced ? 'No metadata to remove' : 'Delete cached metadata'}
+                        title={!metadata.isSynced ? 'No metadata to remove' : (confirmingRemove ? 'Click again to confirm deletion' : 'Delete cached metadata')}
                     >
                         <IconDelete />
-                        Remove Metadata
+                        {confirmingRemove ? 'Click to Confirm Remove' : 'Remove Metadata'}
                     </button>
+
+                    {confirmingRemove && (
+                        <button
+                            type="button"
+                            className="secondary"
+                            onClick={handleCancelRemove}
+                            style={{ padding: '4px 10px', fontSize: '0.85em' }}
+                        >
+                            Cancel
+                        </button>
+                    )}
                 </div>
 
                 {!metadata.canSync ? (

@@ -174,7 +174,7 @@ async function dispatch(message, context, vscode, panel) {
 
     case "removeMetadata": {
       const { removeMetadata, getWorkspaceRoot } = require("../rest/commerceAttributes");
-      removeMetadata(context, getWorkspaceRoot(vscode));
+      removeMetadata(context, getWorkspaceRoot(vscode), vscode);
       await sendState();
       post({ type: "toast", message: "Metadata cache removed successfully." });
       return;

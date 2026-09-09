@@ -312,6 +312,37 @@ suite("settings-panel messageHandler", () => {
     assert.strictEqual(progressMessages[0].isSyncing, true);
   });
 
+  test("'removeMetadata' invokes removal and posts updated state and toast", async () => {
+    const fs = require("fs");
+    const os = require("os");
+    const path = require("path");
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-remove-panel-test-"));
+    const cpqDir = path.join(tempDir, ".cpq");
+    fs.mkdirSync(cpqDir, { recursive: true });
+    fs.writeFileSync(path.join(cpqDir, "commerce.attributes.min.json"), JSON.stringify({ attributes: [] }));
+
+    const panel = fakePanel();
+    const vscode = createFakeVscode({
+      workspaceFolders: [{ uri: { fsPath: tempDir } }],
+    });
+    const context = createFakeContext({});
+
+    try {
+      await handleMessage({ type: "removeMetadata" }, context, vscode, panel);
+
+      const stateMsg = panel.posted.find((m) => m.type === "state");
+      const toastMsg = panel.posted.find((m) => m.type === "toast");
+
+      assert.ok(stateMsg, "Expected state message to be posted");
+      assert.strictEqual(stateMsg.metadata.isSynced, false);
+      assert.ok(toastMsg, "Expected toast message to be posted");
+      assert.ok(toastMsg.message.includes("removed"));
+      assert.strictEqual(fs.existsSync(cpqDir), false);
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
   test("an unknown message type posts an error instead of throwing", async () => {
     const panel = fakePanel();
     const vscode = createFakeVscode({});

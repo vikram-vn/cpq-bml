@@ -1,4 +1,7 @@
-const vscode = require("vscode");
+let vscode;
+try {
+  vscode = require("vscode");
+} catch (_) {}
 const { getResultsTerminal } = require("../terminal");
 const { runSetPassword, runSetAuthToken } = require("./secrets");
 const { runPullLibraryFunctions, runPullCommerceFunctions } = require("./pull");
@@ -15,7 +18,7 @@ const { runCreateBmlFunction } = require("./scaffold");
 const { runChangeEnvironment } = require("./env");
 const { runGlobalSearchBml } = require("./globalSearch");
 const { runGetTransactions } = require("./transactions");
-const { runSyncCommerceMetadata } = require("./sync");
+const { runSyncCommerceMetadata, runRemoveCommerceMetadata } = require("./sync");
 const { runPipelineViewerCommand } = require("./pipelineViewer");
 const { isCommerceSynced } = require("../commerceAttributes");
 const {
@@ -211,6 +214,9 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.syncCommerceMetadata", () =>
       runSyncCommerceMetadata(context, vscode, resultsTerminal),
     ),
+    vscode.commands.registerCommand("cpqBml.rest.removeCommerceMetadata", () =>
+      runRemoveCommerceMetadata(context, vscode, resultsTerminal),
+    ),
     vscode.commands.registerCommand("cpqBml.rest.pipelineViewer", (options) =>
       runPipelineViewerCommand(context, vscode, resultsTerminal, options),
     ),
@@ -251,6 +257,7 @@ module.exports = {
   runGlobalSearchBml,
   runGetTransactions,
   runSyncCommerceMetadata,
+  runRemoveCommerceMetadata,
   runPipelineViewerCommand,
   refreshCommerceSyncContext,
   describeError,

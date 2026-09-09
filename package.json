@@ -221,6 +221,11 @@
         "icon": "app/icons/pull.svg"
       },
       {
+        "command": "cpqBml.rest.removeCommerceMetadata",
+        "title": "CPQ-BML: Remove Offline Cached Metadata",
+        "icon": "app/icons/clear.svg"
+      },
+      {
         "command": "cpqBml.rest.pipelineViewer",
         "title": "CPQ-BML: Run Pipeline Viewer on Transaction",
         "icon": "$(debug-console)"

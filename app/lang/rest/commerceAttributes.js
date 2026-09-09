@@ -325,16 +325,48 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, context) {
   );
 }
 
-function removeMetadata(context, workspaceRoot) {
-  const backendDir = getMetadataStorageDir(context, workspaceRoot);
+function removeMetadata(context, workspaceRoot, vscode) {
+  const ctx = context || extensionContext;
+  const backendDir = getMetadataStorageDir(ctx, workspaceRoot);
   const dirs = [];
-  if (backendDir) dirs.push(backendDir);
+  if (backendDir && !dirs.includes(backendDir)) dirs.push(backendDir);
   if (workspaceRoot) {
     const wsCpq = path.join(workspaceRoot, CPQ_DIR);
-    if (wsCpq !== backendDir) dirs.push(wsCpq);
+    if (!dirs.includes(wsCpq)) dirs.push(wsCpq);
   }
+  if (ctx && ctx.globalStorageUri && ctx.globalStorageUri.fsPath) {
+    const globalMeta = path.join(ctx.globalStorageUri.fsPath, "metadata");
+    if (!dirs.includes(globalMeta)) dirs.push(globalMeta);
+  }
+  if (ctx && ctx.storageUri && ctx.storageUri.fsPath) {
+    if (!dirs.includes(ctx.storageUri.fsPath)) dirs.push(ctx.storageUri.fsPath);
+  }
+  if (vscode && vscode.workspace && Array.isArray(vscode.workspace.workspaceFolders)) {
+    for (const folder of vscode.workspace.workspaceFolders) {
+      if (folder.uri && folder.uri.fsPath) {
+        const p = path.join(folder.uri.fsPath, CPQ_DIR);
+        if (!dirs.includes(p)) dirs.push(p);
+      }
+    }
+  }
+
   removeMetadataFromDirs(dirs, CPQ_DIR);
   clearAttributesCache();
+
+  try {
+    const { invalidateApiData } = require("../intellisense/apiData");
+    if (typeof invalidateApiData === "function") {
+      invalidateApiData();
+    }
+  } catch (e) {}
+
+  if (vscode && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+    vscode.commands.executeCommand(
+      "setContext",
+      "cpqBml.commerceMetadataSynced",
+      false,
+    );
+  }
 }
 
 function getMetadataStatus(context, workspaceRoot, vscode) {

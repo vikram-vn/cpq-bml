@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import Switch from '../components/Switch';
 import { IconAdvanced } from '../components/Icons';
 import ImportExportButtons from '../components/ImportExportButtons';
@@ -18,10 +19,32 @@ export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi
         }
     };
 
+    const [confirmingReset, setConfirmingReset] = useState(false);
+    const resetTimerRef = useRef(null);
+
     const handleReset = () => {
-        if (vscodeApi && window.confirm('Are you sure you want to reset all CPQ-BML extension settings to factory defaults?')) {
+        if (!confirmingReset) {
+            setConfirmingReset(true);
+            if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+            resetTimerRef.current = setTimeout(() => setConfirmingReset(false), 4000);
+            return;
+        }
+        if (resetTimerRef.current) {
+            clearTimeout(resetTimerRef.current);
+            resetTimerRef.current = null;
+        }
+        setConfirmingReset(false);
+        if (vscodeApi) {
             vscodeApi.postMessage({ type: 'resetSettings' });
         }
+    };
+
+    const handleCancelReset = () => {
+        if (resetTimerRef.current) {
+            clearTimeout(resetTimerRef.current);
+            resetTimerRef.current = null;
+        }
+        setConfirmingReset(false);
     };
 
     return (
@@ -94,7 +117,13 @@ export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi
                     Backup &amp; Restore
                 </h2>
                 <p className="card-desc">Export current CPQ-BML extension configuration to a JSON file or import settings from a backup.</p>
-                <ImportExportButtons onImport={handleImport} onExport={handleExport} onReset={handleReset} />
+                <ImportExportButtons
+                    onImport={handleImport}
+                    onExport={handleExport}
+                    onReset={handleReset}
+                    confirmingReset={confirmingReset}
+                    onCancelReset={handleCancelReset}
+                />
             </section>
         </div>
     );

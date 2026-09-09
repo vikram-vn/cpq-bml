@@ -221,7 +221,22 @@ async function runSyncAllMetadata(context, vscode, terminal, onProgress) {
   };
 }
 
+async function runRemoveCommerceMetadata(context, vscode, terminal) {
+  const { removeMetadata, getWorkspaceRoot } = require("../commerceAttributes");
+  const wsRoot = getWorkspaceRoot(vscode);
+  removeMetadata(context, wsRoot, vscode);
+  if (terminal) {
+    writeRunHeader(terminal, "Remove", "Offline Metadata");
+    writeTerminalMessage(terminal, "Offline cached metadata removed successfully.");
+  }
+  if (vscode && vscode.window && typeof vscode.window.showInformationMessage === "function") {
+    vscode.window.showInformationMessage("CPQ-BML: Offline cached metadata removed successfully.");
+  }
+  return { success: true };
+}
+
 module.exports = {
   runSyncCommerceMetadata,
   runSyncAllMetadata,
+  runRemoveCommerceMetadata,
 };

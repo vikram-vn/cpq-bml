@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import Switch from '../components/Switch';
 import { IconMcp, IconDelete } from '../components/Icons';
 import McpHealthBadge from '../components/McpHealthBadge';
@@ -11,12 +12,32 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
     const isPrivileged = numPort > 0 && numPort < 1024;
     const isOutOfRange = numPort < 1 || numPort > 65535;
 
+    const [confirmingClean, setConfirmingClean] = useState(false);
+    const cleanTimerRef = useRef(null);
+
     const handleCleanAiWorkspace = () => {
-        if (window.confirm('Remove any legacy AI skill folders (.agents, .claude, .cursor, etc.) from the workspace root?')) {
-            if (vscodeApi) {
-                vscodeApi.postMessage({ type: 'cleanAiWorkspaceFiles' });
-            }
+        if (!confirmingClean) {
+            setConfirmingClean(true);
+            if (cleanTimerRef.current) clearTimeout(cleanTimerRef.current);
+            cleanTimerRef.current = setTimeout(() => setConfirmingClean(false), 4000);
+            return;
         }
+        if (cleanTimerRef.current) {
+            clearTimeout(cleanTimerRef.current);
+            cleanTimerRef.current = null;
+        }
+        setConfirmingClean(false);
+        if (vscodeApi) {
+            vscodeApi.postMessage({ type: 'cleanAiWorkspaceFiles' });
+        }
+    };
+
+    const handleCancelClean = () => {
+        if (cleanTimerRef.current) {
+            clearTimeout(cleanTimerRef.current);
+            cleanTimerRef.current = null;
+        }
+        setConfirmingClean(false);
     };
 
     return (
@@ -88,11 +109,21 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                         type="button"
                         className="secondary"
                         onClick={handleCleanAiWorkspace}
-                        title="Remove any legacy AI skill folders (.agents, .claude, .cursor, etc.) from project root"
+                        title={confirmingClean ? "Click again to confirm removing AI folders" : "Remove any legacy AI skill folders (.agents, .claude, .cursor, etc.) from project root"}
                     >
                         <IconDelete />
-                        Clean Legacy AI Workspace Files
+                        {confirmingClean ? 'Click to Confirm Clean' : 'Clean Legacy AI Workspace Files'}
                     </button>
+                    {confirmingClean && (
+                        <button
+                            type="button"
+                            className="secondary"
+                            onClick={handleCancelClean}
+                            style={{ padding: '4px 8px', fontSize: '0.85em' }}
+                        >
+                            Cancel
+                        </button>
+                    )}
                     <span style={{ fontSize: '0.8em', color: 'var(--vscode-descriptionForeground)' }}>
                         Safely cleans any legacy .agents, .claude, .cursor, CLAUDE.md, or .cursorrules from your workspace.
                     </span>

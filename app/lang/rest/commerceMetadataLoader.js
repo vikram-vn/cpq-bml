@@ -168,9 +168,37 @@ function inspectMetadataStatus(dirs, vscode, backendDir) {
 }
 
 function removeMetadataFromDirs(dirs, cpqDirName) {
-  for (const dir of dirs) {
+  const targetDirs = Array.isArray(dirs) ? dirs : [];
+  for (const rawDir of targetDirs) {
+    if (!rawDir) continue;
+    const dir = path.normalize(rawDir);
     if (!fs.existsSync(dir)) continue;
-    for (const f of [COMMERCE_ATTRS_FILE, CONFIG_ATTRS_FILE, SYSTEM_ATTRS_FILE, "README.md"]) {
+
+    const baseName = path.basename(dir).toLowerCase();
+    const isDedicatedDir =
+      baseName === (cpqDirName || ".cpq").toLowerCase() ||
+      baseName === ".cpq" ||
+      baseName === "metadata";
+
+    if (isDedicatedDir) {
+      try {
+        fs.rmSync(dir, { recursive: true, force: true });
+        continue;
+      } catch (e) {
+        // If directory locking prevents deleting the folder itself, delete contents below
+      }
+    }
+
+    const knownFiles = [
+      COMMERCE_ATTRS_FILE,
+      CONFIG_ATTRS_FILE,
+      SYSTEM_ATTRS_FILE,
+      "commerce.attributes.json",
+      "config.attributes.json",
+      "system.attributes.json",
+      "README.md",
+    ];
+    for (const f of knownFiles) {
       const p = path.join(dir, f);
       if (fs.existsSync(p)) {
         try { fs.unlinkSync(p); } catch (e) {}
@@ -182,12 +210,12 @@ function removeMetadataFromDirs(dirs, cpqDirName) {
         try { fs.rmSync(p, { recursive: true, force: true }); } catch (e) {}
       }
     }
-    if (dir.endsWith(cpqDirName)) {
-      try {
-        const remaining = fs.readdirSync(dir);
-        if (remaining.length === 0) fs.rmSync(dir, { recursive: true, force: true });
-      } catch (e) {}
-    }
+    try {
+      const remaining = fs.readdirSync(dir);
+      if (remaining.length === 0) {
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
+    } catch (e) {}
   }
 }
 

@@ -291,4 +291,42 @@ suite("commerceAttributes Unit Tests", () => {
 
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
+
+  test("removeMetadata removes .cpq folder, clears caches, and updates context", () => {
+    const fs = require("fs");
+    const os = require("os");
+    const path = require("path");
+    const { removeMetadata, isCommerceSynced } = require("../../app/lang/rest/commerceAttributes");
+    const { saveWorkspaceAttributes } = require("../../app/lang/rest/commerceAttributesWriter");
+
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-remove-meta-test-"));
+    const cpqDir = path.join(tempDir, ".cpq");
+    try {
+      saveWorkspaceAttributes(tempDir, {
+        attributes: [{ variableName: "testAttr_t", label: "Test Attr", dataType: "String" }],
+      });
+      assert.ok(fs.existsSync(path.join(cpqDir, "commerce.attributes.min.json")));
+      assert.strictEqual(isCommerceSynced(tempDir), true);
+
+      let contextSet = false;
+      const fakeVscode = {
+        workspace: { workspaceFolders: [{ uri: { fsPath: tempDir } }] },
+        commands: {
+          executeCommand: (cmd, key, val) => {
+            if (cmd === "setContext" && key === "cpqBml.commerceMetadataSynced" && val === false) {
+              contextSet = true;
+            }
+          },
+        },
+      };
+
+      removeMetadata(null, tempDir, fakeVscode);
+
+      assert.strictEqual(fs.existsSync(cpqDir), false, ".cpq directory should be completely deleted");
+      assert.strictEqual(isCommerceSynced(tempDir), false);
+      assert.strictEqual(contextSet, true);
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
 });
