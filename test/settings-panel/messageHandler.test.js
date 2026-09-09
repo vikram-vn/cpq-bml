@@ -2,6 +2,7 @@ const assert = require("assert");
 const { handleMessage } = require("../../app/lang/settings-panel/messageHandler");
 const config = require("../../app/lang/rest/config");
 const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
+const path = require("path");
 
 function fakePanel() {
   const posted = [];
@@ -341,6 +342,53 @@ suite("settings-panel messageHandler", () => {
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
+  });
+
+  test("'registerMcp' posts toast and mcpActionResult with detected/skipped tools", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: { "mcp.port": 48888 } });
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "registerMcp" }, context, vscode, panel);
+
+    const toastMsg = panel.posted.find((m) => m.type === "toast");
+    const actionMsg = panel.posted.find((m) => m.type === "mcpActionResult");
+    assert.ok(toastMsg, "Expected toast message to be posted");
+    assert.ok(actionMsg, "Expected mcpActionResult message to be posted");
+    assert.strictEqual(actionMsg.action, "register");
+    assert.strictEqual(actionMsg.port, 48888);
+    assert.ok(Array.isArray(actionMsg.registered));
+    assert.ok(Array.isArray(actionMsg.skipped));
+  });
+
+  test("'deregisterMcp' posts toast and mcpActionResult", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({});
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "deregisterMcp" }, context, vscode, panel);
+
+    const toastMsg = panel.posted.find((m) => m.type === "toast");
+    const actionMsg = panel.posted.find((m) => m.type === "mcpActionResult");
+    assert.ok(toastMsg, "Expected toast message to be posted");
+    assert.ok(actionMsg, "Expected mcpActionResult message to be posted");
+    assert.strictEqual(actionMsg.action, "deregister");
+    assert.ok(Array.isArray(actionMsg.deregistered));
+  });
+
+  test("'syncBmlSkills' syncs skills from extension to global config and posts result", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({});
+    const context = createFakeContext({ extensionPath: path.resolve(__dirname, "../..") });
+
+    await handleMessage({ type: "syncBmlSkills" }, context, vscode, panel);
+
+    const toastMsg = panel.posted.find((m) => m.type === "toast");
+    const resultMsg = panel.posted.find((m) => m.type === "bmlSkillsSyncResult");
+    assert.ok(toastMsg, "Expected toast message to be posted");
+    assert.ok(resultMsg, "Expected bmlSkillsSyncResult to be posted");
+    assert.strictEqual(resultMsg.success, true);
+    assert.ok(typeof resultMsg.synced === "number" && resultMsg.synced >= 0);
   });
 
   test("an unknown message type posts an error instead of throwing", async () => {

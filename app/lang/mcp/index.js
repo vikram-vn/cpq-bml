@@ -99,6 +99,19 @@ function registerMcp(context) {
                 await ensureStarted();
             } else if (!status.running) {
                 await ensureStarted();
+            } else {
+                // Running on current port: re-sync native AI configs to reflect any setting updates
+                try {
+                    const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+                        ? vscode.workspace.workspaceFolders[0].uri.fsPath
+                        : null;
+                    const { registered, skipped } = registerMcpWithAllTools(port, wsRoot);
+                    if (registered.length > 0) {
+                        logMcpServerEvent(`MCP re-synced with: ${registered.join(', ')} (skipped: ${skipped.length})`);
+                    }
+                } catch (regErr) {
+                    console.warn('CPQ-BML: MCP config re-sync failed:', regErr);
+                }
             }
         }
     }, null, context.subscriptions);

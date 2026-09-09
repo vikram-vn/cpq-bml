@@ -4,6 +4,17 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.86.0] - 2026-09-09
+
+### Added
+
+- Implement MCP knowledge tools for local BML function management, analysis, and skill documentation.
+- Implement dynamic MCP server configuration and settings panel support.
+- Implement commerce metadata loading and settings panel management infrastructure.
+- Implement commerce metadata loading, cleanup utilities, and corresponding test state integration.
+- Implement settings panel UI with tab-based configuration and sync management capabilities.
+- Add BML logo icon in SVG format.
+
 ## [1.85.0] - 2026-09-09
 
 ### Added
@@ -75,13 +86,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Add bug icon SVG for debugging functionality.
 - Add debug icon SVG to assets.
 - Add debug icon as SVG asset.
-
-## [1.78.0] - 2026-09-07
-
-### Added
-
-- Implement MCP tool integration with secure output scrubbing and headless VS Code proxying.
-- Add transaction retrieval module and register MCP tools for BML search and commerce lookups.
-- Add commerce deployment icon and context tracking to distinguish between commerce and utility BML files.
-- Implement REST pull command for library and commerce functions.
-- Add unused variable linter rule with comprehensive test coverage.

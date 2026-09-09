@@ -346,37 +346,105 @@ function deregisterCodex() {
     fs.writeFileSync(p, updated, 'utf8');
 }
 
+function getMcpPortFromSettings(fallbackPort = 47821) {
+    try {
+        const vscode = require('vscode');
+        if (vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === 'function') {
+            const cfg = vscode.workspace.getConfiguration('cpqBml');
+            return cfg.get('mcp.port', fallbackPort) || fallbackPort;
+        }
+    } catch {
+        // standalone or test environment without vscode runtime
+    }
+    return fallbackPort;
+}
+
+/**
+ * Checks whether a tool's configuration path or application directory is available on the machine.
+ * If not installed or directory not present, the tool is skipped.
+ */
+function isToolAvailable(toolKey, workspaceRoot, forceAll = false) {
+    if (forceAll) return true;
+    switch (toolKey) {
+        case 'antigravity':
+            return fs.existsSync(antigravityConfigPath()) ||
+                   fs.existsSync(path.dirname(antigravityConfigPath())) ||
+                   fs.existsSync(path.join(os.homedir(), '.gemini'));
+        case 'claudeDesktop':
+            return fs.existsSync(claudeDesktopConfigPath()) ||
+                   fs.existsSync(path.dirname(claudeDesktopConfigPath()));
+        case 'claudeCode':
+            return fs.existsSync(claudeCodeConfigPath()) ||
+                   fs.existsSync(path.join(os.homedir(), '.claude'));
+        case 'chatgpt':
+            return chatgptConfigPaths().some(p => fs.existsSync(p) || fs.existsSync(path.dirname(p)));
+        case 'cursor':
+            return fs.existsSync(cursorConfigPath()) ||
+                   fs.existsSync(path.dirname(cursorConfigPath())) ||
+                   fs.existsSync(path.join(os.homedir(), '.cursor'));
+        case 'cursorWs':
+            return !!workspaceRoot && (
+                fs.existsSync(path.join(workspaceRoot, '.cursor')) ||
+                fs.existsSync(path.join(workspaceRoot, '.cursor', 'mcp.json'))
+            );
+        case 'vscodeWs':
+            return !!workspaceRoot && (
+                fs.existsSync(path.join(workspaceRoot, '.vscode')) ||
+                fs.existsSync(path.join(workspaceRoot, '.vscode', 'mcp.json'))
+            );
+        case 'windsurf':
+            return fs.existsSync(windsurfConfigPath()) ||
+                   fs.existsSync(path.dirname(windsurfConfigPath())) ||
+                   fs.existsSync(path.join(os.homedir(), '.codeium'));
+        case 'codex':
+            return fs.existsSync(codexConfigPath()) ||
+                   fs.existsSync(path.dirname(codexConfigPath())) ||
+                   fs.existsSync(path.join(os.homedir(), '.codex'));
+        default:
+            return false;
+    }
+}
+
 // ─── Public API ────────────────────────────────────────────────────────────────
 
 /**
  * Registers the CPQ-BML MCP server across all supported AI desktop apps and IDEs.
  * Safe to call repeatedly — idempotent, updates URL cleanly.
+ * If tool paths/directories are not available on this machine, they are skipped.
  *
- * @param {number} port - The MCP server port (default 47821)
+ * @param {number} [port] - The MCP server port (defaults to port from settings, or 47821)
  * @param {string} [workspaceRoot] - Optional workspace root for project-level configs
- * @returns {{ registered: string[], errors: {tool: string, error: string}[] }}
+ * @param {object} [options] - Optional settings ({ forceAll: boolean })
+ * @returns {{ registered: string[], skipped: string[], errors: {tool: string, error: string}[] }}
  */
-function registerMcpWithAllTools(port, workspaceRoot) {
-    const url = `http://127.0.0.1:${port}/mcp`;
+function registerMcpWithAllTools(port, workspaceRoot, options = {}) {
+    const actualPort = port || getMcpPortFromSettings();
+    const url = `http://127.0.0.1:${actualPort}/mcp`;
     const registered = [];
+    const skipped = [];
     const errors = [];
+    const forceAll = !!(options && options.forceAll);
 
     const registrations = [
-        { name: 'Google Gemini & Antigravity IDE', fn: () => registerAntigravity(url) },
-        { name: 'Claude Desktop', fn: () => registerClaudeDesktop(url) },
-        { name: 'Claude Code', fn: () => registerClaudeCode(url) },
-        { name: 'ChatGPT Desktop', fn: () => registerChatGPT(url) },
-        { name: 'Cursor (Global)', fn: () => registerCursor(url) },
-        { name: 'Windsurf', fn: () => registerWindsurf(url) },
-        { name: 'Codex CLI', fn: () => registerCodex(url) },
+        { key: 'antigravity', name: 'Google Gemini & Antigravity IDE', fn: () => registerAntigravity(url) },
+        { key: 'claudeDesktop', name: 'Claude Desktop', fn: () => registerClaudeDesktop(url) },
+        { key: 'claudeCode', name: 'Claude Code', fn: () => registerClaudeCode(url) },
+        { key: 'chatgpt', name: 'ChatGPT Desktop', fn: () => registerChatGPT(url) },
+        { key: 'cursor', name: 'Cursor (Global)', fn: () => registerCursor(url) },
+        { key: 'windsurf', name: 'Windsurf', fn: () => registerWindsurf(url) },
+        { key: 'codex', name: 'Codex CLI', fn: () => registerCodex(url) },
     ];
 
     if (workspaceRoot) {
-        registrations.push({ name: 'Cursor (Workspace)', fn: () => registerCursorWorkspace(url, workspaceRoot) });
-        registrations.push({ name: 'VS Code & Copilot (Workspace)', fn: () => registerVsCodeWorkspace(url, workspaceRoot) });
+        registrations.push({ key: 'cursorWs', name: 'Cursor (Workspace)', fn: () => registerCursorWorkspace(url, workspaceRoot) });
+        registrations.push({ key: 'vscodeWs', name: 'VS Code & Copilot (Workspace)', fn: () => registerVsCodeWorkspace(url, workspaceRoot) });
     }
 
-    for (const { name, fn } of registrations) {
+    for (const { key, name, fn } of registrations) {
+        if (!isToolAvailable(key, workspaceRoot, forceAll)) {
+            skipped.push(name);
+            continue;
+        }
         try {
             fn();
             registered.push(name);
@@ -385,11 +453,12 @@ function registerMcpWithAllTools(port, workspaceRoot) {
         }
     }
 
-    return { registered, errors };
+    return { registered, skipped, errors };
 }
 
 /**
  * Removes the CPQ-BML MCP server entry from all AI tool configs when stopped.
+ * Only touches files that actually exist.
  *
  * @param {string} [workspaceRoot] - Optional workspace root to clean project configs
  * @returns {{ deregistered: string[], errors: {tool: string, error: string}[] }}
@@ -399,26 +468,29 @@ function deregisterMcpFromAllTools(workspaceRoot) {
     const errors = [];
 
     const deregistrations = [
-        { name: 'Google Gemini & Antigravity IDE', fn: deregisterAntigravity },
-        { name: 'Claude Desktop', fn: deregisterClaudeDesktop },
-        { name: 'Claude Code', fn: deregisterClaudeCode },
-        { name: 'ChatGPT Desktop', fn: deregisterChatGPT },
-        { name: 'Cursor (Global)', fn: deregisterCursor },
-        { name: 'Windsurf', fn: deregisterWindsurf },
-        { name: 'Codex CLI', fn: deregisterCodex },
+        { name: 'Google Gemini & Antigravity IDE', path: antigravityConfigPath(), fn: deregisterAntigravity },
+        { name: 'Claude Desktop', path: claudeDesktopConfigPath(), fn: deregisterClaudeDesktop },
+        { name: 'Claude Code', path: claudeCodeConfigPath(), fn: deregisterClaudeCode },
+        { name: 'ChatGPT Desktop', paths: chatgptConfigPaths(), fn: deregisterChatGPT },
+        { name: 'Cursor (Global)', path: cursorConfigPath(), fn: deregisterCursor },
+        { name: 'Windsurf', path: windsurfConfigPath(), fn: deregisterWindsurf },
+        { name: 'Codex CLI', path: codexConfigPath(), fn: deregisterCodex },
     ];
 
     if (workspaceRoot) {
-        deregistrations.push({ name: 'Cursor (Workspace)', fn: () => deregisterCursorWorkspace(workspaceRoot) });
-        deregistrations.push({ name: 'VS Code & Copilot (Workspace)', fn: () => deregisterVsCodeWorkspace(workspaceRoot) });
+        deregistrations.push({ name: 'Cursor (Workspace)', path: cursorWorkspaceConfigPath(workspaceRoot), fn: () => deregisterCursorWorkspace(workspaceRoot) });
+        deregistrations.push({ name: 'VS Code & Copilot (Workspace)', path: vscodeWorkspaceConfigPath(workspaceRoot), fn: () => deregisterVsCodeWorkspace(workspaceRoot) });
     }
 
-    for (const { name, fn } of deregistrations) {
+    for (const item of deregistrations) {
+        const fileExists = item.paths ? item.paths.some(p => fs.existsSync(p)) : (item.path && fs.existsSync(item.path));
+        if (!fileExists) continue;
+
         try {
-            fn();
-            deregistered.push(name);
+            item.fn();
+            deregistered.push(item.name);
         } catch (e) {
-            errors.push({ tool: name, error: e.message });
+            errors.push({ tool: item.name, error: e.message });
         }
     }
 
@@ -428,6 +500,8 @@ function deregisterMcpFromAllTools(workspaceRoot) {
 module.exports = {
     registerMcpWithAllTools,
     deregisterMcpFromAllTools,
+    getMcpPortFromSettings,
+    isToolAvailable,
     antigravityConfigPath,
     claudeDesktopConfigPath,
     claudeCodeConfigPath,

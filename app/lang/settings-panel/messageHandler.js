@@ -417,7 +417,68 @@ async function dispatch(message, context, vscode, panel) {
     }
     case "getMcpHealth": {
       // Return basic health based on MCP enable flag.
-      post({ type: "mcpHealth", healthy: mcp.enable, port: mcp.port });
+      const cfg = vscode.workspace.getConfiguration(CPQ_SECTION);
+      const isEnabled = cfg.get("mcp.enable", false);
+      const port = cfg.get("mcp.port", 47821);
+      post({ type: "mcpHealth", healthy: isEnabled, port });
+      return;
+    }
+
+    case "registerMcp": {
+      const { registerMcpWithAllTools } = require("../../ai/setup/mcpAutoRegister");
+      const cpqConfig = vscode.workspace.getConfiguration(CPQ_SECTION);
+      const port = cpqConfig.get("mcp.port", 47821);
+      const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+        ? vscode.workspace.workspaceFolders[0].uri.fsPath
+        : null;
+      const { registered, skipped, errors } = registerMcpWithAllTools(port, wsRoot);
+      const msg = registered.length > 0
+        ? `Registered with ${registered.length} AI tool(s): ${registered.join(", ")} (Skipped ${skipped.length} not found)`
+        : `No native AI tool configs found on machine (Skipped ${skipped.length})`;
+      post({ type: "toast", message: msg });
+      post({
+        type: "mcpActionResult",
+        action: "register",
+        registered,
+        skipped,
+        errors,
+        port,
+      });
+      return;
+    }
+
+    case "deregisterMcp": {
+      const { deregisterMcpFromAllTools } = require("../../ai/setup/mcpAutoRegister");
+      const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+        ? vscode.workspace.workspaceFolders[0].uri.fsPath
+        : null;
+      const { deregistered, errors } = deregisterMcpFromAllTools(wsRoot);
+      const msg = deregistered.length > 0
+        ? `Deregistered MCP from: ${deregistered.join(", ")}`
+        : `No registered MCP configurations were found to remove.`;
+      post({ type: "toast", message: msg });
+      post({
+        type: "mcpActionResult",
+        action: "deregister",
+        deregistered,
+        errors,
+      });
+      return;
+    }
+
+    case "syncBmlSkills": {
+      const { syncGlobalAgySkills } = require("../../ai/setup/globalSkillSync");
+      const { synced, errors } = syncGlobalAgySkills(context.extensionPath);
+      const msg = errors.length === 0
+        ? `Successfully synced ${synced} BML skills to IDE.`
+        : `Synced ${synced} BML skills with ${errors.length} warnings.`;
+      post({ type: "toast", message: msg });
+      post({
+        type: "bmlSkillsSyncResult",
+        success: errors.length === 0,
+        synced,
+        errors,
+      });
       return;
     }
     case "resetSettings": {
