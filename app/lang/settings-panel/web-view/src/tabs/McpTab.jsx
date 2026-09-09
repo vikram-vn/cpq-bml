@@ -1,9 +1,8 @@
-import { useState, useRef } from 'react';
 import Switch from '../components/Switch';
-import { IconMcp, IconDelete } from '../components/Icons';
+import { IconMcp } from '../components/Icons';
 import McpHealthBadge from '../components/McpHealthBadge';
 
-export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateField, vscodeApi }) {
+export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateField }) {
     if (!active) return null;
 
     const rawPort = drafts['mcp.port'] !== undefined ? drafts['mcp.port'] : (mcp.port || 47821);
@@ -11,34 +10,6 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
     const isDefaultPort = numPort === 47821;
     const isPrivileged = numPort > 0 && numPort < 1024;
     const isOutOfRange = numPort < 1 || numPort > 65535;
-
-    const [confirmingClean, setConfirmingClean] = useState(false);
-    const cleanTimerRef = useRef(null);
-
-    const handleCleanAiWorkspace = () => {
-        if (!confirmingClean) {
-            setConfirmingClean(true);
-            if (cleanTimerRef.current) clearTimeout(cleanTimerRef.current);
-            cleanTimerRef.current = setTimeout(() => setConfirmingClean(false), 4000);
-            return;
-        }
-        if (cleanTimerRef.current) {
-            clearTimeout(cleanTimerRef.current);
-            cleanTimerRef.current = null;
-        }
-        setConfirmingClean(false);
-        if (vscodeApi) {
-            vscodeApi.postMessage({ type: 'cleanAiWorkspaceFiles' });
-        }
-    };
-
-    const handleCancelClean = () => {
-        if (cleanTimerRef.current) {
-            clearTimeout(cleanTimerRef.current);
-            cleanTimerRef.current = null;
-        }
-        setConfirmingClean(false);
-    };
 
     return (
         <div className="tab-content active">
@@ -103,33 +74,7 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     All AI coding assistants (Claude Code, Cursor, GitHub Copilot, Codex CLI, Antigravity) connect dynamically to this MCP server.
                     BML syntax definitions, BMQL rules, pitfalls, and CPQ domain knowledge are delivered directly in memory over the MCP protocol without creating any files or folders in your workspace.
                 </p>
-
-                <div style={{ marginTop: '16px', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <button
-                        type="button"
-                        className="secondary"
-                        onClick={handleCleanAiWorkspace}
-                        title={confirmingClean ? "Click again to confirm removing AI folders" : "Remove any legacy AI skill folders (.agents, .claude, .cursor, etc.) from project root"}
-                    >
-                        <IconDelete />
-                        {confirmingClean ? 'Click to Confirm Clean' : 'Clean Legacy AI Workspace Files'}
-                    </button>
-                    {confirmingClean && (
-                        <button
-                            type="button"
-                            className="secondary"
-                            onClick={handleCancelClean}
-                            style={{ padding: '4px 8px', fontSize: '0.85em' }}
-                        >
-                            Cancel
-                        </button>
-                    )}
-                    <span style={{ fontSize: '0.8em', color: 'var(--vscode-descriptionForeground)' }}>
-                        Safely cleans any legacy .agents, .claude, .cursor, CLAUDE.md, or .cursorrules from your workspace.
-                    </span>
-                </div>
             </section>
         </div>
     );
 }
-

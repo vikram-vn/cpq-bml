@@ -459,17 +459,6 @@ async function dispatch(message, context, vscode, panel) {
       post({ type: "toast", message: "Settings reset to defaults" });
       return;
     }
-    case "cleanAiWorkspaceFiles": {
-      const { cleanAllAiWorkspaceFiles } = require("../../ai/setup/workspaceAiCleaner");
-      const wsFolders = vscode.workspace && vscode.workspace.workspaceFolders;
-      if (wsFolders && wsFolders.length > 0) {
-        const removed = cleanAllAiWorkspaceFiles(wsFolders[0].uri.fsPath);
-        vscode.window.showInformationMessage(`CPQ-BML: Removed AI workspace files: ${removed.join(", ") || "None found"}`);
-        post({ type: "toast", message: "AI files removed from workspace" });
-      }
-      await sendState();
-      return;
-    }
 
     default:
       throw new Error(`CPQ-BML: unknown message type "${message.type}".`);
