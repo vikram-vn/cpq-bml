@@ -65,27 +65,35 @@ function buildCategorizedItems() {
         }
 
         if (info.category === 'attribute') {
-            const item = new vscode.CompletionItem(info.name, vscode.CompletionItemKind.Property);
-            item.detail = syntax;
-            item.insertText = new vscode.SnippetString(syntax);
-            item.filterText = key;
-            item.sortText = `4_${key}`;
+            const attrName = (info.name || key).replace(/^util\./i, '');
+            const cleanSyntax = (syntax || attrName).replace(/^util\./i, '');
+            const cleanKey = key.replace(/^util\./i, '');
+            const cleanScope = (info.scope || '').replace(/^util\./i, '').trim();
+
+            const isSynced = (info.source === 'workspace-cache');
+
+            const item = new vscode.CompletionItem(attrName, vscode.CompletionItemKind.Property);
+            item.detail = isSynced ? `${cleanSyntax} (Synced)` : cleanSyntax;
+            item.insertText = new vscode.SnippetString(cleanSyntax);
+            item.filterText = cleanKey;
+            // First preference to synced attributes (0_), fallback to extension baseline attributes (4_)
+            item.sortText = isSynced ? `0_${cleanKey}` : `4_${cleanKey}`;
 
             item.documentation = formatAsJsDoc(info);
 
             cachedAllAttributes.push(item);
 
-            if (info.scope === 'Transaction') {
+            if (cleanScope === 'Transaction') {
                 cachedTransactionItems.push(item);
                 cachedGlobalItems.push(item);
-            } else if (info.scope === 'Line Item') {
+            } else if (cleanScope === 'Line Item') {
                 cachedLineItems.push(item);
-            } else if (info.scope === 'System') {
+            } else if (cleanScope === 'System') {
                 cachedSystemItems.push(item);
                 cachedGlobalItems.push(item);
-            } else if (info.scope === 'Array Set' || info.dataType === 'Array Set') {
+            } else if (cleanScope === 'Array Set' || info.dataType === 'Array Set') {
                 cachedArraySetItems.push(item);
-            } else if (info.scope === 'Configuration' || info.scope === 'Model') {
+            } else if (cleanScope === 'Configuration' || cleanScope === 'Model' || cleanScope === 'Product Family') {
                 cachedConfigItems.push(item);
                 cachedGlobalItems.push(item);
             } else {
@@ -124,6 +132,57 @@ function buildCategorizedItems() {
 
         cachedGlobalItems.push(item);
     });
+}
+
+/**
+ * Detects variables used in a for loop iterating over transaction lines in the document.
+ * Matches patterns like:
+ *   for line in transactionLine
+ *   for item in transactionLine
+ *   for row in transaction_line
+ *   for each in transactionLines
+ *   for curLine in transactonLine
+ */
+function getTransactionLineLoopVariables(document) {
+    const lineVars = new Set(['line', 'item', 'lineitem', 'eachline', 'curline', 'l']);
+    if (!document) return lineVars;
+
+    let fullText = '';
+    if (typeof document.getText === 'function') {
+        fullText = document.getText();
+    } else if (typeof document.lineAt === 'function' && typeof document.lineCount === 'number') {
+        const lines = [];
+        for (let i = 0; i < document.lineCount; i++) {
+            lines.push(document.lineAt(i).text);
+        }
+        fullText = lines.join('\n');
+    }
+
+    if (!fullText) return lineVars;
+
+    // Strip comments and string literals to avoid false positives
+    const cleanCode = fullText
+        .replace(/\/\*[\s\S]*?\*\//g, ' ')
+        .replace(/\/\/.*/g, ' ')
+        .replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, ' ');
+
+    // Match: for <var> in <collection>
+    const loopRegex = /\bfor\s+([a-zA-Z_]\w*)\s+in\s+([a-zA-Z_][\w.]*)/gi;
+    let match;
+    while ((match = loopRegex.exec(cleanCode)) !== null) {
+        const varName = match[1].toLowerCase();
+        const collection = match[2].toLowerCase().replace(/^(?:doc\.|commerce\.|transaction\.)+/, '');
+        if (
+            /^(?:transact?i?on_?lines?|line_?items?|lines)$/i.test(collection) ||
+            collection.includes('transactionline') ||
+            collection.includes('transactonline') ||
+            collection.includes('lineitem')
+        ) {
+            lineVars.add(varName);
+        }
+    }
+
+    return lineVars;
 }
 
 /**
@@ -187,18 +246,20 @@ function registerBmlIntelliSense(context) {
 
                 if (objMatch) {
                     const objName = objMatch[1].toLowerCase();
+                    const lineVars = getTransactionLineLoopVariables(document);
+
                     if (objName === 'cpqjs') {
                         return cachedCpqjsItems;
+                    } else if (lineVars.has(objName)) {
+                        return cachedLineItems;
                     } else if (objName === 'transaction' || objName === 'trans' || objName === 't') {
                         return cachedTransactionItems;
-                    } else if (objName === 'line' || objName === 'each' || objName === 'item' || objName === 'l') {
-                        return cachedLineItems;
                     } else if (objName === 'arrayset' || objName === 'arraysets' || objName === 'arr' || objName === 'a') {
                         return cachedArraySetItems;
                     } else if (objName === 'config' || objName === 'cfg' || objName === 'model') {
                         return cachedConfigItems;
                     } else {
-                        return cachedAllAttributes;
+                        return [];
                     }
                 }
 
@@ -466,4 +527,4 @@ function registerBmlIntelliSense(context) {
     context.subscriptions.push(inlayHintsProvider);
 }
 
-module.exports = { registerBmlIntelliSense };
+module.exports = { registerBmlIntelliSense, getTransactionLineLoopVariables };

@@ -26,17 +26,23 @@ def generate_bml_util_attributes(root_dir):
         items = raw.get('items', [])
         for item in items:
             key = item.get('variableName') or item.get('name')
-            if not key:
+            if not key or not key.startswith('_'):
                 continue
             
             dt = item.get('dataType')
             dataType = dt.get('displayValue') if isinstance(dt, dict) else 'String'
 
+            scope = context
+            if key.startswith('_BM_USER_') or key == '_mobile_device_enabled':
+                scope = 'System'
+            elif key in ('_transaction_id', '_price_book_var_name'):
+                scope = 'Transaction'
+
             output[key] = {
-                "scope": f"util.{context}",
+                "scope": scope,
                 "dataType": dataType,
-                "syntax": f"util.{key}",
-                "examples": [f'val = util.{key};'],
+                "syntax": key,
+                "examples": [f'val = {key};'],
                 "notes": item.get('description') or item.get('label') or item.get('displayLabel') or ''
             }
         print(f"[generateBmlUtilAttributes]   -> {len(items)} items from {os.path.basename(filepath)}")

@@ -191,6 +191,84 @@ suite('BML IntelliSense', () => {
 		assert.ok(!labels.includes('priceType_l'), 'did not expect line item attribute priceType_l in global completions');
 	});
 
+	test('transaction and config attributes do not have util. prefix in completion insertText', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = ' });
+		const position = new vscode.Position(0, 4);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+
+		const txItem = list.items.find(i => (typeof i.label === 'string' ? i.label : i.label.label) === '_transaction_id');
+		assert.ok(txItem, 'expected _transaction_id in completion list');
+		const txInsert = typeof txItem.insertText === 'string' ? txItem.insertText : (txItem.insertText && txItem.insertText.value) || txItem.label;
+		assert.strictEqual(txInsert, '_transaction_id', 'expected _transaction_id directly without util.');
+
+		const cfgItem = list.items.find(i => (typeof i.label === 'string' ? i.label : i.label.label) === '_configuration_id');
+		assert.ok(cfgItem, 'expected _configuration_id in completion list');
+		const cfgInsert = typeof cfgItem.insertText === 'string' ? cfgItem.insertText : (cfgItem.insertText && cfgItem.insertText.value) || cfgItem.label;
+		assert.strictEqual(cfgInsert, '_configuration_id', 'expected _configuration_id directly without util.');
+	});
+
+	test('dynamic loop variable over transactionLine triggers line item completions', async () => {
+		const content = 'for row in transactionLine {\n    row.\n}';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(1, 8);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('priceType_l'), 'expected priceType_l in row. completions');
+		assert.ok(!labels.includes('createdBy_t'), 'did not expect createdBy_t in line item completions');
+		assert.ok(!labels.includes('_site_url'), 'did not expect system attribute _site_url in line item completions');
+	});
+
+	test('for item in transactionLIne triggers line item completions', async () => {
+		const content = 'for item in transactionLIne {\n    item.\n}';
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content });
+		const position = new vscode.Position(1, 9);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => i.label);
+
+		assert.ok(labels.includes('priceType_l'), 'expected priceType_l in item. completions');
+		assert.ok(!labels.includes('createdBy_t'), 'did not expect createdBy_t in item. completions');
+	});
+
+	test('system attributes are directly available globally without dot notation', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = ' });
+		const position = new vscode.Position(0, 4);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list.items.map(i => (typeof i.label === 'string' ? i.label : i.label.label));
+
+		assert.ok(labels.includes('_site_url'), 'expected _site_url in global completions');
+		assert.ok(labels.includes('_BM_USER_LOGIN'), 'expected _BM_USER_LOGIN in global completions');
+		assert.ok(labels.includes('_mobile_device_enabled'), 'expected _mobile_device_enabled in global completions');
+	});
+
+	test('unrelated variable dot access does not suggest line or system attributes', async () => {
+		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'myStr.' });
+		const position = new vscode.Position(0, 6);
+		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position);
+		const labels = list ? list.items.map(i => (typeof i.label === 'string' ? i.label : i.label.label)) : [];
+
+		assert.ok(!labels.includes('priceType_l'), 'did not expect line item attributes on unrelated object dot');
+		assert.ok(!labels.includes('_site_url'), 'did not expect system attributes on unrelated object dot');
+		assert.ok(!labels.includes('createdBy_t'), 'did not expect transaction attributes on unrelated object dot');
+	});
+
+	test('extension JSONs only contain OTB attributes and exclude custom site attributes', () => {
+		const utilAttrs = require('../../app/lang/intellisense/bml-util-attributes-api-usage.json');
+		const mainAttrs = require('../../app/lang/intellisense/bml-attributes-api-usage.json');
+
+		// Custom attributes must not be in extension baseline JSONs
+		assert.strictEqual(utilAttrs['serviceTypes_t'], undefined, 'serviceTypes_t custom attribute should not be in util attributes');
+		assert.strictEqual(utilAttrs['CRM_CUSTOMER_ID'], undefined, 'CRM_CUSTOMER_ID custom attribute should not be in util attributes');
+		assert.strictEqual(mainAttrs['currentStepForTesting_tempDisplay_t'], undefined, 'test custom attribute should not be in main attributes');
+		assert.strictEqual(mainAttrs['oRCL_ERP_PartialShipAllowed_t'], undefined, 'ERP custom attribute should not be in main attributes');
+
+		// OTB attributes must be present
+		assert.ok(utilAttrs['_BM_USER_LOGIN'], 'expected OTB _BM_USER_LOGIN');
+		assert.ok(utilAttrs['_site_url'] || mainAttrs['_site_url'], 'expected OTB _site_url');
+		assert.ok(mainAttrs['_transaction_document_number'], 'expected OTB _transaction_document_number');
+		assert.ok(mainAttrs['createdBy_t'], 'expected base process createdBy_t');
+	});
+
 	test('signature help resolves active BML function and parameter highlights', async () => {
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = datetostr(getdate(), ' });
 		const position = new vscode.Position(0, 24);
