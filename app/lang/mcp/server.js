@@ -13,6 +13,7 @@ const knowledgeTools = require("./tool-defs/knowledgeTools");
 const referenceTools = require("./tool-defs/referenceTools");
 const testingTools = require("./tool-defs/testingTools");
 const formattingTools = require("./tool-defs/formattingTools");
+const { recordMcpRequest } = require("./traffic");
 
 // Reads all SKILL.md files from app/ai/skills/ and concatenates them into a
 // single string for the MCP server instructions, stripping YAML frontmatter.
@@ -38,6 +39,34 @@ function loadSkillsInstructions(extensionPath) {
 }
 
 function registerTools(server, context, vscode) {
+  // Instrument tool registration to track real-time traffic
+  const originalRegisterTool = server.registerTool.bind(server);
+  server.registerTool = function(name, schema, handler) {
+    const instrumentedHandler = async (...args) => {
+      const start = Date.now();
+      try {
+        const result = await handler(...args);
+        recordMcpRequest({
+          tool: name,
+          durationMs: Date.now() - start,
+          success: true,
+          args: args[0] || null,
+        });
+        return result;
+      } catch (err) {
+        recordMcpRequest({
+          tool: name,
+          durationMs: Date.now() - start,
+          success: false,
+          error: err ? err.message : String(err),
+          args: args[0] || null,
+        });
+        throw err;
+      }
+    };
+    return originalRegisterTool(name, schema, instrumentedHandler);
+  };
+
   statusTools.register(server, context, vscode, tools);
   lookupTools.register(server, context, vscode, tools);
   lifecycleTools.register(server, context, vscode, tools);
@@ -127,6 +156,21 @@ async function startMcpServer(context, vscode, port) {
 
   httpServer = http.createServer((req, res) => {
     const path = (req.url || "").split("?")[0];
+    if (path === "/health") {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      });
+      res.end(
+        JSON.stringify({
+          status: "healthy",
+          service: "cpq-bml-mcp",
+          port: boundPort,
+          version: "1.85.0",
+        }),
+      );
+      return;
+    }
     if (path !== "/mcp") {
       res.writeHead(404).end();
       return;

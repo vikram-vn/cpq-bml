@@ -391,6 +391,32 @@ suite("settings-panel messageHandler", () => {
     assert.ok(typeof resultMsg.synced === "number" && resultMsg.synced >= 0);
   });
 
+  test("'getAiToolsStatus' posts aiToolsStatus with all supported tools", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({});
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "getAiToolsStatus" }, context, vscode, panel);
+
+    const statusMsg = panel.posted.find((m) => m.type === "aiToolsStatus");
+    assert.ok(statusMsg, "Expected aiToolsStatus message to be posted");
+    assert.ok(Array.isArray(statusMsg.tools));
+    assert.ok(statusMsg.tools.length >= 7);
+  });
+
+  test("'getMcpHealth' returns healthy status", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: { "mcp.enable": true, "mcp.port": 47821 } });
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "getMcpHealth" }, context, vscode, panel);
+
+    const healthMsg = panel.posted.find((m) => m.type === "mcpHealth");
+    assert.ok(healthMsg, "Expected mcpHealth message to be posted");
+    assert.ok(typeof healthMsg.healthy === "boolean");
+    assert.ok(healthMsg.port);
+  });
+
   test("an unknown message type posts an error instead of throwing", async () => {
     const panel = fakePanel();
     const vscode = createFakeVscode({});

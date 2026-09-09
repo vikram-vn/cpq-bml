@@ -5,6 +5,7 @@ const reference = require('./reference');
 const status = require('./status');
 const testing = require('./testing');
 const formatting = require('./formatting');
+const audit = require('./audit');
 
 module.exports = {
     ...lookup,
@@ -14,4 +15,5 @@ module.exports = {
     ...status,
     ...testing,
     ...formatting,
+    ...audit,
 };

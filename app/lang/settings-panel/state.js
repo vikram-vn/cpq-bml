@@ -1,6 +1,7 @@
 const config = require('../rest/config');
 const { getEnvironments } = require('../rest/commands/env');
 const { getMetadataStatus, getWorkspaceRoot } = require('../rest/commerceAttributes');
+const { getAiToolsStatus } = require('../../ai/setup/mcpAutoRegister');
 
 // Only sends hasPassword/hasToken booleans - actual secret values never leave VS Code Secret Storage.
 async function buildState(context, vscode) {
@@ -61,7 +62,8 @@ async function buildState(context, vscode) {
         mcp: {
             enable: cpqConfig.get('mcp.enable', false),
             port: cpqConfig.get('mcp.port', 47821),
-            logToTerminal: cpqConfig.get('mcp.logToTerminal', false)
+            logToTerminal: cpqConfig.get('mcp.logToTerminal', false),
+            tools: getAiToolsStatus(wsRoot),
         },
         debug: {
             logOutputToFile: settings.logOutputToFile,

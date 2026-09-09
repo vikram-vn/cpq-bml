@@ -3,7 +3,9 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const { listSkills, getSkill } = require("../../app/lang/mcp/tools/knowledge");
-const { registerMcpWithAllTools, deregisterMcpFromAllTools } = require("../../app/ai/setup/mcpAutoRegister");
+const { registerMcpWithAllTools, deregisterMcpFromAllTools, getAiToolsStatus, isToolRegistered } = require("../../app/ai/setup/mcpAutoRegister");
+const { startMcpServer, stopMcpServer } = require("../../app/lang/mcp/server");
+const http = require("http");
 
 suite("MCP Skills & Auto-Registration Suite", () => {
   const extensionPath = path.resolve(__dirname, "../..");
@@ -109,6 +111,58 @@ suite("MCP Skills & Auto-Registration Suite", () => {
       assert.strictEqual(json.servers["cpq-bml"].url, "http://127.0.0.1:47821/mcp");
     } finally {
       fs.rmSync(tempWs, { recursive: true, force: true });
+    }
+  });
+
+  test("getAiToolsStatus returns comprehensive status list for native tools", () => {
+    const tempWs = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-mcp-status-test-"));
+    try {
+      const tools = getAiToolsStatus(tempWs);
+      assert.ok(Array.isArray(tools));
+      assert.ok(tools.length >= 7);
+
+      const keys = tools.map((t) => t.key);
+      assert.ok(keys.includes("antigravity"));
+      assert.ok(keys.includes("claudeDesktop"));
+      assert.ok(keys.includes("chatgpt"));
+      assert.ok(keys.includes("cursor"));
+      assert.ok(keys.includes("cursorWs"));
+      assert.ok(keys.includes("vscodeWs"));
+
+      for (const t of tools) {
+        assert.ok(typeof t.key === "string");
+        assert.ok(typeof t.name === "string");
+        assert.ok(typeof t.installed === "boolean");
+        assert.ok(typeof t.registered === "boolean");
+      }
+    } finally {
+      fs.rmSync(tempWs, { recursive: true, force: true });
+    }
+  });
+
+  test("startMcpServer responds with 200 OK on GET /health", async () => {
+    // Start on a random high test port
+    const testPort = 48750 + Math.floor(Math.random() * 500);
+    const server = await startMcpServer(context, null, testPort);
+    assert.ok(server.port);
+
+    try {
+      const resData = await new Promise((resolve, reject) => {
+        http.get(`http://127.0.0.1:${server.port}/health`, (res) => {
+          let body = "";
+          res.on("data", (chunk) => (body += chunk));
+          res.on("end", () => {
+            resolve({ statusCode: res.statusCode, data: JSON.parse(body) });
+          });
+        }).on("error", reject);
+      });
+
+      assert.strictEqual(resData.statusCode, 200);
+      assert.strictEqual(resData.data.status, "healthy");
+      assert.strictEqual(resData.data.service, "cpq-bml-mcp");
+      assert.strictEqual(resData.data.port, server.port);
+    } finally {
+      stopMcpServer();
     }
   });
 });

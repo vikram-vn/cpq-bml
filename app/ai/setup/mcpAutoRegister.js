@@ -1,350 +1,38 @@
-/**
- * Auto-registers the CPQ-BML MCP server into the global and workspace config files
- * of every supported AI coding assistant and desktop application, ensuring seamless
- * integration without manual configuration.
- *
- * Supported tools and their config file paths:
- *  - Google Gemini & Antigravity IDE : %USERPROFILE%\.gemini\config\mcp_config.json
- *  - Claude Desktop                  : %APPDATA%\Claude\claude_desktop_config.json (macOS: ~/Library/Application Support/Claude)
- *  - Claude Code CLI                 : %USERPROFILE%\.claude.json
- *  - ChatGPT Desktop & OpenAI        : %APPDATA%\ChatGPT\mcp.json, %USERPROFILE%\.chatgpt\mcp.json
- *  - Cursor IDE (Global)             : %APPDATA%\Cursor\mcp.json (macOS/Linux: ~/.cursor/mcp.json)
- *  - Cursor IDE (Workspace)          : <workspaceRoot>/.cursor/mcp.json
- *  - VS Code & Copilot (Workspace)   : <workspaceRoot>/.vscode/mcp.json
- *  - Windsurf                        : %USERPROFILE%\.codeium\windsurf\mcp_config.json
- *  - Codex CLI                       : %USERPROFILE%\.codex\config.toml (TOML)
- *
- * Registration is idempotent: re-running at a different port updates the URL.
- * De-registration removes only the cpq-bml entry, leaving all other servers intact.
- */
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-
-const SERVER_KEY = 'cpq-bml';
-
-// ─── Path resolvers ────────────────────────────────────────────────────────────
-
-function antigravityConfigPath() {
-    return path.join(os.homedir(), '.gemini', 'config', 'mcp_config.json');
-}
-
-function claudeDesktopConfigPath() {
-    if (process.platform === 'win32') {
-        const appData = process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming');
-        return path.join(appData, 'Claude', 'claude_desktop_config.json');
-    }
-    if (process.platform === 'darwin') {
-        return path.join(os.homedir(), 'Library', 'Application Support', 'Claude', 'claude_desktop_config.json');
-    }
-    return path.join(os.homedir(), '.config', 'Claude', 'claude_desktop_config.json');
-}
-
-function claudeCodeConfigPath() {
-    return path.join(os.homedir(), '.claude.json');
-}
-
-function chatgptConfigPaths() {
-    const paths = [];
-    if (process.platform === 'win32') {
-        const appData = process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming');
-        paths.push(path.join(appData, 'ChatGPT', 'mcp.json'));
-        paths.push(path.join(os.homedir(), '.chatgpt', 'mcp.json'));
-    } else if (process.platform === 'darwin') {
-        paths.push(path.join(os.homedir(), 'Library', 'Application Support', 'ChatGPT', 'mcp.json'));
-        paths.push(path.join(os.homedir(), '.chatgpt', 'mcp.json'));
-    } else {
-        paths.push(path.join(os.homedir(), '.config', 'ChatGPT', 'mcp.json'));
-        paths.push(path.join(os.homedir(), '.chatgpt', 'mcp.json'));
-    }
-    return paths;
-}
-
-function cursorConfigPath() {
-    const appData = process.env.APPDATA || path.join(os.homedir(), '.config');
-    return process.platform === 'win32'
-        ? path.join(appData, 'Cursor', 'mcp.json')
-        : path.join(os.homedir(), '.cursor', 'mcp.json');
-}
-
-function cursorWorkspaceConfigPath(workspaceRoot) {
-    return workspaceRoot ? path.join(workspaceRoot, '.cursor', 'mcp.json') : null;
-}
-
-function vscodeWorkspaceConfigPath(workspaceRoot) {
-    return workspaceRoot ? path.join(workspaceRoot, '.vscode', 'mcp.json') : null;
-}
-
-function windsurfConfigPath() {
-    return path.join(os.homedir(), '.codeium', 'windsurf', 'mcp_config.json');
-}
-
-function codexConfigPath() {
-    return path.join(os.homedir(), '.codex', 'config.toml');
-}
-
-// ─── JSON helpers ──────────────────────────────────────────────────────────────
-
-function readJson(filePath) {
-    if (!fs.existsSync(filePath)) return {};
-    try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch {
-        return {};
-    }
-}
-
-function writeJson(filePath, data) {
-    try {
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf8');
-    } catch (e) {
-        console.warn(`CPQ-BML: Failed to write config to ${filePath}:`, e.message);
-    }
-}
-
-// ─── TOML minimal helpers ─────────────────────────────────────────────────────
-
-function readToml(filePath) {
-    if (!fs.existsSync(filePath)) return '';
-    try {
-        return fs.readFileSync(filePath, 'utf8');
-    } catch {
-        return '';
-    }
-}
-
-function upsertTomlMcpServer(tomlText, serverKey, url) {
-    const sectionHeader = `[mcp_servers.${serverKey}]`;
-    const block = `\n${sectionHeader}\nurl = "${url}"\n`;
-
-    const headerIdx = tomlText.indexOf(sectionHeader);
-    if (headerIdx !== -1) {
-        const afterHeader = headerIdx + sectionHeader.length;
-        const nextSection = tomlText.indexOf('\n[', afterHeader);
-        const blockEnd = nextSection !== -1 ? nextSection : tomlText.length;
-        return tomlText.slice(0, headerIdx).trimEnd() + block + tomlText.slice(blockEnd);
-    }
-
-    return (tomlText.trimEnd() || '') + block;
-}
-
-function removeTomlMcpServer(tomlText, serverKey) {
-    const sectionHeader = `[mcp_servers.${serverKey}]`;
-    const headerIdx = tomlText.indexOf(sectionHeader);
-    if (headerIdx === -1) return tomlText;
-
-    const afterHeader = headerIdx + sectionHeader.length;
-    const nextSection = tomlText.indexOf('\n[', afterHeader);
-    const blockEnd = nextSection !== -1 ? nextSection : tomlText.length;
-    return (tomlText.slice(0, headerIdx).trimEnd() + tomlText.slice(blockEnd)).trimStart();
-}
-
-// ─── Per-tool registration ────────────────────────────────────────────────────
-
-/**
- * Antigravity IDE & Google Gemini — uses { mcpServers: { cpq-bml: { serverUrl: "..." } } }
- */
-function registerAntigravity(url) {
-    const p = antigravityConfigPath();
-    const cfg = readJson(p);
-    if (!cfg.mcpServers) cfg.mcpServers = {};
-    cfg.mcpServers[SERVER_KEY] = { serverUrl: url };
-    writeJson(p, cfg);
-}
-
-function deregisterAntigravity() {
-    const p = antigravityConfigPath();
-    const cfg = readJson(p);
-    if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-        delete cfg.mcpServers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-}
-
-/**
- * Claude Desktop — uses { mcpServers: { cpq-bml: { url: "..." } } }
- */
-function registerClaudeDesktop(url) {
-    const p = claudeDesktopConfigPath();
-    const cfg = readJson(p);
-    if (!cfg.mcpServers) cfg.mcpServers = {};
-    cfg.mcpServers[SERVER_KEY] = { url };
-    writeJson(p, cfg);
-}
-
-function deregisterClaudeDesktop() {
-    const p = claudeDesktopConfigPath();
-    if (!fs.existsSync(p)) return;
-    const cfg = readJson(p);
-    if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-        delete cfg.mcpServers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-}
-
-/**
- * Claude Code CLI — uses { mcpServers: { cpq-bml: { type: "http", url: "..." } } }
- */
-function registerClaudeCode(url) {
-    const p = claudeCodeConfigPath();
-    const cfg = readJson(p);
-    if (!cfg.mcpServers) cfg.mcpServers = {};
-    cfg.mcpServers[SERVER_KEY] = { type: 'http', url };
-    writeJson(p, cfg);
-}
-
-function deregisterClaudeCode() {
-    const p = claudeCodeConfigPath();
-    if (!fs.existsSync(p)) return;
-    const cfg = readJson(p);
-    if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-        delete cfg.mcpServers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-}
-
-/**
- * ChatGPT Desktop & OpenAI Developer MCP — uses { mcpServers: { cpq-bml: { url: "..." } } }
- */
-function registerChatGPT(url) {
-    for (const p of chatgptConfigPaths()) {
-        const dir = path.dirname(p);
-        if (fs.existsSync(dir) || p.includes('ChatGPT') || p.includes('.chatgpt')) {
-            const cfg = readJson(p);
-            if (!cfg.mcpServers) cfg.mcpServers = {};
-            cfg.mcpServers[SERVER_KEY] = { url };
-            writeJson(p, cfg);
-        }
-    }
-}
-
-function deregisterChatGPT() {
-    for (const p of chatgptConfigPaths()) {
-        if (fs.existsSync(p)) {
-            const cfg = readJson(p);
-            if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-                delete cfg.mcpServers[SERVER_KEY];
-                writeJson(p, cfg);
-            }
-        }
-    }
-}
-
-/**
- * Cursor Global — uses { mcpServers: { cpq-bml: { url: "..." } } }
- */
-function registerCursor(url) {
-    const p = cursorConfigPath();
-    const cfg = readJson(p);
-    if (!cfg.mcpServers) cfg.mcpServers = {};
-    cfg.mcpServers[SERVER_KEY] = { url };
-    writeJson(p, cfg);
-}
-
-function deregisterCursor() {
-    const p = cursorConfigPath();
-    if (!fs.existsSync(p)) return;
-    const cfg = readJson(p);
-    if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-        delete cfg.mcpServers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-}
-
-/**
- * Cursor Workspace — writes to <workspaceRoot>/.cursor/mcp.json
- */
-function registerCursorWorkspace(url, workspaceRoot) {
-    const p = cursorWorkspaceConfigPath(workspaceRoot);
-    if (!p) return;
-    const cfg = readJson(p);
-    if (!cfg.mcpServers) cfg.mcpServers = {};
-    cfg.mcpServers[SERVER_KEY] = { url };
-    writeJson(p, cfg);
-}
-
-function deregisterCursorWorkspace(workspaceRoot) {
-    const p = cursorWorkspaceConfigPath(workspaceRoot);
-    if (!p || !fs.existsSync(p)) return;
-    const cfg = readJson(p);
-    if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-        delete cfg.mcpServers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-}
-
-/**
- * VS Code & Copilot Workspace — writes to <workspaceRoot>/.vscode/mcp.json
- */
-function registerVsCodeWorkspace(url, workspaceRoot) {
-    const p = vscodeWorkspaceConfigPath(workspaceRoot);
-    if (!p) return;
-    const cfg = readJson(p);
-    if (!cfg.servers && !cfg.mcpServers) {
-        cfg.servers = {};
-    }
-    const target = cfg.servers || cfg.mcpServers;
-    target[SERVER_KEY] = {
-        type: 'http',
-        url,
-    };
-    writeJson(p, cfg);
-}
-
-function deregisterVsCodeWorkspace(workspaceRoot) {
-    const p = vscodeWorkspaceConfigPath(workspaceRoot);
-    if (!p || !fs.existsSync(p)) return;
-    const cfg = readJson(p);
-    if (cfg.servers && cfg.servers[SERVER_KEY]) {
-        delete cfg.servers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-    if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-        delete cfg.mcpServers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-}
-
-/**
- * Windsurf — uses { mcpServers: { cpq-bml: { serverType: "streamableHttp", url: "..." } } }
- */
-function registerWindsurf(url) {
-    const p = windsurfConfigPath();
-    const cfg = readJson(p);
-    if (!cfg.mcpServers) cfg.mcpServers = {};
-    cfg.mcpServers[SERVER_KEY] = { serverType: 'streamableHttp', url };
-    writeJson(p, cfg);
-}
-
-function deregisterWindsurf() {
-    const p = windsurfConfigPath();
-    if (!fs.existsSync(p)) return;
-    const cfg = readJson(p);
-    if (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]) {
-        delete cfg.mcpServers[SERVER_KEY];
-        writeJson(p, cfg);
-    }
-}
-
-/**
- * Codex CLI — uses TOML: [mcp_servers.cpq-bml] / url = "..."
- */
-function registerCodex(url) {
-    const p = codexConfigPath();
-    const raw = readToml(p);
-    const updated = upsertTomlMcpServer(raw, SERVER_KEY, url);
-    fs.mkdirSync(path.dirname(p), { recursive: true });
-    fs.writeFileSync(p, updated, 'utf8');
-}
-
-function deregisterCodex() {
-    const p = codexConfigPath();
-    if (!fs.existsSync(p)) return;
-    const raw = readToml(p);
-    const updated = removeTomlMcpServer(raw, SERVER_KEY);
-    fs.writeFileSync(p, updated, 'utf8');
-}
+const {
+    SERVER_KEY,
+    antigravityConfigPath,
+    claudeDesktopConfigPath,
+    claudeCodeConfigPath,
+    chatgptConfigPaths,
+    cursorConfigPath,
+    cursorWorkspaceConfigPath,
+    vscodeWorkspaceConfigPath,
+    windsurfConfigPath,
+    codexConfigPath,
+    readJson,
+    readToml,
+    registerAntigravity,
+    deregisterAntigravity,
+    registerClaudeDesktop,
+    deregisterClaudeDesktop,
+    registerClaudeCode,
+    deregisterClaudeCode,
+    registerChatGPT,
+    deregisterChatGPT,
+    registerCursor,
+    deregisterCursor,
+    registerCursorWorkspace,
+    deregisterCursorWorkspace,
+    registerVsCodeWorkspace,
+    deregisterVsCodeWorkspace,
+    registerWindsurf,
+    deregisterWindsurf,
+    registerCodex,
+    deregisterCodex,
+} = require('./clientRegistrars');
 
 function getMcpPortFromSettings(fallbackPort = 47821) {
     try {
@@ -404,8 +92,6 @@ function isToolAvailable(toolKey, workspaceRoot, forceAll = false) {
             return false;
     }
 }
-
-// ─── Public API ────────────────────────────────────────────────────────────────
 
 /**
  * Registers the CPQ-BML MCP server across all supported AI desktop apps and IDEs.
@@ -497,11 +183,97 @@ function deregisterMcpFromAllTools(workspaceRoot) {
     return { deregistered, errors };
 }
 
+function isToolRegistered(toolKey, workspaceRoot) {
+    try {
+        switch (toolKey) {
+            case 'antigravity': {
+                const cfg = readJson(antigravityConfigPath());
+                return !!(cfg.mcpServers && cfg.mcpServers[SERVER_KEY]);
+            }
+            case 'claudeDesktop': {
+                const cfg = readJson(claudeDesktopConfigPath());
+                return !!(cfg.mcpServers && cfg.mcpServers[SERVER_KEY]);
+            }
+            case 'claudeCode': {
+                const cfg = readJson(claudeCodeConfigPath());
+                return !!(cfg.mcpServers && cfg.mcpServers[SERVER_KEY]);
+            }
+            case 'chatgpt': {
+                return chatgptConfigPaths().some(p => {
+                    const cfg = readJson(p);
+                    return !!(cfg.mcpServers && cfg.mcpServers[SERVER_KEY]);
+                });
+            }
+            case 'cursor': {
+                const cfg = readJson(cursorConfigPath());
+                return !!(cfg.mcpServers && cfg.mcpServers[SERVER_KEY]);
+            }
+            case 'cursorWs': {
+                const p = cursorWorkspaceConfigPath(workspaceRoot);
+                if (!p) return false;
+                const cfg = readJson(p);
+                return !!(cfg.mcpServers && cfg.mcpServers[SERVER_KEY]);
+            }
+            case 'vscodeWs': {
+                const p = vscodeWorkspaceConfigPath(workspaceRoot);
+                if (!p) return false;
+                const cfg = readJson(p);
+                return !!((cfg.servers && cfg.servers[SERVER_KEY]) || (cfg.mcpServers && cfg.mcpServers[SERVER_KEY]));
+            }
+            case 'windsurf': {
+                const cfg = readJson(windsurfConfigPath());
+                return !!(cfg.mcpServers && cfg.mcpServers[SERVER_KEY]);
+            }
+            case 'codex': {
+                const raw = readToml(codexConfigPath());
+                return raw.includes(`[mcp_servers.${SERVER_KEY}]`);
+            }
+            default:
+                return false;
+        }
+    } catch {
+        return false;
+    }
+}
+
+/**
+ * Returns the status of all supported AI assistants on this machine.
+ *
+ * @param {string} [workspaceRoot]
+ * @returns {Array<{ key: string, name: string, installed: boolean, registered: boolean, configPath: string }>}
+ */
+function getAiToolsStatus(workspaceRoot) {
+    const tools = [
+        { key: 'antigravity', name: 'Google Gemini & Antigravity IDE', path: antigravityConfigPath() },
+        { key: 'claudeDesktop', name: 'Claude Desktop', path: claudeDesktopConfigPath() },
+        { key: 'claudeCode', name: 'Claude Code', path: claudeCodeConfigPath() },
+        { key: 'chatgpt', name: 'ChatGPT Desktop', path: chatgptConfigPaths()[0] },
+        { key: 'cursor', name: 'Cursor (Global)', path: cursorConfigPath() },
+        { key: 'windsurf', name: 'Windsurf', path: windsurfConfigPath() },
+        { key: 'codex', name: 'Codex CLI', path: codexConfigPath() },
+    ];
+
+    if (workspaceRoot) {
+        tools.push({ key: 'cursorWs', name: 'Cursor (Workspace)', path: cursorWorkspaceConfigPath(workspaceRoot) });
+        tools.push({ key: 'vscodeWs', name: 'VS Code & Copilot (Workspace)', path: vscodeWorkspaceConfigPath(workspaceRoot) });
+    }
+
+    return tools.map((t) => ({
+        key: t.key,
+        name: t.name,
+        installed: isToolAvailable(t.key, workspaceRoot, false),
+        registered: isToolRegistered(t.key, workspaceRoot),
+        configPath: t.path || '',
+    }));
+}
+
 module.exports = {
     registerMcpWithAllTools,
     deregisterMcpFromAllTools,
     getMcpPortFromSettings,
     isToolAvailable,
+    isToolRegistered,
+    getAiToolsStatus,
     antigravityConfigPath,
     claudeDesktopConfigPath,
     claudeCodeConfigPath,

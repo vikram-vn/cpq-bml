@@ -27,12 +27,28 @@ function registerMcp(context) {
         };
     };
 
+    let statusBarItem = null;
+    if (vscode.window && typeof vscode.window.createStatusBarItem === 'function') {
+        statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+        statusBarItem.command = 'cpqBml.mcp.showInfo';
+        context.subscriptions.push(statusBarItem);
+    }
+
     const ensureStarted = async () => {
         const { enable, port } = getSettings();
-        if (!enable) return { started: false, reason: 'cpqBml.mcp.enable is false' };
+        if (!enable) {
+            if (statusBarItem) statusBarItem.hide();
+            return { started: false, reason: 'cpqBml.mcp.enable is false' };
+        }
         try {
             const result = await startMcpServer(context, vscode, port);
             logMcpServerEvent(`MCP server started on port ${result.port}`);
+
+            if (statusBarItem) {
+                statusBarItem.text = `$(server) MCP:${result.port}`;
+                statusBarItem.tooltip = `CPQ-BML MCP Server active on port ${result.port}. Click to show details.`;
+                statusBarItem.show();
+            }
 
             // Auto-register with all AI tools (idempotent — safe to call on every start)
             try {
@@ -55,6 +71,57 @@ function registerMcp(context) {
         } catch (err) {
             console.error('MCP SERVER START ERROR:', err);
             logMcpServerEvent(`MCP server failed to start: ${err && err.message ? err.message : String(err)}`);
+
+            if (err && (err.code === 'EADDRINUSE' || String(err).includes('EADDRINUSE'))) {
+                // Zero-touch automatic port recovery: probe consecutive ports
+                let recovered = null;
+                for (let nextPort = port + 1; nextPort <= port + 5; nextPort++) {
+                    try {
+                        const rec = await startMcpServer(context, vscode, nextPort);
+                        recovered = rec;
+                        break;
+                    } catch {
+                        // continue searching
+                    }
+                }
+
+                if (recovered) {
+                    logMcpServerEvent(`Port ${port} was busy. Auto-recovered on port ${recovered.port}`);
+                    vscode.workspace.getConfiguration('cpqBml').update('mcp.port', recovered.port, vscode.ConfigurationTarget.Global);
+                    if (statusBarItem) {
+                        statusBarItem.text = `$(server) MCP:${recovered.port}`;
+                        statusBarItem.tooltip = `CPQ-BML MCP Server auto-recovered on port ${recovered.port}.`;
+                        statusBarItem.show();
+                    }
+                    if (vscode.window && typeof vscode.window.showInformationMessage === 'function') {
+                        vscode.window.showInformationMessage(`CPQ-BML: MCP port ${port} was busy. Automatically bound to port ${recovered.port}.`);
+                    }
+                    try {
+                        const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+                            ? vscode.workspace.workspaceFolders[0].uri.fsPath
+                            : null;
+                        registerMcpWithAllTools(recovered.port, wsRoot);
+                    } catch {}
+                    return { started: true, port: recovered.port };
+                }
+
+                if (statusBarItem) {
+                    statusBarItem.text = `$(warning) MCP: Port ${port} Busy`;
+                    statusBarItem.tooltip = `Port ${port} is currently in use. Click to troubleshoot.`;
+                    statusBarItem.show();
+                }
+                if (vscode.window && typeof vscode.window.showWarningMessage === 'function') {
+                    vscode.window.showWarningMessage(
+                        `CPQ-BML: MCP port ${port} is in use and auto-recovery could not find a free port.`,
+                        'Open Settings'
+                    ).then(choice => {
+                        if (choice === 'Open Settings') {
+                            vscode.commands.executeCommand('workbench.action.openSettings', 'cpqBml.mcp.port');
+                        }
+                    });
+                }
+            }
+
             return { started: false, reason: err && err.message ? err.message : String(err) };
         }
     };
@@ -62,6 +129,10 @@ function registerMcp(context) {
     const ensureStopped = () => {
         stopMcpServer();
         logMcpServerEvent('MCP server stopped');
+
+        if (statusBarItem) {
+            statusBarItem.hide();
+        }
 
         // Remove cpq-bml entry from all AI tool global configs
         try {

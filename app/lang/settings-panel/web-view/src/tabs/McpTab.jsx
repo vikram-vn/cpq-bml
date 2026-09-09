@@ -1,26 +1,19 @@
 import { useState, useEffect } from 'react';
 import Switch from '../components/Switch';
-import { IconMcp, IconFeatures, IconSync, IconCheck, IconDelete } from '../components/Icons';
+import { IconMcp, IconSync } from '../components/Icons';
 import McpHealthBadge from '../components/McpHealthBadge';
 import Pill from '../components/Pill';
-
-const BML_SKILLS = [
-    { name: 'bml-language', title: 'Language', desc: 'Core syntax, types & built-ins' },
-    { name: 'bml-pitfalls', title: 'Pitfalls', desc: 'Anti-patterns & traps' },
-    { name: 'cpq-domain', title: 'Domain', desc: 'Commerce, Config & BOM' },
-    { name: 'bml-db-access', title: 'BMQL & DB', desc: 'Queries & Data Tables' },
-    { name: 'bml-json-dict', title: 'JSON & Dict', desc: 'Data structures manipulation' },
-    { name: 'bml-web-services', title: 'Web Services', desc: 'REST, SOAP & XML calls' },
-    { name: 'bml-editor-workflow', title: 'Editor Flow', desc: 'Libraries & editor calls' },
-    { name: 'cpq-rest-api', title: 'REST API', desc: 'Queries, sorting & paging' },
-];
+import McpClientsCard from './mcp/McpClientsCard';
+import McpSkillsCard from './mcp/McpSkillsCard';
+import McpDiagnosticsCard from './mcp/McpDiagnosticsCard';
+import McpTrafficCard from './mcp/McpTrafficCard';
 
 export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateField, vscodeApi }) {
     if (!active) return null;
 
     const isEnabled = !!mcp.enable;
     const rawPort = drafts['mcp.port'] !== undefined ? drafts['mcp.port'] : (mcp.port || 47821);
-    const numPort = Number(rawPort);
+    const numPort = Number(rawPort) || 47821;
     const isDefaultPort = numPort === 47821;
     const isPrivileged = numPort > 0 && numPort < 1024;
     const isOutOfRange = numPort < 1 || numPort > 65535;
@@ -29,6 +22,20 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
     const [isDeregistering, setIsDeregistering] = useState(false);
     const [isSyncingSkills, setIsSyncingSkills] = useState(false);
     const [actionFeedback, setActionFeedback] = useState(null);
+    const [copiedSnippet, setCopiedSnippet] = useState(null);
+    const [pingStatus, setPingStatus] = useState(null);
+    const [isPinging, setIsPinging] = useState(false);
+    const [traffic, setTraffic] = useState([]);
+    const [diagnostics, setDiagnostics] = useState(null);
+    const [isRunningDiagnostics, setIsRunningDiagnostics] = useState(false);
+
+    const aiTools = mcp.tools || [];
+
+    useEffect(() => {
+        if (vscodeApi && isEnabled) {
+            vscodeApi.postMessage({ type: 'getMcpTraffic' });
+        }
+    }, [isEnabled, vscodeApi]);
 
     useEffect(() => {
         const handler = (event) => {
@@ -58,6 +65,17 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     tone: data.success ? 'success' : 'warning',
                     text: `Synced ${data.synced || 0} BML skills to IDE assistant`
                 });
+            } else if (data.type === 'mcpHealth') {
+                setIsPinging(false);
+                setPingStatus({
+                    healthy: data.healthy,
+                    message: data.healthy ? `Healthy - active on port ${data.port}` : 'Server stopped',
+                });
+            } else if (data.type === 'mcpTraffic') {
+                setTraffic(data.traffic || []);
+            } else if (data.type === 'aiDiagnosticsResult') {
+                setIsRunningDiagnostics(false);
+                setDiagnostics(data);
             }
         };
         window.addEventListener('message', handler);
@@ -82,6 +100,58 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
         vscodeApi.postMessage({ type: 'syncBmlSkills' });
     };
 
+    const handleRefreshTraffic = () => {
+        if (vscodeApi) {
+            vscodeApi.postMessage({ type: 'getMcpTraffic' });
+        }
+    };
+
+    const handleClearTraffic = () => {
+        if (vscodeApi) {
+            vscodeApi.postMessage({ type: 'clearMcpTraffic' });
+        }
+    };
+
+    const handleRunDiagnostics = () => {
+        if (!vscodeApi || isRunningDiagnostics) return;
+        setIsRunningDiagnostics(true);
+        vscodeApi.postMessage({ type: 'runAiDiagnostics' });
+    };
+
+    const handleTestHealth = async () => {
+        setIsPinging(true);
+        try {
+            const res = await fetch(`http://127.0.0.1:${numPort}/health`);
+            if (res.ok) {
+                const json = await res.json();
+                setPingStatus({
+                    healthy: true,
+                    message: `200 OK — ${json.service} (v${json.version || '1.87.0'}) running on port ${numPort}`,
+                });
+            } else {
+                setPingStatus({
+                    healthy: false,
+                    message: `HTTP ${res.status}: ${res.statusText}`,
+                });
+            }
+        } catch (err) {
+            setPingStatus({
+                healthy: false,
+                message: `Connection failed: ${err.message || 'Server not reachable'}`,
+            });
+        } finally {
+            setIsPinging(false);
+        }
+    };
+
+    const copyToClipboard = (text, key) => {
+        if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text);
+            setCopiedSnippet(key);
+            setTimeout(() => setCopiedSnippet(null), 2500);
+        }
+    };
+
     return (
         <div className="tab-content active">
             <section className="card">
@@ -90,7 +160,31 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                     MCP (Model Context Protocol) Server
                 </h2>
                 <p className="card-desc">Exposes a local Model Context Protocol server on this machine.</p>
-                <McpHealthBadge healthy={isEnabled} />
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '14px' }}>
+                    <McpHealthBadge healthy={isEnabled} />
+
+                    {isEnabled && (
+                        <button
+                            type="button"
+                            className="secondary"
+                            onClick={handleTestHealth}
+                            disabled={isPinging}
+                            style={{ padding: '3px 10px', fontSize: '0.85em' }}
+                        >
+                            <span className={isPinging ? 'spinner' : ''} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                <IconSync />
+                            </span>
+                            {isPinging ? 'Testing...' : 'Test Local Connection'}
+                        </button>
+                    )}
+
+                    {pingStatus && (
+                        <Pill tone={pingStatus.healthy ? 'success' : 'error'}>
+                            {pingStatus.message}
+                        </Pill>
+                    )}
+                </div>
 
                 <Switch
                     id="mcpEnable"
@@ -148,94 +242,34 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
 
             {isEnabled && (
                 <>
-                    <section className="card" style={{ marginTop: '20px' }}>
-                        <h2>
-                            <IconFeatures />
-                            BML Skills
-                        </h2>
-                        <p className="card-desc">
-                            Synchronizes CPQ BML language rules, BMQL syntax, and domain guidance into your AI IDE assistant skills.
-                        </p>
+                    <McpClientsCard
+                        aiTools={aiTools}
+                        isRegistering={isRegistering}
+                        isDeregistering={isDeregistering}
+                        actionFeedback={actionFeedback}
+                        handleRegisterMcp={handleRegisterMcp}
+                        handleDeregisterMcp={handleDeregisterMcp}
+                        numPort={numPort}
+                        copiedSnippet={copiedSnippet}
+                        copyToClipboard={copyToClipboard}
+                    />
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '8px', margin: '14px 0' }}>
-                            {BML_SKILLS.map((s) => (
-                                <div
-                                    key={s.name}
-                                    style={{
-                                        border: '1px solid var(--vscode-widget-border, #333)',
-                                        borderRadius: '4px',
-                                        padding: '8px 10px',
-                                        background: 'var(--vscode-editor-background, rgba(0,0,0,0.1))'
-                                    }}
-                                >
-                                    <div style={{ fontWeight: 600, fontSize: '0.85em', color: 'var(--vscode-foreground)' }}>
-                                        {s.name}
-                                    </div>
-                                    <div style={{ fontSize: '0.75em', color: 'var(--vscode-descriptionForeground)', marginTop: '2px' }}>
-                                        {s.desc}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                    <McpSkillsCard
+                        isSyncingSkills={isSyncingSkills}
+                        handleSyncSkills={handleSyncSkills}
+                    />
 
-                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '12px' }}>
-                            <button
-                                type="button"
-                                onClick={handleSyncSkills}
-                                disabled={isSyncingSkills}
-                            >
-                                <span className={isSyncingSkills ? 'spinner' : ''} style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                    <IconSync />
-                                </span>
-                                {isSyncingSkills ? 'Syncing BML Skills...' : 'Sync BML Skills to IDE'}
-                            </button>
-                        </div>
-                    </section>
+                    <McpDiagnosticsCard
+                        diagnostics={diagnostics}
+                        isRunningDiagnostics={isRunningDiagnostics}
+                        handleRunDiagnostics={handleRunDiagnostics}
+                    />
 
-                    <section className="card" style={{ marginTop: '20px' }}>
-                        <h2>
-                            <IconMcp />
-                            MCP Registration in Native AIs
-                        </h2>
-                        <p className="card-desc">
-                            Register or deregister this local MCP server across detected AI desktop applications and IDEs (Google Gemini / Antigravity, Claude Desktop &amp; Code, ChatGPT, Cursor, Windsurf, Codex CLI, VS Code / Copilot). Tools not found on this machine are safely skipped.
-                        </p>
-
-                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginTop: '14px' }}>
-                            <button
-                                type="button"
-                                onClick={handleRegisterMcp}
-                                disabled={isRegistering}
-                            >
-                                <span className={isRegistering ? 'spinner' : ''} style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                    <IconCheck />
-                                </span>
-                                {isRegistering ? 'Registering...' : 'Register MCP in Native AIs'}
-                            </button>
-
-                            <button
-                                type="button"
-                                className="secondary"
-                                onClick={handleDeregisterMcp}
-                                disabled={isDeregistering}
-                            >
-                                <span className={isDeregistering ? 'spinner' : ''} style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                    <IconDelete />
-                                </span>
-                                {isDeregistering ? 'Deregistering...' : 'Deregister MCP'}
-                            </button>
-                        </div>
-
-                        <div style={{ marginTop: '12px', fontSize: '0.8em', color: 'var(--vscode-descriptionForeground)' }}>
-                            Server Endpoint: <code style={{ color: 'var(--vscode-textLink-foreground, #3794ff)' }}>http://127.0.0.1:{rawPort}/mcp</code>
-                        </div>
-
-                        {actionFeedback && (
-                            <div style={{ marginTop: '10px' }}>
-                                <Pill tone={actionFeedback.tone}>{actionFeedback.text}</Pill>
-                            </div>
-                        )}
-                    </section>
+                    <McpTrafficCard
+                        traffic={traffic}
+                        handleRefreshTraffic={handleRefreshTraffic}
+                        handleClearTraffic={handleClearTraffic}
+                    />
                 </>
             )}
         </div>

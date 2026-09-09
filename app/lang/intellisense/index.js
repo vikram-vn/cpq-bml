@@ -20,119 +20,11 @@ const {
     CATEGORY_KIND
 } = require('./apiData');
 
-let cachedGlobalItems = null;
-let cachedTransactionItems = null;
-let cachedLineItems = null;
-let cachedSystemItems = null;
-let cachedArraySetItems = null;
-let cachedCpqjsItems = null;
-let cachedConfigItems = null;
-let cachedAllAttributes = null;
-
-/**
- * Builds the categorized completion item lists once per data generation.
- */
-function buildCategorizedItems() {
-    cachedGlobalItems = [];
-    cachedTransactionItems = [];
-    cachedLineItems = [];
-    cachedSystemItems = [];
-    cachedArraySetItems = [];
-    cachedConfigItems = [];
-    cachedCpqjsItems = [];
-    cachedAllAttributes = [];
-
-    const cpqjsItem = new vscode.CompletionItem('CPQJS', vscode.CompletionItemKind.Class);
-    cpqjsItem.detail = 'CPQJS API Object';
-    cpqjsItem.insertText = 'CPQJS';
-    cachedGlobalItems.push(cpqjsItem);
-
-    Object.entries(getBmlApiData()).forEach(([key, info]) => {
-        const syntax = info.syntax || info.name;
-
-        if (key.startsWith('cpqjs.')) {
-            const strippedName = info.name.replace(/^CPQJS\./i, '');
-            const strippedSyntax = syntax.replace(/^CPQJS\./i, '');
-            const strippedKey = key.replace(/^cpqjs\./i, '');
-
-            const item = new vscode.CompletionItem(strippedName, vscode.CompletionItemKind.Method);
-            item.detail = syntax;
-            item.insertText = new vscode.SnippetString(strippedSyntax);
-            item.filterText = strippedKey;
-            item.sortText = `1_${strippedKey}`;
-            cachedCpqjsItems.push(item);
-            return;
-        }
-
-        if (info.category === 'attribute') {
-            const attrName = (info.name || key).replace(/^util\./i, '');
-            const cleanSyntax = (syntax || attrName).replace(/^util\./i, '');
-            const cleanKey = key.replace(/^util\./i, '');
-            const cleanScope = (info.scope || '').replace(/^util\./i, '').trim();
-
-            const isSynced = (info.source === 'workspace-cache');
-
-            const item = new vscode.CompletionItem(attrName, vscode.CompletionItemKind.Property);
-            item.detail = isSynced ? `${cleanSyntax} (Synced)` : cleanSyntax;
-            item.insertText = new vscode.SnippetString(cleanSyntax);
-            item.filterText = cleanKey;
-            // First preference to synced attributes (0_), fallback to extension baseline attributes (4_)
-            item.sortText = isSynced ? `0_${cleanKey}` : `4_${cleanKey}`;
-
-            item.documentation = formatAsJsDoc(info);
-
-            cachedAllAttributes.push(item);
-
-            if (cleanScope === 'Transaction') {
-                cachedTransactionItems.push(item);
-                cachedGlobalItems.push(item);
-            } else if (cleanScope === 'Line Item') {
-                cachedLineItems.push(item);
-            } else if (cleanScope === 'System') {
-                cachedSystemItems.push(item);
-                cachedGlobalItems.push(item);
-            } else if (cleanScope === 'Array Set' || info.dataType === 'Array Set') {
-                cachedArraySetItems.push(item);
-            } else if (cleanScope === 'Configuration' || cleanScope === 'Model' || cleanScope === 'Product Family') {
-                cachedConfigItems.push(item);
-                cachedGlobalItems.push(item);
-            } else {
-                cachedGlobalItems.push(item);
-            }
-            return;
-        }
-
-        let kind = CATEGORY_KIND[info.category] || vscode.CompletionItemKind.Text;
-        let sortGroup = '2_';
-        if (info.scope === 'CPQ Constant') {
-            kind = vscode.CompletionItemKind.Constant;
-            sortGroup = '3_';
-        } else if (info.category === 'variable') {
-            sortGroup = '1_';
-        }
-
-        const isControlFlow = key.startsWith('if') || key.startsWith('for') || key === 'break' || key === 'continue' || key === 'return' || (info.functionCategory && info.functionCategory.toLowerCase() === 'logical');
-        if (isControlFlow) {
-            kind = vscode.CompletionItemKind.Snippet;
-        }
-
-        const item = new vscode.CompletionItem(info.name, kind);
-        item.detail = syntax;
-        item.insertText = new vscode.SnippetString(syntax);
-        item.filterText = key;
-        item.sortText = `${sortGroup}${key}`;
-        item.documentation = formatAsJsDoc(info);
-
-        if (info.category === 'function' && !isControlFlow) {
-            item.command = {
-                command: 'editor.action.triggerParameterHints',
-                title: 'Trigger Parameter Hints'
-            };
-        }
-
-        cachedGlobalItems.push(item);
-    });
-}
+const {
+    buildCategorizedItems,
+    getCategorizedItems,
+    invalidateCategorizedItems,
+} = require('./categorizedItems');
 
 /**
  * Detects variables used in a for loop iterating over transaction lines in the document.
@@ -199,16 +91,20 @@ function registerBmlIntelliSense(context) {
     const apiFilesWatcher = vscode.workspace.createFileSystemWatcher(
         path.join(context.extensionPath, 'app', 'lang', 'intellisense', '*.json*')
     );
-    apiFilesWatcher.onDidChange(invalidateApiData);
-    apiFilesWatcher.onDidCreate(invalidateApiData);
-    apiFilesWatcher.onDidDelete(invalidateApiData);
+    const onCacheInvalidated = () => {
+        invalidateApiData();
+        invalidateCategorizedItems();
+    };
+    apiFilesWatcher.onDidChange(onCacheInvalidated);
+    apiFilesWatcher.onDidCreate(onCacheInvalidated);
+    apiFilesWatcher.onDidDelete(onCacheInvalidated);
     context.subscriptions.push(apiFilesWatcher);
 
     // Watch workspace .cpq cache files to immediately reflect synced metadata
     const cpqCacheWatcher = vscode.workspace.createFileSystemWatcher('**/.cpq/**');
-    cpqCacheWatcher.onDidChange(invalidateApiData);
-    cpqCacheWatcher.onDidCreate(invalidateApiData);
-    cpqCacheWatcher.onDidDelete(invalidateApiData);
+    cpqCacheWatcher.onDidChange(onCacheInvalidated);
+    cpqCacheWatcher.onDidCreate(onCacheInvalidated);
+    cpqCacheWatcher.onDidDelete(onCacheInvalidated);
     context.subscriptions.push(cpqCacheWatcher);
 
     const completionProvider = vscode.languages.registerCompletionItemProvider(
@@ -220,9 +116,7 @@ function registerBmlIntelliSense(context) {
                     return null;
                 }
                 loadApiData(context); // no-op unless the watcher invalidated the cache
-                if (!cachedGlobalItems) {
-                    buildCategorizedItems();
-                }
+                const cat = getCategorizedItems();
 
                 // Check if typing $ for BMQL variable substitution
                 const bmqlVarItems = getBmqlVariableCompletions(document, position);
@@ -249,15 +143,15 @@ function registerBmlIntelliSense(context) {
                     const lineVars = getTransactionLineLoopVariables(document);
 
                     if (objName === 'cpqjs') {
-                        return cachedCpqjsItems;
+                        return cat.cpqjsItems;
                     } else if (lineVars.has(objName)) {
-                        return cachedLineItems;
+                        return cat.lineItems;
                     } else if (objName === 'transaction' || objName === 'trans' || objName === 't') {
-                        return cachedTransactionItems;
+                        return cat.transactionItems;
                     } else if (objName === 'arrayset' || objName === 'arraysets' || objName === 'arr' || objName === 'a') {
-                        return cachedArraySetItems;
+                        return cat.arraySetItems;
                     } else if (objName === 'config' || objName === 'cfg' || objName === 'model') {
-                        return cachedConfigItems;
+                        return cat.configItems;
                     } else {
                         return [];
                     }
@@ -268,10 +162,10 @@ function registerBmlIntelliSense(context) {
                 // General completion: merge local script variables with global API items
                 const localVars = getLocalVariableCompletions(document, position);
                 if (localVars && localVars.length > 0) {
-                    return [...localVars, ...cachedGlobalItems];
+                    return [...localVars, ...cat.globalItems];
                 }
 
-                return cachedGlobalItems;
+                return cat.globalItems;
             },
             resolveCompletionItem(item, token) {
                 if (token && token.isCancellationRequested) return item;

@@ -228,6 +228,28 @@ function register(server, context, vscode, tools) {
     },
     async (args) => jsonResult(await tools.syncConfigurationAttributes(context, vscode, args)),
   );
+
+  server.registerTool(
+    "list_datatables",
+    {
+      description:
+        "List all available Oracle CPQ Data Tables on the active environment. Useful for discovering tables before writing BMQL queries.",
+      inputSchema: {},
+    },
+    async (args) => jsonResult(await tools.listDataTables(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "get_datatable_schema",
+    {
+      description:
+        "Fetch column names, data types, and primary key status for a specific Oracle CPQ Data Table. Enables writing precise BMQL SELECT queries with accurate column names.",
+      inputSchema: {
+        tableName: z.string().describe("The name of the Data Table to inspect."),
+      },
+    },
+    async (args) => jsonResult(await tools.getDataTableSchema(context, vscode, args)),
+  );
 }
 
 module.exports = { register };

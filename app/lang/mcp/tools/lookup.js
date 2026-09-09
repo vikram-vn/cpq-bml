@@ -337,6 +337,126 @@ async function syncConfigurationAttributes(context, vscode, args, transport) {
     };
 }
 
+async function listDataTables(context, vscode, args, transport) {
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    writeRunHeader(terminal, 'List Data Tables', 'allDataTables');
+    terminal.show();
+
+    try {
+        const { statusCode, body } = await api.dispatch(
+            context,
+            vscode,
+            'GET',
+            '/dataTables',
+            { limit: 1000 },
+            undefined,
+            transport,
+        );
+
+        if (!isSuccess(statusCode)) {
+            return {
+                success: true,
+                count: 0,
+                dataTables: [],
+                message: `Data Tables endpoint responded with HTTP ${statusCode}.`,
+                log: getLines(),
+            };
+        }
+
+        const items = (body && body.items) || [];
+        return {
+            success: true,
+            count: items.length,
+            dataTables: items.map(t => ({
+                name: t.name || t.variableName,
+                description: t.description || '',
+                folder: t.folder || '',
+            })),
+            log: getLines(),
+        };
+    } catch (err) {
+        return {
+            success: false,
+            error: err && err.message ? err.message : String(err),
+            log: getLines(),
+        };
+    }
+}
+
+async function getDataTableSchema(context, vscode, args, transport) {
+    const tableName = args && args.tableName ? args.tableName : '';
+    if (!tableName) {
+        return { success: false, error: 'tableName parameter is required' };
+    }
+
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    writeRunHeader(terminal, 'Get Data Table Schema', tableName);
+    terminal.show();
+
+    try {
+        const { statusCode, body } = await api.dispatch(
+            context,
+            vscode,
+            'GET',
+            `/dataTables/${encodeURIComponent(tableName)}/schema`,
+            {},
+            undefined,
+            transport,
+        );
+
+        if (!isSuccess(statusCode)) {
+            const defRes = await api.dispatch(
+                context,
+                vscode,
+                'GET',
+                `/dataTables/${encodeURIComponent(tableName)}`,
+                {},
+                undefined,
+                transport,
+            );
+            if (isSuccess(defRes.statusCode) && defRes.body) {
+                const columns = (defRes.body.columns || []).map(c => ({
+                    name: c.name || c.variableName,
+                    type: c.type || c.dataType || 'string',
+                    isKey: !!c.isKey,
+                    description: c.description || '',
+                }));
+                return {
+                    success: true,
+                    tableName,
+                    columns,
+                    log: getLines(),
+                };
+            }
+            return {
+                success: false,
+                error: `Failed to retrieve schema for data table "${tableName}" (HTTP ${statusCode}).`,
+                log: getLines(),
+            };
+        }
+
+        const columns = ((body && body.columns) || []).map(c => ({
+            name: c.name || c.variableName,
+            type: c.type || c.dataType || 'string',
+            isKey: !!c.isKey,
+            description: c.description || '',
+        }));
+
+        return {
+            success: true,
+            tableName,
+            columns,
+            log: getLines(),
+        };
+    } catch (err) {
+        return {
+            success: false,
+            error: err && err.message ? err.message : String(err),
+            log: getLines(),
+        };
+    }
+}
+
 module.exports = {
     listUtilFunctions,
     listCommerceFunctions,
@@ -350,5 +470,7 @@ module.exports = {
     lookupAttribute: lookupCommerceAttribute,
     syncCommerceAttributes,
     syncConfigurationAttributes,
+    listDataTables,
+    getDataTableSchema,
 };
 

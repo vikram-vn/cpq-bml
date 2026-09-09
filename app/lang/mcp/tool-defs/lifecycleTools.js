@@ -206,6 +206,19 @@ function register(server, context, vscode, tools) {
     async (args) =>
       jsonResult(await tools.resetAiCopy(context, vscode, args)),
   );
+
+  server.registerTool(
+    "audit_bml_code",
+    {
+      description:
+        "Audits a BML code snippet or function body for critical security vulnerabilities, BMQL injection risks, " +
+        "queries in loops, memory exhaustion, and CPQ anti-patterns. Returns score (0-100), issues list with line numbers, and actionable suggestions.",
+      inputSchema: {
+        code: z.string().describe("The BML source code to audit."),
+      },
+    },
+    async (args) => jsonResult(tools.auditBmlCode(args)),
+  );
 }
 
 module.exports = { register };
