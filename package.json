@@ -21,6 +21,9 @@
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
+  "bin": {
+    "cpq-bml": "./bin/cpq-bml.js"
+  },
   "contributes": {
     "mcpServerDefinitionProviders": [
       {
@@ -128,6 +131,18 @@
     ],
     "snippets": [],
     "commands": [
+      {
+        "command": "cpqBml.switchEnvironment",
+        "title": "CPQ-BML: Switch Active CPQ Environment"
+      },
+      {
+        "command": "cpqBml.exportTeamProfiles",
+        "title": "CPQ-BML: Export Team Profiles (.cpq/profiles.json)"
+      },
+      {
+        "command": "cpqBml.importTeamProfiles",
+        "title": "CPQ-BML: Import Team Profiles"
+      },
       {
         "command": "cpqBml.activateIconTheme",
         "title": "CPQ-BML: Activate BML Material Icon Theme"
@@ -529,6 +544,7 @@
     }
   },
   "scripts": {
+    "audit": "node ./bin/cpq-bml.js audit .",
     "compile": "node scripts/build/compile.js",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
     "vscode:prepublish": "node scripts/build/compile.js --production",

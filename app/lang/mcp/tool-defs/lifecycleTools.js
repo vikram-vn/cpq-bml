@@ -219,6 +219,20 @@ function register(server, context, vscode, tools) {
     },
     async (args) => jsonResult(tools.auditBmlCode(args)),
   );
+
+  server.registerTool(
+    "validate_bmql_query",
+    {
+      description:
+        "Validates a BMQL query offline against Oracle CPQ BMQL syntax standards, " +
+        "detects SQL injection risks, unsupported SQL keywords (JOIN, GROUP BY, aggregates), " +
+        "and extracts tables, columns, where clauses, and parameterized variables with detailed explanations.",
+      inputSchema: {
+        query: z.string().describe("The BMQL SELECT query string to validate."),
+      },
+    },
+    async (args) => jsonResult(tools.validateBmqlQuery(args)),
+  );
 }
 
 module.exports = { register };

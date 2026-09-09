@@ -11,6 +11,8 @@ const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
 const { resolveParameterCompletions } = require('./paramCompletions');
 const { registerInlayHintsProvider } = require('./inlayHints');
 const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('./bmqlVariableCompletions');
+const { createDefinitionProvider } = require('./definitionProvider');
+const { createReferenceProvider } = require('./referenceProvider');
 
 const {
     loadApiData,
@@ -264,54 +266,11 @@ function registerBmlIntelliSense(context) {
     context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
 
     // ── Go to Definition ─────────────────────────────────────────────────────
-    const definitionProvider = vscode.languages.registerDefinitionProvider('bml', {
-        provideDefinition(document, position, token) {
-            if (token && token.isCancellationRequested) return null;
-            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
-                return null;
-            }
-            const call = resolveCallAtPosition(document, position);
-            if (!call) return null;
-            const entry = getWorkspaceIndex().get(call.qualifiedName);
-            if (!entry) return null;
-            const uri = vscode.Uri.file(entry.filePath);
-            const loc = new vscode.Location(uri, new vscode.Position(entry.line, 0));
-            return loc;
-        }
-    });
+    const definitionProvider = vscode.languages.registerDefinitionProvider('bml', createDefinitionProvider());
     context.subscriptions.push(definitionProvider);
 
     // ── Find All References ───────────────────────────────────────────────────
-    const referenceProvider = vscode.languages.registerReferenceProvider('bml', {
-        async provideReferences(document, position, contextOptions, token) {
-            if (token && token.isCancellationRequested) return [];
-            if (!vscode.workspace.getConfiguration('cpqBml').get('features.intellisense', true)) {
-                return [];
-            }
-            const call = resolveCallAtPosition(document, position);
-            if (!call) return [];
-            const pattern = new RegExp(`\\b${call.prefix}\.${call.name}\\b`, 'g');
-            const uris = await vscode.workspace.findFiles('**/*.bml', '**/node_modules/**');
-            const locations = [];
-            for (const uri of uris) {
-                if (token && token.isCancellationRequested) return [];
-                let text;
-                try { text = fs.readFileSync(uri.fsPath, 'utf8'); } catch { continue; }
-                const lines = text.split(/\r?\n/);
-                for (let i = 0; i < lines.length; i++) {
-                    let m;
-                    pattern.lastIndex = 0;
-                    while ((m = pattern.exec(lines[i])) !== null) {
-                        locations.push(new vscode.Location(
-                            uri,
-                            new vscode.Range(i, m.index, i, m.index + m[0].length)
-                        ));
-                    }
-                }
-            }
-            return locations;
-        }
-    });
+    const referenceProvider = vscode.languages.registerReferenceProvider('bml', createReferenceProvider());
     context.subscriptions.push(referenceProvider);
 
     // ── Rename Symbol ─────────────────────────────────────────────────────────

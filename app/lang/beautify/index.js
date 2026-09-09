@@ -50,11 +50,14 @@ function computeMinimalEdits(document, formatted, range) {
     return [vscode.TextEdit.replace(new vscode.Range(startPos, endPos), replacement)];
 }
 
-// Register the beautifier
 function registerBeautifier(context) {
-    const selector = 'bml';
+    const selector = [
+        { language: 'bml' },
+        { pattern: '**/*.bml' },
+        { pattern: '**/*.util' }
+    ];
 
-    // Full document formatting
+    // Full document formatting (Shift+Alt+F)
     const fullDisposable = vscode.languages.registerDocumentFormattingEditProvider(selector, {
         async provideDocumentFormattingEdits(document, options, token) {
             if (token && token.isCancellationRequested) return [];
@@ -82,7 +85,26 @@ function registerBeautifier(context) {
         }
     });
 
-    context.subscriptions.push(fullDisposable, rangeDisposable);
+    // On-type formatting for ';' and '}'
+    const onTypeDisposable = vscode.languages.registerOnTypeFormattingEditProvider(
+        selector,
+        {
+            async provideOnTypeFormattingEdits(document, position, ch, options, token) {
+                if (token && token.isCancellationRequested) return [];
+                if (!vscode.workspace.getConfiguration('cpqBml').get('features.beautifier', true)) {
+                    return [];
+                }
+                const line = document.lineAt(position.line);
+                const formatted = await beautifyText(line.text, document, options);
+                if (token && token.isCancellationRequested) return [];
+                return computeMinimalEdits(document, formatted, line.range);
+            }
+        },
+        ';',
+        '}'
+    );
+
+    context.subscriptions.push(fullDisposable, rangeDisposable, onTypeDisposable);
 }
 
 module.exports = { registerBeautifier, computeMinimalEdits };

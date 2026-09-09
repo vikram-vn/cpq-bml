@@ -1,6 +1,8 @@
 const vscode = require('vscode');
 const { lintBMLCustom, reorderVisibleDiagnostics } = require('./core/lint');
 const { registerBmlCodeActions } = require('./core/codeActions');
+const { registerSecurityDiagnostics } = require('./securityDiagnostics');
+const { registerSecurityCodeActions } = require('./code-actions/securityCodeActions');
 const { loadDictionaries } = require('../spell-check/spelling');
 
 let diagnosticCollection;
@@ -116,6 +118,8 @@ function registerBmlLinter(context) {
 
     // register code actions
     registerBmlCodeActions(context);
+    registerSecurityDiagnostics(context);
+    registerSecurityCodeActions(context);
 }
 
 function deactivate() {

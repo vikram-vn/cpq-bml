@@ -13,6 +13,7 @@ const knowledgeTools = require("./tool-defs/knowledgeTools");
 const referenceTools = require("./tool-defs/referenceTools");
 const testingTools = require("./tool-defs/testingTools");
 const formattingTools = require("./tool-defs/formattingTools");
+const { registerResources } = require("./resources");
 const { recordMcpRequest } = require("./traffic");
 
 // Reads all SKILL.md files from app/ai/skills/ and concatenates them into a
@@ -196,6 +197,7 @@ async function startMcpServer(context, vscode, port) {
     );
     registerTools(requestServer, context, vscode);
     registerSkillsResourcesAndPrompts(requestServer, extensionPath);
+    registerResources(requestServer, context, vscode);
 
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
