@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.85.0] - 2026-09-09
+
+### Added
+
+- Add script to generate BML utility attribute metadata and integrate into IntelliSense provider.
+
 ## [1.84.0] - 2026-09-08
 
 ### Added
@@ -79,15 +85,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Add commerce deployment icon and context tracking to distinguish between commerce and utility BML files.
 - Implement REST pull command for library and commerce functions.
 - Add unused variable linter rule with comprehensive test coverage.
-
-## [1.77.0] - 2026-09-07
-
-### Added
-
-- Add BML web crawler utility to fetch and convert documentation to markdown.
-- Introduce dynamic folder icons, CPQ documentation crawler, and project spelling dictionary support.
-- Add BML logo assets and generation script.
-- Add icon definitions and icon optimization script.
-- Add new material folder icons to library.
-- Implement icon set management with new configuration, optimization script, and packaging workflow.
-- Introduce BML icon set with build script, language definitions, and folder rules.

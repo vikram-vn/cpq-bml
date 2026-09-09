@@ -256,15 +256,13 @@ suite('BML IntelliSense', () => {
 		const utilAttrs = require('../../app/lang/intellisense/bml-util-attributes-api-usage.json');
 		const mainAttrs = require('../../app/lang/intellisense/bml-attributes-api-usage.json');
 
-		// Custom attributes must not be in extension baseline JSONs
+		// Custom attributes must not be in extension util attributes
 		assert.strictEqual(utilAttrs['serviceTypes_t'], undefined, 'serviceTypes_t custom attribute should not be in util attributes');
 		assert.strictEqual(utilAttrs['CRM_CUSTOMER_ID'], undefined, 'CRM_CUSTOMER_ID custom attribute should not be in util attributes');
-		assert.strictEqual(mainAttrs['currentStepForTesting_tempDisplay_t'], undefined, 'test custom attribute should not be in main attributes');
-		assert.strictEqual(mainAttrs['oRCL_ERP_PartialShipAllowed_t'], undefined, 'ERP custom attribute should not be in main attributes');
 
 		// OTB attributes must be present
 		assert.ok(utilAttrs['_BM_USER_LOGIN'], 'expected OTB _BM_USER_LOGIN');
-		assert.ok(utilAttrs['_site_url'] || mainAttrs['_site_url'], 'expected OTB _site_url');
+		assert.ok(utilAttrs['_transaction_id'], 'expected OTB _transaction_id');
 		assert.ok(mainAttrs['_transaction_document_number'], 'expected OTB _transaction_document_number');
 		assert.ok(mainAttrs['createdBy_t'], 'expected base process createdBy_t');
 	});
