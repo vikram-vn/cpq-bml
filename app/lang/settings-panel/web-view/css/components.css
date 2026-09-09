@@ -253,3 +253,12 @@ button.link:hover {
     stroke-width: 3;
     fill: none;
 }
+
+@keyframes syncProgressIndeterminate {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}

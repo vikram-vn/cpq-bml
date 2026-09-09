@@ -515,6 +515,7 @@
         "cpqBml.debug.concurrency": {
           "type": "integer",
           "default": 2,
+          "enum": [2, 3, 4, 5, 6, 7, 8, 9, 10],
           "minimum": 2,
           "maximum": 10,
           "description": "Number of transactions to debug simultaneously in parallel (min 2, max 10). Default is 2."

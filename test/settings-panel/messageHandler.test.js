@@ -288,6 +288,30 @@ suite("settings-panel messageHandler", () => {
     assert.strictEqual(panel.posted[1].message, "Auth token cleared successfully");
   });
 
+  test("'toast' echoes the toast notification back to the panel webview", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({});
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "toast", message: "Hello from webview" }, context, vscode, panel);
+
+    assert.strictEqual(panel.posted.length, 1);
+    assert.strictEqual(panel.posted[0].type, "toast");
+    assert.strictEqual(panel.posted[0].message, "Hello from webview");
+  });
+
+  test("'syncMetadata' posts syncProgress updates to the panel webview", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({});
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "syncMetadata" }, context, vscode, panel);
+
+    const progressMessages = panel.posted.filter((m) => m.type === "syncProgress");
+    assert.ok(progressMessages.length >= 1, "Expected at least one syncProgress message");
+    assert.strictEqual(progressMessages[0].isSyncing, true);
+  });
+
   test("an unknown message type posts an error instead of throwing", async () => {
     const panel = fakePanel();
     const vscode = createFakeVscode({});

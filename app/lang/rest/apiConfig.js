@@ -238,6 +238,7 @@ async function syncConfigurationAttributes(
   let offset = 0;
   const pageSize = limit || 1000;
   const rawItems = [];
+  let totalConfigAttrs = null;
 
   while (true) {
     if (signal && signal.aborted) throw new Error("Request aborted");
@@ -258,8 +259,27 @@ async function syncConfigurationAttributes(
         : [];
     rawItems.push(...pageItems);
 
+    if (totalConfigAttrs === null && res && res.body && typeof res.body.totalResults === "number") {
+      totalConfigAttrs = res.body.totalResults;
+    }
+
     if (onProgress && typeof onProgress === "function") {
-      onProgress({ message: `Fetched ${rawItems.length} configuration attributes...` });
+      if (totalConfigAttrs && totalConfigAttrs > 0) {
+        const pct = Math.min(100, Math.round((rawItems.length / totalConfigAttrs) * 100));
+        onProgress({
+          message: `Fetched ${rawItems.length} of ${totalConfigAttrs} configuration attributes (${pct}%)...`,
+          current: rawItems.length,
+          total: totalConfigAttrs,
+          percent: pct,
+          stage: "config",
+        });
+      } else {
+        onProgress({
+          message: `Fetched ${rawItems.length} configuration attributes...`,
+          current: rawItems.length,
+          stage: "config",
+        });
+      }
     }
 
     const hasMore =

@@ -104,6 +104,7 @@ async function syncCommerceAttributes(
   let offset = 0;
   const pageSize = 1000;
   const rawAttrItems = [];
+  let totalCommerceAttrs = null;
 
   while (true) {
     if (signal && signal.aborted) throw new Error("Request aborted");
@@ -131,8 +132,27 @@ async function syncCommerceAttributes(
         : [];
     rawAttrItems.push(...pageItems);
 
+    if (totalCommerceAttrs === null && res && res.body && typeof res.body.totalResults === "number") {
+      totalCommerceAttrs = res.body.totalResults;
+    }
+
     if (onProgress && typeof onProgress === "function") {
-      onProgress({ message: `Fetched ${rawAttrItems.length} commerce attributes...` });
+      if (totalCommerceAttrs && totalCommerceAttrs > 0) {
+        const pct = Math.min(95, Math.round((rawAttrItems.length / totalCommerceAttrs) * 100));
+        onProgress({
+          message: `Fetched ${rawAttrItems.length} of ${totalCommerceAttrs} commerce attributes (${pct}%)...`,
+          current: rawAttrItems.length,
+          total: totalCommerceAttrs,
+          percent: pct,
+          stage: "commerce",
+        });
+      } else {
+        onProgress({
+          message: `Fetched ${rawAttrItems.length} commerce attributes...`,
+          current: rawAttrItems.length,
+          stage: "commerce",
+        });
+      }
     }
 
     const hasMore =
@@ -148,8 +168,39 @@ async function syncCommerceAttributes(
     offset += pageSize;
   }
 
-  if (onProgress && typeof onProgress === "function") {
-    onProgress({ message: "Syncing menu items in parallel..." });
+  const menuItemsToFetch = fetchMenuItems
+    ? rawAttrItems.filter((item) => {
+        const typeStr = (
+          item.type && typeof item.type === "object"
+            ? item.type.displayValue || item.type.displayLabel || item.type.name || (item.type.value !== undefined ? String(item.type.value) : "")
+            : typeof item.type === "string"
+              ? item.type
+              : item.dataType && typeof item.dataType === "object"
+                ? item.dataType.displayValue || item.dataType.displayLabel || item.dataType.name || (item.dataType.value !== undefined ? String(item.dataType.value) : "")
+                : typeof item.dataType === "string"
+                  ? item.dataType
+                  : ""
+        ).toLowerCase();
+        const displayTypeLower =
+          typeof item.displayType === "string" ? item.displayType.toLowerCase() : "";
+        return (
+          typeStr.includes("menu") ||
+          typeStr.includes("select") ||
+          displayTypeLower.includes("menu") ||
+          displayTypeLower.includes("select")
+        );
+      })
+    : [];
+
+  const totalMenus = menuItemsToFetch.length;
+  if (fetchMenuItems && totalMenus > 0 && onProgress && typeof onProgress === "function") {
+    onProgress({
+      message: `Syncing menu options (0/${totalMenus})...`,
+      current: 0,
+      total: totalMenus,
+      stage: "menu",
+      percent: 0,
+    });
   }
 
   let completedMenus = 0;
@@ -206,8 +257,15 @@ async function syncCommerceAttributes(
         // Ignore individual menu fetch error
       }
       completedMenus++;
-      if (onProgress && typeof onProgress === "function" && completedMenus % 10 === 0) {
-        onProgress({ message: `Synced ${completedMenus} menu attributes...` });
+      if (onProgress && typeof onProgress === "function" && (completedMenus % 5 === 0 || completedMenus === totalMenus)) {
+        const pct = Math.round((completedMenus / totalMenus) * 100);
+        onProgress({
+          message: `Syncing menu options (${completedMenus}/${totalMenus}, ${pct}%)...`,
+          current: completedMenus,
+          total: totalMenus,
+          stage: "menu",
+          percent: pct,
+        });
       }
     }
 
@@ -220,6 +278,7 @@ async function syncCommerceAttributes(
   const systemAttributes = [];
   try {
     let sysOffset = 0;
+    let totalSysAttrs = null;
     while (true) {
       if (signal && signal.aborted) throw new Error("Request aborted");
       const sysRes = await listCommerceSystemAttributes(
@@ -249,6 +308,29 @@ async function syncCommerceAttributes(
           dataType: normalizeAttributeDataType(item.type || item.dataType),
           description: item.description || "",
         });
+      }
+
+      if (totalSysAttrs === null && sysRes && sysRes.body && typeof sysRes.body.totalResults === "number") {
+        totalSysAttrs = sysRes.body.totalResults;
+      }
+
+      if (onProgress && typeof onProgress === "function") {
+        if (totalSysAttrs && totalSysAttrs > 0) {
+          const pct = Math.min(100, Math.round((systemAttributes.length / totalSysAttrs) * 100));
+          onProgress({
+            message: `Fetched ${systemAttributes.length} of ${totalSysAttrs} system attributes (${pct}%)...`,
+            current: systemAttributes.length,
+            total: totalSysAttrs,
+            percent: pct,
+            stage: "system",
+          });
+        } else {
+          onProgress({
+            message: `Fetched ${systemAttributes.length} system attributes...`,
+            current: systemAttributes.length,
+            stage: "system",
+          });
+        }
       }
 
       const sysHasMore =

@@ -126,8 +126,31 @@ async function dispatch(message, context, vscode, panel) {
     case "syncMetadata": {
       const { runSyncAllMetadata } = require("../rest/commands/sync");
       try {
-        const res = await runSyncAllMetadata(context, vscode);
+        post({
+          type: "syncProgress",
+          isSyncing: true,
+          message: "Starting metadata sync...",
+          percent: 0,
+        });
+        const res = await runSyncAllMetadata(context, vscode, null, (info) => {
+          post({
+            type: "syncProgress",
+            isSyncing: true,
+            message: typeof info === "string" ? info : (info && info.message ? info.message : ""),
+            percent: info && typeof info.percent === "number" ? info.percent : null,
+            current: info && typeof info.current === "number" ? info.current : null,
+            total: info && typeof info.total === "number" ? info.total : null,
+            stage: info && info.stage ? info.stage : null,
+          });
+        });
         await sendState();
+        post({
+          type: "syncProgress",
+          isSyncing: false,
+          message: "Metadata sync completed.",
+          percent: 100,
+          done: true,
+        });
         if (res && res.success) {
           post({
             type: "toast",
@@ -137,6 +160,13 @@ async function dispatch(message, context, vscode, panel) {
           post({ type: "toast", message: "Metadata sync completed." });
         }
       } catch (err) {
+        post({
+          type: "syncProgress",
+          isSyncing: false,
+          message: `Sync failed: ${err.message}`,
+          error: true,
+          done: true,
+        });
         post({ type: "error", message: `Sync failed: ${err.message}` });
       }
       return;
@@ -187,6 +217,12 @@ async function dispatch(message, context, vscode, panel) {
     // User clicked a different tab in the sidebar - keep the editor tab title in sync.
     case "tabChanged":
       panel.title = titleForTab(message.tab);
+      return;
+
+    case "toast":
+      if (message.message) {
+        post({ type: "toast", message: message.message });
+      }
       return;
 
     case "importSettings": {

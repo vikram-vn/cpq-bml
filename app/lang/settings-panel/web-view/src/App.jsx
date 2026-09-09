@@ -23,6 +23,13 @@ const initialState = {
     isSaving: false,
     toast: '',
     drafts: {},
+    syncProgress: {
+        isSyncing: false,
+        message: '',
+        percent: null,
+        current: null,
+        total: null,
+    },
 };
 
 function appReducer(state, action) {
@@ -74,6 +81,14 @@ function appReducer(state, action) {
         }
         case 'SET_TOAST':
             return { ...state, toast: action.toast };
+        case 'SET_SYNC_PROGRESS':
+            return {
+                ...state,
+                syncProgress: {
+                    ...state.syncProgress,
+                    ...action.payload,
+                },
+            };
         default:
             return state;
     }
@@ -114,6 +129,8 @@ export default function App({ vscodeApi }) {
                 dispatch({ type: 'SET_ERROR', error: message.message });
             } else if (message.type === 'toast') {
                 triggerToast(message.message);
+            } else if (message.type === 'syncProgress') {
+                dispatch({ type: 'SET_SYNC_PROGRESS', payload: message });
             }
         };
         window.addEventListener('message', onMessage);
@@ -277,6 +294,7 @@ export default function App({ vscodeApi }) {
                             state={settings}
                             connection={connection}
                             vscodeApi={vscodeApi}
+                            onToast={triggerToast}
                         />
 
                         <OperationsTab
@@ -287,6 +305,7 @@ export default function App({ vscodeApi }) {
                             changeDraft={changeDraft}
                             metadata={metadata}
                             vscodeApi={vscodeApi}
+                            syncProgress={state.syncProgress}
                         />
 
                         <FeaturesTab

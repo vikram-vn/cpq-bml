@@ -8,10 +8,10 @@ const PRESETS = [
     { label: 'Legacy BM (bm_process / bm_document)', process: 'bm_process', document: 'bm_document' },
 ];
 
-export default function OperationsTab({ active, rest = {}, drafts, changeDraft, metadata = {}, vscodeApi }) {
-    const [isSyncing, setIsSyncing] = useState(false);
-
+export default function OperationsTab({ active, rest = {}, drafts, changeDraft, metadata = {}, vscodeApi, syncProgress = {} }) {
     if (!active) return null;
+
+    const isSyncing = !!syncProgress.isSyncing;
 
     const applyPreset = (process, document) => {
         changeDraft('rest.commerceProcess', process);
@@ -20,11 +20,9 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
 
     const handleSync = () => {
         if (!metadata.canSync || isSyncing) return;
-        setIsSyncing(true);
         if (vscodeApi) {
             vscodeApi.postMessage({ type: 'syncMetadata' });
         }
-        setTimeout(() => setIsSyncing(false), 2500);
     };
 
     const handleRemove = () => {
@@ -172,6 +170,57 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
                     )}
                 </div>
 
+                {isSyncing && (
+                    <div style={{
+                        margin: '12px 0 16px',
+                        padding: '12px 14px',
+                        background: 'var(--vscode-editorWidget-background, rgba(255,255,255,0.03))',
+                        border: '1px solid var(--vscode-focusBorder, #007acc)',
+                        borderRadius: 'var(--cpq-radius-md, 6px)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '8px',
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: '0.83em', fontWeight: 600, color: 'var(--vscode-foreground)' }}>
+                                {syncProgress.message || 'Syncing attributes...'}
+                            </span>
+                            {syncProgress.percent !== null && syncProgress.percent !== undefined && (
+                                <span style={{ fontSize: '0.83em', fontWeight: 700, color: 'var(--vscode-charts-blue, #3794ff)' }}>
+                                    {syncProgress.percent}%
+                                </span>
+                            )}
+                        </div>
+                        <div style={{
+                            width: '100%',
+                            height: '6px',
+                            backgroundColor: 'var(--vscode-editor-background, rgba(0,0,0,0.3))',
+                            borderRadius: '3px',
+                            overflow: 'hidden',
+                        }}>
+                            <div
+                                style={{
+                                    height: '100%',
+                                    width: syncProgress.percent !== null && syncProgress.percent !== undefined
+                                        ? `${Math.max(4, Math.min(100, syncProgress.percent))}%`
+                                        : '100%',
+                                    backgroundColor: 'var(--vscode-progressBar-background, #007acc)',
+                                    borderRadius: '3px',
+                                    transition: 'width 0.3s ease-out',
+                                    animation: syncProgress.percent === null || syncProgress.percent === undefined
+                                        ? 'syncProgressIndeterminate 1.5s infinite linear'
+                                        : 'none',
+                                }}
+                            />
+                        </div>
+                        {syncProgress.total && syncProgress.current !== null && (
+                            <div style={{ fontSize: '0.75em', color: 'var(--vscode-descriptionForeground)' }}>
+                                Processed {syncProgress.current.toLocaleString()} of {syncProgress.total.toLocaleString()} attributes
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                     <button
                         type="button"
@@ -179,7 +228,9 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
                         disabled={!metadata.canSync || isSyncing}
                         title={!metadata.canSync ? 'Active connection credentials required to sync metadata' : 'Sync metadata now'}
                     >
-                        <IconSync />
+                        <span className={isSyncing ? "spinner" : ""} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                            <IconSync />
+                        </span>
                         {isSyncing ? 'Syncing...' : 'Sync Metadata'}
                     </button>
 

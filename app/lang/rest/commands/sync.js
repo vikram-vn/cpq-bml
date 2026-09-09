@@ -13,7 +13,7 @@ async function runSyncCommerceMetadata(
   context,
   vscode,
   resultsTerminal,
-  { process, document, fetchMenuItems = true, transport } = {},
+  { process, document, fetchMenuItems = true, transport, onProgress: externalOnProgress } = {},
 ) {
   const hasCredentials = await ensureCredentials(context, vscode);
   if (!hasCredentials) {
@@ -75,13 +75,26 @@ async function runSyncCommerceMetadata(
         token.onCancellationRequested(() => controller.abort());
       }
 
+      let lastReportedPercent = 0;
       const onProgress = (info) => {
+        const msg = typeof info === "string" ? info : (info && info.message ? info.message : "");
+        let increment;
+        if (info && typeof info.percent === "number") {
+          const delta = info.percent - lastReportedPercent;
+          if (delta > 0) {
+            increment = delta;
+            lastReportedPercent = info.percent;
+          }
+        }
         if (progress && typeof progress.report === "function") {
-          progress.report(info);
+          progress.report({ message: msg, increment });
+        }
+        if (externalOnProgress && typeof externalOnProgress === "function") {
+          externalOnProgress(info);
         }
       };
 
-      onProgress({ message: "Syncing commerce attributes..." });
+      onProgress({ message: "Syncing commerce attributes...", percent: 0, stage: "commerce" });
 
       const data = await api.syncCommerceAttributes(
         context,
@@ -93,7 +106,7 @@ async function runSyncCommerceMetadata(
       let configData = null;
       try {
         if (typeof api.syncConfigurationAttributes === "function") {
-          onProgress({ message: "Syncing configuration attributes & models..." });
+          onProgress({ message: "Syncing configuration attributes & models...", stage: "config" });
           configData = await api.syncConfigurationAttributes(
             context,
             vscode,
@@ -182,12 +195,18 @@ async function runSyncCommerceMetadata(
   }
 }
 
-async function runSyncAllMetadata(context, vscode, terminal) {
+async function runSyncAllMetadata(context, vscode, terminal, onProgress) {
   const { syncConfigurationAttributes } = require("../apiConfig");
-  const commRes = await runSyncCommerceMetadata(context, vscode, terminal, { fetchMenuItems: false });
+  const commRes = await runSyncCommerceMetadata(context, vscode, terminal, {
+    fetchMenuItems: false,
+    onProgress,
+  });
   let configCount = 0;
   try {
-    const cfgRes = await syncConfigurationAttributes(context, vscode, { limit: 1000 }, null);
+    if (onProgress && typeof onProgress === "function") {
+      onProgress({ message: "Syncing configuration attributes...", stage: "config" });
+    }
+    const cfgRes = await syncConfigurationAttributes(context, vscode, { limit: 1000, onProgress }, null);
     configCount = cfgRes ? cfgRes.count : 0;
   } catch (e) {}
   return {

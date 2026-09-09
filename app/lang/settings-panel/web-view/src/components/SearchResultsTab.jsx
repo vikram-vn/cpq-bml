@@ -40,7 +40,7 @@ export const ALL_SETTINGS_REGISTRY = [
     { id: 'debugLog', tab: 'advanced', tabName: 'Advanced', label: 'Log REST Details to File', desc: 'Save detailed API request/response structures inside bml_rest_api.log', type: 'switch', key: 'debug.logRestDetails' },
     { id: 'logOutputToFile', tab: 'advanced', tabName: 'Advanced', label: 'Log Print Statements to File', desc: 'Output BML print logs to bml_debug_print.log and return values to bml_debug_output.log', type: 'switch', key: 'debug.logOutputToFile' },
     { id: 'showResultsAsTable', tab: 'advanced', tabName: 'Advanced', label: 'Show Debug Results as Table', desc: 'Format JSON or dictionary return values in BML debug output as a key-value table', type: 'switch', key: 'debug.showResultsAsTable' },
-    { id: 'debugConcurrency', tab: 'advanced', tabName: 'Advanced', label: 'Debug Concurrency (Parallel Transactions)', desc: 'Number of transactions to debug simultaneously in parallel (min 2, max 10). Default is 2.', type: 'number', key: 'debug.concurrency' },
+    { id: 'debugConcurrency', tab: 'advanced', tabName: 'Advanced', label: 'Debug Concurrency (Parallel Transactions)', desc: 'Number of transactions to debug simultaneously in parallel (2 to 10 max). Default is 2.', type: 'select', key: 'debug.concurrency', options: [2, 3, 4, 5, 6, 7, 8, 9, 10] },
     { id: 'backupRestore', tab: 'advanced', tabName: 'Advanced', label: 'Backup & Restore (Import / Export / Reset)', desc: 'Export or import CPQ-BML configuration JSON or reset to factory defaults', type: 'link', actionText: 'Open Backup & Restore' },
 ];
 
@@ -159,11 +159,26 @@ export default function SearchResultsTab({
                                             <label htmlFor={`search-${item.id}`}>{item.label}</label>
                                             <select
                                                 id={`search-${item.id}`}
-                                                value={val || 'basic'}
-                                                onChange={(e) => updateField(item.key, e.target.value)}
+                                                value={val !== undefined ? val : (item.options ? item.options[0] : 'basic')}
+                                                onChange={(e) => {
+                                                    const parsed = item.options && typeof item.options[0] === 'number'
+                                                        ? parseInt(e.target.value, 10)
+                                                        : e.target.value;
+                                                    updateField(item.key, parsed);
+                                                }}
                                             >
-                                                <option value="basic">basic</option>
-                                                <option value="bearer">bearer</option>
+                                                {item.options ? (
+                                                    item.options.map((opt) => (
+                                                        <option key={opt} value={opt}>
+                                                            {opt} {opt === 2 ? '(Default)' : ''}
+                                                        </option>
+                                                    ))
+                                                ) : (
+                                                    <>
+                                                        <option value="basic">basic</option>
+                                                        <option value="bearer">bearer</option>
+                                                    </>
+                                                )}
                                             </select>
                                             <p className="field-hint">{item.desc}</p>
                                         </div>

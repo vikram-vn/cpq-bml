@@ -3,7 +3,7 @@ import { IconPlus, IconEdit, IconDelete, IconCheck, IconCopy } from './Icons';
 
 const EMPTY_ENV = { name: '', siteUrl: '', username: '', authMethod: 'basic' };
 
-export default function Environments({ environments = [], connection, vscodeApi }) {
+export default function Environments({ environments = [], connection, vscodeApi, onToast }) {
     const [editingIndex, setEditingIndex] = useState(null);
     const [adding, setAdding] = useState(false);
     const [draft, setDraft] = useState(EMPTY_ENV);
@@ -33,7 +33,9 @@ export default function Environments({ environments = [], connection, vscodeApi 
         if (navigator.clipboard) {
             navigator.clipboard.writeText(snippet);
         }
-        vscodeApi.postMessage({ type: 'toast', message: `Copied "${env.name}" JSON snippet to clipboard` });
+        const msg = `Copied "${env.name}" JSON snippet to clipboard`;
+        if (onToast) onToast(msg);
+        vscodeApi.postMessage({ type: 'toast', message: msg });
     };
 
     const duplicate = (index) => {
@@ -44,6 +46,8 @@ export default function Environments({ environments = [], connection, vscodeApi 
             name: `${source.name} (Copy)`
         };
         vscodeApi.postMessage({ type: 'addEnvironment', env: cloned });
+        const msg = `Duplicated profile "${source.name}"`;
+        if (onToast) onToast(msg);
     };
 
     const cancel = () => {
