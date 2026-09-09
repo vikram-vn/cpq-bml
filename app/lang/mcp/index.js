@@ -36,7 +36,10 @@ function registerMcp(context) {
 
             // Auto-register with all AI tools (idempotent — safe to call on every start)
             try {
-                const { registered, errors } = registerMcpWithAllTools(result.port);
+                const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+                    ? vscode.workspace.workspaceFolders[0].uri.fsPath
+                    : null;
+                const { registered, errors } = registerMcpWithAllTools(result.port, wsRoot);
                 if (registered.length > 0) {
                     console.log(`CPQ-BML: MCP auto-registered with: ${registered.join(', ')}`);
                     logMcpServerEvent(`MCP auto-registered with: ${registered.join(', ')}`);
@@ -62,7 +65,10 @@ function registerMcp(context) {
 
         // Remove cpq-bml entry from all AI tool global configs
         try {
-            const { deregistered } = deregisterMcpFromAllTools();
+            const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+                ? vscode.workspace.workspaceFolders[0].uri.fsPath
+                : null;
+            const { deregistered } = deregisterMcpFromAllTools(wsRoot);
             if (deregistered.length > 0) {
                 logMcpServerEvent(`MCP deregistered from: ${deregistered.join(', ')}`);
             }

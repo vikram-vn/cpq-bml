@@ -2,7 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const api = require('../../rest/api');
 const { findOrCreateAiCopy } = require('../locate');
-const { lintBMLCustom } = require('../../lint/core/lint');
+let _lintBMLCustom = null;
+function getLintBMLCustom() {
+    if (!_lintBMLCustom) {
+        _lintBMLCustom = require('../../lint/core/lint').lintBMLCustom;
+    }
+    return _lintBMLCustom;
+}
 const { computeComplexity } = require('../../metrics/complexity');
 const configLib = require('../../rest/config');
 const metadataLib = require('../../rest/metadata');
@@ -33,7 +39,8 @@ function lintFileText(vscode, extensionPath, bmlPath, text) {
     };
     const diagnostics = [];
     const collection = { set: (uri, diags) => diagnostics.push(...diags) };
-    lintBMLCustom(doc, collection, vscode, extensionPath);
+    const lintFn = getLintBMLCustom();
+    lintFn(doc, collection, vscode, extensionPath);
     return diagnostics;
 }
 
@@ -348,6 +355,86 @@ async function lintAllFunctions(context, vscode) {
     };
 }
 
+/**
+ * Lists all built-in Oracle CPQ and BML AI skills with their metadata.
+ */
+function listSkills(context) {
+    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '../../../..');
+    const skillsDir = path.join(extensionPath, 'app', 'ai', 'skills');
+    if (!fs.existsSync(skillsDir)) {
+        return { success: true, skills: [] };
+    }
+    const skills = [];
+    for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue;
+        const skillName = entry.name;
+        const skillMd = path.join(skillsDir, skillName, 'SKILL.md');
+        let description = '';
+        if (fs.existsSync(skillMd)) {
+            try {
+                const content = fs.readFileSync(skillMd, 'utf8');
+                const descMatch = content.match(/description:\s*(?:>-\s*|\s*)([^\r\n]+)/i);
+                if (descMatch) description = descMatch[1].trim();
+            } catch (e) {}
+        }
+        const refsDir = path.join(skillsDir, skillName, 'references');
+        const hasReferences = fs.existsSync(refsDir) && fs.readdirSync(refsDir).length > 0;
+        skills.push({
+            name: skillName,
+            description: description || `Oracle CPQ BigMachines ${skillName} skill`,
+            hasReferences,
+        });
+    }
+    return { success: true, skills };
+}
+
+/**
+ * Fetches the full instructions and reference documents for a specific CPQ/BML skill.
+ */
+function getSkill(context, { name } = {}) {
+    if (!name || typeof name !== 'string') {
+        return { success: false, error: 'Skill name is required (e.g. "bml-language", "bml-pitfalls", "cpq-domain", "cpq-rest-api")' };
+    }
+    const safeName = name.trim().toLowerCase();
+    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '../../../..');
+    const skillDir = path.join(extensionPath, 'app', 'ai', 'skills', safeName);
+    const skillMd = path.join(skillDir, 'SKILL.md');
+    if (!fs.existsSync(skillMd)) {
+        return { success: false, error: `Skill "${safeName}" not found. Call list_skills to see all available skills.` };
+    }
+    let content = '';
+    let description = '';
+    try {
+        content = fs.readFileSync(skillMd, 'utf8');
+        const descMatch = content.match(/description:\s*(?:>-\s*|\s*)([^\r\n]+)/i);
+        if (descMatch) description = descMatch[1].trim();
+    } catch (err) {
+        return { success: false, error: `Failed to read skill ${safeName}: ${err.message}` };
+    }
+    const references = [];
+    const refsDir = path.join(skillDir, 'references');
+    if (fs.existsSync(refsDir)) {
+        try {
+            for (const f of fs.readdirSync(refsDir)) {
+                const refPath = path.join(refsDir, f);
+                if (fs.statSync(refPath).isFile()) {
+                    references.push({
+                        filename: f,
+                        content: fs.readFileSync(refPath, 'utf8'),
+                    });
+                }
+            }
+        } catch (e) {}
+    }
+    return {
+        success: true,
+        name: safeName,
+        description,
+        content,
+        references,
+    };
+}
+
 module.exports = {
     explainFunction,
     diffFunction,
@@ -357,4 +444,6 @@ module.exports = {
     listLocalFunctions,
     lintAllFunctions,
     computeLineDiff,
+    listSkills,
+    getSkill,
 };

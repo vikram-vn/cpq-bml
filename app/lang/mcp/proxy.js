@@ -1,5 +1,8 @@
 const fs = require('fs');
-const vscode = require('vscode');
+let vscode;
+try {
+    vscode = require('vscode');
+} catch (_) {}
 const pathLib = require('path');
 
 // Wraps the real vscode module so the existing run*() command logic can be reused unattended:

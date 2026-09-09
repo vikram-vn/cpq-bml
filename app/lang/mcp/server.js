@@ -47,6 +47,74 @@ function registerTools(server, context, vscode) {
   formattingTools.register(server, context, vscode, tools);
 }
 
+function registerSkillsResourcesAndPrompts(server, extensionPath) {
+  if (!extensionPath) return;
+  const skillsDir = nodePath.join(extensionPath, "app", "ai", "skills");
+  if (!fs.existsSync(skillsDir)) return;
+
+  try {
+    for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const skillName = entry.name;
+      const skillFile = nodePath.join(skillsDir, skillName, "SKILL.md");
+      if (!fs.existsSync(skillFile)) continue;
+
+      let rawContent = "";
+      try {
+        rawContent = fs.readFileSync(skillFile, "utf8");
+      } catch {
+        continue;
+      }
+
+      let description = "";
+      const descMatch = rawContent.match(/description:\s*(?:>-\s*|\s*)([^\r\n]+)/i);
+      if (descMatch) description = descMatch[1].trim();
+
+      try {
+        server.registerResource(
+          skillName,
+          `skill://${skillName}`,
+          {
+            title: `CPQ Skill: ${skillName}`,
+            description: description || `Oracle CPQ guidance for ${skillName}`,
+            mimeType: "text/markdown",
+          },
+          async (uri) => ({
+            contents: [
+              {
+                uri: uri.href,
+                mimeType: "text/markdown",
+                text: rawContent,
+              },
+            ],
+          }),
+        );
+      } catch (e) {}
+
+      try {
+        server.registerPrompt(
+          `cpq-${skillName}`,
+          {
+            title: `CPQ Guide: ${skillName}`,
+            description: description || `Guidance on ${skillName}`,
+          },
+          async () => ({
+            messages: [
+              {
+                role: "user",
+                content: {
+                  type: "text",
+                  text: `Please review and apply Oracle CPQ best practices for ${skillName}:\n\n${rawContent}`,
+                },
+              },
+            ],
+          }),
+        );
+      } catch (e) {}
+    }
+  } catch (e) {}
+}
+
 let httpServer = null;
 let boundPort = null;
 
@@ -83,6 +151,7 @@ async function startMcpServer(context, vscode, port) {
       },
     );
     registerTools(requestServer, context, vscode);
+    registerSkillsResourcesAndPrompts(requestServer, extensionPath);
 
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
