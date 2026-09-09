@@ -177,7 +177,45 @@ flowchart TD
 
 ---
 
-## 7. Settings Tab Catalog & Configuration Matrix
+## 7. Modular MCP Tab Architecture & Live Traffic Inspector
+
+The Settings Panel features a dedicated, modular MCP management dashboard with sub-component isolation and conditional rendering:
+
+```mermaid
+graph TD
+    subgraph McpTab Controller (McpTab.jsx)
+        TOGGLE["MCP Enable Toggle (mcp.enable)"]
+        COND{"Is MCP Enabled?"}
+    end
+
+    subgraph Modular Sub-Cards (tabs/mcp/)
+        CLIENTS["McpClientsCard.jsx<br/>Cursor, Copilot, Antigravity, Claude, ChatGPT"]
+        SKILLS["McpSkillsCard.jsx<br/>Global Antigravity BML Skill Sync"]
+        DIAG["McpDiagnosticsCard.jsx<br/>1-Click Health Scorecard"]
+        TRAFFIC["McpTrafficCard.jsx<br/>Live Streaming Traffic Inspector"]
+    end
+
+    subgraph Backend Dispatcher
+        MSG["mcpMessageHandler.js<br/>GET_MCP_STATUS, REFRESH_TRAFFIC, CLEAR_TRAFFIC, DIAGNOSE"]
+        BUFFER["traffic.js<br/>50-Call In-Memory Ring Buffer"]
+    end
+
+    TOGGLE --> COND
+    COND -->|"Disabled"| INFO["Informational Banner (Enable to activate AI tools)"]
+    COND -->|"Enabled"| CLIENTS & SKILLS & DIAG & TRAFFIC
+    
+    CLIENTS & SKILLS & DIAG & TRAFFIC -->|"RPC Message"| MSG
+    MSG --> BUFFER
+```
+
+### Key Capabilities
+- **Conditional Visibility**: Port settings, AI registration buttons, and diagnostics are only displayed when `mcp.enable = true`, preventing user confusion when local MCP is turned off.
+- **Streaming Traffic Inspector**: Displays the 50 most recent tool calls across all AI clients, capturing duration in milliseconds, arguments, timestamp, and errors. Includes **Refresh** and **Clear History** controls.
+- **1-Click AI Diagnostic Scorecard**: Evaluates local port binding, CPQ site URL, attribute cache freshness, and registered client status with color-coded `PASS`/`WARN` badges.
+
+---
+
+## 8. Settings Tab Catalog & Configuration Matrix
 
 | Settings Tab | Config Keys Managed | Description |
 | :--- | :--- | :--- |

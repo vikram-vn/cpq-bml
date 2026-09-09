@@ -4,6 +4,21 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.88.0] - 2026-09-09
+
+### Added
+
+- **Native Call Hierarchy (`Shift+Alt+H`)**: Complete incoming and outgoing call tree analysis for workspace `util.*` and `commerce.*` functions.
+- **Safe Side-by-Side Diff on Pull**: Interactive diff comparison (`vscode.diff`) and conflict prevention when pulling remote CPQ scripts over modified local files.
+- **Automated BML Scaffolding & Sidecars**: Commands to generate new library functions with docHeaders and paired `-meta.json` sidecars, plus parameterized BMQL query scaffolds.
+- **Offline BMQL Query Validator & Syntax Explainer**: Full offline BMQL parser and optimizer tool (`validate_bmql_query`) warning on SQL injection, unbounded queries, and unsupported SQL keywords.
+- **Standalone CI/CD CLI (`cpq-bml`)**: Command-line tool and npm script (`npm run audit`) for automated security and quality auditing in CI pipelines.
+- **Status Bar Environment Quick-Switcher & Team Profiles**: Status bar item to switch active CPQ environments with 1 click, plus safe export/import of `.cpq/profiles.json` (sensitive secrets stripped).
+- **Real-Time Editor Squiggles & Quick-Fixes**: In-editor diagnostics and `Alt+Enter` code actions for BMQL injection risks and loop safeguards.
+- **Native MCP Resources**: Standard MCP resources (`cpq://attributes/commerce`, `cpq://attributes/configuration`, `cpq://datatables/list`).
+- **Enhanced Document & On-Type Formatter**: Auto-formats BML on `;` and `}` keystrokes and full document format support.
+- **Strict Codebase Refactoring**: Complete architectural compliance ensuring zero JS/JSX files exceed 500 lines of code across the repository.
+
 ## [1.87.0] - 2026-09-09
 
 ### Added

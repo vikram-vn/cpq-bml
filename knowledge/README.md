@@ -11,6 +11,7 @@ Architecture, Control Flow Graphs (CFGs), configuration options, and real-world 
 
 | Guide / Document | Focus Area | Key Features & Capabilities |
 | :--- | :--- | :--- |
+| **[BML Advanced Architectures](BML_Advanced_Architectures.md)** | Modern Subsystems | Multi-AI MCP ecosystem, Local BML Evaluator, BMQL Offline Validator, Call Hierarchy, Safe 3-Way Diff, and CI/CD Quality Gate CLI. |
 | **[BML Beautifier](BML_Beautifier.md)** | Code Formatting | Deterministic 4-stage formatting, brace styles, block comment star alignment, minimal range diff optimizer, and `.bmlbeautifyrc`. |
 | **[BML Linter](BML_Linter.md)** | Static Analysis | 27 built-in rules, AST node visitors, syntax/type validation, loop/block nesting checks, and single-click Quick Fixes (`Ctrl+.`). |
 | **[BML IntelliSense](BML_IntelliSense.md)** | IDE Intelligence | Workspace util library autocompletion (`util.pricing.`), in-query BMQL dynamic variable (`$`) completion, signature help, and rich hovers. |

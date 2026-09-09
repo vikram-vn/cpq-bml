@@ -233,6 +233,20 @@ function register(server, context, vscode, tools) {
     },
     async (args) => jsonResult(tools.validateBmqlQuery(args)),
   );
+
+  server.registerTool(
+    "evaluate_bml_logic",
+    {
+      description:
+        "Executes a pure BML algorithm or expression offline in an isolated sandbox with standard CPQ built-ins " +
+        "(string, math, array, dict, json, date functions). Captures print output, return value, and execution time.",
+      inputSchema: {
+        code: z.string().describe("The BML source code to evaluate."),
+        timeoutMs: z.number().optional().describe("Execution timeout in milliseconds (default: 3000)."),
+      },
+    },
+    async (args) => jsonResult(tools.evaluateBmlLogic(args)),
+  );
 }
 
 module.exports = { register };

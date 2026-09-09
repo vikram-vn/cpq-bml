@@ -31,17 +31,18 @@ For complete architectural blueprints, Control Flow Graphs (CFGs), and code exam
 
 | Feature Area | Description | Deep Dive Guide |
 | :--- | :--- | :--- |
-| **💡 IntelliSense & Autocomplete** | Workspace util library suggestions (`util.pricing.`), BMQL `$var` dynamic completion, parameter signatures, and rich hovers. | **[IntelliSense Guide](knowledge/BML_IntelliSense.md)** |
-| **🛠 BML Beautifier & Formatter** | Deterministic 4-stage formatting, brace styles (`collapse`/`expand`), minimal range diffing, and `.bmlbeautifyrc`. | **[Beautifier Guide](knowledge/BML_Beautifier.md)** |
-| **🔍 Static Linter & Quick Fixes** | 27 rules detecting syntax errors, type mismatches, BMQL N+1 loops, nesting depth caps, and single-click fixes (`Ctrl+.`). | **[Linter Guide](knowledge/BML_Linter.md)** |
-| **🤖 Model Context Protocol (MCP)** | 24 JSON-RPC tools enabling AI agents to pull, edit, lint, debug, test, and deploy BML functions autonomously. | **[MCP Server Guide](knowledge/BML_MCP.md)** |
-| **☁ REST Cloud Synchronization** | OAuth2/Basic Auth client, remote compilation validation, and live debug execution streaming to CPQ DevKit Terminal. | **[REST API Guide](knowledge/BML_REST_API.md)** |
-| **⚙ Interactive Settings Panel** | Webview UI dashboard for managing environments, credentials, formatter options, and linter severities. | **[Settings Panel Guide](knowledge/BML_Settings_Panel.md)** |
+| **💡 IntelliSense & Autocomplete** | Workspace util library suggestions (`util.pricing.`), BMQL `$var` dynamic completion, parameter signatures, Call Hierarchy (`Shift+Alt+H`), and `F12` Go to Definition. | **[IntelliSense Guide](knowledge/BML_IntelliSense.md)** |
+| **🛠 BML Beautifier & Formatter** | Deterministic 4-stage formatting, brace styles (`collapse`/`expand`), minimal range diffing, on-type formatting, and `.bmlbeautifyrc`. | **[Beautifier Guide](knowledge/BML_Beautifier.md)** |
+| **🔍 Real-Time Security & Linter** | Real-time squiggles and `Alt+Enter` Quick-Fixes for BMQL injection risks, queries in loops, unbounded while loops, and type validation. | **[Linter Guide](knowledge/BML_Linter.md)** |
+| **⚡ BML Logic Scratchpad** | Offline interactive sandbox to test pure BML algorithms (math, string manipulation, dates, dict, json) and view print logs instantly. | **[Scratchpad](knowledge/BML_MCP.md)** |
+| **🤖 Model Context Protocol (MCP)** | Seamless multi-client MCP auto-registration for Cursor, Copilot, Google Antigravity, Claude Desktop, and ChatGPT. | **[MCP Server Guide](knowledge/BML_MCP.md)** |
+| **☁ Safe Cloud Sync & 3-Way Diff** | OAuth2/Basic Auth client, side-by-side diff review on pull conflicts, and live debug streaming to CPQ DevKit Terminal. | **[REST API Guide](knowledge/BML_REST_API.md)** |
+| **🏗 BML & BMQL Scaffolding** | Explorer context scaffolding for library functions with docHeaders and `-meta.json` sidecars, plus parameterized BMQL queries. | **[Scaffolding](knowledge/BML_Snippets.md)** |
+| **🚦 CI/CD Security CLI (`cpq-bml`)** | Standalone Node CLI (`npx cpq-bml audit .`) for pre-commit hooks and GitHub Actions pipeline security gates. | **[CLI Documentation](bin/cpq-bml.js)** |
+| **⚙ Interactive Settings Panel** | Webview UI dashboard for managing environments, credentials, formatter options, MCP traffic inspection, and diagnostics. | **[Settings Panel Guide](knowledge/BML_Settings_Panel.md)** |
 | **🔤 Smart Spell Checker** | Morphological inflection analyzer and domain dictionary designed for BML identifiers and comments. | **[Spell Check Guide](knowledge/BML_Spell_Check.md)** |
 | **📄 XSLT & XML Subsystem** | Document Engine XSL template formatting, XPath 1.0 autocompletion, and BML `transformxml()` integration. | **[XSLT Guide](knowledge/BML_XSLT.md)** |
 | **📊 Code Quality & Metrics** | McCabe Cyclomatic Complexity, Halstead Software Science, Maintainability Index (MI), and visual dashboard. | **[Metrics Guide](knowledge/BML_Metrics.md)** |
-| **⚡ BML Snippets Catalog** | 26 production skeletons, chronological tab-stops, and live placeholder synchronization. | **[Snippets Guide](knowledge/BML_Snippets.md)** |
-| **📖 30 Core BML References** | Language fundamentals, BMQL syntax, JSON/Dictionaries, Web Services, Commerce, Configuration, and standard APIs. | **[BML Reference Docs](knowledge/BML/)** |
 
 ---
 
@@ -50,10 +51,16 @@ For complete architectural blueprints, Control Flow Graphs (CFGs), and code exam
 | Action | Shortcut (Windows/Linux) | Shortcut (macOS) | Command Palette (`Ctrl/Cmd+Shift+P`) |
 | :--- | :--- | :--- | :--- |
 | **Format Document** | `Shift+Alt+F` | `Shift+Option+F` | `Format Document` |
-| **Quick Fix / Lightbulb** | `Ctrl+.` | `Cmd+.` | `Quick Fix...` |
-| **Trigger Autocomplete** | `Ctrl+Space` | `Cmd+Space` | `Trigger Suggest` |
-| **Signature Help** | `Ctrl+Shift+Space` | `Cmd+Shift+Space` | `Trigger Parameter Hints` |
+| **Call Hierarchy** | `Shift+Alt+H` | `Shift+Option+H` | `Show Call Hierarchy` |
 | **Go to Definition** | `F12` | `F12` | `Go to Definition` |
+| **Find All References** | `Shift+F12` | `Shift+F12` | `Find All References` |
+| **Quick Fix / Lightbulb** | `Ctrl+.` | `Cmd+.` | `Quick Fix...` |
+| **Open BML Scratchpad** | - | - | `CPQ-BML: Open BML Logic Scratchpad (Offline Sandbox)` |
+| **Run BML Script Locally** | - | - | `CPQ-BML: Run BML Script Locally (Scratchpad)` |
+| **Scaffold Library Function** | - | - | `CPQ-BML: Scaffold New Library Function (with -meta.json sidecar)` |
+| **Scaffold BMQL Query** | - | - | `CPQ-BML: Scaffold Parameterized BMQL Query` |
+| **Switch Environment** | - | - | `CPQ-BML: Switch Active CPQ Environment` |
+| **Export Team Profiles** | - | - | `CPQ-BML: Export Team Profiles (.cpq/profiles.json)` |
 | **Open Settings Panel** | - | - | `CPQ-BML: Open Settings` |
 | **Show Code Metrics** | - | - | `BML: Show Code Metrics` |
 | **Pull Function from CPQ** | - | - | `CPQ: Pull Function` |

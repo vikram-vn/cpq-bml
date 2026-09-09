@@ -36,6 +36,9 @@ graph LR
         HOVER["Hover Info Provider<br/>index.js"]
         INLAY["Inlay Hints Provider<br/>inlayHints.js"]
         BMQL["BMQL Variable Completer<br/>bmqlVariableCompletions.js"]
+        DEF["Go to Definition Provider<br/>definitionProvider.js"]
+        REF["Find All References Provider<br/>referenceProvider.js"]
+        HIER["Call Hierarchy Provider<br/>callHierarchyProvider.js"]
     end
 
     subgraph VS Code Editor
@@ -55,12 +58,18 @@ graph LR
     WS --> SIG
     WS --> HOVER
     WS --> INLAY
+    WS --> DEF
+    WS --> REF
+    WS --> HIER
 
     ED --> COMPL
     ED --> SIG
     ED --> HOVER
     ED --> INLAY
     ED --> BMQL
+    ED --> DEF
+    ED --> REF
+    ED --> HIER
 ```
 
 ---
@@ -238,7 +247,44 @@ flowchart TD
 
 ---
 
-## 8. Lookup Catalogs & Data Sources
+## 8. Semantic Call Hierarchy Provider (CFG 7)
+
+Provides deep workspace function traversal (`Shift+Alt+H`), revealing incoming callers and outgoing downstream invocations:
+
+```mermaid
+flowchart TD
+    TriggerHierarchy(["User presses Shift+Alt+H on function"]) --> PrepareCall["prepareCallHierarchy(document, position)"]
+    
+    PrepareCall --> ResolveTarget{"Cursor on util/commerce call or function definition?"}
+    ResolveTarget -->|"No"| InferFromFile["Infer from File Path & Workspace Index"]
+    ResolveTarget -->|"Yes"| ExtractItem["Build CallHierarchyItem (SymbolKind.Function)"]
+    InferFromFile --> ExtractItem
+
+    ExtractItem --> QueryMode{"User selects Incoming or Outgoing Calls?"}
+    
+    QueryMode -->|"Incoming Calls"| ScanWorkspace["Scan all **/*.bml in workspace index"]
+    ScanWorkspace --> FindCallers["Regex match call sites: util.<name> / commerce.<name>"]
+    FindCallers --> ReturnIncoming(["Return CallHierarchyIncomingCall[]"])
+
+    QueryMode -->|"Outgoing Calls"| ScanFunctionBody["Scan active function body AST"]
+    ScanFunctionBody --> ExtractCalls["Extract invoked util.* / commerce.* / Data Tables"]
+    ExtractCalls --> ResolveCallee["Resolve target file & line via getWorkspaceIndex()"]
+    ResolveCallee --> ReturnOutgoing(["Return CallHierarchyOutgoingCall[]"])
+```
+
+---
+
+## 9. Definition & Reference Resolution (`F12`, `Shift+F12`)
+
+Dual-layer symbol resolution supporting both workspace library functions and in-file variable scopes:
+
+- **Cross-File Library Functions**: Pressing `F12` on `util.myLibFunc` or `commerce.myCommerceFunc` queries `workspaceIndex.js` and jumps directly to the definition file and line.
+- **In-File Local Variables & Parameters**: Pressing `F12` on any local variable or parameter identifier searches upwards through variable declarations and assignments to locate the definition.
+- **Find All References (`Shift+F12`)**: When invoked on a library function, finds all occurrences across all workspace `.bml` files; when invoked on a local variable, highlights all usages within the active document.
+
+---
+
+## 10. Lookup Catalogs & Data Sources
 
 | Catalog File | Purpose | Size / Symbols |
 | :--- | :--- | :--- |

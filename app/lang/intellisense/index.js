@@ -13,6 +13,7 @@ const { registerInlayHintsProvider } = require('./inlayHints');
 const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('./bmqlVariableCompletions');
 const { createDefinitionProvider } = require('./definitionProvider');
 const { createReferenceProvider } = require('./referenceProvider');
+const { createCallHierarchyProvider } = require('./callHierarchyProvider');
 
 const {
     loadApiData,
@@ -272,6 +273,10 @@ function registerBmlIntelliSense(context) {
     // ── Find All References ───────────────────────────────────────────────────
     const referenceProvider = vscode.languages.registerReferenceProvider('bml', createReferenceProvider());
     context.subscriptions.push(referenceProvider);
+
+    // ── Call Hierarchy ────────────────────────────────────────────────────────
+    const callHierarchyProvider = vscode.languages.registerCallHierarchyProvider('bml', createCallHierarchyProvider());
+    context.subscriptions.push(callHierarchyProvider);
 
     // ── Rename Symbol ─────────────────────────────────────────────────────────
     const renameProvider = vscode.languages.registerRenameProvider('bml', {

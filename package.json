@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.87.0",
+  "version": "1.88.0",
   "icon": "app/icons/logo.png",
   "license": "MIT",
   "repository": {
@@ -131,6 +131,22 @@
     ],
     "snippets": [],
     "commands": [
+      {
+        "command": "cpqBml.openScratchpad",
+        "title": "CPQ-BML: Open BML Logic Scratchpad (Offline Sandbox)"
+      },
+      {
+        "command": "cpqBml.runBmlLocally",
+        "title": "CPQ-BML: Run BML Script Locally (Scratchpad)"
+      },
+      {
+        "command": "cpqBml.scaffoldLibraryFunction",
+        "title": "CPQ-BML: Scaffold New Library Function (with -meta.json sidecar)"
+      },
+      {
+        "command": "cpqBml.scaffoldBmqlQuery",
+        "title": "CPQ-BML: Scaffold Parameterized BMQL Query"
+      },
       {
         "command": "cpqBml.switchEnvironment",
         "title": "CPQ-BML: Switch Active CPQ Environment"

@@ -251,9 +251,42 @@ flowchart TD
 | | `comments.js` | `bml-comment-formatting` | Hint | Validates JSDoc parameter documentation completeness. | No |
 | | `style.js` | `bml-style-conventions` | Hint | Enforces canonical BML formatting and naming conventions. | Yes |
 
+| **Security & Best Practices** | `securityDiagnostics.js` | `BMQL_INJECTION_RISK` | Critical | Flags dynamic string concatenation in BMQL queries creating SQL injection vulnerabilities. | Yes |
+| | `securityDiagnostics.js` | `UNBOUNDED_LOOP` | Warning | Flags `while (true)` loops without break conditions or safety limits. | Yes |
+| | `securityDiagnostics.js` | `QUERY_IN_LOOP` | High | Flags BMQL database calls executed within loop constructs. | No |
+| | `securityDiagnostics.js` | `STRING_CONCAT_IN_LOOP` | Medium | Flags repeated memory allocation via string concatenation inside loops. | No |
+
 ---
 
-## 9. Practical Usage Examples & Quick Fix Workflows
+## 9. Real-Time AST Security Diagnostics & Quick-Fix Actions
+
+In addition to syntax and type rules, the extension runs a dedicated, high-speed AST security auditor ([`securityDiagnostics.js`](file:///c:/Users/Vikram-N/Downloads/cpq-bml/app/lang/lint/securityDiagnostics.js)) on open documents:
+
+- **Live Squiggles**: Surfaces red/yellow squiggles immediately as code is written (debounced at 400ms).
+- **Single-Click Quick-Fixes (`Alt+Enter`)**:
+  - `BMQL_INJECTION_RISK`: Automatically replaces dynamic concatenation (`' + var + '`) with parameterized placeholders (`$var`).
+  - `UNBOUNDED_LOOP`: Automatically inserts an iteration safety limit guard (`_loopCounter = _loopCounter + 1; if (_loopCounter > 1000) break;`).
+
+---
+
+## 10. Standalone CI/CD Quality Gate CLI (`bin/cpq-bml.js`)
+
+Run BML security and quality checks in CI pipelines or Git pre-commit hooks without launching VS Code:
+
+```bash
+# Scan workspace or directory
+npx cpq-bml audit . --min-score=75 --fail-on=error
+
+# Generate machine-readable JSON output for pull request bots
+npx cpq-bml audit . --format=json
+
+# Validate BMQL query string offline
+npx cpq-bml validate "SELECT partNumber, price FROM PricingTable WHERE model = $currentModel"
+```
+
+---
+
+## 11. Practical Usage Examples & Quick Fix Workflows
 
 ### How to Apply Quick Fixes in VS Code
 1. Place cursor on the squiggly line under the error or warning.

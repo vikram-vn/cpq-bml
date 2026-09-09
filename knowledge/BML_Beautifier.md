@@ -254,6 +254,13 @@ flowchart TD
     BuildEdit --> ApplyEdit(["Send minimal TextEdit to Editor Buffer"])
 ```
 
+### On-Type Formatting Provider (`registerOnTypeFormattingEditProvider`)
+
+In addition to full document formatting (`Shift+Alt+F`) and selected range formatting, the beautifier registers an on-type formatting edit provider for `;` and `}`:
+- **Statement Completion (`;`)**: Formats and cleans indentation and spacing of the completed line immediately when the developer types `;`.
+- **Block Closure (`}`)**: Adjusts block indentation and collapses/expands closing braces immediately when the developer types `}`.
+- **Universal Selectors**: Operates seamlessly across `bml` language documents, `**/*.bml`, and `**/*.util` file structures.
+
 ---
 
 ## 9. Configuration Options Reference

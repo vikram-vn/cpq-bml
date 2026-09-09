@@ -15,22 +15,30 @@
 
 ## 1. Overview & High-Level Architecture
 
-The **CPQ-BML MCP Server** exposes the full lifecycle of Oracle CPQ BML development as Model Context Protocol (MCP) tools via JSON-RPC over `stdio`. It connects AI coding agents directly to the local workspace, BML AST compiler, and remote Oracle CPQ instances:
+The **CPQ-BML MCP Server** exposes the full lifecycle of Oracle CPQ BML development as Model Context Protocol (MCP) tools and native resources via a local **Streamable HTTP & SSE transport** (`http://127.0.0.1:<port>`). It connects modern AI agents (Cursor, GitHub Copilot, Google Antigravity, Claude Desktop, and ChatGPT) directly to the local workspace, AST security auditor, local logic evaluator, and remote Oracle CPQ instances:
 
 ```mermaid
 graph LR
-    subgraph AI Client
-        AGENT["AI Agent / Cursor / Antigravity"]
+    subgraph AI Client Ecosystem
+        CUR["Cursor IDE<br/>(~/.cursor/mcp.json)"]
+        COP["GitHub Copilot<br/>(.vscode/mcp.json)"]
+        AGY["Google Antigravity<br/>(~/.gemini/config/mcp_config.json)"]
+        CLA["Claude Desktop<br/>(claude_desktop_config.json)"]
+        GPT["ChatGPT Desktop<br/>(chatgpt_desktop_config.json)"]
     end
 
-    subgraph MCP Server Engine
-        STDIO["JSON-RPC Stdio Transport<br/>server.js"]
-        REGISTRY["Tool Registry & Validation<br/>tool-defs/*.js"]
+    subgraph MCP Server Engine (HTTP 127.0.0.1:port)
+        TRANS["Streamable HTTP & SSE Transport<br/>server.js"]
+        PORT["Auto Port Recovery<br/>(EADDRINUSE Probe)"]
+        REGISTRY["Tool & Resource Registry<br/>tool-defs/ & resources/"]
+        TRAFFIC["Live Traffic Ring Buffer<br/>traffic.js (50 Calls)"]
         PROXY["REST / SOAP CPQ Proxy<br/>proxy.js"]
     end
 
-    subgraph Workspace & Local Core
+    subgraph Workspace, Security & Evaluator
         WORKING["AI Working Copy Manager<br/>locate.js"]
+        AUDITOR["AST Security Auditor<br/>audit.js & bmqlValidator.js"]
+        SANDBOX["Local BML Sandbox Evaluator<br/>bmlEvaluator.js"]
         LINTER["BML Linter & Beautifier<br/>lint/ & beautify/"]
         METRICS["Complexity & Halstead Metrics<br/>metrics/"]
     end
@@ -39,17 +47,20 @@ graph LR
         CPQ["Oracle CPQ Cloud Instance<br/>(REST & SOAP APIs)"]
     end
 
-    AGENT -->|"JSON-RPC Request"| STDIO
-    STDIO --> REGISTRY
+    CUR & COP & AGY & CLA & GPT -->|"JSON-RPC (Streamable HTTP / SSE)"| TRANS
+    TRANS --> PORT
+    TRANS --> TRAFFIC
+    TRANS --> REGISTRY
     REGISTRY --> WORKING
+    REGISTRY --> AUDITOR
+    REGISTRY --> SANDBOX
     REGISTRY --> LINTER
     REGISTRY --> METRICS
     REGISTRY --> PROXY
     PROXY -->|"HTTPS Auth & Payload"| CPQ
     CPQ -->|"Execution Result / BML"| PROXY
     PROXY --> REGISTRY
-    REGISTRY --> STDIO
-    STDIO -->|"JSON-RPC Response"| AGENT
+    REGISTRY --> TRANS
 ```
 
 ---
@@ -211,10 +222,19 @@ flowchart TD
 
 ---
 
-## 8. Comprehensive MCP Tool Catalog (24 Tools)
+## 8. Comprehensive MCP Tool Catalog (29 Tools) & Native Resources
 
 | Category | Tool Name | Parameters | Description |
 | :--- | :--- | :--- | :--- |
+| **Security & Quality** | `audit_bml_code` | `code` | High-speed AST/regex auditor checking BMQL injection risks, queries in loops, unbounded while loops, and memory bottlenecks. |
+| | `validate_bmql_query` | `query` | Offline BMQL syntax validator rejecting SQL joins, group by, order by, aggregates, DML, and extracting table/column schemas. |
+| | `evaluate_bml_logic` | `code`, `timeoutMs`? | Offline sandbox executing pure BML logic (strings, math, arrays, dicts, JSON, dates) and capturing print outputs. |
+| | `format_bml` | `code`, `options`? | Formats BML code with deterministic beautifier. |
+| | `lint_function` | `variableName` | Runs 27 static analysis rules on single function. |
+| | `lint_all_functions` | `severityThreshold`? | Runs static analysis across entire workspace. |
+| | `get_function_metrics` | `variableName` | Computes Cyclomatic complexity, Halstead, nesting depth. |
+| **Schema & Data Tables** | `list_datatables` | _none_ | Lists all available Oracle CPQ Data Tables with descriptions. |
+| | `get_datatable_schema` | `tableName` | Retrieves column names, data types, and primary key schema for a Data Table. |
 | **Lifecycle** | `pull_function` | `variableName`, `type`? | Pulls a single BML function from CPQ into local working copy. |
 | | `pull_functions` | `items` | Batch-pulls multiple functions simultaneously. |
 | | `save_function` | `variableName` | Saves the working copy to the CPQ environment. |
@@ -228,10 +248,6 @@ flowchart TD
 | | `remove_override` | `variableName` | Removes local override, reverting to base. |
 | | `reset_ai_copy` | `variableName` | Discards AI modifications and restores original copy. |
 | | `list_local_functions` | _none_ | Lists all local BML functions in workspace. |
-| **Formatting & Quality** | `format_bml` | `code`, `options`? | Formats BML code with deterministic beautifier. |
-| | `lint_function` | `variableName` | Runs 27 static analysis rules on single function. |
-| | `lint_all_functions` | `severityThreshold`? | Runs static analysis across entire workspace. |
-| | `get_function_metrics` | `variableName` | Computes Cyclomatic complexity, Halstead, nesting depth. |
 | **Lookups & Diff** | `lookup_bml_reference` | `query` | Searches standard built-ins, attributes, and variables. |
 | | `explain_function` | `variableName` | Provides structured explanation of function purpose. |
 | | `diff_function` | `variableName`, `compareWith`? | Computes diff between working copy and remote base. |
@@ -241,8 +257,16 @@ flowchart TD
 | **Connection & Status** | `get_connection_status` | `testConnection`? | Reports CPQ credentials & connection status without exposing secrets. |
 | | `list_util_functions` | _none_ | Lists remote util functions from CPQ instance. |
 | | `list_commerce_functions` | `commerceProcess`?, `commerceDocument`? | Lists remote commerce process functions. |
-| | `global_search_bml` | `query`, `caseSensitive`?, `limit`?, `offset`? | Remote BML Global Search across all scripts on CPQ (/rest/v19/bml/scripts). |
-| | `get_transactions` | `q`?, `query`?, `offset`?, `limit`?, `fields`? | Retrieve transactions from CPQ (/rest/v19/commerceDocuments<Process><Document>) with minimal fields (_id, transactionID_t) for debugging. |
+| | `global_search_bml` | `query`, `caseSensitive`?, `limit`?, `offset`? | Remote BML Global Search across all scripts on CPQ. |
+| | `get_transactions` | `q`?, `query`?, `offset`?, `limit`?, `fields`? | Retrieve transactions from CPQ for debugging. |
+
+### Native MCP Resources (`resources/list`, `resources/read`)
+
+The CPQ-BML MCP server exposes standard browsable URIs for zero-token retrieval:
+- `cpq://attributes/commerce`: Returns full cached catalog of Commerce attributes, system variables, and lookups.
+- `cpq://attributes/configuration`: Returns all cached Configuration attributes and hierarchy.
+- `cpq://datatables/list`: Returns list of all known Data Tables and schemas.
+- `skill://{skillName}`: Returns markdown documentation for CPQ architectural skills.
 
 ---
 

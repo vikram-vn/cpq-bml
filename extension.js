@@ -15,6 +15,8 @@ const { registerXslt } = require("./app/lang/xslt");
 const { registerMetrics } = require("./app/lang/metrics");
 const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
 const { registerEnvironmentSwitcher } = require("./app/lang/statusBar/environmentSwitcher");
+const { registerScaffolder } = require("./app/lang/scaffold/bmlScaffolder");
+const { registerScratchpad } = require("./app/lang/evaluator/scratchpadPanel");
 const { syncRuntimeWorkspaceFolders } = require("./app/lang/icons/dynamicFolderIcons");
 const { syncGlobalAgySkills } = require("./app/ai/setup/globalSkillSync");
 const { registerChatParticipant } = require("./app/ai/chatParticipant");
@@ -66,6 +68,8 @@ function activate(context) {
   registerBmlSnapshot(context);
   registerChatParticipant(context);
   registerEnvironmentSwitcher(context);
+  registerScaffolder(context);
+  registerScratchpad(context);
 
   // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
   // so Antigravity IDE can discover them natively (on-demand, by name). Other AI

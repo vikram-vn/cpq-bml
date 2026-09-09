@@ -2,6 +2,7 @@ const path = require('path');
 const api = require('../api');
 const config = require('../config');
 const metadataLib = require('../metadata');
+const { confirmAndWriteBmlFile } = require('../safeSync');
 const {
     getTimestamp,
     writeTerminalMessage,
@@ -82,6 +83,7 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
     }
 
     let pulledCount = 0;
+    const sessionState = { overwriteAll: false, skipAll: false };
     for (const pick of selected) {
         try {
             const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
@@ -120,7 +122,12 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
                 `${metadata.variableName}.bml`
             );
             const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
-            metadataLib.writeBmlFile(bmlPath, scriptText);
+
+            const writeStatus = await confirmAndWriteBmlFile(vscode, bmlPath, scriptText, metadata.variableName, sessionState);
+            if (writeStatus === 'skipped') {
+                resultsTerminal.writeLine(`\x1b[33m${getTimestamp()} Skipped ${metadata.variableName} (kept local)\x1b[0m`);
+                continue;
+            }
             metadataLib.writeMetadata(metaPath, metadata);
             resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
             pulledCount++;
@@ -212,6 +219,7 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
     }
 
     let pulledCount = 0;
+    const sessionState = { overwriteAll: false, skipAll: false };
     for (const pick of selected) {
         try {
             const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
@@ -247,7 +255,12 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
                 `${metadata.variableName}.bml`
             );
             const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
-            metadataLib.writeBmlFile(bmlPath, scriptText);
+
+            const writeStatus = await confirmAndWriteBmlFile(vscode, bmlPath, scriptText, metadata.variableName, sessionState);
+            if (writeStatus === 'skipped') {
+                resultsTerminal.writeLine(`\x1b[33m${getTimestamp()} Skipped ${metadata.variableName} (kept local)\x1b[0m`);
+                continue;
+            }
             metadataLib.writeMetadata(metaPath, metadata);
             resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
             pulledCount++;

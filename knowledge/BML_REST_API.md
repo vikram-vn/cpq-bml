@@ -207,28 +207,56 @@ flowchart TD
 
 ---
 
-## 7. Workspace Scaffolding & Local Override Flow (CFG 6)
+## 7. Safe Pull Synchronization & 3-Way Diff Flow (CFG 6)
 
-Scaffolds new BML functions and manages local override workflows:
+Guards against accidental overwriting of uncommitted local modifications during remote pull operations:
 
 ```mermaid
 flowchart TD
-    TriggerScaffold(["Trigger Scaffold Command (scaffold.js)"]) --> PromptFolder["Prompt for Library Folder Name"]
+    PullFn(["Pull Function from CPQ"]) --> CheckExists{"Does local file exist on disk?"}
     
-    PromptFolder --> PromptFuncName["Prompt for Function Name & Description"]
-    PromptFuncName --> PromptReturnType["Prompt for Return Type (String, Integer, Float, Boolean, Date, dict, json)"]
-    PromptFuncName --> PromptParamsList["Prompt for Parameter Names and Types"]
-
-    PromptParamsList --> GenerateBoilerplate["Generate .bml file with JSDoc headers and type skeletons"]
-    GenerateBoilerplate --> WriteWorkspaceFile["Write file to workspace library folder"]
+    CheckExists -->|"No"| WriteFile["Write .bml and -meta.json sidecar"]
+    CheckExists -->|"Yes"| CompareContent{"Is local content identical to remote?"}
     
-    WriteWorkspaceFile --> RegisterMetadata["Register function in local .cpqdevkit metadata index"]
-    RegisterMetadata --> OpenEditor(["Open newly created BML file in editor"])
+    CompareContent -->|"Identical"| WriteFile
+    CompareContent -->|"Modified"| CheckSession{"Overwrite All or Skip All active?"}
+    
+    CheckSession -->|"Overwrite All"| WriteFile
+    CheckSession -->|"Skip All"| SkipFile["Skip pull and retain local file"]
+    
+    CheckSession -->|"Prompt"| ConflictDialog["Display Interactive Conflict Dialog"]
+    ConflictDialog --> Choice{"User selection?"}
+    
+    Choice -->|"Compare (Diff)"| OpenDiff["Launch vscode.diff(local, remoteTemp)"]
+    OpenDiff --> PostDiffChoice{"Overwrite after review?"}
+    PostDiffChoice -->|"Yes"| WriteFile
+    PostDiffChoice -->|"No"| SkipFile
+    
+    Choice -->|"Overwrite Local"| WriteFile
+    Choice -->|"Keep Local (Skip)"| SkipFile
+    Choice -->|"Overwrite All"| SetOverwriteAll["Set session overwriteAll = true"] --> WriteFile
+    Choice -->|"Skip All"| SetSkipAll["Set session skipAll = true"] --> SkipFile
 ```
 
 ---
 
-## 8. Oracle CPQ REST Endpoint Catalog
+## 8. Status Bar Environment Quick-Switcher & Team Profiles
+
+- **Status Bar Item (`$(server) CPQ: [EnvName]`)**: Clickable status bar indicator showing active connected site. Clicking opens an instant QuickPick allowing developers to switch environments without navigating through settings.
+- **Safe Team Profile Sharing (`.cpq/profiles.json`)**:
+  - `cpqBml.exportTeamProfiles`: Sanitizes configured environments (stripping passwords, client secrets, and api tokens) and writes to `.cpq/profiles.json` for repository version control.
+  - `cpqBml.importTeamProfiles`: Merges shared team environment hostnames and processes into user configuration without overwriting existing secrets.
+
+---
+
+## 9. Automated BML Function & BMQL Scaffolding
+
+- **Library Function Scaffolder (`cpqBml.scaffoldLibraryFunction`)**: Prompts for function name, description, return type (with BML type picker), and parameters (`name:Type`), creating `<name>/<name>.bml` (docHeader comments) and `<name>-meta.json` sidecars synchronously.
+- **BMQL Query Scaffolder (`cpqBml.scaffoldBmqlQuery`)**: Prompts for table name, columns, and filter variable, inserting a parameterized BMQL query with recordset iteration into the active editor.
+
+---
+
+## 10. Oracle CPQ REST Endpoint Catalog
 
 | HTTP Method | API Endpoint | Purpose |
 | :--- | :--- | :--- |
