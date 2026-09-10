@@ -86,14 +86,6 @@ export default function FeaturesTab({ active, features = {}, inlayHints = {}, up
                 />
 
                 <Switch
-                    id="metricsEnable"
-                    label="Enable BML Code Metrics"
-                    description="Calculates cyclomatic complexity, nesting depth, line counts, and generates workspace-wide metrics dashboard"
-                    checked={features.metrics}
-                    onChange={(v) => updateField('features.metrics', v)}
-                />
-
-                <Switch
                     id="testingEnable"
                     label="Enable BML Unit &amp; Snapshot Testing"
                     description="Enables running tests from *.bmltest.json sidecars, and creating/running regression snapshot tests against remote environments"

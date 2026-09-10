@@ -13,7 +13,6 @@ const fs = require('fs');
 const path = require('path');
 const api = require('./api');
 const metadataLib = require('./metadata');
-const { calculateMetrics } = require('../complexity/complexityAnalyzer');
 
 /**
  * Stage 1: Validates function code against the live CPQ server syntax validator.
@@ -51,6 +50,50 @@ async function checkServerValidation(filePath, code, metadata, vscodeInstance = 
       elapsedMs: Date.now() - startedAt
     };
   }
+}
+
+/**
+ * Computes cyclomatic complexity, maintainability index, and loop timeout threats.
+ */
+function calculateMetrics(code = '') {
+  const lines = code.split(/\r?\n/);
+  const loc = lines.filter(l => l.trim().length > 0 && !l.trim().startsWith('//')).length;
+
+  let cyclomaticComplexity = 1;
+  const branchPatterns = [/\bif\b/g, /\belif\b/g, /\bfor\b/g, /\bAND\b/g, /\bOR\b/g, /\?(?!=)/g];
+  for (const pattern of branchPatterns) {
+    const matches = code.match(pattern);
+    if (matches) cyclomaticComplexity += matches.length;
+  }
+
+  let maxNesting = 0;
+  let currentNesting = 0;
+  for (let i = 0; i < code.length; i++) {
+    const ch = code[i];
+    if (ch === '{') {
+      currentNesting++;
+      if (currentNesting > maxNesting) maxNesting = currentNesting;
+    } else if (ch === '}') {
+      if (currentNesting > 0) currentNesting--;
+    }
+  }
+
+  const tokens = code.match(/[a-zA-Z0-9_]+|[+\-*/%=<>!&|]+/g) || [];
+  const uniqueTokens = new Set(tokens);
+  const volume = Math.max(1, tokens.length * Math.log2(Math.max(2, uniqueTokens.size)));
+  const rawMi = 171 - 5.2 * Math.log(volume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(Math.max(1, loc));
+  const maintainabilityIndex = Math.max(0, Math.min(100, Math.round((rawMi * 100) / 171)));
+
+  const hasLoopBmql = /\bfor\b[\s\S]*?\b(?:SELECT|MODIFY)\b[\s\S]*?\bFROM\b/i.test(code);
+  const timeoutThreat = hasLoopBmql || (maxNesting >= 3 && cyclomaticComplexity >= 12);
+
+  return {
+    loc,
+    cyclomaticComplexity,
+    nestingDepth: maxNesting,
+    maintainabilityIndex,
+    timeoutThreat
+  };
 }
 
 /**

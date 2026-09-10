@@ -25,11 +25,9 @@ export const ALL_SETTINGS_REGISTRY = [
     { id: 'intellisense', tab: 'features', tabName: 'Features', label: 'IntelliSense & Autocomplete', desc: 'Function signatures, built-in keyword completions, and documentation tooltips', type: 'switch', key: 'features.intellisense' },
     { id: 'docHeader', tab: 'features', tabName: 'Features', label: 'Documentation Headers', desc: 'Automatic doc header insertion when creating new BML files', type: 'switch', key: 'features.docHeader' },
     { id: 'xslt', tab: 'features', tabName: 'Features', label: 'XSLT View & Transform', desc: 'XSL stylesheet formatting, transformation preview, and validation', type: 'switch', key: 'features.xslt' },
-    { id: 'metrics', tab: 'features', tabName: 'Features', label: 'Code Metrics', desc: 'Calculates cyclomatic complexity and maintainability index in status bar', type: 'switch', key: 'features.metrics' },
     { id: 'testing', tab: 'features', tabName: 'Features', label: 'Unit Test Runner', desc: 'Discovers and executes BML test suites locally with test explorer integration', type: 'switch', key: 'features.testing' },
     { id: 'inlayHints', tab: 'features', tabName: 'Features', label: 'Parameter Inlay Hints', desc: 'Displays inline parameter names in function calls', type: 'switch', key: 'inlayHints.enabled' },
     { id: 'suppressWhenArgumentMatchesName', tab: 'features', tabName: 'Features', label: 'Hide Hints on Exact Name Match', desc: 'Suppresses parameter name hints when argument variable name matches parameter', type: 'switch', key: 'inlayHints.suppressWhenArgumentMatchesName' },
-    { id: 'variableTypes', tab: 'features', tabName: 'Features', label: 'Variable Type Inlay Hints', desc: 'Shows declared return type next to variable declarations', type: 'switch', key: 'inlayHints.variableTypes' },
 
     // AI & MCP
     { id: 'mcpEnable', tab: 'mcp', tabName: 'AI & MCP', label: 'Enable MCP Server', desc: 'Starts a local Model Context Protocol server on this machine', type: 'switch', key: 'mcp.enable' },
