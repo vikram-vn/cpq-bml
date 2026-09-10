@@ -232,6 +232,87 @@ function buildMemberFixes(document, range, targetVar, memberName, argsText, hasP
         return fixes;
     }
 
+    // 22. Date operations: .addDays(n), .minusDays(n), .addMonths(n), .getTime(), .isLeap(), .isWeekend(), .format(...)
+    if (memberLower === 'adddays') {
+        addFix(`Convert to 'adddays(${targetVar}, ${argsText || '1'})'`, `adddays(${targetVar}, ${argsText || '1'})`, true);
+        return fixes;
+    }
+    if (memberLower === 'minusdays') {
+        addFix(`Convert to 'minusdays(${targetVar}, ${argsText || '1'})'`, `minusdays(${targetVar}, ${argsText || '1'})`, true);
+        return fixes;
+    }
+    if (memberLower === 'addmonths') {
+        addFix(`Convert to 'addmonths(${targetVar}, ${argsText || '1'})'`, `addmonths(${targetVar}, ${argsText || '1'})`, true);
+        return fixes;
+    }
+    if (memberLower === 'gettime' || memberLower === 'getmilliseconds') {
+        addFix(`Convert to 'getcurrenttimeinmillis()'`, `getcurrenttimeinmillis()`, true);
+        return fixes;
+    }
+    if (memberLower === 'isleap') {
+        addFix(`Convert to 'isleap(${targetVar})'`, `isleap(${targetVar})`, true);
+        return fixes;
+    }
+    if (memberLower === 'isweekend') {
+        addFix(`Convert to 'isweekend(${targetVar})'`, `isweekend(${targetVar})`, true);
+        return fixes;
+    }
+    if (memberLower === 'format') {
+        addFix(`Convert to 'datetostr(${targetVar}, ${argsText || '"MM/dd/yyyy"'})'`, `datetostr(${targetVar}, ${argsText || '"MM/dd/yyyy"'})`, true);
+        return fixes;
+    }
+
+    // 23. Static Parsing & JSON Helpers: Integer.parseInt, Float.parseFloat, JSON.parse, JSON.stringify
+    if (targetVar.toLowerCase() === 'integer' && memberLower === 'parseint') {
+        addFix(`Convert to 'atoi(${argsText || '""'})'`, `atoi(${argsText || '""'})`, true);
+        return fixes;
+    }
+    if ((targetVar.toLowerCase() === 'float' || targetVar.toLowerCase() === 'double') &&
+        (memberLower === 'parsefloat' || memberLower === 'parsedouble')) {
+        addFix(`Convert to 'atof(${argsText || '""'})'`, `atof(${argsText || '""'})`, true);
+        return fixes;
+    }
+    if (targetVar.toLowerCase() === 'json' && memberLower === 'parse') {
+        addFix(`Convert to 'json(${argsText || '""'})'`, `json(${argsText || '""'})`, true);
+        return fixes;
+    }
+    if (targetVar.toLowerCase() === 'json' && memberLower === 'stringify') {
+        addFix(`Convert to 'jsontostr(${argsText || '""'})'`, `jsontostr(${argsText || '""'})`, true);
+        return fixes;
+    }
+
+    // 24. String helpers: .strip(), .charAt()
+    if (memberLower === 'strip' || memberLower === 'trimleft' || memberLower === 'trimstart' || memberLower === 'trimright' || memberLower === 'trimend') {
+        addFix(`Convert to 'trim(${targetVar})'`, `trim(${targetVar})`, true);
+        return fixes;
+    }
+    if (memberLower === 'charat') {
+        const start = argsText || '0';
+        addFix(`Convert to 'substring(${targetVar}, ${start}, ${start} + 1)'`, `substring(${targetVar}, ${start}, ${start} + 1)`, true);
+        return fixes;
+    }
+
+    // 25. Array helpers: .isEmpty(), .pop(), .shift()
+    if (memberLower === 'isempty') {
+        addFix(`Convert to 'isempty(${targetVar})'`, `isempty(${targetVar})`, true);
+        return fixes;
+    }
+    if (memberLower === 'pop') {
+        addFix(`Convert to '${targetVar} = remove(${targetVar}, sizeofarray(${targetVar}) - 1)'`, `${targetVar} = remove(${targetVar}, sizeofarray(${targetVar}) - 1)`, true);
+        return fixes;
+    }
+    if (memberLower === 'shift') {
+        addFix(`Convert to '${targetVar} = remove(${targetVar}, 0)'`, `${targetVar} = remove(${targetVar}, 0)`, true);
+        return fixes;
+    }
+
+    // 26. Clone / Copy: .clone(), .copy()
+    if (memberLower === 'clone' || memberLower === 'copy') {
+        addFix(`Convert to 'jsoncopy(${targetVar})' (for JSON objects)`, `jsoncopy(${targetVar})`, true);
+        addFix(`Convert to 'jsonarraycopy(${targetVar})' (for JSON arrays)`, `jsonarraycopy(${targetVar})`);
+        return fixes;
+    }
+
     return fixes;
 }
 

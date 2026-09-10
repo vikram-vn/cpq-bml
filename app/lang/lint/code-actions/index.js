@@ -12,6 +12,9 @@ const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
 const { getApiFixes } = require('@/lang/lint/code-actions/apiFixes');
 const { getUnreachableFixes } = require('@/lang/lint/code-actions/unreachableFixes');
 const { getSecurityFixes } = require('@/lang/lint/code-actions/securityFixes');
+const { getStringArrayFixes } = require('@/lang/lint/code-actions/stringArrayFixes');
+const { getDictJsonDateFixes } = require('@/lang/lint/code-actions/dictJsonDateFixes');
+const { getCommerceWebFixes } = require('@/lang/lint/code-actions/commerceWebFixes');
 const { getFixAllSafeAction } = require('@/lang/lint/code-actions/fixAllSafe');
 
 function registerBmlCodeActions(context) {
@@ -43,6 +46,9 @@ function registerBmlCodeActions(context) {
                         ...getApiFixes(document, diag, editRange),
                         ...getUnreachableFixes(document, diag, editRange),
                         ...getSecurityFixes(document, diag, editRange),
+                        ...getStringArrayFixes(document, diag, editRange),
+                        ...getDictJsonDateFixes(document, diag, editRange),
+                        ...getCommerceWebFixes(document, diag, editRange),
                         ...getSpellingFixes(document, diag, editRange, extensionPath)
                     );
 
