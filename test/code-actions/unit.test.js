@@ -10,7 +10,7 @@
  * - syntaxAndQualityRemaining.test.js
  */
 
-require('@/test/code-actions/memberAccess.test');
+require('@/test/code-actions/memberAccessUnit.test');
 require('@/test/code-actions/signaturesAndTypes.test');
 require('@/test/code-actions/performanceSbappend.test');
 require('@/test/code-actions/coreBuiltins.test');
