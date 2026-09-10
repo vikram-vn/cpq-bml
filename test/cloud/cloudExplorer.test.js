@@ -4,7 +4,8 @@ const fs = require('fs');
 const {
   groupFunctionsByFolder,
   findLocalFunctionFile,
-  createCloudExplorer
+  createCloudExplorer,
+  pullFunctionCommand
 } = require('@/lang/cloud/cloudExplorer');
 
 suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
@@ -120,6 +121,8 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     assert.strictEqual(fnItem.description, '-> String');
     assert.strictEqual(fnItem.contextValue, 'cpqCloudFunctionRemote');
     assert.strictEqual(fnItem.iconPath.id, 'cloud-download');
+    assert.strictEqual(fnItem.command.command, 'cpqBml.cloud.pullFunction');
+    assert.strictEqual(fnItem.command.title, 'Download and Open Function');
 
     // Test category tree items (Util & Commerce)
     const utilCategory = {
@@ -184,5 +187,72 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     // Test refresh
     explorer.refresh();
     assert.strictEqual(fired, true);
+  });
+
+  test('pullFunctionCommand downloads remote function and opens document in editor', async () => {
+    const os = require('os');
+    const api = require('@/lang/rest/api');
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-pull-test-'));
+
+    const origGetFunc = api.getLibraryFunction;
+    api.getLibraryFunction = async () => ({
+      statusCode: 200,
+      body: {
+        variableName: 'calcBonus',
+        name: 'Calculate Bonus',
+        returnType: 'Float',
+        scriptText: 'return 100.0;\n'
+      }
+    });
+
+    let openedUri = null;
+    let showedDoc = null;
+
+    const mockVscode = {
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: tempDir } }],
+        getConfiguration: () => ({ get: () => 'library' }),
+        openTextDocument: async (uri) => {
+          openedUri = uri;
+          return { uri };
+        }
+      },
+      window: {
+        withProgress: async (opt, task) => task({ report: () => {} }),
+        showInformationMessage: () => {},
+        showErrorMessage: () => {},
+        showWarningMessage: () => {},
+        showTextDocument: async (doc) => {
+          showedDoc = doc;
+        }
+      },
+      Uri: {
+        file: (f) => ({ fsPath: f, scheme: 'file', toString: () => f })
+      }
+    };
+
+    try {
+      const item = {
+        data: {
+          variableName: 'calcBonus',
+          name: 'Calculate Bonus',
+          folderName: 'finance'
+        }
+      };
+
+      await pullFunctionCommand(item, mockVscode, {});
+
+      const expectedBmlPath = path.join(tempDir, 'library', 'finance', 'calcBonus', 'calcBonus.bml');
+      assert.ok(fs.existsSync(expectedBmlPath), 'Expected .bml file to be written locally');
+      const content = fs.readFileSync(expectedBmlPath, 'utf8');
+      assert.strictEqual(content, 'return 100.0;\n');
+
+      assert.ok(openedUri, 'Expected openTextDocument to be called');
+      assert.strictEqual(openedUri.fsPath, expectedBmlPath);
+      assert.ok(showedDoc, 'Expected showTextDocument to be called');
+    } finally {
+      api.getLibraryFunction = origGetFunc;
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
   });
 });

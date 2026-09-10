@@ -24,6 +24,7 @@ try {
       showInformationMessage: () => {},
       showErrorMessage: () => {},
       showWarningMessage: () => {},
+      showTextDocument: async () => {},
       withProgress: async (opt, task) => task({ report: () => {} })
     },
     commands: {
@@ -308,11 +309,16 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     } else {
       if (isCommerce) {
         const procDoc = `${fn.commerceProcess || 'oraclecpqo'}/${fn.commerceDocument || 'transaction'}`;
-        item.tooltip = `${varName} [Cloud Only - Commerce: ${procDoc}]\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}`;
+        item.tooltip = `${varName} [Cloud Only - Commerce: ${procDoc}]\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}\nDouble-click to download and open`;
       } else {
-        item.tooltip = `${varName} [Cloud Only]\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}`;
+        item.tooltip = `${varName} [Cloud Only]\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}\nDouble-click to download and open`;
       }
       item.iconPath = new vscodeInstance.ThemeIcon('cloud-download', new vscodeInstance.ThemeColor('textLink.foreground'));
+      item.command = {
+        command: 'cpqBml.cloud.pullFunction',
+        title: 'Download and Open Function',
+        arguments: [element]
+      };
     }
 
     return item;
@@ -406,6 +412,8 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
   };
 }
 
+const activePulls = new Set();
+
 /**
  * Handles pulling a cloud function down into the workspace library directory.
  */
@@ -431,13 +439,20 @@ async function pullFunctionCommand(item, vscodeInstance = vscode, context) {
   const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
   const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
   const commerceMetadata = isCommerce ? { commerceProcess, commerceDocument } : undefined;
+  const pullKey = `${isCommerce ? commerceProcess + '_' + commerceDocument : 'util'}_${varName}`;
 
-  await vscodeInstance.window.withProgress({
-    location: 15, // Notification
-    title: `Pulling '${varName}' from CPQ Cloud...`,
-    cancellable: false
-  }, async () => {
-    try {
+  if (activePulls.has(pullKey)) {
+    return;
+  }
+  activePulls.add(pullKey);
+
+  try {
+    await vscodeInstance.window.withProgress({
+      location: 15, // Notification
+      title: `Pulling '${varName}' from CPQ Cloud...`,
+      cancellable: false
+    }, async () => {
+      try {
       const nsVarName = metadataLib.namespaceVariableNameFor(fn);
       let res = await api.getLibraryFunction(context, vscodeInstance, nsVarName, undefined, commerceMetadata);
 
@@ -483,6 +498,9 @@ async function pullFunctionCommand(item, vscodeInstance = vscode, context) {
       vscodeInstance.window.showErrorMessage(`Failed to pull '${varName}': ${err.message}`);
     }
   });
+  } finally {
+    activePulls.delete(pullKey);
+  }
 }
 
 /**

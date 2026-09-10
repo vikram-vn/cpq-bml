@@ -191,6 +191,7 @@ const mockVscode = {
         }),
         registerTreeDataProvider: () => ({ dispose: () => {} }),
         createTreeView: () => ({ dispose: () => {} }),
+        showTextDocument: async (doc) => ({ document: doc }),
         withProgress: async (opts, task) => {
             return task({ report: () => {} }, { isCancellationRequested: false, onCancellationRequested: () => {} });
         },
