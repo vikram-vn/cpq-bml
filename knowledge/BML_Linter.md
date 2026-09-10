@@ -269,24 +269,7 @@ In addition to syntax and type rules, the extension runs a dedicated, high-speed
 
 ---
 
-## 10. Standalone CI/CD Quality Gate CLI (`bin/cpq-bml.js`)
-
-Run BML security and quality checks in CI pipelines or Git pre-commit hooks without launching VS Code:
-
-```bash
-# Scan workspace or directory
-npx cpq-bml audit . --min-score=75 --fail-on=error
-
-# Generate machine-readable JSON output for pull request bots
-npx cpq-bml audit . --format=json
-
-# Validate BMQL query string offline
-npx cpq-bml validate "SELECT partNumber, price FROM PricingTable WHERE model = $currentModel"
-```
-
----
-
-## 11. Practical Usage Examples & Quick Fix Workflows
+## 10. Practical Usage Examples & Quick Fix Workflows
 
 ### How to Apply Quick Fixes in VS Code
 1. Place cursor on the squiggly line under the error or warning.

@@ -15,10 +15,9 @@ Comprehensive technical architecture reference for the advanced subsystems intro
 8. [Standalone CI/CD Quality Gate CLI](#8-standalone-cicd-quality-gate-cli)
 9. [BML Debug Adapter Protocol (DAP) Engine](#9-bml-debug-adapter-protocol-dap-engine)
 10. [Native VS Code Test Explorer (`vscode.TestController`)](#10-native-vs-code-test-explorer-vscodetestcontroller)
-11. [Interactive Data Table Grid Editor (`vscode.CustomTextEditorProvider`)](#11-interactive-data-table-grid-editor-vscodecustomtexteditorprovider)
-12. [AST Parser, Semantic Tokens & F2 Symbol Rename](#12-ast-parser-semantic-tokens--f2-symbol-rename)
-13. [Dynamic Instance Type Definitions (`cpq.d.bml`)](#13-dynamic-instance-type-definitions-cpqdbml)
-14. [Static Performance & Timeout Profiler](#14-static-performance--timeout-profiler)
+11. [AST Parser, Semantic Tokens & F2 Symbol Rename](#11-ast-parser-semantic-tokens--f2-symbol-rename)
+12. [Dynamic Instance Type Definitions (`cpq.d.bml`)](#12-dynamic-instance-type-definitions-cpqdbml)
+13. [Static Performance & Timeout Profiler](#13-static-performance--timeout-profiler)
 
 ---
 
@@ -203,17 +202,14 @@ Guarantees dual-file integrity when creating new CPQ library functions:
 
 ## 8. Standalone CI/CD Quality Gate CLI
 
-The extension ships with a standalone Node.js CLI executable located at `bin/cpq-bml.js`:
+The CI/CD quality gate is invoked directly via the MCP `audit_bml_code` tool or programmatically through the extension's audit engine (`app/lang/audit/`):
 
 ```bash
-# Scan workspace or directory for security violations in CI
-npx cpq-bml audit . --min-score=75 --format=pretty
+# Trigger audit via MCP (from any AI client)
+audit_bml_code({ path: ".", minScore: 75 })
 
-# Output JSON report for CI dashboard integration
-npx cpq-bml audit . --format=json
-
-# Offline BMQL query validation in scripts
-npx cpq-bml validate "SELECT partNumber FROM Parts WHERE active = $isActive"
+# Offline BMQL query validation via MCP
+validate_bmql_query({ query: "SELECT partNumber FROM Parts WHERE active = $isActive" })
 ```
 
 - **Exit Code 0**: Clean audit, all files pass threshold.
@@ -256,7 +252,7 @@ sequenceDiagram
 
 ## 10. Native VS Code Test Explorer (`vscode.TestController`)
 
-Seamless BML unit test discovery and execution directly in the native VS Code Testing sidebar (`app/lang/test/`):
+Seamless BML unit test discovery and execution directly in the native VS Code Testing sidebar (`app/lang/test-controller/`):
 - **Test File Convention**: Any file named `*.test.bml`.
 - **Inline Annotations**: Identifies individual test cases using `// @test "description"`.
 - **BML Assertions**: Native support for `assert.equals(actual, expected)`, `assert.isTrue(condition)`, and `assert.notNull(value)`.
@@ -264,17 +260,7 @@ Seamless BML unit test discovery and execution directly in the native VS Code Te
 
 ---
 
-## 11. Interactive Data Table Grid Editor (`vscode.CustomTextEditorProvider`)
-
-Full spreadsheet-style editor for Oracle CPQ Data Table files (`*.dt.json`, `*.dt.csv`):
-- **Live Spreadsheet View**: Filter, search, and edit cells inline with keyboard navigation.
-- **Schema Enforcement**: Visual validation against CPQ column definitions.
-- **Dual Format Support**: Synchronous read/write for both JSON and standard CSV tabular exports.
-- **Direct Actions**: "Push to CPQ" button for immediate REST API upload.
-
----
-
-## 12. AST Parser, Semantic Tokens & F2 Symbol Rename
+## 11. AST Parser, Semantic Tokens & F2 Symbol Rename
 
 High-speed recursive descent AST parser (`app/lang/ast/`):
 - **Strict BML Compliance**: Models BML statements (`for`, `if`, `elif`, `else`, `return`, `print`, `bmql`), sized arrays (`String[10]`, `String[]{...}`), and logical operators (`AND`, `OR`, `NOT`).
@@ -283,7 +269,7 @@ High-speed recursive descent AST parser (`app/lang/ast/`):
 
 ---
 
-## 13. Dynamic Instance Type Definitions (`cpq.d.bml`)
+## 12. Dynamic Instance Type Definitions (`cpq.d.bml`)
 
 Auto-introspects connected Oracle CPQ environments via `app/lang/intellisense/schemaIntrospector.js`:
 - **Discovers**:
@@ -297,11 +283,10 @@ Auto-introspects connected Oracle CPQ environments via `app/lang/intellisense/sc
 
 ---
 
-## 14. Static Performance & Timeout Profiler
+## 13. Static Performance & Timeout Profiler
 
 Real-time diagnostic analyzer (`app/lang/profiler/bmlProfiler.js`) protecting against CPQ 5-second commerce script timeouts:
 - **Unsupported 'while' Detection**: Flags `while` loops as fatal errors since Oracle CPQ BML only supports `for item in array`.
 - **BMQL in Loops ($O(N)$ Antipattern)**: Detects repeated database lookups inside loops.
 - **String Concatenation in Loops**: Recommends `stringbuilder` or array joining to prevent memory thrashing.
 - **Nesting Limits**: Flags loop nesting $> 3$ and block nesting $> 5$.
-- **CLI Command**: `cpq-bml profile [path]`.
