@@ -253,13 +253,15 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
                 const workspaceFolders = vscode.workspace.workspaceFolders;
                 if (!workspaceFolders || workspaceFolders.length === 0) return null;
                 const workspaceRoot = workspaceFolders[0].uri.fsPath;
-                const pullFolder = config.getSettings(vscode).pullFolder || 'library';
 
                 let createdMetadata = {};
                 let finalBmlPath = '';
 
                 if (typePick.id === 'util') {
-                    finalBmlPath = pathLib.join(workspaceRoot, pullFolder, folderName, variableName, `${variableName}.bml`);
+                    const utilFolder = config.getUtilLibrariesFolder(vscode);
+                    finalBmlPath = folderName
+                        ? pathLib.join(workspaceRoot, utilFolder, folderName, variableName, `${variableName}.bml`)
+                        : pathLib.join(workspaceRoot, utilFolder, variableName, `${variableName}.bml`);
                     createdMetadata = {
                         name: displayName,
                         variableName,
@@ -275,7 +277,8 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
                 } else {
                     const commerceProcess = config.getCommerceProcess(vscode) || 'oraclecpqo';
                     const commerceDocument = config.getCommerceDocument(vscode) || 'transaction';
-                    finalBmlPath = pathLib.join(workspaceRoot, pullFolder, commerceProcess, commerceDocument, 'libraries', variableName, `${variableName}.bml`);
+                    const commerceFolder = config.getCommerceLibrariesFolder();
+                    finalBmlPath = pathLib.join(workspaceRoot, commerceFolder, commerceProcess, commerceDocument, 'libraries', variableName, `${variableName}.bml`);
                     createdMetadata = {
                         name: displayName,
                         variableName,

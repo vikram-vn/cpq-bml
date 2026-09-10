@@ -288,6 +288,12 @@ function buildDeployItem(metadata) {
 function inferCommerceFromPath(bmlFilePath) {
     const normalizedPath = (bmlFilePath || '').replace(/\\/g, '/');
     const segments = normalizedPath.split('/');
+    const commLibIndex = segments.lastIndexOf('commerce-libraries');
+    if (commLibIndex !== -1 && segments.length > commLibIndex + 2) {
+        const commerceProcess = segments[commLibIndex + 1];
+        const commerceDocument = segments[commLibIndex + 2];
+        return { commerceProcess, commerceDocument };
+    }
     const librariesIndex = segments.lastIndexOf('libraries');
     if (librariesIndex >= 2 && librariesIndex <= segments.length - 2) {
         const commerceDocument = segments[librariesIndex - 1];

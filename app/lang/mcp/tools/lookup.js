@@ -127,8 +127,8 @@ async function pullFunction(context, vscode, args, transport) {
     const settings = config.getSettings(vscode);
 
     const bmlPath = isCommerce
-        ? path.join(workspaceRoot, settings.pullFolder, commerceProcess, commerceDocument, 'libraries', metadata.variableName, `${metadata.variableName}.bml`)
-        : path.join(workspaceRoot, settings.pullFolder, metadata.folderName || '', metadata.variableName, `${metadata.variableName}.bml`);
+        ? path.join(workspaceRoot, config.getCommerceLibrariesFolder(), commerceProcess, commerceDocument, 'libraries', metadata.variableName, `${metadata.variableName}.bml`)
+        : path.join(workspaceRoot, config.getUtilLibrariesFolder(vscode), metadata.folderName || '', metadata.variableName, `${metadata.variableName}.bml`);
 
     const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
     metadataLib.writeBmlFile(bmlPath, scriptText);

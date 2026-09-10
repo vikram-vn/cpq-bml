@@ -609,11 +609,6 @@
           "default": "transaction",
           "description": "Commerce Process document variable name used by 'CPQ-BML: Pull Commerce Functions from CPQ' (e.g. 'transaction'). Change this if your commerce process functions live under a different document."
         },
-        "cpqBml.rest.pullFolder": {
-          "type": "string",
-          "default": "library",
-          "description": "Workspace-relative folder where 'CPQ-BML: Pull Util Library Functions from CPQ' saves local .bml files and their -meta.json sidecars. Validate/Deploy/Debug also look for these next to whichever .bml file is open, and fall back to searching the live CPQ library by filename if none is found."
-        },
         "cpqBml.features.lint": {
           "type": "boolean",
           "default": true,

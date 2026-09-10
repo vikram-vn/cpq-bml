@@ -63,7 +63,8 @@ suite("BML REST commands - scaffold", () => {
 
       const bmlPath = path.join(
         tmpDir,
-        "library",
+        "cpq-sitename",
+        "util-libraries",
         "testUtil",
         "testUtil.bml"
       );
@@ -145,7 +146,8 @@ suite("BML REST commands - scaffold", () => {
 
       const bmlPath = path.join(
         tmpDir,
-        "library",
+        "cpq",
+        "commerce-libraries",
         "oraclecpqo",
         "transaction",
         "libraries",

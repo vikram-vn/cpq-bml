@@ -25,7 +25,6 @@ const ALLOWED_FIELDS = new Set([
   "rest.restVersion",
   "rest.commerceProcess",
   "rest.commerceDocument",
-  "rest.pullFolder",
   "features.lint",
   "features.comments",
   "features.spelling",
@@ -260,9 +259,6 @@ async function dispatch(message, context, vscode, panel) {
           await cfg.update("connection.environments", envs, vscode.ConfigurationTarget.Global);
         }
         if (settingsObj.rest) {
-          if (typeof settingsObj.rest.pullFolder === "string") {
-            await cfg.update("rest.pullFolder", settingsObj.rest.pullFolder, vscode.ConfigurationTarget.Global);
-          }
           if (typeof settingsObj.rest.restVersion === "string") {
             await cfg.update("rest.restVersion", settingsObj.rest.restVersion, vscode.ConfigurationTarget.Global);
           }
@@ -342,7 +338,6 @@ async function dispatch(message, context, vscode, panel) {
               enabled: cpqConfig.get("connection.enabled", true),
             },
             rest: {
-              pullFolder: cpqConfig.get("rest.pullFolder", ""),
               restVersion: cpqConfig.get("rest.restVersion", "v17"),
               commerceProcess: cpqConfig.get("rest.commerceProcess", ""),
               commerceDocument: cpqConfig.get("rest.commerceDocument", ""),
@@ -434,7 +429,6 @@ async function dispatch(message, context, vscode, panel) {
         "connection.authMethod": "basic",
         "connection.username": "",
         "connection.enabled": true,
-        "rest.pullFolder": "library",
         "rest.restVersion": "v18",
         "rest.commerceProcess": "oraclecpqo",
         "rest.commerceDocument": "transaction",

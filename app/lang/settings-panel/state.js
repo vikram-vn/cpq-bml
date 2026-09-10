@@ -38,7 +38,6 @@ async function buildState(context, vscode) {
             enabled: cpqConfig.get('connection.enabled', true)
         },
         rest: {
-            pullFolder: settings.pullFolder,
             restVersion: settings.restVersion,
             commerceProcess: settings.commerceProcess,
             commerceDocument: settings.commerceDocument

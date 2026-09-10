@@ -15,7 +15,6 @@ export const ALL_SETTINGS_REGISTRY = [
     { id: 'restVersion', tab: 'operations', tabName: 'Operations & REST', label: 'REST API Version', desc: 'e.g. v18 -> /rest/v18/bml/library/functions', type: 'input', key: 'rest.restVersion' },
     { id: 'commerceProcess', tab: 'operations', tabName: 'Operations & REST', label: 'Commerce Process', desc: 'Oracle CPQ process variable name', type: 'input', key: 'rest.commerceProcess' },
     { id: 'commerceDocument', tab: 'operations', tabName: 'Operations & REST', label: 'Commerce Document', desc: 'Process document variable name (e.g. transaction)', type: 'input', key: 'rest.commerceDocument' },
-    { id: 'pullFolder', tab: 'operations', tabName: 'Operations & REST', label: 'Local Pull Folder', desc: 'Workspace relative path where pulled functions are saved', type: 'input', key: 'rest.pullFolder' },
 
     // Features
     { id: 'lint', tab: 'features', tabName: 'Features', label: 'BML Linter', desc: 'Real-time syntax and semantic validation with inline diagnostic squiggles', type: 'switch', key: 'features.lint' },

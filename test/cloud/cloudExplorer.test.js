@@ -211,7 +211,12 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     const mockVscode = {
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
-        getConfiguration: () => ({ get: () => 'library' }),
+        getConfiguration: () => ({
+          get: (k) => {
+            if (k === 'connection.siteUrl') return 'https://cpq-10234.bigmachines.com';
+            return '';
+          }
+        }),
         openTextDocument: async (uri) => {
           openedUri = uri;
           return { uri };
@@ -242,7 +247,7 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
 
       await pullFunctionCommand(item, mockVscode, {});
 
-      const expectedBmlPath = path.join(tempDir, 'library', 'finance', 'calcBonus', 'calcBonus.bml');
+      const expectedBmlPath = path.join(tempDir, 'cpq-10234', 'util-libraries', 'finance', 'calcBonus', 'calcBonus.bml');
       assert.ok(fs.existsSync(expectedBmlPath), 'Expected .bml file to be written locally');
       const content = fs.readFileSync(expectedBmlPath, 'utf8');
       assert.strictEqual(content, 'return 100.0;\n');
@@ -250,6 +255,20 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       assert.ok(openedUri, 'Expected openTextDocument to be called');
       assert.strictEqual(openedUri.fsPath, expectedBmlPath);
       assert.ok(showedDoc, 'Expected showTextDocument to be called');
+
+      // Test commerce pull lands in cpq/commerce-libraries
+      const commerceItem = {
+        data: {
+          variableName: 'calcCommerceBonus',
+          name: 'Commerce Bonus',
+          isCommerce: true,
+          commerceProcess: 'oraclecpqo',
+          commerceDocument: 'transaction'
+        }
+      };
+      await pullFunctionCommand(commerceItem, mockVscode, {});
+      const expectedCommercePath = path.join(tempDir, 'cpq', 'commerce-libraries', 'oraclecpqo', 'transaction', 'libraries', 'calcCommerceBonus', 'calcCommerceBonus.bml');
+      assert.ok(fs.existsSync(expectedCommercePath), 'Expected commerce .bml file to be written to cpq/commerce-libraries');
     } finally {
       api.getLibraryFunction = origGetFunc;
       fs.rmSync(tempDir, { recursive: true, force: true });

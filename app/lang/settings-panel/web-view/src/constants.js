@@ -6,7 +6,6 @@ export const EMPTY_STATE = {
         enabled: true
     },
     rest: {
-        pullFolder: 'library',
         restVersion: 'v18',
         commerceProcess: 'oraclecpqo',
         commerceDocument: 'transaction'

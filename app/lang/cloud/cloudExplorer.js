@@ -45,40 +45,75 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const metadataLib = require('@/lang/rest/metadata');
-const { getSettings } = require('@/lang/rest/config');
+const { getSettings, getUtilLibrariesFolder, getCommerceLibrariesFolder } = require('@/lang/rest/config');
 
 /**
  * Finds local .bml file matching a function variable name in workspace.
  */
-function findLocalFunctionFile(workspaceRoot, varName, folderName, commerceMetadata) {
+function findLocalFunctionFile(workspaceRoot, varName, folderName, commerceMetadata, vscodeInstance) {
   if (!workspaceRoot || !varName) return null;
 
   const candidatePaths = [];
 
   if (commerceMetadata && commerceMetadata.commerceProcess && commerceMetadata.commerceDocument) {
     candidatePaths.push(
+      path.join(workspaceRoot, 'cpq', 'commerce-libraries', commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`),
       path.join(workspaceRoot, 'library', commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`),
       path.join(workspaceRoot, commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`)
     );
-  }
+  } else {
+    const utilFolder = getUtilLibrariesFolder(vscodeInstance);
+    if (folderName) {
+      candidatePaths.push(path.join(workspaceRoot, utilFolder, folderName, varName, `${varName}.bml`));
+    }
+    candidatePaths.push(path.join(workspaceRoot, utilFolder, varName, `${varName}.bml`));
 
-  candidatePaths.push(
-    path.join(workspaceRoot, 'library', folderName || '', varName, `${varName}.bml`),
-    path.join(workspaceRoot, 'library', 'util', varName, `${varName}.bml`),
-    path.join(workspaceRoot, 'library', varName, `${varName}.bml`),
-    path.join(workspaceRoot, 'util', varName, `${varName}.bml`),
-    path.join(workspaceRoot, 'bml', 'library', varName, `${varName}.bml`)
-  );
+    try {
+      const entries = fs.readdirSync(workspaceRoot, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
+          if (folderName) {
+            candidatePaths.push(path.join(workspaceRoot, entry.name, 'util-libraries', folderName, varName, `${varName}.bml`));
+          }
+          candidatePaths.push(path.join(workspaceRoot, entry.name, 'util-libraries', varName, `${varName}.bml`));
+        }
+      }
+    } catch {
+      // Ignore read errors
+    }
+
+    candidatePaths.push(
+      path.join(workspaceRoot, 'library', folderName || '', varName, `${varName}.bml`),
+      path.join(workspaceRoot, 'library', 'util', varName, `${varName}.bml`),
+      path.join(workspaceRoot, 'library', varName, `${varName}.bml`),
+      path.join(workspaceRoot, 'util', varName, `${varName}.bml`),
+      path.join(workspaceRoot, 'bml', 'library', varName, `${varName}.bml`)
+    );
+  }
 
   for (const candidate of candidatePaths) {
     if (fs.existsSync(candidate)) return candidate;
   }
 
-  // Recursive search inside library folder as fallback
-  const libDir = path.join(workspaceRoot, 'library');
-  if (fs.existsSync(libDir)) {
-    const found = searchFileRecursive(libDir, `${varName}.bml`);
-    if (found) return found;
+  // Recursive search inside standard and legacy folders as fallback
+  const searchDirs = [
+    path.join(workspaceRoot, 'cpq', 'commerce-libraries'),
+    path.join(workspaceRoot, 'library')
+  ];
+  try {
+    const entries = fs.readdirSync(workspaceRoot, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
+        searchDirs.push(path.join(workspaceRoot, entry.name, 'util-libraries'));
+      }
+    }
+  } catch {}
+
+  for (const dir of searchDirs) {
+    if (fs.existsSync(dir)) {
+      const found = searchFileRecursive(dir, `${varName}.bml`);
+      if (found) return found;
+    }
   }
 
   return null;
@@ -285,7 +320,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     const commerceMetadata = isCommerce
       ? { commerceProcess: fn.commerceProcess, commerceDocument: fn.commerceDocument }
       : null;
-    const localPath = findLocalFunctionFile(wsRoot, varName, fn.folderName, commerceMetadata);
+    const localPath = findLocalFunctionFile(wsRoot, varName, fn.folderName, commerceMetadata, vscodeInstance);
 
     const label = fn.name || varName;
     const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
@@ -434,7 +469,6 @@ async function pullFunctionCommand(item, vscodeInstance = vscode, context) {
 
   const root = folders[0].uri.fsPath;
   const settings = getSettings(vscodeInstance);
-  const pullFolder = settings.pullFolder || 'library';
   const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
   const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
   const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
@@ -475,12 +509,18 @@ async function pullFunctionCommand(item, vscodeInstance = vscode, context) {
         metadata.commerceProcess = commerceProcess;
         metadata.commerceDocument = commerceDocument;
         metadata.folderName = metadata.folderName || folderName;
-        targetDir = path.join(root, pullFolder, commerceProcess, commerceDocument, 'libraries', varName);
-        displayDest = `${pullFolder}/${commerceProcess}/${commerceDocument}/libraries/${varName}/`;
+        const commerceFolder = getCommerceLibrariesFolder();
+        targetDir = path.join(root, commerceFolder, commerceProcess, commerceDocument, 'libraries', varName);
+        displayDest = `${commerceFolder}/${commerceProcess}/${commerceDocument}/libraries/${varName}/`;
       } else {
         metadata.folderName = metadata.folderName || folderName;
-        targetDir = path.join(root, pullFolder, folderName, varName);
-        displayDest = `${pullFolder}/${folderName}/${varName}/`;
+        const utilFolder = getUtilLibrariesFolder(vscodeInstance);
+        targetDir = folderName
+          ? path.join(root, utilFolder, folderName, varName)
+          : path.join(root, utilFolder, varName);
+        displayDest = folderName
+          ? `${utilFolder}/${folderName}/${varName}/`
+          : `${utilFolder}/${varName}/`;
       }
 
       fs.mkdirSync(targetDir, { recursive: true });
@@ -528,7 +568,7 @@ async function diffFunctionCommand(item, vscodeInstance = vscode, context) {
   const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
   const commerceMetadata = isCommerce ? { commerceProcess, commerceDocument } : undefined;
 
-  const localFile = findLocalFunctionFile(root, varName, folderName, commerceMetadata);
+  const localFile = findLocalFunctionFile(root, varName, folderName, commerceMetadata, vscodeInstance);
   if (!localFile) {
     vscodeInstance.window.showWarningMessage(`Function '${varName}' is not present locally. Pull it first to compare.`);
     return;
@@ -595,7 +635,7 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
     const commerceMetadata = (fn.isCommerce || fn.commerceDocument)
       ? { commerceProcess: fn.commerceProcess, commerceDocument: fn.commerceDocument }
       : null;
-    const local = findLocalFunctionFile(root, fn.variableName || fn.name, fn.folderName, commerceMetadata);
+    const local = findLocalFunctionFile(root, fn.variableName || fn.name, fn.folderName, commerceMetadata, vscodeInstance);
     if (local) {
       const doc = await vscodeInstance.workspace.openTextDocument(vscodeInstance.Uri.file(local));
       await vscodeInstance.window.showTextDocument(doc);

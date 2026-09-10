@@ -358,6 +358,45 @@ async function ensureCredentials(context, vscode) {
     return true;
 }
 
+function getCpqInstanceFolder(vscodeOrSiteUrl) {
+    let siteUrl = '';
+    if (typeof vscodeOrSiteUrl === 'string') {
+        siteUrl = vscodeOrSiteUrl;
+    } else if (vscodeOrSiteUrl) {
+        siteUrl = getBaseUrl(vscodeOrSiteUrl) || '';
+    }
+    let host = '';
+    try {
+        if (siteUrl) {
+            const raw = siteUrl.replace(/^https?:\/\//i, '');
+            host = raw.split('/')[0].split(':')[0].split('.')[0];
+        }
+    } catch {
+        host = '';
+    }
+    host = (host || '').trim();
+    if (!host) {
+        return 'cpq-default';
+    }
+    if (/^cpq[-_]/i.test(host)) {
+        return host.replace(/_/g, '-');
+    }
+    return `cpq-${host}`;
+}
+
+function getUtilLibrariesFolder(vscodeOrSiteUrl) {
+    const inst = getCpqInstanceFolder(vscodeOrSiteUrl);
+    return pathLib.join(inst, 'util-libraries');
+}
+
+function getCommerceLibrariesFolder() {
+    return pathLib.join('cpq', 'commerce-libraries');
+}
+
+function getDataTableFolder(workspaceRoot) {
+    return workspaceRoot ? pathLib.join(workspaceRoot, 'cpq', 'datatable') : pathLib.join('cpq', 'datatable');
+}
+
 module.exports = {
     DEFAULT_REST_VERSION,
     DEFAULT_DOMAIN_SUFFIX,
@@ -366,6 +405,10 @@ module.exports = {
     getPasswordSecretKey,
     getTokenSecretKey,
     normalizeSiteUrl,
+    getCpqInstanceFolder,
+    getUtilLibrariesFolder,
+    getCommerceLibrariesFolder,
+    getDataTableFolder,
     getSettings,
     getBaseUrl,
     getRestVersion,

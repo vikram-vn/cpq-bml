@@ -15,7 +15,6 @@ suite("settings-panel state", () => {
         "rest.commerceDocument": "myDoc",
         "debug.logRestDetails": true,
         "connection.environments": [{ name: "dev", siteUrl: "dev.bigmachines.com" }],
-        "rest.pullFolder": "myLib",
         "features.lint": false,
         "features.spelling": false,
         "mcp.enable": true,
@@ -38,7 +37,6 @@ suite("settings-panel state", () => {
         enabled: true,
       },
       rest: {
-        pullFolder: "myLib",
         restVersion: "v20",
         commerceProcess: "myProcess",
         commerceDocument: "myDoc",

@@ -44,6 +44,7 @@ try {
 const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
+const { getDataTableFolder } = require('@/lang/rest/config');
 
 /**
  * Fetches the list of all Data Tables from the CPQ server.
@@ -270,17 +271,27 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
 /**
  * Exports data table rows to a CSV file.
  */
-async function exportTableCsvCommand(item, vscodeInstance = vscode, context) {
+async function exportTableCsvCommand(item, vscodeInstance = vscode, customTransport, context) {
   const tableName = item?.data?.name || item?.name;
   if (!tableName) return;
 
-  await vscodeInstance.window.withProgress({
+  let ctx = context;
+  let vsc = vscodeInstance;
+  let transport = customTransport;
+
+  if (vscodeInstance && (vscodeInstance.secrets || vscodeInstance.subscriptions)) {
+    ctx = vscodeInstance;
+    vsc = customTransport || vscode;
+    transport = context;
+  }
+
+  await vsc.window.withProgress({
     location: 15,
     title: `Exporting '${tableName}' records from CPQ Cloud...`,
     cancellable: false
   }, async () => {
     try {
-      const rows = await fetchTableRows(tableName, { limit: 1000 }, vscodeInstance, undefined, context);
+      const rows = await fetchTableRows(tableName, { limit: 1000 }, vsc, transport, ctx);
       if (!rows || rows.length === 0) {
         vscodeInstance.window.showInformationMessage(`Table '${tableName}' contains no records.`);
         return;
@@ -291,12 +302,24 @@ async function exportTableCsvCommand(item, vscodeInstance = vscode, context) {
       const csvRows = rows.map(r => allKeys.map(k => JSON.stringify(r[k] !== undefined ? r[k] : '')).join(','));
       const csvContent = [csvHeader, ...csvRows].join('\n');
 
+      const folders = vscodeInstance.workspace && vscodeInstance.workspace.workspaceFolders;
+      const workspaceRoot = folders && folders.length > 0 ? folders[0].uri.fsPath : null;
+      let defaultPath = `${tableName}.csv`;
+      if (workspaceRoot) {
+        const dtDir = getDataTableFolder(workspaceRoot);
+        fs.mkdirSync(dtDir, { recursive: true });
+        defaultPath = path.join(dtDir, `${tableName}.csv`);
+      }
+
       const uri = await vscodeInstance.window.showSaveDialog({
         filters: { 'CSV Files': ['csv'] },
-        defaultUri: vscodeInstance.Uri.file(`${tableName}.csv`)
+        defaultUri: vscodeInstance.Uri.file(defaultPath)
       });
 
       if (uri) {
+        if (path.isAbsolute(uri.fsPath)) {
+          fs.mkdirSync(path.dirname(uri.fsPath), { recursive: true });
+        }
         if (vscodeInstance.workspace.fs && vscodeInstance.workspace.fs.writeFile) {
           await vscodeInstance.workspace.fs.writeFile(uri, Buffer.from(csvContent, 'utf8'));
         } else {
@@ -330,7 +353,7 @@ function registerCloudDataTables(context, vscodeInstance = vscode) {
   });
 
   const exportCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.exportDataTableCsv', (item) => {
-    return exportTableCsvCommand(item, vscodeInstance, context);
+    return exportTableCsvCommand(item, vscodeInstance, undefined, context);
   });
 
   context.subscriptions.push(treeView, refreshCmd, queryCmd, exportCmd);

@@ -285,13 +285,37 @@ async function listLocalFunctions(context, vscode) {
     if (!workspaceFolders || workspaceFolders.length === 0) {
         return { success: false, error: 'No workspace folder is open.' };
     }
+    const wsRoot = workspaceFolders[0].uri.fsPath;
     const settings = configLib.getSettings(vscode);
-    const root = path.join(workspaceFolders[0].uri.fsPath, settings.pullFolder);
+
+    const searchRoots = [
+        path.join(wsRoot, configLib.getCommerceLibrariesFolder()),
+        path.join(wsRoot, configLib.getUtilLibrariesFolder(vscode))
+    ];
+
+    try {
+        const entries = fs.readdirSync(wsRoot, { withFileTypes: true });
+        for (const entry of entries) {
+            if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
+                searchRoots.push(path.join(wsRoot, entry.name, 'util-libraries'));
+            }
+        }
+    } catch {}
+
+    const legacyRoot = path.join(wsRoot, settings.pullFolder || 'library');
+    if (!searchRoots.includes(legacyRoot)) {
+        searchRoots.push(legacyRoot);
+    }
 
     const canonicalPaths = [];
-    collectCanonicalBmlFiles(root, canonicalPaths, 10);
+    for (const root of searchRoots) {
+        if (fs.existsSync(root)) {
+            collectCanonicalBmlFiles(root, canonicalPaths, 10);
+        }
+    }
+    const uniqueCanonicalPaths = Array.from(new Set(canonicalPaths));
 
-    const functions = canonicalPaths.map((bmlPath) => {
+    const functions = uniqueCanonicalPaths.map((bmlPath) => {
         const variableName = metadataLib.variableNameFromBmlPath(bmlPath);
         const meta = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(bmlPath)) || {};
         return {

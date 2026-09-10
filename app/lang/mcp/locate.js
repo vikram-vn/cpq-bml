@@ -6,14 +6,41 @@ const metadataLib = require('@/lang/rest/metadata');
 const AI_FILE_SUFFIX = '_ai';
 const LEGACY_AI_FOLDER_SUFFIX = '-AI';
 
-// Pulled functions always land at <pullFolder>/.../<variableName>/<variableName>.bml,
-// so finding one by name means walking the pull folder for that directory.
+// Pulled functions land at cpq-<instanceName>/util-libraries or cpq/commerce-libraries
+// (or legacy <pullFolder>/.../<variableName>/<variableName>.bml),
+// so finding one by name means walking the standardized folders and fallbacks.
 function findLocalBmlPath(vscode, variableName) {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) return null;
+    const wsRoot = workspaceFolders[0].uri.fsPath;
     const settings = config.getSettings(vscode);
-    const root = path.join(workspaceFolders[0].uri.fsPath, settings.pullFolder);
-    return searchDir(root, variableName, 8);
+
+    const searchRoots = [
+        path.join(wsRoot, config.getCommerceLibrariesFolder()),
+        path.join(wsRoot, config.getUtilLibrariesFolder(vscode))
+    ];
+
+    try {
+        const entries = fs.readdirSync(wsRoot, { withFileTypes: true });
+        for (const entry of entries) {
+            if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
+                searchRoots.push(path.join(wsRoot, entry.name, 'util-libraries'));
+            }
+        }
+    } catch {}
+
+    const legacyRoot = path.join(wsRoot, settings.pullFolder || 'library');
+    if (!searchRoots.includes(legacyRoot)) {
+        searchRoots.push(legacyRoot);
+    }
+
+    for (const root of searchRoots) {
+        if (fs.existsSync(root)) {
+            const found = searchDir(root, variableName, 8);
+            if (found) return found;
+        }
+    }
+    return null;
 }
 
 function searchDir(dir, variableName, depthLeft) {

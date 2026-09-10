@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const metadataLib = require('@/lang/rest/metadata');
 const shared = require('@/lang/rest/commands/shared');
-const { getCommerceProcess, getCommerceDocument, getSettings } = require('@/lang/rest/config');
+const { getCommerceProcess, getCommerceDocument, getSettings, getUtilLibrariesFolder, getCommerceLibrariesFolder } = require('@/lang/rest/config');
 
 const returnTypeMap = {
     'String': 1,
@@ -117,18 +117,14 @@ async function runCreateBmlFunction(context, vscode, { transport } = {}) {
     }
 
     // 10. File paths and metadata structure
-    const { pullFolder } = getSettings(vscode);
     let bmlPath = '';
     let metadata = {};
 
     if (typeSelection.id === 'util') {
-        bmlPath = path.join(
-            workspaceRoot,
-            pullFolder,
-            folderName,
-            variableName,
-            `${variableName}.bml`
-        );
+        const utilFolder = getUtilLibrariesFolder(vscode);
+        bmlPath = folderName
+            ? path.join(workspaceRoot, utilFolder, folderName, variableName, `${variableName}.bml`)
+            : path.join(workspaceRoot, utilFolder, variableName, `${variableName}.bml`);
         metadata = {
             name: displayName,
             variableName,
@@ -142,9 +138,10 @@ async function runCreateBmlFunction(context, vscode, { transport } = {}) {
             attributes: []
         };
     } else {
+        const commerceFolder = getCommerceLibrariesFolder();
         bmlPath = path.join(
             workspaceRoot,
-            pullFolder,
+            commerceFolder,
             commerceProcess,
             commerceDocument,
             'libraries',

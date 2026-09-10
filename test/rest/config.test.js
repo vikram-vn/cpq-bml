@@ -285,5 +285,39 @@ suite("BML REST config", () => {
       assert.strictEqual(config.getEffectiveRestVersion("v15", 16), "v16");
     });
   });
+
+  suite("standardized folder path helpers", () => {
+    test("getCpqInstanceFolder formats cpq- prefixed and non-prefixed hosts properly", () => {
+      // If site starts with cpq- or cpq_, avoid duplication
+      assert.strictEqual(config.getCpqInstanceFolder("https://cpq-10234.bigmachines.com"), "cpq-10234");
+      assert.strictEqual(config.getCpqInstanceFolder("cpq-1233"), "cpq-1233");
+      assert.strictEqual(config.getCpqInstanceFolder("cpq_sandbox.bigmachines.com"), "cpq-sandbox");
+
+      // If site does not start with cpq-, prepend cpq-
+      assert.strictEqual(config.getCpqInstanceFolder("https://10234.bigmachines.com"), "cpq-10234");
+      assert.strictEqual(config.getCpqInstanceFolder("sitename.oracle.com"), "cpq-sitename");
+      assert.strictEqual(config.getCpqInstanceFolder("dev1"), "cpq-dev1");
+
+      // Fallback if empty
+      assert.strictEqual(config.getCpqInstanceFolder(""), "cpq-default");
+      assert.strictEqual(config.getCpqInstanceFolder(null), "cpq-default");
+    });
+
+    test("getUtilLibrariesFolder returns <instance>/util-libraries", () => {
+      assert.strictEqual(config.getUtilLibrariesFolder("https://cpq-10234.bigmachines.com"), "cpq-10234\\util-libraries".replace(/\\/g, require("path").sep));
+      assert.strictEqual(config.getUtilLibrariesFolder("https://10234.bigmachines.com"), "cpq-10234\\util-libraries".replace(/\\/g, require("path").sep));
+      assert.strictEqual(config.getUtilLibrariesFolder("dev1"), "cpq-dev1\\util-libraries".replace(/\\/g, require("path").sep));
+    });
+
+    test("getCommerceLibrariesFolder returns cpq/commerce-libraries", () => {
+      assert.strictEqual(config.getCommerceLibrariesFolder(), "cpq\\commerce-libraries".replace(/\\/g, require("path").sep));
+    });
+
+    test("getDataTableFolder returns cpq/datatable under workspaceRoot or relative", () => {
+      const path = require("path");
+      assert.strictEqual(config.getDataTableFolder("/workspace"), path.join("/workspace", "cpq", "datatable"));
+      assert.strictEqual(config.getDataTableFolder(""), path.join("cpq", "datatable"));
+    });
+  });
 });
 

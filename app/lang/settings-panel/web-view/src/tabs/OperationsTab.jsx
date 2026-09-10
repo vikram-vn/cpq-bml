@@ -122,16 +122,6 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
                     />
                     <p className="field-hint">Process document variable name (e.g. transaction)</p>
                 </div>
-                <div className="field">
-                    <label htmlFor="pullFolder">Local Pull Folder</label>
-                    <input
-                        id="pullFolder"
-                        type="text"
-                        value={drafts['rest.pullFolder'] !== undefined ? drafts['rest.pullFolder'] : rest.pullFolder}
-                        onChange={(e) => changeDraft('rest.pullFolder', e.target.value)}
-                    />
-                    <p className="field-hint">Workspace relative path where pulled functions are saved</p>
-                </div>
             </section>
 
             <section className="card" style={{ marginTop: '20px' }}>

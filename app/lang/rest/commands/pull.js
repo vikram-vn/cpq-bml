@@ -111,16 +111,23 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
             metadata.name = metadata.name || pick.item.name || metadata.variableName;
             const folder = metadata.folderName || '';
 
-            // Same per-function folder convention as the commerce pull, so every
-            // pulled function gets its own folder holding both its .bml and
-            // -meta.json sidecar: <pullFolder>/<folder>/<variableName>/<variableName>.bml
-            const bmlPath = path.join(
-                workspaceRoot,
-                settings.pullFolder,
-                folder,
-                metadata.variableName,
-                `${metadata.variableName}.bml`
-            );
+            // Saved under standardized folder structure:
+            // <cpq-instanceName>/util-libraries/<folder>/<variableName>/<variableName>.bml
+            const utilFolder = config.getUtilLibrariesFolder(vscode);
+            const bmlPath = folder
+                ? path.join(
+                    workspaceRoot,
+                    utilFolder,
+                    folder,
+                    metadata.variableName,
+                    `${metadata.variableName}.bml`
+                )
+                : path.join(
+                    workspaceRoot,
+                    utilFolder,
+                    metadata.variableName,
+                    `${metadata.variableName}.bml`
+                );
             const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
 
             const writeStatus = await confirmAndWriteBmlFile(vscode, bmlPath, scriptText, metadata.variableName, sessionState);
@@ -139,7 +146,8 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
 
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Pulled ${pulledCount} function(s) (${formatElapsed(startedAt)})\x1b[0m`);
     resultsTerminal.show();
-    vscode.window.showInformationMessage(`CPQ-BML: pulled ${pulledCount} library function(s) into ${settings.pullFolder}/`);
+    const pulledFolderLabel = config.getUtilLibrariesFolder(vscode);
+    vscode.window.showInformationMessage(`CPQ-BML: pulled ${pulledCount} library function(s) into ${pulledFolderLabel}/`);
 }
 
 async function runPullCommerceFunctions(context, vscode, resultsTerminal, { transport } = {}) {
@@ -242,12 +250,12 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
             metadata.variableName = metadata.variableName || pick.item.variableName || pick.item.name || '';
             metadata.name = metadata.name || pick.item.name || metadata.variableName;
 
-            // Matches the folder convention inferCommerceFromPath() relies on, so
-            // these functions are still recognized as commerce-scoped even if the
-            // -meta.json sidecar is ever lost: <process>/<document>/libraries/<variableName>/<variableName>.bml
+            // Saved under standardized folder structure:
+            // cpq/commerce-libraries/<process>/<document>/libraries/<variableName>/<variableName>.bml
+            const commerceFolder = config.getCommerceLibrariesFolder();
             const bmlPath = path.join(
                 workspaceRoot,
-                settings.pullFolder,
+                commerceFolder,
                 commerceProcess,
                 commerceDocument,
                 'libraries',
@@ -272,7 +280,8 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
 
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Pulled ${pulledCount} function(s) (${formatElapsed(startedAt)})\x1b[0m`);
     resultsTerminal.show();
-    vscode.window.showInformationMessage(`CPQ-BML: pulled ${pulledCount} commerce function(s) into ${settings.pullFolder}/${commerceProcess}/${commerceDocument}/`);
+    const pulledCommerceFolderLabel = config.getCommerceLibrariesFolder();
+    vscode.window.showInformationMessage(`CPQ-BML: pulled ${pulledCount} commerce function(s) into ${pulledCommerceFolderLabel}/${commerceProcess}/${commerceDocument}/`);
 }
 
 module.exports = { runPullLibraryFunctions, runPullCommerceFunctions };
