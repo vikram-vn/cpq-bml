@@ -1,4 +1,75 @@
 const vscode = require('vscode');
+const { splitArgumentsList } = require('@/lang/lint/rules/functionSignature');
+
+function buildSbappendSplitFixes(document, range, diag) {
+    const fixes = [];
+    const text = document.getText(range);
+    const m = text.match(/\bsbappend\s*\(([^;]+)\)\s*;?/i);
+    if (!m) return fixes;
+
+    const argsText = m[1];
+    const args = splitArgumentsList(argsText);
+    if (args.length <= 2) return fixes;
+
+    const sbVar = args[0].trim();
+    const items = args.slice(1);
+
+    const lineIndex = range.start.line;
+    const lineText = document.lineAt(lineIndex).text;
+    const indentMatch = lineText.match(/^(\s*)/);
+    const indent = indentMatch ? indentMatch[1] : '';
+
+    if (args.length > 3) {
+        const pairedStatements = [];
+        for (let i = 0; i < items.length; i += 2) {
+            const chunk = items.slice(i, i + 2);
+            pairedStatements.push(`sbappend(${sbVar}, ${chunk.map(c => c.trim()).join(', ')});`);
+        }
+        const pairedReplacement = pairedStatements.join('\n' + indent);
+
+        const pairedAction = new vscode.CodeAction("Split 'sbappend' into paired statements", vscode.CodeActionKind.QuickFix);
+        pairedAction.isPreferred = true;
+        pairedAction.edit = new vscode.WorkspaceEdit();
+        pairedAction.edit.replace(document.uri, range, pairedReplacement);
+        if (diag) pairedAction.diagnostics = [diag];
+        fixes.push(pairedAction);
+    }
+
+    const singleStatements = [];
+    for (let i = 0; i < items.length; i++) {
+        singleStatements.push(`sbappend(${sbVar}, ${items[i].trim()});`);
+    }
+    const singleReplacement = singleStatements.join('\n' + indent);
+
+    const singleAction = new vscode.CodeAction("Split 'sbappend' into individual statements (1 argument each)", vscode.CodeActionKind.RefactorRewrite);
+    singleAction.edit = new vscode.WorkspaceEdit();
+    singleAction.edit.replace(document.uri, range, singleReplacement);
+    if (diag) singleAction.diagnostics = [diag];
+    fixes.push(singleAction);
+
+    return fixes;
+}
+
+function createSbappendSplitActions(document, range) {
+    const actions = [];
+    if (!range || !document) return actions;
+    const line = document.lineAt(range.start.line);
+    const lineText = line.text;
+    if (!lineText.includes('sbappend')) return actions;
+
+    const sbappendRegex = /\bsbappend\s*\(([^;]+)\)\s*;?/gi;
+    let match;
+    while ((match = sbappendRegex.exec(lineText)) !== null) {
+        const startChar = match.index;
+        const endChar = match.index + match[0].length;
+        const matchRange = new vscode.Range(range.start.line, startChar, range.start.line, endChar);
+
+        if (range.intersection(matchRange) || (range.isEmpty && range.start.character >= startChar && range.start.character <= endChar)) {
+            actions.push(...buildSbappendSplitFixes(document, matchRange));
+        }
+    }
+    return actions;
+}
 
 function getPerformanceFixes(document, diag, editRange) {
     const fixes = [];
@@ -75,8 +146,12 @@ function getPerformanceFixes(document, diag, editRange) {
         action.diagnostics = [diag];
         fixes.push(action);
     }
+    else if (diag.code === 'bml-sbappend-multiple-args') {
+        fixes.push(...buildSbappendSplitFixes(document, editRange, diag));
+    }
 
     return fixes;
 }
 
-module.exports = { getPerformanceFixes };
+module.exports = { getPerformanceFixes, createSbappendSplitActions };
+

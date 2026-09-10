@@ -64,6 +64,58 @@ function runPerformanceCodeActionTests() {
             const replaceAction = codeActions.find(a => a.title.includes('_system_site_name'));
             assert.ok(replaceAction, 'Should offer replace with _system_site_name Quick Fix');
         });
+
+        test('Diagnostic and Quick Fix for multi-argument sbappend splits into pairs', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'sb = stringbuilder();\nsbappend(sb,doc,value,doc1,value2,doc3,value3);\nreturn sbtostring(sb);'
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const sbDiag = diags.find(d => d.code === 'bml-sbappend-multiple-args');
+            assert.ok(sbDiag, 'Should flag multi-argument sbappend statement');
+
+            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, sbDiag.range);
+            const pairedAction = codeActions.find(a => a.title.includes("Split 'sbappend' into paired statements"));
+            assert.ok(pairedAction, "Should offer paired split Quick Fix");
+
+            await vscode.workspace.applyEdit(pairedAction.edit);
+
+            const updatedText = doc.getText();
+            assert.ok(updatedText.includes('sbappend(sb, doc, value);\n'), 'Contains first paired sbappend');
+            assert.ok(updatedText.includes('sbappend(sb, doc1, value2);\n'), 'Contains second paired sbappend');
+            assert.ok(updatedText.includes('sbappend(sb, doc3, value3);'), 'Contains third paired sbappend');
+        });
+
+        test('Quick Fix for multi-argument sbappend preserves indentation and handles odd arguments', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: 'sb = stringbuilder();\n    sbappend(sb, a, b, c, d, e);\nreturn sbtostring(sb);'
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const sbDiag = diags.find(d => d.code === 'bml-sbappend-multiple-args');
+            assert.ok(sbDiag, 'Should flag multi-argument sbappend statement');
+
+            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, sbDiag.range);
+            const pairedAction = codeActions.find(a => a.title.includes("Split 'sbappend' into paired statements"));
+            const singleAction = codeActions.find(a => a.title.includes("Split 'sbappend' into individual statements"));
+            assert.ok(pairedAction, "Should offer paired split Quick Fix");
+            assert.ok(singleAction, "Should offer single statement refactoring");
+
+            await vscode.workspace.applyEdit(pairedAction.edit);
+
+            const updatedText = doc.getText();
+            assert.ok(updatedText.includes('    sbappend(sb, a, b);\n'), 'Preserves indentation on pair 1');
+            assert.ok(updatedText.includes('    sbappend(sb, c, d);\n'), 'Preserves indentation on pair 2');
+            assert.ok(updatedText.includes('    sbappend(sb, e);'), 'Preserves indentation on leftover single');
+        });
     });
 }
 

@@ -4,7 +4,7 @@ const { getSyntaxFixes } = require('@/lang/lint/code-actions/syntaxFixes');
 const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
 const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
 const { getSuppressionFixes } = require('@/lang/lint/code-actions/suppressionFixes');
-const { getPerformanceFixes } = require('@/lang/lint/code-actions/performanceFixes');
+const { getPerformanceFixes, createSbappendSplitActions } = require('@/lang/lint/code-actions/performanceFixes');
 const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
 const { getApiFixes } = require('@/lang/lint/code-actions/apiFixes');
 const { getUnreachableFixes } = require('@/lang/lint/code-actions/unreachableFixes');
@@ -47,6 +47,9 @@ function registerBmlCodeActions(context) {
 
                 if (token && token.isCancellationRequested) return [];
 
+                // On-demand refactoring actions (available even if diagnostic is not yet emitted)
+                const refactorActions = createSbappendSplitActions(document, range);
+
                 let docDiags = (vscode.languages && vscode.languages.getDiagnostics)
                     ? vscode.languages.getDiagnostics(document.uri)
                     : context.diagnostics;
@@ -63,6 +66,7 @@ function registerBmlCodeActions(context) {
                 // 3. Fallback Suppressions (Disable for line/file)
                 const allActions = [
                     ...constructiveFixes,
+                    ...refactorActions,
                     ...(fixAllActions || []),
                     ...suppressionFixes
                 ];
