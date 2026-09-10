@@ -11,18 +11,53 @@ function registerXslt(context) {
   const xsltDiagnostics = vscode.languages.createDiagnosticCollection("xsltLint");
   context.subscriptions.push(xsltDiagnostics);
 
+  const debounceTimers = new Map();
+  const DEBOUNCE_DELAY_MS = 300;
+
   const runXsltLinter = (doc) => {
     if (!doc) return;
-    const isXslt = doc.languageId === "xsl" || doc.languageId === "xslt" || doc.fileName.endsWith(".xsl") || doc.fileName.endsWith(".xslt");
+    const isXslt = doc.languageId === "xsl" || doc.languageId === "xslt" || (doc.fileName && (doc.fileName.endsWith(".xsl") || doc.fileName.endsWith(".xslt")));
     if (isXslt) {
       const diags = lintXslt(doc);
       xsltDiagnostics.set(doc.uri, diags);
     }
   };
 
+  const debouncedXsltLinter = (doc) => {
+    if (!doc) return;
+    const uriStr = doc.uri.toString();
+    if (debounceTimers.has(uriStr)) {
+      clearTimeout(debounceTimers.get(uriStr));
+    }
+    debounceTimers.set(
+      uriStr,
+      setTimeout(() => {
+        debounceTimers.delete(uriStr);
+        runXsltLinter(doc);
+      }, DEBOUNCE_DELAY_MS)
+    );
+  };
+
+  context.subscriptions.push({
+    dispose: () => {
+      for (const t of debounceTimers.values()) clearTimeout(t);
+      debounceTimers.clear();
+    }
+  });
+
   vscode.workspace.onDidOpenTextDocument(runXsltLinter, null, context.subscriptions);
-  vscode.workspace.onDidChangeTextDocument((e) => runXsltLinter(e.document), null, context.subscriptions);
+  vscode.workspace.onDidChangeTextDocument((e) => debouncedXsltLinter(e.document), null, context.subscriptions);
   vscode.workspace.onDidSaveTextDocument(runXsltLinter, null, context.subscriptions);
+  vscode.workspace.onDidCloseTextDocument((doc) => {
+    if (doc) {
+      const uriStr = doc.uri.toString();
+      if (debounceTimers.has(uriStr)) {
+        clearTimeout(debounceTimers.get(uriStr));
+        debounceTimers.delete(uriStr);
+      }
+      xsltDiagnostics.delete(doc.uri);
+    }
+  }, null, context.subscriptions);
 
   vscode.workspace.textDocuments.forEach(runXsltLinter);
 

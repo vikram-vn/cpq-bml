@@ -162,9 +162,16 @@ function registerBmlComments(context) {
 
     vscode.window.onDidChangeActiveTextEditor(triggerDecorate, null, context.subscriptions);
     vscode.workspace.onDidChangeTextDocument((e) => {
-        vscode.window.visibleTextEditors.forEach((editor) => {
-            if (editor.document === e.document) triggerDecorate(editor);
-        });
+        if (!e.document || (e.document.languageId !== 'bml' && !(e.document.fileName && e.document.fileName.endsWith('.bml')))) {
+            return;
+        }
+        const active = vscode.window.activeTextEditor;
+        if (active && active.document === e.document) {
+            triggerDecorate(active);
+            return;
+        }
+        const editor = (vscode.window.visibleTextEditors || []).find((ed) => ed.document === e.document);
+        if (editor) triggerDecorate(editor);
     }, null, context.subscriptions);
 
     vscode.workspace.onDidChangeConfiguration((e) => {

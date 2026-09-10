@@ -16,6 +16,16 @@ function buildCsp(nonce, cspSource) {
     ].join('; ');
 }
 
+let cachedTemplate = null;
+
+function getTemplate(context) {
+    if (!cachedTemplate) {
+        const templatePath = path.join(context.extensionPath, 'app', 'lang', 'settings-panel', 'web-view', 'index.html');
+        cachedTemplate = fs.readFileSync(templatePath, 'utf8');
+    }
+    return cachedTemplate;
+}
+
 function getHtml(context, vscode, webview) {
     const webviewRoot = vscode.Uri.joinPath(context.extensionUri, 'app', 'lang', 'settings-panel', 'web-view');
     const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'dist', 'main.js'));
@@ -23,8 +33,7 @@ function getHtml(context, vscode, webview) {
     const componentsStyleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'components.min.css'));
     const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'main.min.css'));
 
-    const templatePath = path.join(context.extensionPath, 'app', 'lang', 'settings-panel', 'web-view', 'index.html');
-    const template = fs.readFileSync(templatePath, 'utf8');
+    const template = getTemplate(context);
 
     const nonce = getNonce();
     const csp = buildCsp(nonce, webview.cspSource);

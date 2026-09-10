@@ -56,6 +56,9 @@ function createSessionKeepAlive() {
 
   function start(vscodeInstance = vscode, customTransport) {
     if (isActive) return;
+    const baseUrl = getBaseUrl(vscodeInstance);
+    const authHeader = getAuthHeader(vscodeInstance);
+    if (!baseUrl || !authHeader) return;
     isActive = true;
 
     timer = setInterval(async () => {

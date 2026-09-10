@@ -117,6 +117,13 @@ function checkComplexityAndThreats(code) {
   };
 }
 
+const IGNORED_SCAN_FOLDERS = new Set([
+  'node_modules', '.git', '.vscode', '.vscode-test', '.agents',
+  'dist', 'out', 'build', 'coverage', '.gemini', 'target',
+  'vendor', 'scratch', 'logs', '.system_generated', 'venv',
+  '.venv', '__pycache__', '.pytest_cache', 'typings'
+]);
+
 function analyzeWorkspaceImpact(varName, workspaceRoot) {
   if (!workspaceRoot || !varName) {
     return { callersCount: 0, callers: [] };
@@ -124,16 +131,25 @@ function analyzeWorkspaceImpact(varName, workspaceRoot) {
 
   const callers = [];
   const searchPattern = new RegExp(`\\b(util\\.)?${varName}\\b`, 'i');
+  let scannedCount = 0;
+  const MAX_SCANNED_FILES = 1000;
+  const MAX_DEPTH = 8;
 
-  function scanDir(dir) {
+  function scanDir(dir, depth = 0) {
+    if (depth > MAX_DEPTH || scannedCount >= MAX_SCANNED_FILES) return;
     try {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
-        if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
+        if (scannedCount >= MAX_SCANNED_FILES) break;
+        if (entry.name.charCodeAt(0) === 46) continue; // skip dotfiles
+        const nameLower = entry.name.toLowerCase();
+        if (IGNORED_SCAN_FOLDERS.has(nameLower)) continue;
+
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
-          scanDir(fullPath);
+          scanDir(fullPath, depth + 1);
         } else if (entry.isFile() && (entry.name.endsWith('.bml') || entry.name.endsWith('.bmlt'))) {
+          scannedCount++;
           // Avoid matching self
           if (path.basename(fullPath).toLowerCase().startsWith(varName.toLowerCase())) continue;
 
@@ -160,7 +176,7 @@ function analyzeWorkspaceImpact(varName, workspaceRoot) {
     }
   }
 
-  scanDir(workspaceRoot);
+  scanDir(workspaceRoot, 0);
   return {
     callersCount: callers.length,
     callers

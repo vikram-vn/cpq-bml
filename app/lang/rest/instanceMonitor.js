@@ -88,6 +88,7 @@ function createInstanceMonitor(vscodeInstance = vscode) {
 
   let lastHealth = null;
   let timer = null;
+  let startupTimer = null;
 
   async function checkHealth(customVscode = vscodeInstance, customTransport) {
     const result = await checkInstanceHealth(customVscode, customTransport, statusBarItem);
@@ -95,15 +96,29 @@ function createInstanceMonitor(vscodeInstance = vscode) {
     return result;
   }
 
-  function startPeriodicChecks(intervalMs = 5 * 60 * 1000) {
-    checkHealth();
+  function startPeriodicChecks(intervalMs = 5 * 60 * 1000, initialDelayMs = 10000) {
+    if (initialDelayMs > 0) {
+      startupTimer = setTimeout(() => {
+        startupTimer = null;
+        checkHealth();
+      }, initialDelayMs);
+    } else {
+      checkHealth();
+    }
     timer = setInterval(() => {
       checkHealth();
     }, intervalMs);
   }
 
   function dispose() {
-    if (timer) clearInterval(timer);
+    if (startupTimer) {
+      clearTimeout(startupTimer);
+      startupTimer = null;
+    }
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
     statusBarItem.dispose();
   }
 

@@ -96,9 +96,20 @@ function registerBmlLinter(context) {
                 visibleRangeTimer = setTimeout(() => {
                     reorderVisibleDiagnostics(e.textEditor.document, diagnosticCollection, vscode);
                 }, 200);
+                activeVisibleRangeTimer = visibleRangeTimer;
             }
         }, null, context.subscriptions);
     }
+
+    context.subscriptions.push({
+        dispose: () => {
+            if (visibleRangeTimer) {
+                clearTimeout(visibleRangeTimer);
+                visibleRangeTimer = null;
+                activeVisibleRangeTimer = null;
+            }
+        }
+    });
 
     // Toggling cpqBml.features.lint or cpqBml.features.spelling should take effect immediately rather than
     // waiting for the next edit/save of each open document.
@@ -123,7 +134,13 @@ function registerBmlLinter(context) {
     registerSecurityCodeActions(context);
 }
 
+let activeVisibleRangeTimer = null;
+
 function deactivate() {
+    if (activeVisibleRangeTimer) {
+        clearTimeout(activeVisibleRangeTimer);
+        activeVisibleRangeTimer = null;
+    }
     if (diagnosticCollection) diagnosticCollection.dispose();
 }
 

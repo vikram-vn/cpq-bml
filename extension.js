@@ -33,6 +33,9 @@ const { registerCloudDeploymentCenter } = require("@/lang/cloud/cloudDeploymentC
 const { registerCloudGlobalSearch } = require("@/lang/cloud/cloudGlobalSearch");
 const { registerRemoteTestCommands } = require("@/lang/test-controller/remoteTestRunner");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
+const { invalidateIndex } = require("@/lang/intellisense/workspaceIndex");
+const { invalidateApiData } = require("@/lang/intellisense/apiData");
+const { isConfigured } = require("@/lang/rest/config");
 
 const DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT_MS = 1000;
 
@@ -90,7 +93,23 @@ function activate(context) {
   registerCacheFlushCommand(context);
   registerActionSimulatorCommands(context);
   registerInstanceMonitorCommands(context);
-  getSessionKeepAlive().start(vscode);
+
+  const keepAlive = getSessionKeepAlive();
+  if (isConfigured(vscode)) {
+    keepAlive.start(vscode);
+  }
+  context.subscriptions.push(
+    keepAlive,
+    vscode.workspace.onDidChangeConfiguration((e) => {
+      if (e.affectsConfiguration("cpqBml.connection") || e.affectsConfiguration("cpqBml.auth")) {
+        if (isConfigured(vscode)) {
+          keepAlive.start(vscode);
+        } else {
+          keepAlive.stop();
+        }
+      }
+    })
+  );
 
   registerCloudExplorer(context);
   registerCloudTypeDefCommands(context);
@@ -145,6 +164,11 @@ function activate(context) {
   }
 
 
+  const syncRuntimeWorkspaceFolders = () => {
+    invalidateIndex();
+    invalidateApiData();
+  };
+
   let syncTimeout = null;
   const triggerFolderSync = () => {
     if (syncTimeout) clearTimeout(syncTimeout);
@@ -158,6 +182,7 @@ function activate(context) {
   triggerFolderSync();
 
   context.subscriptions.push(
+    { dispose: () => { if (syncTimeout) clearTimeout(syncTimeout); } },
     vscode.workspace.onDidChangeWorkspaceFolders(triggerFolderSync),
     vscode.workspace.onDidCreateFiles(triggerFolderSync),
     vscode.workspace.onDidRenameFiles(triggerFolderSync)

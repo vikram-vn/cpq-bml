@@ -4,12 +4,14 @@ const path = require("path");
 
 // ── Per-file cache ──────────────────────────────────────────────────────────
 const _cache = Object.create(null);
+let _resolvedBaseDir = null;
 
 // Drops cached JSON data so next loadJson() re-reads from disk.
 function invalidateCache() {
     for (const key of Object.keys(_cache)) {
         delete _cache[key];
     }
+    _resolvedBaseDir = null;
 }
 
 // Loads minified or fallback JSON data, cached by filename.
@@ -20,26 +22,45 @@ function loadJson(baseName, extPath) {
     const jsonFile = `${baseName}.json`;
     const relDir   = path.join("app", "lang", "intellisense");
 
-    const candidates = [
-        extPath && path.join(extPath, relDir, minFile),
-        path.join(process.cwd(), relDir, minFile),
-        path.join(__dirname, minFile),
-        path.join(__dirname, "..", relDir, minFile),
-        extPath && path.join(extPath, relDir, jsonFile),
-        path.join(process.cwd(), relDir, jsonFile),
-        path.join(__dirname, jsonFile),
-        path.join(__dirname, "..", relDir, jsonFile),
-        extPath && path.join(extPath, "app", "lang", "snippets", jsonFile),
-        path.join(process.cwd(), "app", "lang", "snippets", jsonFile),
-    ].filter(Boolean);
-
-    for (const candidate of candidates) {
+    // Fast path: check previously resolved directory first
+    if (_resolvedBaseDir) {
+        const minCandidate = path.join(_resolvedBaseDir, minFile);
         try {
-            const text = fs.readFileSync(candidate, "utf8");
+            const text = fs.readFileSync(minCandidate, "utf8");
             _cache[baseName] = JSON.parse(text);
             return _cache[baseName];
-        } catch (_) {
-            // try next candidate
+        } catch (_) {}
+
+        const jsonCandidate = path.join(_resolvedBaseDir, jsonFile);
+        try {
+            const text = fs.readFileSync(jsonCandidate, "utf8");
+            _cache[baseName] = JSON.parse(text);
+            return _cache[baseName];
+        } catch (_) {}
+    }
+
+    // Candidate directories to probe (prefer __dirname first)
+    const candidateDirs = [
+        __dirname,
+        extPath && path.join(extPath, relDir),
+        path.join(process.cwd(), relDir),
+        extPath && path.join(extPath, "app", "lang", "snippets"),
+        path.join(process.cwd(), "app", "lang", "snippets"),
+        path.join(__dirname, "..", "snippets"),
+        path.join(__dirname, "..", relDir)
+    ].filter(Boolean);
+
+    for (const dir of candidateDirs) {
+        for (const file of [minFile, jsonFile]) {
+            const candidate = path.join(dir, file);
+            try {
+                const text = fs.readFileSync(candidate, "utf8");
+                _cache[baseName] = JSON.parse(text);
+                _resolvedBaseDir = dir;
+                return _cache[baseName];
+            } catch (_) {
+                // try next
+            }
         }
     }
 

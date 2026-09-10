@@ -40,47 +40,67 @@ function updateSecurityDiagnostics(document) {
     diagnosticCollection.set(document.uri, diagnostics);
 }
 
+function scheduleSecurityDiagnostics(document, delay = 300) {
+    if (!document) return;
+    const uriKey = document.uri.toString();
+    if (debounceTimers.has(uriKey)) {
+        clearTimeout(debounceTimers.get(uriKey));
+    }
+    debounceTimers.set(
+        uriKey,
+        setTimeout(() => {
+            updateSecurityDiagnostics(document);
+            debounceTimers.delete(uriKey);
+        }, delay)
+    );
+}
+
 function registerSecurityDiagnostics(context) {
     diagnosticCollection = vscode.languages.createDiagnosticCollection('bml-security');
     context.subscriptions.push(diagnosticCollection);
 
-    // Initial check on active editor
+    // Initial check on active editor (debounced)
     if (vscode.window.activeTextEditor) {
-        updateSecurityDiagnostics(vscode.window.activeTextEditor.document);
+        scheduleSecurityDiagnostics(vscode.window.activeTextEditor.document, 300);
     }
 
-    // On open
+    // On open (debounced 300ms)
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument((doc) => {
-            updateSecurityDiagnostics(doc);
+            scheduleSecurityDiagnostics(doc, 300);
         })
     );
 
     // On change (debounced 400ms)
     context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument((event) => {
-            const uriKey = event.document.uri.toString();
-            if (debounceTimers.has(uriKey)) {
-                clearTimeout(debounceTimers.get(uriKey));
-            }
-            debounceTimers.set(
-                uriKey,
-                setTimeout(() => {
-                    updateSecurityDiagnostics(event.document);
-                    debounceTimers.delete(uriKey);
-                }, 400)
-            );
+            scheduleSecurityDiagnostics(event.document, 400);
         })
     );
 
     // On close
     context.subscriptions.push(
         vscode.workspace.onDidCloseTextDocument((doc) => {
-            if (diagnosticCollection) {
-                diagnosticCollection.delete(doc.uri);
+            if (doc) {
+                const uriKey = doc.uri.toString();
+                if (debounceTimers.has(uriKey)) {
+                    clearTimeout(debounceTimers.get(uriKey));
+                    debounceTimers.delete(uriKey);
+                }
+                if (diagnosticCollection) {
+                    diagnosticCollection.delete(doc.uri);
+                }
             }
         })
     );
+
+    // Cleanup on dispose
+    context.subscriptions.push({
+        dispose: () => {
+            for (const t of debounceTimers.values()) clearTimeout(t);
+            debounceTimers.clear();
+        }
+    });
 }
 
 module.exports = {

@@ -64,8 +64,6 @@ const IGNORED_FOLDERS = new Set([
   '.github'
 ]);
 
-const sharedBuffer = Buffer.allocUnsafe(2048);
-
 /**
  * Fast read of the first 2KB of a file for header comments and definition line.
  */
@@ -73,10 +71,11 @@ function readHeaderSlice(filePath) {
   let fd = -1;
   try {
     fd = fs.openSync(filePath, 'r');
-    const bytesRead = fs.readSync(fd, sharedBuffer, 0, 2048, 0);
+    const buf = Buffer.alloc(2048);
+    const bytesRead = fs.readSync(fd, buf, 0, 2048, 0);
     fs.closeSync(fd);
     fd = -1;
-    return sharedBuffer.toString('utf8', 0, bytesRead);
+    return buf.toString('utf8', 0, bytesRead);
   } catch {
     if (fd !== -1) {
       try { fs.closeSync(fd); } catch {}
@@ -312,22 +311,69 @@ function invalidateIndex() {
 }
 
 /**
- * Register file-system watchers to keep the index fresh.
+ * Incrementally updates a single file in the workspace index without full rebuild.
+ */
+function updateFileInIndex(filePathOrUri) {
+  if (!_index) return;
+  const rawPath = typeof filePathOrUri === "string" ? filePathOrUri : (filePathOrUri && filePathOrUri.fsPath);
+  if (!rawPath) return;
+
+  let bmlPath = rawPath;
+  if (rawPath.endsWith("-meta.json")) {
+    bmlPath = rawPath.replace(/-meta\.json$/i, ".bml");
+    if (!fs.existsSync(bmlPath)) return;
+  } else if (!rawPath.endsWith(".bml") || /(-AI|_ai)\.bml$/i.test(rawPath)) {
+    return;
+  }
+
+  const normalized = bmlPath.replace(/\\/g, "/");
+  const isUtil = /\/library\/|\/util\//i.test(normalized);
+  const isCommerce = /\/commerce\//i.test(normalized);
+  const prefix = isUtil ? "util" : isCommerce ? "commerce" : null;
+  if (!prefix) return;
+
+  const baseName = path.basename(bmlPath, ".bml");
+  const dir = path.dirname(bmlPath);
+  const metaCandidate = path.join(dir, `${baseName}-meta.json`);
+  const metaPath = fs.existsSync(metaCandidate) ? metaCandidate : null;
+
+  indexBmlFile(bmlPath, prefix, baseName, metaPath, _index);
+}
+
+/**
+ * Removes a single file from the workspace index.
+ */
+function removeFileFromIndex(filePathOrUri) {
+  if (!_index) return;
+  const rawPath = typeof filePathOrUri === "string" ? filePathOrUri : (filePathOrUri && filePathOrUri.fsPath);
+  if (!rawPath) return;
+
+  const bmlPath = rawPath.endsWith("-meta.json") ? rawPath.replace(/-meta\.json$/i, ".bml") : rawPath;
+  for (const [key, val] of _index.entries()) {
+    if (val.filePath === bmlPath) {
+      _index.delete(key);
+      break;
+    }
+  }
+}
+
+/**
+ * Register file-system watchers to keep the index fresh incrementally.
  */
 function registerWorkspaceIndexWatcher(context) {
   // Watch for .bml file changes
   const bmlWatcher = vscode.workspace.createFileSystemWatcher("**/*.bml");
-  bmlWatcher.onDidChange(invalidateIndex);
-  bmlWatcher.onDidCreate(invalidateIndex);
-  bmlWatcher.onDidDelete(invalidateIndex);
+  bmlWatcher.onDidChange(updateFileInIndex);
+  bmlWatcher.onDidCreate(updateFileInIndex);
+  bmlWatcher.onDidDelete(removeFileFromIndex);
   context.subscriptions.push(bmlWatcher);
 
   // Watch for meta.json changes
   const metaWatcher =
     vscode.workspace.createFileSystemWatcher("**/*-meta.json");
-  metaWatcher.onDidChange(invalidateIndex);
-  metaWatcher.onDidCreate(invalidateIndex);
-  metaWatcher.onDidDelete(invalidateIndex);
+  metaWatcher.onDidChange(updateFileInIndex);
+  metaWatcher.onDidCreate(updateFileInIndex);
+  metaWatcher.onDidDelete(updateFileInIndex);
   context.subscriptions.push(metaWatcher);
 }
 
@@ -359,6 +405,8 @@ function resolveCallAtPosition(document, position) {
 module.exports = {
   getWorkspaceIndex,
   invalidateIndex,
+  updateFileInIndex,
+  removeFileFromIndex,
   registerWorkspaceIndexWatcher,
   resolveCallAtPosition,
   extractDocHeader,
