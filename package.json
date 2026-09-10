@@ -160,16 +160,7 @@
         "path": "./app/lang/syntaxes/xslt.tmLanguage.min.json"
       }
     ],
-    "iconThemes": [
-      {
-        "id": "bml-icon-theme",
-        "label": "BML Icon Theme",
-        "path": "./themes/bml-icons.min.json"
-      }
-    ],
-    "configurationDefaults": {
-      "workbench.iconTheme": "bml-icon-theme"
-    },
+
     "themes": [
       {
         "label": "BML Dark Default",
@@ -226,10 +217,7 @@
         "command": "cpqBml.importTeamProfiles",
         "title": "CPQ-BML: Import Team Profiles"
       },
-      {
-        "command": "cpqBml.activateIconTheme",
-        "title": "CPQ-BML: Activate BML Material Icon Theme"
-      },
+
       {
         "command": "cpqBml.rest.setPassword",
         "title": "CPQ-BML: Set CPQ Password"

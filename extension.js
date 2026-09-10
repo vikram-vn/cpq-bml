@@ -138,31 +138,6 @@ function activate(context) {
     console.warn('CPQ-BML: Antigravity skill sync failed (non-fatal):', e);
   }
 
-  const ICON_THEME_ID = "bml-icon-theme";
-  if (!context.globalState.get("bmlIconThemeInitialized")) {
-    context.globalState.update("bmlIconThemeInitialized", true);
-    const workbenchConfig = vscode.workspace.getConfiguration("workbench");
-    if (workbenchConfig.get("iconTheme") !== ICON_THEME_ID) {
-      workbenchConfig.update(
-        "iconTheme",
-        ICON_THEME_ID,
-        vscode.ConfigurationTarget.Global,
-      );
-    }
-  }
-
-  const activateIconsCmd = vscode.commands.registerCommand(
-    "cpqBml.activateIconTheme",
-    async () => {
-      await vscode.workspace
-        .getConfiguration("workbench")
-        .update("iconTheme", ICON_THEME_ID, vscode.ConfigurationTarget.Global);
-      vscode.window.showInformationMessage(
-        "BML Material Icon Theme is now active!",
-      );
-    },
-  );
-  context.subscriptions.push(activateIconsCmd);
 
   let syncTimeout = null;
   const triggerFolderSync = () => {
