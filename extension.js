@@ -14,20 +14,12 @@ const { registerMcp } = require("./app/lang/mcp");
 const { registerXslt } = require("./app/lang/xslt");
 const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
 const { registerEnvironmentSwitcher } = require("./app/lang/statusBar/environmentSwitcher");
-const { registerScaffolder } = require("./app/lang/scaffold/bmlScaffolder");
-const { registerScratchpad } = require("./app/lang/evaluator/scratchpadPanel");
 const { syncGlobalAgySkills } = require("./app/ai/setup/globalSkillSync");
 const { registerChatParticipant } = require("./app/ai/chatParticipant");
-const { registerSemanticTokens } = require("./app/lang/ast/bmlSemanticTokens");
-const { registerRenameProvider } = require("./app/lang/ast/bmlRenameProvider");
-const { registerProfilerDiagnostics } = require("./app/lang/profiler/profilerDiagnostics");
-const { registerBmlDebugger } = require("./app/lang/debug/bmlDebugAdapter");
 const { registerTestController } = require("./app/lang/test/bmlTestController");
 const { registerDatatableEditor } = require("./app/lang/datatable/datatableEditorProvider");
 const { registerSchemaIntrospector } = require("./app/lang/intellisense/schemaIntrospector");
 const { BmqlConsolePanel } = require("./app/lang/bmql/bmqlConsolePanel");
-const { PipelineViewerPanel } = require("./app/lang/graph/pipelineViewerPanel");
-const { registerDocCommands } = require("./app/lang/docs/docCommands");
 const { getCoverageDecorator } = require("./app/lang/test/coverageDecorator");
 const { registerDataTableCommands } = require("./app/lang/datatable/datatableCommands");
 const { registerLogCommands } = require("./app/lang/rest/commands/logs");
@@ -84,17 +76,10 @@ function activate(context) {
   registerSettingsPanel(context);
   registerMcp(context);
   registerXslt(context);
-  registerMetrics(context);
   registerBmlTestRunner(context);
   registerBmlSnapshot(context);
   registerChatParticipant(context);
   registerEnvironmentSwitcher(context);
-  registerScaffolder(context);
-  registerScratchpad(context);
-  registerSemanticTokens(context);
-  registerRenameProvider(context);
-  registerProfilerDiagnostics(context);
-  registerBmlDebugger(context);
   registerTestController(context);
   registerDatatableEditor(context);
   registerSchemaIntrospector(context);
@@ -105,16 +90,6 @@ function activate(context) {
       BmqlConsolePanel.createOrShow(context);
     })
   );
-
-  // ── Commerce Execution Pipeline & Attribute Graph ───────────────────────────
-  context.subscriptions.push(
-    vscode.commands.registerCommand("cpqBml.showAttributeGraph", () => {
-      PipelineViewerPanel.createOrShow(context);
-    })
-  );
-
-  // ── Workspace Documentation Site Generator ──────────────────────────────────
-  registerDocCommands(context);
 
   // ── Test Coverage Heatmap & Gutter Decorator ─────────────────────────────────
   const coverageDecorator = getCoverageDecorator();

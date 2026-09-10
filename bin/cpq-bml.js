@@ -5,7 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const { auditBmlCode } = require('../app/lang/mcp/tools/audit');
 const { validateBmqlQuery } = require('../app/lang/mcp/tools/bmqlValidator');
-const { BmlProfiler } = require('../app/lang/profiler/bmlProfiler');
 const packageJson = require('../package.json');
 
 const IGNORED_DIRS = new Set([

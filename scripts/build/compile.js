@@ -59,11 +59,6 @@ async function compileExtension() {
         path.join(ROOT, 'app', 'lang', 'bmql', 'web-view', 'dist', 'main.js')
     );
 
-    const buildGraphWebview = createWebviewBuild(
-        path.join(ROOT, 'app', 'lang', 'graph', 'web-view', 'src', 'index.jsx'),
-        path.join(ROOT, 'app', 'lang', 'graph', 'web-view', 'dist', 'main.js')
-    );
-
     // 2. Dictionaries (.txt -> .txt.br)
     const spellCheckDir = path.join(ROOT, 'app', 'lang', 'spell-check');
     const dictFiles = ['bml-words.txt', 'cpq-words.txt'];
@@ -193,7 +188,7 @@ async function compileExtension() {
     }
 
     // Await all esbuild tasks
-    await Promise.all([buildExt, buildWebview, buildBmqlWebview, buildGraphWebview]);
+    await Promise.all([buildExt, buildWebview, buildBmqlWebview]);
 
     const t1 = performance.now();
     console.log(`Compile finished in ${(t1 - t0).toFixed(1)}ms`);

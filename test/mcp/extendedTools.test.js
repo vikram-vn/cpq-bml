@@ -1,18 +1,8 @@
 const assert = require('assert');
-const { profileBmlPerformanceTool } = require('../../app/lang/mcp/tools/profilerTools');
 const { generateBmlUnitTestTool, executeBmlTestSuiteTool } = require('../../app/lang/mcp/tools/testTools');
 const { introspectCpqSchemaTool } = require('../../app/lang/mcp/tools/schemaTools');
 
 describe('Extended MCP Tools', () => {
-    it('profile_bml_performance detects performance issues', async () => {
-        const res = await profileBmlPerformanceTool.handler({
-            code: 'for id in ids { bmql select price from Parts where id = $id; }',
-        });
-        const parsed = JSON.parse(res.content[0].text);
-        assert.strictEqual(parsed.healthy, false);
-        assert.ok(parsed.errors > 0);
-        assert.ok(parsed.issues.some(i => i.ruleId === 'bml-bmql-in-loop'));
-    });
 
     it('generate_bml_unit_test scaffolds unit test structure', async () => {
         const res = await generateBmlUnitTestTool.handler({

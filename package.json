@@ -69,15 +69,6 @@
         }
       ]
     },
-    "debuggers": [
-      {
-        "type": "bml",
-        "label": "BML Debugger",
-        "languages": [
-          "bml"
-        ]
-      }
-    ],
     "customEditors": [
       {
         "viewType": "cpqBml.dataTableEditor",
@@ -398,16 +389,6 @@
       {
         "command": "cpqBml.openBmqlConsole",
         "title": "CPQ-BML: Open Live BMQL Query Console",
-        "category": "BML"
-      },
-      {
-        "command": "cpqBml.showAttributeGraph",
-        "title": "CPQ-BML: Show Commerce Execution Pipeline & Attribute Graph",
-        "category": "BML"
-      },
-      {
-        "command": "cpqBml.generateDocs",
-        "title": "CPQ-BML: Generate Workspace API Documentation",
         "category": "BML"
       },
       {
