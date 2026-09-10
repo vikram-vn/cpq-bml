@@ -76,6 +76,23 @@
         }
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cpq-bml-sidebar",
+          "title": "Oracle CPQ Cloud",
+          "icon": "app/icons/bml.svg"
+        }
+      ]
+    },
+    "views": {
+      "cpq-bml-sidebar": [
+        {
+          "id": "cpqBml.cloudExplorer",
+          "name": "Cloud Functions Explorer"
+        }
+      ]
+    },
     "languages": [
       {
         "id": "bml",
@@ -404,6 +421,35 @@
         "command": "cpqBml.rest.checkHealth",
         "title": "CPQ-BML: Check CPQ Instance Health & Latency",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.refresh",
+        "title": "CPQ-BML: Refresh Cloud Functions",
+        "icon": "$(refresh)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.pullFunction",
+        "title": "CPQ-BML: Pull Cloud Function to Workspace",
+        "icon": "$(cloud-download)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.diffFunction",
+        "title": "CPQ-BML: Diff Function Against CPQ Cloud Server",
+        "icon": "$(diff)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.openLocal",
+        "title": "CPQ-BML: Open Local Function File",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.syncDefinitions",
+        "title": "CPQ-BML: Sync Cloud BML Definitions (.cpq/cpq.d.bml)",
+        "icon": "$(sync)",
+        "category": "BML"
       }
     ],
     "menus": {
@@ -464,6 +510,30 @@
           "command": "cpqBml.inferDataTableSchema",
           "when": "resourceExtname == .csv",
           "group": "7_modification"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "cpqBml.cloud.refresh",
+          "when": "view == cpqBml.cloudExplorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.cloud.syncDefinitions",
+          "when": "view == cpqBml.cloudExplorer",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "cpqBml.cloud.pullFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionRemote",
+          "group": "inline"
+        },
+        {
+          "command": "cpqBml.cloud.diffFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "group": "inline"
         }
       ]
     },

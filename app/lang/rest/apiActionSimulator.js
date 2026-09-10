@@ -16,7 +16,7 @@ try {
 
 const { request } = require('./client');
 const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings } = require('./config');
-const { TransactionMockGenerator } = require('./apiTransactionMock');
+const { TransactionMockGenerator, fetchRecentTransactions } = require('./apiTransactionMock');
 
 /**
  * Simulates clicking a Commerce Action and computes attribute deltas.
@@ -125,10 +125,35 @@ let deltaChannel = null;
 
 function registerActionSimulatorCommands(context) {
   const disposable = vscode.commands.registerCommand('cpqBml.rest.simulateAction', async () => {
-    const transId = await vscode.window.showInputBox({
-      prompt: 'Enter Transaction ID or Quote Number to simulate on',
-      placeHolder: 'e.g. 12345678'
-    });
+    let transId = null;
+    try {
+      const recent = await fetchRecentTransactions(null, 12, vscode);
+      if (recent && recent.length > 0) {
+        const items = recent.map(t => ({
+          label: `$(play) Quote #${t.id}`,
+          description: t.status ? `[${t.status}] ${t.amount}` : t.amount,
+          detail: t.lastModified ? `Modified: ${t.lastModified}` : undefined,
+          id: t.id
+        }));
+        items.push({
+          label: '$(edit) Enter Transaction ID manually...',
+          description: 'Input any Quote/Transaction ID',
+          id: null
+        });
+        const picked = await vscode.window.showQuickPick(items, {
+          placeHolder: 'Select a transaction to simulate action on or enter manually'
+        });
+        if (!picked) return;
+        if (picked.id) transId = picked.id;
+      }
+    } catch (_) {}
+
+    if (!transId) {
+      transId = await vscode.window.showInputBox({
+        prompt: 'Enter Transaction ID or Quote Number to simulate on',
+        placeHolder: 'e.g. 12345678'
+      });
+    }
     if (!transId || !transId.trim()) return;
 
     const actionName = await vscode.window.showInputBox({

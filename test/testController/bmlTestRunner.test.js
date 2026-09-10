@@ -1,8 +1,8 @@
 const assert = require('assert');
 const { BmlTestRunner } = require('../../app/lang/test/bmlTestRunner');
 
-describe('BML Test Runner & Assertions', () => {
-    it('extracts test cases from @test annotations', () => {
+suite('BML Test Runner & Assertions', () => {
+    test('extracts test cases from @test annotations', () => {
         const content = `
             // @test "Calculate Tier 1 Discount"
             res = 100 * 0.15;
@@ -19,7 +19,7 @@ describe('BML Test Runner & Assertions', () => {
         assert.strictEqual(testCases[1].name, 'Calculate Tier 2 Discount');
     });
 
-    it('executes passing assertions successfully', () => {
+    test('executes passing assertions successfully', () => {
         const code = `
             total = 50 + 50;
             assert.equals(total, 100);
@@ -32,7 +32,7 @@ describe('BML Test Runner & Assertions', () => {
         assert.ok(res.durationMs >= 0);
     });
 
-    it('fails when assert.equals condition is violated', () => {
+    test('fails when assert.equals condition is violated', () => {
         const code = `
             total = 50 + 50;
             assert.equals(total, 999, "Total should equal 999");
@@ -43,7 +43,7 @@ describe('BML Test Runner & Assertions', () => {
         assert.ok(res.error.includes('Total should equal 999'));
     });
 
-    it('fails when assert.isTrue condition is false', () => {
+    test('fails when assert.isTrue condition is false', () => {
         const code = `
             assert.isTrue(1 > 10, "1 is not greater than 10");
         `;

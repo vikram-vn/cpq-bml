@@ -39,6 +39,8 @@ const { registerCacheFlushCommand } = require("./app/lang/rest/commands/cacheFlu
 const { registerActionSimulatorCommands } = require("./app/lang/rest/apiActionSimulator");
 const { registerInstanceMonitorCommands } = require("./app/lang/rest/instanceMonitor");
 const { getSessionKeepAlive } = require("./app/lang/rest/sessionKeepAlive");
+const { registerCloudExplorer } = require("./app/lang/cloud/cloudExplorer");
+const { registerCloudTypeDefCommands } = require("./app/lang/cloud/cloudTypeDefSync");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -146,6 +148,10 @@ function activate(context) {
   registerActionSimulatorCommands(context);
   registerInstanceMonitorCommands(context);
   getSessionKeepAlive().start(vscode);
+
+  // ── CPQ Cloud Functions Explorer & Type Definition Sync ─────────────────────
+  registerCloudExplorer(context);
+  registerCloudTypeDefCommands(context);
 
   // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
   // so Antigravity IDE can discover them natively (on-demand, by name). Other AI

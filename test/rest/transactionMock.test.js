@@ -60,4 +60,80 @@ suite('Transaction Mock Generator - Unit Tests', () => {
     assert.ok(code.includes('// @test "Verify Line Items Count and Pricing"'));
     assert.ok(code.includes('firstPart = "SERVER-BLADE-X";'));
   });
+
+  test('fetchRecentTransactions queries and formats recent transactions using custom transport', async () => {
+    const mockTransport = async (options) => {
+      assert.ok(options.path.includes('/commerceProcesses/oraclecpqo/transactions'));
+      assert.ok(options.path.includes('limit=10'));
+      assert.ok(options.path.includes('orderBy=dateModified:desc'));
+      return {
+        statusCode: 200,
+        text: JSON.stringify({
+          items: [
+            {
+              _transaction_id: '1001',
+              status_t: 'CREATED',
+              totalAmount_t: '500.00',
+              transactionCurrency_t: 'USD',
+              dateModified: '2026-09-09T10:00:00Z'
+            },
+            {
+              _transaction_id: '1002',
+              status_t: 'WON',
+              totalAmount_t: '12000.00',
+              transactionCurrency_t: 'USD',
+              dateModified: '2026-09-08T15:30:00Z'
+            }
+          ]
+        })
+      };
+    };
+
+    const mockVscode = {
+      workspace: {
+        getConfiguration: () => ({
+          get: (key, fallback) => {
+            if (key === 'connection.siteUrl') return 'https://testsite.bigmachines.com';
+            if (key === 'connection.username') return 'testUser';
+            return fallback;
+          }
+        })
+      }
+    };
+
+    const results = await TransactionMockGenerator.fetchRecentTransactions('oraclecpqo', 10, mockVscode, mockTransport);
+    assert.strictEqual(results.length, 2);
+    assert.strictEqual(results[0].id, '1001');
+    assert.strictEqual(results[0].status, 'CREATED');
+    assert.strictEqual(results[0].amount, '500.00 USD');
+    assert.strictEqual(results[0].lastModified, '2026-09-09T10:00:00Z');
+    assert.strictEqual(results[1].id, '1002');
+  });
+
+  test('fetchRecentTransactions rejects when server responds with error', async () => {
+    const mockTransport = async () => ({
+      statusCode: 403,
+      body: { message: 'Insufficient privileges' }
+    });
+
+    const mockVscode = {
+      workspace: {
+        getConfiguration: () => ({
+          get: (key, fallback) => {
+            if (key === 'connection.siteUrl') return 'https://testsite.bigmachines.com';
+            if (key === 'connection.username') return 'testUser';
+            return fallback;
+          }
+        })
+      }
+    };
+
+    await assert.rejects(
+      async () => {
+        await TransactionMockGenerator.fetchRecentTransactions('oraclecpqo', 5, mockVscode, mockTransport);
+      },
+      /HTTP 403/
+    );
+  });
 });
+

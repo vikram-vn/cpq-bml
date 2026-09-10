@@ -2,6 +2,8 @@ let vscode;
 try {
     vscode = require('vscode');
 } catch (_) {}
+const fs = require('fs');
+const path = require('path');
 const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
 
 const API_FILES = [
@@ -103,6 +105,17 @@ function loadApiData(context) {
                         productLine: meta.productLine,
                     };
                 }
+            }
+
+            // 2b. Load cloud-synced function definitions if present
+            const cloudFuncsPath = path.join(wsRoot, '.cpq', 'cache', 'bml-cloud-functions.json');
+            if (fs.existsSync(cloudFuncsPath)) {
+                try {
+                    const cloudFuncs = JSON.parse(fs.readFileSync(cloudFuncsPath, 'utf8'));
+                    for (const [k, v] of Object.entries(cloudFuncs)) {
+                        bmlApiData[k] = v;
+                    }
+                } catch (_) {}
             }
         }
     } catch (err) {

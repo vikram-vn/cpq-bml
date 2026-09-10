@@ -97,15 +97,71 @@ function generateBmlTestScaffold(mockData) {
   return lines.join('\n');
 }
 
+/**
+ * Fetches recent live transactions from CPQ for interactive QuickPick selection.
+ */
+async function fetchRecentTransactions(proc, limit = 15, vscodeInstance, customTransport) {
+  const baseUrl = getBaseUrl(vscodeInstance);
+  const authHeader = getAuthHeader(vscodeInstance);
+  if (!baseUrl || !authHeader) {
+    throw new Error('CPQ site URL or credentials are not configured.');
+  }
+
+  const version = getRestVersion(vscodeInstance);
+  const process = proc || getCommerceProcess(vscodeInstance) || 'oraclecpqo';
+  const path = `/rest/${version}/commerceProcesses/${process}/transactions?limit=${limit}&orderBy=dateModified:desc`;
+
+  const res = await request({
+    baseUrl,
+    path,
+    method: 'GET',
+    headers: {
+      Authorization: authHeader,
+      Accept: 'application/json'
+    },
+    timeoutMs: getSettings(vscodeInstance).timeoutMs || 20000,
+    transport: customTransport
+  });
+
+  if (res.statusCode >= 200 && res.statusCode < 300) {
+    let body = res.body || {};
+    if (typeof body === 'string') {
+      try { body = JSON.parse(body); } catch (_) { body = {}; }
+    }
+    const items = body.items || (Array.isArray(body) ? body : []);
+    return items.map(t => {
+      const id = t._transaction_id || t.bs_id || t.id || t.transactionNumber || 'unknown';
+      const lastModified = t.dateModified || t._date_modified || '';
+      const status = t.status_t || t.status || t.statusName || '';
+      const amount = t.totalAmount_t || t.totalAmount || '';
+      const currency = t.transactionCurrency_t || '';
+      return {
+        id: String(id),
+        process,
+        lastModified,
+        status,
+        amount: amount ? `${amount} ${currency}`.trim() : '',
+        raw: t
+      };
+    });
+  } else {
+    const err = typeof res.body === 'string' ? res.body : JSON.stringify(res.body || {});
+    throw new Error(`HTTP ${res.statusCode}: ${err || 'Failed to fetch transactions'}`);
+  }
+}
+
 const TransactionMockGenerator = {
   fetchTransaction,
+  fetchRecentTransactions,
   extractMockAttributes,
   generateBmlTestScaffold
 };
 
 module.exports = {
   fetchTransaction,
+  fetchRecentTransactions,
   extractMockAttributes,
   generateBmlTestScaffold,
   TransactionMockGenerator
 };
+

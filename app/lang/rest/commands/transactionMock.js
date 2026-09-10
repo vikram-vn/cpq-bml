@@ -11,15 +11,45 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const { fetchTransaction, extractMockAttributes, generateBmlTestScaffold } = require('../apiTransactionMock');
+const { fetchTransaction, fetchRecentTransactions, extractMockAttributes, generateBmlTestScaffold } = require('../apiTransactionMock');
+
+async function promptForTransactionId(vscodeInstance) {
+  try {
+    const recent = await fetchRecentTransactions(null, 12, vscodeInstance);
+    if (recent && recent.length > 0) {
+      const items = recent.map(t => ({
+        label: `$(file) Quote #${t.id}`,
+        description: t.status ? `[${t.status}] ${t.amount}` : t.amount,
+        detail: t.lastModified ? `Modified: ${t.lastModified}` : undefined,
+        id: t.id
+      }));
+
+      items.push({
+        label: '$(edit) Enter Transaction ID manually...',
+        description: 'Input any Quote/Transaction ID',
+        id: null
+      });
+
+      const selected = await vscodeInstance.window.showQuickPick(items, {
+        placeHolder: 'Select a recent live CPQ transaction or enter ID manually'
+      });
+
+      if (!selected) return null;
+      if (selected.id) return selected.id;
+    }
+  } catch (_) {
+    // Fall back to direct manual input if live query fails
+  }
+
+  return await vscodeInstance.window.showInputBox({
+    prompt: 'Enter CPQ Transaction ID or Quote Number',
+    placeHolder: 'e.g. 12345678'
+  });
+}
 
 function registerTransactionMockCommands(context) {
   const disposable = vscode.commands.registerCommand('cpqBml.rest.generateTransactionMock', async () => {
-    const transId = await vscode.window.showInputBox({
-      prompt: 'Enter CPQ Transaction ID or Quote Number',
-      placeHolder: 'e.g. 12345678'
-    });
-
+    const transId = await promptForTransactionId(vscode);
     if (!transId || !transId.trim()) return;
 
     await vscode.window.withProgress({
@@ -66,4 +96,7 @@ function registerTransactionMockCommands(context) {
   context.subscriptions.push(disposable);
 }
 
-module.exports = { registerTransactionMockCommands };
+module.exports = {
+  promptForTransactionId,
+  registerTransactionMockCommands
+};

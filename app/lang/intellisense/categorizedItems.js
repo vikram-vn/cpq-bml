@@ -1,4 +1,13 @@
-const vscode = require('vscode');
+let vscode;
+try {
+    vscode = require('vscode');
+} catch {
+    vscode = {
+        CompletionItem: function (label, kind) { this.label = label; this.kind = kind; },
+        CompletionItemKind: { Class: 7, Method: 2, Property: 10, Field: 5 },
+        SnippetString: function (s) { this.value = s; }
+    };
+}
 const { getBmlApiData, CATEGORY_KIND } = require('./apiData');
 const { formatAsJsDoc } = require('./docFormatting');
 
