@@ -6,6 +6,8 @@ node_modules/**
 test/**
 logs/**
 scratch/**
+library/**
+extension/**
 .gitignore
 .vscodeignore
 .yarnrc
