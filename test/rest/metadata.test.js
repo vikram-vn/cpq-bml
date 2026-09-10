@@ -2,7 +2,7 @@ const assert = require("assert");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const metadata = require("../../app/lang/rest/metadata");
+const metadata = require("@/lang/rest/metadata");
 
 // A realistic "Get a Util Library Function" response, per Oracle's docs.
 const SAMPLE_RESPONSE = {

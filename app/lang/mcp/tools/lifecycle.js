@@ -1,5 +1,5 @@
-const api = require('../../rest/api');
-const metadataLib = require('../../rest/metadata');
+const api = require('@/lang/rest/api');
+const metadataLib = require('@/lang/rest/metadata');
 const {
     isSuccess,
     describeError,
@@ -8,7 +8,7 @@ const {
     writeRunningLine,
     writeTerminalMessage,
     formatElapsed,
-} = require('../../rest/commands/shared');
+} = require('@/lang/rest/commands/shared');
 const {
     runSaveCurrentFile,
     runValidateCurrentFile,
@@ -18,7 +18,7 @@ const {
     runDeployCommerceProcess,
     runCreateOverride,
     runRemoveOverride,
-} = require('../../rest/commands');
+} = require('@/lang/rest/commands');
 const { createToolVscodeContext, createCapturingTerminal } = require('../proxy');
 const { findOrCreateAiCopy, findLocalBmlPath, resetAiCopy } = require('../locate');
 const { getAiTerminal } = require('../aiTerminal');

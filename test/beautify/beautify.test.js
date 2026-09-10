@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const bml_beautify = require('../../app/lang/beautify/bml/index');
+const bml_beautify = require('@/lang/beautify/bml/index');
 
 suite('BML Beautifier Unit & Fixture Tests', () => {
     test('BML Beautifier formats standard assignments and code', () => {

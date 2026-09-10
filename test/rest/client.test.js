@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { request, buildPath } = require("../../app/lang/rest/client");
+const { request, buildPath } = require("@/lang/rest/client");
 
 suite("BML REST client", () => {
   test("buildPath appends a query string only when query params are given", () => {

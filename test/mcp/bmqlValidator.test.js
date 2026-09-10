@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { validateBmqlQuery } = require('../../app/lang/mcp/tools/bmqlValidator');
+const { validateBmqlQuery } = require('@/lang/mcp/tools/bmqlValidator');
 
 describe('BMQL Validator Tool', () => {
     it('validates a correct parameterized BMQL query', () => {

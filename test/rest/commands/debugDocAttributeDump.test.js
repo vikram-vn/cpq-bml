@@ -1,7 +1,7 @@
 const assert = require("assert");
 const path = require("path");
-const commands = require("../../../app/lang/rest/commands");
-const metadataLib = require("../../../app/lang/rest/metadata");
+const commands = require("@/lang/rest/commands");
+const metadataLib = require("@/lang/rest/metadata");
 const { createFakeVscode } = require("../testHelpers");
 const {
   SAMPLE_FUNCTION,

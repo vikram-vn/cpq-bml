@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { formatAsJsDoc, formatWorkspaceFunctionHover, KEYWORD_HOVERS } = require("../../../app/lang/intellisense/docFormatting");
+const { formatAsJsDoc, formatWorkspaceFunctionHover, KEYWORD_HOVERS } = require("@/lang/intellisense/docFormatting");
 
 suite("BML Intellisense - Hover Documentation Enhancements", () => {
     test("formatAsJsDoc formats built-in function info into Markdown", () => {

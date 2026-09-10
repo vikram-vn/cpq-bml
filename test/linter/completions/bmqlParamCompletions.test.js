@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { resolveParameterCompletions } = require("../../../app/lang/intellisense/paramCompletions");
+const { resolveParameterCompletions } = require("@/lang/intellisense/paramCompletions");
 
 suite("BML Intellisense - bmql() Parameter Suggestions", () => {
     const mockDocument = {

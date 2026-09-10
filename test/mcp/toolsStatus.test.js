@@ -1,6 +1,6 @@
 const assert = require("assert");
-const tools = require("../../app/lang/mcp/tools");
-const config = require("../../app/lang/rest/config");
+const tools = require("@/lang/mcp/tools");
+const config = require("@/lang/rest/config");
 const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
 
 function vscodeWith(configOverrides) {

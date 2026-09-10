@@ -3,7 +3,7 @@ const {
   splitArgumentsList,
 } = require("./functionSignature");
 const { getWorkspaceFunctionsCached } = require("./workspaceFunctions");
-const { loadJson } = require('../../intellisense/apiDataLoader');
+const { loadJson } = require('@/lang/intellisense/apiDataLoader');
 const { getFunctionReturnTypes } = require("./typeCheckOperands");
 const {
   inferArgumentType,

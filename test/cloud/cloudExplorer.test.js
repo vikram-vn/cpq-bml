@@ -5,7 +5,7 @@ const {
   groupFunctionsByFolder,
   findLocalFunctionFile,
   createCloudExplorer
-} = require('../../app/lang/cloud/cloudExplorer');
+} = require('@/lang/cloud/cloudExplorer');
 
 suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
   const sampleFunctions = [

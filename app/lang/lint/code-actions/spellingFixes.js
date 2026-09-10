@@ -32,7 +32,7 @@ function getSpellingFixes(document, diag, editRange, extensionPath) {
 
     if (diag.code === 'bml-spelling-error') {
         const word = document.getText(editRange);
-        const { getSpellingSuggestions } = require('../../spell-check/spelling');
+        const { getSpellingSuggestions } = require('@/lang/spell-check/spelling');
         const suggestions = getSpellingSuggestions(word, extensionPath);
         suggestions.forEach(suggestion => {
             const action = new vscode.CodeAction(`Spelling suggestion: "${suggestion}" (all occurrences)`, vscode.CodeActionKind.QuickFix);

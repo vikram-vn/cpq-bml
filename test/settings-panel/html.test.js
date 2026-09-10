@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { getNonce, buildCsp } = require("../../app/lang/settings-panel/html");
+const { getNonce, buildCsp } = require("@/lang/settings-panel/html");
 
 suite("settings-panel html", () => {
   test("getNonce returns a non-empty string and is different on each call", () => {

@@ -2,7 +2,7 @@ const assert = require("assert");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const api = require("../../app/lang/rest/api");
+const api = require("@/lang/rest/api");
 const { createFakeVscode, createFakeContext } = require("./testHelpers");
 
 const SECRET_PASSWORD = "cpqBml.connection.password";
@@ -160,7 +160,7 @@ suite("BML REST apiCommerceSync - Document Discovery & Paging", () => {
   });
 
   test("saveWorkspaceAttributes preserves union of document attributes and BML lookups without dropping any", () => {
-    const { saveWorkspaceAttributes } = require("../../app/lang/rest/commerceAttributesWriter");
+    const { saveWorkspaceAttributes } = require("@/lang/rest/commerceAttributesWriter");
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-union-test-"));
 
     const data = {

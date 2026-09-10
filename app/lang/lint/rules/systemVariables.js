@@ -1,5 +1,5 @@
 const { levenshtein } = require('../core/levenshtein');
-const { loadJson } = require('../../intellisense/apiDataLoader');
+const { loadJson } = require('@/lang/intellisense/apiDataLoader');
 
 let systemVariables = null; // Map<lowercaseName, canonicalName>
 

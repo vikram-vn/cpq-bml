@@ -1,11 +1,11 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
-const { lintBMLCustom } = require('../../app/lang/lint/core/lint');
-const { getQualityFixes } = require('../../app/lang/lint/code-actions/qualityFixes');
-const { getSpellingFixes } = require('../../app/lang/lint/code-actions/spellingFixes');
-const { getPerformanceFixes } = require('../../app/lang/lint/code-actions/performanceFixes');
-const { getStyleFixes } = require('../../app/lang/lint/code-actions/styleFixes');
+const { lintBMLCustom } = require('@/lang/lint/core/lint');
+const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
+const { getSpellingFixes } = require('@/lang/lint/code-actions/spellingFixes');
+const { getPerformanceFixes } = require('@/lang/lint/code-actions/performanceFixes');
+const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
 
 function runStyleAdvancedCodeActionTests() {
     suite('BML Style Advanced Code Actions Suite', () => {

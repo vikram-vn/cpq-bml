@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { describeLintDirective, describeBeautifyDirective, describeDirective } = require('../../app/lang/comments/directives');
+const { describeLintDirective, describeBeautifyDirective, describeDirective } = require('@/lang/comments/directives');
 
 suite('BML Better Comments - directives', () => {
     test('describeLintDirective recognizes every bml-lint-* variant', () => {

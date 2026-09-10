@@ -2,7 +2,7 @@ const vscode = require('vscode');
 const pathLib = require('path');
 const fs = require('fs');
 const { startMcpServer, stopMcpServer, getMcpServerStatus } = require('./server');
-const { registerMcpWithAllTools, deregisterMcpFromAllTools } = require('../../ai/setup/mcpAutoRegister');
+const { registerMcpWithAllTools, deregisterMcpFromAllTools } = require('@/ai/setup/mcpAutoRegister');
 
 function logMcpServerEvent(message) {
     try {

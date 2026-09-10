@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { getHoverMarkdown } = require('../../app/lang/comments/hover');
+const { getHoverMarkdown } = require('@/lang/comments/hover');
 
 suite('BML Better Comments - hover', () => {
     test('explains a bml-lint-disable-line directive with explicit codes', () => {

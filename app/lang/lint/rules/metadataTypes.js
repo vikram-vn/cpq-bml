@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { loadJson } = require('../../intellisense/apiDataLoader');
+const { loadJson } = require('@/lang/intellisense/apiDataLoader');
 
 let returnTypeLabels = null;
 let paramTypeLabels = null;

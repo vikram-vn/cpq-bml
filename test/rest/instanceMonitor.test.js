@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { InstanceMonitor } = require('../../app/lang/rest/instanceMonitor');
+const { InstanceMonitor } = require('@/lang/rest/instanceMonitor');
 const { createFakeVscode } = require('./testHelpers');
 const { baseVscodeConfig } = require('./commands/fixtures');
 

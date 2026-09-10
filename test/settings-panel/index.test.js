@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { shouldAutoOpenOnInstall, FIRST_INSTALL_KEY, hasMissingCredentials } = require("../../app/lang/settings-panel");
+const { shouldAutoOpenOnInstall, FIRST_INSTALL_KEY, hasMissingCredentials } = require("@/lang/settings-panel");
 const { createFakeContext, createFakeVscode } = require("../rest/testHelpers");
 
 suite("settings-panel index - first-install auto-open", () => {
@@ -130,7 +130,7 @@ suite("settings-panel index - registerSettingsPanel smart activation", () => {
 
   test("does not open settings panel if workspace has no -meta.json files", async () => {
     const vscode = require('vscode');
-    const { registerSettingsPanel } = require("../../app/lang/settings-panel");
+    const { registerSettingsPanel } = require("@/lang/settings-panel");
     const context = createFakeContext();
     context.subscriptions = [];
 
@@ -152,7 +152,7 @@ suite("settings-panel index - registerSettingsPanel smart activation", () => {
 
   test("opens settings panel if workspace has -meta.json files and config is empty", async () => {
     const vscode = require('vscode');
-    const { registerSettingsPanel } = require("../../app/lang/settings-panel");
+    const { registerSettingsPanel } = require("@/lang/settings-panel");
     const context = createFakeContext();
     context.subscriptions = [];
 

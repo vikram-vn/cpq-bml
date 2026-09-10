@@ -1,7 +1,7 @@
 "use strict";
 // BML tokenizer. Constants, patterns, and stateless helpers live in tokenizerHelpers.js.
 
-const { loadBuiltInFunctionsJson } = require("../../intellisense/apiDataLoader");
+const { loadBuiltInFunctionsJson } = require("@/lang/intellisense/apiDataLoader");
 
 const {
   NEWLINE,

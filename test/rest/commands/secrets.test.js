@@ -1,7 +1,7 @@
 const assert = require("assert");
-const commands = require("../../../app/lang/rest/commands");
-const { writePassword, writeAuthToken } = require("../../../app/lang/rest/commands/secrets");
-const config = require("../../../app/lang/rest/config");
+const commands = require("@/lang/rest/commands");
+const { writePassword, writeAuthToken } = require("@/lang/rest/commands/secrets");
+const config = require("@/lang/rest/config");
 const { createFakeVscode, createFakeContext } = require("../testHelpers");
 
 suite("BML REST commands - secrets", () => {

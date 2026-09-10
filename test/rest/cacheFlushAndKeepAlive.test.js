@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { flushServerCache } = require('../../app/lang/rest/commands/cacheFlush');
-const { SessionKeepAlive } = require('../../app/lang/rest/sessionKeepAlive');
+const { flushServerCache } = require('@/lang/rest/commands/cacheFlush');
+const { SessionKeepAlive } = require('@/lang/rest/sessionKeepAlive');
 const { createFakeVscode } = require('./testHelpers');
 const { baseVscodeConfig } = require('./commands/fixtures');
 

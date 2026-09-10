@@ -19,10 +19,10 @@ Module.prototype.require = function(p) {
     return origRequire.apply(this, arguments);
 };
 
-const { lintBMLCustom } = require('../../../app/lang/lint/core/lint');
-const { checkSpelling } = require('../../../app/lang/spell-check/spelling');
-const bml_beautify = require('../../../app/lang/beautify/bml');
-const { getDeclaredVariables } = require('../../../app/lang/lint/rules/variables');
+const { lintBMLCustom } = require('@/lang/lint/core/lint');
+const { checkSpelling } = require('@/lang/spell-check/spelling');
+const bml_beautify = require('@/lang/beautify/bml');
+const { getDeclaredVariables } = require('@/lang/lint/rules/variables');
 
 function createMockDoc(text, fsPath = 'test.bml') {
     const lines = text.split(/\r?\n/);
@@ -158,8 +158,8 @@ results.intelLarge = benchmark('Scope Analysis Massive', () => getDeclaredVariab
 
 // 5. COMMENTS & METRICS BENCHMARKS
 console.log('[5/6] Running Comments & Code Metrics Benchmarks...');
-const { buildCommentDecorations } = require('../../../app/lang/comments/decorate');
-const { computeComplexity } = require('../../../app/lang/metrics/complexity');
+const { buildCommentDecorations } = require('@/lang/comments/decorate');
+const { computeComplexity } = require('@/lang/metrics/complexity');
 
 results.commentMed = benchmark('Comment Tags & Docs (110 lines)', () => buildCommentDecorations(mediumCode), 50);
 results.commentLarge = benchmark('Comment Tags & Docs (2,771 lines)', () => buildCommentDecorations(largeCode), 20);
@@ -168,9 +168,9 @@ results.metricsLarge = benchmark('Metrics Complexity (2,771 lines)', () => compu
 
 // 6. XSLT & MCP TOOLS BENCHMARKS
 console.log('[6/6] Running XSLT & MCP Knowledge Tools Benchmarks...');
-const { formatXml } = require('../../../app/lang/xslt/formatter');
-const { lintXslt } = require('../../../app/lang/xslt/xsltLinter');
-const { computeLineDiff } = require('../../../app/lang/mcp/tools/knowledge');
+const { formatXml } = require('@/lang/xslt/formatter');
+const { lintXslt } = require('@/lang/xslt/xsltLinter');
+const { computeLineDiff } = require('@/lang/mcp/tools/knowledge');
 
 const xsltSample = '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:template match="/"><html><body><h1><xsl:value-of select="title"/></h1><p>Test</p></body></html></xsl:template></xsl:stylesheet>';
 const xsltDoc = createMockDoc(xsltSample, 'sample.xsl');

@@ -2,7 +2,7 @@ const assert = require('assert');
 const vscode = require('vscode');
 const { lintText } = require('../linter/fixtures');
 const { activateExtension } = require('../extensionHelper');
-const { getSpellingSuggestions, splitIdentifier, cleanCommentText } = require('../../app/lang/spell-check/spelling');
+const { getSpellingSuggestions, splitIdentifier, cleanCommentText } = require('@/lang/spell-check/spelling');
 
 suite('BML Linter Test Suite - Custom Spellchecker', () => {
     test('Does not flag correct English words and BML built-ins', () => {

@@ -7,7 +7,7 @@ const {
   resolveAvailableTables,
   getRecordFieldCompletions,
   getBmqlIntelligentCompletions
-} = require('../../app/lang/bmql/bmqlIntellisense');
+} = require('@/lang/bmql/bmqlIntellisense');
 
 suite('BMQL Intelligent Query Autocomplete - Unit Tests', () => {
   const mockVscode = {

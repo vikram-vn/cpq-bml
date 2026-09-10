@@ -1,6 +1,6 @@
 const assert = require("assert");
 const vscode = require("vscode");
-const { getMcpServerStatus, stopMcpServer } = require("../../app/lang/mcp/server");
+const { getMcpServerStatus, stopMcpServer } = require("@/lang/mcp/server");
 const { activateExtension } = require("../extensionHelper");
 
 suite("MCP Server Config Reactivity Integration", () => {
@@ -12,7 +12,7 @@ suite("MCP Server Config Reactivity Integration", () => {
         await new Promise(resolve => setTimeout(resolve, 50));
         commands = await vscode.commands.getCommands(true);
     }
-    const { startMcpServer, stopMcpServer, getMcpServerStatus } = require("../../app/lang/mcp/server");
+    const { startMcpServer, stopMcpServer, getMcpServerStatus } = require("@/lang/mcp/server");
 
     const getSettings = () => {
         const cfg = vscode.workspace.getConfiguration('cpqBml');

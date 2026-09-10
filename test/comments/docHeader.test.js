@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { getCommentRanges } = require('../../app/lang/lint/rules/comments');
-const { findDocHeaderBlocks } = require('../../app/lang/comments/docHeader');
+const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { findDocHeaderBlocks } = require('@/lang/comments/docHeader');
 
 suite('BML Better Comments - doc header detection', () => {
     test('detects a // Function Name : ... run of line comments (abo_jsonCompare.bml style)', () => {

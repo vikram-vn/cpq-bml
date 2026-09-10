@@ -1,7 +1,7 @@
 const assert = require('assert');
 const {
   createCloudDataTablesProvider
-} = require('../../app/lang/cloud/cloudDataTables');
+} = require('@/lang/cloud/cloudDataTables');
 
 suite('CPQ Cloud Data Tables - Unit Tests', () => {
   const mockVscode = {

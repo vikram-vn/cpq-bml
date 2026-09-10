@@ -1,7 +1,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const commands = require("../../../app/lang/rest/commands");
+const commands = require("@/lang/rest/commands");
 const { createFakeVscode } = require("../testHelpers");
 const { baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("./fixtures");
 

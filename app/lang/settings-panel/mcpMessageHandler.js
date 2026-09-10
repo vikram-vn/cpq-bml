@@ -20,7 +20,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
     }
 
     case "getAiToolsStatus": {
-      const { getAiToolsStatus } = require("../../ai/setup/mcpAutoRegister");
+      const { getAiToolsStatus } = require("@/ai/setup/mcpAutoRegister");
       const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
         ? vscode.workspace.workspaceFolders[0].uri.fsPath
         : null;
@@ -100,7 +100,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
       }
 
       // 4. Native AI Client Registrations
-      const { getAiToolsStatus } = require("../../ai/setup/mcpAutoRegister");
+      const { getAiToolsStatus } = require("@/ai/setup/mcpAutoRegister");
       const aiTools = getAiToolsStatus(wsRoot);
       const configuredCount = aiTools.filter((t) => t.registered).length;
       const detectedCount = aiTools.filter((t) => t.installed).length;
@@ -129,7 +129,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
     }
 
     case "registerMcp": {
-      const { registerMcpWithAllTools } = require("../../ai/setup/mcpAutoRegister");
+      const { registerMcpWithAllTools } = require("@/ai/setup/mcpAutoRegister");
       const cpqConfig = vscode.workspace.getConfiguration(CPQ_SECTION);
       const port = cpqConfig.get("mcp.port", 47821);
       const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
@@ -153,7 +153,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
     }
 
     case "deregisterMcp": {
-      const { deregisterMcpFromAllTools } = require("../../ai/setup/mcpAutoRegister");
+      const { deregisterMcpFromAllTools } = require("@/ai/setup/mcpAutoRegister");
       const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
         ? vscode.workspace.workspaceFolders[0].uri.fsPath
         : null;
@@ -173,7 +173,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
     }
 
     case "syncBmlSkills": {
-      const { syncGlobalAgySkills } = require("../../ai/setup/globalSkillSync");
+      const { syncGlobalAgySkills } = require("@/ai/setup/globalSkillSync");
       const { synced, errors } = syncGlobalAgySkills(context.extensionPath);
       const msg = errors.length === 0
         ? `Successfully synced ${synced} BML skills to IDE.`

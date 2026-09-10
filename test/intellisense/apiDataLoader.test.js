@@ -41,8 +41,8 @@ suite('apiDataLoader', () => {
     }
 
     function loadFresh() {
-        delete require.cache[require.resolve('../../app/lang/intellisense/apiDataLoader')];
-        return require('../../app/lang/intellisense/apiDataLoader');
+        delete require.cache[require.resolve('@/lang/intellisense/apiDataLoader')];
+        return require('@/lang/intellisense/apiDataLoader');
     }
 
     test('loads correctly from only a .min.json file (the real packaged/.vsix scenario)', () => {

@@ -5,7 +5,7 @@ const {
     loadUtilAttributesJson,
     loadVariablesJson,
     loadCustomSnippetsJson,
-} = require('../../intellisense/apiDataLoader');
+} = require('@/lang/intellisense/apiDataLoader');
 
 // Every category this tool can search, in the order results get merged in.
 // Matches the same JSON files apiDataLoader.js already serves to the
@@ -33,7 +33,7 @@ const DEFAULT_LIMIT = 20;
  * AI agent can check real syntax/return types/valid attributes instead of
  * guessing.
  */
-const commerceAttributes = require('../../rest/commerceAttributes');
+const commerceAttributes = require('@/lang/rest/commerceAttributes');
 
 async function lookupBmlReference(context, vscode, args) {
     const { name, category, scope, limit } = args || {};

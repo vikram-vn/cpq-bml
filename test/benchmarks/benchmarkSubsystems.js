@@ -25,7 +25,7 @@ console.log('COMMENTS, MCP, XSLT & METRICS PERFORMANCE BENCHMARK');
 console.log('======================================================================\n');
 
 // 1. Comments Decorate
-const { buildCommentDecorations } = require('../../app/lang/comments/decorate');
+const { buildCommentDecorations } = require('@/lang/comments/decorate');
 const t0 = performance.now();
 const runs = 100;
 for (let i = 0; i < runs; i++) buildCommentDecorations(sampleCode);
@@ -33,15 +33,15 @@ const t1 = performance.now();
 console.log(`💬 Comments Decoration (2,771 lines) : ${((t1 - t0) / runs).toFixed(3)} ms`);
 
 // 2. Metrics Complexity
-const { computeComplexity } = require('../../app/lang/metrics/complexity');
+const { computeComplexity } = require('@/lang/metrics/complexity');
 const t2 = performance.now();
 for (let i = 0; i < runs; i++) computeComplexity(sampleCode);
 const t3 = performance.now();
 console.log(`📊 Metrics Complexity (2,771 lines)  : ${((t3 - t2) / runs).toFixed(3)} ms`);
 
 // 3. XSLT Formatter
-const { formatXml } = require('../../app/lang/xslt/formatter');
-const { lintXslt } = require('../../app/lang/xslt/xsltLinter');
+const { formatXml } = require('@/lang/xslt/formatter');
+const { lintXslt } = require('@/lang/xslt/xsltLinter');
 const xsltSample = '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:template match="/"><html><body><h1><xsl:value-of select="title"/></h1><p>Test</p></body></html></xsl:template></xsl:stylesheet>';
 
 const t4 = performance.now();
@@ -59,7 +59,7 @@ const t5b = performance.now();
 console.log(`📄 XSLT Linter (Sample XSLT)         : ${((t5b - t4b) / runs).toFixed(3)} ms`);
 
 // 4. MCP Tools Diff & Lint
-const { computeLineDiff } = require('../../app/lang/mcp/tools/knowledge');
+const { computeLineDiff } = require('@/lang/mcp/tools/knowledge');
 const linesOld = sampleCode.split(/\r?\n/);
 const linesNew = [...linesOld];
 linesNew[10] = '// Modified line 10';

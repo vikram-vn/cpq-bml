@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { RemoteLogStreamer } = require('../../app/lang/rest/apiLogs');
+const { RemoteLogStreamer } = require('@/lang/rest/apiLogs');
 const { createFakeVscode } = require('./testHelpers');
 const { baseVscodeConfig } = require('./commands/fixtures');
 

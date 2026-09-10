@@ -210,7 +210,7 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
     });
 
     test('hasMixedAndOrAtTopLevel correctly identifies mixed AND and OR', () => {
-        const { hasMixedAndOrAtTopLevel } = require('../../../app/lang/lint/rules/mixedOperators');
+        const { hasMixedAndOrAtTopLevel } = require('@/lang/lint/rules/mixedOperators');
         assert.strictEqual(hasMixedAndOrAtTopLevel('a AND b OR c'), true);
         assert.strictEqual(hasMixedAndOrAtTopLevel('a AND (b OR c)'), false);
         assert.strictEqual(hasMixedAndOrAtTopLevel('a OR (b AND c)'), false);
@@ -220,7 +220,7 @@ suite('BML Linter Test Suite - use before define (no-undef-ish, util functions o
     });
 
     test('isCommerceFunction correctly identifies commerce vs utility metadata', () => {
-        const { isCommerceFunction } = require('../../../app/lang/lint/rules/useBeforeDefine');
+        const { isCommerceFunction } = require('@/lang/lint/rules/useBeforeDefine');
         assert.strictEqual(isCommerceFunction({ commerceDocument: 'transaction' }), true);
         assert.strictEqual(isCommerceFunction({ libraryFunctions: [] }), false);
         assert.strictEqual(isCommerceFunction(null), false);

@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { lintBMLCustom } = require('../../../app/lang/lint/core/lint');
+const { lintBMLCustom } = require('@/lang/lint/core/lint');
 
 function lintText(bmlText, filePath = '/mock/test.bml') {
     const lines = bmlText.split(/\r?\n/);

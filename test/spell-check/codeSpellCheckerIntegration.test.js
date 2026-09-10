@@ -4,7 +4,7 @@ const fs = require('fs');
 const {
   isCodeSpellCheckerInstalled,
   checkSpelling
-} = require('../../app/lang/spell-check/spelling');
+} = require('@/lang/spell-check/spelling');
 
 suite('Code Spell Checker Integration - Unit Tests', () => {
   function createMockVscode(installedExtensionId = null) {

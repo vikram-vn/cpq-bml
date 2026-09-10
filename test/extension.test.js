@@ -2,7 +2,7 @@ const assert = require('assert');
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
-const bml_beautify = require('../app/lang/beautify/bml/index');
+const bml_beautify = require('@/lang/beautify/bml/index');
 
 suite('Extension Test Suite', () => {
 	vscode.window.showInformationMessage('Start all tests.');
@@ -148,7 +148,7 @@ suite('Extension Test Suite', () => {
 	});
 
 	suite('BML Beautifier computeMinimalEdits Suite', () => {
-		const { computeMinimalEdits } = require('../app/lang/beautify/index');
+		const { computeMinimalEdits } = require('@/lang/beautify/index');
 
 		const createMockDocument = (text) => ({
 			getText: (range) => {

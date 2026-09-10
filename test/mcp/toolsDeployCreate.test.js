@@ -1,8 +1,8 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const tools = require("../../app/lang/mcp/tools");
-const metadataLib = require("../../app/lang/rest/metadata");
+const tools = require("@/lang/mcp/tools");
+const metadataLib = require("@/lang/rest/metadata");
 const { createFakeVscode } = require("../rest/testHelpers");
 const { SAMPLE_FUNCTION, baseVscodeConfig, makeContext, withTempDir } = require("../rest/commands/fixtures");
 

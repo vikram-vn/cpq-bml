@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { parseSkillFrontmatter } = require('../../app/ai/setup/index.js');
+const { parseSkillFrontmatter } = require('@/ai/setup/index.js');
 
 suite('parseSkillFrontmatter', () => {
     test('extracts an inline scalar description', () => {

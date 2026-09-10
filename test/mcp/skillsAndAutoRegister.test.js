@@ -2,9 +2,9 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const { listSkills, getSkill } = require("../../app/lang/mcp/tools/knowledge");
-const { registerMcpWithAllTools, deregisterMcpFromAllTools, getAiToolsStatus, isToolRegistered } = require("../../app/ai/setup/mcpAutoRegister");
-const { startMcpServer, stopMcpServer } = require("../../app/lang/mcp/server");
+const { listSkills, getSkill } = require("@/lang/mcp/tools/knowledge");
+const { registerMcpWithAllTools, deregisterMcpFromAllTools, getAiToolsStatus, isToolRegistered } = require("@/ai/setup/mcpAutoRegister");
+const { startMcpServer, stopMcpServer } = require("@/lang/mcp/server");
 const http = require("http");
 
 suite("MCP Skills & Auto-Registration Suite", () => {

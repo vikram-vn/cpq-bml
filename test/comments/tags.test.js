@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { matchTag } = require('../../app/lang/comments/tags');
+const { matchTag } = require('@/lang/comments/tags');
 
 suite('BML Better Comments - tags', () => {
     test('matches symbol tags right after the comment marker', () => {

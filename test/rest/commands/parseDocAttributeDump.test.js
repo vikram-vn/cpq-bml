@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { parseDocAttributeDump } = require("../../../app/lang/rest/commands/debug");
+const { parseDocAttributeDump } = require("@/lang/rest/commands/debug");
 
 suite("BML REST commands - debug - parseDocAttributeDump", () => {
   test("splits documentNumber 1 into header and 2+ into per-line rows", () => {

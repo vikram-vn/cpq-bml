@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const { formatAsJsDoc } = require('../../app/lang/intellisense/docFormatting');
+const { formatAsJsDoc } = require('@/lang/intellisense/docFormatting');
 
 // docFormatting.js used to read+parse markdown from a knowledge base at hover
 // time (a separate "offline docs" webview, plus runtime extraction of the
@@ -159,7 +159,7 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
     });
 
     test('loads BEST_PRACTICE_ADVISORIES and KEYWORD_HOVERS from JSON files', () => {
-        const { KEYWORD_HOVERS, BEST_PRACTICE_ADVISORIES } = require('../../app/lang/intellisense/docFormatting');
+        const { KEYWORD_HOVERS, BEST_PRACTICE_ADVISORIES } = require('@/lang/intellisense/docFormatting');
         assert.ok(KEYWORD_HOVERS.if, 'expected keyword hover for if');
         assert.ok(KEYWORD_HOVERS.bmql, 'expected keyword hover for bmql');
         assert.ok(BEST_PRACTICE_ADVISORIES.bmql, 'expected best practice advisory for bmql');

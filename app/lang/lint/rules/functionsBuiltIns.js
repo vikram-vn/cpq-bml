@@ -4,7 +4,7 @@ const {
 } = require("./functionSignature");
 const { levenshtein } = require('../core/levenshtein');
 const { inferLiteralType, inferExpressionType } = require("./typeCheck");
-const { loadJson } = require('../../intellisense/apiDataLoader');
+const { loadJson } = require('@/lang/intellisense/apiDataLoader');
 
 function inferArgumentType(argText, firstTypeByVar, returnTypes) {
   if (!argText) return null;

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { TransactionMockGenerator } = require('../../app/lang/rest/apiTransactionMock');
+const { TransactionMockGenerator } = require('@/lang/rest/apiTransactionMock');
 
 suite('Transaction Mock Generator - Unit Tests', () => {
   test('extracts mock attributes while stripping sensitive credentials and hypermedia links', () => {

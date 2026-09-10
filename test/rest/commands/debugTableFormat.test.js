@@ -3,7 +3,7 @@ const {
   formatRowsAsTable,
   tableLinesToString,
   formatDocAttributeDumpTables,
-} = require("../../../app/lang/rest/commands/debugTableFormat");
+} = require("@/lang/rest/commands/debugTableFormat");
 
 suite("BML REST commands - debugTableFormat", () => {
   suite("formatRowsAsTable", () => {

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const config = require("../../../app/lang/rest/config");
+const config = require("@/lang/rest/config");
 const { createFakeContext } = require("../testHelpers");
 
 const SAMPLE_FUNCTION = {

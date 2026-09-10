@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { buildCommentDecorations } = require('../../app/lang/comments/decorate');
+const { buildCommentDecorations } = require('@/lang/comments/decorate');
 
 suite('BML Better Comments - buildCommentDecorations', () => {
     test('classifies a tagged comment, a directive, and a doc header into separate buckets', () => {

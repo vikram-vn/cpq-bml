@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { getBmlApiData } = require('../../../app/lang/intellisense/apiData');
+const { getBmlApiData } = require('@/lang/intellisense/apiData');
 
 suite('BML IntelliSense - Control Flow Snippets & Completion Verification', () => {
     test('if snippet syntax has clean condition placeholders and proper block indentation', () => {

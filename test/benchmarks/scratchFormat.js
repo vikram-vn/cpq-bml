@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const bml_beautify = require('../../app/lang/beautify/bml/index');
+const bml_beautify = require('@/lang/beautify/bml/index');
 
 const sourcePath = path.join(__dirname, '..', 'beautify', 'fixtures', 'bml_comprehensive_features.bml');
 const expectedPath = path.join(__dirname, '..', 'beautify', 'fixtures', 'bml_comprehensive_features.expected.bml');

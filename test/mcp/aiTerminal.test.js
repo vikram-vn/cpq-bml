@@ -1,6 +1,6 @@
 const assert = require("assert");
 const vscode = require("vscode");
-const { getAiTerminal } = require("../../app/lang/mcp/aiTerminal");
+const { getAiTerminal } = require("@/lang/mcp/aiTerminal");
 
 suite("MCP aiTerminal", () => {
   test("returns null by default (cpqBml.mcp.logToTerminal is off until a user opts in)", () => {

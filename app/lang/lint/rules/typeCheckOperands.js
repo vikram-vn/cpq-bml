@@ -128,7 +128,7 @@ const FUNCTION_RETURN_TYPES = {
 // FUNCTION_RETURN_TYPES map above. Diffed all 81 hardcoded entries against
 // it: only 3 gaps (date/float/boolean cast functions aren't in common.json's
 // dump), kept here as a fallback for those.
-const { loadBuiltInFunctionsJson } = require('../../intellisense/apiDataLoader');
+const { loadBuiltInFunctionsJson } = require('@/lang/intellisense/apiDataLoader');
 
 let _cachedReturnTypes = null;
 

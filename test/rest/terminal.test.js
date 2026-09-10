@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { createResultsTerminal, getResultsTerminal } = require('../../app/lang/rest/terminal');
+const { createResultsTerminal, getResultsTerminal } = require('@/lang/rest/terminal');
 
 suite('BML REST results terminal', () => {
     test('creates a named terminal and supports writeLine/show/dispose without throwing', () => {

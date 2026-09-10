@@ -2,8 +2,8 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
-const { formatXml } = require('../../app/lang/xslt/formatter');
-const { lintXslt } = require('../../app/lang/xslt/xsltLinter');
+const { formatXml } = require('@/lang/xslt/formatter');
+const { lintXslt } = require('@/lang/xslt/xsltLinter');
 
 suite('XSLT 10-Fixture Comprehensive Validation Test Suite', () => {
     const fixturesDir = path.join(__dirname, 'fixtures');

@@ -2,9 +2,9 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const { createFakeVscode, createFakeContext } = require("../testHelpers");
-const { refreshBmlStatus, triggerSmartMetadataFetch, runSaveCurrentFile } = require("../../../app/lang/rest/commands");
-const metadataLib = require("../../../app/lang/rest/metadata");
-const config = require("../../../app/lang/rest/config");
+const { refreshBmlStatus, triggerSmartMetadataFetch, runSaveCurrentFile } = require("@/lang/rest/commands");
+const metadataLib = require("@/lang/rest/metadata");
+const config = require("@/lang/rest/config");
 const { withTempDir, SAMPLE_FUNCTION, baseVscodeConfig, fakeResultsTerminal } = require("./fixtures");
 
 suite("BML REST commands - deployment context keys", () => {

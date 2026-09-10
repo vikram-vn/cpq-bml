@@ -1,16 +1,16 @@
 const fs = require('fs');
 const path = require('path');
-const api = require('../../rest/api');
+const api = require('@/lang/rest/api');
 const { findOrCreateAiCopy } = require('../locate');
 let _lintBMLCustom = null;
 function getLintBMLCustom() {
     if (!_lintBMLCustom) {
-        _lintBMLCustom = require('../../lint/core/lint').lintBMLCustom;
+        _lintBMLCustom = require('@/lang/lint/core/lint').lintBMLCustom;
     }
     return _lintBMLCustom;
 }
-const configLib = require('../../rest/config');
-const metadataLib = require('../../rest/metadata');
+const configLib = require('@/lang/rest/config');
+const metadataLib = require('@/lang/rest/metadata');
 
 // Builds the minimal doc-like object lintBMLCustom() needs, from a file already
 // read off disk - the same shape test/linter/fixtures.js uses to lint text

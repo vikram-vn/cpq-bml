@@ -1,8 +1,8 @@
 const path = require('path');
-const api = require('../../rest/api');
-const config = require('../../rest/config');
-const metadataLib = require('../../rest/metadata');
-const commerceAttributes = require('../../rest/commerceAttributes');
+const api = require('@/lang/rest/api');
+const config = require('@/lang/rest/config');
+const metadataLib = require('@/lang/rest/metadata');
+const commerceAttributes = require('@/lang/rest/commerceAttributes');
 const {
     isSuccess,
     describeError,
@@ -12,7 +12,7 @@ const {
     writeTerminalMessage,
     formatElapsed,
     findLibraryFunctionByVariableName,
-} = require('../../rest/commands/shared');
+} = require('@/lang/rest/commands/shared');
 const { findOrCreateAiCopy } = require('../locate');
 const { getAiTerminal } = require('../aiTerminal');
 const { createCapturingTerminal } = require('../proxy');

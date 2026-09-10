@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { createCapturingTerminal } = require("../../app/lang/mcp/proxy");
+const { createCapturingTerminal } = require("@/lang/mcp/proxy");
 
 suite("MCP proxy - createCapturingTerminal", () => {
   test("forwards lines to the real terminal prefixed with [MCP]", () => {
@@ -46,7 +46,7 @@ suite("MCP proxy - createCapturingTerminal", () => {
   });
 });
 
-const { jsonResult, scrubForMcp } = require("../../app/lang/mcp/jsonResult");
+const { jsonResult, scrubForMcp } = require("@/lang/mcp/jsonResult");
 
 suite("MCP jsonResult - privacy sanitization", () => {
   test("scrubs instance URLs, hypermedia links, and credentials from MCP tool output", () => {

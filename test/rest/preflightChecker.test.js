@@ -4,7 +4,7 @@ const {
   checkComplexityAndThreats,
   analyzeWorkspaceImpact,
   formatPreflightSummary
-} = require('../../app/lang/rest/preflightChecker');
+} = require('@/lang/rest/preflightChecker');
 
 suite('Pre-Flight Safety Checker & Impact Analysis - Unit Tests', () => {
   test('checkComplexityAndThreats flags timeout threat when BMQL is in a loop', () => {

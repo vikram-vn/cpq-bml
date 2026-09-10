@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { ActionSimulator } = require('../../app/lang/rest/apiActionSimulator');
+const { ActionSimulator } = require('@/lang/rest/apiActionSimulator');
 
 suite('Commerce Action Simulator & Delta Inspector - Unit Tests', () => {
   test('computes attribute delta between before and after states', () => {

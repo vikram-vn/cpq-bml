@@ -1,7 +1,7 @@
 const config = require('../rest/config');
 const { getEnvironments } = require('../rest/commands/env');
 const { getMetadataStatus, getWorkspaceRoot } = require('../rest/commerceAttributes');
-const { getAiToolsStatus } = require('../../ai/setup/mcpAutoRegister');
+const { getAiToolsStatus } = require('@/ai/setup/mcpAutoRegister');
 
 // Only sends hasPassword/hasToken booleans - actual secret values never leave VS Code Secret Storage.
 async function buildState(context, vscode) {

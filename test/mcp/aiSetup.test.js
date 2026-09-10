@@ -2,7 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
-const { autoSetupAiSkills } = require('../../app/ai/setup/index.js');
+const { autoSetupAiSkills } = require('@/ai/setup/index.js');
 const { getExtensionId } = require('../extensionHelper.js');
 const { withAiSkillsConfig, setupFakeContext } = require('./aiSetupHelper.js');
 

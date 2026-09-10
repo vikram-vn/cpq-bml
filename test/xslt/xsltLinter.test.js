@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { lintXslt } = require('../../app/lang/xslt/xsltLinter');
+const { lintXslt } = require('@/lang/xslt/xsltLinter');
 
 suite('XSLT Linter & Diagnostics Test Suite', () => {
     const createMockDocument = (content) => ({

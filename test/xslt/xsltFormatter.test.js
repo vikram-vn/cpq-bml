@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { formatXml } = require('../../app/lang/xslt/formatter');
+const { formatXml } = require('@/lang/xslt/formatter');
 
 suite('XML/XSLT Formatter Test Suite (inuris algorithm)', () => {
     test('Formats nested XML elements with indent', () => {

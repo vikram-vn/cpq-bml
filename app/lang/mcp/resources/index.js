@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { getWorkspaceRoot } = require('../../rest/commerceAttributes');
+const { getWorkspaceRoot } = require('@/lang/rest/commerceAttributes');
 
 function registerResources(server, _context, vscode) {
     if (!server || typeof server.registerResource !== 'function') return;

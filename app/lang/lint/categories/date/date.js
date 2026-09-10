@@ -1,5 +1,5 @@
 const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('../best-practices/shared');
-const { inferExpressionType } = require('../../rules/typeCheck');
+const { inferExpressionType } = require('@/lang/lint/rules/typeCheck');
 const vscode = require('vscode');
 
 function checkDate(cleanText, noStringsText, doc) {

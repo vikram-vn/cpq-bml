@@ -1,6 +1,6 @@
 const assert = require("assert");
 const { createFakeVscode, createFakeContext } = require("../testHelpers");
-const { refreshConnectionConfiguredContext } = require("../../../app/lang/rest/commands");
+const { refreshConnectionConfiguredContext } = require("@/lang/rest/commands");
 
 // The editor/title toolbar icons (Save/Validate/Debug/Deploy/etc.) are gated
 // in package.json on the cpqBml.connection.configured context key in addition

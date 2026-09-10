@@ -1,6 +1,6 @@
 const assert = require("assert");
-const { buildState } = require("../../app/lang/settings-panel/state");
-const config = require("../../app/lang/rest/config");
+const { buildState } = require("@/lang/settings-panel/state");
+const config = require("@/lang/rest/config");
 const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
 
 suite("settings-panel state", () => {

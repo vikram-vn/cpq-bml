@@ -1,6 +1,6 @@
 const fs = require('fs');
-const bml_beautify = require('../../beautify/bml');
-const optionsProvider = require('../../beautify/options');
+const bml_beautify = require('@/lang/beautify/bml');
+const optionsProvider = require('@/lang/beautify/options');
 const { findOrCreateAiCopy } = require('../locate');
 
 /**

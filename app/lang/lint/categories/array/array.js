@@ -1,5 +1,5 @@
 const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('../best-practices/shared');
-const { inferExpressionType, collectVariableTypes } = require('../../rules/typeCheck');
+const { inferExpressionType, collectVariableTypes } = require('@/lang/lint/rules/typeCheck');
 const vscode = require('vscode');
 
 function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {

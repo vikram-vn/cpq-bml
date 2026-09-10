@@ -1,9 +1,9 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { performance } = require('perf_hooks');
-const { computeComplexity } = require('../../app/lang/metrics/complexity');
-const { lintBMLCustom } = require('../../app/lang/lint/core/lint');
-const { getFixAllSafeAction } = require('../../app/lang/lint/code-actions/fixAllSafe');
+const { computeComplexity } = require('@/lang/metrics/complexity');
+const { lintBMLCustom } = require('@/lang/lint/core/lint');
+const { getFixAllSafeAction } = require('@/lang/lint/code-actions/fixAllSafe');
 
 suite('Extension Speed Metrics Benchmark', () => {
 

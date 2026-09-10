@@ -1,5 +1,5 @@
 const assert = require("assert");
-const config = require("../../app/lang/rest/config");
+const config = require("@/lang/rest/config");
 const {
   createFakeVscode,
   createFakeContext,

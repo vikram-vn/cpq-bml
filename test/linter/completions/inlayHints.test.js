@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { extractParamName, shouldSuppressHint, resolveParamNames, isInsideCommentOrString, inferVariableType } = require('../../../app/lang/intellisense/inlayHints');
-const { collectLocalVariables } = require('../../../app/lang/intellisense/bmqlVariableCompletions');
+const { extractParamName, shouldSuppressHint, resolveParamNames, isInsideCommentOrString, inferVariableType } = require('@/lang/intellisense/inlayHints');
+const { collectLocalVariables } = require('@/lang/intellisense/bmqlVariableCompletions');
 
 suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
     test('extracts parameter names cleanly from BML signature labels', () => {
@@ -214,7 +214,7 @@ suite('Inlay Hints & BMQL Variable Completions Test Suite', () => {
     });
 
     test('dynamically retrieves return types map from JSON catalogs', () => {
-        const { getReturnTypesMap } = require('../../../app/lang/intellisense/inlayHints/typeInferrer');
+        const { getReturnTypesMap } = require('@/lang/intellisense/inlayHints/typeInferrer');
         const returnTypes = getReturnTypesMap();
         assert.ok(returnTypes, 'Return types map should not be null');
         assert.strictEqual(returnTypes['saveconfigbom'], 'Integer');

@@ -6,7 +6,7 @@ const {
   generateTypeDefBml,
   generateTypeDefJson,
   syncCloudDefinitions
-} = require('../../app/lang/cloud/cloudTypeDefSync');
+} = require('@/lang/cloud/cloudTypeDefSync');
 
 suite('Cloud Type Definition Synchronizer - Unit Tests', () => {
   const sampleFunctions = [

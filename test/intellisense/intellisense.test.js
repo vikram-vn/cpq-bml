@@ -126,7 +126,7 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('custom snippet for dict provides comprehensive type choices', () => {
-		const { loadCustomSnippetsJson } = require('../../app/lang/intellisense/apiDataLoader');
+		const { loadCustomSnippetsJson } = require('@/lang/intellisense/apiDataLoader');
 		const snippets = loadCustomSnippetsJson();
 		assert.ok(snippets.dict, 'expected dict snippet to exist');
 		const syntax = snippets.dict.syntax;
@@ -137,7 +137,7 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('custom snippets include typed jsonget, jsonpathget, and jsonarrayget snippets', () => {
-		const customSnippets = require('../../app/lang/intellisense/custom-snippets.json');
+		const customSnippets = require('@/lang/intellisense/custom-snippets.json');
 		assert.ok(customSnippets['jsonget-typed'], 'expected jsonget-typed snippet');
 		assert.ok(customSnippets['jsonpath-get-typed'], 'expected jsonpath-get-typed snippet');
 		assert.ok(customSnippets['jsonarray-get-typed'], 'expected jsonarray-get-typed snippet');
@@ -253,8 +253,8 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('extension JSONs only contain OTB attributes and exclude custom site attributes', () => {
-		const utilAttrs = require('../../app/lang/intellisense/bml-util-attributes-api-usage.json');
-		const mainAttrs = require('../../app/lang/intellisense/bml-attributes-api-usage.json');
+		const utilAttrs = require('@/lang/intellisense/bml-util-attributes-api-usage.json');
+		const mainAttrs = require('@/lang/intellisense/bml-attributes-api-usage.json');
 
 		// Custom attributes must not be in extension util attributes
 		assert.strictEqual(utilAttrs['serviceTypes_t'], undefined, 'serviceTypes_t custom attribute should not be in util attributes');
@@ -273,9 +273,9 @@ suite('BML IntelliSense', () => {
 		await new Promise(r => setTimeout(r, 200));
 		let sigHelp = await vscode.commands.executeCommand('vscode.executeSignatureHelpProvider', doc.uri, position);
 		if (!sigHelp) {
-			const { getActiveFunctionCall, parseParameters } = require('../../app/lang/intellisense/signatureHelp');
-			const { getBmlApiData } = require('../../app/lang/intellisense/apiData');
-			const { formatAsJsDoc } = require('../../app/lang/intellisense/docFormatting');
+			const { getActiveFunctionCall, parseParameters } = require('@/lang/intellisense/signatureHelp');
+			const { getBmlApiData } = require('@/lang/intellisense/apiData');
+			const { formatAsJsDoc } = require('@/lang/intellisense/docFormatting');
 			const activeCall = getActiveFunctionCall(doc, position);
 			assert.ok(activeCall, 'expected activeCall to be resolved');
 			const apiData = getBmlApiData();
@@ -297,7 +297,7 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('signature help parses polymorphic union and cascading parameters with depth awareness', () => {
-		const { splitParametersWithDepth, parseParameters } = require('../../app/lang/intellisense/signatureHelp');
+		const { splitParametersWithDepth, parseParameters } = require('@/lang/intellisense/signatureHelp');
 		
 		// Polymorphic unions inside types: String(or Integer, Float) must not split on commas inside parentheses
 		const putChunks = splitParametersWithDepth('Dictionary dictionaryIdentifier, String(or Integer, Float) key, <DictionaryType> value');
@@ -320,7 +320,7 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('signature help resolves active function across nested sub-calls and array literals', async () => {
-		const { getActiveFunctionCall } = require('../../app/lang/intellisense/signatureHelp');
+		const { getActiveFunctionCall } = require('@/lang/intellisense/signatureHelp');
 		
 		// Nested call inside argument 1: urldata(getendpoint(), "POST", |)
 		const nestedDoc = await vscode.workspace.openTextDocument({
@@ -488,7 +488,7 @@ suite('BML IntelliSense', () => {
 	});
 
 	test('keyword hovers provide documentation for break, continue, while, and logical operators', () => {
-		const keywordHovers = require('../../app/lang/intellisense/keyword-hovers.json');
+		const keywordHovers = require('@/lang/intellisense/keyword-hovers.json');
 		assert.ok(keywordHovers['break'], 'expected break in keyword hovers');
 		assert.ok(keywordHovers['continue'], 'expected continue in keyword hovers');
 		assert.ok(keywordHovers['while'], 'expected while in keyword hovers');

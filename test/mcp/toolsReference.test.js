@@ -1,5 +1,5 @@
 const assert = require("assert");
-const tools = require("../../app/lang/mcp/tools");
+const tools = require("@/lang/mcp/tools");
 const { createFakeVscode } = require("../rest/testHelpers");
 const { makeContext } = require("../rest/commands/fixtures");
 

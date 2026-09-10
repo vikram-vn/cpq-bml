@@ -1,5 +1,5 @@
 
-const { SchemaIntrospector } = require("../../intellisense/schemaIntrospector");
+const { SchemaIntrospector } = require("@/lang/intellisense/schemaIntrospector");
 
 const introspectCpqSchemaTool = {
   name: "introspect_cpq_schema",

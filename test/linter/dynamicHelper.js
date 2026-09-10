@@ -2,7 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const { lintText } = require('./fixtures');
-const { parseParameterSignature } = require('../../app/lang/lint/rules/functionSignature');
+const { parseParameterSignature } = require('@/lang/lint/rules/functionSignature');
 
 function getSafeLiteralForType(type, index) {
     if (!type) return `arg${index}`;
@@ -29,7 +29,7 @@ function getSafeLiteralForType(type, index) {
 }
 
 function runDynamicTestsForCategory(category, suiteTitle) {
-    const apiUsagePath = path.join(__dirname, '../../app/lang/intellisense/bml-functions-api-usage.json');
+    const apiUsagePath = path.join(__dirname, '@/lang/intellisense/bml-functions-api-usage.json');
     const apiData = JSON.parse(fs.readFileSync(apiUsagePath, 'utf8'));
 
     const localKeywords = new Set([

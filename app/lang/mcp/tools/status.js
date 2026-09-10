@@ -1,6 +1,6 @@
-const configLib = require('../../rest/config');
-const { getEnvironments } = require('../../rest/commands/env');
-const { getActiveEnvironmentName } = require('../../rest/terminal');
+const configLib = require('@/lang/rest/config');
+const { getEnvironments } = require('@/lang/rest/commands/env');
+const { getActiveEnvironmentName } = require('@/lang/rest/terminal');
 
 /**
  * get_connection_status

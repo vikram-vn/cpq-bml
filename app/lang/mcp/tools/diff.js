@@ -1,5 +1,5 @@
 const fs = require('fs');
-const api = require('../../rest/api');
+const api = require('@/lang/rest/api');
 const { findOrCreateAiCopy } = require('../locate');
 
 /**

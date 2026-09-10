@@ -1,9 +1,9 @@
 const assert = require("assert");
 const http = require("http");
-const { recordMcpRequest, getMcpTraffic, clearMcpTraffic } = require("../../app/lang/mcp/traffic");
-const { auditBmlCode } = require("../../app/lang/mcp/tools/audit");
-const { listDataTables, getDataTableSchema } = require("../../app/lang/mcp/tools/lookup");
-const { startMcpServer, stopMcpServer } = require("../../app/lang/mcp/server");
+const { recordMcpRequest, getMcpTraffic, clearMcpTraffic } = require("@/lang/mcp/traffic");
+const { auditBmlCode } = require("@/lang/mcp/tools/audit");
+const { listDataTables, getDataTableSchema } = require("@/lang/mcp/tools/lookup");
+const { startMcpServer, stopMcpServer } = require("@/lang/mcp/server");
 
 suite("MCP Advanced Features Suite", () => {
   const mockVscode = {

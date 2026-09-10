@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { generateBmlUnitTestTool, executeBmlTestSuiteTool } = require('../../app/lang/mcp/tools/testTools');
-const { introspectCpqSchemaTool } = require('../../app/lang/mcp/tools/schemaTools');
+const { generateBmlUnitTestTool, executeBmlTestSuiteTool } = require('@/lang/mcp/tools/testTools');
+const { introspectCpqSchemaTool } = require('@/lang/mcp/tools/schemaTools');
 
 describe('Extended MCP Tools', () => {
 

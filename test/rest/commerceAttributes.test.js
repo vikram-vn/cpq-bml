@@ -1,5 +1,5 @@
 const assert = require("assert");
-const commerceAttributes = require("../../app/lang/rest/commerceAttributes");
+const commerceAttributes = require("@/lang/rest/commerceAttributes");
 
 suite("commerceAttributes Unit Tests", () => {
   test("resolveAttributeName resolves standard CPQ labels to variable names", () => {
@@ -198,7 +198,7 @@ suite("commerceAttributes Unit Tests", () => {
     const fs = require("fs");
     const os = require("os");
     const path = require("path");
-    const { loadApiData, invalidateApiData, lookupApiInfo } = require("../../app/lang/intellisense/apiData");
+    const { loadApiData, invalidateApiData, lookupApiInfo } = require("@/lang/intellisense/apiData");
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-pref-test-"));
     const cacheData = {
@@ -259,7 +259,7 @@ suite("commerceAttributes Unit Tests", () => {
     const fs = require("fs");
     const os = require("os");
     const path = require("path");
-    const configLib = require("../../app/lang/rest/config");
+    const configLib = require("@/lang/rest/config");
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-config-test-"));
     const updated = {};
@@ -296,8 +296,8 @@ suite("commerceAttributes Unit Tests", () => {
     const fs = require("fs");
     const os = require("os");
     const path = require("path");
-    const { removeMetadata, isCommerceSynced } = require("../../app/lang/rest/commerceAttributes");
-    const { saveWorkspaceAttributes } = require("../../app/lang/rest/commerceAttributesWriter");
+    const { removeMetadata, isCommerceSynced } = require("@/lang/rest/commerceAttributes");
+    const { saveWorkspaceAttributes } = require("@/lang/rest/commerceAttributesWriter");
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-remove-meta-test-"));
     const cpqDir = path.join(tempDir, ".cpq");

@@ -1,5 +1,5 @@
 
-const { BmlTestRunner } = require("../../test-controller/bmlTestRunner");
+const { BmlTestRunner } = require("@/lang/test-controller/bmlTestRunner");
 
 const generateBmlUnitTestTool = {
   name: "generate_bml_unit_test",

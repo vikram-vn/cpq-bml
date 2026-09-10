@@ -1,6 +1,6 @@
 const assert = require("assert");
-const { handleMessage } = require("../../app/lang/settings-panel/messageHandler");
-const config = require("../../app/lang/rest/config");
+const { handleMessage } = require("@/lang/settings-panel/messageHandler");
+const config = require("@/lang/rest/config");
 const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
 const path = require("path");
 

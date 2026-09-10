@@ -1,12 +1,12 @@
 const assert = require("assert");
-const commands = require("../../../app/lang/rest/commands");
-const config = require("../../../app/lang/rest/config");
+const commands = require("@/lang/rest/commands");
+const config = require("@/lang/rest/config");
 const {
   applyEnvironment,
   addEnvironment,
   updateEnvironment,
   deleteEnvironment,
-} = require("../../../app/lang/rest/commands/env");
+} = require("@/lang/rest/commands/env");
 const { createFakeVscode, createFakeContext } = require("../testHelpers");
 
 suite("BML REST commands - environment CRUD (used by the settings webview)", () => {
