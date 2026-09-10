@@ -5,94 +5,90 @@ const path = require('path');
  * Static analyzer extracting attribute reads/writes and building
  * directed dependency graphs across CPQ Commerce & Utility BML files.
  */
-class AttributeDependencyGraph {
-  constructor(workspaceRoot) {
-    this.workspaceRoot = workspaceRoot;
-    this.nodes = new Map();
-    this.edges = [];
-    this.phases = {
-      VALIDATION: [],
-      HIDING: [],
-      CONSTRAINT: [],
-      PRICING: [],
-      SUBMITTAL: []
-    };
+function categorizePhase(filePath, content) {
+  const lowerPath = filePath.toLowerCase();
+  const lowerContent = content.toLowerCase();
+
+  if (lowerPath.includes('validation') || lowerContent.includes('@rule validation') || lowerContent.includes('returntype: string')) {
+    return 'VALIDATION';
+  }
+  if (lowerPath.includes('hiding') || lowerContent.includes('@rule hiding') || lowerContent.includes('returntype: boolean')) {
+    return 'HIDING';
+  }
+  if (lowerPath.includes('constraint') || lowerContent.includes('@rule constraint')) {
+    return 'CONSTRAINT';
+  }
+  if (lowerPath.includes('submittal') || lowerPath.includes('action') || lowerContent.includes('@action')) {
+    return 'SUBMITTAL';
+  }
+  return 'PRICING'; // Default for formulas / modify scripts / util
+}
+
+function extractAttributeWrites(code) {
+  const writes = new Set();
+
+  // 1. Dictionary put pattern: put(dict, "attr_name", value)
+  const dictPutRegex = /put\s*\(\s*[a-zA-Z0-9_]+\s*,\s*["']([a-zA-Z0-9_]+)["']\s*,/g;
+  let m;
+  while ((m = dictPutRegex.exec(code)) !== null) {
+    writes.add(m[1]);
   }
 
-  static categorizePhase(filePath, content) {
-    const lowerPath = filePath.toLowerCase();
-    const lowerContent = content.toLowerCase();
-
-    if (lowerPath.includes('validation') || lowerContent.includes('@rule validation') || lowerContent.includes('returntype: string')) {
-      return 'VALIDATION';
-    }
-    if (lowerPath.includes('hiding') || lowerContent.includes('@rule hiding') || lowerContent.includes('returntype: boolean')) {
-      return 'HIDING';
-    }
-    if (lowerPath.includes('constraint') || lowerContent.includes('@rule constraint')) {
-      return 'CONSTRAINT';
-    }
-    if (lowerPath.includes('submittal') || lowerPath.includes('action') || lowerContent.includes('@action')) {
-      return 'SUBMITTAL';
-    }
-    return 'PRICING'; // Default for formulas / modify scripts / util
+  // 2. Attribute assignment pattern: attr_t = value
+  const assignRegex = /\b([a-zA-Z0-9_]+_(?:t|l|q))\s*=(?!=)/g;
+  while ((m = assignRegex.exec(code)) !== null) {
+    writes.add(m[1]);
   }
 
-  static extractAttributeReads(code) {
-    const reads = new Set();
-    const writes = new Set(AttributeDependencyGraph.extractAttributeWrites(code));
+  return Array.from(writes);
+}
 
-    // Remove put(dict, "attr") occurrences so written attributes are not marked as reads
-    const sanitizedCode = code.replace(/put\s*\(\s*[^,]+,\s*["'][^"']+["']/g, '');
+function extractAttributeReads(code) {
+  const reads = new Set();
+  const writes = new Set(extractAttributeWrites(code));
 
-    // 1. Direct attribute access: _quote_process_id, status_t, total_amount_t
-    const directRegex = /\b([a-zA-Z0-9_]+_(?:t|l|q|doc))\b/g;
-    let m;
-    while ((m = directRegex.exec(sanitizedCode)) !== null) {
-      if (!writes.has(m[1])) {
-        reads.add(m[1]);
-      }
-    }
+  // Remove put(dict, "attr") occurrences so written attributes are not marked as reads
+  const sanitizedCode = code.replace(/put\s*\(\s*[^,]+,\s*["'][^"']+["']/g, '');
 
-    // 2. Dictionary get pattern: get(dict, "attr_name")
-    const dictGetRegex = /get\s*\(\s*[a-zA-Z0-9_]+\s*,\s*["']([a-zA-Z0-9_]+)["']\s*\)/g;
-    while ((m = dictGetRegex.exec(code)) !== null) {
+  // 1. Direct attribute access: _quote_process_id, status_t, total_amount_t
+  const directRegex = /\b([a-zA-Z0-9_]+_(?:t|l|q|doc))\b/g;
+  let m;
+  while ((m = directRegex.exec(sanitizedCode)) !== null) {
+    if (!writes.has(m[1])) {
       reads.add(m[1]);
     }
-
-    // 3. Document attribute reference: commerce.attribute_name or doc.attr
-    const docAttrRegex = /(?:commerce|doc|doc1|doc2)\.([a-zA-Z0-9_]+)/g;
-    while ((m = docAttrRegex.exec(code)) !== null) {
-      reads.add(m[1]);
-    }
-
-    return Array.from(reads);
   }
 
-  static extractAttributeWrites(code) {
-    const writes = new Set();
-
-    // 1. Dictionary put pattern: put(dict, "attr_name", value)
-    const dictPutRegex = /put\s*\(\s*[a-zA-Z0-9_]+\s*,\s*["']([a-zA-Z0-9_]+)["']\s*,/g;
-    let m;
-    while ((m = dictPutRegex.exec(code)) !== null) {
-      writes.add(m[1]);
-    }
-
-    // 2. Attribute assignment pattern: attr_t = value
-    const assignRegex = /\b([a-zA-Z0-9_]+_(?:t|l|q))\s*=(?!=)/g;
-    while ((m = assignRegex.exec(code)) !== null) {
-      writes.add(m[1]);
-    }
-
-    return Array.from(writes);
+  // 2. Dictionary get pattern: get(dict, "attr_name")
+  const dictGetRegex = /get\s*\(\s*[a-zA-Z0-9_]+\s*,\s*["']([a-zA-Z0-9_]+)["']\s*\)/g;
+  while ((m = dictGetRegex.exec(code)) !== null) {
+    reads.add(m[1]);
   }
 
-  analyzeCode(scriptId, code, filePath = '') {
-    const phase = AttributeDependencyGraph.categorizePhase(filePath, code);
+  // 3. Document attribute reference: commerce.attribute_name or doc.attr
+  const docAttrRegex = /(?:commerce|doc|doc1|doc2)\.([a-zA-Z0-9_]+)/g;
+  while ((m = docAttrRegex.exec(code)) !== null) {
+    reads.add(m[1]);
+  }
 
-    // Register rule/script node
-    this.nodes.set(scriptId, {
+  return Array.from(reads);
+}
+
+function createAttributeDependencyGraph(workspaceRoot) {
+  const nodes = new Map();
+  const edges = [];
+  const phases = {
+    VALIDATION: [],
+    HIDING: [],
+    CONSTRAINT: [],
+    PRICING: [],
+    SUBMITTAL: []
+  };
+
+  function analyzeCode(scriptId, code, filePath = '') {
+    const phase = categorizePhase(filePath, code);
+
+    nodes.set(scriptId, {
       id: scriptId,
       label: path.basename(filePath || scriptId),
       type: 'rule',
@@ -100,17 +96,16 @@ class AttributeDependencyGraph {
       filePath
     });
 
-    if (this.phases[phase]) {
-      this.phases[phase].push(scriptId);
+    if (phases[phase]) {
+      phases[phase].push(scriptId);
     }
 
-    const reads = AttributeDependencyGraph.extractAttributeReads(code);
-    const writes = AttributeDependencyGraph.extractAttributeWrites(code);
+    const reads = extractAttributeReads(code);
+    const writes = extractAttributeWrites(code);
 
-    // Register attribute nodes and edges
     for (const attr of reads) {
-      if (!this.nodes.has(attr)) {
-        this.nodes.set(attr, {
+      if (!nodes.has(attr)) {
+        nodes.set(attr, {
           id: attr,
           label: attr,
           type: 'attribute',
@@ -118,12 +113,12 @@ class AttributeDependencyGraph {
           filePath: null
         });
       }
-      this.edges.push({ from: scriptId, to: attr, type: 'READS' });
+      edges.push({ from: scriptId, to: attr, type: 'READS' });
     }
 
     for (const attr of writes) {
-      if (!this.nodes.has(attr)) {
-        this.nodes.set(attr, {
+      if (!nodes.has(attr)) {
+        nodes.set(attr, {
           id: attr,
           label: attr,
           type: 'attribute',
@@ -131,11 +126,11 @@ class AttributeDependencyGraph {
           filePath: null
         });
       }
-      this.edges.push({ from: scriptId, to: attr, type: 'WRITES' });
+      edges.push({ from: scriptId, to: attr, type: 'WRITES' });
     }
   }
 
-  scanWorkspace(targetDir = this.workspaceRoot) {
+  function scanWorkspace(targetDir = workspaceRoot) {
     if (!targetDir || !fs.existsSync(targetDir)) return;
 
     const findBmlFiles = (dir) => {
@@ -158,20 +153,18 @@ class AttributeDependencyGraph {
       try {
         const content = fs.readFileSync(file, 'utf8');
         const scriptId = path.relative(targetDir, file).replace(/\\/g, '/');
-        this.analyzeCode(scriptId, content, file);
+        analyzeCode(scriptId, content, file);
       } catch {
         // Skip unreadable files
       }
     }
   }
 
-  detectCycles() {
-    // Build adjacency list for rule-to-rule dependencies via attributes
-    // Rule A writes Attr X, Rule B reads Attr X -> Directed edge Rule A -> Rule B
+  function detectCycles() {
     const writersOf = new Map();
     const readersOf = new Map();
 
-    for (const edge of this.edges) {
+    for (const edge of edges) {
       if (edge.type === 'WRITES') {
         if (!writersOf.has(edge.to)) writersOf.set(edge.to, []);
         writersOf.get(edge.to).push(edge.from);
@@ -194,7 +187,6 @@ class AttributeDependencyGraph {
       }
     }
 
-    // DFS Cycle Detection
     const cycles = [];
     const visited = new Set();
     const recStack = new Set();
@@ -230,24 +222,48 @@ class AttributeDependencyGraph {
     return cycles;
   }
 
-  toGraphModel() {
-    const cycles = this.detectCycles();
-    const nodesArray = Array.from(this.nodes.values());
+  function toGraphModel() {
+    const cycles = detectCycles();
+    const nodesArray = Array.from(nodes.values());
 
     return {
       nodes: nodesArray,
-      edges: this.edges,
-      phases: this.phases,
+      edges,
+      phases,
       cycles,
       stats: {
         totalNodes: nodesArray.length,
         rulesCount: nodesArray.filter(n => n.type === 'rule').length,
         attributesCount: nodesArray.filter(n => n.type === 'attribute').length,
-        totalEdges: this.edges.length,
+        totalEdges: edges.length,
         cyclesCount: cycles.length
       }
     };
   }
+
+  return {
+    workspaceRoot,
+    nodes,
+    edges,
+    phases,
+    analyzeCode,
+    scanWorkspace,
+    detectCycles,
+    toGraphModel
+  };
 }
 
-module.exports = { AttributeDependencyGraph };
+function AttributeDependencyGraph(workspaceRoot) {
+  return createAttributeDependencyGraph(workspaceRoot);
+}
+AttributeDependencyGraph.categorizePhase = categorizePhase;
+AttributeDependencyGraph.extractAttributeReads = extractAttributeReads;
+AttributeDependencyGraph.extractAttributeWrites = extractAttributeWrites;
+
+module.exports = {
+  categorizePhase,
+  extractAttributeReads,
+  extractAttributeWrites,
+  createAttributeDependencyGraph,
+  AttributeDependencyGraph
+};

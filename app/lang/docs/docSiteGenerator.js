@@ -5,130 +5,125 @@ const path = require('path');
  * Parses BML doc comments and generates a modern, searchable
  * static documentation website and Markdown API reference.
  */
-class DocSiteGenerator {
-  constructor(workspaceRoot) {
-    this.workspaceRoot = workspaceRoot;
-    this.functions = [];
-  }
+function parseDocBlock(comment) {
+  const lines = comment.split('\n');
+  let description = '';
+  const params = [];
+  let returns = null;
+  let example = null;
 
-  static parseDocBlock(comment) {
-    const lines = comment.split('\n');
-    let description = '';
-    const params = [];
-    let returns = null;
-    let example = null;
+  let inDesc = true;
+  for (const rawLine of lines) {
+    const line = rawLine.replace(/^\s*\/?\*+\/?\s?/, '').trim();
+    if (!line) continue;
 
-    let inDesc = true;
-    for (const rawLine of lines) {
-      const line = rawLine.replace(/^\s*\/?\*+\/?\s?/, '').trim();
-      if (!line) continue;
-
-      if (line.startsWith('@param')) {
-        inDesc = false;
-        const match = line.match(/@param\s*(?:\{([^}]+)\})?\s*([a-zA-Z0-9_]+)?\s*(.*)/);
-        if (match) {
-          params.push({
-            type: match[1] || 'Any',
-            name: match[2] || 'param',
-            desc: match[3] || ''
-          });
-        }
-      } else if (line.startsWith('@return')) {
-        inDesc = false;
-        const match = line.match(/@return(?:s)?\s*(?:\{([^}]+)\})?\s*(.*)/);
-        if (match) {
-          returns = {
-            type: match[1] || 'Any',
-            desc: match[2] || ''
-          };
-        }
-      } else if (line.startsWith('@example')) {
-        inDesc = false;
-        example = line.replace('@example', '').trim();
-      } else if (inDesc) {
-        description += (description ? ' ' : '') + line;
-      }
-    }
-
-    return { description, params, returns, example };
-  }
-
-  static parseFunctionSignature(content) {
-    // Matches: ReturnType functionName(param1, param2)
-    const sigRegex = /(?:^|\n)\s*(String|Integer|Float|Boolean|Date|String\[\]|Integer\[\]|Float\[\]|Boolean\[\]|Date\[\]|dict|json|jsonarray)\s+([a-zA-Z0-9_]+)\s*\(([^)]*)\)/;
-    const match = sigRegex.exec(content);
-    if (match) {
-      const paramsList = match[3]
-        .split(',')
-        .map(p => p.trim())
-        .filter(Boolean)
-        .map(p => {
-          const parts = p.split(/\s+/);
-          return parts.length >= 2 ? { type: parts[0], name: parts[1] } : { type: 'Any', name: p };
+    if (line.startsWith('@param')) {
+      inDesc = false;
+      const match = line.match(/@param\s*(?:\{([^}]+)\})?\s*([a-zA-Z0-9_]+)?\s*(.*)/);
+      if (match) {
+        params.push({
+          type: match[1] || 'Any',
+          name: match[2] || 'param',
+          desc: match[3] || ''
         });
-
-      return {
-        returnType: match[1],
-        name: match[2],
-        params: paramsList
-      };
+      }
+    } else if (line.startsWith('@return')) {
+      inDesc = false;
+      const match = line.match(/@return(?:s)?\s*(?:\{([^}]+)\})?\s*(.*)/);
+      if (match) {
+        returns = {
+          type: match[1] || 'Any',
+          desc: match[2] || ''
+        };
+      }
+    } else if (line.startsWith('@example')) {
+      inDesc = false;
+      example = line.replace('@example', '').trim();
+    } else if (inDesc) {
+      description += (description ? ' ' : '') + line;
     }
-    return null;
   }
 
-  scanWorkspace(dir = this.workspaceRoot) {
-    if (!dir || !fs.existsSync(dir)) return;
+  return { description, params, returns, example };
+}
 
-    const findBml = (target) => {
-      const results = [];
-      const entries = fs.readdirSync(target, { withFileTypes: true });
-      for (const entry of entries) {
-        if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'dist') continue;
-        const full = path.join(target, entry.name);
-        if (entry.isDirectory()) {
-          results.push(...findBml(full));
-        } else if (entry.isFile() && entry.name.endsWith('.bml') && !entry.name.endsWith('.test.bml')) {
-          results.push(full);
-        }
-      }
-      return results;
+function parseFunctionSignature(content) {
+  const sigRegex = /(?:^|\n)\s*(String|Integer|Float|Boolean|Date|String\[\]|Integer\[\]|Float\[\]|Boolean\[\]|Date\[\]|dict|json|jsonarray)\s+([a-zA-Z0-9_]+)\s*\(([^)]*)\)/;
+  const match = sigRegex.exec(content);
+  if (match) {
+    const paramsList = match[3]
+      .split(',')
+      .map(p => p.trim())
+      .filter(Boolean)
+      .map(p => {
+        const parts = p.split(/\s+/);
+        return parts.length >= 2 ? { type: parts[0], name: parts[1] } : { type: 'Any', name: p };
+      });
+
+    return {
+      returnType: match[1],
+      name: match[2],
+      params: paramsList
     };
+  }
+  return null;
+}
 
-    const files = findBml(dir);
-    for (const file of files) {
-      try {
-        const content = fs.readFileSync(file, 'utf8');
-        const relPath = path.relative(this.workspaceRoot, file).replace(/\\/g, '/');
-        const docMatch = content.match(/\/\*\*([\s\S]*?)\*\//);
-        const docInfo = docMatch ? DocSiteGenerator.parseDocBlock(docMatch[1]) : null;
-        const sig = DocSiteGenerator.parseFunctionSignature(content);
-
-        const name = sig ? sig.name : path.basename(file, '.bml');
-        const returnType = sig ? sig.returnType : (docInfo && docInfo.returns ? docInfo.returns.type : 'Any');
-        const params = (docInfo && docInfo.params.length > 0) ? docInfo.params : (sig ? sig.params : []);
-
-        const category = relPath.startsWith('util') ? 'util' : (relPath.startsWith('commerce') ? 'commerce' : 'general');
-
-        this.functions.push({
-          name,
-          category,
-          relPath,
-          returnType,
-          params,
-          description: docInfo ? docInfo.description : 'No documentation provided.',
-          example: docInfo ? docInfo.example : null,
-          hasDoc: Boolean(docInfo)
-        });
-      } catch {
-        // Skip unreadable files
-      }
+function findBmlFiles(target) {
+  const results = [];
+  const entries = fs.readdirSync(target, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'dist') continue;
+    const full = path.join(target, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...findBmlFiles(full));
+    } else if (entry.isFile() && entry.name.endsWith('.bml') && !entry.name.endsWith('.test.bml')) {
+      results.push(full);
     }
   }
+  return results;
+}
 
-  generateHtml() {
-    const dataJson = JSON.stringify(this.functions).replace(/</g, '\\u003c');
+function scanWorkspaceDocs(workspaceRoot, dir = workspaceRoot) {
+  if (!dir || !fs.existsSync(dir)) return [];
+  const functions = [];
+  const files = findBmlFiles(dir);
 
-    return `<!DOCTYPE html>
+  for (const file of files) {
+    try {
+      const content = fs.readFileSync(file, 'utf8');
+      const relPath = path.relative(workspaceRoot, file).replace(/\\/g, '/');
+      const docMatch = content.match(/\/\*\*([\s\S]*?)\*\//);
+      const docInfo = docMatch ? parseDocBlock(docMatch[1]) : null;
+      const sig = parseFunctionSignature(content);
+
+      const name = sig ? sig.name : path.basename(file, '.bml');
+      const returnType = sig ? sig.returnType : (docInfo && docInfo.returns ? docInfo.returns.type : 'Any');
+      const params = (docInfo && docInfo.params.length > 0) ? docInfo.params : (sig ? sig.params : []);
+
+      const category = relPath.startsWith('util') ? 'util' : (relPath.startsWith('commerce') ? 'commerce' : 'general');
+
+      functions.push({
+        name,
+        category,
+        relPath,
+        returnType,
+        params,
+        description: docInfo ? docInfo.description : 'No documentation provided.',
+        example: docInfo ? docInfo.example : null,
+        hasDoc: Boolean(docInfo)
+      });
+    } catch {
+      // Skip unreadable files
+    }
+  }
+  return functions;
+}
+
+function generateHtml(functions) {
+  const dataJson = JSON.stringify(functions).replace(/</g, '\\u003c');
+
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -246,64 +241,107 @@ class DocSiteGenerator {
   </script>
 </body>
 </html>`;
-  }
-
-  generateMarkdown() {
-    let md = `# CPQ BML Workspace API Reference\n\n`;
-    md += `*Generated automatically on ${new Date().toISOString().split('T')[0]}*\n\n`;
-    md += `## Table of Contents\n\n`;
-
-    for (const f of this.functions) {
-      md += `- [${f.name}](#${f.name.toLowerCase()}) \`(${f.returnType})\` - *${f.relPath}*\n`;
-    }
-    md += `\n---\n\n`;
-
-    for (const f of this.functions) {
-      md += `### ${f.name}\n\n`;
-      md += `**Signature:** \`${f.returnType} ${f.name}(${f.params.map(p => `${p.type} ${p.name}`).join(', ')})\`\n\n`;
-      md += `**Location:** \`${f.relPath}\`\n\n`;
-      md += `${f.description}\n\n`;
-
-      if (f.params.length > 0) {
-        md += `#### Parameters\n\n`;
-        md += `| Name | Type | Description |\n`;
-        md += `|---|---|---|\n`;
-        for (const p of f.params) {
-          md += `| \`${p.name}\` | \`${p.type}\` | ${p.desc || '-'} |\n`;
-        }
-        md += `\n`;
-      }
-
-      if (f.example) {
-        md += `#### Example\n\n\`\`\`bml\n${f.example}\n\`\`\`\n\n`;
-      }
-      md += `---\n\n`;
-    }
-
-    return md;
-  }
-
-  generate(outputDir) {
-    fs.mkdirSync(outputDir, { recursive: true });
-    const htmlPath = path.join(outputDir, 'index.html');
-    const mdPath = path.join(outputDir, 'API.md');
-
-    fs.writeFileSync(htmlPath, this.generateHtml(), 'utf8');
-    fs.writeFileSync(mdPath, this.generateMarkdown(), 'utf8');
-
-    const documentedCount = this.functions.filter(f => f.hasDoc).length;
-    const totalCount = this.functions.length;
-    const percent = totalCount > 0 ? Math.round((documentedCount / totalCount) * 100) : 100;
-
-    return {
-      outputDir,
-      htmlPath,
-      mdPath,
-      totalCount,
-      documentedCount,
-      percent
-    };
-  }
 }
 
-module.exports = { DocSiteGenerator };
+function generateMarkdown(functions) {
+  let md = `# CPQ BML Workspace API Reference\n\n`;
+  md += `*Generated automatically on ${new Date().toISOString().split('T')[0]}*\n\n`;
+  md += `## Table of Contents\n\n`;
+
+  for (const f of functions) {
+    md += `- [${f.name}](#${f.name.toLowerCase()}) \`(${f.returnType})\` - *${f.relPath}*\n`;
+  }
+  md += `\n---\n\n`;
+
+  for (const f of functions) {
+    md += `### ${f.name}\n\n`;
+    md += `**Signature:** \`${f.returnType} ${f.name}(${f.params.map(p => `${p.type} ${p.name}`).join(', ')})\`\n\n`;
+    md += `**Location:** \`${f.relPath}\`\n\n`;
+    md += `${f.description}\n\n`;
+
+    if (f.params.length > 0) {
+      md += `#### Parameters\n\n`;
+      md += `| Name | Type | Description |\n`;
+      md += `|---|---|---|\n`;
+      for (const p of f.params) {
+        md += `| \`${p.name}\` | \`${p.type}\` | ${p.desc || '-'} |\n`;
+      }
+      md += `\n`;
+    }
+
+    if (f.example) {
+      md += `#### Example\n\n\`\`\`bml\n${f.example}\n\`\`\`\n\n`;
+    }
+    md += `---\n\n`;
+  }
+
+  return md;
+}
+
+function generateDocSite(outputDir, functions) {
+  fs.mkdirSync(outputDir, { recursive: true });
+  const htmlPath = path.join(outputDir, 'index.html');
+  const mdPath = path.join(outputDir, 'API.md');
+
+  fs.writeFileSync(htmlPath, generateHtml(functions), 'utf8');
+  fs.writeFileSync(mdPath, generateMarkdown(functions), 'utf8');
+
+  const documentedCount = functions.filter(f => f.hasDoc).length;
+  const totalCount = functions.length;
+  const percent = totalCount > 0 ? Math.round((documentedCount / totalCount) * 100) : 100;
+
+  return {
+    outputDir,
+    htmlPath,
+    mdPath,
+    totalCount,
+    documentedCount,
+    percent
+  };
+}
+
+function createDocSiteGenerator(workspaceRoot) {
+  let functions = [];
+
+  function scanWorkspace(dir = workspaceRoot) {
+    functions = scanWorkspaceDocs(workspaceRoot, dir);
+  }
+
+  function getHtml() {
+    return generateHtml(functions);
+  }
+
+  function getMarkdown() {
+    return generateMarkdown(functions);
+  }
+
+  function generate(outputDir) {
+    return generateDocSite(outputDir, functions);
+  }
+
+  return {
+    workspaceRoot,
+    get functions() { return functions; },
+    scanWorkspace,
+    generateHtml: getHtml,
+    generateMarkdown: getMarkdown,
+    generate
+  };
+}
+
+function DocSiteGenerator(workspaceRoot) {
+  return createDocSiteGenerator(workspaceRoot);
+}
+DocSiteGenerator.parseDocBlock = parseDocBlock;
+DocSiteGenerator.parseFunctionSignature = parseFunctionSignature;
+
+module.exports = {
+  parseDocBlock,
+  parseFunctionSignature,
+  scanWorkspaceDocs,
+  generateHtml,
+  generateMarkdown,
+  generateDocSite,
+  createDocSiteGenerator,
+  DocSiteGenerator
+};

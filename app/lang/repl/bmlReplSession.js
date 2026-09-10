@@ -5,23 +5,37 @@ const { createBmlSandbox, preprocessBmlForJs } = require('../evaluator/bmlEvalua
  * Stateful BML REPL execution engine.
  * Maintains variables across command evaluations.
  */
-class BmlReplSession {
-  constructor() {
-    this.reset();
+function formatReplValue(val) {
+  if (val === undefined) return null;
+  if (val === null) return 'null';
+  if (typeof val === 'string') return `"${val}" (String)`;
+  if (typeof val === 'number') {
+    return Number.isInteger(val) ? `${val} (Integer)` : `${val} (Float)`;
+  }
+  if (typeof val === 'boolean') return `${val} (Boolean)`;
+  if (Array.isArray(val)) return `${JSON.stringify(val)} (Array[${val.length}])`;
+  if (typeof val === 'object') return `${JSON.stringify(val, null, 2)}`;
+  return String(val);
+}
+
+function createBmlReplSession() {
+  let stdout = [];
+  let sandbox = createBmlSandbox(stdout);
+  let history = [];
+  let userVarNames = new Set();
+
+  function reset() {
+    stdout = [];
+    sandbox = createBmlSandbox(stdout);
+    history = [];
+    userVarNames = new Set();
   }
 
-  reset() {
-    this.stdout = [];
-    this.sandbox = createBmlSandbox(this.stdout);
-    this.history = [];
-    this.userVarNames = new Set();
-  }
-
-  getVariables() {
+  function getVariables() {
     const vars = {};
-    for (const name of this.userVarNames) {
-      if (this.sandbox[name] !== undefined) {
-        const val = this.sandbox[name];
+    for (const name of userVarNames) {
+      if (sandbox[name] !== undefined) {
+        const val = sandbox[name];
         let type = typeof val;
         if (val === null) type = 'null';
         else if (Array.isArray(val)) type = 'Array';
@@ -35,20 +49,7 @@ class BmlReplSession {
     return vars;
   }
 
-  formatValue(val) {
-    if (val === undefined) return null;
-    if (val === null) return 'null';
-    if (typeof val === 'string') return `"${val}" (String)`;
-    if (typeof val === 'number') {
-      return Number.isInteger(val) ? `${val} (Integer)` : `${val} (Float)`;
-    }
-    if (typeof val === 'boolean') return `${val} (Boolean)`;
-    if (Array.isArray(val)) return `${JSON.stringify(val)} (Array[${val.length}])`;
-    if (typeof val === 'object') return `${JSON.stringify(val, null, 2)}`;
-    return String(val);
-  }
-
-  execute(rawLine) {
+  function execute(rawLine) {
     const line = rawLine.trim();
     if (!line) return { type: 'empty' };
 
@@ -68,11 +69,11 @@ class BmlReplSession {
         };
       }
       if (cmd === '.clear') {
-        this.reset();
+        reset();
         return { type: 'system', text: 'Session cleared. Memory reset.' };
       }
       if (cmd === '.vars') {
-        const v = this.getVariables();
+        const v = getVariables();
         const entries = Object.entries(v);
         if (entries.length === 0) {
           return { type: 'system', text: 'No active variables defined.' };
@@ -86,56 +87,68 @@ class BmlReplSession {
       return { type: 'error', error: `Unknown meta-command: ${cmd}. Type .help for assistance.` };
     }
 
-    this.history.push(line);
-    this.stdout.length = 0; // Clear print capture buffer
+    history.push(line);
+    stdout.length = 0; // Clear print capture buffer
 
-    // Track variable assignments: e.g. x = 10, total_t = 50.0
     const assignMatch = line.match(/^([a-zA-Z0-9_]+)\s*=(?!=)/);
     if (assignMatch) {
-      this.userVarNames.add(assignMatch[1]);
+      userVarNames.add(assignMatch[1]);
     }
 
     try {
-      // First try evaluating as an expression to return a value
-      let isExpr = false;
-      let jsCode;
-
       if (!line.endsWith(';') && !line.includes('return ') && !line.startsWith('if') && !line.startsWith('for')) {
         try {
           const transformedExpr = preprocessBmlForJs(`return (${line});`);
           const testScript = new vm.Script(transformedExpr);
-          const evalResult = testScript.runInContext(this.sandbox, { timeout: 3000 });
+          const evalResult = testScript.runInContext(sandbox, { timeout: 3000 });
           return {
             type: 'result',
             value: evalResult,
-            formatted: this.formatValue(evalResult),
-            prints: [...this.stdout]
+            formatted: formatReplValue(evalResult),
+            prints: [...stdout]
           };
         } catch {
-          // Not a simple expression, fall through to statement evaluation
+          // Fall through to statement evaluation
         }
       }
 
-      if (!isExpr) {
-        jsCode = preprocessBmlForJs(line);
-        const script = new vm.Script(jsCode);
-        const res = script.runInContext(this.sandbox, { timeout: 3000 });
+      const jsCode = preprocessBmlForJs(line);
+      const script = new vm.Script(jsCode);
+      const res = script.runInContext(sandbox, { timeout: 3000 });
 
-        return {
-          type: 'result',
-          value: res,
-          formatted: res !== undefined ? this.formatValue(res) : null,
-          prints: [...this.stdout]
-        };
-      }
+      return {
+        type: 'result',
+        value: res,
+        formatted: res !== undefined ? formatReplValue(res) : null,
+        prints: [...stdout]
+      };
     } catch (err) {
       return {
         type: 'error',
         error: err.message,
-        prints: [...this.stdout]
+        prints: [...stdout]
       };
     }
   }
+
+  return {
+    get stdout() { return stdout; },
+    get sandbox() { return sandbox; },
+    get history() { return history; },
+    get userVarNames() { return userVarNames; },
+    reset,
+    getVariables,
+    formatValue: formatReplValue,
+    execute
+  };
 }
 
-module.exports = { BmlReplSession };
+function BmlReplSession() {
+  return createBmlReplSession();
+}
+
+module.exports = {
+  createBmlReplSession,
+  formatReplValue,
+  BmlReplSession
+};

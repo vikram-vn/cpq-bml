@@ -10,97 +10,91 @@ try {
 const { request } = require('./client');
 const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('./config');
 
-/**
- * Remote Log Streamer fetching BML runtime logs and server errors from Oracle CPQ.
- */
-class RemoteLogStreamer {
-  constructor() {
-    this.outputChannel = null;
-    this.isStreaming = false;
-    this.timer = null;
-    this.pollIntervalMs = 5000;
-    this.lastSeenTimestamp = null;
+function formatLogEntry(entry) {
+  const time = entry.timestamp || new Date().toISOString();
+  const severity = (entry.severity || entry.level || 'INFO').toUpperCase();
+  const script = entry.scriptName || entry.functionName || entry.source || 'BML';
+  const line = entry.lineNumber ? `:${entry.lineNumber}` : '';
+  const msg = entry.message || entry.text || JSON.stringify(entry);
+
+  return `[${time}] [${severity}] [${script}${line}] ${msg}`;
+}
+
+async function fetchLogs(vscodeInstance = vscode, customTransport) {
+  const settings = getSettings(vscodeInstance);
+  const baseUrl = getBaseUrl(vscodeInstance);
+  const authHeader = getAuthHeader(vscodeInstance);
+
+  if (!baseUrl || !authHeader) {
+    throw new Error('CPQ site URL or credentials are not configured.');
   }
 
-  getChannel() {
-    if (!this.outputChannel) {
-      this.outputChannel = vscode.window.createOutputChannel('CPQ Server Logs');
+  const version = getRestVersion(vscodeInstance);
+  const path = `/rest/${version}/developerLogs?limit=50&orderBy=timestamp:desc`;
+
+  const res = await request({
+    baseUrl,
+    path,
+    method: 'GET',
+    headers: {
+      Authorization: authHeader,
+      Accept: 'application/json'
+    },
+    timeoutMs: settings.timeoutMs || 15000,
+    transport: customTransport
+  });
+
+  if (res.statusCode >= 200 && res.statusCode < 300) {
+    const body = res.body;
+    const items = Array.isArray(body?.items) ? body.items : (Array.isArray(body) ? body : []);
+    return items;
+  } else {
+    const errText = typeof res.body === 'string' ? res.body : JSON.stringify(res.body || {});
+    throw new Error(`HTTP ${res.statusCode}: ${errText || 'Failed to fetch logs'}`);
+  }
+}
+
+function createLogStreamer() {
+  let outputChannel = null;
+  let isStreaming = false;
+  let timer = null;
+  const pollIntervalMs = 5000;
+  let lastSeenTimestamp = null;
+
+  function getChannel() {
+    if (!outputChannel) {
+      outputChannel = vscode.window.createOutputChannel('CPQ Server Logs');
     }
-    return this.outputChannel;
+    return outputChannel;
   }
 
-  static formatLogEntry(entry) {
-    const time = entry.timestamp || new Date().toISOString();
-    const severity = (entry.severity || entry.level || 'INFO').toUpperCase();
-    const script = entry.scriptName || entry.functionName || entry.source || 'BML';
-    const line = entry.lineNumber ? `:${entry.lineNumber}` : '';
-    const msg = entry.message || entry.text || JSON.stringify(entry);
+  function startStream(vscodeInstance = vscode, customTransport) {
+    if (isStreaming) return;
+    isStreaming = true;
 
-    return `[${time}] [${severity}] [${script}${line}] ${msg}`;
-  }
-
-  async fetchLogs(vscodeInstance = vscode, customTransport) {
-    const settings = getSettings(vscodeInstance);
-    const baseUrl = getBaseUrl(vscodeInstance);
-    const authHeader = getAuthHeader(vscodeInstance);
-
-    if (!baseUrl || !authHeader) {
-      throw new Error('CPQ site URL or credentials are not configured.');
-    }
-
-    const version = getRestVersion(vscodeInstance);
-    const path = `/rest/${version}/developerLogs?limit=50&orderBy=timestamp:desc`;
-
-    const res = await request({
-      baseUrl,
-      path,
-      method: 'GET',
-      headers: {
-        Authorization: authHeader,
-        Accept: 'application/json'
-      },
-      timeoutMs: settings.timeoutMs || 15000,
-      transport: customTransport
-    });
-
-    if (res.statusCode >= 200 && res.statusCode < 300) {
-      const body = res.body;
-      const items = Array.isArray(body?.items) ? body.items : (Array.isArray(body) ? body : []);
-      return items;
-    } else {
-      const errText = typeof res.body === 'string' ? res.body : JSON.stringify(res.body || {});
-      throw new Error(`HTTP ${res.statusCode}: ${errText || 'Failed to fetch logs'}`);
-    }
-  }
-
-  startStream(vscodeInstance = vscode, customTransport) {
-    if (this.isStreaming) return;
-    this.isStreaming = true;
-
-    const channel = this.getChannel();
+    const channel = getChannel();
     channel.show(true);
     channel.appendLine(`[${new Date().toISOString()}] === Started CPQ Server Log Streaming ===`);
 
     const poll = async () => {
-      if (!this.isStreaming) return;
+      if (!isStreaming) return;
       try {
-        const logs = await this.fetchLogs(vscodeInstance, customTransport);
+        const logs = await fetchLogs(vscodeInstance, customTransport);
         if (logs.length > 0) {
-          // Sort ascending chronologically for streaming display
           const chronological = [...logs].reverse();
           for (const item of chronological) {
             const itemTime = item.timestamp || '';
-            if (!this.lastSeenTimestamp || itemTime > this.lastSeenTimestamp) {
-              channel.appendLine(RemoteLogStreamer.formatLogEntry(item));
-              if (itemTime) this.lastSeenTimestamp = itemTime;
+            if (!lastSeenTimestamp || itemTime > lastSeenTimestamp) {
+              channel.appendLine(formatLogEntry(item));
+              if (itemTime) lastSeenTimestamp = itemTime;
             }
           }
         }
       } catch (err) {
         channel.appendLine(`[${new Date().toISOString()}] [STREAM_ERROR] ${err.message}`);
       } finally {
-        if (this.isStreaming) {
-          this.timer = setTimeout(poll, this.pollIntervalMs);
+        if (isStreaming) {
+          timer = setTimeout(poll, pollIntervalMs);
         }
       }
     };
@@ -108,33 +102,56 @@ class RemoteLogStreamer {
     poll();
   }
 
-  stopStream() {
-    this.isStreaming = false;
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
+  function stopStream() {
+    isStreaming = false;
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
     }
-    if (this.outputChannel) {
-      this.outputChannel.appendLine(`[${new Date().toISOString()}] === Stopped CPQ Server Log Streaming ===`);
+    if (outputChannel) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] === Stopped CPQ Server Log Streaming ===`);
     }
   }
 
-  dispose() {
-    this.stopStream();
-    if (this.outputChannel) {
-      this.outputChannel.dispose();
-      this.outputChannel = null;
+  function dispose() {
+    stopStream();
+    if (outputChannel) {
+      outputChannel.dispose();
+      outputChannel = null;
     }
   }
+
+  return {
+    get isStreaming() { return isStreaming; },
+    set isStreaming(val) { isStreaming = val; },
+    get timer() { return timer; },
+    set timer(val) { timer = val; },
+    getChannel,
+    fetchLogs,
+    startStream,
+    stopStream,
+    dispose
+  };
 }
+
+function RemoteLogStreamer() {
+  return createLogStreamer();
+}
+RemoteLogStreamer.formatLogEntry = formatLogEntry;
 
 let streamerInstance = null;
 
 function getLogStreamer() {
   if (!streamerInstance) {
-    streamerInstance = new RemoteLogStreamer();
+    streamerInstance = createLogStreamer();
   }
   return streamerInstance;
 }
 
-module.exports = { RemoteLogStreamer, getLogStreamer };
+module.exports = {
+  formatLogEntry,
+  fetchLogs,
+  createLogStreamer,
+  getLogStreamer,
+  RemoteLogStreamer
+};

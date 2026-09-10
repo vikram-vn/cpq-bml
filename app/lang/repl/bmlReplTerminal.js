@@ -5,142 +5,154 @@ try {
   vscode = {
     window: { createTerminal: () => ({ show: () => {} }) },
     commands: { registerCommand: () => ({ dispose: () => {} }) },
-    EventEmitter: class { event = () => {}; fire() {} }
+    EventEmitter: function() {
+      this.event = () => {};
+      this.fire = () => {};
+    }
   };
 }
 
-const { BmlReplSession } = require('./bmlReplSession');
+const { createBmlReplSession } = require('./bmlReplSession');
 
-/**
- * Interactive VS Code Pseudoterminal for the BML REPL.
- */
-class BmlReplTerminal {
-  constructor() {
-    this.session = new BmlReplSession();
-    this.writeEmitter = new vscode.EventEmitter();
-    this.onDidWrite = this.writeEmitter.event;
-    this.closeEmitter = new vscode.EventEmitter();
-    this.onDidClose = this.closeEmitter.event;
+function createBmlReplTerminal() {
+  const session = createBmlReplSession();
+  const writeEmitter = new vscode.EventEmitter();
+  const onDidWrite = writeEmitter.event;
+  const closeEmitter = new vscode.EventEmitter();
+  const onDidClose = closeEmitter.event;
 
-    this.currentLine = '';
-    this.historyIndex = -1;
-    this.history = [];
+  let currentLine = '';
+  let historyIndex = -1;
+  const history = [];
+
+  function write(text) {
+    writeEmitter.fire(text);
   }
 
-  open() {
-    this.write('\r\n\x1b[1;36m=== Oracle CPQ BML Interactive REPL ===\x1b[0m\r\n');
-    this.write('Type BML statements/expressions or \x1b[33m.help\x1b[0m for options.\r\n\r\n');
-    this.prompt();
+  function prompt() {
+    write('\x1b[1;32m>>> \x1b[0m');
   }
 
-  close() {
-    this.closeEmitter.fire();
+  function open() {
+    write('\r\n\x1b[1;36m=== Oracle CPQ BML Interactive REPL ===\x1b[0m\r\n');
+    write('Type BML statements/expressions or \x1b[33m.help\x1b[0m for options.\r\n\r\n');
+    prompt();
   }
 
-  write(text) {
-    this.writeEmitter.fire(text);
+  function close() {
+    closeEmitter.fire();
   }
 
-  prompt() {
-    this.write('\x1b[1;32m>>> \x1b[0m');
+  function replaceLine(newLine) {
+    while (currentLine.length > 0) {
+      write('\b \b');
+      currentLine = currentLine.slice(0, -1);
+    }
+    currentLine = newLine;
+    write(newLine);
   }
 
-  handleInput(data) {
-    // Handle Enter
+  function handleInput(data) {
     if (data === '\r' || data === '\n') {
-      this.write('\r\n');
-      const line = this.currentLine.trim();
+      write('\r\n');
+      const line = currentLine.trim();
 
       if (line) {
-        this.history.push(line);
-        this.historyIndex = this.history.length;
+        history.push(line);
+        historyIndex = history.length;
 
-        const res = this.session.execute(line);
+        const res = session.execute(line);
 
         if (res.type === 'exit') {
-          this.write('Exiting REPL.\r\n');
-          this.close();
+          write('Exiting REPL.\r\n');
+          close();
           return;
         }
 
-        // Print stdout if any prints occurred
         if (res.prints && res.prints.length > 0) {
           for (const p of res.prints) {
-            this.write(`\x1b[90m[print]\x1b[0m ${p}\r\n`);
+            write(`\x1b[90m[print]\x1b[0m ${p}\r\n`);
           }
         }
 
         if (res.type === 'result' && res.formatted) {
-          this.write(`\x1b[36m=> ${res.formatted}\x1b[0m\r\n`);
+          write(`\x1b[36m=> ${res.formatted}\x1b[0m\r\n`);
         } else if (res.type === 'help' || res.type === 'system') {
-          this.write(`\x1b[33m${res.text}\x1b[0m\r\n`);
+          write(`\x1b[33m${res.text}\x1b[0m\r\n`);
         } else if (res.type === 'error') {
-          this.write(`\x1b[31mError: ${res.error}\x1b[0m\r\n`);
+          write(`\x1b[31mError: ${res.error}\x1b[0m\r\n`);
         }
       }
 
-      this.currentLine = '';
-      this.prompt();
+      currentLine = '';
+      prompt();
       return;
     }
 
-    // Handle Backspace
     if (data === '\x7f' || data === '\b') {
-      if (this.currentLine.length > 0) {
-        this.currentLine = this.currentLine.slice(0, -1);
-        this.write('\b \b');
+      if (currentLine.length > 0) {
+        currentLine = currentLine.slice(0, -1);
+        write('\b \b');
       }
       return;
     }
 
-    // Handle Ctrl+C
     if (data === '\x03') {
-      this.write('^C\r\n');
-      this.currentLine = '';
-      this.prompt();
+      write('^C\r\n');
+      currentLine = '';
+      prompt();
       return;
     }
 
-    // Handle Arrow Keys (History recall)
-    if (data === '\x1b[A') { // Up Arrow
-      if (this.history.length > 0 && this.historyIndex > 0) {
-        this.historyIndex--;
-        this.replaceLine(this.history[this.historyIndex]);
+    if (data === '\x1b[A') {
+      if (history.length > 0 && historyIndex > 0) {
+        historyIndex--;
+        replaceLine(history[historyIndex]);
       }
       return;
     }
 
-    if (data === '\x1b[B') { // Down Arrow
-      if (this.historyIndex < this.history.length - 1) {
-        this.historyIndex++;
-        this.replaceLine(this.history[this.historyIndex]);
+    if (data === '\x1b[B') {
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        replaceLine(history[historyIndex]);
       } else {
-        this.historyIndex = this.history.length;
-        this.replaceLine('');
+        historyIndex = history.length;
+        replaceLine('');
       }
       return;
     }
 
-    // Normal typing
-    this.currentLine += data;
-    this.write(data);
+    currentLine += data;
+    write(data);
   }
 
-  replaceLine(newLine) {
-    while (this.currentLine.length > 0) {
-      this.write('\b \b');
-      this.currentLine = this.currentLine.slice(0, -1);
-    }
-    this.currentLine = newLine;
-    this.write(newLine);
-  }
+  return {
+    session,
+    writeEmitter,
+    onDidWrite,
+    closeEmitter,
+    onDidClose,
+    get currentLine() { return currentLine; },
+    get history() { return history; },
+    open,
+    close,
+    write,
+    prompt,
+    handleInput,
+    replaceLine
+  };
+}
+
+function BmlReplTerminal() {
+  return createBmlReplTerminal();
 }
 
 let activeTerminal = null;
 
 function registerReplCommand(context) {
   const disposable = vscode.commands.registerCommand('cpqBml.openRepl', () => {
-    const pty = new BmlReplTerminal();
+    const pty = createBmlReplTerminal();
     activeTerminal = vscode.window.createTerminal({
       name: 'BML REPL',
       pty
@@ -151,4 +163,8 @@ function registerReplCommand(context) {
   context.subscriptions.push(disposable);
 }
 
-module.exports = { BmlReplTerminal, registerReplCommand };
+module.exports = {
+  createBmlReplTerminal,
+  BmlReplTerminal,
+  registerReplCommand
+};

@@ -11,7 +11,7 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const { TransactionMockGenerator } = require('../apiTransactionMock');
+const { fetchTransaction, extractMockAttributes, generateBmlTestScaffold } = require('../apiTransactionMock');
 
 function registerTransactionMockCommands(context) {
   const disposable = vscode.commands.registerCommand('cpqBml.rest.generateTransactionMock', async () => {
@@ -28,9 +28,9 @@ function registerTransactionMockCommands(context) {
       cancellable: false
     }, async () => {
       try {
-        const raw = await TransactionMockGenerator.fetchTransaction(transId.trim(), null, vscode);
-        const mock = TransactionMockGenerator.extractMockAttributes(raw);
-        const testCode = TransactionMockGenerator.generateBmlTestScaffold(mock);
+        const raw = await fetchTransaction(transId.trim(), null, vscode);
+        const mock = extractMockAttributes(raw);
+        const testCode = generateBmlTestScaffold(mock);
 
         const folders = vscode.workspace.workspaceFolders;
         const root = folders && folders.length > 0 ? folders[0].uri.fsPath : process.cwd();

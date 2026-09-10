@@ -21,106 +21,104 @@ const { TransactionMockGenerator } = require('./apiTransactionMock');
 /**
  * Simulates clicking a Commerce Action and computes attribute deltas.
  */
-class ActionSimulator {
-  static async executeAction(transId, actionName, proc, vscodeInstance = vscode, customTransport) {
-    const baseUrl = getBaseUrl(vscodeInstance);
-    const authHeader = getAuthHeader(vscodeInstance);
-    if (!baseUrl || !authHeader) {
-      throw new Error('CPQ site URL or credentials are not configured.');
-    }
-
-    const version = getRestVersion(vscodeInstance);
-    const process = proc || getCommerceProcess(vscodeInstance) || 'oraclecpqo';
-
-    // 1. Fetch pre-action state
-    const beforePayload = await TransactionMockGenerator.fetchTransaction(transId, process, vscodeInstance, customTransport);
-    const beforeAttrs = TransactionMockGenerator.extractMockAttributes(beforePayload);
-
-    // 2. Dispatch Action POST
-    const actionPath = `/rest/${version}/commerceProcesses/${process}/transactions/${transId}/actions/${actionName}`;
-    const res = await request({
-      baseUrl,
-      path: actionPath,
-      method: 'POST',
-      headers: {
-        Authorization: authHeader,
-        Accept: 'application/json'
-      },
-      body: {},
-      timeoutMs: getSettings(vscodeInstance).timeoutMs || 30000,
-      transport: customTransport
-    });
-
-    if (res.statusCode < 200 || res.statusCode >= 300) {
-      const err = typeof res.body === 'string' ? res.body : JSON.stringify(res.body || {});
-      throw new Error(`HTTP ${res.statusCode}: ${err || 'Action execution failed'}`);
-    }
-
-    const afterPayload = res.body || {};
-    const afterAttrs = TransactionMockGenerator.extractMockAttributes(afterPayload);
-
-    // 3. Compute Delta
-    const delta = ActionSimulator.computeAttributeDelta(beforeAttrs, afterAttrs);
-    return {
-      actionName,
-      transactionId: transId,
-      delta,
-      before: beforeAttrs,
-      after: afterAttrs
-    };
+async function executeAction(transId, actionName, proc, vscodeInstance = vscode, customTransport) {
+  const baseUrl = getBaseUrl(vscodeInstance);
+  const authHeader = getAuthHeader(vscodeInstance);
+  if (!baseUrl || !authHeader) {
+    throw new Error('CPQ site URL or credentials are not configured.');
   }
 
-  static computeAttributeDelta(before, after) {
-    const changes = [];
-    const allKeys = new Set([...Object.keys(before.header), ...Object.keys(after.header)]);
+  const version = getRestVersion(vscodeInstance);
+  const process = proc || getCommerceProcess(vscodeInstance) || 'oraclecpqo';
 
-    for (const key of allKeys) {
-      const oldVal = before.header[key];
-      const newVal = after.header[key];
+  // 1. Fetch pre-action state
+  const beforePayload = await TransactionMockGenerator.fetchTransaction(transId, process, vscodeInstance, customTransport);
+  const beforeAttrs = TransactionMockGenerator.extractMockAttributes(beforePayload);
 
-      if (JSON.stringify(oldVal) !== JSON.stringify(newVal)) {
-        changes.push({
-          attribute: key,
-          before: oldVal !== undefined ? oldVal : '(none)',
-          after: newVal !== undefined ? newVal : '(deleted)'
-        });
-      }
-    }
+  // 2. Dispatch Action POST
+  const actionPath = `/rest/${version}/commerceProcesses/${process}/transactions/${transId}/actions/${actionName}`;
+  const res = await request({
+    baseUrl,
+    path: actionPath,
+    method: 'POST',
+    headers: {
+      Authorization: authHeader,
+      Accept: 'application/json'
+    },
+    body: {},
+    timeoutMs: getSettings(vscodeInstance).timeoutMs || 30000,
+    transport: customTransport
+  });
 
-    const lineDiff = {
-      beforeCount: before.lines.length,
-      afterCount: after.lines.length,
-      countChanged: before.lines.length !== after.lines.length
-    };
-
-    return {
-      headerChanges: changes,
-      lineDiff
-    };
+  if (res.statusCode < 200 || res.statusCode >= 300) {
+    const err = typeof res.body === 'string' ? res.body : JSON.stringify(res.body || {});
+    throw new Error(`HTTP ${res.statusCode}: ${err || 'Action execution failed'}`);
   }
 
-  static formatDeltaReport(result) {
-    const lines = [];
-    lines.push(`=== Commerce Action Delta: ${result.actionName} (Quote #${result.transactionId}) ===`);
-    lines.push(`Executed At: ${new Date().toISOString()}`);
-    lines.push(`--------------------------------------------------------------------------------`);
+  const afterPayload = res.body || {};
+  const afterAttrs = TransactionMockGenerator.extractMockAttributes(afterPayload);
 
-    if (result.delta.headerChanges.length === 0) {
-      lines.push('No header attribute changes detected.');
-    } else {
-      lines.push(`Header Attributes Modified (${result.delta.headerChanges.length}):`);
-      for (const ch of result.delta.headerChanges) {
-        lines.push(`  * ${ch.attribute}:`);
-        lines.push(`      Before: ${JSON.stringify(ch.before)}`);
-        lines.push(`      After:  ${JSON.stringify(ch.after)}`);
-      }
+  // 3. Compute Delta
+  const delta = computeAttributeDelta(beforeAttrs, afterAttrs);
+  return {
+    actionName,
+    transactionId: transId,
+    delta,
+    before: beforeAttrs,
+    after: afterAttrs
+  };
+}
+
+function computeAttributeDelta(before, after) {
+  const changes = [];
+  const allKeys = new Set([...Object.keys(before.header), ...Object.keys(after.header)]);
+
+  for (const key of allKeys) {
+    const oldVal = before.header[key];
+    const newVal = after.header[key];
+
+    if (JSON.stringify(oldVal) !== JSON.stringify(newVal)) {
+      changes.push({
+        attribute: key,
+        before: oldVal !== undefined ? oldVal : '(none)',
+        after: newVal !== undefined ? newVal : '(deleted)'
+      });
     }
-
-    lines.push(`--------------------------------------------------------------------------------`);
-    lines.push(`Line Items: ${result.delta.lineDiff.beforeCount} -> ${result.delta.lineDiff.afterCount} lines`);
-    lines.push(`================================================================================`);
-    return lines.join('\n');
   }
+
+  const lineDiff = {
+    beforeCount: before.lines.length,
+    afterCount: after.lines.length,
+    countChanged: before.lines.length !== after.lines.length
+  };
+
+  return {
+    headerChanges: changes,
+    lineDiff
+  };
+}
+
+function formatDeltaReport(result) {
+  const lines = [];
+  lines.push(`=== Commerce Action Delta: ${result.actionName} (Quote #${result.transactionId}) ===`);
+  lines.push(`Executed At: ${new Date().toISOString()}`);
+  lines.push(`--------------------------------------------------------------------------------`);
+
+  if (result.delta.headerChanges.length === 0) {
+    lines.push('No header attribute changes detected.');
+  } else {
+    lines.push(`Header Attributes Modified (${result.delta.headerChanges.length}):`);
+    for (const ch of result.delta.headerChanges) {
+      lines.push(`  * ${ch.attribute}:`);
+      lines.push(`      Before: ${JSON.stringify(ch.before)}`);
+      lines.push(`      After:  ${JSON.stringify(ch.after)}`);
+    }
+  }
+
+  lines.push(`--------------------------------------------------------------------------------`);
+  lines.push(`Line Items: ${result.delta.lineDiff.beforeCount} -> ${result.delta.lineDiff.afterCount} lines`);
+  lines.push(`================================================================================`);
+  return lines.join('\n');
 }
 
 let deltaChannel = null;
@@ -147,13 +145,13 @@ function registerActionSimulatorCommands(context) {
     }, async (progress) => {
       progress.report({ increment: 30, message: 'Executing action and computing delta...' });
       try {
-        const result = await ActionSimulator.executeAction(transId.trim(), actionName.trim(), null, vscode);
+        const result = await executeAction(transId.trim(), actionName.trim(), null, vscode);
 
         if (!deltaChannel) {
           deltaChannel = vscode.window.createOutputChannel('CPQ Action Delta');
         }
         deltaChannel.show(true);
-        deltaChannel.appendLine(ActionSimulator.formatDeltaReport(result));
+        deltaChannel.appendLine(formatDeltaReport(result));
 
         vscode.window.showInformationMessage(
           `Action '${actionName}' completed: ${result.delta.headerChanges.length} attributes updated.`
@@ -167,4 +165,16 @@ function registerActionSimulatorCommands(context) {
   context.subscriptions.push(disposable);
 }
 
-module.exports = { ActionSimulator, registerActionSimulatorCommands };
+const ActionSimulator = {
+  executeAction,
+  computeAttributeDelta,
+  formatDeltaReport
+};
+
+module.exports = {
+  executeAction,
+  computeAttributeDelta,
+  formatDeltaReport,
+  ActionSimulator,
+  registerActionSimulatorCommands
+};

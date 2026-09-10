@@ -8,7 +8,7 @@ try {
   };
 }
 
-const { getLogStreamer, RemoteLogStreamer } = require('../apiLogs');
+const { getLogStreamer, formatLogEntry } = require('../apiLogs');
 
 function registerLogCommands(context) {
   const streamer = getLogStreamer();
@@ -34,7 +34,7 @@ function registerLogCommands(context) {
         channel.show(true);
         channel.appendLine(`[${new Date().toISOString()}] === Fetched ${logs.length} Recent CPQ Logs ===`);
         for (const item of logs.slice(0, 30)) {
-          channel.appendLine(RemoteLogStreamer.formatLogEntry(item));
+          channel.appendLine(formatLogEntry(item));
         }
         vscode.window.showInformationMessage(`Fetched ${logs.length} recent logs from CPQ.`);
       } catch (err) {
