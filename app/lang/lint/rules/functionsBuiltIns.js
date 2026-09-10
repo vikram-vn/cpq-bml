@@ -232,8 +232,28 @@ function countArguments(argsText) {
   return args.filter((a) => a.trim().length > 0).length;
 }
 
+const CANONICAL_FUNCTION_ALIASES = {
+  abs: 'fabs',
+  log10: 'log',
+  now: 'getdate',
+  today: 'getdate',
+  length: 'len',
+  indexof: 'find',
+  tolower: 'lower',
+  toupper: 'upper',
+  tolowercase: 'lower',
+  touppercase: 'upper',
+  btoa: 'encodebase64',
+  atob: 'decodebase64',
+  randomuuid: 'generateuuid',
+  strtodate: 'strtojavadate',
+};
+
 function findClosestBuiltInFunction(name, builtIns) {
   const nameLower = name.toLowerCase();
+  if (CANONICAL_FUNCTION_ALIASES[nameLower]) {
+    return CANONICAL_FUNCTION_ALIASES[nameLower];
+  }
   const nameLen = nameLower.length;
   let best = null;
   let bestDist = Infinity;

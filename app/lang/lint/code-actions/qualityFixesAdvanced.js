@@ -174,6 +174,19 @@ function getAdvancedQualityFixes(document, diag, editRange, extensionPath) {
             action.diagnostics = [diag];
             fixes.push(action);
         }
+        if (word.toLowerCase() === 'length') {
+            const arrAction = new vscode.CodeAction(`Replace with 'sizeofarray' (for arrays)`, vscode.CodeActionKind.QuickFix);
+            arrAction.edit = new vscode.WorkspaceEdit();
+            arrAction.edit.replace(document.uri, editRange, 'sizeofarray');
+            arrAction.diagnostics = [diag];
+            fixes.push(arrAction);
+        } else if (word.toLowerCase() === 'indexof') {
+            const arrAction = new vscode.CodeAction(`Replace with 'findinarray' (for arrays)`, vscode.CodeActionKind.QuickFix);
+            arrAction.edit = new vscode.WorkspaceEdit();
+            arrAction.edit.replace(document.uri, editRange, 'findinarray');
+            arrAction.diagnostics = [diag];
+            fixes.push(arrAction);
+        }
     }
     else if (diag.code === 'bml-null-check-required') {
         const varName = document.getText(editRange);
