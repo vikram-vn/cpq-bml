@@ -1,5 +1,6 @@
 const api = require('@/lang/rest/api');
 const { resolveCommerceTargets } = require('@/lang/cloud/cloudExplorerFiles');
+const { safeParseJson } = require('@/lang/cloud/cloudVscodeShim');
 
 async function fetchUtilFunctions(vscodeInstance, context) {
   let allItems = [];
@@ -12,10 +13,7 @@ async function fetchUtilFunctions(vscodeInstance, context) {
       break;
     }
 
-    let parsed = body;
-    if (typeof parsed === 'string') {
-      try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-    }
+    const parsed = safeParseJson(body);
     const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
     for (const it of items) {
       it.isCommerce = false;
@@ -58,10 +56,7 @@ async function fetchCommerceFunctions(vscodeInstance, context) {
         break;
       }
 
-      let parsed = body;
-      if (typeof parsed === 'string') {
-        try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-      }
+      const parsed = safeParseJson(body);
       const batch = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
       for (const it of batch) {
         it.isCommerce = true;
@@ -120,10 +115,7 @@ async function fetchCommerceActions(vscodeInstance, context) {
         return actions;
       }
 
-      let parsed = res.body;
-      if (typeof parsed === 'string') {
-        try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-      }
+      const parsed = safeParseJson(res.body);
 
       const items = Array.isArray(parsed)
         ? parsed

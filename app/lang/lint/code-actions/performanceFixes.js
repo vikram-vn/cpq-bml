@@ -52,6 +52,126 @@ function extractSbappendCall(text) {
     return null;
 }
 
+function isCpqLineItemArgs(args) {
+    if (!args) return false;
+    if (args.length === 5) {
+        const attrArg = args[2].trim();
+        const pipeArg = args[4].trim();
+        const hasTilde = attrArg.includes('~');
+        const isPipe = pipeArg === '"|"' || pipeArg === "'|'";
+        return hasTilde && isPipe;
+    }
+    if (args.length === 4) {
+        const attrArg = args[2].trim();
+        return attrArg.includes('~');
+    }
+    return false;
+}
+
+function checkCpqPairAtLines(document, lineIdxA, lineIdxB) {
+    if (lineIdxA < 0 || lineIdxB >= document.lineCount) return null;
+    const lineA = document.lineAt(lineIdxA).text;
+    const lineB = document.lineAt(lineIdxB).text;
+
+    const callA = extractSbappendCall(lineA);
+    const callB = extractSbappendCall(lineB);
+    if (!callA || !callB) return null;
+
+    const argsA = splitArgumentsList(callA.argsText);
+    const argsB = splitArgumentsList(callB.argsText);
+
+    // Pattern:
+    // lineA: sbappend(sb, serviceDocNum, "~extendedNetPrice_l~");
+    // lineB: sbappend(sb, string(SVC_FINAL_PRICE_DEFAULT), "|"); OR without pipe: sbappend(sb, string(SVC_FINAL_PRICE_DEFAULT));
+    if (argsA.length === 3 && (argsB.length === 2 || argsB.length === 3)) {
+        const sbA = argsA[0].trim();
+        const sbB = argsB[0].trim();
+        if (sbA !== sbB) return null;
+
+        const docNum = argsA[1].trim();
+        const varArg = argsA[2].trim();
+        const valArg = argsB[1].trim();
+        const pipeArg = (argsB.length === 3 && (argsB[2].trim() === '"|"' || argsB[2].trim() === "'|'"))
+            ? argsB[2].trim()
+            : '"|"';
+
+        if (varArg.includes('~')) {
+            const indentMatch = lineA.match(/^(\s*)/);
+            const indent = indentMatch ? indentMatch[1] : '';
+            const combined = `${indent}sbappend(${sbA}, ${docNum}, ${varArg}, ${valArg}, ${pipeArg});`;
+            const rangeA = document.lineAt(lineIdxA).range;
+            const rangeB = document.lineAt(lineIdxB).range;
+            const fullRange = new vscode.Range(rangeA.start, rangeB.end);
+
+            return {
+                combined,
+                range: fullRange,
+                sb: sbA,
+                docNum,
+                varArg,
+                valArg,
+                pipeArg
+            };
+        }
+    }
+    return null;
+}
+
+function buildCpqLineItemSingleFixes(document, lineIndex) {
+    const fixes = [];
+    if (lineIndex < 0 || lineIndex >= document.lineCount) return fixes;
+    const line = document.lineAt(lineIndex);
+    const call = extractSbappendCall(line.text);
+    if (!call) return fixes;
+    const args = splitArgumentsList(call.argsText);
+    if (args.length === 4 && args[2].trim().includes('~')) {
+        const sb = args[0].trim();
+        const docNum = args[1].trim();
+        const varArg = args[2].trim();
+        const valArg = args[3].trim();
+        const indentMatch = line.text.match(/^(\s*)/);
+        const indent = indentMatch ? indentMatch[1] : '';
+        const replacement = `${indent}sbappend(${sb}, ${docNum}, ${varArg}, ${valArg}, "|");`;
+
+        let targetRange = line.range;
+        if (line.text !== call.fullMatch) {
+            const startPos = new vscode.Position(lineIndex, call.start);
+            const endPos = new vscode.Position(lineIndex, call.end);
+            targetRange = new vscode.Range(startPos, endPos);
+        }
+
+        const action = new vscode.CodeAction(
+            `Add CPQ delimiter pipe: 'sbappend(${sb}, ${docNum}, ${varArg}, ${valArg}, "|");'`,
+            vscode.CodeActionKind.QuickFix
+        );
+        action.isPreferred = true;
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, targetRange, replacement);
+        fixes.push(action);
+    }
+    return fixes;
+}
+
+function buildCpqLineItemCombineFixes(document, lineIndex, diag) {
+    const fixes = [];
+    let pair = checkCpqPairAtLines(document, lineIndex, lineIndex + 1);
+    if (!pair && lineIndex > 0) {
+        pair = checkCpqPairAtLines(document, lineIndex - 1, lineIndex);
+    }
+    if (pair) {
+        const action = new vscode.CodeAction(
+            `Combine into CPQ line item format: 'sbappend(${pair.sb}, ${pair.docNum}, ${pair.varArg}, ${pair.valArg}, ${pair.pipeArg});'`,
+            vscode.CodeActionKind.QuickFix
+        );
+        action.isPreferred = true;
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.replace(document.uri, pair.range, pair.combined);
+        if (diag) action.diagnostics = [diag];
+        fixes.push(action);
+    }
+    return fixes;
+}
+
 function buildSbappendSplitFixes(document, range, diag) {
     const fixes = [];
     const text = document.getText(range);
@@ -61,6 +181,9 @@ function buildSbappendSplitFixes(document, range, diag) {
     const args = splitArgumentsList(call.argsText);
     if (args.length <= 3) return fixes;
 
+    // Do not split canonical CPQ line item format: sbappend(sb, docNum, "~var~", val, "|");
+    if (isCpqLineItemArgs(args)) return fixes;
+
     const sbVar = args[0].trim();
     const items = args.slice(1);
 
@@ -69,11 +192,15 @@ function buildSbappendSplitFixes(document, range, diag) {
     const indentMatch = lineText.match(/^(\s*)/);
     const indent = indentMatch ? indentMatch[1] : '';
 
+    const hasCpqPattern = items.some(it => it.includes('~'));
+    const chunkSize = hasCpqPattern && items.length >= 4 ? 4 : 2;
+
     const pairedStatements = [];
-    for (let i = 0; i < items.length; i += 2) {
-        const chunk = items.slice(i, i + 2);
+    for (let i = 0; i < items.length; i += chunkSize) {
+        const chunk = items.slice(i, i + chunkSize);
         pairedStatements.push(`sbappend(${sbVar}, ${chunk.map(c => c.trim()).join(', ')});`);
     }
+    if (pairedStatements.length <= 1) return fixes;
     const pairedReplacement = pairedStatements.join('\n' + indent);
 
     // Precise range replacement
@@ -84,7 +211,10 @@ function buildSbappendSplitFixes(document, range, diag) {
         targetRange = new vscode.Range(startPos, endPos);
     }
 
-    const pairedAction = new vscode.CodeAction("Split 'sbappend' into paired statements", vscode.CodeActionKind.QuickFix);
+    const pairedAction = new vscode.CodeAction(
+        chunkSize === 4 ? "Split into CPQ line item 'sbappend' statements" : "Split 'sbappend' into paired statements",
+        vscode.CodeActionKind.QuickFix
+    );
     pairedAction.isPreferred = true;
     pairedAction.edit = new vscode.WorkspaceEdit();
     pairedAction.edit.replace(document.uri, targetRange, pairedReplacement);
@@ -97,15 +227,27 @@ function buildSbappendSplitFixes(document, range, diag) {
 function createSbappendSplitActions(document, range) {
     const actions = [];
     if (!range || !document) return actions;
-    const line = document.lineAt(range.start.line);
+    const lineIndex = range.start.line;
+    const line = document.lineAt(lineIndex);
     const lineText = line.text;
     if (!lineText.includes('sbappend')) return actions;
+
+    // Check CPQ line item combination across adjacent lines
+    const combineFixes = buildCpqLineItemCombineFixes(document, lineIndex);
+    actions.push(...combineFixes);
+
+    // Check single-line CPQ line item missing delimiter pipe
+    const singleFixes = buildCpqLineItemSingleFixes(document, lineIndex);
+    actions.push(...singleFixes);
 
     const call = extractSbappendCall(lineText);
     if (!call) return actions;
 
-    const matchRange = new vscode.Range(range.start.line, call.start, range.start.line, call.end);
-    if (range.intersection(matchRange) || (range.isEmpty && range.start.character >= call.start && range.start.character <= call.end)) {
+    const matchRange = new vscode.Range(lineIndex, call.start, lineIndex, call.end);
+    const hasIntersection = (typeof range.intersection === 'function')
+        ? (range.intersection(matchRange) || (range.isEmpty && range.start.character >= call.start && range.start.character <= call.end))
+        : (range.start && range.end && !(range.end.character < call.start || range.start.character > call.end));
+    if (hasIntersection) {
         actions.push(...buildSbappendSplitFixes(document, matchRange));
     }
     return actions;
@@ -185,6 +327,10 @@ function getPerformanceFixes(document, diag, editRange) {
         action.edit.replace(document.uri, editRange, cleaned);
         action.diagnostics = [diag];
         fixes.push(action);
+    }
+    else if (diag.code === 'bml-sbappend-cpq-split') {
+        const lineIndex = editRange.start.line;
+        fixes.push(...buildCpqLineItemCombineFixes(document, lineIndex, diag));
     }
     else if (diag.code === 'bml-sbappend-multiple-args') {
         fixes.push(...buildSbappendSplitFixes(document, editRange, diag));

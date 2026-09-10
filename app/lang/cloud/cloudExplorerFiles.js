@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { getSettings, getUtilLibrariesFolder } = require('@/lang/rest/config');
+const { safeParseJson } = require('@/lang/cloud/cloudVscodeShim');
 
 let activeCommerceTarget = null;
 
@@ -76,10 +77,7 @@ async function resolveCommerceTargets(vscodeInstance, context, forceRemote = fal
   try {
     const res = await api.listCommerceProcesses(context, vscodeInstance);
     if (res && res.statusCode >= 200 && res.statusCode < 300) {
-      let body = res.body;
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch { body = {}; }
-      }
+      const body = safeParseJson(res.body);
       const items = Array.isArray(body) ? body : ((body && (body.items || body.processes || body.data)) || []);
       if (items.length > 0) {
         const discovered = [];
@@ -90,10 +88,7 @@ async function resolveCommerceTargets(vscodeInstance, context, forceRemote = fal
           try {
             const docRes = await api.listCommerceDocuments(context, vscodeInstance, { process: procVar, limit: 10 });
             if (docRes && docRes.statusCode >= 200 && docRes.statusCode < 300) {
-              let docBody = docRes.body;
-              if (typeof docBody === 'string') {
-                try { docBody = JSON.parse(docBody); } catch { docBody = {}; }
-              }
+              const docBody = safeParseJson(docRes.body);
               const docItems = Array.isArray(docBody) ? docBody : ((docBody && (docBody.items || docBody.documents)) || []);
               if (docItems.length > 0) {
                 docVar = docItems[0].variableName || docItems[0].name || 'transaction';

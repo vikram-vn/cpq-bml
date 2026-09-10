@@ -1,45 +1,4 @@
-let vscode;
-try {
-  vscode = require('vscode');
-} catch {
-  vscode = {
-    TreeItem: function (label, collapsibleState) {
-      this.label = label;
-      this.collapsibleState = collapsibleState;
-    },
-    TreeItemCollapsibleState: { None: 0, Collapsed: 1, Expanded: 2 },
-    EventEmitter: function () {
-      this.event = () => ({ dispose: () => {} });
-      this.fire = () => {};
-    },
-    ThemeIcon: function (id, color) {
-      this.id = id;
-      this.color = color;
-    },
-    ThemeColor: function (id) {
-      this.id = id;
-    },
-    window: {
-      registerTreeDataProvider: () => ({ dispose: () => {} }),
-      showInformationMessage: () => {},
-      showErrorMessage: () => {},
-      showWarningMessage: () => {},
-      showSaveDialog: () => {},
-      withProgress: async (opt, task) => task({ report: () => {} })
-    },
-    commands: {
-      registerCommand: () => ({ dispose: () => {} }),
-      executeCommand: () => {}
-    },
-    workspace: {
-      workspaceFolders: [],
-      fs: { writeFile: () => {} }
-    },
-    Uri: {
-      file: (f) => ({ fsPath: f, scheme: 'file', toString: () => f })
-    }
-  };
-}
+const { vscode, safeParseJson } = require('./cloudVscodeShim');
 
 const fs = require('fs');
 const path = require('path');
@@ -63,10 +22,7 @@ async function fetchRemoteDataTables(vscodeInstance = vscode, customTransport, c
   try {
     const res = await api.listDataTables(ctx, vsc, { limit: 1000 }, transport);
     if (res && res.statusCode >= 200 && res.statusCode < 300) {
-      let body = res.body || {};
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch { body = {}; }
-      }
+      const body = safeParseJson(res.body);
       const items = body.items || (Array.isArray(body) ? body : []);
       return items.map(t => ({
         name: t.name || t.variableName || t.tableName || 'UnknownTable',
@@ -100,10 +56,7 @@ async function fetchTableSchema(tableName, vscodeInstance = vscode, customTransp
   try {
     const res = await api.getDataTableSchema(ctx, vsc, tableName, transport);
     if (res && res.statusCode >= 200 && res.statusCode < 300) {
-      let body = res.body || {};
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch { body = {}; }
-      }
+      const body = safeParseJson(res.body);
       const columns = body.columns || body.fields || body.items || [];
       return columns.map(c => ({
         name: c.name || c.variableName || 'col',
@@ -136,10 +89,7 @@ async function fetchTableRows(tableName, { limit = 200, offset = 0, query } = {}
   try {
     const res = await api.getDataTableRows(ctx, vsc, tableName, { limit, offset, q: query }, transport);
     if (res && res.statusCode >= 200 && res.statusCode < 300) {
-      let body = res.body || {};
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch { body = {}; }
-      }
+      const body = safeParseJson(res.body);
       return body.items || (Array.isArray(body) ? body : []);
     }
     return [];

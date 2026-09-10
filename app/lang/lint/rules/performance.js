@@ -7,6 +7,22 @@ function makeDiagnostic(range, message, severity, code) {
     return diag;
 }
 
+function isCpqLineItemArgs(args) {
+    if (!args) return false;
+    if (args.length === 5) {
+        const attrArg = args[2].trim();
+        const pipeArg = args[4].trim();
+        const hasTilde = attrArg.includes('~');
+        const isPipe = pipeArg === '"|"' || pipeArg === "'|'";
+        return hasTilde && isPipe;
+    }
+    if (args.length === 4) {
+        const attrArg = args[2].trim();
+        return attrArg.includes('~');
+    }
+    return false;
+}
+
 function checkPerformance(cleanText, noStringsText, doc) {
     const diagnostics = [];
 
@@ -290,6 +306,10 @@ function checkPerformance(cleanText, noStringsText, doc) {
                 const argsText = cleanText.substring(openParenIdx + 1, closeParenIdx);
                 const args = splitArgumentsList(argsText);
                 if (args.length > 3) {
+                    // Do not flag canonical CPQ line item format: sbappend(sb, docNum, "~var~", val, "|");
+                    if (isCpqLineItemArgs(args)) {
+                        continue;
+                    }
                     const startPos = doc.positionAt(match.index);
                     const endPos = doc.positionAt(fullEndIdx);
                     diagnostics.push(makeDiagnostic(
@@ -301,6 +321,21 @@ function checkPerformance(cleanText, noStringsText, doc) {
                 }
             }
         }
+    }
+
+    // 9. Split CPQ Line Item sbappend Check
+    // Detects when docNum~var~ and val| (or val without pipe) are split across separate sbappend calls
+    const splitCpqRegex = /\bsbappend\s*\(\s*(\w+)\s*,\s*([^,;]+)\s*,\s*(["']~[^~;]+~["'])\s*\)\s*;\s*sbappend\s*\(\s*\1\s*,\s*([^,;]+?)(?:\s*,\s*(["']\|["']))?\s*\)\s*;/gi;
+    let splitMatch;
+    while ((splitMatch = splitCpqRegex.exec(cleanText)) !== null) {
+        const startPos = doc.positionAt(splitMatch.index);
+        const endPos = doc.positionAt(splitMatch.index + splitMatch[0].length);
+        diagnostics.push(makeDiagnostic(
+            new vscode.Range(startPos, endPos),
+            `CPQ Line Item Advisory: Split 'sbappend' statements found for attribute ${splitMatch[3]}. Use canonical format 'sbappend(sb, docNum, "~var~", val, "|");'`,
+            vscode.DiagnosticSeverity.Information,
+            'bml-sbappend-cpq-split'
+        ));
     }
 
     return diagnostics;

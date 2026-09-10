@@ -1,17 +1,4 @@
-let vscode;
-try {
-  vscode = require('vscode');
-} catch {
-  vscode = {
-    window: {
-      showInformationMessage: () => {},
-      showErrorMessage: () => {},
-      withProgress: async (opt, task) => task({ report: () => {} })
-    },
-    commands: { registerCommand: () => ({ dispose: () => {} }) },
-    workspace: { workspaceFolders: [] }
-  };
-}
+const { vscode, safeParseJson } = require('./cloudVscodeShim');
 
 const fs = require('fs');
 const path = require('path');
@@ -54,10 +41,7 @@ async function fetchCloudSignatures(context, vscodeInstance = vscode) {
       throw new Error(`HTTP ${statusCode}: Unable to list library functions for type definitions.`);
     }
 
-    let parsed = body;
-    if (typeof parsed === 'string') {
-      try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-    }
+    const parsed = safeParseJson(body);
     const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
     allItems = allItems.concat(items);
 

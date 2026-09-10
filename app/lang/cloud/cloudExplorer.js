@@ -1,49 +1,7 @@
-let vscode;
-try {
-  vscode = require('vscode');
-} catch {
-  vscode = {
-    TreeItem: function (label, collapsibleState) {
-      this.label = label;
-      this.collapsibleState = collapsibleState;
-    },
-    TreeItemCollapsibleState: { None: 0, Collapsed: 1, Expanded: 2 },
-    EventEmitter: function () {
-      this.event = () => ({ dispose: () => {} });
-      this.fire = () => {};
-    },
-    ThemeIcon: function (id, color) {
-      this.id = id;
-      this.color = color;
-    },
-    ThemeColor: function (id) {
-      this.id = id;
-    },
-    window: {
-      registerTreeDataProvider: () => ({ dispose: () => {} }),
-      showInformationMessage: () => {},
-      showErrorMessage: () => {},
-      showWarningMessage: () => {},
-      showTextDocument: async () => {},
-      withProgress: async (opt, task) => task({ report: () => {} })
-    },
-    commands: {
-      registerCommand: () => ({ dispose: () => {} }),
-      executeCommand: () => {}
-    },
-    workspace: {
-      workspaceFolders: [],
-      openTextDocument: () => {}
-    },
-    Uri: {
-      file: (f) => ({ fsPath: f, scheme: 'file', toString: () => f })
-    }
-  };
-}
-
+const { vscode } = require('./cloudVscodeShim');
 const path = require('path');
 const api = require('@/lang/rest/api');
-const { getSettings } = require('@/lang/rest/config');
+const { getSettings, getWorkspaceRoot } = require('@/lang/rest/config');
 const {
   findLocalFunctionFile,
   groupFunctionsByFolder,
@@ -110,10 +68,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     }
   }
 
-  function getWorkspaceRoot() {
-    const folders = vscodeInstance.workspace.workspaceFolders;
-    return folders && folders.length > 0 ? folders[0].uri.fsPath : null;
-  }
+  const getRoot = () => getWorkspaceRoot(vscodeInstance);
 
   function getTreeItem(element) {
     if (element.type === 'category') {
@@ -185,7 +140,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     // Function item
     const fn = element.data;
     const varName = fn.variableName || fn.name;
-    const wsRoot = getWorkspaceRoot();
+    const wsRoot = getRoot();
     const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
     const commerceMetadata = isCommerce
       ? { commerceProcess: fn.commerceProcess, commerceDocument: fn.commerceDocument }
@@ -298,7 +253,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
   }
 
   async function getChildren(element) {
-    const wsRoot = getWorkspaceRoot();
+    const wsRoot = getRoot();
     if (!wsRoot) {
       return [];
     }

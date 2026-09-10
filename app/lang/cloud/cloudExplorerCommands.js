@@ -1,13 +1,9 @@
-let vscode;
-try {
-  vscode = require('vscode');
-} catch {}
-
+const { vscode, safeParseJson } = require('./cloudVscodeShim');
 const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const metadataLib = require('@/lang/rest/metadata');
-const { getSettings, getUtilLibrariesFolder, getCommerceLibrariesFolder } = require('@/lang/rest/config');
+const { getSettings, getWorkspaceRoot, getUtilLibrariesFolder, getCommerceLibrariesFolder } = require('@/lang/rest/config');
 const { findLocalFunctionFile } = require('@/lang/cloud/cloudExplorerFiles');
 
 const activePulls = new Set();
@@ -24,13 +20,11 @@ async function pullFunctionCommand(item, vscodeInstance = vscode, context) {
 
   const varName = fn.variableName || fn.name;
   const folderName = fn.folderName || fn.namespace || 'util';
-  const folders = vscodeInstance.workspace.workspaceFolders;
-  if (!folders || folders.length === 0) {
+  const root = getWorkspaceRoot(vscodeInstance);
+  if (!root) {
     vscodeInstance.window.showErrorMessage('Please open a workspace folder first.');
     return;
   }
-
-  const root = folders[0].uri.fsPath;
   const settings = getSettings(vscodeInstance);
   const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
   const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
@@ -117,13 +111,11 @@ async function diffFunctionCommand(item, vscodeInstance = vscode, context) {
 
   const varName = fn.variableName || fn.name;
   const folderName = fn.folderName || fn.namespace || '';
-  const folders = vscodeInstance.workspace.workspaceFolders;
-  if (!folders || folders.length === 0) {
+  const root = getWorkspaceRoot(vscodeInstance);
+  if (!root) {
     vscodeInstance.window.showErrorMessage('Please open a workspace folder first.');
     return;
   }
-
-  const root = folders[0].uri.fsPath;
   const settings = getSettings(vscodeInstance);
   const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
   const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
@@ -191,11 +183,7 @@ async function openCommerceActionCommand(item, vscodeInstance = vscode, context)
       if (actionVar) {
         const res = await api.getCommerceAction(context, vscodeInstance, actionVar, { process: proc, document: doc });
         if (res && res.statusCode >= 200 && res.statusCode < 300) {
-          let body = res.body;
-          if (typeof body === 'string') {
-            try { body = JSON.parse(body); } catch {}
-          }
-          data = body || action;
+          data = safeParseJson(res.body, action);
         }
       }
       const formatted = JSON.stringify(data, null, 2);
@@ -218,10 +206,7 @@ async function switchCommerceProcessCommand(vscodeInstance = vscode, context) {
   try {
     const res = await api.listCommerceProcesses(context, vscodeInstance);
     if (res && res.statusCode >= 200 && res.statusCode < 300) {
-      let body = res.body;
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch {}
-      }
+      const body = safeParseJson(res.body);
       processes = Array.isArray(body) ? body : ((body && (body.items || body.processes || body.data)) || []);
     }
   } catch {}
@@ -255,10 +240,7 @@ async function switchCommerceProcessCommand(vscodeInstance = vscode, context) {
   try {
     const docRes = await api.listCommerceDocuments(context, vscodeInstance, { process: processVar, limit: 50 });
     if (docRes && docRes.statusCode >= 200 && docRes.statusCode < 300) {
-      let body = docRes.body;
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch {}
-      }
+      const body = safeParseJson(docRes.body);
       documents = Array.isArray(body) ? body : ((body && (body.items || body.documents || body.data)) || []);
     }
   } catch {}

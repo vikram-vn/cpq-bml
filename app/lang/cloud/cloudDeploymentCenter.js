@@ -1,45 +1,4 @@
-let vscode;
-try {
-  vscode = require('vscode');
-} catch {
-  vscode = {
-    TreeItem: function (label, collapsibleState) {
-      this.label = label;
-      this.collapsibleState = collapsibleState;
-    },
-    TreeItemCollapsibleState: { None: 0, Collapsed: 1, Expanded: 2 },
-    EventEmitter: function () {
-      this.event = () => ({ dispose: () => {} });
-      this.fire = () => {};
-    },
-    ThemeIcon: function (id, color) {
-      this.id = id;
-      this.color = color;
-    },
-    ThemeColor: function (id) {
-      this.id = id;
-    },
-    window: {
-      registerTreeDataProvider: () => ({ dispose: () => {} }),
-      showInformationMessage: () => {},
-      showErrorMessage: () => {},
-      showWarningMessage: () => {},
-      showTextDocument: async () => {},
-      withProgress: async (opt, task) => task({ report: () => {} })
-    },
-    commands: {
-      registerCommand: () => ({ dispose: () => {} }),
-      executeCommand: () => {}
-    },
-    workspace: {
-      workspaceFolders: [],
-      openTextDocument: async () => ({})
-    },
-    Uri: {
-      file: (f) => ({ fsPath: f, scheme: 'file', toString: () => f })
-    }
-  };
-}
+const { vscode, safeParseJson } = require('./cloudVscodeShim');
 
 const api = require('@/lang/rest/api');
 const { isConfigured, getSettings } = require('@/lang/rest/config');
@@ -70,11 +29,7 @@ function createDeploymentCenterProvider(vscodeInstance = vscode, context) {
         return { error: `HTTP ${res.statusCode}: Tasks endpoint returned status ${res.statusCode}` };
       }
 
-      let parsed = res.body;
-      if (typeof parsed === 'string') {
-        try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-      }
-
+      const parsed = safeParseJson(res.body);
       const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
       return { items };
     } catch (err) {
@@ -292,11 +247,7 @@ async function viewTaskDetailsCommand(item, vscodeInstance = vscode, context) {
       if (taskId) {
         const res = await api.getTask(context, vscodeInstance, taskId);
         if (res && res.statusCode >= 200 && res.statusCode < 300) {
-          let body = res.body;
-          if (typeof body === 'string') {
-            try { body = JSON.parse(body); } catch {}
-          }
-          data = body || task;
+          data = safeParseJson(res.body, task);
         }
       }
 

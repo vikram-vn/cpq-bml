@@ -315,5 +315,56 @@ suite('BML Comprehensive Quick Fixes Unit Tests', function() {
             const res = splitFunctionArgumentsIntoLines('sbappend(sb, doc, value, doc1, value2);');
             assert.strictEqual(res, null, 'Should return null for sbappend so function arguments are never broken across lines');
         });
+
+        test('combines split sbappend statements into canonical CPQ line item format with pipe', function() {
+            const doc = createMockDoc(
+                'sbappend(sb, serviceDocNum, "~extendedNetPrice_l~");\n' +
+                'sbappend(sb, string(SVC_FINAL_PRICE_DEFAULT), "|");\n'
+            );
+            const actions = createSbappendSplitActions(doc, new MockRange(0, 0, 0, 40));
+            const combineFix = actions.find(function(a) {
+                return a.title.includes('Combine into CPQ line item format');
+            });
+            assert.ok(combineFix, 'Should offer CPQ line item combine fix');
+            assert.strictEqual(
+                combineFix.edit._edits[0].newText,
+                'sbappend(sb, serviceDocNum, "~extendedNetPrice_l~", string(SVC_FINAL_PRICE_DEFAULT), "|");'
+            );
+        });
+
+        test('combines split sbappend statements when pipe is missing, automatically adding pipe', function() {
+            const doc = createMockDoc(
+                'sbappend(sb, serviceDocNum, "~netPrice_l~");\n' +
+                'sbappend(sb, string(SVC_NET_DEFAULT));\n'
+            );
+            const actions = createSbappendSplitActions(doc, new MockRange(0, 0, 0, 40));
+            const combineFix = actions.find(function(a) {
+                return a.title.includes('Combine into CPQ line item format');
+            });
+            assert.ok(combineFix, 'Should offer CPQ line item combine fix with auto-added pipe');
+            assert.strictEqual(
+                combineFix.edit._edits[0].newText,
+                'sbappend(sb, serviceDocNum, "~netPrice_l~", string(SVC_NET_DEFAULT), "|");'
+            );
+        });
+
+        test('does not split canonical CPQ line item format into pairs', function() {
+            const doc = createMockDoc('sbappend(sb, serviceDocNum, "~extendedNetPrice_l~", string(SVC_FINAL_PRICE_DEFAULT), "|");\n');
+            const fixes = buildSbappendSplitFixes(doc, new MockRange(0, 0, 0, 80));
+            assert.strictEqual(fixes.length, 0, 'Should not split canonical CPQ line item format');
+        });
+
+        test('adds delimiter pipe to single sbappend line item statement when pipe is missing', function() {
+            const doc = createMockDoc('sbappend(sb, serviceDocNum, "~extendedNetPrice_l~", string(SVC_FINAL_PRICE_DEFAULT));\n');
+            const actions = createSbappendSplitActions(doc, new MockRange(0, 0, 0, 80));
+            const addPipeFix = actions.find(function(a) {
+                return a.title.includes('Add CPQ delimiter pipe');
+            });
+            assert.ok(addPipeFix, 'Should offer to add missing CPQ delimiter pipe');
+            assert.strictEqual(
+                addPipeFix.edit._edits[0].newText,
+                'sbappend(sb, serviceDocNum, "~extendedNetPrice_l~", string(SVC_FINAL_PRICE_DEFAULT), "|");'
+            );
+        });
     });
 });

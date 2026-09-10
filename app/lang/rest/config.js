@@ -39,6 +39,13 @@ function getWorkspaceRoot(vscode) {
     return null;
 }
 
+function resolveCommerceScope(vscode, { process, document } = {}) {
+    return {
+        process: process || getCommerceProcess(vscode) || "oraclecpqo",
+        document: document || getCommerceDocument(vscode) || "transaction",
+    };
+}
+
 function getSettings(vscode) {
     const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === "function"
         ? vscode.workspace.getConfiguration("cpqBml")
@@ -430,4 +437,6 @@ module.exports = {
     ensureCredentials,
     saveWorkspaceConfig,
     getDebugConcurrency,
+    getWorkspaceRoot,
+    resolveCommerceScope,
 };

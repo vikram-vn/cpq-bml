@@ -1,39 +1,4 @@
-let vscode;
-try {
-  vscode = require('vscode');
-} catch {
-  vscode = {
-    window: {
-      showInputBox: async () => '',
-      showQuickPick: async () => null,
-      showInformationMessage: () => {},
-      showErrorMessage: () => {},
-      showWarningMessage: () => {},
-      showTextDocument: async () => {},
-      withProgress: async (opt, task) => task({ report: () => {} }),
-      createOutputChannel: () => ({ appendLine: () => {}, show: () => {} })
-    },
-    commands: {
-      registerCommand: () => ({ dispose: () => {} }),
-      executeCommand: () => {}
-    },
-    workspace: {
-      workspaceFolders: [],
-      openTextDocument: async () => ({})
-    },
-    Uri: {
-      file: (f) => ({ fsPath: f, scheme: 'file', toString: () => f })
-    },
-    Position: function (line, char) {
-      this.line = line;
-      this.character = char;
-    },
-    Range: function (start, end) {
-      this.start = start;
-      this.end = end;
-    }
-  };
-}
+const { vscode, safeParseJson } = require('./cloudVscodeShim');
 
 const fs = require('fs');
 const path = require('path');
@@ -134,10 +99,7 @@ async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQue
 
         if (res.statusCode >= 200 && res.statusCode < 300) {
           cloudAvailable = true;
-          let parsed = res.body;
-          if (typeof parsed === 'string') {
-            try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-          }
+          const parsed = safeParseJson(res.body);
           const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
           cloudResults = items.map(it => {
             const snippet = it.snippet || (it.scriptText ? it.scriptText.slice(0, 120).trim() : '');
