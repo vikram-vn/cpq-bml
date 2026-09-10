@@ -6,6 +6,8 @@
  * - performanceSbappend.test.js
  * - coreBuiltins.test.js
  * - functionsComprehensive.test.js
+ * - securityAndBmqlFixes.test.js
+ * - syntaxAndQualityRemaining.test.js
  */
 
 require('@/test/code-actions/memberAccess.test');
@@ -13,3 +15,5 @@ require('@/test/code-actions/signaturesAndTypes.test');
 require('@/test/code-actions/performanceSbappend.test');
 require('@/test/code-actions/coreBuiltins.test');
 require('@/test/code-actions/functionsComprehensive.test');
+require('@/test/code-actions/securityAndBmqlFixes.test');
+require('@/test/code-actions/syntaxAndQualityRemaining.test');

@@ -35,6 +35,17 @@ function createMockDoc(content) {
                 range: new MockRange(idx, 0, idx, lines[idx].length)
             };
         },
+        positionAt: function(offset) {
+            let cur = 0;
+            for (let i = 0; i < lines.length; i++) {
+                const len = lines[i].length + 1;
+                if (cur + len > offset) {
+                    return new MockPosition(i, offset - cur);
+                }
+                cur += len;
+            }
+            return new MockPosition(lines.length - 1, lines[lines.length - 1].length);
+        },
         uri: { fsPath: '/test/script.bml', toString: function() { return 'file:///test/script.bml'; } }
     };
 }
