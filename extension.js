@@ -13,15 +13,12 @@ const { registerSettingsPanel } = require("./app/lang/settings-panel");
 const { registerMcp } = require("./app/lang/mcp");
 const { registerXslt } = require("./app/lang/xslt");
 const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
-const { registerEnvironmentSwitcher } = require("./app/lang/statusBar/environmentSwitcher");
+const { registerEnvironmentSwitcher } = require("./app/lang/status-bar/environmentSwitcher");
 const { syncGlobalAgySkills } = require("./app/ai/setup/globalSkillSync");
 const { registerChatParticipant } = require("./app/ai/chatParticipant");
 const { registerTestController } = require("./app/lang/test/bmlTestController");
-const { registerDatatableEditor } = require("./app/lang/datatable/datatableEditorProvider");
 const { registerSchemaIntrospector } = require("./app/lang/intellisense/schemaIntrospector");
-const { BmqlConsolePanel } = require("./app/lang/bmql/bmqlConsolePanel");
 const { getCoverageDecorator } = require("./app/lang/test/coverageDecorator");
-const { registerDataTableCommands } = require("./app/lang/datatable/datatableCommands");
 const { registerLogCommands } = require("./app/lang/rest/commands/logs");
 const { registerTransactionMockCommands } = require("./app/lang/rest/commands/transactionMock");
 const { registerCacheFlushCommand } = require("./app/lang/rest/commands/cacheFlush");
@@ -74,14 +71,7 @@ function activate(context) {
   registerChatParticipant(context);
   registerEnvironmentSwitcher(context);
   registerTestController(context);
-  registerDatatableEditor(context);
   registerSchemaIntrospector(context);
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand("cpqBml.openBmqlConsole", () => {
-      BmqlConsolePanel.createOrShow(context);
-    })
-  );
 
   const coverageDecorator = getCoverageDecorator();
   context.subscriptions.push(
@@ -94,7 +84,6 @@ function activate(context) {
     })
   );
 
-  registerDataTableCommands(context);
   registerLogCommands(context);
   registerTransactionMockCommands(context);
   registerCacheFlushCommand(context);

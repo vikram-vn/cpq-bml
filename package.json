@@ -21,9 +21,6 @@
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
-  "bin": {
-    "cpq-bml": "./bin/cpq-bml.js"
-  },
   "contributes": {
     "cSpell": {
       "dictionaries": [
@@ -69,20 +66,6 @@
         }
       ]
     },
-    "customEditors": [
-      {
-        "viewType": "cpqBml.dataTableEditor",
-        "displayName": "CPQ Data Table Editor",
-        "selector": [
-          {
-            "filenamePattern": "*.dt.json"
-          },
-          {
-            "filenamePattern": "*.dt.csv"
-          }
-        ]
-      }
-    ],
     "mcpServerDefinitionProviders": [
       {
         "id": "cpqBml.mcpServers",
@@ -387,18 +370,8 @@
         "icon": "app/icons/ai-setup.svg"
       },
       {
-        "command": "cpqBml.openBmqlConsole",
-        "title": "CPQ-BML: Open Live BMQL Query Console",
-        "category": "BML"
-      },
-      {
         "command": "cpqBml.toggleCoverage",
         "title": "CPQ-BML: Toggle BML Test Coverage Heatmap",
-        "category": "BML"
-      },
-      {
-        "command": "cpqBml.inferDataTableSchema",
-        "title": "CPQ-BML: Infer Data Table Schema from CSV",
         "category": "BML"
       },
       {
@@ -547,13 +520,6 @@
           "command": "cpqBml.settings.open",
           "when": "resourceLangId == bml",
           "group": "navigation@7"
-        }
-      ],
-      "explorer/context": [
-        {
-          "command": "cpqBml.inferDataTableSchema",
-          "when": "resourceExtname == .csv",
-          "group": "7_modification"
         }
       ],
       "view/title": [
@@ -783,7 +749,6 @@
     }
   },
   "scripts": {
-    "audit": "node ./bin/cpq-bml.js audit .",
     "compile": "node scripts/build/compile.js",
     "watch": "esbuild extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
     "vscode:prepublish": "node scripts/build/compile.js --production",
@@ -793,7 +758,6 @@
     "crawl:cpq": "python scripts/docs/crawl_cpq_words.py",
     "generate:intellisense": "python scripts/bml_intellisense/generate_intellisense.py",
     "generate:docs": "npm run crawl:docs && npm run generate:intellisense",
-    "generate:icons": "node scripts/generate/generate_dynamic_icons.js",
     "build": "npm run package",
     "release": "python scripts/release/release.py",
     "pretest": "npm run compile",

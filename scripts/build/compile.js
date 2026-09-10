@@ -8,7 +8,6 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { performance } = require('perf_hooks');
-const { generateDynamicIcons } = require('../../app/lang/icons/dynamicFolderIcons');
 
 const ROOT = path.join(__dirname, '..', '..');
 const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
@@ -54,11 +53,6 @@ async function compileExtension() {
         path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'dist', 'main.js')
     );
 
-    const buildBmqlWebview = createWebviewBuild(
-        path.join(ROOT, 'app', 'lang', 'bmql', 'web-view', 'src', 'index.jsx'),
-        path.join(ROOT, 'app', 'lang', 'bmql', 'web-view', 'dist', 'main.js')
-    );
-
     // 2. Dictionaries (.txt -> .txt.br)
     const spellCheckDir = path.join(ROOT, 'app', 'lang', 'spell-check');
     const dictFiles = ['bml-words.txt', 'cpq-words.txt'];
@@ -91,12 +85,6 @@ async function compileExtension() {
         }
     }
 
-    // 4. Dynamic folder icon sync (pure Node.js)
-    try {
-        generateDynamicIcons(ROOT);
-    } catch (err) {
-        console.warn('Dynamic icons warning:', err.message);
-    }
 
     // 5. JSON minification (.json -> .min.json)
     const intellisenseDir = path.join(ROOT, 'app', 'lang', 'intellisense');
@@ -188,7 +176,7 @@ async function compileExtension() {
     }
 
     // Await all esbuild tasks
-    await Promise.all([buildExt, buildWebview, buildBmqlWebview]);
+    await Promise.all([buildExt, buildWebview]);
 
     const t1 = performance.now();
     console.log(`Compile finished in ${(t1 - t0).toFixed(1)}ms`);

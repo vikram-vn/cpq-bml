@@ -338,10 +338,14 @@ function registerCloudDataTables(context, vscodeInstance = vscode) {
     provider.refresh();
   });
 
-  const queryCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.queryDataTable', (item) => {
+  const queryCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.queryDataTable', async (item) => {
     const tableName = item?.data?.name || item?.name;
     if (tableName) {
-      vscodeInstance.commands.executeCommand('cpqBml.openBmqlConsole', `SELECT * FROM ${tableName}`);
+      const doc = await vscodeInstance.workspace.openTextDocument({
+        language: 'bml',
+        content: `// Query ${tableName}\nresults = bmql("SELECT * FROM ${tableName}");\n`
+      });
+      await vscodeInstance.window.showTextDocument(doc);
     }
   });
 
