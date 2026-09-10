@@ -52,7 +52,7 @@ app/lang/syntaxes/*.json
 app/images/**/*.svg
 app/lang/xslt/**
 app/lang/metrics/**
-app/lang/testing/**
+app/lang/test-controller/**
 app/ai/**
 
 # Ignore spell check JS source (compiled into dist/extension.js)

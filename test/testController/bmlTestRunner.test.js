@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { BmlTestRunner } = require('../../app/lang/test/bmlTestRunner');
+const { BmlTestRunner } = require('../../app/lang/test-controller/bmlTestRunner');
 
 suite('BML Test Runner & Assertions', () => {
     test('extracts test cases from @test annotations', () => {

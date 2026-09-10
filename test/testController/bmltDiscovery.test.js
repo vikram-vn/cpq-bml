@@ -2,7 +2,7 @@ const assert = require('assert');
 const {
   isTestFile,
   indexTestFile
-} = require('../../app/lang/test/bmlTestController');
+} = require('../../app/lang/test-controller/bmlTestController');
 
 suite('BMLT Test Discovery & Controller - Unit Tests', () => {
   test('isTestFile identifies .bmlt and .test.bml while excluding plain .bml', () => {
