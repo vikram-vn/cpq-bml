@@ -346,24 +346,6 @@
         "icon": "app/icons/beautify.svg"
       },
       {
-        "command": "cpqBml.test.runTests",
-        "title": "CPQ-BML: Run BML Tests",
-        "category": "BML",
-        "icon": "app/icons/run-tests.svg"
-      },
-      {
-        "command": "cpqBml.test.updateSnapshot",
-        "title": "CPQ-BML: Update BML Snapshot",
-        "category": "BML",
-        "icon": "app/icons/snapshot-update.svg"
-      },
-      {
-        "command": "cpqBml.test.compareSnapshot",
-        "title": "CPQ-BML: Compare BML Snapshot",
-        "category": "BML",
-        "icon": "app/icons/snapshot-compare.svg"
-      },
-      {
         "command": "cpqBml.ai.setupWorkspaceSkills",
         "title": "CPQ-BML: Setup AI Skills for Workspace",
         "category": "BML",

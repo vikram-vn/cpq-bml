@@ -12,7 +12,6 @@ const { setExtensionContext } = require("./app/lang/rest/commerceAttributes");
 const { registerSettingsPanel } = require("./app/lang/settings-panel");
 const { registerMcp } = require("./app/lang/mcp");
 const { registerXslt } = require("./app/lang/xslt");
-const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
 const { registerEnvironmentSwitcher } = require("./app/lang/status-bar/environmentSwitcher");
 const { syncGlobalAgySkills } = require("./app/ai/setup/globalSkillSync");
 const { registerChatParticipant } = require("./app/ai/chatParticipant");
@@ -66,8 +65,6 @@ function activate(context) {
   registerSettingsPanel(context);
   registerMcp(context);
   registerXslt(context);
-  registerBmlTestRunner(context);
-  registerBmlSnapshot(context);
   registerChatParticipant(context);
   registerEnvironmentSwitcher(context);
   registerTestController(context);
