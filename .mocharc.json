@@ -1,0 +1,4 @@
+{
+  "require": ["./scripts/register-alias.js"],
+  "ui": "tdd"
+}

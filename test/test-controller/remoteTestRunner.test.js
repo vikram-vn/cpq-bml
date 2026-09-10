@@ -5,7 +5,7 @@ const {
   extractBmltAssertions,
   executeRemoteBmltTest,
   formatTestRunReport
-} = require('../../app/lang/test-controller/remoteTestRunner');
+} = require('@/lang/test-controller/remoteTestRunner');
 
 suite('Server-Side BMLT Test Runner - Unit Tests', () => {
   test('extractBmltAssertions identifies assert.equals, assert.isTrue, and assert.notNull', () => {

@@ -26,6 +26,10 @@ async function compileExtension() {
         target: 'node18',
         treeShaking: true,
         drop: isProduction ? ['debugger'] : [],
+        alias: {
+            '@/app': path.join(ROOT, 'app'),
+            '@': path.join(ROOT, 'app')
+        },
         nodePaths: [path.join(ROOT, 'node_modules')],
         minify: isProduction,
         legalComments: isProduction ? 'none' : 'inline',
@@ -42,6 +46,10 @@ async function compileExtension() {
         treeShaking: true,
         drop: isProduction ? ['debugger'] : [],
         jsx: 'automatic',
+        alias: {
+            '@/app': path.join(ROOT, 'app'),
+            '@': path.join(ROOT, 'app')
+        },
         nodePaths: [path.join(ROOT, 'node_modules')],
         minify: isProduction,
         legalComments: isProduction ? 'none' : 'inline',
