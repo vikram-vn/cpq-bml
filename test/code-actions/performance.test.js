@@ -105,9 +105,7 @@ function runPerformanceCodeActionTests() {
 
             const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, sbDiag.range);
             const pairedAction = codeActions.find(a => a.title.includes("Split 'sbappend' into paired statements"));
-            const singleAction = codeActions.find(a => a.title.includes("Split 'sbappend' into individual statements"));
             assert.ok(pairedAction, "Should offer paired split Quick Fix");
-            assert.ok(singleAction, "Should offer single statement refactoring");
 
             await vscode.workspace.applyEdit(pairedAction.edit);
 

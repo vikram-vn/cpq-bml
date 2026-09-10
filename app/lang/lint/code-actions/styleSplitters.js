@@ -196,6 +196,9 @@ function splitConcatenationIntoLines(lineText) {
 }
 
 function splitFunctionArgumentsIntoLines(lineText) {
+    if (/\bsbappend\s*\(/i.test(lineText)) {
+        return null; // Do not split sbappend arguments across lines; use paired statements instead
+    }
     const match = lineText.match(/^(\s*(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?[a-zA-Z_]\w*\s*=\s*)?(\s*[a-zA-Z_]\w*\s*\()(.*)(\)\s*;?\s*)$/);
     if (!match) return null;
 

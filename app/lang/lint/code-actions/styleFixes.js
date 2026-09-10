@@ -141,6 +141,16 @@ function getStyleFixes(document, diag, editRange) {
         const lineIndex = editRange.start.line;
         const lineText = document.lineAt(lineIndex).text;
 
+        // 0. sbappend multi-argument statements: move to paired statements instead of splitting lines
+        if (/\bsbappend\s*\(/i.test(lineText)) {
+            const { buildSbappendSplitFixes } = require('@/lang/lint/code-actions/performanceFixes');
+            const sbFixes = buildSbappendSplitFixes(document, document.lineAt(lineIndex).range, diag);
+            if (sbFixes.length > 0) {
+                fixes.push(...sbFixes);
+                return fixes;
+            }
+        }
+
         // 1. Condition split (if / elif)
         const condSplit = splitConditionIntoLines(lineText);
         if (condSplit) {

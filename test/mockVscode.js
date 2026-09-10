@@ -226,6 +226,8 @@ const mockVscode = {
         }),
         registerTreeDataProvider: () => ({ dispose: () => {} }),
         createTreeView: () => ({ dispose: () => {} }),
+        createTextEditorDecorationType: () => ({ dispose: () => {} }),
+        onDidChangeActiveTextEditor: () => ({ dispose: () => {} }),
         showTextDocument: async (doc) => ({ document: doc }),
         withProgress: async (opts, task) => {
             return task({ report: () => {} }, { isCancellationRequested: false, onCancellationRequested: () => {} });
@@ -233,6 +235,7 @@ const mockVscode = {
     },
     workspace: {
         workspaceFolders: [],
+        textDocuments: [],
         getConfiguration: (section = '') => ({
             get: (key, def) => {
                 const fullKey = section ? `${section}.${key}` : key;

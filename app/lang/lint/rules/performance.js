@@ -249,20 +249,56 @@ function checkPerformance(cleanText, noStringsText, doc) {
 
     // 8. Multi-argument sbappend() Check
     if (cleanText.includes('sbappend')) {
-        const sbappendRegex = /\bsbappend\s*\(([^;]+)\)\s*;?/gi;
-        while ((match = sbappendRegex.exec(cleanText)) !== null) {
-            const argsText = match[1];
-            const args = splitArgumentsList(argsText);
-            // Flag when there are more than 3 arguments (i.e. sb + more than 2 items to append)
-            if (args.length > 3) {
-                const startPos = doc.positionAt(match.index);
-                const endPos = doc.positionAt(match.index + match[0].length);
-                diagnostics.push(makeDiagnostic(
-                    new vscode.Range(startPos, endPos),
-                    `Performance / Readability Advisory: 'sbappend' called with ${args.length - 1} items to append. Consider splitting into paired 'sbappend' statements`,
-                    vscode.DiagnosticSeverity.Information,
-                    'bml-sbappend-multiple-args'
-                ));
+        const sbRegex = /\bsbappend\s*\(/gi;
+        while ((match = sbRegex.exec(cleanText)) !== null) {
+            const openParenIdx = match.index + match[0].length - 1;
+            let depth = 1;
+            let inSingle = false;
+            let inDouble = false;
+            let closeParenIdx = -1;
+
+            for (let i = openParenIdx + 1; i < cleanText.length; i++) {
+                const ch = cleanText[i];
+                if (ch === '\\') {
+                    i++;
+                    continue;
+                }
+                if (ch === "'" && !inDouble) {
+                    inSingle = !inSingle;
+                } else if (ch === '"' && !inSingle) {
+                    inDouble = !inDouble;
+                } else if (!inSingle && !inDouble) {
+                    if (ch === '(') depth++;
+                    else if (ch === ')') {
+                        depth--;
+                        if (depth === 0) {
+                            closeParenIdx = i;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (closeParenIdx !== -1) {
+                let fullEndIdx = closeParenIdx + 1;
+                while (fullEndIdx < cleanText.length && (cleanText[fullEndIdx] === ' ' || cleanText[fullEndIdx] === '\t')) {
+                    fullEndIdx++;
+                }
+                if (fullEndIdx < cleanText.length && cleanText[fullEndIdx] === ';') {
+                    fullEndIdx++;
+                }
+                const argsText = cleanText.substring(openParenIdx + 1, closeParenIdx);
+                const args = splitArgumentsList(argsText);
+                if (args.length > 3) {
+                    const startPos = doc.positionAt(match.index);
+                    const endPos = doc.positionAt(fullEndIdx);
+                    diagnostics.push(makeDiagnostic(
+                        new vscode.Range(startPos, endPos),
+                        `Performance / Readability Advisory: 'sbappend' called with ${args.length - 1} items to append. Consider splitting into paired 'sbappend' statements`,
+                        vscode.DiagnosticSeverity.Information,
+                        'bml-sbappend-multiple-args'
+                    ));
+                }
             }
         }
     }

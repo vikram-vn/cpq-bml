@@ -5,6 +5,9 @@ const { getTypeCastFixes } = require('@/lang/lint/code-actions/typeCastFixes');
 const { getSyntaxFixes } = require('@/lang/lint/code-actions/syntaxFixes');
 const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
 const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
+const { getPerformanceFixes, buildSbappendSplitFixes, createSbappendSplitActions } = require('@/lang/lint/code-actions/performanceFixes');
+const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
+const { splitFunctionArgumentsIntoLines } = require('@/lang/lint/code-actions/styleSplitters');
 
 // Mock helper using prototype pattern (no ES6 classes)
 function MockPosition(line, character) {
@@ -200,6 +203,117 @@ suite('BML Comprehensive Quick Fixes Unit Tests', function() {
             const fixes = getBmqlFixes(doc, diag, diag.range);
             const errFix = fixes.find(function(f) { return f.title.includes('BMQL mutation error check'); });
             assert.ok(errFix, 'Should offer BMQL error check');
+        });
+    });
+
+    suite('5. Multi-argument sbappend Paired Statements Quick Fixes (without splitting lines)', function() {
+        test('moves sbappend(sb,doc,value,doc1,value2,doc3,value3); to 3 paired statements', function() {
+            const doc = createMockDoc('sbappend(sb,doc,value,doc1,value2,doc3,value3);\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 48), 'Multiple sbappend args', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 1);
+            const fix = fixes[0];
+            assert.ok(fix.title.includes("Split 'sbappend' into paired statements"));
+            assert.strictEqual(fix.isPreferred, true);
+            const replaced = fix.edit._edits[0].newText;
+            assert.strictEqual(
+                replaced,
+                'sbappend(sb, doc, value);\nsbappend(sb, doc1, value2);\nsbappend(sb, doc3, value3);'
+            );
+        });
+
+        test('moves sbappend with 4 items to 2 paired statements', function() {
+            const doc = createMockDoc('sbappend(sb, k1, v1, k2, v2);\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 29), 'Multiple sbappend args', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 1);
+            const replaced = fixes[0].edit._edits[0].newText;
+            assert.strictEqual(
+                replaced,
+                'sbappend(sb, k1, v1);\nsbappend(sb, k2, v2);'
+            );
+        });
+
+        test('handles odd number of items with trailing single statement', function() {
+            const doc = createMockDoc('sbappend(sb, k1, v1, k2, v2, k3);\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 33), 'Multiple sbappend args', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 1);
+            const replaced = fixes[0].edit._edits[0].newText;
+            assert.strictEqual(
+                replaced,
+                'sbappend(sb, k1, v1);\nsbappend(sb, k2, v2);\nsbappend(sb, k3);'
+            );
+        });
+
+        test('handles 3 items (odd) with 1 pair and 1 trailing statement', function() {
+            const doc = createMockDoc('sbappend(sb, a, b, c);\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 22), 'Multiple sbappend args', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 1);
+            const replaced = fixes[0].edit._edits[0].newText;
+            assert.strictEqual(
+                replaced,
+                'sbappend(sb, a, b);\nsbappend(sb, c);'
+            );
+        });
+
+        test('does not split when sbappend already has only 2 items (single pair)', function() {
+            const doc = createMockDoc('sbappend(sb, a, b);\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 19), 'Single pair', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 0);
+        });
+
+        test('handles string arguments containing semicolons and commas without breaking', function() {
+            const doc = createMockDoc('sbappend(sb, "doc;1", "val,1", "doc;2", "val,2");\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 49), 'Multiple sbappend args', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 1);
+            const replaced = fixes[0].edit._edits[0].newText;
+            assert.strictEqual(
+                replaced,
+                'sbappend(sb, "doc;1", "val,1");\nsbappend(sb, "doc;2", "val,2");'
+            );
+        });
+
+        test('handles nested function calls in arguments', function() {
+            const doc = createMockDoc('sbappend(sb, doc, get(d, "k1"), doc1, get(d, "k2"));\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 52), 'Multiple sbappend args', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 1);
+            const replaced = fixes[0].edit._edits[0].newText;
+            assert.strictEqual(
+                replaced,
+                'sbappend(sb, doc, get(d, "k1"));\nsbappend(sb, doc1, get(d, "k2"));'
+            );
+        });
+
+        test('preserves indentation on all generated statements', function() {
+            const doc = createMockDoc('    sbappend(sb,doc,value,doc1,value2,doc3,value3);\n');
+            const diag = new MockDiagnostic(new MockRange(0, 4, 0, 52), 'Multiple sbappend args', 3, 'bml-sbappend-multiple-args');
+            const fixes = getPerformanceFixes(doc, diag, diag.range);
+            assert.strictEqual(fixes.length, 1);
+            const replaced = fixes[0].edit._edits[0].newText;
+            assert.strictEqual(
+                replaced,
+                'sbappend(sb, doc, value);\n    sbappend(sb, doc1, value2);\n    sbappend(sb, doc3, value3);'
+            );
+        });
+
+        test('bml-line-too-long on sbappend line offers paired statements and does NOT offer line splitting', function() {
+            const doc = createMockDoc('sbappend(sb, "long_key_name_one", "long_value_name_one", "long_key_name_two", "long_value_name_two");\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, 102), 'Line too long', 1, 'bml-line-too-long');
+            const fixes = getStyleFixes(doc, diag, diag.range);
+            const pairedFix = fixes.find(function(f) { return f.title.includes("Split 'sbappend' into paired statements"); });
+            const splitLinesFix = fixes.find(function(f) { return f.title.includes('Split arguments across multiple lines'); });
+            assert.ok(pairedFix, 'Should offer paired sbappend Quick Fix');
+            assert.strictEqual(splitLinesFix, undefined, 'Should NOT offer splitting arguments across multiple lines');
+        });
+
+        test('splitFunctionArgumentsIntoLines returns null for sbappend to prevent splitting lines', function() {
+            const res = splitFunctionArgumentsIntoLines('sbappend(sb, doc, value, doc1, value2);');
+            assert.strictEqual(res, null, 'Should return null for sbappend so function arguments are never broken across lines');
         });
     });
 });

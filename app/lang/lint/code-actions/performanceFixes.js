@@ -1,15 +1,65 @@
 const vscode = require('vscode');
 const { splitArgumentsList } = require('@/lang/lint/rules/functionSignature');
 
+function extractSbappendCall(text) {
+    const regex = /\bsbappend\s*\(/gi;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+        const openParenIdx = match.index + match[0].length - 1;
+        let depth = 1;
+        let inSingle = false;
+        let inDouble = false;
+        let closeParenIdx = -1;
+
+        for (let i = openParenIdx + 1; i < text.length; i++) {
+            const ch = text[i];
+            if (ch === '\\') {
+                i++;
+                continue;
+            }
+            if (ch === "'" && !inDouble) {
+                inSingle = !inSingle;
+            } else if (ch === '"' && !inSingle) {
+                inDouble = !inDouble;
+            } else if (!inSingle && !inDouble) {
+                if (ch === '(') depth++;
+                else if (ch === ')') {
+                    depth--;
+                    if (depth === 0) {
+                        closeParenIdx = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (closeParenIdx !== -1) {
+            let fullEndIdx = closeParenIdx + 1;
+            while (fullEndIdx < text.length && (text[fullEndIdx] === ' ' || text[fullEndIdx] === '\t')) {
+                fullEndIdx++;
+            }
+            if (fullEndIdx < text.length && text[fullEndIdx] === ';') {
+                fullEndIdx++;
+            }
+            return {
+                start: match.index,
+                end: fullEndIdx,
+                argsText: text.substring(openParenIdx + 1, closeParenIdx),
+                fullMatch: text.substring(match.index, fullEndIdx)
+            };
+        }
+    }
+    return null;
+}
+
 function buildSbappendSplitFixes(document, range, diag) {
     const fixes = [];
     const text = document.getText(range);
-    const m = text.match(/\bsbappend\s*\(([^;]+)\)\s*;?/i);
-    if (!m) return fixes;
+    const call = extractSbappendCall(text);
+    if (!call) return fixes;
 
-    const argsText = m[1];
-    const args = splitArgumentsList(argsText);
-    if (args.length <= 2) return fixes;
+    const args = splitArgumentsList(call.argsText);
+    if (args.length <= 3) return fixes;
 
     const sbVar = args[0].trim();
     const items = args.slice(1);
@@ -19,33 +69,27 @@ function buildSbappendSplitFixes(document, range, diag) {
     const indentMatch = lineText.match(/^(\s*)/);
     const indent = indentMatch ? indentMatch[1] : '';
 
-    if (args.length > 3) {
-        const pairedStatements = [];
-        for (let i = 0; i < items.length; i += 2) {
-            const chunk = items.slice(i, i + 2);
-            pairedStatements.push(`sbappend(${sbVar}, ${chunk.map(c => c.trim()).join(', ')});`);
-        }
-        const pairedReplacement = pairedStatements.join('\n' + indent);
+    const pairedStatements = [];
+    for (let i = 0; i < items.length; i += 2) {
+        const chunk = items.slice(i, i + 2);
+        pairedStatements.push(`sbappend(${sbVar}, ${chunk.map(c => c.trim()).join(', ')});`);
+    }
+    const pairedReplacement = pairedStatements.join('\n' + indent);
 
-        const pairedAction = new vscode.CodeAction("Split 'sbappend' into paired statements", vscode.CodeActionKind.QuickFix);
-        pairedAction.isPreferred = true;
-        pairedAction.edit = new vscode.WorkspaceEdit();
-        pairedAction.edit.replace(document.uri, range, pairedReplacement);
-        if (diag) pairedAction.diagnostics = [diag];
-        fixes.push(pairedAction);
+    // Precise range replacement
+    let targetRange = range;
+    if (text !== call.fullMatch) {
+        const startPos = new vscode.Position(lineIndex, range.start.character + call.start);
+        const endPos = new vscode.Position(lineIndex, range.start.character + call.end);
+        targetRange = new vscode.Range(startPos, endPos);
     }
 
-    const singleStatements = [];
-    for (let i = 0; i < items.length; i++) {
-        singleStatements.push(`sbappend(${sbVar}, ${items[i].trim()});`);
-    }
-    const singleReplacement = singleStatements.join('\n' + indent);
-
-    const singleAction = new vscode.CodeAction("Split 'sbappend' into individual statements (1 argument each)", vscode.CodeActionKind.RefactorRewrite);
-    singleAction.edit = new vscode.WorkspaceEdit();
-    singleAction.edit.replace(document.uri, range, singleReplacement);
-    if (diag) singleAction.diagnostics = [diag];
-    fixes.push(singleAction);
+    const pairedAction = new vscode.CodeAction("Split 'sbappend' into paired statements", vscode.CodeActionKind.QuickFix);
+    pairedAction.isPreferred = true;
+    pairedAction.edit = new vscode.WorkspaceEdit();
+    pairedAction.edit.replace(document.uri, targetRange, pairedReplacement);
+    if (diag) pairedAction.diagnostics = [diag];
+    fixes.push(pairedAction);
 
     return fixes;
 }
@@ -57,16 +101,12 @@ function createSbappendSplitActions(document, range) {
     const lineText = line.text;
     if (!lineText.includes('sbappend')) return actions;
 
-    const sbappendRegex = /\bsbappend\s*\(([^;]+)\)\s*;?/gi;
-    let match;
-    while ((match = sbappendRegex.exec(lineText)) !== null) {
-        const startChar = match.index;
-        const endChar = match.index + match[0].length;
-        const matchRange = new vscode.Range(range.start.line, startChar, range.start.line, endChar);
+    const call = extractSbappendCall(lineText);
+    if (!call) return actions;
 
-        if (range.intersection(matchRange) || (range.isEmpty && range.start.character >= startChar && range.start.character <= endChar)) {
-            actions.push(...buildSbappendSplitFixes(document, matchRange));
-        }
+    const matchRange = new vscode.Range(range.start.line, call.start, range.start.line, call.end);
+    if (range.intersection(matchRange) || (range.isEmpty && range.start.character >= call.start && range.start.character <= call.end)) {
+        actions.push(...buildSbappendSplitFixes(document, matchRange));
     }
     return actions;
 }
@@ -153,5 +193,10 @@ function getPerformanceFixes(document, diag, editRange) {
     return fixes;
 }
 
-module.exports = { getPerformanceFixes, createSbappendSplitActions };
+module.exports = {
+    getPerformanceFixes,
+    createSbappendSplitActions,
+    buildSbappendSplitFixes,
+    extractSbappendCall
+};
 
