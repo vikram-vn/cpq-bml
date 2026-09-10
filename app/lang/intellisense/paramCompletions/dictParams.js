@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const DICT_TYPES = [
     { name: 'string', detail: 'dict("string")', doc: 'BML String Dictionary storing key-value pairs where values are String type.' },

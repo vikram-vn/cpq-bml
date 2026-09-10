@@ -1,4 +1,4 @@
-const api = require("../api");
+const api = require("@/lang/rest/api");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -8,7 +8,7 @@ const {
   describeError,
   isSuccess,
   ensureCredentials,
-} = require("./shared");
+} = require("@/lang/rest/commands/shared");
 
 async function runPipelineViewerCommand(
   context,

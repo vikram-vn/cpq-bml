@@ -1,16 +1,16 @@
-const { call, getEffectiveRestVersion } = require("./apiCore");
+const { call, getEffectiveRestVersion } = require("@/lang/rest/apiCore");
 const {
   getCommerceProcess,
   getCommerceDocument,
   getSettings,
-} = require("./config");
+} = require("@/lang/rest/config");
 const {
   resolveAttributeName,
   resolveQueryFilter,
   getWorkspaceRoot,
   saveWorkspaceAttributes,
   normalizeAttributeDataType,
-} = require("./commerceAttributes");
+} = require("@/lang/rest/commerceAttributes");
 
 function commerceDocumentsPath(vscode, process = "oraclecpqo", document = "transaction") {
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
@@ -151,7 +151,7 @@ async function runPipelineViewer(
 const {
   formatCommerceAttribute,
   syncCommerceAttributes: syncCommerceAttributesImpl,
-} = require("./apiCommerceSync");
+} = require("@/lang/rest/apiCommerceSync");
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes
 async function listCommerceAttributes(

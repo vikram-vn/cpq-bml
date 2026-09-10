@@ -1,5 +1,5 @@
-const { Beautifier } = require('./beautifier');
-const { Options } = require('./options');
+const { Beautifier } = require('@/lang/beautify/bml/beautifier');
+const { Options } = require('@/lang/beautify/bml/options');
 
 /**
  * Beautify BML source code.

@@ -1,12 +1,12 @@
-const { getWorkspaceIndex } = require('../workspaceIndex');
-const { loadCuratedParamsJson } = require('../apiDataLoader');
+const { getWorkspaceIndex } = require('@/lang/intellisense/workspaceIndex');
+const { loadCuratedParamsJson } = require('@/lang/intellisense/apiDataLoader');
 
 let staticCurated = {};
 try {
     staticCurated = loadCuratedParamsJson();
 } catch {
     try {
-        staticCurated = require('../curated-params.json');
+        staticCurated = require('@/lang/intellisense/curated-params.json');
     } catch {}
 }
 

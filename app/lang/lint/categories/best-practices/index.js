@@ -1,21 +1,21 @@
-const { checkBmqlSafety } = require('./bmqlSafety');
-const { checkCodeQuality } = require('./codeQuality');
-const { checkCommercePractices } = require('./commercePractices');
-const { checkDataSafety } = require('./dataSafety');
-const { checkSecurity } = require('./security');
-const { checkSyntaxRules } = require('./syntaxRules');
-const { checkSelfReference } = require('./selfReference');
+const { checkBmqlSafety } = require('@/lang/lint/categories/best-practices/bmqlSafety');
+const { checkCodeQuality } = require('@/lang/lint/categories/best-practices/codeQuality');
+const { checkCommercePractices } = require('@/lang/lint/categories/best-practices/commercePractices');
+const { checkDataSafety } = require('@/lang/lint/categories/best-practices/dataSafety');
+const { checkSecurity } = require('@/lang/lint/categories/best-practices/security');
+const { checkSyntaxRules } = require('@/lang/lint/categories/best-practices/syntaxRules');
+const { checkSelfReference } = require('@/lang/lint/categories/best-practices/selfReference');
 
-const { checkArray } = require('../array/array');
-const { checkBmql } = require('../bmql/bmql');
-const { checkDate } = require('../date/date');
-const { checkDictionary } = require('../dictionary/dictionary');
-const { checkJson } = require('../json/json');
-const { checkMath } = require('../math/math');
-const { checkOthers } = require('../others/others');
-const { checkString } = require('../string/string');
-const { checkUrlAccess } = require('../url-access/urlAccess');
-const { checkXml } = require('../xml/xml');
+const { checkArray } = require('@/lang/lint/categories/array/array');
+const { checkBmql } = require('@/lang/lint/categories/bmql/bmql');
+const { checkDate } = require('@/lang/lint/categories/date/date');
+const { checkDictionary } = require('@/lang/lint/categories/dictionary/dictionary');
+const { checkJson } = require('@/lang/lint/categories/json/json');
+const { checkMath } = require('@/lang/lint/categories/math/math');
+const { checkOthers } = require('@/lang/lint/categories/others/others');
+const { checkString } = require('@/lang/lint/categories/string/string');
+const { checkUrlAccess } = require('@/lang/lint/categories/url-access/urlAccess');
+const { checkXml } = require('@/lang/lint/categories/xml/xml');
 
 function checkBestPractices(cleanText, noStringsText, doc, firstTypeByVar) {
     const diagnostics = [];

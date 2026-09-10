@@ -196,7 +196,7 @@ const {
     splitConcatenationIntoLines,
     splitFunctionArgumentsIntoLines,
     splitConditionIntoLines
-} = require('./styleSplitters');
+} = require('@/lang/lint/code-actions/styleSplitters');
 
 module.exports = {
     getStyleFixes,

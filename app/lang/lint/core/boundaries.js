@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { getStringRanges } = require('../rules/strings');
+const { getStringRanges } = require('@/lang/lint/rules/strings');
 
 function makeDiagnostic(range, message, severity, code) {
     const diag = new vscode.Diagnostic(range, message, severity);

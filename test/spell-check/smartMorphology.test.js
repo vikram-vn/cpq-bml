@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { lintText } = require("../linter/fixtures");
+const { lintText } = require("@/test/linter/fixtures");
 
 suite("BML Linter Test Suite - Enhanced Smart Spellchecker Morphology & Vocabulary", () => {
   test("Accepts regular plural and 3rd person inflections (-s, -es, -ies)", () => {

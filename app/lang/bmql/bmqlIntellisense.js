@@ -23,7 +23,7 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const { collectLocalVariables } = require('../intellisense/bmqlVariableCompletions');
+const { collectLocalVariables } = require('@/lang/intellisense/bmqlVariableCompletions');
 
 const BMQL_OPERATORS = [
   { label: '==', detail: 'Equals comparison', insertText: '== ' },

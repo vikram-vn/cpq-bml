@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const metadataLib = require('./metadata');
+const metadataLib = require('@/lang/rest/metadata');
 
 /**
  * Safe file writer with interactive conflict detection and side-by-side diff review.

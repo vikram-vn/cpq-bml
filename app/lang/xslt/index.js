@@ -1,9 +1,9 @@
 const vscode = require("vscode");
 
-const { lintXslt } = require("./xsltLinter");
-const { registerXsltCodeActions } = require("./xsltCodeActions");
-const { registerXsltCompletions } = require("./xsltCompletions");
-const { formatXml } = require("./formatter");
+const { lintXslt } = require("@/lang/xslt/xsltLinter");
+const { registerXsltCodeActions } = require("@/lang/xslt/xsltCodeActions");
+const { registerXsltCompletions } = require("@/lang/xslt/xsltCompletions");
+const { formatXml } = require("@/lang/xslt/formatter");
 
 function registerXslt(context) {
 

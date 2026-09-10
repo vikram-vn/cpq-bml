@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const commands = require("@/lang/rest/commands");
 const metadataLib = require("@/lang/rest/metadata");
-const { createFakeVscode } = require("../testHelpers");
-const { SAMPLE_FUNCTION, baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("./fixtures");
+const { createFakeVscode } = require("@/test/rest/testHelpers");
+const { SAMPLE_FUNCTION, baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("@/test/rest/commands/fixtures");
 
 suite("BML REST commands - pull", () => {
   suite("runPullLibraryFunctions", () => {

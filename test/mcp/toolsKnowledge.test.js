@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const tools = require("@/lang/mcp/tools");
 const metadataLib = require("@/lang/rest/metadata");
-const { createFakeVscode } = require("../rest/testHelpers");
-const { baseVscodeConfig, makeContext, withTempDir } = require("../rest/commands/fixtures");
+const { createFakeVscode } = require("@/test/rest/testHelpers");
+const { baseVscodeConfig, makeContext, withTempDir } = require("@/test/rest/commands/fixtures");
 
 function vscodeRootedAt(tmpDir, overrides) {
   return createFakeVscode({

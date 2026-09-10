@@ -1,6 +1,6 @@
-const api = require("../api");
-const configLib = require("../config");
-const metadataLib = require("../metadata");
+const api = require("@/lang/rest/api");
+const configLib = require("@/lang/rest/config");
+const metadataLib = require("@/lang/rest/metadata");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -10,13 +10,13 @@ const {
   parseErrorLine,
   appendDebugOutputToFile,
   appendDebugPrintToFile,
-} = require("./shared");
+} = require("@/lang/rest/commands/shared");
 const {
   formatAsTable,
   tableLinesToString,
   formatDocAttributeDumpTables,
   parseDocAttributeDump,
-} = require("./debugTableFormat");
+} = require("@/lang/rest/commands/debugTableFormat");
 
 const TABLE_BORDER_COLOR = "\x1b[90m";
 const TABLE_HEADER_STYLE = "\x1b[1m";

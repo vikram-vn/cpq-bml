@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('@/lang/rest/config');
 
 // Dual-write: site-specific key plus the legacy global key, so getAuthHeader's fallback lookup works either way.
 async function writePassword(context, vscode, value) {

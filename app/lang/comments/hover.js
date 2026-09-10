@@ -1,6 +1,6 @@
 "use strict";
-const { getCommentRanges } = require('../lint/rules/comments');
-const { describeDirective } = require('./directives');
+const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { describeDirective } = require('@/lang/comments/directives');
 
 const LINT_DIRECTIVE_EXPLANATIONS = {
     'disable': 'Suppresses bml-lint diagnostics from this point until a matching `bml-lint-enable` (or end of file).',

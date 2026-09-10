@@ -2,36 +2,36 @@ let vscode;
 try {
   vscode = require("vscode");
 } catch (_) {}
-const { getResultsTerminal } = require("../terminal");
-const { runSetPassword, runSetAuthToken } = require("./secrets");
-const { runPullLibraryFunctions, runPullCommerceFunctions } = require("./pull");
-const { runValidateCurrentFile } = require("./validate");
-const { runSaveCurrentFile } = require("./save");
-const { runDebugCurrentFile, runConcurrentPool } = require("./debug");
-const { runCreateOverride, runRemoveOverride } = require("./override");
+const { getResultsTerminal } = require("@/lang/rest/terminal");
+const { runSetPassword, runSetAuthToken } = require("@/lang/rest/commands/secrets");
+const { runPullLibraryFunctions, runPullCommerceFunctions } = require("@/lang/rest/commands/pull");
+const { runValidateCurrentFile } = require("@/lang/rest/commands/validate");
+const { runSaveCurrentFile } = require("@/lang/rest/commands/save");
+const { runDebugCurrentFile, runConcurrentPool } = require("@/lang/rest/commands/debug");
+const { runCreateOverride, runRemoveOverride } = require("@/lang/rest/commands/override");
 const {
   runDeployCommerceProcess,
   runDeployCurrentFile,
   runDeployUtilFunctions,
-} = require("./deploy");
-const { runCreateBmlFunction } = require("./scaffold");
-const { runChangeEnvironment } = require("./env");
-const { runGlobalSearchBml } = require("./globalSearch");
-const { runGetTransactions } = require("./transactions");
-const { runSyncCommerceMetadata, runRemoveCommerceMetadata } = require("./sync");
-const { runPipelineViewerCommand } = require("./pipelineViewer");
-const { isCommerceSynced } = require("../commerceAttributes");
+} = require("@/lang/rest/commands/deploy");
+const { runCreateBmlFunction } = require("@/lang/rest/commands/scaffold");
+const { runChangeEnvironment } = require("@/lang/rest/commands/env");
+const { runGlobalSearchBml } = require("@/lang/rest/commands/globalSearch");
+const { runGetTransactions } = require("@/lang/rest/commands/transactions");
+const { runSyncCommerceMetadata, runRemoveCommerceMetadata } = require("@/lang/rest/commands/sync");
+const { runPipelineViewerCommand } = require("@/lang/rest/commands/pipelineViewer");
+const { isCommerceSynced } = require("@/lang/rest/commerceAttributes");
 const {
   triggerSmartMetadataFetch,
   refreshBmlStatus,
-} = require("./status");
+} = require("@/lang/rest/commands/status");
 const {
   describeError,
   findLibraryFunctionByVariableName,
   resolveMetadataForFile,
   isSuccess,
-} = require("./shared");
-const { hasMissingCredentials } = require("../config");
+} = require("@/lang/rest/commands/shared");
+const { hasMissingCredentials } = require("@/lang/rest/config");
 
 // Gates the editor/title toolbar icons on a fully usable connection (siteUrl + username/token + matching secret), not just the enabled toggle.
 async function refreshConnectionConfiguredContext(context, vscode) {

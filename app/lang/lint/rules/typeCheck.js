@@ -3,7 +3,7 @@ const {
     inferLiteralType,
     inferExpressionType,
     isTypeReassignmentMismatch
-} = require('./typeCheckInference');
+} = require('@/lang/lint/rules/typeCheckInference');
 
 const {
     TYPE_CONSTRUCTORS,
@@ -11,7 +11,7 @@ const {
     getFunctionReturnTypes,
     getLeftOperandType,
     getRightOperandType,
-} = require('./typeCheckOperands');
+} = require('@/lang/lint/rules/typeCheckOperands');
 
 function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode, extensionPath, precomputedDeclaredVars) {
     const diagnostics = [];

@@ -1,11 +1,11 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const { createFakeVscode, createFakeContext } = require("../testHelpers");
+const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 const { refreshBmlStatus, triggerSmartMetadataFetch, runSaveCurrentFile } = require("@/lang/rest/commands");
 const metadataLib = require("@/lang/rest/metadata");
 const config = require("@/lang/rest/config");
-const { withTempDir, SAMPLE_FUNCTION, baseVscodeConfig, fakeResultsTerminal } = require("./fixtures");
+const { withTempDir, SAMPLE_FUNCTION, baseVscodeConfig, fakeResultsTerminal } = require("@/test/rest/commands/fixtures");
 
 suite("BML REST commands - deployment context keys", () => {
   test("sets activeFileIsCommerce=true and activeFileIsUtil=false for a commerce library file", () =>

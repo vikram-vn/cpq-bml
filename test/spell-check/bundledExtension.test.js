@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { activateExtension } = require('../extensionHelper');
+const { activateExtension } = require('@/test/extensionHelper');
 
 // Regression guard for a real bug: loadDictionaries() in spelling.js used to
 // resolve bml-words.txt/english-words.txt relative to __dirname. That's

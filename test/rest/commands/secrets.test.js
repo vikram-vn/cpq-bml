@@ -2,7 +2,7 @@ const assert = require("assert");
 const commands = require("@/lang/rest/commands");
 const { writePassword, writeAuthToken } = require("@/lang/rest/commands/secrets");
 const config = require("@/lang/rest/config");
-const { createFakeVscode, createFakeContext } = require("../testHelpers");
+const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 
 suite("BML REST commands - secrets", () => {
   suite("writePassword / writeAuthToken (no-prompt dual-write, used by the settings webview)", () => {

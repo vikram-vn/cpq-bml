@@ -1,7 +1,7 @@
 const assert = require("assert");
 const vscode = require("vscode");
 const { getMcpServerStatus, stopMcpServer } = require("@/lang/mcp/server");
-const { activateExtension } = require("../extensionHelper");
+const { activateExtension } = require("@/test/extensionHelper");
 
 suite("MCP Server Config Reactivity Integration", () => {
   suiteSetup(async () => {

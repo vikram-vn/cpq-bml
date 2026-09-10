@@ -4,14 +4,14 @@ try {
 } catch {
     vscode = {};
 }
-const { loadJson } = require('../apiDataLoader');
+const { loadJson } = require('@/lang/intellisense/apiDataLoader');
 const {
     extractParamName,
     extractParamNamesFromSignature,
     shouldSuppressHint,
     resolveParamNames,
     BML_CURATED_PARAMS
-} = require('./paramResolver');
+} = require('@/lang/intellisense/inlayHints/paramResolver');
 
 function isInsideCommentOrString(fullText, targetOffset) {
     let inLineComment = false;

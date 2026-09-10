@@ -44,7 +44,6 @@ import bench_inlay_hints
 import bench_code_actions
 import bench_xslt
 import bench_mcp_diff
-import bench_dynamic_icons
 
 SUITES = {
     "intellisense": ("IntelliSense (Hover, Lookup, Signature, Index)", bench_intellisense.run_benchmarks),
@@ -56,7 +55,6 @@ SUITES = {
     "code_actions": ("Code Actions & Safe Fix-All Rewriter", bench_code_actions.run_benchmarks),
     "xslt": ("XSLT Formatter & Linter", bench_xslt.run_benchmarks),
     "mcp_diff": ("MCP Knowledge Fast Diff", bench_mcp_diff.run_benchmarks),
-    "dynamic_icons": ("Dynamic Folder Icons Generator", bench_dynamic_icons.run_benchmarks),
 }
 
 

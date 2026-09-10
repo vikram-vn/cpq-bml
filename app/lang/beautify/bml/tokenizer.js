@@ -19,7 +19,7 @@ const {
   InputScanner,
   isIdentifierStart,
   isDigit,
-} = require("./tokenizerHelpers");
+} = require("@/lang/beautify/bml/tokenizerHelpers");
 
 // Loaded lazily (on first tokenize call, not at module require time) and
 // shared with lint/functions.js via apiDataLoader, instead of parsing the

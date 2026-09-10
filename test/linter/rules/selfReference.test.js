@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 // No -meta.json sidecar exists at these fake paths, so readOwnFunctionName()
 // falls back to inferring the function's own name from the filename - matching

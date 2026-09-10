@@ -1,4 +1,4 @@
-const { vscode, makeDiagnostic } = require('./shared');
+const { vscode, makeDiagnostic } = require('@/lang/lint/categories/best-practices/shared');
 
 // Common placeholder values that look like a secret but aren't one - avoid
 // flagging boilerplate/template code that hasn't been filled in yet.

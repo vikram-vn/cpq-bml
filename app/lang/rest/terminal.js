@@ -1,5 +1,5 @@
 // Read-only Pseudoterminal — unlike Terminal#sendText(), it never executes its output as shell input.
-const { normalizeSiteUrl } = require('./config');
+const { normalizeSiteUrl } = require('@/lang/rest/config');
 function createResultsTerminal(vscode, name) {
     const writeEmitter = new vscode.EventEmitter();
     const pty = {

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - // bml-lint-disable comment directives', () => {
     test('bml-lint-disable-next-line suppresses every diagnostic on the next line', () => {

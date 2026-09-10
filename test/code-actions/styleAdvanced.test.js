@@ -1,6 +1,8 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
+
+const ROOT = path.resolve(__dirname, '..', '..');
 const { lintBMLCustom } = require('@/lang/lint/core/lint');
 const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
 const { getSpellingFixes } = require('@/lang/lint/code-actions/spellingFixes');
@@ -151,8 +153,7 @@ function runStyleAdvancedCodeActionTests() {
             );
             diag.code = 'bml-spelling-error';
 
-            const extPath = path.resolve(__dirname, '../../');
-            const fixes = getSpellingFixes(doc, diag, new vscode.Range(0, 0, 0, 8), extPath);
+            const fixes = getSpellingFixes(doc, diag, new vscode.Range(0, 0, 0, 8), ROOT);
             assert.ok(fixes.length > 0, 'Should return spelling quick fixes');
             assert.ok(fixes[0].title.includes('(all occurrences)'), 'Spelling fix should operate on all occurrences');
         });

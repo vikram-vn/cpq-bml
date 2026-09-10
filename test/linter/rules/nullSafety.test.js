@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - Null Safety', () => {
     test('flags unguarded use of bmql result variable', () => {

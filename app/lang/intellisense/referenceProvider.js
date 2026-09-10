@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 const fs = require('fs');
-const { resolveCallAtPosition } = require('./workspaceIndex');
+const { resolveCallAtPosition } = require('@/lang/intellisense/workspaceIndex');
 
 const BML_KEYWORDS = new Set([
   'if', 'else', 'elif', 'while', 'for', 'return', 'break', 'continue',

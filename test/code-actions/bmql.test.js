@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintBMLCustom } = require('@/lang/lint/core/lint');
-const { activateExtension } = require('../extensionHelper');
+const { activateExtension } = require('@/test/extensionHelper');
 
 function runBmqlCodeActionTests() {
     suite('BML BMQL Code Actions Suite', () => {

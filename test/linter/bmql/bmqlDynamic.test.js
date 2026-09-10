@@ -1,3 +1,3 @@
-const { runDynamicTestsForCategory } = require("../dynamicHelper");
+const { runDynamicTestsForCategory } = require("@/test/linter/dynamicHelper");
 
 runDynamicTestsForCategory("direct_db_access", "BMQL Functions Dynamic Validation");

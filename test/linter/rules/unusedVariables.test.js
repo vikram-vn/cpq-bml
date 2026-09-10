@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - Unused Variables & Hint Diagnostics', function() {
     this.timeout(15000);

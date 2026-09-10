@@ -2,10 +2,10 @@ const fs = require("fs");
 const {
   keywords: reservedWords,
   loadBuiltInFunctions,
-} = require("./functions");
-const { loadSystemVariables } = require("./systemVariables");
-const { getAttributeScope } = require("./commerceAttributes");
-const { levenshtein } = require("../core/levenshtein");
+} = require("@/lang/lint/rules/functions");
+const { loadSystemVariables } = require("@/lang/lint/rules/systemVariables");
+const { getAttributeScope } = require("@/lang/lint/rules/commerceAttributes");
+const { levenshtein } = require("@/lang/lint/core/levenshtein");
 
 // Commerce functions have implicit platform bindings (document attributes, etc.)
 // this rule can't see from the file's text, so it only runs for util functions

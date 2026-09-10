@@ -1,4 +1,4 @@
-const { normalizeAttributeDataType } = require("./commerceAttributes");
+const { normalizeAttributeDataType } = require("@/lang/rest/commerceAttributes");
 
 function formatCommerceAttribute(item, menuOptions = null) {
   if (!item) return null;

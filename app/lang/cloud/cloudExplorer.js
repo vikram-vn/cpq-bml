@@ -42,9 +42,9 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const api = require('../rest/api');
-const metadataLib = require('../rest/metadata');
-const { getSettings } = require('../rest/config');
+const api = require('@/lang/rest/api');
+const metadataLib = require('@/lang/rest/metadata');
+const { getSettings } = require('@/lang/rest/config');
 
 /**
  * Finds local .bml file matching a function variable name in workspace.

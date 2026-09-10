@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - constant conditions (no-constant-condition / no-self-compare)', () => {
     test('Flags an always-true if condition', () => {

@@ -1,8 +1,8 @@
-const { call, getEffectiveRestVersion } = require("./apiCore");
+const { call, getEffectiveRestVersion } = require("@/lang/rest/apiCore");
 const {
   formatConfigurationAttribute,
   syncConfigurationAttributes: syncConfigImpl,
-} = require("./apiConfigSync");
+} = require("@/lang/rest/apiConfigSync");
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/attributes
 async function listConfigurationAttributes(

@@ -3,7 +3,7 @@ const config = require("@/lang/rest/config");
 const {
   createFakeVscode,
   createFakeContext,
-} = require("./testHelpers");
+} = require("@/test/rest/testHelpers");
 
 suite("BML REST config", () => {
   test("getSettings reads connection settings and strips a trailing slash from siteUrl", () => {

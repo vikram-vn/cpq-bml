@@ -1,8 +1,8 @@
 const assert = require('assert');
 const { flushServerCache } = require('@/lang/rest/commands/cacheFlush');
 const { SessionKeepAlive } = require('@/lang/rest/sessionKeepAlive');
-const { createFakeVscode } = require('./testHelpers');
-const { baseVscodeConfig } = require('./commands/fixtures');
+const { createFakeVscode } = require('@/test/rest/testHelpers');
+const { baseVscodeConfig } = require('@/test/rest/commands/fixtures');
 
 suite('Cache Flush & Session Keep-Alive - Unit Tests', () => {
   test('flushServerCache triggers server-side cache invalidation', async () => {

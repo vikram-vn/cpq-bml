@@ -1,6 +1,6 @@
 const fs = require("fs");
 const pathLib = require("path");
-const { request } = require("./client");
+const { request } = require("@/lang/rest/client");
 const {
   getBaseUrl,
   getRestVersion,
@@ -8,7 +8,7 @@ const {
   getCommerceProcess,
   getAuthHeader,
   getSettings,
-} = require("./config");
+} = require("@/lang/rest/config");
 
 // Never emit instance links, hypermedia links (hrefs), or user credentials in REST API responses
 const SENSITIVE_KEY_REGEX =

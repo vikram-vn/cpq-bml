@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { createFakeVscode, createFakeContext } = require("../testHelpers");
+const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 const { refreshConnectionConfiguredContext } = require("@/lang/rest/commands");
 
 // The editor/title toolbar icons (Save/Validate/Debug/Deploy/etc.) are gated

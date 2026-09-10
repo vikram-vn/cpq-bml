@@ -1,6 +1,6 @@
 const assert = require("assert");
 const api = require("@/lang/rest/api");
-const { createFakeVscode, createFakeContext } = require("./testHelpers");
+const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 
 const SECRET_PASSWORD = "cpqBml.connection.password";
 

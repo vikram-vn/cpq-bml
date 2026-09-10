@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const CURRENCY_CODES = [
     { name: 'USD', detail: 'US Dollar ($)', doc: 'United States Dollar.' },

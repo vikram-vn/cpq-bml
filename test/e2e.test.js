@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { activateExtension } = require('./extensionHelper');
+const { activateExtension } = require('@/test/extensionHelper');
 
 suite('CPQ-BML End-to-End Command Registration & Flow Verification', () => {
     suiteSetup(async () => {

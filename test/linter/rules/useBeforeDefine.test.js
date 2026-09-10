@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { lintText } = require("../fixtures");
+const { lintText } = require("@/test/linter/fixtures");
 
 suite("BML Linter Test Suite - Use Before Define (bml-useBeforeDefine)", () => {
   test("Flags self-referencing uninitialized variable assignment (scope2 = scope2;)", () => {

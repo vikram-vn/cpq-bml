@@ -1,8 +1,8 @@
 const path = require('path');
-const api = require('../api');
-const config = require('../config');
-const metadataLib = require('../metadata');
-const { confirmAndWriteBmlFile } = require('../safeSync');
+const api = require('@/lang/rest/api');
+const config = require('@/lang/rest/config');
+const metadataLib = require('@/lang/rest/metadata');
+const { confirmAndWriteBmlFile } = require('@/lang/rest/safeSync');
 const {
     getTimestamp,
     writeTerminalMessage,
@@ -12,7 +12,7 @@ const {
     describeError,
     isSuccess,
     ensureCredentials,
-} = require('./shared');
+} = require('@/lang/rest/commands/shared');
 
 async function runPullLibraryFunctions(context, vscode, resultsTerminal, { transport } = {}) {
     const hasCredentials = await ensureCredentials(context, vscode);

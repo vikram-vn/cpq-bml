@@ -1,4 +1,4 @@
-const { vscode, makeDiagnostic } = require('./shared');
+const { vscode, makeDiagnostic } = require('@/lang/lint/categories/best-practices/shared');
 
 /**
  * Constructs that look plausible but aren't valid BML:

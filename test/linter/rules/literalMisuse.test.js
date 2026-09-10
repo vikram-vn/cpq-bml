@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - literal misuse (guaranteed-to-fail literal arguments)', () => {
     suite('atoi("") / atof("") (bml-atoi-atof-empty-literal)', () => {

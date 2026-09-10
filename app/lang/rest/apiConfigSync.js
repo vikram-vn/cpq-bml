@@ -1,4 +1,4 @@
-const { getWorkspaceRoot, saveWorkspaceAttributes } = require("./commerceAttributes");
+const { getWorkspaceRoot, saveWorkspaceAttributes } = require("@/lang/rest/commerceAttributes");
 
 function formatConfigurationAttribute(raw, productFamily = null) {
   if (!raw || typeof raw !== "object") return raw;

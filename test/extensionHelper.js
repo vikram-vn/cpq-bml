@@ -1,4 +1,4 @@
-const pkg = require('../package.json');
+const pkg = require('@/package.json');
 
 // publisher.name is VS Code's extension id format. Every suiteSetup() across
 // this test suite needs to grab a handle to "the extension under test" to

@@ -8,8 +8,8 @@ try {
   };
 }
 
-const { request } = require('../client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('../config');
+const { request } = require('@/lang/rest/client');
+const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('@/lang/rest/config');
 
 /**
  * Dispatches cache invalidation request to Oracle CPQ server.

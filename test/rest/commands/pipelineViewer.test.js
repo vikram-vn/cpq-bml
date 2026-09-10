@@ -1,7 +1,7 @@
 const assert = require("assert");
 const commands = require("@/lang/rest/commands");
-const { createFakeVscode } = require("../testHelpers");
-const { baseVscodeConfig, makeContext, fakeResultsTerminal } = require("./fixtures");
+const { createFakeVscode } = require("@/test/rest/testHelpers");
+const { baseVscodeConfig, makeContext, fakeResultsTerminal } = require("@/test/rest/commands/fixtures");
 
 suite("BML REST commands - pipelineViewer", () => {
   test("fails if credentials are not configured", async () => {

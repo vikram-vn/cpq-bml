@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Optimization Test Suite', () => {
     test('Linter correctly identifies conditions and control blocks without suffix substring allocation overhead', () => {

@@ -1,4 +1,4 @@
-const { vscode, makeDiagnostic } = require('./shared');
+const { vscode, makeDiagnostic } = require('@/lang/lint/categories/best-practices/shared');
 
 const STANDARD_NUMBERS = new Set(['0', '1', '2', '10', '100', '0.0', '1.0', '2.0', '10.0', '100.0', '-1', '-1.0']);
 const HTTP_STATUS_CODES = new Set([

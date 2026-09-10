@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 const { inferLiteralType, getAssignmentRhsText, checkAssignmentTypeConsistency } = require('@/lang/lint/rules/typeCheck');
 
 suite('BML Linter Test Suite - variable type consistency', () => {

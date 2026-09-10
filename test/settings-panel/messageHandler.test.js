@@ -1,7 +1,7 @@
 const assert = require("assert");
 const { handleMessage } = require("@/lang/settings-panel/messageHandler");
 const config = require("@/lang/rest/config");
-const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
+const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 const path = require("path");
 
 function fakePanel() {

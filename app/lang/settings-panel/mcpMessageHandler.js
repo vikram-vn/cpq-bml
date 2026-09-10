@@ -6,7 +6,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
       let healthy = false;
       let port = 47821;
       try {
-        const { getMcpServerStatus } = require("../mcp/server");
+        const { getMcpServerStatus } = require("@/lang/mcp/server");
         const status = getMcpServerStatus();
         healthy = !!status.running;
         port = status.port || port;
@@ -29,13 +29,13 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
     }
 
     case "getMcpTraffic": {
-      const { getMcpTraffic } = require("../mcp/traffic");
+      const { getMcpTraffic } = require("@/lang/mcp/traffic");
       post({ type: "mcpTraffic", traffic: getMcpTraffic() });
       return true;
     }
 
     case "clearMcpTraffic": {
-      const { clearMcpTraffic } = require("../mcp/traffic");
+      const { clearMcpTraffic } = require("@/lang/mcp/traffic");
       clearMcpTraffic();
       post({ type: "mcpTraffic", traffic: [] });
       post({ type: "toast", message: "MCP traffic history cleared" });
@@ -47,7 +47,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
       let overall = "healthy";
 
       // 1. MCP Server Status
-      const { getMcpServerStatus } = require("../mcp/server");
+      const { getMcpServerStatus } = require("@/lang/mcp/server");
       const mcpStatus = getMcpServerStatus();
       if (mcpStatus.running) {
         checks.push({
@@ -82,7 +82,7 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
       }
 
       // 3. Metadata Attribute Cache
-      const { getWorkspaceRoot, getMetadataStatus } = require("../rest/commerceAttributes");
+      const { getWorkspaceRoot, getMetadataStatus } = require("@/lang/rest/commerceAttributes");
       const wsRoot = getWorkspaceRoot(vscode);
       const meta = getMetadataStatus(context, wsRoot, vscode);
       if (meta && meta.isSynced) {

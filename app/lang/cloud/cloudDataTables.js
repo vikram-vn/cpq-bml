@@ -43,8 +43,8 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const { request } = require('../rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('../rest/config');
+const { request } = require('@/lang/rest/client');
+const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('@/lang/rest/config');
 
 /**
  * Fetches the list of all Data Tables from the CPQ server.

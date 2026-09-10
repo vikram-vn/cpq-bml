@@ -1,7 +1,7 @@
 const assert = require("assert");
 const commands = require("@/lang/rest/commands");
-const { createFakeVscode } = require("../testHelpers");
-const { baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("./fixtures");
+const { createFakeVscode } = require("@/test/rest/testHelpers");
+const { baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("@/test/rest/commands/fixtures");
 
 suite("BML REST commands - globalSearch", () => {
   test("shows error when credentials are not configured", async () => {

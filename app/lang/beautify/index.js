@@ -1,6 +1,6 @@
 const vscode = require('vscode');
-const beautify = require('./bml');
-const optionsProvider = require('./options'); // your options.js
+const beautify = require('@/lang/beautify/bml');
+const optionsProvider = require('@/lang/beautify/options'); // your options.js
 
 // Get full document range
 function getFullDocumentRange(document) {

@@ -1,4 +1,4 @@
-const { makeDiagnostic } = require('../best-practices/shared');
+const { makeDiagnostic } = require('@/lang/lint/categories/best-practices/shared');
 const vscode = require('vscode');
 
 function checkDictionary(cleanText, noStringsText, doc) {

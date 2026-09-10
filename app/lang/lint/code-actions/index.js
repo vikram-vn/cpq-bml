@@ -1,15 +1,15 @@
 const vscode = require('vscode');
-const { registerSpellingCommands, getSpellingFixes } = require('./spellingFixes');
-const { getSyntaxFixes } = require('./syntaxFixes');
-const { getQualityFixes } = require('./qualityFixes');
-const { getStyleFixes } = require('./styleFixes');
-const { getSuppressionFixes } = require('./suppressionFixes');
-const { getPerformanceFixes } = require('./performanceFixes');
-const { getBmqlFixes } = require('./bmqlFixes');
-const { getApiFixes } = require('./apiFixes');
-const { getUnreachableFixes } = require('./unreachableFixes');
-const { getSecurityFixes } = require('./securityFixes');
-const { getFixAllSafeAction } = require('./fixAllSafe');
+const { registerSpellingCommands, getSpellingFixes } = require('@/lang/lint/code-actions/spellingFixes');
+const { getSyntaxFixes } = require('@/lang/lint/code-actions/syntaxFixes');
+const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
+const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
+const { getSuppressionFixes } = require('@/lang/lint/code-actions/suppressionFixes');
+const { getPerformanceFixes } = require('@/lang/lint/code-actions/performanceFixes');
+const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
+const { getApiFixes } = require('@/lang/lint/code-actions/apiFixes');
+const { getUnreachableFixes } = require('@/lang/lint/code-actions/unreachableFixes');
+const { getSecurityFixes } = require('@/lang/lint/code-actions/securityFixes');
+const { getFixAllSafeAction } = require('@/lang/lint/code-actions/fixAllSafe');
 
 function registerBmlCodeActions(context) {
     const extensionPath = context.extensionPath;

@@ -1,14 +1,14 @@
-const metadataLib = require("../metadata");
-const api = require("../api");
+const metadataLib = require("@/lang/rest/metadata");
+const api = require("@/lang/rest/api");
 const {
   hasMissingCredentials,
   getCommerceProcess,
   getCommerceDocument,
-} = require("../config");
+} = require("@/lang/rest/config");
 const {
   findLibraryFunctionByVariableName,
   isSuccess,
-} = require("./shared");
+} = require("@/lang/rest/commands/shared");
 
 const pendingFetches = new Set();
 

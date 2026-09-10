@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('Parameter Type Validation - All String Functions', () => {
     test('atof() expects String, flags Integer argument', () => {

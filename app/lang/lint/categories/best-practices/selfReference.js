@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { vscode, makeDiagnostic } = require('./shared');
+const { vscode, makeDiagnostic } = require('@/lang/lint/categories/best-practices/shared');
 
 /**
  * Util/Commerce Library functions cannot self-reference: per

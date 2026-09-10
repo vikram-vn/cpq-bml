@@ -1,4 +1,4 @@
-const { toDisplayName } = require('./shared');
+const { toDisplayName } = require('@/lang/rest/commands/shared');
 
 // Human-readable label for a BML variable name: drops a trailing "_t"/"_c"/"_l" (the common
 // temp/current/line naming-convention suffixes) and title-cases the rest, e.g. "status_t" ->

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('Parameter Type Validation - All Date Functions', () => {
     test('adddays() expects Date (p1) and Integer (p2), flags String (p1)', () => {

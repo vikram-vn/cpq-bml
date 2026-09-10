@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { findOrCreateAiCopy } = require('../locate');
-const { debugFunction } = require('./lifecycle');
+const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
+const { debugFunction } = require('@/lang/mcp/tools/lifecycle');
 
 // Headless counterparts to app/lang/testing/runner.js and snapshot.js: those are built for an
 // active editor + interactive prompts + an Output Channel, and scrape the return value out of

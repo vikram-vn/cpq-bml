@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('Parameter Type Validation - CPQJS & Other Library Methods', () => {
     test('CPQJS.getTableInfo expects String (p1), flags Integer (p1)', () => {

@@ -1,6 +1,6 @@
 const fs = require("fs");
 const pathLib = require("path");
-const { request } = require("./client");
+const { request } = require("@/lang/rest/client");
 
 const DEFAULT_REST_VERSION = 'v18';
 const DEFAULT_DOMAIN_SUFFIX = '.bigmachines.com';

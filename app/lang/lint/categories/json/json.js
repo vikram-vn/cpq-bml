@@ -1,4 +1,4 @@
-const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('../best-practices/shared');
+const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('@/lang/lint/categories/best-practices/shared');
 const { inferExpressionType } = require('@/lang/lint/rules/typeCheck');
 const vscode = require('vscode');
 

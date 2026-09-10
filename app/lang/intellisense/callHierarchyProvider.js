@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
-const { resolveCallAtPosition, getWorkspaceIndex } = require('./workspaceIndex');
+const { resolveCallAtPosition, getWorkspaceIndex } = require('@/lang/intellisense/workspaceIndex');
 
 function getFunctionFromDocOrPosition(document, position) {
     // 1. Try call at position (e.g., util.myFunc)

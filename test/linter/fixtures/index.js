@@ -1,5 +1,8 @@
+const path = require('path');
 const vscode = require('vscode');
 const { lintBMLCustom } = require('@/lang/lint/core/lint');
+
+const ROOT = path.resolve(__dirname, '..', '..', '..');
 
 function lintText(bmlText, filePath = '/mock/test.bml') {
     const lines = bmlText.split(/\r?\n/);
@@ -27,9 +30,7 @@ function lintText(bmlText, filePath = '/mock/test.bml') {
     };
     const diagnostics = [];
     const collection = { set: (uri, diags) => diagnostics.push(...diags) };
-    const path = require('path');
-    const extPath = path.resolve(__dirname, '../../../');
-    lintBMLCustom(doc, collection, vscode, extPath);
+    lintBMLCustom(doc, collection, vscode, ROOT);
     return diagnostics;
 }
 

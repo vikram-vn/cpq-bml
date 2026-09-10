@@ -11,7 +11,7 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const { fetchTransaction, fetchRecentTransactions, extractMockAttributes, generateBmlTestScaffold } = require('../apiTransactionMock');
+const { fetchTransaction, fetchRecentTransactions, extractMockAttributes, generateBmlTestScaffold } = require('@/lang/rest/apiTransactionMock');
 
 async function promptForTransactionId(vscodeInstance) {
   try {

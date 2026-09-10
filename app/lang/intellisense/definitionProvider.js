@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { resolveCallAtPosition, getWorkspaceIndex } = require('./workspaceIndex');
+const { resolveCallAtPosition, getWorkspaceIndex } = require('@/lang/intellisense/workspaceIndex');
 
 const BML_TYPES = new Set([
   'string', 'integer', 'float', 'boolean', 'date', 'dict',

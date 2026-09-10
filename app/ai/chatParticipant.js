@@ -1,6 +1,6 @@
 const vscode = require('vscode');
-const { auditBmlCode } = require('../lang/mcp/tools/audit');
-const { lookupCommerceAttribute } = require('../lang/mcp/tools/lookup');
+const { auditBmlCode } = require('@/lang/mcp/tools/audit');
+const { lookupCommerceAttribute } = require('@/lang/mcp/tools/lookup');
 
 /**
  * Registers the native VS Code Copilot Chat participant '@bml' (id: cpqBml.bmlAssistant).

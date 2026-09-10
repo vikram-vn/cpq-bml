@@ -4,10 +4,10 @@
 // that preserve_newlines should keep - never invented mid-expression, except wrap_line_length's opt-in
 // forward-only wrapping before the next operand of a '+' chain.
 
-const { Tokenizer, TOKEN, line_starters } = require('./tokenizer');
-const { Options } = require('./options');
-const { Output } = require('./output');
-const { get_directives } = require('./tokenizerHelpers');
+const { Tokenizer, TOKEN, line_starters } = require('@/lang/beautify/bml/tokenizer');
+const { Options } = require('@/lang/beautify/bml/options');
+const { Output } = require('@/lang/beautify/bml/output');
+const { get_directives } = require('@/lang/beautify/bml/tokenizerHelpers');
 
 const CONTROL_WITH_CONDITION = ['if', 'elif', 'for'];
 const HUGS_PREVIOUS_BLOCK = ['else', 'elif'];

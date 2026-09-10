@@ -10,13 +10,13 @@ const {
   SYSTEM_ATTRS_FILE,
   README_CPQ,
   saveWorkspaceAttributes: writeWorkspaceAttributes,
-} = require("./commerceAttributesWriter");
-const { createResolver } = require("./commerceAttributesResolver");
+} = require("@/lang/rest/commerceAttributesWriter");
+const { createResolver } = require("@/lang/rest/commerceAttributesResolver");
 const {
   loadAttributesFromDir,
   inspectMetadataStatus,
   removeMetadataFromDirs,
-} = require("./commerceMetadataLoader");
+} = require("@/lang/rest/commerceMetadataLoader");
 
 // In-memory cache singleton
 let extensionContext = null;
@@ -354,7 +354,7 @@ function removeMetadata(context, workspaceRoot, vscode) {
   clearAttributesCache();
 
   try {
-    const { invalidateApiData } = require("../intellisense/apiData");
+    const { invalidateApiData } = require("@/lang/intellisense/apiData");
     if (typeof invalidateApiData === "function") {
       invalidateApiData();
     }

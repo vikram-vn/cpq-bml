@@ -3,14 +3,14 @@ const {
   saveWorkspaceAttributes,
   getCommerceProcess,
   getCommerceDocument,
-} = require("./commerceAttributes");
-const { getSettings } = require("../settings-panel/state");
+} = require("@/lang/rest/commerceAttributes");
+const { getSettings } = require("@/lang/settings-panel/state");
 const {
   formatCommerceAttribute,
   fetchSystemAttributes,
   fetchArraySets,
   fetchAttributeLookups,
-} = require("./apiCommerceSyncHelpers");
+} = require("@/lang/rest/apiCommerceSyncHelpers");
 
 /**
  * Pulls and caches remote attributes, menu items, systemAttributes, and attributeLookups into local cache.

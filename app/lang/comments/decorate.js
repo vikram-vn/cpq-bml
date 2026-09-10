@@ -1,8 +1,8 @@
 "use strict";
-const { getCommentRanges } = require('../lint/rules/comments');
-const { matchTag } = require('./tags');
-const { describeDirective } = require('./directives');
-const { findDocHeaderBlocks } = require('./docHeader');
+const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { matchTag } = require('@/lang/comments/tags');
+const { describeDirective } = require('@/lang/comments/directives');
+const { findDocHeaderBlocks } = require('@/lang/comments/docHeader');
 
 function isWithinAny(ranges, start, end) {
     return ranges.some(([rStart, rEnd]) => start >= rStart && end <= rEnd);

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const api = require('@/lang/rest/api');
-const { findOrCreateAiCopy } = require('../locate');
+const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
 
 /**
  * Naive line-by-line diff (LCS-based).

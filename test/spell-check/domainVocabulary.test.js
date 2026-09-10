@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../linter/fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - Custom Spellchecker - CPQ/BML domain vocabulary', () => {
     test('Does not flag BML control-flow keywords or built-in type names', () => {

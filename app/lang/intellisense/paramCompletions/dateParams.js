@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const GETDATE_BOOLEANS = [
     { name: 'true', detail: 'getdate(true)', doc: 'Returns current date and system time (default).' },

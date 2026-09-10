@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const SORT_ORDERS = [
     { name: 'asc', detail: 'sort(array, "asc")', doc: 'Ascending order (default). Sorts array from lowest to highest value.' },

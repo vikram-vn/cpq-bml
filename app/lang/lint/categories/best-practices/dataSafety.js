@@ -1,4 +1,4 @@
-const { vscode, makeDiagnostic } = require('./shared');
+const { vscode, makeDiagnostic } = require('@/lang/lint/categories/best-practices/shared');
 
 /**
  * Runtime-safety checks around type conversion, array access, and numeric

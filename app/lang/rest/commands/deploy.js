@@ -1,7 +1,7 @@
-const api = require("../api");
-const metadataLib = require("../metadata");
-const { getCommerceProcess } = require("../config");
-const { runPreflightSafetyCheck, formatPreflightSummary } = require("../preflightChecker");
+const api = require("@/lang/rest/api");
+const metadataLib = require("@/lang/rest/metadata");
+const { getCommerceProcess } = require("@/lang/rest/config");
+const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -12,7 +12,7 @@ const {
   isSuccess,
   resolveMetadataForFile,
   ensureCredentials,
-} = require("./shared");
+} = require("@/lang/rest/commands/shared");
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

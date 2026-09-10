@@ -1,3 +1,3 @@
-const { registerBmlCodeActions } = require('../code-actions');
+const { registerBmlCodeActions } = require('@/lang/lint/code-actions');
 
 module.exports = { registerBmlCodeActions };

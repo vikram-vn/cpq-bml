@@ -1,4 +1,4 @@
-const { isConstantTrue, isConstantFalse, selfCompareOperand } = require('./constantConditions');
+const { isConstantTrue, isConstantFalse, selfCompareOperand } = require('@/lang/lint/rules/constantConditions');
 
 // Includes an implicit top-level "block" spanning the whole file, so unreachable code
 // after a top-level return/break/throwerror with no enclosing braces is still caught.

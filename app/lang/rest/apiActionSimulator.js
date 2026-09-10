@@ -14,9 +14,9 @@ try {
   };
 }
 
-const { request } = require('./client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings } = require('./config');
-const { TransactionMockGenerator, fetchRecentTransactions } = require('./apiTransactionMock');
+const { request } = require('@/lang/rest/client');
+const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings } = require('@/lang/rest/config');
+const { TransactionMockGenerator, fetchRecentTransactions } = require('@/lang/rest/apiTransactionMock');
 
 /**
  * Simulates clicking a Commerce Action and computes attribute deltas.

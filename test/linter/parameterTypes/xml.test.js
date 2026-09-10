@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('Parameter Type Validation - XML Functions', () => {
     test('readxmlsingle() expects String (p1) and String (p2), flags Date (p1)', () => {

@@ -7,7 +7,7 @@ const {
   COMMERCE_ATTRS_FILE,
   CONFIG_ATTRS_FILE,
   SYSTEM_ATTRS_FILE,
-} = require("./commerceAttributesWriter");
+} = require("@/lang/rest/commerceAttributesWriter");
 
 function processCommercePayload(raw, addItems, defaultScope = "Transaction") {
   if (!raw) return;

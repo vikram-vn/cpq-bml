@@ -1,6 +1,6 @@
 const vscode = require("vscode");
 const { loadJson } = require("@/lang/intellisense/apiDataLoader");
-const { makeDiagnostic } = require("../categories/best-practices/shared");
+const { makeDiagnostic } = require("@/lang/lint/categories/best-practices/shared");
 
 let attributesMap = null; // Map<lowercaseName, { canonicalName, scope }>
 

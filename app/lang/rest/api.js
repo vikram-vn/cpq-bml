@@ -3,10 +3,10 @@ const {
   sanitizeRestResponse,
   functionsPath,
   getEffectiveRestVersion,
-} = require("./apiCore");
-const { getRestVersion } = require("./config");
-const apiCommerce = require("./apiCommerce");
-const apiConfig = require("./apiConfig");
+} = require("@/lang/rest/apiCore");
+const { getRestVersion } = require("@/lang/rest/config");
+const apiCommerce = require("@/lang/rest/apiCommerce");
+const apiConfig = require("@/lang/rest/apiConfig");
 
 // GET /rest/<version>/bml/library/functions?offset=&limit= -> { items, offset, limit, count, hasMore }
 function listLibraryFunctions(

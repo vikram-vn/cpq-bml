@@ -19,10 +19,10 @@ const {
     runCreateOverride,
     runRemoveOverride,
 } = require('@/lang/rest/commands');
-const { createToolVscodeContext, createCapturingTerminal } = require('../proxy');
-const { findOrCreateAiCopy, findLocalBmlPath, resetAiCopy } = require('../locate');
-const { getAiTerminal } = require('../aiTerminal');
-const { pullFunction } = require('./lookup');
+const { createToolVscodeContext, createCapturingTerminal } = require('@/lang/mcp/proxy');
+const { findOrCreateAiCopy, findLocalBmlPath, resetAiCopy } = require('@/lang/mcp/locate');
+const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
+const { pullFunction } = require('@/lang/mcp/tools/lookup');
 
 // Operates on the "<variableName>_ai" working copy, never the pulled canonical file.
 function requireLocalFile(vscode, variableName) {

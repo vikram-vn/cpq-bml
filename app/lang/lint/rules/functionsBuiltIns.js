@@ -1,9 +1,9 @@
 const {
   parseParameterSignature,
   splitArgumentsList,
-} = require("./functionSignature");
-const { levenshtein } = require('../core/levenshtein');
-const { inferLiteralType, inferExpressionType } = require("./typeCheck");
+} = require("@/lang/lint/rules/functionSignature");
+const { levenshtein } = require('@/lang/lint/core/levenshtein');
+const { inferLiteralType, inferExpressionType } = require("@/lang/lint/rules/typeCheck");
 const { loadJson } = require('@/lang/intellisense/apiDataLoader');
 
 function inferArgumentType(argText, firstTypeByVar, returnTypes) {

@@ -16,7 +16,7 @@ const {
     loadBestPracticeAdvisoriesJson,
     loadKeywordHoversJson,
     loadCategoryLabelsJson
-} = require('./apiDataLoader');
+} = require('@/lang/intellisense/apiDataLoader');
 
 const categoryData = loadCategoryLabelsJson();
 const CATEGORY_LABEL = (categoryData && categoryData.categories) || {

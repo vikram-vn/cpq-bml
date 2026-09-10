@@ -1,5 +1,5 @@
-const api = require("../api");
-const metadataLib = require("../metadata");
+const api = require("@/lang/rest/api");
+const metadataLib = require("@/lang/rest/metadata");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -11,7 +11,7 @@ const {
   parseErrorLine,
   resolveMetadataForFile,
   ensureCredentials,
-} = require("./shared");
+} = require("@/lang/rest/commands/shared");
 
 async function runValidateCurrentFile(
   context,

@@ -3,7 +3,7 @@ const {
     toUpperSnakeCase,
     inferConstantCandidateName,
     renameIdentifierInDocument
-} = require('./qualityHelpers');
+} = require('@/lang/lint/code-actions/qualityHelpers');
 
 function getQualityFixes(document, diag, editRange, extensionPath) {
     const fixes = [];
@@ -371,7 +371,7 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
     }
     else if (diag.code === 'bml-unknown-function') {
         const word = document.getText(editRange);
-        const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('../rules/functions');
+        const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('@/lang/lint/rules/functions');
         const suggestion = findClosestBuiltInFunction(word, loadBuiltInFunctions(extensionPath));
         if (suggestion) {
             const action = new vscode.CodeAction(`Replace with '${suggestion}'`, vscode.CodeActionKind.QuickFix);

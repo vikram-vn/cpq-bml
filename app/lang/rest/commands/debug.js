@@ -1,6 +1,6 @@
-const api = require("../api");
-const configLib = require("../config");
-const metadataLib = require("../metadata");
+const api = require("@/lang/rest/api");
+const configLib = require("@/lang/rest/config");
+const metadataLib = require("@/lang/rest/metadata");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -14,18 +14,18 @@ const {
   appendDebugOutputToFile,
   appendDebugPrintToFile,
   ensureCredentials,
-} = require("./shared");
+} = require("@/lang/rest/commands/shared");
 const {
   formatAsTable,
   tableLinesToString,
   formatDocAttributeDumpTables,
   parseDocAttributeDump,
-} = require("./debugTableFormat");
+} = require("@/lang/rest/commands/debugTableFormat");
 const {
   writeTableLines,
   runConcurrentPool,
   runDebugSingleExecution,
-} = require("./debugExecution");
+} = require("@/lang/rest/commands/debugExecution");
 
 async function runDebugCurrentFile(
   context,

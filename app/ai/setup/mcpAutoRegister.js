@@ -32,7 +32,7 @@ const {
     deregisterWindsurf,
     registerCodex,
     deregisterCodex,
-} = require('./clientRegistrars');
+} = require('@/ai/setup/clientRegistrars');
 
 function getMcpPortFromSettings(fallbackPort = 47821) {
     try {

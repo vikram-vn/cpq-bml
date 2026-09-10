@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - security-sensitive literals', () => {
     suite('Hardcoded credentials (bml-hardcoded-credential)', () => {

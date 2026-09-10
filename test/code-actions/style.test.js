@@ -1,8 +1,8 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const { lintBMLCustom } = require('@/lang/lint/core/lint');
-const { activateExtension } = require('../extensionHelper');
-const { runStyleAdvancedCodeActionTests } = require('./styleAdvanced.test');
+const { activateExtension } = require('@/test/extensionHelper');
+const { runStyleAdvancedCodeActionTests } = require('@/test/code-actions/styleAdvanced.test');
 
 function runStyleCodeActionTests() {
     suite('BML Style Code Actions Suite', () => {

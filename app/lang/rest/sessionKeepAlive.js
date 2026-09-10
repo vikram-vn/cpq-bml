@@ -7,8 +7,8 @@ try {
   };
 }
 
-const { request } = require('./client');
-const { getBaseUrl, getAuthHeader, getRestVersion } = require('./config');
+const { request } = require('@/lang/rest/client');
+const { getBaseUrl, getAuthHeader, getRestVersion } = require('@/lang/rest/config');
 
 /**
  * Background heartbeat service keeping CPQ sessions and tokens alive.

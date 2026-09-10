@@ -1,4 +1,4 @@
-const { makeDiagnostic, findMatchingParenEnd } = require('../best-practices/shared');
+const { makeDiagnostic, findMatchingParenEnd } = require('@/lang/lint/categories/best-practices/shared');
 const vscode = require('vscode');
 
 // Per XML.md: both functions report failures via a fixed sentinel key in the

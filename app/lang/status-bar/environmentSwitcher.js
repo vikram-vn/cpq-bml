@@ -1,6 +1,6 @@
 const vscode = require('vscode');
-const { getActiveEnvironmentName } = require('../rest/terminal');
-const { exportTeamProfiles, importTeamProfiles } = require('./profileSharing');
+const { getActiveEnvironmentName } = require('@/lang/rest/terminal');
+const { exportTeamProfiles, importTeamProfiles } = require('@/lang/status-bar/profileSharing');
 
 let statusBarItem = null;
 

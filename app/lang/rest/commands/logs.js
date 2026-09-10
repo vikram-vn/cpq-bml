@@ -8,7 +8,7 @@ try {
   };
 }
 
-const { getLogStreamer, formatLogEntry } = require('../apiLogs');
+const { getLogStreamer, formatLogEntry } = require('@/lang/rest/apiLogs');
 
 function registerLogCommands(context) {
   const streamer = getLogStreamer();

@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { lintText } = require("../fixtures");
+const { lintText } = require("@/test/linter/fixtures");
 const { performance } = require("perf_hooks");
 
 suite("BML Linter Performance & Speed Benchmark Suite", function() {

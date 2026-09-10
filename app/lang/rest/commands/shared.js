@@ -1,8 +1,8 @@
 const fs = require('fs');
 const pathLib = require('path');
-const api = require('../api');
-const config = require('../config');
-const metadataLib = require('../metadata');
+const api = require('@/lang/rest/api');
+const config = require('@/lang/rest/config');
+const metadataLib = require('@/lang/rest/metadata');
 
 // e.g. "calculateDiscount" -> "Calculate Discount"
 function toDisplayName(input) {

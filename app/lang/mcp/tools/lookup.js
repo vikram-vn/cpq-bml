@@ -13,9 +13,9 @@ const {
     formatElapsed,
     findLibraryFunctionByVariableName,
 } = require('@/lang/rest/commands/shared');
-const { findOrCreateAiCopy } = require('../locate');
-const { getAiTerminal } = require('../aiTerminal');
-const { createCapturingTerminal } = require('../proxy');
+const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
+const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
+const { createCapturingTerminal } = require('@/lang/mcp/proxy');
 
 async function listAll(context, vscode, transport, metadataTarget) {
     const label = metadataTarget ? 'List Commerce Functions' : 'List Util Functions';

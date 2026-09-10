@@ -1,4 +1,4 @@
-const { getResultsTerminal } = require('../rest/terminal');
+const { getResultsTerminal } = require('@/lang/rest/terminal');
 
 // Gated behind cpqBml.mcp.logToTerminal, re-checked per call so toggling takes effect without a reload.
 // Returns null in unit tests, where vscode.window.createTerminal isn't available.

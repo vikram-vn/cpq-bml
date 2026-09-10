@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('Parameter Type Validation - All URL Access Functions', () => {
     test('makeurlparam() expects Dictionary (p1), flags String (p1)', () => {

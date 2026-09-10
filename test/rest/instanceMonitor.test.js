@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { InstanceMonitor } = require('@/lang/rest/instanceMonitor');
-const { createFakeVscode } = require('./testHelpers');
-const { baseVscodeConfig } = require('./commands/fixtures');
+const { createFakeVscode } = require('@/test/rest/testHelpers');
+const { baseVscodeConfig } = require('@/test/rest/commands/fixtures');
 
 suite('CPQ Instance Monitor & Health Check - Unit Tests', () => {
   test('returns disconnected status when credentials are not configured', async () => {

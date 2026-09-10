@@ -10,9 +10,9 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const { BmlTestRunner } = require('./bmlTestRunner');
-const api = require('../rest/api');
-const { getBaseUrl, getAuthHeader } = require('../rest/config');
+const { BmlTestRunner } = require('@/lang/test-controller/bmlTestRunner');
+const api = require('@/lang/rest/api');
+const { getBaseUrl, getAuthHeader } = require('@/lang/rest/config');
 
 function extractBmltAssertions(code = '') {
   const assertions = [];

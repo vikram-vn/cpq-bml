@@ -11,8 +11,8 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const api = require('./api');
-const metadataLib = require('./metadata');
+const api = require('@/lang/rest/api');
+const metadataLib = require('@/lang/rest/metadata');
 
 async function checkServerValidation(filePath, code, metadata, vscodeInstance = vscode, context) {
   const startedAt = Date.now();

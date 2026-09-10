@@ -1,5 +1,5 @@
 const z = require("zod");
-const { jsonResult } = require("../jsonResult");
+const { jsonResult } = require("@/lang/mcp/jsonResult");
 
 function register(server, context, vscode, tools) {
   server.registerTool(

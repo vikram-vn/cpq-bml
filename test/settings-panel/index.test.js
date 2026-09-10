@@ -1,6 +1,6 @@
 const assert = require("assert");
 const { shouldAutoOpenOnInstall, FIRST_INSTALL_KEY, hasMissingCredentials } = require("@/lang/settings-panel");
-const { createFakeContext, createFakeVscode } = require("../rest/testHelpers");
+const { createFakeContext, createFakeVscode } = require("@/test/rest/testHelpers");
 
 suite("settings-panel index - first-install auto-open", () => {
   test("returns true the first time (flag not yet set)", () => {

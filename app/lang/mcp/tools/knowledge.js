@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
-const { findOrCreateAiCopy } = require('../locate');
+const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
 let _lintBMLCustom = null;
 function getLintBMLCustom() {
     if (!_lintBMLCustom) {
@@ -103,7 +103,7 @@ async function explainFunction(context, vscode, args) {
     };
 }
 
-const { diffFunction, computeLineDiff } = require('./diff');
+const { diffFunction, computeLineDiff } = require('@/lang/mcp/tools/diff');
 
 /**
  * search_functions
@@ -358,7 +358,7 @@ async function lintAllFunctions(context, vscode) {
  * Lists all built-in Oracle CPQ and BML AI skills with their metadata.
  */
 function listSkills(context) {
-    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '../../../..');
+    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '..', '..', '..', '..');
     const skillsDir = path.join(extensionPath, 'app', 'ai', 'skills');
     if (!fs.existsSync(skillsDir)) {
         return { success: true, skills: [] };
@@ -395,7 +395,7 @@ function getSkill(context, { name } = {}) {
         return { success: false, error: 'Skill name is required (e.g. "bml-language", "bml-pitfalls", "cpq-domain", "cpq-rest-api")' };
     }
     const safeName = name.trim().toLowerCase();
-    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '../../../..');
+    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '..', '..', '..', '..');
     const skillDir = path.join(extensionPath, 'app', 'ai', 'skills', safeName);
     const skillMd = path.join(skillDir, 'SKILL.md');
     if (!fs.existsSync(skillMd)) {

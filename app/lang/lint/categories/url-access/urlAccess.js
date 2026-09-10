@@ -1,4 +1,4 @@
-const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('../best-practices/shared');
+const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('@/lang/lint/categories/best-practices/shared');
 const vscode = require('vscode');
 
 function checkUrlAccess(cleanText, noStringsText, doc) {

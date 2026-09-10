@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const JSON_PATH_TEMPLATES = [
     { name: '$.fieldName', insertText: '$.fieldName', detail: 'Root Property', doc: 'Access top-level JSON property by key name.' },

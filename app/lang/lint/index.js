@@ -1,9 +1,9 @@
 const vscode = require('vscode');
-const { lintBMLCustom, reorderVisibleDiagnostics } = require('./core/lint');
-const { registerBmlCodeActions } = require('./core/codeActions');
-const { registerSecurityDiagnostics } = require('./securityDiagnostics');
-const { registerSecurityCodeActions } = require('./code-actions/securityCodeActions');
-const { loadDictionaries, isCodeSpellCheckerInstalled } = require('../spell-check/spelling');
+const { lintBMLCustom, reorderVisibleDiagnostics } = require('@/lang/lint/core/lint');
+const { registerBmlCodeActions } = require('@/lang/lint/core/codeActions');
+const { registerSecurityDiagnostics } = require('@/lang/lint/securityDiagnostics');
+const { registerSecurityCodeActions } = require('@/lang/lint/code-actions/securityCodeActions');
+const { loadDictionaries, isCodeSpellCheckerInstalled } = require('@/lang/spell-check/spelling');
 
 let diagnosticCollection;
 
@@ -43,7 +43,7 @@ function registerBmlLinter(context) {
     if (isLintEnabled()) {
         setImmediate(() => {
             try {
-                const { loadJson } = require('../intellisense/apiDataLoader');
+                const { loadJson } = require('@/lang/intellisense/apiDataLoader');
                 loadJson('bml-functions-api-usage', extensionPath);
                 loadJson('bml-variables-api-usage', extensionPath);
                 loadJson('function-return-types', extensionPath);

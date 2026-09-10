@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const HTTP_METHODS = [
     { name: 'GET', detail: 'HTTP GET Method', doc: 'Retrieve data from endpoint.' },

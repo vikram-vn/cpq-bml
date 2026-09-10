@@ -1,4 +1,4 @@
-const { vscode, makeDiagnostic, splitTopLevelArgs } = require('./shared');
+const { vscode, makeDiagnostic, splitTopLevelArgs } = require('@/lang/lint/categories/best-practices/shared');
 
 /**
  * BMQL query safety and performance checks.

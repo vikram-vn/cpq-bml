@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { lintText } = require("../fixtures");
+const { lintText } = require("@/test/linter/fixtures");
 
 suite("BML Linter Test Suite - Commerce Attributes Scope tests", () => {
     test("Flags Line Item attribute (_l) accessed on Transaction object", () => {

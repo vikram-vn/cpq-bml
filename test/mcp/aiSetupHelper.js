@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
-const { getExtensionId } = require('../extensionHelper.js');
+const { getExtensionId } = require('@/test/extensionHelper.js');
 
 const AI_SKILLS_KEYS = ['claude', 'cursor', 'copilot'];
 

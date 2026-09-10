@@ -1,14 +1,14 @@
-const lookup = require('./lookup');
-const lifecycle = require('./lifecycle');
-const knowledge = require('./knowledge');
-const reference = require('./reference');
-const status = require('./status');
-const testing = require('./testing');
-const formatting = require('./formatting');
-const audit = require('./audit');
-const bmqlValidator = require('./bmqlValidator');
-const testTools = require('./testTools');
-const schemaTools = require('./schemaTools');
+const lookup = require('@/lang/mcp/tools/lookup');
+const lifecycle = require('@/lang/mcp/tools/lifecycle');
+const knowledge = require('@/lang/mcp/tools/knowledge');
+const reference = require('@/lang/mcp/tools/reference');
+const status = require('@/lang/mcp/tools/status');
+const testing = require('@/lang/mcp/tools/testing');
+const formatting = require('@/lang/mcp/tools/formatting');
+const audit = require('@/lang/mcp/tools/audit');
+const bmqlValidator = require('@/lang/mcp/tools/bmqlValidator');
+const testTools = require('@/lang/mcp/tools/testTools');
+const schemaTools = require('@/lang/mcp/tools/schemaTools');
 
 module.exports = {
     ...lookup,

@@ -1,5 +1,5 @@
-const { request } = require('./client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings } = require('./config');
+const { request } = require('@/lang/rest/client');
+const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings } = require('@/lang/rest/config');
 
 /**
  * Fetches real CPQ Commerce Transaction payloads and converts them

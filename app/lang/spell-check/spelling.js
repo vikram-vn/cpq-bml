@@ -7,7 +7,7 @@ const {
   loadDictionaries,
   getSpellingSuggestions,
   isMorphologicallyValid,
-} = require("./spellingDict");
+} = require("@/lang/spell-check/spellingDict");
 
 function splitIdentifier(token) {
   const parts = token.split(/[^a-zA-Z0-9]/);

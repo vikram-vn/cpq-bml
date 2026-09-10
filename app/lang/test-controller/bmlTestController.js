@@ -7,7 +7,7 @@ try {
 }
 
 const fs = require("fs");
-const { BmlTestRunner } = require("./bmlTestRunner");
+const { BmlTestRunner } = require("@/lang/test-controller/bmlTestRunner");
 
 const TEST_GLOB_PATTERNS = ["**/*.bmlt", "**/*.test.bml"];
 

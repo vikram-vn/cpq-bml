@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { inferConstantCandidateName } = require('./qualityHelpers');
+const { inferConstantCandidateName } = require('@/lang/lint/code-actions/qualityHelpers');
 const {
     toCamelCase,
     formatBooleanName,
@@ -8,11 +8,11 @@ const {
     commentOutEmptyLoops,
     computeTransitiveUnusedVariables,
     commentOutUnusedAssignments
-} = require('./cascadingCleanup');
+} = require('@/lang/lint/code-actions/cascadingCleanup');
 
-const { getDeclaredVariables } = require('../rules/variables');
-const { getCommentRanges } = require('../rules/comments');
-const { getStringRanges } = require('../rules/strings');
+const { getDeclaredVariables } = require('@/lang/lint/rules/variables');
+const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { getStringRanges } = require('@/lang/lint/rules/strings');
 
 function blankRangesFast(text, ranges) {
     if (!ranges || ranges.length === 0) return text;

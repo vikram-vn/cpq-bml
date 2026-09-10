@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const DELIMITERS = [
     { name: ',', detail: 'Comma separator (",")', doc: 'Comma delimiter string.' },

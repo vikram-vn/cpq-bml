@@ -8,8 +8,8 @@ try {
         SnippetString: function (s) { this.value = s; }
     };
 }
-const { getBmlApiData, CATEGORY_KIND } = require('./apiData');
-const { formatAsJsDoc } = require('./docFormatting');
+const { getBmlApiData, CATEGORY_KIND } = require('@/lang/intellisense/apiData');
+const { formatAsJsDoc } = require('@/lang/intellisense/docFormatting');
 
 let cachedGlobalItems = null;
 let cachedTransactionItems = null;

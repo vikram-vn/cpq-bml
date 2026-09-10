@@ -1,4 +1,4 @@
-const api = require("../api");
+const api = require("@/lang/rest/api");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -7,7 +7,7 @@ const {
   formatElapsed,
   describeError,
   ensureCredentials,
-} = require("./shared");
+} = require("@/lang/rest/commands/shared");
 
 async function runSyncCommerceMetadata(
   context,
@@ -201,7 +201,7 @@ async function runSyncCommerceMetadata(
 }
 
 async function runSyncAllMetadata(context, vscode, terminal, onProgress) {
-  const { syncConfigurationAttributes } = require("../apiConfig");
+  const { syncConfigurationAttributes } = require("@/lang/rest/apiConfig");
   const commRes = await runSyncCommerceMetadata(context, vscode, terminal, {
     fetchMenuItems: false,
     onProgress,
@@ -222,7 +222,7 @@ async function runSyncAllMetadata(context, vscode, terminal, onProgress) {
 }
 
 async function runRemoveCommerceMetadata(context, vscode, terminal) {
-  const { removeMetadata, getWorkspaceRoot } = require("../commerceAttributes");
+  const { removeMetadata, getWorkspaceRoot } = require("@/lang/rest/commerceAttributes");
   const wsRoot = getWorkspaceRoot(vscode);
   removeMetadata(context, wsRoot, vscode);
   if (terminal) {

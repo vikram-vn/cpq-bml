@@ -1,4 +1,4 @@
-const { buildStringParamItems } = require('./utils');
+const { buildStringParamItems } = require('@/lang/intellisense/paramCompletions/utils');
 
 const CPQJS_TABLE_NAMES = [
     { name: 'lineItemGrid', detail: 'CPQ Line Item Grid', doc: 'Line item grid table variable name in CPQJS.' }

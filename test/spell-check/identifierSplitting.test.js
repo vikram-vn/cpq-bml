@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../linter/fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 const { splitIdentifier } = require('@/lang/spell-check/spelling');
 
 suite('BML Linter Test Suite - Custom Spellchecker - identifier splitting edge cases', () => {

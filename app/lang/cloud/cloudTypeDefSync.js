@@ -15,15 +15,15 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const api = require('../rest/api');
+const api = require('@/lang/rest/api');
 
 function invalidateIntelliSenseCache() {
   try {
-    const { invalidateApiData } = require('../intellisense/apiData');
+    const { invalidateApiData } = require('@/lang/intellisense/apiData');
     if (typeof invalidateApiData === 'function') invalidateApiData();
   } catch (_) {}
   try {
-    const { invalidateCategorizedItems } = require('../intellisense/categorizedItems');
+    const { invalidateCategorizedItems } = require('@/lang/intellisense/categorizedItems');
     if (typeof invalidateCategorizedItems === 'function') invalidateCategorizedItems();
   } catch (_) {}
 }

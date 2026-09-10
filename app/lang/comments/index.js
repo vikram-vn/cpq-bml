@@ -1,8 +1,8 @@
 "use strict";
 const vscode = require('vscode');
-const { buildCommentDecorations } = require('./decorate');
-const { DEFAULT_TAGS } = require('./tags');
-const { getHoverMarkdown } = require('./hover');
+const { buildCommentDecorations } = require('@/lang/comments/decorate');
+const { DEFAULT_TAGS } = require('@/lang/comments/tags');
+const { getHoverMarkdown } = require('@/lang/comments/hover');
 
 function isCommentsEnabled() {
     return vscode.workspace.getConfiguration('cpqBml').get('features.comments', true);
@@ -48,8 +48,8 @@ function toVscodeRanges(document, offsetRanges) {
     return offsetRanges.map(([start, end]) => new vscode.Range(document.positionAt(start), document.positionAt(end)));
 }
 
-const { getCommentRanges } = require('../lint/rules/comments');
-const { getStringRanges } = require('../lint/rules/strings');
+const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { getStringRanges } = require('@/lang/lint/rules/strings');
 
 const DEPRECATED_REGEXES = [
     /\bNaN\b/g,

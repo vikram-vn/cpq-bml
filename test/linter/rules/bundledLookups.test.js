@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { activateExtension } = require('../../extensionHelper');
+const { activateExtension } = require('@/test/extensionHelper');
 
 // Regression guard for two stacked bug classes, both invisible to every
 // other lint test (they require app/lang/lint/*.js directly, bypassing

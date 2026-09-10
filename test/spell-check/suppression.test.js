@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../linter/fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - Custom Spellchecker - suppression directive integration', () => {
     test('// bml-lint-disable-line bml-spelling-error suppresses a spelling diagnostic on that line', () => {

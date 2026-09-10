@@ -2,8 +2,8 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const { findLocalBmlPath, findOrCreateAiCopy, resetAiCopy } = require("@/lang/mcp/locate");
-const { createFakeVscode } = require("../rest/testHelpers");
-const { withTempDir } = require("../rest/commands/fixtures");
+const { createFakeVscode } = require("@/test/rest/testHelpers");
+const { withTempDir } = require("@/test/rest/commands/fixtures");
 
 function vscodeRootedAt(tmpDir, configOverrides) {
   return createFakeVscode({

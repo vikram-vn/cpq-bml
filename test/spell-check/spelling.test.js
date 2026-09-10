@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { lintText } = require('../linter/fixtures');
-const { activateExtension } = require('../extensionHelper');
+const { lintText } = require('@/test/linter/fixtures');
+const { activateExtension } = require('@/test/extensionHelper');
 const { getSpellingSuggestions, splitIdentifier, cleanCommentText } = require('@/lang/spell-check/spelling');
 
 suite('BML Linter Test Suite - Custom Spellchecker', () => {

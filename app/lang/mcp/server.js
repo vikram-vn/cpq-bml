@@ -5,16 +5,16 @@ const { McpServer } = require("@modelcontextprotocol/sdk/server/mcp.js");
 const {
   StreamableHTTPServerTransport,
 } = require("@modelcontextprotocol/sdk/server/streamableHttp.js");
-const tools = require("./tools");
-const statusTools = require("./tool-defs/statusTools");
-const lookupTools = require("./tool-defs/lookupTools");
-const lifecycleTools = require("./tool-defs/lifecycleTools");
-const knowledgeTools = require("./tool-defs/knowledgeTools");
-const referenceTools = require("./tool-defs/referenceTools");
-const testingTools = require("./tool-defs/testingTools");
-const formattingTools = require("./tool-defs/formattingTools");
-const { registerResources } = require("./resources");
-const { recordMcpRequest } = require("./traffic");
+const tools = require("@/lang/mcp/tools");
+const statusTools = require("@/lang/mcp/tool-defs/statusTools");
+const lookupTools = require("@/lang/mcp/tool-defs/lookupTools");
+const lifecycleTools = require("@/lang/mcp/tool-defs/lifecycleTools");
+const knowledgeTools = require("@/lang/mcp/tool-defs/knowledgeTools");
+const referenceTools = require("@/lang/mcp/tool-defs/referenceTools");
+const testingTools = require("@/lang/mcp/tool-defs/testingTools");
+const formattingTools = require("@/lang/mcp/tool-defs/formattingTools");
+const { registerResources } = require("@/lang/mcp/resources");
+const { recordMcpRequest } = require("@/lang/mcp/traffic");
 
 // Reads all SKILL.md files from app/ai/skills/ and concatenates them into a
 // single string for the MCP server instructions, stripping YAML frontmatter.

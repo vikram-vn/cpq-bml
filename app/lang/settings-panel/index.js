@@ -4,11 +4,11 @@ try {
 } catch {
     vscode = {};
 }
-const { createSettingsPanel } = require("./panel");
-const { getHtml } = require("./html");
-const { handleMessage } = require("./messageHandler");
-const { titleForTab } = require("./tabTitles");
-const { hasMissingCredentials } = require("../rest/config");
+const { createSettingsPanel } = require("@/lang/settings-panel/panel");
+const { getHtml } = require("@/lang/settings-panel/html");
+const { handleMessage } = require("@/lang/settings-panel/messageHandler");
+const { titleForTab } = require("@/lang/settings-panel/tabTitles");
+const { hasMissingCredentials } = require("@/lang/rest/config");
 
 let currentPanel = null;
 

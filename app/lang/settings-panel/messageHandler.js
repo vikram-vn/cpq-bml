@@ -1,18 +1,18 @@
-const config = require("../rest/config");
+const config = require("@/lang/rest/config");
 const {
   writePassword,
   writeAuthToken,
   deletePassword,
   deleteAuthToken,
-} = require("../rest/commands/secrets");
+} = require("@/lang/rest/commands/secrets");
 const {
   applyEnvironment,
   addEnvironment,
   updateEnvironment,
   deleteEnvironment,
-} = require("../rest/commands/env");
-const { buildState } = require("./state");
-const { titleForTab } = require("./tabTitles");
+} = require("@/lang/rest/commands/env");
+const { buildState } = require("@/lang/settings-panel/state");
+const { titleForTab } = require("@/lang/settings-panel/tabTitles");
 
 const CPQ_SECTION = "cpqBml";
 
@@ -124,7 +124,7 @@ async function dispatch(message, context, vscode, panel) {
     }
 
     case "syncMetadata": {
-      const { runSyncAllMetadata } = require("../rest/commands/sync");
+      const { runSyncAllMetadata } = require("@/lang/rest/commands/sync");
       try {
         post({
           type: "syncProgress",
@@ -173,7 +173,7 @@ async function dispatch(message, context, vscode, panel) {
     }
 
     case "removeMetadata": {
-      const { removeMetadata, getWorkspaceRoot } = require("../rest/commerceAttributes");
+      const { removeMetadata, getWorkspaceRoot } = require("@/lang/rest/commerceAttributes");
       removeMetadata(context, getWorkspaceRoot(vscode), vscode);
       await sendState();
       post({ type: "toast", message: "Metadata cache removed successfully." });
@@ -423,7 +423,7 @@ async function dispatch(message, context, vscode, panel) {
     case "registerMcp":
     case "deregisterMcp":
     case "syncBmlSkills": {
-      const { handleMcpMessage } = require("./mcpMessageHandler");
+      const { handleMcpMessage } = require("@/lang/settings-panel/mcpMessageHandler");
       await handleMcpMessage(message.type, message, context, vscode, CPQ_SECTION, post, sendState);
       return;
     }

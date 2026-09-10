@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 const { parseParameterSignature, splitArgumentsList } = require('@/lang/lint/rules/functionSignature');
 const { findClosestBuiltInFunction, loadBuiltInFunctions } = require('@/lang/lint/rules/functions');
 

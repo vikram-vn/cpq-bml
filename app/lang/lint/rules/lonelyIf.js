@@ -1,4 +1,4 @@
-const { parseConditionalChains } = require('./duplicateBranches');
+const { parseConditionalChains } = require('@/lang/lint/rules/duplicateBranches');
 
 // Flags an else-block whose entire body is just one if/elif*/else? chain - BML has a
 // first-class 'elif' for this, unlike JS's "else if". conditionalChains is the shared

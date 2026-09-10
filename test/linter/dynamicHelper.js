@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const { lintText } = require('./fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 const { parseParameterSignature } = require('@/lang/lint/rules/functionSignature');
 
 function getSafeLiteralForType(type, index) {

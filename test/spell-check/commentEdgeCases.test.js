@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../linter/fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - Custom Spellchecker - comment text edge cases', () => {
     test('Does not flag numbers, percentages, or dates mentioned in comments', () => {

@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs');
-const metadataLib = require('../metadata');
-const shared = require('./shared');
-const { getCommerceProcess, getCommerceDocument, getSettings } = require('../config');
+const metadataLib = require('@/lang/rest/metadata');
+const shared = require('@/lang/rest/commands/shared');
+const { getCommerceProcess, getCommerceDocument, getSettings } = require('@/lang/rest/config');
 
 const returnTypeMap = {
     'String': 1,

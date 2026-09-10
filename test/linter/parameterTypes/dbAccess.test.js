@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('Parameter Type Validation - Direct DB Access Functions', () => {
     test('getboolean() expects Record (p1) and String (p2), flags String (p1)', () => {

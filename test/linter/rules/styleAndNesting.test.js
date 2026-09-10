@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter Test Suite - deep nesting and print guard', () => {
     suite('bml-deep-nesting flags once per violating region', () => {

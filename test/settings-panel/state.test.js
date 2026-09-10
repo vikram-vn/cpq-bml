@@ -1,7 +1,7 @@
 const assert = require("assert");
 const { buildState } = require("@/lang/settings-panel/state");
 const config = require("@/lang/rest/config");
-const { createFakeVscode, createFakeContext } = require("../rest/testHelpers");
+const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 
 suite("settings-panel state", () => {
   test("buildState assembles all non-secret settings plus environments and hasPassword/hasToken booleans", async () => {

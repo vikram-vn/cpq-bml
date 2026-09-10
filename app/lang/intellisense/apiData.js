@@ -4,7 +4,7 @@ try {
 } catch (_) {}
 const fs = require('fs');
 const path = require('path');
-const { loadJson, invalidateCache: invalidateJsonCache } = require('./apiDataLoader');
+const { loadJson, invalidateCache: invalidateJsonCache } = require('@/lang/intellisense/apiDataLoader');
 
 const API_FILES = [
     { baseName: 'bml-attributes-api-usage', category: 'attribute' },
@@ -51,7 +51,7 @@ function loadApiData(context) {
 
     // 2. Prefer user workspace .cpq/cache first if present
     try {
-        const { loadWorkspaceAttributes } = require('../rest/commerceAttributes');
+        const { loadWorkspaceAttributes } = require('@/lang/rest/commerceAttributes');
         const roots = [];
         if (context && context.workspaceRoot) {
             roots.push(context.workspaceRoot);

@@ -1,4 +1,4 @@
-const { titleForTab } = require('./tabTitles');
+const { titleForTab } = require('@/lang/settings-panel/tabTitles');
 
 function createSettingsPanel(context, vscode) {
     const panel = vscode.window.createWebviewPanel(

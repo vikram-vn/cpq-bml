@@ -2,7 +2,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const config = require("@/lang/rest/config");
-const { createFakeContext } = require("../testHelpers");
+const { createFakeContext } = require("@/test/rest/testHelpers");
 
 const SAMPLE_FUNCTION = {
   name: "ConcatString",

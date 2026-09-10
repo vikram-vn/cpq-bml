@@ -2,7 +2,7 @@ const {
     TYPE_CONSTRUCTORS,
     FUNCTION_RETURN_TYPES,
     getFunctionReturnTypes
-} = require('./typeCheckOperands');
+} = require('@/lang/lint/rules/typeCheckOperands');
 
 // Bails out (returns null) on a newline at depth 0 with no semicolon yet, rather than
 // guessing across what might be two separate statements.

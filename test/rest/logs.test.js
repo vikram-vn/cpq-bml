@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { RemoteLogStreamer } = require('@/lang/rest/apiLogs');
-const { createFakeVscode } = require('./testHelpers');
-const { baseVscodeConfig } = require('./commands/fixtures');
+const { createFakeVscode } = require('@/test/rest/testHelpers');
+const { baseVscodeConfig } = require('@/test/rest/commands/fixtures');
 
 suite('Remote Log Streamer - Unit Tests', () => {
   test('formats log entries with timestamp, severity, script name and line number', () => {

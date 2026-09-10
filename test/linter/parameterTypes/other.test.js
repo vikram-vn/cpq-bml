@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { lintText } = require('../fixtures');
+const { lintText } = require('@/test/linter/fixtures');
 
 suite('Parameter Type Validation - Other, Advanced, BOM, System Config & User Session Functions', () => {
     test('addpartstotransaction() expects String (p1) and Dictionary (p2), flags Integer (p1)', () => {

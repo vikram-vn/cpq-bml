@@ -1,7 +1,7 @@
 const assert = require("assert");
 const tools = require("@/lang/mcp/tools");
-const { createFakeVscode } = require("../rest/testHelpers");
-const { makeContext } = require("../rest/commands/fixtures");
+const { createFakeVscode } = require("@/test/rest/testHelpers");
+const { makeContext } = require("@/test/rest/commands/fixtures");
 
 suite("MCP tools - lookupBmlReference", () => {
   test("requires at least one of name/category/scope", async () => {

@@ -1,8 +1,8 @@
-const { getQuotedStringRange } = require('./utils');
-const { TIMEZONES, getTimezoneCompletions } = require('./timezones');
-const { DATE_FORMATS, getDateFormatCompletions, getGetDateIncludeTimeCompletions } = require('./dateParams');
-const { CURRENCY_CODES, getCurrencyCodeCompletions } = require('./currencies');
-const { DELIMITERS, getDelimiterCompletions } = require('./delimiters');
+const { getQuotedStringRange } = require('@/lang/intellisense/paramCompletions/utils');
+const { TIMEZONES, getTimezoneCompletions } = require('@/lang/intellisense/paramCompletions/timezones');
+const { DATE_FORMATS, getDateFormatCompletions, getGetDateIncludeTimeCompletions } = require('@/lang/intellisense/paramCompletions/dateParams');
+const { CURRENCY_CODES, getCurrencyCodeCompletions } = require('@/lang/intellisense/paramCompletions/currencies');
+const { DELIMITERS, getDelimiterCompletions } = require('@/lang/intellisense/paramCompletions/delimiters');
 const {
     HTTP_METHODS,
     CONTENT_TYPES,
@@ -10,7 +10,7 @@ const {
     getHttpMethodCompletions,
     getContentTypeCompletions,
     getEncodingCompletions
-} = require('./httpAndWeb');
+} = require('@/lang/intellisense/paramCompletions/httpAndWeb');
 const {
     CPQJS_TABLE_NAMES,
     CPQJS_ACTIONS,
@@ -18,17 +18,17 @@ const {
     getCpqjsTableCompletions,
     getCpqjsActionCompletions,
     getCpqjsAttributeCompletions
-} = require('./cpqjsParams');
-const { BMQL_TEMPLATES, getBmqlQueryCompletions } = require('./bmqlParams');
-const { JSON_PATH_TEMPLATES, getJsonPathCompletions } = require('./jsonParams');
-const { DICT_TYPES, getDictTypeCompletions } = require('./dictParams');
+} = require('@/lang/intellisense/paramCompletions/cpqjsParams');
+const { BMQL_TEMPLATES, getBmqlQueryCompletions } = require('@/lang/intellisense/paramCompletions/bmqlParams');
+const { JSON_PATH_TEMPLATES, getJsonPathCompletions } = require('@/lang/intellisense/paramCompletions/jsonParams');
+const { DICT_TYPES, getDictTypeCompletions } = require('@/lang/intellisense/paramCompletions/dictParams');
 const {
     SORT_ORDERS,
     SORT_TYPES,
     getSortOrderCompletions,
     getSortTypeCompletions,
     getByteArrayCharsetCompletions
-} = require('./arrayParams');
+} = require('@/lang/intellisense/paramCompletions/arrayParams');
 
 /**
  * Main dispatcher for Smart Parameter Completions based on active function call and parameter index.
@@ -83,7 +83,7 @@ function resolveParameterCompletions(activeCall, document, position) {
         return getContentTypeCompletions(document, position);
     }
     if (['generatehmacmessage'].includes(fn) && paramIdx === 2) {
-        const { getHmacAlgorithmCompletions } = require('./httpAndWeb');
+        const { getHmacAlgorithmCompletions } = require('@/lang/intellisense/paramCompletions/httpAndWeb');
         return getHmacAlgorithmCompletions(document, position);
     }
 
@@ -92,7 +92,7 @@ function resolveParameterCompletions(activeCall, document, position) {
         return getJsonPathCompletions(document, position);
     }
     if (['jsonget', 'jsonarrayget', 'jsonpathgetsingle'].includes(fn) && paramIdx === 2) {
-        const { getJsonValueTypeCompletions } = require('./jsonParams');
+        const { getJsonValueTypeCompletions } = require('@/lang/intellisense/paramCompletions/jsonParams');
         return getJsonValueTypeCompletions(document, position);
     }
 

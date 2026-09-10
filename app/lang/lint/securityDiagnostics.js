@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { auditBmlCode } = require('../mcp/tools/audit');
+const { auditBmlCode } = require('@/lang/mcp/tools/audit');
 
 let diagnosticCollection = null;
 let debounceTimers = new Map();

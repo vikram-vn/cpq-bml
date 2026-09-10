@@ -1,10 +1,10 @@
 const {
   parseParameterSignature,
   splitArgumentsList,
-} = require("./functionSignature");
-const { getWorkspaceFunctionsCached } = require("./workspaceFunctions");
+} = require("@/lang/lint/rules/functionSignature");
+const { getWorkspaceFunctionsCached } = require("@/lang/lint/rules/workspaceFunctions");
 const { loadJson } = require('@/lang/intellisense/apiDataLoader');
-const { getFunctionReturnTypes } = require("./typeCheckOperands");
+const { getFunctionReturnTypes } = require("@/lang/lint/rules/typeCheckOperands");
 const {
   inferArgumentType,
   controlKeywords,
@@ -19,7 +19,7 @@ const {
   findClosestWorkspaceFunction,
   normalizeType,
   argumentTypeCompatible
-} = require("./functionsBuiltIns");
+} = require("@/lang/lint/rules/functionsBuiltIns");
 
 function checkFunctionCalls(
   cleanText,

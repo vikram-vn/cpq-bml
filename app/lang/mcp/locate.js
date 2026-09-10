@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const config = require('../rest/config');
-const metadataLib = require('../rest/metadata');
+const config = require('@/lang/rest/config');
+const metadataLib = require('@/lang/rest/metadata');
 
 const AI_FILE_SUFFIX = '_ai';
 const LEGACY_AI_FOLDER_SUFFIX = '-AI';

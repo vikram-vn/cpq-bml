@@ -5,16 +5,16 @@ const {
     getWorkspaceIndex,
     registerWorkspaceIndexWatcher,
     resolveCallAtPosition,
-} = require('./workspaceIndex');
-const { formatAsJsDoc, formatWorkspaceFunctionHover, KEYWORD_HOVERS } = require('./docFormatting');
-const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
-const { resolveParameterCompletions } = require('./paramCompletions');
-const { registerInlayHintsProvider } = require('./inlayHints');
-const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('./bmqlVariableCompletions');
-const { getBmqlIntelligentCompletions } = require('../bmql/bmqlIntellisense');
-const { createDefinitionProvider } = require('./definitionProvider');
-const { createReferenceProvider } = require('./referenceProvider');
-const { createCallHierarchyProvider } = require('./callHierarchyProvider');
+} = require('@/lang/intellisense/workspaceIndex');
+const { formatAsJsDoc, formatWorkspaceFunctionHover, KEYWORD_HOVERS } = require('@/lang/intellisense/docFormatting');
+const { getActiveFunctionCall, parseParameters } = require('@/lang/intellisense/signatureHelp');
+const { resolveParameterCompletions } = require('@/lang/intellisense/paramCompletions');
+const { registerInlayHintsProvider } = require('@/lang/intellisense/inlayHints');
+const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('@/lang/intellisense/bmqlVariableCompletions');
+const { getBmqlIntelligentCompletions } = require('@/lang/bmql/bmqlIntellisense');
+const { createDefinitionProvider } = require('@/lang/intellisense/definitionProvider');
+const { createReferenceProvider } = require('@/lang/intellisense/referenceProvider');
+const { createCallHierarchyProvider } = require('@/lang/intellisense/callHierarchyProvider');
 
 const {
     loadApiData,
@@ -22,13 +22,13 @@ const {
     lookupApiInfo,
     getBmlApiData,
     CATEGORY_KIND
-} = require('./apiData');
+} = require('@/lang/intellisense/apiData');
 
 const {
     buildCategorizedItems,
     getCategorizedItems,
     invalidateCategorizedItems,
-} = require('./categorizedItems');
+} = require('@/lang/intellisense/categorizedItems');
 
 /**
  * Detects variables used in a for loop iterating over transaction lines in the document.

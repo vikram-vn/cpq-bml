@@ -1,6 +1,6 @@
 const vscode = require('vscode');
-const { getAssignmentRhsText, inferExpressionType } = require('./typeCheck');
-const { getFunctionReturnTypes } = require('./typeCheckOperands');
+const { getAssignmentRhsText, inferExpressionType } = require('@/lang/lint/rules/typeCheck');
+const { getFunctionReturnTypes } = require('@/lang/lint/rules/typeCheckOperands');
 
 function makeDiagnostic(range, message, severity, code) {
     const diag = new vscode.Diagnostic(range, message, severity);

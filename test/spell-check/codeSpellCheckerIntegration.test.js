@@ -1,6 +1,8 @@
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
+
+const ROOT = path.resolve(__dirname, '..', '..');
 const {
   isCodeSpellCheckerInstalled,
   checkSpelling
@@ -104,7 +106,7 @@ suite('Code Spell Checker Integration - Unit Tests', () => {
   });
 
   test('package.json contributes valid cSpell configuration and dictionary files', () => {
-    const pkgPath = path.resolve(__dirname, '../../package.json');
+    const pkgPath = path.join(ROOT, 'package.json');
     const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
     assert.ok(pkg.contributes.cSpell, 'package.json must contain contributes.cSpell');
@@ -112,7 +114,7 @@ suite('Code Spell Checker Integration - Unit Tests', () => {
     assert.ok(Array.isArray(pkg.contributes.cSpell.languageSettings), 'cSpell.languageSettings must be an array');
 
     for (const dict of pkg.contributes.cSpell.dictionaries) {
-      const resolvedPath = path.resolve(__dirname, '../../', dict.path);
+      const resolvedPath = path.join(ROOT, dict.path);
       assert.ok(fs.existsSync(resolvedPath), `Dictionary file must exist: ${dict.path}`);
       const content = fs.readFileSync(resolvedPath, 'utf8');
       assert.ok(content.length > 0, `Dictionary file must not be empty: ${dict.path}`);
