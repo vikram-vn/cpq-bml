@@ -109,20 +109,33 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       return item;
     }
 
+    if (element.type === 'actionFolder') {
+      const docLabel = element.docName === 'transaction'
+        ? 'Transaction (Header)'
+        : (element.docName === 'transactionLine' ? 'Transaction Line (Sub-document)' : element.docName);
+      const item = new vscodeInstance.TreeItem(
+        `${docLabel} (${element.count})`,
+        vscodeInstance.TreeItemCollapsibleState.Expanded
+      );
+      item.iconPath = new vscodeInstance.ThemeIcon('symbol-event');
+      item.tooltip = `Commerce Actions for document '${element.docName}'`;
+      return item;
+    }
+
     if (element.type === 'action') {
       const action = element.data;
       const varName = action.variableName || action.name;
-      const label = action.name || varName;
+      const label = action.label || action.name || varName;
       const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
 
-      const actionType = action.actionType || action.type || 'Action';
+      const actionType = action.type || action.actionType || 'Action';
       item.description = `[${actionType}] ${varName}`;
       item.tooltip = [
         `Commerce Action: ${label}`,
         `Variable Name: ${varName}`,
         `Action Type: ${actionType}`,
         action.description ? `Description: ${action.description}` : null,
-        `Process: ${action.commerceProcess}/${action.commerceDocument}`,
+        `Document: ${action.commerceProcess}/${action.commerceDocument || 'transaction'}`,
         '---',
         'Click to view action definition'
       ].filter(Boolean).join('\n');
@@ -284,7 +297,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
         {
           type: 'category',
           category: 'actions',
-          label: `Commerce Document Actions (${commerceProcess}/${commerceDocument})`,
+          label: `Commerce Document Actions (${commerceProcess})`,
           count: cachedCommerceActions ? cachedCommerceActions.length : 0,
           commerceProcess,
           commerceDocument
@@ -305,6 +318,31 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
             }
           }];
         }
+
+        const docGroups = new Map();
+        for (const action of cachedCommerceActions) {
+          const docName = action.commerceDocument || 'transaction';
+          if (!docGroups.has(docName)) {
+            docGroups.set(docName, []);
+          }
+          docGroups.get(docName).push(action);
+        }
+
+        if (docGroups.size > 1) {
+          const docFolders = [];
+          for (const [docName, actions] of docGroups.entries()) {
+            docFolders.push({
+              type: 'actionFolder',
+              docName,
+              commerceProcess: element.commerceProcess,
+              count: actions.length,
+              actions
+            });
+          }
+          docFolders.sort((a, b) => a.docName.localeCompare(b.docName));
+          return docFolders;
+        }
+
         return cachedCommerceActions.map(action => ({
           type: 'action',
           data: action
@@ -340,6 +378,13 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       return (element.functions || []).map(fn => ({
         type: 'function',
         data: fn
+      }));
+    }
+
+    if (element.type === 'actionFolder') {
+      return (element.actions || []).map(action => ({
+        type: 'action',
+        data: action
       }));
     }
 

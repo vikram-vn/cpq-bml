@@ -172,23 +172,6 @@ function register(server, context, vscode, tools) {
   );
 
   server.registerTool(
-    "remove_override",
-    {
-      description:
-        "Remove an override on a standard BML function, reverting it to CPQ's system version and discarding local override customizations. Destructive - requires confirm:true.",
-      inputSchema: {
-        variableName: z.string(),
-        confirm: z
-          .boolean()
-          .default(false)
-          .describe("Must be true to proceed; this discards local override customizations."),
-      },
-    },
-    async (args) =>
-      jsonResult(await tools.removeOverride(context, vscode, args)),
-  );
-
-  server.registerTool(
     "reset_ai_copy",
     {
       description:

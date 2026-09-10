@@ -13,6 +13,7 @@ const knowledgeTools = require("@/lang/mcp/tool-defs/knowledgeTools");
 const referenceTools = require("@/lang/mcp/tool-defs/referenceTools");
 const testingTools = require("@/lang/mcp/tool-defs/testingTools");
 const formattingTools = require("@/lang/mcp/tool-defs/formattingTools");
+const commerceActionDefs = require("@/lang/mcp/tool-defs/commerceActionDefs");
 const { registerResources } = require("@/lang/mcp/resources");
 const { recordMcpRequest } = require("@/lang/mcp/traffic");
 
@@ -75,6 +76,7 @@ function registerTools(server, context, vscode) {
   referenceTools.register(server, context, vscode, tools);
   testingTools.register(server, context, vscode, tools);
   formattingTools.register(server, context, vscode, tools);
+  commerceActionDefs.register(server, context, vscode, tools);
 }
 
 function registerSkillsResourcesAndPrompts(server, extensionPath) {

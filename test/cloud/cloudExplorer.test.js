@@ -220,6 +220,24 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     assert.strictEqual(folderFunctions.length, 1);
     assert.strictEqual(folderFunctions[0].data.variableName, 'calcDiscounts');
 
+    // Test action folder tree item (e.g. transactionLine sub-document)
+    const actionFolderElement = {
+      type: 'actionFolder',
+      docName: 'transactionLine',
+      commerceProcess: 'oraclecpqo',
+      count: 2,
+      actions: [
+        { variableName: 'deleteLine_t', name: 'Delete Line', type: 'Modify', commerceDocument: 'transactionLine' }
+      ]
+    };
+    const actionFolderItem = explorer.getTreeItem(actionFolderElement);
+    assert.ok(actionFolderItem.label.includes('Transaction Line (Sub-document) (2)'));
+    assert.strictEqual(actionFolderItem.iconPath.id, 'symbol-event');
+
+    const folderActions = await explorer.getChildren(actionFolderElement);
+    assert.strictEqual(folderActions.length, 1);
+    assert.strictEqual(folderActions[0].data.variableName, 'deleteLine_t');
+
     // Test refresh
     explorer.refresh();
     assert.strictEqual(fired, true);

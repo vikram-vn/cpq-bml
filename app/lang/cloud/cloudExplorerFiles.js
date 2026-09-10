@@ -52,6 +52,26 @@ function findLocalCommerceProcesses(workspaceRoot) {
   return results;
 }
 
+function buildDocumentTargets(proc, primaryDoc = 'transaction') {
+  const docs = [primaryDoc];
+  if (primaryDoc === 'transaction') {
+    docs.push('transactionLine');
+  } else if (primaryDoc === 'transactionLine') {
+    docs.push('transaction');
+  } else {
+    docs.push('transaction', 'transactionLine');
+  }
+  const seen = new Set();
+  const res = [];
+  for (const doc of docs) {
+    if (doc && !seen.has(doc)) {
+      seen.add(doc);
+      res.push({ process: proc, document: doc });
+    }
+  }
+  return res;
+}
+
 /**
  * Dynamically resolves active commerce processes and documents from session, config, local workspace, or live server.
  */
@@ -61,11 +81,11 @@ async function resolveCommerceTargets(vscodeInstance, context, forceRemote = fal
   const configuredDocument = settings.commerceDocument || 'transaction';
 
   if (activeCommerceTarget && !forceRemote) {
-    return [activeCommerceTarget];
+    return buildDocumentTargets(activeCommerceTarget.process, activeCommerceTarget.document);
   }
 
   if (configuredProcess && configuredProcess !== 'oraclecpqo' && !forceRemote) {
-    return [{ process: configuredProcess, document: configuredDocument }];
+    return buildDocumentTargets(configuredProcess, configuredDocument);
   }
 
   const folders = vscodeInstance && vscodeInstance.workspace && vscodeInstance.workspace.workspaceFolders;
@@ -86,18 +106,24 @@ async function resolveCommerceTargets(vscodeInstance, context, forceRemote = fal
         for (const it of items) {
           const procVar = it.variableName || it.name || it.id;
           if (!procVar) continue;
-          let docVar = 'transaction';
           try {
             const docRes = await api.listCommerceDocuments(context, vscodeInstance, { process: procVar, limit: 10 });
             if (docRes && docRes.statusCode >= 200 && docRes.statusCode < 300) {
               const docBody = safeParseJson(docRes.body);
               const docItems = Array.isArray(docBody) ? docBody : ((docBody && (docBody.items || docBody.documents)) || []);
               if (docItems.length > 0) {
-                docVar = docItems[0].variableName || docItems[0].name || 'transaction';
+                for (const d of docItems) {
+                  const dName = d.variableName || d.name;
+                  if (dName) {
+                    discovered.push({ process: procVar, document: dName });
+                  }
+                }
               }
             }
           } catch {}
-          discovered.push({ process: procVar, document: docVar });
+          if (!discovered.some(d => d.process === procVar)) {
+            discovered.push(...buildDocumentTargets(procVar, 'transaction'));
+          }
         }
         if (discovered.length > 0) {
           activeCommerceTarget = discovered[0];
@@ -107,8 +133,8 @@ async function resolveCommerceTargets(vscodeInstance, context, forceRemote = fal
     }
   } catch {}
 
-  const fallback = { process: configuredProcess || 'oraclecpqo', document: configuredDocument };
-  return [fallback];
+  const fallback = buildDocumentTargets(configuredProcess || 'oraclecpqo', configuredDocument || 'transaction');
+  return fallback;
 }
 
 /**

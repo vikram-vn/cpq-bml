@@ -155,7 +155,7 @@ async function getTransaction(
   );
 }
 
-// GET /rest/<version>/commerceProcessSetups/<process>/documents/<document>/actions (or fallback /commerceProcesses)
+// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/actionDefs
 async function listCommerceActions(
   context,
   vscode,
@@ -164,42 +164,24 @@ async function listCommerceActions(
 ) {
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
   const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
 
   const query = { limit };
   if (offset > 0) query.offset = offset;
 
-  let res = await call(
+  return call(
     context,
     vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/actions`,
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actionDefs`,
       method: "GET",
       query,
     },
     transport,
   );
-
-  if (res.statusCode === 404 || res.statusCode >= 300) {
-    const altRes = await call(
-      context,
-      vscode,
-      {
-        path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actions`,
-        method: "GET",
-        query,
-      },
-      transport,
-    );
-    if (altRes.statusCode >= 200 && altRes.statusCode < 300) {
-      res = altRes;
-    }
-  }
-
-  return res;
 }
 
-// GET /rest/<version>/commerceProcessSetups/<process>/documents/<document>/actions/<actionVarName>
+// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/actionDefs/<actionVarName>
 async function getCommerceAction(
   context,
   vscode,
@@ -209,12 +191,13 @@ async function getCommerceAction(
 ) {
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
   const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+
   return call(
     context,
     vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/actions/${actionVarName}`,
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actionDefs/${actionVarName}`,
       method: "GET",
     },
     transport,

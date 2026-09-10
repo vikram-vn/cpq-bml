@@ -9,6 +9,7 @@ const audit = require('@/lang/mcp/tools/audit');
 const bmqlValidator = require('@/lang/mcp/tools/bmqlValidator');
 const testTools = require('@/lang/mcp/tools/testTools');
 const schemaTools = require('@/lang/mcp/tools/schemaTools');
+const commerceActionTools = require('@/lang/mcp/tools/commerceActionTools');
 
 module.exports = {
     ...lookup,
@@ -22,4 +23,5 @@ module.exports = {
     ...bmqlValidator,
     ...testTools,
     ...schemaTools,
+    ...commerceActionTools,
 };
