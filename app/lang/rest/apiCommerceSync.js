@@ -1,10 +1,12 @@
 const {
   getWorkspaceRoot,
   saveWorkspaceAttributes,
+} = require("@/lang/rest/commerceAttributes");
+const {
   getCommerceProcess,
   getCommerceDocument,
-} = require("@/lang/rest/commerceAttributes");
-const { getSettings } = require("@/lang/settings-panel/state");
+  getSettings,
+} = require("@/lang/rest/config");
 const {
   formatCommerceAttribute,
   fetchSystemAttributes,
@@ -332,7 +334,7 @@ async function syncCommerceAttributes(
 
   if (wsRoot) {
     const configSettings = typeof getSettings === "function" ? getSettings(vscode) : null;
-    saveWorkspaceAttributes(wsRoot, cacheData, configSettings);
+    saveWorkspaceAttributes(wsRoot, cacheData, configSettings, context);
   }
 
   return cacheData;

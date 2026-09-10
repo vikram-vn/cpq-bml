@@ -43,48 +43,41 @@ try {
 
 const fs = require('fs');
 const path = require('path');
-const { request } = require('@/lang/rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('@/lang/rest/config');
+const api = require('@/lang/rest/api');
 
 /**
  * Fetches the list of all Data Tables from the CPQ server.
  */
-async function fetchRemoteDataTables(vscodeInstance = vscode, customTransport) {
-  const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-  if (!baseUrl || !authHeader) {
-    throw new Error('CPQ site URL or credentials are not configured.');
+async function fetchRemoteDataTables(vscodeInstance = vscode, customTransport, context) {
+  let ctx = context;
+  let vsc = vscodeInstance;
+  let transport = customTransport;
+
+  if (vscodeInstance && (vscodeInstance.secrets || vscodeInstance.subscriptions)) {
+    ctx = vscodeInstance;
+    vsc = customTransport || vscode;
+    transport = context;
   }
 
-  const version = getRestVersion(vscodeInstance);
-  const pathUrl = `/rest/${version}/customDataTables`;
-
-  const res = await request({
-    baseUrl,
-    path: pathUrl,
-    method: 'GET',
-    headers: {
-      Authorization: authHeader,
-      Accept: 'application/json'
-    },
-    timeoutMs: getSettings(vscodeInstance).timeoutMs || 20000,
-    transport: customTransport
-  });
-
-  if (res.statusCode >= 200 && res.statusCode < 300) {
-    let body = res.body || {};
-    if (typeof body === 'string') {
-      try { body = JSON.parse(body); } catch { body = {}; }
+  try {
+    const res = await api.listDataTables(ctx, vsc, { limit: 1000 }, transport);
+    if (res && res.statusCode >= 200 && res.statusCode < 300) {
+      let body = res.body || {};
+      if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch { body = {}; }
+      }
+      const items = body.items || (Array.isArray(body) ? body : []);
+      return items.map(t => ({
+        name: t.name || t.variableName || t.tableName || 'UnknownTable',
+        label: t.label || t.description || t.name || 'Data Table',
+        description: t.description || '',
+        folder: t.folder || '',
+        raw: t
+      })).sort((a, b) => a.name.localeCompare(b.name));
     }
-    const items = body.items || (Array.isArray(body) ? body : []);
-    return items.map(t => ({
-      name: t.name || t.variableName || t.tableName || 'UnknownTable',
-      label: t.label || t.description || t.name || 'Data Table',
-      description: t.description || '',
-      raw: t
-    })).sort((a, b) => a.name.localeCompare(b.name));
-  } else {
-    // If customDataTables returns 404/not supported, fallback to empty list or describe
+    return [];
+  } catch (err) {
+    console.warn('Failed to fetch remote data tables:', err);
     return [];
   }
 }
@@ -92,102 +85,67 @@ async function fetchRemoteDataTables(vscodeInstance = vscode, customTransport) {
 /**
  * Fetches schema definition (columns, types, descriptions) for a specific Data Table.
  */
-async function fetchTableSchema(tableName, vscodeInstance = vscode, customTransport) {
-  const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-  if (!baseUrl || !authHeader) {
-    throw new Error('CPQ site URL or credentials are not configured.');
+async function fetchTableSchema(tableName, vscodeInstance = vscode, customTransport, context) {
+  let ctx = context;
+  let vsc = vscodeInstance;
+  let transport = customTransport;
+
+  if (vscodeInstance && (vscodeInstance.secrets || vscodeInstance.subscriptions)) {
+    ctx = vscodeInstance;
+    vsc = customTransport || vscode;
+    transport = context;
   }
 
-  const version = getRestVersion(vscodeInstance);
-  const pathUrl = `/rest/${version}/customDataTables/${tableName}`;
-
-  const res = await request({
-    baseUrl,
-    path: pathUrl,
-    method: 'GET',
-    headers: {
-      Authorization: authHeader,
-      Accept: 'application/json'
-    },
-    timeoutMs: getSettings(vscodeInstance).timeoutMs || 20000,
-    transport: customTransport
-  });
-
-  if (res.statusCode >= 200 && res.statusCode < 300) {
-    let body = res.body || {};
-    if (typeof body === 'string') {
-      try { body = JSON.parse(body); } catch { body = {}; }
+  try {
+    const res = await api.getDataTableSchema(ctx, vsc, tableName, transport);
+    if (res && res.statusCode >= 200 && res.statusCode < 300) {
+      let body = res.body || {};
+      if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch { body = {}; }
+      }
+      const columns = body.columns || body.fields || body.items || [];
+      return columns.map(c => ({
+        name: c.name || c.variableName || 'col',
+        type: c.type || c.dataType || 'String',
+        label: c.label || c.name || '',
+        isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey)
+      }));
     }
-    const columns = body.columns || body.fields || body.items || [];
-    return columns.map(c => ({
-      name: c.name || c.variableName || 'col',
-      type: c.type || c.dataType || 'String',
-      label: c.label || c.name || '',
-      isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey)
-    }));
+    return [];
+  } catch (err) {
+    console.warn(`Failed to fetch schema for table ${tableName}:`, err);
+    return [];
   }
-
-  return [];
 }
 
 /**
  * Fetches rows for a Data Table from the live CPQ REST endpoint.
  */
-async function fetchTableRows(tableName, { limit = 200, offset = 0, query } = {}, vscodeInstance = vscode, customTransport) {
-  const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-  if (!baseUrl || !authHeader) {
-    throw new Error('CPQ site URL or credentials are not configured.');
+async function fetchTableRows(tableName, { limit = 200, offset = 0, query } = {}, vscodeInstance = vscode, customTransport, context) {
+  let ctx = context;
+  let vsc = vscodeInstance;
+  let transport = customTransport;
+
+  if (vscodeInstance && (vscodeInstance.secrets || vscodeInstance.subscriptions)) {
+    ctx = vscodeInstance;
+    vsc = customTransport || vscode;
+    transport = context;
   }
 
-  const version = getRestVersion(vscodeInstance);
-  // CPQ supports either /rest/v18/custom{TableName} or /rest/v18/customDataTables/{TableName}/records
-  let pathUrl = `/rest/${version}/custom${tableName}?limit=${limit}&offset=${offset}`;
-  if (query) {
-    pathUrl += `&q=${encodeURIComponent(query)}`;
-  }
-
-  let res = await request({
-    baseUrl,
-    path: pathUrl,
-    method: 'GET',
-    headers: {
-      Authorization: authHeader,
-      Accept: 'application/json'
-    },
-    timeoutMs: getSettings(vscodeInstance).timeoutMs || 25000,
-    transport: customTransport
-  });
-
-  if (res.statusCode >= 300 || res.statusCode < 200) {
-    // Try alternate endpoint: /customDataTables/{tableName}/records
-    const altPath = `/rest/${version}/customDataTables/${tableName}/records?limit=${limit}&offset=${offset}`;
-    const altRes = await request({
-      baseUrl,
-      path: altPath,
-      method: 'GET',
-      headers: {
-        Authorization: authHeader,
-        Accept: 'application/json'
-      },
-      timeoutMs: getSettings(vscodeInstance).timeoutMs || 25000,
-      transport: customTransport
-    });
-    if (altRes.statusCode >= 200 && altRes.statusCode < 300) {
-      res = altRes;
+  try {
+    const res = await api.getDataTableRows(ctx, vsc, tableName, { limit, offset, q: query }, transport);
+    if (res && res.statusCode >= 200 && res.statusCode < 300) {
+      let body = res.body || {};
+      if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch { body = {}; }
+      }
+      return body.items || (Array.isArray(body) ? body : []);
     }
+    return [];
+  } catch (err) {
+    console.warn(`Failed to fetch rows for table ${tableName}:`, err);
+    return [];
   }
-
-  if (res.statusCode >= 200 && res.statusCode < 300) {
-    let body = res.body || {};
-    if (typeof body === 'string') {
-      try { body = JSON.parse(body); } catch { body = {}; }
-    }
-    return body.items || (Array.isArray(body) ? body : []);
-  }
-
-  return [];
 }
 
 /**
@@ -198,7 +156,7 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
   const onDidChangeTreeData = onDidChangeTreeDataEmitter.event;
 
   let cachedTables = null;
-  let schemaCache = new Map();
+  const schemaCache = new Map();
   let isLoading = false;
 
   async function getTables() {
@@ -206,7 +164,7 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
     if (isLoading) return [];
     isLoading = true;
     try {
-      cachedTables = await fetchRemoteDataTables(vscodeInstance);
+      cachedTables = await fetchRemoteDataTables(vscodeInstance, undefined, context);
       return cachedTables;
     } catch {
       return [];
@@ -216,6 +174,12 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
   }
 
   function getTreeItem(element) {
+    if (element.type === 'empty' || element.type === 'empty_column') {
+      const item = new vscodeInstance.TreeItem(element.label, vscodeInstance.TreeItemCollapsibleState.None);
+      item.iconPath = new vscodeInstance.ThemeIcon('info');
+      return item;
+    }
+
     if (element.type === 'table') {
       const item = new vscodeInstance.TreeItem(
         element.data.name,
@@ -245,23 +209,39 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
     if (!element) {
       // Root level: return tables
       const tables = await getTables();
+      if (!tables || tables.length === 0) {
+        return [{
+          type: 'empty',
+          label: 'No Data Tables found (Check connection / credentials)'
+        }];
+      }
       return tables.map(t => ({
         type: 'table',
         data: t
       }));
     }
 
+    if (element.type === 'empty') {
+      return [];
+    }
+
     if (element.type === 'table') {
       const tableName = element.data.name;
       if (!schemaCache.has(tableName)) {
         try {
-          const cols = await fetchTableSchema(tableName, vscodeInstance);
+          const cols = await fetchTableSchema(tableName, vscodeInstance, undefined, context);
           schemaCache.set(tableName, cols);
         } catch {
           schemaCache.set(tableName, []);
         }
       }
       const columns = schemaCache.get(tableName);
+      if (!columns || columns.length === 0) {
+        return [{
+          type: 'empty_column',
+          label: 'No columns found'
+        }];
+      }
       return columns.map(c => ({
         type: 'column',
         tableName,
@@ -290,7 +270,7 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
 /**
  * Exports data table rows to a CSV file.
  */
-async function exportTableCsvCommand(item, vscodeInstance = vscode) {
+async function exportTableCsvCommand(item, vscodeInstance = vscode, context) {
   const tableName = item?.data?.name || item?.name;
   if (!tableName) return;
 
@@ -300,7 +280,7 @@ async function exportTableCsvCommand(item, vscodeInstance = vscode) {
     cancellable: false
   }, async () => {
     try {
-      const rows = await fetchTableRows(tableName, { limit: 1000 }, vscodeInstance);
+      const rows = await fetchTableRows(tableName, { limit: 1000 }, vscodeInstance, undefined, context);
       if (!rows || rows.length === 0) {
         vscodeInstance.window.showInformationMessage(`Table '${tableName}' contains no records.`);
         return;
@@ -350,7 +330,7 @@ function registerCloudDataTables(context, vscodeInstance = vscode) {
   });
 
   const exportCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.exportDataTableCsv', (item) => {
-    return exportTableCsvCommand(item, vscodeInstance);
+    return exportTableCsvCommand(item, vscodeInstance, context);
   });
 
   context.subscriptions.push(treeView, refreshCmd, queryCmd, exportCmd);
@@ -366,3 +346,4 @@ module.exports = {
   exportTableCsvCommand,
   registerCloudDataTables
 };
+

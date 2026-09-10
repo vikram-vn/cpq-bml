@@ -281,8 +281,160 @@ function searchBmlScripts(
   );
 }
 
+// GET /rest/<version>/datatables (or fallback to /dataTables, /customDataTables)
+async function listDataTables(context, vscode, { offset = 0, limit = 1000 } = {}, transport) {
+  const version = getRestVersion(vscode);
+  let res = await call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/datatables`,
+      method: "GET",
+      query: { offset, limit, totalResults: true },
+    },
+    transport,
+  );
+  if (res.statusCode === 404 || res.statusCode >= 300) {
+    const altRes = await call(
+      context,
+      vscode,
+      {
+        path: `/rest/${version}/dataTables`,
+        method: "GET",
+        query: { offset, limit, totalResults: true },
+      },
+      transport,
+    );
+    if (altRes.statusCode >= 200 && altRes.statusCode < 300) {
+      res = altRes;
+    } else {
+      const customRes = await call(
+        context,
+        vscode,
+        {
+          path: `/rest/${version}/customDataTables`,
+          method: "GET",
+          query: { offset, limit, totalResults: true },
+        },
+        transport,
+      );
+      if (customRes.statusCode >= 200 && customRes.statusCode < 300) {
+        res = customRes;
+      }
+    }
+  }
+  return res;
+}
+
+// GET /rest/<version>/datatables/{tableName}/fields (or fallback to /datatables/{tableName}, /customDataTables/{tableName})
+async function getDataTableSchema(context, vscode, tableName, transport) {
+  const version = getRestVersion(vscode);
+  let res = await call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/datatables/${tableName}/fields`,
+      method: "GET",
+    },
+    transport,
+  );
+  if (res.statusCode === 404 || res.statusCode >= 300) {
+    const altRes = await call(
+      context,
+      vscode,
+      {
+        path: `/rest/${version}/datatables/${tableName}`,
+        method: "GET",
+      },
+      transport,
+    );
+    if (altRes.statusCode >= 200 && altRes.statusCode < 300) {
+      res = altRes;
+    } else {
+      const customRes = await call(
+        context,
+        vscode,
+        {
+          path: `/rest/${version}/customDataTables/${tableName}`,
+          method: "GET",
+        },
+        transport,
+      );
+      if (customRes.statusCode >= 200 && customRes.statusCode < 300) {
+        res = customRes;
+      }
+    }
+  }
+  return res;
+}
+
+// GET /rest/<version>/adminCustom{tableName} (or fallback to /custom{tableName}, /datatables/{tableName}/records)
+async function getDataTableRows(context, vscode, tableName, { limit = 200, offset = 0, q } = {}, transport) {
+  const version = getRestVersion(vscode);
+  const queryParams = { limit, offset };
+  if (q) queryParams.q = q;
+
+  let res = await call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/adminCustom${tableName}`,
+      method: "GET",
+      query: queryParams,
+    },
+    transport,
+  );
+  if (res.statusCode === 404 || res.statusCode >= 300) {
+    const altRes = await call(
+      context,
+      vscode,
+      {
+        path: `/rest/${version}/custom${tableName}`,
+        method: "GET",
+        query: queryParams,
+      },
+      transport,
+    );
+    if (altRes.statusCode >= 200 && altRes.statusCode < 300) {
+      res = altRes;
+    } else {
+      const dtRes = await call(
+        context,
+        vscode,
+        {
+          path: `/rest/${version}/datatables/${tableName}/records`,
+          method: "GET",
+          query: queryParams,
+        },
+        transport,
+      );
+      if (dtRes.statusCode >= 200 && dtRes.statusCode < 300) {
+        res = dtRes;
+      }
+    }
+  }
+  return res;
+}
+
+function dispatch(context, vscode, method, subPath, query, body, transport) {
+  const version = getRestVersion(vscode);
+  const cleanSubPath = (subPath || '').startsWith('/') ? subPath : `/${subPath}`;
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}${cleanSubPath}`,
+      method: method || 'GET',
+      query,
+      body,
+    },
+    transport,
+  );
+}
+
 module.exports = {
   call,
+  dispatch,
   functionsPath,
   listLibraryFunctions,
   listLibraryFolders,
@@ -298,6 +450,9 @@ module.exports = {
   deployCommerceProcess,
   getTask,
   searchBmlScripts,
+  listDataTables,
+  getDataTableSchema,
+  getDataTableRows,
   getEffectiveRestVersion,
   sanitizeRestResponse,
   ...apiCommerce,
@@ -305,3 +460,4 @@ module.exports = {
   apiCommerce,
   apiConfig,
 };
+

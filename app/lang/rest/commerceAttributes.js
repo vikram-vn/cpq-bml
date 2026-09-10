@@ -17,6 +17,10 @@ const {
   inspectMetadataStatus,
   removeMetadataFromDirs,
 } = require("@/lang/rest/commerceMetadataLoader");
+const {
+  getCommerceProcess,
+  getCommerceDocument,
+} = require("@/lang/rest/config");
 
 // In-memory cache singleton
 let extensionContext = null;
@@ -410,6 +414,8 @@ module.exports = {
   isCommerceSynced,
   removeMetadata,
   getMetadataStatus,
+  getCommerceProcess,
+  getCommerceDocument,
   resolveAttributeName: resolver.resolveAttributeName,
   resolveMenuValue: resolver.resolveMenuValue,
   resolveQueryFilter: resolver.resolveQueryFilter,

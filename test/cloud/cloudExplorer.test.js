@@ -121,6 +121,66 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     assert.strictEqual(fnItem.contextValue, 'cpqCloudFunctionRemote');
     assert.strictEqual(fnItem.iconPath.id, 'cloud-download');
 
+    // Test category tree items (Util & Commerce)
+    const utilCategory = {
+      type: 'category',
+      category: 'util',
+      label: 'Util Libraries',
+      count: 5
+    };
+    const utilCategoryItem = explorer.getTreeItem(utilCategory);
+    assert.strictEqual(utilCategoryItem.label, 'Util Libraries (5)');
+    assert.strictEqual(utilCategoryItem.contextValue, 'cpqCloudCategoryUtil');
+    assert.strictEqual(utilCategoryItem.iconPath.id, 'library');
+
+    const commerceCategory = {
+      type: 'category',
+      category: 'commerce',
+      label: 'Commerce Libraries (oraclecpqo/transaction)',
+      count: 3
+    };
+    const commerceCategoryItem = explorer.getTreeItem(commerceCategory);
+    assert.strictEqual(commerceCategoryItem.label, 'Commerce Libraries (oraclecpqo/transaction) (3)');
+    assert.strictEqual(commerceCategoryItem.contextValue, 'cpqCloudCategoryCommerce');
+    assert.strictEqual(commerceCategoryItem.iconPath.id, 'briefcase');
+
+    // Test commerce function tree item
+    const commerceFnElement = {
+      type: 'function',
+      data: {
+        variableName: 'calcDiscounts',
+        name: 'Calculate Discounts',
+        returnType: 'Float',
+        folderName: 'pricing',
+        isCommerce: true,
+        commerceProcess: 'oraclecpqo',
+        commerceDocument: 'transaction'
+      }
+    };
+    const commerceFnItem = explorer.getTreeItem(commerceFnElement);
+    assert.strictEqual(commerceFnItem.label, 'Calculate Discounts');
+    assert.strictEqual(commerceFnItem.description, '-> Float');
+    assert.strictEqual(commerceFnItem.contextValue, 'cpqCloudFunctionRemote');
+    assert.ok(commerceFnItem.tooltip.includes('Commerce: oraclecpqo/transaction'));
+
+    // Test children under category and folder
+    const categoryFolders = await explorer.getChildren({
+      type: 'category',
+      category: 'commerce',
+      commerceProcess: 'oraclecpqo',
+      commerceDocument: 'transaction',
+      groups: new Map([
+        ['pricing', [commerceFnElement.data]]
+      ])
+    });
+    assert.strictEqual(categoryFolders.length, 1);
+    assert.strictEqual(categoryFolders[0].folderName, 'pricing');
+    assert.strictEqual(categoryFolders[0].isCommerce, true);
+
+    const folderFunctions = await explorer.getChildren(categoryFolders[0]);
+    assert.strictEqual(folderFunctions.length, 1);
+    assert.strictEqual(folderFunctions[0].data.variableName, 'calcDiscounts');
+
     // Test refresh
     explorer.refresh();
     assert.strictEqual(fired, true);
