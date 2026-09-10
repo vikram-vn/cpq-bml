@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.94.0] - 2026-09-10
+
+### Added
+
+- Implement cloud data tables explorer and CSV export functionality.
+
 ## [1.93.0] - 2026-09-10
 
 ### Added
@@ -129,17 +135,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Add script to generate BML utility attribute metadata and integrate into IntelliSense provider.
-
-## [1.84.0] - 2026-09-08
-
-### Added
-
-- Add workspace AI file management and global skill synchronization for Antigravity IDE support.
-- Implement commerce metadata synchronization system with UI settings and backend caching.
-- Add sync modules to fetch and cache commerce attributes, system attributes, and lookups.
-- Implement semantic material folder icon mapping rules and configuration dictionary.
-- Add new material icons and register folder icon rules.
-- Enforce <= 500 lines per JS file, add debug concurrency to web panel and settings with default 2.
-- Implement settings registry and search functionality with enhanced REST debugging and AI tool configuration support.
-- Implement MCP lifecycle tools for BML functions including validate, save, deploy, and debug capabilities.
-- Introduce commerceAttributes module for CPQ workspace metadata processing and ignore .cpq directory.
