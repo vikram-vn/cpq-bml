@@ -8,6 +8,13 @@ const origResolve = Module._resolveFilename;
 if (!global.__cpq_alias_registered) {
   global.__cpq_alias_registered = true;
   Module._resolveFilename = function (request, parent, isMain, options) {
+    if (request === 'vscode') {
+      try {
+        return origResolve.call(this, request, parent, isMain, options);
+      } catch (e) {
+        return path.join(ROOT, 'test', 'mockVscode.js');
+      }
+    }
     if (request.startsWith('@/')) {
       const sub = request.slice(2);
       const appTarget = path.join(ROOT, 'app', sub);

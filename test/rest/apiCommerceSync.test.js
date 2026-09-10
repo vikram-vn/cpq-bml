@@ -349,4 +349,85 @@ suite("BML REST apiCommerceSync - syncCommerceAttributes", () => {
     assert.ok(maxParallelMenuFetches > 1, `Expected parallel menu fetches > 1, got ${maxParallelMenuFetches}`);
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
+
+  test("syncCommerceAttributes resolves default process and document when omitted (no TypeError)", async () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-default-"));
+    const vscode = createFakeVscode({
+      config: baseConfig(),
+      workspaceFolders: [{ uri: { fsPath: tempDir } }],
+    });
+
+    const mockTransport = async (opts) => {
+      if (opts.path.includes("/attributes")) {
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            items: [{ variableName: "desc_t", name: "Description", dataType: "String" }],
+          }),
+        };
+      }
+      return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+    };
+
+    // Calling with EMPTY options - this previously threw TypeError: aG is not a function
+    // because getCommerceProcess and getCommerceDocument were undefined imports
+    const result = await api.syncCommerceAttributes(
+      fakeContext(),
+      vscode,
+      { fetchMenuItems: false, fetchLookups: false },
+      mockTransport,
+    );
+
+    assert.ok(result, "Expected result object");
+    assert.strictEqual(result.process, "oraclecpqo");
+    assert.strictEqual(result.document, "transaction");
+    assert.strictEqual(result.attributes.length, 1);
+    assert.strictEqual(result.attributes[0].variableName, "desc_t");
+
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  test("syncCommerceAttributes resolves custom process and document from configuration when omitted", async () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-sync-custom-"));
+    const vscode = createFakeVscode({
+      config: baseConfig({
+        "rest.commerceProcess": "specialProcess",
+        "rest.commerceDocument": "specialQuote",
+      }),
+      workspaceFolders: [{ uri: { fsPath: tempDir } }],
+    });
+
+    const pathsCalled = [];
+    const mockTransport = async (opts) => {
+      pathsCalled.push(opts.path);
+      if (opts.path.includes("/attributes")) {
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({
+            items: [{ variableName: "custom_t", name: "Custom Attr", dataType: "String" }],
+          }),
+        };
+      }
+      return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+    };
+
+    const result = await api.syncCommerceAttributes(
+      fakeContext(),
+      vscode,
+      { fetchMenuItems: false, fetchLookups: false },
+      mockTransport,
+    );
+
+    assert.strictEqual(result.process, "specialProcess");
+    assert.strictEqual(result.document, "specialQuote");
+    assert.ok(
+      pathsCalled.some((p) => p.includes("specialProcess") && p.includes("specialQuote")),
+      "Expected custom process and document in API paths",
+    );
+
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
 });
+

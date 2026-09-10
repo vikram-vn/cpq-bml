@@ -152,7 +152,7 @@ suite("Commerce Endpoints & Attributes (apiCommerce)", () => {
       assert.strictEqual(sink.captured.method, "GET");
       assert.strictEqual(
         sink.captured.path,
-        "/rest/v19/commerceProcesses/oraclecpqo/documents/transaction/attributes?offset=10&limit=100",
+        "/rest/v19/commerceProcesses/oraclecpqo/documents/transaction/attributes?offset=10&limit=100&totalResults=true",
       );
     });
 

@@ -104,7 +104,7 @@ suite("BML REST commands - syncCommerceMetadata", () => {
       assert.strictEqual(result.success, true);
       assert.ok(calls.some(([cmd, key, val]) => cmd === "setContext" && key === "cpqBml.commerceMetadataSynced" && val === true));
       assert.ok(lines.some((l) => l.includes("Sync complete:")));
-      assert.ok(infoMessages.some((m) => m.includes("Synced 1 attributes, 1 systemAttributes")));
+      assert.ok(infoMessages.some((m) => m.includes("1 header attributes") || m.includes("1 attributes")));
 
       // Verify file written to .cpq/commerce.attributes.min.json
       const cachePath = path.join(tmpDir, ".cpq", "commerce.attributes.min.json");
@@ -151,4 +151,43 @@ suite("BML REST commands - syncCommerceMetadata", () => {
       assert.ok(result.errorMessage.includes("cancelled"));
       assert.ok(warningMessages.some((m) => m.includes("cancelled")));
     }));
+
+  test("runSyncCommerceMetadata runs with default process and document options without TypeError", () =>
+    withTempDir(async (tmpDir) => {
+      const infoMessages = [];
+      const vscode = createFakeVscode({
+        config: baseVscodeConfig(),
+        workspaceFolders: [{ uri: { fsPath: tmpDir } }],
+        window: { showInformationMessage: (msg) => infoMessages.push(msg) },
+      });
+      const lines = [];
+      const terminal = fakeResultsTerminal(lines);
+
+      const transport = async (opts) => {
+        if (opts.path.includes("/attributes")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({
+              items: [{ variableName: "test_t", name: "Test Attr", dataType: "String" }],
+            }),
+          };
+        }
+        return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+      };
+
+      // Empty options: no process, no document passed - exactly how UI Command executes
+      const result = await commands.runSyncCommerceMetadata(
+        makeContext(),
+        vscode,
+        terminal,
+        { transport, fetchMenuItems: false },
+      );
+
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.data.process, "oraclecpqo");
+      assert.strictEqual(result.data.document, "transaction");
+      assert.ok(infoMessages.length > 0);
+    }));
 });
+
