@@ -7,29 +7,10 @@ const {
   createCloudDataTablesProvider,
   exportTableCsvCommand
 } = require('@/lang/cloud/cloudDataTables');
+const { createCloudMockVscode } = require('./cloudTestMocks');
 
 suite('CPQ Cloud Data Tables - Unit Tests', () => {
-  const mockVscode = {
-    TreeItem: function (label, collapsibleState) {
-      this.label = label;
-      this.collapsibleState = collapsibleState;
-    },
-    TreeItemCollapsibleState: { None: 0, Collapsed: 1, Expanded: 2 },
-    EventEmitter: function () {
-      this.event = (l) => { this._l = l; return { dispose: () => {} }; };
-      this.fire = () => { if (this._l) this._l(); };
-    },
-    ThemeIcon: function (id, color) {
-      this.id = id;
-      this.color = color;
-    },
-    ThemeColor: function (id) {
-      this.id = id;
-    },
-    workspace: {
-      workspaceFolders: []
-    }
-  };
+  const mockVscode = createCloudMockVscode();
 
   test('createCloudDataTablesProvider initializes TreeDataProvider and formats table items', () => {
     const provider = createCloudDataTablesProvider(mockVscode, {});

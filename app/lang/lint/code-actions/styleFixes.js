@@ -1,36 +1,6 @@
 const vscode = require('vscode');
-
-function renameIdentifierInDocument(document, oldName, newName, edit) {
-    const text = document.getText();
-    const regex = new RegExp(`\\b${oldName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'g');
-    let match;
-    while ((match = regex.exec(text)) !== null) {
-        const startPos = document.positionAt(match.index);
-        const endPos = document.positionAt(match.index + oldName.length);
-        edit.replace(document.uri, new vscode.Range(startPos, endPos), newName);
-    }
-}
-
-function toCamelCase(name) {
-    if (!name) return name;
-    const parts = name.split('_').filter(p => p.length > 0);
-    if (parts.length === 0) return name;
-    
-    let result = parts[0].charAt(0).toLowerCase() + parts[0].slice(1);
-    for (let i = 1; i < parts.length; i++) {
-        const part = parts[i];
-        result += part.charAt(0).toUpperCase() + part.slice(1);
-    }
-    return result;
-}
-
-function formatBooleanName(name) {
-    const camel = toCamelCase(name);
-    if (/^(is|has)[A-Z]/.test(camel)) {
-        return camel;
-    }
-    return 'is' + camel.charAt(0).toUpperCase() + camel.slice(1);
-}
+const { renameIdentifierInDocument } = require('@/lang/lint/code-actions/qualityHelpers');
+const { toCamelCase, formatBooleanName } = require('@/lang/lint/code-actions/cascadingCleanup');
 
 function getStyleFixes(document, diag, editRange) {
     const fixes = [];

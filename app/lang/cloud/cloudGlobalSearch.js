@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { isConfigured, getSettings } = require('@/lang/rest/config');
+const { IGNORED_FOLDERS } = require('@/lang/intellisense/workspaceIndex');
 
 /**
  * Recursively scans directory for .bml files.
@@ -14,7 +15,7 @@ function findWorkspaceBmlFiles(dir, maxDepth = 6, currentDepth = 0) {
   try {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
-      if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
+      if (entry.name.charCodeAt(0) === 46 || IGNORED_FOLDERS.has(entry.name.toLowerCase())) continue;
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) {
         results.push(...findWorkspaceBmlFiles(full, maxDepth, currentDepth + 1));

@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const metadataLib = require('@/lang/rest/metadata');
+const { IGNORED_FOLDERS } = require('@/lang/intellisense/workspaceIndex');
 
 async function checkServerValidation(filePath, code, metadata, vscodeInstance = vscode, context) {
   const startedAt = Date.now();
@@ -117,13 +118,6 @@ function checkComplexityAndThreats(code) {
   };
 }
 
-const IGNORED_SCAN_FOLDERS = new Set([
-  'node_modules', '.git', '.vscode', '.vscode-test', '.agents',
-  'dist', 'out', 'build', 'coverage', '.gemini', 'target',
-  'vendor', 'scratch', 'logs', '.system_generated', 'venv',
-  '.venv', '__pycache__', '.pytest_cache', 'typings'
-]);
-
 function analyzeWorkspaceImpact(varName, workspaceRoot) {
   if (!workspaceRoot || !varName) {
     return { callersCount: 0, callers: [] };
@@ -143,7 +137,7 @@ function analyzeWorkspaceImpact(varName, workspaceRoot) {
         if (scannedCount >= MAX_SCANNED_FILES) break;
         if (entry.name.charCodeAt(0) === 46) continue; // skip dotfiles
         const nameLower = entry.name.toLowerCase();
-        if (IGNORED_SCAN_FOLDERS.has(nameLower)) continue;
+        if (IGNORED_FOLDERS.has(nameLower)) continue;
 
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {

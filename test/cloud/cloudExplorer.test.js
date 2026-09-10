@@ -8,6 +8,7 @@ const {
   pullFunctionCommand,
   openCommerceActionCommand
 } = require('@/lang/cloud/cloudExplorer');
+const { createCloudMockVscode } = require('./cloudTestMocks');
 
 suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
   const sampleFunctions = [
@@ -57,12 +58,7 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
 
   test('createCloudExplorer returns functional TreeDataProvider with items, folders, and icons', async () => {
     let fired = false;
-    const mockVscode = {
-      TreeItem: function (label, collapsibleState) {
-        this.label = label;
-        this.collapsibleState = collapsibleState;
-      },
-      TreeItemCollapsibleState: { None: 0, Collapsed: 1, Expanded: 2 },
+    const mockVscode = createCloudMockVscode({
       EventEmitter: function () {
         this.event = (listener) => {
           this._listener = listener;
@@ -73,20 +69,10 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
           if (this._listener) this._listener();
         };
       },
-      ThemeIcon: function (id, color) {
-        this.id = id;
-        this.color = color;
-      },
-      ThemeColor: function (id) {
-        this.id = id;
-      },
       workspace: {
-        workspaceFolders: [{ uri: { fsPath: path.join(__dirname, '..', '..') } }],
-        getConfiguration: () => ({
-          get: () => 'library'
-        })
+        workspaceFolders: [{ uri: { fsPath: path.join(__dirname, '..', '..') } }]
       }
-    };
+    });
 
     const mockContext = {};
     const explorer = createCloudExplorer(mockVscode, mockContext);
@@ -258,14 +244,11 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     let openedUri = null;
     let showedDoc = null;
 
-    const mockVscode = {
+    const mockVscode = createCloudMockVscode({
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
-          get: (k) => {
-            if (k === 'connection.siteUrl') return 'https://cpq-10234.bigmachines.com';
-            return '';
-          }
+          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
         }),
         openTextDocument: async (uri) => {
           openedUri = uri;
@@ -273,10 +256,6 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
         }
       },
       window: {
-        withProgress: async (opt, task) => task({ report: () => {} }),
-        showInformationMessage: () => {},
-        showErrorMessage: () => {},
-        showWarningMessage: () => {},
         showTextDocument: async (doc) => {
           showedDoc = doc;
         }
@@ -284,7 +263,7 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       Uri: {
         file: (f) => ({ fsPath: f, scheme: 'file', toString: () => f })
       }
-    };
+    });
 
     try {
       const item = {

@@ -11,23 +11,8 @@ const {
 } = require('@/lang/lint/code-actions/cascadingCleanup');
 
 const { getDeclaredVariables } = require('@/lang/lint/rules/variables');
-const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { getCommentRanges, blankRanges } = require('@/lang/lint/rules/comments');
 const { getStringRanges } = require('@/lang/lint/rules/strings');
-
-function blankRangesFast(text, ranges) {
-    if (!ranges || ranges.length === 0) return text;
-    let res = '';
-    let last = 0;
-    for (let i = 0; i < ranges.length; i++) {
-        const [start, end] = ranges[i];
-        if (start > last) res += text.slice(last, start);
-        const chunk = text.slice(start, end);
-        res += chunk.replace(/[^\r\n]/g, ' ');
-        last = end;
-    }
-    if (last < text.length) res += text.slice(last);
-    return res;
-}
 
 /**
  * Creates a bundled "Fix All Safe Style & Naming Issues in File" CodeAction.
@@ -40,9 +25,9 @@ function buildFixAllText(document, relevantDiags, initialAst, isCategory = false
     function getAst() {
         if (astContext) return astContext;
         const commentRanges = getCommentRanges(text);
-        const cleanText = blankRangesFast(text, commentRanges);
+        const cleanText = blankRanges(text, commentRanges);
         const stringRanges = getStringRanges(cleanText);
-        const noStringsText = blankRangesFast(cleanText, stringRanges);
+        const noStringsText = blankRanges(cleanText, stringRanges);
         const declaredVars = getDeclaredVariables(noStringsText, document);
         astContext = { commentRanges, cleanText, stringRanges, noStringsText, declaredVars };
         return astContext;
@@ -266,9 +251,9 @@ function getFixAllSafeAction(document, diagnostics) {
 
     const baseText = document.getText();
     const commentRanges = getCommentRanges(baseText);
-    const cleanText = blankRangesFast(baseText, commentRanges);
+    const cleanText = blankRanges(baseText, commentRanges);
     const stringRanges = getStringRanges(cleanText);
-    const noStringsText = blankRangesFast(cleanText, stringRanges);
+    const noStringsText = blankRanges(cleanText, stringRanges);
     const declaredVars = getDeclaredVariables(noStringsText, document);
     const sharedAst = { commentRanges, cleanText, stringRanges, noStringsText, declaredVars };
 

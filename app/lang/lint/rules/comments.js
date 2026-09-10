@@ -42,4 +42,27 @@ function getCommentRanges(text) {
     return commentRanges;
 }
 
-module.exports = { getCommentRanges };
+function blankRanges(text, ranges) {
+    if (!ranges || ranges.length === 0) return text;
+    let result = '';
+    let lastIndex = 0;
+    for (let i = 0; i < ranges.length; i++) {
+        const [start, end] = ranges[i];
+        if (start > lastIndex) {
+            result += text.slice(lastIndex, start);
+        }
+        const slice = text.slice(start, end);
+        if (slice.includes('\n') || slice.includes('\r')) {
+            result += slice.replace(/[^\r\n]/g, ' ');
+        } else {
+            result += ' '.repeat(end - start);
+        }
+        lastIndex = end;
+    }
+    if (lastIndex < text.length) {
+        result += text.slice(lastIndex);
+    }
+    return result;
+}
+
+module.exports = { getCommentRanges, blankRanges };

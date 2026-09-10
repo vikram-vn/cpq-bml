@@ -1,4 +1,4 @@
-const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { getCommentRanges, blankRanges } = require('@/lang/lint/rules/comments');
 const { getConditionRanges } = require('@/lang/lint/rules/conditions');
 const { getDeclaredVariables, checkVariableDiagnostics } = require('@/lang/lint/rules/variables');
 const { checkMissingSemicolons, checkConsecutiveSemicolons } = require('@/lang/lint/rules/semicolon');
@@ -26,31 +26,6 @@ const { checkNullSafety } = require('@/lang/lint/rules/nullSafety');
 const { checkInfiniteLoop } = require('@/lang/lint/rules/infiniteLoop');
 const { checkShadowedVariables } = require('@/lang/lint/rules/shadowedVariables');
 const { checkCommerceAttributes } = require('@/lang/lint/rules/commerceAttributes');
-
-
-
-function blankRanges(text, ranges) {
-    if (!ranges || ranges.length === 0) return text;
-    let result = '';
-    let lastIndex = 0;
-    for (let i = 0; i < ranges.length; i++) {
-        const [start, end] = ranges[i];
-        if (start > lastIndex) {
-            result += text.slice(lastIndex, start);
-        }
-        const slice = text.slice(start, end);
-        if (slice.includes('\n') || slice.includes('\r')) {
-            result += slice.replace(/[^\r\n]/g, ' ');
-        } else {
-            result += ' '.repeat(end - start);
-        }
-        lastIndex = end;
-    }
-    if (lastIndex < text.length) {
-        result += text.slice(lastIndex);
-    }
-    return result;
-}
 
 function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     const isBml = doc.languageId === 'bml' || (doc.uri && doc.uri.fsPath && doc.uri.fsPath.endsWith('.bml'));

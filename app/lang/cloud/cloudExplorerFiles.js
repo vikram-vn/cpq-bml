@@ -3,6 +3,7 @@ const path = require('path');
 const api = require('@/lang/rest/api');
 const { getSettings, getUtilLibrariesFolder } = require('@/lang/rest/config');
 const { safeParseJson } = require('@/lang/cloud/cloudVscodeShim');
+const { IGNORED_FOLDERS } = require('@/lang/intellisense/workspaceIndex');
 
 let activeCommerceTarget = null;
 
@@ -28,6 +29,7 @@ function findLocalCommerceProcesses(workspaceRoot) {
       const procEntries = fs.readdirSync(baseDir, { withFileTypes: true });
       for (const proc of procEntries) {
         if (!proc.isDirectory()) continue;
+        if (proc.name.charCodeAt(0) === 46 || IGNORED_FOLDERS.has(proc.name.toLowerCase())) continue;
         const procPath = path.join(baseDir, proc.name);
         try {
           const docEntries = fs.readdirSync(procPath, { withFileTypes: true });
@@ -178,16 +180,18 @@ function findLocalFunctionFile(workspaceRoot, varName, folderName, commerceMetad
   return null;
 }
 
-function searchFileRecursive(dir, filename) {
+function searchFileRecursive(dir, filename, depth = 0) {
+  if (depth > 6) return null;
   try {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name);
       if (entry.isDirectory()) {
-        const res = searchFileRecursive(fullPath, filename);
+        if (entry.name.charCodeAt(0) === 46 || IGNORED_FOLDERS.has(entry.name.toLowerCase())) continue;
+        const fullPath = path.join(dir, entry.name);
+        const res = searchFileRecursive(fullPath, filename, depth + 1);
         if (res) return res;
       } else if (entry.isFile() && entry.name.toLowerCase() === filename.toLowerCase()) {
-        return fullPath;
+        return path.join(dir, entry.name);
       }
     }
   } catch {}

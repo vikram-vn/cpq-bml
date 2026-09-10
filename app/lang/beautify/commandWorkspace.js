@@ -8,8 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const { Beautifier } = require('@/lang/beautify/bml/beautifier');
 const optionsProvider = require('@/lang/beautify/options');
-
-const IGNORED_FOLDERS = new Set(['node_modules', '.git', '.vscode-test', 'dist', 'out']);
+const { IGNORED_FOLDERS } = require('@/lang/intellisense/workspaceIndex');
 
 /**
  * Recursively collect all *.bml files under a directory.

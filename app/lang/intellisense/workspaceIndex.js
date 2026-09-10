@@ -410,4 +410,5 @@ module.exports = {
   registerWorkspaceIndexWatcher,
   resolveCallAtPosition,
   extractDocHeader,
+  IGNORED_FOLDERS,
 };

@@ -48,7 +48,7 @@ function toVscodeRanges(document, offsetRanges) {
     return offsetRanges.map(([start, end]) => new vscode.Range(document.positionAt(start), document.positionAt(end)));
 }
 
-const { getCommentRanges } = require('@/lang/lint/rules/comments');
+const { getCommentRanges, blankRanges } = require('@/lang/lint/rules/comments');
 const { getStringRanges } = require('@/lang/lint/rules/strings');
 
 const DEPRECATED_REGEXES = [
@@ -56,29 +56,6 @@ const DEPRECATED_REGEXES = [
     /\bstrtodate\b/gi,
     /\b(gettabledata|getpartsdata)\b/gi
 ];
-
-function blankRanges(text, ranges) {
-    if (!ranges || ranges.length === 0) return text;
-    let result = '';
-    let lastIndex = 0;
-    for (let i = 0; i < ranges.length; i++) {
-        const [start, end] = ranges[i];
-        if (start > lastIndex) {
-            result += text.slice(lastIndex, start);
-        }
-        const slice = text.slice(start, end);
-        if (slice.includes('\n') || slice.includes('\r')) {
-            result += slice.replace(/[^\r\n]/g, ' ');
-        } else {
-            result += ' '.repeat(end - start);
-        }
-        lastIndex = end;
-    }
-    if (lastIndex < text.length) {
-        result += text.slice(lastIndex);
-    }
-    return result;
-}
 
 function findDeprecatedRanges(documentText, document) {
     if (!documentText.includes('NaN') && !documentText.includes('strtodate') && !documentText.includes('gettabledata') && !documentText.includes('getpartsdata')) {

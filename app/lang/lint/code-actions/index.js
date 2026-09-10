@@ -64,7 +64,7 @@ function registerBmlCodeActions(context) {
                     docDiags = context.diagnostics;
                 }
 
-                const fixAllActions = getFixAllSafeAction(document, docDiags && docDiags.length > 0 ? docDiags : context.diagnostics);
+                const fixAllActions = getFixAllSafeAction(document, docDiags);
 
                 // Priority Order:
                 // 1. Constructive Quick Fixes (camelCase, type suffixes, code quality fixes)

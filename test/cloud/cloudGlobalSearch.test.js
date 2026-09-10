@@ -9,78 +9,7 @@ const {
 } = require('@/lang/cloud/cloudGlobalSearch');
 const api = require('@/lang/rest/api');
 
-function createMockVscode(overrides = {}) {
-  let openedDoc = null;
-  let shownDoc = null;
-  let infoMsg = null;
-  let quickPickItems = null;
-  let quickPickSelected = null;
-
-  const mock = {
-    workspace: {
-      workspaceFolders: [],
-      openTextDocument: async function (target) {
-        openedDoc = target;
-        return target;
-      }
-    },
-    window: {
-      showInputBox: async function () {
-        return 'testFunc';
-      },
-      showQuickPick: async function (items, opts) {
-        quickPickItems = items;
-        if (typeof quickPickSelected === 'function') {
-          return quickPickSelected(items);
-        }
-        return quickPickSelected || items.find(it => it.data);
-      },
-      showInformationMessage: function (msg) {
-        infoMsg = msg;
-      },
-      showErrorMessage: function (msg) {},
-      showWarningMessage: function (msg) {},
-      showTextDocument: async function (doc) {
-        shownDoc = doc;
-        return {
-          selection: null,
-          revealRange: function () {}
-        };
-      },
-      withProgress: async function (opt, task) {
-        return task({ report: function () {} });
-      }
-    },
-    commands: {
-      registerCommand: function () {
-        return { dispose: function () {} };
-      }
-    },
-    Uri: {
-      file: function (f) {
-        return { fsPath: f, scheme: 'file' };
-      }
-    },
-    Position: function (l, c) {
-      this.line = l;
-      this.char = c;
-    },
-    Range: function (start, end) {
-      this.start = start;
-      this.end = end;
-    },
-    getOpenedDoc: function () { return openedDoc; },
-    getShownDoc: function () { return shownDoc; },
-    getInfoMsg: function () { return infoMsg; },
-    getQuickPickItems: function () { return quickPickItems; },
-    setQuickPickSelected: function (sel) { quickPickSelected = sel; }
-  };
-
-  if (overrides) {
-    Object.assign(mock, overrides);
-  }
-  return mock;
-}
+const { createCloudMockVscode: createMockVscode } = require('./cloudTestMocks');
 
 suite('CPQ Global BML Script Search - Unit Tests', () => {
   let tempDir;

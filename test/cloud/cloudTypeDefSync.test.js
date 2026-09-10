@@ -92,21 +92,6 @@ suite('Cloud Type Definition Synchronizer - Unit Tests', () => {
     const tempDir = path.join(__dirname, '..', 'fixtures', 'temp_typedef_test');
     fs.mkdirSync(tempDir, { recursive: true });
 
-    const mockVscode = {
-      workspace: {
-        workspaceFolders: [{ uri: { fsPath: tempDir } }],
-        getConfiguration: () => ({
-          get: (key, fallback) => fallback
-        })
-      },
-      window: {
-        showInformationMessage: () => {},
-        showErrorMessage: () => {},
-        withProgress: async (opt, task) => {
-          return task({ report: () => {} });
-        }
-      }
-    };
 
     // We override fetchCloudSignatures directly by mocking the module or running sub-steps
     const bmlTypeDef = generateTypeDefBml(sampleFunctions);

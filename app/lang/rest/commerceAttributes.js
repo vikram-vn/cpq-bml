@@ -20,6 +20,7 @@ const {
 const {
   getCommerceProcess,
   getCommerceDocument,
+  getWorkspaceRoot,
 } = require("@/lang/rest/config");
 
 // In-memory cache singleton
@@ -42,18 +43,6 @@ function clearAttributesCache(workspaceRoot) {
     workspaceAttributesCache = {};
     bundledAttributesIndex = null;
   }
-}
-
-function getWorkspaceRoot(vscode) {
-  if (
-    vscode &&
-    vscode.workspace &&
-    vscode.workspace.workspaceFolders &&
-    vscode.workspace.workspaceFolders.length > 0
-  ) {
-    return vscode.workspace.workspaceFolders[0].uri.fsPath;
-  }
-  return null;
 }
 
 function getMetadataStorageDir(context, workspaceRoot) {
