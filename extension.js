@@ -33,6 +33,12 @@ const { getCoverageDecorator } = require("./app/lang/test/coverageDecorator");
 const { registerReplCommand } = require("./app/lang/repl/bmlReplTerminal");
 const { ComplexityPanel } = require("./app/lang/complexity/complexityPanel");
 const { registerDataTableCommands } = require("./app/lang/datatable/datatableCommands");
+const { registerLogCommands } = require("./app/lang/rest/commands/logs");
+const { registerTransactionMockCommands } = require("./app/lang/rest/commands/transactionMock");
+const { registerCacheFlushCommand } = require("./app/lang/rest/commands/cacheFlush");
+const { registerActionSimulatorCommands } = require("./app/lang/rest/apiActionSimulator");
+const { registerInstanceMonitorCommands } = require("./app/lang/rest/instanceMonitor");
+const { getSessionKeepAlive } = require("./app/lang/rest/sessionKeepAlive");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -132,6 +138,14 @@ function activate(context) {
 
   // ── Data Table Schema Inferrer & CSV Importer ───────────────────────────────
   registerDataTableCommands(context);
+
+  // ── Oracle CPQ REST Developer Suite (Phase 4) ───────────────────────────────
+  registerLogCommands(context);
+  registerTransactionMockCommands(context);
+  registerCacheFlushCommand(context);
+  registerActionSimulatorCommands(context);
+  registerInstanceMonitorCommands(context);
+  getSessionKeepAlive().start(vscode);
 
   // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
   // so Antigravity IDE can discover them natively (on-demand, by name). Other AI

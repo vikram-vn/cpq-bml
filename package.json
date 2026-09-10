@@ -369,6 +369,41 @@
         "command": "cpqBml.inferDataTableSchema",
         "title": "CPQ-BML: Infer Data Table Schema from CSV",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.startLogStream",
+        "title": "CPQ-BML: Start Remote BML Log Stream",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.stopLogStream",
+        "title": "CPQ-BML: Stop Remote BML Log Stream",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.fetchLogs",
+        "title": "CPQ-BML: Fetch Recent Server Error Logs",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.generateTransactionMock",
+        "title": "CPQ-BML: Generate Test Mock from Live Transaction",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.flushCache",
+        "title": "CPQ-BML: Flush CPQ Server Cache",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.simulateAction",
+        "title": "CPQ-BML: Simulate Commerce Action & Inspect Delta",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.checkHealth",
+        "title": "CPQ-BML: Check CPQ Instance Health & Latency",
+        "category": "BML"
       }
     ],
     "menus": {
