@@ -7,7 +7,7 @@ const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
 const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
 const { getPerformanceFixes, buildSbappendSplitFixes, createSbappendSplitActions } = require('@/lang/lint/code-actions/performanceFixes');
 const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
-const { splitFunctionArgumentsIntoLines } = require('@/lang/lint/code-actions/styleSplitters');
+const { splitFunctionArgumentsIntoLines, splitConcatenationIntoLines, splitLongStringLiteral } = require('@/lang/lint/code-actions/styleSplitters');
 const { checkPerformance, isCpqLineItemArgs } = require('@/lang/lint/rules/performance');
 
 // Mock helper using prototype pattern (no ES6 classes)
@@ -315,6 +315,24 @@ suite('BML Comprehensive Quick Fixes Unit Tests', function() {
         test('splitFunctionArgumentsIntoLines returns null for sbappend to prevent splitting lines', function() {
             const res = splitFunctionArgumentsIntoLines('sbappend(sb, doc, value, doc1, value2);');
             assert.strictEqual(res, null, 'Should return null for sbappend so function arguments are never broken across lines');
+        });
+
+        test('splitConcatenationIntoLines and splitLongStringLiteral return null for sbappend', function() {
+            const concatRes = splitConcatenationIntoLines('sbappend(sb, "prefix_" + varName + "_suffix", val, "|");');
+            assert.strictEqual(concatRes, null, 'Should return null for sbappend with concatenation');
+            const strRes = splitLongStringLiteral('sbappend(sb, "This is an extremely long string literal that would otherwise be chunked across lines", val, "|");');
+            assert.strictEqual(strRes, null, 'Should return null for sbappend with long string literal');
+        });
+
+        test('bml-line-too-long on canonical sbappend never offers split to multi lines', function() {
+            const line = 'sbappend(sb, "1~finalContractValue_t~", string(round(targetContractPrice + marginDollars)) + "_extra_suffix_here_to_make_it_exceed_maximum_allowed_length_limit", "|");';
+            const doc = createMockDoc(line + '\n');
+            const diag = new MockDiagnostic(new MockRange(0, 0, 0, line.length), 'Line too long', 1, 'bml-line-too-long');
+            const fixes = getStyleFixes(doc, diag, diag.range);
+            const multiLineFix = fixes.find(function(f) {
+                return f.title.includes('multiple lines') || f.title.includes('onto new lines');
+            });
+            assert.strictEqual(multiLineFix, undefined, 'Should never offer multi-line splitting Quick Fix on sbappend');
         });
 
         test('combines split sbappend statements into canonical CPQ line item format with pipe', function() {

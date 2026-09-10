@@ -117,8 +117,8 @@ function getStyleFixes(document, diag, editRange) {
             const sbFixes = buildSbappendSplitFixes(document, document.lineAt(lineIndex).range, diag);
             if (sbFixes.length > 0) {
                 fixes.push(...sbFixes);
-                return fixes;
             }
+            return fixes;
         }
 
         // 1. Condition split (if / elif)

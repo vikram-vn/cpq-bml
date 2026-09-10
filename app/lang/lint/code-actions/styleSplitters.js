@@ -83,6 +83,7 @@ function chunkStringContent(str, quoteChar, maxLen = 70) {
 }
 
 function splitLongStringLiteral(lineText) {
+    if (/\bsbappend\s*\(/i.test(lineText)) return null;
     const stringLiterals = findStringLiterals(lineText);
     if (!stringLiterals || stringLiterals.length === 0) return null;
 
@@ -107,6 +108,7 @@ function splitLongStringLiteral(lineText) {
 }
 
 function splitConcatenationIntoLines(lineText) {
+    if (/\bsbappend\s*\(/i.test(lineText)) return null;
     const baseIndent = lineText.match(/^\s*/)[0];
     const indentUnit = baseIndent.includes('\t') ? '\t' : '    ';
     const continuationIndent = baseIndent + indentUnit;
