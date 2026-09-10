@@ -112,6 +112,38 @@ function EventEmitter() {
     this.event = () => ({ dispose: () => {} });
 }
 EventEmitter.prototype.fire = function() {};
+function CodeAction(title, kind) {
+    this.title = title;
+    this.kind = kind;
+    this.edit = null;
+    this.diagnostics = [];
+    this.isPreferred = false;
+}
+
+const CodeActionKind = {
+    QuickFix: { value: 'quickfix' },
+    Refactor: { value: 'refactor' },
+    RefactorExtract: { value: 'refactor.extract' },
+    RefactorInline: { value: 'refactor.inline' },
+    RefactorRewrite: { value: 'refactor.rewrite' },
+    Source: { value: 'source' },
+    SourceOrganizeImports: { value: 'source.organizeImports' },
+    SourceFixAll: { value: 'source.fixAll' }
+};
+
+function WorkspaceEdit() {
+    this._edits = [];
+}
+WorkspaceEdit.prototype.replace = function(uri, range, newText) {
+    this._edits.push({ type: 'replace', uri: uri, range: range, newText: newText });
+};
+WorkspaceEdit.prototype.insert = function(uri, position, newText) {
+    this._edits.push({ type: 'insert', uri: uri, position: position, newText: newText });
+};
+WorkspaceEdit.prototype.delete = function(uri, range) {
+    this._edits.push({ type: 'delete', uri: uri, range: range });
+};
+
 EventEmitter.prototype.dispose = function() {};
 
 const mockVscode = {
@@ -119,6 +151,9 @@ const mockVscode = {
     Range,
     Diagnostic,
     DiagnosticSeverity,
+    CodeAction,
+    CodeActionKind,
+    WorkspaceEdit,
     CompletionItemKind,
     CompletionItem,
     SnippetString,
@@ -217,6 +252,7 @@ const mockVscode = {
         onDidChangeConfiguration: () => ({ dispose: () => {} }),
         onDidOpenTextDocument: () => ({ dispose: () => {} }),
         onDidChangeTextDocument: () => ({ dispose: () => {} }),
+        onDidSaveTextDocument: () => ({ dispose: () => {} }),
         onDidCloseTextDocument: () => ({ dispose: () => {} }),
         createFileSystemWatcher: () => ({
             onDidChange: () => ({ dispose: () => {} }),
@@ -253,6 +289,14 @@ const mockVscode = {
         registerCodeActionsProvider: () => ({ dispose: () => {} }),
         registerInlayHintsProvider: () => ({ dispose: () => {} }),
         registerDocumentFormattingEditProvider: () => ({ dispose: () => {} }),
+        registerDocumentRangeFormattingEditProvider: () => ({ dispose: () => {} }),
+        registerOnTypeFormattingEditProvider: () => ({ dispose: () => {} }),
+        registerSignatureHelpProvider: () => ({ dispose: () => {} }),
+        registerRenameProvider: () => ({ dispose: () => {} }),
+        registerDocumentSymbolProvider: () => ({ dispose: () => {} }),
+        registerWorkspaceSymbolProvider: () => ({ dispose: () => {} }),
+        registerCodeLensProvider: () => ({ dispose: () => {} }),
+        registerCallHierarchyProvider: () => ({ dispose: () => {} }),
     },
     EventEmitter,
 };

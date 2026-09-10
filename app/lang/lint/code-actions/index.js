@@ -5,6 +5,9 @@ const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
 const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
 const { getSuppressionFixes } = require('@/lang/lint/code-actions/suppressionFixes');
 const { getPerformanceFixes, createSbappendSplitActions } = require('@/lang/lint/code-actions/performanceFixes');
+const { getMemberAccessFixes } = require('@/lang/lint/code-actions/memberAccessFixes');
+const { getFunctionSignatureFixes } = require('@/lang/lint/code-actions/functionSignatureFixes');
+const { getTypeCastFixes } = require('@/lang/lint/code-actions/typeCastFixes');
 const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
 const { getApiFixes } = require('@/lang/lint/code-actions/apiFixes');
 const { getUnreachableFixes } = require('@/lang/lint/code-actions/unreachableFixes');
@@ -32,6 +35,9 @@ function registerBmlCodeActions(context) {
                         ...getSyntaxFixes(document, diag, editRange),
                         ...getQualityFixes(document, diag, editRange, extensionPath),
                         ...getStyleFixes(document, diag, editRange),
+                        ...getMemberAccessFixes(document, diag, editRange),
+                        ...getFunctionSignatureFixes(document, diag, editRange),
+                        ...getTypeCastFixes(document, diag, editRange),
                         ...getPerformanceFixes(document, diag, editRange),
                         ...getBmqlFixes(document, diag, editRange),
                         ...getApiFixes(document, diag, editRange),

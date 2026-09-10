@@ -470,6 +470,53 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
             fixes.push(action);
         }
     }
+    else if (diag.code === 'bml-unchecked-split-access') {
+        const line = document.lineAt(editRange.start.line);
+        const lineText = line.text;
+        const indentMatch = lineText.match(/^(\s*)/);
+        const indent = indentMatch ? indentMatch[1] : '';
+        const m = lineText.match(/([a-zA-Z_]\w*)\[\s*(\d+)\s*\]/);
+        if (m) {
+            const arrVar = m[1];
+            const idx = parseInt(m[2], 10);
+            const action = new vscode.CodeAction(`Guard with 'if (sizeofarray(${arrVar}) > ${idx})'`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            const wrapped = `${indent}if (sizeofarray(${arrVar}) > ${idx}) {\n    ${lineText.trim()}\n${indent}}`;
+            action.edit.replace(document.uri, line.range, wrapped);
+            action.diagnostics = [diag];
+            action.isPreferred = true;
+            fixes.push(action);
+        }
+    }
+    else if (diag.code === 'bml-for-in-function-call') {
+        const line = document.lineAt(editRange.start.line);
+        const lineText = line.text;
+        const indentMatch = lineText.match(/^(\s*)/);
+        const indent = indentMatch ? indentMatch[1] : '';
+        const m = lineText.match(/\bfor\s+([a-zA-Z_]\w*)\s+in\s+([a-zA-Z_]\w*\s*\([^)]*\))\s*\{/i);
+        if (m) {
+            const loopVar = m[1];
+            const callExpr = m[2];
+            const tempVar = `${loopVar}_list`;
+            const action = new vscode.CodeAction(`Extract function call to temporary variable '${tempVar}'`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            const replacement = `${indent}${tempVar} = ${callExpr};\n${indent}for ${loopVar} in ${tempVar} {`;
+            action.edit.replace(document.uri, line.range, replacement);
+            action.diagnostics = [diag];
+            action.isPreferred = true;
+            fixes.push(action);
+        }
+    }
+    else if (diag.code === 'bml-empty-loop') {
+        const line = document.lineAt(editRange.start.line);
+        const text = document.getText(editRange);
+        const action = new vscode.CodeAction("Add '// TODO: loop processing' inside loop", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        const replaced = text.replace(/\{\s*\}/, '{\n    // TODO: loop processing\n}');
+        action.edit.replace(document.uri, editRange, replaced);
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
 
     return fixes;
 }

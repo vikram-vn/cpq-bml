@@ -40,6 +40,23 @@ function getBmqlFixes(document, diag, editRange) {
         action.diagnostics = [diag];
         fixes.push(action);
     }
+    else if (diag.code === 'bml-bmql-mutation-error-unchecked') {
+        const lineIndex = editRange.start.line;
+        const lineText = document.lineAt(lineIndex).text;
+        const varMatch = lineText.match(/^\s*([a-zA-Z_]\w*)\s*=/);
+        const resVar = varMatch ? varMatch[1] : 'res';
+        const indentMatch = lineText.match(/^\s*/);
+        const indent = indentMatch ? indentMatch[0] : '';
+        const errorCheckSnippet = `\n${indent}if (containskey(${resVar}, "errorMessage")) {\n${indent}    // handle BMQL mutation error: get(${resVar}, "errorMessage")\n${indent}}`;
+
+        const action = new vscode.CodeAction("Insert BMQL mutation error check", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        const endOfLinePos = new vscode.Position(lineIndex, lineText.length);
+        action.edit.insert(document.uri, endOfLinePos, errorCheckSnippet);
+        action.diagnostics = [diag];
+        action.isPreferred = true;
+        fixes.push(action);
+    }
 
     return fixes;
 }

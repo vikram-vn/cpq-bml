@@ -818,7 +818,7 @@
     "release": "python scripts/release/release.py",
     "pretest": "npm run compile",
     "test": "vscode-test",
-    "test:unit": "mocha \"test/rest/*.test.js\" \"test/rest/commands/*.test.js\" \"test/cloud/*.test.js\"",
+    "test:unit": "mocha \"test/rest/*.test.js\" \"test/rest/commands/*.test.js\" \"test/cloud/*.test.js\" \"test/code-actions/unit.test.js\"",
     "test:benchmark": "vscode-test test/linter/scripts/benchmark.test.js",
     "benchmark": "python scripts/benchmarks/run_all.py",
     "benchmark:run": "python scripts/benchmarks/run_all.py",

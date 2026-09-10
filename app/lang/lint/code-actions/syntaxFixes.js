@@ -236,6 +236,41 @@ function getSyntaxFixes(document, diag, editRange) {
             }
         }
     }
+    else if (diag.code === 'bml-system-variable-typo') {
+        const msg = diag.message;
+        const match = msg.match(/did you mean '([^']+)'\?/i);
+        if (match) {
+            const suggestion = match[1];
+            const action = new vscode.CodeAction(`Replace with '${suggestion}'`, vscode.CodeActionKind.QuickFix);
+            action.edit = new vscode.WorkspaceEdit();
+            action.edit.replace(document.uri, editRange, suggestion);
+            action.diagnostics = [diag];
+            action.isPreferred = true;
+            fixes.push(action);
+        }
+    }
+    else if (diag.code === 'bml-unclosed-string') {
+        const text = document.getText(editRange);
+        const quoteChar = text.startsWith("'") ? "'" : '"';
+        const action = new vscode.CodeAction(`Close string literal with ${quoteChar}`, vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.insert(document.uri, editRange.end, quoteChar);
+        action.diagnostics = [diag];
+        action.isPreferred = true;
+        fixes.push(action);
+    }
+    else if (diag.code === 'bml-brace-style-open') {
+        const action = new vscode.CodeAction("Format brace onto same line (K&R style)", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        // Move { to end of previous line
+        if (editRange.start.line > 0) {
+            const prevLine = document.lineAt(editRange.start.line - 1);
+            action.edit.insert(document.uri, prevLine.range.end, ' {');
+            action.edit.delete(document.uri, document.lineAt(editRange.start.line).rangeIncludingLineBreak);
+        }
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
 
     return fixes;
 }
