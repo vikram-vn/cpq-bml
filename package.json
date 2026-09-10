@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.91.0",
+  "version": "1.92.0",
   "icon": "app/icons/logo.png",
   "license": "MIT",
   "repository": {
@@ -107,11 +107,19 @@
       "cpq-bml-sidebar": [
         {
           "id": "cpqBml.cloudExplorer",
-          "name": "Cloud Functions Explorer"
+          "name": "Cloud Functions & Actions Explorer"
         },
         {
           "id": "cpqBml.cloudDataTables",
           "name": "CPQ Data Tables"
+        },
+        {
+          "id": "cpqBml.recentTransactions",
+          "name": "Recent Transactions / Quotes"
+        },
+        {
+          "id": "cpqBml.deploymentCenter",
+          "name": "Deployment Center & Task Monitor"
         }
       ]
     },
@@ -437,6 +445,54 @@
         "title": "CPQ-BML: Run BMLT Tests on Server / Live CPQ",
         "icon": "$(run)",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.globalSearch",
+        "title": "CPQ-BML: Global Search BML Scripts Across Entire System",
+        "icon": "$(search)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.refreshTransactions",
+        "title": "CPQ-BML: Refresh Recent Transactions",
+        "icon": "$(refresh)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.inspectTransaction",
+        "title": "CPQ-BML: Inspect Transaction Attributes & Data",
+        "icon": "$(json)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.debugOnTransaction",
+        "title": "CPQ-BML: Debug Active BML File on this Transaction",
+        "icon": "$(debug-alt)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.copyTransactionId",
+        "title": "CPQ-BML: Copy Transaction ID to Clipboard",
+        "icon": "$(copy)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.refreshDeploymentCenter",
+        "title": "CPQ-BML: Refresh Deployment Center & Task Status",
+        "icon": "$(refresh)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.viewTaskDetails",
+        "title": "CPQ-BML: View Task Details",
+        "icon": "$(info)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.openCommerceAction",
+        "title": "CPQ-BML: View Commerce Document Action Definition",
+        "icon": "$(zap)",
+        "category": "BML"
       }
     ],
     "menus": {
@@ -507,6 +563,21 @@
           "command": "cpqBml.cloud.refreshDataTables",
           "when": "view == cpqBml.cloudDataTables",
           "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.cloud.globalSearch",
+          "when": "view == cpqBml.cloudExplorer",
+          "group": "navigation@0"
+        },
+        {
+          "command": "cpqBml.cloud.refreshTransactions",
+          "when": "view == cpqBml.recentTransactions",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.cloud.refreshDeploymentCenter",
+          "when": "view == cpqBml.deploymentCenter",
+          "group": "navigation@1"
         }
       ],
       "view/item/context": [
@@ -529,6 +600,26 @@
           "command": "cpqBml.cloud.exportDataTableCsv",
           "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTable",
           "group": "inline@2"
+        },
+        {
+          "command": "cpqBml.cloud.inspectTransaction",
+          "when": "view == cpqBml.recentTransactions && viewItem == cpqTransactionItem",
+          "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.cloud.debugOnTransaction",
+          "when": "view == cpqBml.recentTransactions && viewItem == cpqTransactionItem",
+          "group": "inline@2"
+        },
+        {
+          "command": "cpqBml.cloud.copyTransactionId",
+          "when": "view == cpqBml.recentTransactions && viewItem == cpqTransactionItem",
+          "group": "inline@3"
+        },
+        {
+          "command": "cpqBml.cloud.viewTaskDetails",
+          "when": "view == cpqBml.deploymentCenter && viewItem == cpqDeploymentTask",
+          "group": "inline@1"
         }
       ]
     },

@@ -5,7 +5,8 @@ const {
   groupFunctionsByFolder,
   findLocalFunctionFile,
   createCloudExplorer,
-  pullFunctionCommand
+  pullFunctionCommand,
+  openCommerceActionCommand
 } = require('@/lang/cloud/cloudExplorer');
 
 suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
@@ -113,18 +114,21 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
         variableName: 'nonExistentCloudFunc',
         name: 'Non Existent Cloud Func',
         returnType: 'String',
-        folderName: 'cloud'
+        folderName: 'cloud',
+        deploymentStatus: 'DEPLOYED'
       }
     };
     const fnItem = explorer.getTreeItem(fnElement);
     assert.strictEqual(fnItem.label, 'Non Existent Cloud Func');
-    assert.strictEqual(fnItem.description, '-> String');
+    assert.ok(fnItem.description.includes('[Deployed]'));
+    assert.ok(fnItem.description.includes('☁ Cloud'));
+    assert.ok(fnItem.description.includes('-> String'));
     assert.strictEqual(fnItem.contextValue, 'cpqCloudFunctionRemote');
     assert.strictEqual(fnItem.iconPath.id, 'cloud-download');
     assert.strictEqual(fnItem.command.command, 'cpqBml.cloud.pullFunction');
     assert.strictEqual(fnItem.command.title, 'Download and Open Function');
 
-    // Test category tree items (Util & Commerce)
+    // Test category tree items (Util, Commerce, and Actions)
     const utilCategory = {
       type: 'category',
       category: 'util',
@@ -147,6 +151,48 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     assert.strictEqual(commerceCategoryItem.contextValue, 'cpqCloudCategoryCommerce');
     assert.strictEqual(commerceCategoryItem.iconPath.id, 'briefcase');
 
+    const actionsCategory = {
+      type: 'category',
+      category: 'actions',
+      label: 'Commerce Document Actions (oraclecpqo/transaction)',
+      count: 8
+    };
+    const actionsCategoryItem = explorer.getTreeItem(actionsCategory);
+    assert.strictEqual(actionsCategoryItem.contextValue, 'cpqCloudCategoryActions');
+    assert.strictEqual(actionsCategoryItem.iconPath.id, 'symbol-event');
+
+    // Test action tree item
+    const actionElement = {
+      type: 'action',
+      data: {
+        variableName: 'cleanSave_t',
+        name: 'Clean Save',
+        actionType: 'Modify',
+        description: 'Saves current transaction cleanly',
+        commerceProcess: 'oraclecpqo',
+        commerceDocument: 'transaction'
+      }
+    };
+    const actionItem = explorer.getTreeItem(actionElement);
+    assert.strictEqual(actionItem.label, 'Clean Save');
+    assert.strictEqual(actionItem.description, '[Modify] cleanSave_t');
+    assert.strictEqual(actionItem.contextValue, 'cpqCloudCommerceAction');
+    assert.strictEqual(actionItem.iconPath.id, 'zap');
+
+    // Test staging status badge on function
+    const stagingFn = {
+      type: 'function',
+      data: {
+        variableName: 'stagedFunc',
+        name: 'Staged Func',
+        returnType: 'Boolean',
+        deploymentStatus: 'STAGING'
+      }
+    };
+    const stagingItem = explorer.getTreeItem(stagingFn);
+    assert.ok(stagingItem.description.includes('[Staging]'));
+    assert.strictEqual(stagingItem.iconPath.id, 'cloud');
+
     // Test commerce function tree item
     const commerceFnElement = {
       type: 'function',
@@ -157,12 +203,16 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
         folderName: 'pricing',
         isCommerce: true,
         commerceProcess: 'oraclecpqo',
-        commerceDocument: 'transaction'
+        commerceDocument: 'transaction',
+        deploymentStatus: 'DEPLOYED',
+        isOverridden: true
       }
     };
     const commerceFnItem = explorer.getTreeItem(commerceFnElement);
     assert.strictEqual(commerceFnItem.label, 'Calculate Discounts');
-    assert.strictEqual(commerceFnItem.description, '-> Float');
+    assert.ok(commerceFnItem.description.includes('[Deployed]'));
+    assert.ok(commerceFnItem.description.includes('[Overridden]'));
+    assert.ok(commerceFnItem.description.includes('-> Float'));
     assert.strictEqual(commerceFnItem.contextValue, 'cpqCloudFunctionRemote');
     assert.ok(commerceFnItem.tooltip.includes('Commerce: oraclecpqo/transaction'));
 
@@ -272,6 +322,62 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     } finally {
       api.getLibraryFunction = origGetFunc;
       fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test('openCommerceActionCommand fetches action definition and opens JSON document', async () => {
+    const api = require('@/lang/rest/api');
+    const origGetAction = api.getCommerceAction;
+    api.getCommerceAction = async function (context, vscodeInstance, varName) {
+      return {
+        statusCode: 200,
+        body: {
+          variableName: varName,
+          name: 'Clean Save',
+          actionType: 'Modify',
+          rules: ['Rule 1', 'Rule 2']
+        }
+      };
+    };
+
+    let openedDoc = null;
+    let showedDoc = null;
+    const mockVscode = {
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: '/mock' } }],
+        openTextDocument: async function (target) {
+          openedDoc = target;
+          return target;
+        }
+      },
+      window: {
+        withProgress: async function (opt, task) {
+          return task({ report: function () {} });
+        },
+        showErrorMessage: function () {},
+        showTextDocument: async function (doc) {
+          showedDoc = doc;
+        }
+      }
+    };
+
+    try {
+      const item = {
+        data: {
+          variableName: 'cleanSave_t',
+          name: 'Clean Save',
+          commerceProcess: 'oraclecpqo',
+          commerceDocument: 'transaction'
+        }
+      };
+      await openCommerceActionCommand(item, mockVscode, {});
+      assert.ok(openedDoc);
+      assert.strictEqual(openedDoc.language, 'json');
+      assert.ok(openedDoc.content.includes('cleanSave_t'));
+      assert.ok(openedDoc.content.includes('Rule 1'));
+      assert.ok(showedDoc);
+    } finally {
+      api.getCommerceAction = origGetAction;
     }
   });
 });

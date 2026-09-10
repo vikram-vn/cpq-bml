@@ -4,6 +4,16 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.92.0] - 2026-09-10
+
+### Added
+
+- Implement BML file scaffolding and metadata management for Oracle CPQ REST services.
+- Implement CloudExplorer logic and add headless VS Code mocks for unit testing.
+- Add testing infrastructure with custom module resolution and commerce API unit tests.
+- Implement cloud data tables exploration and CSV export functionality.
+- Implement native Node.js build runner and remove icon theme support.
+
 ## [1.91.0] - 2026-09-10
 
 ### Added
@@ -132,9 +142,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Implement native Node.js build runner and commerce attribute REST API logic.
-
-## [1.82.1] - 2026-09-08
-
-### Changed
-
-- Performance optimizations, benchmark fixtures, and stability enhancements.

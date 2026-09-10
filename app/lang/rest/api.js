@@ -237,6 +237,27 @@ function getTask(context, vscode, taskId, transport) {
   );
 }
 
+// GET /rest/<version>/tasks
+// Per Oracle CPQ Swagger spec: '?q={category:{$in:[ ]}}' is required.
+// Supported categories: 13 (DT Import), 17 (DT Deploy), 26 (DT Export), 51 (Package Import), 52 (Package Export)
+function listTasks(
+  context,
+  vscode,
+  { offset = 0, limit = 50, orderby = "dateModified:desc", q } = {},
+  transport,
+) {
+  const version = getRestVersion(vscode);
+  const defaultQ = "{category:{$in:[13,17,26,51,52]}}";
+  const queryParams = { offset, limit, totalResults: true, q: q || defaultQ };
+  if (orderby) queryParams.orderby = orderby;
+  return call(
+    context,
+    vscode,
+    { path: `/rest/${version}/tasks`, method: "GET", query: queryParams },
+    transport,
+  );
+}
+
 // GET /rest/<version>/bml/scripts?q={'scriptText':{$contains:'<query>', $options:'I'}}
 // BML Global Search introduced in Oracle CPQ 26A (/rest/v19/bml/scripts).
 function searchBmlScripts(
@@ -449,6 +470,7 @@ module.exports = {
   setOverride,
   deployCommerceProcess,
   getTask,
+  listTasks,
   searchBmlScripts,
   listDataTables,
   getDataTableSchema,

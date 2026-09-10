@@ -168,6 +168,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
 
   let cachedUtilFunctions = null;
   let cachedCommerceFunctions = null;
+  let cachedCommerceActions = null;
   let cachedUtilGroups = null;
   let cachedCommerceGroups = null;
   let isLoading = false;
@@ -251,30 +252,65 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     return allItems;
   }
 
+  async function fetchCommerceActions() {
+    const settings = getSettings(vscodeInstance);
+    const commerceProcess = settings.commerceProcess || 'oraclecpqo';
+    const commerceDocument = settings.commerceDocument || 'transaction';
+
+    try {
+      const res = await api.listCommerceActions(context, vscodeInstance, {
+        process: commerceProcess,
+        document: commerceDocument,
+        limit: 1000
+      });
+
+      if (res.statusCode < 200 || res.statusCode >= 300) {
+        return [];
+      }
+
+      let parsed = res.body;
+      if (typeof parsed === 'string') {
+        try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
+      }
+
+      const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
+      for (const item of items) {
+        item.commerceProcess = commerceProcess;
+        item.commerceDocument = commerceDocument;
+      }
+      return items;
+    } catch {
+      return [];
+    }
+  }
+
   async function fetchRemoteFunctions() {
-    if (cachedUtilFunctions && cachedCommerceFunctions) {
-      return { util: cachedUtilFunctions, commerce: cachedCommerceFunctions };
+    if (cachedUtilFunctions && cachedCommerceFunctions && cachedCommerceActions) {
+      return { util: cachedUtilFunctions, commerce: cachedCommerceFunctions, actions: cachedCommerceActions };
     }
     if (isLoading) {
-      return { util: cachedUtilFunctions || [], commerce: cachedCommerceFunctions || [] };
+      return { util: cachedUtilFunctions || [], commerce: cachedCommerceFunctions || [], actions: cachedCommerceActions || [] };
     }
     isLoading = true;
 
     try {
-      const [utilResult, commerceResult] = await Promise.allSettled([
+      const [utilResult, commerceResult, actionsResult] = await Promise.allSettled([
         fetchUtilFunctions(),
-        fetchCommerceFunctions()
+        fetchCommerceFunctions(),
+        fetchCommerceActions()
       ]);
 
       const utilItems = utilResult.status === 'fulfilled' ? utilResult.value : [];
       const commerceItems = commerceResult.status === 'fulfilled' ? commerceResult.value : [];
+      const actionItems = actionsResult.status === 'fulfilled' ? actionsResult.value : [];
 
       cachedUtilFunctions = utilItems;
       cachedCommerceFunctions = commerceItems;
+      cachedCommerceActions = actionItems;
       cachedUtilGroups = groupFunctionsByFolder(utilItems);
       cachedCommerceGroups = groupFunctionsByFolder(commerceItems);
 
-      return { util: utilItems, commerce: commerceItems };
+      return { util: utilItems, commerce: commerceItems, actions: actionItems };
     } finally {
       isLoading = false;
     }
@@ -291,8 +327,13 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
         `${element.label} (${element.count})`,
         element.count > 0 ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
       );
-      item.contextValue = element.category === 'commerce' ? 'cpqCloudCategoryCommerce' : 'cpqCloudCategoryUtil';
-      item.iconPath = new vscodeInstance.ThemeIcon(element.category === 'commerce' ? 'briefcase' : 'library');
+      if (element.category === 'actions') {
+        item.contextValue = 'cpqCloudCategoryActions';
+        item.iconPath = new vscodeInstance.ThemeIcon('symbol-event');
+      } else {
+        item.contextValue = element.category === 'commerce' ? 'cpqCloudCategoryCommerce' : 'cpqCloudCategoryUtil';
+        item.iconPath = new vscodeInstance.ThemeIcon(element.category === 'commerce' ? 'briefcase' : 'library');
+      }
       return item;
     }
 
@@ -312,6 +353,34 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       return item;
     }
 
+    if (element.type === 'action') {
+      const action = element.data;
+      const varName = action.variableName || action.name;
+      const label = action.name || varName;
+      const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
+
+      const actionType = action.actionType || action.type || 'Action';
+      item.description = `[${actionType}] ${varName}`;
+      item.tooltip = [
+        `Commerce Action: ${label}`,
+        `Variable Name: ${varName}`,
+        `Action Type: ${actionType}`,
+        action.description ? `Description: ${action.description}` : null,
+        `Process: ${action.commerceProcess}/${action.commerceDocument}`,
+        '---',
+        'Click to view action definition'
+      ].filter(Boolean).join('\n');
+
+      item.iconPath = new vscodeInstance.ThemeIcon('zap', new vscodeInstance.ThemeColor('symbolIcon.eventForeground'));
+      item.contextValue = 'cpqCloudCommerceAction';
+      item.command = {
+        command: 'cpqBml.cloud.openCommerceAction',
+        title: 'View Action Definition',
+        arguments: [element]
+      };
+      return item;
+    }
+
     // Function item
     const fn = element.data;
     const varName = fn.variableName || fn.name;
@@ -325,30 +394,99 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     const label = fn.name || varName;
     const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
 
-    item.description = fn.returnType ? `-> ${fn.returnType}` : '';
-    item.contextValue = localPath ? 'cpqCloudFunctionSynced' : 'cpqCloudFunctionRemote';
+    // Compute Deployed vs. Staging status badges per Oracle CPQ Swagger deployedLibrary / utilLibrary schemas
+    const badges = [];
+    const hasStagedTimestamps = Boolean(
+      fn.lastModified && fn.lastDeployed && new Date(fn.lastModified) > new Date(fn.lastDeployed)
+    );
+    const hasDeployedTimestamps = Boolean(
+      fn.lastDeployed && (!fn.lastModified || new Date(fn.lastDeployed) >= new Date(fn.lastModified))
+    );
+
+    const isStaged = fn.deploymentStatus === 'STAGING' ||
+                     fn.deploymentStatus === 'CHANGED' ||
+                     fn.status === 'staged' ||
+                     fn.isStaged === true ||
+                     hasStagedTimestamps;
+    const isDeployed = fn.deploymentStatus === 'DEPLOYED' ||
+                       fn.status === 'active' ||
+                       hasDeployedTimestamps ||
+                       (!isStaged && fn.deploymentStatus !== undefined);
+
+    if (isStaged) {
+      badges.push('[Staging]');
+    } else if (isDeployed) {
+      badges.push('[Deployed]');
+    }
+
+    if (fn.isOverridden) {
+      badges.push('[Overridden]');
+    } else if (fn.isStandardFunction) {
+      badges.push('[Standard]');
+    }
 
     if (localPath) {
-      if (isCommerce) {
-        const procDoc = `${fn.commerceProcess || 'oraclecpqo'}/${fn.commerceDocument || 'transaction'}`;
-        item.tooltip = `${varName} [Commerce: ${procDoc}]\nLocal: ${path.basename(localPath)}\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}`;
+      badges.push('✓ Local');
+    } else {
+      badges.push('☁ Cloud');
+    }
+
+    if (fn.returnType) {
+      badges.push(`-> ${fn.returnType}`);
+    }
+
+    item.description = badges.join(' ');
+    item.contextValue = localPath ? 'cpqCloudFunctionSynced' : 'cpqCloudFunctionRemote';
+
+    const deployStatusText = isStaged ? 'Staging (Pending Deployment)' : (isDeployed ? 'Deployed' : 'Unknown');
+    const funcTypeText = fn.isOverridden
+      ? 'Standard Function (Overridden)'
+      : (fn.isStandardFunction ? 'Standard Function' : 'Custom Library Function');
+
+    if (localPath) {
+      const procDoc = isCommerce ? `Commerce: ${fn.commerceProcess || 'oraclecpqo'}/${fn.commerceDocument || 'transaction'}` : 'Util Library';
+      item.tooltip = [
+        `${varName} [${deployStatusText}]`,
+        `Type: ${funcTypeText}`,
+        `Environment: ${procDoc}`,
+        `Local File: ${path.basename(localPath)}`,
+        `Folder: ${fn.folderName || 'Global'}`,
+        `Return: ${fn.returnType || 'void'}`,
+        '---',
+        'Click to open local file in editor'
+      ].join('\n');
+
+      if (isStaged) {
+        item.iconPath = new vscodeInstance.ThemeIcon('beaker', new vscodeInstance.ThemeColor('problemsWarningIcon.foreground'));
+      } else if (fn.isOverridden) {
+        item.iconPath = new vscodeInstance.ThemeIcon('diff-modified', new vscodeInstance.ThemeColor('symbolIcon.eventForeground'));
       } else {
-        item.tooltip = `${varName} (Local: ${path.basename(localPath)})\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}`;
+        item.iconPath = new vscodeInstance.ThemeIcon('check', new vscodeInstance.ThemeColor('testing.iconPassed'));
       }
-      item.iconPath = new vscodeInstance.ThemeIcon('check', new vscodeInstance.ThemeColor('testing.iconPassed'));
+
       item.command = {
         command: 'vscode.open',
         title: 'Open Local Function',
         arguments: [vscodeInstance.Uri.file(localPath)]
       };
     } else {
-      if (isCommerce) {
-        const procDoc = `${fn.commerceProcess || 'oraclecpqo'}/${fn.commerceDocument || 'transaction'}`;
-        item.tooltip = `${varName} [Cloud Only - Commerce: ${procDoc}]\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}\nDouble-click to download and open`;
+      const procDoc = isCommerce ? `Commerce: ${fn.commerceProcess || 'oraclecpqo'}/${fn.commerceDocument || 'transaction'}` : 'Util Library';
+      item.tooltip = [
+        `${varName} [Cloud Only - ${deployStatusText}]`,
+        `Type: ${funcTypeText}`,
+        `Environment: ${procDoc}`,
+        `Folder: ${fn.folderName || 'Global'}`,
+        `Return: ${fn.returnType || 'void'}`,
+        '---',
+        'Double-click to download and open'
+      ].join('\n');
+
+      if (isStaged) {
+        item.iconPath = new vscodeInstance.ThemeIcon('cloud', new vscodeInstance.ThemeColor('problemsWarningIcon.foreground'));
       } else {
-        item.tooltip = `${varName} [Cloud Only]\nFolder: ${fn.folderName || 'Global'}\nReturn: ${fn.returnType || 'void'}\nDouble-click to download and open`;
+        item.iconPath = new vscodeInstance.ThemeIcon('cloud-download', new vscodeInstance.ThemeColor('textLink.foreground'));
       }
-      item.iconPath = new vscodeInstance.ThemeIcon('cloud-download', new vscodeInstance.ThemeColor('textLink.foreground'));
+
       item.command = {
         command: 'cpqBml.cloud.pullFunction',
         title: 'Download and Open Function',
@@ -366,7 +504,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     }
 
     if (!element) {
-      // Root level: return categories (Util Libraries and Commerce Libraries)
+      // Root level: return categories (Util Libraries, Commerce Libraries, Commerce Actions)
       await fetchRemoteFunctions();
       const settings = getSettings(vscodeInstance);
       const commerceProcess = settings.commerceProcess || 'oraclecpqo';
@@ -388,12 +526,33 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
           groups: cachedCommerceGroups,
           commerceProcess,
           commerceDocument
+        },
+        {
+          type: 'category',
+          category: 'actions',
+          label: `Commerce Document Actions (${commerceProcess}/${commerceDocument})`,
+          count: cachedCommerceActions ? cachedCommerceActions.length : 0,
+          commerceProcess,
+          commerceDocument
         }
       ];
       return nodes;
     }
 
     if (element.type === 'category') {
+      if (element.category === 'actions') {
+        if (!cachedCommerceActions || cachedCommerceActions.length === 0) {
+          return [{
+            type: 'empty',
+            label: 'No commerce document actions found'
+          }];
+        }
+        return cachedCommerceActions.map(action => ({
+          type: 'action',
+          data: action
+        }));
+      }
+
       if (!element.groups || element.groups.size === 0) {
         return [{
           type: 'empty',
@@ -432,6 +591,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
   function refresh() {
     cachedUtilFunctions = null;
     cachedCommerceFunctions = null;
+    cachedCommerceActions = null;
     cachedUtilGroups = null;
     cachedCommerceGroups = null;
     onDidChangeTreeDataEmitter.fire();
@@ -610,6 +770,45 @@ async function diffFunctionCommand(item, vscodeInstance = vscode, context) {
   });
 }
 
+/**
+ * Opens a commerce document action definition in a JSON editor.
+ */
+async function openCommerceActionCommand(item, vscodeInstance = vscode, context) {
+  const action = item?.data || item;
+  if (!action) return;
+  const proc = action.commerceProcess || 'oraclecpqo';
+  const doc = action.commerceDocument || 'transaction';
+  const actionVar = action.variableName;
+
+  await vscodeInstance.window.withProgress({
+    location: 15,
+    title: `Loading action '${actionVar || action.name}' definition...`,
+    cancellable: false
+  }, async () => {
+    try {
+      let data = action;
+      if (actionVar) {
+        const res = await api.getCommerceAction(context, vscodeInstance, actionVar, { process: proc, document: doc });
+        if (res && res.statusCode >= 200 && res.statusCode < 300) {
+          let body = res.body;
+          if (typeof body === 'string') {
+            try { body = JSON.parse(body); } catch {}
+          }
+          data = body || action;
+        }
+      }
+      const formatted = JSON.stringify(data, null, 2);
+      const docObj = await vscodeInstance.workspace.openTextDocument({
+        content: formatted,
+        language: 'json'
+      });
+      await vscodeInstance.window.showTextDocument(docObj);
+    } catch (err) {
+      vscodeInstance.window.showErrorMessage(`Failed to load action '${actionVar}': ${err.message}`);
+    }
+  });
+}
+
 function registerCloudExplorer(context, vscodeInstance = vscode) {
   const treeDataProvider = createCloudExplorer(vscodeInstance, context);
 
@@ -644,7 +843,11 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
     }
   });
 
-  context.subscriptions.push(treeView, refreshCmd, pullCmd, diffCmd, openLocalCmd);
+  const openActionCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.openCommerceAction', (item) => {
+    return openCommerceActionCommand(item, vscodeInstance, context);
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, pullCmd, diffCmd, openLocalCmd, openActionCmd);
 
   return { treeDataProvider, treeView };
 }
@@ -655,6 +858,7 @@ module.exports = {
   createCloudExplorer,
   pullFunctionCommand,
   diffFunctionCommand,
+  openCommerceActionCommand,
   registerCloudExplorer
 };
 

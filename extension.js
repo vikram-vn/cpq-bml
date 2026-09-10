@@ -28,6 +28,9 @@ const { getSessionKeepAlive } = require("@/lang/rest/sessionKeepAlive");
 const { registerCloudExplorer } = require("@/lang/cloud/cloudExplorer");
 const { registerCloudTypeDefCommands } = require("@/lang/cloud/cloudTypeDefSync");
 const { registerCloudDataTables } = require("@/lang/cloud/cloudDataTables");
+const { registerCloudTransactions } = require("@/lang/cloud/cloudTransactions");
+const { registerCloudDeploymentCenter } = require("@/lang/cloud/cloudDeploymentCenter");
+const { registerCloudGlobalSearch } = require("@/lang/cloud/cloudGlobalSearch");
 const { registerRemoteTestCommands } = require("@/lang/test-controller/remoteTestRunner");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
 
@@ -92,6 +95,9 @@ function activate(context) {
   registerCloudExplorer(context);
   registerCloudTypeDefCommands(context);
   registerCloudDataTables(context);
+  registerCloudTransactions(context);
+  registerCloudDeploymentCenter(context);
+  registerCloudGlobalSearch(context);
   registerRemoteTestCommands(context);
 
   context.subscriptions.push(

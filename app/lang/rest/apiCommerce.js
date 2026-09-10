@@ -123,6 +123,72 @@ async function getTransactions(
   return result;
 }
 
+// GET /rest/<version>/commerceDocuments<Process><Document>/<id>
+async function getTransaction(
+  context,
+  vscode,
+  transactionId,
+  { process, document } = {},
+  transport,
+) {
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  return call(
+    context,
+    vscode,
+    {
+      path: `${commerceDocumentsPath(vscode, effectiveProcess, effectiveDocument)}/${transactionId}`,
+      method: "GET",
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/commerceProcessSetups/<process>/documents/<document>/actions
+async function listCommerceActions(
+  context,
+  vscode,
+  { process, document, offset = 0, limit = 1000 } = {},
+  transport,
+) {
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/actions`,
+      method: "GET",
+      query: { offset, limit, totalResults: true },
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/commerceProcessSetups/<process>/documents/<document>/actions/<actionVarName>
+async function getCommerceAction(
+  context,
+  vscode,
+  actionVarName,
+  { process, document } = {},
+  transport,
+) {
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/actions/${actionVarName}`,
+      method: "GET",
+    },
+    transport,
+  );
+}
+
+
 // POST /rest/<version>/commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer
 // Executes the CPQ Commerce Pipeline Viewer for a transaction (rules sequence, attribute changes, timings).
 async function runPipelineViewer(
@@ -476,6 +542,9 @@ module.exports = {
   commerceDocumentsPath,
   getTransactions,
   listTransactions: getTransactions,
+  getTransaction,
+  listCommerceActions,
+  getCommerceAction,
   runPipelineViewer,
   formatCommerceAttribute,
   getCommerceAttribute,

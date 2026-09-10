@@ -397,7 +397,13 @@ function getDataTableFolder(workspaceRoot) {
     return workspaceRoot ? pathLib.join(workspaceRoot, 'cpq', 'datatable') : pathLib.join('cpq', 'datatable');
 }
 
+function isConfigured(vscode) {
+    const { siteUrl } = getSettings(vscode);
+    return Boolean(siteUrl);
+}
+
 module.exports = {
+    isConfigured,
     DEFAULT_REST_VERSION,
     DEFAULT_DOMAIN_SUFFIX,
     SECRET_PASSWORD,
