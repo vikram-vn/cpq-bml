@@ -15,6 +15,7 @@ const { getBmqlIntelligentCompletions } = require('@/lang/bmql/bmqlIntellisense'
 const { createDefinitionProvider } = require('@/lang/intellisense/definitionProvider');
 const { createReferenceProvider } = require('@/lang/intellisense/referenceProvider');
 const { createCallHierarchyProvider } = require('@/lang/intellisense/callHierarchyProvider');
+const { adaptCompletionsForLineContext } = require('@/lang/intellisense/completionContext');
 
 const {
     loadApiData,
@@ -156,15 +157,15 @@ function registerBmlIntelliSense(context) {
                     const lineVars = getTransactionLineLoopVariables(document);
 
                     if (objName === 'cpqjs') {
-                        return cat.cpqjsItems;
+                        return adaptCompletionsForLineContext(cat.cpqjsItems, document, position);
                     } else if (lineVars.has(objName)) {
-                        return cat.lineItems;
+                        return adaptCompletionsForLineContext(cat.lineItems, document, position);
                     } else if (objName === 'transaction' || objName === 'trans' || objName === 't') {
-                        return cat.transactionItems;
+                        return adaptCompletionsForLineContext(cat.transactionItems, document, position);
                     } else if (objName === 'arrayset' || objName === 'arraysets' || objName === 'arr' || objName === 'a') {
-                        return cat.arraySetItems;
+                        return adaptCompletionsForLineContext(cat.arraySetItems, document, position);
                     } else if (objName === 'config' || objName === 'cfg' || objName === 'model') {
-                        return cat.configItems;
+                        return adaptCompletionsForLineContext(cat.configItems, document, position);
                     } else {
                         return [];
                     }
@@ -175,10 +176,10 @@ function registerBmlIntelliSense(context) {
                 // General completion: merge local script variables with global API items
                 const localVars = getLocalVariableCompletions(document, position);
                 if (localVars && localVars.length > 0) {
-                    return [...localVars, ...cat.globalItems];
+                    return adaptCompletionsForLineContext([...localVars, ...cat.globalItems], document, position);
                 }
 
-                return cat.globalItems;
+                return adaptCompletionsForLineContext(cat.globalItems, document, position);
             },
             resolveCompletionItem(item, token) {
                 if (token && token.isCancellationRequested) return item;
