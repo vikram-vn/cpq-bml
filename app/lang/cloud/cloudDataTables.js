@@ -1,4 +1,4 @@
-const { vscode, safeParseJson } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue } = require('./cloudVscodeShim');
 
 const fs = require('fs');
 const path = require('path');
@@ -24,13 +24,19 @@ async function fetchRemoteDataTables(vscodeInstance = vscode, customTransport, c
     if (res && res.statusCode >= 200 && res.statusCode < 300) {
       const body = safeParseJson(res.body);
       const items = body.items || (Array.isArray(body) ? body : []);
-      return items.map(t => ({
-        name: t.name || t.variableName || t.tableName || 'UnknownTable',
-        label: t.label || t.description || t.name || 'Data Table',
-        description: t.description || '',
-        folder: t.folder || '',
-        raw: t
-      })).sort((a, b) => a.name.localeCompare(b.name));
+      return items.map(t => {
+        const name = extractStringValue(t.name || t.variableName || t.tableName, 'UnknownTable');
+        const label = extractStringValue(t.label || t.description || t.name, name);
+        const description = extractStringValue(t.description, '');
+        const folder = extractStringValue(t.folder, '');
+        return {
+          name,
+          label,
+          description,
+          folder,
+          raw: t
+        };
+      }).sort((a, b) => a.name.localeCompare(b.name));
     }
     return [];
   } catch (err) {
@@ -59,9 +65,9 @@ async function fetchTableSchema(tableName, vscodeInstance = vscode, customTransp
       const body = safeParseJson(res.body);
       const columns = body.columns || body.fields || body.items || [];
       return columns.map(c => ({
-        name: c.name || c.variableName || 'col',
-        type: c.type || c.dataType || 'String',
-        label: c.label || c.name || '',
+        name: extractStringValue(c.name || c.variableName, 'col'),
+        type: extractStringValue(c.type || c.dataType, 'String'),
+        label: extractStringValue(c.label || c.name, ''),
         isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey)
       }));
     }

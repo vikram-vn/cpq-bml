@@ -1,4 +1,4 @@
-const { vscode, safeParseJson } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue } = require('./cloudVscodeShim');
 
 const api = require('@/lang/rest/api');
 const { getSettings, isConfigured } = require('@/lang/rest/config');
@@ -93,13 +93,29 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       const tx = element.data;
       const props = [];
 
-      if (tx.status_t) props.push({ key: 'Status', value: String(tx.status_t) });
-      if (tx.customer_t) props.push({ key: 'Customer', value: String(tx.customer_t) });
-      if (tx.totalAmount_t !== undefined) props.push({ key: 'Total Amount', value: String(tx.totalAmount_t) });
-      if (tx.dateModified_t) props.push({ key: 'Date Modified', value: String(tx.dateModified_t) });
-      if (tx.version_t !== undefined) props.push({ key: 'Version', value: String(tx.version_t) });
-      if (tx._id) props.push({ key: 'Internal _id', value: String(tx._id) });
-      if (tx.transactionID_t) props.push({ key: 'Transaction #', value: String(tx.transactionID_t) });
+      const status = extractStringValue(tx.status_t);
+      if (status) props.push({ key: 'Status', value: status });
+
+      const customer = extractStringValue(tx.customer_t);
+      if (customer) props.push({ key: 'Customer', value: customer });
+
+      const totalAmount = extractStringValue(tx.totalAmount_t);
+      if (totalAmount) props.push({ key: 'Total Amount', value: totalAmount.startsWith('$') ? totalAmount : `$${totalAmount}` });
+
+      const dateModified = extractStringValue(tx.dateModified_t);
+      if (dateModified) props.push({ key: 'Date Modified', value: dateModified });
+
+      const version = extractStringValue(tx.version_t);
+      if (version) props.push({ key: 'Version', value: version });
+
+      const internalId = extractStringValue(tx._id);
+      if (internalId) props.push({ key: 'Internal _id', value: internalId });
+
+      const txNum = extractStringValue(tx.transactionID_t || tx.transactionId);
+      if (txNum) props.push({ key: 'Transaction #', value: txNum });
+
+      const txName = extractStringValue(tx.transactionName_t);
+      if (txName) props.push({ key: 'Transaction Name', value: txName });
 
       return props.map(p => ({
         type: 'property',
@@ -140,28 +156,34 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
 
     // Transaction Node
     const tx = element.data;
-    const txNumber = tx.transactionID_t || tx.transactionId || tx._id || 'Quote';
-    const txId = tx._id || txNumber;
+    const txNumber = extractStringValue(tx.transactionID_t || tx.transactionId || tx._id, 'Quote');
+    const txId = extractStringValue(tx._id || tx.transactionID_t || tx.transactionId, txNumber);
 
     const item = new vscodeInstance.TreeItem(
-      String(txNumber),
+      txNumber,
       vscodeInstance.TreeItemCollapsibleState.Collapsed
     );
 
+    const customer = extractStringValue(tx.customer_t);
+    const status = extractStringValue(tx.status_t);
+    const totalAmount = extractStringValue(tx.totalAmount_t);
+    const dateModified = extractStringValue(tx.dateModified_t);
+    const version = extractStringValue(tx.version_t);
+
     const descParts = [];
-    if (tx.customer_t) descParts.push(tx.customer_t);
-    if (tx.status_t) descParts.push(tx.status_t);
-    if (tx.totalAmount_t !== undefined) descParts.push(`$${tx.totalAmount_t}`);
+    if (customer) descParts.push(customer);
+    if (status) descParts.push(status);
+    if (totalAmount) descParts.push(totalAmount.startsWith('$') ? totalAmount : `$${totalAmount}`);
     item.description = descParts.join(' • ');
 
     const tooltipLines = [
       `Quote / Transaction: ${txNumber}`,
       `Internal ID (_id): ${txId}`,
-      tx.customer_t ? `Customer: ${tx.customer_t}` : null,
-      tx.status_t ? `Status: ${tx.status_t}` : null,
-      tx.totalAmount_t !== undefined ? `Total: ${tx.totalAmount_t}` : null,
-      tx.dateModified_t ? `Modified: ${tx.dateModified_t}` : null,
-      tx.version_t !== undefined ? `Version: ${tx.version_t}` : null,
+      customer ? `Customer: ${customer}` : null,
+      status ? `Status: ${status}` : null,
+      totalAmount ? `Total: ${totalAmount}` : null,
+      dateModified ? `Modified: ${dateModified}` : null,
+      version ? `Version: ${version}` : null,
       '---',
       'Click inline actions to inspect, debug BML, or copy ID'
     ].filter(Boolean);
@@ -204,24 +226,41 @@ async function inspectTransactionCommand(item, vscodeInstance = vscode, context)
     return;
   }
 
-  const txId = tx._id || tx.transactionID_t || tx.transactionId;
+  const rawTxId = tx._id || tx.transactionID_t || tx.transactionId;
+  const txId = extractStringValue(rawTxId);
   if (!txId) {
     vscodeInstance.window.showWarningMessage('Transaction ID is missing.');
     return;
   }
 
+  const txNum = extractStringValue(tx.transactionID_t, txId);
+  const settings = getSettings(vscodeInstance);
+  const process = settings.commerceProcess || tx.process || 'oraclecpqo';
+  const document = settings.commerceDocument || tx.document || 'transaction';
+
   await vscodeInstance.window.withProgress({
     location: 15, // Notification
-    title: `Loading transaction #${tx.transactionID_t || txId}...`,
+    title: `Loading transaction #${txNum}...`,
     cancellable: false
   }, async () => {
+    let data = tx;
     try {
-      let data = tx;
-      const res = await api.getTransaction(context, vscodeInstance, txId);
+      const res = await api.getTransaction(context, vscodeInstance, txId, { process, document, timeoutMs: 60000 });
       if (res && res.statusCode >= 200 && res.statusCode < 300) {
         data = safeParseJson(res.body, tx);
+      } else if (tx.transactionID_t && String(tx.transactionID_t) !== String(txId)) {
+        const altRes = await api.getTransaction(context, vscodeInstance, String(tx.transactionID_t), { process, document, timeoutMs: 30000 });
+        if (altRes && altRes.statusCode >= 200 && altRes.statusCode < 300) {
+          data = safeParseJson(altRes.body, tx);
+        }
       }
+    } catch (err) {
+      vscodeInstance.window.showWarningMessage(
+        `Full payload request for #${txNum} timed out or failed (${err.message}). Opening available transaction summary.`
+      );
+    }
 
+    try {
       const formatted = JSON.stringify(data, null, 2);
       const doc = await vscodeInstance.workspace.openTextDocument({
         content: formatted,
@@ -229,7 +268,7 @@ async function inspectTransactionCommand(item, vscodeInstance = vscode, context)
       });
       await vscodeInstance.window.showTextDocument(doc);
     } catch (err) {
-      vscodeInstance.window.showErrorMessage(`Failed to inspect transaction: ${err.message}`);
+      vscodeInstance.window.showErrorMessage(`Failed to display transaction: ${err.message}`);
     }
   });
 }
@@ -244,14 +283,19 @@ async function debugOnTransactionCommand(item, vscodeInstance = vscode) {
     return;
   }
 
-  const txId = tx._id || tx.transactionID_t || tx.transactionId;
+  const rawTxId = tx._id || tx.transactionID_t || tx.transactionId;
+  const txId = extractStringValue(rawTxId);
   if (!txId) {
     vscodeInstance.window.showWarningMessage('Transaction ID is missing.');
     return;
   }
 
   // Execute debug command with the transaction ID
-  await vscodeInstance.commands.executeCommand('cpqBml.rest.debugExecution', { transactionId: String(txId) });
+  try {
+    await vscodeInstance.commands.executeCommand('cpqBml.rest.debugExecution', { transactionId: String(txId) });
+  } catch {
+    await vscodeInstance.commands.executeCommand('cpqBml.rest.debugCurrentFile', { transactionId: String(txId) });
+  }
 }
 
 /**
@@ -260,7 +304,8 @@ async function debugOnTransactionCommand(item, vscodeInstance = vscode) {
 async function copyTransactionIdCommand(item, vscodeInstance = vscode) {
   const tx = item?.data || item;
   if (!tx) return;
-  const txId = tx._id || tx.transactionID_t || tx.transactionId;
+  const rawTxId = tx._id || tx.transactionID_t || tx.transactionId;
+  const txId = extractStringValue(rawTxId);
   if (!txId) return;
 
   await vscodeInstance.env.clipboard.writeText(String(txId));

@@ -181,8 +181,11 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.saveCurrentFile", () =>
       runSaveCurrentFile(context, vscode, resultsTerminal),
     ),
-    vscode.commands.registerCommand("cpqBml.rest.debugCurrentFile", () =>
-      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal),
+    vscode.commands.registerCommand("cpqBml.rest.debugCurrentFile", (options) =>
+      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, options),
+    ),
+    vscode.commands.registerCommand("cpqBml.rest.debugExecution", (options) =>
+      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, options),
     ),
     vscode.commands.registerCommand("cpqBml.rest.createOverride", () =>
       runCreateOverride(context, vscode, resultsTerminal),

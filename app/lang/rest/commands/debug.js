@@ -95,7 +95,16 @@ async function runDebugCurrentFile(
   const parameterValues = {};
   let useCached = false;
 
-  if (hasInputs && context.workspaceState) {
+  if (options && options.transactionId) {
+    transactionIds = [String(options.transactionId)];
+    useCached = true;
+    if (context && context.workspaceState) {
+      const cacheKey = `debugCache:${metadata.variableName}`;
+      const cached = context.workspaceState.get(cacheKey) || {};
+      cached.transactionId = options.transactionId;
+      context.workspaceState.update(cacheKey, cached);
+    }
+  } else if (hasInputs && context.workspaceState) {
     const cacheKey = `debugCache:${metadata.variableName}`;
     const cached = context.workspaceState.get(cacheKey);
     if (cached) {

@@ -84,8 +84,7 @@ function notifyUnauthorized(vscode) {
   }
 }
 
-// transport lets tests intercept the call instead of making a real HTTPS request.
-async function call(context, vscode, { path, method, query, body, signal }, transport) {
+async function call(context, vscode, { path, method, query, body, signal, timeoutMs }, transport) {
   let cleanedBody = body;
   if (body && typeof body === "object") {
     const { commerceProcess, commerceDocument, ...rest } = body;
@@ -140,7 +139,7 @@ async function call(context, vscode, { path, method, query, body, signal }, tran
     query,
     body: cleanedBody,
     authHeader,
-    timeoutMs: settings.requestTimeoutMs,
+    timeoutMs: timeoutMs || settings.requestTimeoutMs,
     signal,
     transport,
     logFilePath,

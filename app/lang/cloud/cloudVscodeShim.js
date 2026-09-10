@@ -85,6 +85,10 @@ function extractStringValue(val, fallback = '') {
   if (typeof val === 'string') return val;
   if (typeof val === 'number' || typeof val === 'boolean') return String(val);
   if (typeof val === 'object') {
+    // If currency is present along with value and no displayValue
+    if (!val.displayValue && val.value !== undefined && val.currency) {
+      return `${val.value} ${val.currency}`.trim();
+    }
     const candidate =
       val.displayValue ||
       val.displayLabel ||
@@ -93,6 +97,10 @@ function extractStringValue(val, fallback = '') {
       val.actionType ||
       val.lookupVal ||
       val.value ||
+      val.text ||
+      val.amount ||
+      val.totalAmount ||
+      val.title ||
       val.type;
     if (typeof candidate === 'string') return candidate;
     if (candidate && typeof candidate === 'object') return extractStringValue(candidate, fallback);

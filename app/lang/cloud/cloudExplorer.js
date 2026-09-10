@@ -156,7 +156,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
 
     // Function item
     const fn = element.data;
-    const varName = fn.variableName || fn.name;
+    const varName = extractStringValue(fn.variableName || fn.name, 'function');
     const wsRoot = getRoot();
     const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
     const commerceMetadata = isCommerce
@@ -164,7 +164,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       : null;
     const localPath = findLocalFunctionFile(wsRoot, varName, fn.folderName, commerceMetadata, vscodeInstance);
 
-    const label = fn.name || varName;
+    const label = extractStringValue(fn.name || varName, varName);
     const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
 
     const badges = [];

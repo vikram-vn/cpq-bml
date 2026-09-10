@@ -139,7 +139,7 @@ async function getTransaction(
   context,
   vscode,
   transactionId,
-  { process, document } = {},
+  { process, document, timeoutMs } = {},
   transport,
 ) {
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
@@ -150,6 +150,7 @@ async function getTransaction(
     {
       path: `${commerceDocumentsPath(vscode, effectiveProcess, effectiveDocument)}/${transactionId}`,
       method: "GET",
+      timeoutMs: timeoutMs || 60000,
     },
     transport,
   );

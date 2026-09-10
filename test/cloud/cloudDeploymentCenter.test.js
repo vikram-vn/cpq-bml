@@ -73,12 +73,11 @@ suite('CPQ Deployment Center & Task Monitor - Unit Tests', () => {
 
     // Test operations category children
     const ops = await provider.getChildren(rootNodes[0]);
-    assert.strictEqual(ops.length, 4);
+    assert.strictEqual(ops.length, 3);
     assert.ok(ops[0].label.includes('Deploy Commerce Process'));
     assert.strictEqual(ops[0].commandId, 'cpqBml.rest.deployCommerceProcess');
     assert.strictEqual(ops[1].label, 'Mass Deploy Util Functions');
-    assert.strictEqual(ops[2].label, 'Flush Server Cache');
-    assert.strictEqual(ops[3].label, 'Pre-flight Safety Check');
+    assert.strictEqual(ops[2].label, 'Pre-flight Safety Check');
 
     // Test task items
     const tasks = await provider.getChildren(rootNodes[1]);

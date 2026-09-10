@@ -76,13 +76,6 @@ function createDeploymentCenterProvider(vscodeInstance = vscode, context) {
         },
         {
           type: 'action',
-          label: 'Flush Server Cache',
-          description: 'Clear CPQ server-side cache',
-          commandId: 'cpqBml.rest.flushCache',
-          icon: 'trash'
-        },
-        {
-          type: 'action',
           label: 'Pre-flight Safety Check',
           description: 'Analyze active file for deployment readiness',
           commandId: 'cpqBml.rest.preflightCheck',

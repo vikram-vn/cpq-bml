@@ -36,6 +36,7 @@ function createCloudMockVscode(overrides = {}) {
   let executedCmd = null;
   let clipboardText = null;
   let infoMsg = null;
+  let warningMsg = null;
   let errorMsg = null;
   let quickPickItems = null;
 
@@ -76,7 +77,7 @@ function createCloudMockVscode(overrides = {}) {
       },
       showInformationMessage: (msg) => { infoMsg = msg; },
       showErrorMessage: (msg) => { errorMsg = msg; },
-      showWarningMessage: () => {},
+      showWarningMessage: (msg) => { warningMsg = msg; },
       showTextDocument: async (doc) => {
         shownDoc = doc;
         return { selection: null, revealRange: () => {} };
@@ -104,6 +105,7 @@ function createCloudMockVscode(overrides = {}) {
     getExecutedCmd: function () { return executedCmd; },
     getClipboardText: function () { return clipboardText; },
     getInfoMsg: function () { return infoMsg; },
+    getWarningMsg: function () { return warningMsg; },
     getErrorMsg: function () { return errorMsg; },
     getQuickPickItems: function () { return quickPickItems; },
     setQuickPickSelected: function (sel) { quickPickSelected = sel; },

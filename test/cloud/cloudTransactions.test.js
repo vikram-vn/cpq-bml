@@ -155,4 +155,61 @@ suite('CPQ Recent Transactions Explorer - Unit Tests', () => {
     const item = provider.getTreeItem(rootNodes[0]);
     assert.ok(item.label.includes('No recent transactions'));
   });
+
+  test('handles object attribute shapes (displayValue/value/currency) without [object Object]', async () => {
+    const mockVscode = createMockVscode();
+    const provider = createTransactionsProvider(mockVscode, {});
+
+    const rawNode = {
+      type: 'transaction',
+      data: {
+        _id: 46332884,
+        transactionID_t: 'CPQ-93',
+        customer_t: { displayValue: 'Acme Global Corp', value: 'ACME' },
+        status_t: { displayValue: 'Pending Approval', value: 'PENDING' },
+        totalAmount_t: { value: 75000, currency: 'USD' },
+        dateModified_t: { value: '2026-09-10T12:00:00Z' },
+        version_t: { value: 1 }
+      }
+    };
+
+    const treeItem = provider.getTreeItem(rawNode);
+    assert.strictEqual(treeItem.label, 'CPQ-93');
+    assert.ok(!treeItem.description.includes('[object Object]'), 'Description must not contain [object Object]');
+    assert.ok(treeItem.description.includes('Acme Global Corp'));
+    assert.ok(treeItem.description.includes('Pending Approval'));
+    assert.ok(treeItem.description.includes('75000 USD'));
+    assert.ok(!treeItem.tooltip.includes('[object Object]'), 'Tooltip must not contain [object Object]');
+    assert.ok(treeItem.tooltip.includes('Customer: Acme Global Corp'));
+    assert.ok(treeItem.tooltip.includes('Status: Pending Approval'));
+
+    // Check children sub-nodes
+    const childNodes = await provider.getChildren(rawNode);
+    for (const child of childNodes) {
+      const item = provider.getTreeItem(child);
+      assert.ok(!item.label.includes('[object Object]'), `Child item label must not contain [object Object]: ${item.label}`);
+    }
+  });
+
+  test('inspectTransactionCommand falls back to available summary on request timeout', async () => {
+    api.getTransaction = async function () {
+      throw new Error('Request timeout after 30 seconds');
+    };
+
+    const mockVscode = createMockVscode();
+    const item = {
+      data: {
+        _id: '46332884',
+        transactionID_t: 'CPQ-93',
+        customer_t: 'Acme Global Corp'
+      }
+    };
+
+    await inspectTransactionCommand(item, mockVscode, {});
+    const opened = mockVscode.getOpenedDoc();
+    assert.ok(opened, 'Document should still open with available transaction data');
+    assert.strictEqual(opened.language, 'json');
+    assert.ok(opened.content.includes('CPQ-93'));
+    assert.ok(mockVscode.getWarningMsg().includes('timed out or failed'));
+  });
 });
