@@ -199,6 +199,9 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.deployUtilFunctions", () =>
       runDeployUtilFunctions(context, vscode, resultsTerminal),
     ),
+    vscode.commands.registerCommand("cpqBml.rest.massDeployUtils", () =>
+      runDeployUtilFunctions(context, vscode, resultsTerminal),
+    ),
     vscode.commands.registerCommand("cpqBml.rest.createBmlFunction", () =>
       runCreateBmlFunction(context, vscode),
     ),

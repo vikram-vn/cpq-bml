@@ -4,6 +4,13 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.93.0] - 2026-09-10
+
+### Added
+
+- Implement lint rules and code actions for BML performance optimizations and code style improvements.
+- Implement framework for automated BML code action quick fixes.
+
 ## [1.92.0] - 2026-09-10
 
 ### Added
@@ -136,9 +143,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement settings registry and search functionality with enhanced REST debugging and AI tool configuration support.
 - Implement MCP lifecycle tools for BML functions including validate, save, deploy, and debug capabilities.
 - Introduce commerceAttributes module for CPQ workspace metadata processing and ignore .cpq directory.
-
-## [1.83.0] - 2026-09-08
-
-### Added
-
-- Implement native Node.js build runner and commerce attribute REST API logic.

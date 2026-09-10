@@ -62,7 +62,18 @@ function formatElapsed(startedAt) {
 
 function describeError(body) {
     if (!body) return '';
-    if (typeof body === 'string') return body;
+    if (typeof body === 'string') {
+        try {
+            const parsed = JSON.parse(body);
+            if (parsed && typeof parsed === 'object') {
+                body = parsed;
+            } else {
+                return body;
+            }
+        } catch {
+            return body;
+        }
+    }
     const details = body['o:errorDetails'] || body.errorDetails || body['o:errorMessages'] || body.errorMessages;
     if (Array.isArray(details) && details.length > 0) {
         return details.map((d) => d.title || d.detail || d.message || JSON.stringify(d)).join('\n');

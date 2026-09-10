@@ -48,6 +48,7 @@ try {
 
 const api = require('@/lang/rest/api');
 const { getSettings, isConfigured } = require('@/lang/rest/config');
+const { describeError } = require('@/lang/rest/commands/shared');
 
 /**
  * Pure Factory: Creates the Recent Transactions TreeDataProvider.
@@ -70,28 +71,21 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       const process = settings.commerceProcess || 'oraclecpqo';
       const document = settings.commerceDocument || 'transaction';
 
-      // Request common fields first
-      let res = await api.getTransactions(context, vscodeInstance, {
+      const res = await api.getTransactions(context, vscodeInstance, {
         process,
         document,
         limit: 30,
+        excludeFieldTypes: false,
         orderby: 'dateModified_t:desc',
         fields: '_id,transactionID_t,status_t,dateModified_t,customer_t,version_t,totalAmount_t,transactionName_t'
       });
 
-      // If field error, fallback to minimal query
-      if (res.statusCode >= 400) {
-        res = await api.getTransactions(context, vscodeInstance, {
-          process,
-          document,
-          limit: 30,
-          orderby: '_id:desc',
-          fields: '_id,transactionID_t'
-        });
-      }
-
       if (res.statusCode < 200 || res.statusCode >= 300) {
-        return { error: `HTTP ${res.statusCode}: Failed to fetch transactions` };
+        const errDetail = describeError(res.body);
+        const msg = errDetail
+          ? `HTTP ${res.statusCode}: ${errDetail}`
+          : `HTTP ${res.statusCode}: Failed to fetch transactions for '${process}/${document}' (Click to switch process)`;
+        return { error: msg, process, document };
       }
 
       let parsed = res.body;
@@ -100,7 +94,7 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       }
 
       const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
-      return { items };
+      return { items, process, document };
     } catch (err) {
       return { error: err.message || 'Error fetching transactions' };
     }
@@ -124,7 +118,11 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       if (lastError) {
         return [{
           type: 'error',
-          label: lastError
+          label: lastError,
+          command: {
+            command: 'cpqBml.cloud.switchCommerceProcess',
+            title: 'Switch Commerce Process'
+          }
         }];
       }
 
@@ -167,10 +165,11 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
     if (element.type === 'error') {
       const item = new vscodeInstance.TreeItem(element.label, vscodeInstance.TreeItemCollapsibleState.None);
       item.iconPath = new vscodeInstance.ThemeIcon('warning', new vscodeInstance.ThemeColor('problemsWarningIcon.foreground'));
-      item.command = {
+      item.command = element.command || {
         command: 'cpqBml.settings.open',
         title: 'Open Settings'
       };
+      item.tooltip = 'Click to switch commerce process / document or configure settings';
       return item;
     }
 

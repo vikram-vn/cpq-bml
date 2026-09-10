@@ -41,123 +41,28 @@ try {
   };
 }
 
-const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
-const metadataLib = require('@/lang/rest/metadata');
-const { getSettings, getUtilLibrariesFolder, getCommerceLibrariesFolder } = require('@/lang/rest/config');
-
-/**
- * Finds local .bml file matching a function variable name in workspace.
- */
-function findLocalFunctionFile(workspaceRoot, varName, folderName, commerceMetadata, vscodeInstance) {
-  if (!workspaceRoot || !varName) return null;
-
-  const candidatePaths = [];
-
-  if (commerceMetadata && commerceMetadata.commerceProcess && commerceMetadata.commerceDocument) {
-    candidatePaths.push(
-      path.join(workspaceRoot, 'cpq', 'commerce-libraries', commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`),
-      path.join(workspaceRoot, 'library', commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`),
-      path.join(workspaceRoot, commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`)
-    );
-  } else {
-    const utilFolder = getUtilLibrariesFolder(vscodeInstance);
-    if (folderName) {
-      candidatePaths.push(path.join(workspaceRoot, utilFolder, folderName, varName, `${varName}.bml`));
-    }
-    candidatePaths.push(path.join(workspaceRoot, utilFolder, varName, `${varName}.bml`));
-
-    try {
-      const entries = fs.readdirSync(workspaceRoot, { withFileTypes: true });
-      for (const entry of entries) {
-        if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
-          if (folderName) {
-            candidatePaths.push(path.join(workspaceRoot, entry.name, 'util-libraries', folderName, varName, `${varName}.bml`));
-          }
-          candidatePaths.push(path.join(workspaceRoot, entry.name, 'util-libraries', varName, `${varName}.bml`));
-        }
-      }
-    } catch {
-      // Ignore read errors
-    }
-
-    candidatePaths.push(
-      path.join(workspaceRoot, 'library', folderName || '', varName, `${varName}.bml`),
-      path.join(workspaceRoot, 'library', 'util', varName, `${varName}.bml`),
-      path.join(workspaceRoot, 'library', varName, `${varName}.bml`),
-      path.join(workspaceRoot, 'util', varName, `${varName}.bml`),
-      path.join(workspaceRoot, 'bml', 'library', varName, `${varName}.bml`)
-    );
-  }
-
-  for (const candidate of candidatePaths) {
-    if (fs.existsSync(candidate)) return candidate;
-  }
-
-  // Recursive search inside standard and legacy folders as fallback
-  const searchDirs = [
-    path.join(workspaceRoot, 'cpq', 'commerce-libraries'),
-    path.join(workspaceRoot, 'library')
-  ];
-  try {
-    const entries = fs.readdirSync(workspaceRoot, { withFileTypes: true });
-    for (const entry of entries) {
-      if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
-        searchDirs.push(path.join(workspaceRoot, entry.name, 'util-libraries'));
-      }
-    }
-  } catch {}
-
-  for (const dir of searchDirs) {
-    if (fs.existsSync(dir)) {
-      const found = searchFileRecursive(dir, `${varName}.bml`);
-      if (found) return found;
-    }
-  }
-
-  return null;
-}
-
-function searchFileRecursive(dir, filename) {
-  try {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        const res = searchFileRecursive(fullPath, filename);
-        if (res) return res;
-      } else if (entry.isFile() && entry.name.toLowerCase() === filename.toLowerCase()) {
-        return fullPath;
-      }
-    }
-  } catch {
-    // Ignore read errors
-  }
-  return null;
-}
-
-/**
- * Categorizes and formats remote functions into a structured map.
- */
-function groupFunctionsByFolder(functions = []) {
-  const groups = new Map();
-
-  for (const fn of functions) {
-    const folder = fn.folderName || fn.namespace || 'Global';
-    if (!groups.has(folder)) {
-      groups.set(folder, []);
-    }
-    groups.get(folder).push(fn);
-  }
-
-  // Sort function lists alphabetically
-  for (const [folder, list] of groups.entries()) {
-    list.sort((a, b) => (a.variableName || a.name || '').localeCompare(b.variableName || b.name || ''));
-  }
-
-  return groups;
-}
+const { getSettings } = require('@/lang/rest/config');
+const {
+  findLocalFunctionFile,
+  groupFunctionsByFolder,
+  findLocalCommerceProcesses,
+  resolveCommerceTargets,
+  getActiveCommerceTarget,
+  setActiveCommerceTarget,
+} = require('@/lang/cloud/cloudExplorerFiles');
+const {
+  pullFunctionCommand,
+  diffFunctionCommand,
+  openCommerceActionCommand,
+  switchCommerceProcessCommand
+} = require('@/lang/cloud/cloudExplorerCommands');
+const {
+  fetchUtilFunctions,
+  fetchCommerceFunctions,
+  fetchCommerceActions,
+} = require('@/lang/cloud/cloudExplorerFetch');
 
 /**
  * Pure Factory: Creates the Cloud Explorer TreeDataProvider.
@@ -173,117 +78,6 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
   let cachedCommerceGroups = null;
   let isLoading = false;
 
-  async function fetchUtilFunctions() {
-    let allItems = [];
-    let offset = 0;
-    const limit = 1000;
-
-    for (;;) {
-      const { statusCode, body } = await api.listLibraryFunctions(context, vscodeInstance, { offset, limit });
-      if (statusCode < 200 || statusCode >= 300) {
-        break;
-      }
-
-      let parsed = body;
-      if (typeof parsed === 'string') {
-        try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-      }
-      const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
-      for (const it of items) {
-        it.isCommerce = false;
-      }
-      allItems = allItems.concat(items);
-
-      const hasMore = parsed && (
-        parsed.hasMore === true ||
-        (parsed.hasMore === undefined && items.length > 0 && parsed.totalResults !== undefined && offset + items.length < parsed.totalResults) ||
-        (parsed.hasMore === undefined && items.length === limit)
-      );
-
-      if (!hasMore || items.length === 0) break;
-      offset += items.length;
-    }
-    return allItems;
-  }
-
-  async function fetchCommerceFunctions() {
-    const settings = getSettings(vscodeInstance);
-    const commerceProcess = settings.commerceProcess || 'oraclecpqo';
-    const commerceDocument = settings.commerceDocument || 'transaction';
-    const commerceMetadata = { commerceProcess, commerceDocument };
-
-    let allItems = [];
-    let offset = 0;
-    const limit = 1000;
-
-    for (;;) {
-      const { statusCode, body } = await api.listLibraryFunctions(
-        context,
-        vscodeInstance,
-        { offset, limit },
-        undefined,
-        commerceMetadata
-      );
-      if (statusCode < 200 || statusCode >= 300) {
-        break;
-      }
-
-      let parsed = body;
-      if (typeof parsed === 'string') {
-        try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-      }
-      const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
-      for (const it of items) {
-        it.isCommerce = true;
-        it.commerceProcess = commerceProcess;
-        it.commerceDocument = commerceDocument;
-      }
-      allItems = allItems.concat(items);
-
-      const hasMore = parsed && (
-        parsed.hasMore === true ||
-        (parsed.hasMore === undefined && items.length > 0 && parsed.totalResults !== undefined && offset + items.length < parsed.totalResults) ||
-        (parsed.hasMore === undefined && items.length === limit)
-      );
-
-      if (!hasMore || items.length === 0) break;
-      offset += items.length;
-    }
-    return allItems;
-  }
-
-  async function fetchCommerceActions() {
-    const settings = getSettings(vscodeInstance);
-    const commerceProcess = settings.commerceProcess || 'oraclecpqo';
-    const commerceDocument = settings.commerceDocument || 'transaction';
-
-    try {
-      const res = await api.listCommerceActions(context, vscodeInstance, {
-        process: commerceProcess,
-        document: commerceDocument,
-        limit: 1000
-      });
-
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        return [];
-      }
-
-      let parsed = res.body;
-      if (typeof parsed === 'string') {
-        try { parsed = JSON.parse(parsed); } catch { parsed = {}; }
-      }
-
-      const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
-      for (const item of items) {
-        item.commerceProcess = commerceProcess;
-        item.commerceDocument = commerceDocument;
-      }
-      return items;
-    } catch {
-      return [];
-    }
-  }
-
   async function fetchRemoteFunctions() {
     if (cachedUtilFunctions && cachedCommerceFunctions && cachedCommerceActions) {
       return { util: cachedUtilFunctions, commerce: cachedCommerceFunctions, actions: cachedCommerceActions };
@@ -295,9 +89,9 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
 
     try {
       const [utilResult, commerceResult, actionsResult] = await Promise.allSettled([
-        fetchUtilFunctions(),
-        fetchCommerceFunctions(),
-        fetchCommerceActions()
+        fetchUtilFunctions(vscodeInstance, context),
+        fetchCommerceFunctions(vscodeInstance, context),
+        fetchCommerceActions(vscodeInstance, context)
       ]);
 
       const utilItems = utilResult.status === 'fulfilled' ? utilResult.value : [];
@@ -325,14 +119,17 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     if (element.type === 'category') {
       const item = new vscodeInstance.TreeItem(
         `${element.label} (${element.count})`,
-        element.count > 0 ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
+        vscodeInstance.TreeItemCollapsibleState.Collapsed
       );
       if (element.category === 'actions') {
         item.contextValue = 'cpqCloudCategoryActions';
         item.iconPath = new vscodeInstance.ThemeIcon('symbol-event');
+      } else if (element.category === 'commerce') {
+        item.contextValue = 'cpqCloudCategoryCommerce';
+        item.iconPath = new vscodeInstance.ThemeIcon('briefcase');
       } else {
-        item.contextValue = element.category === 'commerce' ? 'cpqCloudCategoryCommerce' : 'cpqCloudCategoryUtil';
-        item.iconPath = new vscodeInstance.ThemeIcon(element.category === 'commerce' ? 'briefcase' : 'library');
+        item.contextValue = 'cpqCloudCategoryUtil';
+        item.iconPath = new vscodeInstance.ThemeIcon('library');
       }
       return item;
     }
@@ -350,6 +147,10 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     if (element.type === 'empty') {
       const item = new vscodeInstance.TreeItem(element.label, vscodeInstance.TreeItemCollapsibleState.None);
       item.iconPath = new vscodeInstance.ThemeIcon('info');
+      if (element.command) {
+        item.command = element.command;
+        item.tooltip = element.tooltip || 'Click to switch active Commerce Process / Document';
+      }
       return item;
     }
 
@@ -394,7 +195,6 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     const label = fn.name || varName;
     const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
 
-    // Compute Deployed vs. Staging status badges per Oracle CPQ Swagger deployedLibrary / utilLibrary schemas
     const badges = [];
     const hasStagedTimestamps = Boolean(
       fn.lastModified && fn.lastDeployed && new Date(fn.lastModified) > new Date(fn.lastDeployed)
@@ -504,7 +304,6 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     }
 
     if (!element) {
-      // Root level: return categories (Util Libraries, Commerce Libraries, Commerce Actions)
       await fetchRemoteFunctions();
       const settings = getSettings(vscodeInstance);
       const commerceProcess = settings.commerceProcess || 'oraclecpqo';
@@ -544,7 +343,11 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
         if (!cachedCommerceActions || cachedCommerceActions.length === 0) {
           return [{
             type: 'empty',
-            label: 'No commerce document actions found'
+            label: 'No commerce document actions found (Click to switch process)',
+            command: {
+              command: 'cpqBml.cloud.switchCommerceProcess',
+              title: 'Switch Commerce Process'
+            }
           }];
         }
         return cachedCommerceActions.map(action => ({
@@ -607,208 +410,6 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
   };
 }
 
-const activePulls = new Set();
-
-/**
- * Handles pulling a cloud function down into the workspace library directory.
- */
-async function pullFunctionCommand(item, vscodeInstance = vscode, context) {
-  const fn = item?.data || item;
-  if (!fn || (!fn.variableName && !fn.name)) {
-    vscodeInstance.window.showWarningMessage('No function selected to pull.');
-    return;
-  }
-
-  const varName = fn.variableName || fn.name;
-  const folderName = fn.folderName || fn.namespace || 'util';
-  const folders = vscodeInstance.workspace.workspaceFolders;
-  if (!folders || folders.length === 0) {
-    vscodeInstance.window.showErrorMessage('Please open a workspace folder first.');
-    return;
-  }
-
-  const root = folders[0].uri.fsPath;
-  const settings = getSettings(vscodeInstance);
-  const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
-  const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
-  const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
-  const commerceMetadata = isCommerce ? { commerceProcess, commerceDocument } : undefined;
-  const pullKey = `${isCommerce ? commerceProcess + '_' + commerceDocument : 'util'}_${varName}`;
-
-  if (activePulls.has(pullKey)) {
-    return;
-  }
-  activePulls.add(pullKey);
-
-  try {
-    await vscodeInstance.window.withProgress({
-      location: 15, // Notification
-      title: `Pulling '${varName}' from CPQ Cloud...`,
-      cancellable: false
-    }, async () => {
-      try {
-      const nsVarName = metadataLib.namespaceVariableNameFor(fn);
-      let res = await api.getLibraryFunction(context, vscodeInstance, nsVarName, undefined, commerceMetadata);
-
-      if ((res.statusCode < 200 || res.statusCode >= 300) && nsVarName !== varName) {
-        // Fallback to simple varName
-        res = await api.getLibraryFunction(context, vscodeInstance, varName, undefined, commerceMetadata);
-      }
-
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        throw new Error(`HTTP ${res.statusCode}: Unable to fetch function content.`);
-      }
-
-      const { scriptText, metadata } = metadataLib.splitFunctionResponse(res.body);
-      metadata.variableName = metadata.variableName || varName;
-      metadata.name = metadata.name || fn.name || varName;
-
-      let targetDir;
-      let displayDest;
-      if (isCommerce) {
-        metadata.commerceProcess = commerceProcess;
-        metadata.commerceDocument = commerceDocument;
-        metadata.folderName = metadata.folderName || folderName;
-        const commerceFolder = getCommerceLibrariesFolder();
-        targetDir = path.join(root, commerceFolder, commerceProcess, commerceDocument, 'libraries', varName);
-        displayDest = `${commerceFolder}/${commerceProcess}/${commerceDocument}/libraries/${varName}/`;
-      } else {
-        metadata.folderName = metadata.folderName || folderName;
-        const utilFolder = getUtilLibrariesFolder(vscodeInstance);
-        targetDir = folderName
-          ? path.join(root, utilFolder, folderName, varName)
-          : path.join(root, utilFolder, varName);
-        displayDest = folderName
-          ? `${utilFolder}/${folderName}/${varName}/`
-          : `${utilFolder}/${varName}/`;
-      }
-
-      fs.mkdirSync(targetDir, { recursive: true });
-
-      const bmlPath = path.join(targetDir, `${varName}.bml`);
-      const metaPath = path.join(targetDir, `${varName}-meta.json`);
-
-      fs.writeFileSync(bmlPath, scriptText, 'utf8');
-      fs.writeFileSync(metaPath, JSON.stringify(metadata, null, 2), 'utf8');
-
-      vscodeInstance.window.showInformationMessage(`Successfully pulled '${varName}' to ${displayDest}`);
-      const doc = await vscodeInstance.workspace.openTextDocument(vscodeInstance.Uri.file(bmlPath));
-      await vscodeInstance.window.showTextDocument(doc);
-    } catch (err) {
-      vscodeInstance.window.showErrorMessage(`Failed to pull '${varName}': ${err.message}`);
-    }
-  });
-  } finally {
-    activePulls.delete(pullKey);
-  }
-}
-
-/**
- * Diffs local function against remote version on CPQ server.
- */
-async function diffFunctionCommand(item, vscodeInstance = vscode, context) {
-  const fn = item?.data || item;
-  if (!fn || (!fn.variableName && !fn.name)) {
-    vscodeInstance.window.showWarningMessage('No function selected to diff.');
-    return;
-  }
-
-  const varName = fn.variableName || fn.name;
-  const folderName = fn.folderName || fn.namespace || '';
-  const folders = vscodeInstance.workspace.workspaceFolders;
-  if (!folders || folders.length === 0) {
-    vscodeInstance.window.showErrorMessage('Please open a workspace folder first.');
-    return;
-  }
-
-  const root = folders[0].uri.fsPath;
-  const settings = getSettings(vscodeInstance);
-  const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
-  const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
-  const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
-  const commerceMetadata = isCommerce ? { commerceProcess, commerceDocument } : undefined;
-
-  const localFile = findLocalFunctionFile(root, varName, folderName, commerceMetadata, vscodeInstance);
-  if (!localFile) {
-    vscodeInstance.window.showWarningMessage(`Function '${varName}' is not present locally. Pull it first to compare.`);
-    return;
-  }
-
-  await vscodeInstance.window.withProgress({
-    location: 15,
-    title: `Fetching remote '${varName}' for side-by-side diff...`,
-    cancellable: false
-  }, async () => {
-    try {
-      const nsVarName = metadataLib.namespaceVariableNameFor(fn);
-      let res = await api.getLibraryFunction(context, vscodeInstance, nsVarName, undefined, commerceMetadata);
-      if ((res.statusCode < 200 || res.statusCode >= 300) && nsVarName !== varName) {
-        res = await api.getLibraryFunction(context, vscodeInstance, varName, undefined, commerceMetadata);
-      }
-
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        throw new Error(`HTTP ${res.statusCode}: Failed to fetch remote function.`);
-      }
-
-      const { scriptText } = metadataLib.splitFunctionResponse(res.body);
-
-      // Save remote snapshot in cache for diffing
-      const cacheDir = path.join(root, '.cpq', 'cache');
-      fs.mkdirSync(cacheDir, { recursive: true });
-      const prefix = isCommerce ? `${commerceProcess}_${commerceDocument}_` : '';
-      const remoteTempPath = path.join(cacheDir, `${prefix}${varName}.remote.bml`);
-      fs.writeFileSync(remoteTempPath, scriptText, 'utf8');
-
-      const localUri = vscodeInstance.Uri.file(localFile);
-      const remoteUri = vscodeInstance.Uri.file(remoteTempPath);
-      const title = `${varName} (Server <-> Local)`;
-
-      await vscodeInstance.commands.executeCommand('vscode.diff', remoteUri, localUri, title);
-    } catch (err) {
-      vscodeInstance.window.showErrorMessage(`Diff failed for '${varName}': ${err.message}`);
-    }
-  });
-}
-
-/**
- * Opens a commerce document action definition in a JSON editor.
- */
-async function openCommerceActionCommand(item, vscodeInstance = vscode, context) {
-  const action = item?.data || item;
-  if (!action) return;
-  const proc = action.commerceProcess || 'oraclecpqo';
-  const doc = action.commerceDocument || 'transaction';
-  const actionVar = action.variableName;
-
-  await vscodeInstance.window.withProgress({
-    location: 15,
-    title: `Loading action '${actionVar || action.name}' definition...`,
-    cancellable: false
-  }, async () => {
-    try {
-      let data = action;
-      if (actionVar) {
-        const res = await api.getCommerceAction(context, vscodeInstance, actionVar, { process: proc, document: doc });
-        if (res && res.statusCode >= 200 && res.statusCode < 300) {
-          let body = res.body;
-          if (typeof body === 'string') {
-            try { body = JSON.parse(body); } catch {}
-          }
-          data = body || action;
-        }
-      }
-      const formatted = JSON.stringify(data, null, 2);
-      const docObj = await vscodeInstance.workspace.openTextDocument({
-        content: formatted,
-        language: 'json'
-      });
-      await vscodeInstance.window.showTextDocument(docObj);
-    } catch (err) {
-      vscodeInstance.window.showErrorMessage(`Failed to load action '${actionVar}': ${err.message}`);
-    }
-  });
-}
-
 function registerCloudExplorer(context, vscodeInstance = vscode) {
   const treeDataProvider = createCloudExplorer(vscodeInstance, context);
 
@@ -847,7 +448,11 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
     return openCommerceActionCommand(item, vscodeInstance, context);
   });
 
-  context.subscriptions.push(treeView, refreshCmd, pullCmd, diffCmd, openLocalCmd, openActionCmd);
+  const switchProcCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.switchCommerceProcess', () => {
+    return switchCommerceProcessCommand(vscodeInstance, context);
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, pullCmd, diffCmd, openLocalCmd, openActionCmd, switchProcCmd);
 
   return { treeDataProvider, treeView };
 }
@@ -855,10 +460,14 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
 module.exports = {
   findLocalFunctionFile,
   groupFunctionsByFolder,
+  findLocalCommerceProcesses,
+  resolveCommerceTargets,
+  getActiveCommerceTarget,
+  setActiveCommerceTarget,
   createCloudExplorer,
   pullFunctionCommand,
   diffFunctionCommand,
   openCommerceActionCommand,
+  switchCommerceProcessCommand,
   registerCloudExplorer
 };
-
