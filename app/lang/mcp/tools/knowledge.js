@@ -9,7 +9,6 @@ function getLintBMLCustom() {
     }
     return _lintBMLCustom;
 }
-const { computeComplexity } = require('../../metrics/complexity');
 const configLib = require('../../rest/config');
 const metadataLib = require('../../rest/metadata');
 

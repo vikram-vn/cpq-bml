@@ -40,7 +40,6 @@ import bench_linter
 import bench_beautifier
 import bench_comments
 import bench_spelling
-import bench_metrics
 import bench_inlay_hints
 import bench_code_actions
 import bench_xslt
@@ -53,7 +52,6 @@ SUITES = {
     "beautifier": ("Code Beautifier & Formatter", bench_beautifier.run_benchmarks),
     "comments": ("Better Comments & Directives", bench_comments.run_benchmarks),
     "spelling": ("Spell Checker (20k+ tokens)", bench_spelling.run_benchmarks),
-    "metrics": ("Complexity & Code Health Metrics", bench_metrics.run_benchmarks),
     "inlay_hints": ("Inlay Hints Parameter Names", bench_inlay_hints.run_benchmarks),
     "code_actions": ("Code Actions & Safe Fix-All Rewriter", bench_code_actions.run_benchmarks),
     "xslt": ("XSLT Formatter & Linter", bench_xslt.run_benchmarks),

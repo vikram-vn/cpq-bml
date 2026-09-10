@@ -12,7 +12,6 @@ const { setExtensionContext } = require("./app/lang/rest/commerceAttributes");
 const { registerSettingsPanel } = require("./app/lang/settings-panel");
 const { registerMcp } = require("./app/lang/mcp");
 const { registerXslt } = require("./app/lang/xslt");
-const { registerMetrics } = require("./app/lang/metrics");
 const { registerBmlTestRunner, registerBmlSnapshot } = require("./app/lang/testing");
 const { registerEnvironmentSwitcher } = require("./app/lang/statusBar/environmentSwitcher");
 const { registerScaffolder } = require("./app/lang/scaffold/bmlScaffolder");
@@ -30,8 +29,6 @@ const { BmqlConsolePanel } = require("./app/lang/bmql/bmqlConsolePanel");
 const { PipelineViewerPanel } = require("./app/lang/graph/pipelineViewerPanel");
 const { registerDocCommands } = require("./app/lang/docs/docCommands");
 const { getCoverageDecorator } = require("./app/lang/test/coverageDecorator");
-const { registerReplCommand } = require("./app/lang/repl/bmlReplTerminal");
-const { ComplexityPanel } = require("./app/lang/complexity/complexityPanel");
 const { registerDataTableCommands } = require("./app/lang/datatable/datatableCommands");
 const { registerLogCommands } = require("./app/lang/rest/commands/logs");
 const { registerTransactionMockCommands } = require("./app/lang/rest/commands/transactionMock");
@@ -131,15 +128,6 @@ function activate(context) {
     })
   );
 
-  // ── Interactive BML REPL Terminal ───────────────────────────────────────────
-  registerReplCommand(context);
-
-  // ── Technical Debt & Cyclomatic Complexity Dashboard ────────────────────────
-  context.subscriptions.push(
-    vscode.commands.registerCommand("cpqBml.showComplexityDashboard", () => {
-      ComplexityPanel.createOrShow(context);
-    })
-  );
 
   // ── Data Table Schema Inferrer & CSV Importer ───────────────────────────────
   registerDataTableCommands(context);

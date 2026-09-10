@@ -312,13 +312,6 @@ function loadDictionaries(extensionPath) {
     }
   } catch (e) {}
 
-  try {
-    const content = readWordListFile(baseDir, "english-words.txt");
-    if (content) {
-      content.split(/\r?\n/).forEach(addWord);
-    }
-  } catch (e) {}
-
   return combinedDictionary;
 }
 

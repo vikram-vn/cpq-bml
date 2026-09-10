@@ -328,12 +328,6 @@
         "icon": "app/icons/beautify.svg"
       },
       {
-        "command": "cpqBml.metrics.openReport",
-        "title": "CPQ-BML: Open Code Metrics Report",
-        "category": "BML",
-        "icon": "app/icons/metrics.svg"
-      },
-      {
         "command": "cpqBml.test.runTests",
         "title": "CPQ-BML: Run BML Tests",
         "category": "BML",
@@ -375,16 +369,6 @@
       {
         "command": "cpqBml.toggleCoverage",
         "title": "CPQ-BML: Toggle BML Test Coverage Heatmap",
-        "category": "BML"
-      },
-      {
-        "command": "cpqBml.openRepl",
-        "title": "CPQ-BML: Open Interactive BML REPL Terminal",
-        "category": "BML"
-      },
-      {
-        "command": "cpqBml.showComplexityDashboard",
-        "title": "CPQ-BML: Show Technical Debt & Complexity Dashboard",
         "category": "BML"
       },
       {
@@ -682,7 +666,7 @@
         "cpqBml.features.spelling": {
           "type": "boolean",
           "default": true,
-          "description": "Enable BML spelling checker (checks spelling in comments, identifiers, and string literals using custom and English dictionaries)."
+          "description": "Enable BML & CPQ domain spelling checker for BML keywords, built-ins, and CPQ terminology (generic English prose is handled by Code Spell Checker)."
         },
         "cpqBml.spelling.userWords": {
           "type": "array",
@@ -717,11 +701,6 @@
           "default": 1,
           "description": "Minimum number of parameters a function must accept before inlay hints are shown."
         },
-        "cpqBml.inlayHints.variableTypes.enabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable inferred variable type inlay hints for BML variable assignment statements."
-        },
         "cpqBml.features.docHeader": {
           "type": "boolean",
           "default": true,
@@ -731,11 +710,6 @@
           "type": "boolean",
           "default": true,
           "description": "Enable XSLT formatting support."
-        },
-        "cpqBml.features.metrics": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable BML code complexity metrics and HTML dashboard report."
         },
         "cpqBml.features.testing": {
           "type": "boolean",
@@ -806,7 +780,6 @@
     "benchmark:linter": "python scripts/benchmarks/bench_linter.py",
     "benchmark:beautifier": "python scripts/benchmarks/bench_beautifier.py",
     "benchmark:comments": "python scripts/benchmarks/bench_comments.py",
-    "benchmark:metrics": "python scripts/benchmarks/bench_metrics.py",
     "benchmark:icons": "node scripts/benchmarks/bench_dynamic_icons.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."

@@ -12,7 +12,6 @@ const {
     resolveParamNames,
     BML_CURATED_PARAMS
 } = require('./paramResolver');
-const { inferVariableType } = require('./typeInferrer');
 
 function isInsideCommentOrString(fullText, targetOffset) {
     let inLineComment = false;
@@ -71,7 +70,6 @@ function registerInlayHintsProvider(context) {
             const enableParamHints = config.get('inlayHints.parameterNames.enabled', true);
             const suppressWhenArgumentMatchesName = config.get('inlayHints.suppressWhenArgumentMatchesName', true);
             const minParams = Math.max(1, config.get('inlayHints.minimumParameters', 1));
-            const enableVarTypes = config.get('inlayHints.variableTypes.enabled', false);
 
             const extPath = context ? context.extensionPath : null;
             const bmlApiData = Object.assign(
@@ -191,58 +189,6 @@ function registerInlayHintsProvider(context) {
                 }
             }
 
-            // 2. Inferred Variable Type Inlay Hints
-            if (enableVarTypes) {
-                const assignRegex = /^([ \t]*)([a-zA-Z_]\w*)\s*=\s*([^;\r\n]+);/gm;
-                let assignMatch;
-
-                while ((assignMatch = assignRegex.exec(text)) !== null) {
-                    const varName = assignMatch[2];
-                    const rhs = assignMatch[3];
-                    const leadingWhitespace = assignMatch[1].length;
-                    const varOffset = startOffset + assignMatch.index + leadingWhitespace + varName.length;
-
-                    if (isInsideCommentOrString(fullText, startOffset + assignMatch.index)) {
-                        continue;
-                    }
-
-                    const inferredType = inferVariableType(rhs, lowerApiData);
-                    if (inferredType) {
-                        const pos = document.positionAt(varOffset);
-                        if (pos.line >= range.start.line && pos.line <= range.end.line) {
-                            const hint = new vscode.InlayHint(
-                                pos,
-                                `: ${inferredType}`,
-                                vscode.InlayHintKind.Type
-                            );
-                            hint.paddingLeft = true;
-                            const typeTooltip = new vscode.MarkdownString();
-                            typeTooltip.isTrusted = true;
-                            typeTooltip.appendMarkdown(`**Inferred Variable Type:** \`${inferredType}\`\n\n`);
-                            const baseType = inferredType.replace(/\[\]/g, '').trim();
-                            const TYPE_DOCS = {
-                                'Date': 'BML Date object. Manipulate with `getdate()`, `adddays()`, `datetostr()`, `comparedates()`.',
-                                'Json': 'Oracle CPQ JSON Object. Manipulate with `jsonget()`, `jsonput()`, `jsonpathgetsingle()`, `jsontostr()`.',
-                                'JsonArray': 'Oracle CPQ JSON Array. Manipulate with `jsonarrayget()`, `jsonarrayappend()`, `jsonarraytostr()`.',
-                                'Dictionary': 'BML Key-Value Dictionary. Manipulate with `get()`, `put()`, `keys()`, `containskey()`.',
-                                'RecordSet': 'BMQL Database RecordSet. Iterate with `for row in rs` and read typed columns with `get()`, `getint()`, `getfloat()`.',
-                                'ByteArray': 'BML Binary data container. Create with `bytearray()` and serialize with `decodebase64()`.',
-                                'StringBuilder': 'High-performance string buffer for loops. Manipulate with `sbappend()`, `sbtostring()`.'
-                            };
-                            if (inferredType.includes('[][]')) {
-                                typeTooltip.appendMarkdown(`2-Dimensional Array of \`${baseType}\`. Access via matrix indexing \`arr[row][col]\`.\n`);
-                            } else if (inferredType.includes('[]')) {
-                                typeTooltip.appendMarkdown(`1-Dimensional Array of \`${baseType}\`. Iterate with \`for item in arr\` or access via \`arr[index]\`.\n`);
-                            } else if (TYPE_DOCS[baseType]) {
-                                typeTooltip.appendMarkdown(`${TYPE_DOCS[baseType]}\n`);
-                            }
-                            hint.tooltip = typeTooltip;
-                            hints.push(hint);
-                        }
-                    }
-                }
-            }
-
             return hints;
         }
     });
@@ -254,7 +200,6 @@ module.exports = {
     extractParamNamesFromSignature,
     shouldSuppressHint,
     resolveParamNames,
-    inferVariableType,
     isInsideCommentOrString,
     BML_CURATED_PARAMS
 };

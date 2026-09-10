@@ -2,8 +2,6 @@ let vscode;
 try {
   vscode = require("vscode");
 } catch (e) {}
-const { getCommentRanges } = require("../lint/rules/comments");
-const { getStringRanges } = require("../lint/rules/strings");
 const {
   extraAllowed,
   loadDictionaries,
@@ -137,8 +135,6 @@ function checkSpelling(
   extensionPath,
 ) {
   const diagnostics = [];
-  const commentRanges = getCommentRanges(text);
-  const stringRanges = getStringRanges(cleanText);
 
   let userWords = new Set();
   try {
@@ -204,23 +200,7 @@ function checkSpelling(
     diagnostics.push(diag);
   };
 
-  // Comment words are split on camelCase/acronym boundaries like identifiers, since docHeader
-  // comments (e.g. "// Function Name : abo_getOneAssetState") routinely embed identifiers by name.
-  commentRanges.forEach(([start, end]) => {
-    const rawComment = text.substring(start, end);
-    const cleanedComment = cleanCommentText(rawComment);
-
-    const wordRegex = /[a-zA-Z]+/g;
-    let match;
-    while ((match = wordRegex.exec(cleanedComment)) !== null) {
-      const word = match[0];
-      // allowCompound=false: comment text is prose - see checkWord.
-      collectFlaggedSubWords(word, 1, false).forEach((err) => {
-        addSpellingDiagnostic(err.subWord, start + match.index + err.relIndex);
-      });
-    }
-  });
-
+  // Only check BML code identifiers against BML/CPQ vocabulary (comments & prose are handled by Code Spell Checker)
   const identRegex = /\b[a-zA-Z_][a-zA-Z0-9_]*\b/g;
   let match;
   while ((match = identRegex.exec(noStringsText)) !== null) {
@@ -234,30 +214,6 @@ function checkSpelling(
       addSpellingDiagnostic(err.subWord, match.index + err.relIndex);
     }
   }
-
-  // String literals are split on camelCase/acronym boundaries too, since BML string values are
-  // often enum/state-code identifiers (e.g. "waitingForInternalApproval") rather than prose.
-  stringRanges.forEach(([start, end]) => {
-    const rawString = cleanText.substring(start, end);
-    const content = rawString.slice(1, -1); // strip quotes
-
-    if (content.trim().startsWith("{") || content.trim().startsWith("["))
-      return; // JSON
-    if (content.includes("/") || content.includes("\\")) return; // Path / URL
-    if (/\b(?:select|from|where|insert|update|delete|create)\b/i.test(content))
-      return; // BMQL/SQL
-
-    const cleanedString = cleanCommentText(content);
-    const wordRegex = /[a-zA-Z]+/g;
-    let match;
-    while ((match = wordRegex.exec(cleanedString)) !== null) {
-      const word = match[0];
-      if (word.length <= 2) continue;
-      collectFlaggedSubWords(word, 2).forEach((err) => {
-        addSpellingDiagnostic(err.subWord, start + 1 + match.index + err.relIndex);
-      });
-    }
-  });
 
   return diagnostics;
 }
