@@ -98,6 +98,56 @@ class BmlTestRunner {
       };
     }
   }
+  /**
+   * Identifies executable statement line numbers in a BML source file.
+   */
+  static getExecutableLines(code = "") {
+    const lines = code.split(/\r?\n/);
+    const executable = [];
+    let inBlockComment = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      if (line.startsWith("/*")) {
+        inBlockComment = true;
+      }
+      if (inBlockComment) {
+        if (line.includes("*/")) inBlockComment = false;
+        continue;
+      }
+      if (line.startsWith("//")) continue;
+
+      // Filter out pure structural closing braces
+      if (line === "}" || line === "};" || line === "else {" || line === "else") {
+        continue;
+      }
+
+      executable.push(i + 1);
+    }
+    return executable;
+  }
+
+  /**
+   * Computes statement line coverage from executed line numbers.
+   */
+  static computeCoverage(totalExecutableLines, executedLines) {
+    const coveredSet = new Set(executedLines);
+    const covered = totalExecutableLines.filter((l) => coveredSet.has(l));
+    const uncovered = totalExecutableLines.filter((l) => !coveredSet.has(l));
+    const percentage =
+      totalExecutableLines.length > 0
+        ? Math.round((covered.length / totalExecutableLines.length) * 100)
+        : 100;
+
+    return {
+      covered,
+      uncovered,
+      totalLines: totalExecutableLines.length,
+      percentage,
+    };
+  }
 }
 
 module.exports = {

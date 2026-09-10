@@ -19,6 +19,7 @@ process.env.VSCE_TESTS = '1';
 
 const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 const args = [
+    '-y',
     '@vscode/vsce',
     'package',
     '--no-yarn',

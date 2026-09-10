@@ -47,6 +47,9 @@ app/lang/intellisense/*.js
 app/lang/intellisense/**/*.js
 app/lang/settings-panel/*.js
 app/lang/settings-panel/web-view/src/**
+app/lang/bmql/web-view/src/**
+app/lang/graph/web-view/src/**
+app/lang/complexity/web-view/src/**
 app/lang/syntaxes/*.json
 !app/lang/syntaxes/*.min.json
 app/images/**/*.svg

@@ -26,6 +26,13 @@ const { registerBmlDebugger } = require("./app/lang/debug/bmlDebugAdapter");
 const { registerTestController } = require("./app/lang/test/bmlTestController");
 const { registerDatatableEditor } = require("./app/lang/datatable/datatableEditorProvider");
 const { registerSchemaIntrospector } = require("./app/lang/intellisense/schemaIntrospector");
+const { BmqlConsolePanel } = require("./app/lang/bmql/bmqlConsolePanel");
+const { PipelineViewerPanel } = require("./app/lang/graph/pipelineViewerPanel");
+const { registerDocCommands } = require("./app/lang/docs/docCommands");
+const { getCoverageDecorator } = require("./app/lang/test/coverageDecorator");
+const { registerReplCommand } = require("./app/lang/repl/bmlReplTerminal");
+const { ComplexityPanel } = require("./app/lang/complexity/complexityPanel");
+const { registerDataTableCommands } = require("./app/lang/datatable/datatableCommands");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -83,6 +90,48 @@ function activate(context) {
   registerTestController(context);
   registerDatatableEditor(context);
   registerSchemaIntrospector(context);
+
+  // ── BMQL Live Query Console ────────────────────────────────────────────────
+  context.subscriptions.push(
+    vscode.commands.registerCommand("cpqBml.openBmqlConsole", () => {
+      BmqlConsolePanel.createOrShow(context);
+    })
+  );
+
+  // ── Commerce Execution Pipeline & Attribute Graph ───────────────────────────
+  context.subscriptions.push(
+    vscode.commands.registerCommand("cpqBml.showAttributeGraph", () => {
+      PipelineViewerPanel.createOrShow(context);
+    })
+  );
+
+  // ── Workspace Documentation Site Generator ──────────────────────────────────
+  registerDocCommands(context);
+
+  // ── Test Coverage Heatmap & Gutter Decorator ─────────────────────────────────
+  const coverageDecorator = getCoverageDecorator();
+  context.subscriptions.push(
+    coverageDecorator,
+    vscode.commands.registerCommand("cpqBml.toggleCoverage", () => {
+      coverageDecorator.toggle();
+    }),
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      if (editor) coverageDecorator.updateActiveEditor();
+    })
+  );
+
+  // ── Interactive BML REPL Terminal ───────────────────────────────────────────
+  registerReplCommand(context);
+
+  // ── Technical Debt & Cyclomatic Complexity Dashboard ────────────────────────
+  context.subscriptions.push(
+    vscode.commands.registerCommand("cpqBml.showComplexityDashboard", () => {
+      ComplexityPanel.createOrShow(context);
+    })
+  );
+
+  // ── Data Table Schema Inferrer & CSV Importer ───────────────────────────────
+  registerDataTableCommands(context);
 
   // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
   // so Antigravity IDE can discover them natively (on-demand, by name). Other AI

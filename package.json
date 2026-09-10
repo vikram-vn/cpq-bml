@@ -334,6 +334,41 @@
         "title": "CPQ-BML: Setup AI Skills for Workspace",
         "category": "BML",
         "icon": "app/icons/ai-setup.svg"
+      },
+      {
+        "command": "cpqBml.openBmqlConsole",
+        "title": "CPQ-BML: Open Live BMQL Query Console",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.showAttributeGraph",
+        "title": "CPQ-BML: Show Commerce Execution Pipeline & Attribute Graph",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.generateDocs",
+        "title": "CPQ-BML: Generate Workspace API Documentation",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.toggleCoverage",
+        "title": "CPQ-BML: Toggle BML Test Coverage Heatmap",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.openRepl",
+        "title": "CPQ-BML: Open Interactive BML REPL Terminal",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.showComplexityDashboard",
+        "title": "CPQ-BML: Show Technical Debt & Complexity Dashboard",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.inferDataTableSchema",
+        "title": "CPQ-BML: Infer Data Table Schema from CSV",
+        "category": "BML"
       }
     ],
     "menus": {
@@ -387,6 +422,13 @@
           "command": "cpqBml.settings.open",
           "when": "resourceLangId == bml",
           "group": "navigation@7"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "cpqBml.inferDataTableSchema",
+          "when": "resourceExtname == .csv",
+          "group": "7_modification"
         }
       ]
     },

@@ -33,9 +33,9 @@ async function compileExtension() {
         define: isProduction ? { 'process.env.NODE_ENV': '"production"' } : undefined
     });
 
-    const buildWebview = esbuild.build({
-        entryPoints: [path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'src', 'index.jsx')],
-        outfile: path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'dist', 'main.js'),
+    const createWebviewBuild = (entry, outfile) => esbuild.build({
+        entryPoints: [entry],
+        outfile,
         bundle: true,
         format: 'iife',
         platform: 'browser',
@@ -48,6 +48,26 @@ async function compileExtension() {
         legalComments: isProduction ? 'none' : 'inline',
         define: isProduction ? { 'process.env.NODE_ENV': '"production"' } : undefined
     });
+
+    const buildWebview = createWebviewBuild(
+        path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'src', 'index.jsx'),
+        path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'dist', 'main.js')
+    );
+
+    const buildBmqlWebview = createWebviewBuild(
+        path.join(ROOT, 'app', 'lang', 'bmql', 'web-view', 'src', 'index.jsx'),
+        path.join(ROOT, 'app', 'lang', 'bmql', 'web-view', 'dist', 'main.js')
+    );
+
+    const buildGraphWebview = createWebviewBuild(
+        path.join(ROOT, 'app', 'lang', 'graph', 'web-view', 'src', 'index.jsx'),
+        path.join(ROOT, 'app', 'lang', 'graph', 'web-view', 'dist', 'main.js')
+    );
+
+    const buildComplexityWebview = createWebviewBuild(
+        path.join(ROOT, 'app', 'lang', 'complexity', 'web-view', 'src', 'index.jsx'),
+        path.join(ROOT, 'app', 'lang', 'complexity', 'web-view', 'dist', 'main.js')
+    );
 
     // 2. Dictionaries (.txt -> .txt.br)
     const spellCheckDir = path.join(ROOT, 'app', 'lang', 'spell-check');
@@ -177,8 +197,8 @@ async function compileExtension() {
         fs.writeFileSync(aiDestFile, compressed);
     }
 
-    // Await both esbuild tasks
-    await Promise.all([buildExt, buildWebview]);
+    // Await all esbuild tasks
+    await Promise.all([buildExt, buildWebview, buildBmqlWebview, buildGraphWebview, buildComplexityWebview]);
 
     const t1 = performance.now();
     console.log(`Compile finished in ${(t1 - t0).toFixed(1)}ms`);
