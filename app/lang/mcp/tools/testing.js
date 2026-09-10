@@ -3,7 +3,7 @@ const path = require('path');
 const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
 const { debugFunction } = require('@/lang/mcp/tools/lifecycle');
 
-// Headless counterparts to app/lang/testing/runner.js and snapshot.js: those are built for an
+// Headless counterparts to app/lang/test-controller/runner.js and snapshot.js: those are built for an
 // active editor + interactive prompts + an Output Channel, and scrape the return value out of
 // rendered terminal text. These reuse debugFunction's already-structured {success, returnValue}
 // result directly instead, so no fragile "return value:" line-scraping is needed here.

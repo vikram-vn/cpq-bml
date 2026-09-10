@@ -39,7 +39,6 @@ app/lang/beautify/**
 app/lang/lint/**
 app/lang/rest/**
 app/lang/comments/**
-app/lang/icons/**
 app/lang/mcp/*.js
 app/lang/mcp/tools/*.js
 app/lang/mcp/tool-defs/*.js

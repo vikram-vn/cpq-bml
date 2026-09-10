@@ -38,7 +38,7 @@ For complete architectural blueprints, Control Flow Graphs (CFGs), and code exam
 | **🤖 Model Context Protocol (MCP)** | Seamless multi-client MCP auto-registration for Cursor, Copilot, Google Antigravity, Claude Desktop, and ChatGPT. | **[MCP Server Guide](knowledge/BML_MCP.md)** |
 | **☁ Safe Cloud Sync & 3-Way Diff** | OAuth2/Basic Auth client, side-by-side diff review on pull conflicts, and live debug streaming to CPQ DevKit Terminal. | **[REST API Guide](knowledge/BML_REST_API.md)** |
 | **🏗 BML & BMQL Scaffolding** | Explorer context scaffolding for library functions with docHeaders and `-meta.json` sidecars, plus parameterized BMQL queries. | **[Scaffolding](knowledge/BML_Snippets.md)** |
-| **🚦 CI/CD Security CLI (`cpq-bml`)** | Standalone Node CLI (`npx cpq-bml audit .`) for pre-commit hooks and GitHub Actions pipeline security gates. | **[CLI Documentation](bin/cpq-bml.js)** |
+| **🚦 CI/CD Security Audit** | Workspace-wide BML security and quality audit via MCP `audit_bml_code` tool — detects BMQL injection risks, queries in loops, and failing quality scores. | **[Linter Guide](knowledge/BML_Linter.md)** |
 | **⚙ Interactive Settings Panel** | Webview UI dashboard for managing environments, credentials, formatter options, MCP traffic inspection, and diagnostics. | **[Settings Panel Guide](knowledge/BML_Settings_Panel.md)** |
 | **🔤 Smart Spell Checker** | Morphological inflection analyzer and domain dictionary designed for BML identifiers and comments. | **[Spell Check Guide](knowledge/BML_Spell_Check.md)** |
 | **📄 XSLT & XML Subsystem** | Document Engine XSL template formatting, XPath 1.0 autocompletion, and BML `transformxml()` integration. | **[XSLT Guide](knowledge/BML_XSLT.md)** |

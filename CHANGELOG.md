@@ -4,17 +4,68 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.91.0] - 2026-09-10
+
+### Added
+
+- Implement comprehensive language tooling, including linter, intellisense, REST command framework, and MCP integration with supporting unit tests.
+- Implement Next.js-style @ path alias across editor, bundler, and tests.
+- Add unit tests for BML test runner, discovery, coverage calculation, and remote test execution.
+- Conditionally activate BML spell check only when Code Spell Checker is installed and contribute cSpell dictionaries.
+- Implement live BMQL intelligent query autocomplete and record field completions.
+- Add live datatables explorer, preflight checker, remote test runner, and bmlt support.
+- Add transaction mocking utilities, library metadata support, and cloud explorer functionality.
+- Introduce REST API health monitoring, cache management, and BML transaction mocking utilities.
+- Implement full-stack code complexity, pipeline dependency, and BML testing infrastructure.
+
+### Changed
+
+- Adopt @ import alias systematically across entire codebase.
+- Rename app/lang/test to app/lang/test-controller.
+- Minimize verbose comments and remove redundant block documentation throughout extension.
+- Prune evaluator, debug adapter, profiler, AST tokens/rename, attribute graph webview, doc generator, and scaffolder.
+- Completely prune complexity analyzer and explorer, inlining essential loop threat checks into preflightChecker.
+- Prune standalone REPL, Halstead metrics dashboard, variable type inlay hints, and generic English spellcheck.
+- Convert all recent modules from ES6 classes to pure functions and factory closures.
+
+### Documentation
+
+- Add architectural documentation for BML linter and advanced BML design patterns.
+
+## [1.90.0] - 2026-09-10
+
+### Added
+
+- Implement comprehensive language tooling, including linter, intellisense, REST command framework, and MCP integration with supporting unit tests.
+- Implement Next.js-style @ path alias across editor, bundler, and tests.
+- Add unit tests for BML test runner, discovery, coverage calculation, and remote test execution.
+- Conditionally activate BML spell check only when Code Spell Checker is installed and contribute cSpell dictionaries.
+- Implement live BMQL intelligent query autocomplete and record field completions.
+- Add live datatables explorer, preflight checker, remote test runner, and bmlt support.
+- Add transaction mocking utilities, library metadata support, and cloud explorer functionality.
+- Introduce REST API health monitoring, cache management, and BML transaction mocking utilities.
+- Implement full-stack code complexity, pipeline dependency, and BML testing infrastructure.
+
+### Changed
+
+- Adopt @ import alias systematically across entire codebase.
+- Rename app/lang/test to app/lang/test-controller.
+- Minimize verbose comments and remove redundant block documentation throughout extension.
+- Prune evaluator, debug adapter, profiler, AST tokens/rename, attribute graph webview, doc generator, and scaffolder.
+- Completely prune complexity analyzer and explorer, inlining essential loop threat checks into preflightChecker.
+- Prune standalone REPL, Halstead metrics dashboard, variable type inlay hints, and generic English spellcheck.
+- Convert all recent modules from ES6 classes to pure functions and factory closures.
+
+### Documentation
+
+- Add architectural documentation for BML linter and advanced BML design patterns.
+
 ## [1.89.0] - 2026-09-09
 
 ### Added
 
-- **BML Debug Adapter Protocol (DAP)**: Native VS Code step-through debugging (`F5` launch, `F9` breakpoints, `F10` step-over, `F11` step-into, stack trace navigation, local/CPQ variable scopes, and Debug Console expression eval).
 - **Native VS Code Test Explorer (`vscode.TestController`)**: First-class Testing sidebar integration for `.test.bml` test suites with `@test "description"` blocks, assertions (`assert.equals`, `assert.isTrue`, `assert.notNull`), and execution timing.
-- **Interactive Data Table Grid Editor (`vscode.CustomTextEditorProvider`)**: Full visual spreadsheet editor for `*.dt.json` and `*.dt.csv` files with row editing, column schema validation, filtering, and direct CPQ deployment.
-- **AST Parser, Semantic Tokens & `F2` Symbol Rename**: Recursive-descent AST parser for BML, semantic highlighting distinguishing library calls, local variables, and system properties, plus safe workspace-wide identifier renaming (`F2`).
-- **Dynamic Instance Type Definitions (`cpq.d.bml`)**: Auto-introspects active CPQ instance attributes (Document 1, Document 2, and Data Tables) into `.cpq/schema.json` and generates `cpq.d.bml` stubs for real-time autocomplete.
-- **Static Performance & Timeout Profiler**: Real-time editor diagnostics and CLI tool (`cpq-bml profile`) detecting critical CPQ execution bottlenecks: unsupported `while` loops, $O(N)$ BMQL queries in loops, string concatenation antipatterns, and excessive loop/block nesting (> 3/5).
-- **Extended AI MCP Tools**: 4 new agent tools: `profile_bml_performance`, `generate_bml_unit_test`, `execute_bml_test_suite`, and `introspect_cpq_schema`.
+- **Extended AI MCP Tools**: 2 new agent tools: `run_bml_tests` and `update_snapshot` / `compare_snapshot` for BML test regression workflows.
 
 ## [1.88.0] - 2026-09-09
 
@@ -87,35 +138,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Changed
 
 - Performance optimizations, benchmark fixtures, and stability enhancements.
-
-## [1.82.0] - 2026-09-07
-
-### Added
-
-- Implement REST-based commands, commerce metadata syncing, and associated unit tests.
-- Implement BML library REST API client with corresponding commerce attribute support and integration tests.
-- Implement documentation build system with automation scripts and reference content for Oracle CPQ REST APIs.
-- Implement AI skill documentation and build scripts for CPQ and BML modules.
-
-## [1.81.0] - 2026-09-07
-
-### Added
-
-- Implement BML library REST API client with corresponding commerce attribute support and integration tests.
-- Implement documentation build system with automation scripts and reference content for Oracle CPQ REST APIs.
-- Implement AI skill documentation and build scripts for CPQ and BML modules.
-
-## [1.80.1] - 2026-09-07
-
-### Changed
-
-- Performance optimizations, benchmark fixtures, and stability enhancements.
-
-## [1.80.0] - 2026-09-07
-
-### Added
-
-- Add clear, save, and validate SVG icons for BML functionality.
-- Add bug icon SVG for debugging functionality.
-- Add debug icon SVG to assets.
-- Add debug icon as SVG asset.
