@@ -123,6 +123,14 @@ function checkWord(word, extensionPath, allowCompound = true) {
   return wordLower.length >= 5 && segmentsIntoKnownWords(wordLower, dict, 3);
 }
 
+function isCodeSpellCheckerInstalled(vscodeInstance = vscode) {
+  if (!vscodeInstance || !vscodeInstance.extensions) return false;
+  return Boolean(
+    vscodeInstance.extensions.getExtension("streetsidesoftware.code-spell-checker") ||
+    vscodeInstance.extensions.getExtension("streetsidesoftware.code-spell-checker-canary")
+  );
+}
+
 let globalWordCache = new Map();
 let globalTokenCache = new Map();
 
@@ -131,15 +139,20 @@ function checkSpelling(
   cleanText,
   noStringsText,
   doc,
-  vscode,
+  vscodeInstance = vscode,
   extensionPath,
 ) {
+  const vs = vscodeInstance || vscode;
+  if (vs && vs.extensions && !isCodeSpellCheckerInstalled(vs)) {
+    return [];
+  }
+
   const diagnostics = [];
 
   let userWords = new Set();
   try {
-    const config = vscode.workspace.getConfiguration("cpqBml");
-    const words = config.get("spelling.userWords") || [];
+    const config = vs && vs.workspace ? vs.workspace.getConfiguration("cpqBml") : null;
+    const words = config ? config.get("spelling.userWords") || [] : [];
     words.forEach(w => {
       const wLower = w.trim().toLowerCase();
       if (wLower) userWords.add(wLower);
@@ -189,12 +202,12 @@ function checkSpelling(
 
   const addSpellingDiagnostic = (word, startOffset) => {
     const startPos = doc.positionAt(startOffset);
-    const endPos = new vscode.Position(startPos.line, startPos.character + word.length);
-    const range = new vscode.Range(startPos, endPos);
-    const diag = new vscode.Diagnostic(
+    const endPos = new vs.Position(startPos.line, startPos.character + word.length);
+    const range = new vs.Range(startPos, endPos);
+    const diag = new vs.Diagnostic(
       range,
       `Spelling: "${word}" is not in the dictionary.`,
-      vscode.DiagnosticSeverity.Information,
+      vs.DiagnosticSeverity.Information,
     );
     diag.code = "bml-spelling-error";
     diagnostics.push(diag);
@@ -220,6 +233,7 @@ function checkSpelling(
 
 module.exports = {
   checkSpelling,
+  isCodeSpellCheckerInstalled,
   getSpellingSuggestions,
   splitIdentifier,
   cleanCommentText,

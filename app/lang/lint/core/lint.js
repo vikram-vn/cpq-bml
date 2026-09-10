@@ -21,7 +21,7 @@ const { checkUnusedExpressions } = require('../rules/unusedExpressions');
 const { checkUseBeforeDefine } = require('../rules/useBeforeDefine');
 const { getStringRanges, checkUnclosedStrings } = require('../rules/strings');
 const { computeSuppressions } = require('./suppressions');
-const { checkSpelling } = require('../../spell-check/spelling');
+const { checkSpelling, isCodeSpellCheckerInstalled } = require('../../spell-check/spelling');
 const { checkNullSafety } = require('../rules/nullSafety');
 const { checkInfiniteLoop } = require('../rules/infiniteLoop');
 const { checkShadowedVariables } = require('../rules/shadowedVariables');
@@ -59,7 +59,7 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     const text = doc.getText();
     const diagnostics = [];
     const isLintEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.lint', true);
-    const isSpellingEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true);
+    const isSpellingEnabled = vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true) && isCodeSpellCheckerInstalled(vscode);
 
     const commentRanges = getCommentRanges(text);
     const cleanText = blankRanges(text, commentRanges);

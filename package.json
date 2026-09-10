@@ -25,6 +25,50 @@
     "cpq-bml": "./bin/cpq-bml.js"
   },
   "contributes": {
+    "cSpell": {
+      "dictionaries": [
+        {
+          "name": "cpq-bml-words",
+          "path": "./app/lang/spell-check/bml-words.txt",
+          "description": "Oracle CPQ BML language keywords and built-in functions"
+        },
+        {
+          "name": "cpq-domain-words",
+          "path": "./app/lang/spell-check/cpq-words.txt",
+          "description": "Oracle CPQ domain vocabulary and attribute names"
+        }
+      ],
+      "dictionaryDefinitions": [
+        {
+          "name": "cpq-bml-words",
+          "path": "./app/lang/spell-check/bml-words.txt",
+          "description": "Oracle CPQ BML language keywords and built-in functions"
+        },
+        {
+          "name": "cpq-domain-words",
+          "path": "./app/lang/spell-check/cpq-words.txt",
+          "description": "Oracle CPQ domain vocabulary and attribute names"
+        }
+      ],
+      "languageSettings": [
+        {
+          "languageId": "bml",
+          "locale": "*",
+          "dictionaries": [
+            "cpq-bml-words",
+            "cpq-domain-words"
+          ]
+        },
+        {
+          "languageId": "bmlt",
+          "locale": "*",
+          "dictionaries": [
+            "cpq-bml-words",
+            "cpq-domain-words"
+          ]
+        }
+      ]
+    },
     "debuggers": [
       {
         "type": "bml",

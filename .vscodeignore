@@ -58,11 +58,8 @@ app/lang/metrics/**
 app/lang/testing/**
 app/ai/**
 
-# Ignore spell check JS source and uncompressed dictionaries
-# (runtime loads bml-words.txt.br/english-words.txt.br instead)
+# Ignore spell check JS source (compiled into dist/extension.js)
 app/lang/spell-check/*.js
-app/lang/spell-check/bml-words.txt
-app/lang/spell-check/english-words.txt
 
 # Intellisense JSON: ship only the minified .min.json variants
 # (apiDataLoader.js reads them directly, same pattern as the themes/grammars below).

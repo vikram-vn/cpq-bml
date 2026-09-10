@@ -3,7 +3,7 @@ const { lintBMLCustom, reorderVisibleDiagnostics } = require('./core/lint');
 const { registerBmlCodeActions } = require('./core/codeActions');
 const { registerSecurityDiagnostics } = require('./securityDiagnostics');
 const { registerSecurityCodeActions } = require('./code-actions/securityCodeActions');
-const { loadDictionaries } = require('../spell-check/spelling');
+const { loadDictionaries, isCodeSpellCheckerInstalled } = require('../spell-check/spelling');
 
 let diagnosticCollection;
 
@@ -12,7 +12,8 @@ function isLintEnabled() {
 }
 
 function isSpellingEnabled() {
-    return vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true);
+    const configured = vscode.workspace.getConfiguration('cpqBml').get('features.spelling', true);
+    return configured && isCodeSpellCheckerInstalled(vscode);
 }
 
 function registerBmlLinter(context) {
