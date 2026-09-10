@@ -27,6 +27,8 @@ async function listCommerceDocumentsTool(context, vscode, args = {}, transport) 
   }
 }
 
+const { extractStringValue } = require('@/lang/cloud/cloudVscodeShim');
+
 async function listCommerceActionsTool(context, vscode, args = {}, transport) {
   const proc = args.commerceProcess || config.getCommerceProcess(vscode) || 'oraclecpqo';
   const docsToQuery = args.commerceDocument
@@ -51,10 +53,10 @@ async function listCommerceActionsTool(context, vscode, args = {}, transport) {
           : ((body && (body.items || body.actions || body.data)) || []);
         for (const it of items) {
           allActions.push({
-            variableName: it.variableName || it.name,
-            label: it.label || it.name || it.variableName,
-            type: it.type || it.actionType || 'Action',
-            description: it.description || '',
+            variableName: extractStringValue(it.variableName || it.name, 'action'),
+            label: extractStringValue(it.label || it.name || it.variableName, 'Action'),
+            type: extractStringValue(it.actionType) || extractStringValue(it.type) || 'Action',
+            description: extractStringValue(it.description, ''),
             commerceProcess: proc,
             commerceDocument: doc,
           });

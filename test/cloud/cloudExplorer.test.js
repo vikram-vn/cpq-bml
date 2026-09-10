@@ -165,6 +165,39 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     assert.strictEqual(actionItem.contextValue, 'cpqCloudCommerceAction');
     assert.strictEqual(actionItem.iconPath.id, 'zap');
 
+    // Test action tree item where type is an object (CPQ REST API response shape)
+    const actionElementWithObjType = {
+      type: 'action',
+      data: {
+        variableName: 'submit_t',
+        label: 'Initiate Approval',
+        type: { displayValue: 'Modify', value: 'modify' },
+        description: 'Submits quote for approval',
+        commerceProcess: 'oraclecpqo',
+        commerceDocument: 'transaction'
+      }
+    };
+    const actionObjItem = explorer.getTreeItem(actionElementWithObjType);
+    assert.strictEqual(actionObjItem.label, 'Initiate Approval');
+    assert.strictEqual(actionObjItem.description, '[Modify] submit_t');
+    assert.ok(!actionObjItem.description.includes('[object Object]'), 'Description must not contain [object Object]');
+    assert.ok(actionObjItem.tooltip.includes('Action Type: Modify'));
+    assert.ok(!actionObjItem.tooltip.includes('[object Object]'), 'Tooltip must not contain [object Object]');
+
+    // Test action tree item with nested name/lookupVal in type
+    const actionElementLookup = {
+      type: 'action',
+      data: {
+        name: 'copyLineItems_t',
+        label: 'Copy Line Items',
+        type: { lookupVal: 'copy' }
+      }
+    };
+    const actionLookupItem = explorer.getTreeItem(actionElementLookup);
+    assert.strictEqual(actionLookupItem.label, 'Copy Line Items');
+    assert.strictEqual(actionLookupItem.description, '[copy] copyLineItems_t');
+    assert.ok(!actionLookupItem.description.includes('[object Object]'));
+
     // Test staging status badge on function
     const stagingFn = {
       type: 'function',

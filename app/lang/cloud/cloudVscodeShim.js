@@ -77,7 +77,33 @@ function safeParseJson(val, fallback = {}) {
   return fallback;
 }
 
+/**
+ * Safely extracts a string from a string, number, or CPQ metadata object (e.g. { displayValue, name, label, value }).
+ */
+function extractStringValue(val, fallback = '') {
+  if (val === null || val === undefined) return fallback;
+  if (typeof val === 'string') return val;
+  if (typeof val === 'number' || typeof val === 'boolean') return String(val);
+  if (typeof val === 'object') {
+    const candidate =
+      val.displayValue ||
+      val.displayLabel ||
+      val.label ||
+      val.name ||
+      val.actionType ||
+      val.lookupVal ||
+      val.value ||
+      val.type;
+    if (typeof candidate === 'string') return candidate;
+    if (candidate && typeof candidate === 'object') return extractStringValue(candidate, fallback);
+    if (candidate !== null && candidate !== undefined) return String(candidate);
+  }
+  return fallback;
+}
+
 module.exports = {
   vscode,
   safeParseJson,
+  extractStringValue,
 };
+

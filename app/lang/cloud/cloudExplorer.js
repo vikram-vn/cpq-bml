@@ -1,4 +1,4 @@
-const { vscode } = require('./cloudVscodeShim');
+const { vscode, extractStringValue } = require('./cloudVscodeShim');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { getSettings, getWorkspaceRoot } = require('@/lang/rest/config');
@@ -124,17 +124,21 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
 
     if (element.type === 'action') {
       const action = element.data;
-      const varName = action.variableName || action.name;
-      const label = action.label || action.name || varName;
+      const varName = extractStringValue(action.variableName || action.name, 'action');
+      const label = extractStringValue(action.label || action.name || varName, varName);
       const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
 
-      const actionType = action.type || action.actionType || 'Action';
+      const actionType =
+        extractStringValue(action.actionType) ||
+        extractStringValue(action.type) ||
+        'Action';
       item.description = `[${actionType}] ${varName}`;
+      const desc = extractStringValue(action.description, '');
       item.tooltip = [
         `Commerce Action: ${label}`,
         `Variable Name: ${varName}`,
         `Action Type: ${actionType}`,
-        action.description ? `Description: ${action.description}` : null,
+        desc ? `Description: ${desc}` : null,
         `Document: ${action.commerceProcess}/${action.commerceDocument || 'transaction'}`,
         '---',
         'Click to view action definition'
@@ -199,8 +203,9 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       badges.push('☁ Cloud');
     }
 
-    if (fn.returnType) {
-      badges.push(`-> ${fn.returnType}`);
+    const returnType = extractStringValue(fn.returnType, '');
+    if (returnType) {
+      badges.push(`-> ${returnType}`);
     }
 
     item.description = badges.join(' ');
@@ -219,7 +224,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
         `Environment: ${procDoc}`,
         `Local File: ${path.basename(localPath)}`,
         `Folder: ${fn.folderName || 'Global'}`,
-        `Return: ${fn.returnType || 'void'}`,
+        `Return: ${returnType || 'void'}`,
         '---',
         'Click to open local file in editor'
       ].join('\n');
