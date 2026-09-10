@@ -11,6 +11,7 @@ const { getActiveFunctionCall, parseParameters } = require('./signatureHelp');
 const { resolveParameterCompletions } = require('./paramCompletions');
 const { registerInlayHintsProvider } = require('./inlayHints');
 const { getBmqlVariableCompletions, getLocalVariableCompletions } = require('./bmqlVariableCompletions');
+const { getBmqlIntelligentCompletions } = require('../bmql/bmqlIntellisense');
 const { createDefinitionProvider } = require('./definitionProvider');
 const { createReferenceProvider } = require('./referenceProvider');
 const { createCallHierarchyProvider } = require('./callHierarchyProvider');
@@ -127,6 +128,15 @@ function registerBmlIntelliSense(context) {
                     return bmqlVarItems;
                 }
 
+                // Check for intelligent BMQL query autocomplete (tables, columns, operators, record fields)
+                const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]
+                    ? vscode.workspace.workspaceFolders[0].uri.fsPath
+                    : null;
+                const bmqlIntelligentItems = getBmqlIntelligentCompletions(document, position, wsRoot, vscode);
+                if (bmqlIntelligentItems && bmqlIntelligentItems.length > 0) {
+                    return bmqlIntelligentItems;
+                }
+
                 if (token && token.isCancellationRequested) return null;
 
                 // Check if inside a function call expecting parameter completions
@@ -187,7 +197,7 @@ function registerBmlIntelliSense(context) {
                 return item;
             }
         },
-        '.', '(', '_', '$', '"', "'"
+        '.', '(', '_', '$', '"', "'", ','
     );
 
     const hoverProvider = vscode.languages.registerHoverProvider('bml', {
