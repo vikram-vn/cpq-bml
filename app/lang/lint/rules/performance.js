@@ -7,19 +7,66 @@ function makeDiagnostic(range, message, severity, code) {
     return diag;
 }
 
+function isPipe(str) {
+    if (!str) return false;
+    const t = str.trim();
+    return t === '"|"' || t === "'|'";
+}
+
+function isTilde(str) {
+    if (!str) return false;
+    const t = str.trim();
+    return t === '"~"' || t === "'~'";
+}
+
 function isCpqLineItemArgs(args) {
-    if (!args) return false;
+    if (!args || args.length < 4) return false;
+
+    // 7 arguments: sbappend(sb, docNum, "~", dynamicVar, "~", val, "|")
+    if (args.length === 7) {
+        return isTilde(args[2]) && isTilde(args[4]) && isPipe(args[6]);
+    }
+
+    // 6 arguments:
+    // Case A (dynamic with pipe): sbappend(sb, "1~", dynamicVar, "~", val, "|")
+    // Case B (separated docNum dynamic without pipe): sbappend(sb, docNum, "~", dynamicVar, "~", val)
+    if (args.length === 6) {
+        if (args[1].includes('~') && isTilde(args[3]) && isPipe(args[5])) {
+            return true;
+        }
+        if (isTilde(args[2]) && isTilde(args[4])) {
+            return true;
+        }
+        return false;
+    }
+
+    // 5 arguments:
+    // Case A (canonical static with separated docNum): sbappend(sb, docNum, "~var~", val, "|")
+    // Case B (dynamic without pipe): sbappend(sb, "1~", dynamicVar, "~", val)
     if (args.length === 5) {
-        const attrArg = args[2].trim();
-        const pipeArg = args[4].trim();
-        const hasTilde = attrArg.includes('~');
-        const isPipe = pipeArg === '"|"' || pipeArg === "'|'";
-        return hasTilde && isPipe;
+        const hasTildeInVar = args[2].trim().includes('~');
+        if (!isPipe(args[1]) && hasTildeInVar && isPipe(args[4])) {
+            return true;
+        }
+        if (args[1].includes('~') && isTilde(args[3])) {
+            return true;
+        }
+        return false;
     }
+
+    // 4 arguments:
+    // Case A (canonical static with embedded/omitted docNum): sbappend(sb, "1~var~", val, "|") or sbappend(sb, "~var~", val, "|")
+    // Case B (separated docNum without pipe): sbappend(sb, docNum, "~var~", val)
     if (args.length === 4) {
-        const attrArg = args[2].trim();
-        return attrArg.includes('~');
+        if (!isPipe(args[1]) && args[1].includes('~') && isPipe(args[3])) {
+            return true;
+        }
+        if (!isPipe(args[1]) && args[2].trim().includes('~')) {
+            return true;
+        }
+        return false;
     }
+
     return false;
 }
 
@@ -341,4 +388,9 @@ function checkPerformance(cleanText, noStringsText, doc) {
     return diagnostics;
 }
 
-module.exports = { checkPerformance };
+module.exports = {
+    checkPerformance,
+    isCpqLineItemArgs,
+    isPipe,
+    isTilde
+};

@@ -8,6 +8,7 @@ const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
 const { getPerformanceFixes, buildSbappendSplitFixes, createSbappendSplitActions } = require('@/lang/lint/code-actions/performanceFixes');
 const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
 const { splitFunctionArgumentsIntoLines } = require('@/lang/lint/code-actions/styleSplitters');
+const { checkPerformance, isCpqLineItemArgs } = require('@/lang/lint/rules/performance');
 
 // Mock helper using prototype pattern (no ES6 classes)
 function MockPosition(line, character) {
@@ -364,6 +365,112 @@ suite('BML Comprehensive Quick Fixes Unit Tests', function() {
             assert.strictEqual(
                 addPipeFix.edit._edits[0].newText,
                 'sbappend(sb, serviceDocNum, "~extendedNetPrice_l~", string(SVC_FINAL_PRICE_DEFAULT), "|");'
+            );
+        });
+
+        test('does not split static string CPQ line item format with embedded docNum and pipe', function() {
+            const doc = createMockDoc('sbappend(sb, "1~finalContractValue_t~", fcvStr, "|");\n');
+            const fixes = buildSbappendSplitFixes(doc, new MockRange(0, 0, 0, 80));
+            assert.strictEqual(fixes.length, 0, 'Should not split static CPQ line item format with embedded docNum');
+        });
+
+        test('does not split static string CPQ line item format with omitted docNum and pipe', function() {
+            const doc = createMockDoc('sbappend(sb, "~estimatedContractValue_t~", fcvStr, "|");\n');
+            const fixes = buildSbappendSplitFixes(doc, new MockRange(0, 0, 0, 80));
+            assert.strictEqual(fixes.length, 0, 'Should not split static CPQ line item format with omitted docNum');
+        });
+
+        test('does not split dynamic variable CPQ line item format with pipe', function() {
+            const doc = createMockDoc('sbappend(sb, "1~", serviceAttrsArray[typeIndex], "~", string(serviceTypeTotal), "|");\n');
+            const fixes = buildSbappendSplitFixes(doc, new MockRange(0, 0, 0, 100));
+            assert.strictEqual(fixes.length, 0, 'Should not split dynamic CPQ line item format with pipe');
+        });
+
+        test('does not split dynamic variable CPQ line item format with separated docNum and pipe', function() {
+            const doc = createMockDoc('sbappend(sb, docNum, "~", dynamicVar, "~", val, "|");\n');
+            const fixes = buildSbappendSplitFixes(doc, new MockRange(0, 0, 0, 80));
+            assert.strictEqual(fixes.length, 0, 'Should not split dynamic CPQ line item format with separated docNum');
+        });
+
+        test('isCpqLineItemArgs correctly identifies static and dynamic CPQ formats', function() {
+            assert.strictEqual(isCpqLineItemArgs(['sb', '"1~finalContractValue_t~"', 'fcvStr', '"|"']), true);
+            assert.strictEqual(isCpqLineItemArgs(['sb', '"~estimatedContractValue_t~"', 'fcvStr', '"|"']), true);
+            assert.strictEqual(isCpqLineItemArgs(['sb', '"1~"', 'serviceAttrsArray[typeIndex]', '"~"', 'string(serviceTypeTotal)', '"|"']), true);
+            assert.strictEqual(isCpqLineItemArgs(['sb', 'docNum', '"~"', 'dynamicVar', '"~"', 'val', '"|"']), true);
+            assert.strictEqual(isCpqLineItemArgs(['sb', 'serviceDocNum', '"~extendedNetPrice_l~"', 'val', '"|"']), true);
+            assert.strictEqual(isCpqLineItemArgs(['sb', 'serviceDocNum', '"~netPrice_l~"', 'val']), true);
+            assert.strictEqual(isCpqLineItemArgs(['sb', 'k1', 'v1', 'k2', 'v2']), false);
+            assert.strictEqual(isCpqLineItemArgs(['sb', 'doc', 'value', 'doc1', 'value2', 'doc3', 'value3']), false);
+        });
+
+        test('checkPerformance does not flag accepted static and dynamic CPQ line item formats', function() {
+            const code = [
+                'sb = stringbuilder();',
+                'sbappend(sb, "~estimatedContractValue_t~", fcvStr, "|");',
+                'sbappend(sb, "1~finalContractValue_t~", fcvStr, "|");',
+                'sbappend(sb, "1~totalSum_t~", string(alignedCon), "|");',
+                'sbappend(sb, "1~fcv_upper_t~", string(round(targetContractPrice + marginDollars)), "|");',
+                'sbappend(sb, "1~", serviceAttrsArray[typeIndex], "~", string(serviceTypeTotal), "|");',
+                'sbappend(sb, docNum, "~", dynamicVar, "~", val, "|");',
+                'return sbtostring(sb);'
+            ].join('\n');
+            const doc = createMockDoc(code);
+            const diags = checkPerformance(code, code, doc);
+            const sbDiags = diags.filter(function(d) { return d.code === 'bml-sbappend-multiple-args'; });
+            assert.strictEqual(sbDiags.length, 0, 'Should not flag canonical CPQ line item formats with bml-sbappend-multiple-args');
+        });
+
+        test('combines split sbappend statements with embedded docNum attribute', function() {
+            const doc = createMockDoc(
+                'sbappend(sb, "1~priceChangeFlag_t~");\n' +
+                'sbappend(sb, changeFlag, "|");\n'
+            );
+            const actions = createSbappendSplitActions(doc, new MockRange(0, 0, 0, 40));
+            const combineFix = actions.find(function(a) {
+                return a.title.includes('Combine into CPQ line item format');
+            });
+            assert.ok(combineFix, 'Should offer CPQ line item combine fix for embedded docNum');
+            assert.strictEqual(
+                combineFix.edit._edits[0].newText,
+                'sbappend(sb, "1~priceChangeFlag_t~", changeFlag, "|");'
+            );
+        });
+
+        test('does not mistreat leading delimiter pipe as docNum when combining', function() {
+            const doc = createMockDoc(
+                'sbappend(sb, "|", "1~priceChangeFlag_t~");\n' +
+                'sbappend(sb, changeFlag, "|");\n'
+            );
+            const actions = createSbappendSplitActions(doc, new MockRange(0, 0, 0, 40));
+            const badCombineFix = actions.find(function(a) {
+                return a.title.includes('sbappend(sb, "|", "1~priceChangeFlag_t~"');
+            });
+            assert.strictEqual(badCombineFix, undefined, 'Must not generate invalid combination with pipe as docNum');
+        });
+
+        test('adds delimiter pipe to single static sbappend line item statement with embedded docNum', function() {
+            const doc = createMockDoc('sbappend(sb, "1~finalContractValue_t~", fcvStr);\n');
+            const actions = createSbappendSplitActions(doc, new MockRange(0, 0, 0, 60));
+            const addPipeFix = actions.find(function(a) {
+                return a.title.includes('Add CPQ delimiter pipe');
+            });
+            assert.ok(addPipeFix, 'Should offer to add missing CPQ delimiter pipe for embedded docNum statement');
+            assert.strictEqual(
+                addPipeFix.edit._edits[0].newText,
+                'sbappend(sb, "1~finalContractValue_t~", fcvStr, "|");'
+            );
+        });
+
+        test('adds delimiter pipe to single dynamic sbappend line item statement', function() {
+            const doc = createMockDoc('sbappend(sb, "1~", serviceAttrsArray[typeIndex], "~", string(serviceTypeTotal));\n');
+            const actions = createSbappendSplitActions(doc, new MockRange(0, 0, 0, 90));
+            const addPipeFix = actions.find(function(a) {
+                return a.title.includes('Add CPQ delimiter pipe');
+            });
+            assert.ok(addPipeFix, 'Should offer to add missing CPQ delimiter pipe for dynamic statement');
+            assert.strictEqual(
+                addPipeFix.edit._edits[0].newText,
+                'sbappend(sb, "1~", serviceAttrsArray[typeIndex], "~", string(serviceTypeTotal), "|");'
             );
         });
     });

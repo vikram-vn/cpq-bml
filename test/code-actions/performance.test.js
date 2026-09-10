@@ -114,6 +114,29 @@ function runPerformanceCodeActionTests() {
             assert.ok(updatedText.includes('    sbappend(sb, c, d);\n'), 'Preserves indentation on pair 2');
             assert.ok(updatedText.includes('    sbappend(sb, e);'), 'Preserves indentation on leftover single');
         });
+
+        test('Does not flag canonical static and dynamic CPQ line item sbappend formats', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'bml',
+                content: [
+                    'sb = stringbuilder();',
+                    'sbappend(sb, "~estimatedContractValue_t~", fcvStr, "|");',
+                    'sbappend(sb, "1~finalContractValue_t~", fcvStr, "|");',
+                    'sbappend(sb, "1~totalSum_t~", string(alignedCon), "|");',
+                    'sbappend(sb, "1~fcv_upper_t~", string(round(targetContractPrice + marginDollars)), "|");',
+                    'sbappend(sb, "1~", serviceAttrsArray[typeIndex], "~", string(serviceTypeTotal), "|");',
+                    'sbappend(sb, docNum, "~", dynamicVar, "~", val, "|");',
+                    'return sbtostring(sb);'
+                ].join('\n')
+            });
+
+            const collection = vscode.languages.createDiagnosticCollection('bml');
+            lintBMLCustom(doc, collection, vscode);
+
+            const diags = collection.get(doc.uri);
+            const sbDiags = diags.filter(d => d.code === 'bml-sbappend-multiple-args');
+            assert.strictEqual(sbDiags.length, 0, 'Should not flag accepted static and dynamic CPQ line item formats');
+        });
     });
 }
 

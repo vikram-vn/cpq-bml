@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const { splitArgumentsList } = require('@/lang/lint/rules/functionSignature');
+const { isCpqLineItemArgs, isPipe, isTilde } = require('@/lang/lint/rules/performance');
 
 function extractSbappendCall(text) {
     const regex = /\bsbappend\s*\(/gi;
@@ -52,22 +53,6 @@ function extractSbappendCall(text) {
     return null;
 }
 
-function isCpqLineItemArgs(args) {
-    if (!args) return false;
-    if (args.length === 5) {
-        const attrArg = args[2].trim();
-        const pipeArg = args[4].trim();
-        const hasTilde = attrArg.includes('~');
-        const isPipe = pipeArg === '"|"' || pipeArg === "'|'";
-        return hasTilde && isPipe;
-    }
-    if (args.length === 4) {
-        const attrArg = args[2].trim();
-        return attrArg.includes('~');
-    }
-    return false;
-}
-
 function checkCpqPairAtLines(document, lineIdxA, lineIdxB) {
     if (lineIdxA < 0 || lineIdxB >= document.lineCount) return null;
     const lineA = document.lineAt(lineIdxA).text;
@@ -80,22 +65,23 @@ function checkCpqPairAtLines(document, lineIdxA, lineIdxB) {
     const argsA = splitArgumentsList(callA.argsText);
     const argsB = splitArgumentsList(callB.argsText);
 
-    // Pattern:
+    const sbA = argsA[0] ? argsA[0].trim() : '';
+    const sbB = argsB[0] ? argsB[0].trim() : '';
+    if (!sbA || sbA !== sbB) return null;
+
+    // Pattern 1:
     // lineA: sbappend(sb, serviceDocNum, "~extendedNetPrice_l~");
     // lineB: sbappend(sb, string(SVC_FINAL_PRICE_DEFAULT), "|"); OR without pipe: sbappend(sb, string(SVC_FINAL_PRICE_DEFAULT));
     if (argsA.length === 3 && (argsB.length === 2 || argsB.length === 3)) {
-        const sbA = argsA[0].trim();
-        const sbB = argsB[0].trim();
-        if (sbA !== sbB) return null;
-
         const docNum = argsA[1].trim();
         const varArg = argsA[2].trim();
         const valArg = argsB[1].trim();
-        const pipeArg = (argsB.length === 3 && (argsB[2].trim() === '"|"' || argsB[2].trim() === "'|'"))
+        const pipeArg = (argsB.length === 3 && isPipe(argsB[2]))
             ? argsB[2].trim()
             : '"|"';
 
-        if (varArg.includes('~')) {
+        // Ensure docNum is not accidentally a delimiter pipe from previous statement
+        if (varArg.includes('~') && !isPipe(docNum)) {
             const indentMatch = lineA.match(/^(\s*)/);
             const indent = indentMatch ? indentMatch[1] : '';
             const combined = `${indent}sbappend(${sbA}, ${docNum}, ${varArg}, ${valArg}, ${pipeArg});`;
@@ -114,6 +100,36 @@ function checkCpqPairAtLines(document, lineIdxA, lineIdxB) {
             };
         }
     }
+
+    // Pattern 2:
+    // lineA: sbappend(sb, "1~extendedNetPrice_l~");
+    // lineB: sbappend(sb, string(SVC_FINAL_PRICE_DEFAULT), "|"); OR without pipe
+    if (argsA.length === 2 && (argsB.length === 2 || argsB.length === 3)) {
+        const varArg = argsA[1].trim();
+        const valArg = argsB[1].trim();
+        const pipeArg = (argsB.length === 3 && isPipe(argsB[2]))
+            ? argsB[2].trim()
+            : '"|"';
+
+        if (varArg.includes('~') && !isPipe(varArg)) {
+            const indentMatch = lineA.match(/^(\s*)/);
+            const indent = indentMatch ? indentMatch[1] : '';
+            const combined = `${indent}sbappend(${sbA}, ${varArg}, ${valArg}, ${pipeArg});`;
+            const rangeA = document.lineAt(lineIdxA).range;
+            const rangeB = document.lineAt(lineIdxB).range;
+            const fullRange = new vscode.Range(rangeA.start, rangeB.end);
+
+            return {
+                combined,
+                range: fullRange,
+                sb: sbA,
+                varArg,
+                valArg,
+                pipeArg
+            };
+        }
+    }
+
     return null;
 }
 
@@ -124,15 +140,41 @@ function buildCpqLineItemSingleFixes(document, lineIndex) {
     const call = extractSbappendCall(line.text);
     if (!call) return fixes;
     const args = splitArgumentsList(call.argsText);
-    if (args.length === 4 && args[2].trim().includes('~')) {
+    const indentMatch = line.text.match(/^(\s*)/);
+    const indent = indentMatch ? indentMatch[1] : '';
+
+    let replacement = null;
+    let label = null;
+
+    // Pattern 1: sbappend(sb, docNum, "~var~", val) -> missing pipe
+    if (args.length === 4 && args[2].trim().includes('~') && !isPipe(args[1]) && !isPipe(args[3])) {
         const sb = args[0].trim();
         const docNum = args[1].trim();
         const varArg = args[2].trim();
         const valArg = args[3].trim();
-        const indentMatch = line.text.match(/^(\s*)/);
-        const indent = indentMatch ? indentMatch[1] : '';
-        const replacement = `${indent}sbappend(${sb}, ${docNum}, ${varArg}, ${valArg}, "|");`;
+        replacement = `${indent}sbappend(${sb}, ${docNum}, ${varArg}, ${valArg}, "|");`;
+        label = `Add CPQ delimiter pipe: 'sbappend(${sb}, ${docNum}, ${varArg}, ${valArg}, "|");'`;
+    }
+    // Pattern 2: sbappend(sb, "1~var~", val) -> missing pipe
+    else if (args.length === 3 && args[1].trim().includes('~') && !isPipe(args[1]) && !isPipe(args[2])) {
+        const sb = args[0].trim();
+        const attrArg = args[1].trim();
+        const valArg = args[2].trim();
+        replacement = `${indent}sbappend(${sb}, ${attrArg}, ${valArg}, "|");`;
+        label = `Add CPQ delimiter pipe: 'sbappend(${sb}, ${attrArg}, ${valArg}, "|");'`;
+    }
+    // Pattern 3 (dynamic): sbappend(sb, "1~", dynamicVar, "~", val) -> missing pipe
+    else if (args.length === 5 && args[1].includes('~') && isTilde(args[3]) && !isPipe(args[4])) {
+        const sb = args[0].trim();
+        const prefix = args[1].trim();
+        const dynamicVar = args[2].trim();
+        const tilde = args[3].trim();
+        const valArg = args[4].trim();
+        replacement = `${indent}sbappend(${sb}, ${prefix}, ${dynamicVar}, ${tilde}, ${valArg}, "|");`;
+        label = `Add CPQ delimiter pipe: 'sbappend(${sb}, ${prefix}, ${dynamicVar}, ${tilde}, ${valArg}, "|");'`;
+    }
 
+    if (replacement && label) {
         let targetRange = line.range;
         if (line.text !== call.fullMatch) {
             const startPos = new vscode.Position(lineIndex, call.start);
@@ -140,15 +182,13 @@ function buildCpqLineItemSingleFixes(document, lineIndex) {
             targetRange = new vscode.Range(startPos, endPos);
         }
 
-        const action = new vscode.CodeAction(
-            `Add CPQ delimiter pipe: 'sbappend(${sb}, ${docNum}, ${varArg}, ${valArg}, "|");'`,
-            vscode.CodeActionKind.QuickFix
-        );
+        const action = new vscode.CodeAction(label, vscode.CodeActionKind.QuickFix);
         action.isPreferred = true;
         action.edit = new vscode.WorkspaceEdit();
         action.edit.replace(document.uri, targetRange, replacement);
         fixes.push(action);
     }
+
     return fixes;
 }
 
@@ -159,10 +199,10 @@ function buildCpqLineItemCombineFixes(document, lineIndex, diag) {
         pair = checkCpqPairAtLines(document, lineIndex - 1, lineIndex);
     }
     if (pair) {
-        const action = new vscode.CodeAction(
-            `Combine into CPQ line item format: 'sbappend(${pair.sb}, ${pair.docNum}, ${pair.varArg}, ${pair.valArg}, ${pair.pipeArg});'`,
-            vscode.CodeActionKind.QuickFix
-        );
+        const title = pair.docNum
+            ? `Combine into CPQ line item format: 'sbappend(${pair.sb}, ${pair.docNum}, ${pair.varArg}, ${pair.valArg}, ${pair.pipeArg});'`
+            : `Combine into CPQ line item format: 'sbappend(${pair.sb}, ${pair.varArg}, ${pair.valArg}, ${pair.pipeArg});'`;
+        const action = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
         action.isPreferred = true;
         action.edit = new vscode.WorkspaceEdit();
         action.edit.replace(document.uri, pair.range, pair.combined);
