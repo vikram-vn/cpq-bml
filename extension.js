@@ -34,12 +34,8 @@ const { registerCloudDataTables } = require("./app/lang/cloud/cloudDataTables");
 const { registerRemoteTestCommands } = require("./app/lang/test/remoteTestRunner");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("./app/lang/rest/preflightChecker");
 
-// How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
-// before racing the next address family, for any outbound request this extension
-// makes. Not available on every Node version the extension host may bundle.
 const DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT_MS = 1000;
 
-// Main activation entry point for CPQ-BML extension host
 function activate(context) {
   setExtensionContext(context);
   const output = vscode.window.createOutputChannel("CPQ-BML");
@@ -56,9 +52,6 @@ function activate(context) {
     vscode.window.showInformationMessage("Thank you for using CPQ-BML!");
   });
   context.subscriptions.push(disposable);
-
-  // ── Critical path: register immediately ─────────────────────────────────────
-  // These features must be live from the moment the first .bml file opens.
 
   registerBeautifier(context);
   registerBmlIntelliSense(context);
@@ -84,14 +77,12 @@ function activate(context) {
   registerDatatableEditor(context);
   registerSchemaIntrospector(context);
 
-  // ── BMQL Live Query Console ────────────────────────────────────────────────
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.openBmqlConsole", () => {
       BmqlConsolePanel.createOrShow(context);
     })
   );
 
-  // ── Test Coverage Heatmap & Gutter Decorator ─────────────────────────────────
   const coverageDecorator = getCoverageDecorator();
   context.subscriptions.push(
     coverageDecorator,
@@ -103,11 +94,7 @@ function activate(context) {
     })
   );
 
-
-  // ── Data Table Schema Inferrer & CSV Importer ───────────────────────────────
   registerDataTableCommands(context);
-
-  // ── Oracle CPQ REST Developer Suite (Phase 4) ───────────────────────────────
   registerLogCommands(context);
   registerTransactionMockCommands(context);
   registerCacheFlushCommand(context);
@@ -115,13 +102,11 @@ function activate(context) {
   registerInstanceMonitorCommands(context);
   getSessionKeepAlive().start(vscode);
 
-  // ── CPQ Cloud Functions Explorer & Type Definition Sync ─────────────────────
   registerCloudExplorer(context);
   registerCloudTypeDefCommands(context);
   registerCloudDataTables(context);
   registerRemoteTestCommands(context);
 
-  // ── Pre-Flight Safety & Impact Checker ──────────────────────────────────────
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.rest.preflightCheck", async () => {
       const editor = vscode.window.activeTextEditor;
@@ -155,10 +140,6 @@ function activate(context) {
     })
   );
 
-  // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
-  // so Antigravity IDE can discover them natively (on-demand, by name). Other AI
-  // tools (Claude, Cursor, Copilot, Codex) receive skills via the MCP instructions
-  // payload when they connect to the CPQ-BML MCP server — no files needed for them.
   try {
     const { synced, errors } = syncGlobalAgySkills(context.extensionPath);
     if (errors.length > 0) {
@@ -170,7 +151,6 @@ function activate(context) {
     console.warn('CPQ-BML: Antigravity skill sync failed (non-fatal):', e);
   }
 
-  // ── Icon Theme: activate by default on first run ────────────────────────────
   const ICON_THEME_ID = "bml-icon-theme";
   if (!context.globalState.get("bmlIconThemeInitialized")) {
     context.globalState.update("bmlIconThemeInitialized", true);
@@ -197,7 +177,6 @@ function activate(context) {
   );
   context.subscriptions.push(activateIconsCmd);
 
-  // ── Runtime Dynamic Folder Icon Sync ────────────────────────────────────────
   let syncTimeout = null;
   const triggerFolderSync = () => {
     if (syncTimeout) clearTimeout(syncTimeout);

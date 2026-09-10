@@ -1,8 +1,3 @@
-/**
- * MCP Test Tools
- * Allows AI agents to generate and execute BML unit test suites.
- * Strictly maintains under 500 lines of code.
- */
 
 const { BmlTestRunner } = require("../../test/bmlTestRunner");
 

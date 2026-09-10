@@ -1,8 +1,3 @@
-/**
- * BML Schema Introspector & Dynamic Typings
- * Generates dynamic CPQ workspace type definitions (cpq.d.bml) and schema cache.
- * Strictly maintains under 500 lines of code.
- */
 
 let vscode;
 try {

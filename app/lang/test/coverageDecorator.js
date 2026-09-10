@@ -12,9 +12,6 @@ try {
   };
 }
 
-/**
- * Manages test coverage gutter heatmap and line highlights in the active editor.
- */
 function createCoverageDecorator() {
   let enabled = true;
   const coverageMap = new Map();

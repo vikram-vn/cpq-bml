@@ -27,9 +27,6 @@ Commands:
                        --min-score=<0-100>    Minimum passing audit score (default: 70)
                        --fail-on=error|warn   Fail on warnings or only critical/error (default: error)
 
-  profile [path]     Scan BML file(s) for execution bottlenecks, while loops, and timeout risks.
-                     Path defaults to current directory.
-
   validate <query>   Validate a BMQL query offline against CPQ syntax standards.
                      Example: cpq-bml validate "SELECT sku, price FROM Parts WHERE active = $isActive"
 

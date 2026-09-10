@@ -1,8 +1,3 @@
-/**
- * Data Table Webview HTML Generator
- * Generates interactive spreadsheet grid UI for Oracle CPQ Data Tables.
- * Strictly maintains under 500 lines of code.
- */
 
 function getDatatableWebviewHtml(tableName, columns = [], rows = []) {
   const safeColumns = JSON.stringify(columns);

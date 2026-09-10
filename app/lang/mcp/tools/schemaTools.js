@@ -1,8 +1,3 @@
-/**
- * MCP Schema Tools
- * Exposes dynamic workspace schema and attribute introspection to AI agents.
- * Strictly maintains under 500 lines of code.
- */
 
 const { SchemaIntrospector } = require("../../intellisense/schemaIntrospector");
 

@@ -1,9 +1,3 @@
-/**
- * BML Test Runner
- * Executes BML unit tests with assertion checking and mock interception.
- * Supports assertions: assert.equals(a, b), assert.isTrue(cond), assert.notNull(val)
- * Strictly maintains under 500 lines of code.
- */
 
 const vm = require("vm");
 
@@ -104,10 +98,6 @@ function preprocessBmlForJs(code) {
   return js;
 }
 
-/**
- * Parses test cases from a test file text.
- * Looks for `@test "description"` blocks or standalone test functions.
- */
 function extractTestCases(content = "") {
   const lines = content.split(/\r?\n/);
   const tests = [];
@@ -142,9 +132,6 @@ function extractTestCases(content = "") {
   return tests;
 }
 
-/**
- * Executes a single test case code string.
- */
 function runTestCase(code, timeoutMs = 3000) {
   const stdout = [];
   const sandbox = createBmlSandbox(stdout);
@@ -194,9 +181,6 @@ function runTestCase(code, timeoutMs = 3000) {
   }
 }
 
-/**
- * Identifies executable statement line numbers in a BML source file.
- */
 function getExecutableLines(code = "") {
   const lines = code.split(/\r?\n/);
   const executable = [];
@@ -225,9 +209,6 @@ function getExecutableLines(code = "") {
   return executable;
 }
 
-/**
- * Computes statement line coverage from executed line numbers.
- */
 function computeCoverage(totalExecutableLines, executedLines) {
   const coveredSet = new Set(executedLines);
   const covered = totalExecutableLines.filter((l) => coveredSet.has(l));

@@ -1,8 +1,3 @@
-/**
- * BML Data Table Custom Editor Provider
- * Implements vscode.CustomTextEditorProvider for visual spreadsheet editing of CPQ Data Tables.
- * Strictly maintains under 500 lines of code.
- */
 
 const vscode = require("vscode");
 const path = require("path");

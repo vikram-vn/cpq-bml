@@ -1,8 +1,3 @@
-/**
- * BML Native Test Controller (Pure Functional Implementation)
- * Discovers and runs tests from *.bmlt and *.test.bml files directly in the VS Code Test Explorer.
- * Strictly maintains under 500 lines of code.
- */
 
 let vscode;
 try {
@@ -20,9 +15,6 @@ function isTestFile(filePath = "") {
   return filePath.endsWith(".bmlt") || filePath.endsWith(".test.bml");
 }
 
-/**
- * Indexes an individual test file into the Test Controller hierarchy.
- */
 function indexTestFile(controller, uri, vscodeInstance = vscode) {
   if (!controller || !uri || !uri.fsPath) return;
 
@@ -122,9 +114,6 @@ async function handleTestRun(controller, request, token, vscodeInstance = vscode
   run.end();
 }
 
-/**
- * Factory closure creating the BML Test Controller.
- */
 function createBmlTestController(context, vscodeInstance = vscode) {
   if (!vscodeInstance.tests || !vscodeInstance.tests.createTestController) {
     return null;
@@ -164,7 +153,6 @@ function registerTestController(context, vscodeInstance = vscode) {
   return createBmlTestController(context, vscodeInstance);
 }
 
-// Backward compatibility alias as a factory function
 const BmlTestController = function (context, vscodeInstance = vscode) {
   return createBmlTestController(context, vscodeInstance);
 };

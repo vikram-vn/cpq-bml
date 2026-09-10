@@ -14,9 +14,6 @@ const { BmlTestRunner } = require('./bmlTestRunner');
 const api = require('../rest/api');
 const { getBaseUrl, getAuthHeader } = require('../rest/config');
 
-/**
- * Extracts assertion patterns from BMLT code.
- */
 function extractBmltAssertions(code = '') {
   const assertions = [];
   const lines = code.split('\n');
@@ -62,9 +59,6 @@ function extractBmltAssertions(code = '') {
   return assertions;
 }
 
-/**
- * Executes a .bmlt test suite against the CPQ server (or local engine if offline).
- */
 async function executeRemoteBmltTest(testFilePath, vscodeInstance = vscode, context, customTransport) {
   if (!fs.existsSync(testFilePath)) {
     throw new Error(`Test file not found: ${testFilePath}`);
@@ -98,7 +92,6 @@ async function executeRemoteBmltTest(testFilePath, vscodeInstance = vscode, cont
 
     if (configured) {
       try {
-        // Run against live CPQ evaluation/validation endpoint
         const payload = {
           variableName: `test_${tc.name.replace(/[^a-zA-Z0-9_]/g, '_')}`,
           scriptText: code
@@ -119,7 +112,6 @@ async function executeRemoteBmltTest(testFilePath, vscodeInstance = vscode, cont
           error = `Server Error (HTTP ${res.statusCode}): ${msg}`;
         }
       } catch (err) {
-        // Fallback to local
         const local = BmlTestRunner.runTestCase(code);
         passed = local.passed;
         error = local.error;
@@ -127,7 +119,6 @@ async function executeRemoteBmltTest(testFilePath, vscodeInstance = vscode, cont
         logs.push(`[Local Fallback] ${err.message}`);
       }
     } else {
-      // Offline execution
       const local = BmlTestRunner.runTestCase(code);
       passed = local.passed;
       error = local.error;

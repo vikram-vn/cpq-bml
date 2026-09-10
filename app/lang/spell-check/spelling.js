@@ -66,9 +66,6 @@ function cleanCommentText(text) {
   return clean;
 }
 
-// Short technical tokens accepted as compound segments even below the 4-char
-// minimum (json, xml, ...), and connectors accepted only as a trailing
-// segment (numberof, linesby, followon, ...).
 const SHORT_TECH_SEGMENTS = new Set([
   "json", "xml", "doc", "log", "map", "get", "set", "ref", "app", "bom",
   "txn", "grp", "arr", "str", "num", "val", "obj", "seq", "pac", "ids",
@@ -83,8 +80,6 @@ const SHORT_TECH_SEGMENTS = new Set([
 ]);
 const COMPOUND_CONNECTORS = new Set(["of", "by", "on", "in", "to", "for", "up", "down", "at", "as"]);
 
-// True if `word` can be segmented into 2-3 known chunks (dictionary words of
-// 4+ chars or short tech tokens, optionally ending in a connector).
 function segmentsIntoKnownWords(word, dict, depth) {
   if (depth <= 0) return false;
   const okSeg = (s) => (s.length >= 4 && (dict.has(s) || extraAllowed.has(s) || isMorphologicallyValid(s, dict))) || SHORT_TECH_SEGMENTS.has(s);
@@ -109,16 +104,7 @@ function checkWord(word, extensionPath, allowCompound = true) {
   const dict = loadDictionaries(extensionPath);
   if (dict.has(wordLower)) return true;
 
-  // Morphological validation: check if word is a regular inflection (plurals, -ed, -ing, -ly, -tion, -able, etc.),
-  // prefix derivation (re-, un-, sub-, pre-, multi-, auto-, etc.), or alphanumeric code (line1, field2)
   if (isMorphologicallyValid(wordLower, dict)) return true;
-
-  // Compound fallback: all-lowercase glued identifiers (linejson, orderline,
-  // sizeofline) have no camelCase boundary for splitIdentifier to split on,
-  // so accept them when they segment cleanly into known words. Identifiers
-  // and enum-style string values only - comment text is prose, where a glued
-  // word is far more likely a real typo (calclate = calc+late would slip
-  // through), so comments keep the strict single-word check.
   if (!allowCompound) return false;
   return wordLower.length >= 5 && segmentsIntoKnownWords(wordLower, dict, 3);
 }
@@ -213,7 +199,6 @@ function checkSpelling(
     diagnostics.push(diag);
   };
 
-  // Only check BML code identifiers against BML/CPQ vocabulary (comments & prose are handled by Code Spell Checker)
   const identRegex = /\b[a-zA-Z_][a-zA-Z0-9_]*\b/g;
   let match;
   while ((match = identRegex.exec(noStringsText)) !== null) {

@@ -14,9 +14,6 @@ const path = require('path');
 const api = require('./api');
 const metadataLib = require('./metadata');
 
-/**
- * Stage 1: Validates function code against the live CPQ server syntax validator.
- */
 async function checkServerValidation(filePath, code, metadata, vscodeInstance = vscode, context) {
   const startedAt = Date.now();
   try {
@@ -52,9 +49,6 @@ async function checkServerValidation(filePath, code, metadata, vscodeInstance = 
   }
 }
 
-/**
- * Computes cyclomatic complexity, maintainability index, and loop timeout threats.
- */
 function calculateMetrics(code = '') {
   const lines = code.split(/\r?\n/);
   const loc = lines.filter(l => l.trim().length > 0 && !l.trim().startsWith('//')).length;
@@ -96,9 +90,6 @@ function calculateMetrics(code = '') {
   };
 }
 
-/**
- * Stage 2: Evaluates cyclomatic complexity, maintainability index, and anti-patterns.
- */
 function checkComplexityAndThreats(code) {
   const metrics = calculateMetrics(code);
   const warnings = [];
@@ -126,9 +117,6 @@ function checkComplexityAndThreats(code) {
   };
 }
 
-/**
- * Stage 3: Scans workspace to determine which other scripts call this function (Impact Analysis).
- */
 function analyzeWorkspaceImpact(varName, workspaceRoot) {
   if (!workspaceRoot || !varName) {
     return { callersCount: 0, callers: [] };
@@ -201,9 +189,6 @@ function checkDiagnostics(filePath, vscodeInstance = vscode) {
   };
 }
 
-/**
- * Runs the comprehensive 4-stage Pre-Flight Safety Pipeline.
- */
 async function runPreflightSafetyCheck(filePath, vscodeInstance = vscode, context) {
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
