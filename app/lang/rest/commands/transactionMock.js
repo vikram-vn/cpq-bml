@@ -69,13 +69,13 @@ function registerTransactionMockCommands(context) {
         fs.mkdirSync(fixturesDir, { recursive: true });
 
         const jsonPath = path.join(fixturesDir, `mock_transaction_${transId.trim()}.json`);
-        const bmlTestPath = path.join(root, 'test', `transaction_${transId.trim()}.test.bml`);
+        const bmlTestPath = path.join(root, 'test', `transaction_${transId.trim()}.bmlt`);
 
         fs.writeFileSync(jsonPath, JSON.stringify(mock, null, 2), 'utf8');
         fs.writeFileSync(bmlTestPath, testCode, 'utf8');
 
         const choice = await vscode.window.showInformationMessage(
-          `Generated mock fixture (${mock.lines.length} lines) and BML test file.`,
+          `Generated mock fixture (${mock.lines.length} lines) and BMLT test file.`,
           'Open Test File',
           'Open Mock JSON'
         );

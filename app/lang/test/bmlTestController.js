@@ -1,129 +1,180 @@
 /**
- * BML Native Test Controller
- * Integrates BML test discovery and execution directly into the native VS Code Test Explorer.
+ * BML Native Test Controller (Pure Functional Implementation)
+ * Discovers and runs tests from *.bmlt and *.test.bml files directly in the VS Code Test Explorer.
  * Strictly maintains under 500 lines of code.
  */
 
-const vscode = require("vscode");
+let vscode;
+try {
+  vscode = require("vscode");
+} catch {
+  vscode = {};
+}
+
 const fs = require("fs");
 const { BmlTestRunner } = require("./bmlTestRunner");
 
-class BmlTestController {
-  constructor(context) {
-    this.context = context;
-    if (!vscode.tests || !vscode.tests.createTestController) {
-      return; // Fallback if API not present
-    }
+const TEST_GLOB_PATTERNS = ["**/*.bmlt", "**/*.test.bml"];
 
-    this.controller = vscode.tests.createTestController("cpqBmlTests", "CPQ BML Tests");
-    context.subscriptions.push(this.controller);
+function isTestFile(filePath = "") {
+  return filePath.endsWith(".bmlt") || filePath.endsWith(".test.bml");
+}
 
-    this.runProfile = this.controller.createRunProfile(
-      "Run BML Tests",
-      vscode.TestRunProfileKind.Run,
-      (request, token) => this.runHandler(request, token),
-      true
-    );
+/**
+ * Indexes an individual test file into the Test Controller hierarchy.
+ */
+function indexTestFile(controller, uri, vscodeInstance = vscode) {
+  if (!controller || !uri || !uri.fsPath) return;
 
-    this.discoverTests();
-    this.registerWatchers();
-  }
+  try {
+    const content = fs.readFileSync(uri.fsPath, "utf8");
+    const testCases = BmlTestRunner.extractTestCases(content);
 
-  async discoverTests() {
-    if (!this.controller) return;
+    const fileName = uri.path ? uri.path.split("/").pop() : uri.fsPath.split(/[\\/]/).pop();
+    const fileItem = controller.createTestItem(uri.fsPath, fileName, uri);
 
-    const files = await vscode.workspace.findFiles("**/*.test.bml");
-    for (const file of files) {
-      this.indexTestFile(file);
-    }
-  }
-
-  indexTestFile(uri) {
-    try {
-      const content = fs.readFileSync(uri.fsPath, "utf8");
-      const testCases = BmlTestRunner.extractTestCases(content);
-
-      const fileItem = this.controller.createTestItem(
-        uri.fsPath,
-        uri.path.split("/").pop(),
-        uri
-      );
-
-      for (const tc of testCases) {
-        const testId = `${uri.fsPath}::${tc.name}`;
-        const item = this.controller.createTestItem(testId, tc.name, uri);
-        item.range = new vscode.Range(tc.line - 1, 0, tc.line - 1, 0);
-        fileItem.children.add(item);
+    for (const tc of testCases) {
+      const testId = `${uri.fsPath}::${tc.name}`;
+      const item = controller.createTestItem(testId, tc.name, uri);
+      if (vscodeInstance.Range && tc.line) {
+        item.range = new vscodeInstance.Range(tc.line - 1, 0, tc.line - 1, 0);
       }
+      fileItem.children.add(item);
+    }
 
-      this.controller.items.add(fileItem);
+    controller.items.add(fileItem);
+    return fileItem;
+  } catch {
+    // Ignored
+  }
+}
+
+/**
+ * Scans workspace folders for *.bmlt and *.test.bml test suites.
+ */
+async function discoverTests(controller, vscodeInstance = vscode) {
+  if (!controller || !vscodeInstance.workspace || !vscodeInstance.workspace.findFiles) return;
+
+  for (const pattern of TEST_GLOB_PATTERNS) {
+    try {
+      const files = await vscodeInstance.workspace.findFiles(pattern);
+      for (const file of files) {
+        indexTestFile(controller, file, vscodeInstance);
+      }
     } catch {
-      // Ignored
+      // Ignore discovery errors
     }
   }
+}
 
-  registerWatchers() {
-    const watcher = vscode.workspace.createFileSystemWatcher("**/*.test.bml");
-    watcher.onDidCreate((uri) => this.indexTestFile(uri));
-    watcher.onDidChange((uri) => this.indexTestFile(uri));
-    watcher.onDidDelete((uri) => this.controller.items.delete(uri.fsPath));
-    this.context.subscriptions.push(watcher);
+/**
+ * Handles test run requests from VS Code UI.
+ */
+async function handleTestRun(controller, request, token, vscodeInstance = vscode) {
+  const run = controller.createTestRun(request);
+  const queue = [];
+
+  if (request.include) {
+    request.include.forEach((test) => queue.push(test));
+  } else {
+    controller.items.forEach((test) => queue.push(test));
   }
 
-  async runHandler(request, token) {
-    const run = this.controller.createTestRun(request);
-    const queue = [];
+  while (queue.length > 0 && (!token || !token.isCancellationRequested)) {
+    const current = queue.shift();
 
-    if (request.include) {
-      request.include.forEach((test) => queue.push(test));
-    } else {
-      this.controller.items.forEach((test) => queue.push(test));
+    if (current.children && current.children.size > 0) {
+      current.children.forEach((child) => queue.push(child));
+      continue;
     }
 
-    while (queue.length > 0 && !token.isCancellationRequested) {
-      const current = queue.shift();
+    run.started(current);
 
-      if (current.children && current.children.size > 0) {
-        current.children.forEach((child) => queue.push(child));
+    try {
+      if (!current.uri || !fs.existsSync(current.uri.fsPath)) {
+        run.skipped(current);
         continue;
       }
 
-      run.started(current);
+      const fileContent = fs.readFileSync(current.uri.fsPath, "utf8");
+      const testCases = BmlTestRunner.extractTestCases(fileContent);
+      const match = testCases.find((tc) => tc.name === current.label);
 
-      try {
-        if (!current.uri || !fs.existsSync(current.uri.fsPath)) {
-          run.skipped(current);
-          continue;
+      const codeToRun = match ? match.codeLines.join("\n") : fileContent;
+      const result = BmlTestRunner.runTestCase(codeToRun);
+
+      if (result.passed) {
+        run.passed(current, result.durationMs);
+      } else {
+        const errorMsg = result.error || "Test execution failed";
+        const msg = vscodeInstance.TestMessage ? new vscodeInstance.TestMessage(errorMsg) : { message: errorMsg };
+        if (current.range && vscodeInstance.Location) {
+          msg.location = new vscodeInstance.Location(current.uri, current.range);
         }
-
-        const fileContent = fs.readFileSync(current.uri.fsPath, "utf8");
-        const testCases = BmlTestRunner.extractTestCases(fileContent);
-        const match = testCases.find((tc) => tc.name === current.label);
-
-        const codeToRun = match ? match.codeLines.join("\n") : fileContent;
-        const result = BmlTestRunner.runTestCase(codeToRun);
-
-        if (result.passed) {
-          run.passed(current, result.durationMs);
-        } else {
-          const msg = new vscode.TestMessage(result.error || "Test execution failed");
-          if (current.range) msg.location = new vscode.Location(current.uri, current.range);
-          run.failed(current, msg, result.durationMs);
-        }
-      } catch (err) {
-        run.failed(current, new vscode.TestMessage(err.message));
+        run.failed(current, msg, result.durationMs);
       }
+    } catch (err) {
+      const msg = vscodeInstance.TestMessage ? new vscodeInstance.TestMessage(err.message) : { message: err.message };
+      run.failed(current, msg);
     }
-
-    run.end();
   }
+
+  run.end();
 }
 
-function registerTestController(context) {
-  return new BmlTestController(context);
+/**
+ * Factory closure creating the BML Test Controller.
+ */
+function createBmlTestController(context, vscodeInstance = vscode) {
+  if (!vscodeInstance.tests || !vscodeInstance.tests.createTestController) {
+    return null;
+  }
+
+  const controller = vscodeInstance.tests.createTestController("cpqBmlTests", "CPQ BML Tests");
+  context.subscriptions.push(controller);
+
+  const runProfile = controller.createRunProfile(
+    "Run BML Tests",
+    vscodeInstance.TestRunProfileKind.Run,
+    (request, token) => handleTestRun(controller, request, token, vscodeInstance),
+    true
+  );
+
+  discoverTests(controller, vscodeInstance);
+
+  // Register file watchers for *.bmlt and *.test.bml
+  for (const pattern of TEST_GLOB_PATTERNS) {
+    const watcher = vscodeInstance.workspace.createFileSystemWatcher(pattern);
+    watcher.onDidCreate((uri) => indexTestFile(controller, uri, vscodeInstance));
+    watcher.onDidChange((uri) => indexTestFile(controller, uri, vscodeInstance));
+    watcher.onDidDelete((uri) => controller.items.delete(uri.fsPath));
+    context.subscriptions.push(watcher);
+  }
+
+  return {
+    controller,
+    runProfile,
+    discoverTests: () => discoverTests(controller, vscodeInstance),
+    indexTestFile: (uri) => indexTestFile(controller, uri, vscodeInstance),
+    runHandler: (req, tok) => handleTestRun(controller, req, tok, vscodeInstance)
+  };
 }
+
+function registerTestController(context, vscodeInstance = vscode) {
+  return createBmlTestController(context, vscodeInstance);
+}
+
+// Backward compatibility alias as a factory function
+const BmlTestController = function (context, vscodeInstance = vscode) {
+  return createBmlTestController(context, vscodeInstance);
+};
 
 module.exports = {
-  BmlTestController,
+  isTestFile,
+  indexTestFile,
+  discoverTests,
+  handleTestRun,
+  createBmlTestController,
   registerTestController,
+  BmlTestController
 };

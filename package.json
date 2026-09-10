@@ -90,6 +90,10 @@
         {
           "id": "cpqBml.cloudExplorer",
           "name": "Cloud Functions Explorer"
+        },
+        {
+          "id": "cpqBml.cloudDataTables",
+          "name": "CPQ Data Tables"
         }
       ]
     },
@@ -103,7 +107,8 @@
           "BigMachines Markup Language"
         ],
         "extensions": [
-          ".bml"
+          ".bml",
+          ".bmlt"
         ],
         "configuration": "./language-configuration.json",
         "icon": {
@@ -450,6 +455,36 @@
         "title": "CPQ-BML: Sync Cloud BML Definitions (.cpq/cpq.d.bml)",
         "icon": "$(sync)",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.refreshDataTables",
+        "title": "CPQ-BML: Refresh CPQ Data Tables",
+        "icon": "$(refresh)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.queryDataTable",
+        "title": "CPQ-BML: Query Data Table in BMQL Live Console",
+        "icon": "$(play)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.exportDataTableCsv",
+        "title": "CPQ-BML: Export CPQ Data Table to CSV",
+        "icon": "$(cloud-download)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.preflightCheck",
+        "title": "CPQ-BML: Run Pre-Flight Safety & Impact Check on Active File",
+        "icon": "$(shield)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.test.runRemoteTest",
+        "title": "CPQ-BML: Run BMLT Tests on Server / Live CPQ",
+        "icon": "$(run)",
+        "category": "BML"
       }
     ],
     "menus": {
@@ -522,6 +557,11 @@
           "command": "cpqBml.cloud.syncDefinitions",
           "when": "view == cpqBml.cloudExplorer",
           "group": "navigation@2"
+        },
+        {
+          "command": "cpqBml.cloud.refreshDataTables",
+          "when": "view == cpqBml.cloudDataTables",
+          "group": "navigation@1"
         }
       ],
       "view/item/context": [
@@ -534,6 +574,16 @@
           "command": "cpqBml.cloud.diffFunction",
           "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
           "group": "inline"
+        },
+        {
+          "command": "cpqBml.cloud.queryDataTable",
+          "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTable",
+          "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.cloud.exportDataTableCsv",
+          "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTable",
+          "group": "inline@2"
         }
       ]
     },

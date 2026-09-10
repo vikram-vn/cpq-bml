@@ -41,6 +41,9 @@ const { registerInstanceMonitorCommands } = require("./app/lang/rest/instanceMon
 const { getSessionKeepAlive } = require("./app/lang/rest/sessionKeepAlive");
 const { registerCloudExplorer } = require("./app/lang/cloud/cloudExplorer");
 const { registerCloudTypeDefCommands } = require("./app/lang/cloud/cloudTypeDefSync");
+const { registerCloudDataTables } = require("./app/lang/cloud/cloudDataTables");
+const { registerRemoteTestCommands } = require("./app/lang/test/remoteTestRunner");
+const { runPreflightSafetyCheck, formatPreflightSummary } = require("./app/lang/rest/preflightChecker");
 
 // How long Node's Happy Eyeballs (RFC 8305) dual-stack connection attempt waits
 // before racing the next address family, for any outbound request this extension
@@ -152,6 +155,42 @@ function activate(context) {
   // ── CPQ Cloud Functions Explorer & Type Definition Sync ─────────────────────
   registerCloudExplorer(context);
   registerCloudTypeDefCommands(context);
+  registerCloudDataTables(context);
+  registerRemoteTestCommands(context);
+
+  // ── Pre-Flight Safety & Impact Checker ──────────────────────────────────────
+  context.subscriptions.push(
+    vscode.commands.registerCommand("cpqBml.rest.preflightCheck", async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showErrorMessage("Open a BML or BMLT file to run Pre-Flight Safety Check.");
+        return;
+      }
+      await vscode.window.withProgress({
+        location: 15,
+        title: "Running Pre-Flight Safety & Impact Analysis...",
+        cancellable: false
+      }, async () => {
+        try {
+          const report = await runPreflightSafetyCheck(editor.document.uri.fsPath, vscode, context);
+          const channel = vscode.window.createOutputChannel("CPQ Pre-Flight Report");
+          channel.show(true);
+          channel.appendLine(formatPreflightSummary(report));
+          if (report.canDeploy) {
+            vscode.window.showInformationMessage(
+              `Pre-Flight Check PASSED for ${report.functionName}. Referenced in ${report.impact.callersCount} workspace files.`
+            );
+          } else {
+            vscode.window.showWarningMessage(
+              `Pre-Flight Check flagged issues for ${report.functionName}. See output channel for full report.`
+            );
+          }
+        } catch (err) {
+          vscode.window.showErrorMessage(`Pre-Flight check error: ${err.message}`);
+        }
+      });
+    })
+  );
 
   // Sync BML skills into Antigravity's global config dir (~/.gemini/config/skills/)
   // so Antigravity IDE can discover them natively (on-demand, by name). Other AI

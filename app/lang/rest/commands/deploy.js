@@ -1,6 +1,7 @@
 const api = require("../api");
 const metadataLib = require("../metadata");
 const { getCommerceProcess } = require("../config");
+const { runPreflightSafetyCheck, formatPreflightSummary } = require("../preflightChecker");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -185,6 +186,32 @@ async function runDeployCurrentFile(
       vscode.commands.executeCommand("cpqBml.internal.refreshStatus");
     }
     return runDeployCommerceProcess(context, vscode, resultsTerminal, { transport });
+  }
+
+  // Pre-Flight Safety & Impact Analysis
+  try {
+    const preflight = await runPreflightSafetyCheck(editor.document.uri.fsPath, vscode, context);
+    if (!preflight.canDeploy) {
+      const err = preflight.server.passed ? 'Code failed complexity or linter threshold' : preflight.server.message;
+      const choice = await vscode.window.showErrorMessage(
+        `Pre-Flight Safety Check Failed for "${metadata.variableName}": ${err}`,
+        "View Safety Report",
+        "Deploy Anyway",
+        "Cancel"
+      );
+      if (choice === "View Safety Report") {
+        resultsTerminal.show();
+        resultsTerminal.writeLine(formatPreflightSummary(preflight));
+        return { success: false, errorMessage: "Deployment halted by Pre-Flight check failure." };
+      }
+      if (choice !== "Deploy Anyway") {
+        return { success: false, errorMessage: "CPQ-BML: deployment cancelled by user." };
+      }
+    } else {
+      resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pre-Flight Safety Check: PASSED (Referenced in ${preflight.impact.callersCount} files)\x1b[0m`);
+    }
+  } catch (_) {
+    // Pre-flight check error should not prevent deployment if user insists
   }
 
   const confirm = await vscode.window.showWarningMessage(
