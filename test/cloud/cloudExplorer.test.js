@@ -331,7 +331,7 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
 
       await pullFunctionCommand(item, mockVscode, {});
 
-      const expectedBmlPath = path.join(tempDir, 'cpq-10234', 'util-libraries', 'finance', 'calcBonus', 'calcBonus.bml');
+      const expectedBmlPath = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcBonus', 'calcBonus.bml');
       assert.ok(fs.existsSync(expectedBmlPath), 'Expected .bml file to be written locally');
       const content = fs.readFileSync(expectedBmlPath, 'utf8');
       assert.strictEqual(content, 'return 100.0;\n');
@@ -351,8 +351,8 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
         }
       };
       await pullFunctionCommand(commerceItem, mockVscode, {});
-      const expectedCommercePath = path.join(tempDir, 'cpq', 'commerce-libraries', 'oraclecpqo', 'transaction', 'libraries', 'calcCommerceBonus', 'calcCommerceBonus.bml');
-      assert.ok(fs.existsSync(expectedCommercePath), 'Expected commerce .bml file to be written to cpq/commerce-libraries');
+      const expectedCommercePath = path.join(tempDir, 'cpq', 'cpq-10234', 'oraclecpqo', 'commerce-libraries', 'calcCommerceBonus', 'calcCommerceBonus.bml');
+      assert.ok(fs.existsSync(expectedCommercePath), 'Expected commerce .bml file to be written to cpq/cpq-10234/oraclecpqo/commerce-libraries');
     } finally {
       api.getLibraryFunction = origGetFunc;
       fs.rmSync(tempDir, { recursive: true, force: true });

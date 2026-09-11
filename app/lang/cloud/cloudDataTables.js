@@ -262,7 +262,7 @@ async function exportTableCsvCommand(item, vscodeInstance = vscode, customTransp
       const workspaceRoot = folders && folders.length > 0 ? folders[0].uri.fsPath : null;
       let defaultPath = `${tableName}.csv`;
       if (workspaceRoot) {
-        const dtDir = getDataTableFolder(workspaceRoot);
+        const dtDir = getDataTableFolder(workspaceRoot, vscodeInstance);
         fs.mkdirSync(dtDir, { recursive: true });
         defaultPath = path.join(dtDir, `${tableName}.csv`);
       }

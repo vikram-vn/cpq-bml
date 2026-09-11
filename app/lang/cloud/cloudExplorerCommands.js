@@ -63,11 +63,11 @@ async function pullFunctionCommand(item, vscodeInstance = vscode, context) {
         let displayDest;
         if (isCommerce) {
           metadata.commerceProcess = commerceProcess;
-          metadata.commerceDocument = commerceDocument;
+          metadata.commerceDocument = commerceDocument || 'transaction';
           metadata.folderName = metadata.folderName || folderName;
-          const commerceFolder = getCommerceLibrariesFolder();
-          targetDir = path.join(root, commerceFolder, commerceProcess, commerceDocument, 'libraries', varName);
-          displayDest = `${commerceFolder}/${commerceProcess}/${commerceDocument}/libraries/${varName}/`;
+          const commerceFolder = getCommerceLibrariesFolder(vscodeInstance, commerceProcess);
+          targetDir = path.join(root, commerceFolder, varName);
+          displayDest = `${commerceFolder}/${varName}/`;
         } else {
           metadata.folderName = metadata.folderName || folderName;
           const utilFolder = getUtilLibrariesFolder(vscodeInstance);

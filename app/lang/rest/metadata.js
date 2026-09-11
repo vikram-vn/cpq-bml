@@ -289,10 +289,20 @@ function inferCommerceFromPath(bmlFilePath) {
     const normalizedPath = (bmlFilePath || '').replace(/\\/g, '/');
     const segments = normalizedPath.split('/');
     const commLibIndex = segments.lastIndexOf('commerce-libraries');
-    if (commLibIndex !== -1 && segments.length > commLibIndex + 2) {
-        const commerceProcess = segments[commLibIndex + 1];
-        const commerceDocument = segments[commLibIndex + 2];
-        return { commerceProcess, commerceDocument };
+    if (commLibIndex !== -1) {
+        // Standard structure: cpq/{sitename}/{processname}/commerce-libraries/{varName}
+        if (commLibIndex >= 1) {
+            const potentialProcess = segments[commLibIndex - 1];
+            if (potentialProcess && potentialProcess !== 'cpq') {
+                return { commerceProcess: potentialProcess, commerceDocument: 'transaction' };
+            }
+        }
+        // Legacy structure: cpq/commerce-libraries/{process}/{document}/...
+        if (segments.length > commLibIndex + 2) {
+            const commerceProcess = segments[commLibIndex + 1];
+            const commerceDocument = segments[commLibIndex + 2];
+            return { commerceProcess, commerceDocument };
+        }
     }
     const librariesIndex = segments.lastIndexOf('libraries');
     if (librariesIndex >= 2 && librariesIndex <= segments.length - 2) {

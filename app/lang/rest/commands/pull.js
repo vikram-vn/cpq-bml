@@ -251,14 +251,11 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
             metadata.name = metadata.name || pick.item.name || metadata.variableName;
 
             // Saved under standardized folder structure:
-            // cpq/commerce-libraries/<process>/<document>/libraries/<variableName>/<variableName>.bml
-            const commerceFolder = config.getCommerceLibrariesFolder();
+            // cpq/{sitename}/{processname}/commerce-libraries/<variableName>/<variableName>.bml
+            const commerceFolder = config.getCommerceLibrariesFolder(vscode, commerceProcess);
             const bmlPath = path.join(
                 workspaceRoot,
                 commerceFolder,
-                commerceProcess,
-                commerceDocument,
-                'libraries',
                 metadata.variableName,
                 `${metadata.variableName}.bml`
             );
@@ -280,8 +277,8 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
 
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Pulled ${pulledCount} function(s) (${formatElapsed(startedAt)})\x1b[0m`);
     resultsTerminal.show();
-    const pulledCommerceFolderLabel = config.getCommerceLibrariesFolder();
-    vscode.window.showInformationMessage(`CPQ-BML: pulled ${pulledCount} commerce function(s) into ${pulledCommerceFolderLabel}/${commerceProcess}/${commerceDocument}/`);
+    const pulledCommerceFolderLabel = config.getCommerceLibrariesFolder(vscode, commerceProcess);
+    vscode.window.showInformationMessage(`CPQ-BML: pulled ${pulledCount} commerce function(s) into ${pulledCommerceFolderLabel}/`);
 }
 
 module.exports = { runPullLibraryFunctions, runPullCommerceFunctions };

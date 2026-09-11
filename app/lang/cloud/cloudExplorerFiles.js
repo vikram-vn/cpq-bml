@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
-const { getSettings, getUtilLibrariesFolder } = require('@/lang/rest/config');
+const { getSettings, getUtilLibrariesFolder, getCpqSiteName } = require('@/lang/rest/config');
 const { safeParseJson } = require('@/lang/cloud/cloudVscodeShim');
 const { IGNORED_FOLDERS } = require('@/lang/intellisense/workspaceIndex');
 
@@ -46,6 +46,34 @@ function findLocalCommerceProcesses(workspaceRoot) {
       }
     } catch {}
   }
+
+  // Check new structure: cpq/<sitename>/<proc>/commerce-libraries
+  try {
+    const cpqDir = path.join(workspaceRoot, 'cpq');
+    if (fs.existsSync(cpqDir)) {
+      const siteEntries = fs.readdirSync(cpqDir, { withFileTypes: true });
+      for (const site of siteEntries) {
+        if (site.isDirectory() && !site.name.startsWith('.')) {
+          const sitePath = path.join(cpqDir, site.name);
+          try {
+            const procEntries = fs.readdirSync(sitePath, { withFileTypes: true });
+            for (const proc of procEntries) {
+              if (!proc.isDirectory() || proc.name.startsWith('.')) continue;
+              if (proc.name === 'util-libraries' || proc.name === 'data-tables') continue;
+              const commLibDir = path.join(sitePath, proc.name, 'commerce-libraries');
+              if (fs.existsSync(commLibDir)) {
+                const key = `${proc.name}/transaction`;
+                if (!seen.has(key)) {
+                  seen.add(key);
+                  results.push({ process: proc.name, document: 'transaction' });
+                }
+              }
+            }
+          } catch {}
+        }
+      }
+    }
+  } catch {}
 
   checkDir(path.join(workspaceRoot, 'cpq', 'commerce-libraries'));
   checkDir(path.join(workspaceRoot, 'library'));
@@ -145,19 +173,64 @@ function findLocalFunctionFile(workspaceRoot, varName, folderName, commerceMetad
 
   const candidatePaths = [];
 
-  if (commerceMetadata && commerceMetadata.commerceProcess && commerceMetadata.commerceDocument) {
+  if (commerceMetadata && commerceMetadata.commerceProcess) {
+    const cp = commerceMetadata.commerceProcess;
+    const cd = commerceMetadata.commerceDocument || 'transaction';
+    const site = getCpqSiteName(vscodeInstance);
+
+    // 1. New standard structure: cpq/{sitename}/{processname}/commerce-libraries/{varName}/{varName}.bml
     candidatePaths.push(
-      path.join(workspaceRoot, 'cpq', 'commerce-libraries', commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`),
-      path.join(workspaceRoot, 'library', commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`),
-      path.join(workspaceRoot, commerceMetadata.commerceProcess, commerceMetadata.commerceDocument, 'libraries', varName, `${varName}.bml`)
+      path.join(workspaceRoot, 'cpq', site, cp, 'commerce-libraries', varName, `${varName}.bml`),
+      path.join(workspaceRoot, 'cpq', site, cp, 'commerce-libraries', `${varName}.bml`)
+    );
+
+    // 2. Any cpq/*/{processname}/commerce-libraries/{varName}/{varName}.bml
+    try {
+      const cpqDir = path.join(workspaceRoot, 'cpq');
+      if (fs.existsSync(cpqDir)) {
+        const siteEntries = fs.readdirSync(cpqDir, { withFileTypes: true });
+        for (const s of siteEntries) {
+          if (s.isDirectory() && !s.name.startsWith('.')) {
+            candidatePaths.push(
+              path.join(cpqDir, s.name, cp, 'commerce-libraries', varName, `${varName}.bml`),
+              path.join(cpqDir, s.name, cp, 'commerce-libraries', `${varName}.bml`)
+            );
+          }
+        }
+      }
+    } catch {}
+
+    // 3. Legacy paths
+    candidatePaths.push(
+      path.join(workspaceRoot, 'cpq', 'commerce-libraries', cp, cd, 'libraries', varName, `${varName}.bml`),
+      path.join(workspaceRoot, 'library', cp, cd, 'libraries', varName, `${varName}.bml`),
+      path.join(workspaceRoot, cp, cd, 'libraries', varName, `${varName}.bml`)
     );
   } else {
-    const utilFolder = getUtilLibrariesFolder(vscodeInstance);
+    const site = getCpqSiteName(vscodeInstance);
+    // 1. New standard structure: cpq/{sitename}/util-libraries/{folderName}/{varName}/{varName}.bml
     if (folderName) {
-      candidatePaths.push(path.join(workspaceRoot, utilFolder, folderName, varName, `${varName}.bml`));
+      candidatePaths.push(path.join(workspaceRoot, 'cpq', site, 'util-libraries', folderName, varName, `${varName}.bml`));
     }
-    candidatePaths.push(path.join(workspaceRoot, utilFolder, varName, `${varName}.bml`));
+    candidatePaths.push(path.join(workspaceRoot, 'cpq', site, 'util-libraries', varName, `${varName}.bml`));
 
+    // 2. Any cpq/*/util-libraries/...
+    try {
+      const cpqDir = path.join(workspaceRoot, 'cpq');
+      if (fs.existsSync(cpqDir)) {
+        const siteEntries = fs.readdirSync(cpqDir, { withFileTypes: true });
+        for (const s of siteEntries) {
+          if (s.isDirectory() && !s.name.startsWith('.')) {
+            if (folderName) {
+              candidatePaths.push(path.join(cpqDir, s.name, 'util-libraries', folderName, varName, `${varName}.bml`));
+            }
+            candidatePaths.push(path.join(cpqDir, s.name, 'util-libraries', varName, `${varName}.bml`));
+          }
+        }
+      }
+    } catch {}
+
+    // 3. Legacy cpq-* folders
     try {
       const entries = fs.readdirSync(workspaceRoot, { withFileTypes: true });
       for (const entry of entries) {
@@ -184,17 +257,9 @@ function findLocalFunctionFile(workspaceRoot, varName, folderName, commerceMetad
   }
 
   const searchDirs = [
-    path.join(workspaceRoot, 'cpq', 'commerce-libraries'),
+    path.join(workspaceRoot, 'cpq'),
     path.join(workspaceRoot, 'library')
   ];
-  try {
-    const entries = fs.readdirSync(workspaceRoot, { withFileTypes: true });
-    for (const entry of entries) {
-      if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
-        searchDirs.push(path.join(workspaceRoot, entry.name, 'util-libraries'));
-      }
-    }
-  } catch {}
 
   for (const dir of searchDirs) {
     if (fs.existsSync(dir)) {

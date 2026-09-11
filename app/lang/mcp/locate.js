@@ -16,7 +16,8 @@ function findLocalBmlPath(vscode, variableName) {
     const settings = config.getSettings(vscode);
 
     const searchRoots = [
-        path.join(wsRoot, config.getCommerceLibrariesFolder()),
+        path.join(wsRoot, 'cpq'),
+        path.join(wsRoot, config.getCommerceLibrariesFolder(vscode)),
         path.join(wsRoot, config.getUtilLibrariesFolder(vscode))
     ];
 

@@ -138,13 +138,10 @@ async function runCreateBmlFunction(context, vscode, { transport } = {}) {
             attributes: []
         };
     } else {
-        const commerceFolder = getCommerceLibrariesFolder();
+        const commerceFolder = getCommerceLibrariesFolder(vscode, commerceProcess);
         bmlPath = path.join(
             workspaceRoot,
             commerceFolder,
-            commerceProcess,
-            commerceDocument,
-            'libraries',
             variableName,
             `${variableName}.bml`
         );

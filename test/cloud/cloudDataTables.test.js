@@ -107,12 +107,12 @@ suite('CPQ Cloud Data Tables - Unit Tests', () => {
 
       await exportTableCsvCommand(item, customVscode);
 
-      const expectedDir = path.join(tmpDir, 'cpq', 'datatable');
+      const expectedDir = path.join(tmpDir, 'cpq', 'default', 'data-tables');
       const expectedFile = path.join(expectedDir, 'PartInventory.csv');
 
       assert.ok(suggestedUri, 'showSaveDialog should have been called');
       assert.strictEqual(suggestedUri.fsPath, expectedFile);
-      assert.ok(fs.existsSync(expectedFile), 'CSV file should be written to cpq/datatable');
+      assert.ok(fs.existsSync(expectedFile), 'CSV file should be written to cpq/default/data-tables');
 
       const content = fs.readFileSync(expectedFile, 'utf8');
       assert.ok(content.includes('part_number,qty'));

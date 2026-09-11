@@ -288,8 +288,8 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
                 } else {
                     const commerceProcess = config.getCommerceProcess(vscode) || 'oraclecpqo';
                     const commerceDocument = config.getCommerceDocument(vscode) || 'transaction';
-                    const commerceFolder = config.getCommerceLibrariesFolder();
-                    finalBmlPath = pathLib.join(workspaceRoot, commerceFolder, commerceProcess, commerceDocument, 'libraries', variableName, `${variableName}.bml`);
+                    const commerceFolder = config.getCommerceLibrariesFolder(vscode, commerceProcess);
+                    finalBmlPath = pathLib.join(workspaceRoot, commerceFolder, variableName, `${variableName}.bml`);
                     createdMetadata = {
                         name: displayName,
                         variableName,

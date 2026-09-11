@@ -365,7 +365,7 @@ async function ensureCredentials(context, vscode) {
     return true;
 }
 
-function getCpqInstanceFolder(vscodeOrSiteUrl) {
+function getCpqSiteName(vscodeOrSiteUrl) {
     let siteUrl = '';
     if (typeof vscodeOrSiteUrl === 'string') {
         siteUrl = vscodeOrSiteUrl;
@@ -383,6 +383,17 @@ function getCpqInstanceFolder(vscodeOrSiteUrl) {
     }
     host = (host || '').trim();
     if (!host) {
+        return 'default';
+    }
+    if (/^cpq[-_]/i.test(host)) {
+        return host.replace(/_/g, '-');
+    }
+    return host;
+}
+
+function getCpqInstanceFolder(vscodeOrSiteUrl) {
+    const host = getCpqSiteName(vscodeOrSiteUrl);
+    if (host === 'default') {
         return 'cpq-default';
     }
     if (/^cpq[-_]/i.test(host)) {
@@ -392,16 +403,26 @@ function getCpqInstanceFolder(vscodeOrSiteUrl) {
 }
 
 function getUtilLibrariesFolder(vscodeOrSiteUrl) {
-    const inst = getCpqInstanceFolder(vscodeOrSiteUrl);
-    return pathLib.join(inst, 'util-libraries');
+    const site = getCpqSiteName(vscodeOrSiteUrl);
+    return pathLib.join('cpq', site, 'util-libraries');
 }
 
-function getCommerceLibrariesFolder() {
-    return pathLib.join('cpq', 'commerce-libraries');
+function getCommerceLibrariesFolder(vscodeOrSiteUrl, processName) {
+    if (!vscodeOrSiteUrl && !processName) {
+        return pathLib.join('cpq', 'commerce-libraries');
+    }
+    const site = getCpqSiteName(vscodeOrSiteUrl);
+    const proc = processName || (vscodeOrSiteUrl && typeof vscodeOrSiteUrl === 'object' && getCommerceProcess(vscodeOrSiteUrl)) || '';
+    if (proc) {
+        return pathLib.join('cpq', site, proc, 'commerce-libraries');
+    }
+    return pathLib.join('cpq', site, 'commerce-libraries');
 }
 
-function getDataTableFolder(workspaceRoot) {
-    return workspaceRoot ? pathLib.join(workspaceRoot, 'cpq', 'datatable') : pathLib.join('cpq', 'datatable');
+function getDataTableFolder(workspaceRoot, vscodeOrSiteUrl) {
+    const site = getCpqSiteName(vscodeOrSiteUrl);
+    const rel = pathLib.join('cpq', site, 'data-tables');
+    return workspaceRoot ? pathLib.join(workspaceRoot, rel) : rel;
 }
 
 function isConfigured(vscode) {
@@ -418,6 +439,7 @@ module.exports = {
     getPasswordSecretKey,
     getTokenSecretKey,
     normalizeSiteUrl,
+    getCpqSiteName,
     getCpqInstanceFolder,
     getUtilLibrariesFolder,
     getCommerceLibrariesFolder,

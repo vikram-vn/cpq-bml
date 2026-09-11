@@ -289,7 +289,8 @@ async function listLocalFunctions(context, vscode) {
     const settings = configLib.getSettings(vscode);
 
     const searchRoots = [
-        path.join(wsRoot, configLib.getCommerceLibrariesFolder()),
+        path.join(wsRoot, 'cpq'),
+        path.join(wsRoot, configLib.getCommerceLibrariesFolder(vscode)),
         path.join(wsRoot, configLib.getUtilLibrariesFolder(vscode))
     ];
 

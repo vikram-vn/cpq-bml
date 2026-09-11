@@ -98,7 +98,8 @@ suite("BML REST commands - pull", () => {
 
         const bmlPath = path.join(
           tmpDir,
-          "cpq-sitename",
+          "cpq",
+          "sitename",
           "util-libraries",
           "util",
           "concatString",
@@ -202,7 +203,7 @@ suite("BML REST commands - pull", () => {
         const lines = [];
         await commands.runPullLibraryFunctions(makeContext(), vscode, fakeResultsTerminal(lines), { transport });
 
-        const bmlPath = path.join(tmpDir, "cpq-sitename", "util-libraries", "pricing", "calcTax", "calcTax.bml");
+        const bmlPath = path.join(tmpDir, "cpq", "sitename", "util-libraries", "pricing", "calcTax", "calcTax.bml");
         assert.ok(fs.existsSync(bmlPath));
         assert.strictEqual(fs.readFileSync(bmlPath, "utf8"), "return 0.0;");
         assert.ok(lines.some((l) => l.includes("Pulled calcTax")));
@@ -301,10 +302,9 @@ suite("BML REST commands - pull", () => {
         const bmlPath = path.join(
           tmpDir,
           "cpq",
-          "commerce-libraries",
+          "sitename",
           "oraclecpqo",
-          "transaction",
-          "libraries",
+          "commerce-libraries",
           "currentStep",
           "currentStep.bml",
         );
