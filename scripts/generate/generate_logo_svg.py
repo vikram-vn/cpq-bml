@@ -62,18 +62,30 @@ with open(OUTPUT_SVG, 'w', encoding='utf-8') as f:
 
 print(f'[OK] Written {OUTPUT_SVG}  ({os.path.getsize(OUTPUT_SVG):,} bytes)')
 
-# Also render app/icons/logo.png for package.json marketplace icon (vsce requires PNG)
+# Also render app/icons/logo.png for package.json marketplace icon (VS Code Marketplace standard: 512x512 square PNG)
 OUTPUT_PNG = 'app/icons/logo.png'
 try:
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
-        page = browser.new_page(viewport={'width': 759, 'height': 518})
-        url = 'file:///' + os.path.abspath(OUTPUT_SVG).replace('\\', '/')
-        page.goto(url)
-        page.screenshot(path=OUTPUT_PNG, omit_background=True, clip={'x': 0, 'y': 0, 'width': 759, 'height': 518})
+        page = browser.new_page(viewport={'width': 512, 'height': 512})
+        html = f'''<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * {{ margin: 0; padding: 0; }}
+  html, body {{ width: 512px; height: 512px; overflow: hidden; background: transparent; display: flex; align-items: center; justify-content: center; }}
+  svg {{ width: 470px; height: auto; }}
+</style>
+</head>
+<body>
+  {svg}
+</body>
+</html>'''
+        page.set_content(html)
+        page.screenshot(path=OUTPUT_PNG, omit_background=True)
         browser.close()
-    print(f'[OK] Written {OUTPUT_PNG}  ({os.path.getsize(OUTPUT_PNG):,} bytes, transparent RGBA)')
+    print(f'[OK] Written {OUTPUT_PNG} (512x512 square, {os.path.getsize(OUTPUT_PNG):,} bytes, transparent RGBA)')
 except ImportError:
     pass
 
