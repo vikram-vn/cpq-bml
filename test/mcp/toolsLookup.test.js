@@ -396,10 +396,7 @@ suite("MCP tools - lookup", () => {
           if (opts.path.includes("allProductFamilySetups/_allProductFamilies/attributes")) {
             return jsonResponse(200, { items: [{ variableName: "global_attr", name: "Global Attr", dataType: "TEXT" }] });
           }
-          if (opts.path.includes("allProductFamilySetups/_allProductFamilies/productFamilies")) {
-            return jsonResponse(200, { items: [] });
-          }
-          if (opts.path.includes("allProductFamilySetups")) {
+          if (opts.path.includes("allProductFamilySetups/_allProductFamilies/productFamilies") && !opts.path.includes("/attributes")) {
             return jsonResponse(200, { items: [{ variableName: "pf_laptops", name: "Laptops" }] });
           }
           return jsonResponse(200, { items: [] });

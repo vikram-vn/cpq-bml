@@ -36,7 +36,7 @@ async function listConfigurationAttributes(
 }
 
 // GET /rest/<version>/allProductFamilySetups
-async function listProductFamilies(
+async function listAllProductFamilySetups(
   context,
   vscode,
   { offset = 0, limit = 100, q, fields = "variableName,label", signal } = {},
@@ -52,6 +52,31 @@ async function listProductFamilies(
     vscode,
     {
       path: `/rest/${version}/allProductFamilySetups`,
+      method: "GET",
+      query: queryParams,
+      signal,
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies
+async function listProductFamilies(
+  context,
+  vscode,
+  { allProductFamilies = "_allProductFamilies", offset = 0, limit = 100, q, fields = "variableName,label,name", signal } = {},
+  transport,
+) {
+  const version = getEffectiveRestVersion(vscode, 18);
+  const queryParams = { offset, limit, totalResults: true };
+  if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/allProductFamilySetups/${allProductFamilies}/productFamilies`,
       method: "GET",
       query: queryParams,
       signal,
@@ -96,7 +121,7 @@ async function listProductFamilyAttributes(
 async function listProductLines(
   context,
   vscode,
-  { productFamily, offset = 0, limit = 100, q, fields = "variableName,label,name", signal } = {},
+  { productFamily, offset = 0, limit = 100, q, fields = "variableName,label", signal } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
@@ -117,11 +142,44 @@ async function listProductLines(
   );
 }
 
+// GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/attributes
+async function listProductLineAttributes(
+  context,
+  vscode,
+  {
+    productFamily,
+    productLine,
+    offset = 0,
+    limit = 1000,
+    q,
+    fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
+    signal,
+  } = {},
+  transport,
+) {
+  const version = getEffectiveRestVersion(vscode, 18);
+  const queryParams = { offset, limit, totalResults: true };
+  if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/attributes`,
+      method: "GET",
+      query: queryParams,
+      signal,
+    },
+    transport,
+  );
+}
+
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/models
 async function listModels(
   context,
   vscode,
-  { productFamily, productLine, offset = 0, limit = 100, q, fields = "variableName,label,name", signal } = {},
+  { productFamily, productLine, offset = 0, limit = 100, q, fields = "variableName,label", signal } = {},
   transport,
 ) {
   const version = getEffectiveRestVersion(vscode, 18);
@@ -176,6 +234,112 @@ async function listModelAttributes(
   );
 }
 
+// GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/rules
+async function listProductFamilyRules(
+  context,
+  vscode,
+  { productFamily, offset = 0, limit = 1000, q, signal } = {},
+  transport,
+) {
+  const version = getEffectiveRestVersion(vscode, 18);
+  const queryParams = { offset, limit, totalResults: true };
+  if (q) queryParams.q = q;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/rules`,
+      method: "GET",
+      query: queryParams,
+      signal,
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/rules
+async function listProductLineRules(
+  context,
+  vscode,
+  { productFamily, productLine, offset = 0, limit = 1000, q, signal } = {},
+  transport,
+) {
+  const version = getEffectiveRestVersion(vscode, 18);
+  const queryParams = { offset, limit, totalResults: true };
+  if (q) queryParams.q = q;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/rules`,
+      method: "GET",
+      query: queryParams,
+      signal,
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/models/{model}/rules
+async function listModelRules(
+  context,
+  vscode,
+  { productFamily, productLine, model, offset = 0, limit = 1000, q, signal } = {},
+  transport,
+) {
+  const version = getEffectiveRestVersion(vscode, 18);
+  const queryParams = { offset, limit, totalResults: true };
+  if (q) queryParams.q = q;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/rules`,
+      method: "GET",
+      query: queryParams,
+      signal,
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/models/{model}/bomMappingRules
+async function listModelBomMappingRules(
+  context,
+  vscode,
+  {
+    productFamily,
+    productLine,
+    model,
+    offset = 0,
+    limit = 1000,
+    q,
+    fields,
+    signal,
+  } = {},
+  transport,
+) {
+  const version = getEffectiveRestVersion(vscode, 18);
+  const queryParams = { offset, limit, totalResults: true };
+  if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/bomMappingRules`,
+      method: "GET",
+      query: queryParams,
+      signal,
+    },
+    transport,
+  );
+}
+
 // Pulls and caches remote configuration attributes into .cpq/config.attributes.min.json
 async function syncConfigurationAttributes(
   context,
@@ -193,18 +357,27 @@ async function syncConfigurationAttributes(
       listProductFamilies,
       listProductFamilyAttributes,
       listProductLines,
+      listProductLineAttributes,
       listModels,
+      listModelAttributes,
     },
   );
 }
 
 module.exports = {
   formatConfigurationAttribute,
+  listAllProductFamilySetups,
   listConfigurationAttributes,
   listProductFamilies,
   listProductFamilyAttributes,
+  listProductFamilyRules,
   listProductLines,
+  listProductLineAttributes,
+  listProductLineRules,
   listModels,
   listModelAttributes,
+  listModelRules,
+  listModelBomMappingRules,
   syncConfigurationAttributes,
 };
+

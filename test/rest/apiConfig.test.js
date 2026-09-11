@@ -46,7 +46,28 @@ suite("Configuration Attributes & Product Families (apiConfig)", () => {
     assert.strictEqual(result.body.items[0].variableName, "_config_memory_size");
   });
 
-  test("listProductFamilies dispatches GET to /allProductFamilySetups", async () => {
+  test("listAllProductFamilySetups dispatches GET to /allProductFamilySetups", async () => {
+    const vscode = createFakeVscode({ config: baseConfig() });
+    const sink = {};
+    const transport = async (opts) => {
+      sink.captured = opts;
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({
+          items: [{ variableName: "_allProductFamilies", label: "All Product Families" }],
+        }),
+      };
+    };
+
+    const result = await api.listAllProductFamilySetups(fakeContext(), vscode, {}, transport);
+    assert.strictEqual(sink.captured.method, "GET");
+    assert.ok(sink.captured.path.includes("/allProductFamilySetups"));
+    assert.strictEqual(result.body.items.length, 1);
+    assert.strictEqual(result.body.items[0].variableName, "_allProductFamilies");
+  });
+
+  test("listProductFamilies dispatches GET to /allProductFamilySetups/_allProductFamilies/productFamilies", async () => {
     const vscode = createFakeVscode({ config: baseConfig() });
     const sink = {};
     const transport = async (opts) => {
@@ -62,9 +83,56 @@ suite("Configuration Attributes & Product Families (apiConfig)", () => {
 
     const result = await api.listProductFamilies(fakeContext(), vscode, {}, transport);
     assert.strictEqual(sink.captured.method, "GET");
-    assert.ok(sink.captured.path.includes("/allProductFamilySetups"));
+    assert.ok(sink.captured.path.includes("/allProductFamilySetups/_allProductFamilies/productFamilies"));
     assert.strictEqual(result.body.items.length, 1);
     assert.strictEqual(result.body.items[0].variableName, "servers");
+  });
+
+  test("listProductLineAttributes dispatches GET to line attributes endpoint", async () => {
+    const vscode = createFakeVscode({ config: baseConfig() });
+    const sink = {};
+    const transport = async (opts) => {
+      sink.captured = opts;
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({
+          items: [{ variableName: "line_speed", label: "Speed" }],
+        }),
+      };
+    };
+
+    const result = await api.listProductLineAttributes(fakeContext(), vscode, {
+      productFamily: "servers",
+      productLine: "rack",
+    }, transport);
+    assert.strictEqual(sink.captured.method, "GET");
+    assert.ok(sink.captured.path.includes("/allProductFamilySetups/_allProductFamilies/productFamilies/servers/productLines/rack/attributes"));
+    assert.strictEqual(result.body.items[0].variableName, "line_speed");
+  });
+
+  test("listModelBomMappingRules dispatches GET to model bomMappingRules endpoint", async () => {
+    const vscode = createFakeVscode({ config: baseConfig() });
+    const sink = {};
+    const transport = async (opts) => {
+      sink.captured = opts;
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({
+          items: [{ variableName: "bom_rule_1", label: "BOM Rule 1" }],
+        }),
+      };
+    };
+
+    const result = await api.listModelBomMappingRules(fakeContext(), vscode, {
+      productFamily: "servers",
+      productLine: "rack",
+      model: "poweredge_r750",
+    }, transport);
+    assert.strictEqual(sink.captured.method, "GET");
+    assert.ok(sink.captured.path.includes("/allProductFamilySetups/_allProductFamilies/productFamilies/servers/productLines/rack/models/poweredge_r750/bomMappingRules"));
+    assert.strictEqual(result.body.items[0].variableName, "bom_rule_1");
   });
 
   test("formatConfigurationAttribute normalizes object and string dataTypes cleanly", () => {

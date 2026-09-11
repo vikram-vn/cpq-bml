@@ -88,54 +88,128 @@ async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQue
     cancellable: false
   }, async (progress) => {
     let cloudResults = [];
+    let dataTableResults = [];
+    let transactionResults = [];
     let cloudAvailable = false;
 
     if (isConfigured(vscodeInstance)) {
-      progress.report({ message: 'Querying CPQ Cloud 26A+ Search API...' });
-      try {
-        const res = await api.searchBmlScripts(context, vscodeInstance, {
-          query,
-          limit: 100
-        });
+      progress.report({ message: 'Querying CPQ Cloud 26A+ Search API, Data Tables & Transactions...' });
+      
+      const searchPromises = [
+        // 1. Search BML Scripts & Actions
+        (async () => {
+          try {
+            const res = await api.searchBmlScripts(context, vscodeInstance, {
+              query,
+              limit: 100
+            });
 
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          cloudAvailable = true;
-          const parsed = safeParseJson(res.body);
-          const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
-          cloudResults = items.map(it => {
-            const snippet = it.snippet || (it.scriptText ? it.scriptText.slice(0, 120).trim() : '');
-            let name = it.name || it.variableName || it.scriptName;
-            let type = it.componentType || it.scriptType;
-            let proc = it.commerceProcess || '';
-            let doc = it.commerceDocument || '';
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+              cloudAvailable = true;
+              const parsed = safeParseJson(res.body);
+              const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
+              cloudResults = items.map(it => {
+                const snippet = it.snippet || (it.scriptText ? it.scriptText.slice(0, 120).trim() : '');
+                let name = it.name || it.variableName || it.scriptName;
+                let type = it.componentType || it.scriptType;
+                let proc = it.commerceProcess || '';
+                let doc = it.commerceDocument || '';
 
-            // Handle Swagger globalScript 'path' property (e.g. "Util/math/calc" or "Commerce/oraclecpqo/transaction/actions/cleanSave_t")
-            if (it.path && typeof it.path === 'string') {
-              const parts = it.path.split('/');
-              if (!name) name = parts[parts.length - 1];
-              if (!type) type = parts[0];
-              if (!proc && parts.length > 2) proc = parts[1];
-              if (!doc && parts.length > 3) doc = parts[2];
+                if (it.path && typeof it.path === 'string') {
+                  const parts = it.path.split('/');
+                  if (!name) name = parts[parts.length - 1];
+                  if (!type) type = parts[0];
+                  if (!proc && parts.length > 2) proc = parts[1];
+                  if (!doc && parts.length > 3) doc = parts[2];
+                }
+                if (!name) name = 'Script';
+                if (!type) type = 'Cloud Script';
+
+                return {
+                  category: 'script',
+                  name,
+                  type,
+                  process: proc,
+                  document: doc,
+                  snippet,
+                  scriptText: it.scriptText,
+                  source: 'CPQ Cloud',
+                  path: it.path,
+                  raw: it
+                };
+              });
             }
-            if (!name) name = 'Script';
-            if (!type) type = 'Cloud Script';
+          } catch {
+            // Ignore script search error
+          }
+        })(),
 
-            return {
-              name,
-              type,
-              process: proc,
-              document: doc,
-              snippet,
-              scriptText: it.scriptText,
-              source: 'CPQ Cloud',
-              path: it.path,
-              raw: it
-            };
-          });
-        }
-      } catch {
-        // Fall back to local search
-      }
+        // 2. Search CPQ Data Tables
+        (async () => {
+          try {
+            const dtRes = await api.listDataTables(context, vscodeInstance, { limit: 500 });
+            if (dtRes && dtRes.statusCode >= 200 && dtRes.statusCode < 300) {
+              const parsed = safeParseJson(dtRes.body);
+              const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
+              const lower = query.toLowerCase();
+              dataTableResults = items
+                .filter(it => {
+                  const name = String(it.name || it.variableName || it.tableName || '').toLowerCase();
+                  const label = String(it.label || it.description || '').toLowerCase();
+                  const desc = String(it.description || '').toLowerCase();
+                  return name.includes(lower) || label.includes(lower) || desc.includes(lower);
+                })
+                .map(it => ({
+                  category: 'datatable',
+                  name: it.name || it.variableName || it.tableName,
+                  label: it.label || it.name,
+                  description: it.description || '',
+                  source: 'CPQ Data Tables',
+                  raw: it
+                }));
+            }
+          } catch {
+            // Ignore datatable search error
+          }
+        })(),
+
+        // 3. Search Transactions
+        (async () => {
+          try {
+            const txRes = await api.getTransactions(context, vscodeInstance, {
+              limit: 50,
+              fields: '_id,transactionID_t,status_t,customer_t,transactionName_t'
+            });
+            if (txRes && txRes.statusCode >= 200 && txRes.statusCode < 300) {
+              const parsed = safeParseJson(txRes.body);
+              const items = Array.isArray(parsed) ? parsed : ((parsed && parsed.items) || []);
+              const lower = query.toLowerCase();
+              transactionResults = items
+                .filter(it => {
+                  const id = String(it.transactionID_t || it._id || '').toLowerCase();
+                  const cust = String(it.customer_t || '').toLowerCase();
+                  const name = String(it.transactionName_t || '').toLowerCase();
+                  const status = String(it.status_t || '').toLowerCase();
+                  return id.includes(lower) || cust.includes(lower) || name.includes(lower) || status.includes(lower);
+                })
+                .map(it => ({
+                  category: 'transaction',
+                  name: it.transactionID_t || it._id,
+                  id: it._id,
+                  transactionID_t: it.transactionID_t,
+                  customer: it.customer_t,
+                  status: it.status_t,
+                  source: 'Recent Transactions',
+                  raw: it
+                }));
+            }
+          } catch {
+            // Ignore transaction search error
+          }
+        })()
+      ];
+
+      await Promise.allSettled(searchPromises);
     }
 
     // Local workspace search
@@ -145,7 +219,7 @@ async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQue
     // Combine results for quick pick
     const quickPickItems = [];
 
-    // Add Cloud Results
+    // Add Cloud Script Results
     if (cloudResults.length > 0) {
       quickPickItems.push({
         label: `Cloud Matches (${cloudResults.length})`,
@@ -157,6 +231,40 @@ async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQue
           label: `$(cloud) ${item.name}`,
           description: `[${item.type}] ${item.process ? item.process + '/' + item.document : ''}`,
           detail: item.snippet || 'Click to view full BML script',
+          data: item
+        });
+      }
+    }
+
+    // Add Data Table Results
+    if (dataTableResults.length > 0) {
+      quickPickItems.push({
+        label: `Data Table Matches (${dataTableResults.length})`,
+        kind: -1 // Separator
+      });
+
+      for (const item of dataTableResults) {
+        quickPickItems.push({
+          label: `$(database) ${item.name}`,
+          description: item.label !== item.name ? item.label : 'Data Table',
+          detail: item.description || 'Click to query table in BMQL Live Console or export CSV',
+          data: item
+        });
+      }
+    }
+
+    // Add Transaction Results
+    if (transactionResults.length > 0) {
+      quickPickItems.push({
+        label: `Transaction Matches (${transactionResults.length})`,
+        kind: -1 // Separator
+      });
+
+      for (const item of transactionResults) {
+        quickPickItems.push({
+          label: `$(history) ${item.name}`,
+          description: item.status ? `[${item.status}]` : 'Transaction',
+          detail: item.customer ? `Customer: ${item.customer}` : 'Click to inspect transaction details',
           data: item
         });
       }
@@ -184,9 +292,11 @@ async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQue
       return;
     }
 
+    const totalMatches = cloudResults.length + dataTableResults.length + transactionResults.length + localResults.length;
+
     // Show interactive quick pick
     const selected = await vscodeInstance.window.showQuickPick(quickPickItems, {
-      placeHolder: `Found ${cloudResults.length} cloud & ${localResults.length} local matches for "${query}"`,
+      placeHolder: `Found ${totalMatches} match(es) across scripts, data tables, transactions & local workspace for "${query}"`,
       matchOnDescription: true,
       matchOnDetail: true
     });
@@ -194,6 +304,59 @@ async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQue
     if (!selected || !selected.data) return;
 
     const data = selected.data;
+
+    if (data.category === 'datatable') {
+      const actionChoice = await vscodeInstance.window.showQuickPick([
+        { label: '$(play) Query Table in BMQL Live Console', action: 'query' },
+        { label: '$(cloud-download) Export Table to CSV', action: 'export' },
+        { label: '$(json) View Table Schema Definition', action: 'schema' }
+      ], { placeHolder: `Action for Data Table: ${data.name}` });
+
+      if (!actionChoice) return;
+
+      if (actionChoice.action === 'query') {
+        if (vscodeInstance.commands?.executeCommand) {
+          await vscodeInstance.commands.executeCommand('cpqBml.cloud.queryDataTable', { data: data.raw || { name: data.name } });
+        }
+      } else if (actionChoice.action === 'export') {
+        if (vscodeInstance.commands?.executeCommand) {
+          await vscodeInstance.commands.executeCommand('cpqBml.cloud.exportDataTableCsv', { data: data.raw || { name: data.name } });
+        }
+      } else if (actionChoice.action === 'schema') {
+        const doc = await vscodeInstance.workspace.openTextDocument({
+          content: JSON.stringify(data.raw, null, 2),
+          language: 'json'
+        });
+        await vscodeInstance.window.showTextDocument(doc);
+      }
+      return;
+    }
+
+    if (data.category === 'transaction') {
+      const actionChoice = await vscodeInstance.window.showQuickPick([
+        { label: '$(inspect) Inspect Transaction Details', action: 'inspect' },
+        { label: '$(debug-alt) Debug Active BML on this Transaction', action: 'debug' },
+        { label: '$(copy) Copy Transaction ID to Clipboard', action: 'copy' }
+      ], { placeHolder: `Action for Transaction: ${data.name}` });
+
+      if (!actionChoice) return;
+
+      if (actionChoice.action === 'inspect') {
+        if (vscodeInstance.commands?.executeCommand) {
+          await vscodeInstance.commands.executeCommand('cpqBml.cloud.inspectTransaction', { data: data.raw });
+        }
+      } else if (actionChoice.action === 'debug') {
+        if (vscodeInstance.commands?.executeCommand) {
+          await vscodeInstance.commands.executeCommand('cpqBml.cloud.debugOnTransaction', { data: data.raw });
+        }
+      } else if (actionChoice.action === 'copy') {
+        if (vscodeInstance.commands?.executeCommand) {
+          await vscodeInstance.commands.executeCommand('cpqBml.cloud.copyTransactionId', { data: data.raw });
+        }
+      }
+      return;
+    }
+
     if (data.file) {
       // Local workspace file match -> open at line
       const doc = await vscodeInstance.workspace.openTextDocument(vscodeInstance.Uri.file(data.file));

@@ -62,10 +62,56 @@ def generate_deployment_svg():
 </svg>
 '''
 
+def generate_util_libraries_svg():
+    """24x24 Util Libraries icon: clean library books with function symbol."""
+    return '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <!-- Book 1 -->
+  <path d="M4 19.5V5.5C4 4.67157 4.67157 4 5.5 4H7.5C8.32843 4 9 4.67157 9 5.5V19.5" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="4" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Book 2 (slanted) -->
+  <path d="M10.5 4.5L14 5.5L11 19.5L7.5 18.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Book 3 -->
+  <path d="M15 19.5V7C15 6.17157 15.6716 5.5 16.5 5.5H18.5C19.3284 5.5 20 6.17157 20 7V19.5" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="15" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Shelf Base -->
+  <line x1="2.5" y1="20" x2="21.5" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+'''
+
+def generate_commerce_svg():
+    """24x24 Commerce icon: shopping cart with document / pipeline badge."""
+    return '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <!-- Cart Handle & Basket -->
+  <path d="M3 4H5.5L8 14.5H18L20.5 6.5H6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Wheels -->
+  <circle cx="9" cy="18.5" r="1.5" fill="currentColor"/>
+  <circle cx="17" cy="18.5" r="1.5" fill="currentColor"/>
+  <!-- Document / Tag Inside Cart -->
+  <path d="M11 8.5H15M11 11.5H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+'''
+
+def generate_config_svg():
+    """24x24 Configuration / Product Families icon: hierarchy tree with product models."""
+    return '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <!-- Root Family Node -->
+  <rect x="9" y="3" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Branch lines -->
+  <path d="M12 8V12M12 12H6V15M12 12H18V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Left Model Node -->
+  <rect x="3" y="15" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Right Model Node -->
+  <rect x="15" y="15" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+</svg>
+'''
+
 def main():
     os.makedirs(ICONS_DIR, exist_ok=True)
     
     files = {
+        'util-libraries.svg': generate_util_libraries_svg(),
+        'commerce.svg': generate_commerce_svg(),
+        'config.svg': generate_config_svg(),
         'datatables.svg': generate_datatables_svg(),
         'transactions.svg': generate_transactions_svg(),
         'deployment.svg': generate_deployment_svg()
@@ -79,3 +125,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

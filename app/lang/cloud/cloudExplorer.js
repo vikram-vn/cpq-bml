@@ -92,32 +92,23 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
   }
 
   async function fetchRemoteFunctions() {
-    if (cachedUtilFunctions && cachedCommerceFunctions && cachedCommerceActions) {
-      return { util: cachedUtilFunctions, commerce: cachedCommerceFunctions, actions: cachedCommerceActions };
+    if (cachedUtilFunctions) {
+      return { util: cachedUtilFunctions };
     }
     if (isLoading) {
-      return { util: cachedUtilFunctions || [], commerce: cachedCommerceFunctions || [], actions: cachedCommerceActions || [] };
+      return { util: cachedUtilFunctions || [] };
     }
     isLoading = true;
 
     try {
-      const [utilResult, commerceResult, actionsResult] = await Promise.allSettled([
-        fetchUtilFunctions(vscodeInstance, context),
-        fetchCommerceFunctions(vscodeInstance, context),
-        fetchCommerceActions(vscodeInstance, context)
-      ]);
-
-      const utilItems = utilResult.status === 'fulfilled' ? utilResult.value : [];
-      const commerceItems = commerceResult.status === 'fulfilled' ? commerceResult.value : [];
-      const actionItems = actionsResult.status === 'fulfilled' ? actionsResult.value : [];
-
-      cachedUtilFunctions = utilItems;
-      cachedCommerceFunctions = commerceItems;
-      cachedCommerceActions = actionItems;
-      cachedUtilGroups = groupFunctionsByFolder(utilItems);
-      cachedCommerceGroups = groupFunctionsByFolder(commerceItems);
-
-      return { util: utilItems, commerce: commerceItems, actions: actionItems };
+      const utilItems = await fetchUtilFunctions(vscodeInstance, context);
+      cachedUtilFunctions = Array.isArray(utilItems) ? utilItems : [];
+      cachedUtilGroups = groupFunctionsByFolder(cachedUtilFunctions);
+      return { util: cachedUtilFunctions };
+    } catch {
+      cachedUtilFunctions = [];
+      cachedUtilGroups = new Map();
+      return { util: [] };
     } finally {
       isLoading = false;
     }
@@ -353,15 +344,10 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
 
     if (!element) {
       await fetchRemoteFunctions();
-      const settings = getSettings(vscodeInstance);
-      const commerceProcess = settings.commerceProcess || 'oraclecpqo';
-      const commerceDocument = settings.commerceDocument || 'transaction';
 
       if (filterQuery) {
         const filteredUtil = (cachedUtilFunctions || []).filter(fn => matchesFunction(fn, filterQuery));
-        const filteredCommerce = (cachedCommerceFunctions || []).filter(fn => matchesFunction(fn, filterQuery));
-        const filteredActions = (cachedCommerceActions || []).filter(act => matchesAction(act, filterQuery));
-        const totalMatches = filteredUtil.length + filteredCommerce.length + filteredActions.length;
+        const totalMatches = filteredUtil.length;
 
         const filterNode = {
           type: 'filterInfo',
@@ -374,7 +360,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
             filterNode,
             {
               type: 'empty',
-              label: `No functions or actions match "${filterQuery}"`,
+              label: `No util functions match "${filterQuery}"`,
               tooltip: 'Click to clear filter',
               command: {
                 command: 'cpqBml.cloud.clearFilter',
@@ -384,146 +370,62 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
           ];
         }
 
-        const nodes = [filterNode];
-        if (filteredUtil.length > 0) {
-          nodes.push({
-            type: 'category',
+        const groups = groupFunctionsByFolder(filteredUtil);
+        const folderNodes = [];
+        for (const [folderName, list] of groups.entries()) {
+          folderNodes.push({
+            type: 'folder',
             category: 'util',
-            label: `Util Libraries (${filteredUtil.length} match${filteredUtil.length === 1 ? '' : 'es'})`,
-            count: filteredUtil.length,
-            groups: groupFunctionsByFolder(filteredUtil),
+            folderName,
+            count: list.length,
+            functions: list,
             isFiltered: true
           });
         }
-        if (filteredCommerce.length > 0) {
-          nodes.push({
-            type: 'category',
-            category: 'commerce',
-            label: `Commerce Libraries (${commerceProcess}/${commerceDocument}) (${filteredCommerce.length} match${filteredCommerce.length === 1 ? '' : 'es'})`,
-            count: filteredCommerce.length,
-            groups: groupFunctionsByFolder(filteredCommerce),
-            commerceProcess,
-            commerceDocument,
-            isFiltered: true
-          });
-        }
-        if (filteredActions.length > 0) {
-          nodes.push({
-            type: 'category',
-            category: 'actions',
-            label: `Commerce Document Actions (${commerceProcess}) (${filteredActions.length} match${filteredActions.length === 1 ? '' : 'es'})`,
-            count: filteredActions.length,
-            filteredActions,
-            commerceProcess,
-            commerceDocument,
-            isFiltered: true
-          });
-        }
-        return nodes;
+        folderNodes.sort((a, b) => a.folderName.localeCompare(b.folderName));
+        return [filterNode, ...folderNodes];
       }
 
-      const nodes = [
-        {
-          type: 'category',
-          category: 'util',
-          label: 'Util Libraries',
-          count: cachedUtilFunctions ? cachedUtilFunctions.length : 0,
-          groups: cachedUtilGroups
-        },
-        {
-          type: 'category',
-          category: 'commerce',
-          label: `Commerce Libraries (${commerceProcess}/${commerceDocument})`,
-          count: cachedCommerceFunctions ? cachedCommerceFunctions.length : 0,
-          groups: cachedCommerceGroups,
-          commerceProcess,
-          commerceDocument
-        },
-        {
-          type: 'category',
-          category: 'actions',
-          label: `Commerce Document Actions (${commerceProcess})`,
-          count: cachedCommerceActions ? cachedCommerceActions.length : 0,
-          commerceProcess,
-          commerceDocument
-        }
-      ];
-      return nodes;
-    }
-
-    if (element.type === 'category') {
-      if (element.category === 'actions') {
-        const actionsToDisplay = element.isFiltered
-          ? (element.filteredActions || [])
-          : (cachedCommerceActions || []);
-
-        if (!actionsToDisplay || actionsToDisplay.length === 0) {
-          return [{
-            type: 'empty',
-            label: element.isFiltered
-              ? `No actions match "${filterQuery}"`
-              : 'No commerce document actions found (Click to switch process)',
-            command: element.isFiltered ? {
-              command: 'cpqBml.cloud.clearFilter',
-              title: 'Clear Filter'
-            } : {
-              command: 'cpqBml.cloud.switchCommerceProcess',
-              title: 'Switch Commerce Process'
-            }
-          }];
-        }
-
-        const docGroups = new Map();
-        for (const action of actionsToDisplay) {
-          const docName = action.commerceDocument || 'transaction';
-          if (!docGroups.has(docName)) {
-            docGroups.set(docName, []);
-          }
-          docGroups.get(docName).push(action);
-        }
-
-        if (docGroups.size > 1) {
-          const docFolders = [];
-          for (const [docName, actions] of docGroups.entries()) {
-            docFolders.push({
-              type: 'actionFolder',
-              docName,
-              commerceProcess: element.commerceProcess,
-              count: actions.length,
-              actions
-            });
-          }
-          docFolders.sort((a, b) => a.docName.localeCompare(b.docName));
-          return docFolders;
-        }
-
-        return actionsToDisplay.map(action => ({
-          type: 'action',
-          data: action
-        }));
-      }
-
-      if (!element.groups || element.groups.size === 0) {
+      if (!cachedUtilGroups || cachedUtilGroups.size === 0) {
         return [{
           type: 'empty',
-          label: `No ${element.category === 'commerce' ? 'commerce' : 'util'} functions found`
+          label: 'No util libraries found'
         }];
       }
 
       const folderNodes = [];
-      for (const [folderName, list] of element.groups.entries()) {
+      for (const [folderName, list] of cachedUtilGroups.entries()) {
         folderNodes.push({
           type: 'folder',
-          category: element.category,
-          isCommerce: element.category === 'commerce',
-          commerceProcess: element.commerceProcess,
-          commerceDocument: element.commerceDocument,
+          category: 'util',
           folderName,
           count: list.length,
           functions: list
         });
       }
+      folderNodes.sort((a, b) => a.folderName.localeCompare(b.folderName));
+      return folderNodes;
+    }
 
+    if (element.type === 'category') {
+      const groups = element.groups || (element.functions ? groupFunctionsByFolder(element.functions) : cachedUtilGroups);
+      if (!groups || groups.size === 0) {
+        return [{
+          type: 'empty',
+          label: 'No util functions found'
+        }];
+      }
+      const folderNodes = [];
+      for (const [folderName, list] of groups.entries()) {
+        folderNodes.push({
+          type: 'folder',
+          category: element.category || 'util',
+          isCommerce: element.category === 'commerce',
+          folderName,
+          count: list.length,
+          functions: list
+        });
+      }
       folderNodes.sort((a, b) => a.folderName.localeCompare(b.folderName));
       return folderNodes;
     }
@@ -547,10 +449,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
 
   function refresh() {
     cachedUtilFunctions = null;
-    cachedCommerceFunctions = null;
-    cachedCommerceActions = null;
     cachedUtilGroups = null;
-    cachedCommerceGroups = null;
     onDidChangeTreeDataEmitter.fire();
   }
 
@@ -563,9 +462,9 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     getFilter,
     clearFilter,
     fetchRemoteFunctions,
-    getCachedFunctions: () => (cachedUtilFunctions || []).concat(cachedCommerceFunctions || []),
-    getCachedActions: () => cachedCommerceActions || [],
-    getCachedGroups: () => ({ util: cachedUtilGroups, commerce: cachedCommerceGroups })
+    getCachedFunctions: () => cachedUtilFunctions || [],
+    getCachedActions: () => [],
+    getCachedGroups: () => ({ util: cachedUtilGroups })
   };
 }
 

@@ -135,4 +135,74 @@ suite('CPQ Global BML Script Search - Unit Tests', () => {
     assert.ok(localItem);
     assert.ok(localItem.data.file.includes(tempDir));
   });
+
+  test('runGlobalBmlSearch includes Data Tables and Transactions in search results', async () => {
+    const origListDt = api.listDataTables;
+    const origGetTx = api.getTransactions;
+
+    api.listDataTables = async function () {
+      return {
+        statusCode: 200,
+        body: {
+          items: [
+            { name: 'TaxRates', description: 'Tax rate tables by jurisdiction' },
+            { name: 'DiscountMatrix', description: 'Discount tiers' }
+          ]
+        }
+      };
+    };
+
+    api.getTransactions = async function () {
+      return {
+        statusCode: 200,
+        body: {
+          items: [
+            { _id: '1001', transactionID_t: 'TX-TAX-01', customer_t: 'Acme Corp', status_t: 'Draft' },
+            { _id: '1002', transactionID_t: 'TX-DISC-02', customer_t: 'Globex', status_t: 'Active' }
+          ]
+        }
+      };
+    };
+
+    try {
+      const mockVscode = createMockVscode({
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: tempDir } }],
+          getConfiguration: function () {
+            return {
+              get: function (key, def) {
+                if (key === 'connection.siteUrl') return 'https://test.bigmachines.com';
+                if (key === 'connection.username') return 'testuser';
+                return def;
+              }
+            };
+          },
+          openTextDocument: async function (target) {
+            mockVscode._openedTarget = target;
+            return target;
+          }
+        }
+      });
+
+      await runGlobalBmlSearch({}, mockVscode, 'Tax');
+      const items = mockVscode.getQuickPickItems();
+      assert.ok(items);
+
+      // Verify Data Table match
+      assert.ok(items.some(it => it.label && it.label.includes('Data Table Matches')));
+      const dtItem = items.find(it => it.data && it.data.category === 'datatable');
+      assert.ok(dtItem);
+      assert.strictEqual(dtItem.data.name, 'TaxRates');
+
+      // Verify Transaction match
+      assert.ok(items.some(it => it.label && it.label.includes('Transaction Matches')));
+      const txItem = items.find(it => it.data && it.data.category === 'transaction');
+      assert.ok(txItem);
+      assert.strictEqual(txItem.data.name, 'TX-TAX-01');
+    } finally {
+      api.listDataTables = origListDt;
+      api.getTransactions = origGetTx;
+    }
+  });
 });
+

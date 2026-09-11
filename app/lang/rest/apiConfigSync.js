@@ -68,6 +68,7 @@ async function syncConfigurationAttributes(
     listProductFamilies,
     listProductFamilyAttributes,
     listProductLines,
+    listProductLineAttributes,
     listModels,
   } = endpoints;
 
@@ -265,6 +266,29 @@ async function syncConfigurationAttributes(
                 rawLines.map(async (line) => {
                   if (signal && signal.aborted) throw new Error("Request aborted");
                   const lineVar = line.variableName || line.id || line.name;
+                  if (typeof listProductLineAttributes === "function") {
+                    try {
+                      const lineAttrRes = await listProductLineAttributes(
+                        context,
+                        vscode,
+                        { productFamily: fam.variableName, productLine: lineVar, signal },
+                        transport,
+                      );
+                      const pageItems = lineAttrRes && lineAttrRes.body
+                        ? (Array.isArray(lineAttrRes.body) ? lineAttrRes.body : (Array.isArray(lineAttrRes.body.items) ? lineAttrRes.body.items : []))
+                        : [];
+                      for (const item of pageItems) {
+                        const formatted = formatConfigurationAttribute(item, fam.variableName);
+                        if (formatted) {
+                          formatted.productLine = lineVar;
+                          const existingIdx = attributes.findIndex((a) => a.variableName === formatted.variableName);
+                          if (existingIdx === -1) {
+                            attributes.push(formatted);
+                          }
+                        }
+                      }
+                    } catch (e) {}
+                  }
                   try {
                     let modOffset = 0;
                     const modPageSize = 100;

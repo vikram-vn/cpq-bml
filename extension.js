@@ -26,6 +26,8 @@ const { registerActionSimulatorCommands } = require("@/lang/rest/apiActionSimula
 const { registerInstanceMonitorCommands } = require("@/lang/rest/instanceMonitor");
 const { getSessionKeepAlive } = require("@/lang/rest/sessionKeepAlive");
 const { registerCloudExplorer } = require("@/lang/cloud/cloudExplorer");
+const { registerCommerceExplorer } = require("@/lang/cloud/cloudCommerceExplorer");
+const { registerConfigExplorer } = require("@/lang/cloud/cloudConfigExplorer");
 const { registerCloudTypeDefCommands } = require("@/lang/cloud/cloudTypeDefSync");
 const { registerCloudDataTables } = require("@/lang/cloud/cloudDataTables");
 const { registerCloudTransactions } = require("@/lang/cloud/cloudTransactions");
@@ -112,6 +114,8 @@ function activate(context) {
   );
 
   registerCloudExplorer(context);
+  registerCommerceExplorer(context);
+  registerConfigExplorer(context);
   registerCloudTypeDefCommands(context);
   registerCloudDataTables(context);
   registerCloudTransactions(context);

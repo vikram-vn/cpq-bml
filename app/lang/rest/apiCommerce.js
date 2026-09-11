@@ -205,6 +205,46 @@ async function getCommerceAction(
   );
 }
 
+// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/rules
+// or fallback to /rest/<version>/commerceProcesses/<process>/rules
+async function listCommerceRules(
+  context,
+  vscode,
+  { process, document, offset = 0, limit = 1000 } = {},
+  transport,
+) {
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+
+  const query = { limit };
+  if (offset > 0) query.offset = offset;
+
+  let res = await call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/rules`,
+      method: "GET",
+      query,
+    },
+    transport,
+  );
+  if (res.statusCode >= 400) {
+    res = await call(
+      context,
+      vscode,
+      {
+        path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/rules`,
+        method: "GET",
+        query,
+      },
+      transport,
+    );
+  }
+  return res;
+}
+
 // POST /rest/<version>/commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer
 // Executes the CPQ Commerce Pipeline Viewer for a transaction (rules sequence, attribute changes, timings).
 async function runPipelineViewer(
@@ -238,6 +278,8 @@ module.exports = {
   getTransaction,
   listCommerceActions,
   getCommerceAction,
+  listCommerceRules,
   runPipelineViewer,
   ...attributesApi,
 };
+

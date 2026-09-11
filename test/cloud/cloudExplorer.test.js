@@ -537,42 +537,25 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       try {
         const explorer = createCloudExplorer(mockVscode, {});
 
-        // Unfiltered root
+        // Unfiltered root returns util library folders (pricing, stringUtils)
         const rootUnfiltered = await explorer.getChildren();
-        assert.strictEqual(rootUnfiltered.length, 3);
+        assert.strictEqual(rootUnfiltered.length, 2);
+        assert.strictEqual(rootUnfiltered[0].folderName, 'pricing');
+        assert.strictEqual(rootUnfiltered[1].folderName, 'stringUtils');
 
-        // Filter for "calc" -> matches calcDiscount (util), calcCommerceTax (commerce), calcTotals_t (action)
+        // Filter for "calc" -> matches calcDiscount (util in pricing folder)
         explorer.setFilter('calc');
         const rootFiltered = await explorer.getChildren();
-        assert.strictEqual(rootFiltered.length, 4); // filterInfo + util + commerce + actions
+        assert.strictEqual(rootFiltered.length, 2); // filterInfo + pricing folder
         assert.strictEqual(rootFiltered[0].type, 'filterInfo');
-        assert.strictEqual(rootFiltered[0].totalMatches, 3);
-        assert.strictEqual(rootFiltered[1].category, 'util');
-        assert.strictEqual(rootFiltered[1].count, 1);
-        assert.strictEqual(rootFiltered[2].category, 'commerce');
-        assert.strictEqual(rootFiltered[2].count, 1);
-        assert.strictEqual(rootFiltered[3].category, 'actions');
-        assert.strictEqual(rootFiltered[3].count, 1);
+        assert.strictEqual(rootFiltered[0].totalMatches, 1);
+        assert.strictEqual(rootFiltered[1].type, 'folder');
+        assert.strictEqual(rootFiltered[1].folderName, 'pricing');
 
-        // Check children of util category
-        const utilFolders = await explorer.getChildren(rootFiltered[1]);
-        assert.strictEqual(utilFolders.length, 1);
-        assert.strictEqual(utilFolders[0].folderName, 'pricing');
-        const utilFuncs = await explorer.getChildren(utilFolders[0]);
+        // Check children of filtered pricing folder
+        const utilFuncs = await explorer.getChildren(rootFiltered[1]);
         assert.strictEqual(utilFuncs.length, 1);
         assert.strictEqual(utilFuncs[0].data.variableName, 'calcDiscount');
-
-        // Check children of actions category
-        const actionsList = await explorer.getChildren(rootFiltered[3]);
-        assert.strictEqual(actionsList.length, 1);
-        assert.strictEqual(actionsList[0].data.variableName, 'calcTotals_t');
-
-        // Filter for "Submit" -> only matches action submitOrder_t
-        explorer.setFilter('submit');
-        const submitRoot = await explorer.getChildren();
-        assert.strictEqual(submitRoot.length, 2); // filterInfo + actions
-        assert.strictEqual(submitRoot[0].totalMatches, 1);
-        assert.strictEqual(submitRoot[1].category, 'actions');
 
         // Filter for something nonexistent -> empty state
         explorer.setFilter('xyzNonExistent999');
@@ -581,13 +564,13 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
         assert.strictEqual(emptyRoot[0].type, 'filterInfo');
         assert.strictEqual(emptyRoot[0].totalMatches, 0);
         assert.strictEqual(emptyRoot[1].type, 'empty');
-        assert.ok(emptyRoot[1].label.includes('No functions or actions match'));
+        assert.ok(emptyRoot[1].label.includes('No util functions match'));
         assert.strictEqual(emptyRoot[1].command.command, 'cpqBml.cloud.clearFilter');
 
         // Clearing filter restores full tree
         explorer.clearFilter();
         const restoredRoot = await explorer.getChildren();
-        assert.strictEqual(restoredRoot.length, 3);
+        assert.strictEqual(restoredRoot.length, 2);
       } finally {
         api.listLibraryFunctions = origListUtil;
         api.listCommerceActions = origListActions;
@@ -709,10 +692,9 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
         // Test opening QuickPick
         await searchExplorerCommand(explorer, mockVscode, {});
         assert.ok(quickPickPicks);
-        assert.ok(quickPickPicks.length >= 3); // Filter prompt + atoisafe + cleanSave_t
+        assert.ok(quickPickPicks.length >= 2); // Filter prompt + atoisafe
         assert.ok(quickPickPicks[0].label.includes('Filter Cloud Explorer Tree View'));
         assert.ok(quickPickPicks.some(p => p.data && p.data.variableName === 'atoisafe'));
-        assert.ok(quickPickPicks.some(p => p.data && p.data.variableName === 'cleanSave_t'));
 
         // Test selecting a function item -> pulls and opens file
         const atoisafePick = quickPickPicks.find(p => p.data && p.data.variableName === 'atoisafe');

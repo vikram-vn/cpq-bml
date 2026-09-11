@@ -107,8 +107,18 @@
       "cpq-bml-sidebar": [
         {
           "id": "cpqBml.cloudExplorer",
-          "name": "Cloud Functions & Actions Explorer",
-          "icon": "app/icons/sidebar.svg"
+          "name": "Util Libraries",
+          "icon": "app/icons/util-libraries.svg"
+        },
+        {
+          "id": "cpqBml.commerceExplorer",
+          "name": "Commerce",
+          "icon": "app/icons/commerce.svg"
+        },
+        {
+          "id": "cpqBml.configExplorer",
+          "name": "Configuration",
+          "icon": "app/icons/config.svg"
         },
         {
           "id": "cpqBml.cloudDataTables",
@@ -524,6 +534,24 @@
         "title": "CPQ-BML: View Commerce Document Action Definition",
         "icon": "$(zap)",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.commerce.refresh",
+        "title": "CPQ-BML: Refresh Commerce Explorer",
+        "icon": "$(refresh)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.commerce.switchProcess",
+        "title": "CPQ-BML: Switch Active Commerce Process",
+        "icon": "$(arrow-swap)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.config.refresh",
+        "title": "CPQ-BML: Refresh Configuration Explorer",
+        "icon": "$(refresh)",
+        "category": "BML"
       }
     ],
     "menus": {
@@ -623,6 +651,21 @@
         {
           "command": "cpqBml.cloud.refreshDeploymentCenter",
           "when": "view == cpqBml.deploymentCenter",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.commerce.switchProcess",
+          "when": "view == cpqBml.commerceExplorer",
+          "group": "navigation@0"
+        },
+        {
+          "command": "cpqBml.commerce.refresh",
+          "when": "view == cpqBml.commerceExplorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.config.refresh",
+          "when": "view == cpqBml.configExplorer",
           "group": "navigation@1"
         }
       ],
