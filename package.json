@@ -99,7 +99,7 @@
         {
           "id": "cpq-bml-sidebar",
           "title": "Oracle CPQ Cloud",
-          "icon": "app/icons/bml.svg"
+          "icon": "app/icons/sidebar.svg"
         }
       ]
     },
@@ -107,19 +107,23 @@
       "cpq-bml-sidebar": [
         {
           "id": "cpqBml.cloudExplorer",
-          "name": "Cloud Functions & Actions Explorer"
+          "name": "Cloud Functions & Actions Explorer",
+          "icon": "app/icons/sidebar.svg"
         },
         {
           "id": "cpqBml.cloudDataTables",
-          "name": "CPQ Data Tables"
+          "name": "CPQ Data Tables",
+          "icon": "app/icons/datatables.svg"
         },
         {
           "id": "cpqBml.recentTransactions",
-          "name": "Recent Transactions / Quotes"
+          "name": "Recent Transactions / Quotes",
+          "icon": "app/icons/transactions.svg"
         },
         {
           "id": "cpqBml.deploymentCenter",
-          "name": "Deployment Center & Task Monitor"
+          "name": "Deployment Center & Task Monitor",
+          "icon": "app/icons/deployment.svg"
         }
       ]
     },
@@ -168,7 +172,6 @@
         "path": "./app/lang/syntaxes/xslt.tmLanguage.min.json"
       }
     ],
-
     "themes": [
       {
         "label": "BML Dark Default",
@@ -225,7 +228,6 @@
         "command": "cpqBml.importTeamProfiles",
         "title": "CPQ-BML: Import Team Profiles"
       },
-
       {
         "command": "cpqBml.rest.setPassword",
         "title": "CPQ-BML: Set CPQ Password"
@@ -840,7 +842,17 @@
         "cpqBml.debug.concurrency": {
           "type": "integer",
           "default": 2,
-          "enum": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "enum": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
           "minimum": 2,
           "maximum": 10,
           "description": "Number of transactions to debug simultaneously in parallel (min 2, max 10). Default is 2."
@@ -857,6 +869,7 @@
     "crawl:docs": "python scripts/docs/bml_crawler/crawler.py",
     "crawl:cpq": "python scripts/docs/crawl_cpq_words.py",
     "generate:intellisense": "python scripts/bml_intellisense/generate_intellisense.py",
+    "generate:icons": "python scripts/generate/generate_icons.py",
     "generate:docs": "npm run crawl:docs && npm run generate:intellisense",
     "build": "npm run package",
     "release": "python scripts/release/release.py",

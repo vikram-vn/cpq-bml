@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <!-- Rocket Body -->
+  <path d="M12 2.5C9.5 5 8.5 9 8.5 13.5H15.5C15.5 9 14.5 5 12 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Left Fin -->
+  <path d="M8.5 11.5L5 14V17.5L8.5 15.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Right Fin -->
+  <path d="M15.5 11.5L19 14V17.5L15.5 15.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Porthole Window -->
+  <circle cx="12" cy="8.5" r="1.5" fill="currentColor"/>
+  <!-- Exhaust Flame -->
+  <path d="M10 15C10.5 17 11.5 19 12 21.5C12.5 19 13.5 17 14 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

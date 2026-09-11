@@ -1,22 +1,17 @@
 """
 generate_bml_svg.py
-Generates app/icons/bml.svg — an enhanced 3D extruded "B" letter.
+Generates app/icons/bml.svg — the stylized BML "B" language icon
+with the outline contour and layered depth.
 
 Fully self-contained: no external file dependencies.
 
 Run from the project root:
     python scripts/generate/generate_bml_svg.py
 """
-import re
 import os
 
-# ── Output path ───────────────────────────────────────────────────────────────
-OUTPUT_SVG = 'app/icons/bml.svg'
-# ─────────────────────────────────────────────────────────────────────────────
+OUTPUT_SVG = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'app', 'icons', 'bml.svg')
 
-# ── Glyph path data (Arial Bold "B", vectorized at 1024×1024) ────────────────
-# Source glyph dimensions: width=1024, height=1024
-# transform on original path: translate(304,254)
 GLYPH_D = (
     "M0 0 C328.803099143026 0 328.803099143026 0 370.8359375 40.7421875 "
     "C395.003893834177 65.0888348237088 407.4130637023736 96.17480290443638 408.1875 130.25 "
@@ -77,45 +72,8 @@ GLYPH_D = (
     "124.9216785245232 290.9682269879992 105 291 Z"
 )
 
-# The original path has transform="translate(304,254)" on a 1024×1024 canvas
-GLYPH_TX = 304.0
-GLYPH_TY = 254.0
-
-# ── Compute scale from glyph bounds ──────────────────────────────────────────
-nums = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', GLYPH_D)]
-xs = [x + GLYPH_TX for x in nums[0::2]]
-ys = [y + GLYPH_TY for y in nums[1::2]]
-orig_h = max(ys) - min(ys)
-
-TARGET_H  = 230.0
-scale     = TARGET_H / orig_h
-MAX_DX    = 18.0
-MAX_DY    = 22.0
-FINAL_TX  = 54.783
-FINAL_TY  = 34.000
-
-# ── Build extrusion slices ────────────────────────────────────────────────────
-NUM_SLICES = 64
-slices = []
-for i in range(NUM_SLICES, 0, -1):
-    t      = i / float(NUM_SLICES)
-    t_pow  = t ** 1.4
-    r = int(58  + (202 - 58)  * (1.0 - t_pow))
-    g = int(4   + (20  - 4)   * (1.0 - t_pow))
-    b = int(1   + (16  - 1)   * (1.0 - t_pow))
-    color  = f'#{r:02x}{g:02x}{b:02x}'
-    tx     = FINAL_TX + MAX_DX * t
-    ty     = FINAL_TY + MAX_DY * t
-    slices.append(
-        f'    <g transform="translate({tx:.3f}, {ty:.3f}) scale({scale:.6f})">\n'
-        f'      <path d="{GLYPH_D}" fill="{color}"/>\n'
-        f'    </g>'
-    )
-
-slices_str = '\n'.join(slices)
-
-# ── Compose SVG ───────────────────────────────────────────────────────────────
-svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
+def generate_svg():
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
   <defs>
     <linearGradient id="front-grad" x1="5%" y1="0%" x2="95%" y2="100%">
       <stop offset="0%"   stop-color="#FF3D30"/>
@@ -133,14 +91,13 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="3
     </linearGradient>
   </defs>
   <g>
-{slices_str}
-    <g transform="translate({FINAL_TX:.3f}, {FINAL_TY:.3f}) scale({scale:.6f})">
-      <path d="{GLYPH_D}" fill="url(#front-grad)"/>
+    <g transform="translate(72.783, 56.000) scale(0.440838)">
+      <path d="{GLYPH_D}" fill="#3a0401"/>
     </g>
-    <g transform="translate({FINAL_TX:.3f}, {FINAL_TY:.3f}) scale({scale:.6f})">
-      <path d="{GLYPH_D}" fill="url(#sheen-grad)"/>
+    <g transform="translate(66.595, 48.438) scale(0.440838)">
+      <path d="{GLYPH_D}" fill="#ad100d"/>
     </g>
-    <g transform="translate({FINAL_TX:.3f}, {FINAL_TY:.3f}) scale({scale:.6f})">
+    <g transform="translate(54.783, 34.000) scale(0.440838)">
       <path d="{GLYPH_D}" fill="none"
             stroke="url(#edge-grad)" stroke-width="5"
             stroke-linejoin="round" stroke-linecap="round"
@@ -150,8 +107,12 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="3
 </svg>
 '''
 
-os.makedirs(os.path.dirname(OUTPUT_SVG), exist_ok=True)
-with open(OUTPUT_SVG, 'w', encoding='utf-8') as f:
-    f.write(svg)
+def main():
+    svg = generate_svg()
+    os.makedirs(os.path.dirname(OUTPUT_SVG), exist_ok=True)
+    with open(OUTPUT_SVG, 'w', encoding='utf-8') as f:
+        f.write(svg)
+    print(f'[OK] Written {OUTPUT_SVG} ({os.path.getsize(OUTPUT_SVG):,} bytes)')
 
-print(f'[OK] Written {OUTPUT_SVG} ({os.path.getsize(OUTPUT_SVG):,} bytes)')
+if __name__ == '__main__':
+    main()
