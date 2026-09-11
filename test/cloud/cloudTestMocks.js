@@ -39,8 +39,8 @@ function createCloudMockVscode(overrides = {}) {
   let warningMsg = null;
   let errorMsg = null;
   let quickPickItems = null;
-
   let quickPickSelected = null;
+  const contexts = new Map();
 
   return {
     Position: function (l, c) { this.line = l; this.character = c; this.char = c; },
@@ -83,11 +83,18 @@ function createCloudMockVscode(overrides = {}) {
         return { selection: null, revealRange: () => {} };
       },
       withProgress: async (opt, task) => task({ report: () => {} }),
+      registerTreeDataProvider: (viewId, provider) => ({ dispose: () => {} }),
+      createTreeView: (viewId, opts) => ({ dispose: () => {}, description: '', title: '' }),
       ...(winOverride || {})
     },
     commands: {
       registerCommand: () => ({ dispose: () => {} }),
-      executeCommand: async (cmd, ...args) => { executedCmd = { cmd, arg: args[0], args }; },
+      executeCommand: async (cmd, ...args) => {
+        executedCmd = { cmd, arg: args[0], args };
+        if (cmd === 'setContext') {
+          contexts.set(args[0], args[1]);
+        }
+      },
       ...(cmdOverride || {})
     },
     env: {
@@ -109,6 +116,7 @@ function createCloudMockVscode(overrides = {}) {
     getErrorMsg: function () { return errorMsg; },
     getQuickPickItems: function () { return quickPickItems; },
     setQuickPickSelected: function (sel) { quickPickSelected = sel; },
+    getContext: function (k) { return contexts.get(k); },
     _state: {
       get openedDoc() { return openedDoc; },
       get shownDoc() { return shownDoc; },

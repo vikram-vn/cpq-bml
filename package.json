@@ -458,6 +458,24 @@
         "category": "BML"
       },
       {
+        "command": "cpqBml.cloud.searchExplorer",
+        "title": "CPQ-BML: Search Cloud Functions & Actions",
+        "icon": "$(search)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.filterExplorer",
+        "title": "CPQ-BML: Filter Cloud Explorer Tree",
+        "icon": "$(filter)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.clearFilter",
+        "title": "CPQ-BML: Clear Cloud Explorer Filter",
+        "icon": "$(clear-all)",
+        "category": "BML"
+      },
+      {
         "command": "cpqBml.cloud.globalSearch",
         "title": "CPQ-BML: Global Search BML Scripts Across Entire System",
         "icon": "$(search)",
@@ -561,6 +579,21 @@
       ],
       "view/title": [
         {
+          "command": "cpqBml.cloud.searchExplorer",
+          "when": "view == cpqBml.cloudExplorer",
+          "group": "navigation@0"
+        },
+        {
+          "command": "cpqBml.cloud.filterExplorer",
+          "when": "view == cpqBml.cloudExplorer",
+          "group": "navigation@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.clearFilter",
+          "when": "view == cpqBml.cloudExplorer && cpqBml.cloudExplorerFiltered",
+          "group": "navigation@0.6"
+        },
+        {
           "command": "cpqBml.cloud.refresh",
           "when": "view == cpqBml.cloudExplorer",
           "group": "navigation@1"
@@ -571,14 +604,14 @@
           "group": "navigation@2"
         },
         {
+          "command": "cpqBml.cloud.globalSearch",
+          "when": "view == cpqBml.cloudExplorer",
+          "group": "navigation@3"
+        },
+        {
           "command": "cpqBml.cloud.refreshDataTables",
           "when": "view == cpqBml.cloudDataTables",
           "group": "navigation@1"
-        },
-        {
-          "command": "cpqBml.cloud.globalSearch",
-          "when": "view == cpqBml.cloudExplorer",
-          "group": "navigation@0"
         },
         {
           "command": "cpqBml.cloud.refreshTransactions",

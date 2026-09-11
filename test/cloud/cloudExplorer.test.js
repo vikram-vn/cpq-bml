@@ -6,7 +6,11 @@ const {
   findLocalFunctionFile,
   createCloudExplorer,
   pullFunctionCommand,
-  openCommerceActionCommand
+  openCommerceActionCommand,
+  filterExplorerCommand,
+  clearFilterCommand,
+  searchExplorerCommand,
+  registerCloudExplorer
 } = require('@/lang/cloud/cloudExplorer');
 const { createCloudMockVscode } = require('./cloudTestMocks');
 
@@ -409,5 +413,349 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
     } finally {
       api.getCommerceAction = origGetAction;
     }
+  });
+
+  suite('Cloud Explorer - Search & Filter Tests', () => {
+    test('filter state, context setting, and collapsible auto-expansion', async () => {
+      const mockVscode = createCloudMockVscode({
+        EventEmitter: function () {
+          this.event = () => ({ dispose: () => {} });
+          this.fire = () => {};
+        }
+      });
+
+      const explorer = createCloudExplorer(mockVscode, {});
+      assert.strictEqual(explorer.getFilter(), '');
+
+      // Set filter
+      explorer.setFilter('calc');
+      assert.strictEqual(explorer.getFilter(), 'calc');
+      assert.strictEqual(mockVscode.getContext('cpqBml.cloudExplorerFiltered'), true);
+
+      // getTreeItem for filterInfo
+      const filterNode = { type: 'filterInfo', query: 'calc', totalMatches: 3 };
+      const filterItem = explorer.getTreeItem(filterNode);
+      assert.ok(filterItem.label.includes('Filter: "calc"'));
+      assert.ok(filterItem.label.includes('3 matches'));
+      assert.strictEqual(filterItem.iconPath.id, 'filter');
+      assert.strictEqual(filterItem.command.command, 'cpqBml.cloud.clearFilter');
+
+      // Category auto-expanded when filtered
+      const catNode = {
+        type: 'category',
+        category: 'util',
+        label: 'Util Libraries (2 matches)',
+        count: 2,
+        isFiltered: true
+      };
+      const catItem = explorer.getTreeItem(catNode);
+      assert.strictEqual(catItem.collapsibleState, 2); // Expanded
+      assert.strictEqual(catItem.label, 'Util Libraries (2 matches)');
+
+      // Folder auto-expanded when filtered
+      const folderNode = {
+        type: 'folder',
+        folderName: 'finance',
+        count: 2
+      };
+      const folderItem = explorer.getTreeItem(folderNode);
+      assert.strictEqual(folderItem.collapsibleState, 2); // Expanded
+
+      // Clear filter
+      explorer.clearFilter();
+      assert.strictEqual(explorer.getFilter(), '');
+      assert.strictEqual(mockVscode.getContext('cpqBml.cloudExplorerFiltered'), false);
+
+      // Category collapsed when not filtered
+      const catNodeUnfiltered = {
+        type: 'category',
+        category: 'util',
+        label: 'Util Libraries',
+        count: 5
+      };
+      const catItemUnfiltered = explorer.getTreeItem(catNodeUnfiltered);
+      assert.strictEqual(catItemUnfiltered.collapsibleState, 1); // Collapsed
+      assert.strictEqual(catItemUnfiltered.label, 'Util Libraries (5)');
+    });
+
+    test('getChildren correctly filters util, commerce, and actions', async () => {
+      const api = require('@/lang/rest/api');
+      const origListUtil = api.listLibraryFunctions;
+      const origListActions = api.listCommerceActions;
+
+      api.listLibraryFunctions = async function (context, vscodeInstance, opts, transport, metadata) {
+        if (metadata && metadata.commerceProcess) {
+          if (metadata.commerceDocument === 'transaction') {
+            return {
+              statusCode: 200,
+              body: {
+                items: [
+                  { variableName: 'calcCommerceTax', name: 'Commerce Tax', returnType: 'Float', folderName: 'tax', commerceProcess: 'oraclecpqo', commerceDocument: 'transaction' },
+                  { variableName: 'validateOrder', name: 'Validate Order', returnType: 'Boolean', folderName: 'validation', commerceProcess: 'oraclecpqo', commerceDocument: 'transaction' }
+                ]
+              }
+            };
+          }
+          return { statusCode: 200, body: { items: [] } };
+        }
+        return {
+          statusCode: 200,
+          body: {
+            items: [
+              { variableName: 'calcDiscount', name: 'Calculate Discount', returnType: 'Float', folderName: 'pricing' },
+              { variableName: 'concatNames', name: 'Concat Names', returnType: 'String', folderName: 'stringUtils' }
+            ]
+          }
+        };
+      };
+
+      api.listCommerceActions = async function (context, vscodeInstance, opts) {
+        if (opts && opts.document === 'transaction') {
+          return {
+            statusCode: 200,
+            body: {
+              items: [
+                { variableName: 'calcTotals_t', name: 'Calculate Totals', actionType: 'Modify', commerceProcess: 'oraclecpqo', commerceDocument: 'transaction' },
+                { variableName: 'submitOrder_t', name: 'Submit Order', actionType: 'Submit', commerceProcess: 'oraclecpqo', commerceDocument: 'transaction' }
+              ]
+            }
+          };
+        }
+        return { statusCode: 200, body: { items: [] } };
+      };
+
+      const mockVscode = createCloudMockVscode({
+        EventEmitter: function () {
+          this.event = () => ({ dispose: () => {} });
+          this.fire = () => {};
+        },
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: '/test/workspace' } }]
+        }
+      });
+
+      try {
+        const explorer = createCloudExplorer(mockVscode, {});
+
+        // Unfiltered root
+        const rootUnfiltered = await explorer.getChildren();
+        assert.strictEqual(rootUnfiltered.length, 3);
+
+        // Filter for "calc" -> matches calcDiscount (util), calcCommerceTax (commerce), calcTotals_t (action)
+        explorer.setFilter('calc');
+        const rootFiltered = await explorer.getChildren();
+        assert.strictEqual(rootFiltered.length, 4); // filterInfo + util + commerce + actions
+        assert.strictEqual(rootFiltered[0].type, 'filterInfo');
+        assert.strictEqual(rootFiltered[0].totalMatches, 3);
+        assert.strictEqual(rootFiltered[1].category, 'util');
+        assert.strictEqual(rootFiltered[1].count, 1);
+        assert.strictEqual(rootFiltered[2].category, 'commerce');
+        assert.strictEqual(rootFiltered[2].count, 1);
+        assert.strictEqual(rootFiltered[3].category, 'actions');
+        assert.strictEqual(rootFiltered[3].count, 1);
+
+        // Check children of util category
+        const utilFolders = await explorer.getChildren(rootFiltered[1]);
+        assert.strictEqual(utilFolders.length, 1);
+        assert.strictEqual(utilFolders[0].folderName, 'pricing');
+        const utilFuncs = await explorer.getChildren(utilFolders[0]);
+        assert.strictEqual(utilFuncs.length, 1);
+        assert.strictEqual(utilFuncs[0].data.variableName, 'calcDiscount');
+
+        // Check children of actions category
+        const actionsList = await explorer.getChildren(rootFiltered[3]);
+        assert.strictEqual(actionsList.length, 1);
+        assert.strictEqual(actionsList[0].data.variableName, 'calcTotals_t');
+
+        // Filter for "Submit" -> only matches action submitOrder_t
+        explorer.setFilter('submit');
+        const submitRoot = await explorer.getChildren();
+        assert.strictEqual(submitRoot.length, 2); // filterInfo + actions
+        assert.strictEqual(submitRoot[0].totalMatches, 1);
+        assert.strictEqual(submitRoot[1].category, 'actions');
+
+        // Filter for something nonexistent -> empty state
+        explorer.setFilter('xyzNonExistent999');
+        const emptyRoot = await explorer.getChildren();
+        assert.strictEqual(emptyRoot.length, 2);
+        assert.strictEqual(emptyRoot[0].type, 'filterInfo');
+        assert.strictEqual(emptyRoot[0].totalMatches, 0);
+        assert.strictEqual(emptyRoot[1].type, 'empty');
+        assert.ok(emptyRoot[1].label.includes('No functions or actions match'));
+        assert.strictEqual(emptyRoot[1].command.command, 'cpqBml.cloud.clearFilter');
+
+        // Clearing filter restores full tree
+        explorer.clearFilter();
+        const restoredRoot = await explorer.getChildren();
+        assert.strictEqual(restoredRoot.length, 3);
+      } finally {
+        api.listLibraryFunctions = origListUtil;
+        api.listCommerceActions = origListActions;
+      }
+    });
+
+    test('filterExplorerCommand and clearFilterCommand operate on tree filter', async () => {
+      let inputBoxValue = 'discount';
+      const mockVscode = createCloudMockVscode({
+        EventEmitter: function () {
+          this.event = () => ({ dispose: () => {} });
+          this.fire = () => {};
+        },
+        window: {
+          showInputBox: async () => inputBoxValue
+        }
+      });
+
+      const explorer = createCloudExplorer(mockVscode, {});
+
+      // Running filterExplorerCommand sets filter
+      await filterExplorerCommand(explorer, mockVscode);
+      assert.strictEqual(explorer.getFilter(), 'discount');
+
+      // Running clearFilterCommand clears filter
+      clearFilterCommand(explorer, mockVscode);
+      assert.strictEqual(explorer.getFilter(), '');
+
+      // Running filterExplorerCommand with empty input clears filter
+      inputBoxValue = '   ';
+      explorer.setFilter('test');
+      await filterExplorerCommand(explorer, mockVscode);
+      assert.strictEqual(explorer.getFilter(), '');
+
+      // Running filterExplorerCommand with cancellation (undefined) leaves filter intact
+      explorer.setFilter('activeFilter');
+      inputBoxValue = undefined;
+      await filterExplorerCommand(explorer, mockVscode);
+      assert.strictEqual(explorer.getFilter(), 'activeFilter');
+    });
+
+    test('searchExplorerCommand shows QuickPick and handles selection', async () => {
+      const api = require('@/lang/rest/api');
+      const origListUtil = api.listLibraryFunctions;
+      const origListActions = api.listCommerceActions;
+      const origGetLib = api.getLibraryFunction;
+
+      const tempDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'cpq-search-test-'));
+
+      api.listLibraryFunctions = async function (context, vscodeInstance, opts, transport, metadata) {
+        if (metadata && metadata.commerceProcess) {
+          return { statusCode: 200, body: { items: [] } };
+        }
+        return {
+          statusCode: 200,
+          body: {
+            items: [
+              { variableName: 'atoisafe', name: 'atoisafe', returnType: 'Integer', folderName: 'util' }
+            ]
+          }
+        };
+      };
+
+      api.listCommerceActions = async function () {
+        return {
+          statusCode: 200,
+          body: {
+            items: [
+              { variableName: 'cleanSave_t', name: 'Clean Save', actionType: 'Modify', commerceProcess: 'oraclecpqo', commerceDocument: 'transaction' }
+            ]
+          }
+        };
+      };
+
+      api.getLibraryFunction = async function () {
+        return {
+          statusCode: 200,
+          body: {
+            name: 'atoisafe',
+            variableName: 'atoisafe',
+            scriptText: 'return 0;\n'
+          }
+        };
+      };
+
+      let quickPickPicks = null;
+      let selectedPick = null;
+      let openedFile = null;
+
+      const mockVscode = createCloudMockVscode({
+        EventEmitter: function () {
+          this.event = () => ({ dispose: () => {} });
+          this.fire = () => {};
+        },
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: tempDir } }],
+          getConfiguration: () => ({ get: () => '' }),
+          openTextDocument: async (uri) => {
+            openedFile = uri;
+            return { uri };
+          }
+        },
+        window: {
+          showQuickPick: async (items) => {
+            quickPickPicks = items;
+            return selectedPick;
+          },
+          showTextDocument: async () => {},
+          withProgress: async (opt, task) => task({ report: () => {} })
+        },
+        Uri: {
+          file: (f) => ({ fsPath: f, scheme: 'file' })
+        }
+      });
+
+      try {
+        const explorer = createCloudExplorer(mockVscode, {});
+
+        // Test opening QuickPick
+        await searchExplorerCommand(explorer, mockVscode, {});
+        assert.ok(quickPickPicks);
+        assert.ok(quickPickPicks.length >= 3); // Filter prompt + atoisafe + cleanSave_t
+        assert.ok(quickPickPicks[0].label.includes('Filter Cloud Explorer Tree View'));
+        assert.ok(quickPickPicks.some(p => p.data && p.data.variableName === 'atoisafe'));
+        assert.ok(quickPickPicks.some(p => p.data && p.data.variableName === 'cleanSave_t'));
+
+        // Test selecting a function item -> pulls and opens file
+        const atoisafePick = quickPickPicks.find(p => p.data && p.data.variableName === 'atoisafe');
+        selectedPick = atoisafePick;
+        await searchExplorerCommand(explorer, mockVscode, {});
+        assert.ok(openedFile);
+
+        // Test selecting filterTree action
+        selectedPick = quickPickPicks[0];
+        mockVscode.window.showInputBox = async () => 'testSearch';
+        await searchExplorerCommand(explorer, mockVscode, {});
+        assert.strictEqual(explorer.getFilter(), 'testSearch');
+      } finally {
+        api.listLibraryFunctions = origListUtil;
+        api.listCommerceActions = origListActions;
+        api.getLibraryFunction = origGetLib;
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    test('registerCloudExplorer registers search, filter, and clearFilter commands', () => {
+      const registeredCmds = [];
+      const mockContext = { subscriptions: [] };
+      const mockVscode = createCloudMockVscode({
+        EventEmitter: function () {
+          this.event = () => ({ dispose: () => {} });
+          this.fire = () => {};
+        },
+        commands: {
+          registerCommand: (id, handler) => {
+            registeredCmds.push(id);
+            return { dispose: () => {} };
+          }
+        }
+      });
+
+      registerCloudExplorer(mockContext, mockVscode);
+
+      assert.ok(registeredCmds.includes('cpqBml.cloud.searchExplorer'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.filterExplorer'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.clearFilter'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.refresh'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.pullFunction'));
+    });
   });
 });
