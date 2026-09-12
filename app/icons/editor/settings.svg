@@ -1,8 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="setGrad" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#a78bfa"/><stop offset="50%" stop-color="#818cf8"/><stop offset="100%" stop-color="#4f46e5"/>
+    <linearGradient id="gearMetal" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="15%" stop-color="#e2e8f0"/>
+      <stop offset="45%" stop-color="#94a3b8"/>
+      <stop offset="75%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1e293b"/>
     </linearGradient>
+    <linearGradient id="metalRim" x1="2" y1="2" x2="14" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#cbd5e1"/>
+      <stop offset="80%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <radialGradient id="hubRecess" cx="7.2" cy="7.2" r="3.2" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="70%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+    <linearGradient id="axleCollar" x1="6" y1="6" x2="10" y2="10" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <radialGradient id="axleHole" cx="7.2" cy="7.2" r="1.8" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="80%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </radialGradient>
   </defs>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 0.8H9.5L9.9 2.8C10.5 3.1 11.1 3.5 11.6 3.9L13.5 3.1L15.0 5.7L13.5 7.2C13.6 7.5 13.6 7.7 13.6 8C13.6 8.3 13.6 8.5 13.5 8.8L15.0 10.3L13.5 12.9L11.6 12.1C11.1 12.5 10.5 12.9 9.9 13.2L9.5 15.2H6.5L6.1 13.2C5.5 12.9 4.9 12.5 4.4 12.1L2.5 12.9L1.0 10.3L2.5 8.8C2.4 8.5 2.4 8.3 2.4 8C2.4 7.7 2.4 7.5 2.5 7.2L1.0 5.7L2.5 3.1L4.4 3.9C4.9 3.5 5.5 3.1 6.1 2.8L6.5 0.8ZM8 5.6C6.67 5.6 5.6 6.67 5.6 8C5.6 9.33 6.67 10.4 8 10.4C9.33 10.4 10.4 9.33 10.4 8C10.4 6.67 9.33 5.6 8 5.6Z" fill="url(#setGrad)"/>
+  <!-- Industrial drop shadow -->
+  <path d="M6.5 0.8H9.5L9.9 2.8C10.5 3.1 11.1 3.5 11.6 3.9L13.5 3.1L15.0 5.7L13.5 7.2C13.6 7.5 13.6 7.7 13.6 8C13.6 8.3 13.6 8.5 13.5 8.8L15.0 10.3L13.5 12.9L11.6 12.1C11.1 12.5 10.5 12.9 9.9 13.2L9.5 15.2H6.5L6.1 13.2C5.5 12.9 4.9 12.5 4.4 12.1L2.5 12.9L1.0 10.3L2.5 8.8C2.4 8.5 2.4 8.3 2.4 8C2.4 7.7 2.4 7.5 2.5 7.2L1.0 5.7L2.5 3.1L4.4 3.9C4.9 3.5 5.5 3.1 6.1 2.8L6.5 0.8Z" fill="#090d16" transform="translate(0, 0.6)" opacity="0.6"/>
+  <!-- Machined steel gear body -->
+  <path d="M6.5 0.8H9.5L9.9 2.8C10.5 3.1 11.1 3.5 11.6 3.9L13.5 3.1L15.0 5.7L13.5 7.2C13.6 7.5 13.6 7.7 13.6 8C13.6 8.3 13.6 8.5 13.5 8.8L15.0 10.3L13.5 12.9L11.6 12.1C11.1 12.5 10.5 12.9 9.9 13.2L9.5 15.2H6.5L6.1 13.2C5.5 12.9 4.9 12.5 4.4 12.1L2.5 12.9L1.0 10.3L2.5 8.8C2.4 8.5 2.4 8.3 2.4 8C2.4 7.7 2.4 7.5 2.5 7.2L1.0 5.7L2.5 3.1L4.4 3.9C4.9 3.5 5.5 3.1 6.1 2.8L6.5 0.8Z" fill="url(#gearMetal)" stroke="url(#metalRim)" stroke-width="0.5" stroke-linejoin="round"/>
+  <!-- Recessed circular gear web -->
+  <circle cx="8" cy="8" r="4.6" fill="url(#hubRecess)" stroke="#090d16" stroke-width="0.5"/>
+  <!-- Mechanical chamfer ring -->
+  <circle cx="8" cy="8" r="3.9" fill="none" stroke="#64748b" stroke-width="0.35" opacity="0.8"/>
+  <!-- Raised axle hub collar -->
+  <circle cx="8" cy="8" r="2.9" fill="url(#axleCollar)" stroke="#ffffff" stroke-width="0.4"/>
+  <!-- Drive axle bore -->
+  <circle cx="8" cy="8" r="1.7" fill="url(#axleHole)" stroke="#090d16" stroke-width="0.35"/>
+  <!-- Drive shaft keyway slot -->
+  <rect x="7.45" y="5.9" width="1.1" height="0.85" rx="0.15" fill="#020617"/>
+  <!-- Specular reflection dot on collar -->
+  <circle cx="6.8" cy="6.8" r="0.4" fill="#ffffff" opacity="0.8"/>
 </svg>

@@ -1,15 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="serverBlade" x1="1" y1="0.8" x2="15" y2="6.2" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#334155"/><stop offset="50%" stop-color="#1e293b"/><stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="bladeTop" x1="1" y1="1" x2="13" y2="6" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="bladeBot" x1="3" y1="10" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
   </defs>
-  <rect x="1.0" y="0.8" width="14.0" height="5.2" rx="1.6" fill="url(#serverBlade)" stroke="#475569" stroke-width="0.7"/>
-  <circle cx="3.6" cy="3.4" r="1.1" fill="#34d399"/>
-  <line x1="6.5" y1="3.4" x2="12.8" y2="3.4" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
-  <rect x="1.0" y="10.0" width="14.0" height="5.2" rx="1.6" fill="url(#serverBlade)" stroke="#475569" stroke-width="0.7"/>
-  <circle cx="3.6" cy="12.6" r="1.1" fill="#38bdf8"/>
-  <line x1="6.5" y1="12.6" x2="12.8" y2="12.6" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
-  <path d="M10.2 6.8L12.4 8.0L10.2 9.2" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M5.8 9.2L3.6 8.0L5.8 6.8" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Dev Server blade (top-left) -->
+  <rect x="0.8" y="1.2" width="10.4" height="4.4" rx="1.4" fill="url(#bladeTop)" stroke="#64748b" stroke-width="0.6"/>
+  <circle cx="2.6" cy="3.4" r="0.9" fill="#10b981"/>
+  <line x1="4.6" y1="3.4" x2="9.4" y2="3.4" stroke="#94a3b8" stroke-width="0.9" stroke-linecap="round"/>
+  <!-- Prod Server blade (bottom-right) -->
+  <rect x="4.8" y="10.4" width="10.4" height="4.4" rx="1.4" fill="url(#bladeBot)" stroke="#64748b" stroke-width="0.6"/>
+  <circle cx="6.6" cy="12.6" r="0.9" fill="#0284c7"/>
+  <line x1="8.6" y1="12.6" x2="13.4" y2="12.6" stroke="#94a3b8" stroke-width="0.9" stroke-linecap="round"/>
+  <!-- Switch Arrow Top: curves right & down -->
+  <path d="M12.6 3.4C14.2 3.4 15.2 4.6 15.2 6.4V7.2" stroke="#10b981" stroke-width="1.3" stroke-linecap="round"/>
+  <path d="M13.8 6.4L15.2 7.8L16.4 6.4" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Switch Arrow Bottom: curves left & up -->
+  <path d="M3.4 12.6C1.8 12.6 0.8 11.4 0.8 9.6V8.8" stroke="#38bdf8" stroke-width="1.3" stroke-linecap="round"/>
+  <path d="M2.2 9.6L0.8 8.2L-0.4 9.6" stroke="#38bdf8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

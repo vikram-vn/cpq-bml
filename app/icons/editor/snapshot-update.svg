@@ -1,8 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <rect x="1.0" y="3.8" width="14.0" height="10.2" rx="2.5" fill="#334155" stroke="#64748b" stroke-width="0.8"/>
-  <path d="M4.5 3.8L6.0 1.6H10.0L11.5 3.8" fill="#1e293b" stroke="#64748b" stroke-width="0.6"/>
-  <circle cx="8" cy="8.9" r="3.2" fill="#0f172a" stroke="#94a3b8" stroke-width="0.6"/>
-  <circle cx="8" cy="8.9" r="2.2" fill="#0284c7"/>
-  <circle cx="7.3" cy="8.2" r="0.7" fill="#ffffff" opacity="0.8"/>
-  <circle cx="12.8" cy="5.8" r="1.0" fill="#34d399"/>
+  <defs>
+    <linearGradient id="camBody" x1="1" y1="3" x2="14" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+  <!-- Camera body -->
+  <rect x="1.0" y="3.8" width="13.0" height="10.2" rx="2.2" fill="url(#camBody)" stroke="#64748b" stroke-width="0.7"/>
+  <!-- Pentaprism top housing -->
+  <path d="M4.4 3.8L5.8 1.8H9.2L10.6 3.8Z" fill="#334155" stroke="#64748b" stroke-width="0.5"/>
+  <!-- Flash & sensor -->
+  <circle cx="3.4" cy="5.8" r="0.7" fill="#ef4444"/>
+  <!-- Main camera lens -->
+  <circle cx="7.2" cy="8.9" r="3.1" fill="#0f172a" stroke="#cbd5e1" stroke-width="0.6"/>
+  <circle cx="7.2" cy="8.9" r="2.1" fill="#0284c7"/>
+  <circle cx="6.5" cy="8.2" r="0.7" fill="#ffffff" opacity="0.8"/>
+  <!-- Update / Sync Circular Arrows Badge at bottom-right -->
+  <circle cx="12.5" cy="12.2" r="3.3" fill="#0f172a" stroke="#10b981" stroke-width="0.7"/>
+  <!-- Circular update arrows -->
+  <path d="M11.0 12.2C11.0 11.4 11.7 10.7 12.5 10.7C13.2 10.7 13.8 11.2 14.0 11.8" stroke="#34d399" stroke-width="0.7" stroke-linecap="round"/>
+  <path d="M13.4 11.5L14.0 11.8L14.2 11.2" stroke="#34d399" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M14.0 12.2C14.0 13.0 13.3 13.7 12.5 13.7C11.8 13.7 11.2 13.2 11.0 12.6" stroke="#34d399" stroke-width="0.7" stroke-linecap="round"/>
+  <path d="M11.6 12.9L11.0 12.6L10.8 13.2" stroke="#34d399" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

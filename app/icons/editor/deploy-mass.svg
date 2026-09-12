@@ -1,15 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="fleetGold" x1="4" y1="2" x2="15" y2="13" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#fde047"/><stop offset="100%" stop-color="#b45309"/>
+    <linearGradient id="mainRkt" x1="6" y1="1" x2="16" y2="11" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="40%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#854d0e"/>
     </linearGradient>
-    <g id="fleet-cruiser">
-      <path d="M4.8 6.8L1.2 8.4L2.0 11.6L3.8 9.8ZM9.2 11.2L7.6 14.8L4.4 14.0L6.2 12.2Z" fill="#ef4444"/>
-      <path d="M3.8 10.2C3.0 11.4 2.0 12.6 0.6 15.4C3.4 14.0 4.6 13.0 5.8 12.2Z" fill="#f97316"/>
-      <path d="M15.4 0.6C11.6 1.4 6.0 5.0 3.8 10.0L6.0 12.2C11.0 10.0 14.6 4.4 15.4 0.6Z" fill="url(#fleetGold)"/>
-    </g>
+    <linearGradient id="wingRkt" x1="2" y1="5" x2="11" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="50%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#075985"/>
+    </linearGradient>
   </defs>
-  <use href="#fleet-cruiser" xlink:href="#fleet-cruiser" opacity="0.45" transform="translate(-2.4, 2.8) scale(0.72)"/>
-  <use href="#fleet-cruiser" xlink:href="#fleet-cruiser" opacity="0.65" transform="translate(2.8, -2.4) scale(0.72)"/>
-  <use href="#fleet-cruiser" xlink:href="#fleet-cruiser" transform="translate(0.3, 0.3) scale(0.88)"/>
+  <!-- Wing rocket 1 (top-left wingman) -->
+  <g transform="translate(-2.2, 2.2) scale(0.68)">
+    <path d="M3.4 10.4C2.2 12.0 1.2 13.8 0.2 16.0C2.4 15.0 4.2 14.0 5.4 12.8Z" fill="#f97316"/>
+    <path d="M15.4 0.6C11.6 1.4 6.0 5.0 3.8 10.0L6.0 12.2C11.0 10.0 14.6 4.4 15.4 0.6Z" fill="url(#wingRkt)"/>
+  </g>
+  <!-- Wing rocket 2 (bottom-right wingman) -->
+  <g transform="translate(3.2, -1.8) scale(0.68)">
+    <path d="M3.4 10.4C2.2 12.0 1.2 13.8 0.2 16.0C2.4 15.0 4.2 14.0 5.4 12.8Z" fill="#f97316"/>
+    <path d="M15.4 0.6C11.6 1.4 6.0 5.0 3.8 10.0L6.0 12.2C11.0 10.0 14.6 4.4 15.4 0.6Z" fill="url(#wingRkt)"/>
+  </g>
+  <!-- Flagship Lead Rocket (center) -->
+  <!-- Exhaust -->
+  <path d="M3.8 10.2C2.8 11.4 1.8 12.8 0.6 15.4C3.2 14.2 4.6 13.2 5.8 12.2Z" fill="#ea580c"/>
+  <path d="M3.2 10.8C2.6 11.6 1.8 12.6 1.2 14.4C2.8 13.6 3.8 12.8 4.6 12.2Z" fill="#fde047"/>
+  <!-- Fins -->
+  <path d="M4.6 6.6L1.4 8.2L2.2 11.4L4.0 9.8Z" fill="#b45309"/>
+  <path d="M9.4 11.4L7.8 14.6L4.6 13.8L6.2 12.0Z" fill="#b45309"/>
+  <!-- Hull -->
+  <path d="M15.4 0.6C11.6 1.4 6.0 5.0 3.8 10.0L6.0 12.2C11.0 10.0 14.6 4.4 15.4 0.6Z" fill="url(#mainRkt)" stroke="#ca8a04" stroke-width="0.5"/>
+  <!-- Porthole -->
+  <circle cx="10.2" cy="5.8" r="1.4" fill="#ffffff" stroke="#854d0e" stroke-width="0.4"/>
+  <circle cx="10.2" cy="5.8" r="0.8" fill="#0284c7"/>
 </svg>

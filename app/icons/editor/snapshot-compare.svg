@@ -1,9 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <rect x="1.0" y="1.2" width="6.2" height="13.6" rx="1.6" fill="#1d4ed8" stroke="#60a5fa" stroke-width="0.7"/>
-  <line x1="2.4" y1="4.2" x2="5.8" y2="4.2" stroke="#ffffff" stroke-width="1.1" stroke-linecap="round"/>
-  <line x1="2.4" y1="7.2" x2="5.8" y2="7.2" stroke="#f87171" stroke-width="1.1" stroke-linecap="round"/>
-  <rect x="8.8" y="1.2" width="6.2" height="13.6" rx="1.6" fill="#047857" stroke="#34d399" stroke-width="0.7"/>
-  <line x1="10.2" y1="4.2" x2="13.6" y2="4.2" stroke="#ffffff" stroke-width="1.1" stroke-linecap="round"/>
-  <line x1="10.2" y1="7.2" x2="13.6" y2="7.2" stroke="#34d399" stroke-width="1.1" stroke-linecap="round"/>
-  <path d="M6.8 7.2L9.2 7.2" stroke="#fde047" stroke-width="1.2" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="diffLeft" x1="1" y1="1" x2="7" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="diffRight" x1="9" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <!-- Frame outline -->
+  <rect x="1.0" y="1.2" width="14.0" height="13.6" rx="2.0" fill="#0f172a" stroke="#475569" stroke-width="0.7"/>
+  <!-- Left pane (original / deleted) -->
+  <path d="M1.2 2.2C1.2 1.6 1.6 1.2 2.2 1.2H7.5V14.8H2.2C1.6 14.8 1.2 14.4 1.2 13.8V2.2Z" fill="url(#diffLeft)"/>
+  <!-- Red deletion lines -->
+  <line x1="2.8" y1="4.2" x2="6.2" y2="4.2" stroke="#f87171" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="2.8" y1="7.2" x2="5.4" y2="7.2" stroke="#f87171" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="2.8" y1="10.2" x2="6.2" y2="10.2" stroke="#94a3b8" stroke-width="1.0" stroke-linecap="round"/>
+  <!-- Right pane (new / added) -->
+  <path d="M8.5 1.2H13.8C14.4 1.2 14.8 1.6 14.8 2.2V13.8C14.8 14.4 14.4 14.8 13.8 14.8H8.5V1.2Z" fill="url(#diffRight)"/>
+  <!-- Green addition lines -->
+  <line x1="9.8" y1="4.2" x2="13.2" y2="4.2" stroke="#94a3b8" stroke-width="1.0" stroke-linecap="round"/>
+  <line x1="9.8" y1="7.2" x2="13.2" y2="7.2" stroke="#34d399" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="9.8" y1="10.2" x2="12.4" y2="10.2" stroke="#34d399" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Center dividing slider line with arrows -->
+  <line x1="8.0" y1="1.2" x2="8.0" y2="14.8" stroke="#38bdf8" stroke-width="0.9"/>
+  <circle cx="8.0" cy="8.0" r="1.4" fill="#38bdf8"/>
 </svg>
