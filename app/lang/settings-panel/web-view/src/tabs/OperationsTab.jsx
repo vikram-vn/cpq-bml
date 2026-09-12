@@ -122,6 +122,17 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
                     />
                     <p className="field-hint">Process document variable name (e.g. transaction)</p>
                 </div>
+                <div className="field">
+                    <label htmlFor="productFamily">Configuration Product Family</label>
+                    <input
+                        id="productFamily"
+                        type="text"
+                        placeholder="_allProductFamilies (All families)"
+                        value={drafts['rest.productFamily'] !== undefined ? drafts['rest.productFamily'] : (rest.productFamily || '')}
+                        onChange={(e) => changeDraft('rest.productFamily', e.target.value)}
+                    />
+                    <p className="field-hint">Target product family for configuration sync (e.g. servers, telecom). Leave blank for all families.</p>
+                </div>
             </section>
 
             <section className="card" style={{ marginTop: '20px' }}>

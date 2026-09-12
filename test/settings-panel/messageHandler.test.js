@@ -72,6 +72,18 @@ suite("settings-panel messageHandler", () => {
     assert.strictEqual(panel.posted[1].inlayHints.variableTypes, true);
   });
 
+  test("'updateField' supports updating rest.productFamily", async () => {
+    const configValues = {};
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: configValues });
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "updateField", key: "rest.productFamily", value: "servers" }, context, vscode, panel);
+    assert.strictEqual(configValues["rest.productFamily"], "servers");
+    assert.strictEqual(panel.posted[0].type, "state");
+    assert.strictEqual(panel.posted[0].rest.productFamily, "servers");
+  });
+
   test("'updateField' with a key outside the allow-list is rejected with an error message, and writes nothing", async () => {
     const configValues = {};
     const panel = fakePanel();

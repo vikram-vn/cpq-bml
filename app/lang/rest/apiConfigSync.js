@@ -1,4 +1,5 @@
 const { getWorkspaceRoot, saveWorkspaceAttributes } = require("@/lang/rest/commerceAttributes");
+const { getProductFamily } = require("@/lang/rest/config");
 
 function formatConfigurationAttribute(raw, productFamily = null) {
   if (!raw || typeof raw !== "object") return raw;
@@ -55,6 +56,7 @@ async function syncConfigurationAttributes(
     limit = 1000,
     fetchProductFamilies = true,
     fetchModels = true,
+    productFamily,
     signal,
     onProgress,
   } = {},
@@ -62,6 +64,9 @@ async function syncConfigurationAttributes(
   endpoints = {},
 ) {
   const wsRoot = getWorkspaceRoot(vscode);
+  const scopedFamily = productFamily !== undefined ? productFamily : (typeof getProductFamily === "function" ? getProductFamily(vscode) : "");
+  const targetFamily = typeof scopedFamily === "string" ? scopedFamily.trim() : "";
+  const isFamilyScoped = Boolean(targetFamily && targetFamily !== "_allProductFamilies" && targetFamily !== "*");
 
   const {
     listConfigurationAttributes,
@@ -174,6 +179,17 @@ async function syncConfigurationAttributes(
         variableName: f.variableName || f.id || f.name,
         label: f.label || f.name || f.variableName,
       }));
+
+      if (isFamilyScoped) {
+        productFamilies = productFamilies.filter(
+          (f) =>
+            f.variableName === targetFamily ||
+            (f.variableName && f.variableName.toLowerCase() === targetFamily.toLowerCase())
+        );
+        if (productFamilies.length === 0) {
+          productFamilies = [{ variableName: targetFamily, label: targetFamily }];
+        }
+      }
 
       await Promise.all(
         productFamilies.map(async (fam) => {
@@ -344,6 +360,7 @@ async function syncConfigurationAttributes(
   const result = {
     updatedAt: new Date().toISOString(),
     count: attributes.length,
+    productFamily: isFamilyScoped ? targetFamily : undefined,
     attributes,
     productFamilies,
     models,

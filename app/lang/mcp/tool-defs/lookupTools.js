@@ -224,7 +224,12 @@ function register(server, context, vscode, tools) {
       description:
         "Pull and cache Configuration attributes, product families, product lines, and models dynamically from Oracle CPQ into the local workspace (cpq/config/<productFamily>/attributes.min.json). " +
         "Enables offline intellisense and AI attribute lookups for Configuration BML scripts.",
-      inputSchema: {},
+      inputSchema: {
+        productFamily: z
+          .string()
+          .optional()
+          .describe("Optional Product Family variable name to sync (e.g. 'servers', 'telecom'). Leave blank or omit to sync all product families."),
+      },
     },
     async (args) => jsonResult(await tools.syncConfigurationAttributes(context, vscode, args)),
   );

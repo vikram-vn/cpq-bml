@@ -232,6 +232,43 @@ suite("Configuration Attributes & Product Families (apiConfig)", () => {
     assert.strictEqual(result.models[0].productFamily, "storageFamily");
   });
 
+  test("syncConfigurationAttributes filters product families when productFamily is specified", async () => {
+    const vscode = createFakeVscode({ config: { ...baseConfig(), "rest.productFamily": "storageFamily" } });
+    const queriedFamilies = [];
+    const transport = async (opts) => {
+      if (opts.path.includes("/attributes") && !opts.path.includes("/productFamilies/")) {
+        return { statusCode: 200, headers: {}, text: JSON.stringify({ items: [] }) };
+      }
+      if (opts.path.includes("/productFamilies/storageFamily/attributes")) {
+        queriedFamilies.push("storageFamily");
+        return {
+          statusCode: 200,
+          headers: {},
+          text: JSON.stringify({ items: [{ variableName: "raid_level", label: "RAID Level" }] }),
+        };
+      }
+      if (opts.path.includes("/allProductFamilySetups")) {
+        return {
+          statusCode: 200,
+          headers: {},
+          text: JSON.stringify({
+            items: [
+              { variableName: "networkFamily", label: "Network Family" },
+              { variableName: "storageFamily", label: "Storage Family" },
+            ],
+          }),
+        };
+      }
+      return { statusCode: 200, headers: {}, text: JSON.stringify({ items: [] }) };
+    };
+
+    const result = await api.syncConfigurationAttributes(fakeContext(), vscode, {}, transport);
+    assert.strictEqual(result.productFamily, "storageFamily");
+    assert.strictEqual(result.productFamilies.length, 1);
+    assert.strictEqual(result.productFamilies[0].variableName, "storageFamily");
+    assert.ok(queriedFamilies.includes("storageFamily"));
+  });
+
   test("listProductLines, listModels, listModelAttributes dispatch to proper REST endpoints", async () => {
     const vscode = createFakeVscode({ config: baseConfig() });
     const calls = [];

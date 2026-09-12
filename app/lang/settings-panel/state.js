@@ -40,7 +40,8 @@ async function buildState(context, vscode) {
         rest: {
             restVersion: settings.restVersion,
             commerceProcess: settings.commerceProcess,
-            commerceDocument: settings.commerceDocument
+            commerceDocument: settings.commerceDocument,
+            productFamily: settings.productFamily || ''
         },
         features: {
             lint: cpqConfig.get('features.lint', true),

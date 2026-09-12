@@ -67,6 +67,7 @@ function getSettings(vscode) {
     const envAuthMethod = process.env.CPQ_AUTH_METHOD || (process.env.CPQ_TOKEN ? "bearer" : "basic");
     const envProcess = process.env.CPQ_COMMERCE_PROCESS || "";
     const envDocument = process.env.CPQ_COMMERCE_DOCUMENT || "";
+    const envProductFamily = process.env.CPQ_PRODUCT_FAMILY || "";
 
     return {
         siteUrl: normalizeSiteUrl(getVal("connection.siteUrl", envSite)),
@@ -75,6 +76,7 @@ function getSettings(vscode) {
         restVersion: getVal("rest.restVersion", DEFAULT_REST_VERSION),
         commerceProcess: getVal("rest.commerceProcess", envProcess || "oraclecpqo"),
         commerceDocument: getVal("rest.commerceDocument", envDocument || "transaction"),
+        productFamily: getVal("rest.productFamily", envProductFamily || ""),
         pullFolder: getVal("rest.pullFolder", "library"),
         debugLog: Boolean(getVal("debug.logRestDetails", false)),
         logOutputToFile: Boolean(getVal("debug.logOutputToFile", false)),
@@ -112,6 +114,7 @@ async function saveWorkspaceConfig(vscode, settings) {
     if (settings.restVersion !== undefined) await config.update("rest.restVersion", settings.restVersion, false);
     if (settings.commerceProcess !== undefined) await config.update("rest.commerceProcess", settings.commerceProcess, false);
     if (settings.commerceDocument !== undefined) await config.update("rest.commerceDocument", settings.commerceDocument, false);
+    if (settings.productFamily !== undefined) await config.update("rest.productFamily", settings.productFamily, false);
     if (settings.pullFolder !== undefined) await config.update("rest.pullFolder", settings.pullFolder, false);
     if (settings.debugConcurrency !== undefined) await config.update("debug.concurrency", Math.max(2, Math.min(10, Math.round(Number(settings.debugConcurrency)) || 2)), false);
 
@@ -182,6 +185,10 @@ function getCommerceProcess(vscode) {
 
 function getCommerceDocument(vscode) {
     return getSettings(vscode).commerceDocument;
+}
+
+function getProductFamily(vscode) {
+    return getSettings(vscode).productFamily;
 }
 
 function getPasswordSecretKey(siteUrl, username) {
@@ -494,6 +501,7 @@ module.exports = {
     getEffectiveRestVersion,
     getCommerceProcess,
     getCommerceDocument,
+    getProductFamily,
     getAuthHeader,
     getDebugOutputLogPath,
     getDebugPrintLogPath,

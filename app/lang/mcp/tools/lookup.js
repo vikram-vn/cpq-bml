@@ -330,6 +330,7 @@ async function syncConfigurationAttributes(context, vscode, args, transport) {
     return {
         success: true,
         count,
+        productFamily: result.productFamily,
         productFamiliesCount: result.productFamilies ? result.productFamilies.length : 0,
         modelsCount: result.models ? result.models.length : 0,
         updatedAt: result.updatedAt,

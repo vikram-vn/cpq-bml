@@ -24,6 +24,7 @@ suite("BML REST config", () => {
       restVersion: "v20",
       commerceProcess: "oraclecpqo",
       commerceDocument: "transaction",
+      productFamily: "",
       pullFolder: "my-library",
       debugLog: false,
       logOutputToFile: false,
@@ -41,6 +42,7 @@ suite("BML REST config", () => {
       restVersion: "v18",
       commerceProcess: "oraclecpqo",
       commerceDocument: "transaction",
+      productFamily: "",
       pullFolder: "library",
       debugLog: false,
       logOutputToFile: false,
@@ -76,6 +78,16 @@ suite("BML REST config", () => {
         createFakeVscode({ config: { "rest.commerceProcess": "customProcess" } }),
       ),
       "customProcess",
+    );
+  });
+
+  test("getProductFamily reads cpqBml.rest.productFamily, defaulting to empty string", () => {
+    assert.strictEqual(config.getProductFamily(createFakeVscode({})), "");
+    assert.strictEqual(
+      config.getProductFamily(
+        createFakeVscode({ config: { "rest.productFamily": "servers" } }),
+      ),
+      "servers",
     );
   });
 

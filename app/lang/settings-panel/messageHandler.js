@@ -25,6 +25,7 @@ const ALLOWED_FIELDS = new Set([
   "rest.restVersion",
   "rest.commerceProcess",
   "rest.commerceDocument",
+  "rest.productFamily",
   "features.lint",
   "features.comments",
   "features.spelling",
@@ -268,6 +269,9 @@ async function dispatch(message, context, vscode, panel) {
           if (typeof settingsObj.rest.commerceDocument === "string") {
             await cfg.update("rest.commerceDocument", settingsObj.rest.commerceDocument, vscode.ConfigurationTarget.Global);
           }
+          if (typeof settingsObj.rest.productFamily === "string") {
+            await cfg.update("rest.productFamily", settingsObj.rest.productFamily, vscode.ConfigurationTarget.Global);
+          }
         }
         if (settingsObj.features && typeof settingsObj.features === "object") {
           for (const [fKey, fVal] of Object.entries(settingsObj.features)) {
@@ -341,6 +345,7 @@ async function dispatch(message, context, vscode, panel) {
               restVersion: cpqConfig.get("rest.restVersion", "v17"),
               commerceProcess: cpqConfig.get("rest.commerceProcess", ""),
               commerceDocument: cpqConfig.get("rest.commerceDocument", ""),
+              productFamily: cpqConfig.get("rest.productFamily", ""),
             },
             features: {
               lint: cpqConfig.get("features.lint", true),
@@ -432,6 +437,7 @@ async function dispatch(message, context, vscode, panel) {
         "rest.restVersion": "v18",
         "rest.commerceProcess": "oraclecpqo",
         "rest.commerceDocument": "transaction",
+        "rest.productFamily": "",
         "features.lint": true,
         "features.comments": true,
         "features.spelling": true,

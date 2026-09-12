@@ -8,7 +8,8 @@ export const EMPTY_STATE = {
     rest: {
         restVersion: 'v18',
         commerceProcess: 'oraclecpqo',
-        commerceDocument: 'transaction'
+        commerceDocument: 'transaction',
+        productFamily: ''
     },
     features: {
         lint: true,
