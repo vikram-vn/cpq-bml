@@ -1,4 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M3 1.5h6.5l3.5 3.5V14.5H3V1.5z" stroke="currentColor" stroke-width="1.2" fill="none"/>
-  <path d="M6 6.5c-.8 0-1.2.4-1.2 1.2 0 .4-.4.8-.8.8.4 0 .8.4.8.8 0 .8.4 1.2 1.2 1.2M10 6.5c.8 0 1.2.4 1.2 1.2 0 .4.4.8.8.8-.4 0-.8.4-.8.8 0 .8-.4 1.2-1.2 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="txDoc" x1="2" y1="1" x2="12" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="inspLens" x1="7" y1="7" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <!-- Base transaction document -->
+  <path d="M2.0 2.2C2.0 1.5 2.5 1.0 3.2 1.0H8.6L12.4 4.8V13.8C12.4 14.5 11.9 15.0 11.2 15.0H3.2C2.5 15.0 2.0 14.5 2.0 13.8V2.2Z" fill="url(#txDoc)" stroke="#64748b" stroke-width="0.6"/>
+  <path d="M8.6 1.0V4.8H12.4L8.6 1.0Z" fill="#94a3b8"/>
+  <!-- Ledger rows -->
+  <line x1="4.0" y1="6.5" x2="9.0" y2="6.5" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="4.0" y1="9.0" x2="7.5" y2="9.0" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="4.0" y1="11.5" x2="6.5" y2="11.5" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Inspector magnifying glass -->
+  <circle cx="11.2" cy="11.2" r="3.2" fill="#0f172a" stroke="url(#inspLens)" stroke-width="1.2"/>
+  <line x1="13.4" y1="13.4" x2="15.2" y2="15.2" stroke="#38bdf8" stroke-width="1.6" stroke-linecap="round"/>
 </svg>

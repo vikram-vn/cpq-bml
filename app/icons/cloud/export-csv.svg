@@ -1,5 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <rect x="1.5" y="1.5" width="13" height="13" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-  <line x1="1.5" y1="5.5" x2="14.5" y2="5.5" stroke="currentColor" stroke-width="1.2"/>
-  <path d="M8 7v5m0 0l-2-2m2 2l2-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="csvTable" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+  </defs>
+  <!-- Table sheet plate -->
+  <rect x="1.5" y="1.5" width="13.0" height="13.0" rx="2.0" fill="url(#csvTable)" stroke="#6ee7b7" stroke-width="0.7"/>
+  <!-- Table header band -->
+  <line x1="1.5" y1="5.5" x2="14.5" y2="5.5" stroke="#a7f3d0" stroke-width="0.8"/>
+  <!-- Vertical column dividers -->
+  <line x1="5.8" y1="1.5" x2="5.8" y2="5.5" stroke="#a7f3d0" stroke-width="0.8"/>
+  <line x1="10.2" y1="1.5" x2="10.2" y2="5.5" stroke="#a7f3d0" stroke-width="0.8"/>
+  <!-- Downward CSV export arrow -->
+  <path d="M8.0 7.0V12.0M8.0 12.0L5.5 9.5M8.0 12.0L10.5 9.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

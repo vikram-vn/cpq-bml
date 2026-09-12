@@ -1,15 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="prevFrame" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#475569"/>
-      <stop offset="100%" stop-color="#1e293b"/>
+    <linearGradient id="eyeLens" x1="8" y1="4" x2="8" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/><stop offset="50%" stop-color="#0284c7"/><stop offset="100%" stop-color="#1e3a8a"/>
     </linearGradient>
   </defs>
-  <rect x="0.8" y="1.2" width="14.4" height="13.6" rx="2" fill="url(#prevFrame)" stroke="#64748b" stroke-width="1"/>
-  <line x1="8" y1="1.5" x2="8" y2="14.5" stroke="#64748b" stroke-width="1"/>
-  <line x1="2.8" y1="4.5" x2="6" y2="4.5" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
-  <line x1="2.8" y1="7.5" x2="6.5" y2="7.5" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
-  <line x1="2.8" y1="10.5" x2="5.2" y2="10.5" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
-  <circle cx="11.5" cy="8" r="2.6" fill="#f97316"/>
-  <circle cx="11.5" cy="8" r="1.1" fill="#ffffff"/>
+  <path d="M1.2 8.0C3.0 4.2 6.5 2.2 8.0 2.2C9.5 2.2 13.0 4.2 14.8 8.0C13.0 11.8 9.5 13.8 8.0 13.8C6.5 13.8 3.0 11.8 1.2 8.0Z" fill="#0f172a" stroke="#64748b" stroke-width="1.2"/>
+  <circle cx="8" cy="8" r="4.2" fill="url(#eyeLens)" stroke="#7dd3fc" stroke-width="0.5"/>
+  <circle cx="8" cy="8" r="1.6" fill="#0f172a"/>
+  <circle cx="7.0" cy="6.8" r="0.7" fill="#ffffff"/>
 </svg>

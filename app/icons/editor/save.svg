@@ -1,10 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="saveGrad" x1="2" y1="2" x2="14" y2="14" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#60a5fa"/>
-      <stop offset="100%" stop-color="#2563eb"/>
+    <linearGradient id="diskBody" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3b82f6"/><stop offset="50%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="metalShutter" x1="4" y1="1" x2="12" y2="6.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8fafc"/><stop offset="50%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#64748b"/>
     </linearGradient>
   </defs>
-  <path d="M12.5 7.2C12.5 4.5 10.3 2.3 7.6 2.3C5.4 2.3 3.5 3.7 2.8 5.8C1.2 6.3 0 7.8 0 9.6C0 11.9 1.8 13.8 4.1 13.8H12.3C14.3 13.8 16 12.2 16 10.2C16 8.5 14.6 7.4 12.5 7.2Z" fill="url(#saveGrad)"/>
-  <path d="M8 11.5V5.5M8 5.5L5.2 8.3M8 5.5L10.8 8.3" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1.5 2.5C1.5 1.7 2.1 1.0 2.9 1.0H12.5L14.5 3.0V13.5C14.5 14.3 13.9 15.0 13.1 15.0H2.9C2.1 15.0 1.5 14.3 1.5 13.5V2.5Z" fill="url(#diskBody)" stroke="#60a5fa" stroke-width="0.6"/>
+  <rect x="4.2" y="1.0" width="7.6" height="5.6" rx="0.8" fill="url(#metalShutter)" stroke="#475569" stroke-width="0.4"/>
+  <rect x="6.0" y="2.2" width="2.0" height="3.4" rx="0.9" fill="#1e293b"/>
+  <rect x="3.4" y="8.8" width="9.2" height="5.6" rx="1.0" fill="#f8fafc"/>
+  <rect x="3.4" y="8.8" width="9.2" height="1.4" rx="0.6" fill="#0284c7"/>
+  <line x1="4.6" y1="11.8" x2="11.4" y2="11.8" stroke="#94a3b8" stroke-width="1.0" stroke-linecap="round"/>
+  <circle cx="13.2" cy="7.2" r="0.9" fill="#10b981"/>
 </svg>

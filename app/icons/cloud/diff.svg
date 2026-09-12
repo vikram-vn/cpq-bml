@@ -1,10 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <rect x="1.5" y="2" width="5.5" height="12" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
-  <rect x="9" y="2" width="5.5" height="12" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
-  <line x1="3.5" y1="5.5" x2="5" y2="5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-  <line x1="3.5" y1="8" x2="5" y2="8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-  <line x1="3.5" y1="10.5" x2="5" y2="10.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-  <line x1="11" y1="5.5" x2="12.5" y2="5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-  <line x1="11" y1="8" x2="12.5" y2="8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-  <line x1="11" y1="10.5" x2="12.5" y2="10.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="diffLeft" x1="1" y1="1" x2="7" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <linearGradient id="diffRight" x1="9" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <!-- Left document pane -->
+  <rect x="1.0" y="1.5" width="6.0" height="13.0" rx="1.5" fill="url(#diffLeft)" stroke="#60a5fa" stroke-width="0.6"/>
+  <line x1="2.5" y1="4.5" x2="5.5" y2="4.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
+  <line x1="2.5" y1="7.5" x2="5.5" y2="7.5" stroke="#f87171" stroke-width="1.0" stroke-linecap="round"/>
+  <line x1="2.5" y1="10.5" x2="5.5" y2="10.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
+  <!-- Right document pane -->
+  <rect x="9.0" y="1.5" width="6.0" height="13.0" rx="1.5" fill="url(#diffRight)" stroke="#34d399" stroke-width="0.6"/>
+  <line x1="10.5" y1="4.5" x2="13.5" y2="4.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
+  <line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#34d399" stroke-width="1.0" stroke-linecap="round"/>
+  <line x1="10.5" y1="10.5" x2="13.5" y2="10.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
 </svg>

@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="pullGrad" x1="2" y1="2" x2="14" y2="14" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#2dd4bf"/>
-      <stop offset="100%" stop-color="#0d9488"/>
+    <linearGradient id="pullCloud" x1="2" y1="1" x2="14" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5eead4"/><stop offset="50%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#0f766e"/>
     </linearGradient>
   </defs>
-  <path d="M12.5 7.2C12.5 4.5 10.3 2.3 7.6 2.3C5.4 2.3 3.5 3.7 2.8 5.8C1.2 6.3 0 7.8 0 9.6C0 11.9 1.8 13.8 4.1 13.8H12.3C14.3 13.8 16 12.2 16 10.2C16 8.5 14.6 7.4 12.5 7.2Z" fill="url(#pullGrad)"/>
-  <path d="M8 4.8V10.8M8 10.8L5.2 8M8 10.8L10.8 8" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12.5 6.4C12.5 4.0 10.5 2.0 8.0 2.0C6.0 2.0 4.2 3.2 3.5 5.0C1.8 5.4 0.6 6.8 0.6 8.6C0.6 10.8 2.4 12.6 4.6 12.6H12.3C14.3 12.6 16.0 11.0 16.0 9.0C16.0 7.3 14.5 6.6 12.5 6.4Z" fill="url(#pullCloud)"/>
+  <path d="M8.0 4.2V11.2M8.0 11.2L5.2 8.4M8.0 11.2L10.8 8.4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M3.0 14.6H13.0" stroke="#14b8a6" stroke-width="1.2" stroke-linecap="round"/>
 </svg>

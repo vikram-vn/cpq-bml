@@ -1,17 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="termGrad" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#334155"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="termFrame" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#334155"/><stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
     <linearGradient id="delBadge" x1="9" y1="9" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#fb7185"/>
-      <stop offset="100%" stop-color="#e11d48"/>
+      <stop offset="0%" stop-color="#fb7185"/><stop offset="100%" stop-color="#9f1239"/>
     </linearGradient>
   </defs>
-  <rect x="0.8" y="1.2" width="14.4" height="13.6" rx="2.5" fill="url(#termGrad)" stroke="#475569" stroke-width="0.8"/>
-  <path d="M3.5 5.5L6.5 8L3.5 10.5" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="8.2" y1="10.5" x2="11" y2="10.5" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round"/>
+  <rect x="0.8" y="1.2" width="14.4" height="13.6" rx="2.5" fill="url(#termFrame)" stroke="#475569" stroke-width="0.8"/>
+  <path d="M3.4 5.8L6.2 8.0L3.4 10.2" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="7.8" y1="10.2" x2="10.6" y2="10.2" stroke="#f8fafc" stroke-width="1.8" stroke-linecap="round"/>
   <circle cx="12.2" cy="12.2" r="3.4" fill="url(#delBadge)" stroke="#0f172a" stroke-width="1"/>
-  <path d="M10.6 12.2H13.8" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M10.4 12.2H14.0" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
 </svg>

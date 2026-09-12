@@ -464,14 +464,10 @@ def generate_skills_into(dest_dir, copy_images=False):
     for skill_name, refs in SKILL_REFERENCES.items():
         skill_dir = os.path.join(dest_dir, skill_name)
         os.makedirs(skill_dir, exist_ok=True)
-        
-        # Write SKILL.md from embedded template
         skill_content = SKILL_TEMPLATES.get(skill_name, "")
         if skill_content:
             with open(os.path.join(skill_dir, "SKILL.md"), "w", encoding="utf-8") as f:
                 f.write(skill_content)
-        
-        # Copy references
         if refs:
             refs_dir = os.path.join(skill_dir, "references")
             os.makedirs(refs_dir, exist_ok=True)
@@ -481,8 +477,6 @@ def generate_skills_into(dest_dir, copy_images=False):
                     shutil.copy2(src_ref, refs_dir)
                 else:
                     print(f"Warning: Reference file {ref} not found for skill {skill_name}")
-            
-            # Optionally copy images for local workspace rendering
             if copy_images:
                 src_images = os.path.join(SRC_KNOWLEDGE_DIR, "images")
                 dest_images = os.path.join(refs_dir, "images")
@@ -491,18 +485,12 @@ def generate_skills_into(dest_dir, copy_images=False):
 
 def build_skills():
     print(f"Building AI Skills in {DEST_SKILLS_DIR} and workspace .agents/skills...")
-    
-    # 1. Clean and generate app/ai/skills (without images for lean brotli compression)
     if os.path.exists(DEST_SKILLS_DIR):
         shutil.rmtree(DEST_SKILLS_DIR)
     generate_skills_into(DEST_SKILLS_DIR, copy_images=False)
-
-    # 2. Also synchronize workspace .agents/skills (with images for rich local rendering)
     agents_skills_dir = os.path.join(ROOT, ".agents", "skills")
     generate_skills_into(agents_skills_dir, copy_images=True)
-
     print("AI Skills build complete.")
 
 if __name__ == "__main__":
     build_skills()
-
