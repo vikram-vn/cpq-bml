@@ -438,9 +438,7 @@ SKILL_REFERENCES = {
         "URLAccess.md", "XML.md", "UseSOAPwithBML.md",
         "REST_Query_Collections.md", "REST_Status_Codes.md", "REST_Resource_Methods.md"
     ],
-    "bml-json-dict": [
-        "Json.md", "Dictionary.md"
-    ],
+    "bml-json-dict": ["Json.md", "Dictionary.md"],
     "cpq-domain": [
         "Others.md", "Others-BOM.md", "Others-Constants.md", "Others-GlobalDict.md",
         "Others-SysConfig.md", "Others-UserSessions.md", "PackageLifecycleManagement.md"
@@ -453,9 +451,9 @@ SKILL_REFERENCES = {
     "bml-pitfalls": [],
     "cpq-mcp-workflow": [],
     "cpq-rest-api": [
-        "REST_Query_Collections.md", "REST_Sort_Collections.md",
-        "REST_Pagination.md", "REST_Expand_Objects.md", "REST_Status_Codes.md",
-        "REST_Resource_Methods.md", "REST_Reference_Catalog.md", "REST_CORS.md"
+        "REST_Query_Collections.md", "REST_Sort_Collections.md", "REST_Pagination.md",
+        "REST_Expand_Objects.md", "REST_Status_Codes.md", "REST_Resource_Methods.md",
+        "REST_Reference_Catalog.md", "REST_CORS.md"
     ]
 }
 

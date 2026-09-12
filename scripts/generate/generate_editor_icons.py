@@ -301,17 +301,29 @@ EDITOR_ICONS = {
 
   "validate.svg": """<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="valBase" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#34d399"/><stop offset="45%" stop-color="#10b981"/><stop offset="100%" stop-color="#047857"/>
+    <linearGradient id="valBase" x1="2" y1="1" x2="14" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="35%" stop-color="#10b981"/>
+      <stop offset="75%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
     </linearGradient>
-    <linearGradient id="valRim" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#a7f3d0"/><stop offset="100%" stop-color="#065f46"/>
+    <linearGradient id="valRim" x1="2" y1="1" x2="14" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a7f3d0"/>
+      <stop offset="50%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#064e3b"/>
     </linearGradient>
+    <radialGradient id="valGloss" cx="8" cy="3.5" r="6.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </radialGradient>
   </defs>
-  <circle cx="8" cy="8" r="7.0" fill="url(#valBase)" stroke="url(#valRim)" stroke-width="0.9"/>
-  <circle cx="8" cy="8" r="5.6" fill="none" stroke="#a7f3d0" stroke-width="0.5" opacity="0.65"/>
-  <path d="M3.2 6.5A5.8 5.8 0 0 1 12.8 6.5" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" opacity="0.45"/>
-  <path d="M4.8 8.2L7.0 10.6L11.4 5.4" stroke="#ffffff" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="8" cy="8" r="7.2" fill="#047857"/>
+  <circle cx="8" cy="8" r="6.7" fill="url(#valBase)" stroke="url(#valRim)" stroke-width="0.8"/>
+  <circle cx="8" cy="8" r="6.3" fill="url(#valGloss)"/>
+  <circle cx="8" cy="8" r="5.2" fill="none" stroke="#6ee7b7" stroke-width="0.5" stroke-dasharray="2.5 1.0" opacity="0.75"/>
+  <path d="M3.5 6.6C3.9 4.2 5.8 2.5 8.0 2.5C10.2 2.5 12.1 4.2 12.5 6.6C11.2 5.1 9.7 4.4 8.0 4.4C6.3 4.4 4.8 5.1 3.5 6.6Z" fill="#ffffff" opacity="0.38"/>
+  <path d="M4.6 8.3L6.9 10.7L11.5 5.6" stroke="#064e3b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M4.6 8.1L6.9 10.5L11.5 5.4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 """
 }

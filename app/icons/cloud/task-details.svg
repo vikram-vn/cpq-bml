@@ -6,11 +6,8 @@
       <stop offset="100%" stop-color="#1e293b"/>
     </linearGradient>
   </defs>
-  <!-- Clipboard board -->
   <rect x="2.0" y="2.0" width="12.0" height="13.0" rx="2.0" fill="url(#boardGrad)" stroke="#64748b" stroke-width="0.8"/>
-  <!-- Metallic spring clamp -->
   <rect x="5.0" y="0.8" width="6.0" height="2.4" rx="0.8" fill="#cbd5e1" stroke="#475569" stroke-width="0.6"/>
-  <!-- Completed task items (checkmark + rule line) -->
   <path d="M4.2 6.0L5.2 7.0L7.2 4.8" stroke="#34d399" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
   <line x1="8.2" y1="6.0" x2="12.0" y2="6.0" stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round"/>
   <path d="M4.2 9.5L5.2 10.5L7.2 8.3" stroke="#34d399" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
