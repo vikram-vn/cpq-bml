@@ -47,7 +47,7 @@ function formatConfigurationAttribute(raw, productFamily = null) {
   return attr;
 }
 
-// Pulls and caches remote configuration attributes into cpq/config.attributes.min.json
+// Pulls and caches remote configuration attributes into cpq/config/<productFamily>/attributes.min.json
 async function syncConfigurationAttributes(
   context,
   vscode,

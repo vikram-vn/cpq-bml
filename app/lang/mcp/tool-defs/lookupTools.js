@@ -202,7 +202,7 @@ function register(server, context, vscode, tools) {
     "sync_commerce_attributes",
     {
       description:
-        "Pull and cache commerce attributes, transaction line attributes, and dropdown menu options from Oracle CPQ for the active process/document into the local workspace (cpq/commerce.attributes.min.json). " +
+        "Pull and cache commerce attributes, transaction line attributes, and dropdown menu options from Oracle CPQ for the active process/document into the local workspace (cpq/commerce/<process>/attributes.min.json). " +
         "Enables smart query resolution and offline attribute lookups with zero network calls.",
       inputSchema: {
         commerceProcess: z
@@ -222,7 +222,7 @@ function register(server, context, vscode, tools) {
     "sync_configuration_attributes",
     {
       description:
-        "Pull and cache Configuration attributes, product families, product lines, and models dynamically from Oracle CPQ into the local workspace (cpq/config.attributes.min.json). " +
+        "Pull and cache Configuration attributes, product families, product lines, and models dynamically from Oracle CPQ into the local workspace (cpq/config/<productFamily>/attributes.min.json). " +
         "Enables offline intellisense and AI attribute lookups for Configuration BML scripts.",
       inputSchema: {},
     },

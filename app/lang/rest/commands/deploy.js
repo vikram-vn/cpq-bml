@@ -190,7 +190,7 @@ async function runDeployCurrentFile(
 
   // Pre-Flight Safety & Impact Analysis
   try {
-    const preflight = await runPreflightSafetyCheck(editor.document.uri.fsPath, vscode, context);
+    const preflight = await runPreflightSafetyCheck(editor.document.uri.fsPath, vscode, context, { transport });
     if (!preflight.canDeploy) {
       const err = preflight.server.passed ? 'Code failed complexity or linter threshold' : preflight.server.message;
       const choice = await vscode.window.showErrorMessage(

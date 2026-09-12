@@ -110,7 +110,7 @@ suite("MCP tools - deploy & create lifecycle", () => {
         assert.strictEqual(result.success, true);
         const meta = metadataLib.readMetadata(metadataLib.bmlPathToMetaPath(result.localPath));
         assert.strictEqual(meta.variableName, "newFn");
-        assert.strictEqual(result.localPath, path.join(tmpDir, "library", "util", "newFn", "newFn_ai.bml"));
+        assert.strictEqual(result.localPath, path.join(tmpDir, "cpq", "sitename", "util-libraries", "util", "newFn", "newFn_ai.bml"));
         assert.ok(result.log.some((l) => l.includes("Create") && l.includes("newFn")));
         assert.ok(result.log.some((l) => l.includes("Pull") && l.includes("newFn")));
       }));

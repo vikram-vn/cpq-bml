@@ -15,7 +15,7 @@ const api = require('@/lang/rest/api');
 const metadataLib = require('@/lang/rest/metadata');
 const { IGNORED_FOLDERS } = require('@/lang/intellisense/workspaceIndex');
 
-async function checkServerValidation(filePath, code, metadata, vscodeInstance = vscode, context) {
+async function checkServerValidation(filePath, code, metadata, vscodeInstance = vscode, context, transport) {
   const startedAt = Date.now();
   try {
     const payload = {
@@ -24,7 +24,7 @@ async function checkServerValidation(filePath, code, metadata, vscodeInstance = 
       variableName: metadata?.variableName || metadataLib.variableNameFromBmlPath(filePath)
     };
 
-    const res = await api.validateLibraryFunction(context, vscodeInstance, payload);
+    const res = await api.validateLibraryFunction(context, vscodeInstance, payload, transport);
     const elapsedMs = Date.now() - startedAt;
 
     if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -199,7 +199,7 @@ function checkDiagnostics(filePath, vscodeInstance = vscode) {
   };
 }
 
-async function runPreflightSafetyCheck(filePath, vscodeInstance = vscode, context) {
+async function runPreflightSafetyCheck(filePath, vscodeInstance = vscode, context, { transport } = {}) {
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
@@ -219,7 +219,7 @@ async function runPreflightSafetyCheck(filePath, vscodeInstance = vscode, contex
   }
 
   // 1. Server validation
-  const server = await checkServerValidation(filePath, code, metadata, vscodeInstance, context);
+  const server = await checkServerValidation(filePath, code, metadata, vscodeInstance, context, transport);
 
   // 2. Complexity & timeout threats
   const complexity = checkComplexityAndThreats(code);
