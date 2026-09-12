@@ -216,9 +216,14 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       const dataType = extractStringValue(attr.dataType || attr.type, 'String');
       const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `(${dataType})`;
-      item.tooltip = `${label} (${varName}) [${dataType}]\n${attr.description || ''}`;
+      item.tooltip = `${label} (${varName}) [${dataType}]\n${attr.description || ''}\nClick to insert variable name at cursor (or copy to clipboard)`;
       item.iconPath = new vscodeInstance.ThemeIcon('symbol-property');
       item.contextValue = 'cpqConfigAttribute';
+      item.command = {
+        command: 'cpqBml.cloud.insertOrCopyAttribute',
+        title: 'Insert Variable Name at Cursor',
+        arguments: [element]
+      };
       return item;
     }
 
@@ -233,9 +238,14 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `[${ruleType}]`;
       const bomTarget = r.bomVariableName ? `\nTarget BOM: ${r.bomVariableName}` : '';
-      item.tooltip = `${label} (${varName}) [${ruleType}]${bomTarget}\n${r.description || ''}`;
+      item.tooltip = `${label} (${varName}) [${ruleType}]${bomTarget}\n${r.description || ''}\nClick to extract and open rule BML script`;
       item.iconPath = new vscodeInstance.ThemeIcon('law');
       item.contextValue = 'cpqConfigBomRule';
+      item.command = {
+        command: 'cpqBml.cloud.openRuleBml',
+        title: 'Open Rule BML Script',
+        arguments: [element]
+      };
       return item;
     }
 
@@ -247,9 +257,14 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       const ruleType = extractStringValue(r.ruleType || r.type || 'Rule');
       const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `[${ruleType}]`;
-      item.tooltip = `${label} (${varName}) [${ruleType}]\n${r.description || ''}`;
+      item.tooltip = `${label} (${varName}) [${ruleType}]\n${r.description || ''}\nClick to extract and open rule BML script`;
       item.iconPath = new vscodeInstance.ThemeIcon('law');
       item.contextValue = 'cpqConfigRule';
+      item.command = {
+        command: 'cpqBml.cloud.openRuleBml',
+        title: 'Open Rule BML Script',
+        arguments: [element]
+      };
       return item;
     }
 

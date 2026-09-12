@@ -1,4 +1,5 @@
 const { vscode, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
+const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { getSettings, getWorkspaceRoot, isConfigured } = require('@/lang/rest/config');
@@ -16,7 +17,14 @@ const {
   deployFunctionCommand,
   viewFunctionMetadataCommand,
   openCommerceActionCommand,
-  switchCommerceProcessCommand
+  switchCommerceProcessCommand,
+  insertOrCopyAttributeCommand,
+  copyVariableNameCommand,
+  copyTableNameCommand,
+  generateBmqlQueryCommand,
+  openActionBmlCommand,
+  openRuleBmlCommand,
+  createTestFixtureCommand,
 } = require('@/lang/cloud/cloudExplorerCommands');
 const {
   fetchUtilFunctions,
@@ -267,8 +275,26 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       badges.push('[Standard]');
     }
 
+    let isLocallyModified = false;
     if (localPath) {
-      badges.push('✓ Local');
+      try {
+        const localStat = fs.statSync(localPath);
+        const metaPath = localPath.replace(/\.bml$/, '-meta.json');
+        if (fs.existsSync(metaPath)) {
+          const metaStat = fs.statSync(metaPath);
+          if (localStat.mtimeMs > metaStat.mtimeMs + 1000) {
+            isLocallyModified = true;
+          }
+        }
+      } catch {}
+    }
+
+    if (localPath) {
+      if (isLocallyModified) {
+        badges.push('● Modified');
+      } else {
+        badges.push('✓ Synced');
+      }
     } else {
       badges.push('☁ Cloud');
     }
@@ -279,7 +305,9 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
     }
 
     item.description = badges.join(' ');
-    item.contextValue = localPath ? 'cpqCloudFunctionSynced' : 'cpqCloudFunctionRemote';
+    item.contextValue = localPath
+      ? (isLocallyModified ? 'cpqCloudFunctionModified' : 'cpqCloudFunctionSynced')
+      : 'cpqCloudFunctionRemote';
 
     const deployStatusText = isStaged ? 'Staging (Pending Deployment)' : (isDeployed ? 'Deployed' : 'Unknown');
     const funcTypeText = fn.isOverridden
@@ -290,6 +318,7 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       const procDoc = isCommerce ? `Commerce: ${fn.commerceProcess || 'oraclecpqo'}/${fn.commerceDocument || 'transaction'}` : 'Util Library';
       item.tooltip = [
         `${varName} [${deployStatusText}]`,
+        `Status: ${isLocallyModified ? 'Modified locally (pending deploy)' : 'In-sync with Cloud'}`,
         `Type: ${funcTypeText}`,
         `Environment: ${procDoc}`,
         `Local File: ${path.basename(localPath)}`,
@@ -299,7 +328,9 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
         'Click to open local file in editor'
       ].join('\n');
 
-      if (isStaged) {
+      if (isLocallyModified) {
+        item.iconPath = new vscodeInstance.ThemeIcon('diff-modified', new vscodeInstance.ThemeColor('gitDecoration.modifiedResourceForeground'));
+      } else if (isStaged) {
         item.iconPath = new vscodeInstance.ThemeIcon('beaker', new vscodeInstance.ThemeColor('problemsWarningIcon.foreground'));
       } else if (fn.isOverridden) {
         item.iconPath = new vscodeInstance.ThemeIcon('diff-modified', new vscodeInstance.ThemeColor('symbolIcon.eventForeground'));
@@ -800,6 +831,34 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
     return viewFunctionMetadataCommand(item, vscodeInstance, context);
   });
 
+  const insertAttrCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.insertOrCopyAttribute', (item) => {
+    return insertOrCopyAttributeCommand(item, vscodeInstance);
+  });
+
+  const copyVarCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.copyVariableName', (item) => {
+    return copyVariableNameCommand(item, vscodeInstance);
+  });
+
+  const copyTableCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.copyTableName', (item) => {
+    return copyTableNameCommand(item, vscodeInstance);
+  });
+
+  const generateBmqlCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.generateBmqlQuery', (item) => {
+    return generateBmqlQueryCommand(item, vscodeInstance, context);
+  });
+
+  const openActionBmlCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.openActionBml', (item) => {
+    return openActionBmlCommand(item, vscodeInstance, context);
+  });
+
+  const openRuleBmlCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.openRuleBml', (item) => {
+    return openRuleBmlCommand(item, vscodeInstance, context);
+  });
+
+  const createFixtureCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.createTestFixture', (item) => {
+    return createTestFixtureCommand(item, vscodeInstance, context);
+  });
+
   context.subscriptions.push(
     treeView,
     refreshCmd,
@@ -812,7 +871,14 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
     filterExplorerCmd,
     clearFilterCmd,
     deployCmd,
-    viewMetaCmd
+    viewMetaCmd,
+    insertAttrCmd,
+    copyVarCmd,
+    copyTableCmd,
+    generateBmqlCmd,
+    openActionBmlCmd,
+    openRuleBmlCmd,
+    createFixtureCmd
   );
 
   return { treeDataProvider, treeView };
@@ -835,5 +901,12 @@ module.exports = {
   filterExplorerCommand,
   clearFilterCommand,
   searchExplorerCommand,
+  insertOrCopyAttributeCommand,
+  copyVariableNameCommand,
+  copyTableNameCommand,
+  generateBmqlQueryCommand,
+  openActionBmlCommand,
+  openRuleBmlCommand,
+  createTestFixtureCommand,
   registerCloudExplorer
 };

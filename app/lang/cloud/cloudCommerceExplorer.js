@@ -224,9 +224,14 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       const displayLabel = formatNameAndVarName(name, varName);
       const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `(${dataType})`;
-      item.tooltip = `${name} (${varName}) [${dataType}]\n${attr.description || ''}`;
+      item.tooltip = `${name} (${varName}) [${dataType}]\n${attr.description || ''}\nClick to insert variable name at cursor (or copy to clipboard)`;
       item.iconPath = new vscodeInstance.ThemeIcon('symbol-property');
       item.contextValue = 'cpqCommerceAttribute';
+      item.command = {
+        command: 'cpqBml.cloud.insertOrCopyAttribute',
+        title: 'Insert Variable Name at Cursor',
+        arguments: [element]
+      };
       return item;
     }
 

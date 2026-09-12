@@ -642,6 +642,48 @@
         "title": "CPQ-BML: Clear Recent Transactions Filter",
         "icon": "app/icons/cloud/clear-filter.svg",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.insertOrCopyAttribute",
+        "title": "CPQ-BML: Insert Variable Name at Cursor",
+        "icon": "$(symbol-field)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.copyVariableName",
+        "title": "CPQ-BML: Copy Variable Name",
+        "icon": "$(copy)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.copyTableName",
+        "title": "CPQ-BML: Copy Table Name",
+        "icon": "$(copy)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.generateBmqlQuery",
+        "title": "CPQ-BML: Generate BMQL Query Block",
+        "icon": "$(code)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.openActionBml",
+        "title": "CPQ-BML: Open Action BML Script",
+        "icon": "$(file-code)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.openRuleBml",
+        "title": "CPQ-BML: Open Rule BML Script",
+        "icon": "$(file-code)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.createTestFixture",
+        "title": "CPQ-BML: Create Test Fixture from Quote",
+        "icon": "$(beaker)",
+        "category": "BML"
       }
     ],
     "menus": {
@@ -917,9 +959,54 @@
           "group": "inline@2"
         },
         {
-          "command": "cpqBml.cloud.copyTransactionId",
+          "command": "cpqBml.cloud.createTestFixture",
           "when": "view == cpqBml.recentTransactions && viewItem == cpqTransactionItem",
           "group": "inline@3"
+        },
+        {
+          "command": "cpqBml.cloud.copyTransactionId",
+          "when": "view == cpqBml.recentTransactions && viewItem == cpqTransactionItem",
+          "group": "1_actions@1"
+        },
+        {
+          "command": "cpqBml.cloud.generateBmqlQuery",
+          "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTable",
+          "group": "inline@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.copyTableName",
+          "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTable",
+          "group": "1_actions@1"
+        },
+        {
+          "command": "cpqBml.cloud.insertOrCopyAttribute",
+          "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTableColumn",
+          "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.cloud.copyVariableName",
+          "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTableColumn",
+          "group": "1_actions@1"
+        },
+        {
+          "command": "cpqBml.cloud.insertOrCopyAttribute",
+          "when": "viewItem =~ /^(cpqCommerceAttribute|cpqConfigAttribute)$/",
+          "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.cloud.copyVariableName",
+          "when": "viewItem =~ /^(cpqCommerceAttribute|cpqConfigAttribute)$/",
+          "group": "1_actions@1"
+        },
+        {
+          "command": "cpqBml.cloud.openActionBml",
+          "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceAction",
+          "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.cloud.openRuleBml",
+          "when": "view == cpqBml.configExplorer && viewItem =~ /^(cpqConfigRule|cpqConfigBomRule)$/",
+          "group": "inline@1"
         },
         {
           "command": "cpqBml.cloud.viewTaskDetails",

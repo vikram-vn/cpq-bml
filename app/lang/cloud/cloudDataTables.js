@@ -191,6 +191,12 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
       item.description = col.type || 'String';
       item.iconPath = new vscodeInstance.ThemeIcon(col.isPrimaryKey ? 'key' : 'symbol-field');
       item.contextValue = 'cpqCloudDataTableColumn';
+      item.tooltip = `${col.name} (${col.type || 'String'})${col.isPrimaryKey ? ' [Primary Key]' : ''}\nClick to insert column name at cursor (or copy to clipboard)`;
+      item.command = {
+        command: 'cpqBml.cloud.insertOrCopyAttribute',
+        title: 'Insert Column Name at Cursor',
+        arguments: [{ data: { variableName: col.name } }]
+      };
       return item;
     }
 

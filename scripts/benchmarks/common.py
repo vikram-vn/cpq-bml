@@ -161,6 +161,9 @@ const fs = require('fs');
 const path = require('path');
 const {{ performance }} = require('perf_hooks');
 
+const rootDir = '{escaped_root}';
+require(path.join(rootDir, 'scripts', 'register-alias.js'));
+
 // Setup minimal VS Code Mock
 const Module = require('module');
 const origRequire = Module.prototype.require;
@@ -224,7 +227,6 @@ Module.prototype.require = function(r) {{
     return origRequire.apply(this, arguments);
 }};
 
-const rootDir = '{escaped_root}';
 const sampleBmlPath = path.join(rootDir, 'test', 'benchmarks', 'fixtures', 'benchmark_1_full_suite.bml');
 const sampleBml = fs.readFileSync(sampleBmlPath, 'utf8');
 
