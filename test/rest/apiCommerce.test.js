@@ -43,7 +43,7 @@ suite("Commerce Endpoints & Attributes (apiCommerce)", () => {
   });
 
   suite("getTransactions", () => {
-    test("uses default offset=25, limit=25, fields=_id,transactionID_t, excludeFieldTypes=yes", async () => {
+    test("uses default offset=25, limit=25, fields=_id,transactionID_t and omits excludeFieldTypes", async () => {
       const vscode = createFakeVscode({ config: baseConfig() });
       const sink = {};
       const transport = async (opts) => {
@@ -73,13 +73,27 @@ suite("Commerce Endpoints & Attributes (apiCommerce)", () => {
       assert.strictEqual(sink.captured.method, "GET");
       assert.strictEqual(
         sink.captured.path,
-        "/rest/v19/commerceDocumentsOraclecpqoTransaction?offset=25&limit=25&fields=_id%2CtransactionID_t&excludeFieldTypes=yes&totalResults=true",
+        "/rest/v19/commerceDocumentsOraclecpqoTransaction?offset=25&limit=25&fields=_id%2CtransactionID_t&totalResults=true",
       );
       assert.strictEqual(result.statusCode, 200);
       assert.strictEqual(result.body.items.length, 1);
       assert.strictEqual(result.body.items[0]._id, "12345");
       assert.strictEqual(result.body.items[0].transactionID_t, "48420727");
       assert.strictEqual(result.body.items[0].links, undefined);
+    });
+
+    test("includes excludeFieldTypes when fields is omitted", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.getTransactions(
+        fakeContext(),
+        vscode,
+        { fields: "", excludeFieldTypes: "yes" },
+        capturingTransport(sink),
+      );
+
+      assert.ok(sink.captured.path.includes("excludeFieldTypes=yes"));
+      assert.ok(!sink.captured.path.includes("fields="));
     });
 
     test("passes custom q filter and honors custom pagination", async () => {

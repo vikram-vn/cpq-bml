@@ -21,19 +21,19 @@ function createToolVscodeContext(vscode, { bmlPath, quickPickSelector, warningCo
         }
         : undefined;
 
-    const windowProxy = new Proxy(vscode.window, {
-        get(target, prop) {
+    const windowProxy = new Proxy({}, {
+        get(_, prop) {
             if (prop === 'activeTextEditor') return fakeEditor;
             if (prop === 'showInformationMessage') {
                 return (msg, ...rest) => {
                     messages.info.push(msg);
-                    return target.showInformationMessage(msg, ...rest);
+                    return vscode.window.showInformationMessage(msg, ...rest);
                 };
             }
             if (prop === 'showErrorMessage') {
                 return (msg, ...rest) => {
                     messages.error.push(msg);
-                    return target.showErrorMessage(msg, ...rest);
+                    return vscode.window.showErrorMessage(msg, ...rest);
                 };
             }
             if (prop === 'showWarningMessage') {
@@ -51,44 +51,44 @@ function createToolVscodeContext(vscode, { bmlPath, quickPickSelector, warningCo
                     return undefined; // no answerer configured - cancel rather than hang
                 };
             }
-            const value = target[prop];
-            return typeof value === 'function' ? value.bind(target) : value;
+            const value = vscode.window[prop];
+            return typeof value === 'function' ? value.bind(vscode.window) : value;
         },
     });
 
-    const workspaceProxy = new Proxy(vscode.workspace, {
-        get(target, prop) {
+    const workspaceProxy = new Proxy({}, {
+        get(_, prop) {
             if (prop === 'getConfiguration') {
                 return (section) => {
-                    const real = target.getConfiguration(section);
+                    const real = vscode.workspace.getConfiguration(section);
                     if (!configOverrides) return real;
-                    return new Proxy(real, {
-                        get(cfgTarget, cfgProp) {
+                    return new Proxy({}, {
+                        get(__, cfgProp) {
                             if (cfgProp === 'get') {
                                 return (key, defaultValue) => {
                                     if (Object.prototype.hasOwnProperty.call(configOverrides, key)) {
                                         return configOverrides[key];
                                     }
-                                    return cfgTarget.get(key, defaultValue);
+                                    return real.get(key, defaultValue);
                                 };
                             }
-                            const value = cfgTarget[cfgProp];
-                            return typeof value === 'function' ? value.bind(cfgTarget) : value;
+                            const value = real[cfgProp];
+                            return typeof value === 'function' ? value.bind(real) : value;
                         },
                     });
                 };
             }
-            const value = target[prop];
-            return typeof value === 'function' ? value.bind(target) : value;
+            const value = vscode.workspace[prop];
+            return typeof value === 'function' ? value.bind(vscode.workspace) : value;
         },
     });
 
-    const vscodeProxy = new Proxy(vscode, {
-        get(target, prop) {
+    const vscodeProxy = new Proxy({}, {
+        get(_, prop) {
             if (prop === 'window') return windowProxy;
             if (prop === 'workspace') return workspaceProxy;
-            const value = target[prop];
-            return typeof value === 'function' ? value.bind(target) : value;
+            const value = vscode[prop];
+            return typeof value === 'function' ? value.bind(vscode) : value;
         },
     });
 

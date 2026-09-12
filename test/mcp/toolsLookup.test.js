@@ -291,9 +291,8 @@ suite("MCP tools - lookup", () => {
           assert.ok(opts.path.startsWith("/rest/v19/commerceDocumentsOraclecpqoTransaction?"));
           assert.strictEqual(opts.method, "GET");
           assert.ok(opts.path.includes("offset=25"));
-          assert.ok(opts.path.includes("limit=25"));
-          assert.ok(opts.path.includes("excludeFieldTypes=yes"));
           assert.ok(opts.path.includes("fields=_id%2CtransactionID_t"));
+          assert.ok(!opts.path.includes("excludeFieldTypes="));
           return jsonResponse(200, mockResponse);
         };
 

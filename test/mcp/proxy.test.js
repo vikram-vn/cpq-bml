@@ -88,3 +88,67 @@ suite("MCP jsonResult - privacy sanitization", () => {
   });
 });
 
+const { createToolVscodeContext } = require("@/lang/mcp/proxy");
+
+suite("MCP proxy - createToolVscodeContext", () => {
+  test("prevents Proxy invariant violations when target has non-configurable properties", () => {
+    // Create a mock vscode with non-configurable, non-writable properties
+    const mockWindow = {};
+    Object.defineProperty(mockWindow, "activeTextEditor", {
+      value: undefined,
+      configurable: false,
+      writable: false,
+    });
+    Object.defineProperty(mockWindow, "showInformationMessage", {
+      value: () => Promise.resolve("OK"),
+      configurable: false,
+      writable: false,
+    });
+
+    const mockVscode = {
+      window: mockWindow,
+      workspace: {
+        getConfiguration: () => ({
+          get: (k, d) => d,
+        }),
+      },
+    };
+
+    // If the Proxy used the target directly with invariants, overriding activeTextEditor would throw TypeError
+    assert.doesNotThrow(() => {
+      const { vscodeProxy, messages } = createToolVscodeContext(mockVscode, {
+        bmlPath: "c:/test/file.bml",
+      });
+
+      // Getting activeTextEditor returns the fakeEditor without invariant error
+      assert.ok(vscodeProxy.window.activeTextEditor);
+      assert.strictEqual(vscodeProxy.window.activeTextEditor.document.languageId, "bml");
+
+      // Invoking showInformationMessage captures message
+      vscodeProxy.window.showInformationMessage("test message");
+      assert.deepStrictEqual(messages.info, ["test message"]);
+    });
+  });
+
+  test("honors configOverrides without proxy invariant errors", () => {
+    const mockVscode = {
+      window: {},
+      workspace: {
+        getConfiguration: (section) => {
+          const config = { "debug.concurrency": 2 };
+          return {
+            get: (key, defaultValue) => config[key] ?? defaultValue,
+          };
+        },
+      },
+    };
+
+    const { vscodeProxy } = createToolVscodeContext(mockVscode, {
+      configOverrides: { "debug.concurrency": 5 },
+    });
+
+    const cfg = vscodeProxy.workspace.getConfiguration("cpqBml");
+    assert.strictEqual(cfg.get("debug.concurrency"), 5);
+  });
+});
+

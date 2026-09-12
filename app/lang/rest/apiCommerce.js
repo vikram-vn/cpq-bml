@@ -71,8 +71,9 @@ async function getTransactions(
   const queryParams = {};
   if (offset !== undefined) queryParams.offset = offset;
   if (limit !== undefined) queryParams.limit = limit;
-  if (resolvedFields) queryParams.fields = resolvedFields;
-  if (excludeFieldTypes !== undefined && excludeFieldTypes !== false && excludeFieldTypes !== null) {
+  if (resolvedFields) {
+    queryParams.fields = resolvedFields;
+  } else if (excludeFieldTypes !== undefined && excludeFieldTypes !== false && excludeFieldTypes !== null) {
     queryParams.excludeFieldTypes = excludeFieldTypes === true ? "yes" : String(excludeFieldTypes);
   }
   if (queryFilter) queryParams.q = queryFilter;

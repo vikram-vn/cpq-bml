@@ -48,9 +48,8 @@ suite("BML REST commands - getTransactions", () => {
       const transport = async (opts) => {
         assert.ok(opts.path.startsWith("/rest/v19/commerceDocumentsOraclecpqoTransaction?"));
         assert.ok(opts.path.includes("offset=25"));
-        assert.ok(opts.path.includes("limit=25"));
-        assert.ok(opts.path.includes("excludeFieldTypes=yes"));
         assert.ok(opts.path.includes("fields=_id%2CtransactionID_t"));
+        assert.ok(!opts.path.includes("excludeFieldTypes="));
         return {
           statusCode: 200,
           headers: { "content-type": "application/json" },
