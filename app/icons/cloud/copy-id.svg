@@ -1,24 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <defs>
-    <linearGradient id="cipBack" x1="1" y1="1" x2="11" y2="12" gradientUnits="userSpaceOnUse">
+    <linearGradient id="cIdBack" x1="1" y1="1" x2="11" y2="12" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/>
     </linearGradient>
-    <linearGradient id="cipFront" x1="3" y1="3" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="45%" stop-color="#0284c7"/>
-      <stop offset="100%" stop-color="#1e3a8a"/>
+    <linearGradient id="cIdFront" x1="3" y1="3" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#64748b"/><stop offset="50%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/>
     </linearGradient>
   </defs>
-  <rect x="1.0" y="1.2" width="10.2" height="11.0" rx="1.8" fill="url(#cipBack)" stroke="#64748b" stroke-width="0.8"/>
+  <rect x="1.0" y="1.2" width="10.2" height="11.0" rx="1.8" fill="url(#cIdBack)" stroke="#64748b" stroke-width="0.8"/>
   <rect x="4.4" y="2.0" width="3.4" height="1.0" rx="0.5" fill="#0f172a"/>
-  <rect x="4.2" y="3.6" width="10.8" height="11.4" rx="2.0" fill="url(#cipFront)" stroke="#7dd3fc" stroke-width="0.8"/>
-  <rect x="8.0" y="4.4" width="3.2" height="1.0" rx="0.5" fill="#0f172a" stroke="#38bdf8" stroke-width="0.3"/>
-  <rect x="5.4" y="6.4" width="3.4" height="3.8" rx="0.6" fill="#0f172a" stroke="#7dd3fc" stroke-width="0.4"/>
+  <rect x="4.2" y="3.6" width="10.8" height="11.4" rx="2.0" fill="url(#cIdFront)" stroke="#cbd5e1" stroke-width="0.8"/>
+  <rect x="8.0" y="4.4" width="3.2" height="1.0" rx="0.5" fill="#0f172a" stroke="#94a3b8" stroke-width="0.3"/>
+  <rect x="5.4" y="6.4" width="3.4" height="3.8" rx="0.6" fill="#0f172a" stroke="#cbd5e1" stroke-width="0.4"/>
   <circle cx="7.1" cy="7.6" r="0.8" fill="#ffffff"/>
   <path d="M6.0 9.8C6.0 9.0 6.5 8.7 7.1 8.7C7.7 8.7 8.2 9.0 8.2 9.8" stroke="#ffffff" stroke-width="0.6" stroke-linecap="round"/>
   <line x1="10.0" y1="6.8" x2="13.8" y2="6.8" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
-  <line x1="10.0" y1="8.4" x2="13.2" y2="8.4" stroke="#7dd3fc" stroke-width="0.9" stroke-linecap="round"/>
-  <line x1="10.0" y1="10.0" x2="12.4" y2="10.0" stroke="#bae6fd" stroke-width="0.8" stroke-linecap="round"/>
-  <line x1="5.4" y1="12.2" x2="13.8" y2="12.2" stroke="#e0f2fe" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.6 0.9"/>
+  <line x1="10.0" y1="8.4" x2="13.2" y2="8.4" stroke="#cbd5e1" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="10.0" y1="10.0" x2="12.4" y2="10.0" stroke="#94a3b8" stroke-width="0.8" stroke-linecap="round"/>
+  <line x1="5.4" y1="12.2" x2="13.8" y2="12.2" stroke="#f8fafc" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.6 0.9"/>
   <circle cx="14.4" cy="3.6" r="0.8" fill="#ffffff"/>
 </svg>
