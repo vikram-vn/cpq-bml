@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M2 2C2 1.2 2.6 0.8 3.5 0.8H10.5L14 4.3V14C14 14.8 13.4 15.2 12.5 15.2H3.5C2.6 15.2 2 14.8 2 14V2Z" fill="url(#bmlGrad)"/>
-  <path d="M10.5 0.8V4.3H14L10.5 0.8Z" fill="#fca5a5"/>
-  <path d="M8 6.5V11.5M5.5 9H10.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
   <defs>
-    <linearGradient id="bmlGrad" x1="2" y1="0.8" x2="14" y2="15.2" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#f87171"/>
-      <stop offset="1" stop-color="#dc2626"/>
+    <linearGradient id="bmlGrad" x1="2" y1="1" x2="14" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+    <linearGradient id="bmlFold" x1="9" y1="1" x2="14" y2="5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fecdd3"/>
+      <stop offset="100%" stop-color="#fda4af"/>
     </linearGradient>
   </defs>
+  <path d="M2 2.2C2 1.4 2.6 0.8 3.5 0.8H10.2L14 4.6V13.8C14 14.6 13.4 15.2 12.5 15.2H3.5C2.6 15.2 2 14.6 2 13.8V2.2Z" fill="url(#bmlGrad)"/>
+  <path d="M10.2 0.8V4.6H14L10.2 0.8Z" fill="url(#bmlFold)"/>
+  <path d="M8 6.5V11.5M5.5 9H10.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
 </svg>

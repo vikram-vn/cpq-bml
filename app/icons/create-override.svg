@@ -1,12 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <!-- Document page -->
-  <path d="M1.8 2.2C1.8 1.4 2.4 0.8 3.2 0.8H8.8L12.4 4.4V13.8C12.4 14.6 11.8 15.2 11 15.2H3.2C2.4 15.2 1.8 14.6 1.8 13.8V2.2Z" fill="#475569"/>
-  <path d="M8.8 0.8V4.4H12.4L8.8 0.8Z" fill="#64748b"/>
-  <!-- Lines on document -->
-  <line x1="3.8" y1="6.8" x2="9.8" y2="6.8" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
-  <line x1="3.8" y1="9.2" x2="8.5" y2="9.2" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
-  <line x1="3.8" y1="11.6" x2="7.5" y2="11.6" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
-  <!-- Green plus circle badge -->
-  <circle cx="12.2" cy="12.2" r="3.4" fill="#10b981" stroke="#0f172a" stroke-width="1.2"/>
+  <defs>
+    <linearGradient id="docGrad" x1="2" y1="1" x2="12" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="plusBadge" x1="9" y1="9" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <path d="M2 2.2C2 1.5 2.5 1 3.2 1H8.6L12.4 4.8V13.8C12.4 14.5 11.9 15 11.2 15H3.2C2.5 15 2 14.5 2 13.8V2.2Z" fill="url(#docGrad)"/>
+  <path d="M8.6 1V4.8H12.4L8.6 1Z" fill="#94a3b8"/>
+  <line x1="4" y1="6.8" x2="9.8" y2="6.8" stroke="#cbd5e1" stroke-width="1.3" stroke-linecap="round"/>
+  <line x1="4" y1="9.2" x2="8.2" y2="9.2" stroke="#cbd5e1" stroke-width="1.3" stroke-linecap="round"/>
+  <line x1="4" y1="11.6" x2="7" y2="11.6" stroke="#cbd5e1" stroke-width="1.3" stroke-linecap="round"/>
+  <circle cx="12.2" cy="12.2" r="3.4" fill="url(#plusBadge)" stroke="#0f172a" stroke-width="1"/>
   <path d="M12.2 10.4V14M10.4 12.2H14" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
 </svg>
