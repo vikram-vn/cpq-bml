@@ -92,23 +92,6 @@ async function getTransactions(
     transport,
   );
 
-  // If initial request fails (e.g. 400 Bad Request due to custom fields/sort), retry with minimal query
-  if (result.statusCode >= 400) {
-    const minimalQuery = { limit: queryParams.limit || 25, offset: queryParams.offset || 0 };
-    const retry = await call(
-      context,
-      vscode,
-      {
-        path: basePath,
-        method: "GET",
-        query: minimalQuery,
-      },
-      transport,
-    );
-    if (retry.statusCode < result.statusCode) {
-      result = retry;
-    }
-  }
 
   // Sanitize items so no href links are ever returned, keeping minimal _id and transactionID_t
   if (result && result.body && typeof result.body === "object") {
@@ -207,7 +190,6 @@ async function getCommerceAction(
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/rules
-// or fallback to /rest/<version>/commerceProcesses/<process>/rules
 async function listCommerceRules(
   context,
   vscode,
@@ -221,7 +203,7 @@ async function listCommerceRules(
   const query = { limit };
   if (offset > 0) query.offset = offset;
 
-  let res = await call(
+  return call(
     context,
     vscode,
     {
@@ -231,19 +213,6 @@ async function listCommerceRules(
     },
     transport,
   );
-  if (res.statusCode >= 400) {
-    res = await call(
-      context,
-      vscode,
-      {
-        path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/rules`,
-        method: "GET",
-        query,
-      },
-      transport,
-    );
-  }
-  return res;
 }
 
 // POST /rest/<version>/commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer

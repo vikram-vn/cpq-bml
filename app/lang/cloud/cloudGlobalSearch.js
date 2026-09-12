@@ -116,7 +116,7 @@ async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQue
                 let doc = it.commerceDocument || '';
 
                 if (it.path && typeof it.path === 'string') {
-                  const parts = it.path.split('/');
+                  const parts = it.path.includes(' : ') ? it.path.split(' : ') : it.path.split('/');
                   if (!name) name = parts[parts.length - 1];
                   if (!type) type = parts[0];
                   if (!proc && parts.length > 2) proc = parts[1];

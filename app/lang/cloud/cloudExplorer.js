@@ -1,7 +1,7 @@
-const { vscode, extractStringValue } = require('./cloudVscodeShim');
+const { vscode, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
 const path = require('path');
 const api = require('@/lang/rest/api');
-const { getSettings, getWorkspaceRoot } = require('@/lang/rest/config');
+const { getSettings, getWorkspaceRoot, isConfigured } = require('@/lang/rest/config');
 const {
   findLocalFunctionFile,
   groupFunctionsByFolder,
@@ -192,13 +192,14 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       const action = element.data;
       const varName = extractStringValue(action.variableName || action.name, 'action');
       const label = extractStringValue(action.label || action.name || varName, varName);
-      const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
+      const displayLabel = formatNameAndVarName(label, varName);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
 
       const actionType =
         extractStringValue(action.actionType) ||
         extractStringValue(action.type) ||
         'Action';
-      item.description = `[${actionType}] ${varName}`;
+      item.description = `[${actionType}]`;
       const desc = extractStringValue(action.description, '');
       item.tooltip = [
         `Commerce Action: ${label}`,
@@ -230,8 +231,9 @@ function createCloudExplorer(vscodeInstance = vscode, context) {
       : null;
     const localPath = findLocalFunctionFile(wsRoot, varName, fn.folderName, commerceMetadata, vscodeInstance);
 
-    const label = extractStringValue(fn.name || varName, varName);
-    const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.None);
+    const name = extractStringValue(fn.name || varName, varName);
+    const displayLabel = formatNameAndVarName(name, varName);
+    const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
 
     const badges = [];
     const hasStagedTimestamps = Boolean(
@@ -502,7 +504,7 @@ function clearFilterCommand(treeDataProvider, vscodeInstance = vscode) {
 }
 
 /**
- * Interactive QuickPick search across all CPQ functions and actions.
+ * Interactive QuickPick search across all Cloud Explorer sections (Functions, Actions, Rules, Attributes, Data Tables).
  */
 async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, context) {
   if (treeDataProvider && treeDataProvider.fetchRemoteFunctions) {
@@ -512,16 +514,14 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, 
   const functions = treeDataProvider.getCachedFunctions ? (treeDataProvider.getCachedFunctions() || []) : [];
   const actions = treeDataProvider.getCachedActions ? (treeDataProvider.getCachedActions() || []) : [];
 
-  if (functions.length === 0 && actions.length === 0) {
-    vscodeInstance.window.showInformationMessage('No functions or actions found in Cloud Explorer.');
-    return;
-  }
-
   const wsRoot = getWorkspaceRoot(vscodeInstance);
   const items = [];
 
+  // 1. Functions (Util & Commerce)
   for (const fn of functions) {
     const varName = extractStringValue(fn.variableName || fn.name, 'function');
+    const name = extractStringValue(fn.name || varName, varName);
+    const displayLabel = formatNameAndVarName(name, varName);
     const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
     const commerceMetadata = isCommerce ? { commerceProcess: fn.commerceProcess, commerceDocument: fn.commerceDocument } : null;
     const localPath = findLocalFunctionFile(wsRoot, varName, fn.folderName, commerceMetadata, vscodeInstance);
@@ -530,7 +530,7 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, 
     const envType = isCommerce ? `Commerce: ${fn.commerceProcess || 'oraclecpqo'}/${fn.commerceDocument || 'transaction'}` : 'Util';
 
     const icon = localPath ? '$(check)' : '$(cloud)';
-    const label = `${icon} ${varName}`;
+    const label = `${icon} ${displayLabel}`;
     const statusBadge = localPath ? '✓ Local' : '☁ Cloud';
     const descParts = [`[${envType}]`, folderName];
     if (returnType) descParts.push(`-> ${returnType}`);
@@ -546,19 +546,138 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, 
     });
   }
 
+  // 2. Actions (Commerce)
   for (const act of actions) {
     const varName = extractStringValue(act.variableName || act.name, 'action');
+    const name = extractStringValue(act.label || act.name || varName, varName);
+    const displayLabel = formatNameAndVarName(name, varName);
     const actionType = extractStringValue(act.actionType || act.type || 'Action');
     const doc = act.commerceDocument || 'transaction';
     const proc = act.commerceProcess || 'oraclecpqo';
 
     items.push({
-      label: `$(zap) ${varName}`,
+      label: `$(zap) ${displayLabel}`,
       description: `[Action: ${proc}/${doc}] [${actionType}]`,
       detail: act.description || `Commerce Action for ${doc} (click to view definition)`,
       data: act,
       itemType: 'action'
     });
+  }
+
+  // 3. Search other sections if CPQ is configured
+  if (isConfigured(vscodeInstance)) {
+    const settings = getSettings(vscodeInstance);
+    const proc = settings.commerceProcess || 'oraclecpqo';
+
+    try {
+      const [txRulesRes, txAttrsRes, dataTablesRes, configFamiliesRes, configAttrsRes] = await Promise.allSettled([
+        api.listCommerceRules(context, vscodeInstance, { process: proc, document: 'transaction', limit: 100 }),
+        api.listCommerceAttributes(context, vscodeInstance, { process: proc, document: 'transaction', limit: 100 }),
+        api.listDataTables(context, vscodeInstance, { limit: 100 }),
+        api.listProductFamilies(context, vscodeInstance, { limit: 50 }),
+        api.listConfigurationAttributes(context, vscodeInstance, { limit: 100 })
+      ]);
+
+      // Rules
+      if (txRulesRes.status === 'fulfilled' && txRulesRes.value?.body) {
+        const body = typeof txRulesRes.value.body === 'string' ? JSON.parse(txRulesRes.value.body) : txRulesRes.value.body;
+        const ruleItems = body.items || (Array.isArray(body) ? body : []);
+        for (const r of ruleItems) {
+          const varName = extractStringValue(r.variableName || r.ruleVariableName || r.name, 'rule');
+          const name = extractStringValue(r.name || r.label || r.ruleName || varName, varName);
+          const displayLabel = formatNameAndVarName(name, varName);
+          const ruleType = extractStringValue(r.ruleType || r.type || 'Rule');
+          items.push({
+            label: `$(law) ${displayLabel}`,
+            description: `[Commerce Rule: ${proc}/transaction] [${ruleType}]`,
+            detail: r.description || `Commerce Rule: ${name}`,
+            data: r,
+            itemType: 'rule'
+          });
+        }
+      }
+
+      // Attributes
+      if (txAttrsRes.status === 'fulfilled' && txAttrsRes.value?.body) {
+        const body = typeof txAttrsRes.value.body === 'string' ? JSON.parse(txAttrsRes.value.body) : txAttrsRes.value.body;
+        const attrItems = body.items || (Array.isArray(body) ? body : []);
+        for (const attr of attrItems) {
+          const varName = extractStringValue(attr.variableName || attr.name, 'attr');
+          const name = extractStringValue(attr.label || attr.name || varName, varName);
+          const displayLabel = formatNameAndVarName(name, varName);
+          const dataType = extractStringValue(attr.dataType || attr.type, 'String');
+          items.push({
+            label: `$(symbol-property) ${displayLabel}`,
+            description: `[Commerce Attr: ${proc}/transaction] [${dataType}]`,
+            detail: attr.description || `Commerce Attribute (${dataType})`,
+            data: attr,
+            itemType: 'attribute'
+          });
+        }
+      }
+
+      // Configuration Families
+      if (configFamiliesRes.status === 'fulfilled' && configFamiliesRes.value?.body) {
+        const body = typeof configFamiliesRes.value.body === 'string' ? JSON.parse(configFamiliesRes.value.body) : configFamiliesRes.value.body;
+        const famItems = body.items || (Array.isArray(body) ? body : []);
+        for (const fam of famItems) {
+          const varName = extractStringValue(fam.variableName || fam.name, 'family');
+          const name = extractStringValue(fam.label || fam.name || varName, varName);
+          const displayLabel = formatNameAndVarName(name, varName);
+          items.push({
+            label: `$(package) ${displayLabel}`,
+            description: '[Config Product Family]',
+            detail: fam.description || `Product Family: ${name}`,
+            data: fam,
+            itemType: 'configFamily'
+          });
+        }
+      }
+
+      // Configuration Attributes
+      if (configAttrsRes.status === 'fulfilled' && configAttrsRes.value?.body) {
+        const body = typeof configAttrsRes.value.body === 'string' ? JSON.parse(configAttrsRes.value.body) : configAttrsRes.value.body;
+        const cAttrItems = body.items || (Array.isArray(body) ? body : []);
+        for (const attr of cAttrItems) {
+          const varName = extractStringValue(attr.variableName || attr.name, 'attr');
+          const name = extractStringValue(attr.label || attr.name || varName, varName);
+          const displayLabel = formatNameAndVarName(name, varName);
+          const dataType = extractStringValue(attr.dataType || attr.type, 'String');
+          items.push({
+            label: `$(symbol-property) ${displayLabel}`,
+            description: `[Config Attr] [${dataType}]`,
+            detail: attr.description || `Configuration Attribute (${dataType})`,
+            data: attr,
+            itemType: 'attribute'
+          });
+        }
+      }
+
+      // Data Tables
+      if (dataTablesRes.status === 'fulfilled' && dataTablesRes.value?.body) {
+        const body = typeof dataTablesRes.value.body === 'string' ? JSON.parse(dataTablesRes.value.body) : dataTablesRes.value.body;
+        const dtItems = body.items || (Array.isArray(body) ? body : []);
+        for (const dt of dtItems) {
+          const tableName = extractStringValue(dt.name || dt.variableName, 'table');
+          const label = extractStringValue(dt.label || dt.description || tableName, tableName);
+          const displayLabel = formatNameAndVarName(label, tableName);
+          items.push({
+            label: `$(database) ${displayLabel}`,
+            description: '[CPQ Data Table]',
+            detail: dt.description || `Data Table: ${tableName} (click to query in BMQL)`,
+            data: dt,
+            itemType: 'dataTable'
+          });
+        }
+      }
+    } catch {
+      // best effort auxiliary items
+    }
+  }
+
+  if (items.length === 0) {
+    vscodeInstance.window.showInformationMessage('No items found in Cloud Explorer.');
+    return;
   }
 
   const currentFilter = treeDataProvider.getFilter ? treeDataProvider.getFilter() : '';
@@ -570,7 +689,7 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, 
   items.unshift(filterPromptItem);
 
   const selected = await vscodeInstance.window.showQuickPick(items, {
-    placeHolder: 'Search Cloud Explorer functions and actions...',
+    placeHolder: 'Search across all sections (functions, actions, rules, attributes, tables)...',
     matchOnDescription: true,
     matchOnDetail: true
   });
@@ -594,6 +713,26 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, 
     }
   } else if (selected.itemType === 'action') {
     await openCommerceActionCommand(selected, vscodeInstance, context);
+  } else if (selected.itemType === 'dataTable') {
+    const tableName = selected.data?.name || selected.data?.variableName;
+    if (tableName) {
+      const doc = await vscodeInstance.workspace.openTextDocument({
+        language: 'bml',
+        content: `// Query ${tableName}\nresults = bmql("SELECT * FROM ${tableName}");\n`
+      });
+      await vscodeInstance.window.showTextDocument(doc);
+    }
+  } else if (selected.itemType === 'rule') {
+    const r = selected.data;
+    const name = r.name || r.variableName || 'Rule';
+    vscodeInstance.window.showInformationMessage(`Rule: ${name} [${r.ruleType || 'Commerce Rule'}]\n${r.description || ''}`);
+  } else if (selected.itemType === 'attribute') {
+    const a = selected.data;
+    const name = a.label || a.variableName || 'Attribute';
+    vscodeInstance.window.showInformationMessage(`Attribute: ${name} (${a.variableName}) [${a.dataType || 'String'}]\n${a.description || ''}`);
+  } else if (selected.itemType === 'configFamily') {
+    const f = selected.data;
+    vscodeInstance.window.showInformationMessage(`Product Family: ${f.label || f.variableName} (${f.variableName})`);
   }
 }
 

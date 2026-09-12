@@ -552,6 +552,60 @@
         "title": "CPQ-BML: Refresh Configuration Explorer",
         "icon": "$(refresh)",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.commerce.filterExplorer",
+        "title": "CPQ-BML: Filter Commerce Explorer",
+        "icon": "$(filter)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.commerce.clearFilter",
+        "title": "CPQ-BML: Clear Commerce Explorer Filter",
+        "icon": "$(clear-all)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.commerce.searchExplorer",
+        "title": "CPQ-BML: Search Commerce Explorer",
+        "icon": "$(search)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.config.filterExplorer",
+        "title": "CPQ-BML: Filter Configuration Explorer",
+        "icon": "$(filter)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.config.clearFilter",
+        "title": "CPQ-BML: Clear Configuration Explorer Filter",
+        "icon": "$(clear-all)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.config.searchExplorer",
+        "title": "CPQ-BML: Search Configuration Explorer",
+        "icon": "$(search)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.dataTables.filterExplorer",
+        "title": "CPQ-BML: Filter Data Tables",
+        "icon": "$(filter)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.dataTables.clearFilter",
+        "title": "CPQ-BML: Clear Data Tables Filter",
+        "icon": "$(clear-all)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.dataTables.searchExplorer",
+        "title": "CPQ-BML: Search Data Tables",
+        "icon": "$(search)",
+        "category": "BML"
       }
     ],
     "menus": {

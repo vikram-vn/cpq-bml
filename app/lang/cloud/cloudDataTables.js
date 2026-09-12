@@ -1,4 +1,4 @@
-const { vscode, safeParseJson, extractStringValue } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
 
 const fs = require('fs');
 const path = require('path');
@@ -114,23 +114,57 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
 
   let cachedTables = null;
   const schemaCache = new Map();
-  let isLoading = false;
+  let filterQuery = '';
+
+  function setFilter(query) {
+    filterQuery = typeof query === 'string' ? query.trim() : '';
+    if (vscodeInstance?.commands?.executeCommand) {
+      vscodeInstance.commands.executeCommand('setContext', 'cpqBml.cloudDataTablesFiltered', Boolean(filterQuery));
+    }
+    onDidChangeTreeDataEmitter.fire();
+  }
+
+  function getFilter() {
+    return filterQuery;
+  }
+
+  function clearFilter() {
+    setFilter('');
+  }
+
+  function matchesTable(t, query) {
+    if (!t) return false;
+    const q = query.toLowerCase();
+    const name = extractStringValue(t.name, '').toLowerCase();
+    const label = extractStringValue(t.label, '').toLowerCase();
+    const desc = extractStringValue(t.description, '').toLowerCase();
+    return name.includes(q) || label.includes(q) || desc.includes(q);
+  }
 
   async function getTables() {
-    if (cachedTables) return cachedTables;
-    if (isLoading) return [];
-    isLoading = true;
-    try {
+    if (!cachedTables) {
       cachedTables = await fetchRemoteDataTables(vscodeInstance, undefined, context);
-      return cachedTables;
-    } catch {
-      return [];
-    } finally {
-      isLoading = false;
     }
+    return cachedTables;
   }
 
   function getTreeItem(element) {
+    if (element.type === 'filterInfo') {
+      const item = new vscodeInstance.TreeItem(
+        `Filter: "${element.query}" (${element.totalMatches} match${element.totalMatches === 1 ? '' : 'es'})`,
+        vscodeInstance.TreeItemCollapsibleState.None
+      );
+      item.description = 'Click to clear';
+      item.tooltip = `Active search filter: "${element.query}"\nFound ${element.totalMatches} matching item(s)\nClick to clear filter`;
+      item.iconPath = new vscodeInstance.ThemeIcon('filter');
+      item.contextValue = 'cpqDataTablesFilterInfo';
+      item.command = {
+        command: 'cpqBml.dataTables.clearFilter',
+        title: 'Clear Data Tables Filter'
+      };
+      return item;
+    }
+
     if (element.type === 'empty' || element.type === 'empty_column') {
       const item = new vscodeInstance.TreeItem(element.label, vscodeInstance.TreeItemCollapsibleState.None);
       item.iconPath = new vscodeInstance.ThemeIcon('info');
@@ -138,12 +172,13 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
     }
 
     if (element.type === 'table') {
+      const displayLabel = formatNameAndVarName(element.data.label, element.data.name);
+      const isFiltered = Boolean(filterQuery);
       const item = new vscodeInstance.TreeItem(
-        element.data.name,
-        vscodeInstance.TreeItemCollapsibleState.Collapsed
+        displayLabel,
+        isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
       );
-      item.description = element.data.label !== element.data.name ? element.data.label : '';
-      item.tooltip = `Data Table: ${element.data.name}\n${element.data.description || 'Click to view columns'}`;
+      item.tooltip = `Data Table: ${element.data.label || element.data.name} (${element.data.name})\n${element.data.description || 'Click to view columns'}`;
       item.contextValue = 'cpqCloudDataTable';
       item.iconPath = new vscodeInstance.ThemeIcon('database', new vscodeInstance.ThemeColor('symbolIcon.classForeground'));
       return item;
@@ -172,6 +207,21 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
           label: 'No Data Tables found (Check connection / credentials)'
         }];
       }
+
+      const items = [];
+      if (filterQuery) {
+        const matches = tables.filter(t => matchesTable(t, filterQuery));
+        items.push({
+          type: 'filterInfo',
+          query: filterQuery,
+          totalMatches: matches.length
+        });
+        for (const t of matches) {
+          items.push({ type: 'table', data: t });
+        }
+        return items;
+      }
+
       return tables.map(t => ({
         type: 'table',
         data: t
@@ -220,6 +270,10 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
     getTreeItem,
     getChildren,
     refresh,
+    setFilter,
+    getFilter,
+    clearFilter,
+    getTables,
     getCachedTables: () => cachedTables
   };
 }
@@ -312,7 +366,28 @@ function registerCloudDataTables(context, vscodeInstance = vscode) {
     return exportTableCsvCommand(item, vscodeInstance, undefined, context);
   });
 
-  context.subscriptions.push(treeView, refreshCmd, queryCmd, exportCmd);
+  const filterCmd = vscodeInstance.commands.registerCommand('cpqBml.dataTables.filterExplorer', async () => {
+    const current = provider.getFilter();
+    const query = await vscodeInstance.window.showInputBox({
+      prompt: 'Filter Data Tables',
+      placeHolder: 'e.g. pricing, parts, discount...',
+      value: current,
+      ignoreFocusOut: true
+    });
+    if (query !== undefined) {
+      provider.setFilter(query);
+    }
+  });
+
+  const clearFilterCmd = vscodeInstance.commands.registerCommand('cpqBml.dataTables.clearFilter', () => {
+    provider.clearFilter();
+  });
+
+  const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.dataTables.searchExplorer', () => {
+    return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, queryCmd, exportCmd, filterCmd, clearFilterCmd, searchCmd);
 
   return { provider, treeView };
 }

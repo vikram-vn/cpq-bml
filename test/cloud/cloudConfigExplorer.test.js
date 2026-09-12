@@ -181,11 +181,11 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(globalAttrs.length, 1);
     assert.strictEqual(globalAttrs[0].data.variableName, '_config_currency');
     const globalAttrItem = explorer.getTreeItem(globalAttrs[0]);
-    assert.strictEqual(globalAttrItem.label, '_config_currency');
+    assert.strictEqual(globalAttrItem.label, 'User Currency (_config_currency)');
 
     const famItem = explorer.getTreeItem(rootItems[1]);
-    assert.strictEqual(famItem.label, 'Telecom Products');
-    assert.strictEqual(famItem.description, 'telecom_family');
+    assert.strictEqual(famItem.label, 'Telecom Products (telecom_family)');
+    assert.ok(!famItem.description);
 
     // Under Product Family: Attributes, Rules, Product Lines
     const familyFolders = await explorer.getChildren(rootItems[1]);
@@ -199,14 +199,14 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(famAttrs.length, 1);
     assert.strictEqual(famAttrs[0].data.variableName, 'networkType');
     const famAttrItem = explorer.getTreeItem(famAttrs[0]);
-    assert.strictEqual(famAttrItem.label, 'networkType');
+    assert.strictEqual(famAttrItem.label, 'Network Type (networkType)');
 
     // Inspect Family Rules
     const famRules = await explorer.getChildren(familyFolders[1]);
     assert.strictEqual(famRules.length, 1);
     assert.strictEqual(famRules[0].data.name, 'Family Compatibility Rule');
     const famRuleItem = explorer.getTreeItem(famRules[0]);
-    assert.strictEqual(famRuleItem.label, 'Family Compatibility Rule');
+    assert.strictEqual(famRuleItem.label, 'Family Compatibility Rule (famCompatibilityRule)');
     assert.ok(famRuleItem.description.includes('[Validation]'));
 
     // Inspect Product Lines under Family
@@ -216,7 +216,7 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(lines[0].lineVarName, 'broadband_line');
 
     const lineItem = explorer.getTreeItem(lines[0]);
-    assert.strictEqual(lineItem.label, 'Broadband Line');
+    assert.strictEqual(lineItem.label, 'Broadband Line (broadband_line)');
 
     // Under Product Line: Attributes, Rules, Models
     const lineFolders = await explorer.getChildren(lines[0]);
@@ -230,14 +230,14 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(lineAttrs.length, 1);
     assert.strictEqual(lineAttrs[0].data.variableName, 'connection_speed');
     const lineAttrItem = explorer.getTreeItem(lineAttrs[0]);
-    assert.strictEqual(lineAttrItem.label, 'connection_speed');
+    assert.strictEqual(lineAttrItem.label, 'Connection Speed (connection_speed)');
 
     // Inspect Line Rules
     const lineRules = await explorer.getChildren(lineFolders[1]);
     assert.strictEqual(lineRules.length, 1);
     assert.strictEqual(lineRules[0].data.name, 'Line Constraint Rule');
     const lineRuleItem = explorer.getTreeItem(lineRules[0]);
-    assert.strictEqual(lineRuleItem.label, 'Line Constraint Rule');
+    assert.strictEqual(lineRuleItem.label, 'Line Constraint Rule (lineConstraintRule)');
     assert.ok(lineRuleItem.description.includes('[Constraint]'));
 
     // Inspect Models under Product Line
@@ -249,7 +249,7 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(models[1].modelVarName, 'modem_v2');
 
     const modelItem = explorer.getTreeItem(models[0]);
-    assert.strictEqual(modelItem.label, 'Router X1 Enterprise');
+    assert.strictEqual(modelItem.label, 'Router X1 Enterprise (router_x1)');
 
     // Under Model: Attributes, BOM Rules, Rules
     const modelFolders = await explorer.getChildren(models[0]);
@@ -263,7 +263,7 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(modelAttrs.length, 1);
     assert.strictEqual(modelAttrs[0].data.variableName, 'bandwidth_mbps');
     const modelAttrItem = explorer.getTreeItem(modelAttrs[0]);
-    assert.strictEqual(modelAttrItem.label, 'bandwidth_mbps');
+    assert.strictEqual(modelAttrItem.label, 'Bandwidth (Mbps) (bandwidth_mbps)');
     assert.strictEqual(modelAttrItem.description, '(Integer)');
 
     // Model BOM Mapping Rules
@@ -271,7 +271,7 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(modelBomRules.length, 1);
     assert.strictEqual(modelBomRules[0].data.variableName, 'bom_router_parts');
     const bomRuleItem = explorer.getTreeItem(modelBomRules[0]);
-    assert.strictEqual(bomRuleItem.label, 'Router Parts BOM Rule');
+    assert.strictEqual(bomRuleItem.label, 'Router Parts BOM Rule (bom_router_parts)');
     assert.ok(bomRuleItem.description.includes('[BOM]'));
     assert.ok(bomRuleItem.tooltip.includes('Target BOM: routerBOM'));
 
@@ -280,7 +280,7 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(modelRules.length, 1);
     assert.strictEqual(modelRules[0].data.name, 'Model Pricing Recommendation');
     const modelRuleItem = explorer.getTreeItem(modelRules[0]);
-    assert.strictEqual(modelRuleItem.label, 'Model Pricing Recommendation');
+    assert.strictEqual(modelRuleItem.label, 'Model Pricing Recommendation (modelPricingRule)');
     assert.ok(modelRuleItem.description.includes('[Recommendation]'));
   });
 
@@ -291,6 +291,6 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     const registered = registerConfigExplorer(mockContext, mockVscode);
     assert.ok(registered.treeDataProvider);
     assert.ok(registered.treeView);
-    assert.strictEqual(mockContext.subscriptions.length, 2);
+    assert.strictEqual(mockContext.subscriptions.length, 5);
   });
 });

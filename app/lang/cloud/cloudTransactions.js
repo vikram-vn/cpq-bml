@@ -248,11 +248,6 @@ async function inspectTransactionCommand(item, vscodeInstance = vscode, context)
       const res = await api.getTransaction(context, vscodeInstance, txId, { process, document, timeoutMs: 60000 });
       if (res && res.statusCode >= 200 && res.statusCode < 300) {
         data = safeParseJson(res.body, tx);
-      } else if (tx.transactionID_t && String(tx.transactionID_t) !== String(txId)) {
-        const altRes = await api.getTransaction(context, vscodeInstance, String(tx.transactionID_t), { process, document, timeoutMs: 30000 });
-        if (altRes && altRes.statusCode >= 200 && altRes.statusCode < 300) {
-          data = safeParseJson(altRes.body, tx);
-        }
       }
     } catch (err) {
       vscodeInstance.window.showWarningMessage(

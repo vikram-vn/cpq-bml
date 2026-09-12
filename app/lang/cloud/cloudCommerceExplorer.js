@@ -1,4 +1,4 @@
-const { vscode, safeParseJson, extractStringValue } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
 const api = require('@/lang/rest/api');
 const { getSettings, isConfigured } = require('@/lang/rest/config');
 const { fetchCommerceFunctions } = require('./cloudExplorerFetch');
@@ -15,6 +15,34 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
   let cachedProcess = null;
   let cachedData = null;
   let isLoading = false;
+  let filterQuery = '';
+
+  function setFilter(query) {
+    filterQuery = typeof query === 'string' ? query.trim() : '';
+    if (vscodeInstance?.commands?.executeCommand) {
+      vscodeInstance.commands.executeCommand('setContext', 'cpqBml.commerceExplorerFiltered', Boolean(filterQuery));
+    }
+    onDidChangeTreeDataEmitter.fire();
+  }
+
+  function getFilter() {
+    return filterQuery;
+  }
+
+  function clearFilter() {
+    setFilter('');
+  }
+
+  function matchesItem(item, query) {
+    if (!item) return false;
+    const q = query.toLowerCase();
+    const varName = extractStringValue(item.variableName || item.name || item.ruleName, '').toLowerCase();
+    const label = extractStringValue(item.label || item.name, '').toLowerCase();
+    const type = extractStringValue(item.actionType || item.ruleType || item.dataType || item.type || item.returnType, '').toLowerCase();
+    const desc = extractStringValue(item.description, '').toLowerCase();
+
+    return varName.includes(q) || label.includes(q) || type.includes(q) || desc.includes(q);
+  }
 
   async function fetchCommerceData() {
     if (!isConfigured(vscodeInstance)) {
@@ -76,6 +104,22 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
   }
 
   function getTreeItem(element) {
+    if (element.type === 'filterInfo') {
+      const item = new vscodeInstance.TreeItem(
+        `Filter: "${element.query}" (${element.totalMatches} match${element.totalMatches === 1 ? '' : 'es'})`,
+        vscodeInstance.TreeItemCollapsibleState.None
+      );
+      item.description = 'Click to clear';
+      item.tooltip = `Active search filter: "${element.query}"\nFound ${element.totalMatches} matching item(s)\nClick to clear filter`;
+      item.iconPath = new vscodeInstance.ThemeIcon('filter');
+      item.contextValue = 'cpqCommerceFilterInfo';
+      item.command = {
+        command: 'cpqBml.commerce.clearFilter',
+        title: 'Clear Commerce Filter'
+      };
+      return item;
+    }
+
     if (element.type === 'processHeader') {
       const item = new vscodeInstance.TreeItem(
         `Process: ${element.process}`,
@@ -107,9 +151,10 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     }
 
     if (element.type === 'section') {
+      const isFiltered = Boolean(filterQuery);
       const item = new vscodeInstance.TreeItem(
         `${element.label} (${element.count})`,
-        vscodeInstance.TreeItemCollapsibleState.Collapsed
+        isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
       );
       item.iconPath = new vscodeInstance.ThemeIcon(element.icon);
       item.tooltip = `${element.label} for ${element.docName}`;
@@ -120,10 +165,12 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     if (element.type === 'action') {
       const act = element.data;
       const varName = extractStringValue(act.variableName || act.name, 'action');
+      const name = extractStringValue(act.label || act.name || varName, varName);
       const actionType = extractStringValue(act.actionType || act.type || 'Action');
-      const item = new vscodeInstance.TreeItem(varName, vscodeInstance.TreeItemCollapsibleState.None);
+      const displayLabel = formatNameAndVarName(name, varName);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `[${actionType}]`;
-      item.tooltip = `${act.label || varName} (${actionType})\n${act.description || ''}\nClick to view action definition`;
+      item.tooltip = `${name} (${varName}) [${actionType}]\n${act.description || ''}\nClick to view action definition`;
       item.iconPath = new vscodeInstance.ThemeIcon('zap');
       item.contextValue = 'cpqCommerceAction';
       item.command = {
@@ -137,10 +184,12 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     if (element.type === 'library') {
       const fn = element.data;
       const varName = extractStringValue(fn.variableName || fn.name, 'function');
-      const item = new vscodeInstance.TreeItem(varName, vscodeInstance.TreeItemCollapsibleState.None);
+      const name = extractStringValue(fn.name || varName, varName);
+      const displayLabel = formatNameAndVarName(name, varName);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       const ret = extractStringValue(fn.returnType, '');
       item.description = ret ? `-> ${ret}` : '';
-      item.tooltip = `${fn.name || varName}${ret ? ' -> ' + ret : ''}\n${fn.description || ''}\nClick to pull and open function`;
+      item.tooltip = `${name} (${varName})${ret ? ' -> ' + ret : ''}\n${fn.description || ''}\nClick to pull and open function`;
       item.iconPath = new vscodeInstance.ThemeIcon('cloud-download');
       item.contextValue = 'cpqCommerceLibrary';
       item.command = {
@@ -153,11 +202,13 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
 
     if (element.type === 'rule') {
       const r = element.data;
-      const name = extractStringValue(r.name || r.variableName || r.ruleName, 'Rule');
+      const varName = extractStringValue(r.variableName || r.name, 'rule');
+      const name = extractStringValue(r.name || r.label || varName, varName);
       const ruleType = extractStringValue(r.ruleType || r.type || 'Rule');
-      const item = new vscodeInstance.TreeItem(name, vscodeInstance.TreeItemCollapsibleState.None);
+      const displayLabel = formatNameAndVarName(name, varName);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `[${ruleType}]`;
-      item.tooltip = `${name} (${ruleType})\n${r.description || ''}`;
+      item.tooltip = `${name} (${varName}) [${ruleType}]\n${r.description || ''}`;
       item.iconPath = new vscodeInstance.ThemeIcon('law');
       item.contextValue = 'cpqCommerceRule';
       return item;
@@ -166,10 +217,12 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     if (element.type === 'attribute') {
       const attr = element.data;
       const varName = extractStringValue(attr.variableName || attr.name, 'attribute');
+      const name = extractStringValue(attr.label || attr.name || varName, varName);
       const dataType = extractStringValue(attr.dataType || attr.type, 'String');
-      const item = new vscodeInstance.TreeItem(varName, vscodeInstance.TreeItemCollapsibleState.None);
+      const displayLabel = formatNameAndVarName(name, varName);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `(${dataType})`;
-      item.tooltip = `${attr.label || varName} [${dataType}]\n${attr.description || ''}`;
+      item.tooltip = `${name} (${varName}) [${dataType}]\n${attr.description || ''}`;
       item.iconPath = new vscodeInstance.ThemeIcon('symbol-property');
       item.contextValue = 'cpqCommerceAttribute';
       return item;
@@ -203,43 +256,68 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       }
 
       const proc = cachedProcess || getSettings(vscodeInstance).commerceProcess || 'oraclecpqo';
+      const nodes = [];
 
-      return [
+      if (filterQuery && cachedData) {
+        let matchCount = 0;
+        const allItems = [
+          ...(cachedData.transaction?.actions || []),
+          ...(cachedData.transaction?.libraries || []),
+          ...(cachedData.transaction?.rules || []),
+          ...(cachedData.transaction?.attributes || []),
+          ...(cachedData.transactionLine?.actions || []),
+          ...(cachedData.transactionLine?.rules || []),
+          ...(cachedData.transactionLine?.attributes || []),
+        ];
+        matchCount = allItems.filter(it => matchesItem(it, filterQuery)).length;
+        nodes.push({ type: 'filterInfo', query: filterQuery, totalMatches: matchCount });
+      }
+
+      nodes.push(
         { type: 'processHeader', process: proc },
         { type: 'document', docName: 'transaction', process: proc },
         { type: 'document', docName: 'transactionLine', process: proc }
-      ];
+      );
+      return nodes;
     }
 
     if (element.type === 'document') {
       const doc = element.docName;
       const docData = cachedData ? cachedData[doc] : null;
 
-      if (doc === 'transaction') {
-        const actionsCount = docData?.actions?.length || 0;
-        const libsCount = docData?.libraries?.length || 0;
-        const rulesCount = docData?.rules?.length || 0;
-        const attrsCount = docData?.attributes?.length || 0;
+      const filterList = (arr) => {
+        if (!filterQuery) return arr || [];
+        return (arr || []).filter(it => matchesItem(it, filterQuery));
+      };
 
-        return [
-          { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: actionsCount, docName: doc, process: element.process, items: docData?.actions || [] },
-          { type: 'section', section: 'libraries', label: 'Libraries', icon: 'library', count: libsCount, docName: doc, process: element.process, items: docData?.libraries || [] },
-          { type: 'section', section: 'rules', label: 'Rules', icon: 'law', count: rulesCount, docName: doc, process: element.process, items: docData?.rules || [] },
-          { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: attrsCount, docName: doc, process: element.process, items: docData?.attributes || [] }
+      if (doc === 'transaction') {
+        const filteredActions = filterList(docData?.actions);
+        const filteredLibs = filterList(docData?.libraries);
+        const filteredRules = filterList(docData?.rules);
+        const filteredAttrs = filterList(docData?.attributes);
+
+        const sections = [
+          { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
+          { type: 'section', section: 'libraries', label: 'Libraries', icon: 'library', count: filteredLibs.length, docName: doc, process: element.process, items: filteredLibs },
+          { type: 'section', section: 'rules', label: 'Rules', icon: 'law', count: filteredRules.length, docName: doc, process: element.process, items: filteredRules },
+          { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
         ];
+
+        return filterQuery ? sections.filter(s => s.count > 0) : sections;
       }
 
       if (doc === 'transactionLine') {
-        const actionsCount = docData?.actions?.length || 0;
-        const rulesCount = docData?.rules?.length || 0;
-        const attrsCount = docData?.attributes?.length || 0;
+        const filteredActions = filterList(docData?.actions);
+        const filteredRules = filterList(docData?.rules);
+        const filteredAttrs = filterList(docData?.attributes);
 
-        // Transaction Line does NOT contain libraries!
-        return [
-          { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: actionsCount, docName: doc, process: element.process, items: docData?.actions || [] },
-          { type: 'section', section: 'rules', label: 'Rules', icon: 'law', count: rulesCount, docName: doc, process: element.process, items: docData?.rules || [] },
-          { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: attrsCount, docName: doc, process: element.process, items: docData?.attributes || [] }
+        const sections = [
+          { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
+          { type: 'section', section: 'rules', label: 'Rules', icon: 'law', count: filteredRules.length, docName: doc, process: element.process, items: filteredRules },
+          { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
         ];
+
+        return filterQuery ? sections.filter(s => s.count > 0) : sections;
       }
     }
 
@@ -248,7 +326,7 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       if (items.length === 0) {
         return [{
           type: 'empty',
-          label: `No ${element.label.toLowerCase()} found`
+          label: filterQuery ? `No matching ${element.label.toLowerCase()}` : `No ${element.label.toLowerCase()} found`
         }];
       }
 
@@ -280,6 +358,9 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     getTreeItem,
     getChildren,
     refresh,
+    setFilter,
+    getFilter,
+    clearFilter,
     fetchCommerceData,
     getCachedData: () => cachedData
   };
@@ -298,7 +379,28 @@ function registerCommerceExplorer(context, vscodeInstance = vscode) {
     treeDataProvider.refresh();
   });
 
-  context.subscriptions.push(treeView, refreshCmd, switchProcCmd);
+  const filterCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.filterExplorer', async () => {
+    const current = treeDataProvider.getFilter();
+    const query = await vscodeInstance.window.showInputBox({
+      prompt: 'Filter Commerce Explorer (actions, rules, attributes, libraries)',
+      placeHolder: 'e.g. cleanSave, pricingRule, transactionID...',
+      value: current,
+      ignoreFocusOut: true
+    });
+    if (query !== undefined) {
+      treeDataProvider.setFilter(query);
+    }
+  });
+
+  const clearFilterCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.clearFilter', () => {
+    treeDataProvider.clearFilter();
+  });
+
+  const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.searchExplorer', () => {
+    return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, switchProcCmd, filterCmd, clearFilterCmd, searchCmd);
   return { treeDataProvider, treeView };
 }
 
@@ -306,3 +408,4 @@ module.exports = {
   createCommerceExplorer,
   registerCommerceExplorer
 };
+

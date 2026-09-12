@@ -109,9 +109,25 @@ function extractStringValue(val, fallback = '') {
   return fallback;
 }
 
+/**
+ * Formats a display name and variable name according to CPQ standard:
+ * If both name and variable name are present and differ, returns "name (variableName)".
+ * Otherwise returns whichever is available.
+ */
+function formatNameAndVarName(name, varName) {
+  const n = (name !== undefined && name !== null) ? extractStringValue(name).trim() : '';
+  const v = (varName !== undefined && varName !== null) ? extractStringValue(varName).trim() : '';
+  if (n && v && n.toLowerCase() !== v.toLowerCase()) {
+    return `${n} (${v})`;
+  }
+  return n || v || '';
+}
+
 module.exports = {
   vscode,
   safeParseJson,
   extractStringValue,
+  formatNameAndVarName,
 };
+
 

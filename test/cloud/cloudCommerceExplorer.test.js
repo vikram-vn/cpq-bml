@@ -155,7 +155,7 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     assert.strictEqual(txActions.length, 2);
     assert.strictEqual(txActions[0].data.variableName, 'cleanSave_t');
     const actItem = explorer.getTreeItem(txActions[0]);
-    assert.strictEqual(actItem.label, 'cleanSave_t');
+    assert.strictEqual(actItem.label, 'Clean Save (cleanSave_t)');
     assert.ok(actItem.description.includes('[Modify]'));
     assert.strictEqual(actItem.command.command, 'cpqBml.cloud.openCommerceAction');
 
@@ -164,7 +164,7 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     assert.strictEqual(txLibs.length, 1);
     assert.strictEqual(txLibs[0].data.variableName, '_s_publishQuote');
     const libItem = explorer.getTreeItem(txLibs[0]);
-    assert.strictEqual(libItem.label, '_s_publishQuote');
+    assert.strictEqual(libItem.label, 'Publish Quote (_s_publishQuote)');
     assert.strictEqual(libItem.command.command, 'cpqBml.cloud.pullFunction');
 
     // Inspect Rules in Transaction
@@ -172,14 +172,14 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     assert.strictEqual(txRules.length, 1);
     assert.strictEqual(txRules[0].data.name, 'Pricing Calculation Rule');
     const ruleItem = explorer.getTreeItem(txRules[0]);
-    assert.strictEqual(ruleItem.label, 'Pricing Calculation Rule');
+    assert.strictEqual(ruleItem.label, 'Pricing Calculation Rule (pricingRule)');
 
     // Inspect Attributes in Transaction
     const txAttrs = await explorer.getChildren(txSections[3]);
     assert.strictEqual(txAttrs.length, 2);
     assert.strictEqual(txAttrs[0].data.variableName, 'transactionID_t');
     const attrItem = explorer.getTreeItem(txAttrs[0]);
-    assert.strictEqual(attrItem.label, 'transactionID_t');
+    assert.strictEqual(attrItem.label, 'Transaction ID (transactionID_t)');
     assert.strictEqual(attrItem.description, '(String)');
   });
 
@@ -190,6 +190,6 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     const registered = registerCommerceExplorer(mockContext, mockVscode);
     assert.ok(registered.treeDataProvider);
     assert.ok(registered.treeView);
-    assert.strictEqual(mockContext.subscriptions.length, 3);
+    assert.strictEqual(mockContext.subscriptions.length, 6);
   });
 });

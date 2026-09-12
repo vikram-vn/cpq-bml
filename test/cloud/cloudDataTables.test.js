@@ -29,8 +29,8 @@ suite('CPQ Cloud Data Tables - Unit Tests', () => {
     };
 
     const tableItem = provider.getTreeItem(tableElement);
-    assert.strictEqual(tableItem.label, 'PricingMatrix');
-    assert.strictEqual(tableItem.description, 'Global Pricing Matrix');
+    assert.strictEqual(tableItem.label, 'Global Pricing Matrix (PricingMatrix)');
+    assert.ok(!tableItem.description);
     assert.strictEqual(tableItem.collapsibleState, 1);
     assert.strictEqual(tableItem.iconPath.id, 'database');
     assert.strictEqual(tableItem.contextValue, 'cpqCloudDataTable');

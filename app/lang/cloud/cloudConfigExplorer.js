@@ -1,4 +1,4 @@
-const { vscode, safeParseJson, extractStringValue } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
 const api = require('@/lang/rest/api');
 const { isConfigured } = require('@/lang/rest/config');
 
@@ -13,6 +13,34 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
 
   let cachedFamilies = null;
   let isLoading = false;
+  let filterQuery = '';
+
+  function setFilter(query) {
+    filterQuery = typeof query === 'string' ? query.trim() : '';
+    if (vscodeInstance?.commands?.executeCommand) {
+      vscodeInstance.commands.executeCommand('setContext', 'cpqBml.configExplorerFiltered', Boolean(filterQuery));
+    }
+    onDidChangeTreeDataEmitter.fire();
+  }
+
+  function getFilter() {
+    return filterQuery;
+  }
+
+  function clearFilter() {
+    setFilter('');
+  }
+
+  function matchesItem(item, query) {
+    if (!item) return false;
+    const q = query.toLowerCase();
+    const varName = extractStringValue(item.variableName || item.name || item.ruleName, '').toLowerCase();
+    const label = extractStringValue(item.label || item.name, '').toLowerCase();
+    const type = extractStringValue(item.ruleType || item.dataType || item.type, '').toLowerCase();
+    const desc = extractStringValue(item.description, '').toLowerCase();
+
+    return varName.includes(q) || label.includes(q) || type.includes(q) || desc.includes(q);
+  }
 
   async function fetchProductFamilies() {
     if (!isConfigured(vscodeInstance)) {
@@ -35,6 +63,22 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
   }
 
   function getTreeItem(element) {
+    if (element.type === 'filterInfo') {
+      const item = new vscodeInstance.TreeItem(
+        `Filter: "${element.query}" (${element.totalMatches} match${element.totalMatches === 1 ? '' : 'es'})`,
+        vscodeInstance.TreeItemCollapsibleState.None
+      );
+      item.description = 'Click to clear';
+      item.tooltip = `Active search filter: "${element.query}"\nFound ${element.totalMatches} matching item(s)\nClick to clear filter`;
+      item.iconPath = new vscodeInstance.ThemeIcon('filter');
+      item.contextValue = 'cpqConfigFilterInfo';
+      item.command = {
+        command: 'cpqBml.config.clearFilter',
+        title: 'Clear Configuration Filter'
+      };
+      return item;
+    }
+
     if (element.type === 'globalAttributesFolder') {
       const item = new vscodeInstance.TreeItem('Global Attributes', vscodeInstance.TreeItemCollapsibleState.Collapsed);
       item.description = '_allProductFamilies';
@@ -48,8 +92,12 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       const pf = element.data;
       const varName = extractStringValue(pf.variableName || pf.name, 'family');
       const label = extractStringValue(pf.label || pf.name, varName);
-      const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.Collapsed);
-      item.description = label !== varName ? varName : '';
+      const displayLabel = formatNameAndVarName(label, varName);
+      const isFiltered = Boolean(filterQuery);
+      const item = new vscodeInstance.TreeItem(
+        displayLabel,
+        isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
+      );
       item.tooltip = `Product Family: ${label} (${varName})`;
       item.iconPath = new vscodeInstance.ThemeIcon('folder');
       item.contextValue = 'cpqConfigProductFamily';
@@ -84,8 +132,12 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       const pl = element.data;
       const varName = extractStringValue(pl.variableName || pl.name, 'line');
       const label = extractStringValue(pl.label || pl.name, varName);
-      const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.Collapsed);
-      item.description = label !== varName ? varName : '';
+      const displayLabel = formatNameAndVarName(label, varName);
+      const isFiltered = Boolean(filterQuery);
+      const item = new vscodeInstance.TreeItem(
+        displayLabel,
+        isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
+      );
       item.tooltip = `Product Line: ${label} (${varName})`;
       item.iconPath = new vscodeInstance.ThemeIcon('folder');
       item.contextValue = 'cpqConfigProductLine';
@@ -120,8 +172,12 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       const m = element.data;
       const varName = extractStringValue(m.variableName || m.name, 'model');
       const label = extractStringValue(m.label || m.name, varName);
-      const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.Collapsed);
-      item.description = label !== varName ? varName : '';
+      const displayLabel = formatNameAndVarName(label, varName);
+      const isFiltered = Boolean(filterQuery);
+      const item = new vscodeInstance.TreeItem(
+        displayLabel,
+        isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
+      );
       item.tooltip = `Configuration Model: ${label} (${varName})`;
       item.iconPath = new vscodeInstance.ThemeIcon('package');
       item.contextValue = 'cpqConfigModel';
@@ -155,10 +211,12 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
     if (element.type === 'attribute') {
       const attr = element.data;
       const varName = extractStringValue(attr.variableName || attr.name, 'attr');
+      const label = extractStringValue(attr.label || attr.name, varName);
+      const displayLabel = formatNameAndVarName(label, varName);
       const dataType = extractStringValue(attr.dataType || attr.type, 'String');
-      const item = new vscodeInstance.TreeItem(varName, vscodeInstance.TreeItemCollapsibleState.None);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `(${dataType})`;
-      item.tooltip = `${attr.label || varName} [${dataType}]\n${attr.description || ''}`;
+      item.tooltip = `${label} (${varName}) [${dataType}]\n${attr.description || ''}`;
       item.iconPath = new vscodeInstance.ThemeIcon('symbol-property');
       item.contextValue = 'cpqConfigAttribute';
       return item;
@@ -166,14 +224,16 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
 
     if (element.type === 'bomRule') {
       const r = element.data;
-      const name = extractStringValue(r.label || r.variableName || r.name, 'BOM Rule');
+      const varName = extractStringValue(r.variableName || r.ruleId || r.name, 'bomRule');
+      const label = extractStringValue(r.label || r.name, varName);
+      const displayLabel = formatNameAndVarName(label, varName);
       const ruleType = extractStringValue(
         r.ruleType && r.ruleType.displayValue ? r.ruleType.displayValue : (r.ruleType || 'BOM Rule')
       );
-      const item = new vscodeInstance.TreeItem(name, vscodeInstance.TreeItemCollapsibleState.None);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `[${ruleType}]`;
       const bomTarget = r.bomVariableName ? `\nTarget BOM: ${r.bomVariableName}` : '';
-      item.tooltip = `${name} (${ruleType})${bomTarget}\n${r.description || ''}`;
+      item.tooltip = `${label} (${varName}) [${ruleType}]${bomTarget}\n${r.description || ''}`;
       item.iconPath = new vscodeInstance.ThemeIcon('law');
       item.contextValue = 'cpqConfigBomRule';
       return item;
@@ -181,11 +241,13 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
 
     if (element.type === 'rule') {
       const r = element.data;
-      const name = extractStringValue(r.name || r.variableName || r.ruleName, 'Rule');
+      const varName = extractStringValue(r.variableName || r.name, 'rule');
+      const label = extractStringValue(r.name || r.label, varName);
+      const displayLabel = formatNameAndVarName(label, varName);
       const ruleType = extractStringValue(r.ruleType || r.type || 'Rule');
-      const item = new vscodeInstance.TreeItem(name, vscodeInstance.TreeItemCollapsibleState.None);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = `[${ruleType}]`;
-      item.tooltip = `${name} (${ruleType})\n${r.description || ''}`;
+      item.tooltip = `${label} (${varName}) [${ruleType}]\n${r.description || ''}`;
       item.iconPath = new vscodeInstance.ThemeIcon('law');
       item.contextValue = 'cpqConfigRule';
       return item;
@@ -226,14 +288,27 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
         }];
       }
 
-      const items = [
-        {
-          type: 'globalAttributesFolder',
-          allProductFamilies: '_allProductFamilies'
-        }
-      ];
+      const items = [];
 
-      for (const pf of cachedFamilies) {
+      if (filterQuery && cachedFamilies) {
+        const matches = cachedFamilies.filter(f => matchesItem(f, filterQuery));
+        items.push({
+          type: 'filterInfo',
+          query: filterQuery,
+          totalMatches: matches.length
+        });
+      }
+
+      items.push({
+        type: 'globalAttributesFolder',
+        allProductFamilies: '_allProductFamilies'
+      });
+
+      const displayFamilies = filterQuery
+        ? cachedFamilies.filter(f => matchesItem(f, filterQuery))
+        : cachedFamilies;
+
+      for (const pf of displayFamilies) {
         items.push({
           type: 'productFamily',
           data: pf,
@@ -467,6 +542,9 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
     getTreeItem,
     getChildren,
     refresh,
+    setFilter,
+    getFilter,
+    clearFilter,
     fetchProductFamilies,
     getCachedFamilies: () => cachedFamilies
   };
@@ -480,7 +558,28 @@ function registerConfigExplorer(context, vscodeInstance = vscode) {
     treeDataProvider.refresh();
   });
 
-  context.subscriptions.push(treeView, refreshCmd);
+  const filterCmd = vscodeInstance.commands.registerCommand('cpqBml.config.filterExplorer', async () => {
+    const current = treeDataProvider.getFilter();
+    const query = await vscodeInstance.window.showInputBox({
+      prompt: 'Filter Configuration Explorer (families, lines, models, rules, attributes)',
+      placeHolder: 'e.g. telecom, router, bandwidth, compatibility...',
+      value: current,
+      ignoreFocusOut: true
+    });
+    if (query !== undefined) {
+      treeDataProvider.setFilter(query);
+    }
+  });
+
+  const clearFilterCmd = vscodeInstance.commands.registerCommand('cpqBml.config.clearFilter', () => {
+    treeDataProvider.clearFilter();
+  });
+
+  const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.config.searchExplorer', () => {
+    return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, filterCmd, clearFilterCmd, searchCmd);
   return { treeDataProvider, treeView };
 }
 

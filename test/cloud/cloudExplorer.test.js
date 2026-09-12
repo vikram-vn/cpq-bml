@@ -109,7 +109,7 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       }
     };
     const fnItem = explorer.getTreeItem(fnElement);
-    assert.strictEqual(fnItem.label, 'Non Existent Cloud Func');
+    assert.strictEqual(fnItem.label, 'Non Existent Cloud Func (nonExistentCloudFunc)');
     assert.ok(fnItem.description.includes('[Deployed]'));
     assert.ok(fnItem.description.includes('☁ Cloud'));
     assert.ok(fnItem.description.includes('-> String'));
@@ -164,8 +164,8 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       }
     };
     const actionItem = explorer.getTreeItem(actionElement);
-    assert.strictEqual(actionItem.label, 'Clean Save');
-    assert.strictEqual(actionItem.description, '[Modify] cleanSave_t');
+    assert.strictEqual(actionItem.label, 'Clean Save (cleanSave_t)');
+    assert.strictEqual(actionItem.description, '[Modify]');
     assert.strictEqual(actionItem.contextValue, 'cpqCloudCommerceAction');
     assert.strictEqual(actionItem.iconPath.id, 'zap');
 
@@ -182,8 +182,8 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       }
     };
     const actionObjItem = explorer.getTreeItem(actionElementWithObjType);
-    assert.strictEqual(actionObjItem.label, 'Initiate Approval');
-    assert.strictEqual(actionObjItem.description, '[Modify] submit_t');
+    assert.strictEqual(actionObjItem.label, 'Initiate Approval (submit_t)');
+    assert.strictEqual(actionObjItem.description, '[Modify]');
     assert.ok(!actionObjItem.description.includes('[object Object]'), 'Description must not contain [object Object]');
     assert.ok(actionObjItem.tooltip.includes('Action Type: Modify'));
     assert.ok(!actionObjItem.tooltip.includes('[object Object]'), 'Tooltip must not contain [object Object]');
@@ -198,8 +198,8 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       }
     };
     const actionLookupItem = explorer.getTreeItem(actionElementLookup);
-    assert.strictEqual(actionLookupItem.label, 'Copy Line Items');
-    assert.strictEqual(actionLookupItem.description, '[copy] copyLineItems_t');
+    assert.strictEqual(actionLookupItem.label, 'Copy Line Items (copyLineItems_t)');
+    assert.strictEqual(actionLookupItem.description, '[copy]');
     assert.ok(!actionLookupItem.description.includes('[object Object]'));
 
     // Test staging status badge on function
@@ -213,6 +213,7 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       }
     };
     const stagingItem = explorer.getTreeItem(stagingFn);
+    assert.strictEqual(stagingItem.label, 'Staged Func (stagedFunc)');
     assert.ok(stagingItem.description.includes('[Staging]'));
     assert.strictEqual(stagingItem.iconPath.id, 'cloud');
 
@@ -232,7 +233,7 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       }
     };
     const commerceFnItem = explorer.getTreeItem(commerceFnElement);
-    assert.strictEqual(commerceFnItem.label, 'Calculate Discounts');
+    assert.strictEqual(commerceFnItem.label, 'Calculate Discounts (calcDiscounts)');
     assert.ok(commerceFnItem.description.includes('[Deployed]'));
     assert.ok(commerceFnItem.description.includes('[Overridden]'));
     assert.ok(commerceFnItem.description.includes('-> Float'));
