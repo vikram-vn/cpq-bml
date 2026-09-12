@@ -38,9 +38,9 @@ extension.js
 app/**/*.js
 !app/lang/settings-panel/web-view/dist/main.js
 
-# Ignore WebAssembly source files (compiled into dist/cipher.wasm)
+# Ignore WebAssembly source and binary files (shipped via cipherWasmBinary.js)
 **/*.wat
-app/lang/rest/util/*.wasm
+**/*.wasm
 
 # Ignore raw source folders that are compiled into dist/extension.js
 app/lang/beautify/**

@@ -77,6 +77,14 @@ function getSettings(vscode) {
     };
 }
 
+function getSmartDebugReuseInputs(vscode) {
+    const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === "function"
+        ? vscode.workspace.getConfiguration("cpqBml")
+        : null;
+    const val = config ? config.get("debug.smartReuseInputs") : undefined;
+    return val !== false; // default true
+}
+
 function getDebugConcurrency(vscode) {
     const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === "function"
         ? vscode.workspace.getConfiguration("cpqBml")
@@ -450,6 +458,7 @@ module.exports = {
     getCommerceLibrariesFolder,
     getDataTableFolder,
     getSettings,
+    getSmartDebugReuseInputs,
     getBaseUrl,
     getRestVersion,
     getEffectiveRestVersion,

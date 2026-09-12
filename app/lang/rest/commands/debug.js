@@ -95,6 +95,13 @@ async function runDebugCurrentFile(
   const parameterValues = {};
   let useCached = false;
 
+  const forceConfigure = Boolean(
+    options && (options.configureInputs || options.newInputs || options.prompt),
+  );
+  const smartReuse = configLib.getSmartDebugReuseInputs
+    ? configLib.getSmartDebugReuseInputs(vscode)
+    : true;
+
   if (options && options.transactionId) {
     transactionIds = [String(options.transactionId)];
     useCached = true;
@@ -104,7 +111,7 @@ async function runDebugCurrentFile(
       cached.transactionId = options.transactionId;
       context.workspaceState.update(cacheKey, cached);
     }
-  } else if (hasInputs && context.workspaceState) {
+  } else if (hasInputs && context.workspaceState && !forceConfigure) {
     const cacheKey = `debugCache:${metadata.variableName}`;
     const cached = context.workspaceState.get(cacheKey);
     if (cached) {
@@ -119,31 +126,11 @@ async function runDebugCurrentFile(
         : "";
       const summary = [txSummary, paramsSummary].filter(Boolean).join("; ");
 
-      const picks = [
-        {
-          label: "$(play) Run with last inputs",
-          description: summary,
-          id: "last",
-        },
-        {
-          label: "$(gear) Configure inputs...",
-          description: "Enter new transaction ID(s) and parameter values",
-          id: "new",
-        },
-      ];
+      const hasTx = !isCommerce || (cached.transactionId !== undefined && cached.transactionId !== null && String(cached.transactionId).trim() !== "");
+      const hasAllParams = !metadata.parameters || metadata.parameters.every((p) => cached.parameterValues && cached.parameterValues[p.name] !== undefined);
 
-      const selected = await vscode.window.showQuickPick(picks, {
-        placeHolder: `Debug "${metadata.variableName}": choose inputs option`,
-        ignoreFocusOut: true,
-      });
-
-      if (!selected)
-        return {
-          success: false,
-          errorMessage: "Cancelled: no debug inputs selected.",
-        };
-
-      if (selected.id === "last") {
+      if (smartReuse && hasTx && hasAllParams) {
+        // Smart Debug: Automatically reuse cached inputs without showing QuickPick
         useCached = true;
         const rawCachedTx = cached.transactionId;
         if (Array.isArray(rawCachedTx)) {
@@ -163,6 +150,63 @@ async function runDebugCurrentFile(
           transactionIds = [String(rawCachedTx).trim()];
         }
         Object.assign(parameterValues, cached.parameterValues || {});
+
+        if (vscode.window && typeof vscode.window.setStatusBarMessage === "function") {
+          const txInfo = transactionIds.length > 0 ? ` (txn: ${transactionIds.join(", ")})` : "";
+          vscode.window.setStatusBarMessage(`CPQ-BML: Smart Debug reused previous inputs${txInfo}`, 4000);
+        }
+        writeTerminalMessage(
+          resultsTerminal,
+          "[Smart Debug] ",
+          `Reusing previous inputs: ${summary}. (Run "CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)" to change)`,
+          "\x1b[36m",
+        );
+      } else if (!smartReuse) {
+        const picks = [
+          {
+            label: "$(play) Run with last inputs",
+            description: summary,
+            id: "last",
+          },
+          {
+            label: "$(gear) Configure inputs...",
+            description: "Enter new transaction ID(s) and parameter values",
+            id: "new",
+          },
+        ];
+
+        const selected = await vscode.window.showQuickPick(picks, {
+          placeHolder: `Debug "${metadata.variableName}": choose inputs option`,
+          ignoreFocusOut: true,
+        });
+
+        if (!selected)
+          return {
+            success: false,
+            errorMessage: "Cancelled: no debug inputs selected.",
+          };
+
+        if (selected.id === "last") {
+          useCached = true;
+          const rawCachedTx = cached.transactionId;
+          if (Array.isArray(rawCachedTx)) {
+            transactionIds = rawCachedTx
+              .map((t) => String(t).trim())
+              .filter(Boolean);
+          } else if (typeof rawCachedTx === "string" && rawCachedTx.includes(",")) {
+            transactionIds = rawCachedTx
+              .split(/[\s,]+/)
+              .map((t) => t.trim())
+              .filter(Boolean);
+          } else if (
+            rawCachedTx !== undefined &&
+            rawCachedTx !== null &&
+            String(rawCachedTx).trim()
+          ) {
+            transactionIds = [String(rawCachedTx).trim()];
+          }
+          Object.assign(parameterValues, cached.parameterValues || {});
+        }
       }
     }
   }

@@ -16,12 +16,11 @@ async function compileExtension() {
     const t0 = performance.now();
 
     // 0. Compile WebAssembly Cipher (cipher.wat -> cipher.wasm & cipherWasmBinary.js)
-    const watPath = path.join(ROOT, 'app', 'lang', 'rest', 'util', 'cipher.wat');
-    const wasmPath = path.join(ROOT, 'app', 'lang', 'rest', 'util', 'cipher.wasm');
-    const distWasmPath = path.join(ROOT, 'dist', 'cipher.wasm');
+    const watPath = path.join(ROOT, 'scripts', 'crypto', 'cipher.wat');
+    const wasmPath = path.join(ROOT, 'scripts', 'crypto', 'cipher.wasm');
     const jsBinPath = path.join(ROOT, 'app', 'lang', 'rest', 'util', 'cipherWasmBinary.js');
     if (fs.existsSync(watPath)) {
-        const needsCompile = !fs.existsSync(wasmPath) || !fs.existsSync(jsBinPath) || !fs.existsSync(distWasmPath) ||
+        const needsCompile = !fs.existsSync(wasmPath) || !fs.existsSync(jsBinPath) ||
             fs.statSync(wasmPath).mtimeMs < fs.statSync(watPath).mtimeMs || isProduction;
         if (needsCompile) {
             try {
@@ -32,8 +31,6 @@ async function compileExtension() {
                 fs.writeFileSync(wasmPath, Buffer.from(buffer));
                 const b64 = Buffer.from(buffer).toString('base64');
                 fs.writeFileSync(jsBinPath, `module.exports = Buffer.from('${b64}', 'base64');\n`);
-                fs.mkdirSync(path.join(ROOT, 'dist'), { recursive: true });
-                fs.writeFileSync(path.join(ROOT, 'dist', 'cipher.wasm'), Buffer.from(buffer));
             } catch (err) {
                 console.warn('WebAssembly cipher compile warning:', err.message);
             }

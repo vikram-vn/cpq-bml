@@ -267,6 +267,12 @@
         "icon": "app/icons/debug.svg"
       },
       {
+        "command": "cpqBml.rest.debugConfigureInputs",
+        "title": "CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)",
+        "icon": "app/icons/debug-configure.svg",
+        "category": "BML"
+      },
+      {
         "command": "cpqBml.rest.saveCurrentFile",
         "title": "CPQ-BML: Save Current File to CPQ",
         "icon": "app/icons/save.svg"
@@ -638,7 +644,8 @@
         {
           "command": "cpqBml.rest.debugCurrentFile",
           "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
-          "group": "navigation@4"
+          "group": "navigation@4",
+          "alt": "cpqBml.rest.debugConfigureInputs"
         },
         {
           "command": "cpqBml.rest.deployCommerceProcess",
@@ -953,6 +960,11 @@
           "minimum": 2,
           "maximum": 10,
           "description": "Number of transactions to debug simultaneously in parallel (min 2, max 10). Default is 2."
+        },
+        "cpqBml.debug.smartReuseInputs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Smart Debug: Automatically reuse previous transaction ID(s) and parameter inputs on repeated debug runs without prompting. Use 'CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)' or hold Alt while clicking Debug to change inputs."
         }
       }
     }

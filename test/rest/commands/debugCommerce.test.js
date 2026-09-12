@@ -178,18 +178,16 @@ suite("BML REST commands - debug (commerce functions)", () => {
         assert.strictEqual(cache.transactionId, "99999");
         assert.deepStrictEqual(cache.parameterValues, { stringOne: "cachedOne", stringTwo: "cachedTwo" });
 
-        // Second run: mock QuickPick to return 'last'
-        let quickPickOptions = [];
+        // Second run: Smart Debug automatically reuses cached inputs without showing QuickPick
         let quickPickCalled = false;
         let showInputBoxCalledOnSecondRun = false;
         const vscodeSecond = createFakeVscode({
           config: baseVscodeConfig(),
           window: {
             activeTextEditor: editor,
-            showQuickPick: async (picks) => {
+            showQuickPick: async () => {
               quickPickCalled = true;
-              quickPickOptions = picks;
-              return picks.find(p => p.id === 'last');
+              return undefined;
             },
             showInputBox: async () => {
               showInputBoxCalledOnSecondRun = true;
@@ -201,8 +199,8 @@ suite("BML REST commands - debug (commerce functions)", () => {
         transportCalls.length = 0; // reset
         await commands.runDebugCurrentFile(testContext, vscodeSecond, fakeResultsTerminal(), { transport });
 
-        assert.strictEqual(quickPickCalled, true);
-        assert.strictEqual(quickPickOptions.length, 2);
+        // Zero extra clicks: Smart Debug directly executes with cached inputs!
+        assert.strictEqual(quickPickCalled, false);
         assert.strictEqual(showInputBoxCalledOnSecondRun, false); // should not have prompted
         assert.strictEqual(transportCalls.length, 2);
 
@@ -256,9 +254,6 @@ suite("BML REST commands - debug (commerce functions)", () => {
           config: baseVscodeConfig(),
           window: {
             activeTextEditor: editor,
-            showQuickPick: async (picks) => {
-              return picks.find(p => p.id === 'new');
-            },
             showInputBox: async ({ prompt, value }) => {
               promptsPrefills.push({ prompt, value });
               if (prompt.includes("stringOne")) return "newOne";
@@ -285,7 +280,7 @@ suite("BML REST commands - debug (commerce functions)", () => {
           };
         };
 
-        await commands.runDebugCurrentFile(testContext, vscode, fakeResultsTerminal(), { transport });
+        await commands.runDebugCurrentFile(testContext, vscode, fakeResultsTerminal(), { transport, configureInputs: true });
 
         // Verify prefilled values were shown to the user
         assert.strictEqual(promptsPrefills.length, 3);
@@ -309,6 +304,68 @@ suite("BML REST commands - debug (commerce functions)", () => {
           { name: "stringOne", dataType: { value: 2, displayValue: "String" }, value: "newOne" },
           { name: "stringTwo", dataType: { value: 2, displayValue: "String" }, value: "newTwo" }
         ]);
+      }));
+
+    test("shows QuickPick when smartReuseInputs is explicitly configured as false", () =>
+      withTempDir(async (tmpDir) => {
+        const commerceFunction = {
+          ...SAMPLE_FUNCTION,
+          commerceProcess: "oraclecpqo",
+          commerceDocument: "transaction",
+          systemAttributes: [],
+          mainDocAttributes: [],
+          subDocAttributes: []
+        };
+        const bmlPath = path.join(tmpDir, "concatString.bml");
+        metadataLib.writeMetadata(
+          metadataLib.bmlPathToMetaPath(bmlPath),
+          metadataLib.splitFunctionResponse(commerceFunction).metadata,
+        );
+        const editor = {
+          document: {
+            languageId: "bml",
+            uri: { fsPath: bmlPath },
+            getText: () => SAMPLE_FUNCTION.scriptText,
+          },
+        };
+
+        const testContext = makeContext();
+        testContext.workspaceState.update("debugCache:concatString", {
+          transactionId: "55555",
+          parameterValues: { stringOne: "val1", stringTwo: "val2" }
+        });
+
+        let quickPickCalled = false;
+        let quickPickOptions = [];
+        const vscode = createFakeVscode({
+          config: {
+            ...baseVscodeConfig(),
+            "debug.smartReuseInputs": false,
+          },
+          window: {
+            activeTextEditor: editor,
+            showQuickPick: async (picks) => {
+              quickPickCalled = true;
+              quickPickOptions = picks;
+              return picks.find(p => p.id === "last");
+            },
+          },
+        });
+
+        const transportCalls = [];
+        const transport = async (opts) => {
+          transportCalls.push(opts);
+          if (opts.path.includes("/actions/loadTransactionData")) {
+            return { statusCode: 200, headers: { "content-type": "application/json" }, text: "{}" };
+          }
+          return { statusCode: 200, headers: { "content-type": "application/json" }, text: JSON.stringify({ returnData: "ok" }) };
+        };
+
+        await commands.runDebugCurrentFile(testContext, vscode, fakeResultsTerminal(), { transport });
+
+        assert.strictEqual(quickPickCalled, true);
+        assert.strictEqual(quickPickOptions.length, 2);
+        assert.strictEqual(transportCalls.length, 2);
       }));
 
     test("queries dependentAttributes, merges attributes, and normalizes libraryFunctions objects when debugging commerce functions", () =>
