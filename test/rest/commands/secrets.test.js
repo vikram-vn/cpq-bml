@@ -2,6 +2,7 @@ const assert = require("assert");
 const commands = require("@/lang/rest/commands");
 const { writePassword, writeAuthToken } = require("@/lang/rest/commands/secrets");
 const config = require("@/lang/rest/config");
+const { decryptSecret, isCustomAesEncrypted } = require("@/lang/rest/crypto");
 const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 
 suite("BML REST commands - secrets", () => {
@@ -14,11 +15,13 @@ suite("BML REST commands - secrets", () => {
 
       await writePassword(context, vscode, "my-pw");
 
-      assert.strictEqual(await context.secrets.get(config.SECRET_PASSWORD), "my-pw");
-      assert.strictEqual(
-        await context.secrets.get(config.getPasswordSecretKey("https://sitename.oracle.com", "alice")),
-        "my-pw",
-      );
+      const globalStored = await context.secrets.get(config.SECRET_PASSWORD);
+      const siteStored = await context.secrets.get(config.getPasswordSecretKey("https://sitename.oracle.com", "alice"));
+
+      assert.ok(isCustomAesEncrypted(globalStored), "stored password must be encrypted with Custom AES");
+      assert.strictEqual(decryptSecret(globalStored, context, vscode), "my-pw");
+      assert.ok(isCustomAesEncrypted(siteStored), "stored site password must be encrypted with Custom AES");
+      assert.strictEqual(decryptSecret(siteStored, context, vscode), "my-pw");
     });
 
     test("writeAuthToken dual-writes to the site-specific key and the legacy global key", async () => {
@@ -29,11 +32,13 @@ suite("BML REST commands - secrets", () => {
 
       await writeAuthToken(context, vscode, "my-token");
 
-      assert.strictEqual(await context.secrets.get(config.SECRET_TOKEN), "my-token");
-      assert.strictEqual(
-        await context.secrets.get(config.getTokenSecretKey("https://sitename.oracle.com")),
-        "my-token",
-      );
+      const globalStored = await context.secrets.get(config.SECRET_TOKEN);
+      const siteStored = await context.secrets.get(config.getTokenSecretKey("https://sitename.oracle.com"));
+
+      assert.ok(isCustomAesEncrypted(globalStored), "stored token must be encrypted with Custom AES");
+      assert.strictEqual(decryptSecret(globalStored, context, vscode), "my-token");
+      assert.ok(isCustomAesEncrypted(siteStored), "stored site token must be encrypted with Custom AES");
+      assert.strictEqual(decryptSecret(siteStored, context, vscode), "my-token");
     });
   });
 
@@ -46,10 +51,9 @@ suite("BML REST commands - secrets", () => {
 
       await commands.runSetPassword(context, vscode);
 
-      assert.strictEqual(
-        await context.secrets.get(config.SECRET_PASSWORD),
-        "my-pw",
-      );
+      const stored = await context.secrets.get(config.SECRET_PASSWORD);
+      assert.ok(isCustomAesEncrypted(stored));
+      assert.strictEqual(decryptSecret(stored, context, vscode), "my-pw");
     });
 
     test("runSetPassword does nothing when the prompt is cancelled", async () => {
@@ -74,10 +78,9 @@ suite("BML REST commands - secrets", () => {
 
       await commands.runSetAuthToken(context, vscode);
 
-      assert.strictEqual(
-        await context.secrets.get(config.SECRET_TOKEN),
-        "my-token",
-      );
+      const stored = await context.secrets.get(config.SECRET_TOKEN);
+      assert.ok(isCustomAesEncrypted(stored));
+      assert.strictEqual(decryptSecret(stored, context, vscode), "my-token");
     });
   });
 });

@@ -930,6 +930,7 @@
     "lint:fix": "eslint --fix ."
   },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
@@ -939,11 +940,11 @@
     "@vscode/test-electron": "^3.1.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.9.0",
+    "prop-types": "^15.8.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "vscode-oniguruma": "^2.0.1",
     "vscode-textmate": "^9.3.2",
-    "prop-types": "^15.8.1",
-    "@modelcontextprotocol/sdk": "^1.30.0"
+    "wabt": "^1.0.39"
   }
 }

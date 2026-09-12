@@ -8,6 +8,7 @@ const {
   deleteEnvironment,
 } = require("@/lang/rest/commands/env");
 const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
+const { decryptSecret, isCustomAesEncrypted } = require("@/lang/rest/crypto");
 
 suite("BML REST commands - environment CRUD (used by the settings webview)", () => {
   test("applyEnvironment copies siteUrl/username/authMethod into active settings, excluding any password/token", async () => {
@@ -145,9 +146,10 @@ suite("BML REST commands - changeEnvironment & site-specific secrets", function 
     const siteSpecificKey = config.getPasswordSecretKey("https://dev.bigmachines.com", "alice");
     assert.strictEqual(siteSpecificKey, "cpqBml.connection.password.https___dev_bigmachines_com.alice");
 
-    // Password must be in siteSpecificKey
+    // Password must be in siteSpecificKey and encrypted
     const savedPassword = await context.secrets.get(siteSpecificKey);
-    assert.strictEqual(savedPassword, "mypassword");
+    assert.ok(isCustomAesEncrypted(savedPassword));
+    assert.strictEqual(decryptSecret(savedPassword, context, vscode), "mypassword");
 
     // 2. Retrieve header
     const authHeader = await config.getAuthHeader(context, vscode);
@@ -182,7 +184,8 @@ suite("BML REST commands - changeEnvironment & site-specific secrets", function 
     assert.strictEqual(siteSpecificKey, "cpqBml.connection.token.https___uat_bigmachines_com");
 
     const savedToken = await context.secrets.get(siteSpecificKey);
-    assert.strictEqual(savedToken, "mytoken");
+    assert.ok(isCustomAesEncrypted(savedToken));
+    assert.strictEqual(decryptSecret(savedToken, context, vscode), "mytoken");
 
     // 2. Retrieve header
     const authHeader = await config.getAuthHeader(context, vscode);
@@ -226,7 +229,8 @@ suite("BML REST commands - changeEnvironment & site-specific secrets", function 
 
     const siteSpecificKey = config.getPasswordSecretKey("https://dev.bigmachines.com", "alice");
     const savedPassword = await context.secrets.get(siteSpecificKey);
-    assert.strictEqual(savedPassword, "newpassword");
+    assert.ok(isCustomAesEncrypted(savedPassword));
+    assert.strictEqual(decryptSecret(savedPassword, context, vscode), "newpassword");
   });
 });
 

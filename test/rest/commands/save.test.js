@@ -2,6 +2,7 @@ const assert = require("assert");
 const path = require("path");
 const commands = require("@/lang/rest/commands");
 const config = require("@/lang/rest/config");
+const { decryptSecret, isCustomAesEncrypted } = require("@/lang/rest/crypto");
 const metadataLib = require("@/lang/rest/metadata");
 const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 const { SAMPLE_FUNCTION, baseVscodeConfig, makeContext, withTempDir, fakeResultsTerminal } = require("@/test/rest/commands/fixtures");
@@ -232,7 +233,9 @@ suite("BML REST commands - save", () => {
         const updatedConfig = vscode.workspace.getConfiguration("cpqBml");
         assert.strictEqual(updatedConfig.get("connection.siteUrl"), "testsite");
         assert.strictEqual(updatedConfig.get("connection.username"), "testuser");
-        assert.strictEqual(await context.secrets.get(config.SECRET_PASSWORD), "testpass");
+        const savedSecret = await context.secrets.get(config.SECRET_PASSWORD);
+        assert.ok(isCustomAesEncrypted(savedSecret));
+        assert.strictEqual(decryptSecret(savedSecret, context, vscode), "testpass");
 
         // The save succeeded
         assert.ok(infos[0].includes("saved"));

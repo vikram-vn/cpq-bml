@@ -33,19 +33,24 @@ SKILLS.md
 requirements.txt
 knowledge/**
 
-# Ignore root JavaScript source file (bundled into dist/extension.js)
+# Ignore root and raw JavaScript source files (compiled into dist/extension.js)
 extension.js
+app/**/*.js
+!app/lang/settings-panel/web-view/dist/main.js
+
+# Ignore WebAssembly source files (compiled into dist/cipher.wasm)
+**/*.wat
+app/lang/rest/util/*.wasm
 
 # Ignore raw source folders that are compiled into dist/extension.js
 app/lang/beautify/**
 app/lang/lint/**
 app/lang/rest/**
 app/lang/comments/**
-app/lang/mcp/*.js
-app/lang/mcp/tools/*.js
-app/lang/mcp/tool-defs/*.js
-app/lang/intellisense/*.js
-app/lang/intellisense/**/*.js
+app/lang/cloud/**
+app/lang/bmql/**
+app/lang/status-bar/**
+app/lang/mcp/**
 app/lang/settings-panel/*.js
 app/lang/settings-panel/web-view/src/**
 app/lang/syntaxes/*.json
@@ -55,9 +60,6 @@ app/lang/xslt/**
 app/lang/metrics/**
 app/lang/test-controller/**
 app/ai/**
-
-# Ignore spell check JS source (compiled into dist/extension.js)
-app/lang/spell-check/*.js
 
 # Intellisense JSON: ship only the minified .min.json variants
 # (apiDataLoader.js reads them directly, same pattern as the themes/grammars below).

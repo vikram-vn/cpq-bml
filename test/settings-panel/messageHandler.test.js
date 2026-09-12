@@ -1,6 +1,7 @@
 const assert = require("assert");
 const { handleMessage } = require("@/lang/settings-panel/messageHandler");
 const config = require("@/lang/rest/config");
+const { decryptSecret, isCustomAesEncrypted } = require("@/lang/rest/crypto");
 const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
 const path = require("path");
 
@@ -93,11 +94,12 @@ suite("settings-panel messageHandler", () => {
 
     await handleMessage({ type: "setPassword", value: "super-secret-pw" }, context, vscode, panel);
 
-    assert.strictEqual(await context.secrets.get(config.SECRET_PASSWORD), "super-secret-pw");
-    assert.strictEqual(
-      await context.secrets.get(config.getPasswordSecretKey("https://sitename.oracle.com", "alice")),
-      "super-secret-pw",
-    );
+    const storedGlobal = await context.secrets.get(config.SECRET_PASSWORD);
+    assert.ok(isCustomAesEncrypted(storedGlobal));
+    assert.strictEqual(decryptSecret(storedGlobal, context, vscode), "super-secret-pw");
+    const storedSite = await context.secrets.get(config.getPasswordSecretKey("https://sitename.oracle.com", "alice"));
+    assert.ok(isCustomAesEncrypted(storedSite));
+    assert.strictEqual(decryptSecret(storedSite, context, vscode), "super-secret-pw");
     assert.strictEqual(panel.posted[panel.posted.length - 1].type, "state");
     assert.strictEqual(panel.posted[panel.posted.length - 1].hasPassword, true);
     assertNoSecretLeak(panel.posted, "super-secret-pw");
@@ -110,7 +112,9 @@ suite("settings-panel messageHandler", () => {
 
     await handleMessage({ type: "setAuthToken", value: "super-secret-token" }, context, vscode, panel);
 
-    assert.strictEqual(await context.secrets.get(config.SECRET_TOKEN), "super-secret-token");
+    const storedToken = await context.secrets.get(config.SECRET_TOKEN);
+    assert.ok(isCustomAesEncrypted(storedToken));
+    assert.strictEqual(decryptSecret(storedToken, context, vscode), "super-secret-token");
     assert.strictEqual(panel.posted[panel.posted.length - 1].hasToken, true);
     assertNoSecretLeak(panel.posted, "super-secret-token");
   });

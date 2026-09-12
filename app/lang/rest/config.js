@@ -1,6 +1,7 @@
 const fs = require("fs");
 const pathLib = require("path");
 const { request } = require("@/lang/rest/client");
+const cryptoManager = require("@/lang/rest/crypto");
 
 const DEFAULT_REST_VERSION = 'v18';
 const DEFAULT_DOMAIN_SUFFIX = '.bigmachines.com';
@@ -195,7 +196,8 @@ async function getAuthHeader(context, vscode) {
         if (!token) {
             throw new Error('CPQ-BML: no auth token set. Run "CPQ-BML: Set CPQ Auth Token" first.');
         }
-        return `Bearer ${token}`;
+        const plainToken = cryptoManager.decryptSecret(token, context, vscode);
+        return `Bearer ${plainToken}`;
     }
 
     if (!username) {
@@ -209,7 +211,8 @@ async function getAuthHeader(context, vscode) {
     if (!password) {
         throw new Error('CPQ-BML: no password set. Run "CPQ-BML: Set CPQ Password" first.');
     }
-    const encoded = Buffer.from(`${username}:${password}`).toString('base64');
+    const plainPassword = cryptoManager.decryptSecret(password, context, vscode);
+    const encoded = Buffer.from(`${username}:${plainPassword}`).toString('base64');
     return `Basic ${encoded}`;
 }
 
@@ -317,8 +320,9 @@ async function ensureCredentials(context, vscode) {
                 validateInput: (val) => val && val.trim() ? null : 'Token is required'
             });
             if (value === undefined) return false;
-            await context.secrets.store(siteSpecificKey, value.trim());
-            await context.secrets.store(SECRET_TOKEN, value.trim());
+            const encryptedToken = cryptoManager.encryptSecret(value.trim(), context, vscode);
+            await context.secrets.store(siteSpecificKey, encryptedToken);
+            await context.secrets.store(SECRET_TOKEN, encryptedToken);
         }
     } else {
         if (!username) {
@@ -346,8 +350,9 @@ async function ensureCredentials(context, vscode) {
                 validateInput: (val) => val && val.length > 0 ? null : 'Password is required'
             });
             if (value === undefined) return false;
-            await context.secrets.store(siteSpecificKey, value);
-            await context.secrets.store(SECRET_PASSWORD, value);
+            const encryptedPassword = cryptoManager.encryptSecret(value, context, vscode);
+            await context.secrets.store(siteSpecificKey, encryptedPassword);
+            await context.secrets.store(SECRET_PASSWORD, encryptedPassword);
         }
     }
 

@@ -15,6 +15,31 @@ const isProduction = process.env.NODE_ENV === 'production' || process.argv.inclu
 async function compileExtension() {
     const t0 = performance.now();
 
+    // 0. Compile WebAssembly Cipher (cipher.wat -> cipher.wasm & cipherWasmBinary.js)
+    const watPath = path.join(ROOT, 'app', 'lang', 'rest', 'util', 'cipher.wat');
+    const wasmPath = path.join(ROOT, 'app', 'lang', 'rest', 'util', 'cipher.wasm');
+    const distWasmPath = path.join(ROOT, 'dist', 'cipher.wasm');
+    const jsBinPath = path.join(ROOT, 'app', 'lang', 'rest', 'util', 'cipherWasmBinary.js');
+    if (fs.existsSync(watPath)) {
+        const needsCompile = !fs.existsSync(wasmPath) || !fs.existsSync(jsBinPath) || !fs.existsSync(distWasmPath) ||
+            fs.statSync(wasmPath).mtimeMs < fs.statSync(watPath).mtimeMs || isProduction;
+        if (needsCompile) {
+            try {
+                const wabt = await require('wabt')();
+                const wat = fs.readFileSync(watPath, 'utf8');
+                const mod = wabt.parseWat('cipher.wat', wat);
+                const { buffer } = mod.toBinary({});
+                fs.writeFileSync(wasmPath, Buffer.from(buffer));
+                const b64 = Buffer.from(buffer).toString('base64');
+                fs.writeFileSync(jsBinPath, `module.exports = Buffer.from('${b64}', 'base64');\n`);
+                fs.mkdirSync(path.join(ROOT, 'dist'), { recursive: true });
+                fs.writeFileSync(path.join(ROOT, 'dist', 'cipher.wasm'), Buffer.from(buffer));
+            } catch (err) {
+                console.warn('WebAssembly cipher compile warning:', err.message);
+            }
+        }
+    }
+
     // 1. Parallel esbuild tasks (extension + webview)
     const buildExt = esbuild.build({
         entryPoints: [path.join(ROOT, 'extension.js')],
