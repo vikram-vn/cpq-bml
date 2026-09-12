@@ -24,6 +24,8 @@ def main():
     scripts = [
         'generate_sidebar_svg.py',
         'generate_views_svg.py',
+        'generate_editor_icons.py',
+        'generate_cloud_icons.py',
         'generate_command_icons.py',
         'generate_bml_svg.py',
         'generate_logo_svg.py'

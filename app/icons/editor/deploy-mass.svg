@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="massGold" x1="4" y1="2" x2="15" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="60%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <g id="mass-rocket">
+      <path d="M4.8 6.8L1.2 8.4L2.0 11.6L3.8 9.8Z" fill="#ef4444"/>
+      <path d="M9.2 11.2L7.6 14.8L4.4 14.0L6.2 12.2Z" fill="#ef4444"/>
+      <path d="M3.8 10.2C3.0 11.4 2.0 12.6 0.6 15.4C3.4 14.0 4.6 13.0 5.8 12.2Z" fill="#f97316"/>
+      <path d="M15.4 0.6C11.6 1.4 6.0 5.0 3.8 10.0L6.0 12.2C11.0 10.0 14.6 4.4 15.4 0.6Z" fill="url(#massGold)"/>
+      <circle cx="10" cy="6" r="1.6" fill="#ffffff"/>
+      <circle cx="10" cy="6" r="1.0" fill="#b45309"/>
+    </g>
+  </defs>
+  <use href="#mass-rocket" xlink:href="#mass-rocket" opacity="0.45" transform="translate(-2.2, 2.8) scale(0.72)"/>
+  <use href="#mass-rocket" xlink:href="#mass-rocket" opacity="0.65" transform="translate(2.8, -2.2) scale(0.72)"/>
+  <use href="#mass-rocket" xlink:href="#mass-rocket" transform="translate(0.4, 0.4) scale(0.86)"/>
+</svg>
