@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <defs>
+    <linearGradient id="vRktBody" x1="8" y1="2" x2="16" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fb923c"/><stop offset="50%" stop-color="#ea580c"/><stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="vRktFlame" x1="10" y1="15" x2="14" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <path d="M12 2.5C9.5 5 8.5 9 8.5 13.5H15.5C15.5 9 14.5 5 12 2.5Z" fill="url(#vRktBody)" stroke="#ea580c" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M8.5 11.5L5 14V17.5L8.5 15.5" fill="#ea580c" stroke="#c2410c" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M15.5 11.5L19 14V17.5L15.5 15.5" fill="#ea580c" stroke="#c2410c" stroke-width="1.4" stroke-linejoin="round"/>
+  <circle cx="12" cy="8.5" r="1.6" fill="#ffffff"/>
+  <path d="M10 15C10.5 17 11.5 19 12 21.5C12.5 19 13.5 17 14 15" stroke="url(#vRktFlame)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

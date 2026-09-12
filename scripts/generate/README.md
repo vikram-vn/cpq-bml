@@ -18,7 +18,7 @@ python scripts/generate/generate_icons.py
 ## Scripts
 
 ### `generate_bml_svg.py`
-Generates `app/icons/bml.svg` — the 3D extruded "B" icon.  
+Generates `app/icons/brand/bml.svg` — the 3D extruded "B" icon.  
 Glyph path data is inlined — no external files required.
 
 ```bash
@@ -28,8 +28,8 @@ python scripts/generate/generate_bml_svg.py
 ---
 
 ### `generate_logo_svg.py`
-Generates `app/icons/logo.svg` — the BML cloud logo with smooth rounded edges.  
-No external dependencies beyond Python stdlib.
+Generates `app/icons/brand/logo.svg` and `app/icons/brand/logo.png` — the BML cloud logo with smooth rounded edges.  
+No external dependencies beyond Python stdlib (Playwright optional for PNG rasterization).
 
 ```bash
 python scripts/generate/generate_logo_svg.py
@@ -38,7 +38,7 @@ python scripts/generate/generate_logo_svg.py
 ---
 
 ### `generate_sidebar_svg.py`
-Generates `app/icons/sidebar.svg` and `app/icons/sidebar-solid.svg` — the 24×24 monochrome VS Code Activity Bar icons.  
+Generates `app/icons/sidebar/sidebar.svg` and `app/icons/sidebar/sidebar-solid.svg` — the 24×24 VS Code Activity Bar icons.  
 No external dependencies beyond Python stdlib.
 
 ```bash
@@ -48,7 +48,7 @@ python scripts/generate/generate_sidebar_svg.py
 ---
 
 ### `generate_views_svg.py`
-Generates 24×24 monochrome view icons for each sidebar view (`app/icons/datatables.svg`, `app/icons/transactions.svg`, `app/icons/deployment.svg`).  
+Generates the 6 vibrant 24×24 view icons in `app/icons/views/` (`commerce.svg`, `config.svg`, `datatables.svg`, `deployment.svg`, `transactions.svg`, `util-libraries.svg`).  
 No external dependencies beyond Python stdlib.
 
 ```bash
@@ -57,11 +57,22 @@ python scripts/generate/generate_views_svg.py
 
 ---
 
-### `generate_command_icons.py`
-Generates all 21 command and toolbar action icons (e.g. `save.svg`, `deploy.svg`, `debug.svg`, `settings.svg`, `run-tests.svg`, etc.).  
+### `generate_editor_icons.py`
+Generates the 22 colorful editor toolbar and command action icons in `app/icons/editor/` (`save.svg`, `deploy.svg`, `debug.svg`, `validate.svg`, `settings.svg`, `run-tests.svg`, etc.).  
 No external dependencies beyond Python stdlib.
 
 ```bash
-python scripts/generate/generate_command_icons.py
+python scripts/generate/generate_editor_icons.py
 ```
+
+---
+
+### `generate_cloud_icons.py`
+Generates the 14 vibrant cloud explorer icons in `app/icons/cloud/` (`refresh.svg`, `search.svg`, `filter.svg`, `query.svg`, `copy-id.svg`, `sync.svg`, etc.).  
+No external dependencies beyond Python stdlib.
+
+```bash
+python scripts/generate/generate_cloud_icons.py
+```
+
 

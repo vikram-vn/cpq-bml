@@ -4,6 +4,20 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.96.0] - 2026-09-12
+
+### Added
+
+- Add cloud explorer SVG icons and generation scripts.
+- Add cloud and editor SVG icons along with build and generation scripts.
+- Add new UI icons and asset generation scripts.
+- Add editor and cloud SVG icons and generation scripts.
+- Add command icons and generation script.
+- Add REST commands, debugging utilities, icons, and configuration for CPQ BML extension.
+- Implement cloud explorers, data tables, and REST API integration modules with tests.
+- Implement REST configuration, custom AES encryption, and environment/secret commands with tests.
+- Add Commerce REST API and MCP proxy implementation with corresponding tests.
+
 ## [1.95.0] - 2026-09-11
 
 ### Added
@@ -134,14 +148,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - **`@bml` Copilot Chat Participant**: Interactive `@bml` chat assistant in VS Code with slash commands: `/bmql`, `/audit`, and `/attr`.
 - **Zero-Touch Automatic Port Recovery**: Automatically recovers from `EADDRINUSE` port collisions by finding the next open port, updating user configuration, and syncing registered AI tools.
 - **MCP HTTP Health Check**: `GET /health` endpoint reporting server health, bound port, and service status.
-
-## [1.86.0] - 2026-09-09
-
-### Added
-
-- Implement MCP knowledge tools for local BML function management, analysis, and skill documentation.
-- Implement dynamic MCP server configuration and settings panel support.
-- Implement commerce metadata loading and settings panel management infrastructure.
-- Implement commerce metadata loading, cleanup utilities, and corresponding test state integration.
-- Implement settings panel UI with tab-based configuration and sync management capabilities.
-- Add BML logo icon in SVG format.

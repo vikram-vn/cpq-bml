@@ -1,6 +1,6 @@
 """
 generate_bml_svg.py
-Generates app/icons/bml.svg — the stylized BML "B" language icon
+Generates app/icons/brand/bml.svg — the stylized BML "B" language icon
 with the outline contour and layered depth.
 
 Fully self-contained: no external file dependencies.
@@ -10,7 +10,8 @@ Run from the project root:
 """
 import os
 
-OUTPUT_SVG = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'app', 'icons', 'bml.svg')
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'app', 'icons', 'brand')
+OUTPUT_SVG = os.path.join(OUTPUT_DIR, 'bml.svg')
 
 GLYPH_D = (
     "M0 0 C328.803099143026 0 328.803099143026 0 370.8359375 40.7421875 "

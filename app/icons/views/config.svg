@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <defs>
+    <linearGradient id="vCfgRoot" x1="9" y1="3" x2="15" y2="8" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="vCfgNode" x1="3" y1="15" x2="9" y2="20" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <rect x="9" y="3" width="6" height="5" rx="1.2" fill="url(#vCfgRoot)" stroke="#7dd3fc" stroke-width="1.3"/>
+  <path d="M12 8V12M12 12H6V15M12 12H18V15" stroke="#38bdf8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="3" y="15" width="6" height="5" rx="1.2" fill="url(#vCfgNode)" stroke="#6ee7b7" stroke-width="1.3"/>
+  <rect x="15" y="15" width="6" height="5" rx="1.2" fill="url(#vCfgNode)" stroke="#6ee7b7" stroke-width="1.3"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <defs>
+    <linearGradient id="vCart" x1="3" y1="4" x2="20" y2="18" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <path d="M3 4H5.5L8 14.5H18L20.5 6.5H6.5" stroke="url(#vCart)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="9" cy="18.5" r="1.6" fill="#ea580c"/>
+  <circle cx="17" cy="18.5" r="1.6" fill="#ea580c"/>
+  <path d="M11 8.5H15M11 11.5H14" stroke="#38bdf8" stroke-width="1.6" stroke-linecap="round"/>
+</svg>

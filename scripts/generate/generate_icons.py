@@ -1,14 +1,12 @@
 """
 generate_icons.py
 Master runner to generate all project SVGs:
-- app/icons/sidebar.svg (VS Code Activity Bar icon)
-- app/icons/sidebar-solid.svg (VS Code Activity Bar solid variant)
-- app/icons/datatables.svg (CPQ Data Tables view icon)
-- app/icons/transactions.svg (Recent Transactions view icon)
-- app/icons/deployment.svg (Deployment Center view icon)
-- app/icons/bml.svg (BML file language icon)
-- app/icons/logo.svg & app/icons/logo.png (BML cloud logo)
-- 21 command & action SVGs (ai-setup, beautify, debug, deploy, etc.)
+- app/icons/brand/logo.svg & app/icons/brand/logo.png (BML cloud logo & marketplace icon)
+- app/icons/brand/bml.svg (BML file language icon)
+- app/icons/sidebar/sidebar.svg & sidebar-solid.svg (VS Code Activity Bar icons)
+- app/icons/views/ (6 views: commerce, config, datatables, deployment, transactions, util-libraries)
+- app/icons/editor/ (22 colorful editor toolbar & command action SVGs)
+- app/icons/cloud/ (14 colorful cloud explorer tree SVGs)
 
 Run from project root:
     python scripts/generate/generate_icons.py

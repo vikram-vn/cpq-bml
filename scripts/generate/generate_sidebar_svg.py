@@ -1,6 +1,6 @@
 """
 generate_sidebar_svg.py
-Generates app/icons/sidebar.svg — the 24x24 monochrome VS Code Activity Bar icon.
+Generates app/icons/sidebar/sidebar.svg and app/icons/sidebar/sidebar-solid.svg.
 
 Follows VS Code product icon guidelines:
 - 24x24 viewBox
@@ -13,8 +13,10 @@ Run from the project root:
 import os
 import sys
 
-OUTPUT_SIDEBAR_SVG = os.path.join('app', 'icons', 'sidebar.svg')
-OUTPUT_SOLID_SVG = os.path.join('app', 'icons', 'sidebar-solid.svg')
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'app', 'icons', 'sidebar')
+OUTPUT_SIDEBAR_SVG = os.path.join(OUTPUT_DIR, 'sidebar.svg')
+OUTPUT_SOLID_SVG = os.path.join(OUTPUT_DIR, 'sidebar-solid.svg')
 
 # Option 1: Outline Cloud + Bold Center B (Codicon style)
 SVG_OUTLINE = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">

@@ -3,8 +3,8 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.95.0",
-  "icon": "app/icons/logo.png",
+  "version": "1.96.0",
+  "icon": "app/icons/brand/logo.png",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -99,7 +99,7 @@
         {
           "id": "cpq-bml-sidebar",
           "title": "Oracle CPQ Cloud",
-          "icon": "app/icons/sidebar.svg"
+          "icon": "app/icons/sidebar/sidebar.svg"
         }
       ]
     },
@@ -108,32 +108,32 @@
         {
           "id": "cpqBml.cloudExplorer",
           "name": "Util Libraries",
-          "icon": "app/icons/util-libraries.svg"
+          "icon": "app/icons/views/util-libraries.svg"
         },
         {
           "id": "cpqBml.commerceExplorer",
           "name": "Commerce",
-          "icon": "app/icons/commerce.svg"
+          "icon": "app/icons/views/commerce.svg"
         },
         {
           "id": "cpqBml.configExplorer",
           "name": "Configuration",
-          "icon": "app/icons/config.svg"
+          "icon": "app/icons/views/config.svg"
         },
         {
           "id": "cpqBml.cloudDataTables",
           "name": "CPQ Data Tables",
-          "icon": "app/icons/datatables.svg"
+          "icon": "app/icons/views/datatables.svg"
         },
         {
           "id": "cpqBml.recentTransactions",
           "name": "Recent Transactions / Quotes",
-          "icon": "app/icons/transactions.svg"
+          "icon": "app/icons/views/transactions.svg"
         },
         {
           "id": "cpqBml.deploymentCenter",
           "name": "Deployment Center & Task Monitor",
-          "icon": "app/icons/deployment.svg"
+          "icon": "app/icons/views/deployment.svg"
         }
       ]
     },
@@ -152,8 +152,8 @@
         ],
         "configuration": "./language-configuration.json",
         "icon": {
-          "dark": "./app/icons/bml.svg",
-          "light": "./app/icons/bml.svg"
+          "dark": "./app/icons/brand/bml.svg",
+          "light": "./app/icons/brand/bml.svg"
         }
       },
       {

@@ -1,6 +1,6 @@
 """
 generate_logo_svg.py
-Generates app/icons/logo.svg — the BML cloud logo with smooth rounded edges.
+Generates app/icons/brand/logo.svg and app/icons/brand/logo.png — the BML cloud logo.
 
 Fully self-contained: no external file dependencies.
 
@@ -9,9 +9,11 @@ Run from the project root:
 """
 import os
 
-# ── Path ─────────────────────────────────────────────────────────────────────
-OUTPUT_SVG = 'app/icons/logo.svg'
-# ─────────────────────────────────────────────────────────────────────────────
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'app', 'icons', 'brand')
+OUTPUT_SVG = os.path.join(OUTPUT_DIR, 'logo.svg')
+OUTPUT_PNG = os.path.join(OUTPUT_DIR, 'logo.png')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 759 518" width="759" height="518" shape-rendering="geometricPrecision">
   <defs>
@@ -62,8 +64,7 @@ with open(OUTPUT_SVG, 'w', encoding='utf-8') as f:
 
 print(f'[OK] Written {OUTPUT_SVG}  ({os.path.getsize(OUTPUT_SVG):,} bytes)')
 
-# Also render app/icons/logo.png for package.json marketplace icon (VS Code Marketplace standard: 512x512 square PNG)
-OUTPUT_PNG = 'app/icons/logo.png'
+# Also render app/icons/brand/logo.png for package.json marketplace icon (VS Code Marketplace standard: 512x512 square PNG)
 try:
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:

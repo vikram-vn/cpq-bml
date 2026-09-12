@@ -335,9 +335,6 @@ def main():
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(content)
         print(f"Generated: app/icons/editor/{filename}")
-    # Also write debug-config.svg alias
-    with open(os.path.join(EDITOR_ICONS_DIR, 'debug-config.svg'), 'w', encoding='utf-8') as f:
-        f.write(EDITOR_ICONS['debug-configure.svg'])
     print(f"All {len(EDITOR_ICONS)} editor icons generated successfully.")
 
 if __name__ == '__main__':
