@@ -2,7 +2,6 @@ node_modules/**
 .vscode/**
 .vscode-test/**
 .claude/**
-.cpq/**
 test/**
 logs/**
 scratch/**
@@ -11,7 +10,6 @@ extension/**
 .gitignore
 .vscodeignore
 .yarnrc
-.cpqdevkit
 yarn.lock
 .cursorrules
 package-lock.json

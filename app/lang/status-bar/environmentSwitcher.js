@@ -49,7 +49,7 @@ async function switchEnvironment() {
     });
 
     items.push({
-        label: '$(export) Export Team Profiles (.cpq/profiles.json)',
+        label: '$(export) Export Team Profiles (cpq/profiles.json)',
         description: 'Export sanitized environment profiles without secrets',
         action: 'exportProfiles',
     });

@@ -145,7 +145,7 @@ function registerBmlRestCommands(context) {
     context.subscriptions.push(metaWatcher);
 
     const syncWatcher =
-      vscode.workspace.createFileSystemWatcher("**/.cpq/*attributes*.json");
+      vscode.workspace.createFileSystemWatcher("**/cpq/*attributes*.json");
     const onSyncChange = () => {
       refreshCommerceSyncContext(vscode);
     };

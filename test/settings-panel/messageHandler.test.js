@@ -322,7 +322,7 @@ suite("settings-panel messageHandler", () => {
     const os = require("os");
     const path = require("path");
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cpq-remove-panel-test-"));
-    const cpqDir = path.join(tempDir, ".cpq");
+    const cpqDir = path.join(tempDir, "cpq");
     fs.mkdirSync(cpqDir, { recursive: true });
     fs.writeFileSync(path.join(cpqDir, "commerce.attributes.min.json"), JSON.stringify({ attributes: [] }));
 

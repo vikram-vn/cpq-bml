@@ -60,7 +60,7 @@ For complete architectural blueprints, Control Flow Graphs (CFGs), and code exam
 | **Scaffold Library Function** | - | - | `CPQ-BML: Scaffold New Library Function (with -meta.json sidecar)` |
 | **Scaffold BMQL Query** | - | - | `CPQ-BML: Scaffold Parameterized BMQL Query` |
 | **Switch Environment** | - | - | `CPQ-BML: Switch Active CPQ Environment` |
-| **Export Team Profiles** | - | - | `CPQ-BML: Export Team Profiles (.cpq/profiles.json)` |
+| **Export Team Profiles** | - | - | `CPQ-BML: Export Team Profiles (cpq/profiles.json)` |
 | **Open Settings Panel** | - | - | `CPQ-BML: Open Settings` |
 | **Show Code Metrics** | - | - | `BML: Show Code Metrics` |
 | **Pull Function from CPQ** | - | - | `CPQ: Pull Function` |

@@ -14,6 +14,34 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
   let cachedTransactions = null;
   let isLoading = false;
   let lastError = null;
+  let filterQuery = '';
+
+  function setFilter(query) {
+    filterQuery = typeof query === 'string' ? query.trim() : '';
+    if (vscodeInstance?.commands?.executeCommand) {
+      vscodeInstance.commands.executeCommand('setContext', 'cpqBml.recentTransactionsFiltered', Boolean(filterQuery));
+    }
+    onDidChangeTreeDataEmitter.fire();
+  }
+
+  function getFilter() {
+    return filterQuery;
+  }
+
+  function clearFilter() {
+    setFilter('');
+  }
+
+  function matchesTransaction(tx, query) {
+    if (!tx) return false;
+    const q = query.toLowerCase();
+    const id = extractStringValue(tx.transactionID_t || tx._id || tx.transactionId, '').toLowerCase();
+    const cust = extractStringValue(tx.customer_t || tx._customer_t_company_name, '').toLowerCase();
+    const status = extractStringValue(tx.status_t, '').toLowerCase();
+    const name = extractStringValue(tx.transactionName_t || tx.name, '').toLowerCase();
+    const date = extractStringValue(tx._date_modified || tx.dateModified_t, '').toLowerCase();
+    return id.includes(q) || cust.includes(q) || status.includes(q) || name.includes(q) || date.includes(q);
+  }
 
   async function fetchTransactions() {
     if (!isConfigured(vscodeInstance)) {
@@ -97,7 +125,18 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
         }];
       }
 
-      return cachedTransactions.map(tx => ({
+      const displayList = filterQuery
+        ? cachedTransactions.filter(tx => matchesTransaction(tx, filterQuery))
+        : cachedTransactions;
+
+      if (displayList.length === 0) {
+        return [{
+          type: 'empty',
+          label: `No transactions matching '${filterQuery}'`
+        }];
+      }
+
+      return displayList.map(tx => ({
         type: 'transaction',
         data: tx
       }));
@@ -226,7 +265,10 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
     getChildren,
     getTreeItem,
     refresh,
-    getCachedTransactions: () => cachedTransactions
+    getCachedTransactions: () => cachedTransactions,
+    setFilter,
+    getFilter,
+    clearFilter
   };
 }
 
@@ -236,48 +278,53 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
 async function inspectTransactionCommand(item, vscodeInstance = vscode, context) {
   const tx = item?.data || item;
   if (!tx) {
-    vscodeInstance.window.showWarningMessage('No transaction selected to inspect.');
+    vscodeInstance.window.showWarningMessage('No transaction selected.');
     return;
   }
 
   const rawTxId = tx._id || tx.transactionID_t || tx.transactionId;
   const txId = extractStringValue(rawTxId);
   if (!txId) {
-    vscodeInstance.window.showWarningMessage('Transaction ID is missing.');
+    vscodeInstance.window.showWarningMessage('Selected item does not have a valid Transaction ID.');
     return;
   }
 
-  const txNum = extractStringValue(tx.transactionID_t, txId);
+  const docTitle = `Transaction_${txId}.json`;
   const settings = getSettings(vscodeInstance);
   const process = settings.commerceProcess || tx.process || 'oraclecpqo';
   const document = settings.commerceDocument || tx.document || 'transaction';
 
   await vscodeInstance.window.withProgress({
-    location: 15, // Notification
-    title: `Loading transaction #${txNum}...`,
+    location: (vscodeInstance.ProgressLocation && vscodeInstance.ProgressLocation.Notification) || 15,
+    title: `Fetching CPQ Transaction ${txId}...`,
     cancellable: false
   }, async () => {
-    let data = tx;
     try {
       const res = await api.getTransaction(context, vscodeInstance, txId, { process, document, timeoutMs: 60000 });
-      if (res && res.statusCode >= 200 && res.statusCode < 300) {
-        data = safeParseJson(res.body, tx);
-      }
-    } catch (err) {
-      vscodeInstance.window.showWarningMessage(
-        `Full payload request for #${txNum} timed out or failed (${err.message}). Opening available transaction summary.`
-      );
-    }
+      let payload = null;
 
-    try {
-      const formatted = JSON.stringify(data, null, 2);
+      if (res && res.statusCode >= 200 && res.statusCode < 300) {
+        payload = safeParseJson(res.body);
+      }
+
+      if (!payload) {
+        payload = tx;
+      }
+
+      const formatted = JSON.stringify(payload, null, 2);
       const doc = await vscodeInstance.workspace.openTextDocument({
-        content: formatted,
-        language: 'json'
+        language: 'json',
+        content: formatted
       });
       await vscodeInstance.window.showTextDocument(doc);
     } catch (err) {
-      vscodeInstance.window.showErrorMessage(`Failed to display transaction: ${err.message}`);
+      vscodeInstance.window.showWarningMessage(`Transaction fetch timed out or failed: ${err.message}. Showing cached data.`);
+      const formatted = JSON.stringify(tx, null, 2);
+      const doc = await vscodeInstance.workspace.openTextDocument({
+        language: 'json',
+        content: formatted
+      });
+      await vscodeInstance.window.showTextDocument(doc);
     }
   });
 }
@@ -345,9 +392,62 @@ function registerCloudTransactions(context, vscodeInstance = vscode) {
     return copyTransactionIdCommand(item, vscodeInstance);
   });
 
-  context.subscriptions.push(treeView, refreshCmd, inspectCmd, debugCmd, copyCmd);
+  const filterCmd = vscodeInstance.commands.registerCommand('cpqBml.transactions.filterExplorer', async () => {
+    const current = treeDataProvider.getFilter ? treeDataProvider.getFilter() : '';
+    const query = await vscodeInstance.window.showInputBox({
+      prompt: 'Filter Recent Transactions / Quotes',
+      placeHolder: 'e.g. CPQ-4415, Redline, Horizon, Approved...',
+      value: current,
+      ignoreFocusOut: true
+    });
+    if (query !== undefined && treeDataProvider.setFilter) {
+      treeDataProvider.setFilter(query);
+    }
+  });
 
-  return { treeDataProvider, treeView };
+  const clearFilterCmd = vscodeInstance.commands.registerCommand('cpqBml.transactions.clearFilter', () => {
+    if (treeDataProvider.clearFilter) {
+      treeDataProvider.clearFilter();
+    }
+  });
+
+  const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.transactions.searchExplorer', async () => {
+    let txs = treeDataProvider.getCachedTransactions ? treeDataProvider.getCachedTransactions() : null;
+    if (!txs) {
+      await treeDataProvider.getChildren();
+      txs = treeDataProvider.getCachedTransactions ? treeDataProvider.getCachedTransactions() : [];
+    }
+    if (!txs || txs.length === 0) {
+      vscodeInstance.window.showInformationMessage('No transactions available to search.');
+      return;
+    }
+    const items = txs.map(tx => {
+      const id = extractStringValue(tx.transactionID_t || tx._id || tx.transactionId, 'Unknown');
+      const cust = extractStringValue(tx.customer_t || tx._customer_t_company_name, '');
+      const status = extractStringValue(tx.status_t, '');
+      const name = extractStringValue(tx.transactionName_t || tx.name, '');
+      const date = extractStringValue(tx._date_modified || tx.dateModified_t, '');
+      return {
+        label: `$(file) ${id}`,
+        description: [cust, status].filter(Boolean).join(' • '),
+        detail: [name, date ? `Modified: ${date}` : ''].filter(Boolean).join(' | '),
+        data: tx,
+        itemType: 'transaction'
+      };
+    });
+    const selected = await vscodeInstance.window.showQuickPick(items, {
+      placeHolder: 'Search Recent Transactions / Quotes by ID, Customer, or Status...',
+      matchOnDescription: true,
+      matchOnDetail: true
+    });
+    if (selected) {
+      await inspectTransactionCommand(selected, vscodeInstance, context);
+    }
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, inspectCmd, debugCmd, copyCmd, filterCmd, clearFilterCmd, searchCmd);
+
+  return { treeDataProvider, treeView, provider: treeDataProvider };
 }
 
 module.exports = {

@@ -24,6 +24,16 @@ ICONS_DEF = {
   <path d="M12.5 7.2C12.5 4.5 10.3 2.3 7.6 2.3C5.4 2.3 3.5 3.7 2.8 5.8C1.2 6.3 0 7.8 0 9.6C0 11.9 1.8 13.8 4.1 13.8H12.3C14.3 13.8 16 12.2 16 10.2C16 8.5 14.6 7.4 12.5 7.2Z" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M8 5.5v5.5m0 0L5.5 8.5M8 11l2.5-2.5" stroke="{stroke}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>""",
 
+  "deploy.svg": """
+  <path d="M12.5 7.2C12.5 4.5 10.3 2.3 7.6 2.3C5.4 2.3 3.5 3.7 2.8 5.8C1.2 6.3 0 7.8 0 9.6C0 11.9 1.8 13.8 4.1 13.8H12.3C14.3 13.8 16 12.2 16 10.2C16 8.5 14.6 7.4 12.5 7.2Z" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 11V5.5m0 0L5.5 8M8 5.5l2.5 2.5" stroke="{stroke}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>""",
+
+  "metadata.svg": """
+  <path d="M9 1.5H3.5a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V6L9 1.5z" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 1.5V6h4.5" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="8" cy="8" r="0.6" stroke="{stroke}" stroke-width="1.2"/>
+  <line x1="8" y1="9.5" x2="8" y2="12" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>""",
+
   "diff.svg": """
   <rect x="1.5" y="2.5" width="5" height="11" rx="1" stroke="{stroke}" stroke-width="1.2"/>
   <rect x="9.5" y="2.5" width="5" height="11" rx="1" stroke="{stroke}" stroke-width="1.2"/>

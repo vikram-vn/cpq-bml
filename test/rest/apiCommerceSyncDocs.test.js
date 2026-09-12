@@ -83,8 +83,8 @@ suite("BML REST apiCommerceSync - Document Discovery & Paging", () => {
     assert.strictEqual(result.lineAttributes[0].scope, "Line Item");
     assert.strictEqual(result.lineAttributes[1].variableName, "itemQuantity_l");
 
-    // Verify written to commerce.attributes.min.json with both header and line items preserved
-    const cacheFile = path.join(tempDir, ".cpq", "commerce.attributes.min.json");
+    // Verify written to commerce/<process>/attributes.min.json with both header and line items preserved
+    const cacheFile = path.join(tempDir, "cpq", "commerce", "oraclecpqo", "attributes.min.json");
     assert.ok(fs.existsSync(cacheFile));
     const cachedJson = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
     assert.strictEqual(cachedJson.count, 3);
@@ -151,8 +151,8 @@ suite("BML REST apiCommerceSync - Document Discovery & Paging", () => {
     assert.strictEqual(result.lookups.transactionLine[0].variableName, "line_attr_0");
     assert.strictEqual(result.lookups.transactionLine[1249].variableName, "line_attr_1249");
 
-    // Verify commerce.attributes.min.json received all 1250 line attributes
-    const cacheFile = path.join(tempDir, ".cpq", "commerce.attributes.min.json");
+    // Verify attributes.min.json received all 1250 line attributes
+    const cacheFile = path.join(tempDir, "cpq", "commerce", "oraclecpqo", "attributes.min.json");
     const cachedJson = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
     assert.strictEqual(cachedJson.lookups.transactionLine.length, 1250);
 
@@ -210,7 +210,7 @@ suite("BML REST apiCommerceSync - Document Discovery & Paging", () => {
 
     saveWorkspaceAttributes(tempDir, data);
 
-    const cacheFile = path.join(tempDir, ".cpq", "commerce.attributes.min.json");
+    const cacheFile = path.join(tempDir, "cpq", "commerce", "oraclecpqo", "attributes.min.json");
     assert.ok(fs.existsSync(cacheFile));
     const json = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
 

@@ -3,7 +3,8 @@ const {
   createTransactionsProvider,
   inspectTransactionCommand,
   debugOnTransactionCommand,
-  copyTransactionIdCommand
+  copyTransactionIdCommand,
+  registerCloudTransactions
 } = require('@/lang/cloud/cloudTransactions');
 const api = require('@/lang/rest/api');
 
@@ -211,5 +212,58 @@ suite('CPQ Recent Transactions Explorer - Unit Tests', () => {
     assert.strictEqual(opened.language, 'json');
     assert.ok(opened.content.includes('CPQ-93'));
     assert.ok(mockVscode.getWarningMsg().includes('timed out or failed'));
+  });
+
+  test('filtering transactions updates visible nodes and clearFilter restores them', async () => {
+    const mockVscode = createMockVscode();
+    const provider = createTransactionsProvider(mockVscode, {});
+
+    // Initial load - 2 items
+    let rootNodes = await provider.getChildren();
+    assert.strictEqual(rootNodes.length, 2);
+
+    // Filter by customer 'Acme'
+    provider.setFilter('Acme');
+    assert.strictEqual(provider.getFilter(), 'Acme');
+    rootNodes = await provider.getChildren();
+    assert.strictEqual(rootNodes.length, 1);
+    assert.strictEqual(rootNodes[0].data.customer_t, 'Acme Corp');
+
+    // Filter matching nothing
+    provider.setFilter('NonExistent');
+    rootNodes = await provider.getChildren();
+    assert.strictEqual(rootNodes.length, 1);
+    assert.strictEqual(rootNodes[0].type, 'empty');
+    assert.ok(rootNodes[0].label.includes('No transactions matching'));
+
+    // Clear filter
+    provider.clearFilter();
+    assert.strictEqual(provider.getFilter(), '');
+    rootNodes = await provider.getChildren();
+    assert.strictEqual(rootNodes.length, 2);
+  });
+
+  test('registerCloudTransactions registers filter, clearFilter, and search commands', () => {
+    const registeredCmds = [];
+    const mockVscode = createMockVscode({
+      commands: {
+        registerCommand: (id) => {
+          registeredCmds.push(id);
+          return { dispose: () => {} };
+        }
+      }
+    });
+    const context = { subscriptions: [] };
+    const { treeDataProvider, treeView } = registerCloudTransactions(context, mockVscode);
+
+    assert.ok(treeDataProvider);
+    assert.ok(treeView);
+    assert.strictEqual(typeof treeDataProvider.setFilter, 'function');
+    assert.strictEqual(typeof treeDataProvider.clearFilter, 'function');
+
+    assert.ok(registeredCmds.includes('cpqBml.transactions.filterExplorer'), 'filterExplorer command must be registered');
+    assert.ok(registeredCmds.includes('cpqBml.transactions.clearFilter'), 'clearFilter command must be registered');
+    assert.ok(registeredCmds.includes('cpqBml.transactions.searchExplorer'), 'searchExplorer command must be registered');
+    assert.ok(registeredCmds.includes('cpqBml.cloud.refreshTransactions'), 'refreshTransactions command must be registered');
   });
 });

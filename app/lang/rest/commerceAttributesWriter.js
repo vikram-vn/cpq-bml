@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const CPQ_DIR = ".cpq";
+const CPQ_DIR = "cpq";
 const COMMERCE_DIR = "commerce";
 const SYSTEM_DIR = "system";
 const CONFIG_DIR = "config";
@@ -9,7 +9,6 @@ const CONFIG_DIR = "config";
 const COMMERCE_ATTRS_FILE = "commerce.attributes.min.json";
 const CONFIG_ATTRS_FILE = "config.attributes.min.json";
 const SYSTEM_ATTRS_FILE = "system.attributes.min.json";
-const OBSOLETE_DIRS = ["commerce", "system", "config", "cache"];
 
 const README_CPQ = `# Oracle CPQ Backend Metadata Directory
 
@@ -20,9 +19,10 @@ This directory contains metadata, configuration, and schemas synchronized from y
 > Removing this folder will cause IntelliSense and MCP to lose instance-specific Commerce and Configuration attribute definitions, dropdown menus, and array sets.
 
 ## Structure
-- \`commerce.attributes.min.json\`: Unified Commerce metadata (transactions, line items, array sets, and custom processes).
-- \`config.attributes.min.json\`: Unified Configuration metadata (attributes, product families, and models).
-- \`system.attributes.min.json\`: Unified System variables metadata.
+- \`commerce/<process>/attributes.min.json\`: Commerce attributes scoped per process (transactions, line items, array sets).
+- \`config/<productFamily>/attributes.min.json\`: Configuration attributes scoped per product family.
+- \`config/general.attributes.min.json\`: Global configuration attributes, product families, and models.
+- \`system/variables.min.json\`: Unified System variables metadata.
 `;
 
 function pruneAttribute(attr, defaultScope) {
@@ -86,7 +86,10 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
     const readmePath = path.join(storageDir, "README.md");
     fs.writeFileSync(readmePath, README_CPQ, "utf8");
 
-    // 1. Save consolidated commerce metadata in commerce.attributes.min.json
+    // 1. Save commerce metadata in commerce/<process>/attributes.min.json
+    const commDir = path.join(storageDir, COMMERCE_DIR);
+    fs.mkdirSync(commDir, { recursive: true });
+
     if (data.consolidatedTransaction) {
       const ct = data.consolidatedTransaction;
       const prunedLookups = {};
@@ -109,9 +112,13 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
           }
         }
       }
+      const standardProc = ct.process || (configSettings && configSettings.commerceProcess) || "oraclecpqo";
+      const stdProcDir = path.join(commDir, standardProc);
+      fs.mkdirSync(stdProcDir, { recursive: true });
+
       const prunedCT = {
         lookupType: ct.lookupType || "commerce",
-        process: ct.process || (configSettings && configSettings.commerceProcess) || "oraclecpqo",
+        process: standardProc,
         updatedAt: ct.updatedAt || new Date().toISOString(),
         processes: ct.processes,
         standardCounts: ct.standardCounts,
@@ -119,13 +126,36 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
         count: ct.count || ((prunedLookups.transaction?.length || 0) + (prunedLookups.transactionLine?.length || 0)),
         attributes: prunedLookups.transaction || [],
         items: prunedLookups.transaction || [],
+        lineAttributes: prunedLookups.transactionLine || [],
         lookups: prunedLookups,
       };
       fs.writeFileSync(
-        path.join(storageDir, COMMERCE_ATTRS_FILE),
+        path.join(stdProcDir, "attributes.min.json"),
         JSON.stringify(prunedCT),
         "utf8",
       );
+
+      // Write custom processes to their respective folders
+      if (prunedLookups.custom && typeof prunedLookups.custom === "object") {
+        for (const [cProc, cAttrs] of Object.entries(prunedLookups.custom)) {
+          if (Array.isArray(cAttrs) && cAttrs.length > 0 && cProc !== standardProc) {
+            const cProcDir = path.join(commDir, cProc);
+            fs.mkdirSync(cProcDir, { recursive: true });
+            fs.writeFileSync(
+              path.join(cProcDir, "attributes.min.json"),
+              JSON.stringify({
+                process: cProc,
+                updatedAt: ct.updatedAt || new Date().toISOString(),
+                count: cAttrs.length,
+                attributes: cAttrs,
+                items: cAttrs,
+                lookups: { transaction: cAttrs },
+              }),
+              "utf8",
+            );
+          }
+        }
+      }
     } else {
       // 1. Transaction attributes: Merge data.attributes and data.lookups.transaction
       const txnMap = new Map();
@@ -209,12 +239,16 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
       }
       const arraySets = Array.from(arraySetMap.values()).map(a => pruneAttribute(a, "Array Set"));
 
+      const targetProc = data.process || (configSettings && configSettings.commerceProcess) || "oraclecpqo";
+      const targetProcDir = path.join(commDir, targetProc);
+      fs.mkdirSync(targetProcDir, { recursive: true });
+
       if (txnAttrs.length > 0 || lineAttrs.length > 0 || arraySets.length > 0) {
         fs.writeFileSync(
-          path.join(storageDir, COMMERCE_ATTRS_FILE),
+          path.join(targetProcDir, "attributes.min.json"),
           JSON.stringify({
             updatedAt: new Date().toISOString(),
-            process: (configSettings && configSettings.commerceProcess) || "oraclecpqo",
+            process: targetProc,
             count: txnAttrs.length + lineAttrs.length,
             attributes: txnAttrs,
             items: txnAttrs,
@@ -230,9 +264,34 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
           "utf8",
         );
       }
+
+      if (data.lookups && data.lookups.custom && typeof data.lookups.custom === "object") {
+        for (const [cProc, cAttrs] of Object.entries(data.lookups.custom)) {
+          if (Array.isArray(cAttrs) && cAttrs.length > 0 && cProc !== targetProc) {
+            const cProcDir = path.join(commDir, cProc);
+            fs.mkdirSync(cProcDir, { recursive: true });
+            const prunedCustom = cAttrs.map(a => pruneAttribute(a, "Transaction"));
+            fs.writeFileSync(
+              path.join(cProcDir, "attributes.min.json"),
+              JSON.stringify({
+                process: cProc,
+                updatedAt: new Date().toISOString(),
+                count: prunedCustom.length,
+                attributes: prunedCustom,
+                items: prunedCustom,
+                lookups: { transaction: prunedCustom },
+              }),
+              "utf8",
+            );
+          }
+        }
+      }
     }
 
-    // 2. Save system variables in system.attributes.min.json
+    // 2. Save system variables in system/variables.min.json
+    const sysDir = path.join(storageDir, SYSTEM_DIR);
+    fs.mkdirSync(sysDir, { recursive: true });
+
     const sysMap = new Map();
     if (Array.isArray(data.systemAttributes)) {
       for (const a of data.systemAttributes) {
@@ -261,7 +320,7 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
     const sysItems = Array.from(sysMap.values()).map(a => pruneAttribute(a, "System"));
     if (sysItems.length > 0) {
       fs.writeFileSync(
-        path.join(storageDir, SYSTEM_ATTRS_FILE),
+        path.join(sysDir, "variables.min.json"),
         JSON.stringify({
           lookupType: "systemVariables",
           count: sysItems.length,
@@ -272,7 +331,10 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
       );
     }
 
-    // 3. Save unified configuration metadata in config.attributes.min.json
+    // 3. Save configuration metadata in config/<productFamily>/attributes.min.json
+    const cfgDir = path.join(storageDir, CONFIG_DIR);
+    fs.mkdirSync(cfgDir, { recursive: true });
+
     const hasConfigAttrs =
       Array.isArray(data.configAttributes) && data.configAttributes.length > 0;
     const hasProductFamilies =
@@ -281,53 +343,71 @@ function saveWorkspaceAttributes(targetDir, data, configSettings, onCacheInvalid
       Array.isArray(data.models) && data.models.length > 0;
 
     if (hasConfigAttrs || hasProductFamilies || hasModels) {
-      const configAttrs = hasConfigAttrs
-        ? data.configAttributes.map(a => pruneAttribute(a, "Configuration"))
-        : [];
-      const configPayload = {
-        updatedAt: new Date().toISOString(),
-        count: configAttrs.length,
-        productFamilies: hasProductFamilies ? data.productFamilies : [],
-        models: hasModels ? data.models : [],
-        items: configAttrs,
-        attributes: configAttrs,
-      };
-      fs.writeFileSync(
-        path.join(storageDir, CONFIG_ATTRS_FILE),
-        JSON.stringify(configPayload),
-        "utf8",
-      );
-    }
+      const byFamily = new Map();
+      const generalAttrs = [];
 
-    // Clean up obsolete subfolders if present in storageDir
-    for (const sub of OBSOLETE_DIRS) {
-      const subPath = path.join(storageDir, sub);
-      if (fs.existsSync(subPath)) {
-        try {
-          fs.rmSync(subPath, { recursive: true, force: true });
-        } catch (e) {}
-      }
-    }
-
-    // Clean up any non-minified .json files directly in storageDir
-    try {
-      const entries = fs.readdirSync(storageDir);
-      for (const entry of entries) {
-        if (entry.endsWith(".json") && !entry.endsWith(".min.json")) {
-          fs.unlinkSync(path.join(storageDir, entry));
+      if (hasConfigAttrs) {
+        for (const a of data.configAttributes) {
+          const pruned = pruneAttribute(a, "Configuration");
+          if (!pruned) continue;
+          const fam = pruned.productFamily;
+          if (fam) {
+            if (!byFamily.has(fam)) byFamily.set(fam, []);
+            byFamily.get(fam).push(pruned);
+          } else {
+            generalAttrs.push(pruned);
+          }
         }
       }
-    } catch (e) {}
 
-    // Clean up legacy .cpq folder from user workspace if storageDir is outside workspace
-    if (workspaceRoot) {
-      const wsCpq = path.join(workspaceRoot, CPQ_DIR);
-      if (wsCpq !== storageDir && fs.existsSync(wsCpq)) {
-        try {
-          fs.rmSync(wsCpq, { recursive: true, force: true });
-        } catch (e) {}
+      for (const [fam, famAttrs] of byFamily.entries()) {
+        const famDir = path.join(cfgDir, fam);
+        fs.mkdirSync(famDir, { recursive: true });
+        fs.writeFileSync(
+          path.join(famDir, "attributes.min.json"),
+          JSON.stringify({
+            productFamily: fam,
+            updatedAt: new Date().toISOString(),
+            count: famAttrs.length,
+            attributes: famAttrs,
+            items: famAttrs,
+          }),
+          "utf8",
+        );
+      }
+
+      if (generalAttrs.length > 0 || hasProductFamilies || hasModels) {
+        fs.writeFileSync(
+          path.join(cfgDir, "general.attributes.min.json"),
+          JSON.stringify({
+            updatedAt: new Date().toISOString(),
+            count: generalAttrs.length,
+            productFamilies: hasProductFamilies ? data.productFamilies : [],
+            models: hasModels ? data.models : [],
+            attributes: generalAttrs,
+            items: generalAttrs,
+          }),
+          "utf8",
+        );
       }
     }
+
+    // Clean up any legacy flat files directly in storageDir to prevent monolithic duplicates
+    const legacyFlatFiles = [
+      COMMERCE_ATTRS_FILE,
+      CONFIG_ATTRS_FILE,
+      SYSTEM_ATTRS_FILE,
+      "commerce.attributes.json",
+      "config.attributes.json",
+      "system.attributes.json",
+    ];
+    for (const lf of legacyFlatFiles) {
+      const lp = path.join(storageDir, lf);
+      if (fs.existsSync(lp)) {
+        try { fs.unlinkSync(lp); } catch (e) {}
+      }
+    }
+
 
     if (typeof onCacheInvalidated === "function") {
       onCacheInvalidated(storageDir);

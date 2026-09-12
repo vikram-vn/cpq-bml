@@ -21,11 +21,11 @@ suite("BML REST commands - syncCommerceMetadata", () => {
 
   test("refreshCommerceSyncContext sets cpqBml.commerceMetadataSynced to true when cache exists", () =>
     withTempDir(async (tmpDir) => {
-      const cacheDir = path.join(tmpDir, ".cpq", "cache");
-      fs.mkdirSync(cacheDir, { recursive: true });
+      const cpqDir = path.join(tmpDir, "cpq", "commerce", "oraclecpqo");
+      fs.mkdirSync(cpqDir, { recursive: true });
       fs.writeFileSync(
-        path.join(cacheDir, "commerce-attributes.json"),
-        JSON.stringify({ attributes: [] }),
+        path.join(cpqDir, "attributes.min.json"),
+        JSON.stringify({ attributes: [{ variableName: "test_t" }] }),
         "utf8",
       );
 
@@ -106,8 +106,8 @@ suite("BML REST commands - syncCommerceMetadata", () => {
       assert.ok(lines.some((l) => l.includes("Sync complete:")));
       assert.ok(infoMessages.some((m) => m.includes("1 header attributes") || m.includes("1 attributes")));
 
-      // Verify file written to .cpq/commerce.attributes.min.json
-      const cachePath = path.join(tmpDir, ".cpq", "commerce.attributes.min.json");
+      // Verify file written to cpq/commerce/<process>/attributes.min.json
+      const cachePath = path.join(tmpDir, "cpq", "commerce", "oraclecpqo", "attributes.min.json");
       assert.ok(fs.existsSync(cachePath));
       const saved = JSON.parse(fs.readFileSync(cachePath, "utf8"));
       assert.strictEqual(saved.items ? saved.items.length : saved.length, 1);

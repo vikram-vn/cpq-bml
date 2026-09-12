@@ -105,8 +105,8 @@ function registerBmlIntelliSense(context) {
     apiFilesWatcher.onDidDelete(onCacheInvalidated);
     context.subscriptions.push(apiFilesWatcher);
 
-    // Watch workspace .cpq cache files to immediately reflect synced metadata
-    const cpqCacheWatcher = vscode.workspace.createFileSystemWatcher('**/.cpq/**');
+    // Watch workspace cpq cache files to immediately reflect synced metadata
+    const cpqCacheWatcher = vscode.workspace.createFileSystemWatcher('**/cpq/**');
     cpqCacheWatcher.onDidChange(onCacheInvalidated);
     cpqCacheWatcher.onDidCreate(onCacheInvalidated);
     cpqCacheWatcher.onDidDelete(onCacheInvalidated);

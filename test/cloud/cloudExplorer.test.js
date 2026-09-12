@@ -6,6 +6,9 @@ const {
   findLocalFunctionFile,
   createCloudExplorer,
   pullFunctionCommand,
+  diffFunctionCommand,
+  deployFunctionCommand,
+  viewFunctionMetadataCommand,
   openCommerceActionCommand,
   filterExplorerCommand,
   clearFilterCommand,
@@ -737,8 +740,137 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       assert.ok(registeredCmds.includes('cpqBml.cloud.searchExplorer'));
       assert.ok(registeredCmds.includes('cpqBml.cloud.filterExplorer'));
       assert.ok(registeredCmds.includes('cpqBml.cloud.clearFilter'));
-      assert.ok(registeredCmds.includes('cpqBml.cloud.refresh'));
       assert.ok(registeredCmds.includes('cpqBml.cloud.pullFunction'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.diffFunction'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.deployFunction'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.viewFunctionMetadata'));
+    });
+
+    test('deployFunctionCommand opens local file and invokes deployCurrentFile when local file exists', async () => {
+      const os = require('os');
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-deploy-test-'));
+      const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcTax');
+      fs.mkdirSync(fnDir, { recursive: true });
+      const localFile = path.join(fnDir, 'calcTax.bml');
+      fs.writeFileSync(localFile, 'return 0.05;\n', 'utf8');
+
+      let executedCommand = null;
+      let openedFile = null;
+
+      const mockVscode = createCloudMockVscode({
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: tempDir } }],
+          getConfiguration: () => ({
+            get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          }),
+          openTextDocument: async (uri) => {
+            openedFile = uri.fsPath;
+            return { uri };
+          }
+        },
+        commands: {
+          executeCommand: async (cmd) => {
+            executedCommand = cmd;
+          }
+        },
+        Uri: {
+          file: (f) => ({ fsPath: f, scheme: 'file' })
+        }
+      });
+
+      try {
+        const item = {
+          data: {
+            variableName: 'calcTax',
+            name: 'Calculate Tax',
+            folderName: 'finance'
+          }
+        };
+
+        await deployFunctionCommand(item, mockVscode, {});
+        assert.strictEqual(openedFile, localFile);
+        assert.strictEqual(executedCommand, 'cpqBml.rest.deployCurrentFile');
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    test('viewFunctionMetadataCommand opens local -meta.json if present or fetches remote metadata', async () => {
+      const os = require('os');
+      const api = require('@/lang/rest/api');
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-meta-test-'));
+      const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcFee');
+      fs.mkdirSync(fnDir, { recursive: true });
+      const metaFile = path.join(fnDir, 'calcFee-meta.json');
+      fs.writeFileSync(metaFile, JSON.stringify({ variableName: 'calcFee', returnType: 'Float' }), 'utf8');
+      const bmlFile = path.join(fnDir, 'calcFee.bml');
+      fs.writeFileSync(bmlFile, 'return 1.5;\n', 'utf8');
+
+      let openedDocPath = null;
+      let openedJsonContent = null;
+
+      const mockVscode = createCloudMockVscode({
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: tempDir } }],
+          getConfiguration: () => ({
+            get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          }),
+          openTextDocument: async (target) => {
+            if (target && target.content) {
+              openedJsonContent = target.content;
+              return target;
+            }
+            openedDocPath = target.fsPath;
+            return target;
+          }
+        },
+        Uri: {
+          file: (f) => ({ fsPath: f, scheme: 'file' })
+        }
+      });
+
+      try {
+        // 1. With local -meta.json
+        const localItem = {
+          data: {
+            variableName: 'calcFee',
+            name: 'Calculate Fee',
+            folderName: 'finance'
+          }
+        };
+        await viewFunctionMetadataCommand(localItem, mockVscode, {});
+        assert.strictEqual(openedDocPath, metaFile);
+
+        // 2. Cloud-only function fetches via API
+        const origGetFunc = api.getLibraryFunction;
+        api.getLibraryFunction = async () => ({
+          statusCode: 200,
+          body: {
+            variableName: 'cloudOnlyFunc',
+            name: 'Cloud Only Func',
+            returnType: 'String',
+            description: 'Remote cloud function metadata'
+          }
+        });
+
+        try {
+          const remoteItem = {
+            data: {
+              variableName: 'cloudOnlyFunc',
+              name: 'Cloud Only Func',
+              folderName: 'remote'
+            }
+          };
+          await viewFunctionMetadataCommand(remoteItem, mockVscode, {});
+          assert.ok(openedJsonContent);
+          assert.ok(openedJsonContent.includes('cloudOnlyFunc'));
+          assert.ok(openedJsonContent.includes('Remote cloud function metadata'));
+        } finally {
+          api.getLibraryFunction = origGetFunc;
+        }
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
     });
   });
 });

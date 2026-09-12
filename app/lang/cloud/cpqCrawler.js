@@ -423,17 +423,11 @@ function resolveStorageDir(context, vscode, options = {}) {
     return path.join(context.globalStoragePath, 'schema');
   }
   const wsRoot = getWorkspaceRoot(vscode);
-  if (options.useWorkspaceDir && wsRoot) {
-    return path.join(wsRoot, '.cpq');
-  }
-  if (wsRoot && fs.existsSync(path.join(wsRoot, '.cpq'))) {
-    return path.join(wsRoot, '.cpq');
-  }
   if (wsRoot) {
-    return path.join(wsRoot, '.cpq');
+    return path.join(wsRoot, 'cpq');
   }
   const os = require('os');
-  return path.join(os.homedir(), '.cpq');
+  return path.join(os.homedir(), 'cpq');
 }
 
 module.exports = {

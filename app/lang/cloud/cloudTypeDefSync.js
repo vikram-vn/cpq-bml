@@ -59,7 +59,7 @@ async function fetchCloudSignatures(context, vscodeInstance = vscode) {
 }
 
 /**
- * Generates BML interface declaration stubs for `.cpq/cpq.d.bml`.
+ * Generates BML interface declaration stubs for `cpq/cpq.d.bml`.
  */
 function generateTypeDefBml(functions = []) {
   const lines = [];
@@ -188,7 +188,7 @@ async function syncCloudDefinitions(context, vscodeInstance = vscode) {
       const bmlTypeDef = generateTypeDefBml(functions);
       const jsonTypeDef = generateTypeDefJson(functions);
 
-      const cpqDir = path.join(root, '.cpq');
+      const cpqDir = path.join(root, 'cpq');
       const cacheDir = path.join(cpqDir, 'cache');
       fs.mkdirSync(cacheDir, { recursive: true });
 
@@ -202,7 +202,7 @@ async function syncCloudDefinitions(context, vscodeInstance = vscode) {
       invalidateIntelliSenseCache();
 
       vscodeInstance.window.showInformationMessage(
-        `CPQ-BML: Synced ${functions.length} cloud function definitions to .cpq/cpq.d.bml and IntelliSense cache.`
+        `CPQ-BML: Synced ${functions.length} cloud function definitions to cpq/cpq.d.bml and IntelliSense cache.`
       );
       return { success: true, count: functions.length };
     } catch (err) {

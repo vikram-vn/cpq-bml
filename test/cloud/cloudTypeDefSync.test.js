@@ -97,7 +97,7 @@ suite('Cloud Type Definition Synchronizer - Unit Tests', () => {
     const bmlTypeDef = generateTypeDefBml(sampleFunctions);
     const jsonTypeDef = generateTypeDefJson(sampleFunctions);
 
-    const cpqDir = path.join(tempDir, '.cpq');
+    const cpqDir = path.join(tempDir, 'cpq');
     const cacheDir = path.join(cpqDir, 'cache');
     fs.mkdirSync(cacheDir, { recursive: true });
 

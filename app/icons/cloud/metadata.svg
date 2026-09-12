@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <style>
+    path, line, circle, rect, ellipse { stroke: #C5C5C5; }
+    @media (prefers-color-scheme: light) {
+      path, line, circle, rect, ellipse { stroke: #424242; }
+    }
+  </style>
+  <path d="M9 1.5H3.5a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V6L9 1.5z" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 1.5V6h4.5" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="8" cy="8" r="0.6" stroke="#C5C5C5" stroke-width="1.2"/>
+  <line x1="8" y1="9.5" x2="8" y2="12" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

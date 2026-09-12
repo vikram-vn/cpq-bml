@@ -185,18 +185,28 @@ function getCacheFilePath(workspaceRoot, context) {
   }
 
   for (const dir of dirs) {
+    const commDir = path.join(dir, COMMERCE_DIR);
+    if (fs.existsSync(commDir)) {
+      const defaultProc = (typeof getCommerceProcess === "function" && vscode) ? getCommerceProcess(vscode) : "oraclecpqo";
+      const defaultPath = path.join(commDir, defaultProc, "attributes.min.json");
+      if (fs.existsSync(defaultPath)) return defaultPath;
+
+      try {
+        for (const entry of fs.readdirSync(commDir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            const p = path.join(commDir, entry.name, "attributes.min.json");
+            if (fs.existsSync(p)) return p;
+          } else if (entry.isFile() && entry.name.endsWith(".min.json")) {
+            return path.join(commDir, entry.name);
+          }
+        }
+      } catch (e) {}
+    }
+
     const flatCommerce = path.join(dir, COMMERCE_ATTRS_FILE);
     if (fs.existsSync(flatCommerce)) return flatCommerce;
-    const txnMin = path.join(dir, COMMERCE_DIR, "transaction.min.json");
-    if (fs.existsSync(txnMin)) return txnMin;
-    const commerceMin = path.join(dir, COMMERCE_DIR, "attributes.min.json");
-    if (fs.existsSync(commerceMin)) return commerceMin;
-    const legacyMin = path.join(dir, "cache", "commerce-attributes.min.json");
-    if (fs.existsSync(legacyMin)) return legacyMin;
-    const legacyJson = path.join(dir, "cache", "commerce-attributes.json");
-    if (fs.existsSync(legacyJson)) return legacyJson;
   }
-  return backendDir ? path.join(backendDir, COMMERCE_ATTRS_FILE) : null;
+  return backendDir ? path.join(backendDir, COMMERCE_DIR, "oraclecpqo", "attributes.min.json") : null;
 }
 
 function loadWorkspaceAttributes(workspaceRoot, context) {
@@ -252,30 +262,6 @@ function loadWorkspaceAttributes(workspaceRoot, context) {
     }
   }
 
-  // Fallback: Legacy .cpq/cache/ structure
-  for (const dir of dirs) {
-    const legacyMin = path.join(dir, "cache", "commerce-attributes.min.json");
-    const legacyJson = path.join(dir, "cache", "commerce-attributes.json");
-    const legacyPath = fs.existsSync(legacyMin) ? legacyMin : fs.existsSync(legacyJson) ? legacyJson : null;
-    if (legacyPath) {
-      try {
-        const data = JSON.parse(fs.readFileSync(legacyPath, "utf8"));
-        index.data = data;
-        addItems(data.attributes, "Transaction");
-        addItems(data.systemAttributes, "System");
-        addItems(data.arraySets, "Array Set");
-        if (data.lookups && typeof data.lookups === "object") {
-          addItems(data.lookups.transaction, "Transaction");
-          addItems(data.lookups.transactionLine, "Line Item");
-          addItems(data.lookups.systemVariables, "System");
-          addItems(data.lookups.arraySets, "Array Set");
-        }
-        workspaceAttributesCache[cacheKey] = index;
-        return index;
-      } catch (e) {}
-    }
-  }
-
   return null;
 }
 
@@ -289,16 +275,22 @@ function isCommerceSynced(workspaceRoot, context) {
   }
 
   for (const dir of dirs) {
+    const commDir = path.join(dir, COMMERCE_DIR);
+    if (fs.existsSync(commDir)) {
+      try {
+        for (const entry of fs.readdirSync(commDir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            const p = path.join(commDir, entry.name, "attributes.min.json");
+            if (fs.existsSync(p) && fs.statSync(p).size > 0) return true;
+          } else if (entry.isFile() && entry.name.endsWith(".min.json")) {
+            const p = path.join(commDir, entry.name);
+            if (fs.statSync(p).size > 0) return true;
+          }
+        }
+      } catch (e) {}
+    }
     const flatCommerce = path.join(dir, COMMERCE_ATTRS_FILE);
     if (fs.existsSync(flatCommerce) && fs.statSync(flatCommerce).size > 0) return true;
-    const txnMin = path.join(dir, COMMERCE_DIR, "transaction.min.json");
-    if (fs.existsSync(txnMin) && fs.statSync(txnMin).size > 0) return true;
-    const commMin = path.join(dir, COMMERCE_DIR, "attributes.min.json");
-    if (fs.existsSync(commMin) && fs.statSync(commMin).size > 0) return true;
-    const legacyMin = path.join(dir, "cache", "commerce-attributes.min.json");
-    if (fs.existsSync(legacyMin) && fs.statSync(legacyMin).size > 0) return true;
-    const legacyJson = path.join(dir, "cache", "commerce-attributes.json");
-    if (fs.existsSync(legacyJson) && fs.statSync(legacyJson).size > 0) return true;
   }
   return false;
 }

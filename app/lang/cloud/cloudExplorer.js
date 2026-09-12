@@ -13,6 +13,8 @@ const {
 const {
   pullFunctionCommand,
   diffFunctionCommand,
+  deployFunctionCommand,
+  viewFunctionMetadataCommand,
   openCommerceActionCommand,
   switchCommerceProcessCommand
 } = require('@/lang/cloud/cloudExplorerCommands');
@@ -790,6 +792,14 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
     return clearFilterCommand(treeDataProvider, vscodeInstance);
   });
 
+  const deployCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.deployFunction', (item) => {
+    return deployFunctionCommand(item, vscodeInstance, context);
+  });
+
+  const viewMetaCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.viewFunctionMetadata', (item) => {
+    return viewFunctionMetadataCommand(item, vscodeInstance, context);
+  });
+
   context.subscriptions.push(
     treeView,
     refreshCmd,
@@ -800,7 +810,9 @@ function registerCloudExplorer(context, vscodeInstance = vscode) {
     switchProcCmd,
     searchExplorerCmd,
     filterExplorerCmd,
-    clearFilterCmd
+    clearFilterCmd,
+    deployCmd,
+    viewMetaCmd
   );
 
   return { treeDataProvider, treeView };
@@ -816,6 +828,8 @@ module.exports = {
   createCloudExplorer,
   pullFunctionCommand,
   diffFunctionCommand,
+  deployFunctionCommand,
+  viewFunctionMetadataCommand,
   openCommerceActionCommand,
   switchCommerceProcessCommand,
   filterExplorerCommand,

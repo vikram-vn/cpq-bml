@@ -40,14 +40,9 @@ function getCacheDir(contextOrRoot, maybeRoot) {
     if (fs.existsSync(p)) return p;
   }
 
-  // 2. User home backend cache ~/.cpq
-  const os = require("os");
-  const homeCpq = path.join(os.homedir(), ".cpq");
-  if (fs.existsSync(homeCpq)) return homeCpq;
-
-  // 3. Workspace .cpq folder (fallback or if project already has .cpq)
+  // 2. Workspace cpq folder
   const root = workspaceRoot || (vscode && vscode.workspace && vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0] ? vscode.workspace.workspaceFolders[0].uri.fsPath : process.cwd());
-  const wsCpq = path.join(root, ".cpq");
+  const wsCpq = path.join(root, "cpq");
   if (fs.existsSync(wsCpq)) return wsCpq;
 
   // Prefer context globalStorageUri if available

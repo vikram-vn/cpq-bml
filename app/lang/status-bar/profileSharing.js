@@ -34,7 +34,7 @@ async function exportTeamProfiles() {
     let targetPath = null;
 
     if (wsFolder) {
-        const cpqDir = path.join(wsFolder.uri.fsPath, '.cpq');
+        const cpqDir = path.join(wsFolder.uri.fsPath, 'cpq');
         if (!fs.existsSync(cpqDir)) {
             try { fs.mkdirSync(cpqDir, { recursive: true }); } catch {}
         }
@@ -70,7 +70,7 @@ async function importTeamProfiles() {
     let sourcePath = null;
 
     if (wsFolder) {
-        const defaultPath = path.join(wsFolder.uri.fsPath, '.cpq', 'profiles.json');
+        const defaultPath = path.join(wsFolder.uri.fsPath, 'cpq', 'profiles.json');
         if (fs.existsSync(defaultPath)) {
             sourcePath = defaultPath;
         }

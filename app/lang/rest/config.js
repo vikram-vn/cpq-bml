@@ -115,14 +115,14 @@ async function saveWorkspaceConfig(vscode, settings) {
     if (settings.pullFolder !== undefined) await config.update("rest.pullFolder", settings.pullFolder, false);
     if (settings.debugConcurrency !== undefined) await config.update("debug.concurrency", Math.max(2, Math.min(10, Math.round(Number(settings.debugConcurrency)) || 2)), false);
 
-    // Ensure connection settings are never left in .cpq/config
+    // Ensure connection settings are never left in cpq/config
     const root = getWorkspaceRoot(vscode);
     if (root) {
-        const obsoleteConfigMin = pathLib.join(root, ".cpq", "config", "config.min.json");
+        const obsoleteConfigMin = pathLib.join(root, "cpq", "config", "config.min.json");
         if (fs.existsSync(obsoleteConfigMin)) {
             try { fs.unlinkSync(obsoleteConfigMin); } catch (e) {}
         }
-        const obsoleteConfigJson = pathLib.join(root, ".cpq", "config", "config.json");
+        const obsoleteConfigJson = pathLib.join(root, "cpq", "config", "config.json");
         if (fs.existsSync(obsoleteConfigJson)) {
             try { fs.unlinkSync(obsoleteConfigJson); } catch (e) {}
         }

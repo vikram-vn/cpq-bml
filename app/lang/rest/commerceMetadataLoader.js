@@ -68,43 +68,74 @@ function loadAttributesFromDir(dir, index, addItems) {
   }
   if (loadedAny) return true;
 
-  // Subfolders fallback
+  // Subfolders: commerce/<process>/attributes.min.json, config/<family>/attributes.min.json, system/variables.min.json
   const commDir = path.join(dir, COMMERCE_DIR);
   const cfgDir = path.join(dir, CONFIG_DIR);
   const sysDir = path.join(dir, SYSTEM_DIR);
 
   if (fs.existsSync(commDir)) {
     try {
-      for (const f of fs.readdirSync(commDir)) {
-        if (!f.endsWith(".min.json")) continue;
-        const raw = JSON.parse(fs.readFileSync(path.join(commDir, f), "utf8"));
-        const scope = f.includes("line") ? "Line Item" : f.includes("array") ? "Array Set" : "Transaction";
-        processCommercePayload(raw, addItems, scope);
-        loadedAny = true;
+      for (const entry of fs.readdirSync(commDir, { withFileTypes: true })) {
+        if (entry.isDirectory()) {
+          const procDir = path.join(commDir, entry.name);
+          for (const subFile of fs.readdirSync(procDir)) {
+            if (!subFile.endsWith(".min.json")) continue;
+            try {
+              const raw = JSON.parse(fs.readFileSync(path.join(procDir, subFile), "utf8"));
+              processCommercePayload(raw, addItems);
+              loadedAny = true;
+            } catch (e) {}
+          }
+        } else if (entry.isFile() && entry.name.endsWith(".min.json")) {
+          try {
+            const raw = JSON.parse(fs.readFileSync(path.join(commDir, entry.name), "utf8"));
+            processCommercePayload(raw, addItems);
+            loadedAny = true;
+          } catch (e) {}
+        }
       }
     } catch (e) {}
   }
-  if (fs.existsSync(sysDir)) {
-    const vf = path.join(sysDir, "variables.min.json");
-    if (fs.existsSync(vf)) {
-      try {
-        const raw = JSON.parse(fs.readFileSync(vf, "utf8"));
-        addItems(raw.items || raw.attributes || (Array.isArray(raw) ? raw : []), "System");
-        loadedAny = true;
-      } catch (e) {}
-    }
-  }
+
   if (fs.existsSync(cfgDir)) {
     try {
-      for (const f of fs.readdirSync(cfgDir)) {
+      for (const entry of fs.readdirSync(cfgDir, { withFileTypes: true })) {
+        if (entry.isDirectory()) {
+          const famDir = path.join(cfgDir, entry.name);
+          for (const subFile of fs.readdirSync(famDir)) {
+            if (!subFile.endsWith(".min.json")) continue;
+            try {
+              const raw = JSON.parse(fs.readFileSync(path.join(famDir, subFile), "utf8"));
+              const items = Array.isArray(raw) ? raw : Array.isArray(raw.attributes) ? raw.attributes : Array.isArray(raw.items) ? raw.items : [];
+              addItems(items, "Configuration");
+              if (Array.isArray(raw.models)) addItems(raw.models, "Model");
+              if (Array.isArray(raw.productFamilies)) addItems(raw.productFamilies, "Configuration");
+              loadedAny = true;
+            } catch (e) {}
+          }
+        } else if (entry.isFile() && entry.name.endsWith(".min.json")) {
+          try {
+            const raw = JSON.parse(fs.readFileSync(path.join(cfgDir, entry.name), "utf8"));
+            const items = Array.isArray(raw) ? raw : Array.isArray(raw.attributes) ? raw.attributes : Array.isArray(raw.items) ? raw.items : [];
+            addItems(items, "Configuration");
+            if (Array.isArray(raw.models)) addItems(raw.models, "Model");
+            if (Array.isArray(raw.productFamilies)) addItems(raw.productFamilies, "Configuration");
+            loadedAny = true;
+          } catch (e) {}
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (fs.existsSync(sysDir)) {
+    try {
+      for (const f of fs.readdirSync(sysDir)) {
         if (!f.endsWith(".min.json")) continue;
-        const raw = JSON.parse(fs.readFileSync(path.join(cfgDir, f), "utf8"));
-        const items = Array.isArray(raw) ? raw : Array.isArray(raw.attributes) ? raw.attributes : Array.isArray(raw.items) ? raw.items : [];
-        const scope = f.includes("model") ? "Model" : "Configuration";
-        addItems(items, scope);
-        if (Array.isArray(raw.models)) addItems(raw.models, "Model");
-        if (Array.isArray(raw.productFamilies)) addItems(raw.productFamilies, "Configuration");
-        loadedAny = true;
+        try {
+          const raw = JSON.parse(fs.readFileSync(path.join(sysDir, f), "utf8"));
+          addItems(raw.items || raw.attributes || (Array.isArray(raw) ? raw : []), "System");
+          loadedAny = true;
+        } catch (e) {}
       }
     } catch (e) {}
   }
@@ -120,8 +151,25 @@ function inspectMetadataStatus(dirs, vscode, backendDir) {
   let systemCount = 0;
 
   for (const dir of dirs) {
+    // 1. Check modular commerce/<process>/attributes.min.json
+    const commDir = path.join(dir, COMMERCE_DIR);
+    if (fs.existsSync(commDir)) {
+      try {
+        for (const entry of fs.readdirSync(commDir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            const p = path.join(commDir, entry.name, "attributes.min.json");
+            if (fs.existsSync(p)) {
+              const raw = JSON.parse(fs.readFileSync(p, "utf8"));
+              isSynced = true;
+              updatedAt = raw.updatedAt || updatedAt;
+              commerceCount += raw.count || (Array.isArray(raw.attributes) ? raw.attributes.length : 0);
+            }
+          }
+        }
+      } catch (e) {}
+    }
     const commFile = path.join(dir, COMMERCE_ATTRS_FILE);
-    if (fs.existsSync(commFile)) {
+    if (fs.existsSync(commFile) && commerceCount === 0) {
       try {
         const raw = JSON.parse(fs.readFileSync(commFile, "utf8"));
         isSynced = true;
@@ -129,8 +177,32 @@ function inspectMetadataStatus(dirs, vscode, backendDir) {
         commerceCount = raw.count || (Array.isArray(raw.attributes) ? raw.attributes.length : 0);
       } catch (e) {}
     }
+
+    // 2. Check modular config/<productFamily>/attributes.min.json and config/general.attributes.min.json
+    const cfgDir = path.join(dir, CONFIG_DIR);
+    if (fs.existsSync(cfgDir)) {
+      try {
+        for (const entry of fs.readdirSync(cfgDir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            const p = path.join(cfgDir, entry.name, "attributes.min.json");
+            if (fs.existsSync(p)) {
+              const raw = JSON.parse(fs.readFileSync(p, "utf8"));
+              isSynced = true;
+              updatedAt = raw.updatedAt || updatedAt;
+              configCount += raw.count || (Array.isArray(raw.attributes) ? raw.attributes.length : 0);
+            }
+          } else if (entry.isFile() && entry.name.endsWith(".min.json")) {
+            const p = path.join(cfgDir, entry.name);
+            const raw = JSON.parse(fs.readFileSync(p, "utf8"));
+            isSynced = true;
+            updatedAt = raw.updatedAt || updatedAt;
+            configCount += raw.count || (Array.isArray(raw.attributes) ? raw.attributes.length : 0);
+          }
+        }
+      } catch (e) {}
+    }
     const cfgFile = path.join(dir, CONFIG_ATTRS_FILE);
-    if (fs.existsSync(cfgFile)) {
+    if (fs.existsSync(cfgFile) && configCount === 0) {
       try {
         const raw = JSON.parse(fs.readFileSync(cfgFile, "utf8"));
         isSynced = true;
@@ -138,13 +210,26 @@ function inspectMetadataStatus(dirs, vscode, backendDir) {
         configCount = raw.count || (Array.isArray(raw.attributes) ? raw.attributes.length : 0);
       } catch (e) {}
     }
+
+    // 3. Check modular system/variables.min.json
+    const sysDir = path.join(dir, SYSTEM_DIR);
+    if (fs.existsSync(sysDir)) {
+      try {
+        const vf = path.join(sysDir, "variables.min.json");
+        if (fs.existsSync(vf)) {
+          const raw = JSON.parse(fs.readFileSync(vf, "utf8"));
+          systemCount = raw.count || (Array.isArray(raw.items) ? raw.items.length : 0);
+        }
+      } catch (e) {}
+    }
     const sysFile = path.join(dir, SYSTEM_ATTRS_FILE);
-    if (fs.existsSync(sysFile)) {
+    if (fs.existsSync(sysFile) && systemCount === 0) {
       try {
         const raw = JSON.parse(fs.readFileSync(sysFile, "utf8"));
         systemCount = raw.count || (Array.isArray(raw.items) ? raw.items.length : 0);
       } catch (e) {}
     }
+
     if (isSynced) break;
   }
 
@@ -176,8 +261,8 @@ function removeMetadataFromDirs(dirs, cpqDirName) {
 
     const baseName = path.basename(dir).toLowerCase();
     const isDedicatedDir =
-      baseName === (cpqDirName || ".cpq").toLowerCase() ||
-      baseName === ".cpq" ||
+      baseName === (cpqDirName || "cpq").toLowerCase() ||
+      baseName === "cpq" ||
       baseName === "metadata";
 
     if (isDedicatedDir) {

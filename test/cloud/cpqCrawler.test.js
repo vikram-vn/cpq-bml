@@ -18,7 +18,7 @@ suite('CPQ Recursive Metadata Crawler - Unit Tests', () => {
     }
   });
 
-  test('crawlCpqSchema hits commerceProcesses and productFamilies roots and compiles .cpq/schema.json', async () => {
+  test('crawlCpqSchema hits commerceProcesses and productFamilies roots and compiles cpq/schema.json', async () => {
     const requestedPaths = [];
 
     const mockTransport = async (opts) => {
@@ -212,12 +212,12 @@ suite('CPQ Recursive Metadata Crawler - Unit Tests', () => {
     assert.ok(requestedPaths.some(p => p.includes('/productFamilies')), 'Should have hit /productFamilies root');
 
     // Verify partitioned files were generated
-    const commercePath = path.join(tmpDir, '.cpq', 'commerce.json');
-    const configPath = path.join(tmpDir, '.cpq', 'config.json');
-    const dtPath = path.join(tmpDir, '.cpq', 'datatables.json');
-    const schemaPath = path.join(tmpDir, '.cpq', 'schema.json');
-    const metaPath = path.join(tmpDir, '.cpq', 'metadata.json');
-    const dtsPath = path.join(tmpDir, '.cpq', 'cpq.d.bml');
+    const commercePath = path.join(tmpDir, 'cpq', 'commerce.json');
+    const configPath = path.join(tmpDir, 'cpq', 'config.json');
+    const dtPath = path.join(tmpDir, 'cpq', 'datatables.json');
+    const schemaPath = path.join(tmpDir, 'cpq', 'schema.json');
+    const metaPath = path.join(tmpDir, 'cpq', 'metadata.json');
+    const dtsPath = path.join(tmpDir, 'cpq', 'cpq.d.bml');
 
     assert.ok(fs.existsSync(commercePath), 'commerce.json must exist');
     assert.ok(fs.existsSync(configPath), 'config.json must exist');

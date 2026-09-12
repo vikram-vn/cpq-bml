@@ -146,7 +146,7 @@ async function diffFunctionCommand(item, vscodeInstance = vscode, context) {
 
       const { scriptText } = metadataLib.splitFunctionResponse(res.body);
 
-      const cacheDir = path.join(root, '.cpq', 'cache');
+      const cacheDir = path.join(root, 'cpq', 'cache');
       fs.mkdirSync(cacheDir, { recursive: true });
       const prefix = isCommerce ? `${commerceProcess}_${commerceDocument}_` : '';
       const remoteTempPath = path.join(cacheDir, `${prefix}${varName}.remote.bml`);
@@ -270,9 +270,115 @@ async function switchCommerceProcessCommand(vscodeInstance = vscode, context) {
   vscodeInstance.window.showInformationMessage(`Active commerce target set to '${processVar}/${docVar}'`);
 }
 
+/**
+ * Deploys a local library function to CPQ Cloud from the explorer.
+ */
+async function deployFunctionCommand(item, vscodeInstance = vscode, context) {
+  const fn = item?.data || item;
+  if (!fn || (!fn.variableName && !fn.name)) {
+    vscodeInstance.window.showWarningMessage('No function selected to deploy.');
+    return;
+  }
+
+  const varName = fn.variableName || fn.name;
+  const folderName = fn.folderName || fn.namespace || '';
+  const root = getWorkspaceRoot(vscodeInstance);
+  if (!root) {
+    vscodeInstance.window.showErrorMessage('Please open a workspace folder first.');
+    return;
+  }
+  const settings = getSettings(vscodeInstance);
+  const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
+  const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
+  const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
+  const commerceMetadata = isCommerce ? { commerceProcess, commerceDocument } : undefined;
+
+  const localFile = findLocalFunctionFile(root, varName, folderName, commerceMetadata, vscodeInstance);
+  if (!localFile) {
+    const choice = await vscodeInstance.window.showWarningMessage(
+      `Function '${varName}' is not present locally. Pull it first to deploy.`,
+      'Pull Now'
+    );
+    if (choice === 'Pull Now') {
+      await pullFunctionCommand(item, vscodeInstance, context);
+    }
+    return;
+  }
+
+  // Open the local file and trigger deployment
+  const doc = await vscodeInstance.workspace.openTextDocument(vscodeInstance.Uri.file(localFile));
+  await vscodeInstance.window.showTextDocument(doc);
+  await vscodeInstance.commands.executeCommand('cpqBml.rest.deployCurrentFile');
+}
+
+/**
+ * Opens function metadata (-meta.json or remote metadata) in editor.
+ */
+async function viewFunctionMetadataCommand(item, vscodeInstance = vscode, context) {
+  const fn = item?.data || item;
+  if (!fn || (!fn.variableName && !fn.name)) {
+    vscodeInstance.window.showWarningMessage('No function selected.');
+    return;
+  }
+
+  const varName = fn.variableName || fn.name;
+  const folderName = fn.folderName || fn.namespace || '';
+  const root = getWorkspaceRoot(vscodeInstance);
+  const settings = getSettings(vscodeInstance);
+  const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
+  const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
+  const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
+  const commerceMetadata = isCommerce ? { commerceProcess, commerceDocument } : undefined;
+
+  // 1. Check if local -meta.json exists
+  if (root) {
+    const localFile = findLocalFunctionFile(root, varName, folderName, commerceMetadata, vscodeInstance);
+    if (localFile) {
+      const metaPath = localFile.replace(/\.bml$/, '-meta.json');
+      if (fs.existsSync(metaPath)) {
+        const doc = await vscodeInstance.workspace.openTextDocument(vscodeInstance.Uri.file(metaPath));
+        await vscodeInstance.window.showTextDocument(doc);
+        return;
+      }
+    }
+  }
+
+  // 2. Otherwise, fetch remote metadata
+  await vscodeInstance.window.withProgress({
+    location: (vscodeInstance.ProgressLocation && vscodeInstance.ProgressLocation.Notification) || 15,
+    title: `Loading metadata for '${varName}'...`,
+    cancellable: false
+  }, async () => {
+    try {
+      const nsVarName = metadataLib.namespaceVariableNameFor(fn);
+      let res = await api.getLibraryFunction(context, vscodeInstance, nsVarName, undefined, commerceMetadata);
+      if ((res.statusCode < 200 || res.statusCode >= 300) && nsVarName !== varName) {
+        res = await api.getLibraryFunction(context, vscodeInstance, varName, undefined, commerceMetadata);
+      }
+
+      let metadata = fn;
+      if (res && res.statusCode >= 200 && res.statusCode < 300) {
+        const parsed = metadataLib.splitFunctionResponse(res.body);
+        metadata = parsed.metadata || safeParseJson(res.body, fn);
+      }
+
+      const formatted = JSON.stringify(metadata, null, 2);
+      const doc = await vscodeInstance.workspace.openTextDocument({
+        content: formatted,
+        language: 'json'
+      });
+      await vscodeInstance.window.showTextDocument(doc);
+    } catch (err) {
+      vscodeInstance.window.showErrorMessage(`Failed to load metadata for '${varName}': ${err.message}`);
+    }
+  });
+}
+
 module.exports = {
   pullFunctionCommand,
   diffFunctionCommand,
+  deployFunctionCommand,
+  viewFunctionMetadataCommand,
   openCommerceActionCommand,
   switchCommerceProcessCommand
 };

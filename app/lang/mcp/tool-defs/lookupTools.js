@@ -172,7 +172,7 @@ function register(server, context, vscode, tools) {
     {
       description:
         "Look up commerce, system, or configuration attributes by name or human-readable label (e.g. 'Status', 'Grand Total', 'status_t', 'ram_size'). " +
-        "Returns matching attributes, data types, product families, models, and dropdown menu items (if any). Reads from local workspace metadata (.cpq/) and bundled CPQ catalog with zero network calls.",
+        "Returns matching attributes, data types, product families, models, and dropdown menu items (if any). Reads from local workspace metadata (cpq/) and bundled CPQ catalog with zero network calls.",
       inputSchema: {
         query: z
           .string()
@@ -187,7 +187,7 @@ function register(server, context, vscode, tools) {
     "lookup_attribute",
     {
       description:
-        "Alias for lookup_commerce_attribute: Search attributes across Commerce, System, and Configuration domains from local workspace (.cpq/).",
+        "Alias for lookup_commerce_attribute: Search attributes across Commerce, System, and Configuration domains from local workspace (cpq/).",
       inputSchema: {
         query: z
           .string()
@@ -202,7 +202,7 @@ function register(server, context, vscode, tools) {
     "sync_commerce_attributes",
     {
       description:
-        "Pull and cache commerce attributes, transaction line attributes, and dropdown menu options from Oracle CPQ for the active process/document into the local workspace (.cpq/commerce.attributes.min.json). " +
+        "Pull and cache commerce attributes, transaction line attributes, and dropdown menu options from Oracle CPQ for the active process/document into the local workspace (cpq/commerce.attributes.min.json). " +
         "Enables smart query resolution and offline attribute lookups with zero network calls.",
       inputSchema: {
         commerceProcess: z
@@ -222,7 +222,7 @@ function register(server, context, vscode, tools) {
     "sync_configuration_attributes",
     {
       description:
-        "Pull and cache Configuration attributes, product families, product lines, and models dynamically from Oracle CPQ into the local workspace (.cpq/config.attributes.min.json). " +
+        "Pull and cache Configuration attributes, product families, product lines, and models dynamically from Oracle CPQ into the local workspace (cpq/config.attributes.min.json). " +
         "Enables offline intellisense and AI attribute lookups for Configuration BML scripts.",
       inputSchema: {},
     },

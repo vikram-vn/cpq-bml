@@ -216,8 +216,8 @@ function resolveAvailableTables(workspaceRoot) {
     }
   } catch {}
 
-  // 2. Scan .cpq/cache/ for cached remote schemas
-  const cacheDir = path.join(workspaceRoot, '.cpq', 'cache', 'datatables');
+  // 2. Scan cpq/cache/ for cached remote schemas
+  const cacheDir = path.join(workspaceRoot, 'cpq', 'cache', 'datatables');
   if (fs.existsSync(cacheDir)) {
     try {
       const files = fs.readdirSync(cacheDir);

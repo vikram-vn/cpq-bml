@@ -72,7 +72,7 @@ suite("BML REST apiCommerceSync - syncCommerceAttributes", () => {
     assert.strictEqual(result.systemAttributes[0].variableName, "_transaction_id");
 
     // Verify written to disk cache
-    const cacheFile = path.join(tempDir, ".cpq", "commerce.attributes.min.json");
+    const cacheFile = path.join(tempDir, "cpq", "commerce", "oraclecpqo", "attributes.min.json");
     assert.ok(fs.existsSync(cacheFile));
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
@@ -246,9 +246,9 @@ suite("BML REST apiCommerceSync - syncCommerceAttributes", () => {
     assert.strictEqual(result.arraySets.length, 1);
     assert.strictEqual(result.arraySets[0].variableName, "feeItems_set");
 
-    // Verify files written to .cpq/
-    assert.ok(fs.existsSync(path.join(tempDir, ".cpq", "commerce.attributes.min.json")));
-    assert.ok(fs.existsSync(path.join(tempDir, ".cpq", "system.attributes.min.json")));
+    // Verify files written to cpq/
+    assert.ok(fs.existsSync(path.join(tempDir, "cpq", "commerce", "oraclecpqo", "attributes.min.json")));
+    assert.ok(fs.existsSync(path.join(tempDir, "cpq", "system", "variables.min.json")));
 
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
