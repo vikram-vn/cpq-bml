@@ -53,51 +53,66 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     const process = settings.commerceProcess || 'oraclecpqo';
     cachedProcess = process;
 
-    const [
-      txActionsRes,
-      txRulesRes,
-      txAttrsRes,
-      txLibsRes,
-      lineActionsRes,
-      lineRulesRes,
-      lineAttrsRes
-    ] = await Promise.allSettled([
-      api.listCommerceActions(context, vscodeInstance, { process, document: 'transaction', limit: 500 }),
-      api.listCommerceRules(context, vscodeInstance, { process, document: 'transaction', limit: 500 }),
-      api.listCommerceAttributes(context, vscodeInstance, { process, document: 'transaction', limit: 1000 }),
-      api.listLibraryFunctions(context, vscodeInstance, { limit: 1000 }, undefined, { commerceProcess: process, commerceDocument: 'transaction' }),
-      api.listCommerceActions(context, vscodeInstance, { process, document: 'transactionLine', limit: 500 }),
-      api.listCommerceRules(context, vscodeInstance, { process, document: 'transactionLine', limit: 500 }),
-      api.listCommerceAttributes(context, vscodeInstance, { process, document: 'transactionLine', limit: 1000 })
-    ]);
-
     const parseItems = (settled) => {
       if (settled.status !== 'fulfilled' || !settled.value) return [];
       const val = settled.value;
       if (Array.isArray(val)) return val;
-      const body = safeParseJson(val.body);
+      const body = safeParseJson(val.body !== undefined ? val.body : val);
       return Array.isArray(body) ? body : ((body && body.items) || []);
     };
 
+    let docList = ['transaction', 'transactionLine'];
+    try {
+      if (typeof api.listCommerceDocuments === 'function') {
+        const docRes = await api.listCommerceDocuments(context, vscodeInstance, { process, limit: 50 });
+        const docItems = (docRes && docRes.body && docRes.body.items) || (Array.isArray(docRes?.body) ? docRes.body : []);
+        if (docItems && docItems.length > 0) {
+          const names = docItems.map(d => d.variableName || d.name).filter(Boolean);
+          if (names.length > 0) {
+            docList = names;
+          }
+        }
+      }
+    } catch {}
+
+    const calls = [];
+    for (const d of docList) {
+      calls.push(api.listCommerceActions(context, vscodeInstance, { process, document: d, limit: 500 }));
+      calls.push(api.listCommerceAttributes(context, vscodeInstance, { process, document: d, limit: 1000 }));
+      if (d === 'transaction') {
+        calls.push(api.listLibraryFunctions(context, vscodeInstance, { limit: 1000 }, undefined, { commerceProcess: process, commerceDocument: 'transaction' }));
+      }
+    }
+
+    const results = await Promise.allSettled(calls);
     const data = {
       process,
-      transaction: {
-        actions: parseItems(txActionsRes),
-        rules: parseItems(txRulesRes),
-        attributes: parseItems(txAttrsRes),
-        libraries: parseItems(txLibsRes).map(fn => ({
+      documentList: docList
+    };
+
+    let idx = 0;
+    for (const d of docList) {
+      const actionsRes = results[idx++];
+      const attrsRes = results[idx++];
+      let libsRes = null;
+      if (d === 'transaction') {
+        libsRes = results[idx++];
+      }
+
+      data[d] = {
+        actions: parseItems(actionsRes),
+        attributes: parseItems(attrsRes)
+      };
+
+      if (d === 'transaction') {
+        data[d].libraries = parseItems(libsRes).map(fn => ({
           ...fn,
           isCommerce: true,
           commerceProcess: process,
           commerceDocument: 'transaction'
-        }))
-      },
-      transactionLine: {
-        actions: parseItems(lineActionsRes),
-        rules: parseItems(lineRulesRes),
-        attributes: parseItems(lineAttrsRes)
+        }));
       }
-    };
+    }
 
     cachedData = data;
     return data;
@@ -200,19 +215,6 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       return item;
     }
 
-    if (element.type === 'rule') {
-      const r = element.data;
-      const varName = extractStringValue(r.variableName || r.name, 'rule');
-      const name = extractStringValue(r.name || r.label || varName, varName);
-      const ruleType = extractStringValue(r.ruleType || r.type || 'Rule');
-      const displayLabel = formatNameAndVarName(name, varName);
-      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
-      item.description = `[${ruleType}]`;
-      item.tooltip = `${name} (${varName}) [${ruleType}]\n${r.description || ''}`;
-      item.iconPath = new vscodeInstance.ThemeIcon('law');
-      item.contextValue = 'cpqCommerceRule';
-      return item;
-    }
 
     if (element.type === 'attribute') {
       const attr = element.data;
@@ -260,24 +262,30 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
 
       if (filterQuery && cachedData) {
         let matchCount = 0;
-        const allItems = [
-          ...(cachedData.transaction?.actions || []),
-          ...(cachedData.transaction?.libraries || []),
-          ...(cachedData.transaction?.rules || []),
-          ...(cachedData.transaction?.attributes || []),
-          ...(cachedData.transactionLine?.actions || []),
-          ...(cachedData.transactionLine?.rules || []),
-          ...(cachedData.transactionLine?.attributes || []),
-        ];
+        const allItems = [];
+        const docNames = (cachedData.documentList && cachedData.documentList.length > 0)
+          ? cachedData.documentList
+          : ['transaction', 'transactionLine'];
+        for (const d of docNames) {
+          const docObj = cachedData[d];
+          if (docObj) {
+            if (docObj.actions) allItems.push(...docObj.actions);
+            if (docObj.libraries) allItems.push(...docObj.libraries);
+            if (docObj.attributes) allItems.push(...docObj.attributes);
+          }
+        }
         matchCount = allItems.filter(it => matchesItem(it, filterQuery)).length;
         nodes.push({ type: 'filterInfo', query: filterQuery, totalMatches: matchCount });
       }
 
-      nodes.push(
-        { type: 'processHeader', process: proc },
-        { type: 'document', docName: 'transaction', process: proc },
-        { type: 'document', docName: 'transactionLine', process: proc }
-      );
+      const docNames = (cachedData?.documentList && cachedData.documentList.length > 0)
+        ? cachedData.documentList
+        : ['transaction', 'transactionLine'];
+
+      nodes.push({ type: 'processHeader', process: proc });
+      for (const d of docNames) {
+        nodes.push({ type: 'document', docName: d, process: proc });
+      }
       return nodes;
     }
 
@@ -290,35 +298,24 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
         return (arr || []).filter(it => matchesItem(it, filterQuery));
       };
 
-      if (doc === 'transaction') {
-        const filteredActions = filterList(docData?.actions);
-        const filteredLibs = filterList(docData?.libraries);
-        const filteredRules = filterList(docData?.rules);
-        const filteredAttrs = filterList(docData?.attributes);
+      const filteredActions = filterList(docData?.actions);
+      const filteredAttrs = filterList(docData?.attributes);
 
+      if (doc === 'transaction') {
+        const filteredLibs = filterList(docData?.libraries);
         const sections = [
           { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
           { type: 'section', section: 'libraries', label: 'Libraries', icon: 'library', count: filteredLibs.length, docName: doc, process: element.process, items: filteredLibs },
-          { type: 'section', section: 'rules', label: 'Rules', icon: 'law', count: filteredRules.length, docName: doc, process: element.process, items: filteredRules },
           { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
         ];
-
         return filterQuery ? sections.filter(s => s.count > 0) : sections;
       }
 
-      if (doc === 'transactionLine') {
-        const filteredActions = filterList(docData?.actions);
-        const filteredRules = filterList(docData?.rules);
-        const filteredAttrs = filterList(docData?.attributes);
-
-        const sections = [
-          { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
-          { type: 'section', section: 'rules', label: 'Rules', icon: 'law', count: filteredRules.length, docName: doc, process: element.process, items: filteredRules },
-          { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
-        ];
-
-        return filterQuery ? sections.filter(s => s.count > 0) : sections;
-      }
+      const sections = [
+        { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
+        { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
+      ];
+      return filterQuery ? sections.filter(s => s.count > 0) : sections;
     }
 
     if (element.type === 'section') {
@@ -335,9 +332,6 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       }
       if (element.section === 'libraries') {
         return items.map(lib => ({ type: 'library', data: lib, docName: element.docName, process: element.process }));
-      }
-      if (element.section === 'rules') {
-        return items.map(r => ({ type: 'rule', data: r, docName: element.docName, process: element.process }));
       }
       if (element.section === 'attributes') {
         return items.map(attr => ({ type: 'attribute', data: attr, docName: element.docName, process: element.process }));

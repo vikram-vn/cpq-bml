@@ -6,4 +6,8 @@ import path from 'path';
 export default defineConfig({
 	files: 'test/**/*.test.js',
 	launchArgs: ['--user-data-dir', path.join(os.tmpdir(), 'vscode-test-dir-' + process.pid)],
+	mocha: {
+		require: './scripts/register-alias.js',
+		timeout: 20000,
+	},
 });

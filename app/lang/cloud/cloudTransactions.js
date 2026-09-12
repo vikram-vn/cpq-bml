@@ -25,14 +25,28 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       const process = settings.commerceProcess || 'oraclecpqo';
       const document = settings.commerceDocument || 'transaction';
 
-      const res = await api.getTransactions(context, vscodeInstance, {
+      let res = await api.getTransactions(context, vscodeInstance, {
         process,
         document,
         limit: 30,
         excludeFieldTypes: false,
-        orderby: 'dateModified_t:desc',
-        fields: '_id,transactionID_t,status_t,dateModified_t,customer_t,version_t,totalAmount_t,transactionName_t'
+        orderby: '_date_modified:desc',
+        fields: '_id,transactionID_t,status_t,_date_modified,dateModified_t,customer_t,_customer_t_company_name,version_t,totalAmount_t,transactionName_t'
       });
+
+      // If orderby parameter fails with HTTP 400, retry defensively without orderby
+      if (res.statusCode === 400) {
+        const fallback = await api.getTransactions(context, vscodeInstance, {
+          process,
+          document,
+          limit: 30,
+          excludeFieldTypes: false,
+          fields: '_id,transactionID_t,status_t,_date_modified,dateModified_t,customer_t,_customer_t_company_name,version_t,totalAmount_t,transactionName_t'
+        });
+        if (fallback.statusCode >= 200 && fallback.statusCode < 300) {
+          res = fallback;
+        }
+      }
 
       if (res.statusCode < 200 || res.statusCode >= 300) {
         const errDetail = describeError(res.body);
@@ -96,13 +110,13 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       const status = extractStringValue(tx.status_t);
       if (status) props.push({ key: 'Status', value: status });
 
-      const customer = extractStringValue(tx.customer_t);
+      const customer = extractStringValue(tx._customer_t_company_name || tx.customer_t);
       if (customer) props.push({ key: 'Customer', value: customer });
 
       const totalAmount = extractStringValue(tx.totalAmount_t);
       if (totalAmount) props.push({ key: 'Total Amount', value: totalAmount.startsWith('$') ? totalAmount : `$${totalAmount}` });
 
-      const dateModified = extractStringValue(tx.dateModified_t);
+      const dateModified = extractStringValue(tx._date_modified || tx.dateModified_t || tx.lastUpdatedDate_t || tx._date_tx_modified);
       if (dateModified) props.push({ key: 'Date Modified', value: dateModified });
 
       const version = extractStringValue(tx.version_t);
@@ -164,10 +178,10 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       vscodeInstance.TreeItemCollapsibleState.Collapsed
     );
 
-    const customer = extractStringValue(tx.customer_t);
+    const customer = extractStringValue(tx._customer_t_company_name || tx.customer_t);
     const status = extractStringValue(tx.status_t);
     const totalAmount = extractStringValue(tx.totalAmount_t);
-    const dateModified = extractStringValue(tx.dateModified_t);
+    const dateModified = extractStringValue(tx._date_modified || tx.dateModified_t || tx.lastUpdatedDate_t || tx._date_tx_modified);
     const version = extractStringValue(tx.version_t);
 
     const descParts = [];

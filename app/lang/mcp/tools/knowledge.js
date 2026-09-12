@@ -11,6 +11,7 @@ function getLintBMLCustom() {
 }
 const configLib = require('@/lang/rest/config');
 const metadataLib = require('@/lang/rest/metadata');
+const { computeComplexity } = require('@/lang/metrics/complexity');
 
 // Builds the minimal doc-like object lintBMLCustom() needs, from a file already
 // read off disk - the same shape test/linter/fixtures.js uses to lint text

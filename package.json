@@ -700,6 +700,21 @@
           "group": "navigation@3"
         },
         {
+          "command": "cpqBml.dataTables.searchExplorer",
+          "when": "view == cpqBml.cloudDataTables",
+          "group": "navigation@0.1"
+        },
+        {
+          "command": "cpqBml.dataTables.filterExplorer",
+          "when": "view == cpqBml.cloudDataTables",
+          "group": "navigation@0.2"
+        },
+        {
+          "command": "cpqBml.dataTables.clearFilter",
+          "when": "view == cpqBml.cloudDataTables && cpqBml.cloudDataTablesFiltered",
+          "group": "navigation@0.3"
+        },
+        {
           "command": "cpqBml.cloud.refreshDataTables",
           "when": "view == cpqBml.cloudDataTables",
           "group": "navigation@1"
@@ -715,14 +730,44 @@
           "group": "navigation@1"
         },
         {
+          "command": "cpqBml.commerce.searchExplorer",
+          "when": "view == cpqBml.commerceExplorer",
+          "group": "navigation@0.1"
+        },
+        {
+          "command": "cpqBml.commerce.filterExplorer",
+          "when": "view == cpqBml.commerceExplorer",
+          "group": "navigation@0.2"
+        },
+        {
+          "command": "cpqBml.commerce.clearFilter",
+          "when": "view == cpqBml.commerceExplorer && cpqBml.commerceExplorerFiltered",
+          "group": "navigation@0.3"
+        },
+        {
           "command": "cpqBml.commerce.switchProcess",
           "when": "view == cpqBml.commerceExplorer",
-          "group": "navigation@0"
+          "group": "navigation@0.4"
         },
         {
           "command": "cpqBml.commerce.refresh",
           "when": "view == cpqBml.commerceExplorer",
           "group": "navigation@1"
+        },
+        {
+          "command": "cpqBml.config.searchExplorer",
+          "when": "view == cpqBml.configExplorer",
+          "group": "navigation@0.1"
+        },
+        {
+          "command": "cpqBml.config.filterExplorer",
+          "when": "view == cpqBml.configExplorer",
+          "group": "navigation@0.2"
+        },
+        {
+          "command": "cpqBml.config.clearFilter",
+          "when": "view == cpqBml.configExplorer && cpqBml.configExplorerFiltered",
+          "group": "navigation@0.3"
         },
         {
           "command": "cpqBml.config.refresh",

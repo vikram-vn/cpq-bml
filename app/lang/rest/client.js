@@ -220,15 +220,15 @@ async function request({
       } catch (e) {}
     }
 
-    let parsedBody = response.text;
+    let parsedBody = response.body !== undefined ? response.body : response.text;
     const contentType =
       ((response.headers && response.headers["content-type"]) || "").toLowerCase();
     const looksLikeJson =
-      typeof response.text === "string" &&
-      (response.text.trim().startsWith("{") || response.text.trim().startsWith("["));
-    if (response.text && (contentType.includes("json") || looksLikeJson)) {
+      typeof parsedBody === "string" &&
+      (parsedBody.trim().startsWith("{") || parsedBody.trim().startsWith("["));
+    if (typeof parsedBody === "string" && (contentType.includes("json") || looksLikeJson)) {
       try {
-        parsedBody = JSON.parse(response.text);
+        parsedBody = JSON.parse(parsedBody);
       } catch (e) {
         // Leave parsedBody as the raw text if it claims to be JSON but isn't.
       }

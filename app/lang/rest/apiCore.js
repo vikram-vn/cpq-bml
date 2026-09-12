@@ -96,6 +96,8 @@ async function call(context, vscode, { path, method, query, body, signal, timeou
   let logFilePath;
   if (
     settings.debugLog &&
+    vscode &&
+    vscode.workspace &&
     vscode.workspace.workspaceFolders &&
     vscode.workspace.workspaceFolders.length > 0
   ) {

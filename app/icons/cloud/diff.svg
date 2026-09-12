@@ -1,18 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <defs>
-    <linearGradient id="cDiffLeft" x1="1" y1="1" x2="7" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#fb923c"/><stop offset="50%" stop-color="#ea580c"/><stop offset="100%" stop-color="#9a3412"/>
-    </linearGradient>
-    <linearGradient id="cDiffRight" x1="9" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#34d399"/><stop offset="50%" stop-color="#059669"/><stop offset="100%" stop-color="#064e3b"/>
-    </linearGradient>
-  </defs>
-  <rect x="1.0" y="1.5" width="6.0" height="13.0" rx="1.5" fill="url(#cDiffLeft)" stroke="#fdba74" stroke-width="0.7"/>
-  <line x1="2.5" y1="4.5" x2="5.5" y2="4.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
-  <line x1="2.5" y1="7.5" x2="5.5" y2="7.5" stroke="#ffedd5" stroke-width="1.0" stroke-linecap="round"/>
-  <line x1="2.5" y1="10.5" x2="5.5" y2="10.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
-  <rect x="9.0" y="1.5" width="6.0" height="13.0" rx="1.5" fill="url(#cDiffRight)" stroke="#6ee7b7" stroke-width="0.7"/>
-  <line x1="10.5" y1="4.5" x2="13.5" y2="4.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
-  <line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#d1fae5" stroke-width="1.0" stroke-linecap="round"/>
-  <line x1="10.5" y1="10.5" x2="13.5" y2="10.5" stroke="#ffffff" stroke-width="1.0" stroke-linecap="round"/>
+  <style>
+    path, line, circle, rect, ellipse { stroke: #C5C5C5; }
+    @media (prefers-color-scheme: light) {
+      path, line, circle, rect, ellipse { stroke: #424242; }
+    }
+  </style>
+  <rect x="1.5" y="2.5" width="5" height="11" rx="1" stroke="#C5C5C5" stroke-width="1.2"/>
+  <rect x="9.5" y="2.5" width="5" height="11" rx="1" stroke="#C5C5C5" stroke-width="1.2"/>
+  <line x1="3.5" y1="5.5" x2="5" y2="5.5" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="3.5" y1="8" x2="5" y2="8" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="11.5" y1="5.5" x2="13" y2="5.5" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="11.5" y1="8" x2="13" y2="8" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round"/>
 </svg>

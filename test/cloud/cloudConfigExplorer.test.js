@@ -187,12 +187,11 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(famItem.label, 'Telecom Products (telecom_family)');
     assert.ok(!famItem.description);
 
-    // Under Product Family: Attributes, Rules, Product Lines
+    // Under Product Family: Attributes, Product Lines
     const familyFolders = await explorer.getChildren(rootItems[1]);
-    assert.strictEqual(familyFolders.length, 3);
+    assert.strictEqual(familyFolders.length, 2);
     assert.strictEqual(familyFolders[0].type, 'familyAttributesFolder');
-    assert.strictEqual(familyFolders[1].type, 'familyRulesFolder');
-    assert.strictEqual(familyFolders[2].type, 'productLinesFolder');
+    assert.strictEqual(familyFolders[1].type, 'productLinesFolder');
 
     // Inspect Family Attributes
     const famAttrs = await explorer.getChildren(familyFolders[0]);
@@ -201,16 +200,8 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     const famAttrItem = explorer.getTreeItem(famAttrs[0]);
     assert.strictEqual(famAttrItem.label, 'Network Type (networkType)');
 
-    // Inspect Family Rules
-    const famRules = await explorer.getChildren(familyFolders[1]);
-    assert.strictEqual(famRules.length, 1);
-    assert.strictEqual(famRules[0].data.name, 'Family Compatibility Rule');
-    const famRuleItem = explorer.getTreeItem(famRules[0]);
-    assert.strictEqual(famRuleItem.label, 'Family Compatibility Rule (famCompatibilityRule)');
-    assert.ok(famRuleItem.description.includes('[Validation]'));
-
     // Inspect Product Lines under Family
-    const lines = await explorer.getChildren(familyFolders[2]);
+    const lines = await explorer.getChildren(familyFolders[1]);
     assert.strictEqual(lines.length, 1);
     assert.strictEqual(lines[0].type, 'productLine');
     assert.strictEqual(lines[0].lineVarName, 'broadband_line');
@@ -218,12 +209,11 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     const lineItem = explorer.getTreeItem(lines[0]);
     assert.strictEqual(lineItem.label, 'Broadband Line (broadband_line)');
 
-    // Under Product Line: Attributes, Rules, Models
+    // Under Product Line: Attributes, Models
     const lineFolders = await explorer.getChildren(lines[0]);
-    assert.strictEqual(lineFolders.length, 3);
+    assert.strictEqual(lineFolders.length, 2);
     assert.strictEqual(lineFolders[0].type, 'lineAttributesFolder');
-    assert.strictEqual(lineFolders[1].type, 'lineRulesFolder');
-    assert.strictEqual(lineFolders[2].type, 'modelsFolder');
+    assert.strictEqual(lineFolders[1].type, 'modelsFolder');
 
     // Inspect Line Attributes
     const lineAttrs = await explorer.getChildren(lineFolders[0]);
@@ -232,16 +222,8 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     const lineAttrItem = explorer.getTreeItem(lineAttrs[0]);
     assert.strictEqual(lineAttrItem.label, 'Connection Speed (connection_speed)');
 
-    // Inspect Line Rules
-    const lineRules = await explorer.getChildren(lineFolders[1]);
-    assert.strictEqual(lineRules.length, 1);
-    assert.strictEqual(lineRules[0].data.name, 'Line Constraint Rule');
-    const lineRuleItem = explorer.getTreeItem(lineRules[0]);
-    assert.strictEqual(lineRuleItem.label, 'Line Constraint Rule (lineConstraintRule)');
-    assert.ok(lineRuleItem.description.includes('[Constraint]'));
-
     // Inspect Models under Product Line
-    const models = await explorer.getChildren(lineFolders[2]);
+    const models = await explorer.getChildren(lineFolders[1]);
     assert.strictEqual(models.length, 2);
     assert.strictEqual(models[0].type, 'model');
     assert.strictEqual(models[0].modelVarName, 'router_x1');
@@ -251,12 +233,11 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     const modelItem = explorer.getTreeItem(models[0]);
     assert.strictEqual(modelItem.label, 'Router X1 Enterprise (router_x1)');
 
-    // Under Model: Attributes, BOM Rules, Rules
+    // Under Model: Attributes, BOM Rules
     const modelFolders = await explorer.getChildren(models[0]);
-    assert.strictEqual(modelFolders.length, 3);
+    assert.strictEqual(modelFolders.length, 2);
     assert.strictEqual(modelFolders[0].type, 'modelAttributesFolder');
     assert.strictEqual(modelFolders[1].type, 'modelBomRulesFolder');
-    assert.strictEqual(modelFolders[2].type, 'modelRulesFolder');
 
     // Model Attributes
     const modelAttrs = await explorer.getChildren(modelFolders[0]);
@@ -274,14 +255,6 @@ suite('CPQ Configuration Explorer - Unit Tests', () => {
     assert.strictEqual(bomRuleItem.label, 'Router Parts BOM Rule (bom_router_parts)');
     assert.ok(bomRuleItem.description.includes('[BOM]'));
     assert.ok(bomRuleItem.tooltip.includes('Target BOM: routerBOM'));
-
-    // Model Rules
-    const modelRules = await explorer.getChildren(modelFolders[2]);
-    assert.strictEqual(modelRules.length, 1);
-    assert.strictEqual(modelRules[0].data.name, 'Model Pricing Recommendation');
-    const modelRuleItem = explorer.getTreeItem(modelRules[0]);
-    assert.strictEqual(modelRuleItem.label, 'Model Pricing Recommendation (modelPricingRule)');
-    assert.ok(modelRuleItem.description.includes('[Recommendation]'));
   });
 
   test('registerConfigExplorer registers tree data provider and refresh command', () => {

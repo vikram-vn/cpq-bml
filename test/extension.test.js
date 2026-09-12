@@ -1,3 +1,4 @@
+require('../scripts/register-alias');
 const assert = require('assert');
 const vscode = require('vscode');
 const fs = require('fs');

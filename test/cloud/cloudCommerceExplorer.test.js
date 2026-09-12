@@ -4,11 +4,10 @@ const api = require('@/lang/rest/api');
 const { createCloudMockVscode } = require('./cloudTestMocks');
 
 suite('CPQ Commerce Explorer - Unit Tests', () => {
-  let origListActions, origListRules, origListAttrs, origGetLibFuncs;
+  let origListActions, origListAttrs, origGetLibFuncs;
 
   setup(() => {
     origListActions = api.listCommerceActions;
-    origListRules = api.listCommerceRules;
     origListAttrs = api.listCommerceAttributes;
     origGetLibFuncs = api.listLibraryFunctions;
 
@@ -29,27 +28,6 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
         body: {
           items: [
             { variableName: 'deleteLine_t', label: 'Delete Line', actionType: 'Delete', description: 'Remove line item' }
-          ]
-        }
-      };
-    };
-
-    api.listCommerceRules = async function (ctx, vsc, { document }) {
-      if (document === 'transaction') {
-        return {
-          statusCode: 200,
-          body: {
-            items: [
-              { variableName: 'pricingRule', name: 'Pricing Calculation Rule', ruleType: 'Validation' }
-            ]
-          }
-        };
-      }
-      return {
-        statusCode: 200,
-        body: {
-          items: [
-            { variableName: 'lineDiscountRule', name: 'Line Discount Rule', ruleType: 'Recommendation' }
           ]
         }
       };
@@ -95,7 +73,6 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
 
   teardown(() => {
     api.listCommerceActions = origListActions;
-    api.listCommerceRules = origListRules;
     api.listCommerceAttributes = origListAttrs;
     api.listLibraryFunctions = origGetLibFuncs;
   });
@@ -130,24 +107,21 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     assert.strictEqual(headerItem.label, 'Process: oraclecpqo');
     assert.strictEqual(headerItem.command.command, 'cpqBml.commerce.switchProcess');
 
-    // Transaction document sections: Actions, Libraries, Rules, Attributes (4 sections)
+    // Transaction document sections: Actions, Libraries, Attributes (3 sections)
     const txSections = await explorer.getChildren(rootNodes[1]);
-    assert.strictEqual(txSections.length, 4);
+    assert.strictEqual(txSections.length, 3);
     assert.strictEqual(txSections[0].section, 'actions');
     assert.strictEqual(txSections[0].count, 2);
     assert.strictEqual(txSections[1].section, 'libraries');
     assert.strictEqual(txSections[1].count, 1);
-    assert.strictEqual(txSections[2].section, 'rules');
-    assert.strictEqual(txSections[2].count, 1);
-    assert.strictEqual(txSections[3].section, 'attributes');
-    assert.strictEqual(txSections[3].count, 2);
+    assert.strictEqual(txSections[2].section, 'attributes');
+    assert.strictEqual(txSections[2].count, 2);
 
-    // Transaction Line document sections: Actions, Rules, Attributes (3 sections, NO libraries!)
+    // Transaction Line document sections: Actions, Attributes (2 sections, NO libraries!)
     const lineSections = await explorer.getChildren(rootNodes[2]);
-    assert.strictEqual(lineSections.length, 3);
+    assert.strictEqual(lineSections.length, 2);
     assert.strictEqual(lineSections[0].section, 'actions');
-    assert.strictEqual(lineSections[1].section, 'rules');
-    assert.strictEqual(lineSections[2].section, 'attributes');
+    assert.strictEqual(lineSections[1].section, 'attributes');
     assert.ok(!lineSections.some(s => s.section === 'libraries'), 'Transaction Line must NOT have libraries');
 
     // Inspect Actions in Transaction
@@ -167,15 +141,8 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     assert.strictEqual(libItem.label, 'Publish Quote (_s_publishQuote)');
     assert.strictEqual(libItem.command.command, 'cpqBml.cloud.pullFunction');
 
-    // Inspect Rules in Transaction
-    const txRules = await explorer.getChildren(txSections[2]);
-    assert.strictEqual(txRules.length, 1);
-    assert.strictEqual(txRules[0].data.name, 'Pricing Calculation Rule');
-    const ruleItem = explorer.getTreeItem(txRules[0]);
-    assert.strictEqual(ruleItem.label, 'Pricing Calculation Rule (pricingRule)');
-
     // Inspect Attributes in Transaction
-    const txAttrs = await explorer.getChildren(txSections[3]);
+    const txAttrs = await explorer.getChildren(txSections[2]);
     assert.strictEqual(txAttrs.length, 2);
     assert.strictEqual(txAttrs[0].data.variableName, 'transactionID_t');
     const attrItem = explorer.getTreeItem(txAttrs[0]);

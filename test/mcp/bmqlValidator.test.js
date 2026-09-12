@@ -1,8 +1,8 @@
 const assert = require('assert');
 const { validateBmqlQuery } = require('@/lang/mcp/tools/bmqlValidator');
 
-describe('BMQL Validator Tool', () => {
-    it('validates a correct parameterized BMQL query', () => {
+suite('BMQL Validator Tool', () => {
+    test('validates a correct parameterized BMQL query', () => {
         const result = validateBmqlQuery({
             query: 'SELECT partNumber, price FROM PricingTable WHERE model = $currentModel AND region = $userRegion'
         });
@@ -14,7 +14,7 @@ describe('BMQL Validator Tool', () => {
         assert.strictEqual(result.issues.length, 0);
     });
 
-    it('warns on SELECT * in BMQL', () => {
+    test('warns on SELECT * in BMQL', () => {
         const result = validateBmqlQuery({
             query: 'SELECT * FROM Products WHERE active = $isActive'
         });
@@ -25,7 +25,7 @@ describe('BMQL Validator Tool', () => {
         assert.ok(warning);
     });
 
-    it('flags BMQL injection risks from string concatenation', () => {
+    test('flags BMQL injection risks from string concatenation', () => {
         const result = validateBmqlQuery({
             query: "SELECT id FROM Users WHERE username = '\" + adminVar + \"'"
         });
@@ -35,7 +35,7 @@ describe('BMQL Validator Tool', () => {
         assert.strictEqual(injection.severity, 'critical');
     });
 
-    it('rejects unsupported SQL keywords like JOIN and GROUP BY', () => {
+    test('rejects unsupported SQL keywords like JOIN and GROUP BY', () => {
         const result = validateBmqlQuery({
             query: 'SELECT a.col, b.col FROM TableA a JOIN TableB b ON a.id = b.id'
         });
@@ -45,7 +45,7 @@ describe('BMQL Validator Tool', () => {
         assert.ok(joinIssue);
     });
 
-    it('warns on queries with missing WHERE clause', () => {
+    test('warns on queries with missing WHERE clause', () => {
         const result = validateBmqlQuery({
             query: 'SELECT sku FROM Catalog'
         });

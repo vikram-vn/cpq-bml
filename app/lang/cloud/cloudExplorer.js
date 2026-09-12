@@ -570,29 +570,29 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, 
     const proc = settings.commerceProcess || 'oraclecpqo';
 
     try {
-      const [txRulesRes, txAttrsRes, dataTablesRes, configFamiliesRes, configAttrsRes] = await Promise.allSettled([
-        api.listCommerceRules(context, vscodeInstance, { process: proc, document: 'transaction', limit: 100 }),
+      const [txActionsRes, txAttrsRes, dataTablesRes, configFamiliesRes, configAttrsRes] = await Promise.allSettled([
+        api.listCommerceActions(context, vscodeInstance, { process: proc, document: 'transaction', limit: 100 }),
         api.listCommerceAttributes(context, vscodeInstance, { process: proc, document: 'transaction', limit: 100 }),
         api.listDataTables(context, vscodeInstance, { limit: 100 }),
         api.listProductFamilies(context, vscodeInstance, { limit: 50 }),
         api.listConfigurationAttributes(context, vscodeInstance, { limit: 100 })
       ]);
 
-      // Rules
-      if (txRulesRes.status === 'fulfilled' && txRulesRes.value?.body) {
-        const body = typeof txRulesRes.value.body === 'string' ? JSON.parse(txRulesRes.value.body) : txRulesRes.value.body;
-        const ruleItems = body.items || (Array.isArray(body) ? body : []);
-        for (const r of ruleItems) {
-          const varName = extractStringValue(r.variableName || r.ruleVariableName || r.name, 'rule');
-          const name = extractStringValue(r.name || r.label || r.ruleName || varName, varName);
+      // Actions
+      if (txActionsRes.status === 'fulfilled' && txActionsRes.value?.body) {
+        const body = typeof txActionsRes.value.body === 'string' ? JSON.parse(txActionsRes.value.body) : txActionsRes.value.body;
+        const actionItems = body.items || (Array.isArray(body) ? body : []);
+        for (const act of actionItems) {
+          const varName = extractStringValue(act.variableName || act.name, 'action');
+          const name = extractStringValue(act.label || act.name || varName, varName);
           const displayLabel = formatNameAndVarName(name, varName);
-          const ruleType = extractStringValue(r.ruleType || r.type || 'Rule');
+          const actionType = extractStringValue(act.type?.displayValue || act.type || act.actionType, 'Action');
           items.push({
-            label: `$(law) ${displayLabel}`,
-            description: `[Commerce Rule: ${proc}/transaction] [${ruleType}]`,
-            detail: r.description || `Commerce Rule: ${name}`,
-            data: r,
-            itemType: 'rule'
+            label: `$(zap) ${displayLabel}`,
+            description: `[Commerce Action: ${proc}/transaction] [${actionType}]`,
+            detail: act.description || `Commerce Action: ${name}`,
+            data: act,
+            itemType: 'action'
           });
         }
       }

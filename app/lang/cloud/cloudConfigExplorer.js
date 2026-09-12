@@ -334,12 +334,11 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       }
     }
 
-    // Under Product Family: Attributes, Rules, Product Lines
+    // Under Product Family: Attributes, Product Lines
     if (element.type === 'productFamily') {
       const fam = element.familyVarName;
       return [
         { type: 'familyAttributesFolder', productFamily: fam },
-        { type: 'familyRulesFolder', productFamily: fam },
         { type: 'productLinesFolder', productFamily: fam }
       ];
     }
@@ -359,20 +358,6 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       }
     }
 
-    // Product Family Rules
-    if (element.type === 'familyRulesFolder') {
-      try {
-        const res = await api.listProductFamilyRules(context, vscodeInstance, { productFamily: element.productFamily });
-        const body = safeParseJson(res.body);
-        const items = Array.isArray(body) ? body : ((body && body.items) || []);
-        if (items.length === 0) {
-          return [{ type: 'empty', label: 'No family rules' }];
-        }
-        return items.map(r => ({ type: 'rule', data: r }));
-      } catch {
-        return [{ type: 'empty', label: 'No family rules found' }];
-      }
-    }
 
     // Product Lines under Product Family
     if (element.type === 'productLinesFolder') {
@@ -394,11 +379,10 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       }
     }
 
-    // Under Product Line: Attributes, Rules, Models
+    // Under Product Line: Attributes, Models
     if (element.type === 'productLine') {
       return [
         { type: 'lineAttributesFolder', productFamily: element.productFamily, productLine: element.lineVarName },
-        { type: 'lineRulesFolder', productFamily: element.productFamily, productLine: element.lineVarName },
         { type: 'modelsFolder', productFamily: element.productFamily, productLine: element.lineVarName }
       ];
     }
@@ -421,23 +405,6 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       }
     }
 
-    // Product Line Rules
-    if (element.type === 'lineRulesFolder') {
-      try {
-        const res = await api.listProductLineRules(context, vscodeInstance, {
-          productFamily: element.productFamily,
-          productLine: element.productLine
-        });
-        const body = safeParseJson(res.body);
-        const items = Array.isArray(body) ? body : ((body && body.items) || []);
-        if (items.length === 0) {
-          return [{ type: 'empty', label: 'No product line rules' }];
-        }
-        return items.map(r => ({ type: 'rule', data: r }));
-      } catch {
-        return [{ type: 'empty', label: 'No product line rules found' }];
-      }
-    }
 
     // Models under Product Line
     if (element.type === 'modelsFolder') {
@@ -463,12 +430,11 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       }
     }
 
-    // Under Model: Attributes, BOM Mapping Rules, Rules
+    // Under Model: Attributes, BOM Mapping Rules
     if (element.type === 'model') {
       return [
         { type: 'modelAttributesFolder', productFamily: element.productFamily, productLine: element.productLine, model: element.modelVarName },
-        { type: 'modelBomRulesFolder', productFamily: element.productFamily, productLine: element.productLine, model: element.modelVarName },
-        { type: 'modelRulesFolder', productFamily: element.productFamily, productLine: element.productLine, model: element.modelVarName }
+        { type: 'modelBomRulesFolder', productFamily: element.productFamily, productLine: element.productLine, model: element.modelVarName }
       ];
     }
 
@@ -510,24 +476,6 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
       }
     }
 
-    // Model Rules
-    if (element.type === 'modelRulesFolder') {
-      try {
-        const res = await api.listModelRules(context, vscodeInstance, {
-          productFamily: element.productFamily,
-          productLine: element.productLine,
-          model: element.model
-        });
-        const body = safeParseJson(res.body);
-        const items = Array.isArray(body) ? body : ((body && body.items) || []);
-        if (items.length === 0) {
-          return [{ type: 'empty', label: 'No model rules' }];
-        }
-        return items.map(r => ({ type: 'rule', data: r }));
-      } catch {
-        return [{ type: 'empty', label: 'No model rules found' }];
-      }
-    }
 
     return [];
   }

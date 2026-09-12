@@ -62,7 +62,11 @@ async function getTransactions(
       .split(",")
       .map((pair) => {
         const [f, dir] = pair.split(":");
-        const resolvedF = resolveAttributeName(f.trim(), wsRoot);
+        let resolvedF = resolveAttributeName(f.trim(), wsRoot);
+        const lower = resolvedF.toLowerCase();
+        if (lower === "datemodified_t" || lower === "datemodified" || lower === "lastmodifieddate") {
+          resolvedF = "_date_modified";
+        }
         return dir ? `${resolvedF}:${dir.trim()}` : resolvedF;
       })
       .join(",");
@@ -144,7 +148,7 @@ async function getTransaction(
 async function listCommerceActions(
   context,
   vscode,
-  { process, document, offset = 0, limit = 1000 } = {},
+  { process, document, offset = 0, limit = 1000, q } = {},
   transport,
 ) {
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
@@ -153,6 +157,7 @@ async function listCommerceActions(
 
   const query = { limit };
   if (offset > 0) query.offset = offset;
+  if (q) query.q = q;
 
   return call(
     context,
@@ -189,32 +194,6 @@ async function getCommerceAction(
   );
 }
 
-// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/rules
-async function listCommerceRules(
-  context,
-  vscode,
-  { process, document, offset = 0, limit = 1000 } = {},
-  transport,
-) {
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-
-  const query = { limit };
-  if (offset > 0) query.offset = offset;
-
-  return call(
-    context,
-    vscode,
-    {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/rules`,
-      method: "GET",
-      query,
-    },
-    transport,
-  );
-}
-
 // POST /rest/<version>/commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer
 // Executes the CPQ Commerce Pipeline Viewer for a transaction (rules sequence, attribute changes, timings).
 async function runPipelineViewer(
@@ -228,7 +207,6 @@ async function runPipelineViewer(
   const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
   const proc = effectiveProcess ? effectiveProcess.charAt(0).toUpperCase() + effectiveProcess.slice(1) : "Oraclecpqo";
   const doc = effectiveDocument ? effectiveDocument.charAt(0).toUpperCase() + effectiveDocument.slice(1) : "Transaction";
-
   return call(
     context,
     vscode,
@@ -241,15 +219,42 @@ async function runPipelineViewer(
   );
 }
 
+// GET /rest/<version>/commerceProcesses
+async function listCommerceProcesses(
+  context,
+  vscode,
+  { offset = 0, limit = 100, q, fields, signal } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const queryParams = { limit, totalResults: true };
+  if (offset > 0) queryParams.offset = offset;
+  if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
+
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcesses`,
+      method: "GET",
+      query: queryParams,
+      signal,
+    },
+    transport,
+  );
+}
+
 module.exports = {
   commerceDocumentsPath,
   getTransactions,
   listTransactions: getTransactions,
   getTransaction,
+  listCommerceProcesses,
   listCommerceActions,
   getCommerceAction,
-  listCommerceRules,
   runPipelineViewer,
   ...attributesApi,
 };
+
 

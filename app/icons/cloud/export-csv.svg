@@ -1,12 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <defs>
-    <linearGradient id="cCsvTable" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#34d399"/><stop offset="50%" stop-color="#059669"/><stop offset="100%" stop-color="#064e3b"/>
-    </linearGradient>
-  </defs>
-  <rect x="1.5" y="1.5" width="13.0" height="13.0" rx="2.0" fill="url(#cCsvTable)" stroke="#6ee7b7" stroke-width="0.7"/>
-  <line x1="1.5" y1="5.5" x2="14.5" y2="5.5" stroke="#a7f3d0" stroke-width="0.8"/>
-  <line x1="5.8" y1="1.5" x2="5.8" y2="5.5" stroke="#a7f3d0" stroke-width="0.8"/>
-  <line x1="10.2" y1="1.5" x2="10.2" y2="5.5" stroke="#a7f3d0" stroke-width="0.8"/>
-  <path d="M8.0 7.0V12.0M8.0 12.0L5.5 9.5M8.0 12.0L10.5 9.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <style>
+    path, line, circle, rect, ellipse { stroke: #C5C5C5; }
+    @media (prefers-color-scheme: light) {
+      path, line, circle, rect, ellipse { stroke: #424242; }
+    }
+  </style>
+  <path d="M9 1.5H3.5a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1H8" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 1.5L13.5 6V9" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 1.5V6h4.5" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M11 11v4m0 0l-1.5-1.5m1.5 1.5l1.5-1.5" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="4.5" y1="6" x2="7" y2="6" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="4.5" y1="8.5" x2="8" y2="8.5" stroke="#C5C5C5" stroke-width="1.2" stroke-linecap="round"/>
 </svg>

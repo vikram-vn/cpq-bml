@@ -62,13 +62,19 @@ function getSettings(vscode) {
         return defaultVal;
     };
 
+    const envSite = process.env.CPQ_SITE_URL || "";
+    const envUser = process.env.CPQ_USERNAME || "";
+    const envAuthMethod = process.env.CPQ_AUTH_METHOD || (process.env.CPQ_TOKEN ? "bearer" : "basic");
+    const envProcess = process.env.CPQ_COMMERCE_PROCESS || "";
+    const envDocument = process.env.CPQ_COMMERCE_DOCUMENT || "";
+
     return {
-        siteUrl: normalizeSiteUrl(getVal("connection.siteUrl", "")),
-        authMethod: getVal("connection.authMethod", "basic"),
-        username: getVal("connection.username", ""),
+        siteUrl: normalizeSiteUrl(getVal("connection.siteUrl", envSite)),
+        authMethod: getVal("connection.authMethod", envAuthMethod),
+        username: getVal("connection.username", envUser),
         restVersion: getVal("rest.restVersion", DEFAULT_REST_VERSION),
-        commerceProcess: getVal("rest.commerceProcess", "oraclecpqo"),
-        commerceDocument: getVal("rest.commerceDocument", "transaction"),
+        commerceProcess: getVal("rest.commerceProcess", envProcess || "oraclecpqo"),
+        commerceDocument: getVal("rest.commerceDocument", envDocument || "transaction"),
         pullFolder: getVal("rest.pullFolder", "library"),
         debugLog: Boolean(getVal("debug.logRestDetails", false)),
         logOutputToFile: Boolean(getVal("debug.logOutputToFile", false)),
@@ -191,15 +197,22 @@ function getTokenSecretKey(siteUrl) {
 
 async function getAuthHeader(context, vscode) {
     const { siteUrl, authMethod, username } = getSettings(vscode);
-    const config = vscode.workspace.getConfiguration('cpqBml');
-    const environments = config.get('connection.environments', []) || [];
+    const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === 'function'
+        ? vscode.workspace.getConfiguration('cpqBml')
+        : null;
+    const environments = config ? (config.get('connection.environments', []) || []) : [];
     const hasMultipleEnvs = environments.length > 1;
 
     if (authMethod === 'bearer') {
         const siteSpecificKey = getTokenSecretKey(siteUrl);
-        let token = await context.secrets.get(siteSpecificKey);
-        if (!token && !hasMultipleEnvs) {
+        let token = context && context.secrets && typeof context.secrets.get === 'function'
+            ? await context.secrets.get(siteSpecificKey)
+            : null;
+        if (!token && !hasMultipleEnvs && context && context.secrets && typeof context.secrets.get === 'function') {
             token = await context.secrets.get(SECRET_TOKEN);
+        }
+        if (!token && process.env.CPQ_TOKEN) {
+            token = process.env.CPQ_TOKEN;
         }
         if (!token) {
             throw new Error('CPQ-BML: no auth token set. Run "CPQ-BML: Set CPQ Auth Token" first.');
@@ -212,9 +225,14 @@ async function getAuthHeader(context, vscode) {
         throw new Error('CPQ-BML: cpqBml.connection.username is not configured.');
     }
     const siteSpecificKey = getPasswordSecretKey(siteUrl, username);
-    let password = await context.secrets.get(siteSpecificKey);
-    if (!password && !hasMultipleEnvs) {
+    let password = context && context.secrets && typeof context.secrets.get === 'function'
+        ? await context.secrets.get(siteSpecificKey)
+        : null;
+    if (!password && !hasMultipleEnvs && context && context.secrets && typeof context.secrets.get === 'function') {
         password = await context.secrets.get(SECRET_PASSWORD);
+    }
+    if (!password && process.env.CPQ_PASSWORD) {
+        password = process.env.CPQ_PASSWORD;
     }
     if (!password) {
         throw new Error('CPQ-BML: no password set. Run "CPQ-BML: Set CPQ Password" first.');
@@ -230,15 +248,22 @@ async function hasMissingCredentials(context, vscode) {
     if (!siteUrl) {
         return true;
     }
-    const config = vscode.workspace.getConfiguration('cpqBml');
-    const environments = config.get('connection.environments', []) || [];
+    const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === 'function'
+        ? vscode.workspace.getConfiguration('cpqBml')
+        : null;
+    const environments = config ? (config.get('connection.environments', []) || []) : [];
     const hasMultipleEnvs = environments.length > 1;
 
     if (authMethod === 'bearer') {
         const siteSpecificKey = getTokenSecretKey(siteUrl);
-        let token = await context.secrets.get(siteSpecificKey);
-        if (!token && !hasMultipleEnvs) {
+        let token = context && context.secrets && typeof context.secrets.get === 'function'
+            ? await context.secrets.get(siteSpecificKey)
+            : null;
+        if (!token && !hasMultipleEnvs && context && context.secrets && typeof context.secrets.get === 'function') {
             token = await context.secrets.get(SECRET_TOKEN);
+        }
+        if (!token && process.env.CPQ_TOKEN) {
+            token = process.env.CPQ_TOKEN;
         }
         return !token;
     }
@@ -246,9 +271,14 @@ async function hasMissingCredentials(context, vscode) {
         return true;
     }
     const siteSpecificKey = getPasswordSecretKey(siteUrl, username);
-    let password = await context.secrets.get(siteSpecificKey);
-    if (!password && !hasMultipleEnvs) {
+    let password = context && context.secrets && typeof context.secrets.get === 'function'
+        ? await context.secrets.get(siteSpecificKey)
+        : null;
+    if (!password && !hasMultipleEnvs && context && context.secrets && typeof context.secrets.get === 'function') {
         password = await context.secrets.get(SECRET_PASSWORD);
+    }
+    if (!password && process.env.CPQ_PASSWORD) {
+        password = process.env.CPQ_PASSWORD;
     }
     return !password;
 }
