@@ -3,6 +3,8 @@
 const assert = require('assert');
 const path = require('path');
 const {
+    stripComments,
+    inferLibraryPrefix,
     analyzeScriptContent,
     buildWorkspaceCallGraph,
     computeBlastRadius,
@@ -288,5 +290,54 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
 
         assert.ok(Array.isArray(model.workspaceSymbols));
         assert.strictEqual(model.workspaceSymbols.length, 2);
+    });
+
+    test('stripComments strips line and block comments without breaking code alignment', () => {
+        const code = `
+            // This is a comment from status_t
+            status = status_t; /* block comment from other_t */
+            rs = bmql("SELECT x FROM table_1");
+        `;
+        const stripped = stripComments(code);
+        assert.ok(!stripped.includes('// This is a comment'));
+        assert.ok(!stripped.includes('/* block comment'));
+        assert.ok(stripped.includes('status = status_t;'));
+        assert.ok(stripped.includes('rs = bmql("SELECT x FROM table_1");'));
+    });
+
+    test('inferLibraryPrefix correctly identifies commerce-libraries vs util-libraries', () => {
+        assert.strictEqual(
+            inferLibraryPrefix('/cpq/cpq-10124/oraclecpqo/commerce-libraries/transactionStatus/transactionStatus.bml'),
+            'commerce'
+        );
+        assert.strictEqual(
+            inferLibraryPrefix('/cpq/cpq-10124/util-libraries/util/atofsafe/atofsafe.bml'),
+            'util'
+        );
+        assert.strictEqual(
+            inferLibraryPrefix('/cpq/custom/foo.bml', { commerceProcess: 'oraclecpqo' }),
+            'commerce'
+        );
+    });
+
+    test('transactionStatus accurately extracts only status_t and status_l, with 0 false tables and 0 fake actions', () => {
+        const filePath = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
+        const model = generateDependencyModel(filePath, [{ filePath }]);
+
+        // Focal node
+        assert.strictEqual(model.target.name, 'transactionStatus');
+        assert.strictEqual(model.target.qualifiedName, 'commerce.transactionstatus');
+
+        // Data Tables must be 0 (no false positive from comment "from status_t")
+        assert.strictEqual(model.outgoing.dataTables.length, 0);
+
+        // Actions must be 0 (no fake "transaction Action" fabricated)
+        assert.strictEqual(model.outgoing.actions.length, 0);
+
+        // Attributes must be status_t (transaction) and status_l (line)
+        const attrNames = model.outgoing.attributes.map(a => a.name);
+        assert.ok(attrNames.includes('status_t'));
+        assert.ok(attrNames.includes('status_l'));
+        assert.strictEqual(model.outgoing.attributes.length, 2);
     });
 });

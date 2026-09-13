@@ -4,13 +4,99 @@ const fs = require('fs');
 const path = require('path');
 const { exportToMermaid } = require('@/lang/graph/mermaidExport');
 
-const SQL_KEYWORDS = new Set(['where', 'set', 'values', 'select', 'join', 'group', 'order', 'inner', 'left', 'right', 'outer', 'having', 'limit']);
+const SQL_KEYWORDS = new Set([
+    'where', 'set', 'values', 'select', 'join', 'group', 'order', 'inner', 'left',
+    'right', 'outer', 'having', 'limit', 'on', 'and', 'or', 'as', 'table', 'by',
+    'asc', 'desc', 'null', 'not', 'in', 'is', 'like', 'between', 'into', 'from'
+]);
+
+/**
+ * Strips single-line and multi-line comments from BML code while preserving line breaks and character alignment.
+ */
+function stripComments(source) {
+    if (!source) return '';
+    let result = '';
+    let i = 0;
+    const len = source.length;
+    let inString = false;
+    let stringChar = '';
+
+    while (i < len) {
+        const ch = source[i];
+        const next = i + 1 < len ? source[i + 1] : '';
+
+        if (inString) {
+            result += ch;
+            if (ch === '\\' && i + 1 < len) {
+                result += source[i + 1];
+                i += 2;
+                continue;
+            }
+            if (ch === stringChar) inString = false;
+            i++;
+            continue;
+        }
+
+        if (ch === '"' || ch === "'") {
+            inString = true;
+            stringChar = ch;
+            result += ch;
+            i++;
+            continue;
+        }
+
+        if (ch === '/' && next === '/') {
+            while (i < len && source[i] !== '\n' && source[i] !== '\r') {
+                result += ' ';
+                i++;
+            }
+            continue;
+        }
+
+        if (ch === '/' && next === '*') {
+            result += '  ';
+            i += 2;
+            while (i < len && !(source[i] === '*' && i + 1 < len && source[i + 1] === '/')) {
+                result += (source[i] === '\n' || source[i] === '\r') ? source[i] : ' ';
+                i++;
+            }
+            if (i < len) {
+                result += '  ';
+                i += 2;
+            }
+            continue;
+        }
+
+        result += ch;
+        i++;
+    }
+    return result;
+}
+
+/**
+ * Determines whether a file path or metadata corresponds to a commerce or util function.
+ */
+function inferLibraryPrefix(filePath, meta = null) {
+    if (meta?.commerceProcess) return 'commerce';
+    const normalized = (filePath || '').replace(/\\/g, '/').toLowerCase();
+    if (
+        normalized.includes('/commerce-libraries/') ||
+        normalized.includes('/commerce/') ||
+        normalized.includes('/commerceprocess') ||
+        normalized.includes('commercelibraries')
+    ) {
+        return 'commerce';
+    }
+    return 'util';
+}
 
 /**
  * Extracts outgoing calls, BMQL data tables, attributes, actions, and external APIs from BML script content.
  */
 function analyzeScriptContent(content, meta = null, schema = null) {
-    const lines = (content || '').split(/\r?\n/);
+    const rawContent = content || '';
+    const cleanContent = stripComments(rawContent);
+    const lines = cleanContent.split(/\r?\n/);
     const functions = [];
     const dataTables = [];
     const externalApis = [];
@@ -18,13 +104,12 @@ function analyzeScriptContent(content, meta = null, schema = null) {
     const actions = [];
 
     const callRegex = /\b(util|commerce)\.([a-zA-Z_]\w*)\b/g;
-    const bmqlFromRegex = /\b(?:FROM|INTO|UPDATE)\s+([a-zA-Z_]\w*)\b/gi;
     const gettabledataRegex = /\bgettabledata\s*\(\s*["']([a-zA-Z_]\w*)["']/g;
     const urldataRegex = /\b(?:urldata|urldatabypost)\s*\(\s*(["'][^"']+["']|[a-zA-Z_]\w*)/g;
     const attrTxRegex = /\b([a-zA-Z_]\w*_t)\b/g;
     const attrLineRegex = /\b([a-zA-Z_]\w*_l)\b/g;
     const attrDotRegex = /\b(?:line|row|item)\.([a-zA-Z_]\w*)\b/g;
-    const actionCompareRegex = /\b(?:_action_name|_modify_action)\s*==\s*["']([^"']+)["']/g;
+    const actionCompareRegex = /\b(?:_action_name|_modify_action|_action)\s*==\s*["']([^"']+)["']/g;
     const stdActionRegex = /\b(save_t|submit_t|recalculate_t|modify_t|generateDocument_t|approve_t|reject_t)\b/g;
 
     const seenFuncs = new Set();
@@ -32,10 +117,28 @@ function analyzeScriptContent(content, meta = null, schema = null) {
     const seenAttrs = new Set();
     const seenActions = new Set();
 
+    // 1. Precise BMQL table extraction: only inside bmql(...) calls
+    const bmqlCallRegex = /\bbmql\s*\(\s*([`"'][\s\S]*?[`"']|[^;]+)\)/g;
+    const tableInsideBmqlRegex = /\b(?:FROM|INTO|UPDATE|MODIFY)\s+([a-zA-Z_]\w*)\b/gi;
+    let bmqlMatch;
+    while ((bmqlMatch = bmqlCallRegex.exec(cleanContent)) !== null) {
+        const queryBody = bmqlMatch[1];
+        const matchLine = cleanContent.substring(0, bmqlMatch.index).split('\n').length - 1;
+        let tableMatch;
+        while ((tableMatch = tableInsideBmqlRegex.exec(queryBody)) !== null) {
+            const tName = tableMatch[1];
+            if (!SQL_KEYWORDS.has(tName.toLowerCase()) && !seenTables.has(tName.toLowerCase())) {
+                seenTables.add(tName.toLowerCase());
+                dataTables.push({ name: tName, operation: 'BMQL', line: matchLine });
+            }
+        }
+    }
+
+    // 2. Line-by-line analysis for other constructs
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
 
-        // 1. Function calls (Libraries)
+        // Function calls (Libraries)
         let match;
         while ((match = callRegex.exec(line)) !== null) {
             const qualifiedName = `${match[1]}.${match[2]}`.toLowerCase();
@@ -45,28 +148,21 @@ function analyzeScriptContent(content, meta = null, schema = null) {
             }
         }
 
-        // 2. Data Tables (BMQL & gettabledata)
-        while ((match = bmqlFromRegex.exec(line)) !== null) {
-            const tName = match[1];
-            if (!SQL_KEYWORDS.has(tName.toLowerCase()) && !seenTables.has(`${tName.toLowerCase()}:${i}`)) {
-                seenTables.add(`${tName.toLowerCase()}:${i}`);
-                dataTables.push({ name: tName, operation: 'BMQL', line: i });
-            }
-        }
+        // gettabledata
         while ((match = gettabledataRegex.exec(line)) !== null) {
             const tName = match[1];
-            if (!seenTables.has(`${tName.toLowerCase()}:${i}`)) {
-                seenTables.add(`${tName.toLowerCase()}:${i}`);
+            if (!seenTables.has(tName.toLowerCase())) {
+                seenTables.add(tName.toLowerCase());
                 dataTables.push({ name: tName, operation: 'gettabledata', line: i });
             }
         }
 
-        // 3. External API calls
+        // External API calls
         while ((match = urldataRegex.exec(line)) !== null) {
             externalApis.push({ target: match[1].replace(/['"]/g, ''), line: i });
         }
 
-        // 4. Attributes
+        // Attributes (_t and _l)
         while ((match = attrTxRegex.exec(line)) !== null) {
             const a = match[1];
             if (!seenAttrs.has(a.toLowerCase())) {
@@ -83,13 +179,13 @@ function analyzeScriptContent(content, meta = null, schema = null) {
         }
         while ((match = attrDotRegex.exec(line)) !== null) {
             const a = match[1];
-            if (!a.endsWith('_l') && !['length', 'size', 'get', 'put'].includes(a.toLowerCase()) && !seenAttrs.has(a.toLowerCase())) {
+            if (!a.endsWith('_l') && !['length', 'size', 'get', 'put', 'status_l'].includes(a.toLowerCase()) && !seenAttrs.has(a.toLowerCase())) {
                 seenAttrs.add(a.toLowerCase());
                 attributes.push({ name: a, scope: 'line', operation: new RegExp(`\\.${a}\\s*=`).test(line) ? 'WRITE' : 'READ', line: i });
             }
         }
 
-        // 5. Actions
+        // Actions in code
         while ((match = actionCompareRegex.exec(line)) !== null) {
             if (!seenActions.has(match[1].toLowerCase())) {
                 seenActions.add(match[1].toLowerCase());
@@ -104,7 +200,7 @@ function analyzeScriptContent(content, meta = null, schema = null) {
         }
     }
 
-    // 6. Meta attributes and action context
+    // 3. Meta attributes and explicit action context
     if (meta) {
         const addMetaAttrs = (arr, scope) => {
             if (!Array.isArray(arr)) return;
@@ -118,22 +214,21 @@ function analyzeScriptContent(content, meta = null, schema = null) {
         };
         addMetaAttrs(meta.mainDocAttributes, 'transaction');
         addMetaAttrs(meta.subDocAttributes, 'line');
-        if (meta.actionName && !seenActions.has(meta.actionName.toLowerCase())) {
-            seenActions.add(meta.actionName.toLowerCase());
-            actions.push({ name: meta.actionName, type: 'Commerce Action', line: 0 });
-        }
-        if (meta.commerceDocument && actions.length === 0) {
-            actions.push({ name: `${meta.commerceDocument} Action`, type: 'Commerce Pipeline', line: 0 });
+
+        const explicitAction = meta.actionName || meta.actionVarName || meta.action_name;
+        if (explicitAction && !seenActions.has(explicitAction.toLowerCase())) {
+            seenActions.add(explicitAction.toLowerCase());
+            actions.push({ name: explicitAction, type: 'Commerce Action', line: 0 });
         }
     }
 
-    // 7. Schema attributes
+    // 4. Schema attributes
     if (schema) {
         const checkSchema = (list, scope) => {
             if (!Array.isArray(list)) return;
             for (const it of list) {
                 const n = typeof it === 'string' ? it : it?.name;
-                if (n && !seenAttrs.has(n.toLowerCase()) && new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(content || '')) {
+                if (n && !seenAttrs.has(n.toLowerCase()) && new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(cleanContent)) {
                     seenAttrs.add(n.toLowerCase());
                     attributes.push({ name: n, scope, operation: 'READ', line: 0 });
                 }
@@ -157,14 +252,15 @@ function buildWorkspaceCallGraph(fileList) {
             try { content = fs.readFileSync(file.filePath, 'utf8'); } catch { continue; }
         }
         const baseName = path.basename(file.filePath, path.extname(file.filePath));
-        const normalized = file.filePath.replace(/\\/g, '/');
-        const prefix = /[\/\\]commerce[\/\\]/i.test(normalized) ? 'commerce' : 'util';
+        const { meta } = loadMetaAndSchema(file.filePath);
+        const prefix = inferLibraryPrefix(file.filePath, meta);
         const qualifiedName = `${prefix}.${baseName}`.toLowerCase();
         graph.set(qualifiedName, {
             filePath: file.filePath,
             qualifiedName,
             name: baseName,
-            outgoing: analyzeScriptContent(content)
+            prefix,
+            outgoing: analyzeScriptContent(content, meta)
         });
     }
     return graph;
@@ -246,11 +342,10 @@ function loadMetaAndSchema(targetFilePath) {
  */
 function generateDependencyModel(targetFilePath, workspaceFiles, currentFileContent) {
     const baseName = path.basename(targetFilePath, path.extname(targetFilePath));
-    const normalized = targetFilePath.replace(/\\/g, '/');
-    const prefix = /[\/\\]commerce[\/\\]/i.test(normalized) ? 'commerce' : 'util';
-    const targetQualified = `${prefix}.${baseName}`.toLowerCase();
-
     const { meta: metaJson, schema: schemaJson } = loadMetaAndSchema(targetFilePath);
+    const prefix = inferLibraryPrefix(targetFilePath, metaJson);
+    const targetQualified = `${prefix}.${baseName}`.toLowerCase();
+    const targetDisplayQualified = `${prefix}.${baseName}`;
 
     const files = [...(workspaceFiles || [])];
     const existingIdx = files.findIndex(f => path.resolve(f.filePath) === path.resolve(targetFilePath));
@@ -278,7 +373,15 @@ function generateDependencyModel(targetFilePath, workspaceFiles, currentFileCont
     // 1. Focal Node
     const focalId = `target_${targetQualified}`;
     seenNodeIds.add(focalId);
-    nodes.push({ id: focalId, label: baseName, subtitle: targetQualified, type: 'focal', filePath: targetFilePath, line: 0, risk: blastRadius.impactLevel });
+    nodes.push({
+        id: focalId,
+        label: baseName,
+        subtitle: targetDisplayQualified,
+        type: 'focal',
+        filePath: targetFilePath,
+        line: 0,
+        risk: blastRadius.impactLevel
+    });
 
     // 2. Upstream Callers (Libraries)
     for (const c of blastRadius.callers) {
@@ -330,7 +433,15 @@ function generateDependencyModel(targetFilePath, workspaceFiles, currentFileCont
         const attrId = `attr_${attr.name.toLowerCase()}`;
         if (!seenNodeIds.has(attrId)) {
             seenNodeIds.add(attrId);
-            nodes.push({ id: attrId, label: attr.name, subtitle: `${attr.scope === 'line' ? 'Line' : 'Transaction'} Attribute (${attr.operation})`, type: 'attribute', scope: attr.scope, operation: attr.operation, line: attr.line });
+            nodes.push({
+                id: attrId,
+                label: attr.name,
+                subtitle: `${attr.scope === 'line' ? 'Line' : 'Transaction'} Attribute (${attr.operation})`,
+                type: 'attribute',
+                scope: attr.scope,
+                operation: attr.operation,
+                line: attr.line
+            });
         }
         edges.push({ source: focalId, target: attrId, type: 'attribute_access', label: attr.operation === 'WRITE' ? 'writes' : 'reads' });
     }
@@ -367,6 +478,8 @@ function generateDependencyModel(targetFilePath, workspaceFiles, currentFileCont
 }
 
 module.exports = {
+    stripComments,
+    inferLibraryPrefix,
     analyzeScriptContent,
     buildWorkspaceCallGraph,
     computeBlastRadius,
