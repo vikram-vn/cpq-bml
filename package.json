@@ -324,7 +324,7 @@
       },
       {
         "command": "cpqBml.rest.globalSearchBml",
-        "title": "CPQ-BML: Global Search BML Scripts on CPQ",
+        "title": "Global Search BML Scripts",
         "icon": "$(search)"
       },
       {
@@ -519,8 +519,8 @@
       },
       {
         "command": "cpqBml.cloud.globalSearch",
-        "title": "CPQ-BML: Global Search BML Scripts Across Entire System",
-        "shortTitle": "CPQ-BML: Global Search Across CPQ",
+        "title": "Global Search BML Scripts",
+        "shortTitle": "Global Search Across CPQ",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
