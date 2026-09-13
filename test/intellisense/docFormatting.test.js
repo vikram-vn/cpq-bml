@@ -165,4 +165,44 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         assert.ok(BEST_PRACTICE_ADVISORIES.bmql, 'expected best practice advisory for bmql');
         assert.strictEqual(BEST_PRACTICE_ADVISORIES.bmql.title, 'Performance Best Practice');
     });
+
+    test('renders Menu attribute options as a clean bulleted list for object array', () => {
+        const info = {
+            category: 'attribute',
+            name: 'status_l',
+            syntax: 'status_l',
+            scope: 'Line Item',
+            dataType: 'Menu',
+            notes: 'The status of this line.',
+            menuOptions: [
+                { value: 'New', displayValue: 'New' },
+                { value: 'Pending_VQ', displayValue: 'Pending VQ' },
+                { value: 'Closed', displayValue: 'Closed' }
+            ]
+        };
+        const md = formatAsJsDoc(info);
+        assert.match(md.value, /\*Line Item · Menu\*/);
+        assert.match(md.value, /\*\*Menu Options:\*\*/);
+        assert.match(md.value, /- `New`/);
+        assert.match(md.value, /- `Pending_VQ` \(Pending VQ\)/);
+        assert.match(md.value, /- `Closed`/);
+    });
+
+    test('renders Menu attribute options as a clean bulleted list for string array', () => {
+        const info = {
+            category: 'attribute',
+            name: 'status_l',
+            syntax: 'status_l',
+            scope: 'Line Item',
+            dataType: 'Menu',
+            notes: 'The status of this line.',
+            values: ['New', 'Pending VQ', 'Created', 'Quoted', 'Billed']
+        };
+        const md = formatAsJsDoc(info);
+        assert.match(md.value, /\*Line Item · Menu\*/);
+        assert.match(md.value, /\*\*Menu Options:\*\*/);
+        assert.match(md.value, /- `New`/);
+        assert.match(md.value, /- `Pending VQ`/);
+        assert.match(md.value, /- `Quoted`/);
+    });
 });

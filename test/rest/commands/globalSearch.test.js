@@ -74,4 +74,37 @@ suite("BML REST commands - globalSearch", () => {
     assert.strictEqual(result.success, false);
     assert.ok(result.errorMessage.includes("cancelled"));
   });
+
+  test("uses active editor selection directly without showing input box", () =>
+    withTempDir(async (tmpDir) => {
+      let inputBoxCalled = false;
+      const vscode = createFakeVscode({
+        config: baseVscodeConfig(),
+        window: {
+          activeTextEditor: {
+            selection: { isEmpty: false },
+            document: { getText: () => "selectedStatusQuery" },
+          },
+          showInputBox: async () => {
+            inputBoxCalled = true;
+            return "prompted";
+          },
+        },
+        workspaceFolders: [{ uri: { fsPath: tmpDir } }],
+      });
+      const lines = [];
+      const terminal = fakeResultsTerminal(lines);
+      const transport = async (opts) => {
+        assert.ok(decodeURIComponent(opts.path).includes("selectedStatusQuery"));
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ items: [], count: 0, totalResults: 0 }),
+        };
+      };
+
+      const result = await commands.runGlobalSearchBml(makeContext(), vscode, terminal, { transport });
+      assert.strictEqual(inputBoxCalled, false, "showInputBox should not be called when text is selected");
+      assert.strictEqual(result.success, true);
+    }));
 });

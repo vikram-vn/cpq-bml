@@ -159,4 +159,74 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     assert.ok(registered.treeView);
     assert.strictEqual(mockContext.subscriptions.length, 7);
   });
+
+  test('menu attributes are collapsible, show preview in tooltip, and expand to menuOption nodes', async () => {
+    const mockVscode = createCloudMockVscode();
+    const explorer = createCommerceExplorer(mockVscode, {});
+
+    const menuAttrNode = {
+      type: 'attribute',
+      process: 'oraclecpqo',
+      docName: 'transactionLine',
+      data: {
+        variableName: 'status_l',
+        label: 'Line Status',
+        dataType: 'Menu',
+        menuOptions: [
+          { value: 'New', displayValue: 'New' },
+          { value: 'Pending_VQ', displayValue: 'Pending VQ' }
+        ]
+      }
+    };
+
+    const treeItem = explorer.getTreeItem(menuAttrNode);
+    assert.strictEqual(treeItem.collapsibleState, mockVscode.TreeItemCollapsibleState.Collapsed);
+    assert.ok(treeItem.tooltip.includes('Menu Options (2)'));
+    assert.ok(treeItem.tooltip.includes('Pending VQ'));
+
+    // Expand children
+    const children = await explorer.getChildren(menuAttrNode);
+    assert.strictEqual(children.length, 2);
+    assert.strictEqual(children[0].type, 'menuOption');
+    assert.strictEqual(children[0].data.value, 'New');
+
+    const optItem = explorer.getTreeItem(children[1]);
+    assert.strictEqual(optItem.label, 'Pending_VQ (Pending VQ)');
+    assert.strictEqual(optItem.command.command, 'cpqBml.cloud.insertOrCopyAttribute');
+    assert.strictEqual(optItem.command.arguments[0].data.variableName, '"Pending_VQ"');
+  });
+
+  test('offline fallback loads attributes from workspace cache when not configured', async () => {
+    const mockVscode = createCloudMockVscode({
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: 'c:\\test-ws' } }],
+        getConfiguration: () => ({ get: () => '' }) // Unconfigured
+      }
+    });
+
+    const commerceAttrs = require('@/lang/rest/commerceAttributes');
+    const origLoad = commerceAttrs.loadWorkspaceAttributes;
+    commerceAttrs.loadWorkspaceAttributes = () => ({
+      varNameToMeta: new Map([
+        ['status_t', { variableName: 'status_t', label: 'Status', scope: 'Transaction', dataType: 'Menu' }],
+        ['status_l', { variableName: 'status_l', label: 'Line Status', scope: 'Line Item', dataType: 'Menu' }]
+      ])
+    });
+
+    try {
+      const explorer = createCommerceExplorer(mockVscode, {});
+      const rootNodes = await explorer.getChildren();
+      assert.ok(rootNodes.length >= 3);
+      const docNode = rootNodes.find(n => n.type === 'document' && n.docName === 'transaction');
+      assert.ok(docNode);
+      const sections = await explorer.getChildren(docNode);
+      const attrSec = sections.find(s => s.section === 'attributes');
+      assert.ok(attrSec);
+      assert.strictEqual(attrSec.count, 1);
+      const attrs = await explorer.getChildren(attrSec);
+      assert.strictEqual(attrs[0].data.variableName, 'status_t');
+    } finally {
+      commerceAttrs.loadWorkspaceAttributes = origLoad;
+    }
+  });
 });

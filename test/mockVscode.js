@@ -109,8 +109,8 @@ MarkdownString.prototype.appendMarkdown = function(val) {
     this.value += val;
     return this;
 };
-MarkdownString.prototype.appendText = function(val) {
-    this.value += val;
+MarkdownString.prototype.appendCodeblock = function(val, lang = '') {
+    this.value += `\n\`\`\`${lang}\n${val}\n\`\`\`\n`;
     return this;
 };
 

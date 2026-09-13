@@ -96,12 +96,14 @@ function loadApiData(context) {
               : "attribute";
 
           const menuVals = Array.isArray(meta.menuOptions)
-            ? meta.menuOptions.map((m) => m.value || m.id)
+            ? meta.menuOptions.map((m) => (typeof m === 'object' && m !== null ? (m.value !== undefined ? m.value : (m.id !== undefined ? m.id : m.variableName || m.name || m.label)) : m))
             : Array.isArray(meta.menuItems)
-              ? meta.menuItems.map((m) => m.value || m.id)
+              ? meta.menuItems.map((m) => (typeof m === 'object' && m !== null ? (m.value !== undefined ? m.value : (m.id !== undefined ? m.id : m.variableName || m.name || m.label)) : m))
               : null;
 
-          // Overwrite bundled entry with instance-specific workspace entry
+          const existingBundled = bmlApiData[key];
+
+          // Overwrite bundled entry with instance-specific workspace entry while preserving baseline values if not present
           bmlApiData[key] = {
             name: varName,
             label: meta.label || meta.name || varName,
@@ -112,10 +114,11 @@ function loadApiData(context) {
               meta.dataType ||
               meta.type ||
               (isArraySet ? "Array Set" : "String"),
-            description: meta.description || meta.notes || "",
-            notes: meta.description || meta.notes || "",
-            menuOptions: meta.menuOptions || null,
-            values: menuVals || meta.values || null,
+            description: meta.description || meta.notes || (existingBundled && (existingBundled.description || existingBundled.notes)) || "",
+            notes: meta.description || meta.notes || (existingBundled && (existingBundled.notes || existingBundled.description)) || "",
+            menuOptions: meta.menuOptions || meta.menuItems || (existingBundled && existingBundled.menuOptions) || null,
+            values: menuVals || meta.values || (existingBundled && existingBundled.values) || null,
+            examples: meta.examples || (existingBundled && existingBundled.examples) || null,
             source: "workspace-cache",
             required: meta.required,
             userDefault: meta.userDefault,

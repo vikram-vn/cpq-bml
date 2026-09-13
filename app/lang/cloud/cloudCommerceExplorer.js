@@ -1,6 +1,6 @@
 const { vscode, safeParseJson, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
 const api = require('@/lang/rest/api');
-const { getSettings, isConfigured } = require('@/lang/rest/config');
+const { getSettings, isConfigured, getWorkspaceRoot } = require('@/lang/rest/config');
 const { fetchCommerceFunctions } = require('./cloudExplorerFetch');
 const { pullFunctionCommand, diffFunctionCommand, openCommerceActionCommand, switchCommerceProcessCommand } = require('./cloudExplorerCommands');
 const { findLocalFunctionFile } = require('./cloudExplorerFiles');
@@ -45,8 +45,50 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
   }
 
   async function fetchCommerceData() {
+    const wsRoot = getWorkspaceRoot(vscodeInstance);
     if (!isConfigured(vscodeInstance)) {
-      return null;
+      const settings = getSettings(vscodeInstance);
+      const process = settings.commerceProcess || 'oraclecpqo';
+      cachedProcess = process;
+
+      let wsAttributes = [];
+      let wsLineAttributes = [];
+      try {
+        const { loadWorkspaceAttributes } = require('@/lang/rest/commerceAttributes');
+        if (wsRoot && typeof loadWorkspaceAttributes === 'function') {
+          const wsIndex = loadWorkspaceAttributes(wsRoot, context);
+          if (wsIndex && wsIndex.varNameToMeta) {
+            for (const attr of wsIndex.varNameToMeta.values()) {
+              if (attr.scope === 'Line Item') {
+                wsLineAttributes.push(attr);
+              } else {
+                wsAttributes.push(attr);
+              }
+            }
+          }
+        }
+      } catch {}
+
+      if (wsAttributes.length === 0 && wsLineAttributes.length === 0) {
+        return null;
+      }
+
+      cachedData = {
+        process,
+        documentList: ['transaction', 'transactionLine'],
+        integrations: [],
+        transaction: {
+          actions: [],
+          attributes: wsAttributes,
+          libraries: []
+        },
+        transactionLine: {
+          actions: [],
+          attributes: wsLineAttributes
+        },
+        isOffline: true
+      };
+      return cachedData;
     }
 
     const settings = getSettings(vscodeInstance);
@@ -232,16 +274,63 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       const varName = extractStringValue(attr.variableName || attr.name, 'attribute');
       const name = extractStringValue(attr.label || attr.name || varName, varName);
       const dataType = extractStringValue(attr.dataType || attr.type, 'String');
+      const isMenu = dataType.toLowerCase().includes('menu') || dataType.toLowerCase().includes('select');
+      const menuOpts = (Array.isArray(attr.menuOptions) && attr.menuOptions.length > 0)
+        ? attr.menuOptions
+        : (Array.isArray(attr.menuItems) && attr.menuItems.length > 0)
+          ? attr.menuItems
+          : (Array.isArray(attr.values) && attr.values.length > 0)
+            ? attr.values
+            : null;
+      const hasOptions = Array.isArray(menuOpts) && menuOpts.length > 0;
+
       const displayLabel = formatNameAndVarName(name, varName);
-      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
+      const collapsibleState = (isMenu || hasOptions)
+        ? vscodeInstance.TreeItemCollapsibleState.Collapsed
+        : vscodeInstance.TreeItemCollapsibleState.None;
+
+      const item = new vscodeInstance.TreeItem(displayLabel, collapsibleState);
       item.description = `(${dataType})`;
-      item.tooltip = `${name} (${varName}) [${dataType}]\n${attr.description || ''}\nClick to insert variable name at cursor (or copy to clipboard)`;
-      item.iconPath = new vscodeInstance.ThemeIcon('symbol-property');
-      item.contextValue = 'cpqCommerceAttribute';
+
+      let optionsSummary = '';
+      if (hasOptions) {
+        const preview = menuOpts.slice(0, 8).map(o => {
+          if (typeof o === 'object' && o !== null) {
+            return o.displayValue || o.label || o.name || o.value || o.id;
+          }
+          return String(o);
+        }).join(', ');
+        optionsSummary = `\n\nMenu Options (${menuOpts.length}):\n${preview}${menuOpts.length > 8 ? '...' : ''}`;
+      }
+
+      item.tooltip = `${name} (${varName}) [${dataType}]\n${attr.description || ''}${optionsSummary}\nClick to insert variable name at cursor (or copy to clipboard)`;
+      item.iconPath = new vscodeInstance.ThemeIcon(isMenu ? 'symbol-enum' : 'symbol-property');
+      item.contextValue = isMenu ? 'cpqCommerceMenuAttribute' : 'cpqCommerceAttribute';
       item.command = {
         command: 'cpqBml.cloud.insertOrCopyAttribute',
         title: 'Insert Variable Name at Cursor',
         arguments: [element]
+      };
+      return item;
+    }
+
+    if (element.type === 'menuOption') {
+      const opt = element.data;
+      const val = typeof opt === 'object' && opt !== null
+        ? (opt.value !== undefined ? opt.value : (opt.id !== undefined ? opt.id : opt.name || opt.label || ''))
+        : String(opt);
+      const label = typeof opt === 'object' && opt !== null
+        ? (opt.displayValue || opt.label || opt.name || val)
+        : String(opt);
+      const display = label && String(label) !== String(val) ? `${val} (${label})` : String(val);
+      const item = new vscodeInstance.TreeItem(display, vscodeInstance.TreeItemCollapsibleState.None);
+      item.iconPath = new vscodeInstance.ThemeIcon('symbol-enum-member');
+      item.tooltip = `Menu Option: "${val}"\nClick to insert "${val}" into active BML editor at cursor`;
+      item.contextValue = 'cpqCommerceMenuOption';
+      item.command = {
+        command: 'cpqBml.cloud.insertOrCopyAttribute',
+        title: 'Insert Option Value',
+        arguments: [{ data: { variableName: `"${val}"` } }]
       };
       return item;
     }
@@ -287,13 +376,6 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
   }
 
   async function getChildren(element) {
-    if (!isConfigured(vscodeInstance)) {
-      return [{
-        type: 'empty',
-        label: 'CPQ credentials are not configured'
-      }];
-    }
-
     if (!element) {
       if (!cachedData && !isLoading) {
         isLoading = true;
@@ -302,6 +384,19 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
         } finally {
           isLoading = false;
         }
+      }
+
+      if (!cachedData) {
+        if (!isConfigured(vscodeInstance)) {
+          return [{
+            type: 'empty',
+            label: 'CPQ credentials are not configured'
+          }];
+        }
+        return [{
+          type: 'empty',
+          label: 'No commerce data loaded'
+        }];
       }
 
       const proc = cachedProcess || getSettings(vscodeInstance).commerceProcess || 'oraclecpqo';
@@ -415,6 +510,54 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       if (element.section === 'attributes') {
         return items.map(attr => ({ type: 'attribute', data: attr, docName: element.docName, process: element.process }));
       }
+    }
+
+    if (element.type === 'attribute') {
+      const attr = element.data;
+      let menuOpts = (Array.isArray(attr.menuOptions) && attr.menuOptions.length > 0)
+        ? attr.menuOptions
+        : (Array.isArray(attr.menuItems) && attr.menuItems.length > 0)
+          ? attr.menuItems
+          : (Array.isArray(attr.values) && attr.values.length > 0)
+            ? attr.values
+            : null;
+
+      if ((!menuOpts || menuOpts.length === 0) && isConfigured(vscodeInstance)) {
+        const isMenu = String(attr.dataType || attr.type || '').toLowerCase().includes('menu');
+        if (isMenu) {
+          try {
+            const varName = attr.variableName || attr.name || attr.id;
+            const res = await api.listCommerceAttributeMenuItems(
+              context,
+              vscodeInstance,
+              {
+                process: element.process,
+                document: element.docName,
+                attributeVarName: varName,
+                limit: 500
+              }
+            );
+            if (res && res.body) {
+              const items = Array.isArray(res.body) ? res.body : (Array.isArray(res.body.items) ? res.body.items : []);
+              if (items.length > 0) {
+                attr.menuOptions = items;
+                menuOpts = items;
+              }
+            }
+          } catch {}
+        }
+      }
+
+      if (Array.isArray(menuOpts) && menuOpts.length > 0) {
+        return menuOpts.map(opt => ({
+          type: 'menuOption',
+          data: opt,
+          attrName: attr.variableName || attr.name,
+          process: element.process,
+          docName: element.docName
+        }));
+      }
+      return [];
     }
 
     return [];

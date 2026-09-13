@@ -261,19 +261,54 @@ function formatAsJsDoc(info) {
         md.appendMarkdown(`**Returns:** \`${info.returnType}\`\n\n`);
     }
 
-    if (Array.isArray(info.menuOptions) && info.menuOptions.length > 0) {
+    const isMenuAttr = info.category === 'attribute' && (
+        info.dataType === 'Menu' ||
+        (typeof info.dataType === 'string' && info.dataType.toLowerCase().includes('menu')) ||
+        (typeof info.type === 'string' && info.type.toLowerCase().includes('menu')) ||
+        (Array.isArray(info.menuOptions) && info.menuOptions.length > 0) ||
+        (Array.isArray(info.menuItems) && info.menuItems.length > 0)
+    );
+
+    const rawMenu = (Array.isArray(info.menuOptions) && info.menuOptions.length > 0)
+        ? info.menuOptions
+        : (Array.isArray(info.menuItems) && info.menuItems.length > 0)
+            ? info.menuItems
+            : null;
+
+    if (rawMenu && rawMenu.length > 0) {
         md.appendMarkdown(`**Menu Options:**\n`);
-        for (const opt of info.menuOptions.slice(0, 15)) {
-            const val = opt.value !== undefined ? opt.value : opt.id;
-            const label = opt.displayValue || opt.name || opt.label || val;
-            md.appendMarkdown(`- \`${val}\`${label && label !== val ? ` (${label})` : ''}\n`);
+        for (const opt of rawMenu.slice(0, 25)) {
+            const val = typeof opt === 'object' && opt !== null
+                ? (opt.value !== undefined ? opt.value : (opt.id !== undefined ? opt.id : (opt.name || opt.label || opt.variableName || '')))
+                : String(opt);
+            const label = typeof opt === 'object' && opt !== null
+                ? (opt.displayValue || opt.label || opt.name || opt.description || val)
+                : String(opt);
+            md.appendMarkdown(`- \`${val}\`${label && String(label) !== String(val) ? ` (${label})` : ''}\n`);
         }
-        if (info.menuOptions.length > 15) {
-            md.appendMarkdown(`- *(+ ${info.menuOptions.length - 15} more)*\n`);
+        if (rawMenu.length > 25) {
+            md.appendMarkdown(`- *(+ ${rawMenu.length - 25} more)*\n`);
         }
         md.appendMarkdown('\n');
-    } else if (info.values?.length) {
-        md.appendMarkdown(`**Values:** ${info.values.map(v => `\`${v}\``).join(', ')}\n\n`);
+    } else if (Array.isArray(info.values) && info.values.length > 0) {
+        if (isMenuAttr) {
+            md.appendMarkdown(`**Menu Options:**\n`);
+            for (const val of info.values.slice(0, 25)) {
+                if (typeof val === 'object' && val !== null) {
+                    const v = val.value !== undefined ? val.value : (val.id !== undefined ? val.id : val.name || val.label);
+                    const l = val.displayValue || val.label || val.name || v;
+                    md.appendMarkdown(`- \`${v}\`${l && String(l) !== String(v) ? ` (${l})` : ''}\n`);
+                } else {
+                    md.appendMarkdown(`- \`${val}\`\n`);
+                }
+            }
+            if (info.values.length > 25) {
+                md.appendMarkdown(`- *(+ ${info.values.length - 25} more)*\n`);
+            }
+            md.appendMarkdown('\n');
+        } else {
+            md.appendMarkdown(`**Values:** ${info.values.map(v => `\`${typeof v === 'object' && v !== null ? (v.value !== undefined ? v.value : v.id || v.name) : v}\``).join(', ')}\n\n`);
+        }
     }
 
     if (info.examples?.length) {

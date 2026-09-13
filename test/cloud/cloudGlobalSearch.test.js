@@ -5,6 +5,9 @@ const os = require('os');
 const {
   findWorkspaceBmlFiles,
   searchLocalWorkspaceBml,
+  extractMatchingSnippet,
+  detectActiveProcess,
+  consolidateCloudResults,
   runGlobalBmlSearch
 } = require('@/lang/cloud/cloudGlobalSearch');
 const api = require('@/lang/rest/api');
@@ -205,8 +208,9 @@ suite('CPQ Global BML Script Search - Unit Tests', () => {
     }
   });
 
-  test('runGlobalBmlSearch prefills input box from active editor selection', async () => {
+  test('runGlobalBmlSearch executes search directly from active editor selection without showing input box', async () => {
     let capturedOptions = null;
+    let quickPickShown = false;
     const mockVscode = createMockVscode({
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }]
@@ -221,14 +225,17 @@ suite('CPQ Global BML Script Search - Unit Tests', () => {
         showInputBox: async (opts) => {
           capturedOptions = opts;
           return opts.value;
+        },
+        showQuickPick: async () => {
+          quickPickShown = true;
+          return null;
         }
       }
     });
 
     await runGlobalBmlSearch({}, mockVscode);
-    assert.ok(capturedOptions);
-    assert.strictEqual(capturedOptions.value, 'calculateTax');
-    assert.deepStrictEqual(capturedOptions.valueSelection, [0, 12]);
+    assert.strictEqual(capturedOptions, null, 'showInputBox should not be called when text is selected');
+    assert.strictEqual(quickPickShown, true, 'search should execute directly');
   });
 
   test('runGlobalBmlSearch prefills input box from word under cursor when selection is empty', async () => {
@@ -256,6 +263,132 @@ suite('CPQ Global BML Script Search - Unit Tests', () => {
     assert.ok(capturedOptions);
     assert.strictEqual(capturedOptions.value, 'statusId');
     assert.deepStrictEqual(capturedOptions.valueSelection, [0, 8]);
+  });
+
+  test('extractMatchingSnippet highlights matching line and eliminates broken newline characters', () => {
+    const script = '//default to starting status\nstatus = status_t;\nstatusDict = dict("integer");\n';
+    
+    // Non-comment code match preferred
+    const res1 = extractMatchingSnippet(script, 'status', null);
+    assert.strictEqual(res1.lineNum, 2);
+    assert.strictEqual(res1.snippet, 'Line 2: status = status_t;');
+    assert.ok(!res1.snippet.includes('\n'), 'Snippet must not contain newlines');
+
+    // Comment fallback when only comment matches
+    const res2 = extractMatchingSnippet(script, 'starting', null);
+    assert.strictEqual(res2.lineNum, 1);
+    assert.strictEqual(res2.snippet, 'Line 1: //default to starting status');
+
+    // First non-comment code line when query does not match body
+    const res3 = extractMatchingSnippet(script, 'unrelatedFunc', null);
+    assert.strictEqual(res3.lineNum, 2);
+    assert.strictEqual(res3.snippet, 'Line 2: status = status_t;');
+
+    // Raw snippet sanitization when scriptText is null
+    const res4 = extractMatchingSnippet(null, 'query', 'first line\nsecond line\nthird');
+    assert.strictEqual(res4.snippet, 'first line second line third');
+    assert.ok(!res4.snippet.includes('\n'));
+  });
+
+  test('consolidateCloudResults collapses duplicate functions across processes and prioritizes active process', () => {
+    const rawCloudItems = [
+      { name: 'transactionStatus', type: 'Commerce Library Function', process: 'Prodtec Quote Process GRP03', document: 'Transaction', scriptText: 'status = status_t;' },
+      { name: 'transactionStatus', type: 'Commerce Library Function', process: 'Demo', document: 'Transaction', scriptText: 'status = status_t;' },
+      { name: 'transactionStatus', type: 'Commerce Library Function', process: 'oraclecpqo', document: 'Transaction', scriptText: 'status = status_t;' },
+      { name: 'transactionStatus', type: 'Commerce Library Function', process: 'Sales Process', document: 'Transaction', scriptText: 'status = status_t;' },
+      { name: 'customPricing', type: 'Commerce Library Function', process: 'oraclecpqo', document: 'Transaction', scriptText: 'return 100.0;' },
+    ];
+
+    const consolidated = consolidateCloudResults(rawCloudItems, 'oraclecpqo');
+    // 5 items should be consolidated to 2 unique items
+    assert.strictEqual(consolidated.length, 2);
+
+    const statusItem = consolidated.find(it => it.name === 'transactionStatus');
+    assert.ok(statusItem);
+    // Active process 'oraclecpqo' should be primary
+    assert.strictEqual(statusItem.process, 'oraclecpqo');
+    assert.strictEqual(statusItem.isConsolidated, true);
+    assert.strictEqual(statusItem.otherProcesses.length, 3);
+    assert.ok(statusItem.otherProcesses.includes('Prodtec Quote Process GRP03'));
+    assert.ok(statusItem.otherProcesses.includes('Demo'));
+    assert.ok(statusItem.otherProcesses.includes('Sales Process'));
+
+    // Non-duplicate item remains single
+    const pricingItem = consolidated.find(it => it.name === 'customPricing');
+    assert.ok(pricingItem);
+    assert.strictEqual(pricingItem.isConsolidated, undefined);
+  });
+
+  test('runGlobalBmlSearch deduplicates identical functions in QuickPick popup', async () => {
+    api.searchBmlScripts = async function () {
+      return {
+        statusCode: 200,
+        body: {
+          items: [
+            {
+              name: 'Transaction Status',
+              componentType: 'Commerce Library Function',
+              commerceProcess: 'Prodtec Quote Process GRP03',
+              commerceDocument: 'Transaction',
+              scriptText: '//default to starting status\nstatus = status_t;\nstatusDict = dict("integer");\n'
+            },
+            {
+              name: 'Transaction Status',
+              componentType: 'Commerce Library Function',
+              commerceProcess: 'Demo',
+              commerceDocument: 'Transaction',
+              scriptText: '//default to starting status\nstatus = status_t;\nstatusDict = dict("integer");\n'
+            },
+            {
+              name: 'Transaction Status',
+              componentType: 'Commerce Library Function',
+              commerceProcess: 'oraclecpqo',
+              commerceDocument: 'Transaction',
+              scriptText: '//default to starting status\nstatus = status_t;\nstatusDict = dict("integer");\n'
+            },
+            {
+              name: 'Transaction Status',
+              componentType: 'Commerce Library Function',
+              commerceProcess: 'Sales Process',
+              commerceDocument: 'Transaction',
+              scriptText: '//default to starting status\nstatus = status_t;\nstatusDict = dict("integer");\n'
+            }
+          ]
+        }
+      };
+    };
+
+    const mockVscode = createMockVscode({
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: tempDir } }],
+        getConfiguration: () => ({
+          get: (key, def) => {
+            if (key === 'connection.siteUrl') return 'https://test.bigmachines.com';
+            if (key === 'connection.username') return 'testuser';
+            if (key === 'commerce.process') return 'oraclecpqo';
+            return def;
+          }
+        })
+      }
+    });
+
+    await runGlobalBmlSearch({}, mockVscode, 'status');
+    const items = mockVscode.getQuickPickItems();
+    assert.ok(items);
+
+    // Should only have 1 cloud match item instead of 4
+    const cloudItems = items.filter(it => it.data && it.data.source === 'CPQ Cloud');
+    assert.strictEqual(cloudItems.length, 1, 'Should consolidate 4 identical process items into 1 QuickPick item');
+
+    const primary = cloudItems[0];
+    assert.strictEqual(primary.label, '$(cloud) Transaction Status');
+    // Description should indicate the active process and mention the others
+    assert.ok(primary.description.includes('oraclecpqo'), 'Primary process should be active process oraclecpqo');
+    assert.ok(primary.description.includes('+3 other processes'), 'Description should count other processes');
+    // Detail must show the clean line without newline characters
+    assert.ok(!primary.detail.includes('\n'), 'Detail must not contain newline characters');
+    assert.ok(primary.detail.includes('Line 2: status = status_t;'), 'Detail should highlight matching line');
+    assert.ok(primary.detail.includes('Also in:'), 'Detail should list other processes');
   });
 });
 

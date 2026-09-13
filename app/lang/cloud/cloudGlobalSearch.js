@@ -3,8 +3,197 @@ const { vscode, safeParseJson } = require("./cloudVscodeShim");
 const fs = require("fs");
 const path = require("path");
 const api = require("@/lang/rest/api");
-const { isConfigured, getSettings } = require("@/lang/rest/config");
+const { isConfigured, getSettings, getCommerceProcess } = require("@/lang/rest/config");
 const { IGNORED_FOLDERS } = require("@/lang/intellisense/workspaceIndex");
+
+/**
+ * Extracts a clean, single-line snippet highlighting the matched query line.
+ * Strips raw newlines to prevent broken '⏎' character display in VS Code QuickPick.
+ */
+function extractMatchingSnippet(scriptText, query, rawSnippet) {
+  const q = (query || "").toLowerCase();
+
+  if (scriptText && typeof scriptText === "string") {
+    const lines = scriptText.split(/\r?\n/);
+    if (q) {
+      let firstCommentMatch = null;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line && line.toLowerCase().includes(q)) {
+          const isComment =
+            line.startsWith("//") ||
+            line.startsWith("/*") ||
+            line.startsWith("*");
+          if (!isComment) {
+            return {
+              lineNum: i + 1,
+              snippet: `Line ${i + 1}: ${line}`,
+            };
+          } else if (!firstCommentMatch) {
+            firstCommentMatch = {
+              lineNum: i + 1,
+              snippet: `Line ${i + 1}: ${line}`,
+            };
+          }
+        }
+      }
+      if (firstCommentMatch) {
+        return firstCommentMatch;
+      }
+    }
+
+    // If query was not matched in script body, pick first non-comment code line
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (
+        line &&
+        !line.startsWith("//") &&
+        !line.startsWith("/*") &&
+        !line.startsWith("*")
+      ) {
+        return {
+          lineNum: i + 1,
+          snippet: `Line ${i + 1}: ${line}`,
+        };
+      }
+    }
+    if (lines.length > 0 && lines[0].trim()) {
+      return {
+        lineNum: 1,
+        snippet: lines[0].trim(),
+      };
+    }
+  }
+
+  if (rawSnippet && typeof rawSnippet === "string") {
+    const clean = rawSnippet
+      .replace(/[\r\n]+/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+    if (clean) {
+      return {
+        lineNum: null,
+        snippet: clean.length > 120 ? clean.slice(0, 117) + "..." : clean,
+      };
+    }
+  }
+
+  return { lineNum: null, snippet: "" };
+}
+
+/**
+ * Detects the active commerce process from open editor or configuration.
+ */
+function detectActiveProcess(vscodeInstance) {
+  try {
+    const editor =
+      vscodeInstance.window && vscodeInstance.window.activeTextEditor;
+    if (
+      editor &&
+      editor.document &&
+      editor.document.uri &&
+      editor.document.uri.fsPath
+    ) {
+      const fsPath = editor.document.uri.fsPath.replace(/\\/g, "/");
+      const mCpq = fsPath.match(/\/cpq\/[^/]+\/([^/]+)\//i);
+      if (mCpq && mCpq[1]) return mCpq[1];
+      const mProc = fsPath.match(
+        /\/([^/]+)\/(?:commerce-libraries|actions|rules|sub-documents|documents)\//i,
+      );
+      if (mProc && mProc[1]) return mProc[1];
+    }
+  } catch {}
+  try {
+    const configured = getCommerceProcess(vscodeInstance);
+    if (configured) return configured;
+  } catch {}
+  return "oraclecpqo";
+}
+
+/**
+ * Consolidates identical cloud scripts across multiple commerce processes.
+ * Keeps active process as the primary item and lists secondary processes.
+ */
+function consolidateCloudResults(cloudResults, activeProcess) {
+  if (!Array.isArray(cloudResults) || cloudResults.length === 0) return [];
+  const groups = new Map();
+  const activeProcLower = (activeProcess || "").toLowerCase();
+
+  for (const item of cloudResults) {
+    const normName = (item.name || "").trim().toLowerCase();
+    const normType = (item.type || "").trim().toLowerCase();
+    const normScript = (item.scriptText || "").replace(/\r\n/g, "\n").trim();
+    const scriptSig = normScript
+      ? `sig:${normScript.length}:${normScript.slice(0, 200)}`
+      : `doc:${(item.document || "").toLowerCase()}`;
+    const key = `${normName}::${normType}::${scriptSig}`;
+
+    if (!groups.has(key)) {
+      groups.set(key, []);
+    }
+    groups.get(key).push(item);
+  }
+
+  const consolidated = [];
+
+  for (const items of groups.values()) {
+    if (items.length === 1) {
+      consolidated.push(items[0]);
+      continue;
+    }
+
+    // Identify primary item: prefer active process
+    let primaryIdx = items.findIndex(
+      (it) => it.process && it.process.toLowerCase() === activeProcLower,
+    );
+    if (primaryIdx === -1 && activeProcLower) {
+      primaryIdx = items.findIndex(
+        (it) =>
+          it.process &&
+          (it.process.toLowerCase().includes(activeProcLower) ||
+            activeProcLower.includes(it.process.toLowerCase())),
+      );
+    }
+    if (primaryIdx === -1) {
+      primaryIdx = 0;
+    }
+
+    const primary = { ...items[primaryIdx] };
+    const otherProcesses = [];
+    for (let i = 0; i < items.length; i++) {
+      if (i !== primaryIdx && items[i].process) {
+        if (!otherProcesses.includes(items[i].process)) {
+          otherProcesses.push(items[i].process);
+        }
+      }
+    }
+
+    primary.otherProcesses = otherProcesses;
+    primary.allProcesses = [primary.process, ...otherProcesses].filter(Boolean);
+    primary.isConsolidated = otherProcesses.length > 0;
+    consolidated.push(primary);
+  }
+
+  // Sort: active process items first, then alphabetical by name
+  consolidated.sort((a, b) => {
+    const aActive =
+      a.process &&
+      (a.process.toLowerCase() === activeProcLower ||
+        a.process.toLowerCase().includes(activeProcLower))
+        ? 1
+        : 0;
+    const bActive =
+      b.process &&
+      (b.process.toLowerCase() === activeProcLower ||
+        b.process.toLowerCase().includes(activeProcLower))
+        ? 1
+        : 0;
+    if (aActive !== bActive) return bActive - aActive;
+    return a.name.localeCompare(b.name);
+  });
+
+  return consolidated;
+}
 
 /**
  * Recursively scans directory for .bml files.
@@ -82,6 +271,22 @@ async function runGlobalBmlSearch(
     typeof prefilledQuery === "string" && prefilledQuery.trim()
       ? prefilledQuery.trim()
       : "";
+  if (!query && vscodeInstance.window && vscodeInstance.window.activeTextEditor) {
+    const editor = vscodeInstance.window.activeTextEditor;
+    const document = editor.document;
+    const selection = editor.selection;
+    if (
+      selection &&
+      !selection.isEmpty &&
+      typeof document.getText === "function"
+    ) {
+      const selText = document.getText(selection).trim();
+      if (selText) {
+        query = selText;
+      }
+    }
+  }
+
   if (!query) {
     let initialValue = "";
     if (vscodeInstance.window && vscodeInstance.window.activeTextEditor) {
@@ -89,12 +294,6 @@ async function runGlobalBmlSearch(
       const document = editor.document;
       const selection = editor.selection;
       if (
-        selection &&
-        !selection.isEmpty &&
-        typeof document.getText === "function"
-      ) {
-        initialValue = document.getText(selection).trim();
-      } else if (
         selection &&
         typeof document.getWordRangeAtPosition === "function" &&
         typeof document.getText === "function"
@@ -160,9 +359,6 @@ async function runGlobalBmlSearch(
                   ? parsed
                   : (parsed && parsed.items) || [];
                 cloudResults = items.map((it) => {
-                  const snippet =
-                    it.snippet ||
-                    (it.scriptText ? it.scriptText.slice(0, 120).trim() : "");
                   let name = it.name || it.variableName || it.scriptName;
                   let type = it.componentType || it.scriptType;
                   let proc = it.commerceProcess || "";
@@ -180,6 +376,12 @@ async function runGlobalBmlSearch(
                   if (!name) name = "Script";
                   if (!type) type = "Cloud Script";
 
+                  const { lineNum, snippet } = extractMatchingSnippet(
+                    it.scriptText,
+                    query,
+                    it.snippet,
+                  );
+
                   return {
                     category: "script",
                     name,
@@ -187,6 +389,7 @@ async function runGlobalBmlSearch(
                     process: proc,
                     document: doc,
                     snippet,
+                    matchedLine: lineNum,
                     scriptText: it.scriptText,
                     source: "CPQ Cloud",
                     path: it.path,
@@ -297,27 +500,75 @@ async function runGlobalBmlSearch(
         ? searchLocalWorkspaceBml(workspaceRoot, query)
         : [];
 
+      // Detect active process to prioritize relevant scripts
+      const activeProcess = detectActiveProcess(vscodeInstance);
+      const consolidatedCloudResults = consolidateCloudResults(
+        cloudResults,
+        activeProcess,
+      );
+
       // Combine results for quick pick
       const quickPickItems = [];
 
-      // Add Cloud Script Results
-      if (cloudResults.length > 0) {
+      // 1. Add Local Results (workspace first for highest relevance)
+      if (localResults.length > 0) {
         quickPickItems.push({
-          label: `Cloud Matches (${cloudResults.length})`,
+          label: `Local Workspace Matches (${localResults.length})`,
           kind: -1, // Separator
         });
 
-        for (const item of cloudResults) {
+        for (const item of localResults) {
           quickPickItems.push({
-            label: `$(cloud) ${item.name}`,
-            description: `[${item.type}] ${item.process ? item.process + "/" + item.document : ""}`,
-            detail: item.snippet || "Click to view full BML script",
+            label: `$(file-code) ${path.basename(item.file)}:${item.line}`,
+            description: item.relPath,
+            detail: item.lineText,
             data: item,
           });
         }
       }
 
-      // Add Data Table Results
+      // 2. Add Cloud Script Results (deduplicated across commerce processes)
+      if (consolidatedCloudResults.length > 0) {
+        const procNote = activeProcess ? ` [Active: ${activeProcess}]` : "";
+        quickPickItems.push({
+          label: `Cloud Matches (${consolidatedCloudResults.length})${procNote}`,
+          kind: -1, // Separator
+        });
+
+        for (const item of consolidatedCloudResults) {
+          let desc = `[${item.type}]`;
+          if (item.process) {
+            desc += ` ${item.process}${item.document ? "/" + item.document : ""}`;
+          }
+          if (item.otherProcesses && item.otherProcesses.length > 0) {
+            desc += ` (+${item.otherProcesses.length} other process${item.otherProcesses.length > 1 ? "es" : ""})`;
+          }
+
+          let detail = item.snippet;
+          if (item.otherProcesses && item.otherProcesses.length > 0) {
+            const othersList =
+              item.otherProcesses.slice(0, 3).join(", ") +
+              (item.otherProcesses.length > 3 ? "..." : "");
+            if (detail) {
+              detail += `  •  Also in: ${othersList}`;
+            } else {
+              detail = `Also in: ${othersList}`;
+            }
+          }
+          if (!detail) {
+            detail = "Click to view full BML script";
+          }
+
+          quickPickItems.push({
+            label: `$(cloud) ${item.name}`,
+            description: desc,
+            detail,
+            data: item,
+          });
+        }
+      }
+
+      // 3. Add Data Table Results
       if (dataTableResults.length > 0) {
         quickPickItems.push({
           label: `Data Table Matches (${dataTableResults.length})`,
@@ -336,7 +587,7 @@ async function runGlobalBmlSearch(
         }
       }
 
-      // Add Transaction Results
+      // 4. Add Transaction Results
       if (transactionResults.length > 0) {
         quickPickItems.push({
           label: `Transaction Matches (${transactionResults.length})`,
@@ -355,23 +606,6 @@ async function runGlobalBmlSearch(
         }
       }
 
-      // Add Local Results
-      if (localResults.length > 0) {
-        quickPickItems.push({
-          label: `Local Workspace Matches (${localResults.length})`,
-          kind: -1, // Separator
-        });
-
-        for (const item of localResults) {
-          quickPickItems.push({
-            label: `$(file-code) ${path.basename(item.file)}:${item.line}`,
-            description: item.relPath,
-            detail: item.lineText,
-            data: item,
-          });
-        }
-      }
-
       if (quickPickItems.length === 0) {
         vscodeInstance.window.showInformationMessage(
           `No matches found for "${query}" across CPQ system.`,
@@ -380,7 +614,7 @@ async function runGlobalBmlSearch(
       }
 
       const totalMatches =
-        cloudResults.length +
+        consolidatedCloudResults.length +
         dataTableResults.length +
         transactionResults.length +
         localResults.length;
@@ -511,7 +745,19 @@ async function runGlobalBmlSearch(
           content: data.scriptText,
           language: "bml",
         });
-        await vscodeInstance.window.showTextDocument(doc);
+        const editor = await vscodeInstance.window.showTextDocument(doc);
+        if (
+          editor &&
+          data.matchedLine &&
+          vscodeInstance.Position &&
+          vscodeInstance.Range
+        ) {
+          const pos = new vscodeInstance.Position(data.matchedLine - 1, 0);
+          editor.selection = new vscodeInstance.Range(pos, pos);
+          if (typeof editor.revealRange === "function") {
+            editor.revealRange(new vscodeInstance.Range(pos, pos));
+          }
+        }
       } else if (data.raw) {
         // Other cloud payload
         const doc = await vscodeInstance.workspace.openTextDocument({
@@ -543,6 +789,9 @@ function registerCloudGlobalSearch(context, vscodeInstance = vscode) {
 module.exports = {
   findWorkspaceBmlFiles,
   searchLocalWorkspaceBml,
+  extractMatchingSnippet,
+  detectActiveProcess,
+  consolidateCloudResults,
   runGlobalBmlSearch,
   registerCloudGlobalSearch,
 };

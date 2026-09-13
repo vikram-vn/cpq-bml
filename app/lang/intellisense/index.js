@@ -227,6 +227,39 @@ function registerBmlIntelliSense(context) {
 
             const info = lookupApiInfo(word);
             if (info) {
+                // Enrich Menu attribute options if not present on info
+                const isMenu = info.dataType === 'Menu' ||
+                    (typeof info.dataType === 'string' && info.dataType.toLowerCase().includes('menu')) ||
+                    (typeof info.type === 'string' && info.type.toLowerCase().includes('menu'));
+                if (isMenu && (!info.menuOptions || info.menuOptions.length === 0) && (!info.values || info.values.length === 0)) {
+                    try {
+                        const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+                            ? vscode.workspace.workspaceFolders[0].uri.fsPath
+                            : null;
+                        const attrKey = word.includes('.') ? word.split('.').pop() : word;
+                        let foundAttr = null;
+                        if (commerceAttributes && typeof commerceAttributes.loadWorkspaceAttributes === 'function') {
+                            const wsIndex = commerceAttributes.loadWorkspaceAttributes(wsRoot);
+                            if (wsIndex && wsIndex.varNameToMeta) {
+                                foundAttr = wsIndex.varNameToMeta.get(attrKey) || wsIndex.varNameToMeta.get(word);
+                            }
+                        }
+                        if (!foundAttr && commerceAttributes && typeof commerceAttributes.loadBundledAttributes === 'function') {
+                            const bundled = commerceAttributes.loadBundledAttributes();
+                            if (bundled && bundled.varNameToMeta) {
+                                foundAttr = bundled.varNameToMeta.get(attrKey) || bundled.varNameToMeta.get(word);
+                            }
+                        }
+                        if (foundAttr) {
+                            if (foundAttr.menuOptions || foundAttr.menuItems) {
+                                info.menuOptions = foundAttr.menuOptions || foundAttr.menuItems;
+                            }
+                            if (foundAttr.values) {
+                                info.values = foundAttr.values;
+                            }
+                        }
+                    } catch (_) {}
+                }
                 return new vscode.Hover(formatAsJsDoc(info));
             }
 
@@ -267,6 +300,22 @@ function registerBmlIntelliSense(context) {
                     if (attr.document || attr.scope) md.appendMarkdown(`**Scope**: \`${attr.document || attr.scope}\`  \n`);
                     if (attr.description || attr.notes) md.appendMarkdown(`**Description**: ${attr.description || attr.notes}  \n`);
                     if (attr.defaultValue) md.appendMarkdown(`**Default Value**: \`${attr.defaultValue}\`  \n`);
+                    const opts = attr.menuOptions || attr.menuItems || attr.values;
+                    if (Array.isArray(opts) && opts.length > 0) {
+                        md.appendMarkdown(`\n**Menu Options:**\n`);
+                        for (const opt of opts.slice(0, 25)) {
+                            const val = typeof opt === 'object' && opt !== null
+                                ? (opt.value !== undefined ? opt.value : (opt.id !== undefined ? opt.id : opt.name || opt.label || ''))
+                                : String(opt);
+                            const label = typeof opt === 'object' && opt !== null
+                                ? (opt.displayValue || opt.label || opt.name || opt.description || val)
+                                : String(opt);
+                            md.appendMarkdown(`- \`${val}\`${label && String(label) !== String(val) ? ` (${label})` : ''}\n`);
+                        }
+                        if (opts.length > 25) {
+                            md.appendMarkdown(`- *(+ ${opts.length - 25} more)*\n`);
+                        }
+                    }
                     return new vscode.Hover(md);
                 }
 

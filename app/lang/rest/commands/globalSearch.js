@@ -35,6 +35,22 @@ async function runGlobalSearchBml(
 
   let searchQuery =
     typeof query === "string" && query.trim() ? query.trim() : "";
+  if (!searchQuery && vscode.window && vscode.window.activeTextEditor) {
+    const editor = vscode.window.activeTextEditor;
+    const document = editor.document;
+    const selection = editor.selection;
+    if (
+      selection &&
+      !selection.isEmpty &&
+      typeof document.getText === "function"
+    ) {
+      const selText = document.getText(selection).trim();
+      if (selText) {
+        searchQuery = selText;
+      }
+    }
+  }
+
   if (!searchQuery) {
     let initialValue = "";
     if (vscode.window && vscode.window.activeTextEditor) {
@@ -42,12 +58,6 @@ async function runGlobalSearchBml(
       const document = editor.document;
       const selection = editor.selection;
       if (
-        selection &&
-        !selection.isEmpty &&
-        typeof document.getText === "function"
-      ) {
-        initialValue = document.getText(selection).trim();
-      } else if (
         selection &&
         typeof document.getWordRangeAtPosition === "function" &&
         typeof document.getText === "function"
