@@ -29,4 +29,6 @@ package-lock.json
 *.min.css
 *.min.js
 *.min.json
+*.br
+*.wasm
 knowledge/bml
