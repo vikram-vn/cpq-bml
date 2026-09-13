@@ -3,7 +3,7 @@ const { lintText } = require('@/test/linter/fixtures');
 
 suite('BML Linter - Magic Numbers Test Suite', () => {
 
-    test('Flags raw un-named business numbers and factors passed as inputs or parameters', () => {
+    test('Does not flag raw business numbers, factors, or parameters (magic numbers disabled)', () => {
         const diagnostics = lintText(`
             mRate_03 = 47.25;
             discountFactor = 0.85;
@@ -15,18 +15,7 @@ suite('BML Linter - Magic Numbers Test Suite', () => {
         `);
 
         const magicDiags = diagnostics.filter(d => d.code === 'bml-magic-number');
-        const flaggedValues = magicDiags.map(d => {
-            const m = d.message.match(/Magic number '([^']+)'/);
-            return m ? m[1] : null;
-        }).filter(Boolean);
-
-        assert.ok(flaggedValues.includes('47.25'), 'Should flag 47.25');
-        assert.ok(flaggedValues.includes('0.85'), 'Should flag 0.85');
-        assert.ok(flaggedValues.includes('5500'), 'Should flag 5500');
-        assert.ok(flaggedValues.includes('0.0825'), 'Should flag 0.0825');
-        assert.ok(flaggedValues.includes('18.5'), 'Should flag 18.5');
-        assert.ok(flaggedValues.includes('4.2'), 'Should flag 4.2');
-        assert.ok(flaggedValues.includes('15000'), 'Should flag 15000');
+        assert.strictEqual(magicDiags.length, 0, 'Magic numbers should never be flagged');
     });
 
     test('Exempts standard numbers (0, 1, 2, 10, 100, 0.0, 1.0, 2.0, -1, -1.0)', () => {

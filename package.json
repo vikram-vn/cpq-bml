@@ -520,6 +520,7 @@
       {
         "command": "cpqBml.cloud.globalSearch",
         "title": "CPQ-BML: Global Search BML Scripts Across Entire System",
+        "shortTitle": "CPQ-BML: Global Search Across CPQ",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
@@ -750,6 +751,13 @@
           "command": "cpqBml.settings.open",
           "when": "resourceLangId == bml",
           "group": "navigation@7"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "cpqBml.cloud.globalSearch",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "navigation@10"
         }
       ],
       "view/title": [

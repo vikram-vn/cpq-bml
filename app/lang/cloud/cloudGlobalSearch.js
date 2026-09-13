@@ -65,11 +65,29 @@ function searchLocalWorkspaceBml(workspaceRoot, query) {
  * Interactive Global BML Search runner across entire CPQ system.
  */
 async function runGlobalBmlSearch(context, vscodeInstance = vscode, prefilledQuery) {
-  let query = prefilledQuery;
+  let query = typeof prefilledQuery === 'string' && prefilledQuery.trim() ? prefilledQuery.trim() : '';
   if (!query) {
+    let initialValue = '';
+    if (vscodeInstance.window && vscodeInstance.window.activeTextEditor) {
+      const editor = vscodeInstance.window.activeTextEditor;
+      const document = editor.document;
+      const selection = editor.selection;
+      if (selection && !selection.isEmpty && typeof document.getText === 'function') {
+        initialValue = document.getText(selection).trim();
+      } else if (selection && typeof document.getWordRangeAtPosition === 'function' && typeof document.getText === 'function') {
+        const wordRange = document.getWordRangeAtPosition(selection.active);
+        if (wordRange) {
+          initialValue = document.getText(wordRange).trim();
+        }
+      }
+    }
+
     query = await vscodeInstance.window.showInputBox({
-      prompt: 'Search BML scripts across entire CPQ system',
+      title: 'CPQ-BML: Global Search Across CPQ System',
+      prompt: 'Search BML scripts, data tables, and transactions across entire CPQ system',
       placeHolder: 'e.g. calculateDiscount, urldata, myCustomUtil...',
+      value: initialValue,
+      valueSelection: initialValue ? [0, initialValue.length] : undefined,
       ignoreFocusOut: true
     });
   }

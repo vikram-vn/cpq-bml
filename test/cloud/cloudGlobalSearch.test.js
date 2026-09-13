@@ -204,5 +204,58 @@ suite('CPQ Global BML Script Search - Unit Tests', () => {
       api.getTransactions = origGetTx;
     }
   });
+
+  test('runGlobalBmlSearch prefills input box from active editor selection', async () => {
+    let capturedOptions = null;
+    const mockVscode = createMockVscode({
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: tempDir } }]
+      },
+      window: {
+        activeTextEditor: {
+          selection: { isEmpty: false },
+          document: {
+            getText: () => 'calculateTax'
+          }
+        },
+        showInputBox: async (opts) => {
+          capturedOptions = opts;
+          return opts.value;
+        }
+      }
+    });
+
+    await runGlobalBmlSearch({}, mockVscode);
+    assert.ok(capturedOptions);
+    assert.strictEqual(capturedOptions.value, 'calculateTax');
+    assert.deepStrictEqual(capturedOptions.valueSelection, [0, 12]);
+  });
+
+  test('runGlobalBmlSearch prefills input box from word under cursor when selection is empty', async () => {
+    let capturedOptions = null;
+    const mockVscode = createMockVscode({
+      workspace: {
+        workspaceFolders: [{ uri: { fsPath: tempDir } }]
+      },
+      window: {
+        activeTextEditor: {
+          selection: { isEmpty: true, active: { line: 0, character: 5 } },
+          document: {
+            getWordRangeAtPosition: () => ({ start: 0, end: 8 }),
+            getText: () => 'statusId'
+          }
+        },
+        showInputBox: async (opts) => {
+          capturedOptions = opts;
+          return opts.value;
+        }
+      }
+    });
+
+    await runGlobalBmlSearch({}, mockVscode);
+    assert.ok(capturedOptions);
+    assert.strictEqual(capturedOptions.value, 'statusId');
+    assert.deepStrictEqual(capturedOptions.valueSelection, [0, 8]);
+  });
 });
 

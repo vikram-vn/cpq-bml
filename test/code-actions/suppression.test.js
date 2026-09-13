@@ -12,18 +12,18 @@ function runSuppressionCodeActionTests() {
         test('Universal Quick Fix to disable lint rule for a line', async () => {
             const doc = await vscode.workspace.openTextDocument({
                 language: 'bml',
-                content: 'x = 0.35;\nreturn "";'
+                content: 'if (true) {}\nreturn "";'
             });
 
             const collection = vscode.languages.createDiagnosticCollection('bml');
             lintBMLCustom(doc, collection, vscode);
 
             const diags = collection.get(doc.uri);
-            const magicDiag = diags.find(d => d.code === 'bml-magic-number');
-            assert.ok(magicDiag, 'Should have magic number diagnostic');
+            const emptyDiag = diags.find(d => d.code === 'bml-empty-block');
+            assert.ok(emptyDiag, 'Should have empty block diagnostic');
 
-            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, magicDiag.range);
-            const disableAction = codeActions.find(a => a.title.includes("Disable 'bml-magic-number' for this line"));
+            const codeActions = await vscode.commands.executeCommand('vscode.executeCodeActionProvider', doc.uri, emptyDiag.range);
+            const disableAction = codeActions.find(a => a.title.includes("Disable 'bml-empty-block' for this line"));
             assert.ok(disableAction, 'Should offer universal line suppression Quick Fix');
 
             // Verify no duplicate actions exist per kind

@@ -9,44 +9,7 @@ const { getAdvancedQualityFixes } = require('@/lang/lint/code-actions/qualityFix
 function getQualityFixes(document, diag, editRange, extensionPath) {
     const fixes = [];
 
-    if (diag.code === 'bml-magic-number') {
-        const val = document.getText(editRange);
-        const lineText = document.lineAt(editRange.start.line).text;
-        const prefix = lineText.substring(0, editRange.start.character);
-        const suffix = lineText.substring(editRange.start.character + val.length);
-        const smartName = inferConstantCandidateName(lineText, editRange.start.character, val);
-        const fallbackName = 'CONST_' + val.replace(/[^0-9]/g, '_');
-
-        const candidateNames = [smartName];
-        if (fallbackName !== smartName) {
-            candidateNames.push(fallbackName);
-        }
-
-        const directAssignMatch = prefix.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?([a-zA-Z_]\w*)\s*=\s*$/i);
-        const isPureAssignment = directAssignMatch && (/^[\s;]*$/.test(suffix));
-
-        const indentMatch = lineText.match(/^\s*/);
-        const indent = indentMatch ? indentMatch[0] : '';
-        const lineStartPos = new vscode.Position(editRange.start.line, 0);
-
-        for (const constName of candidateNames) {
-            const action = new vscode.CodeAction(`Extract '${val}' to constant candidate '${constName}' (all occurrences)`, vscode.CodeActionKind.QuickFix);
-            action.edit = new vscode.WorkspaceEdit();
-
-            if (isPureAssignment) {
-                const targetVar = directAssignMatch[1];
-                renameIdentifierInDocument(document, targetVar, constName, action.edit);
-            } else {
-                const decl = `${indent}${constName} = ${val};\n`;
-                action.edit.insert(document.uri, lineStartPos, decl);
-                action.edit.replace(document.uri, editRange, constName);
-            }
-
-            action.diagnostics = [diag];
-            fixes.push(action);
-        }
-    }
-    else if (diag.code === 'bml-empty-block') {
+    if (diag.code === 'bml-empty-block') {
         const text = document.getText(editRange);
         if (text.includes('{') && text.includes('}')) {
             const action = new vscode.CodeAction("Add '// TODO: implement' inside block", vscode.CodeActionKind.QuickFix);

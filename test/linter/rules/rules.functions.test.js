@@ -312,24 +312,13 @@ suite('BML Linter Test Suite - rules (functions & syntax)', function() {
                 print("not found");
             }
 
-            // Raw magic numbers that SHOULD be flagged
+            // Business numbers should not be flagged (magic numbers disabled)
             mRate_03 = 47.25;
             discountFactor = 0.85;
             return "";
         `);
 
         const magicDiags = diagnostics.filter(d => d.code === 'bml-magic-number');
-        const magicMessages = magicDiags.map(d => d.message);
-
-        // Verify that 47.25 and 0.85 are flagged
-        assert.ok(magicMessages.some(m => m.includes("'47.25'")), "Should flag raw business number 47.25");
-        assert.ok(magicMessages.some(m => m.includes("'0.85'")), "Should flag raw factor 0.85");
-
-        // Verify that safe context numbers are NOT flagged
-        assert.ok(!magicMessages.some(m => m.includes("'5'")), "Should NOT flag substring length 5");
-        assert.ok(!magicMessages.some(m => m.includes("'7'")), "Should NOT flag adddays offset 7");
-        assert.ok(!magicMessages.some(m => m.includes("'200'")), "Should NOT flag HTTP status 200");
-        assert.ok(!magicMessages.some(m => m.includes("'404'")), "Should NOT flag HTTP status 404");
-        assert.ok(!magicMessages.some(m => m.includes("'1000'")), "Should NOT flag time multiplier 1000");
+        assert.strictEqual(magicDiags.length, 0, "Magic numbers should never be flagged");
     });
 });

@@ -30,12 +30,29 @@ async function runGlobalSearchBml(
     return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
   }
 
-  let searchQuery = query;
+  let searchQuery = typeof query === "string" && query.trim() ? query.trim() : "";
   if (!searchQuery) {
+    let initialValue = "";
+    if (vscode.window && vscode.window.activeTextEditor) {
+      const editor = vscode.window.activeTextEditor;
+      const document = editor.document;
+      const selection = editor.selection;
+      if (selection && !selection.isEmpty && typeof document.getText === "function") {
+        initialValue = document.getText(selection).trim();
+      } else if (selection && typeof document.getWordRangeAtPosition === "function" && typeof document.getText === "function") {
+        const wordRange = document.getWordRangeAtPosition(selection.active);
+        if (wordRange) {
+          initialValue = document.getText(wordRange).trim();
+        }
+      }
+    }
+
     searchQuery = await vscode.window.showInputBox({
       title: "CPQ-BML: Global Search BML Scripts",
       prompt: "Enter text string to search across all remote BML scripts in Oracle CPQ",
       placeHolder: "e.g., bmql, calcDiscount, price_attr",
+      value: initialValue,
+      valueSelection: initialValue ? [0, initialValue.length] : undefined,
     });
     if (!searchQuery || !searchQuery.trim()) {
       return { success: false, errorMessage: "Search cancelled or empty." };

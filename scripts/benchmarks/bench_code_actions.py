@@ -98,7 +98,7 @@ for (const diag of cursorDiags) {
         name="Single Diagnostic AST Quick Fix Computation",
         category="CodeActions",
         setup_code=common_setup + """
-const singleDiag = recordedDiags[0] || { range: new vscodeMock.Range(new MockPosition(10, 0), new MockPosition(10, 20)), message: 'Test', code: 'bml-magic-number' };
+const singleDiag = recordedDiags[0] || { range: new vscodeMock.Range(new MockPosition(10, 0), new MockPosition(10, 20)), message: 'Test', code: 'bml-empty-block' };
 const singleRange = singleDiag.originalRange ?? singleDiag.range;
 """,
         run_code="""

@@ -33,7 +33,6 @@ function buildFixAllText(document, relevantDiags, initialAst, isCategory = false
         return astContext;
     }
 
-    const hasMagic = relevantDiags.some(d => d.code === 'bml-magic-number');
     const hasCamel = relevantDiags.some(d => d.code === 'bml-variable-camelcase');
     const hasDictSuffix = relevantDiags.some(d => d.code === 'bml-dict-naming-suffix');
     const hasArraySuffix = relevantDiags.some(d => d.code === 'bml-array-naming-suffix');
@@ -45,29 +44,9 @@ function buildFixAllText(document, relevantDiags, initialAst, isCategory = false
     const hasStringBuilderSuffix = relevantDiags.some(d => d.code === 'bml-stringbuilder-naming-suffix');
     const hasNaming = hasCamel || hasDictSuffix || hasArraySuffix || hasRecordSetSuffix || hasBoolPrefix || hasJsonSuffix || hasJsonArraySuffix || hasDateSuffix || hasStringBuilderSuffix;
 
-    // 1. Identifier renamings (Constants take priority over camelCase)
+    // 1. Identifier renamings
     const renameMap = new Map();
     const constantVars = new Set();
-
-    if (hasMagic) {
-        for (const diag of relevantDiags) {
-            if (diag.code === 'bml-magic-number') {
-                const editRange = diag.originalRange ?? diag.range;
-                const val = document.getText(editRange);
-                const lineText = document.lineAt(editRange.start.line).text;
-                const prefix = lineText.substring(0, editRange.start.character);
-                const suffix = lineText.substring(editRange.start.character + val.length);
-                const directAssignMatch = prefix.match(/(?:(?:string|integer|float|boolean|dict|json|jsonarray|date)\s+)?([a-zA-Z_]\w*)\s*=\s*$/i);
-                const isPureAssignment = directAssignMatch && (/^[\s;]*$/.test(suffix));
-                if (isPureAssignment) {
-                    const varName = directAssignMatch[1];
-                    const constName = inferConstantCandidateName(lineText, editRange.start.character, val);
-                    renameMap.set(varName, constName);
-                    constantVars.add(varName);
-                }
-            }
-        }
-    }
 
     if (hasNaming) {
         for (const diag of relevantDiags) {
@@ -235,7 +214,6 @@ function getFixAllSafeAction(document, diagnostics) {
         'bml-jsonarray-naming-suffix',
         'bml-date-naming-suffix',
         'bml-stringbuilder-naming-suffix',
-        'bml-magic-number',
         'bml-unused-variable',
         'bml-unused-loop-var',
         'bml-string-cast-of-string',
@@ -313,11 +291,6 @@ function getFixAllSafeAction(document, diagnostics) {
         (count) => `Apply CPQ type naming conventions (Dict, Array, Json, Date, Sb, is/has) (${count} issue${count > 1 ? 's' : ''})`
     );
 
-    // 4. Category: Direct Magic Number Constants
-    addCategoryAction(
-        relevantDiags.filter(d => d.code === 'bml-magic-number'),
-        (count) => `Convert direct magic number variables to named constants (${count} issue${count > 1 ? 's' : ''})`
-    );
 
     // 5. Category: Syntax & Formatting
     addCategoryAction(
