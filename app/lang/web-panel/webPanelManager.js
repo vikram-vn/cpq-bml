@@ -10,6 +10,11 @@ try {
 } catch (_) {}
 
 let primaryPanel = null;
+const panelsByPage = {
+  settings: null,
+  graph: null,
+  interactive: null
+};
 let currentInspectorContext = null;
 
 function getNonce() {
@@ -150,6 +155,10 @@ async function dispatchMessage(message, context, vscodeInstance, panel) {
     return;
   }
 
+  if (message.command === 'panelReady' || message.command === 'ready') {
+    return;
+  }
+
   if (message.command === 'pageChanged') {
     if (panel && !panel.isDetached) {
       panel.title = getTitleForPage(message.page);
@@ -158,6 +167,29 @@ async function dispatchMessage(message, context, vscodeInstance, panel) {
   }
 
   // Handle Graph messages
+  if (message.command === 'refresh') {
+    const activeTarget = panel?.activeTargetFile;
+    if (activeTarget) {
+      try {
+        const { updatePanelModel } = require('@/lang/graph/dependencyGraphPanel');
+        await updatePanelModel(panel, activeTarget);
+      } catch (_) {}
+    }
+    return;
+  }
+
+  if (message.command === 'switchTarget' && message.filePath) {
+    if (fs.existsSync(message.filePath)) {
+      try {
+        const { updatePanelModel } = require('@/lang/graph/dependencyGraphPanel');
+        panel.activeTargetFile = message.filePath;
+        panel.title = getTitleForPage('graph', { targetFilePath: message.filePath });
+        await updatePanelModel(panel, message.filePath);
+      } catch (_) {}
+    }
+    return;
+  }
+
   if (message.command === 'openFile' && message.filePath) {
     if (fs.existsSync(message.filePath)) {
       const doc = await vscodeInstance.workspace.openTextDocument(message.filePath);
@@ -233,11 +265,18 @@ async function dispatchMessage(message, context, vscodeInstance, panel) {
     return;
   }
 
-  // Handle Settings messages
-  try {
-    const { handleMessage } = require('@/lang/settings/messageHandler');
-    await handleMessage(message, context, vscodeInstance, panel);
-  } catch (_) {}
+  // If message has command, it was intended for web-panel shell / graph / inspector
+  if (message.command) {
+    return;
+  }
+
+  // Handle Settings messages (messages with type)
+  if (message.type) {
+    try {
+      const { handleMessage } = require('@/lang/settings/messageHandler');
+      await handleMessage(message, context, vscodeInstance, panel);
+    } catch (_) {}
+  }
 }
 
 function openWebPanel(context, options = {}) {
@@ -258,27 +297,26 @@ function openWebPanel(context, options = {}) {
     ? vscodeInstance.ViewColumn.Active
     : (vscodeInstance?.ViewColumn?.One || 1));
 
-  // If reusing the single primary panel
-  if (!separateTab && primaryPanel) {
+  // If reusing the panel for this specific page
+  const existingPanel = panelsByPage[page];
+  if (!separateTab && existingPanel) {
     try {
-      primaryPanel.title = getTitleForPage(page, payload);
-      primaryPanel.reveal(targetColumn);
+      existingPanel.title = getTitleForPage(page, payload);
+      existingPanel.reveal(targetColumn);
 
       if (page === 'graph') {
-        primaryPanel.activeTargetFile = payload?.targetFilePath || primaryPanel.activeTargetFile;
-        primaryPanel.webview.postMessage({ type: 'updateGraph', model: payload?.model || payload, autoFocus: true });
+        existingPanel.activeTargetFile = payload?.targetFilePath || existingPanel.activeTargetFile;
+        existingPanel.webview.postMessage({ type: 'updateGraph', model: payload?.model || payload, autoFocus: true });
       } else if (page === 'interactive') {
-        primaryPanel.webview.postMessage({ command: 'setData', payload, autoFocus: true });
+        existingPanel.webview.postMessage({ command: 'setData', payload, autoFocus: true });
       } else if (page === 'settings') {
         if (payload?.tab) {
-          primaryPanel.webview.postMessage({ type: 'switchTab', tab: payload.tab });
-        } else {
-          primaryPanel.webview.postMessage({ type: 'navigate', page: 'settings' });
+          existingPanel.webview.postMessage({ type: 'switchTab', tab: payload.tab });
         }
       }
-      return primaryPanel;
+      return existingPanel;
     } catch (_) {
-      primaryPanel = null;
+      panelsByPage[page] = null;
     }
   }
 
@@ -289,8 +327,10 @@ function openWebPanel(context, options = {}) {
   }
 
   const title = getTitleForPage(page, payload);
+  const viewType = 'cpqBmlWebPanel';
+
   const panel = vscodeInstance.window.createWebviewPanel(
-    'cpqBmlWebPanel',
+    viewType,
     title,
     { viewColumn: targetColumn, preserveFocus: false },
     {
@@ -302,6 +342,7 @@ function openWebPanel(context, options = {}) {
 
   panel.isDetached = !!separateTab;
   if (!separateTab) {
+    panelsByPage[page] = panel;
     primaryPanel = panel;
   }
 
@@ -326,8 +367,13 @@ function openWebPanel(context, options = {}) {
   });
 
   panel.onDidDispose(() => {
+    if (panelsByPage[page] === panel) {
+      panelsByPage[page] = null;
+    }
     if (primaryPanel === panel) {
       primaryPanel = null;
+    }
+    if (page === 'interactive') {
       currentInspectorContext = null;
     }
   });
@@ -340,10 +386,13 @@ function getPrimaryPanel() {
 }
 
 function _resetWebPanel() {
-  if (primaryPanel) {
-    try {
-      if (typeof primaryPanel.dispose === 'function') primaryPanel.dispose();
-    } catch (_) {}
+  for (const k of Object.keys(panelsByPage)) {
+    if (panelsByPage[k]) {
+      try {
+        if (typeof panelsByPage[k].dispose === 'function') panelsByPage[k].dispose();
+      } catch (_) {}
+      panelsByPage[k] = null;
+    }
   }
   primaryPanel = null;
   currentInspectorContext = null;

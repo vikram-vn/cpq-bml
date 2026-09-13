@@ -31,19 +31,27 @@ export default function HeaderBar({ model, onRefresh, onExportMermaid }) {
             </div>
 
             <div className="metrics-pill-group">
-                <div className="metric-pill" title="Upstream files calling this function (Blast Radius)">
+                <div className="metric-pill" title="Upstream libraries calling this function (Blast Radius)">
                     <span style={{ color: 'var(--accent-red)' }}>💥 Blast Radius:</span>
                     <span className="metric-value">
                         {blastRadius ? `${blastRadius.transitiveCount} caller${blastRadius.transitiveCount === 1 ? '' : 's'}` : '0'}
                     </span>
                 </div>
-                <div className="metric-pill" title="Downstream library functions invoked">
-                    <span style={{ color: 'var(--accent-cyan)' }}>📦 Sub-functions:</span>
+                <div className="metric-pill" title="Commerce Actions triggering this script">
+                    <span style={{ color: 'var(--accent-amber)' }}>⚡ Actions:</span>
+                    <span className="metric-value">{outgoing?.actions?.length || 0}</span>
+                </div>
+                <div className="metric-pill" title="Outgoing library functions invoked">
+                    <span style={{ color: 'var(--accent-cyan)' }}>📦 Libraries:</span>
                     <span className="metric-value">{outgoing?.functions?.length || 0}</span>
                 </div>
                 <div className="metric-pill" title="CPQ Data Tables queried via BMQL">
                     <span style={{ color: 'var(--accent-purple)' }}>🗄 Data Tables:</span>
                     <span className="metric-value">{outgoing?.dataTables?.length || 0}</span>
+                </div>
+                <div className="metric-pill" title="CPQ Transaction and Line Attributes referenced">
+                    <span style={{ color: 'var(--accent-green)' }}>🏷 Attributes:</span>
+                    <span className="metric-value">{outgoing?.attributes?.length || 0}</span>
                 </div>
             </div>
 

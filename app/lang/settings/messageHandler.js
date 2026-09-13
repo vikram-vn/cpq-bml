@@ -51,8 +51,11 @@ const ALLOWED_FIELDS = new Set([
 
 // Every mutating case re-sends a fresh 'state' snapshot so the webview never relies on stale state.
 async function handleMessage(message, context, vscode, panel) {
+  if (!message || typeof message.type !== "string" || !message.type) {
+    return;
+  }
   try {
-    await dispatch(message || {}, context, vscode, panel);
+    await dispatch(message, context, vscode, panel);
   } catch (err) {
     panel.webview.postMessage({ type: "error", message: err.message });
   }

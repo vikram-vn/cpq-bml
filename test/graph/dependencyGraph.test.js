@@ -194,14 +194,18 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
         const model = {
             target: { name: 'calc', qualifiedName: 'util.calc', filePath: '/test.bml' },
             blastRadius: { callers: [], directCount: 0, transitiveCount: 0, maxDepth: 0, impactLevel: 'Isolated' },
-            outgoing: { functions: [], dataTables: [], externalApis: [] },
+            outgoing: { functions: [], dataTables: [], externalApis: [], attributes: [], actions: [] },
             graph: {
                 nodes: [
                     { id: 'target_util_calc', label: 'calc', subtitle: 'util.calc', type: 'focal' },
-                    { id: 'caller_action', label: 'action', subtitle: 'commerce.action', type: 'caller' }
+                    { id: 'caller_action', label: 'action', subtitle: 'commerce.action', type: 'caller' },
+                    { id: 'attr_status_t', label: 'status_t', subtitle: 'Transaction Attribute', type: 'attribute' },
+                    { id: 'action_save', label: 'save_t', subtitle: 'Commerce Action', type: 'action' }
                 ],
                 edges: [
-                    { source: 'caller_action', target: 'target_util_calc', type: 'blast_radius', label: 'calls' }
+                    { source: 'caller_action', target: 'target_util_calc', type: 'blast_radius', label: 'calls' },
+                    { source: 'target_util_calc', target: 'attr_status_t', type: 'attribute_access', label: 'reads' },
+                    { source: 'action_save', target: 'target_util_calc', type: 'action_trigger', label: 'triggers' }
                 ]
             }
         };
@@ -210,6 +214,79 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
         assert.ok(mermaid.startsWith('flowchart LR'));
         assert.ok(mermaid.includes('caller_action'));
         assert.ok(mermaid.includes('target_util_calc'));
+        assert.ok(mermaid.includes('attr_status_t'));
+        assert.ok(mermaid.includes('action_save'));
         assert.ok(mermaid.includes('-->|"calls"|'));
+    });
+
+    test('analyzeScriptContent extracts attributes, actions, datatables, and libraries', () => {
+        const script = `
+            status = status_t;
+            line_status = line.status_l;
+            val = line.unit_price;
+            totalAmount_t = 500.0;
+            if (_action_name == "SubmitOrder") {
+                util.notification.send();
+            }
+            save_t;
+            recordset = bmql("SELECT part FROM catalog_dt");
+        `;
+        const meta = {
+            mainDocAttributes: [{ name: 'custom_t' }],
+            subDocAttributes: [{ name: 'custom_l' }],
+            actionName: 'ApproveQuote'
+        };
+
+        const result = analyzeScriptContent(script, meta);
+
+        // Attributes
+        const attrNames = result.attributes.map(a => a.name);
+        assert.ok(attrNames.includes('status_t'));
+        assert.ok(attrNames.includes('status_l'));
+        assert.ok(attrNames.includes('unit_price'));
+        assert.ok(attrNames.includes('totalAmount_t'));
+        assert.ok(attrNames.includes('custom_t'));
+        assert.ok(attrNames.includes('custom_l'));
+
+        // Actions
+        const actNames = result.actions.map(a => a.name);
+        assert.ok(actNames.includes('SubmitOrder'));
+        assert.ok(actNames.includes('save_t'));
+        assert.ok(actNames.includes('ApproveQuote'));
+
+        // Data Tables
+        assert.strictEqual(result.dataTables[0].name, 'catalog_dt');
+
+        // Functions / Libraries
+        assert.strictEqual(result.functions[0].qualifiedName, 'util.notification');
+    });
+
+    test('generateDependencyModel generates nodes and workspaceSymbols for attributes and actions', () => {
+        const files = [
+            {
+                filePath: '/cpq/commerce/transactionStatus.bml',
+                content: `
+                    status = status_t;
+                    line_status = line.status_l;
+                    rs = bmql("SELECT x FROM rates_dt");
+                    util.helper();
+                `
+            },
+            {
+                filePath: '/cpq/util/helper.bml',
+                content: `return 1;`
+            }
+        ];
+
+        const model = generateDependencyModel('/cpq/commerce/transactionStatus.bml', files);
+
+        const nodeTypes = model.graph.nodes.map(n => n.type);
+        assert.ok(nodeTypes.includes('focal'));
+        assert.ok(nodeTypes.includes('attribute'));
+        assert.ok(nodeTypes.includes('table'));
+        assert.ok(nodeTypes.includes('callee'));
+
+        assert.ok(Array.isArray(model.workspaceSymbols));
+        assert.strictEqual(model.workspaceSymbols.length, 2);
     });
 });

@@ -455,4 +455,16 @@ suite("settings messageHandler", () => {
     assert.strictEqual(panel.posted[0].type, "error");
     assert.ok(panel.posted[0].message.includes("unknown message type"));
   });
+
+  test("messages without type or command-only messages are safely ignored", async () => {
+    const panel = fakePanel();
+    const vscode = createFakeVscode({});
+    const context = createFakeContext({});
+
+    await handleMessage({ command: "panelReady", activePage: "settings" }, context, vscode, panel);
+    await handleMessage(null, context, vscode, panel);
+    await handleMessage({}, context, vscode, panel);
+
+    assert.strictEqual(panel.posted.length, 0);
+  });
 });

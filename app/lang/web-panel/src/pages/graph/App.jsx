@@ -11,10 +11,13 @@ export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
         return initialModel || (typeof window !== 'undefined' && window.__INITIAL_GRAPH_MODEL__) || null;
     });
     const [showCallers, setShowCallers] = useState(true);
+    const [showActions, setShowActions] = useState(true);
     const [showCallees, setShowCallees] = useState(true);
     const [showTables, setShowTables] = useState(true);
+    const [showAttributes, setShowAttributes] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedNode, setSelectedNode] = useState(null);
+    const [activeMatchNodeId, setActiveMatchNodeId] = useState(null);
 
     useEffect(() => {
         const handleMessage = (event) => {
@@ -40,6 +43,13 @@ export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
         vscodeApi.postMessage({ command: 'exportMermaid' });
     }, [vscodeApi]);
 
+    const handleSwitchTarget = useCallback((filePath) => {
+        vscodeApi.postMessage({
+            command: 'switchTarget',
+            filePath
+        });
+    }, [vscodeApi]);
+
     const handleOpenNodeFile = useCallback((node) => {
         if (node && node.filePath) {
             vscodeApi.postMessage({
@@ -58,23 +68,35 @@ export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
                 onExportMermaid={handleExportMermaid}
             />
             <Toolbar
+                model={model}
                 showCallers={showCallers}
                 setShowCallers={setShowCallers}
+                showActions={showActions}
+                setShowActions={setShowActions}
                 showCallees={showCallees}
                 setShowCallees={setShowCallees}
                 showTables={showTables}
                 setShowTables={setShowTables}
+                showAttributes={showAttributes}
+                setShowAttributes={setShowAttributes}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+                onSelectNode={setSelectedNode}
+                onSwitchTarget={handleSwitchTarget}
+                activeMatchNodeId={activeMatchNodeId}
+                setActiveMatchNodeId={setActiveMatchNodeId}
             />
             <GraphCanvas
                 model={model}
                 showCallers={showCallers}
+                showActions={showActions}
                 showCallees={showCallees}
                 showTables={showTables}
+                showAttributes={showAttributes}
                 searchQuery={searchQuery}
                 selectedNode={selectedNode}
                 onSelectNode={setSelectedNode}
+                activeMatchNodeId={activeMatchNodeId}
             />
             <NodeDrawer
                 selectedNode={selectedNode}

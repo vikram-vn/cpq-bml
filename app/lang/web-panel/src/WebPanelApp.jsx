@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import NavigationBar from './components/NavigationBar';
+import React, { useState, useEffect } from 'react';
 import SettingsPage from './pages/settings/App';
 import GraphPage from './pages/graph/App';
 import InteractivePage from './pages/interactive/App';
@@ -60,52 +59,17 @@ export default function WebPanelApp({ vscodeApi: propVscodeApi }) {
     return () => window.removeEventListener('message', handleMessage);
   }, [vscodeApi, activePage]);
 
-  const handleSelectPage = useCallback((page) => {
-    setActivePage(page);
-    vscodeApi.postMessage({ command: 'pageChanged', page });
-  }, [vscodeApi]);
-
-  const handlePopOut = useCallback(() => {
-    let payload = null;
-    if (activePage === 'graph') payload = graphModel;
-    else if (activePage === 'interactive') payload = inspectorData;
-
-    vscodeApi.postMessage({
-      command: 'openInNewTab',
-      page: activePage,
-      payload
-    });
-  }, [vscodeApi, activePage, graphModel, inspectorData]);
-
-  const pageContextTitle = useMemo(() => {
-    if (activePage === 'graph') {
-      return graphModel?.targetName ? `Graph: ${graphModel.targetName}` : 'Graph';
-    }
-    if (activePage === 'interactive') {
-      return inspectorData?.title ? `Inspect: ${inspectorData.title}` : 'Inspector';
-    }
-    return 'Settings';
-  }, [activePage, graphModel, inspectorData]);
-
   return (
     <div className="web-panel-shell">
-      <NavigationBar
-        activePage={activePage}
-        onSelectPage={handleSelectPage}
-        onPopOut={handlePopOut}
-        pageTitle={pageContextTitle}
-      />
-      <main className="web-panel-content">
-        <div className={`web-panel-page-wrapper ${activePage === 'settings' ? 'active' : ''}`}>
-          <SettingsPage vscodeApi={vscodeApi} />
-        </div>
-        <div className={`web-panel-page-wrapper ${activePage === 'graph' ? 'active' : ''}`}>
-          <GraphPage vscodeApi={vscodeApi} initialModel={graphModel} />
-        </div>
-        <div className={`web-panel-page-wrapper ${activePage === 'interactive' ? 'active' : ''}`}>
-          <InteractivePage vscodeApi={vscodeApi} initialData={inspectorData} />
-        </div>
-      </main>
+      {activePage === 'settings' && (
+        <SettingsPage vscodeApi={vscodeApi} />
+      )}
+      {activePage === 'graph' && (
+        <GraphPage vscodeApi={vscodeApi} initialModel={graphModel} />
+      )}
+      {activePage === 'interactive' && (
+        <InteractivePage vscodeApi={vscodeApi} initialData={inspectorData} />
+      )}
     </div>
   );
 }

@@ -1,13 +1,16 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 
 export default function GraphCanvas({
     model,
     showCallers,
+    showActions,
     showCallees,
     showTables,
+    showAttributes,
     searchQuery,
     selectedNode,
-    onSelectNode
+    onSelectNode,
+    activeMatchNodeId
 }) {
     const [scale, setScale] = useState(1.0);
     const [pan, setPan] = useState({ x: 60, y: 60 });
@@ -42,62 +45,56 @@ export default function GraphCanvas({
     const handleZoomOut = () => setScale(s => Math.max(s * 0.8, 0.3));
     const handleZoomReset = () => { setScale(1.0); setPan({ x: 60, y: 60 }); };
 
+    const query = (searchQuery || '').trim().toLowerCase();
+
     // Layout computation
     const { positions, visibleNodes, visibleEdges } = useMemo(() => {
         if (!model) return { positions: new Map(), visibleNodes: [], visibleEdges: [] };
 
-        const query = (searchQuery || '').trim().toLowerCase();
         const colWidth = 280;
         const nodeWidth = 220;
         const nodeHeight = 56;
         const nodeGap = 20;
 
-        const callers = (model.blastRadius?.callers || []).filter(c =>
-            !query || c.name.toLowerCase().includes(query) || c.qualifiedName.toLowerCase().includes(query)
-        );
-        const callees = (model.outgoing?.functions || []).filter(c =>
-            !query || c.name.toLowerCase().includes(query) || c.qualifiedName.toLowerCase().includes(query)
-        );
-        const tables = (model.outgoing?.dataTables || []).filter(t =>
-            !query || t.name.toLowerCase().includes(query)
-        );
-        const apis = (model.outgoing?.externalApis || []).filter(a =>
-            !query || a.target.toLowerCase().includes(query)
-        );
+        const callers = (model.blastRadius?.callers || []);
+        const actions = (model.outgoing?.actions || []);
+        const callees = (model.outgoing?.functions || []);
+        const tables = (model.outgoing?.dataTables || []);
+        const attributes = (model.outgoing?.attributes || []);
+        const apis = (model.outgoing?.externalApis || []);
 
-        const rightSideNodes = [
-            ...(showCallees ? callees.map(c => ({ ...c, type: 'callee' })) : []),
-            ...(showTables ? tables.map(t => ({ ...t, type: 'table' })) : []),
-            ...apis.map(a => ({ ...a, type: 'api' }))
+        const leftSideNodes = [
+            ...(showCallers ? callers.map(c => ({ ...c, type: 'caller', id: `caller_${c.qualifiedName}` })) : []),
+            ...(showActions ? actions.map(a => ({ ...a, type: 'action', id: `action_${a.name.toLowerCase().replace(/[^a-zA-Z0-9_]/g, '_')}` })) : [])
         ];
 
-        const maxRows = Math.max(1, callers.length, rightSideNodes.length);
+        const rightSideNodes = [
+            ...(showCallees ? callees.map(c => ({ ...c, type: 'callee', id: `callee_${c.qualifiedName}` })) : []),
+            ...(showTables ? tables.map(t => ({ ...t, type: 'table', id: `table_${t.name.toLowerCase()}` })) : []),
+            ...(showAttributes ? attributes.map(a => ({ ...a, type: 'attribute', id: `attr_${a.name.toLowerCase()}` })) : []),
+            ...apis.map(a => ({ ...a, type: 'api', id: `api_${a.target.replace(/[^a-zA-Z0-9]/g, '_')}` }))
+        ];
+
+        const maxRows = Math.max(1, leftSideNodes.length, rightSideNodes.length);
         const totalHeight = maxRows * (nodeHeight + nodeGap);
         const focalY = Math.max(0, (totalHeight - nodeHeight) / 2);
 
         const posMap = new Map();
 
-        // 1. Focal node position
+        // 1. Focal node position (Column 1)
         const focalId = `target_${model.target.qualifiedName}`;
         posMap.set(focalId, { x: colWidth, y: focalY });
 
-        // 2. Callers positions (Column 0)
-        if (showCallers) {
-            callers.forEach((c, idx) => {
-                const y = idx * (nodeHeight + nodeGap);
-                posMap.set(`caller_${c.qualifiedName}`, { x: 0, y });
-            });
-        }
+        // 2. Left side positions (Column 0 - Inbound Triggers & Callers)
+        leftSideNodes.forEach((n, idx) => {
+            const y = idx * (nodeHeight + nodeGap);
+            posMap.set(n.id, { x: 0, y });
+        });
 
-        // 3. Right side positions (Column 2)
+        // 3. Right side positions (Column 2 - Dependencies)
         rightSideNodes.forEach((n, idx) => {
             const y = idx * (nodeHeight + nodeGap);
-            const id = n.type === 'callee'
-                ? `callee_${n.qualifiedName}`
-                : n.type === 'table'
-                    ? `table_${n.name.toLowerCase()}`
-                    : `api_${n.target.replace(/[^a-zA-Z0-9]/g, '_')}`;
-            posMap.set(id, { x: colWidth * 2, y });
+            posMap.set(n.id, { x: colWidth * 2, y });
         });
 
         // Filter visible nodes and edges
@@ -105,7 +102,17 @@ export default function GraphCanvas({
         const vEdges = model.graph.edges.filter(e => posMap.has(e.source) && posMap.has(e.target));
 
         return { positions: posMap, visibleNodes: vNodes, visibleEdges: vEdges };
-    }, [model, showCallers, showCallees, showTables, searchQuery]);
+    }, [model, showCallers, showActions, showCallees, showTables, showAttributes]);
+
+    // Auto-pan / Zoom-to-fit to active search match or selected node
+    useEffect(() => {
+        const targetId = activeMatchNodeId || selectedNode?.id;
+        if (!targetId || !positions.has(targetId)) return;
+        const pos = positions.get(targetId);
+        const targetX = 240 - pos.x * scale;
+        const targetY = 180 - pos.y * scale;
+        setPan({ x: targetX, y: targetY });
+    }, [activeMatchNodeId, selectedNode, positions, scale]);
 
     if (!model) {
         return (
@@ -133,11 +140,17 @@ export default function GraphCanvas({
                     <marker id="arrow-blast" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
                         <polygon points="0 0, 8 4, 0 8" fill="#ef4444" />
                     </marker>
+                    <marker id="arrow-action" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                        <polygon points="0 0, 8 4, 0 8" fill="#f97316" />
+                    </marker>
                     <marker id="arrow-callee" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
                         <polygon points="0 0, 8 4, 0 8" fill="#06b6d4" />
                     </marker>
                     <marker id="arrow-table" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
                         <polygon points="0 0, 8 4, 0 8" fill="#8b5cf6" />
+                    </marker>
+                    <marker id="arrow-attribute" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                        <polygon points="0 0, 8 4, 0 8" fill="#10b981" />
                     </marker>
                     <marker id="arrow-api" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
                         <polygon points="0 0, 8 4, 0 8" fill="#f59e0b" />
@@ -162,9 +175,15 @@ export default function GraphCanvas({
                             if (edge.type === 'blast_radius') {
                                 marker = 'arrow-blast';
                                 edgeClass += ' edge-blast';
+                            } else if (edge.type === 'action_trigger') {
+                                marker = 'arrow-action';
+                                edgeClass += ' edge-action';
                             } else if (edge.type === 'data_access') {
                                 marker = 'arrow-table';
                                 edgeClass += ' edge-table';
+                            } else if (edge.type === 'attribute_access') {
+                                marker = 'arrow-attribute';
+                                edgeClass += ' edge-attribute';
                             } else if (edge.type === 'external_call') {
                                 marker = 'arrow-api';
                                 edgeClass += ' edge-api';
@@ -191,13 +210,33 @@ export default function GraphCanvas({
                             if (!pos) return null;
 
                             const isSelected = selectedNode && selectedNode.id === node.id;
-                            const label = node.label.length > 22 ? node.label.slice(0, 20) + '...' : node.label;
-                            const subtitle = node.subtitle.length > 28 ? node.subtitle.slice(0, 26) + '...' : node.subtitle;
+                            const isMatch = query && (
+                                node.label.toLowerCase().includes(query) ||
+                                (node.subtitle && node.subtitle.toLowerCase().includes(query))
+                            );
+                            const isActiveMatch = node.id === activeMatchNodeId;
+
+                            let icon = '';
+                            if (node.type === 'action') icon = '⚡ ';
+                            else if (node.type === 'attribute') icon = '🏷 ';
+                            else if (node.type === 'table') icon = '🗄 ';
+                            else if (node.type === 'callee') icon = '📦 ';
+                            else if (node.type === 'caller') icon = '💥 ';
+                            else if (node.type === 'focal') icon = '🎯 ';
+                            else if (node.type === 'api') icon = '🌐 ';
+
+                            const label = `${icon}${node.label.length > 20 ? node.label.slice(0, 18) + '...' : node.label}`;
+                            const subtitle = node.subtitle && node.subtitle.length > 28 ? node.subtitle.slice(0, 26) + '...' : (node.subtitle || '');
+
+                            let extraClass = '';
+                            if (isSelected) extraClass += ' node-selected';
+                            if (isMatch) extraClass += ' node-search-match';
+                            if (isActiveMatch) extraClass += ' node-active-match';
 
                             return (
                                 <g
                                     key={node.id}
-                                    className={`node-group node-${node.type}`}
+                                    className={`node-group node-${node.type}${extraClass}`}
                                     transform={`translate(${pos.x}, ${pos.y})`}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -209,7 +248,6 @@ export default function GraphCanvas({
                                         height={nodeHeight}
                                         rx={8}
                                         ry={8}
-                                        style={isSelected ? { stroke: '#ffffff', strokeWidth: '3px' } : undefined}
                                     />
                                     <text x={14} y={24} className="node-title">
                                         {label}
