@@ -1,10 +1,19 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 
 // ── Per-file cache ──────────────────────────────────────────────────────────
 const _cache = Object.create(null);
 let _resolvedBaseDir = null;
+
+function readJsonFile(filePath) {
+    if (filePath.endsWith('.br')) {
+        const buf = fs.readFileSync(filePath);
+        return JSON.parse(zlib.brotliDecompressSync(buf).toString('utf8'));
+    }
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
 
 // Drops cached JSON data so next loadJson() re-reads from disk.
 function invalidateCache() {
@@ -14,29 +23,24 @@ function invalidateCache() {
     _resolvedBaseDir = null;
 }
 
-// Loads minified or fallback JSON data, cached by filename.
+// Loads minified, compressed, or fallback JSON data, cached by filename.
 function loadJson(baseName, extPath) {
     if (_cache[baseName] && Object.keys(_cache[baseName]).length > 0) return _cache[baseName];
 
+    const brFile   = `${baseName}.min.json.br`;
     const minFile  = `${baseName}.min.json`;
     const jsonFile = `${baseName}.json`;
     const relDir   = path.join("app", "lang", "intellisense");
 
     // Fast path: check previously resolved directory first
     if (_resolvedBaseDir) {
-        const minCandidate = path.join(_resolvedBaseDir, minFile);
-        try {
-            const text = fs.readFileSync(minCandidate, "utf8");
-            _cache[baseName] = JSON.parse(text);
-            return _cache[baseName];
-        } catch (_) {}
-
-        const jsonCandidate = path.join(_resolvedBaseDir, jsonFile);
-        try {
-            const text = fs.readFileSync(jsonCandidate, "utf8");
-            _cache[baseName] = JSON.parse(text);
-            return _cache[baseName];
-        } catch (_) {}
+        for (const file of [brFile, minFile, jsonFile]) {
+            const candidate = path.join(_resolvedBaseDir, file);
+            try {
+                _cache[baseName] = readJsonFile(candidate);
+                return _cache[baseName];
+            } catch (_) {}
+        }
     }
 
     // Candidate directories to probe (prefer __dirname first)
@@ -51,11 +55,10 @@ function loadJson(baseName, extPath) {
     ].filter(Boolean);
 
     for (const dir of candidateDirs) {
-        for (const file of [minFile, jsonFile]) {
+        for (const file of [brFile, minFile, jsonFile]) {
             const candidate = path.join(dir, file);
             try {
-                const text = fs.readFileSync(candidate, "utf8");
-                _cache[baseName] = JSON.parse(text);
+                _cache[baseName] = readJsonFile(candidate);
                 _resolvedBaseDir = dir;
                 return _cache[baseName];
             } catch (_) {

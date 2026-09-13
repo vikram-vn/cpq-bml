@@ -94,6 +94,23 @@ suite('apiDataLoader', () => {
             const data = loadJson(baseName, tmpDir);
             assert.deepStrictEqual(data, {});
         });
+
+        test('transparently reads and decompresses .min.json.br files', () => {
+            withTempDir((tmpDir) => {
+                const zlib = require('zlib');
+                const baseName = freshBaseName();
+                const expected = { functions: ['atof', 'atoi'], compressed: true };
+                const compressed = zlib.brotliCompressSync(Buffer.from(JSON.stringify(expected)));
+
+                const filePath = path.join(tmpDir, 'app', 'lang', 'intellisense', `${baseName}.min.json.br`);
+                fs.mkdirSync(path.dirname(filePath), { recursive: true });
+                fs.writeFileSync(filePath, compressed);
+
+                const { loadJson } = loadFresh();
+                const data = loadJson(baseName, tmpDir);
+                assert.deepStrictEqual(data, expected);
+            });
+        });
     });
 
     test('invalidateCache() forces the next loadJson() call to re-read from disk', () => {

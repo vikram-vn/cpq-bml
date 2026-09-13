@@ -38,6 +38,19 @@ async function compileExtension() {
         }
     }
 
+    // 0. Plugins
+    const ignoreZodLocalesPlugin = {
+        name: 'ignore-zod-locales',
+        setup(build) {
+            build.onResolve({ filter: /zod[\\/]v4[\\/]locales/ }, (args) => {
+                const norm = args.path.replace(/\\/g, '/');
+                if (!norm.endsWith('/en') && !norm.endsWith('/en.cjs') && !norm.endsWith('/en.js')) {
+                    return { path: path.join(ROOT, 'scripts', 'build', 'empty-locale.js') };
+                }
+            });
+        }
+    };
+
     // 1. Parallel esbuild tasks (extension + webview)
     const buildExt = esbuild.build({
         entryPoints: [path.join(ROOT, 'extension.js')],
@@ -48,7 +61,8 @@ async function compileExtension() {
         platform: 'node',
         target: 'node18',
         treeShaking: true,
-        drop: isProduction ? ['debugger'] : [],
+        drop: isProduction ? ['debugger', 'console'] : [],
+        plugins: [ignoreZodLocalesPlugin],
         alias: {
             '@/app': path.join(ROOT, 'app'),
             '@': path.join(ROOT, 'app')
@@ -67,9 +81,13 @@ async function compileExtension() {
         platform: 'browser',
         target: 'es2022',
         treeShaking: true,
-        drop: ['debugger'],
+        drop: isProduction ? ['debugger', 'console'] : ['debugger'],
         jsx: 'automatic',
         alias: {
+            'react': 'preact/compat',
+            'react-dom/test-utils': 'preact/test-utils',
+            'react-dom': 'preact/compat',
+            'react/jsx-runtime': 'preact/jsx-runtime',
             '@/app': path.join(ROOT, 'app'),
             '@': path.join(ROOT, 'app')
         },
@@ -138,6 +156,22 @@ async function compileExtension() {
         if (!fs.existsSync(outPath) || fs.statSync(outPath).mtimeMs < fs.statSync(srcPath).mtimeMs) {
             const data = JSON.parse(fs.readFileSync(srcPath, 'utf8'));
             fs.writeFileSync(outPath, JSON.stringify(data), 'utf8');
+        }
+    }
+
+    // Brotli-compress heavy intellisense files for shipping
+    const heavyIntellisense = [
+        path.join(intellisenseDir, 'bml-functions-api-usage.min.json'),
+        path.join(intellisenseDir, 'bml-attributes-api-usage.min.json')
+    ];
+    for (const p of heavyIntellisense) {
+        const outBr = p + '.br';
+        if (!fs.existsSync(outBr) || fs.statSync(outBr).mtimeMs < fs.statSync(p).mtimeMs || isProduction) {
+            const data = fs.readFileSync(p);
+            const compressed = zlib.brotliCompressSync(data, {
+                params: { [zlib.constants.BROTLI_PARAM_QUALITY]: isProduction ? 11 : 6 }
+            });
+            fs.writeFileSync(outBr, compressed);
         }
     }
 
