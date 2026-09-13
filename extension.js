@@ -33,7 +33,6 @@ const { registerCloudDataTables } = require("@/lang/cloud/cloudDataTables");
 const { registerCloudTransactions } = require("@/lang/cloud/cloudTransactions");
 const { registerCloudDeploymentCenter } = require("@/lang/cloud/cloudDeploymentCenter");
 const { registerCloudGlobalSearch } = require("@/lang/cloud/cloudGlobalSearch");
-const { registerBmlDropEditProvider } = require("@/lang/cloud/cloudDragAndDrop");
 const { registerRemoteTestCommands } = require("@/lang/test-controller/remoteTestRunner");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
 const { invalidateIndex } = require("@/lang/intellisense/workspaceIndex");
@@ -123,7 +122,6 @@ function activate(context) {
   registerCloudDeploymentCenter(context);
   registerCloudGlobalSearch(context);
   registerRemoteTestCommands(context);
-  registerBmlDropEditProvider(context, vscode);
 
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.rest.preflightCheck", async () => {

@@ -33,7 +33,6 @@ const {
   fetchCommerceFunctions,
   fetchCommerceActions,
 } = require('@/lang/cloud/cloudExplorerFetch');
-const { createCloudDragAndDropController } = require('@/lang/cloud/cloudDragAndDrop');
 
 /**
  * Pure Factory: Creates the Cloud Explorer TreeDataProvider.
@@ -774,15 +773,7 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance = vscode, 
 
 function registerCloudExplorer(context, vscodeInstance = vscode) {
   const treeDataProvider = createCloudExplorer(vscodeInstance, context);
-  const dragAndDropController = createCloudDragAndDropController(vscodeInstance, 'util');
-
-  const treeView = vscodeInstance.window.createTreeView
-    ? vscodeInstance.window.createTreeView('cpqBml.cloudExplorer', {
-        treeDataProvider,
-        dragAndDropController,
-        canSelectMany: true,
-      })
-    : vscodeInstance.window.registerTreeDataProvider('cpqBml.cloudExplorer', treeDataProvider);
+  const treeView = vscodeInstance.window.registerTreeDataProvider('cpqBml.cloudExplorer', treeDataProvider);
 
   const refreshCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.refresh', () => {
     treeDataProvider.refresh();

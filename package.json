@@ -1274,21 +1274,6 @@
           "type": "boolean",
           "default": true,
           "description": "Smart Debug: Automatically reuse previous transaction ID(s) and parameter inputs on repeated debug runs without prompting. Use 'CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)' or hold Alt while clicking Debug to change inputs."
-        },
-        "cpqBml.editor.dragAndDropFormat": {
-          "type": "string",
-          "enum": [
-            "variableName",
-            "accessorSnippet",
-            "stringLiteral"
-          ],
-          "enumDescriptions": [
-            "Insert plain variable name (e.g. customer_t)",
-            "Insert canonical BML accessor (e.g. get(transaction, \"customer_t\") or getconfigattr(\"attr\"))",
-            "Insert quoted string literal (e.g. \"customer_t\")"
-          ],
-          "default": "variableName",
-          "description": "Format used when dragging and dropping attributes or items from Cloud Explorer into BML editors."
         }
       }
     }

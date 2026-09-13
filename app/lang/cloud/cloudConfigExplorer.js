@@ -1,7 +1,6 @@
 const { vscode, safeParseJson, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
 const api = require('@/lang/rest/api');
 const { isConfigured } = require('@/lang/rest/config');
-const { createCloudDragAndDropController } = require('./cloudDragAndDrop');
 
 /**
  * Pure Factory: Creates the Configuration Product Families Explorer TreeDataProvider.
@@ -516,14 +515,7 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
 
 function registerConfigExplorer(context, vscodeInstance = vscode) {
   const treeDataProvider = createConfigExplorer(vscodeInstance, context);
-  const dragAndDropController = createCloudDragAndDropController(vscodeInstance, 'config');
-  const treeView = vscodeInstance.window.createTreeView
-    ? vscodeInstance.window.createTreeView('cpqBml.configExplorer', {
-        treeDataProvider,
-        dragAndDropController,
-        canSelectMany: true,
-      })
-    : vscodeInstance.window.registerTreeDataProvider('cpqBml.configExplorer', treeDataProvider);
+  const treeView = vscodeInstance.window.registerTreeDataProvider('cpqBml.configExplorer', treeDataProvider);
 
   const refreshCmd = vscodeInstance.commands.registerCommand('cpqBml.config.refresh', () => {
     treeDataProvider.refresh();
