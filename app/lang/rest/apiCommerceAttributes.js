@@ -107,7 +107,7 @@ async function getCommerceAttribute(
     process,
     document,
     attributeVarName,
-    fields = "label,variableName,type,required,userDefault,description,additional,defaultDataType",
+    fields = "label,variableName,type,required,userDefault,description,additional,defaultDataType,dependencies,ajaxSensitive,attributeSet,systemDefault",
     fetchMenuOptions = true,
   } = {},
   transport,

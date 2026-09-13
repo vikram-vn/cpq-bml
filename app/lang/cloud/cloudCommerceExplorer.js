@@ -46,57 +46,34 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
 
   function getTreeItem(element) {
     if (element.type === 'filterInfo') {
-      const item = new vscodeInstance.TreeItem(
-        `Filter: "${element.query}" (${element.totalMatches} match${element.totalMatches === 1 ? '' : 'es'})`,
-        vscodeInstance.TreeItemCollapsibleState.None
-      );
+      const item = new vscodeInstance.TreeItem(`Filter: "${element.query}" (${element.totalMatches} match${element.totalMatches === 1 ? '' : 'es'})`, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = 'Click to clear';
-      item.tooltip = `Active search filter: "${element.query}"\nFound ${element.totalMatches} matching item(s)\nClick to clear filter`;
+      item.tooltip = `Active search filter: "${element.query}"\nFound ${element.totalMatches} match(es)\nClick to clear`;
       item.iconPath = new vscodeInstance.ThemeIcon('filter');
       item.contextValue = 'cpqCommerceFilterInfo';
-      item.command = {
-        command: 'cpqBml.commerce.clearFilter',
-        title: 'Clear Commerce Filter'
-      };
+      item.command = { command: 'cpqBml.commerce.clearFilter', title: 'Clear Commerce Filter' };
       return item;
     }
-
     if (element.type === 'processHeader') {
-      const item = new vscodeInstance.TreeItem(
-        `Process: ${element.process}`,
-        vscodeInstance.TreeItemCollapsibleState.None
-      );
+      const item = new vscodeInstance.TreeItem(`Process: ${element.process}`, vscodeInstance.TreeItemCollapsibleState.None);
       item.description = '(Click to switch)';
-      item.tooltip = `Active Commerce Process: ${element.process}\nClick to switch to a different process`;
+      item.tooltip = `Active Commerce Process: ${element.process}\nClick to switch`;
       item.iconPath = new vscodeInstance.ThemeIcon('arrow-swap');
-      item.command = {
-        command: 'cpqBml.commerce.switchProcess',
-        title: 'Switch Active Commerce Process'
-      };
+      item.command = { command: 'cpqBml.commerce.switchProcess', title: 'Switch Process' };
       item.contextValue = 'cpqCommerceProcessHeader';
       return item;
     }
-
     if (element.type === 'document') {
-      const label = element.docName === 'transaction'
-        ? 'Transaction'
-        : 'Transaction Line';
-      const item = new vscodeInstance.TreeItem(
-        label,
-        vscodeInstance.TreeItemCollapsibleState.Expanded
-      );
+      const label = element.docName === 'transaction' ? 'Transaction' : 'Transaction Line';
+      const item = new vscodeInstance.TreeItem(label, vscodeInstance.TreeItemCollapsibleState.Expanded);
       item.iconPath = new vscodeInstance.ThemeIcon(element.docName === 'transaction' ? 'file-text' : 'list-unordered');
       item.tooltip = `Commerce Document: ${element.docName}`;
       item.contextValue = 'cpqCommerceDocument';
       return item;
     }
-
     if (element.type === 'section') {
       const isFiltered = Boolean(filterQuery);
-      const item = new vscodeInstance.TreeItem(
-        `${element.label} (${element.count})`,
-        isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
-      );
+      const item = new vscodeInstance.TreeItem(`${element.label} (${element.count})`, isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed);
       item.iconPath = new vscodeInstance.ThemeIcon(element.icon);
       item.tooltip = `${element.label} for ${element.docName}`;
       item.contextValue = `cpqCommerceSection_${element.section}`;
@@ -119,6 +96,22 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
         title: 'View Action Definition',
         arguments: [{ data: { ...act, commerceProcess: element.process, commerceDocument: element.docName } }]
       };
+      return item;
+    }
+
+    if (element.type === 'arraySet') {
+      const arr = element.data || {};
+      const varName = extractStringValue(arr.variableName || arr.name, 'arraySet');
+      const name = extractStringValue(arr.label || arr.name || varName, varName);
+      const memberCount = (arr.attributes && arr.attributes.length) || 0;
+      const item = new vscodeInstance.TreeItem(
+        formatNameAndVarName(name, varName),
+        memberCount > 0 ? vscodeInstance.TreeItemCollapsibleState.Collapsed : vscodeInstance.TreeItemCollapsibleState.None
+      );
+      item.description = `[${memberCount} attrs]`;
+      item.tooltip = `Array Set: ${name} (${varName})\n${arr.description || ''}\nContains ${memberCount} member attributes\nExpand to view child attributes`;
+      item.iconPath = new vscodeInstance.ThemeIcon('table');
+      item.contextValue = 'cpqCommerceArraySet';
       return item;
     }
 
@@ -358,31 +351,38 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
         return filterQuery ? sections.filter(s => s.count > 0) : sections;
       }
 
+      const filteredArraySets = filterList(docData?.arraySets);
       const sections = [
         { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
         { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
       ];
+      if (docData?.arraySets && docData.arraySets.length > 0) {
+        sections.push({ type: 'section', section: 'arraySets', label: 'Array Sets', icon: 'table', count: filteredArraySets.length, docName: doc, process: element.process, items: filteredArraySets });
+      }
       return filterQuery ? sections.filter(s => s.count > 0) : sections;
     }
 
     if (element.type === 'section') {
       const items = element.items || [];
       if (items.length === 0) {
-        return [{
-          type: 'empty',
-          label: filterQuery ? `No matching ${element.label.toLowerCase()}` : `No ${element.label.toLowerCase()} found`
-        }];
+        return [{ type: 'empty', label: filterQuery ? `No matching ${element.label.toLowerCase()}` : `No ${element.label.toLowerCase()} found` }];
       }
 
-      if (element.section === 'actions') {
-        return items.map(act => ({ type: 'action', data: act, docName: element.docName, process: element.process }));
-      }
-      if (element.section === 'libraries') {
-        return items.map(lib => ({ type: 'library', data: lib, docName: element.docName, process: element.process }));
-      }
-      if (element.section === 'attributes') {
-        return items.map(attr => ({ type: 'attribute', data: attr, docName: element.docName, process: element.process }));
-      }
+      if (element.section === 'actions') return items.map(act => ({ type: 'action', data: act, docName: element.docName, process: element.process }));
+      if (element.section === 'libraries') return items.map(lib => ({ type: 'library', data: lib, docName: element.docName, process: element.process }));
+      if (element.section === 'attributes') return items.map(attr => ({ type: 'attribute', data: attr, docName: element.docName, process: element.process }));
+      if (element.section === 'arraySets') return items.map(arr => ({ type: 'arraySet', data: arr, docName: element.docName, process: element.process }));
+    }
+
+    if (element.type === 'arraySet') {
+      const attrs = element.data?.attributes || [];
+      return attrs.map(attr => ({
+        type: 'attribute',
+        data: { ...attr, scope: 'Array Set' },
+        docName: element.docName,
+        process: element.process,
+        parentArraySet: element.data?.variableName
+      }));
     }
 
     if (element.type === 'attribute') {

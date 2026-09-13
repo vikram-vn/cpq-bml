@@ -251,12 +251,13 @@ export default function GraphCanvas({
                             const isActiveMatch = node.id === activeMatchNodeId;
 
                             let icon = '';
-                            if (node.type === 'action') icon = '⚡ ';
+                            if (node.entityType === 'arraySet' || node.type === 'arraySet') icon = '▦ ';
+                            else if (node.type === 'action') icon = '⚡ ';
                             else if (node.type === 'attribute') icon = '🏷 ';
                             else if (node.type === 'table') icon = '🗄 ';
                             else if (node.type === 'callee') icon = '📦 ';
                             else if (node.type === 'caller') icon = '💥 ';
-                            else if (node.type === 'focal') icon = '🎯 ';
+                            else if (node.type === 'focal') icon = (node.entityType === 'arraySet' ? '▦ ' : (node.entityType === 'attribute' ? '🏷 ' : (node.entityType === 'table' ? '🗄 ' : (node.entityType === 'action' ? '⚡ ' : '🎯 '))));
                             else if (node.type === 'api') icon = '🌐 ';
 
                             const label = `${icon}${node.label.length > 20 ? node.label.slice(0, 18) + '...' : node.label}`;

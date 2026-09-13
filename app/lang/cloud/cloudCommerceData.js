@@ -18,12 +18,19 @@ function matchesItem(item, query) {
 
 async function fetchCommerceData(vscodeInstance, context) {
   const wsRoot = getWorkspaceRoot(vscodeInstance);
+  const fs = require('fs');
+  const path = require('path');
+
   if (!isConfigured(vscodeInstance)) {
     const settings = getSettings(vscodeInstance);
     const process = settings.commerceProcess || 'oraclecpqo';
 
     let wsAttributes = [];
     let wsLineAttributes = [];
+    let wsActions = [];
+    let wsLineActions = [];
+    let wsArraySets = [];
+
     try {
       const { loadWorkspaceAttributes } = require('@/lang/rest/commerceAttributes');
       if (wsRoot && typeof loadWorkspaceAttributes === 'function') {
@@ -40,7 +47,38 @@ async function fetchCommerceData(vscodeInstance, context) {
       }
     } catch {}
 
-    if (wsAttributes.length === 0 && wsLineAttributes.length === 0) {
+    if (wsRoot) {
+      const searchDirs = [
+        path.join(wsRoot, 'cpq', 'commerce', process),
+        path.join(wsRoot, '.cpq', 'commerce', process),
+        path.join(wsRoot, 'cpq', 'commerce'),
+        path.join(wsRoot, '.cpq', 'commerce')
+      ];
+
+      for (const sDir of searchDirs) {
+        if (!fs.existsSync(sDir)) continue;
+        const actPath = path.join(sDir, 'actions.min.json');
+        if (fs.existsSync(actPath) && wsActions.length === 0) {
+          try {
+            const raw = JSON.parse(fs.readFileSync(actPath, 'utf8'));
+            const list = Array.isArray(raw) ? raw : (raw.actions || raw.items || []);
+            for (const a of list) {
+              if (a.scope === 'Line Item') wsLineActions.push(a);
+              else wsActions.push(a);
+            }
+          } catch {}
+        }
+        const arrPath = path.join(sDir, 'arraySets.min.json');
+        if (fs.existsSync(arrPath) && wsArraySets.length === 0) {
+          try {
+            const raw = JSON.parse(fs.readFileSync(arrPath, 'utf8'));
+            wsArraySets = Array.isArray(raw) ? raw : (raw.arraySets || raw.items || []);
+          } catch {}
+        }
+      }
+    }
+
+    if (wsAttributes.length === 0 && wsLineAttributes.length === 0 && wsActions.length === 0) {
       return null;
     }
 
@@ -49,13 +87,14 @@ async function fetchCommerceData(vscodeInstance, context) {
       documentList: ['transaction', 'transactionLine'],
       integrations: [],
       transaction: {
-        actions: [],
+        actions: wsActions,
         attributes: wsAttributes,
         libraries: []
       },
       transactionLine: {
-        actions: [],
-        attributes: wsLineAttributes
+        actions: wsLineActions,
+        attributes: wsLineAttributes,
+        arraySets: wsArraySets
       },
       isOffline: true
     };
@@ -92,6 +131,8 @@ async function fetchCommerceData(vscodeInstance, context) {
     calls.push(api.listCommerceAttributes(context, vscodeInstance, { process, document: d, limit: 1000 }));
     if (d === 'transaction') {
       calls.push(api.listLibraryFunctions(context, vscodeInstance, { limit: 1000 }, undefined, { commerceProcess: process, commerceDocument: 'transaction' }));
+    } else if (d === 'transactionLine' && typeof api.listCommerceArraySets === 'function') {
+      calls.push(api.listCommerceArraySets(context, vscodeInstance, { process, document: d, limit: 100 }));
     }
   }
 
@@ -116,13 +157,17 @@ async function fetchCommerceData(vscodeInstance, context) {
     const actionsRes = results[idx++];
     const attrsRes = results[idx++];
     let libsRes = null;
+    let arraySetsRes = null;
     if (d === 'transaction') {
       libsRes = results[idx++];
+    } else if (d === 'transactionLine' && typeof api.listCommerceArraySets === 'function') {
+      arraySetsRes = results[idx++];
     }
 
     data[d] = {
       actions: parseItems(actionsRes),
-      attributes: parseItems(attrsRes)
+      attributes: parseItems(attrsRes),
+      arraySets: arraySetsRes ? parseItems(arraySetsRes) : []
     };
 
     if (d === 'transaction') {

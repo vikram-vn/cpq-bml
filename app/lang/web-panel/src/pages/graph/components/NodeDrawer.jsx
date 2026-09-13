@@ -15,10 +15,13 @@ export default function NodeDrawer({ node, selectedNode: propNode, onOpenNodeFil
     } else if (selectedNode.type === 'callee') {
         const linesStr = selectedNode.lines && selectedNode.lines.length > 0 ? ` · Line(s): ${selectedNode.lines.map(l => l + 1).join(', ')}` : '';
         desc = `Direct Touching Script / Library${linesStr} · File: ${selectedNode.filePath || 'External'}`;
+    } else if (selectedNode.type === 'arraySet' || selectedNode.entityType === 'arraySet') {
+        desc = `Oracle CPQ Line Array Set · Groups multi-value grid attributes · ${selectedNode.subtitle || ''}`;
     } else if (selectedNode.type === 'table') {
         desc = `Oracle CPQ Data Table queried via BMQL / gettabledata`;
     } else if (selectedNode.type === 'attribute') {
-        desc = `CPQ ${selectedNode.scope === 'line' ? 'Line Item' : 'Transaction'} Attribute (${selectedNode.operation || 'Read'}) · Scope: ${selectedNode.scope || 'Doc'}`;
+        const parentSet = selectedNode.parentArraySet ? ` · Parent Array Set: [${selectedNode.parentArraySet}]` : '';
+        desc = `CPQ ${selectedNode.scope === 'line' ? 'Line Item' : (selectedNode.scope === 'Array Set' ? 'Array Set' : 'Transaction')} Attribute (${selectedNode.operation || 'Read'}) · Scope: ${selectedNode.scope || 'Doc'}${parentSet}`;
     } else if (selectedNode.type === 'action') {
         desc = `Commerce Action · Triggers BML script execution · ${selectedNode.subtitle || 'Action'}`;
     } else {

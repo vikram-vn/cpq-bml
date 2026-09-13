@@ -407,6 +407,13 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
         assert.strictEqual(tableModel.target.entityType, 'table');
         const wsScriptNode = tableModel.graph.nodes.find(n => n.id === 'script_commerce.invokewebservice');
         assert.ok(wsScriptNode);
+
+        // 3. Bottom-up model for Array Set
+        const arraySetModel = generateBottomUpModel('arraySet', '_chargeSet', files);
+        assert.strictEqual(arraySetModel.target.name, '_chargeSet');
+        assert.strictEqual(arraySetModel.target.entityType, 'arraySet');
+        assert.strictEqual(arraySetModel.graph.nodes[0].id, 'entity_arrayset__chargeset');
+        assert.strictEqual(arraySetModel.graph.nodes[0].resourceType, 'Array Set');
     });
 });
 

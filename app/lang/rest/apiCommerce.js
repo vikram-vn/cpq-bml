@@ -334,6 +334,73 @@ async function getCommerceIntegration(
   );
 }
 
+// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets
+async function listCommerceArraySets(
+  context,
+  vscode,
+  { process, document, offset = 0, limit = 1000 } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets`,
+      method: "GET",
+      query: { offset, limit, totalResults: true },
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets/<arraySetVarName>
+async function getCommerceArraySet(
+  context,
+  vscode,
+  arraySetVarName,
+  { process, document } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets/${arraySetVarName}`,
+      method: "GET",
+    },
+    transport,
+  );
+}
+
+// GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets/<arraySetVarName>/attributes
+async function listArraySetAttributes(
+  context,
+  vscode,
+  arraySetVarName,
+  { process, document, offset = 0, limit = 1000 } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets/${arraySetVarName}/attributes`,
+      method: "GET",
+      query: { offset, limit, totalResults: true },
+    },
+    transport,
+  );
+}
+
 module.exports = {
   commerceDocumentsPath,
   getTransactions,
@@ -342,10 +409,14 @@ module.exports = {
   listCommerceProcesses,
   listCommerceActions,
   getCommerceAction,
+  listCommerceArraySets,
+  getCommerceArraySet,
+  listArraySetAttributes,
   listCommerceIntegrations,
   getCommerceIntegration,
   runPipelineViewer,
   ...attributesApi,
 };
+
 
 

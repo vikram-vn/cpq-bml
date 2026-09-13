@@ -229,4 +229,49 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
       commerceAttrs.loadWorkspaceAttributes = origLoad;
     }
   });
+
+  test('renders Array Sets section and expands member attributes for Transaction Line', async () => {
+    const mockVscode = createCloudMockVscode();
+    const explorer = createCommerceExplorer(mockVscode, {});
+
+    const mockArraySet = {
+      variableName: '_chargeSet',
+      label: 'Charge Set',
+      description: 'Recurring and one-time charges',
+      attributes: [
+        { variableName: 'chargeType_l', label: 'Charge Type', dataType: 'String' },
+        { variableName: 'price_l', label: 'Price', dataType: 'Currency' }
+      ]
+    };
+
+    // Simulate section
+    const sectionNode = {
+      type: 'section',
+      section: 'arraySets',
+      label: 'Array Sets',
+      docName: 'transactionLine',
+      process: 'oraclecpqo',
+      items: [mockArraySet]
+    };
+
+    const arraySetNodes = await explorer.getChildren(sectionNode);
+    assert.strictEqual(arraySetNodes.length, 1);
+    assert.strictEqual(arraySetNodes[0].type, 'arraySet');
+    assert.strictEqual(arraySetNodes[0].data.variableName, '_chargeSet');
+
+    const treeItem = explorer.getTreeItem(arraySetNodes[0]);
+    assert.ok(treeItem.label.includes('Charge Set'));
+    assert.strictEqual(treeItem.collapsibleState, mockVscode.TreeItemCollapsibleState.Collapsed);
+    assert.ok(treeItem.description.includes('2 attrs'));
+
+    // Expand array set to member attributes
+    const memberNodes = await explorer.getChildren(arraySetNodes[0]);
+    assert.strictEqual(memberNodes.length, 2);
+    assert.strictEqual(memberNodes[0].type, 'attribute');
+    assert.strictEqual(memberNodes[0].data.variableName, 'chargeType_l');
+    assert.strictEqual(memberNodes[0].parentArraySet, '_chargeSet');
+
+    const memberItem = explorer.getTreeItem(memberNodes[0]);
+    assert.strictEqual(memberItem.command.command, 'cpqBml.cloud.insertOrCopyAttribute');
+  });
 });
