@@ -2,7 +2,8 @@ const assert = require("assert");
 const http = require("http");
 const { recordMcpRequest, getMcpTraffic, clearMcpTraffic } = require("@/lang/mcp/traffic");
 const { auditBmlCode } = require("@/lang/mcp/tools/audit");
-const { listDataTables, getDataTableSchema } = require("@/lang/mcp/tools/lookup");
+const { listDataTables, getDataTableSchema, listParts, getPart } = require("@/lang/mcp/tools/lookup");
+const { evaluateBmlLogic } = require("@/lang/mcp/tools/testTools");
 const { startMcpServer, stopMcpServer } = require("@/lang/mcp/server");
 
 suite("MCP Advanced Features Suite", () => {
@@ -158,6 +159,41 @@ suite("MCP Advanced Features Suite", () => {
       const res = await getDataTableSchema({}, mockVscode, {});
       assert.strictEqual(res.success, false);
       assert.ok(res.error.includes("tableName"));
+    });
+  });
+
+  suite("Parts MCP Lookup Tools", () => {
+    test("listParts handles disconnected site gracefully", async () => {
+      const context = {};
+      const res = await listParts(context, mockVscode, {});
+      assert.strictEqual(res.success, false);
+      assert.ok(res.error);
+    });
+
+    test("getPart fails gracefully for missing partNumber", async () => {
+      const res = await getPart({}, mockVscode, {});
+      assert.strictEqual(res.success, false);
+      assert.ok(res.error.includes("partNumber"));
+    });
+  });
+
+  suite("BML Logic Evaluation Tool", () => {
+    test("evaluates expressions and captures print output", () => {
+      const code = `
+        val = 10 + 25;
+        print("Result is: " + string(val));
+        return val;
+      `;
+      const res = evaluateBmlLogic({ code });
+      assert.strictEqual(res.success, true);
+      assert.strictEqual(res.returnValue, 35);
+      assert.ok(res.printOutput.some(line => line.includes("Result is: 35")));
+    });
+
+    test("rejects empty code", () => {
+      const res = evaluateBmlLogic({ code: "   " });
+      assert.strictEqual(res.success, false);
+      assert.ok(res.error);
     });
   });
 

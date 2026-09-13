@@ -135,8 +135,10 @@ async function diffFunction(context, vscode, args) {
         if (!baseUrl) return { success: false, error: 'No CPQ site URL configured.' };
 
         if (type === 'util') {
-            const resp = await api.getUtilFunction(context, vscode, variableName);
-            remoteText = resp && resp.scriptText ? resp.scriptText : '';
+            const fetchFn = typeof api.getLibraryFunction === 'function' ? api.getLibraryFunction : api.getUtilFunction;
+            const resp = await fetchFn(context, vscode, variableName);
+            const body = resp && resp.body ? resp.body : resp;
+            remoteText = body && body.scriptText ? body.scriptText : '';
         } else {
             return { success: false, error: 'diff_function currently supports util functions only.' };
         }

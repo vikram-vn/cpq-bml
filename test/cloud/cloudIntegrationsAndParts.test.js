@@ -209,6 +209,50 @@ suite('CPQ Cloud Integrations & Parts - Unit Tests', () => {
       assert.ok(res);
       assert.strictEqual(res.statusCode, 200);
       assert.ok(dispatchedPath.includes('/parts'));
+      assert.ok(!dispatchedPath.includes('orderBy'), 'should not contain camelCase orderBy');
+      assert.ok(!dispatchedPath.includes('orderby'), 'should not contain lowercase orderby when not specified');
+    });
+
+    test('listParts uses lowercase orderby when sort is provided', async () => {
+      let dispatchedPath = null;
+      const customTransport = async (options) => {
+        dispatchedPath = options.path;
+        return {
+          statusCode: 200,
+          headers: {},
+          body: JSON.stringify({ items: [] })
+        };
+      };
+
+      await apiParts.listParts(fakeCtx, fakeVsc, { orderBy: 'partNumber:asc' }, customTransport);
+      assert.ok(dispatchedPath.includes('orderby=partNumber%3Aasc') || dispatchedPath.includes('orderby=partNumber:asc'));
+      assert.ok(!dispatchedPath.includes('orderBy='));
+    });
+
+    test('listParts automatically recovers when CPQ returns 400 for unsupported orderby param', async () => {
+      let calls = 0;
+      const customTransport = async (options) => {
+        calls++;
+        if (options.path.includes('orderby')) {
+          return {
+            statusCode: 400,
+            headers: {},
+            body: JSON.stringify({
+              type: 'HTTP://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html',
+              title: 'Unsupported param [orderBy].'
+            })
+          };
+        }
+        return {
+          statusCode: 200,
+          headers: {},
+          body: JSON.stringify({ items: [{ partNumber: 'PART-FALLBACK' }] })
+        };
+      };
+
+      const res = await apiParts.listParts(fakeCtx, fakeVsc, { orderby: 'dateModified:desc' }, customTransport);
+      assert.strictEqual(res.statusCode, 200);
+      assert.strictEqual(calls, 2);
     });
 
     test('getPart retrieves single part by partNumber', async () => {

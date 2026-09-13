@@ -373,6 +373,7 @@ module.exports = {
   listLibraryFunctions,
   listLibraryFolders,
   getLibraryFunction,
+  getUtilFunction: getLibraryFunction,
   updateLibraryFunction,
   createLibraryFunction,
   validateLibraryFunction,

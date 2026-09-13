@@ -235,6 +235,8 @@ flowchart TD
 | | `get_function_metrics` | `variableName` | Computes Cyclomatic complexity, Halstead, nesting depth. |
 | **Schema & Data Tables** | `list_datatables` | _none_ | Lists all available Oracle CPQ Data Tables with descriptions. |
 | | `get_datatable_schema` | `tableName` | Retrieves column names, data types, and primary key schema for a Data Table. |
+| **Parts Catalog** | `list_parts` | `limit`?, `offset`?, `q`?, `fields`? | Lists/queries items from the Oracle CPQ Site Catalog with pricing and status. |
+| | `get_part` | `partNumber`, `fields`? | Retrieves full details, attributes, and pricing for a specific part number. |
 | **Lifecycle** | `pull_function` | `variableName`, `type`? | Pulls a single BML function from CPQ into local working copy. |
 | | `pull_functions` | `items` | Batch-pulls multiple functions simultaneously. |
 | | `save_function` | `variableName` | Saves the working copy to the CPQ environment. |

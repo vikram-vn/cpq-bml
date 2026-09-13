@@ -458,6 +458,8 @@ async function getDataTableSchema(context, vscode, args, transport) {
     }
 }
 
+const { listParts, getPart } = require('@/lang/mcp/tools/partsTools');
+
 module.exports = {
     listUtilFunctions,
     listCommerceFunctions,
@@ -473,5 +475,7 @@ module.exports = {
     syncConfigurationAttributes,
     listDataTables,
     getDataTableSchema,
+    listParts,
+    getPart,
 };
 

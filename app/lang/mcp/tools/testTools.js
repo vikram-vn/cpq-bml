@@ -103,7 +103,27 @@ const executeBmlTestSuiteTool = {
   },
 };
 
+function evaluateBmlLogic(args = {}) {
+  const code = args.code || "";
+  if (!code.trim()) {
+    return {
+      success: false,
+      error: "BML source code cannot be empty.",
+    };
+  }
+  const timeoutMs = typeof args.timeoutMs === "number" ? args.timeoutMs : 3000;
+  const res = BmlTestRunner.runTestCase(code, timeoutMs);
+  return {
+    success: res.passed,
+    returnValue: res.returnValue !== undefined ? res.returnValue : null,
+    printOutput: res.output || [],
+    durationMs: res.durationMs,
+    error: res.error || null,
+  };
+}
+
 module.exports = {
   generateBmlUnitTestTool,
   executeBmlTestSuiteTool,
+  evaluateBmlLogic,
 };

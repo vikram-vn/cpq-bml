@@ -49,8 +49,7 @@ function createPartsProvider(vscodeInstance = vscode, context) {
 
     try {
       const res = await api.listParts(context, vscodeInstance, {
-        limit: 200,
-        orderBy: 'dateModified:desc'
+        limit: 200
       });
       if (res && res.statusCode >= 200 && res.statusCode < 300) {
         const body = safeParseJson(res.body);
@@ -74,14 +73,31 @@ function createPartsProvider(vscodeInstance = vscode, context) {
             data: p
           };
         });
+
+        if (items.some(p => p.dateModified || p._date_modified)) {
+          cachedParts.sort((a, b) => {
+            const da = a.dateModified || '';
+            const db = b.dateModified || '';
+            return db.localeCompare(da);
+          });
+        }
+
         return cachedParts;
       } else {
-        const errText = res?.body ? (typeof res.body === 'string' ? res.body : JSON.stringify(res.body)) : `HTTP ${res?.statusCode}`;
+        let errText = `HTTP ${res?.statusCode || 'Error'}`;
+        if (res?.body) {
+          const parsed = typeof res.body === 'object' ? res.body : safeParseJson(res.body);
+          if (parsed && (parsed.title || parsed.detail || parsed.message)) {
+            errText = parsed.title || parsed.detail || parsed.message;
+          } else if (typeof res.body === 'string') {
+            errText = res.body;
+          }
+        }
         lastError = errText;
         return [];
       }
     } catch (err) {
-      lastError = err.message;
+      lastError = err?.message || String(err);
       return [];
     } finally {
       isLoading = false;

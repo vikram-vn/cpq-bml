@@ -8,8 +8,9 @@ async function listParts(
     offset = 0,
     limit = 100,
     q,
-    orderBy = 'dateModified:desc',
-    fields = 'partNumber,description,price,currency,status,units,dateModified',
+    orderby,
+    orderBy,
+    fields,
     signal
   } = {},
   transport
@@ -18,10 +19,11 @@ async function listParts(
   const queryParams = { limit, totalResults: true };
   if (offset > 0) queryParams.offset = offset;
   if (q) queryParams.q = q;
-  if (orderBy) queryParams.orderBy = orderBy;
+  const sort = orderby || orderBy;
+  if (sort) queryParams.orderby = sort;
   if (fields) queryParams.fields = fields;
 
-  return call(
+  const res = await call(
     context,
     vscode,
     {
@@ -32,6 +34,28 @@ async function listParts(
     },
     transport
   );
+
+  // Auto-recovery: if CPQ rejects the sort parameter with 400 Bad Request, retry without orderby
+  if (res && res.statusCode === 400 && queryParams.orderby) {
+    const errorBody = typeof res.body === 'string' ? res.body : JSON.stringify(res.body || {});
+    if (/unsupported param.*order/i.test(errorBody)) {
+      const fallbackQuery = { ...queryParams };
+      delete fallbackQuery.orderby;
+      return call(
+        context,
+        vscode,
+        {
+          path: `/rest/${version}/parts`,
+          method: 'GET',
+          query: fallbackQuery,
+          signal
+        },
+        transport
+      );
+    }
+  }
+
+  return res;
 }
 
 // GET /rest/<version>/parts/<id>

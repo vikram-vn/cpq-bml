@@ -255,6 +255,56 @@ function register(server, context, vscode, tools) {
     },
     async (args) => jsonResult(await tools.getDataTableSchema(context, vscode, args)),
   );
+
+  server.registerTool(
+    "list_parts",
+    {
+      description:
+        "List or query parts from the Oracle CPQ Site Catalog. Supports filtering (q parameter), pagination (limit, offset), and field selection. Useful for looking up part numbers, pricing, descriptions, and statuses for quote lines or BMQL parts queries.",
+      inputSchema: {
+        limit: z
+          .number()
+          .int()
+          .positive()
+          .max(500)
+          .optional()
+          .describe("Maximum number of parts to return (default 50, max 500)."),
+        offset: z
+          .number()
+          .int()
+          .min(0)
+          .optional()
+          .describe("Pagination offset (0-based)."),
+        q: z
+          .string()
+          .optional()
+          .describe("Query filter string for filtering parts (e.g. \"status eq 'Active'\" or \"partNumber eq 'SRV-100'\")."),
+        fields: z
+          .string()
+          .optional()
+          .describe("Comma-separated list of fields to retrieve (e.g. 'partNumber,description,price,currency')."),
+      },
+    },
+    async (args) => jsonResult(await tools.listParts(context, vscode, args)),
+  );
+
+  server.registerTool(
+    "get_part",
+    {
+      description:
+        "Retrieve full details, pricing, units, and custom attributes for a specific Part Number from the Oracle CPQ Site Catalog.",
+      inputSchema: {
+        partNumber: z
+          .string()
+          .describe("The Part Number / item number to look up (e.g. 'PART-001', 'SRV-1000')."),
+        fields: z
+          .string()
+          .optional()
+          .describe("Optional comma-separated fields to return."),
+      },
+    },
+    async (args) => jsonResult(await tools.getPart(context, vscode, args)),
+  );
 }
 
 module.exports = { register };
