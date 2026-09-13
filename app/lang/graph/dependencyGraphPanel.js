@@ -4,6 +4,11 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 const { generateDependencyModel, exportToMermaid } = require('@/lang/graph/dependencyGraphAnalyzer');
+const {
+    buildWorkspaceEntityIndex,
+    searchWorkspaceEntities,
+    generateBottomUpModel
+} = require('@/lang/graph/bottomUpTracer');
 
 let currentPanel = null;
 
@@ -113,6 +118,40 @@ async function updatePanelModel(panel, targetFilePath) {
 }
 
 /**
+ * Traces a specific entity (attribute, table, action, library) bottom-up and sends model to webview.
+ * @param {vscode.WebviewPanel} panel
+ * @param {'attribute'|'table'|'action'|'library'} entityType
+ * @param {string} entityName
+ */
+async function updatePanelEntityModel(panel, entityType, entityName) {
+    if (!panel || !entityType || !entityName) return;
+    try {
+        const files = await loadWorkspaceBmlFiles();
+        const model = generateBottomUpModel(entityType, entityName, files);
+        if (model) {
+            panel.webview.postMessage({ type: 'updateGraph', model });
+        }
+    } catch (err) {
+        vscode.window.showErrorMessage(`Error generating bottom-up dependency graph for ${entityName}: ${err.message}`);
+    }
+}
+
+/**
+ * Searches across workspace entities and sends categorized results to webview.
+ * @param {vscode.WebviewPanel} panel
+ * @param {string} query
+ */
+async function handleSearchEntities(panel, query) {
+    if (!panel || !query) return;
+    try {
+        const files = await loadWorkspaceBmlFiles();
+        const index = buildWorkspaceEntityIndex(files);
+        const results = searchWorkspaceEntities(index, query, 15);
+        panel.webview.postMessage({ type: 'entitySearchResults', results, query });
+    } catch (_) {}
+}
+
+/**
  * Registers the dependency graph command.
  * @param {vscode.ExtensionContext} context 
  */
@@ -127,5 +166,8 @@ module.exports = {
     showDependencyGraph,
     registerDependencyGraph,
     loadWorkspaceBmlFiles,
+    updatePanelModel,
+    updatePanelEntityModel,
+    handleSearchEntities,
     getHtml
 };

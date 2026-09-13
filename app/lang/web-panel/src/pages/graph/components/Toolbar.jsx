@@ -17,7 +17,10 @@ export default function Toolbar({
     onSelectNode,
     onSwitchTarget,
     activeMatchNodeId,
-    setActiveMatchNodeId
+    setActiveMatchNodeId,
+    entitySearchResults = [],
+    onSearchQueryChange,
+    onGraphEntity
 }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const containerRef = useRef(null);
@@ -33,9 +36,9 @@ export default function Toolbar({
         );
     }, [q, model]);
 
-    // 2. Matches across workspace BML functions
+    // 2. Fallback matches across workspace BML functions if entitySearchResults is empty
     const workspaceMatches = useMemo(() => {
-        if (!q || !model?.workspaceSymbols) return [];
+        if (!q || (entitySearchResults && entitySearchResults.length > 0) || !model?.workspaceSymbols) return [];
         const currentTarget = model.target?.qualifiedName?.toLowerCase();
         return model.workspaceSymbols
             .filter(s =>
@@ -43,9 +46,9 @@ export default function Toolbar({
                 (s.name.toLowerCase().includes(q) || s.qualifiedName.toLowerCase().includes(q))
             )
             .slice(0, 8);
-    }, [q, model]);
+    }, [q, model, entitySearchResults]);
 
-    const hasResults = graphMatches.length > 0 || workspaceMatches.length > 0;
+    const hasResults = graphMatches.length > 0 || (entitySearchResults && entitySearchResults.length > 0) || workspaceMatches.length > 0;
 
     // Cycle through matches
     const currentMatchIdx = useMemo(() => {
@@ -81,6 +84,15 @@ export default function Toolbar({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const handleInputChange = (e) => {
+        const val = e.target.value;
+        setSearchQuery(val);
+        setIsDropdownOpen(true);
+        if (onSearchQueryChange) {
+            onSearchQueryChange(val);
+        }
+    };
+
     const handleKeyDown = (e) => {
         if (e.key === 'Escape') {
             setIsDropdownOpen(false);
@@ -89,6 +101,14 @@ export default function Toolbar({
                 const node = graphMatches[currentMatchIdx];
                 setActiveMatchNodeId(node.id);
                 onSelectNode(node);
+                setIsDropdownOpen(false);
+            } else if (entitySearchResults && entitySearchResults.length > 0) {
+                const item = entitySearchResults[0];
+                if (item.entityType === 'library' && item.filePath && onSwitchTarget) {
+                    onSwitchTarget(item.filePath);
+                } else if (onGraphEntity) {
+                    onGraphEntity(item.entityType, item.name);
+                }
                 setIsDropdownOpen(false);
             } else if (workspaceMatches.length > 0) {
                 onSwitchTarget(workspaceMatches[0].filePath);
@@ -150,23 +170,19 @@ export default function Toolbar({
                         checked={showAttributes}
                         onChange={(e) => setShowAttributes(e.target.checked)}
                     />
-                    <span style={{ color: 'var(--accent-green)' }}>●</span> Attributes
+                    <span style={{ color: 'var(--accent-emerald)' }}>●</span> Attributes
                 </label>
             </div>
 
-            {/* Global Search Interface */}
-            <div className="search-container" ref={containerRef}>
-                <div className="search-input-wrapper">
+            <div className="search-box-wrapper" ref={containerRef}>
+                <div className="search-input-container">
                     <span className="search-icon">🔍</span>
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="Search graph & workspace BML..."
+                        placeholder="Search attribute, table, action, or library..."
                         value={searchQuery}
-                        onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                            setIsDropdownOpen(true);
-                        }}
+                        onChange={handleInputChange}
                         onFocus={() => setIsDropdownOpen(true)}
                         onKeyDown={handleKeyDown}
                     />
@@ -194,9 +210,39 @@ export default function Toolbar({
                     </div>
                 )}
 
-                {/* Autocomplete / Quick Switch Dropdown */}
+                {/* Autocomplete / Multi-Hop Entity Dropdown */}
                 {isDropdownOpen && q && hasResults && (
                     <div className="search-dropdown">
+                        {/* Categorized Workspace Entity Results (Bottom-Up Tracing) */}
+                        {entitySearchResults && entitySearchResults.length > 0 && (
+                            <div className="search-dropdown-group">
+                                <div className="search-dropdown-section">
+                                    Workspace Entities — Bottom-Up Trace ({entitySearchResults.length})
+                                </div>
+                                {entitySearchResults.map((ent, idx) => (
+                                    <div
+                                        key={`ent_${ent.entityType}_${ent.name}_${idx}`}
+                                        className="search-dropdown-item"
+                                        onClick={() => {
+                                            if (ent.entityType === 'library' && ent.filePath && onSwitchTarget) {
+                                                onSwitchTarget(ent.filePath);
+                                            } else if (onGraphEntity) {
+                                                onGraphEntity(ent.entityType, ent.name);
+                                            }
+                                            setIsDropdownOpen(false);
+                                            setSearchQuery('');
+                                        }}
+                                    >
+                                        <span className="search-item-icon">{ent.icon || '🏷'}</span>
+                                        <div className="search-item-info">
+                                            <span className="search-item-title">{ent.name}</span>
+                                            <span className="search-item-sub">{ent.subtitle || ent.hierarchyLabel}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
                         {graphMatches.length > 0 && (
                             <div className="search-dropdown-group">
                                 <div className="search-dropdown-section">
@@ -222,7 +268,7 @@ export default function Toolbar({
                             </div>
                         )}
 
-                        {workspaceMatches.length > 0 && (
+                        {workspaceMatches.length > 0 && (!entitySearchResults || entitySearchResults.length === 0) && (
                             <div className="search-dropdown-group">
                                 <div className="search-dropdown-section">
                                     Switch Graph to Workspace Function ({workspaceMatches.length})
@@ -237,7 +283,7 @@ export default function Toolbar({
                                             setSearchQuery('');
                                         }}
                                     >
-                                        <span className="search-item-icon">🌐</span>
+                                        <span className="search-item-icon">📦</span>
                                         <div className="search-item-info">
                                             <span className="search-item-title">{sym.qualifiedName}</span>
                                             <span className="search-item-sub">{sym.filePath}</span>

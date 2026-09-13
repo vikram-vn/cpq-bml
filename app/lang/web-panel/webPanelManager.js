@@ -190,6 +190,23 @@ async function dispatchMessage(message, context, vscodeInstance, panel) {
     return;
   }
 
+  if (message.command === 'graphEntity' && message.entityType && message.entityName) {
+    try {
+      const { updatePanelEntityModel } = require('@/lang/graph/dependencyGraphPanel');
+      panel.title = `CPQ Graph: ${message.entityName}`;
+      await updatePanelEntityModel(panel, message.entityType, message.entityName);
+    } catch (_) {}
+    return;
+  }
+
+  if (message.command === 'searchEntities' && typeof message.query === 'string') {
+    try {
+      const { handleSearchEntities } = require('@/lang/graph/dependencyGraphPanel');
+      await handleSearchEntities(panel, message.query);
+    } catch (_) {}
+    return;
+  }
+
   if (message.command === 'openFile' && message.filePath) {
     if (fs.existsSync(message.filePath)) {
       const doc = await vscodeInstance.workspace.openTextDocument(message.filePath);

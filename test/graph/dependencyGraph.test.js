@@ -12,6 +12,12 @@ const {
     exportToMermaid
 } = require('@/lang/graph/dependencyGraphAnalyzer');
 
+const {
+    buildWorkspaceEntityIndex,
+    searchWorkspaceEntities,
+    generateBottomUpModel
+} = require('@/lang/graph/bottomUpTracer');
+
 const { getHtml } = require('@/lang/graph/dependencyGraphPanel');
 
 suite('Dependency Graph & Blast Radius Analyzer', () => {
@@ -340,4 +346,67 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
         assert.ok(attrNames.includes('status_l'));
         assert.strictEqual(model.outgoing.attributes.length, 2);
     });
+
+    test('buildWorkspaceEntityIndex accurately indexes attributes, data tables, and libraries', () => {
+        const fileStatus = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
+        const fileWs = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
+        const index = buildWorkspaceEntityIndex([{ filePath: fileStatus }, { filePath: fileWs }]);
+
+        assert.ok(index.attributeIndex.has('status_t'));
+        assert.ok(index.attributeIndex.has('status_l'));
+        assert.ok(index.tableIndex.has('int_system_details'));
+        assert.ok(index.libraryIndex.has('commerce.transactionstatus'));
+        assert.ok(index.libraryIndex.has('commerce.invokewebservice'));
+
+        // Verify canonical schema details
+        const statusEntry = index.attributeIndex.get('status_t')[0];
+        assert.strictEqual(statusEntry.category, 'Commerce');
+        assert.strictEqual(statusEntry.resourceType, 'Attribute');
+        assert.ok(statusEntry.hierarchyLabel.includes('status_t'));
+    });
+
+    test('searchWorkspaceEntities categorizes attributes, tables, actions, and libraries', () => {
+        const fileStatus = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
+        const fileWs = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
+        const index = buildWorkspaceEntityIndex([{ filePath: fileStatus }, { filePath: fileWs }]);
+
+        const statusResults = searchWorkspaceEntities(index, 'status');
+        const types = statusResults.map(r => r.entityType);
+        assert.ok(types.includes('attribute'));
+        assert.ok(types.includes('library'));
+
+        const tableResults = searchWorkspaceEntities(index, 'int_system');
+        assert.strictEqual(tableResults[0].entityType, 'table');
+        assert.strictEqual(tableResults[0].name, 'INT_SYSTEM_DETAILS');
+    });
+
+    test('generateBottomUpModel generates multi-hop graph for attribute and data table', () => {
+        const fileStatus = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
+        const fileWs = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
+        const files = [{ filePath: fileStatus }, { filePath: fileWs }];
+
+        // 1. Bottom-up model for attribute status_t
+        const attrModel = generateBottomUpModel('attribute', 'status_t', files);
+        assert.strictEqual(attrModel.target.name, 'status_t');
+        assert.strictEqual(attrModel.target.entityType, 'attribute');
+        assert.strictEqual(attrModel.graph.nodes[0].id, 'entity_attr_status_t');
+
+        // Touching script should be transactionStatus
+        const scriptNode = attrModel.graph.nodes.find(n => n.id === 'script_commerce.transactionstatus');
+        assert.ok(scriptNode);
+        assert.strictEqual(scriptNode.label, 'transactionStatus');
+
+        // Edge should be 'reads'
+        const edge = attrModel.graph.edges.find(e => e.source === 'entity_attr_status_t' && e.target === 'script_commerce.transactionstatus');
+        assert.ok(edge);
+        assert.strictEqual(edge.label, 'reads');
+
+        // 2. Bottom-up model for data table INT_SYSTEM_DETAILS
+        const tableModel = generateBottomUpModel('table', 'INT_SYSTEM_DETAILS', files);
+        assert.strictEqual(tableModel.target.name, 'INT_SYSTEM_DETAILS');
+        assert.strictEqual(tableModel.target.entityType, 'table');
+        const wsScriptNode = tableModel.graph.nodes.find(n => n.id === 'script_commerce.invokewebservice');
+        assert.ok(wsScriptNode);
+    });
 });
+

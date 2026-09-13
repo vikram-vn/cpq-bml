@@ -18,12 +18,16 @@ export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedNode, setSelectedNode] = useState(null);
     const [activeMatchNodeId, setActiveMatchNodeId] = useState(null);
+    const [entitySearchResults, setEntitySearchResults] = useState([]);
 
     useEffect(() => {
         const handleMessage = (event) => {
             const message = event.data;
-            if (message && message.type === 'updateGraph') {
+            if (!message) return;
+            if (message.type === 'updateGraph') {
                 setModel(message.model);
+            } else if (message.type === 'entitySearchResults') {
+                setEntitySearchResults(message.results || []);
             }
         };
 
@@ -48,6 +52,23 @@ export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
             command: 'switchTarget',
             filePath
         });
+    }, [vscodeApi]);
+
+    const handleGraphEntity = useCallback((entityType, entityName) => {
+        vscodeApi.postMessage({
+            command: 'graphEntity',
+            entityType,
+            entityName
+        });
+    }, [vscodeApi]);
+
+    const handleSearchQueryChange = useCallback((query) => {
+        if (vscodeApi && typeof vscodeApi.postMessage === 'function') {
+            vscodeApi.postMessage({
+                command: 'searchEntities',
+                query
+            });
+        }
     }, [vscodeApi]);
 
     const handleOpenNodeFile = useCallback((node) => {
@@ -85,6 +106,9 @@ export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
                 onSwitchTarget={handleSwitchTarget}
                 activeMatchNodeId={activeMatchNodeId}
                 setActiveMatchNodeId={setActiveMatchNodeId}
+                entitySearchResults={entitySearchResults}
+                onSearchQueryChange={handleSearchQueryChange}
+                onGraphEntity={handleGraphEntity}
             />
             <GraphCanvas
                 model={model}
@@ -99,8 +123,9 @@ export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
                 activeMatchNodeId={activeMatchNodeId}
             />
             <NodeDrawer
-                selectedNode={selectedNode}
-                onOpenNodeFile={handleOpenNodeFile}
+                node={selectedNode}
+                onClose={() => setSelectedNode(null)}
+                onOpenFile={handleOpenNodeFile}
             />
         </div>
     );

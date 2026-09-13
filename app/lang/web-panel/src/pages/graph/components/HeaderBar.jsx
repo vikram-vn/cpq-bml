@@ -22,11 +22,17 @@ export default function HeaderBar({ model, onRefresh, onExportMermaid }) {
                 <div className="title-wrapper">
                     <div className="main-title">
                         <span>{target.name}</span>
-                        <span className={`risk-badge risk-${impact.toLowerCase()}`}>
-                            {impact} Risk
-                        </span>
+                        {target.entityType ? (
+                            <span className="risk-badge" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                                {target.entityType.toUpperCase()} BOTTOM-UP
+                            </span>
+                        ) : (
+                            <span className={`risk-badge risk-${impact.toLowerCase()}`}>
+                                {impact} Risk
+                            </span>
+                        )}
                     </div>
-                    <div className="sub-title">{target.qualifiedName}</div>
+                    <div className="sub-title">{target.hierarchyLabel || target.qualifiedName}</div>
                 </div>
             </div>
 

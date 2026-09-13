@@ -63,6 +63,43 @@ export default function GraphCanvas({
         const attributes = (model.outgoing?.attributes || []);
         const apis = (model.outgoing?.externalApis || []);
 
+        const focalNode = model.graph.nodes.find(n => n.type === 'focal');
+        const focalId = focalNode ? focalNode.id : `target_${model.target.qualifiedName}`;
+        const posMap = new Map();
+
+        const isBottomUp = Boolean(model.target?.entityType);
+        if (isBottomUp) {
+            // Bottom-Up Layout:
+            // Column 0: Root Entity (Attribute / Data Table / Action)
+            // Column 1: Direct Touching BML Scripts
+            // Column 2: Triggering Actions & Upstream Callers
+            const scriptNodes = model.graph.nodes.filter(n => n.id.startsWith('script_'));
+            const actionNodes = showActions ? model.graph.nodes.filter(n => n.type === 'action') : [];
+            const callerNodes = showCallers ? model.graph.nodes.filter(n => n.type === 'caller') : [];
+            const rightSideNodes = [...actionNodes, ...callerNodes];
+
+            const maxRows = Math.max(1, scriptNodes.length, rightSideNodes.length);
+            const totalHeight = maxRows * (nodeHeight + nodeGap);
+            const focalY = Math.max(0, (totalHeight - nodeHeight) / 2);
+
+            posMap.set(focalId, { x: 0, y: focalY });
+
+            scriptNodes.forEach((n, idx) => {
+                const y = idx * (nodeHeight + nodeGap);
+                posMap.set(n.id, { x: colWidth, y });
+            });
+
+            rightSideNodes.forEach((n, idx) => {
+                const y = idx * (nodeHeight + nodeGap);
+                posMap.set(n.id, { x: colWidth * 2, y });
+            });
+
+            const vNodes = model.graph.nodes.filter(n => posMap.has(n.id));
+            const vEdges = model.graph.edges.filter(e => posMap.has(e.source) && posMap.has(e.target));
+            return { positions: posMap, visibleNodes: vNodes, visibleEdges: vEdges };
+        }
+
+        // Forward File Mode (3-Column Topology)
         const leftSideNodes = [
             ...(showCallers ? callers.map(c => ({ ...c, type: 'caller', id: `caller_${c.qualifiedName}` })) : []),
             ...(showActions ? actions.map(a => ({ ...a, type: 'action', id: `action_${a.name.toLowerCase().replace(/[^a-zA-Z0-9_]/g, '_')}` })) : [])
@@ -79,10 +116,7 @@ export default function GraphCanvas({
         const totalHeight = maxRows * (nodeHeight + nodeGap);
         const focalY = Math.max(0, (totalHeight - nodeHeight) / 2);
 
-        const posMap = new Map();
-
         // 1. Focal node position (Column 1)
-        const focalId = `target_${model.target.qualifiedName}`;
         posMap.set(focalId, { x: colWidth, y: focalY });
 
         // 2. Left side positions (Column 0 - Inbound Triggers & Callers)
