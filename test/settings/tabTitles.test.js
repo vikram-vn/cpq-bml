@@ -1,7 +1,7 @@
 const assert = require("assert");
-const { TAB_LABELS, titleForTab } = require("@/lang/settings-panel/tabTitles");
+const { TAB_LABELS, titleForTab } = require("@/lang/settings/tabTitles");
 
-suite("settings-panel tabTitles", () => {
+suite("settings tabTitles", () => {
   test("returns a CPQ-BML prefixed title for each known tab", () => {
     for (const [tab, label] of Object.entries(TAB_LABELS)) {
       assert.strictEqual(titleForTab(tab), `CPQ-BML: ${label}`);

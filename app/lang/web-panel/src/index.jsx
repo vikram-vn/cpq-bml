@@ -3,6 +3,13 @@ import { createRoot } from 'react-dom/client';
 import WebPanelApp from './WebPanelApp';
 import { getVsCodeApi } from './vscodeApi';
 
+import '../css/shell.css';
+import '../css/settings-layout.css';
+import '../css/settings-components.css';
+import '../css/settings-main.css';
+import '../css/graph.css';
+import '../css/inspector.css';
+
 function showFatalError(error) {
   const root = document.getElementById('root');
   if (!root) return;

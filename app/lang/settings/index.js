@@ -4,10 +4,8 @@ try {
 } catch {
     vscode = {};
 }
-const { createSettingsPanel } = require("@/lang/settings-panel/panel");
-const { getHtml } = require("@/lang/settings-panel/html");
-const { handleMessage } = require("@/lang/settings-panel/messageHandler");
-const { titleForTab } = require("@/lang/settings-panel/tabTitles");
+const { handleMessage } = require("@/lang/settings/messageHandler");
+const { titleForTab } = require("@/lang/settings/tabTitles");
 const { hasMissingCredentials } = require("@/lang/rest/config");
 
 let currentPanel = null;
@@ -132,69 +130,20 @@ function registerSettingsPanel(context) {
   );
 }
 
-function escapeHtml(value) {
-  return String(value).replace(
-    /[&<>"']/g,
-    (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        c
-      ],
-  );
-}
-
 function openPanel(context, vscode, args) {
   const targetTab =
     typeof args === "string" ? args : (args && args.tab) || "connection";
 
-  try {
-    const { openWebPanel } = require("@/lang/web-panel/webPanelManager");
-    const panel = openWebPanel(context, {
-      page: "settings",
-      payload: { tab: targetTab },
-      vscodeInstance: vscode,
-    });
-    if (panel) {
-      currentPanel = panel;
-      return;
-    }
-  } catch (_) {}
-
-  if (currentPanel) {
-    currentPanel.reveal();
-    if (targetTab) {
-      currentPanel.webview.postMessage({ type: "switchTab", tab: targetTab });
-      currentPanel.title = titleForTab(targetTab);
-    }
+  const { openWebPanel } = require("@/lang/web-panel/webPanelManager");
+  const panel = openWebPanel(context, {
+    page: "settings",
+    payload: { tab: targetTab },
+    vscodeInstance: vscode,
+  });
+  if (panel) {
+    currentPanel = panel;
     return;
   }
-
-  const panel = createSettingsPanel(context, vscode);
-  currentPanel = panel;
-  if (targetTab) {
-    panel.targetTab = targetTab;
-    panel.title = titleForTab(targetTab);
-  }
-
-  // Fall back to a visible error instead of a silently blank panel if HTML fails to build.
-  try {
-    panel.webview.html = getHtml(context, vscode, panel.webview);
-  } catch (err) {
-    panel.webview.html =
-      `<!DOCTYPE html><html><body style="font-family:sans-serif;padding:16px;">` +
-      `<h3>CPQ-BML: Connection Settings failed to load</h3>` +
-      `<pre style="white-space:pre-wrap;">${escapeHtml(err && err.stack ? err.stack : err)}</pre>` +
-      `</body></html>`;
-    vscode.window.showErrorMessage(
-      `CPQ-BML: failed to Open Settings - ${err.message}`,
-    );
-  }
-
-  panel.webview.onDidReceiveMessage((message) =>
-    handleMessage(message, context, vscode, panel),
-  );
-  panel.onDidDispose(() => {
-    currentPanel = null;
-  });
 }
 
 module.exports = {

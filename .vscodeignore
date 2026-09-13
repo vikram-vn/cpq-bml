@@ -37,10 +37,11 @@ knowledge/**
 # Ignore root and raw JavaScript source files (compiled into dist/extension.js)
 extension.js
 app/**/*.js
-!app/lang/web-panel/dist/main.js
-!app/lang/web-panel/settings/dist/main.js
-!app/lang/web-panel/interactive/dist/main.js
-!app/lang/web-panel/graph/dist/main.js
+!dist/web-panel/**
+
+# Exclude minified CSS and JS from the extension package
+*.min.css
+*.min.js
 
 # Ignore WebAssembly source and binary files (shipped via cipherWasmBinary.js)
 **/*.wat
@@ -53,10 +54,9 @@ app/lang/rest/**
 app/lang/comments/**
 app/lang/cloud/*.js
 app/lang/graph/*.js
-app/lang/settings-panel/*.js
+app/lang/settings/*.js
 app/lang/web-panel/*.js
 app/lang/web-panel/src/**
-!app/lang/web-panel/dist/**
 !app/lang/web-panel/css/**
 !app/lang/web-panel/index.html
 app/lang/snippets/**
@@ -89,12 +89,6 @@ app/lang/intellisense/keyword-hovers.json
 
 # Exclude development scripts
 scripts/**
-
-# Settings webview CSS: ship only the minified .min.css variants
-# (html.js references the .min.css files directly)
-app/lang/web-panel/css/settings-main.css
-app/lang/web-panel/css/settings-layout.css
-app/lang/web-panel/css/settings-components.css
 
 # Themes/grammars: ship only the minified .min.json variants
 # (package.json's contributes.themes/grammars paths point at these directly)

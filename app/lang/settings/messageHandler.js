@@ -11,8 +11,8 @@ const {
   updateEnvironment,
   deleteEnvironment,
 } = require("@/lang/rest/commands/env");
-const { buildState } = require("@/lang/settings-panel/state");
-const { titleForTab } = require("@/lang/settings-panel/tabTitles");
+const { buildState } = require("@/lang/settings/state");
+const { titleForTab } = require("@/lang/settings/tabTitles");
 
 const CPQ_SECTION = "cpqBml";
 
@@ -424,7 +424,7 @@ async function dispatch(message, context, vscode, panel) {
     case "registerMcp":
     case "deregisterMcp":
     case "syncBmlSkills": {
-      const { handleMcpMessage } = require("@/lang/settings-panel/mcpMessageHandler");
+      const { handleMcpMessage } = require("@/lang/settings/mcpMessageHandler");
       await handleMcpMessage(message.type, message, context, vscode, CPQ_SECTION, post, sendState);
       return;
     }

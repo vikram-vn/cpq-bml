@@ -10,8 +10,8 @@ runs, and lessons learned the hard way across past sessions.
 no TypeScript anywhere, no `src/` folder. Source lives under `app/lang/`,
 tests under `test/`, mirroring each other. esbuild bundles to
 `dist/extension.js` for the real Node-side extension; a separate esbuild
-invocation bundles a React webview to
-`app/lang/settings-panel/web-view/dist/main.js`.
+invocation bundles the unified React webview to
+`app/lang/web-panel/dist/main.js`.
 
 ---
 
@@ -27,7 +27,7 @@ registerBmlLinter(context);         // ./app/lang/lint
 registerBmlComments(context);       // ./app/lang/comments
 registerBmlRest(context);           // ./app/lang/rest
 registerMcp(context);               // ./app/lang/mcp
-registerSettingsPanel(context);     // ./app/lang/settings-panel
+registerSettingsPanel(context);     // ./app/lang/settings
 ```
 
 Plus one inline command (`cpqBml.beautifyWorkspace`) registered directly in
@@ -49,7 +49,7 @@ from `extension.js`.
 | `app/lang/comments/` | `registerBmlComments` | top-level | Tag/directive/docHeader comment decorations + hover, debounced like the linter |
 | `app/lang/rest/` | `registerBmlRest` | via `./commands/index.js` | Live Oracle CPQ REST integration: pull/save/validate/debug/deploy |
 | `app/lang/mcp/` | `registerMcp` | inside the function, not top-level | MCP server so an AI agent can call the REST tools directly over localhost |
-| `app/lang/settings-panel/` | `registerSettingsPanel` | inside the function, not top-level | WebView settings UI (React, see section 6); auto-opens on first install if workspace looks unconfigured |
+| `app/lang/settings/` | `registerSettingsPanel` | inside the function, not top-level | Unified WebView settings UI (React, see section 6); auto-opens on first install if workspace looks unconfigured |
 | `app/ai/setup/` | `autoSetupAiSkills` | inside the function, not top-level | Automated zero-config AI setup script that decompresses built `.br` skills to global storage on MCP enable |
 | `app/lang/spell-check/` | `checkSpelling` (no `register*`) | none - takes `vscode` as a parameter | Pure spell-checker; called as a sub-step *from inside* `lint.js`, not from `extension.js` - see section 3 |
 | `app/lang/syntaxes/` | n/a (JSON only) | n/a | `bml.tmLanguage.json` TextMate grammar, referenced from `package.json` |
@@ -227,21 +227,21 @@ real CPQ library code under `bml/library/`):
 - `npm run compile` - esbuild bundles `extension.js` (and everything it
   `require()`s, except `vscode`) into `dist/extension.js`
   (`--external:vscode --format=cjs --platform=node`), then runs
-  `compile:webview` for the settings panel's React bundle
+  `compile:webview` for the unified webview's React bundle
   (`--format=iife --platform=browser --jsx=automatic`, output to
-  `app/lang/settings-panel/web-view/dist/main.js`).
+  `app/lang/web-panel/dist/main.js`).
 - `npm run watch` / `npm run minify` mirror the same two-bundle shape with
   `--watch` / `--minify --legal-comments=none` respectively.
 - `npm test` runs `pretest` (`compile`) then `vscode-test`.
 - **`.vscodeignore`** is the map of what's bundled-away vs shipped as-is in
   the VSIX. Source `.js` files for most modules (`beautify`, `lint`, `rest`,
-  `comments`, `mcp`, `intellisense`, `settings-panel`, plus root
+  `comments`, `mcp`, `intellisense`, `settings`, plus root
   `extension.js`) are excluded - they're already inlined into
   `dist/extension.js`. Data/static files ship as-is and are **not**
   excluded: `app/lang/intellisense/*.json`, `app/lang/spell-check/*.txt`,
   `app/lang/syntaxes/bml.tmLanguage.json`,
-  `app/lang/settings-panel/web-view/dist/main.js` (the *compiled* webview
-  output - the React `.jsx` sources under `web-view/src/` are excluded,
+  `app/lang/web-panel/dist/main.js` (the *compiled* webview
+  output - the React `.jsx` sources under `web-panel/src/` are excluded,
   the bundle is not), `themes/*.json`, `language-configuration.json`,
   `app/images/`. When adding a new module with a JS entry point that gets
   bundled, add its source path to `.vscodeignore` alongside the others;

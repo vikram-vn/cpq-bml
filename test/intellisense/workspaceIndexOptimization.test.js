@@ -11,7 +11,7 @@ const {
 } = require("@/lang/intellisense/workspaceIndex");
 const { createSessionKeepAlive } = require("@/lang/rest/sessionKeepAlive");
 const { createInstanceMonitor } = require("@/lang/rest/instanceMonitor");
-const { getHtml } = require("@/lang/settings-panel/html");
+const { getWebPanelHtml } = require("@/lang/web-panel/webPanelManager");
 
 suite("Architectural & Performance Fixes Verification", () => {
   suite("workspaceIndex incremental indexing", () => {
@@ -131,11 +131,11 @@ suite("Architectural & Performance Fixes Verification", () => {
         },
       };
 
-      const html1 = getHtml(mockContext, mockVscode, mockWebview);
+      const html1 = getWebPanelHtml(mockContext, mockWebview, { page: 'settings' }, mockVscode);
       assert.ok(html1.includes("<!DOCTYPE html>"));
       assert.ok(html1.includes("script-src 'nonce-"));
 
-      const html2 = getHtml(mockContext, mockVscode, mockWebview);
+      const html2 = getWebPanelHtml(mockContext, mockWebview, { page: 'settings' }, mockVscode);
       assert.ok(html2.includes("<!DOCTYPE html>"));
     });
   });

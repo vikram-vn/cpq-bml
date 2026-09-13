@@ -14,7 +14,7 @@ function walk(dir) {
     const stat = fs.statSync(full);
     if (stat.isDirectory()) {
       results.push(...walk(full));
-    } else if (entry.endsWith('.js')) {
+    } else if (entry.endsWith('.js') || entry.endsWith('.jsx')) {
       results.push(full);
     }
   }

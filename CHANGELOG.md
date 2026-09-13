@@ -4,6 +4,16 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.0] - 2026-09-13
+
+### Added
+
+- Add unified web panel application with React components, build scripts, and inspection tools.
+- Add BML intellisense module and update extension packaging configuration.
+- Add cloud document provider, inspector panel, and unit test suites.
+- Add settings-panel web-view interface with message handling and tests.
+- Add BML cloud inspector panel, UI components, tests, and documentation.
+
 ## [1.99.0] - 2026-09-13
 
 ### Added
@@ -74,76 +84,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Implement cloud data tables explorer and CSV export functionality.
-
-## [1.93.0] - 2026-09-10
-
-### Added
-
-- Implement lint rules and code actions for BML performance optimizations and code style improvements.
-- Implement framework for automated BML code action quick fixes.
-
-## [1.92.0] - 2026-09-10
-
-### Added
-
-- Implement BML file scaffolding and metadata management for Oracle CPQ REST services.
-- Implement CloudExplorer logic and add headless VS Code mocks for unit testing.
-- Add testing infrastructure with custom module resolution and commerce API unit tests.
-- Implement cloud data tables exploration and CSV export functionality.
-- Implement native Node.js build runner and remove icon theme support.
-
-## [1.91.0] - 2026-09-10
-
-### Added
-
-- Implement comprehensive language tooling, including linter, intellisense, REST command framework, and MCP integration with supporting unit tests.
-- Implement Next.js-style @ path alias across editor, bundler, and tests.
-- Add unit tests for BML test runner, discovery, coverage calculation, and remote test execution.
-- Conditionally activate BML spell check only when Code Spell Checker is installed and contribute cSpell dictionaries.
-- Implement live BMQL intelligent query autocomplete and record field completions.
-- Add live datatables explorer, preflight checker, remote test runner, and bmlt support.
-- Add transaction mocking utilities, library metadata support, and cloud explorer functionality.
-- Introduce REST API health monitoring, cache management, and BML transaction mocking utilities.
-- Implement full-stack code complexity, pipeline dependency, and BML testing infrastructure.
-
-### Changed
-
-- Adopt @ import alias systematically across entire codebase.
-- Rename app/lang/test to app/lang/test-controller.
-- Minimize verbose comments and remove redundant block documentation throughout extension.
-- Prune evaluator, debug adapter, profiler, AST tokens/rename, attribute graph webview, doc generator, and scaffolder.
-- Completely prune complexity analyzer and explorer, inlining essential loop threat checks into preflightChecker.
-- Prune standalone REPL, Halstead metrics dashboard, variable type inlay hints, and generic English spellcheck.
-- Convert all recent modules from ES6 classes to pure functions and factory closures.
-
-### Documentation
-
-- Add architectural documentation for BML linter and advanced BML design patterns.
-
-## [1.90.0] - 2026-09-10
-
-### Added
-
-- Implement comprehensive language tooling, including linter, intellisense, REST command framework, and MCP integration with supporting unit tests.
-- Implement Next.js-style @ path alias across editor, bundler, and tests.
-- Add unit tests for BML test runner, discovery, coverage calculation, and remote test execution.
-- Conditionally activate BML spell check only when Code Spell Checker is installed and contribute cSpell dictionaries.
-- Implement live BMQL intelligent query autocomplete and record field completions.
-- Add live datatables explorer, preflight checker, remote test runner, and bmlt support.
-- Add transaction mocking utilities, library metadata support, and cloud explorer functionality.
-- Introduce REST API health monitoring, cache management, and BML transaction mocking utilities.
-- Implement full-stack code complexity, pipeline dependency, and BML testing infrastructure.
-
-### Changed
-
-- Adopt @ import alias systematically across entire codebase.
-- Rename app/lang/test to app/lang/test-controller.
-- Minimize verbose comments and remove redundant block documentation throughout extension.
-- Prune evaluator, debug adapter, profiler, AST tokens/rename, attribute graph webview, doc generator, and scaffolder.
-- Completely prune complexity analyzer and explorer, inlining essential loop threat checks into preflightChecker.
-- Prune standalone REPL, Halstead metrics dashboard, variable type inlay hints, and generic English spellcheck.
-- Convert all recent modules from ES6 classes to pure functions and factory closures.
-
-### Documentation
-
-- Add architectural documentation for BML linter and advanced BML design patterns.

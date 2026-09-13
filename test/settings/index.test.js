@@ -1,8 +1,8 @@
 const assert = require("assert");
-const { shouldAutoOpenOnInstall, FIRST_INSTALL_KEY, hasMissingCredentials } = require("@/lang/settings-panel");
+const { shouldAutoOpenOnInstall, FIRST_INSTALL_KEY, hasMissingCredentials } = require("@/lang/settings");
 const { createFakeContext, createFakeVscode } = require("@/test/rest/testHelpers");
 
-suite("settings-panel index - first-install auto-open", () => {
+suite("settings index - first-install auto-open", () => {
   test("returns true the first time (flag not yet set)", () => {
     const context = createFakeContext();
     assert.strictEqual(shouldAutoOpenOnInstall(context), true);
@@ -15,7 +15,7 @@ suite("settings-panel index - first-install auto-open", () => {
   });
 });
 
-suite("settings-panel index - hasMissingCredentials", () => {
+suite("settings index - hasMissingCredentials", () => {
   test("returns true if siteUrl is empty", async () => {
     const context = createFakeContext();
     const vscode = createFakeVscode({
@@ -97,7 +97,7 @@ suite("settings-panel index - hasMissingCredentials", () => {
   });
 });
 
-suite("settings-panel index - registerSettingsPanel smart activation", () => {
+suite("settings index - registerSettingsPanel smart activation", () => {
   let originalFindFiles;
   let originalGetConfiguration;
   let originalRegisterCommand;
@@ -130,7 +130,7 @@ suite("settings-panel index - registerSettingsPanel smart activation", () => {
 
   test("does not open settings panel if workspace has no -meta.json files", async () => {
     const vscode = require('vscode');
-    const { registerSettingsPanel } = require("@/lang/settings-panel");
+    const { registerSettingsPanel } = require("@/lang/settings");
     const context = createFakeContext();
     context.subscriptions = [];
 
@@ -152,7 +152,7 @@ suite("settings-panel index - registerSettingsPanel smart activation", () => {
 
   test("opens settings panel if workspace has -meta.json files and config is empty", async () => {
     const vscode = require('vscode');
-    const { registerSettingsPanel } = require("@/lang/settings-panel");
+    const { registerSettingsPanel } = require("@/lang/settings");
     const context = createFakeContext();
     context.subscriptions = [];
 

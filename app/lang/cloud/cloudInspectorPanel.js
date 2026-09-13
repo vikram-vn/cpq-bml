@@ -1,9 +1,6 @@
 'use strict';
 
 const vscodeModule = require('vscode');
-const path = require('path');
-const fs = require('fs');
-const { getInspectorHtml } = require('@/lang/cloud/cloudInspectorHtml');
 const { openVirtualJsonDocument } = require('@/lang/cloud/cloudDocumentProvider');
 
 let currentPanel = null;
@@ -68,145 +65,15 @@ async function showCloudInspector(item, context, vscodeInstance = vscodeModule, 
     ? (vscodeInstance?.ViewColumn?.Beside ?? 2)
     : (vscodeInstance?.ViewColumn?.One ?? 1);
 
-  try {
-    const { openWebPanel } = require('@/lang/web-panel/webPanelManager');
-    const panel = openWebPanel(context, {
-      page: 'interactive',
-      payload: norm,
-      column,
-      vscodeInstance,
-      onOpenBml
-    });
-    if (panel) {
-      currentPanel = panel;
-      return panel;
-    }
-  } catch (_) {}
-
-  if (currentPanel) {
-    try {
-      currentPanel.title = `Inspect: ${norm.title}`;
-      const rootPath = context?.extensionPath || path.join(__dirname, '..', '..', '..');
-      if (typeof currentPanel.webview?.postMessage === 'function') {
-        currentPanel.webview.postMessage({ command: 'setData', payload: norm });
-      } else {
-        currentPanel.webview.html = getInspectorHtml(norm, currentPanel.webview, rootPath, vscodeInstance);
-      }
-      currentPanel.reveal(column, true);
-      return currentPanel;
-    } catch (_) {
-      currentPanel = null;
-      currentItemContext = null;
-    }
-  }
-
-  const rootPath = context?.extensionPath || path.join(__dirname, '..', '..', '..');
-  const localResourceRoots = [];
-  if (vscodeInstance?.Uri?.file) {
-    localResourceRoots.push(vscodeInstance.Uri.file(rootPath));
-  }
-
-  const panel = vscodeInstance.window.createWebviewPanel(
-    'cpqBmlCloudInspector',
-    `Inspect: ${norm.title}`,
-    { viewColumn: column, preserveFocus: true },
-    {
-      enableScripts: true,
-      retainContextWhenHidden: true,
-      localResourceRoots
-    }
-  );
-
-  panel.onDidDispose(() => {
-    if (currentPanel === panel) {
-      currentPanel = null;
-      currentItemContext = null;
-    }
+  const { openWebPanel } = require('@/lang/web-panel/webPanelManager');
+  const panel = openWebPanel(context, {
+    page: 'interactive',
+    payload: norm,
+    column,
+    vscodeInstance,
+    onOpenBml
   });
-
   currentPanel = panel;
-
-  try {
-    if (vscodeInstance?.Uri?.file) {
-      const iconUri = vscodeInstance.Uri.file(path.join(rootPath, 'app', 'icons', 'brand', 'logo.png'));
-      if (fs.existsSync(iconUri.fsPath)) {
-        panel.iconPath = iconUri;
-      }
-    }
-
-    panel.webview.html = getInspectorHtml(norm, panel.webview, rootPath, vscodeInstance);
-  } catch (err) {
-    currentPanel = null;
-    currentItemContext = null;
-    try { panel.dispose(); } catch (_) {}
-    throw err;
-  }
-
-  panel.webview.onDidReceiveMessage(async (message) => {
-    if (!message) return;
-
-    try {
-      switch (message.command) {
-        case 'copyText':
-          if (message.text) {
-            if (vscodeInstance.env?.clipboard?.writeText) {
-              await vscodeInstance.env.clipboard.writeText(message.text);
-            }
-            if (vscodeInstance.window && vscodeInstance.window.setStatusBarMessage) {
-              vscodeInstance.window.setStatusBarMessage(`CPQ-BML: ${message.label || 'Text'} copied to clipboard`, 3000);
-            }
-          }
-          break;
-
-        case 'insertAtCursor':
-          if (message.text) {
-            const editor = vscodeInstance.window?.activeTextEditor;
-            if (editor && editor.selection) {
-              await editor.edit(editBuilder => {
-                editBuilder.insert(editor.selection.active, message.text);
-              });
-            } else if (vscodeInstance.env?.clipboard?.writeText) {
-              await vscodeInstance.env.clipboard.writeText(message.text);
-              if (vscodeInstance.window?.showInformationMessage) {
-                vscodeInstance.window.showInformationMessage(`Copied '${message.text}' to clipboard.`);
-              }
-            }
-          }
-          break;
-
-        case 'openRawJson':
-          if (currentItemContext) {
-            await openVirtualJsonDocument(
-              (currentItemContext.category || 'item').toLowerCase().replace(/\s+/g, '-'),
-              currentItemContext.title || 'Metadata',
-              currentItemContext.data || {},
-              vscodeInstance
-            );
-          }
-          break;
-
-        case 'openBmlScript':
-          if (currentItemContext && typeof currentItemContext.onOpenBml === 'function') {
-            await currentItemContext.onOpenBml(currentItemContext.rawItem);
-          } else if (currentItemContext && currentItemContext.category === 'Action') {
-            if (vscodeInstance.commands?.executeCommand) {
-              vscodeInstance.commands.executeCommand('cpqBml.cloud.openActionBml', currentItemContext.rawItem);
-            }
-          } else if (currentItemContext && currentItemContext.category === 'Rule') {
-            if (vscodeInstance.commands?.executeCommand) {
-              vscodeInstance.commands.executeCommand('cpqBml.cloud.openRuleBml', currentItemContext.rawItem);
-            }
-          }
-          break;
-
-        default:
-          break;
-      }
-    } catch {
-      // Safe fallback - avoid unhandled rejections from malformed webview messages
-    }
-  });
-
   return panel;
 }
 

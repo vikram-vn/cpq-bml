@@ -66,21 +66,21 @@ async function compileExtension() {
         platform: 'browser',
         target: 'es2022',
         treeShaking: true,
-        drop: isProduction ? ['debugger'] : [],
+        drop: ['debugger'],
         jsx: 'automatic',
         alias: {
             '@/app': path.join(ROOT, 'app'),
             '@': path.join(ROOT, 'app')
         },
         nodePaths: [path.join(ROOT, 'node_modules')],
-        minify: isProduction,
-        legalComments: isProduction ? 'none' : 'inline',
-        define: isProduction ? { 'process.env.NODE_ENV': '"production"' } : undefined
+        minify: true,
+        legalComments: 'none',
+        define: { 'process.env.NODE_ENV': '"production"' }
     });
 
     const buildUnifiedWebPanel = createWebviewBuild(
         path.join(ROOT, 'app', 'lang', 'web-panel', 'src', 'index.jsx'),
-        path.join(ROOT, 'app', 'lang', 'web-panel', 'dist', 'main.js')
+        path.join(ROOT, 'dist', 'web-panel', 'main.js')
     );
 
 
@@ -99,22 +99,6 @@ async function compileExtension() {
         }
     }
 
-    // 3. CSS minification (.css -> .min.css)
-    const cssDir = path.join(ROOT, 'app', 'lang', 'web-panel', 'css');
-    const cssFiles = ['settings-main.css', 'settings-layout.css', 'settings-components.css'];
-    for (const file of cssFiles) {
-        const srcPath = path.join(cssDir, file);
-        const outPath = path.join(cssDir, file.replace('.css', '.min.css'));
-        if (!fs.existsSync(outPath) || fs.statSync(outPath).mtimeMs < fs.statSync(srcPath).mtimeMs) {
-            const src = fs.readFileSync(srcPath, 'utf8');
-            const minified = src
-                .replace(/\/\*[\s\S]*?\*\//g, '')
-                .replace(/\s+/g, ' ')
-                .replace(/\s*([{}:;,])\s*/g, '$1')
-                .trim();
-            fs.writeFileSync(outPath, minified, 'utf8');
-        }
-    }
 
 
     // 5. JSON minification (.json -> .min.json)

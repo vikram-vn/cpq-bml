@@ -30,23 +30,6 @@ def build_dictionaries():
             f.write(compressed)
         print(f"compressed {file_name}: {len(data)} -> {len(compressed)} bytes")
 
-# ── 2. CSS Minification ─────────────────────────────────────────────────────
-CSS_DIR = os.path.join(ROOT, "app", "lang", "web-panel", "css")
-CSS_FILES = ["settings-main.css", "settings-layout.css", "settings-components.css"]
-
-def minify_css():
-    for file_name in CSS_FILES:
-        src_path = os.path.join(CSS_DIR, file_name)
-        out_path = os.path.join(CSS_DIR, file_name.replace(".css", ".min.css"))
-        if os.path.exists(out_path) and os.path.getmtime(out_path) >= os.path.getmtime(src_path):
-            continue
-        with open(src_path, encoding="utf-8") as f:
-            src = f.read()
-        minified = rcssmin.cssmin(src)
-        with open(out_path, "w", encoding="utf-8", newline="\n") as f:
-            f.write(minified)
-        pct = round((1 - len(minified) / len(src)) * 100)
-        print(f"minified {file_name}: {len(src)} -> {len(minified)} chars (-{pct}%)")
 
 # ── 3. JSON Minification ────────────────────────────────────────────────────
 INTELLISENSE_DIR = os.path.join(ROOT, "app", "lang", "intellisense")
@@ -140,7 +123,6 @@ def main():
         subprocess.run([sys.executable, crawler_path, "--all"], check=True)
 
     build_dictionaries()
-    minify_css()
     minify_json()
     process_ai_skills(force_rebuild=args.force or args.fetch_docs)
 

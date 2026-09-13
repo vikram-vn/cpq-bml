@@ -16,11 +16,21 @@ function getNonce() {
   return crypto.randomBytes(16).toString('base64');
 }
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function buildCsp(nonce, cspSource) {
   return [
     "default-src 'none'",
     `img-src ${cspSource} data:`,
-    `style-src ${cspSource} 'unsafe-inline'`,
+    `style-src ${cspSource}`,
     `script-src 'nonce-${nonce}'`
   ].join('; ');
 }
@@ -46,25 +56,31 @@ function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscode
     ? fs.readFileSync(templatePath, 'utf8')
     : '<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="{{csp}}"></head><body><div id="root"></div></body></html>';
 
-  const toUri = (subPath) => {
-    const full = path.join(webviewRoot, subPath);
+  const toFileUri = (filePath) => {
     if (vscodeInstance?.Uri?.file && webview?.asWebviewUri) {
-      return webview.asWebviewUri(vscodeInstance.Uri.file(full)).toString();
+      const u = vscodeInstance.Uri.file(filePath);
+      if (u && !u.path) {
+        u.path = filePath.replace(/\\/g, '/');
+      }
+      return webview.asWebviewUri(u).toString();
     }
-    return full.replace(/\\/g, '/');
+    return filePath.replace(/\\/g, '/');
   };
+
+  const toUri = (subPath) => toFileUri(path.join(webviewRoot, subPath));
 
   const nonce = getNonce();
   const cspSource = webview?.cspSource || "'self'";
   const csp = buildCsp(nonce, cspSource);
 
+  const styleUri = toFileUri(path.join(rootPath, 'dist', 'web-panel', 'main.css'));
   const shellStyleUri = toUri(path.join('css', 'shell.css'));
-  const layoutStyleUri = toUri(path.join('css', 'settings-layout.min.css'));
-  const componentsStyleUri = toUri(path.join('css', 'settings-components.min.css'));
-  const settingsStyleUri = toUri(path.join('css', 'settings-main.min.css'));
+  const layoutStyleUri = toUri(path.join('css', 'settings-layout.css'));
+  const componentsStyleUri = toUri(path.join('css', 'settings-components.css'));
+  const settingsStyleUri = toUri(path.join('css', 'settings-main.css'));
   const graphStyleUri = toUri(path.join('css', 'graph.css'));
   const inspectorStyleUri = toUri(path.join('css', 'inspector.css'));
-  const scriptUri = toUri(path.join('dist', 'main.js'));
+  const scriptUri = toFileUri(path.join(rootPath, 'dist', 'web-panel', 'main.js'));
 
   let initialGraphJson = 'null';
   if (graphModel) {
@@ -80,13 +96,14 @@ function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscode
     try {
       initialInspectorJson = JSON.stringify(inspectorData).replace(/</g, '\\u003c');
     } catch (_) {
-      initialInspectorJson = 'null';
+      initialInspectorJson = '{}';
     }
   }
 
   return template
     .replace(/\{\{csp\}\}/g, csp)
     .replace(/\{\{nonce\}\}/g, nonce)
+    .replace(/\{\{styleUri\}\}/g, styleUri)
     .replace(/\{\{shellStyleUri\}\}/g, shellStyleUri)
     .replace(/\{\{layoutStyleUri\}\}/g, layoutStyleUri)
     .replace(/\{\{componentsStyleUri\}\}/g, componentsStyleUri)
@@ -97,6 +114,26 @@ function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscode
     .replace(/\{\{initialPage\}\}/g, page)
     .replace(/\{\{initialGraphModel\}\}/g, initialGraphJson)
     .replace(/\{\{initialInspectorData\}\}/g, initialInspectorJson);
+}
+
+function getInspectorHtml(payload = {}, webview = null, extensionPath = null, vscodeInstance = vscodeModule) {
+  const safePayload = payload || {};
+  const context = { extensionPath: extensionPath || path.join(__dirname, '..', '..', '..') };
+  const html = getWebPanelHtml(context, webview, { page: 'interactive', inspectorData: safePayload }, vscodeInstance);
+
+  const initialMarkup = `
+    <div class="inspector-container">
+      <div class="header">
+        <span class="badge">${escapeHtml(safePayload.category || 'Item')}</span>
+        <h1>${escapeHtml(safePayload.title || 'CPQ Metadata')}</h1>
+        ${safePayload.variableName ? `<span class="subtitle">${escapeHtml(safePayload.variableName)}</span>` : ''}
+        ${safePayload.description ? `<p>${escapeHtml(safePayload.description)}</p>` : ''}
+        ${safePayload.hasBml ? '<button class="primary">Open BML Script</button>' : ''}
+      </div>
+    </div>
+  `.trim();
+
+  return html.replace(/<div id="root">.*?<\/div>/s, `<div id="root">${initialMarkup}</div>`);
 }
 
 async function dispatchMessage(message, context, vscodeInstance, panel) {
@@ -198,7 +235,7 @@ async function dispatchMessage(message, context, vscodeInstance, panel) {
 
   // Handle Settings messages
   try {
-    const { handleMessage } = require('@/lang/settings-panel/messageHandler');
+    const { handleMessage } = require('@/lang/settings/messageHandler');
     await handleMessage(message, context, vscodeInstance, panel);
   } catch (_) {}
 }
@@ -316,6 +353,10 @@ module.exports = {
   openWebPanel,
   getPrimaryPanel,
   getWebPanelHtml,
+  getInspectorHtml,
   getTitleForPage,
+  getNonce,
+  buildCsp,
+  escapeHtml,
   _resetWebPanel
 };

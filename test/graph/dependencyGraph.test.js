@@ -35,8 +35,8 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
         assert.ok(html.includes('window.__INITIAL_GRAPH_MODEL__ = {'), 'Must inject initialModel JSON');
         assert.ok(html.includes('"invokeWebService"'), 'Must contain target name');
         assert.ok(html.includes('"INT_SYSTEM_DETAILS"'), 'Must contain BMQL data table');
-        assert.ok(html.includes('dist/main.js'), 'Must point to main.js');
-        assert.ok(html.includes('css/graph.css'), 'Must point to graph.css');
+        assert.ok(html.includes('dist/web-panel/main.js'), 'Must point to main.js');
+        assert.ok(html.includes('dist/web-panel/main.css'), 'Must point to main.css');
         assert.ok(!html.includes('{{nonce}}'), 'Nonce template token must be replaced');
         assert.ok(!html.includes('{{csp}}'), 'CSP template token must be replaced');
     });

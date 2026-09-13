@@ -3,58 +3,13 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const { generateDependencyModel, exportToMermaid } = require('@/lang/graph/dependencyGraphAnalyzer');
 
 let currentPanel = null;
 
-function getNonce() {
-    return crypto.randomBytes(16).toString('base64');
-}
-
 function getHtml(context, webview, initialModel = null) {
-    const extensionRoot = context.extensionUri || vscode.Uri.file(context.extensionPath);
-    const webviewRoot = vscode.Uri.joinPath
-        ? vscode.Uri.joinPath(extensionRoot, 'app', 'lang', 'web-panel', 'graph')
-        : vscode.Uri.file(path.join(context.extensionPath, 'app', 'lang', 'web-panel', 'graph'));
-
-    const scriptUri = webview.asWebviewUri(
-        vscode.Uri.joinPath
-            ? vscode.Uri.joinPath(webviewRoot, 'dist', 'main.js')
-            : vscode.Uri.file(path.join(webviewRoot.fsPath, 'dist', 'main.js'))
-    );
-    const styleUri = webview.asWebviewUri(
-        vscode.Uri.joinPath
-            ? vscode.Uri.joinPath(webviewRoot, 'css', 'graph.css')
-            : vscode.Uri.file(path.join(webviewRoot.fsPath, 'css', 'graph.css'))
-    );
-
-    const templatePath = path.join(context.extensionPath, 'app', 'lang', 'web-panel', 'graph', 'index.html');
-    const template = fs.readFileSync(templatePath, 'utf8');
-
-    const nonce = getNonce();
-    const csp = [
-        "default-src 'none'",
-        `img-src ${webview.cspSource} data:`,
-        `style-src ${webview.cspSource} 'unsafe-inline'`,
-        `script-src 'nonce-${nonce}'`
-    ].join('; ');
-
-    let initialModelJson = 'null';
-    if (initialModel) {
-        try {
-            initialModelJson = JSON.stringify(initialModel).replace(/</g, '\\u003c');
-        } catch {
-            initialModelJson = 'null';
-        }
-    }
-
-    return template
-        .replace(/\{\{csp\}\}/g, csp)
-        .replace(/\{\{nonce\}\}/g, nonce)
-        .replace(/\{\{scriptUri\}\}/g, scriptUri.toString())
-        .replace(/\{\{styleUri\}\}/g, styleUri.toString())
-        .replace(/\{\{initialModel\}\}/g, initialModelJson);
+    const { getWebPanelHtml } = require('@/lang/web-panel/webPanelManager');
+    return getWebPanelHtml(context, webview, { page: 'graph', graphModel: initialModel });
 }
 
 /**
@@ -120,97 +75,15 @@ async function showDependencyGraph(context, targetUri) {
         currentContent
     );
 
-    try {
-        const { openWebPanel } = require('@/lang/web-panel/webPanelManager');
-        const panel = openWebPanel(context, {
-            page: 'graph',
-            payload: { model: initialModel, targetName: baseName, targetFilePath },
-            column
-        });
-        if (panel) {
-            currentPanel = panel;
-            updatePanelModel(panel, targetFilePath).catch(() => {});
-            return panel;
-        }
-    } catch (_) {}
-
-    const extensionRoot = context.extensionUri || vscode.Uri.file(context.extensionPath);
-    const localResourceRoots = [
-        extensionRoot,
-        vscode.Uri.file(context.extensionPath)
-    ];
-
-    const panel = vscode.window.createWebviewPanel(
-        'cpqBmlDependencyGraph',
-        `Blast Radius: ${baseName}`,
-        column,
-        {
-            enableScripts: true,
-            retainContextWhenHidden: true,
-            localResourceRoots
-        }
-    );
-
+    const { openWebPanel } = require('@/lang/web-panel/webPanelManager');
+    const panel = openWebPanel(context, {
+        page: 'graph',
+        payload: { model: initialModel, targetName: baseName, targetFilePath },
+        column
+    });
     currentPanel = panel;
-    panel.activeTarget = targetFilePath;
-
-    const iconPath = vscode.Uri.joinPath
-        ? vscode.Uri.joinPath(extensionRoot, 'app', 'icons', 'logo.svg')
-        : vscode.Uri.file(path.join(context.extensionPath, 'app', 'icons', 'logo.svg'));
-    if (fs.existsSync(iconPath.fsPath)) {
-        panel.iconPath = iconPath;
-    }
-
-    panel.onDidDispose(() => {
-        if (currentPanel === panel) {
-            currentPanel = null;
-        }
-    }, null, context.subscriptions);
-
-    // Register message handler BEFORE setting HTML so 'ready' is never lost
-    panel.webview.onDidReceiveMessage(async (message) => {
-        if (!message) return;
-
-        const activeTarget = panel.activeTarget || targetFilePath;
-        switch (message.command) {
-            case 'ready':
-                await updatePanelModel(panel, activeTarget);
-                break;
-
-            case 'refresh':
-                await updatePanelModel(panel, activeTarget);
-                vscode.window.showInformationMessage(`Refreshed dependency graph for ${path.basename(activeTarget)}`);
-                break;
-
-            case 'openFile':
-                if (message.filePath && fs.existsSync(message.filePath)) {
-                    const doc = await vscode.workspace.openTextDocument(message.filePath);
-                    const line = Math.max(0, message.line || 0);
-                    await vscode.window.showTextDocument(doc, {
-                        viewColumn: vscode.ViewColumn.Beside,
-                        selection: new vscode.Range(line, 0, line, 0)
-                    });
-                }
-                break;
-
-            case 'exportMermaid':
-                try {
-                    const files = await loadWorkspaceBmlFiles();
-                    const model = generateDependencyModel(activeTarget, files);
-                    const mermaidCode = exportToMermaid(model);
-                    await vscode.env.clipboard.writeText(mermaidCode);
-                    vscode.window.showInformationMessage('Mermaid diagram markdown copied to clipboard!');
-                } catch (err) {
-                    vscode.window.showErrorMessage(`Failed to export Mermaid diagram: ${err.message}`);
-                }
-                break;
-        }
-    }, null, context.subscriptions);
-
-    panel.webview.html = getHtml(context, panel.webview, initialModel);
-
-    // Asynchronously scan workspace in background to populate upstream callers (Blast Radius)
     updatePanelModel(panel, targetFilePath).catch(() => {});
+    return panel;
 }
 
 /**

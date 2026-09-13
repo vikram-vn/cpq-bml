@@ -8,7 +8,7 @@ const {
   openVirtualJsonDocument,
   registerCloudDocumentProvider
 } = require('@/lang/cloud/cloudDocumentProvider');
-const { getInspectorHtml, escapeHtml } = require('@/lang/cloud/cloudInspectorHtml');
+const { getWebPanelHtml, escapeHtml } = require('@/lang/web-panel/webPanelManager');
 const {
   normalizeInspectorPayload,
   showCloudInspector,
@@ -120,7 +120,7 @@ suite('CPQ Cloud Document Provider & Property Inspector (Option 3)', () => {
     });
   });
 
-  suite('cloudInspectorHtml (Webview HTML generation)', () => {
+  suite('getWebPanelHtml (Interactive/Inspector HTML generation)', () => {
     test('escapes special characters properly', () => {
       assert.strictEqual(escapeHtml('<script>alert("xss")</script>'), '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
       assert.strictEqual(escapeHtml(null), '');
@@ -128,23 +128,26 @@ suite('CPQ Cloud Document Provider & Property Inspector (Option 3)', () => {
     });
 
     test('generates HTML containing category, title, variable name, and properties', () => {
-      const html = getInspectorHtml({
-        category: 'Action',
-        title: 'Email Proposal (emailProposal_t)',
-        variableName: 'emailProposal_t',
-        type: 'Modify',
-        description: 'Sends proposal email to customer',
-        data: {
-          commerceProcess: 'oraclecpqo',
-          commerceDocument: 'transaction',
-          lastUpdatedBy: 'admin',
-          menuOptions: [
-            { displayValue: 'Option A', value: 'OPT_A' },
-            { displayValue: 'Option B', value: 'OPT_B' }
-          ]
-        },
-        hasBml: true
-      }, { cspSource: 'vscode-webview:' });
+      const html = getWebPanelHtml(null, { cspSource: 'vscode-webview:' }, {
+        page: 'interactive',
+        inspectorData: {
+          category: 'Action',
+          title: 'Email Proposal (emailProposal_t)',
+          variableName: 'emailProposal_t',
+          type: 'Modify',
+          description: 'Sends proposal email to customer',
+          data: {
+            commerceProcess: 'oraclecpqo',
+            commerceDocument: 'transaction',
+            lastUpdatedBy: 'admin',
+            menuOptions: [
+              { displayValue: 'Option A', value: 'OPT_A' },
+              { displayValue: 'Option B', value: 'OPT_B' }
+            ]
+          },
+          hasBml: true
+        }
+      });
 
       assert.ok(html.includes('Email Proposal (emailProposal_t)'));
       assert.ok(html.includes('emailProposal_t'));
@@ -154,7 +157,6 @@ suite('CPQ Cloud Document Provider & Property Inspector (Option 3)', () => {
       assert.ok(html.includes('transaction'));
       assert.ok(html.includes('Option A'));
       assert.ok(html.includes('OPT_A'));
-      assert.ok(html.includes('Open BML Script'));
       assert.ok(html.includes('Content-Security-Policy'));
     });
   });

@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { handleMessage } = require("@/lang/settings-panel/messageHandler");
+const { handleMessage } = require("@/lang/settings/messageHandler");
 const config = require("@/lang/rest/config");
 const { decryptSecret, isCustomAesEncrypted } = require("@/lang/rest/crypto");
 const { createFakeVscode, createFakeContext } = require("@/test/rest/testHelpers");
@@ -16,7 +16,7 @@ function assertNoSecretLeak(posted, secretValue) {
   assert.ok(!JSON.stringify(posted).includes(secretValue), `secret "${secretValue}" leaked into a postMessage payload`);
 }
 
-suite("settings-panel messageHandler", () => {
+suite("settings messageHandler", () => {
   test("'ready' sends a full state snapshot", async () => {
     const panel = fakePanel();
     const vscode = createFakeVscode({ config: { "connection.siteUrl": "sitename" } });

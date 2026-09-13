@@ -26,14 +26,7 @@ cpq
 !knowledge/*.md
 /bml
 package-lock.json
-app/lang/web-panel/dist/
-app/lang/web-panel/**/*.min.css
-app/lang/web-panel/**/dist/
-app/lang/spell-check/bml-words.txt.br
-app/lang/spell-check/cpq-words.txt.br
-app/lang/spell-check/english-words.txt.br
-app/lang/intellisense/*.min.json
-app/lang/web-panel/settings/css/*.min.css
-themes/*.min.json
-app/lang/syntaxes/*.min.json
+*.min.css
+*.min.js
+*.min.json
 knowledge/bml

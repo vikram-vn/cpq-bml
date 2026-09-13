@@ -9,7 +9,7 @@ const {
   inspectItemAccordingToPreference,
   _resetInspectorPanel
 } = require('@/lang/cloud/cloudInspectorPanel');
-const { getInspectorHtml, escapeHtml } = require('@/lang/cloud/cloudInspectorHtml');
+const { getInspectorHtml, escapeHtml } = require('@/lang/web-panel/webPanelManager');
 const { viewRawJsonCommand, inspectPropertiesCommand } = require('@/lang/cloud/cloudExplorerCommands');
 const { openVirtualJsonDocument, getCloudDocumentProvider } = require('@/lang/cloud/cloudDocumentProvider');
 const { createCloudMockVscode } = require('@/test/cloud/cloudTestMocks');
@@ -431,15 +431,15 @@ suite('Cloud Inspector - Negative & Edge Cases', () => {
       const root = path.resolve(__dirname, '..', '..');
       const webviewDir = path.join(root, 'app', 'lang', 'web-panel');
       const htmlPath = path.join(webviewDir, 'index.html');
-      const bundlePath = path.join(webviewDir, 'dist', 'main.js');
+      const bundlePath = path.join(root, 'dist', 'web-panel', 'main.js');
       const cssPath = path.join(webviewDir, 'css', 'inspector.css');
 
       assert.ok(fs.existsSync(htmlPath), 'index.html must exist');
-      assert.ok(fs.existsSync(bundlePath), 'dist/main.js must exist');
+      assert.ok(fs.existsSync(bundlePath), 'dist/web-panel/main.js must exist');
       assert.ok(fs.existsSync(cssPath), 'css/inspector.css must exist');
 
       const bundleStats = fs.statSync(bundlePath);
-      assert.ok(bundleStats.size > 1000, 'dist/main.js bundle must not be empty');
+      assert.ok(bundleStats.size > 1000, 'dist/web-panel/main.js bundle must not be empty');
     });
 
     test('.vscodeignore correctly includes inspector-web-view distribution files', () => {
@@ -448,10 +448,9 @@ suite('Cloud Inspector - Negative & Edge Cases', () => {
       assert.ok(fs.existsSync(ignorePath), '.vscodeignore must exist');
       const content = fs.readFileSync(ignorePath, 'utf8');
 
-      assert.ok(content.includes('!app/lang/web-panel/dist/**'));
+      assert.ok(content.includes('!dist/web-panel/**'));
       assert.ok(content.includes('!app/lang/web-panel/css/**'));
       assert.ok(content.includes('!app/lang/web-panel/index.html'));
-      assert.ok(content.includes('!app/lang/web-panel/dist/main.js'));
     });
   });
 });
