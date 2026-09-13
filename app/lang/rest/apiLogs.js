@@ -8,7 +8,7 @@ try {
 }
 
 const { request } = require('@/lang/rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('@/lang/rest/config');
+const { getBaseUrl, getAuthHeader, getRestVersion, getSettings, isConfigured } = require('@/lang/rest/config');
 
 function formatLogEntry(entry) {
   const time = entry.timestamp || new Date().toISOString();
@@ -20,12 +20,20 @@ function formatLogEntry(entry) {
   return `[${time}] [${severity}] [${script}${line}] ${msg}`;
 }
 
-async function fetchLogs(vscodeInstance = vscode, customTransport) {
+async function fetchLogs(vscodeInstance = vscode, customTransport, context) {
   const settings = getSettings(vscodeInstance);
   const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
+  if (!baseUrl) {
+    throw new Error('CPQ site URL or credentials are not configured.');
+  }
+  let authHeader = "";
+  try {
+    authHeader = await getAuthHeader(context, vscodeInstance);
+  } catch (err) {
+    if (!customTransport) throw err;
+  }
 
-  if (!baseUrl || !authHeader) {
+  if (!authHeader && !customTransport) {
     throw new Error('CPQ site URL or credentials are not configured.');
   }
 

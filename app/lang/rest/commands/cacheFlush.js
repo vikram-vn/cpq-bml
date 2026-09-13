@@ -9,15 +9,23 @@ try {
 }
 
 const { request } = require('@/lang/rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('@/lang/rest/config');
+const { getBaseUrl, getAuthHeader, getRestVersion, getSettings, isConfigured } = require('@/lang/rest/config');
 
 /**
  * Dispatches cache invalidation request to Oracle CPQ server.
  */
-async function flushServerCache(vscodeInstance = vscode, customTransport) {
+async function flushServerCache(vscodeInstance = vscode, customTransport, context) {
   const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-  if (!baseUrl || !authHeader) {
+  if (!baseUrl) {
+    throw new Error('CPQ site URL or credentials are not configured.');
+  }
+  let authHeader = "";
+  try {
+    authHeader = await getAuthHeader(context, vscodeInstance);
+  } catch (err) {
+    if (!customTransport) throw err;
+  }
+  if (!authHeader && !customTransport) {
     throw new Error('CPQ site URL or credentials are not configured.');
   }
 

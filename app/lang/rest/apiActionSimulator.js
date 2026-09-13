@@ -15,15 +15,18 @@ try {
 }
 
 const { request } = require('@/lang/rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings } = require('@/lang/rest/config');
+const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings, isConfigured } = require('@/lang/rest/config');
 const { TransactionMockGenerator, fetchRecentTransactions } = require('@/lang/rest/apiTransactionMock');
 
 /**
  * Simulates clicking a Commerce Action and computes attribute deltas.
  */
-async function executeAction(transId, actionName, proc, vscodeInstance = vscode, customTransport) {
+async function executeAction(transId, actionName, proc, vscodeInstance = vscode, customTransport, context) {
+  if (!isConfigured(vscodeInstance)) {
+    throw new Error('CPQ site URL or credentials are not configured.');
+  }
   const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
+  const authHeader = await getAuthHeader(context, vscodeInstance);
   if (!baseUrl || !authHeader) {
     throw new Error('CPQ site URL or credentials are not configured.');
   }

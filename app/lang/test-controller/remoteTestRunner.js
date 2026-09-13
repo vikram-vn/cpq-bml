@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { BmlTestRunner } = require('@/lang/test-controller/bmlTestRunner');
 const api = require('@/lang/rest/api');
-const { getBaseUrl, getAuthHeader } = require('@/lang/rest/config');
+const { getBaseUrl, getAuthHeader, isConfigured } = require('@/lang/rest/config');
 
 function extractBmltAssertions(code = '') {
   const assertions = [];
@@ -75,7 +75,7 @@ async function executeRemoteBmltTest(testFilePath, vscodeInstance = vscode, cont
     });
   }
 
-  const configured = Boolean(getBaseUrl(vscodeInstance) && getAuthHeader(vscodeInstance));
+  const configured = isConfigured(vscodeInstance);
   const results = [];
   const t0 = Date.now();
 

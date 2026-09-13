@@ -8,15 +8,23 @@ try {
 }
 
 const { request } = require('@/lang/rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion } = require('@/lang/rest/config');
+const { getBaseUrl, getAuthHeader, getRestVersion, isConfigured } = require('@/lang/rest/config');
 
 /**
  * Background heartbeat service keeping CPQ sessions and tokens alive.
  */
-async function pingSession(vscodeInstance = vscode, customTransport) {
+async function pingSession(vscodeInstance = vscode, customTransport, context) {
+  if (!isConfigured(vscodeInstance)) return { success: false, reason: 'Not configured' };
   const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-  if (!baseUrl || !authHeader) return { success: false, reason: 'Not configured' };
+  let authHeader;
+  try {
+    authHeader = await getAuthHeader(context, vscodeInstance);
+  } catch {
+    if (!customTransport) {
+      return { success: false, reason: 'Credentials not configured' };
+    }
+  }
+  if (!baseUrl || (!authHeader && !customTransport)) return { success: false, reason: 'Not configured' };
 
   const version = getRestVersion(vscodeInstance);
   const path = `/rest/${version}`;
@@ -48,21 +56,21 @@ function createSessionKeepAlive() {
   let lastPingTime = null;
   let isActive = false;
 
-  async function ping(vscodeInstance = vscode, customTransport) {
-    const res = await pingSession(vscodeInstance, customTransport);
+  async function ping(vscodeInstance = vscode, customTransport, context) {
+    const res = await pingSession(vscodeInstance, customTransport, context);
     lastPingTime = new Date();
     return res;
   }
 
-  function start(vscodeInstance = vscode, customTransport) {
+  function start(vscodeInstance = vscode, customTransport, context) {
     if (isActive) return;
+    if (!isConfigured(vscodeInstance)) return;
     const baseUrl = getBaseUrl(vscodeInstance);
-    const authHeader = getAuthHeader(vscodeInstance);
-    if (!baseUrl || !authHeader) return;
+    if (!baseUrl) return;
     isActive = true;
 
     timer = setInterval(async () => {
-      await ping(vscodeInstance, customTransport);
+      await ping(vscodeInstance, customTransport, context);
     }, intervalMs);
   }
 

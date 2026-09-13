@@ -18,12 +18,9 @@ try {
 }
 
 const { request } = require('@/lang/rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getSettings } = require('@/lang/rest/config');
+const { getBaseUrl, getAuthHeader, getRestVersion, getSettings, isConfigured } = require('@/lang/rest/config');
 
-async function checkInstanceHealth(vscodeInstance = vscode, customTransport, statusBarItem) {
-  const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-
+async function checkInstanceHealth(vscodeInstance = vscode, customTransport, statusBarItem, context) {
   const updateStatus = (text, tooltip) => {
     if (statusBarItem) {
       statusBarItem.text = `$(server) ${text}`;
@@ -31,8 +28,24 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
     }
   };
 
-  if (!baseUrl || !authHeader) {
-    updateStatus('CPQ: Not Configured', 'Click to configure Oracle CPQ connection settings');
+  if (!isConfigured(vscodeInstance)) {
+    updateStatus('Offline / Standby', 'Click to configure Oracle CPQ connection settings');
+    return { connected: false, reason: 'Credentials not configured' };
+  }
+
+  const baseUrl = getBaseUrl(vscodeInstance);
+  let authHeader;
+  try {
+    authHeader = await getAuthHeader(context, vscodeInstance);
+  } catch (err) {
+    if (!customTransport) {
+      updateStatus('Offline / Standby', err.message || 'Credentials not configured');
+      return { connected: false, reason: err.message };
+    }
+  }
+
+  if (!baseUrl || (!authHeader && !customTransport)) {
+    updateStatus('Offline / Standby', 'Click to configure Oracle CPQ connection settings');
     return { connected: false, reason: 'Credentials not configured' };
   }
 
@@ -80,7 +93,7 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
   }
 }
 
-function createInstanceMonitor(vscodeInstance = vscode) {
+function createInstanceMonitor(vscodeInstance = vscode, context) {
   const statusBarItem = vscodeInstance.window.createStatusBarItem(vscodeInstance.StatusBarAlignment.Right, 90);
   statusBarItem.command = 'cpqBml.rest.checkHealth';
   statusBarItem.text = '$(server) Offline / Standby';
@@ -90,8 +103,8 @@ function createInstanceMonitor(vscodeInstance = vscode) {
   let timer = null;
   let startupTimer = null;
 
-  async function checkHealth(customVscode = vscodeInstance, customTransport) {
-    const result = await checkInstanceHealth(customVscode, customTransport, statusBarItem);
+  async function checkHealth(customVscode = vscodeInstance, customTransport, customContext = context) {
+    const result = await checkInstanceHealth(customVscode, customTransport, statusBarItem, customContext);
     lastHealth = result;
     return result;
   }
@@ -131,25 +144,25 @@ function createInstanceMonitor(vscodeInstance = vscode) {
   };
 }
 
-function InstanceMonitor() {
-  return createInstanceMonitor();
+function InstanceMonitor(context) {
+  return createInstanceMonitor(vscode, context);
 }
 
 let monitorInstance = null;
 
-function getInstanceMonitor() {
+function getInstanceMonitor(context) {
   if (!monitorInstance) {
-    monitorInstance = createInstanceMonitor();
+    monitorInstance = createInstanceMonitor(vscode, context);
   }
   return monitorInstance;
 }
 
 function registerInstanceMonitorCommands(context) {
-  const monitor = getInstanceMonitor();
+  const monitor = getInstanceMonitor(context);
   context.subscriptions.push(
     monitor,
     vscode.commands.registerCommand('cpqBml.rest.checkHealth', async () => {
-      const h = await monitor.checkHealth(vscode);
+      const h = await monitor.checkHealth(vscode, undefined, context);
       if (h.connected) {
         vscode.window.showInformationMessage(
           `Connected to ${h.siteName} (${h.version}): Latency ${h.latencyMs}ms.`

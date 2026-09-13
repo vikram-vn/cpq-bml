@@ -1,14 +1,22 @@
 const { request } = require('@/lang/rest/client');
-const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings } = require('@/lang/rest/config');
+const { getBaseUrl, getAuthHeader, getRestVersion, getCommerceProcess, getSettings, isConfigured } = require('@/lang/rest/config');
 
 /**
  * Fetches real CPQ Commerce Transaction payloads and converts them
  * into clean test mocks and executable BML unit test fixtures.
  */
-async function fetchTransaction(transId, proc, vscodeInstance, customTransport) {
+async function fetchTransaction(transId, proc, vscodeInstance, customTransport, context) {
   const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-  if (!baseUrl || !authHeader) {
+  if (!baseUrl) {
+    throw new Error('CPQ site URL or credentials are not configured.');
+  }
+  let authHeader = "";
+  try {
+    authHeader = await getAuthHeader(context, vscodeInstance);
+  } catch (err) {
+    if (!customTransport) throw err;
+  }
+  if (!authHeader && !customTransport) {
     throw new Error('CPQ site URL or credentials are not configured.');
   }
 
@@ -100,10 +108,18 @@ function generateBmlTestScaffold(mockData) {
 /**
  * Fetches recent live transactions from CPQ for interactive QuickPick selection.
  */
-async function fetchRecentTransactions(proc, limit = 15, vscodeInstance, customTransport) {
+async function fetchRecentTransactions(proc, limit = 15, vscodeInstance, customTransport, context) {
   const baseUrl = getBaseUrl(vscodeInstance);
-  const authHeader = getAuthHeader(vscodeInstance);
-  if (!baseUrl || !authHeader) {
+  if (!baseUrl) {
+    throw new Error('CPQ site URL or credentials are not configured.');
+  }
+  let authHeader = "";
+  try {
+    authHeader = await getAuthHeader(context, vscodeInstance);
+  } catch (err) {
+    if (!customTransport) throw err;
+  }
+  if (!authHeader && !customTransport) {
     throw new Error('CPQ site URL or credentials are not configured.');
   }
 

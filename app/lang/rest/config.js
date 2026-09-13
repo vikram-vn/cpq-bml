@@ -203,6 +203,10 @@ function getTokenSecretKey(siteUrl) {
 }
 
 async function getAuthHeader(context, vscode) {
+    if (!vscode && context && (context.workspace || context.window || context.commands)) {
+        vscode = context;
+        context = null;
+    }
     const { siteUrl, authMethod, username } = getSettings(vscode);
     const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === 'function'
         ? vscode.workspace.getConfiguration('cpqBml')
