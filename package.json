@@ -131,14 +131,14 @@
           "icon": "app/icons/views/transactions.svg"
         },
         {
-          "id": "cpqBml.deploymentCenter",
-          "name": "Deployment Center & Task Monitor",
-          "icon": "app/icons/views/deployment.svg"
-        },
-        {
           "id": "cpqBml.cloudParts",
           "name": "Parts (Site Catalog)",
           "icon": "app/icons/views/parts.svg"
+        },
+        {
+          "id": "cpqBml.deploymentCenter",
+          "name": "Deployment Center & Task Monitor",
+          "icon": "app/icons/views/deployment.svg"
         }
       ]
     },
