@@ -12,10 +12,22 @@ function getNonce() {
     return crypto.randomBytes(16).toString('base64');
 }
 
-function getHtml(context, webview) {
-    const webviewRoot = vscode.Uri.file(path.join(context.extensionPath, 'app', 'lang', 'graph', 'web-view'));
-    const scriptUri = webview.asWebviewUri(vscode.Uri.file(path.join(webviewRoot.fsPath, 'dist', 'main.js')));
-    const styleUri = webview.asWebviewUri(vscode.Uri.file(path.join(webviewRoot.fsPath, 'css', 'graph.css')));
+function getHtml(context, webview, initialModel = null) {
+    const extensionRoot = context.extensionUri || vscode.Uri.file(context.extensionPath);
+    const webviewRoot = vscode.Uri.joinPath
+        ? vscode.Uri.joinPath(extensionRoot, 'app', 'lang', 'graph', 'web-view')
+        : vscode.Uri.file(path.join(context.extensionPath, 'app', 'lang', 'graph', 'web-view'));
+
+    const scriptUri = webview.asWebviewUri(
+        vscode.Uri.joinPath
+            ? vscode.Uri.joinPath(webviewRoot, 'dist', 'main.js')
+            : vscode.Uri.file(path.join(webviewRoot.fsPath, 'dist', 'main.js'))
+    );
+    const styleUri = webview.asWebviewUri(
+        vscode.Uri.joinPath
+            ? vscode.Uri.joinPath(webviewRoot, 'css', 'graph.css')
+            : vscode.Uri.file(path.join(webviewRoot.fsPath, 'css', 'graph.css'))
+    );
 
     const templatePath = path.join(context.extensionPath, 'app', 'lang', 'graph', 'web-view', 'index.html');
     const template = fs.readFileSync(templatePath, 'utf8');
@@ -28,11 +40,21 @@ function getHtml(context, webview) {
         `script-src 'nonce-${nonce}'`
     ].join('; ');
 
+    let initialModelJson = 'null';
+    if (initialModel) {
+        try {
+            initialModelJson = JSON.stringify(initialModel).replace(/</g, '\\u003c');
+        } catch {
+            initialModelJson = 'null';
+        }
+    }
+
     return template
         .replace(/\{\{csp\}\}/g, csp)
         .replace(/\{\{nonce\}\}/g, nonce)
         .replace(/\{\{scriptUri\}\}/g, scriptUri.toString())
-        .replace(/\{\{styleUri\}\}/g, styleUri.toString());
+        .replace(/\{\{styleUri\}\}/g, styleUri.toString())
+        .replace(/\{\{initialModel\}\}/g, initialModelJson);
 }
 
 /**
@@ -40,7 +62,10 @@ function getHtml(context, webview) {
  * @returns {Promise<Array<{filePath: string, content: string}>>}
  */
 async function loadWorkspaceBmlFiles() {
-    const uris = await vscode.workspace.findFiles('**/*.bml', '**/node_modules/**');
+    const uris = await vscode.workspace.findFiles(
+        '**/*.bml',
+        '{**/node_modules/**,**/.vscode-test/**,**/dist/**,**/.git/**,**/scratch/**}'
+    );
     const files = [];
     for (const uri of uris) {
         try {
@@ -64,7 +89,7 @@ async function showDependencyGraph(context, targetUri) {
         uri = vscode.window.activeTextEditor.document.uri;
     }
 
-    if (!uri || !uri.fsPath.endsWith('.bml')) {
+    if (!uri || !uri.fsPath || !uri.fsPath.endsWith('.bml')) {
         vscode.window.showWarningMessage('Please open a BML file to view its Architecture Dependency & Blast Radius graph.');
         return;
     }
@@ -76,12 +101,43 @@ async function showDependencyGraph(context, targetUri) {
         ? vscode.window.activeTextEditor.viewColumn || vscode.ViewColumn.One
         : vscode.ViewColumn.One;
 
-    if (currentPanel) {
-        currentPanel.title = `Blast Radius: ${baseName}`;
-        currentPanel.reveal(column);
-        await updatePanelModel(currentPanel, targetFilePath);
-        return;
+    // Fast read of target file content
+    let currentContent = '';
+    if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.fsPath === targetFilePath) {
+        currentContent = vscode.window.activeTextEditor.document.getText();
+    } else {
+        try {
+            currentContent = fs.readFileSync(targetFilePath, 'utf8');
+        } catch {
+            currentContent = '';
+        }
     }
+
+    // Fast initial model computed synchronously so webview renders instantaneously without loading delay
+    const initialModel = generateDependencyModel(
+        targetFilePath,
+        [{ filePath: targetFilePath, content: currentContent }],
+        currentContent
+    );
+
+    if (currentPanel) {
+        try {
+            currentPanel.title = `Blast Radius: ${baseName}`;
+            currentPanel.activeTarget = targetFilePath;
+            currentPanel.reveal(column);
+            currentPanel.webview.postMessage({ type: 'updateGraph', model: initialModel });
+            await updatePanelModel(currentPanel, targetFilePath);
+            return;
+        } catch (_) {
+            currentPanel = null;
+        }
+    }
+
+    const extensionRoot = context.extensionUri || vscode.Uri.file(context.extensionPath);
+    const localResourceRoots = [
+        extensionRoot,
+        vscode.Uri.file(context.extensionPath)
+    ];
 
     const panel = vscode.window.createWebviewPanel(
         'cpqBmlDependencyGraph',
@@ -90,31 +146,31 @@ async function showDependencyGraph(context, targetUri) {
         {
             enableScripts: true,
             retainContextWhenHidden: true,
-            localResourceRoots: [
-                vscode.Uri.file(path.join(context.extensionPath, 'app', 'lang', 'graph', 'web-view')),
-                vscode.Uri.file(path.join(context.extensionPath, 'app', 'icons'))
-            ]
+            localResourceRoots
         }
     );
 
     currentPanel = panel;
+    panel.activeTarget = targetFilePath;
 
-    const iconPath = vscode.Uri.file(path.join(context.extensionPath, 'app', 'icons', 'logo.svg'));
+    const iconPath = vscode.Uri.joinPath
+        ? vscode.Uri.joinPath(extensionRoot, 'app', 'icons', 'logo.svg')
+        : vscode.Uri.file(path.join(context.extensionPath, 'app', 'icons', 'logo.svg'));
     if (fs.existsSync(iconPath.fsPath)) {
         panel.iconPath = iconPath;
     }
 
-    panel.webview.html = getHtml(context, panel.webview);
-
     panel.onDidDispose(() => {
-        currentPanel = null;
+        if (currentPanel === panel) {
+            currentPanel = null;
+        }
     }, null, context.subscriptions);
 
-    let activeTarget = targetFilePath;
-
+    // Register message handler BEFORE setting HTML so 'ready' is never lost
     panel.webview.onDidReceiveMessage(async (message) => {
         if (!message) return;
 
+        const activeTarget = panel.activeTarget || targetFilePath;
         switch (message.command) {
             case 'ready':
                 await updatePanelModel(panel, activeTarget);
@@ -149,6 +205,11 @@ async function showDependencyGraph(context, targetUri) {
                 break;
         }
     }, null, context.subscriptions);
+
+    panel.webview.html = getHtml(context, panel.webview, initialModel);
+
+    // Asynchronously scan workspace in background to populate upstream callers (Blast Radius)
+    updatePanelModel(panel, targetFilePath).catch(() => {});
 }
 
 /**
@@ -157,11 +218,18 @@ async function showDependencyGraph(context, targetUri) {
  * @param {string} targetFilePath 
  */
 async function updatePanelModel(panel, targetFilePath) {
+    if (!panel || !targetFilePath) return;
     try {
         const files = await loadWorkspaceBmlFiles();
         let currentContent;
         if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.fsPath === targetFilePath) {
             currentContent = vscode.window.activeTextEditor.document.getText();
+        } else {
+            try {
+                currentContent = fs.readFileSync(targetFilePath, 'utf8');
+            } catch {
+                currentContent = '';
+            }
         }
         const model = generateDependencyModel(targetFilePath, files, currentContent);
         panel.webview.postMessage({ type: 'updateGraph', model });
@@ -184,5 +252,6 @@ function registerDependencyGraph(context) {
 module.exports = {
     showDependencyGraph,
     registerDependencyGraph,
-    loadWorkspaceBmlFiles
+    loadWorkspaceBmlFiles,
+    getHtml
 };

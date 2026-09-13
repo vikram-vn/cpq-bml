@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('assert');
+const path = require('path');
 const {
     analyzeScriptContent,
     buildWorkspaceCallGraph,
@@ -9,7 +10,62 @@ const {
     exportToMermaid
 } = require('@/lang/graph/dependencyGraphAnalyzer');
 
+const { getHtml } = require('@/lang/graph/dependencyGraphPanel');
+
 suite('Dependency Graph & Blast Radius Analyzer', () => {
+
+    test('getHtml injects initialModel, CSP, nonce, and script/style URIs', () => {
+        const mockContext = {
+            extensionPath: path.resolve(__dirname, '..', '..')
+        };
+        const mockWebview = {
+            cspSource: 'vscode-webview:',
+            asWebviewUri: (uri) => uri
+        };
+        const sampleModel = {
+            target: { name: 'invokeWebService', qualifiedName: 'util.invokewebservice', filePath: '/test.bml' },
+            blastRadius: { callers: [], directCount: 0, transitiveCount: 0, maxDepth: 0, impactLevel: 'Isolated' },
+            outgoing: { functions: [], dataTables: [{ name: 'INT_SYSTEM_DETAILS', operation: 'BMQL', line: 1 }], externalApis: [] },
+            graph: { nodes: [], edges: [] }
+        };
+
+        const html = getHtml(mockContext, mockWebview, sampleModel);
+
+        assert.ok(html.includes('Content-Security-Policy'), 'Must have CSP meta tag');
+        assert.ok(html.includes('window.__INITIAL_GRAPH_MODEL__ = {'), 'Must inject initialModel JSON');
+        assert.ok(html.includes('"invokeWebService"'), 'Must contain target name');
+        assert.ok(html.includes('"INT_SYSTEM_DETAILS"'), 'Must contain BMQL data table');
+        assert.ok(html.includes('dist/main.js'), 'Must point to main.js');
+        assert.ok(html.includes('css/graph.css'), 'Must point to graph.css');
+        assert.ok(!html.includes('{{nonce}}'), 'Nonce template token must be replaced');
+        assert.ok(!html.includes('{{csp}}'), 'CSP template token must be replaced');
+    });
+
+    test('getHtml handles null initialModel gracefully', () => {
+        const mockContext = {
+            extensionPath: path.resolve(__dirname, '..', '..')
+        };
+        const mockWebview = {
+            cspSource: 'vscode-webview:',
+            asWebviewUri: (uri) => uri
+        };
+
+        const html = getHtml(mockContext, mockWebview, null);
+
+        assert.ok(html.includes('window.__INITIAL_GRAPH_MODEL__ = null;'), 'Must inject null for empty model');
+    });
+
+    test('showDependencyGraph creates webview panel and populates initial html with model', async () => {
+        const targetBml = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
+        const mockContext = {
+            extensionPath: path.resolve(__dirname, '..', '..'),
+            extensionUri: { fsPath: path.resolve(__dirname, '..', '..'), scheme: 'file' },
+            subscriptions: []
+        };
+
+        const { showDependencyGraph } = require('@/lang/graph/dependencyGraphPanel');
+        await showDependencyGraph(mockContext, { fsPath: targetBml });
+    });
 
     test('analyzeScriptContent extracts util/commerce calls, BMQL tables, and urldata', () => {
         const script = `

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import App from '@/lang/graph/web-view/src/App';
 
 function showFatalError(error) {
     const root = document.getElementById('root');
@@ -17,10 +17,14 @@ window.addEventListener('error', (event) => showFatalError(event.error || event.
 window.addEventListener('unhandledrejection', (event) => showFatalError(event.reason));
 
 try {
-    const vscodeApi = acquireVsCodeApi();
+    const vscodeApi = typeof acquireVsCodeApi === 'function' ? acquireVsCodeApi() : {
+        postMessage: (m) => console.log('VSCode msg:', m)
+    };
     const container = document.getElementById('root');
-    const root = createRoot(container);
-    root.render(<App vscodeApi={vscodeApi} />);
+    if (container) {
+        const root = createRoot(container);
+        root.render(<App vscodeApi={vscodeApi} />);
+    }
 } catch (err) {
     showFatalError(err);
 }

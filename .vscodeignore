@@ -20,6 +20,9 @@ jsconfig.json
 .agents/ 
 **/eslint.config.mjs
 **/.vscode-test.*
+cpq/**
+cpq
+.mocharc.json
 *.vsix
 *.bml
 .github
@@ -36,6 +39,7 @@ extension.js
 app/**/*.js
 !app/lang/settings-panel/web-view/dist/main.js
 !app/lang/cloud/inspector-web-view/dist/main.js
+!app/lang/graph/web-view/dist/main.js
 
 # Ignore WebAssembly source and binary files (shipped via cipherWasmBinary.js)
 **/*.wat
@@ -51,11 +55,19 @@ app/lang/cloud/inspector-web-view/src/**
 !app/lang/cloud/inspector-web-view/dist/**
 !app/lang/cloud/inspector-web-view/css/**
 !app/lang/cloud/inspector-web-view/index.html
+app/lang/graph/*.js
+app/lang/graph/web-view/src/**
+!app/lang/graph/web-view/dist/**
+!app/lang/graph/web-view/css/**
+!app/lang/graph/web-view/index.html
 app/lang/bmql/**
 app/lang/status-bar/**
 app/lang/mcp/**
 app/lang/settings-panel/*.js
 app/lang/settings-panel/web-view/src/**
+app/lang/snippets/**
+app/lang/spell-check/*.br
+app/lang/**/README*.md
 app/lang/syntaxes/*.json
 !app/lang/syntaxes/*.min.json
 app/images/**/*.svg

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import HeaderBar from './components/HeaderBar';
-import Toolbar from './components/Toolbar';
-import GraphCanvas from './components/GraphCanvas';
-import NodeDrawer from './components/NodeDrawer';
+import HeaderBar from '@/lang/graph/web-view/src/components/HeaderBar';
+import Toolbar from '@/lang/graph/web-view/src/components/Toolbar';
+import GraphCanvas from '@/lang/graph/web-view/src/components/GraphCanvas';
+import NodeDrawer from '@/lang/graph/web-view/src/components/NodeDrawer';
 
 export default function App({ vscodeApi }) {
-    const [model, setModel] = useState(null);
+    const [model, setModel] = useState(() => {
+        return (typeof window !== 'undefined' && window.__INITIAL_GRAPH_MODEL__) || null;
+    });
     const [showCallers, setShowCallers] = useState(true);
     const [showCallees, setShowCallees] = useState(true);
     const [showTables, setShowTables] = useState(true);
@@ -21,7 +23,9 @@ export default function App({ vscodeApi }) {
         };
 
         window.addEventListener('message', handleMessage);
-        vscodeApi.postMessage({ command: 'ready' });
+        if (vscodeApi && typeof vscodeApi.postMessage === 'function') {
+            vscodeApi.postMessage({ command: 'ready' });
+        }
 
         return () => window.removeEventListener('message', handleMessage);
     }, [vscodeApi]);
@@ -45,7 +49,7 @@ export default function App({ vscodeApi }) {
     }, [vscodeApi]);
 
     return (
-        <div id="root">
+        <div className="app-container">
             <HeaderBar
                 model={model}
                 onRefresh={handleRefresh}

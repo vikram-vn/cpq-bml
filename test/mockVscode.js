@@ -186,11 +186,27 @@ const mockVscode = {
             fsPath: uriStr.replace(/^file:\/\//, ''),
             scheme: (uriStr.match(/^([a-z]+):/) || [])[1] || 'file',
         }),
+        joinPath: (baseUri, ...pathSegments) => {
+            const joined = path.join(baseUri.fsPath || baseUri.path || '', ...pathSegments);
+            return {
+                fsPath: joined,
+                scheme: 'file',
+                path: joined,
+                toString: () => 'file://' + String(joined).replace(/\\/g, '/'),
+            };
+        },
     },
     ConfigurationTarget: {
         Global: 1,
         Workspace: 2,
         WorkspaceFolder: 3,
+    },
+    ViewColumn: {
+        Active: -1,
+        Beside: -2,
+        One: 1,
+        Two: 2,
+        Three: 3,
     },
     window: {
         terminals: [],
@@ -239,8 +255,28 @@ const mockVscode = {
         withProgress: async (opts, task) => {
             return task({ report: () => {} }, { isCancellationRequested: false, onCancellationRequested: () => {} });
         },
+        createWebviewPanel: (viewType, title, showOptions, options) => {
+            const panel = {
+                viewType,
+                title,
+                showOptions,
+                options,
+                webview: {
+                    html: '',
+                    cspSource: 'vscode-webview:',
+                    asWebviewUri: (u) => u,
+                    postMessage: async () => true,
+                    onDidReceiveMessage: () => ({ dispose: () => {} }),
+                },
+                onDidDispose: (cb) => { panel._onDispose = cb; return { dispose: () => {} }; },
+                reveal: () => {},
+                dispose: () => { if (panel._onDispose) panel._onDispose(); },
+            };
+            return panel;
+        },
     },
     workspace: {
+        findFiles: async () => [],
         workspaceFolders: [],
         textDocuments: [],
         getConfiguration: (section = '') => ({

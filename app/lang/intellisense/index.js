@@ -87,13 +87,11 @@ function getTransactionLineLoopVariables(document) {
  * Register Hover, Completion, and Signature Help providers for BML.
  */
 function registerBmlIntelliSense(context) {
-    loadApiData(context);
+    if (typeof setImmediate === 'function') {
+        setImmediate(() => { try { loadApiData(context); } catch (_) {} });
+    }
 
-    // The API JSON files are static bundled resources; only reload them if
-    // they actually change on disk (e.g. a maintainer re-running the
-    // generator scripts, or `npm run compile` regenerating the .min.json
-    // files loadJson() prefers), instead of re-reading/re-parsing on every
-    // request.
+    // Reload static API resources only when changed on disk
     const apiFilesWatcher = vscode.workspace.createFileSystemWatcher(
         path.join(context.extensionPath, 'app', 'lang', 'intellisense', '*.json*')
     );

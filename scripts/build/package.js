@@ -14,7 +14,22 @@ for (const f of existingVsix) {
     }
 }
 
-// 2. Run vsce package non-interactively
+// 2. Explicitly compile in production mode with minification and tree shaking
+console.log('Compiling extension assets in production mode...');
+const nodeCmd = process.execPath;
+const compileResult = spawnSync(nodeCmd, [path.join(ROOT, 'scripts', 'build', 'compile.js'), '--production'], {
+    cwd: ROOT,
+    stdio: 'inherit',
+    shell: false,
+    env: { ...process.env, NODE_ENV: 'production' }
+});
+
+if (compileResult.status !== 0) {
+    console.error('Production compile failed before packaging.');
+    process.exit(compileResult.status || 1);
+}
+
+// 3. Run vsce package non-interactively
 process.env.VSCE_TESTS = '1';
 
 const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';

@@ -14,7 +14,6 @@ const { registerSettingsPanel } = require("@/lang/settings-panel");
 const { registerMcp } = require("@/lang/mcp");
 const { registerXslt } = require("@/lang/xslt");
 const { registerEnvironmentSwitcher } = require("@/lang/status-bar/environmentSwitcher");
-const { syncGlobalAgySkills } = require("@/ai/setup/globalSkillSync");
 const { registerChatParticipant } = require("@/ai/chatParticipant");
 const { registerTestController } = require("@/lang/test-controller/bmlTestController");
 const { registerSchemaIntrospector } = require("@/lang/intellisense/schemaIntrospector");
@@ -41,7 +40,6 @@ const { registerBmqlCommands } = require("@/lang/cloud/bmqlRunner");
 const { registerAttributeLookupCommands } = require("@/lang/cloud/attributeLookup");
 const { registerBmlCodeLensProvider } = require("@/lang/codelens/bmlCodeLensProvider");
 const { registerDependencyGraph } = require("@/lang/graph/dependencyGraphPanel");
-const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
 const { invalidateIndex } = require("@/lang/intellisense/workspaceIndex");
 const { invalidateApiData } = require("@/lang/intellisense/apiData");
 const { isConfigured } = require("@/lang/rest/config");
@@ -154,6 +152,7 @@ function activate(context) {
         cancellable: false
       }, async () => {
         try {
+          const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
           const report = await runPreflightSafetyCheck(editor.document.uri.fsPath, vscode, context);
           const channel = vscode.window.createOutputChannel("CPQ Pre-Flight Report");
           channel.show(true);
@@ -174,15 +173,20 @@ function activate(context) {
     })
   );
 
-  try {
-    const { synced, errors } = syncGlobalAgySkills(context.extensionPath);
-    if (errors.length > 0) {
-      console.warn('CPQ-BML: Antigravity skill sync warnings:', errors);
-    } else {
-      output.appendLine(`CPQ-BML: Synced ${synced} BML skills to Antigravity global config.`);
-    }
-  } catch (e) {
-    console.warn('CPQ-BML: Antigravity skill sync failed (non-fatal):', e);
+  if (typeof setImmediate === 'function') {
+    setImmediate(() => {
+      try {
+        const { syncGlobalAgySkills } = require("@/ai/setup/globalSkillSync");
+        const { synced, errors } = syncGlobalAgySkills(context.extensionPath);
+        if (errors.length > 0) {
+          console.warn('CPQ-BML: Antigravity skill sync warnings:', errors);
+        } else {
+          output.appendLine(`CPQ-BML: Synced ${synced} BML skills to Antigravity global config.`);
+        }
+      } catch (e) {
+        console.warn('CPQ-BML: Antigravity skill sync failed (non-fatal):', e);
+      }
+    });
   }
 
 
