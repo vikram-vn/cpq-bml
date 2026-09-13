@@ -461,12 +461,24 @@
     },
     "status_t": {
         "scope": "Transaction",
-        "dataType": "String",
+        "dataType": "Menu",
         "syntax": "status_t",
         "examples": [
             "val = status_t;"
         ],
         "notes": "The most advanced milestone reached by lines of this transaction.",
+        "menuOptions": [
+            { "value": "DATA_GATHERING", "displayValue": "Data Gathering" },
+            { "value": "SOURCING", "displayValue": "Sourcing" },
+            { "value": "REVISED", "displayValue": "Revised" },
+            { "value": "AWAIT_BILLING", "displayValue": "Awaiting Billing" },
+            { "value": "BILLED", "displayValue": "Billed" },
+            { "value": "CLOSED_WON", "displayValue": "Closed Won" },
+            { "value": "ORDER_SCHEDULED", "displayValue": "Order Scheduled" },
+            { "value": "PICKED", "displayValue": "Picked" },
+            { "value": "MANUFACTURED", "displayValue": "Manufactured" },
+            { "value": "AWAIT_SHIP", "displayValue": "Awaiting Shipment" }
+        ],
         "values": [
             "Data Gathering",
             "Sourcing",
@@ -3616,12 +3628,24 @@
     },
     "status_l": {
         "scope": "Line Item",
-        "dataType": "String",
+        "dataType": "Menu",
         "syntax": "status_l",
         "examples": [
             "val = line.status_l;"
         ],
         "notes": "The status of this line.",
+        "menuOptions": [
+            { "value": "NEW", "displayValue": "New" },
+            { "value": "PENDING_VQ", "displayValue": "Pending VQ" },
+            { "value": "INCREASE", "displayValue": "Increase" },
+            { "value": "DECREASE", "displayValue": "Decrease" },
+            { "value": "CP_HELD", "displayValue": "CP Held" },
+            { "value": "CREATED", "displayValue": "Created" },
+            { "value": "QUOTED", "displayValue": "Quoted" },
+            { "value": "INVOICED", "displayValue": "Invoiced" },
+            { "value": "AWAIT_BILLING", "displayValue": "Awaiting Billing" },
+            { "value": "BILLED", "displayValue": "Billed" }
+        ],
         "values": [
             "New",
             "Pending VQ",

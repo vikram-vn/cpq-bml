@@ -322,7 +322,7 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       const label = typeof opt === 'object' && opt !== null
         ? (opt.displayValue || opt.label || opt.name || val)
         : String(opt);
-      const display = label && String(label) !== String(val) ? `${val} (${label})` : String(val);
+      const display = label && val && String(label) !== String(val) ? `${label} (${val})` : String(val || label);
       const item = new vscodeInstance.TreeItem(display, vscodeInstance.TreeItemCollapsibleState.None);
       item.iconPath = new vscodeInstance.ThemeIcon('symbol-enum-member');
       item.tooltip = `Menu Option: "${val}"\nClick to insert "${val}" into active BML editor at cursor`;

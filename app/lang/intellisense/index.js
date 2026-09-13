@@ -310,7 +310,11 @@ function registerBmlIntelliSense(context) {
                             const label = typeof opt === 'object' && opt !== null
                                 ? (opt.displayValue || opt.label || opt.name || opt.description || val)
                                 : String(opt);
-                            md.appendMarkdown(`- \`${val}\`${label && String(label) !== String(val) ? ` (${label})` : ''}\n`);
+                            if (val && label && String(label) !== String(val)) {
+                                md.appendMarkdown(`- ${label} (\`${val}\`)\n`);
+                            } else {
+                                md.appendMarkdown(`- \`${label || val}\`\n`);
+                            }
                         }
                         if (opts.length > 25) {
                             md.appendMarkdown(`- *(+ ${opts.length - 25} more)*\n`);

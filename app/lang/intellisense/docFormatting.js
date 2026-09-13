@@ -284,7 +284,11 @@ function formatAsJsDoc(info) {
             const label = typeof opt === 'object' && opt !== null
                 ? (opt.displayValue || opt.label || opt.name || opt.description || val)
                 : String(opt);
-            md.appendMarkdown(`- \`${val}\`${label && String(label) !== String(val) ? ` (${label})` : ''}\n`);
+            if (val && label && String(label) !== String(val)) {
+                md.appendMarkdown(`- ${label} (\`${val}\`)\n`);
+            } else {
+                md.appendMarkdown(`- \`${label || val}\`\n`);
+            }
         }
         if (rawMenu.length > 25) {
             md.appendMarkdown(`- *(+ ${rawMenu.length - 25} more)*\n`);
@@ -297,7 +301,11 @@ function formatAsJsDoc(info) {
                 if (typeof val === 'object' && val !== null) {
                     const v = val.value !== undefined ? val.value : (val.id !== undefined ? val.id : val.name || val.label);
                     const l = val.displayValue || val.label || val.name || v;
-                    md.appendMarkdown(`- \`${v}\`${l && String(l) !== String(v) ? ` (${l})` : ''}\n`);
+                    if (v && l && String(l) !== String(v)) {
+                        md.appendMarkdown(`- ${l} (\`${v}\`)\n`);
+                    } else {
+                        md.appendMarkdown(`- \`${l || v}\`\n`);
+                    }
                 } else {
                     md.appendMarkdown(`- \`${val}\`\n`);
                 }

@@ -184,7 +184,7 @@ suite('docFormatting - real generated bml-functions-api-usage.json integration',
         assert.match(md.value, /\*Line Item · Menu\*/);
         assert.match(md.value, /\*\*Menu Options:\*\*/);
         assert.match(md.value, /- `New`/);
-        assert.match(md.value, /- `Pending_VQ` \(Pending VQ\)/);
+        assert.match(md.value, /- Pending VQ \(`Pending_VQ`\)/);
         assert.match(md.value, /- `Closed`/);
     });
 

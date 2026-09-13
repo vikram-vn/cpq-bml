@@ -191,7 +191,7 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     assert.strictEqual(children[0].data.value, 'New');
 
     const optItem = explorer.getTreeItem(children[1]);
-    assert.strictEqual(optItem.label, 'Pending_VQ (Pending VQ)');
+    assert.strictEqual(optItem.label, 'Pending VQ (Pending_VQ)');
     assert.strictEqual(optItem.command.command, 'cpqBml.cloud.insertOrCopyAttribute');
     assert.strictEqual(optItem.command.arguments[0].data.variableName, '"Pending_VQ"');
   });
