@@ -19,23 +19,23 @@ The **CPQ Cloud Property Inspector** replaces this with a dedicated, high-perfor
 
 ```mermaid
 graph LR
-    subgraph Cloud Explorer Tree View
+    subgraph Tree_View ["Cloud Explorer Tree View"]
         EXPLORER["Cloud Explorer Node<br/>Action, Attribute, Part, Integration"]
     end
 
-    subgraph Dispatcher & Preference Router
+    subgraph Router_Sub ["Dispatcher & Preference Router"]
         ROUTER["inspectItemAccordingToPreference()<br/>cloudInspectorPanel.js"]
         NORM["normalizeInspectorPayload()<br/>(category, title, variableName, type)"]
     end
 
-    subgraph Webview Architecture (React 19 + CSS)
+    subgraph Webview_Arch ["Webview Architecture (React 19 + CSS)"]
         PANEL["WebviewPanel Manager<br/>cloudInspectorPanel.js"]
         HTML["HTML Shell & CSP Nonce<br/>cloudInspectorHtml.js"]
         REACT["React 19 UI (src/App.jsx)<br/>css/inspector.css"]
         BUS["vscode.postMessage Client Bridge"]
     end
 
-    subgraph Read-Only Virtual Document Subsystem
+    subgraph Virtual_Sub ["Read-Only Virtual Document Subsystem"]
         VIRT["cloudDocumentProvider.js<br/>scheme: 'cpq-cloud'"]
         DOC["Read-Only JSON Document<br/>(no dirty buffer!)"]
     end
@@ -64,14 +64,14 @@ flowchart TD
     TriggerInspect(["User clicks CPQ Cloud Item in Explorer"]) --> NormalizePayload["normalizeInspectorPayload(item)"]
     NormalizePayload --> CheckActivePanel{"Is WebviewPanel already active?"}
 
-    CheckActivePanel -->|"Yes"| UpdateTitle["Update panel.title = 'Inspect: <title>'"]
+    CheckActivePanel -->|"Yes"| UpdateTitle["Update panel.title = 'Inspect: Component Title'"]
     UpdateTitle --> PostDataMsg["panel.webview.postMessage({ command: 'setData', payload })"]
     PostDataMsg --> RevealPanel["panel.reveal(ViewColumn.Beside, true)"]
 
     CheckActivePanel -->|"No"| CreatePanel["vscode.window.createWebviewPanel('cpqBmlCloudInspector', ...)"]
     CreatePanel --> BuildCSP["Generate Content Security Policy (crypto nonce, strict script-src, img-src)"]
     BuildCSP --> BundleAssets["Resolve webview URIs for dist/main.js and css/inspector.css"]
-    BundleAssets --> EscapeJSON["Embed initial payload JSON with unicode escaping (replace /</ with \\u003c)"]
+    BundleAssets --> EscapeJSON["Embed initial payload JSON with unicode escaping"]
     EscapeJSON --> RenderHTML["Mount initial HTML shell with fallback pre-rendered DOM in #root"]
     RenderHTML --> ClientHydrate["React 19 Client Mounts (index.jsx & App.jsx)"]
     ClientHydrate --> ReadyState(["Inspector Ready for User Interaction"])
@@ -152,8 +152,8 @@ flowchart TD
 
     ValidateType -->|"null / undefined"| SafeDefault["normalizeInspectorPayload: assign safe default object"]
     ValidateType -->|"Circular Object"| SafeJSON["getInspectorHtml: catch JSON.stringify circular exception"]
-    ValidateType -->|"HTML in Title/Desc"| EscapeHTML["escapeHtml(): convert <, >, &, \", ' to entities"]
-    ValidateType -->|"Script tags in JSON"| UnicodeEscape["Escape </script> as \\u003c/script> in initialData"]
+    ValidateType -->|"HTML in Title/Desc"| EscapeHTML["escapeHtml(): convert special characters to HTML entities"]
+    ValidateType -->|"Script tags in JSON"| UnicodeEscape["Neutralize script tags as unicode in initialData"]
 
     ValidateType -->|"Malformed Message"| GuardMessage["Wrap message handler in try/catch block"]
     ValidateType -->|"Empty text on copy"| SkipClipboard["Bypass clipboard API call without throwing"]
