@@ -42,6 +42,8 @@ function createCloudMockVscode(overrides = {}) {
   let quickPickSelected = null;
   const contexts = new Map();
 
+  let lastWebviewPanel = null;
+
   return {
     Position: function (l, c) { this.line = l; this.character = c; this.char = c; },
     Range: function (start, end) { this.start = start; this.end = end; },
@@ -62,10 +64,41 @@ function createCloudMockVscode(overrides = {}) {
     workspace: {
       workspaceFolders: [],
       openTextDocument: async (target) => {
-        openedDoc = target;
-        return target;
+        let content = '';
+        try {
+          const { getCloudDocumentProvider } = require('@/lang/cloud/cloudDocumentProvider');
+          const prov = getCloudDocumentProvider();
+          content = prov?.provideTextDocumentContent(target) || '';
+        } catch (_) {}
+        if (!content && typeof target?.content === 'string') {
+          content = target.content;
+        }
+
+        const doc = Object.freeze({
+          uri: target,
+          content: content,
+          language: target?.language || 'json',
+          languageId: target?.language || 'json',
+          getText: () => content
+        });
+        openedDoc = doc;
+        return doc;
       },
-      getConfiguration: () => ({ get: () => 'library' }),
+      getConfiguration: (section) => ({
+        get: (key, def) => {
+          if (wsOverride?.config && typeof wsOverride.config[key] !== 'undefined') {
+            return wsOverride.config[key];
+          }
+          if (key === 'openMetadataAs' || key === 'cloud.openMetadataAs') {
+            return wsOverride?.openMetadataAs || overrides?.openMetadataAs || 'virtualDocument';
+          }
+          if (wsOverride?.configValues && typeof wsOverride.configValues[key] !== 'undefined') {
+            return wsOverride.configValues[key];
+          }
+          return def !== undefined ? def : 'library';
+        }
+      }),
+      registerTextDocumentContentProvider: () => ({ dispose: () => {} }),
       ...(wsOverride || {})
     },
     window: {
@@ -85,6 +118,49 @@ function createCloudMockVscode(overrides = {}) {
       withProgress: async (opt, task) => task({ report: () => {} }),
       registerTreeDataProvider: (viewId, provider) => ({ dispose: () => {} }),
       createTreeView: (viewId, opts) => ({ dispose: () => {}, description: '', title: '' }),
+      createWebviewPanel: (viewType, title, showOptions, options) => {
+        let msgHandler = null;
+        let isDisposed = false;
+        let _title = title;
+        const panel = {
+          viewType,
+          get title() {
+            if (isDisposed) throw new Error('Webview is disposed.');
+            return _title;
+          },
+          set title(val) {
+            if (isDisposed) throw new Error('Webview is disposed.');
+            _title = val;
+          },
+          webview: {
+            html: '',
+            cspSource: 'vscode-webview:',
+            asWebviewUri: (resource) => {
+              if (isDisposed) throw new Error('Webview is disposed.');
+              if (!resource || typeof resource.path !== 'string') {
+                throw new TypeError("Cannot read properties of undefined (reading 'replace')");
+              }
+              return `vscode-webview-resource://${resource.path.replace(/^\//, '')}`;
+            },
+            postMessage: async () => {
+              if (isDisposed) throw new Error('Webview is disposed.');
+              return true;
+            },
+            onDidReceiveMessage: (fn) => { msgHandler = fn; }
+          },
+          reveal: () => {
+            if (isDisposed) throw new Error('Webview is disposed.');
+          },
+          onDidDispose: (cb) => { panel._disposeCb = cb; },
+          dispose: () => {
+            if (isDisposed) return;
+            isDisposed = true;
+            if (panel._disposeCb) panel._disposeCb();
+          }
+        };
+        lastWebviewPanel = panel;
+        return panel;
+      },
       ...(winOverride || {})
     },
     commands: {
@@ -104,11 +180,22 @@ function createCloudMockVscode(overrides = {}) {
       ...(envOverride || {})
     },
     Uri: {
-      file: (f) => ({ fsPath: f, scheme: 'file' }),
+      file: (f) => Object.freeze({
+        fsPath: f,
+        path: f.replace(/\\/g, '/'),
+        scheme: 'file',
+        toString: () => `file://${f}`
+      }),
+      from: (c) => Object.freeze({
+        scheme: c.scheme,
+        path: c.path,
+        toString: () => `${c.scheme}://${c.path}`
+      }),
       ...(uriOverride || {})
     },
     getOpenedDoc: function () { return openedDoc; },
     getShownDoc: function () { return shownDoc; },
+    getLastWebviewPanel: function () { return lastWebviewPanel; },
     getExecutedCmd: function () { return executedCmd; },
     getClipboardText: function () { return clipboardText; },
     getInfoMsg: function () { return infoMsg; },

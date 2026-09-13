@@ -85,16 +85,24 @@ async function openVirtualJsonDocument(category, title, payload, vscodeInstance 
   const uri = createCloudUri(category, title, '.json', vscodeInstance);
   const content = typeof payload === 'string' ? payload : JSON.stringify(payload, null, 2);
 
-  uri.content = content;
-  uri.language = 'json';
+  try {
+    if (uri && Object.isExtensible(uri)) {
+      uri.content = content;
+      uri.language = 'json';
+    }
+  } catch (_) {}
 
   provider.registerDocument(uri, content);
 
   const doc = await vscodeInstance.workspace.openTextDocument(uri);
   if (doc && typeof doc === 'object') {
-    if (!doc.content) doc.content = content;
-    if (!doc.language) doc.language = 'json';
-    if (!doc.getText) doc.getText = () => content;
+    try {
+      if (Object.isExtensible(doc)) {
+        if (!doc.content) doc.content = content;
+        if (!doc.language) doc.language = 'json';
+        if (!doc.getText) doc.getText = () => content;
+      }
+    } catch (_) {}
   }
   await vscodeInstance.window.showTextDocument(doc, { preview: true });
   return doc;

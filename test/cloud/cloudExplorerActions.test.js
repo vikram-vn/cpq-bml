@@ -222,14 +222,20 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
-          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          get: (k) => {
+            if (k === 'connection.siteUrl') return 'https://cpq-10234.bigmachines.com';
+            if (k === 'openMetadataAs') return 'virtualDocument';
+            return '';
+          }
         }),
         openTextDocument: async (target) => {
-          if (target && target.content) {
-            openedJsonContent = target.content;
-            return target;
+          const { getCloudDocumentProvider } = require('@/lang/cloud/cloudDocumentProvider');
+          const content = getCloudDocumentProvider().provideTextDocumentContent(target);
+          if (content) {
+            openedJsonContent = content;
+            return { uri: target, content, getText: () => content };
           }
-          openedDocPath = target.fsPath;
+          openedDocPath = target?.fsPath;
           return target;
         }
       },

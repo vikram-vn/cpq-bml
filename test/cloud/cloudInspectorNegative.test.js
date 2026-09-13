@@ -1,6 +1,8 @@
 'use strict';
 
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 const {
   showCloudInspector,
   normalizeInspectorPayload,
@@ -8,6 +10,8 @@ const {
   _resetInspectorPanel
 } = require('@/lang/cloud/cloudInspectorPanel');
 const { getInspectorHtml, escapeHtml } = require('@/lang/cloud/cloudInspectorHtml');
+const { viewRawJsonCommand, inspectPropertiesCommand } = require('@/lang/cloud/cloudExplorerCommands');
+const { openVirtualJsonDocument, getCloudDocumentProvider } = require('@/lang/cloud/cloudDocumentProvider');
 const { createCloudMockVscode } = require('@/test/cloud/cloudTestMocks');
 
 suite('Cloud Inspector - Negative & Edge Cases', () => {
@@ -281,6 +285,173 @@ suite('Cloud Inspector - Negative & Edge Cases', () => {
       await inspectItemAccordingToPreference({ data: { name: 'fallbackItem' } }, {}, mockVscode);
       assert.ok(openedUri);
       assert.strictEqual(openedUri.scheme, 'cpq-cloud');
+    });
+  });
+
+  suite('Non-extensible VS Code object safety (Bug A regression)', () => {
+    test('openVirtualJsonDocument safely handles frozen Uri and frozen TextDocument', async () => {
+      const mockVscode = createCloudMockVscode();
+
+      // Ensure openVirtualJsonDocument executes without throwing "Cannot add property content, object is not extensible"
+      let doc = null;
+      await assert.doesNotReject(async () => {
+        doc = await openVirtualJsonDocument('actions', 'testAction', { sample: 123 }, mockVscode);
+      });
+
+      assert.ok(doc);
+      assert.strictEqual(doc.language, 'json');
+      assert.ok(doc.getText().includes('123'));
+    });
+
+    test('viewRawJsonCommand works without error on frozen VS Code objects', async () => {
+      const mockVscode = createCloudMockVscode();
+
+      await assert.doesNotReject(async () => {
+        await viewRawJsonCommand({
+          data: {
+            variableName: 'controlAttr',
+            name: 'Control Attribute',
+            dataType: 'Text'
+          }
+        }, mockVscode);
+      });
+
+      const opened = mockVscode.getOpenedDoc();
+      assert.ok(opened);
+      assert.strictEqual(opened.language, 'json');
+      assert.ok(opened.content.includes('controlAttr'));
+      assert.ok(opened.content.includes('Control Attribute'));
+    });
+  });
+
+  suite('Strict Webview Uri & Path Resolution (Bug B regression)', () => {
+    test('getInspectorHtml handles strict asWebviewUri requiring .path property', () => {
+      const extensionRoot = path.resolve(__dirname, '..', '..');
+      const strictWebview = {
+        cspSource: 'vscode-webview:',
+        asWebviewUri: (resource) => {
+          if (!resource || typeof resource.path !== 'string') {
+            throw new TypeError("Cannot read properties of undefined (reading 'replace')");
+          }
+          return `vscode-webview-resource://${resource.path.replace(/^\//, '')}`;
+        }
+      };
+
+      const mockVscode = createCloudMockVscode();
+      let html = null;
+      assert.doesNotThrow(() => {
+        html = getInspectorHtml(
+          {
+            title: 'emailProposal_t',
+            category: 'Action',
+            variableName: 'emailProposal_t',
+            data: { commerceProcess: 'oraclecpqo', commerceDocument: 'transaction' }
+          },
+          strictWebview,
+          extensionRoot,
+          mockVscode
+        );
+      });
+
+      assert.ok(html);
+      assert.ok(html.includes('emailProposal_t'));
+      assert.ok(html.includes('vscode-webview-resource://'));
+      assert.ok(html.includes('Content-Security-Policy'));
+    });
+  });
+
+  suite('Preference routing between Inspector and Virtual Document', () => {
+    test('routes to inspector webview panel when openMetadataAs is inspector', async () => {
+      const mockVscode = createCloudMockVscode({
+        openMetadataAs: 'inspector'
+      });
+
+      await inspectItemAccordingToPreference(
+        { data: { variableName: 'prefTest', name: 'Preference Test' } },
+        {},
+        mockVscode
+      );
+
+      const panel = mockVscode.getLastWebviewPanel();
+      assert.ok(panel);
+      assert.strictEqual(panel.viewType, 'cpqBmlCloudInspector');
+      assert.ok(panel.title.includes('Preference Test'));
+    });
+
+    test('routes to virtual document when openMetadataAs is virtualDocument', async () => {
+      const mockVscode = createCloudMockVscode({
+        openMetadataAs: 'virtualDocument'
+      });
+
+      await inspectItemAccordingToPreference(
+        { data: { variableName: 'prefDocTest', name: 'Virtual Doc Test' } },
+        {},
+        mockVscode
+      );
+
+      const opened = mockVscode.getOpenedDoc();
+      assert.ok(opened);
+      assert.strictEqual(opened.language, 'json');
+      assert.ok(opened.content.includes('prefDocTest'));
+    });
+
+    test('handles disposed webview panel seamlessly without throwing "Webview is disposed."', async () => {
+      const mockVscode = createCloudMockVscode({
+        openMetadataAs: 'inspector'
+      });
+
+      // 1. Initial inspection opens panel
+      await inspectPropertiesCommand({
+        part: { partNumber: 'SPGM87410-KA4', description: 'Initial Part' }
+      }, mockVscode, {});
+
+      const firstPanel = mockVscode.getLastWebviewPanel();
+      assert.ok(firstPanel);
+
+      // 2. Panel is closed or disposed by user
+      firstPanel.dispose();
+
+      // 3. User clicks on "Hardware" part item
+      let secondPanel = null;
+      await assert.doesNotReject(async () => {
+        await inspectPropertiesCommand({
+          part: { partNumber: 'Hardware', description: 'Hardware Part' }
+        }, mockVscode, {});
+        secondPanel = mockVscode.getLastWebviewPanel();
+      });
+
+      assert.ok(secondPanel);
+      assert.notStrictEqual(secondPanel, firstPanel);
+      assert.ok(secondPanel.title.includes('Hardware'));
+    });
+  });
+
+  suite('Packaging & Webview Asset Distribution Verification', () => {
+    test('all inspector webview bundle assets exist on disk', () => {
+      const root = path.resolve(__dirname, '..', '..');
+      const webviewDir = path.join(root, 'app', 'lang', 'cloud', 'inspector-web-view');
+      const htmlPath = path.join(webviewDir, 'index.html');
+      const bundlePath = path.join(webviewDir, 'dist', 'main.js');
+      const cssPath = path.join(webviewDir, 'css', 'inspector.css');
+
+      assert.ok(fs.existsSync(htmlPath), 'index.html must exist');
+      assert.ok(fs.existsSync(bundlePath), 'dist/main.js must exist');
+      assert.ok(fs.existsSync(cssPath), 'css/inspector.css must exist');
+
+      const bundleStats = fs.statSync(bundlePath);
+      assert.ok(bundleStats.size > 1000, 'dist/main.js bundle must not be empty');
+    });
+
+    test('.vscodeignore correctly includes inspector-web-view distribution files', () => {
+      const root = path.resolve(__dirname, '..', '..');
+      const ignorePath = path.join(root, '.vscodeignore');
+      assert.ok(fs.existsSync(ignorePath), '.vscodeignore must exist');
+      const content = fs.readFileSync(ignorePath, 'utf8');
+
+      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/dist/**'));
+      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/css/**'));
+      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/index.html'));
+      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/dist/main.js'));
     });
   });
 });

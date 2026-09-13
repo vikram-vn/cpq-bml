@@ -35,6 +35,7 @@ knowledge/**
 extension.js
 app/**/*.js
 !app/lang/settings-panel/web-view/dist/main.js
+!app/lang/cloud/inspector-web-view/dist/main.js
 
 # Ignore WebAssembly source and binary files (shipped via cipherWasmBinary.js)
 **/*.wat
@@ -45,7 +46,11 @@ app/lang/beautify/**
 app/lang/lint/**
 app/lang/rest/**
 app/lang/comments/**
-app/lang/cloud/**
+app/lang/cloud/*.js
+app/lang/cloud/inspector-web-view/src/**
+!app/lang/cloud/inspector-web-view/dist/**
+!app/lang/cloud/inspector-web-view/css/**
+!app/lang/cloud/inspector-web-view/index.html
 app/lang/bmql/**
 app/lang/status-bar/**
 app/lang/mcp/**

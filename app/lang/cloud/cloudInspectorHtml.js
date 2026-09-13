@@ -30,7 +30,7 @@ function escapeHtml(str) {
  * @param {string} [extensionPath] Root path of extension
  * @returns {string} HTML content
  */
-function getInspectorHtml(payload = {}, webview, extensionPath) {
+function getInspectorHtml(payload = {}, webview, extensionPath, vscodeInstance = null) {
   const safePayload = payload || {};
   const rootPath = extensionPath || path.join(__dirname, '..', '..', '..');
   const webviewRoot = path.join(rootPath, 'app', 'lang', 'cloud', 'inspector-web-view');
@@ -40,12 +40,30 @@ function getInspectorHtml(payload = {}, webview, extensionPath) {
     ? fs.readFileSync(templatePath, 'utf8')
     : '<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="{{csp}}"></head><body><div id="root"></div></body></html>';
 
+  let vscodeModule = vscodeInstance;
+  if (!vscodeModule) {
+    try {
+      vscodeModule = require('vscode');
+    } catch (_) {}
+  }
+
+  const toUri = (p) => {
+    if (vscodeModule?.Uri?.file) {
+      const u = vscodeModule.Uri.file(p);
+      if (u && !u.path) {
+        u.path = p.replace(/\\/g, '/');
+      }
+      return u;
+    }
+    return { fsPath: p, path: p.replace(/\\/g, '/') };
+  };
+
   const scriptUri = webview?.asWebviewUri
-    ? webview.asWebviewUri({ fsPath: path.join(webviewRoot, 'dist', 'main.js') })
+    ? webview.asWebviewUri(toUri(path.join(webviewRoot, 'dist', 'main.js')))
     : 'dist/main.js';
 
   const styleUri = webview?.asWebviewUri
-    ? webview.asWebviewUri({ fsPath: path.join(webviewRoot, 'css', 'inspector.css') })
+    ? webview.asWebviewUri(toUri(path.join(webviewRoot, 'css', 'inspector.css')))
     : 'css/inspector.css';
 
   const nonce = getNonce();

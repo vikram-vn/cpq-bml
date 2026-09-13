@@ -69,19 +69,26 @@ async function showCloudInspector(item, context, vscodeInstance = vscodeModule, 
     : (vscodeInstance?.ViewColumn?.One ?? 1);
 
   if (currentPanel) {
-    currentPanel.title = `Inspect: ${norm.title}`;
-    if (typeof currentPanel.webview?.postMessage === 'function') {
-      currentPanel.webview.postMessage({ command: 'setData', payload: norm });
-    } else {
-      currentPanel.webview.html = getInspectorHtml(norm, currentPanel.webview, context?.extensionPath);
+    try {
+      currentPanel.title = `Inspect: ${norm.title}`;
+      const rootPath = context?.extensionPath || path.join(__dirname, '..', '..', '..');
+      if (typeof currentPanel.webview?.postMessage === 'function') {
+        currentPanel.webview.postMessage({ command: 'setData', payload: norm });
+      } else {
+        currentPanel.webview.html = getInspectorHtml(norm, currentPanel.webview, rootPath, vscodeInstance);
+      }
+      currentPanel.reveal(column, true);
+      return currentPanel;
+    } catch (_) {
+      currentPanel = null;
+      currentItemContext = null;
     }
-    currentPanel.reveal(column, true);
-    return currentPanel;
   }
 
+  const rootPath = context?.extensionPath || path.join(__dirname, '..', '..', '..');
   const localResourceRoots = [];
-  if (context && context.extensionPath) {
-    localResourceRoots.push(vscodeInstance.Uri.file(context.extensionPath));
+  if (vscodeInstance?.Uri?.file) {
+    localResourceRoots.push(vscodeInstance.Uri.file(rootPath));
   }
 
   const panel = vscodeInstance.window.createWebviewPanel(
@@ -95,22 +102,30 @@ async function showCloudInspector(item, context, vscodeInstance = vscodeModule, 
     }
   );
 
+  panel.onDidDispose(() => {
+    if (currentPanel === panel) {
+      currentPanel = null;
+      currentItemContext = null;
+    }
+  });
+
   currentPanel = panel;
 
-  if (context && context.extensionPath) {
-    const iconUri = vscodeInstance.Uri.file(path.join(context.extensionPath, 'app', 'icons', 'brand', 'logo.png'));
-    if (fs.existsSync(iconUri.fsPath)) {
-      panel.iconPath = iconUri;
+  try {
+    if (vscodeInstance?.Uri?.file) {
+      const iconUri = vscodeInstance.Uri.file(path.join(rootPath, 'app', 'icons', 'brand', 'logo.png'));
+      if (fs.existsSync(iconUri.fsPath)) {
+        panel.iconPath = iconUri;
+      }
     }
-  }
 
-  panel.webview.html = getInspectorHtml(norm, panel.webview, context?.extensionPath);
-
-
-  panel.onDidDispose(() => {
+    panel.webview.html = getInspectorHtml(norm, panel.webview, rootPath, vscodeInstance);
+  } catch (err) {
     currentPanel = null;
     currentItemContext = null;
-  });
+    try { panel.dispose(); } catch (_) {}
+    throw err;
+  }
 
   panel.webview.onDidReceiveMessage(async (message) => {
     if (!message) return;

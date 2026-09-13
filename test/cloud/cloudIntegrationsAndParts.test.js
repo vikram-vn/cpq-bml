@@ -162,8 +162,10 @@ suite('CPQ Cloud Integrations & Parts - Unit Tests', () => {
     test('inspectIntegrationCommand opens integration payload as JSON', async () => {
       let openedDocOpts = null;
       mockVscode.workspace.openTextDocument = async (opts) => {
-        openedDocOpts = opts;
-        return opts;
+        const { getCloudDocumentProvider } = require('@/lang/cloud/cloudDocumentProvider');
+        const content = getCloudDocumentProvider().provideTextDocumentContent(opts);
+        openedDocOpts = { uri: opts, language: 'json', content, getText: () => content };
+        return openedDocOpts;
       };
 
       const mockItem = {
@@ -345,8 +347,9 @@ suite('CPQ Cloud Integrations & Parts - Unit Tests', () => {
     test('inspectPartCommand fetches and displays part in JSON document', async () => {
       let openedContent = null;
       mockVscode.workspace.openTextDocument = async (opts) => {
-        openedContent = opts.content;
-        return opts;
+        const { getCloudDocumentProvider } = require('@/lang/cloud/cloudDocumentProvider');
+        openedContent = getCloudDocumentProvider().provideTextDocumentContent(opts);
+        return { uri: opts, content: openedContent, getText: () => openedContent };
       };
 
       const partItem = {
