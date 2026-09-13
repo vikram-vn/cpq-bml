@@ -213,118 +213,118 @@
     "commands": [
       {
         "command": "cpqBml.introspectSchema",
-        "title": "CPQ-BML: Introspect Instance Schema & Custom Attributes"
+        "title": "Introspect Instance Schema & Custom Attributes"
       },
       {
         "command": "cpqBml.openScratchpad",
-        "title": "CPQ-BML: Open BML Logic Scratchpad (Offline Sandbox)"
+        "title": "Open BML Logic Scratchpad (Offline Sandbox)"
       },
       {
         "command": "cpqBml.runBmlLocally",
-        "title": "CPQ-BML: Run BML Script Locally (Scratchpad)"
+        "title": "Run BML Script Locally (Scratchpad)"
       },
       {
         "command": "cpqBml.scaffoldLibraryFunction",
-        "title": "CPQ-BML: Scaffold New Library Function (with -meta.json sidecar)"
+        "title": "Scaffold New Library Function (with -meta.json sidecar)"
       },
       {
         "command": "cpqBml.scaffoldBmqlQuery",
-        "title": "CPQ-BML: Scaffold Parameterized BMQL Query"
+        "title": "Scaffold Parameterized BMQL Query"
       },
       {
         "command": "cpqBml.switchEnvironment",
-        "title": "CPQ-BML: Switch Active CPQ Environment"
+        "title": "Switch Active CPQ Environment"
       },
       {
         "command": "cpqBml.exportTeamProfiles",
-        "title": "CPQ-BML: Export Team Profiles (cpq/profiles.json)"
+        "title": "Export Team Profiles (cpq/profiles.json)"
       },
       {
         "command": "cpqBml.importTeamProfiles",
-        "title": "CPQ-BML: Import Team Profiles"
+        "title": "Import Team Profiles"
       },
       {
         "command": "cpqBml.rest.setPassword",
-        "title": "CPQ-BML: Set CPQ Password"
+        "title": "Set CPQ Password"
       },
       {
         "command": "cpqBml.rest.setAuthToken",
-        "title": "CPQ-BML: Set CPQ Auth Token"
+        "title": "Set CPQ Auth Token"
       },
       {
         "command": "cpqBml.rest.pullLibraryFunctions",
-        "title": "CPQ-BML: Pull Util Library Functions from CPQ",
+        "title": "Pull Util Library Functions from CPQ",
         "icon": "app/icons/editor/pull.svg"
       },
       {
         "command": "cpqBml.rest.pullCommerceFunctions",
-        "title": "CPQ-BML: Pull Commerce Functions from CPQ",
+        "title": "Pull Commerce Functions from CPQ",
         "icon": "app/icons/editor/pull.svg"
       },
       {
         "command": "cpqBml.rest.validateCurrentFile",
-        "title": "CPQ-BML: Validate Current File Against CPQ",
+        "title": "Validate Current File Against CPQ",
         "icon": "app/icons/editor/validate.svg"
       },
       {
         "command": "cpqBml.rest.debugCurrentFile",
-        "title": "CPQ-BML: Debug Current Function on CPQ",
+        "title": "Debug Current Function on CPQ",
         "icon": "app/icons/editor/debug.svg"
       },
       {
         "command": "cpqBml.rest.debugConfigureInputs",
-        "title": "CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)",
+        "title": "Debug Current Function (Configure New Inputs / Transaction...)",
         "icon": "app/icons/editor/debug-configure.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.saveCurrentFile",
-        "title": "CPQ-BML: Save Current File to CPQ",
+        "title": "Save Current File to CPQ",
         "icon": "app/icons/editor/save.svg"
       },
       {
         "command": "cpqBml.rest.clearResults",
-        "title": "CPQ-BML: Clear Results Terminal",
+        "title": "Clear Results Terminal",
         "icon": "app/icons/editor/clear.svg"
       },
       {
         "command": "cpqBml.rest.createOverride",
-        "title": "CPQ-BML: Create Override",
+        "title": "Create Override",
         "icon": "app/icons/editor/create-override.svg"
       },
       {
         "command": "cpqBml.rest.removeOverride",
-        "title": "CPQ-BML: Remove Override",
+        "title": "Remove Override",
         "icon": "app/icons/editor/remove-override.svg"
       },
       {
         "command": "cpqBml.rest.deployCommerceProcess",
-        "title": "CPQ-BML: Deploy Commerce Process Setup",
+        "title": "Deploy Commerce Process Setup",
         "icon": "app/icons/editor/deploy-commerce.svg"
       },
       {
         "command": "cpqBml.rest.deployCurrentFile",
-        "title": "CPQ-BML: Deploy Current Util Function to CPQ",
+        "title": "Deploy Current Util Function to CPQ",
         "icon": "app/icons/editor/deploy.svg"
       },
       {
         "command": "cpqBml.rest.deployUtilFunctions",
-        "title": "CPQ-BML: Mass Deploy Util Library Functions",
+        "title": "Mass Deploy Util Library Functions",
         "icon": "app/icons/editor/deploy-mass.svg"
       },
       {
         "command": "cpqBml.rest.massDeployUtils",
-        "title": "CPQ-BML: Mass Deploy Util Functions",
+        "title": "Mass Deploy Util Functions",
         "icon": "app/icons/editor/deploy-mass.svg"
       },
       {
         "command": "cpqBml.rest.createBmlFunction",
-        "title": "CPQ-BML: Create BML Function",
+        "title": "Create BML Function",
         "icon": "app/icons/editor/create-bml.svg"
       },
       {
         "command": "cpqBml.rest.changeEnvironment",
-        "title": "CPQ-BML: Change Environment",
+        "title": "Change Environment",
         "icon": "app/icons/editor/change-env.svg"
       },
       {
@@ -334,191 +334,191 @@
       },
       {
         "command": "cpqBml.rest.getTransactions",
-        "title": "CPQ-BML: Pull Transactions from CPQ",
+        "title": "Pull Transactions from CPQ",
         "icon": "$(list-unordered)"
       },
       {
         "command": "cpqBml.rest.syncCommerceMetadata",
-        "title": "CPQ-BML: Sync Commerce Schema & Metadata",
+        "title": "Sync Commerce Schema & Metadata",
         "icon": "app/icons/editor/pull.svg"
       },
       {
         "command": "cpqBml.rest.removeCommerceMetadata",
-        "title": "CPQ-BML: Remove Offline Cached Metadata",
+        "title": "Remove Offline Cached Metadata",
         "icon": "app/icons/editor/clear.svg"
       },
       {
         "command": "cpqBml.rest.pipelineViewer",
-        "title": "CPQ-BML: Run Pipeline Viewer on Transaction",
+        "title": "Run Pipeline Viewer on Transaction",
         "icon": "$(debug-console)"
       },
       {
         "command": "cpqBml.mcp.showInfo",
-        "title": "CPQ-BML: Show MCP Server Connection Info",
+        "title": "Show MCP Server Connection Info",
         "icon": "$(info)"
       },
       {
         "command": "cpqBml.settings.open",
-        "title": "CPQ-BML: Open Settings",
+        "title": "Open Settings",
         "category": "BML",
         "icon": "app/icons/editor/settings.svg"
       },
       {
         "command": "cpqBml.beautifyWorkspace",
-        "title": "CPQ-BML: Beautify / Format All BML Files in Workspace",
+        "title": "Beautify / Format All BML Files in Workspace",
         "category": "BML",
         "icon": "app/icons/editor/beautify.svg"
       },
       {
         "command": "cpqBml.ai.setupWorkspaceSkills",
-        "title": "CPQ-BML: Setup AI Skills for Workspace",
+        "title": "Setup AI Skills for Workspace",
         "category": "BML",
         "icon": "app/icons/editor/ai-setup.svg"
       },
       {
         "command": "cpqBml.toggleCoverage",
-        "title": "CPQ-BML: Toggle BML Test Coverage Heatmap",
+        "title": "Toggle BML Test Coverage Heatmap",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.startLogStream",
-        "title": "CPQ-BML: Start Remote BML Log Stream",
+        "title": "Start Remote BML Log Stream",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.stopLogStream",
-        "title": "CPQ-BML: Stop Remote BML Log Stream",
+        "title": "Stop Remote BML Log Stream",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.fetchLogs",
-        "title": "CPQ-BML: Fetch Recent Server Error Logs",
+        "title": "Fetch Recent Server Error Logs",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.generateTransactionMock",
-        "title": "CPQ-BML: Generate Test Mock from Live Transaction",
+        "title": "Generate Test Mock from Live Transaction",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.flushCache",
-        "title": "CPQ-BML: Flush CPQ Server Cache",
+        "title": "Flush CPQ Server Cache",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.simulateAction",
-        "title": "CPQ-BML: Simulate Commerce Action & Inspect Delta",
+        "title": "Simulate Commerce Action & Inspect Delta",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.checkHealth",
-        "title": "CPQ-BML: Check CPQ Instance Health & Latency",
+        "title": "Check CPQ Instance Health & Latency",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.refresh",
-        "title": "CPQ-BML: Refresh Cloud Functions",
+        "title": "Refresh Cloud Functions",
         "icon": "app/icons/cloud/refresh.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.pullFunction",
-        "title": "CPQ-BML: Pull Cloud Function to Workspace",
+        "title": "Pull Cloud Function to Workspace",
         "icon": "app/icons/cloud/pull.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.diffFunction",
-        "title": "CPQ-BML: Diff Function Against CPQ Cloud Server",
+        "title": "Diff Function Against CPQ Cloud Server",
         "icon": "app/icons/cloud/diff.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.deployFunction",
-        "title": "CPQ-BML: Deploy Function to CPQ Cloud",
+        "title": "Deploy Function to CPQ Cloud",
         "icon": "app/icons/cloud/deploy.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.debugFunction",
-        "title": "CPQ-BML: Debug Function on CPQ (Smart Debug)",
+        "title": "Debug Function on CPQ (Smart Debug)",
         "icon": "app/icons/cloud/debug.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.debugConfigureFunction",
-        "title": "CPQ-BML: Debug Function (Configure New Inputs / Transaction...)",
+        "title": "Debug Function (Configure New Inputs / Transaction...)",
         "icon": "app/icons/cloud/debug-configure.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.viewFunctionMetadata",
-        "title": "CPQ-BML: View Function Metadata (-meta.json)",
+        "title": "View Function Metadata (-meta.json)",
         "icon": "app/icons/cloud/metadata.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.openLocal",
-        "title": "CPQ-BML: Open Local Function File",
+        "title": "Open Local Function File",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.switchCommerceProcess",
-        "title": "CPQ-BML: Switch Active Commerce Process & Document",
+        "title": "Switch Active Commerce Process & Document",
         "icon": "app/icons/cloud/switch-process.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.syncDefinitions",
-        "title": "CPQ-BML: Sync Cloud BML Definitions (cpq/cpq.d.bml)",
+        "title": "Sync Cloud BML Definitions (cpq/cpq.d.bml)",
         "icon": "app/icons/cloud/sync.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.refreshDataTables",
-        "title": "CPQ-BML: Refresh CPQ Data Tables",
+        "title": "Refresh CPQ Data Tables",
         "icon": "app/icons/cloud/refresh.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.queryDataTable",
-        "title": "CPQ-BML: Query Data Table in BMQL Live Console",
+        "title": "Query Data Table in BMQL Live Console",
         "icon": "app/icons/cloud/query.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.exportDataTableCsv",
-        "title": "CPQ-BML: Export CPQ Data Table to CSV",
+        "title": "Export CPQ Data Table to CSV",
         "icon": "app/icons/cloud/export-csv.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.rest.preflightCheck",
-        "title": "CPQ-BML: Run Pre-Flight Safety & Impact Check on Active File",
+        "title": "Run Pre-Flight Safety & Impact Check on Active File",
         "icon": "$(shield)",
         "category": "BML"
       },
       {
         "command": "cpqBml.test.runRemoteTest",
-        "title": "CPQ-BML: Run BMLT Tests on Server / Live CPQ",
+        "title": "Run BMLT Tests on Server / Live CPQ",
         "icon": "$(run)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.searchExplorer",
-        "title": "CPQ-BML: Search Cloud Functions & Actions",
+        "title": "Search Cloud Functions & Actions",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.filterExplorer",
-        "title": "CPQ-BML: Filter Cloud Explorer Tree",
+        "title": "Filter Cloud Explorer Tree",
         "icon": "app/icons/cloud/filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.clearFilter",
-        "title": "CPQ-BML: Clear Cloud Explorer Filter",
+        "title": "Clear Cloud Explorer Filter",
         "icon": "app/icons/cloud/clear-filter.svg",
         "category": "BML"
       },
@@ -531,25 +531,25 @@
       },
       {
         "command": "cpqBml.cloud.refreshTransactions",
-        "title": "CPQ-BML: Refresh Recent Transactions",
+        "title": "Refresh Recent Transactions",
         "icon": "app/icons/cloud/refresh.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.inspectTransaction",
-        "title": "CPQ-BML: Inspect Transaction Attributes & Data",
+        "title": "Inspect Transaction Attributes & Data",
         "icon": "app/icons/cloud/inspect-tx.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.debugOnTransaction",
-        "title": "CPQ-BML: Debug Active BML File on this Transaction",
+        "title": "Debug Active BML File on this Transaction",
         "icon": "app/icons/cloud/debug-tx.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.copyTransactionId",
-        "title": "CPQ-BML: Copy Transaction ID to Clipboard",
+        "title": "Copy Transaction ID to Clipboard",
         "icon": "app/icons/cloud/copy-id.svg",
         "category": "BML"
       },
@@ -579,199 +579,199 @@
       },
       {
         "command": "cpqBml.cloud.inspectIntegration",
-        "title": "CPQ-BML: Inspect Integration Definition",
+        "title": "Inspect Integration Definition",
         "icon": "$(plug)",
         "category": "BML"
       },
       {
         "command": "cpqBml.parts.refresh",
-        "title": "CPQ-BML: Refresh Parts Catalog",
+        "title": "Refresh Parts Catalog",
         "icon": "app/icons/cloud/refresh.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.parts.searchExplorer",
-        "title": "CPQ-BML: Search Parts Catalog",
+        "title": "Search Parts Catalog",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.parts.filterExplorer",
-        "title": "CPQ-BML: Filter Parts Catalog",
+        "title": "Filter Parts Catalog",
         "icon": "app/icons/cloud/filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.parts.clearFilter",
-        "title": "CPQ-BML: Clear Parts Filter",
+        "title": "Clear Parts Filter",
         "icon": "app/icons/cloud/clear-filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.parts.inspectPart",
-        "title": "CPQ-BML: Inspect Part Details",
+        "title": "Inspect Part Details",
         "icon": "$(package)",
         "category": "BML"
       },
       {
         "command": "cpqBml.parts.copyPartNumber",
-        "title": "CPQ-BML: Copy Part Number",
+        "title": "Copy Part Number",
         "icon": "$(copy)",
         "category": "BML"
       },
       {
         "command": "cpqBml.parts.insertPartNumber",
-        "title": "CPQ-BML: Insert Part Number at Cursor",
+        "title": "Insert Part Number at Cursor",
         "icon": "$(symbol-field)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.refreshDeploymentCenter",
-        "title": "CPQ-BML: Refresh Deployment Center & Task Status",
+        "title": "Refresh Deployment Center & Task Status",
         "icon": "app/icons/cloud/refresh.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.viewTaskDetails",
-        "title": "CPQ-BML: View Task Details",
+        "title": "View Task Details",
         "icon": "app/icons/cloud/task-details.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.openCommerceAction",
-        "title": "CPQ-BML: View Commerce Document Action Definition",
+        "title": "View Commerce Document Action Definition",
         "icon": "$(zap)",
         "category": "BML"
       },
       {
         "command": "cpqBml.commerce.refresh",
-        "title": "CPQ-BML: Refresh Commerce Explorer",
+        "title": "Refresh Commerce Explorer",
         "icon": "app/icons/cloud/refresh.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.commerce.switchProcess",
-        "title": "CPQ-BML: Switch Active Commerce Process",
+        "title": "Switch Active Commerce Process",
         "icon": "app/icons/cloud/switch-process.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.config.refresh",
-        "title": "CPQ-BML: Refresh Configuration Explorer",
+        "title": "Refresh Configuration Explorer",
         "icon": "app/icons/cloud/refresh.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.commerce.filterExplorer",
-        "title": "CPQ-BML: Filter Commerce Explorer",
+        "title": "Filter Commerce Explorer",
         "icon": "app/icons/cloud/filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.commerce.clearFilter",
-        "title": "CPQ-BML: Clear Commerce Explorer Filter",
+        "title": "Clear Commerce Explorer Filter",
         "icon": "app/icons/cloud/clear-filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.commerce.searchExplorer",
-        "title": "CPQ-BML: Search Commerce Explorer",
+        "title": "Search Commerce Explorer",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.config.filterExplorer",
-        "title": "CPQ-BML: Filter Configuration Explorer",
+        "title": "Filter Configuration Explorer",
         "icon": "app/icons/cloud/filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.config.clearFilter",
-        "title": "CPQ-BML: Clear Configuration Explorer Filter",
+        "title": "Clear Configuration Explorer Filter",
         "icon": "app/icons/cloud/clear-filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.config.searchExplorer",
-        "title": "CPQ-BML: Search Configuration Explorer",
+        "title": "Search Configuration Explorer",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.dataTables.filterExplorer",
-        "title": "CPQ-BML: Filter Data Tables",
+        "title": "Filter Data Tables",
         "icon": "app/icons/cloud/filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.dataTables.clearFilter",
-        "title": "CPQ-BML: Clear Data Tables Filter",
+        "title": "Clear Data Tables Filter",
         "icon": "app/icons/cloud/clear-filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.dataTables.searchExplorer",
-        "title": "CPQ-BML: Search Data Tables",
+        "title": "Search Data Tables",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.transactions.searchExplorer",
-        "title": "CPQ-BML: Search Recent Transactions / Quotes",
+        "title": "Search Recent Transactions / Quotes",
         "icon": "app/icons/cloud/search.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.transactions.filterExplorer",
-        "title": "CPQ-BML: Filter Recent Transactions / Quotes",
+        "title": "Filter Recent Transactions / Quotes",
         "icon": "app/icons/cloud/filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.transactions.clearFilter",
-        "title": "CPQ-BML: Clear Recent Transactions Filter",
+        "title": "Clear Recent Transactions Filter",
         "icon": "app/icons/cloud/clear-filter.svg",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.insertOrCopyAttribute",
-        "title": "CPQ-BML: Insert Variable Name at Cursor",
+        "title": "Insert Variable Name at Cursor",
         "icon": "$(symbol-field)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.copyVariableName",
-        "title": "CPQ-BML: Copy Variable Name",
+        "title": "Copy Variable Name",
         "icon": "$(copy)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.copyTableName",
-        "title": "CPQ-BML: Copy Table Name",
+        "title": "Copy Table Name",
         "icon": "$(copy)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.generateBmqlQuery",
-        "title": "CPQ-BML: Generate BMQL Query Block",
+        "title": "Generate BMQL Query Block",
         "icon": "$(code)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.openActionBml",
-        "title": "CPQ-BML: Open Action BML Script",
+        "title": "Open Action BML Script",
         "icon": "$(file-code)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.openRuleBml",
-        "title": "CPQ-BML: Open Rule BML Script",
+        "title": "Open Rule BML Script",
         "icon": "$(file-code)",
         "category": "BML"
       },
       {
         "command": "cpqBml.cloud.createTestFixture",
-        "title": "CPQ-BML: Create Test Fixture from Quote",
+        "title": "Create Test Fixture from Quote",
         "icon": "$(beaker)",
         "category": "BML"
       }
@@ -1257,7 +1257,7 @@
         "cpqBml.connection.username": {
           "type": "string",
           "default": "",
-          "description": "Username for Basic authentication. The password/token itself is never stored here - use the 'CPQ-BML: Set CPQ Password' / 'Set CPQ Auth Token' commands, which store it securely via VS Code Secret Storage."
+          "description": "Username for Basic authentication. The password/token itself is never stored here - use the 'Set CPQ Password' / 'Set CPQ Auth Token' commands, which store it securely via VS Code Secret Storage."
         },
         "cpqBml.connection.environments": {
           "type": "array",
@@ -1307,7 +1307,7 @@
         "cpqBml.rest.commerceDocument": {
           "type": "string",
           "default": "transaction",
-          "description": "Commerce Process document variable name used by 'CPQ-BML: Pull Commerce Functions from CPQ' (e.g. 'transaction'). Change this if your commerce process functions live under a different document."
+          "description": "Commerce Process document variable name used by 'Pull Commerce Functions from CPQ' (e.g. 'transaction'). Change this if your commerce process functions live under a different document."
         },
         "cpqBml.rest.productFamily": {
           "type": "string",
@@ -1385,7 +1385,7 @@
         "cpqBml.mcp.enable": {
           "type": "boolean",
           "default": false,
-          "description": "Start a local MCP (Model Context Protocol) server so an AI agent (e.g. Claude Code) can call CPQ-BML's pull/save/validate/debug/deploy operations directly. The server only binds to 127.0.0.1 (this machine only) and never exposes your CPQ credentials to the connecting client - only the extension itself builds the Authorization header. Run 'CPQ-BML: Show MCP Server Connection Info' for the connection URL."
+          "description": "Start a local MCP (Model Context Protocol) server so an AI agent (e.g. Claude Code) can call CPQ-BML's pull/save/validate/debug/deploy operations directly. The server only binds to 127.0.0.1 (this machine only) and never exposes your CPQ credentials to the connecting client - only the extension itself builds the Authorization header. Run 'Show MCP Server Connection Info' for the connection URL."
         },
         "cpqBml.mcp.port": {
           "type": "number",
@@ -1433,7 +1433,7 @@
         "cpqBml.debug.smartReuseInputs": {
           "type": "boolean",
           "default": true,
-          "description": "Smart Debug: Automatically reuse previous transaction ID(s) and parameter inputs on repeated debug runs without prompting. Use 'CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)' or hold Alt while clicking Debug to change inputs."
+          "description": "Smart Debug: Automatically reuse previous transaction ID(s) and parameter inputs on repeated debug runs without prompting. Use 'Debug Current Function (Configure New Inputs / Transaction...)' or hold Alt while clicking Debug to change inputs."
         }
       }
     }
