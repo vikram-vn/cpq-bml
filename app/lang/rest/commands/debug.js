@@ -51,15 +51,39 @@ async function runDebugCurrentFile(
   }
   const { transport } = options;
 
-  const editor = vscode.window.activeTextEditor;
-  if (!editor || editor.document.languageId !== "bml") {
+  let doc = null;
+  if (options && options.document) {
+    doc = options.document;
+  } else if (options && (options.targetUri || options.uri || options.file)) {
+    const targetUri =
+      options.targetUri ||
+      options.uri ||
+      (typeof options.file === "string"
+        ? vscode?.Uri?.file
+          ? vscode.Uri.file(options.file)
+          : { fsPath: options.file }
+        : options.file);
+    try {
+      if (vscode.workspace && typeof vscode.workspace.openTextDocument === "function") {
+        doc = await vscode.workspace.openTextDocument(targetUri);
+      }
+    } catch (_) {}
+  }
+  if (!doc) {
+    const editor = vscode.window.activeTextEditor;
+    if (editor && editor.document) {
+      doc = editor.document;
+    }
+  }
+
+  if (!doc || (doc.languageId && doc.languageId !== "bml")) {
     const errorMessage = "CPQ-BML: open a .bml file to debug.";
     vscode.window.showErrorMessage(errorMessage);
     return { success: false, errorMessage };
   }
 
-  if (diagnosticCollection) {
-    diagnosticCollection.delete(editor.document.uri);
+  if (diagnosticCollection && doc.uri) {
+    diagnosticCollection.delete(doc.uri);
   }
 
   const hasCredentials = await ensureCredentials(context, vscode);
@@ -70,7 +94,6 @@ async function runDebugCurrentFile(
     };
   }
 
-  const doc = editor.document;
   const metadata = await resolveMetadataForFile(
     context,
     vscode,

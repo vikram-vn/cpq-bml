@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { getDataTableFolder } = require('@/lang/rest/config');
+const { createCloudDragAndDropController } = require('./cloudDragAndDrop');
 
 /**
  * Fetches the list of all Data Tables from the CPQ server.
@@ -351,7 +352,14 @@ async function exportTableCsvCommand(item, vscodeInstance = vscode, customTransp
 
 function registerCloudDataTables(context, vscodeInstance = vscode) {
   const provider = createCloudDataTablesProvider(vscodeInstance, context);
-  const treeView = vscodeInstance.window.registerTreeDataProvider('cpqBml.cloudDataTables', provider);
+  const dragAndDropController = createCloudDragAndDropController(vscodeInstance, 'datatable');
+  const treeView = vscodeInstance.window.createTreeView
+    ? vscodeInstance.window.createTreeView('cpqBml.cloudDataTables', {
+        treeDataProvider: provider,
+        dragAndDropController,
+        canSelectMany: true,
+      })
+    : vscodeInstance.window.registerTreeDataProvider('cpqBml.cloudDataTables', provider);
 
   const refreshCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.refreshDataTables', () => {
     provider.refresh();

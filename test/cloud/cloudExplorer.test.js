@@ -8,6 +8,8 @@ const {
   pullFunctionCommand,
   diffFunctionCommand,
   deployFunctionCommand,
+  debugFunctionCommand,
+  debugConfigureFunctionCommand,
   viewFunctionMetadataCommand,
   openCommerceActionCommand,
   filterExplorerCommand,
@@ -743,6 +745,8 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
       assert.ok(registeredCmds.includes('cpqBml.cloud.pullFunction'));
       assert.ok(registeredCmds.includes('cpqBml.cloud.diffFunction'));
       assert.ok(registeredCmds.includes('cpqBml.cloud.deployFunction'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.debugFunction'));
+      assert.ok(registeredCmds.includes('cpqBml.cloud.debugConfigureFunction'));
       assert.ok(registeredCmds.includes('cpqBml.cloud.viewFunctionMetadata'));
     });
 
@@ -790,6 +794,154 @@ suite('CPQ Cloud Functions Explorer - Unit Tests', () => {
         await deployFunctionCommand(item, mockVscode, {});
         assert.strictEqual(openedFile, localFile);
         assert.strictEqual(executedCommand, 'cpqBml.rest.deployCurrentFile');
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    test('debugFunctionCommand opens local file and invokes debugCurrentFile with configureInputs: false (Smart Debug)', async () => {
+      const os = require('os');
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-debug-test-'));
+      const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcDiscount');
+      fs.mkdirSync(fnDir, { recursive: true });
+      const localFile = path.join(fnDir, 'calcDiscount.bml');
+      fs.writeFileSync(localFile, 'return 10.0;\n', 'utf8');
+
+      let executedCommand = null;
+      let executedOptions = null;
+      let openedFile = null;
+
+      const mockVscode = createCloudMockVscode({
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: tempDir } }],
+          getConfiguration: () => ({
+            get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          }),
+          openTextDocument: async (uri) => {
+            openedFile = uri.fsPath;
+            return { uri, languageId: 'bml' };
+          }
+        },
+        commands: {
+          executeCommand: async (cmd, opts) => {
+            executedCommand = cmd;
+            executedOptions = opts;
+          }
+        },
+        Uri: {
+          file: (f) => ({ fsPath: f, scheme: 'file' })
+        }
+      });
+
+      try {
+        const item = {
+          data: {
+            variableName: 'calcDiscount',
+            name: 'Calculate Discount',
+            folderName: 'finance'
+          }
+        };
+
+        await debugFunctionCommand(item, mockVscode, {});
+        assert.strictEqual(openedFile, localFile);
+        assert.strictEqual(executedCommand, 'cpqBml.rest.debugCurrentFile');
+        assert.strictEqual(executedOptions.configureInputs, false);
+        assert.strictEqual(executedOptions.file, localFile);
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    test('debugConfigureFunctionCommand opens local file and invokes debugConfigureInputs with configureInputs: true', async () => {
+      const os = require('os');
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-debug-cfg-test-'));
+      const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcDiscount');
+      fs.mkdirSync(fnDir, { recursive: true });
+      const localFile = path.join(fnDir, 'calcDiscount.bml');
+      fs.writeFileSync(localFile, 'return 10.0;\n', 'utf8');
+
+      let executedCommand = null;
+      let executedOptions = null;
+      let openedFile = null;
+
+      const mockVscode = createCloudMockVscode({
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: tempDir } }],
+          getConfiguration: () => ({
+            get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          }),
+          openTextDocument: async (uri) => {
+            openedFile = uri.fsPath;
+            return { uri, languageId: 'bml' };
+          }
+        },
+        commands: {
+          executeCommand: async (cmd, opts) => {
+            executedCommand = cmd;
+            executedOptions = opts;
+          }
+        },
+        Uri: {
+          file: (f) => ({ fsPath: f, scheme: 'file' })
+        }
+      });
+
+      try {
+        const item = {
+          data: {
+            variableName: 'calcDiscount',
+            name: 'Calculate Discount',
+            folderName: 'finance'
+          }
+        };
+
+        await debugConfigureFunctionCommand(item, mockVscode, {});
+        assert.strictEqual(openedFile, localFile);
+        assert.strictEqual(executedCommand, 'cpqBml.rest.debugConfigureInputs');
+        assert.strictEqual(executedOptions.configureInputs, true);
+        assert.strictEqual(executedOptions.file, localFile);
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    test('debugFunctionCommand shows warning and does not run debug when function is missing locally and pull is declined', async () => {
+      const tempDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'cpq-debug-missing-'));
+      let warned = false;
+      let executedCommand = null;
+
+      const mockVscode = createCloudMockVscode({
+        workspace: {
+          workspaceFolders: [{ uri: { fsPath: tempDir } }],
+          getConfiguration: () => ({
+            get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          })
+        },
+        window: {
+          showWarningMessage: async (msg) => {
+            warned = true;
+            return undefined; // declined pull
+          }
+        },
+        commands: {
+          executeCommand: async (cmd) => {
+            executedCommand = cmd;
+          }
+        }
+      });
+
+      try {
+        const item = {
+          data: {
+            variableName: 'missingFunc',
+            name: 'Missing Function',
+            folderName: 'util'
+          }
+        };
+
+        await debugFunctionCommand(item, mockVscode, {});
+        assert.ok(warned);
+        assert.strictEqual(executedCommand, null);
       } finally {
         fs.rmSync(tempDir, { recursive: true, force: true });
       }

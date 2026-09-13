@@ -4,6 +4,7 @@ const { getSettings, isConfigured } = require('@/lang/rest/config');
 const { fetchCommerceFunctions } = require('./cloudExplorerFetch');
 const { pullFunctionCommand, diffFunctionCommand, openCommerceActionCommand, switchCommerceProcessCommand } = require('./cloudExplorerCommands');
 const { findLocalFunctionFile } = require('./cloudExplorerFiles');
+const { createCloudDragAndDropController } = require('./cloudDragAndDrop');
 
 /**
  * Pure Factory: Creates the Commerce Explorer TreeDataProvider.
@@ -367,7 +368,14 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
 
 function registerCommerceExplorer(context, vscodeInstance = vscode) {
   const treeDataProvider = createCommerceExplorer(vscodeInstance, context);
-  const treeView = vscodeInstance.window.registerTreeDataProvider('cpqBml.commerceExplorer', treeDataProvider);
+  const dragAndDropController = createCloudDragAndDropController(vscodeInstance, 'commerce');
+  const treeView = vscodeInstance.window.createTreeView
+    ? vscodeInstance.window.createTreeView('cpqBml.commerceExplorer', {
+        treeDataProvider,
+        dragAndDropController,
+        canSelectMany: true,
+      })
+    : vscodeInstance.window.registerTreeDataProvider('cpqBml.commerceExplorer', treeDataProvider);
 
   const refreshCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.refresh', () => {
     treeDataProvider.refresh();

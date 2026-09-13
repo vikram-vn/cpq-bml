@@ -98,6 +98,32 @@ ICONS_DEF = {
   <line x1="4.5" y1="10.5" x2="2" y2="11" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
   <line x1="11.5" y1="10.5" x2="14" y2="11" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>""",
 
+  "debug.svg": """
+  <ellipse cx="8" cy="9" rx="3.5" ry="4.5" stroke="{stroke}" stroke-width="1.2"/>
+  <path d="M6 4.5a2 2 0 0 1 4 0v1H6v-1z" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="6.5" y1="2.5" x2="5" y2="1" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="9.5" y1="2.5" x2="11" y2="1" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="4.5" y1="7.5" x2="2" y2="7" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="11.5" y1="7.5" x2="14" y2="7" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="4.5" y1="10.5" x2="2" y2="11" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="11.5" y1="10.5" x2="14" y2="11" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M7 7.5l3 1.5-3 1.5V7.5z" stroke="{stroke}" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>""",
+
+  "debug-configure.svg": """
+  <ellipse cx="7" cy="8.5" rx="3.2" ry="4.2" stroke="{stroke}" stroke-width="1.2"/>
+  <path d="M5 4a2 2 0 0 1 4 0v1H5v-1z" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="5.5" y1="2" x2="4" y2="0.8" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="8.5" y1="2" x2="10" y2="0.8" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="3.8" y1="7" x2="1.5" y2="6.5" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="3.8" y1="10" x2="1.5" y2="10.5" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="10.2" y1="7" x2="12.5" y2="6.5" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M6 7.2l2.6 1.3-2.6 1.3V7.2z" stroke="{stroke}" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="12.5" cy="12.5" r="2" stroke="{stroke}" stroke-width="1.1"/>
+  <line x1="12.5" y1="9.8" x2="12.5" y2="10.8" stroke="{stroke}" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="12.5" y1="14.2" x2="12.5" y2="15.2" stroke="{stroke}" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="9.8" y1="12.5" x2="10.8" y2="12.5" stroke="{stroke}" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="14.2" y1="12.5" x2="15.2" y2="12.5" stroke="{stroke}" stroke-width="1.1" stroke-linecap="round"/>""",
+
   "copy-id.svg": """
   <rect x="4.5" y="1.5" width="9" height="10" rx="1" stroke="{stroke}" stroke-width="1.2"/>
   <path d="M2.5 4.5v9a1 1 0 0 0 1 1h8" stroke="{stroke}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>

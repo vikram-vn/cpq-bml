@@ -318,6 +318,71 @@ async function deployFunctionCommand(item, vscodeInstance = vscode, context) {
 }
 
 /**
+ * Triggers Smart Debug on a library function from Cloud Explorer.
+ */
+async function debugFunctionCommand(item, vscodeInstance = vscode, context, options = {}) {
+  const fn = item?.data || item;
+  if (!fn || (!fn.variableName && !fn.name)) {
+    vscodeInstance.window.showWarningMessage('No function selected to debug.');
+    return;
+  }
+
+  const varName = fn.variableName || fn.name;
+  const folderName = fn.folderName || fn.namespace || '';
+  const root = getWorkspaceRoot(vscodeInstance);
+  if (!root) {
+    vscodeInstance.window.showErrorMessage('Please open a workspace folder first.');
+    return;
+  }
+  const settings = getSettings(vscodeInstance);
+  const isCommerce = Boolean(fn.isCommerce || fn.commerceDocument);
+  const commerceProcess = fn.commerceProcess || settings.commerceProcess || 'oraclecpqo';
+  const commerceDocument = fn.commerceDocument || settings.commerceDocument || 'transaction';
+  const commerceMetadata = isCommerce ? { commerceProcess, commerceDocument } : undefined;
+
+  let localFile = findLocalFunctionFile(root, varName, folderName, commerceMetadata, vscodeInstance);
+  if (!localFile) {
+    const choice = await vscodeInstance.window.showWarningMessage(
+      `Function '${varName}' is not present locally. Pull it first to debug.`,
+      'Pull Now'
+    );
+    if (choice === 'Pull Now') {
+      await pullFunctionCommand(item, vscodeInstance, context);
+      localFile = findLocalFunctionFile(root, varName, folderName, commerceMetadata, vscodeInstance);
+    }
+    if (!localFile) {
+      return;
+    }
+  }
+
+  // Open the local file and trigger debug
+  const uri = getUriFromFile(localFile, vscodeInstance);
+  const doc = await vscodeInstance.workspace.openTextDocument(uri);
+  await vscodeInstance.window.showTextDocument(doc);
+
+  const debugOptions = {
+    configureInputs: false,
+    ...options,
+    document: doc,
+    file: localFile,
+    targetUri: uri,
+  };
+
+  const commandToRun = options && options.configureInputs
+    ? 'cpqBml.rest.debugConfigureInputs'
+    : 'cpqBml.rest.debugCurrentFile';
+
+  return vscodeInstance.commands.executeCommand(commandToRun, debugOptions);
+}
+
+/**
+ * Triggers Debug with Configure Inputs on a library function from Cloud Explorer.
+ */
+async function debugConfigureFunctionCommand(item, vscodeInstance = vscode, context) {
+  return debugFunctionCommand(item, vscodeInstance, context, { configureInputs: true });
+}
+
+/**
  * Opens function metadata (-meta.json or remote metadata) in editor.
  */
 async function viewFunctionMetadataCommand(item, vscodeInstance = vscode, context) {
@@ -626,6 +691,8 @@ module.exports = {
   pullFunctionCommand,
   diffFunctionCommand,
   deployFunctionCommand,
+  debugFunctionCommand,
+  debugConfigureFunctionCommand,
   viewFunctionMetadataCommand,
   openCommerceActionCommand,
   switchCommerceProcessCommand,

@@ -435,6 +435,18 @@
         "category": "BML"
       },
       {
+        "command": "cpqBml.cloud.debugFunction",
+        "title": "CPQ-BML: Debug Function on CPQ (Smart Debug)",
+        "icon": "app/icons/cloud/debug.svg",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.cloud.debugConfigureFunction",
+        "title": "CPQ-BML: Debug Function (Configure New Inputs / Transaction...)",
+        "icon": "app/icons/cloud/debug-configure.svg",
+        "category": "BML"
+      },
+      {
         "command": "cpqBml.cloud.viewFunctionMetadata",
         "title": "CPQ-BML: View Function Metadata (-meta.json)",
         "icon": "app/icons/cloud/metadata.svg",
@@ -864,23 +876,33 @@
       ],
       "view/item/context": [
         {
+          "command": "cpqBml.cloud.debugFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
+          "group": "inline@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.debugConfigureFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
+          "group": "inline@0.6"
+        },
+        {
           "command": "cpqBml.cloud.diffFunction",
-          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
           "group": "inline@1"
         },
         {
           "command": "cpqBml.cloud.deployFunction",
-          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
           "group": "inline@2"
         },
         {
           "command": "cpqBml.cloud.pullFunction",
-          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
           "group": "inline@3"
         },
         {
           "command": "cpqBml.cloud.viewFunctionMetadata",
-          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
           "group": "inline@4"
         },
         {
@@ -894,13 +916,23 @@
           "group": "inline@2"
         },
         {
+          "command": "cpqBml.cloud.debugFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
+          "group": "1_actions@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.debugConfigureFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
+          "group": "1_actions@0.6"
+        },
+        {
           "command": "cpqBml.cloud.diffFunction",
-          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
           "group": "1_actions@1"
         },
         {
           "command": "cpqBml.cloud.deployFunction",
-          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
           "group": "1_actions@2"
         },
         {
@@ -914,9 +946,29 @@
           "group": "1_actions@4"
         },
         {
+          "command": "cpqBml.cloud.debugFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionRemote",
+          "group": "1_actions@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.debugConfigureFunction",
+          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionRemote",
+          "group": "1_actions@0.6"
+        },
+        {
           "command": "cpqBml.cloud.openLocal",
-          "when": "view == cpqBml.cloudExplorer && viewItem == cpqCloudFunctionSynced",
+          "when": "view == cpqBml.cloudExplorer && viewItem =~ /^cpqCloudFunction(Synced|Modified)$/",
           "group": "2_local@1"
+        },
+        {
+          "command": "cpqBml.cloud.debugFunction",
+          "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceLibrary",
+          "group": "inline@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.debugConfigureFunction",
+          "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceLibrary",
+          "group": "inline@0.6"
         },
         {
           "command": "cpqBml.cloud.diffFunction",
@@ -937,6 +989,16 @@
           "command": "cpqBml.cloud.viewFunctionMetadata",
           "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceLibrary",
           "group": "inline@4"
+        },
+        {
+          "command": "cpqBml.cloud.debugFunction",
+          "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceLibrary",
+          "group": "1_actions@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.debugConfigureFunction",
+          "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceLibrary",
+          "group": "1_actions@0.6"
         },
         {
           "command": "cpqBml.cloud.queryDataTable",
@@ -1212,6 +1274,21 @@
           "type": "boolean",
           "default": true,
           "description": "Smart Debug: Automatically reuse previous transaction ID(s) and parameter inputs on repeated debug runs without prompting. Use 'CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)' or hold Alt while clicking Debug to change inputs."
+        },
+        "cpqBml.editor.dragAndDropFormat": {
+          "type": "string",
+          "enum": [
+            "variableName",
+            "accessorSnippet",
+            "stringLiteral"
+          ],
+          "enumDescriptions": [
+            "Insert plain variable name (e.g. customer_t)",
+            "Insert canonical BML accessor (e.g. get(transaction, \"customer_t\") or getconfigattr(\"attr\"))",
+            "Insert quoted string literal (e.g. \"customer_t\")"
+          ],
+          "default": "variableName",
+          "description": "Format used when dragging and dropping attributes or items from Cloud Explorer into BML editors."
         }
       }
     }
