@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const { splitArgumentsList } = require('@/lang/lint/rules/functionSignature');
 const { isCpqLineItemArgs, isPipe, isTilde } = require('@/lang/lint/rules/performance');
+const { analyzeCpqReturnAtLines } = require('@/lang/lint/rules/cpqReturnNormalizer');
 
 function extractSbappendCall(text) {
     const regex = /\bsbappend\s*\(/gi;
@@ -272,6 +273,17 @@ function createSbappendSplitActions(document, range) {
     const lineText = line.text;
     if (!lineText.includes('sbappend')) return actions;
 
+    // Intelligent CPQ return normalization
+    const normalizerResult = analyzeCpqReturnAtLines(document, lineIndex);
+    if (normalizerResult) {
+        const title = `Convert to canonical CPQ return format: '${normalizerResult.replacement.trim()}'`;
+        const normAction = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
+        normAction.isPreferred = true;
+        normAction.edit = new vscode.WorkspaceEdit();
+        normAction.edit.replace(document.uri, normalizerResult.range, normalizerResult.replacement);
+        actions.push(normAction);
+    }
+
     // Check CPQ line item combination across adjacent lines
     const combineFixes = buildCpqLineItemCombineFixes(document, lineIndex);
     actions.push(...combineFixes);
@@ -370,9 +382,30 @@ function getPerformanceFixes(document, diag, editRange) {
     }
     else if (diag.code === 'bml-sbappend-cpq-split') {
         const lineIndex = editRange.start.line;
+        const normalizerResult = analyzeCpqReturnAtLines(document, lineIndex);
+        if (normalizerResult) {
+            const title = `Convert to canonical CPQ return format: '${normalizerResult.replacement.trim()}'`;
+            const normAction = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
+            normAction.isPreferred = true;
+            normAction.edit = new vscode.WorkspaceEdit();
+            normAction.edit.replace(document.uri, normalizerResult.range, normalizerResult.replacement);
+            normAction.diagnostics = [diag];
+            fixes.push(normAction);
+        }
         fixes.push(...buildCpqLineItemCombineFixes(document, lineIndex, diag));
     }
     else if (diag.code === 'bml-sbappend-multiple-args') {
+        const lineIndex = editRange.start.line;
+        const normalizerResult = analyzeCpqReturnAtLines(document, lineIndex);
+        if (normalizerResult) {
+            const title = `Convert to canonical CPQ return format: '${normalizerResult.replacement.trim()}'`;
+            const normAction = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
+            normAction.isPreferred = true;
+            normAction.edit = new vscode.WorkspaceEdit();
+            normAction.edit.replace(document.uri, normalizerResult.range, normalizerResult.replacement);
+            normAction.diagnostics = [diag];
+            fixes.push(normAction);
+        }
         fixes.push(...buildSbappendSplitFixes(document, editRange, diag));
     }
 
