@@ -168,7 +168,7 @@ function registerBmlIntelliSense(context) {
                     } else if (objName === 'config' || objName === 'cfg' || objName === 'model') {
                         return adaptCompletionsForLineContext(cat.configItems, document, position);
                     } else {
-                        return [];
+                        return new vscode.CompletionList([], false);
                     }
                 }
 
@@ -246,18 +246,28 @@ function registerBmlIntelliSense(context) {
                 const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
                     ? vscode.workspace.workspaceFolders[0].uri.fsPath
                     : null;
-                if (commerceAttributes && typeof commerceAttributes.resolveAttributeName === 'function') {
-                    const attr = commerceAttributes.resolveAttributeName(word, wsRoot);
-                    if (attr) {
-                        const md = new vscode.MarkdownString();
-                        md.appendMarkdown(`### CPQ Attribute: \`${attr.name || attr.variableName || word}\`\n\n`);
-                        if (attr.label) md.appendMarkdown(`**Label**: ${attr.label}  \n`);
-                        if (attr.dataType || attr.type) md.appendMarkdown(`**Data Type**: \`${attr.dataType || attr.type}\`  \n`);
-                        if (attr.document || attr.scope) md.appendMarkdown(`**Scope**: \`${attr.document || attr.scope}\`  \n`);
-                        if (attr.description) md.appendMarkdown(`**Description**: ${attr.description}  \n`);
-                        if (attr.defaultValue) md.appendMarkdown(`**Default Value**: \`${attr.defaultValue}\`  \n`);
-                        return new vscode.Hover(md);
+                let attr = null;
+                if (commerceAttributes && typeof commerceAttributes.loadWorkspaceAttributes === 'function') {
+                    const wsIndex = commerceAttributes.loadWorkspaceAttributes(wsRoot);
+                    if (wsIndex && wsIndex.varNameToMeta && wsIndex.varNameToMeta.has(word)) {
+                        attr = wsIndex.varNameToMeta.get(word);
                     }
+                }
+                if (!attr && commerceAttributes && typeof commerceAttributes.loadBundledAttributes === 'function') {
+                    const bundled = commerceAttributes.loadBundledAttributes();
+                    if (bundled && bundled.varNameToMeta && bundled.varNameToMeta.has(word)) {
+                        attr = bundled.varNameToMeta.get(word);
+                    }
+                }
+                if (attr) {
+                    const md = new vscode.MarkdownString();
+                    md.appendMarkdown(`### CPQ Attribute: \`${attr.name || attr.variableName || word}\`\n\n`);
+                    if (attr.label) md.appendMarkdown(`**Label**: ${attr.label}  \n`);
+                    if (attr.dataType || attr.type) md.appendMarkdown(`**Data Type**: \`${attr.dataType || attr.type}\`  \n`);
+                    if (attr.document || attr.scope) md.appendMarkdown(`**Scope**: \`${attr.document || attr.scope}\`  \n`);
+                    if (attr.description || attr.notes) md.appendMarkdown(`**Description**: ${attr.description || attr.notes}  \n`);
+                    if (attr.defaultValue) md.appendMarkdown(`**Default Value**: \`${attr.defaultValue}\`  \n`);
+                    return new vscode.Hover(md);
                 }
 
                 // Check Data Table context in BMQL

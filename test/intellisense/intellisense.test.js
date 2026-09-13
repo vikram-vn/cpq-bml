@@ -245,7 +245,7 @@ suite('BML IntelliSense', () => {
 		const doc = await vscode.workspace.openTextDocument({ language: 'bml', content: 'x = myObj.' });
 		const position = new vscode.Position(0, 10);
 		const list = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider', doc.uri, position, '.');
-		const labels = list ? list.items.map(i => (typeof i.label === 'string' ? i.label : i.label.label)) : [];
+		const labels = list ? list.items.filter(i => i.kind !== vscode.CompletionItemKind.Text).map(i => (typeof i.label === 'string' ? i.label : i.label.label)) : [];
 
 		assert.ok(!labels.includes('priceType_l'), 'did not expect line item attributes on unrelated object dot');
 		assert.ok(!labels.includes('_site_url'), 'did not expect system attributes on unrelated object dot');

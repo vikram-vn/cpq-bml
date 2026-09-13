@@ -8,6 +8,8 @@ const {
   getSpellingSuggestions,
   isMorphologicallyValid,
 } = require("@/lang/spell-check/spellingDict");
+const { getCommentRanges } = require("@/lang/lint/rules/comments");
+const { getStringRanges } = require("@/lang/lint/rules/strings");
 
 function splitIdentifier(token) {
   const parts = token.split(/[^a-zA-Z0-9]/);
@@ -110,7 +112,7 @@ function checkWord(word, extensionPath, allowCompound = true) {
 }
 
 function isCodeSpellCheckerInstalled(vscodeInstance = vscode) {
-  if (!vscodeInstance || !vscodeInstance.extensions) return false;
+  if (!vscodeInstance || typeof vscodeInstance !== "object" || !vscodeInstance.extensions) return false;
   return Boolean(
     vscodeInstance.extensions.getExtension("streetsidesoftware.code-spell-checker") ||
     vscodeInstance.extensions.getExtension("streetsidesoftware.code-spell-checker-canary")
@@ -199,6 +201,21 @@ function checkSpelling(
     diagnostics.push(diag);
   };
 
+  const commentRanges = getCommentRanges(text);
+  commentRanges.forEach(([start, end]) => {
+    const rawComment = text.substring(start, end);
+    const cleanedComment = cleanCommentText(rawComment);
+
+    const wordRegex = /[a-zA-Z]+/g;
+    let match;
+    while ((match = wordRegex.exec(cleanedComment)) !== null) {
+      const word = match[0];
+      collectFlaggedSubWords(word, 1, false).forEach((err) => {
+        addSpellingDiagnostic(err.subWord, start + match.index + err.relIndex);
+      });
+    }
+  });
+
   const identRegex = /\b[a-zA-Z_][a-zA-Z0-9_]*\b/g;
   let match;
   while ((match = identRegex.exec(noStringsText)) !== null) {
@@ -212,6 +229,29 @@ function checkSpelling(
       addSpellingDiagnostic(err.subWord, match.index + err.relIndex);
     }
   }
+
+  const stringRanges = getStringRanges(cleanText);
+  stringRanges.forEach(([start, end]) => {
+    const rawString = cleanText.substring(start, end);
+    const content = rawString.slice(1, -1);
+
+    if (content.trim().startsWith("{") || content.trim().startsWith("["))
+      return;
+    if (content.includes("/") || content.includes("\\")) return;
+    if (/\b(?:select|from|where|insert|update|delete|create)\b/i.test(content))
+      return;
+
+    const cleanedString = cleanCommentText(content);
+    const wordRegex = /[a-zA-Z]+/g;
+    let match;
+    while ((match = wordRegex.exec(cleanedString)) !== null) {
+      const word = match[0];
+      if (word.length <= 2) continue;
+      collectFlaggedSubWords(word, 2).forEach((err) => {
+        addSpellingDiagnostic(err.subWord, start + 1 + match.index + err.relIndex);
+      });
+    }
+  });
 
   return diagnostics;
 }

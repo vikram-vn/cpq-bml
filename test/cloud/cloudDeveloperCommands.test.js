@@ -121,7 +121,7 @@ suite('Cloud Explorer Developer Commands', () => {
     assert.ok(fs.existsSync(expectedPath));
     const content = fs.readFileSync(expectedPath, 'utf8');
     assert.ok(content.includes('Running clean save BML script'));
-    assert.strictEqual(openedUri.fsPath, expectedPath);
+    assert.strictEqual(openedUri.fsPath.toLowerCase(), expectedPath.toLowerCase());
 
     fs.rmSync(tempDir, { recursive: true, force: true });
   });

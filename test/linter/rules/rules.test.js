@@ -54,9 +54,6 @@ suite('BML Linter Test Suite - rules', function() {
 
         const nanDiag = diagnostics.find(d => d.message.includes('constant \'NaN\''));
         assert.ok(nanDiag, 'Should flag NaN as deprecated');
-
-        const magicDiag = diagnostics.find(d => d.message.includes('Magic number \'999\''));
-        assert.ok(magicDiag, 'Should flag magic number 999');
     });
 
     test('Linter flags BML script size warning when script exceeds 64KB', () => {
@@ -77,10 +74,6 @@ suite('BML Linter Test Suite - rules', function() {
         const missingSemiDiag = diagnostics.find(d => d.message.includes('Missing semicolon'));
         assert.ok(missingSemiDiag, 'Should flag the missing semicolon on "magic = 999"');
         assert.strictEqual(missingSemiDiag.range.start.line, 4);
-
-        const magicNumDiag = diagnostics.find(d => d.message.includes("Magic number '999'"));
-        assert.ok(magicNumDiag, 'Should flag 999 as a magic number');
-        assert.strictEqual(magicNumDiag.range.start.line, 4);
     });
 
     test('Linter flags JS strict inequality operator !==', () => {

@@ -20,6 +20,15 @@ function getQualityFixes(document, diag, editRange, extensionPath) {
             fixes.push(action);
         }
     }
+    else if (diag.code === 'bml-lonelyIf') {
+        const text = document.getText(editRange);
+        const action = new vscode.CodeAction("Convert to 'elif'", vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        const replaced = text.replace(/else\s*\{\s*if\s*\(/i, 'elif (');
+        action.edit.replace(document.uri, editRange, replaced);
+        action.diagnostics = [diag];
+        fixes.push(action);
+    }
     else if (diag.code === 'bml-missing-return') {
         let retStmt = 'return "";';
         const msg = diag.message || '';

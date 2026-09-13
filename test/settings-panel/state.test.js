@@ -40,6 +40,7 @@ suite("settings-panel state", () => {
         restVersion: "v20",
         commerceProcess: "myProcess",
         commerceDocument: "myDoc",
+        productFamily: "",
       },
       features: {
         lint: false,
@@ -60,7 +61,8 @@ suite("settings-panel state", () => {
       mcp: {
         enable: true,
         port: 12345,
-        logToTerminal: true
+        logToTerminal: true,
+        tools: state.mcp.tools,
       },
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, concurrency: 2 },
       metadata: {
