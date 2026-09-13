@@ -39,7 +39,7 @@ suite('CPQ Cloud Workflow Features - Unit Tests', () => {
 
       const lenses = provider.provideCodeLenses(mockDoc, {});
       assert.ok(Array.isArray(lenses));
-      assert.strictEqual(lenses.length, 5); // 4 top lenses + 1 BMQL lens
+      assert.strictEqual(lenses.length, 6); // 5 top lenses + 1 BMQL lens
 
       // Verify top lenses
       const commands = lenses.map(l => l.command?.command);
@@ -47,6 +47,7 @@ suite('CPQ Cloud Workflow Features - Unit Tests', () => {
       assert.ok(commands.includes('cpqBml.cloud.debugWithQuote'));
       assert.ok(commands.includes('cpqBml.cloud.diffFunction'));
       assert.ok(commands.includes('cpqBml.rest.preflightCheck'));
+      assert.ok(commands.includes('cpqBml.showDependencyGraph'));
 
       // Verify BMQL live lens
       const bmqlLens = lenses.find(l => l.command?.command === 'cpqBml.bmql.runAtCursor');

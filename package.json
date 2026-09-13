@@ -220,6 +220,11 @@
         "title": "Open BML Logic Scratchpad (Offline Sandbox)"
       },
       {
+        "command": "cpqBml.showDependencyGraph",
+        "title": "Visual Dependency & Blast Radius Architecture Graph",
+        "icon": "$(type-hierarchy)"
+      },
+      {
         "command": "cpqBml.runBmlLocally",
         "title": "Run BML Script Locally (Scratchpad)"
       },
@@ -828,6 +833,11 @@
           "command": "cpqBml.settings.open",
           "when": "resourceLangId == bml",
           "group": "navigation@7"
+        },
+        {
+          "command": "cpqBml.showDependencyGraph",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "navigation@8"
         }
       ],
       "editor/context": [
@@ -845,6 +855,11 @@
           "command": "cpqBml.rest.preflightCheck",
           "when": "resourceLangId == bml || resourceLangId == bmlt",
           "group": "navigation@12"
+        },
+        {
+          "command": "cpqBml.showDependencyGraph",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "navigation@13"
         },
         {
           "command": "cpqBml.cloud.debugWithQuote",

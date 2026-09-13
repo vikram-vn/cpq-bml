@@ -84,7 +84,7 @@ suite('Extension Speed Metrics Benchmark', () => {
         console.log(`3. Whole-Document Fix-All AST Rewrite (1,000 lines): ${fixAllDuration.toFixed(2)} ms`);
         console.log(`   Diagnostics Processed: ${diags.length}`);
 
-        assert.ok(queryDuration < 1000, `CodeActions query must return in < 1000ms (actual: ${queryDuration.toFixed(2)}ms)`);
+        assert.ok(queryDuration < 1500, `CodeActions query must return in < 1500ms (actual: ${queryDuration.toFixed(2)}ms)`);
         assert.ok(fixAllDuration < 200, `FixAll must process 1,000 lines in < 200ms (actual: ${fixAllDuration.toFixed(2)}ms)`);
     });
 

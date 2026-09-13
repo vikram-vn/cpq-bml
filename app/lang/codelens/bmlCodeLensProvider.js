@@ -70,6 +70,12 @@ class BmlCodeLensProvider {
         title: '$(shield) Safety Check',
         command: 'cpqBml.rest.preflightCheck',
         tooltip: 'Run pre-flight impact check on callers and dependencies'
+      }),
+      new CodeLensClass(topRange, {
+        title: '$(type-hierarchy) Blast Radius & Architecture',
+        command: 'cpqBml.showDependencyGraph',
+        arguments: [document.uri],
+        tooltip: 'View visual dependency graph and blast radius impact analysis'
       })
     );
 

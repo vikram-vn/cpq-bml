@@ -38,6 +38,7 @@ const { registerRemoteTestCommands } = require("@/lang/test-controller/remoteTes
 const { registerBmqlCommands } = require("@/lang/cloud/bmqlRunner");
 const { registerAttributeLookupCommands } = require("@/lang/cloud/attributeLookup");
 const { registerBmlCodeLensProvider } = require("@/lang/codelens/bmlCodeLensProvider");
+const { registerDependencyGraph } = require("@/lang/graph/dependencyGraphPanel");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
 const { invalidateIndex } = require("@/lang/intellisense/workspaceIndex");
 const { invalidateApiData } = require("@/lang/intellisense/apiData");
@@ -130,6 +131,7 @@ function activate(context) {
   registerBmqlCommands(context);
   registerAttributeLookupCommands(context);
   registerBmlCodeLensProvider(context);
+  registerDependencyGraph(context);
 
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.rest.preflightCheck", async () => {
