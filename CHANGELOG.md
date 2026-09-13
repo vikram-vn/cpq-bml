@@ -4,6 +4,23 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.99.0] - 2026-09-13
+
+### Added
+
+- Add BML intellisense module and update extension packaging configuration.
+- Add cloud document provider, inspector panel, and unit test suites.
+- Add settings-panel web-view interface with message handling and tests.
+- Add BML cloud inspector panel, UI components, tests, and documentation.
+
+### Changed
+
+- Update sidebar and command titles.
+
+### Documentation
+
+- Add architecture and control flow documentation for BML Cloud Property Inspector.
+
 ## [1.98.0] - 2026-09-13
 
 ### Added
@@ -130,10 +147,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Documentation
 
 - Add architectural documentation for BML linter and advanced BML design patterns.
-
-## [1.89.0] - 2026-09-09
-
-### Added
-
-- **Native VS Code Test Explorer (`vscode.TestController`)**: First-class Testing sidebar integration for `.test.bml` test suites with `@test "description"` blocks, assertions (`assert.equals`, `assert.isTrue`, `assert.notNull`), and execution timing.
-- **Extended AI MCP Tools**: 2 new agent tools: `run_bml_tests` and `update_snapshot` / `compare_snapshot` for BML test regression workflows.
