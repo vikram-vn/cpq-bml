@@ -157,6 +157,6 @@ suite('CPQ Commerce Explorer - Unit Tests', () => {
     const registered = registerCommerceExplorer(mockContext, mockVscode);
     assert.ok(registered.treeDataProvider);
     assert.ok(registered.treeView);
-    assert.strictEqual(mockContext.subscriptions.length, 6);
+    assert.strictEqual(mockContext.subscriptions.length, 7);
   });
 });

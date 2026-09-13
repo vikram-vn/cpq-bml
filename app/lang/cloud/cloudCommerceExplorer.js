@@ -84,11 +84,22 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       }
     }
 
+    // Fetch process setups integrations (e.g. Oracle Engagement Cloud, Salesforce, BML, REST/SOAP)
+    let integrationsCallIdx = calls.length;
+    if (typeof api.listCommerceIntegrations === 'function') {
+      calls.push(api.listCommerceIntegrations(context, vscodeInstance, { process, limit: 100 }));
+    }
+
     const results = await Promise.allSettled(calls);
     const data = {
       process,
-      documentList: docList
+      documentList: docList,
+      integrations: []
     };
+
+    if (typeof api.listCommerceIntegrations === 'function' && results[integrationsCallIdx]) {
+      data.integrations = parseItems(results[integrationsCallIdx]);
+    }
 
     let idx = 0;
     for (const d of docList) {
@@ -235,6 +246,37 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       return item;
     }
 
+    if (element.type === 'processIntegrations') {
+      const isFiltered = Boolean(filterQuery);
+      const item = new vscodeInstance.TreeItem(
+        `Integrations (${element.count})`,
+        isFiltered ? vscodeInstance.TreeItemCollapsibleState.Expanded : vscodeInstance.TreeItemCollapsibleState.Collapsed
+      );
+      item.iconPath = new vscodeInstance.ThemeIcon('plug');
+      item.tooltip = `Commerce Process Integrations for ${element.process} (e.g. Salesforce, Oracle Engagement Cloud, Custom BML/REST)`;
+      item.contextValue = 'cpqCommerceSection_integrations';
+      return item;
+    }
+
+    if (element.type === 'integration') {
+      const itg = element.data;
+      const varName = extractStringValue(itg.variableName || itg.name, 'integration');
+      const name = extractStringValue(itg.name || itg.label || varName, varName);
+      const intType = extractStringValue(itg.integrationType || itg.type || 'Integration');
+      const displayLabel = formatNameAndVarName(name, varName);
+      const item = new vscodeInstance.TreeItem(displayLabel, vscodeInstance.TreeItemCollapsibleState.None);
+      item.description = `[${intType}]`;
+      item.tooltip = `${name} (${varName}) [${intType}]\n${itg.description || ''}\n${itg.endpointUrl ? 'Endpoint: ' + itg.endpointUrl + '\n' : ''}Click to inspect integration definition`;
+      item.iconPath = new vscodeInstance.ThemeIcon('plug');
+      item.contextValue = 'cpqCommerceIntegration';
+      item.command = {
+        command: 'cpqBml.cloud.inspectIntegration',
+        title: 'Inspect Integration',
+        arguments: [element]
+      };
+      return item;
+    }
+
     if (element.type === 'empty') {
       const item = new vscodeInstance.TreeItem(element.label, vscodeInstance.TreeItemCollapsibleState.None);
       item.iconPath = new vscodeInstance.ThemeIcon('info');
@@ -279,6 +321,9 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
             if (docObj.attributes) allItems.push(...docObj.attributes);
           }
         }
+        if (cachedData.integrations) {
+          allItems.push(...cachedData.integrations);
+        }
         matchCount = allItems.filter(it => matchesItem(it, filterQuery)).length;
         nodes.push({ type: 'filterInfo', query: filterQuery, totalMatches: matchCount });
       }
@@ -291,7 +336,36 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       for (const d of docNames) {
         nodes.push({ type: 'document', docName: d, process: proc });
       }
+
+      // Add Integrations section at Commerce Process level
+      const allIntegrations = cachedData?.integrations || [];
+      const filteredIntegrations = filterQuery
+        ? allIntegrations.filter(it => matchesItem(it, filterQuery))
+        : allIntegrations;
+      if (filteredIntegrations.length > 0) {
+        nodes.push({
+          type: 'processIntegrations',
+          process: proc,
+          count: filteredIntegrations.length,
+          items: filteredIntegrations
+        });
+      }
       return nodes;
+    }
+
+    if (element.type === 'processIntegrations') {
+      const items = element.items || [];
+      if (items.length === 0) {
+        return [{
+          type: 'empty',
+          label: filterQuery ? 'No matching integrations' : 'No integrations configured for this process'
+        }];
+      }
+      return items.map(itg => ({
+        type: 'integration',
+        data: itg,
+        process: element.process
+      }));
     }
 
     if (element.type === 'document') {
@@ -399,12 +473,54 @@ function registerCommerceExplorer(context, vscodeInstance = vscode) {
     return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
   });
 
-  context.subscriptions.push(treeView, refreshCmd, switchProcCmd, filterCmd, clearFilterCmd, searchCmd);
+  const inspectIntegrationCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.inspectIntegration', (item) => {
+    return inspectIntegrationCommand(item, vscodeInstance, context);
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, switchProcCmd, filterCmd, clearFilterCmd, searchCmd, inspectIntegrationCmd);
   return { treeDataProvider, treeView };
+}
+
+async function inspectIntegrationCommand(item, vscodeInstance = vscode, context) {
+  const itg = item?.data || item;
+  if (!itg) {
+    vscodeInstance.window?.showWarningMessage?.('No integration selected.');
+    return;
+  }
+  const varName = extractStringValue(itg.variableName || itg.name, 'integration');
+  const process = itg.process || item?.process;
+
+  await vscodeInstance.window.withProgress({
+    location: (vscodeInstance.ProgressLocation && vscodeInstance.ProgressLocation.Notification) || 15,
+    title: `Fetching CPQ Integration ${varName}...`,
+    cancellable: false
+  }, async () => {
+    let payload = null;
+    try {
+      if (typeof api.getCommerceIntegration === 'function') {
+        const res = await api.getCommerceIntegration(context, vscodeInstance, { process, integrationVarName: varName });
+        if (res && res.statusCode >= 200 && res.statusCode < 300) {
+          payload = safeParseJson(res.body);
+        }
+      }
+    } catch (_) {}
+
+    if (!payload) {
+      payload = itg;
+    }
+
+    const formatted = JSON.stringify(payload, null, 2);
+    const doc = await vscodeInstance.workspace.openTextDocument({
+      language: 'json',
+      content: formatted
+    });
+    await vscodeInstance.window.showTextDocument(doc);
+  });
 }
 
 module.exports = {
   createCommerceExplorer,
-  registerCommerceExplorer
+  registerCommerceExplorer,
+  inspectIntegrationCommand
 };
 

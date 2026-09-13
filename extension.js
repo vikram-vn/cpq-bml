@@ -33,6 +33,7 @@ const { registerCloudDataTables } = require("@/lang/cloud/cloudDataTables");
 const { registerCloudTransactions } = require("@/lang/cloud/cloudTransactions");
 const { registerCloudDeploymentCenter } = require("@/lang/cloud/cloudDeploymentCenter");
 const { registerCloudGlobalSearch } = require("@/lang/cloud/cloudGlobalSearch");
+const { registerCloudParts } = require("@/lang/cloud/cloudParts");
 const { registerRemoteTestCommands } = require("@/lang/test-controller/remoteTestRunner");
 const { registerBmqlCommands } = require("@/lang/cloud/bmqlRunner");
 const { registerAttributeLookupCommands } = require("@/lang/cloud/attributeLookup");
@@ -124,6 +125,7 @@ function activate(context) {
   registerCloudTransactions(context);
   registerCloudDeploymentCenter(context);
   registerCloudGlobalSearch(context);
+  registerCloudParts(context);
   registerRemoteTestCommands(context);
   registerBmqlCommands(context);
   registerAttributeLookupCommands(context);

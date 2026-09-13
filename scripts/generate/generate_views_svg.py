@@ -125,6 +125,32 @@ def generate_config_svg():
   <rect x="15" y="15" width="6" height="5" rx="1.2" fill="url(#vCfgNode)" stroke="#6ee7b7" stroke-width="1.3"/>
 </svg>'''
 
+def generate_parts_svg():
+    """24x24 Parts / Site Catalog icon: vibrant golden-amber component package with cyan flap seam and spec lines."""
+    return '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <defs>
+    <linearGradient id="vPartGrad" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="vPartTop" x1="12" y1="3" x2="12" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <!-- Top Face Subtle Tint -->
+  <polygon points="12,3.5 20,7.8 12,12 4,7.8" fill="url(#vPartTop)"/>
+  <!-- Outer Isometric Cube Contour -->
+  <path d="M12 3.5L20 7.8V16.5L12 21L4 16.5V7.8L12 3.5Z" stroke="url(#vPartGrad)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Inner Crease Edges -->
+  <path d="M12 12V21M12 12L20 7.8M12 12L4 7.8" stroke="url(#vPartGrad)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Top Flap Seam in Sky Blue -->
+  <path d="M7.5 5.9L16.5 10" stroke="#38bdf8" stroke-width="1.4" stroke-linecap="round"/>
+  <!-- Specification / Part Identification Lines on Front-Right Face -->
+  <line x1="14.5" y1="13" x2="17.5" y2="11.4" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="14.5" y1="15.8" x2="17.5" y2="14.2" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+</svg>'''
+
 def main():
     os.makedirs(VIEWS_DIR, exist_ok=True)
     
@@ -134,7 +160,8 @@ def main():
         'config.svg': generate_config_svg(),
         'datatables.svg': generate_datatables_svg(),
         'transactions.svg': generate_transactions_svg(),
-        'deployment.svg': generate_deployment_svg()
+        'deployment.svg': generate_deployment_svg(),
+        'parts.svg': generate_parts_svg()
     }
     
     for filename, content in view_files.items():

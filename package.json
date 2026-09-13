@@ -134,6 +134,11 @@
           "id": "cpqBml.deploymentCenter",
           "name": "Deployment Center & Task Monitor",
           "icon": "app/icons/views/deployment.svg"
+        },
+        {
+          "id": "cpqBml.cloudParts",
+          "name": "Parts (Site Catalog)",
+          "icon": "app/icons/views/parts.svg"
         }
       ]
     },
@@ -573,6 +578,54 @@
         "category": "BML"
       },
       {
+        "command": "cpqBml.cloud.inspectIntegration",
+        "title": "CPQ-BML: Inspect Integration Definition",
+        "icon": "$(plug)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.parts.refresh",
+        "title": "CPQ-BML: Refresh Parts Catalog",
+        "icon": "app/icons/cloud/refresh.svg",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.parts.searchExplorer",
+        "title": "CPQ-BML: Search Parts Catalog",
+        "icon": "app/icons/cloud/search.svg",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.parts.filterExplorer",
+        "title": "CPQ-BML: Filter Parts Catalog",
+        "icon": "app/icons/cloud/filter.svg",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.parts.clearFilter",
+        "title": "CPQ-BML: Clear Parts Filter",
+        "icon": "app/icons/cloud/clear-filter.svg",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.parts.inspectPart",
+        "title": "CPQ-BML: Inspect Part Details",
+        "icon": "$(package)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.parts.copyPartNumber",
+        "title": "CPQ-BML: Copy Part Number",
+        "icon": "$(copy)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.parts.insertPartNumber",
+        "title": "CPQ-BML: Insert Part Number at Cursor",
+        "icon": "$(symbol-field)",
+        "category": "BML"
+      },
+      {
         "command": "cpqBml.cloud.refreshDeploymentCenter",
         "title": "CPQ-BML: Refresh Deployment Center & Task Status",
         "icon": "app/icons/cloud/refresh.svg",
@@ -886,6 +939,26 @@
           "group": "navigation@1"
         },
         {
+          "command": "cpqBml.parts.searchExplorer",
+          "when": "view == cpqBml.cloudParts",
+          "group": "navigation@0.1"
+        },
+        {
+          "command": "cpqBml.parts.filterExplorer",
+          "when": "view == cpqBml.cloudParts",
+          "group": "navigation@0.2"
+        },
+        {
+          "command": "cpqBml.parts.clearFilter",
+          "when": "view == cpqBml.cloudParts && cpqBml.cloudPartsFiltered",
+          "group": "navigation@0.3"
+        },
+        {
+          "command": "cpqBml.parts.refresh",
+          "when": "view == cpqBml.cloudParts",
+          "group": "navigation@1"
+        },
+        {
           "command": "cpqBml.commerce.searchExplorer",
           "when": "view == cpqBml.commerceExplorer",
           "group": "navigation@0.1"
@@ -1131,6 +1204,31 @@
           "command": "cpqBml.cloud.viewTaskDetails",
           "when": "view == cpqBml.deploymentCenter && viewItem == cpqDeploymentTask",
           "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.cloud.inspectIntegration",
+          "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceIntegration",
+          "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.cloud.copyVariableName",
+          "when": "view == cpqBml.commerceExplorer && viewItem == cpqCommerceIntegration",
+          "group": "1_actions@1"
+        },
+        {
+          "command": "cpqBml.parts.inspectPart",
+          "when": "view == cpqBml.cloudParts && viewItem == cpqCloudPart",
+          "group": "inline@1"
+        },
+        {
+          "command": "cpqBml.parts.copyPartNumber",
+          "when": "view == cpqBml.cloudParts && viewItem == cpqCloudPart",
+          "group": "inline@2"
+        },
+        {
+          "command": "cpqBml.parts.insertPartNumber",
+          "when": "view == cpqBml.cloudParts && viewItem == cpqCloudPart",
+          "group": "1_actions@1"
         }
       ]
     },
