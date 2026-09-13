@@ -52,7 +52,11 @@ function processAllSvgs(targetDir = path.join(__dirname, '..', '..', 'app', 'ico
 
   const saved = origTotal - minTotal;
   const pct = origTotal > 0 ? ((saved / origTotal) * 100).toFixed(1) : '0.0';
-  console.log(`Processed ${fileCount} SVGs: ${(origTotal / 1024).toFixed(1)} KB -> ${(minTotal / 1024).toFixed(1)} KB (saved ${(saved / 1024).toFixed(1)} KB, ${pct}% reduction)`);
+  if (saved > 0) {
+    console.log(`Optimized ${fileCount} SVGs: ${(origTotal / 1024).toFixed(1)} KB -> ${(minTotal / 1024).toFixed(1)} KB (saved ${(saved / 1024).toFixed(1)} KB, ${pct}%)`);
+  } else {
+    console.log(`All ${fileCount} SVGs verified clean (${(minTotal / 1024).toFixed(1)} KB)`);
+  }
   return { fileCount, origTotal, minTotal, saved };
 }
 
