@@ -37,9 +37,10 @@ knowledge/**
 # Ignore root and raw JavaScript source files (compiled into dist/extension.js)
 extension.js
 app/**/*.js
-!app/lang/settings-panel/web-view/dist/main.js
-!app/lang/cloud/inspector-web-view/dist/main.js
-!app/lang/graph/web-view/dist/main.js
+!app/lang/web-panel/dist/main.js
+!app/lang/web-panel/settings/dist/main.js
+!app/lang/web-panel/interactive/dist/main.js
+!app/lang/web-panel/graph/dist/main.js
 
 # Ignore WebAssembly source and binary files (shipped via cipherWasmBinary.js)
 **/*.wat
@@ -51,20 +52,13 @@ app/lang/lint/**
 app/lang/rest/**
 app/lang/comments/**
 app/lang/cloud/*.js
-app/lang/cloud/inspector-web-view/src/**
-!app/lang/cloud/inspector-web-view/dist/**
-!app/lang/cloud/inspector-web-view/css/**
-!app/lang/cloud/inspector-web-view/index.html
 app/lang/graph/*.js
-app/lang/graph/web-view/src/**
-!app/lang/graph/web-view/dist/**
-!app/lang/graph/web-view/css/**
-!app/lang/graph/web-view/index.html
-app/lang/bmql/**
-app/lang/status-bar/**
-app/lang/mcp/**
 app/lang/settings-panel/*.js
-app/lang/settings-panel/web-view/src/**
+app/lang/web-panel/*.js
+app/lang/web-panel/src/**
+!app/lang/web-panel/dist/**
+!app/lang/web-panel/css/**
+!app/lang/web-panel/index.html
 app/lang/snippets/**
 app/lang/spell-check/*.br
 app/lang/**/README*.md
@@ -98,9 +92,9 @@ scripts/**
 
 # Settings webview CSS: ship only the minified .min.css variants
 # (html.js references the .min.css files directly)
-app/lang/settings-panel/web-view/css/main.css
-app/lang/settings-panel/web-view/css/layout.css
-app/lang/settings-panel/web-view/css/components.css
+app/lang/web-panel/css/settings-main.css
+app/lang/web-panel/css/settings-layout.css
+app/lang/web-panel/css/settings-components.css
 
 # Themes/grammars: ship only the minified .min.json variants
 # (package.json's contributes.themes/grammars paths point at these directly)

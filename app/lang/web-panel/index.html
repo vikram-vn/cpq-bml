@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="{{csp}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{shellStyleUri}}" />
+    <link rel="stylesheet" href="{{layoutStyleUri}}" />
+    <link rel="stylesheet" href="{{componentsStyleUri}}" />
+    <link rel="stylesheet" href="{{settingsStyleUri}}" />
+    <link rel="stylesheet" href="{{graphStyleUri}}" />
+    <link rel="stylesheet" href="{{inspectorStyleUri}}" />
+    <title>CPQ-BML</title>
+</head>
+<body>
+    <div id="root">Loading CPQ-BML Panel&hellip;</div>
+    <script nonce="{{nonce}}">
+        window.__INITIAL_PAGE__ = '{{initialPage}}';
+        window.__INITIAL_GRAPH_MODEL__ = {{initialGraphModel}};
+        window.__INITIAL_INSPECTOR_DATA__ = {{initialInspectorData}};
+    </script>
+    <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+</body>
+</html>

@@ -78,19 +78,9 @@ async function compileExtension() {
         define: isProduction ? { 'process.env.NODE_ENV': '"production"' } : undefined
     });
 
-    const buildWebview = createWebviewBuild(
-        path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'src', 'index.jsx'),
-        path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'dist', 'main.js')
-    );
-
-    const buildGraphWebview = createWebviewBuild(
-        path.join(ROOT, 'app', 'lang', 'graph', 'web-view', 'src', 'index.jsx'),
-        path.join(ROOT, 'app', 'lang', 'graph', 'web-view', 'dist', 'main.js')
-    );
-
-    const buildInspectorWebview = createWebviewBuild(
-        path.join(ROOT, 'app', 'lang', 'cloud', 'inspector-web-view', 'src', 'index.jsx'),
-        path.join(ROOT, 'app', 'lang', 'cloud', 'inspector-web-view', 'dist', 'main.js')
+    const buildUnifiedWebPanel = createWebviewBuild(
+        path.join(ROOT, 'app', 'lang', 'web-panel', 'src', 'index.jsx'),
+        path.join(ROOT, 'app', 'lang', 'web-panel', 'dist', 'main.js')
     );
 
 
@@ -110,8 +100,8 @@ async function compileExtension() {
     }
 
     // 3. CSS minification (.css -> .min.css)
-    const cssDir = path.join(ROOT, 'app', 'lang', 'settings-panel', 'web-view', 'css');
-    const cssFiles = ['main.css', 'layout.css', 'components.css'];
+    const cssDir = path.join(ROOT, 'app', 'lang', 'web-panel', 'css');
+    const cssFiles = ['settings-main.css', 'settings-layout.css', 'settings-components.css'];
     for (const file of cssFiles) {
         const srcPath = path.join(cssDir, file);
         const outPath = path.join(cssDir, file.replace('.css', '.min.css'));
@@ -216,7 +206,7 @@ async function compileExtension() {
     }
 
     // Await all esbuild tasks
-    await Promise.all([buildExt, buildWebview, buildGraphWebview, buildInspectorWebview]);
+    await Promise.all([buildExt, buildUnifiedWebPanel]);
 
 
     const t1 = performance.now();

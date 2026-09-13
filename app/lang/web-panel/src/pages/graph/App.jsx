@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import HeaderBar from '@/lang/graph/web-view/src/components/HeaderBar';
-import Toolbar from '@/lang/graph/web-view/src/components/Toolbar';
-import GraphCanvas from '@/lang/graph/web-view/src/components/GraphCanvas';
-import NodeDrawer from '@/lang/graph/web-view/src/components/NodeDrawer';
+import HeaderBar from './components/HeaderBar';
+import Toolbar from './components/Toolbar';
+import GraphCanvas from './components/GraphCanvas';
+import NodeDrawer from './components/NodeDrawer';
+import { getVsCodeApi } from '@/lang/web-panel/src/vscodeApi';
 
-export default function App({ vscodeApi }) {
+export default function App({ vscodeApi: propVscodeApi, initialModel = null }) {
+    const vscodeApi = propVscodeApi || getVsCodeApi();
     const [model, setModel] = useState(() => {
-        return (typeof window !== 'undefined' && window.__INITIAL_GRAPH_MODEL__) || null;
+        return initialModel || (typeof window !== 'undefined' && window.__INITIAL_GRAPH_MODEL__) || null;
     });
     const [showCallers, setShowCallers] = useState(true);
     const [showCallees, setShowCallees] = useState(true);

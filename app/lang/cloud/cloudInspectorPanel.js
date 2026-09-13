@@ -68,6 +68,21 @@ async function showCloudInspector(item, context, vscodeInstance = vscodeModule, 
     ? (vscodeInstance?.ViewColumn?.Beside ?? 2)
     : (vscodeInstance?.ViewColumn?.One ?? 1);
 
+  try {
+    const { openWebPanel } = require('@/lang/web-panel/webPanelManager');
+    const panel = openWebPanel(context, {
+      page: 'interactive',
+      payload: norm,
+      column,
+      vscodeInstance,
+      onOpenBml
+    });
+    if (panel) {
+      currentPanel = panel;
+      return panel;
+    }
+  } catch (_) {}
+
   if (currentPanel) {
     try {
       currentPanel.title = `Inspect: ${norm.title}`;
@@ -220,6 +235,10 @@ async function inspectItemAccordingToPreference(item, context, vscodeInstance = 
 }
 
 function _resetInspectorPanel() {
+  try {
+    const { _resetWebPanel } = require('@/lang/web-panel/webPanelManager');
+    _resetWebPanel();
+  } catch (_) {}
   if (currentPanel) {
     try {
       if (typeof currentPanel.dispose === 'function') currentPanel.dispose();

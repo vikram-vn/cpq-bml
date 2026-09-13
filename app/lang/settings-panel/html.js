@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { getWebPanelHtml } = require('@/lang/web-panel/webPanelManager');
 
 function getNonce() {
     return crypto.randomBytes(16).toString('base64');
@@ -20,31 +21,14 @@ let cachedTemplate = null;
 
 function getTemplate(context) {
     if (!cachedTemplate) {
-        const templatePath = path.join(context.extensionPath, 'app', 'lang', 'settings-panel', 'web-view', 'index.html');
+        const templatePath = path.join(context.extensionPath, 'app', 'lang', 'web-panel', 'index.html');
         cachedTemplate = fs.readFileSync(templatePath, 'utf8');
     }
     return cachedTemplate;
 }
 
 function getHtml(context, vscode, webview) {
-    const webviewRoot = vscode.Uri.joinPath(context.extensionUri, 'app', 'lang', 'settings-panel', 'web-view');
-    const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'dist', 'main.js'));
-    const layoutStyleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'layout.min.css'));
-    const componentsStyleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'components.min.css'));
-    const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewRoot, 'css', 'main.min.css'));
-
-    const template = getTemplate(context);
-
-    const nonce = getNonce();
-    const csp = buildCsp(nonce, webview.cspSource);
-
-    return template
-        .replace(/\{\{csp\}\}/g, csp)
-        .replace(/\{\{nonce\}\}/g, nonce)
-        .replace(/\{\{scriptUri\}\}/g, scriptUri.toString())
-        .replace(/\{\{layoutStyleUri\}\}/g, layoutStyleUri.toString())
-        .replace(/\{\{componentsStyleUri\}\}/g, componentsStyleUri.toString())
-        .replace(/\{\{styleUri\}\}/g, styleUri.toString());
+    return getWebPanelHtml(context, webview, { page: 'settings' }, vscode);
 }
 
 module.exports = { getHtml, getNonce, buildCsp };

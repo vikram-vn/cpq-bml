@@ -146,6 +146,19 @@ function openPanel(context, vscode, args) {
   const targetTab =
     typeof args === "string" ? args : (args && args.tab) || "connection";
 
+  try {
+    const { openWebPanel } = require("@/lang/web-panel/webPanelManager");
+    const panel = openWebPanel(context, {
+      page: "settings",
+      payload: { tab: targetTab },
+      vscodeInstance: vscode,
+    });
+    if (panel) {
+      currentPanel = panel;
+      return;
+    }
+  } catch (_) {}
+
   if (currentPanel) {
     currentPanel.reveal();
     if (targetTab) {

@@ -30,7 +30,7 @@ export default [
     rules: {},
   },
   {
-    files: ["**/*.mjs", "app/lang/settings-panel/web-view/**", "eslint.config.mjs", ".vscode-test.mjs"],
+    files: ["**/*.mjs", "app/lang/web-panel/**", "eslint.config.mjs", ".vscode-test.mjs"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",

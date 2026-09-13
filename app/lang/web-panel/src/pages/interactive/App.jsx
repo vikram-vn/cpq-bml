@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { getVsCodeApi } from '@/lang/web-panel/src/vscodeApi';
 
-const vscode = typeof acquireVsCodeApi === 'function' ? acquireVsCodeApi() : {
-  postMessage: (msg) => console.log('VSCode message:', msg)
-};
-
-export default function App() {
+export default function App({ vscodeApi: propVscodeApi, initialData = null }) {
+  const vscode = propVscodeApi || getVsCodeApi();
   const [data, setData] = useState(() => {
-    return window.__INITIAL_INSPECTOR_DATA__ || {};
+    return initialData || (typeof window !== 'undefined' && window.__INITIAL_INSPECTOR_DATA__) || {};
   });
   const [filter, setFilter] = useState('');
   const [activeTab, setActiveTab] = useState('properties');

@@ -11,8 +11,8 @@ function getAllJsFiles(dir) {
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      // Skip web-view frontend code (React/browser bundle)
-      if (entry.name === "web-view" || entry.name === "node_modules") continue;
+      // Skip web-view/web-panel frontend code (React/browser bundle)
+      if (entry.name === "web-view" || entry.name === "web-panel" || entry.name === "node_modules") continue;
       files.push(...getAllJsFiles(fullPath));
     } else if (entry.isFile() && entry.name.endsWith(".js")) {
       files.push(fullPath);

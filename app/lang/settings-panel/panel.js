@@ -9,7 +9,7 @@ function createSettingsPanel(context, vscode) {
             enableScripts: true,
             retainContextWhenHidden: false,
             localResourceRoots: [
-                vscode.Uri.joinPath(context.extensionUri, 'app', 'lang', 'settings-panel', 'web-view')
+                vscode.Uri.joinPath(context.extensionUri, 'app', 'lang', 'web-panel')
             ]
         }
     );

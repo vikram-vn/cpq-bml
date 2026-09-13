@@ -15,8 +15,8 @@ function getNonce() {
 function getHtml(context, webview, initialModel = null) {
     const extensionRoot = context.extensionUri || vscode.Uri.file(context.extensionPath);
     const webviewRoot = vscode.Uri.joinPath
-        ? vscode.Uri.joinPath(extensionRoot, 'app', 'lang', 'graph', 'web-view')
-        : vscode.Uri.file(path.join(context.extensionPath, 'app', 'lang', 'graph', 'web-view'));
+        ? vscode.Uri.joinPath(extensionRoot, 'app', 'lang', 'web-panel', 'graph')
+        : vscode.Uri.file(path.join(context.extensionPath, 'app', 'lang', 'web-panel', 'graph'));
 
     const scriptUri = webview.asWebviewUri(
         vscode.Uri.joinPath
@@ -29,7 +29,7 @@ function getHtml(context, webview, initialModel = null) {
             : vscode.Uri.file(path.join(webviewRoot.fsPath, 'css', 'graph.css'))
     );
 
-    const templatePath = path.join(context.extensionPath, 'app', 'lang', 'graph', 'web-view', 'index.html');
+    const templatePath = path.join(context.extensionPath, 'app', 'lang', 'web-panel', 'graph', 'index.html');
     const template = fs.readFileSync(templatePath, 'utf8');
 
     const nonce = getNonce();
@@ -120,18 +120,19 @@ async function showDependencyGraph(context, targetUri) {
         currentContent
     );
 
-    if (currentPanel) {
-        try {
-            currentPanel.title = `Blast Radius: ${baseName}`;
-            currentPanel.activeTarget = targetFilePath;
-            currentPanel.reveal(column);
-            currentPanel.webview.postMessage({ type: 'updateGraph', model: initialModel });
-            await updatePanelModel(currentPanel, targetFilePath);
-            return;
-        } catch (_) {
-            currentPanel = null;
+    try {
+        const { openWebPanel } = require('@/lang/web-panel/webPanelManager');
+        const panel = openWebPanel(context, {
+            page: 'graph',
+            payload: { model: initialModel, targetName: baseName, targetFilePath },
+            column
+        });
+        if (panel) {
+            currentPanel = panel;
+            updatePanelModel(panel, targetFilePath).catch(() => {});
+            return panel;
         }
-    }
+    } catch (_) {}
 
     const extensionRoot = context.extensionUri || vscode.Uri.file(context.extensionPath);
     const localResourceRoots = [

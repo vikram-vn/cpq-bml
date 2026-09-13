@@ -31,8 +31,8 @@ def build_dictionaries():
         print(f"compressed {file_name}: {len(data)} -> {len(compressed)} bytes")
 
 # ── 2. CSS Minification ─────────────────────────────────────────────────────
-CSS_DIR = os.path.join(ROOT, "app", "lang", "settings-panel", "web-view", "css")
-CSS_FILES = ["main.css", "layout.css", "components.css"]
+CSS_DIR = os.path.join(ROOT, "app", "lang", "web-panel", "css")
+CSS_FILES = ["settings-main.css", "settings-layout.css", "settings-components.css"]
 
 def minify_css():
     for file_name in CSS_FILES:

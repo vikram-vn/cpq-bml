@@ -374,7 +374,7 @@ suite('Cloud Inspector - Negative & Edge Cases', () => {
 
       const panel = mockVscode.getLastWebviewPanel();
       assert.ok(panel);
-      assert.strictEqual(panel.viewType, 'cpqBmlCloudInspector');
+      assert.strictEqual(panel.viewType, 'cpqBmlWebPanel');
       assert.ok(panel.title.includes('Preference Test'));
     });
 
@@ -427,9 +427,9 @@ suite('Cloud Inspector - Negative & Edge Cases', () => {
   });
 
   suite('Packaging & Webview Asset Distribution Verification', () => {
-    test('all inspector webview bundle assets exist on disk', () => {
+    test('all web-panel bundle assets exist on disk', () => {
       const root = path.resolve(__dirname, '..', '..');
-      const webviewDir = path.join(root, 'app', 'lang', 'cloud', 'inspector-web-view');
+      const webviewDir = path.join(root, 'app', 'lang', 'web-panel');
       const htmlPath = path.join(webviewDir, 'index.html');
       const bundlePath = path.join(webviewDir, 'dist', 'main.js');
       const cssPath = path.join(webviewDir, 'css', 'inspector.css');
@@ -448,10 +448,10 @@ suite('Cloud Inspector - Negative & Edge Cases', () => {
       assert.ok(fs.existsSync(ignorePath), '.vscodeignore must exist');
       const content = fs.readFileSync(ignorePath, 'utf8');
 
-      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/dist/**'));
-      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/css/**'));
-      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/index.html'));
-      assert.ok(content.includes('!app/lang/cloud/inspector-web-view/dist/main.js'));
+      assert.ok(content.includes('!app/lang/web-panel/dist/**'));
+      assert.ok(content.includes('!app/lang/web-panel/css/**'));
+      assert.ok(content.includes('!app/lang/web-panel/index.html'));
+      assert.ok(content.includes('!app/lang/web-panel/dist/main.js'));
     });
   });
 });

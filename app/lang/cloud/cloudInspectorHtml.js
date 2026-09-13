@@ -33,7 +33,7 @@ function escapeHtml(str) {
 function getInspectorHtml(payload = {}, webview, extensionPath, vscodeInstance = null) {
   const safePayload = payload || {};
   const rootPath = extensionPath || path.join(__dirname, '..', '..', '..');
-  const webviewRoot = path.join(rootPath, 'app', 'lang', 'cloud', 'inspector-web-view');
+  const webviewRoot = path.join(rootPath, 'app', 'lang', 'web-panel');
 
   const templatePath = path.join(webviewRoot, 'index.html');
   const template = fs.existsSync(templatePath)
@@ -100,7 +100,16 @@ function getInspectorHtml(payload = {}, webview, extensionPath, vscodeInstance =
     .replace(/\{\{csp\}\}/g, csp)
     .replace(/\{\{nonce\}\}/g, nonce)
     .replace(/\{\{styleUri\}\}/g, String(styleUri))
+    .replace(/\{\{inspectorStyleUri\}\}/g, String(styleUri))
+    .replace(/\{\{shellStyleUri\}\}/g, '')
+    .replace(/\{\{layoutStyleUri\}\}/g, '')
+    .replace(/\{\{componentsStyleUri\}\}/g, '')
+    .replace(/\{\{settingsStyleUri\}\}/g, '')
+    .replace(/\{\{graphStyleUri\}\}/g, '')
     .replace(/\{\{scriptUri\}\}/g, String(scriptUri))
+    .replace(/\{\{initialPage\}\}/g, 'interactive')
+    .replace(/\{\{initialGraphModel\}\}/g, 'null')
+    .replace(/\{\{initialInspectorData\}\}/g, initialDataJson)
     .replace(/\{\{initialData\}\}/g, initialDataJson);
 
   return html;

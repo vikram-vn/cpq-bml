@@ -9,6 +9,7 @@ import McpTab from './tabs/McpTab';
 import AdvancedTab from './tabs/AdvancedTab';
 import SearchResultsTab from './components/SearchResultsTab';
 import { EMPTY_STATE } from './constants';
+import { getVsCodeApi } from '@/lang/web-panel/src/vscodeApi';
 
 const initialState = {
     settings: EMPTY_STATE,
@@ -94,7 +95,8 @@ function appReducer(state, action) {
     }
 }
 
-export default function App({ vscodeApi }) {
+export default function App({ vscodeApi: propVscodeApi }) {
+    const vscodeApi = propVscodeApi || getVsCodeApi();
     const [state, dispatch] = useReducer(appReducer, initialState);
     const [searchQuery, setSearchQuery] = useState('');
     const saveTimeouts = useRef({});
