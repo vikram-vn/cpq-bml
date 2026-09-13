@@ -29,8 +29,10 @@ function getSafeLiteralForType(type, index) {
 }
 
 function runDynamicTestsForCategory(category, suiteTitle) {
-    const apiUsagePath = path.join(__dirname, '@/lang/intellisense/bml-functions-api-usage.json');
-    const apiData = JSON.parse(fs.readFileSync(apiUsagePath, 'utf8'));
+    const apiUsagePath = path.resolve(__dirname, '../../app/lang/intellisense/bml-functions-api-usage.json');
+    const apiData = fs.existsSync(apiUsagePath)
+        ? JSON.parse(fs.readFileSync(apiUsagePath, 'utf8'))
+        : require('@/lang/intellisense/bml-functions-api-usage.json');
 
     const localKeywords = new Set([
         'if', 'elif', 'else', 'for', 'in', 'break', 'continue', 'return',

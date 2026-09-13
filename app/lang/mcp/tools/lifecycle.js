@@ -142,7 +142,14 @@ async function debugFunction(context, vscode, args, transport) {
         transactionIds = transactionIds.slice(0, 10);
     }
 
-    const parameterValues = (args && args.parameters) || {};
+    const parameterValues = Object.assign({}, (args && args.parameters) || {});
+    if (metadata.parameters && Array.isArray(metadata.parameters)) {
+        for (const param of metadata.parameters) {
+            if (param && param.name && parameterValues[param.name] === undefined) {
+                parameterValues[param.name] = '';
+            }
+        }
+    }
 
     const hasInputs = (metadata.parameters && metadata.parameters.length > 0) || isCommerce;
     if (hasInputs && context.workspaceState) {

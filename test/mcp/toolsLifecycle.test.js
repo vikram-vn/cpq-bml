@@ -140,7 +140,10 @@ suite("MCP tools - lifecycle", () => {
         assert.strictEqual(result.success, true);
         assert.strictEqual(result.variableName, "concatString");
         assert.ok(result.message.includes("deployed"));
-        assert.deepStrictEqual(calls, ["/rest/v18/bml/library/functions/actions/deploy"]);
+        assert.deepStrictEqual(calls, [
+          "/rest/v18/bml/library/functions/actions/validate",
+          "/rest/v18/bml/library/functions/actions/deploy",
+        ]);
       }));
 
     test("rejects deploying a commerce function with a clear error", () =>

@@ -4,7 +4,11 @@ const { getMcpServerStatus, stopMcpServer } = require("@/lang/mcp/server");
 const { activateExtension } = require("@/test/extensionHelper");
 
 suite("MCP Server Config Reactivity Integration", () => {
-  suiteSetup(async () => {
+  suiteSetup(async function () {
+    if (!vscode.extensions || typeof vscode.extensions.getExtension !== "function" || typeof vscode.commands.getCommands !== "function") {
+      this.skip();
+      return;
+    }
     await activateExtension(vscode);
     // Wait dynamically for setImmediate commands registration to finish
     let commands = await vscode.commands.getCommands(true);

@@ -32,6 +32,12 @@ const DiagnosticSeverity = {
     Hint: 3,
 };
 
+const DiagnosticTag = {
+    Unnecessary: 1,
+    Deprecated: 2,
+};
+
+
 const CompletionItemKind = {
     Text: 1,
     Method: 2,
@@ -151,6 +157,7 @@ const mockVscode = {
     Range,
     Diagnostic,
     DiagnosticSeverity,
+    DiagnosticTag,
     CodeAction,
     CodeActionKind,
     WorkspaceEdit,

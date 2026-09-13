@@ -64,7 +64,9 @@ function reportDeadZone(vscode, doc, diagnostics, deadStart, deadEnd, reasonText
         vscode.DiagnosticSeverity.Warning
     );
     diag.code = 'bml-unreachable-code';
-    diag.tags = [vscode.DiagnosticTag.Unnecessary];
+    if (vscode && vscode.DiagnosticTag && vscode.DiagnosticTag.Unnecessary !== undefined) {
+        diag.tags = [vscode.DiagnosticTag.Unnecessary];
+    }
     diagnostics.push(diag);
 }
 
