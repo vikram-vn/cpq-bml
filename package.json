@@ -3,7 +3,7 @@
   "displayName": "CPQ-BML",
   "publisher": "vikram-n",
   "description": "CPQ-BML adds syntax highlighting and reusable code snippets for BigMachines Language (BML) used in CPQ Cloud.",
-  "version": "1.97.0",
+  "version": "1.98.0",
   "icon": "app/icons/brand/logo.png",
   "license": "MIT",
   "repository": {
@@ -223,6 +223,16 @@
         "command": "cpqBml.showDependencyGraph",
         "title": "Visual Dependency & Blast Radius Architecture Graph",
         "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "cpqBml.cloud.inspectProperties",
+        "title": "CPQ Cloud: Inspect Properties",
+        "icon": "$(info)"
+      },
+      {
+        "command": "cpqBml.cloud.viewRawJson",
+        "title": "CPQ Cloud: View Raw JSON (Read-Only)",
+        "icon": "$(file-code)"
       },
       {
         "command": "cpqBml.runBmlLocally",
@@ -1244,12 +1254,35 @@
           "command": "cpqBml.parts.insertPartNumber",
           "when": "view == cpqBml.cloudParts && viewItem == cpqCloudPart",
           "group": "1_actions@1"
+        },
+        {
+          "command": "cpqBml.cloud.inspectProperties",
+          "when": "viewItem =~ /^(cpqCommerceAction|cpqCommerceIntegration|cpqCommerceAttribute|cpqCommerceMenuAttribute|cpqTransactionItem|cpqCloudPart|cpqCloudDataTable|cpqCommerceLibrary|cpqConfigAttribute|cpqConfigRule|cpqConfigBomRule|cpqDeploymentTask)$/",
+          "group": "2_inspect@1"
+        },
+        {
+          "command": "cpqBml.cloud.viewRawJson",
+          "when": "viewItem =~ /^(cpqCommerceAction|cpqCommerceIntegration|cpqCommerceAttribute|cpqCommerceMenuAttribute|cpqTransactionItem|cpqCloudPart|cpqCloudDataTable|cpqCommerceLibrary|cpqConfigAttribute|cpqConfigRule|cpqConfigBomRule|cpqDeploymentTask)$/",
+          "group": "2_inspect@2"
         }
       ]
     },
     "configuration": {
       "title": "CPQ-BML",
       "properties": {
+        "cpqBml.cloud.openMetadataAs": {
+          "type": "string",
+          "enum": [
+            "inspector",
+            "virtualDocument"
+          ],
+          "enumDescriptions": [
+            "Open the interactive CPQ Property & Metadata Inspector webview",
+            "Open a read-only virtual JSON document (cpq-cloud://...) without unsaved prompts"
+          ],
+          "default": "inspector",
+          "description": "Determines how Oracle CPQ cloud actions, integrations, attributes, parts, and transactions are displayed when clicked or inspected."
+        },
         "cpqBml.connection.enabled": {
           "type": "boolean",
           "default": true,

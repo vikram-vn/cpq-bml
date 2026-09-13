@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { getSettings, getWorkspaceRoot, isConfigured } = require('@/lang/rest/config');
-const { safeParseJson } = require('./cloudVscodeShim');
+const { safeParseJson } = require('@/lang/cloud/cloudVscodeShim');
 
 function extractItems(response) {
   if (!response) return [];

@@ -2,6 +2,7 @@ const fs = require("fs");
 const pathLib = require("path");
 const { request } = require("@/lang/rest/client");
 const cryptoManager = require("@/lang/rest/crypto");
+const folders = require("@/lang/rest/folders");
 
 const DEFAULT_REST_VERSION = 'v18';
 const DEFAULT_DOMAIN_SUFFIX = '.bigmachines.com';
@@ -420,64 +421,25 @@ async function ensureCredentials(context, vscode) {
 }
 
 function getCpqSiteName(vscodeOrSiteUrl) {
-    let siteUrl = '';
-    if (typeof vscodeOrSiteUrl === 'string') {
-        siteUrl = vscodeOrSiteUrl;
-    } else if (vscodeOrSiteUrl) {
-        siteUrl = getBaseUrl(vscodeOrSiteUrl) || '';
-    }
-    let host = '';
-    try {
-        if (siteUrl) {
-            const raw = siteUrl.replace(/^https?:\/\//i, '');
-            host = raw.split('/')[0].split(':')[0].split('.')[0];
-        }
-    } catch {
-        host = '';
-    }
-    host = (host || '').trim();
-    if (!host) {
-        return 'default';
-    }
-    if (/^cpq[-_]/i.test(host)) {
-        return host.replace(/_/g, '-');
-    }
-    return host;
+    return folders.getCpqSiteName(vscodeOrSiteUrl, getBaseUrl);
 }
 
 function getCpqInstanceFolder(vscodeOrSiteUrl) {
-    const host = getCpqSiteName(vscodeOrSiteUrl);
-    if (host === 'default') {
-        return 'cpq-default';
-    }
-    if (/^cpq[-_]/i.test(host)) {
-        return host.replace(/_/g, '-');
-    }
-    return `cpq-${host}`;
+    return folders.getCpqInstanceFolder(vscodeOrSiteUrl, getBaseUrl);
 }
 
 function getUtilLibrariesFolder(vscodeOrSiteUrl) {
-    const site = getCpqSiteName(vscodeOrSiteUrl);
-    return pathLib.join('cpq', site, 'util-libraries');
+    return folders.getUtilLibrariesFolder(vscodeOrSiteUrl, getBaseUrl);
 }
 
 function getCommerceLibrariesFolder(vscodeOrSiteUrl, processName) {
-    if (!vscodeOrSiteUrl && !processName) {
-        return pathLib.join('cpq', 'commerce-libraries');
-    }
-    const site = getCpqSiteName(vscodeOrSiteUrl);
-    const proc = processName || (vscodeOrSiteUrl && typeof vscodeOrSiteUrl === 'object' && getCommerceProcess(vscodeOrSiteUrl)) || '';
-    if (proc) {
-        return pathLib.join('cpq', site, proc, 'commerce-libraries');
-    }
-    return pathLib.join('cpq', site, 'commerce-libraries');
+    return folders.getCommerceLibrariesFolder(vscodeOrSiteUrl, processName, getBaseUrl, getCommerceProcess);
 }
 
 function getDataTableFolder(workspaceRoot, vscodeOrSiteUrl) {
-    const site = getCpqSiteName(vscodeOrSiteUrl);
-    const rel = pathLib.join('cpq', site, 'data-tables');
-    return workspaceRoot ? pathLib.join(workspaceRoot, rel) : rel;
+    return folders.getDataTableFolder(workspaceRoot, vscodeOrSiteUrl, getBaseUrl);
 }
+
 
 function isConfigured(vscode) {
     const { siteUrl } = getSettings(vscode);

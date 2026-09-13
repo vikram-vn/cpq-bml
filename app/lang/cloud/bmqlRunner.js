@@ -1,4 +1,4 @@
-const { vscode, safeParseJson, extractStringValue } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue } = require('@/lang/cloud/cloudVscodeShim');
 const api = require('@/lang/rest/api');
 const { isConfigured } = require('@/lang/rest/config');
 const { describeError } = require('@/lang/rest/commands/shared');

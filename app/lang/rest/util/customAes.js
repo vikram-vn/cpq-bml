@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const wasmBinary = require('./cipherWasmBinary');
+const wasmBinary = require('@/lang/rest/util/cipherWasmBinary');
 
 // Pre-compiled WebAssembly module for custom AES cipher engine
 const wasmModule = new WebAssembly.Module(wasmBinary);

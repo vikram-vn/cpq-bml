@@ -1,4 +1,4 @@
-const { vscode, safeParseJson, extractStringValue, formatNameAndVarName } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue, formatNameAndVarName } = require('@/lang/cloud/cloudVscodeShim');
 
 const fs = require('fs');
 const path = require('path');

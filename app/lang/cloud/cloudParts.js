@@ -1,6 +1,7 @@
-const { vscode, safeParseJson, extractStringValue } = require('./cloudVscodeShim');
+const { vscode, safeParseJson, extractStringValue } = require('@/lang/cloud/cloudVscodeShim');
 const api = require('@/lang/rest/api');
 const { isConfigured } = require('@/lang/rest/config');
+const { inspectItemAccordingToPreference } = require('@/lang/cloud/cloudInspectorPanel');
 
 /**
  * Pure Factory: Creates the Parts Explorer TreeDataProvider for CPQ Site-Level Parts Catalog.
@@ -272,12 +273,8 @@ async function inspectPartCommand(item, vscodeInstance = vscode, context) {
       payload = part.data || part;
     }
 
-    const formatted = JSON.stringify(payload, null, 2);
-    const doc = await vscodeInstance.workspace.openTextDocument({
-      language: 'json',
-      content: formatted
-    });
-    await vscodeInstance.window.showTextDocument(doc);
+    const itemPayload = { ...part, ...payload, category: 'Part', partNumber: pNum };
+    await inspectItemAccordingToPreference(itemPayload, context, vscodeInstance);
   });
 }
 

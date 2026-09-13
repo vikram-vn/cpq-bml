@@ -1,4 +1,4 @@
-const { vscode } = require('./cloudVscodeShim');
+const { vscode } = require('@/lang/cloud/cloudVscodeShim');
 
 /**
  * Inserts snippet or text at the active editor's cursor position.

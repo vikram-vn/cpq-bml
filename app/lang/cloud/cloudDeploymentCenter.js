@@ -1,7 +1,8 @@
-const { vscode, safeParseJson } = require('./cloudVscodeShim');
+const { vscode, safeParseJson } = require('@/lang/cloud/cloudVscodeShim');
 
 const api = require('@/lang/rest/api');
 const { isConfigured, getSettings } = require('@/lang/rest/config');
+const { inspectItemAccordingToPreference } = require('@/lang/cloud/cloudInspectorPanel');
 
 /**
  * Pure Factory: Creates Deployment Center & Task Monitor TreeDataProvider.
@@ -244,12 +245,8 @@ async function viewTaskDetailsCommand(item, vscodeInstance = vscode, context) {
         }
       }
 
-      const formatted = JSON.stringify(data, null, 2);
-      const doc = await vscodeInstance.workspace.openTextDocument({
-        content: formatted,
-        language: 'json'
-      });
-      await vscodeInstance.window.showTextDocument(doc);
+      const itemPayload = { ...task, ...data, category: 'Deployment Task' };
+      await inspectItemAccordingToPreference(itemPayload, context, vscodeInstance);
     } catch (err) {
       vscodeInstance.window.showErrorMessage(`Failed to view task: ${err.message}`);
     }
