@@ -31,6 +31,8 @@ For complete architectural blueprints, Control Flow Graphs (CFGs), and code exam
 
 | Feature Area | Description | Deep Dive Guide |
 | :--- | :--- | :--- |
+| **🔍 Cloud Property Inspector** | Dedicated React 19 + Pure CSS inspector panel for Actions, Attributes, Integrations, Transactions, and Parts. Fast search, cursor code injection, and read-only virtual JSON docs (`cpq-cloud://`) preventing dirty unsaved buffers. | **[Cloud Inspector Guide](knowledge/BML_Cloud_Inspector.md)** |
+| **🕸 Visual Dependency & Blast Radius Graph** | Full-topology interactive dependency visualizer powered by Cytoscape.js and React 19. Traces caller/callee trees and calculates blast radius impact across BML libraries, commerce actions, and rules. | **[Advanced Architectures](knowledge/BML_Advanced_Architectures.md)** |
 | **💡 IntelliSense & Autocomplete** | Workspace util library suggestions (`util.pricing.`), BMQL `$var` dynamic completion, parameter signatures, Call Hierarchy (`Shift+Alt+H`), and `F12` Go to Definition. | **[IntelliSense Guide](knowledge/BML_IntelliSense.md)** |
 | **🛠 BML Beautifier & Formatter** | Deterministic 4-stage formatting, brace styles (`collapse`/`expand`), minimal range diffing, on-type formatting, and `.bmlbeautifyrc`. | **[Beautifier Guide](knowledge/BML_Beautifier.md)** |
 | **🔍 Real-Time Security & Linter** | Real-time squiggles and `Alt+Enter` Quick-Fixes for BMQL injection risks, queries in loops, unbounded while loops, and type validation. | **[Linter Guide](knowledge/BML_Linter.md)** |
@@ -55,6 +57,8 @@ For complete architectural blueprints, Control Flow Graphs (CFGs), and code exam
 | **Go to Definition** | `F12` | `F12` | `Go to Definition` |
 | **Find All References** | `Shift+F12` | `Shift+F12` | `Find All References` |
 | **Quick Fix / Lightbulb** | `Ctrl+.` | `Cmd+.` | `Quick Fix...` |
+| **Architecture & Blast Radius Graph** | - | - | `CPQ-BML: Open Architecture & Blast Radius Dependency Graph` |
+| **Inspect Cloud Component** | - | - | `CPQ-BML: Inspect Component / Action / Attribute` |
 | **Open BML Scratchpad** | - | - | `CPQ-BML: Open BML Logic Scratchpad (Offline Sandbox)` |
 | **Run BML Script Locally** | - | - | `CPQ-BML: Run BML Script Locally (Scratchpad)` |
 | **Scaffold Library Function** | - | - | `CPQ-BML: Scaffold New Library Function (with -meta.json sidecar)` |
@@ -114,6 +118,11 @@ npm run compile
 ```
 
 Press **F5** in VS Code to launch the Extension Development Host.
+
+### 📐 Architectural & Code Quality Standards
+- **File Length Constraint**: No JavaScript file in the codebase may exceed **500 lines of code**. Enforced via `node scripts/check-rules.js`.
+- **Module Aliasing**: All internal requires in `app/` use `@/` alias resolution via `scripts/register-alias.js`. Direct relative paths (`./` or `../`) are strictly prohibited.
+- **Webview Tech Stack**: All webview user interfaces (Inspector, Architecture Graph, Settings Panel) are built exclusively in **React 19** and **Pure CSS**, compiled via esbuild. No raw CSS strings in JS.
 
 ---
 

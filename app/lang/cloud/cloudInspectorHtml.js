@@ -31,13 +31,14 @@ function escapeHtml(str) {
  * @returns {string} HTML content
  */
 function getInspectorHtml(payload = {}, webview, extensionPath) {
+  const safePayload = payload || {};
   const rootPath = extensionPath || path.join(__dirname, '..', '..', '..');
   const webviewRoot = path.join(rootPath, 'app', 'lang', 'cloud', 'inspector-web-view');
 
   const templatePath = path.join(webviewRoot, 'index.html');
   const template = fs.existsSync(templatePath)
     ? fs.readFileSync(templatePath, 'utf8')
-    : '<!DOCTYPE html><html><body><div id="root"></div></body></html>';
+    : '<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="{{csp}}"></head><body><div id="root"></div></body></html>';
 
   const scriptUri = webview?.asWebviewUri
     ? webview.asWebviewUri({ fsPath: path.join(webviewRoot, 'dist', 'main.js') })
@@ -56,17 +57,22 @@ function getInspectorHtml(payload = {}, webview, extensionPath) {
     `script-src 'nonce-${nonce}'`
   ].join('; ');
 
-  const initialDataJson = JSON.stringify(payload || {}).replace(/</g, '\\u003c');
+  let initialDataJson;
+  try {
+    initialDataJson = JSON.stringify(safePayload).replace(/</g, '\\u003c');
+  } catch {
+    initialDataJson = '{}';
+  }
 
   // Provide initial pre-rendered fallback in #root so tests and initial render have content
   const initialMarkup = `
     <div class="inspector-container">
       <div class="header">
-        <span class="badge">${escapeHtml(payload.category || 'Item')}</span>
-        <h1>${escapeHtml(payload.title || 'CPQ Metadata')}</h1>
-        ${payload.variableName ? `<span class="subtitle">${escapeHtml(payload.variableName)}</span>` : ''}
-        ${payload.description ? `<p>${escapeHtml(payload.description)}</p>` : ''}
-        ${payload.hasBml ? '<button class="primary">Open BML Script</button>' : ''}
+        <span class="badge">${escapeHtml(safePayload.category || 'Item')}</span>
+        <h1>${escapeHtml(safePayload.title || 'CPQ Metadata')}</h1>
+        ${safePayload.variableName ? `<span class="subtitle">${escapeHtml(safePayload.variableName)}</span>` : ''}
+        ${safePayload.description ? `<p>${escapeHtml(safePayload.description)}</p>` : ''}
+        ${safePayload.hasBml ? '<button class="primary">Open BML Script</button>' : ''}
       </div>
     </div>
   `.trim();

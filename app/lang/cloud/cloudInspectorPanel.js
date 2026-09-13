@@ -115,53 +115,65 @@ async function showCloudInspector(item, context, vscodeInstance = vscodeModule, 
   panel.webview.onDidReceiveMessage(async (message) => {
     if (!message) return;
 
-    switch (message.command) {
-      case 'copyText':
-        if (message.text) {
-          await vscodeInstance.env.clipboard.writeText(message.text);
-          if (vscodeInstance.window && vscodeInstance.window.setStatusBarMessage) {
-            vscodeInstance.window.setStatusBarMessage(`CPQ-BML: ${message.label || 'Text'} copied to clipboard`, 3000);
+    try {
+      switch (message.command) {
+        case 'copyText':
+          if (message.text) {
+            if (vscodeInstance.env?.clipboard?.writeText) {
+              await vscodeInstance.env.clipboard.writeText(message.text);
+            }
+            if (vscodeInstance.window && vscodeInstance.window.setStatusBarMessage) {
+              vscodeInstance.window.setStatusBarMessage(`CPQ-BML: ${message.label || 'Text'} copied to clipboard`, 3000);
+            }
           }
-        }
-        break;
+          break;
 
-      case 'insertAtCursor':
-        if (message.text) {
-          const editor = vscodeInstance.window.activeTextEditor;
-          if (editor) {
-            await editor.edit(editBuilder => {
-              editBuilder.insert(editor.selection.active, message.text);
-            });
-          } else {
-            await vscodeInstance.env.clipboard.writeText(message.text);
-            vscodeInstance.window.showInformationMessage(`Copied '${message.text}' to clipboard.`);
+        case 'insertAtCursor':
+          if (message.text) {
+            const editor = vscodeInstance.window?.activeTextEditor;
+            if (editor && editor.selection) {
+              await editor.edit(editBuilder => {
+                editBuilder.insert(editor.selection.active, message.text);
+              });
+            } else if (vscodeInstance.env?.clipboard?.writeText) {
+              await vscodeInstance.env.clipboard.writeText(message.text);
+              if (vscodeInstance.window?.showInformationMessage) {
+                vscodeInstance.window.showInformationMessage(`Copied '${message.text}' to clipboard.`);
+              }
+            }
           }
-        }
-        break;
+          break;
 
-      case 'openRawJson':
-        if (currentItemContext) {
-          await openVirtualJsonDocument(
-            currentItemContext.category.toLowerCase().replace(/\s+/g, '-'),
-            currentItemContext.title,
-            currentItemContext.data,
-            vscodeInstance
-          );
-        }
-        break;
+        case 'openRawJson':
+          if (currentItemContext) {
+            await openVirtualJsonDocument(
+              (currentItemContext.category || 'item').toLowerCase().replace(/\s+/g, '-'),
+              currentItemContext.title || 'Metadata',
+              currentItemContext.data || {},
+              vscodeInstance
+            );
+          }
+          break;
 
-      case 'openBmlScript':
-        if (currentItemContext && typeof currentItemContext.onOpenBml === 'function') {
-          await currentItemContext.onOpenBml(currentItemContext.rawItem);
-        } else if (currentItemContext && currentItemContext.category === 'Action') {
-          vscodeInstance.commands.executeCommand('cpqBml.cloud.openActionBml', currentItemContext.rawItem);
-        } else if (currentItemContext && currentItemContext.category === 'Rule') {
-          vscodeInstance.commands.executeCommand('cpqBml.cloud.openRuleBml', currentItemContext.rawItem);
-        }
-        break;
+        case 'openBmlScript':
+          if (currentItemContext && typeof currentItemContext.onOpenBml === 'function') {
+            await currentItemContext.onOpenBml(currentItemContext.rawItem);
+          } else if (currentItemContext && currentItemContext.category === 'Action') {
+            if (vscodeInstance.commands?.executeCommand) {
+              vscodeInstance.commands.executeCommand('cpqBml.cloud.openActionBml', currentItemContext.rawItem);
+            }
+          } else if (currentItemContext && currentItemContext.category === 'Rule') {
+            if (vscodeInstance.commands?.executeCommand) {
+              vscodeInstance.commands.executeCommand('cpqBml.cloud.openRuleBml', currentItemContext.rawItem);
+            }
+          }
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
+    } catch {
+      // Safe fallback - avoid unhandled rejections from malformed webview messages
     }
   });
 
