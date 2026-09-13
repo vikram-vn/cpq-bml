@@ -46,6 +46,7 @@ const ALLOWED_FIELDS = new Set([
   "debug.logOutputToFile",
   "debug.showResultsAsTable",
   "debug.concurrency",
+  "cloud.openMetadataAs",
 ]);
 
 // Every mutating case re-sends a fresh 'state' snapshot so the webview never relies on stale state.

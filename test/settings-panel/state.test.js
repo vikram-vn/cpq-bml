@@ -74,6 +74,9 @@ suite("settings-panel state", () => {
         canSync: true,
         storagePath: "",
       },
+      cloud: {
+        openMetadataAs: "inspector",
+      },
       environments: [{ name: "dev", siteUrl: "dev.bigmachines.com" }],
       hasPassword: true,
       hasToken: false,

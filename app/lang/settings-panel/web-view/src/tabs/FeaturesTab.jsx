@@ -1,7 +1,7 @@
 import Switch from '../components/Switch';
 import { IconFeatures } from '../components/Icons';
 
-export default function FeaturesTab({ active, features = {}, inlayHints = {}, updateField }) {
+export default function FeaturesTab({ active, features = {}, inlayHints = {}, cloud = {}, updateField }) {
     if (!active) return null;
 
     return (
@@ -92,6 +92,19 @@ export default function FeaturesTab({ active, features = {}, inlayHints = {}, up
                     checked={features.testing}
                     onChange={(v) => updateField('features.testing', v)}
                 />
+
+                <div className="field field-spaced" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--vscode-widget-border, rgba(128, 128, 128, 0.2))' }}>
+                    <label htmlFor="openMetadataAs">Cloud Component Click Action</label>
+                    <select
+                        id="openMetadataAs"
+                        value={cloud.openMetadataAs || 'inspector'}
+                        onChange={(e) => updateField('cloud.openMetadataAs', e.target.value)}
+                    >
+                        <option value="inspector">React Property Inspector Panel (Default)</option>
+                        <option value="virtualDocument">Read-Only Virtual JSON Document</option>
+                    </select>
+                    <p className="field-hint">Choose how Cloud Explorer items (Actions, Attributes, Integrations, Parts) open: in a React visual inspector beside your editor or a read-only virtual JSON tab.</p>
+                </div>
             </section>
         </div>
     );

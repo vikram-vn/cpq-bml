@@ -84,6 +84,18 @@ suite("settings-panel messageHandler", () => {
     assert.strictEqual(panel.posted[0].rest.productFamily, "servers");
   });
 
+  test("'updateField' supports updating cloud.openMetadataAs", async () => {
+    const configValues = {};
+    const panel = fakePanel();
+    const vscode = createFakeVscode({ config: configValues });
+    const context = createFakeContext({});
+
+    await handleMessage({ type: "updateField", key: "cloud.openMetadataAs", value: "virtualDocument" }, context, vscode, panel);
+    assert.strictEqual(configValues["cloud.openMetadataAs"], "virtualDocument");
+    assert.strictEqual(panel.posted[0].type, "state");
+    assert.strictEqual(panel.posted[0].cloud.openMetadataAs, "virtualDocument");
+  });
+
   test("'updateField' with a key outside the allow-list is rejected with an error message, and writes nothing", async () => {
     const configValues = {};
     const panel = fakePanel();

@@ -29,6 +29,7 @@ export const EMPTY_STATE = {
     },
     mcp: { enable: false, port: 47821, logToTerminal: false },
     debug: { logOutputToFile: false, logRestDetails: false, showResultsAsTable: false, concurrency: 2 },
+    cloud: { openMetadataAs: 'inspector' },
     environments: [],
     hasPassword: false,
     hasToken: false

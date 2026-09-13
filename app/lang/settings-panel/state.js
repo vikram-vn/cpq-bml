@@ -72,6 +72,9 @@ async function buildState(context, vscode) {
             concurrency: settings.debugConcurrency || config.getDebugConcurrency(vscode)
         },
         metadata: metaStatus,
+        cloud: {
+            openMetadataAs: cpqConfig.get('cloud.openMetadataAs', 'inspector')
+        },
         environments,
         hasPassword,
         hasToken

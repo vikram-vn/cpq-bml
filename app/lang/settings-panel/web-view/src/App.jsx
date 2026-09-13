@@ -223,6 +223,7 @@ export default function App({ vscodeApi }) {
         debug = {},
         environments = [],
         metadata = {},
+        cloud = {},
     } = settings || {};
 
     const setActiveTab = (tab) => dispatch({ type: 'SET_ACTIVE_TAB', tab });
@@ -312,6 +313,7 @@ export default function App({ vscodeApi }) {
                             active={activeTab === 'features'}
                             features={features}
                             inlayHints={inlayHints}
+                            cloud={cloud}
                             updateField={updateField}
                         />
 
