@@ -4,6 +4,16 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.1.0] - 2026-09-13
+
+### Added
+
+- Add native build script, brand logo, and spell-check dictionary.
+- Add script to strip and optimize SVG icons.
+- Add native build runner, Brotli asset compression, and intellisense API data loader.
+- Introduce programmatic build runner, api data loader, and compressed dictionary assets.
+- Add UI icons, build scripts, web panel manager, and test files.
+
 ## [2.0.0] - 2026-09-13
 
 ### Added
