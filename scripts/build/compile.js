@@ -11,6 +11,7 @@ const { performance } = require('perf_hooks');
 
 const ROOT = path.join(__dirname, '..', '..');
 const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
+const { processAllSvgs } = require('./strip-svgs');
 
 async function compileExtension() {
     const t0 = performance.now();
@@ -138,6 +139,11 @@ async function compileExtension() {
             const data = JSON.parse(fs.readFileSync(srcPath, 'utf8'));
             fs.writeFileSync(outPath, JSON.stringify(data), 'utf8');
         }
+    }
+
+    // 6. SVG Optimization (strip comments, metadata, XML declarations)
+    if (isProduction) {
+        processAllSvgs(path.join(ROOT, 'app', 'icons'));
     }
 
     // 5. AI Skills Compression (knowledge -> dist/ai.br)

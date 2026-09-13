@@ -57,7 +57,7 @@ app/lang/graph/*.js
 app/lang/settings/*.js
 app/lang/web-panel/*.js
 app/lang/web-panel/src/**
-!app/lang/web-panel/css/**
+app/lang/web-panel/css/**
 !app/lang/web-panel/index.html
 app/lang/snippets/**
 app/lang/spell-check/*.br

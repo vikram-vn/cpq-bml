@@ -449,7 +449,8 @@ suite('Cloud Inspector - Negative & Edge Cases', () => {
       const content = fs.readFileSync(ignorePath, 'utf8');
 
       assert.ok(content.includes('!dist/web-panel/**'));
-      assert.ok(content.includes('!app/lang/web-panel/css/**'));
+      assert.ok(content.includes('app/lang/web-panel/css/**'));
+      assert.ok(!content.includes('!app/lang/web-panel/css/**'));
       assert.ok(content.includes('!app/lang/web-panel/index.html'));
     });
   });

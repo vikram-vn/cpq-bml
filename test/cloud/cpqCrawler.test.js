@@ -177,7 +177,7 @@ suite('CPQ Recursive Metadata Crawler - Unit Tests', () => {
 
     const fakeVsc = createFakeVscode({
       config: {
-        'connection.siteUrl': 'https://cpq-10124.bigmachines.com',
+        'connection.siteUrl': 'https://test-site.bigmachines.com',
         'connection.username': 'admin',
         'rest.commerceProcess': 'oraclecpqo',
         'rest.commerceDocument': 'transaction'

@@ -64,7 +64,7 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
     });
 
     test('showDependencyGraph creates webview panel and populates initial html with model', async () => {
-        const targetBml = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
+        const targetBml = '/workspace/commerce-libraries/invokeWebService/invokeWebService.bml';
         const mockContext = {
             extensionPath: path.resolve(__dirname, '..', '..'),
             extensionUri: { fsPath: path.resolve(__dirname, '..', '..'), scheme: 'file' },
@@ -313,22 +313,29 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
 
     test('inferLibraryPrefix correctly identifies commerce-libraries vs util-libraries', () => {
         assert.strictEqual(
-            inferLibraryPrefix('/cpq/cpq-10124/oraclecpqo/commerce-libraries/transactionStatus/transactionStatus.bml'),
+            inferLibraryPrefix('/workspace/oraclecpqo/commerce-libraries/transactionStatus/transactionStatus.bml'),
             'commerce'
         );
         assert.strictEqual(
-            inferLibraryPrefix('/cpq/cpq-10124/util-libraries/util/atofsafe/atofsafe.bml'),
+            inferLibraryPrefix('/workspace/util-libraries/util/atofsafe/atofsafe.bml'),
             'util'
         );
         assert.strictEqual(
-            inferLibraryPrefix('/cpq/custom/foo.bml', { commerceProcess: 'oraclecpqo' }),
+            inferLibraryPrefix('/workspace/custom/foo.bml', { commerceProcess: 'oraclecpqo' }),
             'commerce'
         );
     });
 
     test('transactionStatus accurately extracts only status_t and status_l, with 0 false tables and 0 fake actions', () => {
-        const filePath = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
-        const model = generateDependencyModel(filePath, [{ filePath }]);
+        const filePath = '/workspace/oraclecpqo/commerce-libraries/transactionStatus/transactionStatus.bml';
+        const content = `
+            // transactionStatus
+            // status_t is transaction status
+            status = status_t;
+            line_status = status_l;
+            return status;
+        `;
+        const model = generateDependencyModel(filePath, [{ filePath, content }], content);
 
         // Focal node
         assert.strictEqual(model.target.name, 'transactionStatus');
@@ -348,9 +355,20 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
     });
 
     test('buildWorkspaceEntityIndex accurately indexes attributes, data tables, and libraries', () => {
-        const fileStatus = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
-        const fileWs = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
-        const index = buildWorkspaceEntityIndex([{ filePath: fileStatus }, { filePath: fileWs }]);
+        const fileStatus = {
+            filePath: '/workspace/oraclecpqo/commerce-libraries/transactionStatus/transactionStatus.bml',
+            content: `
+                // transactionStatus
+                status = status_t;
+                line_status = status_l;
+                return status;
+            `
+        };
+        const fileWs = {
+            filePath: '/workspace/oraclecpqo/commerce-libraries/invokeWebService/invokeWebService.bml',
+            content: 'rs = bmql("SELECT username, endpoint FROM INT_SYSTEM_DETAILS WHERE active = 1");'
+        };
+        const index = buildWorkspaceEntityIndex([fileStatus, fileWs]);
 
         assert.ok(index.attributeIndex.has('status_t'));
         assert.ok(index.attributeIndex.has('status_l'));
@@ -366,9 +384,20 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
     });
 
     test('searchWorkspaceEntities categorizes attributes, tables, actions, and libraries', () => {
-        const fileStatus = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
-        const fileWs = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
-        const index = buildWorkspaceEntityIndex([{ filePath: fileStatus }, { filePath: fileWs }]);
+        const fileStatus = {
+            filePath: '/workspace/oraclecpqo/commerce-libraries/transactionStatus/transactionStatus.bml',
+            content: `
+                // transactionStatus
+                status = status_t;
+                line_status = status_l;
+                return status;
+            `
+        };
+        const fileWs = {
+            filePath: '/workspace/oraclecpqo/commerce-libraries/invokeWebService/invokeWebService.bml',
+            content: 'rs = bmql("SELECT username, endpoint FROM INT_SYSTEM_DETAILS WHERE active = 1");'
+        };
+        const index = buildWorkspaceEntityIndex([fileStatus, fileWs]);
 
         const statusResults = searchWorkspaceEntities(index, 'status');
         const types = statusResults.map(r => r.entityType);
@@ -381,9 +410,20 @@ suite('Dependency Graph & Blast Radius Analyzer', () => {
     });
 
     test('generateBottomUpModel generates multi-hop graph for attribute and data table', () => {
-        const fileStatus = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'transactionStatus', 'transactionStatus.bml');
-        const fileWs = path.resolve(__dirname, '..', '..', 'cpq', 'cpq-10124', 'oraclecpqo', 'commerce-libraries', 'invokeWebService', 'invokeWebService.bml');
-        const files = [{ filePath: fileStatus }, { filePath: fileWs }];
+        const fileStatus = {
+            filePath: '/workspace/oraclecpqo/commerce-libraries/transactionStatus/transactionStatus.bml',
+            content: `
+                // transactionStatus
+                status = status_t;
+                line_status = status_l;
+                return status;
+            `
+        };
+        const fileWs = {
+            filePath: '/workspace/oraclecpqo/commerce-libraries/invokeWebService/invokeWebService.bml',
+            content: 'rs = bmql("SELECT username, endpoint FROM INT_SYSTEM_DETAILS WHERE active = 1");'
+        };
+        const files = [fileStatus, fileWs];
 
         // 1. Bottom-up model for attribute status_t
         const attrModel = generateBottomUpModel('attribute', 'status_t', files);

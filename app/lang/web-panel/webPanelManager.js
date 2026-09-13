@@ -72,19 +72,11 @@ function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscode
     return filePath.replace(/\\/g, '/');
   };
 
-  const toUri = (subPath) => toFileUri(path.join(webviewRoot, subPath));
-
   const nonce = getNonce();
   const cspSource = webview?.cspSource || "'self'";
   const csp = buildCsp(nonce, cspSource);
 
   const styleUri = toFileUri(path.join(rootPath, 'dist', 'web-panel', 'main.css'));
-  const shellStyleUri = toUri(path.join('css', 'shell.css'));
-  const layoutStyleUri = toUri(path.join('css', 'settings-layout.css'));
-  const componentsStyleUri = toUri(path.join('css', 'settings-components.css'));
-  const settingsStyleUri = toUri(path.join('css', 'settings-main.css'));
-  const graphStyleUri = toUri(path.join('css', 'graph.css'));
-  const inspectorStyleUri = toUri(path.join('css', 'inspector.css'));
   const scriptUri = toFileUri(path.join(rootPath, 'dist', 'web-panel', 'main.js'));
 
   let initialGraphJson = 'null';
@@ -109,12 +101,6 @@ function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscode
     .replace(/\{\{csp\}\}/g, csp)
     .replace(/\{\{nonce\}\}/g, nonce)
     .replace(/\{\{styleUri\}\}/g, styleUri)
-    .replace(/\{\{shellStyleUri\}\}/g, shellStyleUri)
-    .replace(/\{\{layoutStyleUri\}\}/g, layoutStyleUri)
-    .replace(/\{\{componentsStyleUri\}\}/g, componentsStyleUri)
-    .replace(/\{\{settingsStyleUri\}\}/g, settingsStyleUri)
-    .replace(/\{\{graphStyleUri\}\}/g, graphStyleUri)
-    .replace(/\{\{inspectorStyleUri\}\}/g, inspectorStyleUri)
     .replace(/\{\{scriptUri\}\}/g, scriptUri)
     .replace(/\{\{initialPage\}\}/g, page)
     .replace(/\{\{initialGraphModel\}\}/g, initialGraphJson)
