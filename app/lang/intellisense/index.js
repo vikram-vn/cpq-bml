@@ -16,6 +16,7 @@ const { createDefinitionProvider } = require('@/lang/intellisense/definitionProv
 const { createReferenceProvider } = require('@/lang/intellisense/referenceProvider');
 const { createCallHierarchyProvider } = require('@/lang/intellisense/callHierarchyProvider');
 const { adaptCompletionsForLineContext } = require('@/lang/intellisense/completionContext');
+const commerceAttributes = require('@/lang/rest/commerceAttributes');
 
 const {
     loadApiData,
@@ -239,6 +240,38 @@ function registerBmlIntelliSense(context) {
                     return new vscode.Hover(formatWorkspaceFunctionHover(wsIndex.get(lowerWord)));
                 }
             }
+
+            // Check CPQ Commerce & Configuration Attributes
+            try {
+                const wsRoot = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+                    ? vscode.workspace.workspaceFolders[0].uri.fsPath
+                    : null;
+                if (commerceAttributes && typeof commerceAttributes.resolveAttributeName === 'function') {
+                    const attr = commerceAttributes.resolveAttributeName(word, wsRoot);
+                    if (attr) {
+                        const md = new vscode.MarkdownString();
+                        md.appendMarkdown(`### CPQ Attribute: \`${attr.name || attr.variableName || word}\`\n\n`);
+                        if (attr.label) md.appendMarkdown(`**Label**: ${attr.label}  \n`);
+                        if (attr.dataType || attr.type) md.appendMarkdown(`**Data Type**: \`${attr.dataType || attr.type}\`  \n`);
+                        if (attr.document || attr.scope) md.appendMarkdown(`**Scope**: \`${attr.document || attr.scope}\`  \n`);
+                        if (attr.description) md.appendMarkdown(`**Description**: ${attr.description}  \n`);
+                        if (attr.defaultValue) md.appendMarkdown(`**Default Value**: \`${attr.defaultValue}\`  \n`);
+                        return new vscode.Hover(md);
+                    }
+                }
+
+                // Check Data Table context in BMQL
+                const lineText = document.lineAt(position.line).text;
+                const prefix = lineText.substring(0, wordRange.end.character);
+                if (/\b(?:FROM|INTO|UPDATE)\s+[\w.]*$/i.test(prefix)) {
+                    const md = new vscode.MarkdownString();
+                    md.appendMarkdown(`### CPQ Data Table: \`${word}\`\n\n`);
+                    md.appendMarkdown(`*Click or execute BMQL to query live rows from this table.*\n\n`);
+                    md.appendMarkdown(`[▶ Run BMQL Live](command:cpqBml.bmql.runAtCursor) | [Lookup Schema](command:cpqBml.rest.lookupAttributeAtCursor)\n`);
+                    md.isTrusted = true;
+                    return new vscode.Hover(md);
+                }
+            } catch (_) {}
 
             return null;
         }

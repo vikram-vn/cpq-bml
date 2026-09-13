@@ -368,6 +368,81 @@ async function copyTransactionIdCommand(item, vscodeInstance = vscode) {
   vscodeInstance.window.showInformationMessage(`Copied Transaction ID '${txId}' to clipboard.`);
 }
 
+/**
+ * QuickPick interactive transaction debugger: fetches recent quotes/transactions,
+ * lets user choose one, and triggers remote BML debugging with that transaction ID.
+ */
+async function debugWithQuoteCommand(provider, vscodeInstance = vscode, context) {
+  if (!isConfigured(vscodeInstance)) {
+    vscodeInstance.window.showWarningMessage('CPQ credentials are not configured. Click to configure settings.');
+    return { success: false, reason: 'Unconfigured' };
+  }
+
+  let txs = provider && typeof provider.getCachedTransactions === 'function'
+    ? provider.getCachedTransactions()
+    : null;
+
+  if (!txs || txs.length === 0) {
+    await vscodeInstance.window.withProgress({
+      location: 15,
+      title: 'Fetching recent transactions from CPQ...',
+      cancellable: false
+    }, async () => {
+      if (provider && typeof provider.getChildren === 'function') {
+        await provider.getChildren();
+        txs = provider.getCachedTransactions ? provider.getCachedTransactions() : [];
+      } else {
+        const settings = getSettings(vscodeInstance);
+        const process = settings.commerceProcess || 'oraclecpqo';
+        const document = settings.commerceDocument || 'transaction';
+        const res = await api.getTransactions(context, vscodeInstance, {
+          process,
+          document,
+          limit: 20,
+          orderby: '_date_modified:desc'
+        });
+        if (res && res.statusCode >= 200 && res.statusCode < 300) {
+          const parsed = safeParseJson(res.body);
+          txs = Array.isArray(parsed) ? parsed : (parsed?.items || []);
+        }
+      }
+    });
+  }
+
+  if (!txs || txs.length === 0) {
+    vscodeInstance.window.showInformationMessage('No transactions found on the active CPQ environment.');
+    return { success: false, reason: 'No transactions' };
+  }
+
+  const items = txs.map(tx => {
+    const id = extractStringValue(tx.transactionID_t || tx._id || tx.transactionId, 'Unknown');
+    const cust = extractStringValue(tx.customer_t || tx._customer_t_company_name, '');
+    const status = extractStringValue(tx.status_t, 'Draft');
+    const name = extractStringValue(tx.transactionName_t || tx.name, '');
+    const date = extractStringValue(tx._date_modified || tx.dateModified_t, '');
+    return {
+      label: `$(history) ${id}`,
+      description: [status ? `[${status}]` : '', cust].filter(Boolean).join(' • '),
+      detail: [name, date ? `Modified: ${date}` : ''].filter(Boolean).join(' | '),
+      data: tx
+    };
+  });
+
+  const selected = await vscodeInstance.window.showQuickPick(items, {
+    placeHolder: 'Select a Transaction / Quote to debug current BML function with...',
+    matchOnDescription: true,
+    matchOnDetail: true
+  });
+
+  if (!selected || !selected.data) {
+    return { success: false, reason: 'Cancelled' };
+  }
+
+  await debugOnTransactionCommand(selected, vscodeInstance);
+  const selectedId = extractStringValue(selected.data?.transactionID_t || selected.data?._id || selected.data?.transactionId, 'Unknown');
+  return { success: true, transactionId: selectedId };
+}
+
 function registerCloudTransactions(context, vscodeInstance = vscode) {
   const treeDataProvider = createTransactionsProvider(vscodeInstance, context);
 
@@ -386,6 +461,10 @@ function registerCloudTransactions(context, vscodeInstance = vscode) {
 
   const debugCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.debugOnTransaction', (item) => {
     return debugOnTransactionCommand(item, vscodeInstance);
+  });
+
+  const debugWithQuoteCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.debugWithQuote', () => {
+    return debugWithQuoteCommand(treeDataProvider, vscodeInstance, context);
   });
 
   const copyCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.copyTransactionId', (item) => {
@@ -445,15 +524,16 @@ function registerCloudTransactions(context, vscodeInstance = vscode) {
     }
   });
 
-  context.subscriptions.push(treeView, refreshCmd, inspectCmd, debugCmd, copyCmd, filterCmd, clearFilterCmd, searchCmd);
+  context.subscriptions.push(treeView, refreshCmd, inspectCmd, debugCmd, debugWithQuoteCmd, copyCmd, filterCmd, clearFilterCmd, searchCmd);
 
-  return { treeDataProvider, treeView, provider: treeDataProvider };
+  return { treeDataProvider, treeView, provider: treeDataProvider, debugWithQuoteCmd };
 }
 
 module.exports = {
   createTransactionsProvider,
   inspectTransactionCommand,
   debugOnTransactionCommand,
+  debugWithQuoteCommand,
   copyTransactionIdCommand,
   registerCloudTransactions
 };

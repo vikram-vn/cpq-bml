@@ -34,6 +34,9 @@ const { registerCloudTransactions } = require("@/lang/cloud/cloudTransactions");
 const { registerCloudDeploymentCenter } = require("@/lang/cloud/cloudDeploymentCenter");
 const { registerCloudGlobalSearch } = require("@/lang/cloud/cloudGlobalSearch");
 const { registerRemoteTestCommands } = require("@/lang/test-controller/remoteTestRunner");
+const { registerBmqlCommands } = require("@/lang/cloud/bmqlRunner");
+const { registerAttributeLookupCommands } = require("@/lang/cloud/attributeLookup");
+const { registerBmlCodeLensProvider } = require("@/lang/codelens/bmlCodeLensProvider");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
 const { invalidateIndex } = require("@/lang/intellisense/workspaceIndex");
 const { invalidateApiData } = require("@/lang/intellisense/apiData");
@@ -122,6 +125,9 @@ function activate(context) {
   registerCloudDeploymentCenter(context);
   registerCloudGlobalSearch(context);
   registerRemoteTestCommands(context);
+  registerBmqlCommands(context);
+  registerAttributeLookupCommands(context);
+  registerBmlCodeLensProvider(context);
 
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.rest.preflightCheck", async () => {

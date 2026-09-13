@@ -549,6 +549,30 @@
         "category": "BML"
       },
       {
+        "command": "cpqBml.cloud.debugWithQuote",
+        "title": "Debug with Live Transaction / Quote...",
+        "icon": "$(history)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.bmql.runAtCursor",
+        "title": "Execute BMQL Query at Cursor",
+        "icon": "$(play)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.lookupAttributeAtCursor",
+        "title": "Lookup CPQ Attribute or Data Table Schema",
+        "icon": "$(symbol-field)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.toggleLogStream",
+        "title": "Toggle Remote BML Log Stream",
+        "icon": "$(output)",
+        "category": "BML"
+      },
+      {
         "command": "cpqBml.cloud.refreshDeploymentCenter",
         "title": "CPQ-BML: Refresh Deployment Center & Task Status",
         "icon": "app/icons/cloud/refresh.svg",
@@ -758,6 +782,31 @@
           "command": "cpqBml.cloud.globalSearch",
           "when": "resourceLangId == bml || resourceLangId == bmlt",
           "group": "navigation@10"
+        },
+        {
+          "command": "cpqBml.cloud.diffFunction",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "navigation@11"
+        },
+        {
+          "command": "cpqBml.rest.preflightCheck",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "navigation@12"
+        },
+        {
+          "command": "cpqBml.cloud.debugWithQuote",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "navigation@13"
+        },
+        {
+          "command": "cpqBml.bmql.runAtCursor",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "1_modification@1"
+        },
+        {
+          "command": "cpqBml.rest.lookupAttributeAtCursor",
+          "when": "resourceLangId == bml || resourceLangId == bmlt",
+          "group": "1_modification@2"
         }
       ],
       "view/title": [
@@ -1171,6 +1220,11 @@
           "type": "boolean",
           "default": true,
           "description": "Enable BML linting (diagnostics and quick fixes). Individual lines or whole files can still be excluded with // bml-lint-disable comments regardless of this setting."
+        },
+        "cpqBml.features.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable BML CodeLens action links (Debug on Cloud, Diff with Server, Run BMQL Live) directly above functions and query blocks."
         },
         "cpqBml.features.comments": {
           "type": "boolean",
