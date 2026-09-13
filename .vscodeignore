@@ -70,19 +70,9 @@ app/lang/metrics/**
 app/lang/test-controller/**
 app/ai/**
 
-# Intellisense JSON: ship only the minified .min.json variants and .br for large catalogs
+# Intellisense JSON: ship only the compressed .min.json.br variants
 app/lang/intellisense/**
 !app/lang/intellisense/*.min.json.br
-!app/lang/intellisense/best-practice-advisories.min.json
-!app/lang/intellisense/bml-cpq-js-api-usage.min.json
-!app/lang/intellisense/bml-util-attributes-api-usage.min.json
-!app/lang/intellisense/bml-variables-api-usage.min.json
-!app/lang/intellisense/category-labels.min.json
-!app/lang/intellisense/curated-params.min.json
-!app/lang/intellisense/custom-snippets.min.json
-!app/lang/intellisense/function-param-data-types.min.json
-!app/lang/intellisense/function-return-types.min.json
-!app/lang/intellisense/keyword-hovers.min.json
 
 # Exclude development scripts
 scripts/**

@@ -159,19 +159,18 @@ async function compileExtension() {
         }
     }
 
-    // Brotli-compress heavy intellisense files for shipping
-    const heavyIntellisense = [
-        path.join(intellisenseDir, 'bml-functions-api-usage.min.json'),
-        path.join(intellisenseDir, 'bml-attributes-api-usage.min.json')
-    ];
-    for (const p of heavyIntellisense) {
-        const outBr = p + '.br';
-        if (!fs.existsSync(outBr) || fs.statSync(outBr).mtimeMs < fs.statSync(p).mtimeMs || isProduction) {
-            const data = fs.readFileSync(p);
-            const compressed = zlib.brotliCompressSync(data, {
-                params: { [zlib.constants.BROTLI_PARAM_QUALITY]: isProduction ? 11 : 6 }
-            });
-            fs.writeFileSync(outBr, compressed);
+    // Brotli-compress all intellisense catalog files for shipping
+    for (const srcPath of jsonFiles) {
+        if (srcPath.startsWith(intellisenseDir)) {
+            const minJsonPath = srcPath.replace('.json', '.min.json');
+            const outBr = minJsonPath + '.br';
+            if (!fs.existsSync(outBr) || fs.statSync(outBr).mtimeMs < fs.statSync(minJsonPath).mtimeMs || isProduction) {
+                const data = fs.readFileSync(minJsonPath);
+                const compressed = zlib.brotliCompressSync(data, {
+                    params: { [zlib.constants.BROTLI_PARAM_QUALITY]: isProduction ? 11 : 6 }
+                });
+                fs.writeFileSync(outBr, compressed);
+            }
         }
     }
 
