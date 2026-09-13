@@ -98,7 +98,7 @@
       "activitybar": [
         {
           "id": "cpq-bml-sidebar",
-          "title": "Oracle CPQ Cloud",
+          "title": "CPQ BML",
           "icon": "app/icons/sidebar/sidebar.svg"
         }
       ]
@@ -226,12 +226,12 @@
       },
       {
         "command": "cpqBml.cloud.inspectProperties",
-        "title": "CPQ Cloud: Inspect Properties",
+        "title": "Inspect Properties",
         "icon": "$(info)"
       },
       {
         "command": "cpqBml.cloud.viewRawJson",
-        "title": "CPQ Cloud: View Raw JSON (Read-Only)",
+        "title": "View Raw JSON (Read-Only)",
         "icon": "$(file-code)"
       },
       {
