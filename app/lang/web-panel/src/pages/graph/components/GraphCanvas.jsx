@@ -76,15 +76,24 @@ export default function GraphCanvas({
             const scriptNodes = model.graph.nodes.filter(n => n.id.startsWith('script_'));
             const actionNodes = showActions ? model.graph.nodes.filter(n => n.type === 'action') : [];
             const callerNodes = showCallers ? model.graph.nodes.filter(n => n.type === 'caller') : [];
-            const rightSideNodes = [...actionNodes, ...callerNodes];
+            const cloudRefNodes = model.graph.nodes.filter(n => n.type === 'cloud_reference');
 
-            const maxRows = Math.max(1, scriptNodes.length, rightSideNodes.length);
+            let midColNodes = scriptNodes;
+            let rightSideNodes = [...actionNodes, ...callerNodes];
+
+            if (midColNodes.length === 0) {
+                midColNodes = cloudRefNodes;
+            } else {
+                rightSideNodes.push(...cloudRefNodes);
+            }
+
+            const maxRows = Math.max(1, midColNodes.length, rightSideNodes.length);
             const totalHeight = maxRows * (nodeHeight + nodeGap);
             const focalY = Math.max(0, (totalHeight - nodeHeight) / 2);
 
             posMap.set(focalId, { x: 0, y: focalY });
 
-            scriptNodes.forEach((n, idx) => {
+            midColNodes.forEach((n, idx) => {
                 const y = idx * (nodeHeight + nodeGap);
                 posMap.set(n.id, { x: colWidth, y });
             });
@@ -152,7 +161,7 @@ export default function GraphCanvas({
         return (
             <div className="canvas-container">
                 <div className="empty-state">
-                    <p>Open a BML file to view its Architecture Dependency & Blast Radius graph.</p>
+                    <p>Open a BML file to view its Architecture Dependency & References graph.</p>
                 </div>
             </div>
         );
@@ -206,7 +215,7 @@ export default function GraphCanvas({
 
                             let marker = 'arrow-callee';
                             let edgeClass = 'edge-path';
-                            if (edge.type === 'blast_radius') {
+                            if (edge.type === 'blast_radius' || edge.type === 'cloud_usage') {
                                 marker = 'arrow-blast';
                                 edgeClass += ' edge-blast';
                             } else if (edge.type === 'action_trigger') {
@@ -257,6 +266,7 @@ export default function GraphCanvas({
                             else if (node.type === 'table') icon = '🗄 ';
                             else if (node.type === 'callee') icon = '📦 ';
                             else if (node.type === 'caller') icon = '💥 ';
+                            else if (node.type === 'cloud_reference') icon = '☁️ ';
                             else if (node.type === 'focal') icon = (node.entityType === 'arraySet' ? '▦ ' : (node.entityType === 'attribute' ? '🏷 ' : (node.entityType === 'table' ? '🗄 ' : (node.entityType === 'action' ? '⚡ ' : '🎯 '))));
                             else if (node.type === 'api') icon = '🌐 ';
 

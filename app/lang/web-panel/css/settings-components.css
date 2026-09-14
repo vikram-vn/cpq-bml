@@ -192,9 +192,9 @@ button.link:hover {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 3px 10px;
+    padding: 2px 8px;
     border-radius: 999px;
-    font-size: 0.68em;
+    font-size: 0.72em;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -202,18 +202,87 @@ button.link:hover {
 }
 
 .pill.success {
-    background-color: rgba(89, 191, 84, 0.15);
-    color: var(--vscode-terminal-ansiGreen, #6dd17a);
+    background-color: rgba(46, 160, 67, 0.2);
+    color: #3fb950;
+    border: 1px solid rgba(46, 160, 67, 0.35);
 }
 
 .pill.muted {
-    background-color: var(--vscode-badge-background, rgba(255, 255, 255, 0.08));
-    color: var(--vscode-descriptionForeground);
+    background-color: rgba(128, 128, 128, 0.16);
+    color: var(--vscode-descriptionForeground, #9da5b4);
+    border: 1px solid rgba(128, 128, 128, 0.25);
 }
 
 .pill.error {
-    background-color: rgba(244, 135, 113, 0.15);
-    color: var(--vscode-errorForeground, #f48771);
+    background-color: rgba(248, 81, 73, 0.2);
+    color: #f85149;
+    border: 1px solid rgba(248, 81, 73, 0.35);
+}
+
+.pill.info {
+    background-color: rgba(56, 139, 253, 0.2);
+    color: #58a6ff;
+    border: 1px solid rgba(56, 139, 253, 0.35);
+}
+
+.pill.warning {
+    background-color: rgba(210, 153, 34, 0.2);
+    color: #d29922;
+    border: 1px solid rgba(210, 153, 34, 0.35);
+}
+
+/* Light Theme Overrides */
+body.vscode-light .pill.muted,
+[data-vscode-theme-kind="vscode-light"] .pill.muted,
+[data-vscode-theme-kind*="light"] .pill.muted {
+    background-color: rgba(0, 0, 0, 0.06);
+    color: #57606a;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+body.vscode-light .pill.success,
+[data-vscode-theme-kind="vscode-light"] .pill.success,
+[data-vscode-theme-kind*="light"] .pill.success {
+    background-color: rgba(46, 160, 67, 0.12);
+    color: #1a7f37;
+    border: 1px solid rgba(46, 160, 67, 0.28);
+}
+
+body.vscode-light .pill.error,
+[data-vscode-theme-kind="vscode-light"] .pill.error,
+[data-vscode-theme-kind*="light"] .pill.error {
+    background-color: rgba(207, 34, 46, 0.1);
+    color: #cf222e;
+    border: 1px solid rgba(207, 34, 46, 0.22);
+}
+
+body.vscode-light .pill.info,
+[data-vscode-theme-kind="vscode-light"] .pill.info,
+[data-vscode-theme-kind*="light"] .pill.info {
+    background-color: rgba(9, 105, 218, 0.1);
+    color: #0969da;
+    border: 1px solid rgba(9, 105, 218, 0.22);
+}
+
+body.vscode-light .pill.warning,
+[data-vscode-theme-kind="vscode-light"] .pill.warning,
+[data-vscode-theme-kind*="light"] .pill.warning {
+    background-color: rgba(154, 103, 0, 0.1);
+    color: #9a6700;
+    border: 1px solid rgba(154, 103, 0, 0.22);
+}
+
+body.vscode-light .switch,
+[data-vscode-theme-kind="vscode-light"] .switch,
+[data-vscode-theme-kind*="light"] .switch {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.vscode-light .switch-thumb,
+[data-vscode-theme-kind="vscode-light"] .switch-thumb,
+[data-vscode-theme-kind*="light"] .switch-thumb {
+    background-color: #656d76;
 }
 
 /* Floating Toast Notification */

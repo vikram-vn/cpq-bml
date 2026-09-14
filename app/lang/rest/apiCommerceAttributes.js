@@ -219,6 +219,42 @@ async function listCommerceArraySets(
   );
 }
 
+// GET /rest/<version>/commerceProcessSetups/<process>/documents/<document>/attributes/<attributeVarName>/references
+async function listCommerceAttributeReferences(
+  context,
+  vscode,
+  attributeVarName,
+  {
+    process,
+    document,
+    offset = 0,
+    limit = 1000,
+    q,
+    fields,
+  } = {},
+  transport,
+) {
+  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+
+  const queryParams = { offset, limit, totalResults: true };
+  if (q) queryParams.q = q;
+  if (fields) queryParams.fields = fields;
+
+  const encodedAttr = encodeURIComponent(attributeVarName);
+  return call(
+    context,
+    vscode,
+    {
+      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/attributes/${encodedAttr}/references`,
+      method: "GET",
+      query: queryParams,
+    },
+    transport,
+  );
+}
+
 // GET /rest/<version>/commerceProcessSetups/systemAttributes
 async function listCommerceSystemAttributes(
   context,
@@ -336,5 +372,6 @@ module.exports = {
   listCommerceSystemAttributes,
   listCommerceAttributeLookups,
   listCommerceAttributeLookupValues,
+  listCommerceAttributeReferences,
   syncCommerceAttributes,
 };

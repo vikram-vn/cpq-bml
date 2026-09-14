@@ -221,13 +221,18 @@
       },
       {
         "command": "cpqBml.showDependencyGraph",
-        "title": "Visual Dependency & Blast Radius Architecture Graph",
+        "title": "Visual Dependency & References Architecture Graph",
         "icon": "$(type-hierarchy)"
       },
       {
         "command": "cpqBml.cloud.inspectProperties",
         "title": "Inspect Properties",
         "icon": "$(info)"
+      },
+      {
+        "command": "cpqBml.cloud.findReferences",
+        "title": "Find References & Dependencies",
+        "icon": "$(pulse)"
       },
       {
         "command": "cpqBml.cloud.viewRawJson",
@@ -1277,13 +1282,18 @@
           "group": "1_actions@1"
         },
         {
+          "command": "cpqBml.cloud.findReferences",
+          "when": "viewItem =~ /^(cpqCommerceAttribute|cpqCommerceMenuAttribute|cpqCommerceArraySetAttribute|cpqCommerceAction|cpqCommerceArraySet|cpqCommerceLibrary)$/",
+          "group": "2_inspect@0"
+        },
+        {
           "command": "cpqBml.cloud.inspectProperties",
-          "when": "viewItem =~ /^(cpqCommerceAction|cpqCommerceIntegration|cpqCommerceAttribute|cpqCommerceMenuAttribute|cpqTransactionItem|cpqCloudPart|cpqCloudDataTable|cpqCommerceLibrary|cpqConfigAttribute|cpqConfigRule|cpqConfigBomRule|cpqDeploymentTask)$/",
+          "when": "viewItem =~ /^(cpqCommerceAction|cpqCommerceIntegration|cpqCommerceAttribute|cpqCommerceMenuAttribute|cpqCommerceArraySetAttribute|cpqTransactionItem|cpqCloudPart|cpqCloudDataTable|cpqCommerceLibrary|cpqConfigAttribute|cpqConfigRule|cpqConfigBomRule|cpqDeploymentTask)$/",
           "group": "2_inspect@1"
         },
         {
           "command": "cpqBml.cloud.viewRawJson",
-          "when": "viewItem =~ /^(cpqCommerceAction|cpqCommerceIntegration|cpqCommerceAttribute|cpqCommerceMenuAttribute|cpqTransactionItem|cpqCloudPart|cpqCloudDataTable|cpqCommerceLibrary|cpqConfigAttribute|cpqConfigRule|cpqConfigBomRule|cpqDeploymentTask)$/",
+          "when": "viewItem =~ /^(cpqCommerceAction|cpqCommerceIntegration|cpqCommerceAttribute|cpqCommerceMenuAttribute|cpqCommerceArraySetAttribute|cpqTransactionItem|cpqCloudPart|cpqCloudDataTable|cpqCommerceLibrary|cpqConfigAttribute|cpqConfigRule|cpqConfigBomRule|cpqDeploymentTask)$/",
           "group": "2_inspect@2"
         }
       ]

@@ -13,7 +13,15 @@ function matchesItem(item, query) {
   const type = extractStringValue(item.actionType || item.ruleType || item.dataType || item.type || item.returnType, '').toLowerCase();
   const desc = extractStringValue(item.description, '').toLowerCase();
 
-  return varName.includes(q) || label.includes(q) || type.includes(q) || desc.includes(q);
+  if (varName.includes(q) || label.includes(q) || type.includes(q) || desc.includes(q)) {
+    return true;
+  }
+
+  if (Array.isArray(item.attributes)) {
+    return item.attributes.some(attr => matchesItem(attr, query));
+  }
+
+  return false;
 }
 
 async function fetchCommerceData(vscodeInstance, context) {
@@ -78,8 +86,18 @@ async function fetchCommerceData(vscodeInstance, context) {
       }
     }
 
-    if (wsAttributes.length === 0 && wsLineAttributes.length === 0 && wsActions.length === 0) {
+    if (wsAttributes.length === 0 && wsLineAttributes.length === 0 && wsActions.length === 0 && wsArraySets.length === 0) {
       return null;
+    }
+
+    const wsTxnArraySets = [];
+    const wsLineArraySets = [];
+    for (const a of wsArraySets) {
+      if (a.scope === 'Line Item' || a.document === 'transactionLine' || a.commerceDocument === 'transactionLine') {
+        wsLineArraySets.push(a);
+      } else {
+        wsTxnArraySets.push(a);
+      }
     }
 
     return {
@@ -89,12 +107,13 @@ async function fetchCommerceData(vscodeInstance, context) {
       transaction: {
         actions: wsActions,
         attributes: wsAttributes,
+        arraySets: wsTxnArraySets.length > 0 ? wsTxnArraySets : wsArraySets,
         libraries: []
       },
       transactionLine: {
         actions: wsLineActions,
         attributes: wsLineAttributes,
-        arraySets: wsArraySets
+        arraySets: wsLineArraySets.length > 0 ? wsLineArraySets : wsArraySets
       },
       isOffline: true
     };
@@ -129,10 +148,11 @@ async function fetchCommerceData(vscodeInstance, context) {
   for (const d of docList) {
     calls.push(api.listCommerceActions(context, vscodeInstance, { process, document: d, limit: 500 }));
     calls.push(api.listCommerceAttributes(context, vscodeInstance, { process, document: d, limit: 1000 }));
+    if (typeof api.listCommerceArraySets === 'function') {
+      calls.push(api.listCommerceArraySets(context, vscodeInstance, { process, document: d, limit: 100 }));
+    }
     if (d === 'transaction') {
       calls.push(api.listLibraryFunctions(context, vscodeInstance, { limit: 1000 }, undefined, { commerceProcess: process, commerceDocument: 'transaction' }));
-    } else if (d === 'transactionLine' && typeof api.listCommerceArraySets === 'function') {
-      calls.push(api.listCommerceArraySets(context, vscodeInstance, { process, document: d, limit: 100 }));
     }
   }
 
@@ -156,12 +176,13 @@ async function fetchCommerceData(vscodeInstance, context) {
   for (const d of docList) {
     const actionsRes = results[idx++];
     const attrsRes = results[idx++];
-    let libsRes = null;
     let arraySetsRes = null;
+    if (typeof api.listCommerceArraySets === 'function') {
+      arraySetsRes = results[idx++];
+    }
+    let libsRes = null;
     if (d === 'transaction') {
       libsRes = results[idx++];
-    } else if (d === 'transactionLine' && typeof api.listCommerceArraySets === 'function') {
-      arraySetsRes = results[idx++];
     }
 
     data[d] = {

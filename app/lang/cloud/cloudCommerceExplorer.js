@@ -106,19 +106,12 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       const memberCount = (arr.attributes && arr.attributes.length) || 0;
       const item = new vscodeInstance.TreeItem(
         formatNameAndVarName(name, varName),
-        memberCount > 0 ? vscodeInstance.TreeItemCollapsibleState.Collapsed : vscodeInstance.TreeItemCollapsibleState.None
+        vscodeInstance.TreeItemCollapsibleState.Collapsed
       );
-      item.description = `[${memberCount} attrs]`;
-      item.tooltip = `Array Set: ${name} (${varName})\n${arr.description || ''}\nContains ${memberCount} member attributes\nExpand to view child attributes`;
+      item.description = memberCount > 0 ? `[${memberCount} attrs]` : `[Array Set]`;
+      item.tooltip = `Array Set: ${name} (${varName})\n${arr.description || ''}\n${memberCount > 0 ? `Contains ${memberCount} fields\n` : ''}Click to expand fields or inspect table properties`;
       item.iconPath = new vscodeInstance.ThemeIcon('table');
       item.contextValue = 'cpqCommerceArraySet';
-      if (memberCount === 0) {
-        item.command = {
-          command: 'cpqBml.cloud.inspectArraySet',
-          title: 'Inspect Array Set Properties',
-          arguments: [element]
-        };
-      }
       return item;
     }
 
@@ -163,7 +156,7 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
         : vscodeInstance.TreeItemCollapsibleState.None;
 
       const item = new vscodeInstance.TreeItem(displayLabel, collapsibleState);
-      item.description = `(${dataType})`;
+      item.description = element.parentArraySet ? `[${dataType}] • ${element.parentArraySet}` : `(${dataType})`;
 
       let optionsSummary = '';
       if (hasOptions) {
@@ -176,9 +169,10 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
         optionsSummary = `\n\nMenu Options (${menuOpts.length}):\n${preview}${menuOpts.length > 8 ? '...' : ''}`;
       }
 
-      item.tooltip = `${name} (${varName}) [${dataType}]\n${attr.description || ''}${optionsSummary}\nClick to insert variable name at cursor (or copy to clipboard)`;
-      item.iconPath = new vscodeInstance.ThemeIcon(isMenu ? 'symbol-enum' : 'symbol-property');
-      item.contextValue = isMenu ? 'cpqCommerceMenuAttribute' : 'cpqCommerceAttribute';
+      const parentInfo = element.parentArraySet ? `Array Set Field: ${name} (${varName}) [${dataType}]\nArray Set: ${element.parentArraySet}\n` : `${name} (${varName}) [${dataType}]\n`;
+      item.tooltip = `${parentInfo}${attr.description || ''}${optionsSummary}\nClick to insert variable name at cursor (or copy to clipboard)`;
+      item.iconPath = new vscodeInstance.ThemeIcon(isMenu ? 'symbol-enum' : (element.parentArraySet ? 'symbol-field' : 'symbol-property'));
+      item.contextValue = isMenu ? 'cpqCommerceMenuAttribute' : (element.parentArraySet ? 'cpqCommerceArraySetAttribute' : 'cpqCommerceAttribute');
       item.command = {
         command: 'cpqBml.cloud.insertOrCopyAttribute',
         title: 'Insert Variable Name at Cursor',
@@ -347,25 +341,23 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
 
       const filteredActions = filterList(docData?.actions);
       const filteredAttrs = filterList(docData?.attributes);
+      const filteredArraySets = filterList(docData?.arraySets);
+
+      const sections = [
+        { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions }
+      ];
 
       if (doc === 'transaction') {
         const filteredLibs = filterList(docData?.libraries);
-        const sections = [
-          { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
-          { type: 'section', section: 'libraries', label: 'Libraries', icon: 'library', count: filteredLibs.length, docName: doc, process: element.process, items: filteredLibs },
-          { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
-        ];
-        return filterQuery ? sections.filter(s => s.count > 0) : sections;
+        sections.push({ type: 'section', section: 'libraries', label: 'Libraries', icon: 'library', count: filteredLibs.length, docName: doc, process: element.process, items: filteredLibs });
       }
 
-      const filteredArraySets = filterList(docData?.arraySets);
-      const sections = [
-        { type: 'section', section: 'actions', label: 'Actions', icon: 'zap', count: filteredActions.length, docName: doc, process: element.process, items: filteredActions },
-        { type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs }
-      ];
+      sections.push({ type: 'section', section: 'attributes', label: 'Attributes', icon: 'symbol-property', count: filteredAttrs.length, docName: doc, process: element.process, items: filteredAttrs });
+
       if (docData?.arraySets && docData.arraySets.length > 0) {
         sections.push({ type: 'section', section: 'arraySets', label: 'Array Sets', icon: 'table', count: filteredArraySets.length, docName: doc, process: element.process, items: filteredArraySets });
       }
+
       return filterQuery ? sections.filter(s => s.count > 0) : sections;
     }
 
@@ -382,13 +374,37 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     }
 
     if (element.type === 'arraySet') {
-      const attrs = element.data?.attributes || [];
-      return attrs.map(attr => ({
+      let attrs = element.data?.attributes;
+      if ((!attrs || attrs.length === 0) && element.data) {
+        try {
+          const api = require('@/lang/rest/apiCommerce');
+          const varName = element.data.variableName || element.data.name;
+          if (typeof api.listArraySetAttributes === 'function' && varName) {
+            const res = await api.listArraySetAttributes(context, vscodeInstance, varName, {
+              process: element.process,
+              document: element.docName
+            });
+            const raw = typeof res?.body === 'string' ? JSON.parse(res.body) : res?.body;
+            attrs = Array.isArray(raw) ? raw : ((raw && raw.items) || []);
+            element.data.attributes = attrs;
+          }
+        } catch (_) {}
+      }
+
+      const list = attrs || [];
+      if (list.length === 0) {
+        return [{
+          type: 'empty',
+          label: 'No member fields found in this array set'
+        }];
+      }
+
+      return list.map(attr => ({
         type: 'attribute',
         data: { ...attr, scope: 'Array Set' },
         docName: element.docName,
         process: element.process,
-        parentArraySet: element.data?.variableName
+        parentArraySet: element.data?.variableName || element.data?.name
       }));
     }
 

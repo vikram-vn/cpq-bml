@@ -258,31 +258,11 @@ async function listCommerceIntegrations(
   if (offset > 0) queryParams.offset = offset;
   if (q) queryParams.q = q;
 
-  try {
-    const res = await call(
-      context,
-      vscode,
-      {
-        path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/integrations`,
-        method: "GET",
-        query: queryParams,
-        signal,
-      },
-      transport,
-    );
-    if (res && res.statusCode >= 200 && res.statusCode < 300) {
-      return res;
-    }
-  } catch (err) {
-    // Fallback below
-  }
-
-  // Fallback to /commerceProcesses/<process>/integrations
   return call(
     context,
     vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/integrations`,
+      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/integrations`,
       method: "GET",
       query: queryParams,
       signal,
@@ -304,29 +284,11 @@ async function getCommerceIntegration(
   const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
   const effectiveVersion = getEffectiveRestVersion(vscode, 19);
 
-  try {
-    const res = await call(
-      context,
-      vscode,
-      {
-        path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/integrations/${encodeURIComponent(integrationVarName)}`,
-        method: "GET",
-        signal,
-      },
-      transport,
-    );
-    if (res && res.statusCode >= 200 && res.statusCode < 300) {
-      return res;
-    }
-  } catch (err) {
-    // Fallback below
-  }
-
   return call(
     context,
     vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/integrations/${encodeURIComponent(integrationVarName)}`,
+      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/integrations/${encodeURIComponent(integrationVarName)}`,
       method: "GET",
       signal,
     },

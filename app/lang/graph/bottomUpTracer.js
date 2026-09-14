@@ -222,9 +222,10 @@ function searchWorkspaceEntities(index, query, maxResults = 15) {
  * @param {'attribute'|'table'|'action'|'library'|'arraySet'} entityType
  * @param {string} entityName
  * @param {Array<{filePath: string, content?: string}>} fileList
+ * @param {Array<object>} [cloudReferences]
  * @returns {object} Bottom-up Dependency Graph model
  */
-function generateBottomUpModel(entityType, entityName, fileList) {
+function generateBottomUpModel(entityType, entityName, fileList, cloudReferences = []) {
     const index = buildWorkspaceEntityIndex(fileList);
     const workspaceGraph = buildWorkspaceCallGraph(fileList);
 
@@ -292,6 +293,31 @@ function generateBottomUpModel(entityType, entityName, fileList) {
             resourceTypeLabel: 'Line Array Set',
             hierarchyLabel: arrData?.hierarchyLabel || `Array Sets > ${canonicalName}`
         };
+    } else if (entityType === 'library' || entityType === 'function') {
+        let libData = index.libraryIndex.get(normKey);
+        if (!libData) {
+            for (const [qName, d] of index.libraryIndex.entries()) {
+                if (d.name.toLowerCase() === normKey || qName.endsWith(`.${normKey}`)) {
+                    libData = d;
+                    break;
+                }
+            }
+        }
+        const canonicalName = libData?.name || entityName;
+        const qName = libData?.qualifiedName || normKey;
+        rootNode = {
+            id: `entity_lib_${qName.replace(/[^a-zA-Z0-9_]/g, '_')}`,
+            label: canonicalName,
+            qualifiedName: qName,
+            subtitle: `${libData?.resourceTypeLabel || 'BML Library Function'} (${qName})`,
+            type: 'focal',
+            entityType: 'library',
+            category: libData?.category || 'Commerce',
+            resourceType: 'Library Function',
+            resourceTypeLabel: libData?.resourceTypeLabel || 'BML Library Function',
+            hierarchyLabel: libData?.hierarchyLabel || `Libraries > ${canonicalName}`,
+            filePath: libData?.filePath
+        };
     }
 
     if (!rootNode) return null;
@@ -307,6 +333,19 @@ function generateBottomUpModel(entityType, entityName, fileList) {
         touchingScripts.push(...(index.tableIndex.get(normKey) || []));
     } else if (entityType === 'action') {
         touchingScripts.push(...(index.actionIndex.get(normKey) || []));
+    } else if (entityType === 'library' || entityType === 'function') {
+        const targetQName = rootNode.qualifiedName || normKey;
+        const blast = computeBlastRadius(targetQName, workspaceGraph);
+        for (const caller of blast.callers) {
+            touchingScripts.push({
+                qualifiedName: caller.qualifiedName,
+                name: caller.name,
+                filePath: caller.filePath,
+                operation: 'CALLS',
+                line: caller.lines?.[0] || 0,
+                hierarchyLabel: `Workspace Callers > ${caller.name}`
+            });
+        }
     } else if (entityType === 'arraySet') {
         const arrData = index.arraySetIndex?.get(normKey);
         if (arrData && Array.isArray(arrData.attributes)) {
@@ -367,7 +406,7 @@ function generateBottomUpModel(entityType, entityName, fileList) {
             });
         }
 
-        const edgeLabel = entityType === 'table' ? 'queries' : (Array.from(scriptData.operations).join('/') === 'WRITE' ? 'writes' : 'reads');
+        const edgeLabel = entityType === 'table' ? 'queries' : (entityType === 'library' || entityType === 'function' ? 'called by' : (Array.from(scriptData.operations).join('/') === 'WRITE' ? 'writes' : 'reads'));
         edges.push({
             source: rootNode.id,
             target: scriptId,
@@ -418,6 +457,51 @@ function generateBottomUpModel(entityType, entityName, fileList) {
         }
     }
 
+    // Hop 4: Server-Side Cloud Usages & References (from Oracle CPQ REST API /references)
+    const connectedCloudRefs = [];
+    if (Array.isArray(cloudReferences) && cloudReferences.length > 0) {
+        for (const ref of cloudReferences) {
+            const refName = ref.name || ref.label || ref.variableName || ref.id || 'Cloud Usage';
+            const refType = ref.type || ref.ruleType || ref.actionType || 'Cloud Reference';
+            const refDesc = ref.description || '';
+            const refId = `cloud_ref_${String(refName).toLowerCase().replace(/[^a-z0-9_]/gi, '_')}`;
+
+            if (!seenNodeIds.has(refId)) {
+                seenNodeIds.add(refId);
+                nodes.push({
+                    id: refId,
+                    label: refName,
+                    subtitle: `${refType} (CPQ Cloud)`,
+                    type: 'cloud_reference',
+                    entityType: refType.toLowerCase().includes('rule') ? 'rule' : (refType.toLowerCase().includes('action') ? 'action' : 'integration'),
+                    description: refDesc,
+                    category: ref.category || 'Commerce'
+                });
+                connectedCloudRefs.push({
+                    name: refName,
+                    type: refType,
+                    description: refDesc,
+                    document: ref.document || ref.commerceDocument,
+                    process: ref.process || ref.commerceProcess
+                });
+            }
+
+            edges.push({
+                source: rootNode.id,
+                target: refId,
+                type: 'cloud_usage',
+                label: 'referenced in'
+            });
+        }
+    }
+
+    const totalImpact = connectedCallers.length + connectedCloudRefs.length;
+    let impactLevel = 'Isolated';
+    if (totalImpact === 0) impactLevel = 'Isolated';
+    else if (totalImpact <= 2) impactLevel = 'Low';
+    else if (totalImpact <= 6) impactLevel = 'Medium';
+    else impactLevel = 'Critical';
+
     const workspaceSymbols = Array.from(index.libraryIndex.entries()).map(([k, v]) => ({
         qualifiedName: k,
         name: v.name,
@@ -433,9 +517,10 @@ function generateBottomUpModel(entityType, entityName, fileList) {
         },
         blastRadius: {
             callers: connectedCallers,
-            directCount: connectedCallers.filter(c => c.depth === 1).length,
-            transitiveCount: connectedCallers.length,
-            impactLevel: connectedCallers.length === 0 ? 'Isolated' : (connectedCallers.length <= 2 ? 'Low' : 'Medium')
+            cloudReferences: connectedCloudRefs,
+            directCount: connectedCallers.filter(c => c.depth === 1).length + connectedCloudRefs.length,
+            transitiveCount: totalImpact,
+            impactLevel
         },
         workspaceSymbols,
         outgoing: {
@@ -445,6 +530,7 @@ function generateBottomUpModel(entityType, entityName, fileList) {
                 filePath: s.filePath
             })),
             actions: connectedActions,
+            cloudReferences: connectedCloudRefs,
             attributes: entityType === 'attribute' ? [{ name: rootNode.label, scope: rootNode.subtitle }] : [],
             dataTables: entityType === 'table' ? [{ name: rootNode.label }] : [],
             externalApis: []

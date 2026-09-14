@@ -72,10 +72,10 @@ class BmlCodeLensProvider {
         tooltip: 'Run pre-flight impact check on callers and dependencies'
       }),
       new CodeLensClass(topRange, {
-        title: '$(type-hierarchy) Blast Radius & Architecture',
+        title: '$(type-hierarchy) References & Architecture',
         command: 'cpqBml.showDependencyGraph',
         arguments: [document.uri],
-        tooltip: 'View visual dependency graph and blast radius impact analysis'
+        tooltip: 'View visual dependency graph and references impact analysis'
       })
     );
 

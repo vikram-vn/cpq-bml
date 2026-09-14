@@ -537,3 +537,23 @@ svg#graphCanvas {
     text-overflow: ellipsis;
     font-family: monospace;
 }
+
+/* Light Theme Overrides */
+body.vscode-light,
+[data-vscode-theme-kind="vscode-light"],
+[data-vscode-theme-kind*="light"] {
+    --bg-primary: var(--vscode-editor-background, #ffffff);
+    --bg-secondary: var(--vscode-sideBar-background, #f6f8fa);
+    --bg-card: var(--vscode-editorWidget-background, #f6f8fa);
+    --text-primary: var(--vscode-editor-foreground, #1f2328);
+    --text-secondary: var(--vscode-descriptionForeground, #57606a);
+    --border-color: var(--vscode-widget-border, #d0d7de);
+}
+
+body.vscode-light .canvas-container,
+[data-vscode-theme-kind="vscode-light"] .canvas-container,
+[data-vscode-theme-kind*="light"] .canvas-container {
+    background-color: #fafbfc;
+    background-image: radial-gradient(#d0d7de 1px, transparent 1px);
+}
+

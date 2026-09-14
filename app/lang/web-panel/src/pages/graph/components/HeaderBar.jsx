@@ -37,10 +37,14 @@ export default function HeaderBar({ model, onRefresh, onExportMermaid }) {
             </div>
 
             <div className="metrics-pill-group">
-                <div className="metric-pill" title="Upstream libraries calling this function (Blast Radius)">
-                    <span style={{ color: 'var(--accent-red)' }}>💥 Blast Radius:</span>
+                <div className="metric-pill" title="Upstream libraries and CPQ cloud rules/actions referencing this entity (References)">
+                    <span style={{ color: 'var(--accent-red)' }}>🔗 References:</span>
                     <span className="metric-value">
-                        {blastRadius ? `${blastRadius.transitiveCount} caller${blastRadius.transitiveCount === 1 ? '' : 's'}` : '0'}
+                        {blastRadius ? (
+                            blastRadius.cloudReferences?.length > 0
+                                ? `${blastRadius.transitiveCount} total (${blastRadius.cloudReferences.length} cloud)`
+                                : `${blastRadius.transitiveCount} caller${blastRadius.transitiveCount === 1 ? '' : 's'}`
+                        ) : '0'}
                     </span>
                 </div>
                 <div className="metric-pill" title="Commerce Actions triggering this script">

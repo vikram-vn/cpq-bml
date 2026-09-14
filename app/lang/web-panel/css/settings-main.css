@@ -195,15 +195,89 @@ select {
 }
 
 .test-feedback.success {
-    background-color: rgba(89, 191, 84, 0.12);
-    border: 1px solid rgba(89, 191, 84, 0.25);
-    color: var(--vscode-terminal-ansiGreen, #6dd17a);
+    background-color: rgba(46, 160, 67, 0.15);
+    border: 1px solid rgba(46, 160, 67, 0.3);
+    color: var(--vscode-terminal-ansiGreen, #3fb950);
 }
 
 .test-feedback.error {
-    background-color: rgba(244, 135, 113, 0.12);
-    border: 1px solid rgba(244, 135, 113, 0.25);
-    color: var(--vscode-errorForeground, #f48771);
+    background-color: rgba(248, 81, 73, 0.15);
+    border: 1px solid rgba(248, 81, 73, 0.3);
+    color: var(--vscode-errorForeground, #f85149);
+}
+
+/* Light Theme Overrides */
+body.vscode-light .test-feedback.success,
+[data-vscode-theme-kind="vscode-light"] .test-feedback.success,
+[data-vscode-theme-kind*="light"] .test-feedback.success {
+    background-color: rgba(46, 160, 67, 0.1);
+    border-color: rgba(46, 160, 67, 0.25);
+    color: #1a7f37;
+}
+
+body.vscode-light .test-feedback.error,
+[data-vscode-theme-kind="vscode-light"] .test-feedback.error,
+[data-vscode-theme-kind*="light"] .test-feedback.error {
+    background-color: rgba(207, 34, 46, 0.08);
+    border-color: rgba(207, 34, 46, 0.25);
+    color: #cf222e;
+}
+
+body.vscode-light .card,
+[data-vscode-theme-kind="vscode-light"] .card,
+[data-vscode-theme-kind*="light"] .card {
+    background: var(--vscode-sideBar-background, #f6f8fa);
+    border-color: var(--vscode-widget-border, #d0d7de);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+body.vscode-light .environment-card,
+[data-vscode-theme-kind="vscode-light"] .environment-card,
+[data-vscode-theme-kind*="light"] .environment-card {
+    background-color: var(--vscode-editor-background, #ffffff);
+    border-color: var(--vscode-widget-border, #d0d7de);
+}
+
+body.vscode-light .environment-card.active,
+[data-vscode-theme-kind="vscode-light"] .environment-card.active,
+[data-vscode-theme-kind*="light"] .environment-card.active {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+body.vscode-light .tag-chip,
+[data-vscode-theme-kind="vscode-light"] .tag-chip,
+[data-vscode-theme-kind*="light"] .tag-chip {
+    background-color: rgba(0, 0, 0, 0.06);
+    color: var(--vscode-descriptionForeground, #57606a);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.vscode-light .tag-chip.active,
+[data-vscode-theme-kind="vscode-light"] .tag-chip.active,
+[data-vscode-theme-kind*="light"] .tag-chip.active {
+    background-color: rgba(46, 160, 67, 0.15);
+    color: #1a7f37;
+    border-color: rgba(46, 160, 67, 0.3);
+}
+
+body.vscode-light .shortcuts-table th,
+[data-vscode-theme-kind="vscode-light"] .shortcuts-table th,
+[data-vscode-theme-kind*="light"] .shortcuts-table th {
+    border-bottom-color: var(--vscode-widget-border, #d0d7de);
+    color: #57606a;
+}
+
+body.vscode-light .shortcuts-table td,
+[data-vscode-theme-kind="vscode-light"] .shortcuts-table td,
+[data-vscode-theme-kind*="light"] .shortcuts-table td {
+    border-bottom-color: var(--vscode-widget-border, rgba(0, 0, 0, 0.06));
+}
+
+body.vscode-light .environment-editor,
+[data-vscode-theme-kind="vscode-light"] .environment-editor,
+[data-vscode-theme-kind*="light"] .environment-editor {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-color: var(--vscode-widget-border, #d0d7de);
 }
 
 .test-feedback-icon {

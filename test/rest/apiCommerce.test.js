@@ -204,6 +204,24 @@ suite("Commerce Endpoints & Attributes (apiCommerce)", () => {
       );
     });
 
+    test("listCommerceAttributeReferences dispatches GET to /commerceProcessSetups/<process>/documents/<document>/attributes/<attribute>/references", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.listCommerceAttributeReferences(
+        fakeContext(),
+        vscode,
+        "createdDate_t",
+        { process: "oraclecpqo", document: "transaction" },
+        capturingTransport(sink),
+      );
+      assert.strictEqual(sink.captured.method, "GET");
+      assert.ok(
+        sink.captured.path.startsWith(
+          "/rest/v19/commerceProcessSetups/oraclecpqo/documents/transaction/attributes/createdDate_t/references",
+        ),
+      );
+    });
+
     test("listCommerceSystemAttributes dispatches GET to /commerceProcessSetups/systemAttributes", async () => {
       const vscode = createFakeVscode({ config: baseConfig() });
       const sink = {};

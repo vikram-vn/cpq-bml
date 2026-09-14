@@ -26,7 +26,7 @@ const { registerInstanceMonitorCommands } = require("@/lang/rest/instanceMonitor
 const { getSessionKeepAlive } = require("@/lang/rest/sessionKeepAlive");
 const { registerCloudExplorer } = require("@/lang/cloud/cloudExplorer");
 const { registerCloudDocumentProvider } = require("@/lang/cloud/cloudDocumentProvider");
-const { inspectPropertiesCommand, inspectArraySetCommand, viewRawJsonCommand } = require("@/lang/cloud/cloudExplorerCommands");
+const { inspectPropertiesCommand, inspectArraySetCommand, analyzeBlastRadiusCommand, viewRawJsonCommand } = require("@/lang/cloud/cloudExplorerCommands");
 const { registerCommerceExplorer } = require("@/lang/cloud/cloudCommerceExplorer");
 const { registerConfigExplorer } = require("@/lang/cloud/cloudConfigExplorer");
 const { registerCloudTypeDefCommands } = require("@/lang/cloud/cloudTypeDefSync");
@@ -122,6 +122,8 @@ function activate(context) {
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.cloud.inspectProperties", (item) => inspectPropertiesCommand(item, vscode, context)),
     vscode.commands.registerCommand("cpqBml.cloud.inspectArraySet", (item) => inspectArraySetCommand(item, vscode, context)),
+    vscode.commands.registerCommand("cpqBml.cloud.findReferences", (item) => analyzeBlastRadiusCommand(item, vscode, context)),
+    vscode.commands.registerCommand("cpqBml.cloud.analyzeBlastRadius", (item) => analyzeBlastRadiusCommand(item, vscode, context)),
     vscode.commands.registerCommand("cpqBml.cloud.viewRawJson", (item) => viewRawJsonCommand(item, vscode))
   );
 
