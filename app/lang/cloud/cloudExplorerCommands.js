@@ -474,6 +474,22 @@ async function viewRawJsonCommand(item, vscodeInstance = vscode) {
   );
 }
 
+/**
+ * Opens the Property Inspector webview for a Commerce Array Set.
+ */
+async function inspectArraySetCommand(item, vscodeInstance = vscode, context) {
+  const target = item?.data || item;
+  if (!target) return;
+  const payload = {
+    type: 'arraySet',
+    category: 'Array Set',
+    commerceProcess: item.process || target.process,
+    commerceDocument: item.docName || target.docName,
+    ...target
+  };
+  return showCloudInspector({ ...item, data: payload, category: 'Array Set' }, context, vscodeInstance);
+}
+
 module.exports = {
   pullFunctionCommand,
   diffFunctionCommand,
@@ -491,6 +507,7 @@ module.exports = {
   openRuleBmlCommand,
   createTestFixtureCommand,
   inspectPropertiesCommand,
+  inspectArraySetCommand,
   viewRawJsonCommand,
 };
 

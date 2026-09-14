@@ -26,7 +26,7 @@ const { registerInstanceMonitorCommands } = require("@/lang/rest/instanceMonitor
 const { getSessionKeepAlive } = require("@/lang/rest/sessionKeepAlive");
 const { registerCloudExplorer } = require("@/lang/cloud/cloudExplorer");
 const { registerCloudDocumentProvider } = require("@/lang/cloud/cloudDocumentProvider");
-const { inspectPropertiesCommand, viewRawJsonCommand } = require("@/lang/cloud/cloudExplorerCommands");
+const { inspectPropertiesCommand, inspectArraySetCommand, viewRawJsonCommand } = require("@/lang/cloud/cloudExplorerCommands");
 const { registerCommerceExplorer } = require("@/lang/cloud/cloudCommerceExplorer");
 const { registerConfigExplorer } = require("@/lang/cloud/cloudConfigExplorer");
 const { registerCloudTypeDefCommands } = require("@/lang/cloud/cloudTypeDefSync");
@@ -121,6 +121,7 @@ function activate(context) {
   registerCloudDocumentProvider(context);
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.cloud.inspectProperties", (item) => inspectPropertiesCommand(item, vscode, context)),
+    vscode.commands.registerCommand("cpqBml.cloud.inspectArraySet", (item) => inspectArraySetCommand(item, vscode, context)),
     vscode.commands.registerCommand("cpqBml.cloud.viewRawJson", (item) => viewRawJsonCommand(item, vscode))
   );
 

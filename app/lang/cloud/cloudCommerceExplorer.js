@@ -112,6 +112,13 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
       item.tooltip = `Array Set: ${name} (${varName})\n${arr.description || ''}\nContains ${memberCount} member attributes\nExpand to view child attributes`;
       item.iconPath = new vscodeInstance.ThemeIcon('table');
       item.contextValue = 'cpqCommerceArraySet';
+      if (memberCount === 0) {
+        item.command = {
+          command: 'cpqBml.cloud.inspectArraySet',
+          title: 'Inspect Array Set Properties',
+          arguments: [element]
+        };
+      }
       return item;
     }
 

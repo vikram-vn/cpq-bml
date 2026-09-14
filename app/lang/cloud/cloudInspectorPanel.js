@@ -25,6 +25,7 @@ function normalizeInspectorPayload(rawItem) {
   else if (category === 'library' || rawItem?.itemType === 'function' || category === 'function') category = 'Function';
   else if (category === 'rule' || category === 'bomRule') category = 'Rule';
   else if (category === 'deploymentTask' || category === 'task') category = 'Deployment Task';
+  else if (category === 'arraySet' || rawItem?.itemType === 'arraySet' || category === 'Array Set') category = 'Array Set';
 
   const variableName = item.variableName || item.name || item.partNumber || item.transactionID_t || item.id || item._id || '';
   const label = item.label || item.displayName || item.name || item.partNumber || item.transactionID_t || variableName;

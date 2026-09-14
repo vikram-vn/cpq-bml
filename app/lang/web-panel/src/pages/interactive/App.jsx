@@ -52,11 +52,14 @@ export default function App({ vscodeApi: propVscodeApi, initialData = null }) {
     if (rawData.dateModified || rawData._date_modified) add('Last Modified', rawData.dateModified || rawData._date_modified);
     if (rawData.lastUpdatedBy) add('Modified By', rawData.lastUpdatedBy);
 
+    const memberAttrs = Array.isArray(rawData.attributes) ? rawData.attributes : [];
+    if (memberAttrs.length > 0) add('Member Attributes Count', memberAttrs.length);
+
     const skipKeys = new Set([
       'category', 'title', 'variableName', 'type', 'commerceProcess', 'commerceDocument',
       'returnType', 'endpointUrl', 'status', 'price', 'units', 'currency', 'dateModified',
       '_date_modified', 'lastUpdatedBy', 'description', 'label', 'name', 'scriptText', 'bmlScript',
-      'conditionScript', 'actionScript', 'script', 'menuOptions', 'menuItems', 'values', 'columns'
+      'conditionScript', 'actionScript', 'script', 'menuOptions', 'menuItems', 'values', 'columns', 'attributes'
     ]);
 
     for (const [k, v] of Object.entries(rawData || {})) {
@@ -75,6 +78,9 @@ export default function App({ vscodeApi: propVscodeApi, initialData = null }) {
 
   const menuOptions = rawData.menuOptions || rawData.menuItems || rawData.values || [];
   const hasMenu = Array.isArray(menuOptions) && menuOptions.length > 0;
+
+  const memberAttributes = Array.isArray(rawData.attributes) ? rawData.attributes : [];
+  const hasAttributes = memberAttributes.length > 0;
 
   const copyToClipboard = (text, label) => {
     vscode.postMessage({ command: 'copyText', text, label });
@@ -144,6 +150,14 @@ export default function App({ vscodeApi: propVscodeApi, initialData = null }) {
               onClick={() => setActiveTab('menu')}
             >
               Menu Items ({menuOptions.length})
+            </button>
+          )}
+          {hasAttributes && (
+            <button
+              className={`tab-btn ${activeTab === 'attributes' ? 'active' : ''}`}
+              onClick={() => setActiveTab('attributes')}
+            >
+              Member Attributes ({memberAttributes.length})
             </button>
           )}
           <button
@@ -224,6 +238,49 @@ export default function App({ vscodeApi: propVscodeApi, initialData = null }) {
                     <td className="prop-val">{opt.variableName || opt.value || opt}</td>
                   </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {activeTab === 'attributes' && hasAttributes && (
+          <div>
+            <div className="card-header">
+              <span className="card-title">Member Attributes in Array Set</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Label</th>
+                  <th>Variable Name</th>
+                  <th>Data Type</th>
+                  <th style={{ width: '80px', textAlign: 'right' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {memberAttributes.map((attr, idx) => {
+                  const varName = attr.variableName || attr.name || '';
+                  const lbl = attr.label || attr.name || varName;
+                  const dt = attr.dataType || attr.type || 'String';
+                  return (
+                    <tr key={idx}>
+                      <td style={{ width: '40px', color: 'var(--vscode-descriptionForeground)' }}>{idx + 1}</td>
+                      <td>{lbl}</td>
+                      <td className="prop-val">{varName}</td>
+                      <td>{dt}</td>
+                      <td style={{ textAlign: 'right' }}>
+                        <button
+                          style={{ padding: '2px 6px', fontSize: '11px' }}
+                          onClick={() => copyToClipboard(varName, 'Variable Name')}
+                          title={`Copy ${varName}`}
+                        >
+                          📋
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
