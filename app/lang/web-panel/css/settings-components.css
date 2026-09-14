@@ -41,12 +41,14 @@ button.secondary:hover:not(:disabled) {
 
 button.danger {
     background-color: transparent;
-    color: var(--vscode-errorForeground, #f48771);
-    border: 1px solid var(--vscode-errorForeground, #f48771);
+    color: #ff7b72;
+    border: 1px solid rgba(248, 81, 73, 0.4);
 }
 
 button.danger:hover:not(:disabled) {
-    background-color: var(--vscode-inputValidation-errorBackground, rgba(244, 135, 113, 0.16));
+    background-color: rgba(248, 81, 73, 0.15);
+    color: #ffa198;
+    border-color: rgba(248, 81, 73, 0.6);
 }
 
 button.link {
@@ -59,6 +61,27 @@ button.link {
 button.link:hover {
     text-decoration: underline;
     background: none;
+}
+
+.danger-link {
+    background: none !important;
+    border: none !important;
+    color: #ff7b72 !important;
+    font-size: 0.82em !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    padding: 2px 6px !important;
+    border-radius: var(--cpq-radius-sm, 4px) !important;
+    transition: all var(--transition-fast) !important;
+    text-decoration: underline !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+.danger-link:hover {
+    background-color: rgba(248, 81, 73, 0.15) !important;
+    color: #ffa198 !important;
 }
 
 .row {
@@ -98,6 +121,18 @@ button.link:hover {
     font-size: 0.76em;
     line-height: 1.4;
     color: var(--vscode-descriptionForeground);
+}
+
+.field-hint.error-hint {
+    color: #ff7b72;
+}
+
+.field-hint.success-hint {
+    color: #3fb950;
+}
+
+.field-hint.warning-hint {
+    color: #e3b341;
 }
 
 /* Modern Toggle Switch */
@@ -283,6 +318,52 @@ body.vscode-light .switch-thumb,
 [data-vscode-theme-kind="vscode-light"] .switch-thumb,
 [data-vscode-theme-kind*="light"] .switch-thumb {
     background-color: #656d76;
+}
+
+body.vscode-light .danger-link,
+[data-vscode-theme-kind="vscode-light"] .danger-link,
+[data-vscode-theme-kind*="light"] .danger-link {
+    color: #cf222e !important;
+}
+
+body.vscode-light .danger-link:hover,
+[data-vscode-theme-kind="vscode-light"] .danger-link:hover,
+[data-vscode-theme-kind*="light"] .danger-link:hover {
+    background-color: rgba(207, 34, 46, 0.08) !important;
+    color: #a40e26 !important;
+}
+
+body.vscode-light button.danger,
+[data-vscode-theme-kind="vscode-light"] button.danger,
+[data-vscode-theme-kind*="light"] button.danger {
+    color: #cf222e;
+    border-color: rgba(207, 34, 46, 0.4);
+}
+
+body.vscode-light button.danger:hover:not(:disabled),
+[data-vscode-theme-kind="vscode-light"] button.danger:hover:not(:disabled),
+[data-vscode-theme-kind*="light"] button.danger:hover:not(:disabled) {
+    background-color: rgba(207, 34, 46, 0.08);
+    color: #a40e26;
+    border-color: rgba(207, 34, 46, 0.6);
+}
+
+body.vscode-light .field-hint.error-hint,
+[data-vscode-theme-kind="vscode-light"] .field-hint.error-hint,
+[data-vscode-theme-kind*="light"] .field-hint.error-hint {
+    color: #cf222e;
+}
+
+body.vscode-light .field-hint.success-hint,
+[data-vscode-theme-kind="vscode-light"] .field-hint.success-hint,
+[data-vscode-theme-kind*="light"] .field-hint.success-hint {
+    color: #1a7f37;
+}
+
+body.vscode-light .field-hint.warning-hint,
+[data-vscode-theme-kind="vscode-light"] .field-hint.warning-hint,
+[data-vscode-theme-kind*="light"] .field-hint.warning-hint {
+    color: #9a6700;
 }
 
 /* Floating Toast Notification */

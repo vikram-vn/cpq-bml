@@ -14,7 +14,7 @@ export default function ImportExportButtons({ onImport, onExport, onReset, confi
             </button>
             {onReset && (
                 <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button type="button" className="secondary" onClick={onReset} style={{ color: 'var(--vscode-errorForeground, #f48771)' }}>
+                    <button type="button" className="danger" onClick={onReset}>
                         {confirmingReset ? 'Click to Confirm Reset' : 'Reset to Factory Defaults'}
                     </button>
                     {confirmingReset && onCancelReset && (

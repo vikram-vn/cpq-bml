@@ -281,7 +281,7 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
                 </div>
 
                 {!metadata.canSync ? (
-                    <p className="field-hint" style={{ color: 'var(--vscode-inputValidation-warningForeground, #cca700)', marginTop: '10px' }}>
+                    <p className="field-hint warning-hint" style={{ marginTop: '10px' }}>
                         Active connection credentials (Site URL and password/token) required to sync metadata.
                     </p>
                 ) : (

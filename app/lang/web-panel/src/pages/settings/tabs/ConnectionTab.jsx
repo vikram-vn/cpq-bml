@@ -106,9 +106,9 @@ export default function ConnectionTab({
                                 {state.hasPassword && clearPassword && (
                                     <button
                                         type="button"
-                                        className="link"
+                                        className="danger-link"
                                         onClick={clearPassword}
-                                        style={{ fontSize: '0.8em', color: 'var(--vscode-errorForeground, #f48771)', textDecoration: 'underline' }}
+                                        title="Remove stored password from secure storage"
                                     >
                                         Clear Stored Password
                                     </button>
@@ -147,9 +147,9 @@ export default function ConnectionTab({
                             {state.hasToken && clearToken && (
                                 <button
                                     type="button"
-                                    className="link"
+                                    className="danger-link"
                                     onClick={clearToken}
-                                    style={{ fontSize: '0.8em', color: 'var(--vscode-errorForeground, #f48771)', textDecoration: 'underline' }}
+                                    title="Remove stored auth token from secure storage"
                                 >
                                     Clear Stored Token
                                 </button>

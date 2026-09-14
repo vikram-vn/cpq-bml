@@ -151,7 +151,7 @@ export default function Sidebar({
             </nav>
 
             <div className="sidebar-footer">
-                <div style={{ fontSize: '0.78em', marginBottom: '10px', padding: '6px 8px', borderRadius: '4px', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid var(--vscode-widget-border, var(--vscode-panel-border))' }}>
+                <div className="sidebar-target-card">
                     <div style={{ color: 'var(--vscode-descriptionForeground)', fontSize: '0.9em', marginBottom: '2px' }}>Active Target</div>
                     <div style={{ fontWeight: '600', color: connection.siteUrl ? 'var(--vscode-foreground)' : 'var(--vscode-descriptionForeground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {activeEnvLabel}

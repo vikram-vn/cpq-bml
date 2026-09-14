@@ -557,3 +557,28 @@ body.vscode-light .canvas-container,
     background-image: radial-gradient(#d0d7de 1px, transparent 1px);
 }
 
+body.vscode-light .search-dropdown,
+[data-vscode-theme-kind*="light"] .search-dropdown {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+body.vscode-light .search-dropdown-section,
+[data-vscode-theme-kind*="light"] .search-dropdown-section {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+body.vscode-light .search-dropdown-item,
+[data-vscode-theme-kind*="light"] .search-dropdown-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.vscode-light .search-match-badge,
+[data-vscode-theme-kind*="light"] .search-match-badge {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+body.vscode-light .search-nav-btn:hover,
+[data-vscode-theme-kind*="light"] .search-nav-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+

@@ -93,9 +93,7 @@ export default function McpClientsCard({
                                     ) : tool.installed ? (
                                         <Pill tone="info">Detected</Pill>
                                     ) : (
-                                        <span style={{ fontSize: '0.75em', opacity: 0.55, color: 'var(--vscode-descriptionForeground)' }}>
-                                            Not Installed
-                                        </span>
+                                        <Pill tone="muted">Not Installed</Pill>
                                     )}
                                 </div>
 

@@ -110,19 +110,12 @@ export default function SearchResultsTab({
                                 >
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                                         <span
+                                            className="pill info"
                                             onClick={() => {
                                                 setSearchQuery('');
                                                 onNavigateTab(item.tab);
                                             }}
-                                            style={{
-                                                fontSize: '0.75em',
-                                                padding: '2px 8px',
-                                                borderRadius: '12px',
-                                                backgroundColor: 'var(--vscode-badge-background)',
-                                                color: 'var(--vscode-badge-foreground)',
-                                                cursor: 'pointer',
-                                                fontWeight: '600',
-                                            }}
+                                            style={{ cursor: 'pointer' }}
                                             title={`Go to ${item.tabName} tab`}
                                         >
                                             {item.tabName} &rarr;

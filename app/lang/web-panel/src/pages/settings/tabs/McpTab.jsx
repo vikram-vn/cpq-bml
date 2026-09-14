@@ -213,17 +213,17 @@ export default function McpTab({ active, mcp = {}, drafts, changeDraft, updateFi
                                 onChange={(e) => changeDraft('mcp.port', e.target.value)}
                             />
                             {isPrivileged && (
-                                <p className="field-hint" style={{ color: 'var(--vscode-errorForeground, #f48771)', marginTop: '4px' }}>
+                                <p className="field-hint error-hint" style={{ marginTop: '4px' }}>
                                     Warning: Ports below 1024 are privileged and may require administrator rights to bind.
                                 </p>
                             )}
                             {isOutOfRange && (
-                                <p className="field-hint" style={{ color: 'var(--vscode-errorForeground, #f48771)', marginTop: '4px' }}>
+                                <p className="field-hint error-hint" style={{ marginTop: '4px' }}>
                                     Port must be between 1024 and 65535.
                                 </p>
                             )}
                             {isDefaultPort && (
-                                <p className="field-hint" style={{ color: 'var(--vscode-terminal-ansiGreen, #6dd17a)', marginTop: '4px' }}>
+                                <p className="field-hint success-hint" style={{ marginTop: '4px' }}>
                                     Standard CPQ-BML port (47821)
                                 </p>
                             )}

@@ -723,3 +723,63 @@ body.vscode-light .raw-json-box,
   color: #0550ae;
   background: #f6f8fa;
 }
+
+body.vscode-light .badge-type-string,
+[data-vscode-theme-kind*="light"] .badge-type-string {
+  background: rgba(46, 160, 67, 0.12);
+  color: #1a7f37;
+  border-color: rgba(46, 160, 67, 0.3);
+}
+
+body.vscode-light .badge-type-number,
+[data-vscode-theme-kind*="light"] .badge-type-number {
+  background: rgba(9, 105, 218, 0.12);
+  color: #0969da;
+  border-color: rgba(9, 105, 218, 0.3);
+}
+
+body.vscode-light .badge-type-date,
+[data-vscode-theme-kind*="light"] .badge-type-date {
+  background: rgba(154, 103, 0, 0.12);
+  color: #9a6700;
+  border-color: rgba(154, 103, 0, 0.3);
+}
+
+body.vscode-light .badge-type-boolean,
+[data-vscode-theme-kind*="light"] .badge-type-boolean {
+  background: rgba(130, 80, 223, 0.12);
+  color: #8250df;
+  border-color: rgba(130, 80, 223, 0.3);
+}
+
+body.vscode-light .badge-type-menu,
+[data-vscode-theme-kind*="light"] .badge-type-menu {
+  background: rgba(5, 80, 174, 0.12);
+  color: #0550ae;
+  border-color: rgba(5, 80, 174, 0.3);
+}
+
+body.vscode-light .badge-type-default,
+[data-vscode-theme-kind*="light"] .badge-type-default {
+  background: rgba(0, 0, 0, 0.06);
+  color: #57606a;
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+body.vscode-light .highlight-btn,
+[data-vscode-theme-kind*="light"] .highlight-btn {
+  background-color: rgba(9, 105, 218, 0.12);
+  border-color: rgba(9, 105, 218, 0.4);
+  color: #0969da;
+}
+
+body.vscode-light .highlight-btn:hover,
+[data-vscode-theme-kind*="light"] .highlight-btn:hover {
+  background-color: #0969da;
+  color: #ffffff;
+}
+
+body.vscode-light .snippet-field-picker,
+[data-vscode-theme-kind*="light"] .snippet-field-picker {
+  background: rgba(0, 0, 0, 0.03);
+}

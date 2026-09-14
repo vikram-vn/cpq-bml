@@ -84,7 +84,7 @@ export default function McpTrafficCard({
                                         </div>
                                     )}
                                     {req.error && (
-                                        <div style={{ color: 'var(--vscode-errorForeground, #f48771)', marginTop: '3px' }}>
+                                        <div className="error-hint" style={{ marginTop: '3px' }}>
                                             <strong>Error:</strong> {req.error}
                                         </div>
                                     )}
