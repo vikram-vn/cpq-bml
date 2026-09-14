@@ -4,6 +4,13 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.2.0] - 2026-09-14
+
+### Added
+
+- Add architecture dependency graph visualization and cloud commerce attribute explorer.
+- Add cloud metadata inspector panel and commerce explorer UI.
+
 ## [2.1.0] - 2026-09-13
 
 ### Added
