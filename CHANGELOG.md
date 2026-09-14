@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.3.0] - 2026-09-14
+
+### Added
+
+- Implement ConnectionTab component and settings UI styles.
+
 ## [2.2.0] - 2026-09-14
 
 ### Added
