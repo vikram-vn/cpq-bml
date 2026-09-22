@@ -4,6 +4,13 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.4.0] - 2026-09-22
+
+### Added
+
+- Add CPQ-BML environment switcher, linter code actions, REST commands, and MCP integration modules.
+- Add BML REST client, commands, settings handlers, and operations UI tab.
+
 ## [2.3.0] - 2026-09-14
 
 ### Added
@@ -101,9 +108,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement BML CodeAction provider and member access fix suggestions.
 - Implement BML style linting quick fixes and text-splitting utilities with associated unit tests.
 - Implement performance optimization rules and associated code actions for BML scripts.
-
-## [1.94.0] - 2026-09-10
-
-### Added
-
-- Implement cloud data tables explorer and CSV export functionality.
