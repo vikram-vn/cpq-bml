@@ -92,11 +92,67 @@ async function runChangeEnvironment(context, vscode) {
 
     const { env } = selected;
     await applyEnvironment(vscode, env);
+
+    // Refresh cloud explorer views, transactions, and status bar
+    try {
+        if (vscode.commands && typeof vscode.commands.executeCommand === 'function') {
+            vscode.commands.executeCommand('cpqCloudExplorer.refresh');
+            vscode.commands.executeCommand('cpqCloudTransactions.refresh');
+            vscode.commands.executeCommand('cpqBml.internal.refreshStatus');
+        }
+    } catch {}
+
+    // Check if metadata for this environment exists or is outdated
+    try {
+        const { getMetadataStatus } = require('@/lang/rest/commerceAttributes');
+        const status = getMetadataStatus(vscode);
+        if (!status || !status.isSynced) {
+            const action = await vscode.window.showInformationMessage(
+                `CPQ-BML: Switched to "${env.name}". Metadata is not synced yet for this environment.`,
+                'Sync Metadata Now'
+            );
+            if (action === 'Sync Metadata Now') {
+                vscode.commands.executeCommand('cpqBml.rest.syncCommerceMetadata');
+            }
+            return;
+        } else if (status.isStale) {
+            const action = await vscode.window.showInformationMessage(
+                `CPQ-BML: Switched to "${env.name}". Metadata is over 24 hours old.`,
+                'Refresh Metadata',
+                'Keep Cached'
+            );
+            if (action === 'Refresh Metadata') {
+                vscode.commands.executeCommand('cpqBml.rest.syncCommerceMetadata');
+            }
+            return;
+        }
+    } catch {}
+
     vscode.window.showInformationMessage(`CPQ-BML: Switched to environment "${env.name}".`);
+}
+
+async function runForceSyncEnvironment(context, vscode, resultsTerminal) {
+    const { getWorkspaceRoot, getSettings } = require('@/lang/rest/config');
+    const { getCpqSiteName } = require('@/lang/rest/folders');
+    const { clearAttributesCache } = require('@/lang/rest/commerceAttributes');
+
+    const wsRoot = getWorkspaceRoot(vscode);
+    const siteUrl = getSettings(vscode).siteUrl;
+    const siteKey = getCpqSiteName(siteUrl);
+
+    clearAttributesCache(wsRoot, siteKey);
+
+    if (vscode.commands && typeof vscode.commands.executeCommand === 'function') {
+        await vscode.commands.executeCommand('cpqBml.rest.syncCommerceMetadata');
+        vscode.commands.executeCommand('cpqCloudExplorer.refresh');
+        vscode.commands.executeCommand('cpqCloudTransactions.refresh');
+        vscode.commands.executeCommand('cpqBml.internal.refreshStatus');
+    }
 }
 
 module.exports = {
     runChangeEnvironment,
+    runForceSyncEnvironment,
     getEnvironments,
     applyEnvironment,
     addEnvironment,

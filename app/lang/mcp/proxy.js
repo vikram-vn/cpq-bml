@@ -4,6 +4,7 @@ try {
     vscode = require('vscode');
 } catch (_) {}
 const pathLib = require('path');
+const { safeAppendLog } = require('@/lang/rest/logger');
 
 // Wraps the real vscode module so the existing run*() command logic can be reused unattended:
 // overrides activeTextEditor and QuickPick (which would otherwise block waiting for a human),
@@ -122,10 +123,9 @@ function createCapturingTerminal(realTerminal) {
                     if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
                         const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
                         const mcpLogsDir = pathLib.join(workspaceRoot, 'logs', 'mcp-logs');
-                        fs.mkdirSync(mcpLogsDir, { recursive: true });
                         const mcpLogPath = pathLib.join(mcpLogsDir, 'mcp.log');
                         const timestamp = new Date().toISOString();
-                        fs.appendFileSync(mcpLogPath, `[${timestamp}] [Tool] ${l}\n`);
+                        safeAppendLog(mcpLogPath, `[${timestamp}] [Tool] ${l}\n`);
                     }
                 } catch (e) {}
             },

@@ -96,7 +96,7 @@ async function runDebugCurrentFile(
     };
   }
 
-  const metadata = await resolveMetadataForFile(
+  let metadata = await resolveMetadataForFile(
     context,
     vscode,
     doc.uri.fsPath,
@@ -104,9 +104,35 @@ async function runDebugCurrentFile(
   );
   if (!metadata) {
     const variableName = metadataLib.variableNameFromBmlPath(doc.uri.fsPath);
-    const errorMessage = `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or confirm the function exists in CPQ.`;
-    vscode.window.showErrorMessage(errorMessage);
-    return { success: false, errorMessage };
+    const inferred = metadataLib.inferCommerceFromPath(doc.uri.fsPath);
+    const process = (inferred && inferred.commerceProcess) || configLib.getCommerceProcess(vscode) || "oraclecpqo";
+    const document = (inferred && inferred.commerceDocument) || configLib.getCommerceDocument(vscode) || "transaction";
+
+    // Attempt on-the-fly fetch from CPQ without saving a -meta.json sidecar to disk
+    try {
+      const serverFn = await api.getLibraryFunction(context, vscode, variableName, transport, inferred ? { commerceProcess: process, commerceDocument: document } : undefined);
+      if (serverFn && serverFn.statusCode >= 200 && serverFn.statusCode < 300 && serverFn.body) {
+        const split = metadataLib.splitFunctionResponse(serverFn.body);
+        metadata = split.metadata || {};
+        metadata.variableName = metadata.variableName || variableName;
+        metadata.name = metadata.name || variableName;
+      }
+    } catch {}
+
+    // If still not found on CPQ, synthesize in-memory metadata for seamless debugging
+    if (!metadata) {
+      metadata = {
+        name: variableName,
+        variableName,
+        returnType: { type: "String" },
+        parameters: [],
+        libraryFunctions: [],
+        attributes: [],
+        commerceProcess: process,
+        commerceDocument: document,
+        inMemoryOnly: true,
+      };
+    }
   }
 
   writeRunHeader(resultsTerminal, "Debug", metadata.variableName);

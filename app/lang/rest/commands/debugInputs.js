@@ -209,17 +209,23 @@ async function promptDebugInputs({ context, vscode, metadata, options, resultsTe
             },
             transport,
           );
-          if (
-            res &&
-            res.body &&
-            Array.isArray(res.body.items) &&
-            res.body.items.length > 0
-          ) {
-            const picks = res.body.items.map((it) => ({
-              label: String(it.transactionID_t || it._id),
-              description: `_id: ${it._id}${it.transactionID_t ? ` (${it.transactionID_t})` : ''}`,
-              id: String(it._id || it.transactionID_t),
-            }));
+          const rawItems = res && res.body
+            ? (res.body.items || res.body.records || res.body.results || (Array.isArray(res.body) ? res.body : []))
+            : [];
+          if (Array.isArray(rawItems) && rawItems.length > 0) {
+            const picks = rawItems.map((it) => {
+              const quoteNum = it.transactionID_t || it.transactionId || it.quoteNumber || '';
+              const dbId = it._id || it.bs_id || it.id || '';
+              const label = quoteNum ? `Quote: ${quoteNum}` : `ID: ${dbId}`;
+              const desc = dbId && quoteNum
+                ? `bs_id: ${dbId} | CPQ ID: ${quoteNum}`
+                : (dbId ? `bs_id: ${dbId}` : `CPQ ID: ${quoteNum}`);
+              return {
+                label,
+                description: desc,
+                id: String(dbId || quoteNum),
+              };
+            });
             const picked = await vscode.window.showQuickPick(picks, {
               placeHolder:
                 'Select transaction(s) from CPQ to use for debugging (up to 10)',

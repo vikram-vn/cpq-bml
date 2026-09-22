@@ -246,7 +246,7 @@ function getAdvancedQualityFixes(document, diag, editRange, extensionPath) {
 
             const compOp = isNotEqual ? '>' : '<=';
             const toleranceCode = isZero
-                ? `fabs(${varName}) ${compOp} 0.000001`
+                ? `fabs(${varName}) ${compOp} 0`
                 : `fabs(${varName} - ${floatVal}) ${compOp} 0.000001`;
 
             const fix1 = new vscode.CodeAction(`Replace with tolerance check '${toleranceCode}'`, vscode.CodeActionKind.QuickFix);

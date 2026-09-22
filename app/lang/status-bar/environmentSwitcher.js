@@ -4,8 +4,21 @@ const { exportTeamProfiles, importTeamProfiles } = require('@/lang/status-bar/pr
 
 let statusBarItem = null;
 
+function isBmlActive() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor || !editor.document) return false;
+    const doc = editor.document;
+    if (doc.languageId === 'bml' || doc.languageId === 'bmlt') return true;
+    const path = (doc.fileName || (doc.uri && doc.uri.fsPath) || '').toLowerCase();
+    return path.endsWith('.bml') || path.endsWith('.bmlt');
+}
+
 function updateStatusBar() {
     if (!statusBarItem) return;
+    if (!isBmlActive()) {
+        statusBarItem.hide();
+        return;
+    }
     try {
         const config = vscode.workspace.getConfiguration('cpqBml');
         const activeName = getActiveEnvironmentName(vscode);
@@ -109,6 +122,9 @@ function registerEnvironmentSwitcher(context) {
                 if (e.affectsConfiguration('cpqBml.connection')) {
                     updateStatusBar();
                 }
+            }),
+            vscode.window.onDidChangeActiveTextEditor(() => {
+                updateStatusBar();
             })
         );
     }

@@ -13,6 +13,7 @@ const {
     isSuccess,
     ensureCredentials,
 } = require('@/lang/rest/commands/shared');
+const { runConcurrentPool } = require('@/lang/rest/commands/debugExecution');
 
 async function runPullLibraryFunctions(context, vscode, resultsTerminal, { transport } = {}) {
     const hasCredentials = await ensureCredentials(context, vscode);
@@ -82,9 +83,8 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
         return;
     }
 
-    let pulledCount = 0;
     const sessionState = { overwriteAll: false, skipAll: false };
-    for (const pick of selected) {
+    const worker = async (pick) => {
         try {
             const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
             let result = await api.getLibraryFunction(context, vscode, nsVarName, transport);
@@ -103,7 +103,7 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
                 const message = `failed to fetch ${nsVarName} (HTTP ${result.statusCode}). ${describeError(result.body)}`;
                 writeTerminalMessage(resultsTerminal, 'Pull failed: ', message, '\x1b[31m');
                 vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
-                continue;
+                return false;
             }
             const { scriptText, metadata } = metadataLib.splitFunctionResponse(result.body);
             metadata.variableName = metadata.variableName || pick.item.variableName || pick.item.name || '';
@@ -111,8 +111,6 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
             metadata.name = metadata.name || pick.item.name || metadata.variableName;
             const folder = metadata.folderName || '';
 
-            // Saved under standardized folder structure:
-            // <cpq-instanceName>/util-libraries/<folder>/<variableName>/<variableName>.bml
             const utilFolder = config.getUtilLibrariesFolder(vscode);
             const bmlPath = folder
                 ? path.join(
@@ -133,16 +131,20 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
             const writeStatus = await confirmAndWriteBmlFile(vscode, bmlPath, scriptText, metadata.variableName, sessionState);
             if (writeStatus === 'skipped') {
                 resultsTerminal.writeLine(`\x1b[33m${getTimestamp()} Skipped ${metadata.variableName} (kept local)\x1b[0m`);
-                continue;
+                return false;
             }
             metadataLib.writeMetadata(metaPath, metadata);
             resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
-            pulledCount++;
+            return true;
         } catch (err) {
             writeTerminalMessage(resultsTerminal, 'Pull failed: ', err.message, '\x1b[31m');
             vscode.window.showErrorMessage(`CPQ-BML: failed to pull ${pick.label}: ${err.message}`);
+            return false;
         }
-    }
+    };
+
+    const pullResults = await runConcurrentPool(selected, worker, 5, 2, 10);
+    const pulledCount = pullResults.filter(Boolean).length;
 
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Pulled ${pulledCount} function(s) (${formatElapsed(startedAt)})\x1b[0m`);
     resultsTerminal.show();
@@ -226,9 +228,8 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
         return;
     }
 
-    let pulledCount = 0;
     const sessionState = { overwriteAll: false, skipAll: false };
-    for (const pick of selected) {
+    const commerceWorker = async (pick) => {
         try {
             const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
             let result = await api.getLibraryFunction(context, vscode, nsVarName, transport, commerceMetadata);
@@ -242,7 +243,7 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
                 const message = `failed to fetch ${nsVarName} (HTTP ${result.statusCode}). ${describeError(result.body)}`;
                 writeTerminalMessage(resultsTerminal, 'Pull failed: ', message, '\x1b[31m');
                 vscode.window.showErrorMessage(`CPQ-BML: ${message}`);
-                continue;
+                return false;
             }
             const { scriptText, metadata } = metadataLib.splitFunctionResponse(result.body);
             metadata.commerceProcess = commerceProcess;
@@ -250,8 +251,6 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
             metadata.variableName = metadata.variableName || pick.item.variableName || pick.item.name || '';
             metadata.name = metadata.name || pick.item.name || metadata.variableName;
 
-            // Saved under standardized folder structure:
-            // cpq/{sitename}/{processname}/commerce-libraries/<variableName>/<variableName>.bml
             const commerceFolder = config.getCommerceLibrariesFolder(vscode, commerceProcess);
             const bmlPath = path.join(
                 workspaceRoot,
@@ -264,16 +263,20 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
             const writeStatus = await confirmAndWriteBmlFile(vscode, bmlPath, scriptText, metadata.variableName, sessionState);
             if (writeStatus === 'skipped') {
                 resultsTerminal.writeLine(`\x1b[33m${getTimestamp()} Skipped ${metadata.variableName} (kept local)\x1b[0m`);
-                continue;
+                return false;
             }
             metadataLib.writeMetadata(metaPath, metadata);
             resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Pulled ${metadata.variableName}\x1b[0m`);
-            pulledCount++;
+            return true;
         } catch (err) {
             writeTerminalMessage(resultsTerminal, 'Pull failed: ', err.message, '\x1b[31m');
             vscode.window.showErrorMessage(`CPQ-BML: failed to pull ${pick.label}: ${err.message}`);
+            return false;
         }
-    }
+    };
+
+    const commercePullResults = await runConcurrentPool(selected, commerceWorker, 5, 2, 10);
+    const pulledCount = commercePullResults.filter(Boolean).length;
 
     resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Pulled ${pulledCount} function(s) (${formatElapsed(startedAt)})\x1b[0m`);
     resultsTerminal.show();

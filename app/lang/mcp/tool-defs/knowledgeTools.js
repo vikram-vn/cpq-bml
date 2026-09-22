@@ -103,10 +103,36 @@ function register(server, context, vscode, tools) {
   );
 
   server.registerTool(
+    "list_bml_skills",
+    {
+      description:
+        "List all available Oracle CPQ and BML AI skills, returning names, summaries, descriptions, and whether references are available.",
+      inputSchema: {},
+    },
+    async () => jsonResult(await tools.listSkills(context)),
+  );
+
+  server.registerTool(
     "get_skill",
     {
       description:
         "Fetch the full documentation, best practices, rules, and reference files for a specific CPQ/BML skill. Call list_skills to see all available skills.",
+      inputSchema: {
+        name: z
+          .string()
+          .describe(
+            "Skill name (e.g. 'bml-language', 'bml-pitfalls', 'cpq-domain', 'cpq-rest-api', 'bml-db-access', 'bml-json-dict')",
+          ),
+      },
+    },
+    async (args) => jsonResult(await tools.getSkill(context, args)),
+  );
+
+  server.registerTool(
+    "get_bml_skill",
+    {
+      description:
+        "Retrieve the full markdown content, guidelines, and reference files for a specific CPQ/BML skill.",
       inputSchema: {
         name: z
           .string()

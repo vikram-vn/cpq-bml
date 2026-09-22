@@ -5,6 +5,7 @@ const { getQualityFixes } = require('@/lang/lint/code-actions/qualityFixes');
 const { getStyleFixes } = require('@/lang/lint/code-actions/styleFixes');
 const { getSuppressionFixes } = require('@/lang/lint/code-actions/suppressionFixes');
 const { getPerformanceFixes, createSbappendSplitActions } = require('@/lang/lint/code-actions/performanceFixes');
+const { getSbappendConvertCodeActions } = require('@/lang/lint/code-actions/sbappendConverter');
 const { getMemberAccessFixes } = require('@/lang/lint/code-actions/memberAccessFixes');
 const { getFunctionSignatureFixes } = require('@/lang/lint/code-actions/functionSignatureFixes');
 const { getTypeCastFixes } = require('@/lang/lint/code-actions/typeCastFixes');
@@ -60,7 +61,10 @@ function registerBmlCodeActions(context) {
                 if (token && token.isCancellationRequested) return [];
 
                 // On-demand refactoring actions (available even if diagnostic is not yet emitted)
-                const refactorActions = createSbappendSplitActions(document, range);
+                const refactorActions = [
+                    ...createSbappendSplitActions(document, range),
+                    ...getSbappendConvertCodeActions(document, range)
+                ];
 
                 let docDiags = (vscode.languages && vscode.languages.getDiagnostics)
                     ? vscode.languages.getDiagnostics(document.uri)

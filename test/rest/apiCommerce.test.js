@@ -43,7 +43,7 @@ suite("Commerce Endpoints & Attributes (apiCommerce)", () => {
   });
 
   suite("getTransactions", () => {
-    test("uses default offset=25, limit=25, fields=_id,transactionID_t and omits excludeFieldTypes", async () => {
+    test("returns all query fields by default with excludeFieldTypes=yes", async () => {
       const vscode = createFakeVscode({ config: baseConfig() });
       const sink = {};
       const transport = async (opts) => {
@@ -56,6 +56,8 @@ suite("Commerce Endpoints & Attributes (apiCommerce)", () => {
               {
                 _id: 12345,
                 transactionID_t: "48420727",
+                status_t: "Draft",
+                customer_t: "Acme Corp",
                 links: [{ rel: "self", href: "https://example.com" }],
               },
             ],
@@ -73,13 +75,28 @@ suite("Commerce Endpoints & Attributes (apiCommerce)", () => {
       assert.strictEqual(sink.captured.method, "GET");
       assert.strictEqual(
         sink.captured.path,
-        "/rest/v19/commerceDocumentsOraclecpqoTransaction?offset=25&limit=25&fields=_id%2CtransactionID_t&totalResults=true",
+        "/rest/v19/commerceDocumentsOraclecpqoTransaction?offset=25&limit=25&excludeFieldTypes=yes&totalResults=true",
       );
       assert.strictEqual(result.statusCode, 200);
       assert.strictEqual(result.body.items.length, 1);
       assert.strictEqual(result.body.items[0]._id, "12345");
       assert.strictEqual(result.body.items[0].transactionID_t, "48420727");
+      assert.strictEqual(result.body.items[0].status_t, "Draft");
+      assert.strictEqual(result.body.items[0].customer_t, "Acme Corp");
       assert.strictEqual(result.body.items[0].links, undefined);
+    });
+
+    test("passes explicit fields parameter when specified", async () => {
+      const vscode = createFakeVscode({ config: baseConfig() });
+      const sink = {};
+      await api.getTransactions(
+        fakeContext(),
+        vscode,
+        { offset: 25, limit: 25, fields: "_id,transactionID_t" },
+        capturingTransport(sink),
+      );
+
+      assert.ok(sink.captured.path.includes("fields=_id%2CtransactionID_t"));
     });
 
     test("includes excludeFieldTypes when fields is omitted", async () => {

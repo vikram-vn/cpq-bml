@@ -83,8 +83,9 @@ async function generateBmqlQueryCommand(item, vscodeInstance = vscode, context) 
 
 /**
  * Extracts BML script from a Commerce Action and opens it in a .bml editor.
+ * Supports Before Formulas, After Formulas, and Modify scripts with sidecar metadata.
  */
-async function openActionBmlCommand(item, vscodeInstance = vscode, context) {
+async function openActionBmlCommand(item, vscodeInstance = vscode, context, preferredType) {
   const action = item?.data || item;
   if (!action) return;
   const proc = action.commerceProcess || 'oraclecpqo';
@@ -98,7 +99,7 @@ async function openActionBmlCommand(item, vscodeInstance = vscode, context) {
   }, async () => {
     try {
       let data = action;
-      if (actionVar && !data.scriptText && !data.bmlScript) {
+      if (actionVar && !data.scriptText && !data.bmlScript && !data.beforeFormulas && !data.afterFormulas) {
         try {
           const res = await api.getCommerceAction(context, vscodeInstance, actionVar, { process: proc, document: doc });
           if (res && res.statusCode >= 200 && res.statusCode < 300) {
@@ -107,39 +108,170 @@ async function openActionBmlCommand(item, vscodeInstance = vscode, context) {
         } catch {}
       }
 
-      let bmlText = data.scriptText || data.bmlScript || data.modifyScript || data.validationScript || data.script;
-      if (!bmlText && typeof data === 'object') {
+      // Collect available scripts on the action
+      const scripts = [];
+      const beforeScript = data.beforeFormulas || data.modifyBeforeScript || data.beforeScript || data.beforeFormula;
+      if (beforeScript) scripts.push({ type: 'before-formulas', label: 'Advanced Modify - Before Formulas', code: beforeScript });
+
+      const afterScript = data.afterFormulas || data.modifyAfterScript || data.afterScript || data.afterFormula;
+      if (afterScript) scripts.push({ type: 'after-formulas', label: 'Advanced Modify - After Formulas', code: afterScript });
+
+      const modifyScript = data.modifyScript || data.bmlScript || data.scriptText || data.script;
+      if (modifyScript) scripts.push({ type: 'modify', label: 'Advanced Modify Script', code: modifyScript });
+
+      if (scripts.length === 0 && typeof data === 'object') {
         for (const [key, val] of Object.entries(data)) {
           if (typeof val === 'string' && (key.toLowerCase().includes('script') || key.toLowerCase().includes('bml')) && val.trim().length > 0) {
-            bmlText = val;
+            scripts.push({ type: 'modify', label: key, code: val });
             break;
           }
         }
       }
 
-      if (!bmlText) {
+      if (scripts.length === 0) {
         vscodeInstance?.window?.showInformationMessage?.(`Action '${actionVar}' does not contain an embedded BML script. Opening JSON definition.`);
         const { openCommerceActionCommand } = require('@/lang/cloud/cloudExplorerCommands');
         return openCommerceActionCommand(item, vscodeInstance, context);
       }
 
+      let selected = scripts[0];
+      if (preferredType) {
+        const match = scripts.find(s => s.type === preferredType);
+        if (match) selected = match;
+      } else if (scripts.length > 1) {
+        const picked = await vscodeInstance.window.showQuickPick(
+          scripts.map(s => ({ label: s.label, script: s })),
+          { placeHolder: `Action '${actionVar}' has multiple scripts. Select script to open:` }
+        );
+        if (!picked) return;
+        selected = picked.script;
+      }
+
       const root = getWorkspaceRoot(vscodeInstance);
       if (root) {
-        const actionDir = path.join(root, 'cpq', 'commerce', proc, 'actions');
+        const actionDir = (selected.type === 'before-formulas' || selected.type === 'after-formulas')
+          ? path.join(root, 'cpq', 'commerce', proc, 'actions', selected.type)
+          : path.join(root, 'cpq', 'commerce', proc, 'actions');
         fs.mkdirSync(actionDir, { recursive: true });
         const filePath = path.join(actionDir, `${actionVar}.bml`);
-        fs.writeFileSync(filePath, bmlText, 'utf8');
+        fs.writeFileSync(filePath, selected.code, 'utf8');
+
+        // Write sidecar metadata for debugging
+        const metaPath = path.join(actionDir, `${actionVar}-meta.json`);
+        const meta = {
+          name: action.name || actionVar,
+          variableName: actionVar,
+          commerceProcess: proc,
+          commerceDocument: doc,
+          actionType: selected.type,
+          returnType: { type: 'String' },
+          parameters: [],
+          libraryFunctions: [],
+          attributes: [],
+        };
+        fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf8');
+
         const docObj = await vscodeInstance.workspace.openTextDocument(getUriFromFile(filePath, vscodeInstance));
         await vscodeInstance.window.showTextDocument(docObj);
       } else {
         const docObj = await vscodeInstance.workspace.openTextDocument({
-          content: bmlText,
+          content: selected.code,
           language: 'bml'
         });
         await vscodeInstance.window.showTextDocument(docObj);
       }
     } catch (err) {
       vscodeInstance?.window?.showErrorMessage?.(`Failed to extract action BML: ${err.message}`);
+    }
+  });
+}
+
+/**
+ * Extracts BML script from a Commerce Attribute (modify formula or default formula) and opens it in a .bml editor.
+ */
+async function openAttributeBmlCommand(item, vscodeInstance = vscode, context, preferredType) {
+  const attr = item?.data || item;
+  if (!attr) return;
+  const proc = attr.commerceProcess || 'oraclecpqo';
+  const doc = attr.commerceDocument || 'transaction';
+  const attrVar = attr.variableName || attr.name;
+
+  await vscodeInstance.window.withProgress({
+    location: 15,
+    title: `Extracting BML formula for attribute '${attrVar}'...`,
+    cancellable: false
+  }, async () => {
+    try {
+      let data = attr;
+      if (attrVar && !data.modifyScript && !data.defaultScript && !data.formula && !data.modifyFormula) {
+        try {
+          const res = await api.getCommerceAttribute(context, vscodeInstance, attrVar, { process: proc, document: doc });
+          if (res && res.statusCode >= 200 && res.statusCode < 300) {
+            data = safeParseJson(res.body, attr);
+          }
+        } catch {}
+      }
+
+      const scripts = [];
+      const modifyScript = data.modifyScript || data.modifyFormula || data.advancedModify;
+      if (modifyScript) scripts.push({ type: 'modify', label: 'Advanced Modify Formula', code: modifyScript });
+
+      const defaultScript = data.defaultScript || data.defaultFormula || data.advancedDefault || data.formula;
+      if (defaultScript) scripts.push({ type: 'default', label: 'Advanced Default Formula', code: defaultScript });
+
+      if (scripts.length === 0) {
+        vscodeInstance?.window?.showInformationMessage?.(`Attribute '${attrVar}' does not contain an embedded BML formula.`);
+        return;
+      }
+
+      let selected = scripts[0];
+      if (preferredType) {
+        const match = scripts.find(s => s.type === preferredType);
+        if (match) selected = match;
+      } else if (scripts.length > 1) {
+        const picked = await vscodeInstance.window.showQuickPick(
+          scripts.map(s => ({ label: s.label, script: s })),
+          { placeHolder: `Attribute '${attrVar}' has multiple formulas. Select formula to open:` }
+        );
+        if (!picked) return;
+        selected = picked.script;
+      }
+
+      const { getCommerceAttributesFolder } = require('@/lang/rest/folders');
+      const root = getWorkspaceRoot(vscodeInstance);
+      if (root) {
+        const relDir = getCommerceAttributesFolder(vscodeInstance, proc, selected.type);
+        const attrDir = path.join(root, relDir);
+        fs.mkdirSync(attrDir, { recursive: true });
+        const filePath = path.join(attrDir, `${attrVar}.bml`);
+        fs.writeFileSync(filePath, selected.code, 'utf8');
+
+        // Write sidecar metadata for debugging
+        const metaPath = path.join(attrDir, `${attrVar}-meta.json`);
+        const meta = {
+          name: attr.name || attrVar,
+          variableName: attrVar,
+          commerceProcess: proc,
+          commerceDocument: doc,
+          attributeType: selected.type,
+          returnType: { type: attr.dataType || 'String' },
+          parameters: [],
+          libraryFunctions: [],
+          attributes: [],
+        };
+        fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf8');
+
+        const docObj = await vscodeInstance.workspace.openTextDocument(getUriFromFile(filePath, vscodeInstance));
+        await vscodeInstance.window.showTextDocument(docObj);
+      } else {
+        const docObj = await vscodeInstance.workspace.openTextDocument({
+          content: selected.code,
+          language: 'bml'
+        });
+        await vscodeInstance.window.showTextDocument(docObj);
+      }
+    } catch (err) {
+      vscodeInstance?.window?.showErrorMessage?.(`Failed to extract attribute BML formula: ${err.message}`);
     }
   });
 }
@@ -261,6 +393,7 @@ module.exports = {
   copyTableNameCommand,
   generateBmqlQueryCommand,
   openActionBmlCommand,
+  openAttributeBmlCommand,
   openRuleBmlCommand,
   createTestFixtureCommand
 };

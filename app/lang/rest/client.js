@@ -1,5 +1,6 @@
 const https = require("https");
 const fs = require("fs");
+const { safeAppendLog } = require("@/lang/rest/logger");
 
 // Builds the path + query string for a request, e.g.
 //   buildPath('/rest/v18/bml/library/functions', { offset: 0, limit: 1000 })
@@ -173,10 +174,8 @@ async function request({
         headers: redactHeadersForLog(headers),
         body: body,
       };
-      try {
-        const timestamp = new Date().toISOString();
-        fs.appendFileSync(logFilePath, `[${timestamp}] REQUEST:\n${JSON.stringify(requestInfo, null, 2)}\n\n`);
-      } catch (e) {}
+      const timestamp = new Date().toISOString();
+      safeAppendLog(logFilePath, `[${timestamp}] REQUEST:\n${JSON.stringify(requestInfo, null, 2)}\n\n`);
     }
 
     let response;
@@ -220,10 +219,8 @@ async function request({
         headers: redactHeadersForLog(response.headers),
         text: response.text,
       };
-      try {
-        const timestamp = new Date().toISOString();
-        fs.appendFileSync(logFilePath, `[${timestamp}] RESPONSE:\n${JSON.stringify(responseInfo, null, 2)}\n\n-------------------------\n\n`);
-      } catch (e) {}
+      const timestamp = new Date().toISOString();
+      safeAppendLog(logFilePath, `[${timestamp}] RESPONSE:\n${JSON.stringify(responseInfo, null, 2)}\n\n-------------------------\n\n`);
     }
 
     let parsedBody = response.body !== undefined ? response.body : response.text;

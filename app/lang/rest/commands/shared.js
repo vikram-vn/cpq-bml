@@ -3,6 +3,7 @@ const pathLib = require('path');
 const api = require('@/lang/rest/api');
 const config = require('@/lang/rest/config');
 const metadataLib = require('@/lang/rest/metadata');
+const { safeAppendLog } = require('@/lang/rest/logger');
 
 // e.g. "calculateDiscount" -> "Calculate Discount"
 function toDisplayName(input) {
@@ -400,7 +401,7 @@ function appendDebugOutputToFile(logPath, variableName, returnVal) {
         ? String(returnVal)
         : '(no output)';
     const entry = `${timestamp} [${variableName}] Output:\n${value}\n${'─'.repeat(60)}\n`;
-    try { fs.appendFileSync(logPath, entry, 'utf8'); } catch (e) {}
+    safeAppendLog(logPath, entry);
 }
 
 // logPath comes from config.getDebugPrintLogPath(); pass null to skip.
@@ -408,7 +409,7 @@ function appendDebugPrintToFile(logPath, variableName, printText) {
     if (!logPath || !printText) return;
     const timestamp = getTimestamp();
     const entry = `${timestamp} [${variableName}] Print:\n${String(printText)}\n${'─'.repeat(60)}\n`;
-    try { fs.appendFileSync(logPath, entry, 'utf8'); } catch (e) {}
+    safeAppendLog(logPath, entry);
 }
 
 

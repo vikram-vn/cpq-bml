@@ -21,7 +21,18 @@ const {
   getCommerceProcess,
   getCommerceDocument,
   getWorkspaceRoot,
+  getSettings,
 } = require("@/lang/rest/config");
+const { getCpqSiteName } = require("@/lang/rest/folders");
+
+function resolveActiveSiteKey(vscodeInstance) {
+  try {
+    const s = getSettings(vscodeInstance);
+    return getCpqSiteName(s && s.siteUrl);
+  } catch {
+    return "default";
+  }
+}
 
 // In-memory cache singleton
 let extensionContext = null;
@@ -36,9 +47,16 @@ function getExtensionContext() {
   return extensionContext;
 }
 
-function clearAttributesCache(workspaceRoot) {
-  if (workspaceRoot) {
+function clearAttributesCache(workspaceRoot, siteKey) {
+  if (workspaceRoot && siteKey) {
+    delete workspaceAttributesCache[`${workspaceRoot}:${siteKey}`];
     delete workspaceAttributesCache[workspaceRoot];
+  } else if (workspaceRoot) {
+    for (const k of Object.keys(workspaceAttributesCache)) {
+      if (k === workspaceRoot || k.startsWith(`${workspaceRoot}:`)) {
+        delete workspaceAttributesCache[k];
+      }
+    }
   } else {
     workspaceAttributesCache = {};
     bundledAttributesIndex = null;
@@ -209,10 +227,14 @@ function getCacheFilePath(workspaceRoot, context) {
   return backendDir ? path.join(backendDir, COMMERCE_DIR, "oraclecpqo", "attributes.min.json") : null;
 }
 
-function loadWorkspaceAttributes(workspaceRoot, context) {
-  const cacheKey = workspaceRoot || "global";
+function loadWorkspaceAttributes(workspaceRoot, context, explicitSiteKey) {
+  const siteKey = explicitSiteKey || resolveActiveSiteKey();
+  const cacheKey = `${workspaceRoot || "global"}:${siteKey}`;
   if (workspaceAttributesCache[cacheKey]) {
     return workspaceAttributesCache[cacheKey];
+  }
+  if (workspaceRoot && workspaceAttributesCache[workspaceRoot]) {
+    return workspaceAttributesCache[workspaceRoot];
   }
 
   const index = {
@@ -247,9 +269,14 @@ function loadWorkspaceAttributes(workspaceRoot, context) {
 
   const backendDir = getMetadataStorageDir(context, workspaceRoot);
   const dirs = [];
-  if (backendDir) dirs.push(backendDir);
+  if (backendDir) {
+    dirs.push(path.join(backendDir, siteKey));
+    dirs.push(backendDir);
+  }
   if (workspaceRoot) {
+    const siteCpq = path.join(workspaceRoot, CPQ_DIR, siteKey);
     const wsCpq = path.join(workspaceRoot, CPQ_DIR);
+    dirs.push(siteCpq);
     if (wsCpq !== backendDir) dirs.push(wsCpq);
   }
 

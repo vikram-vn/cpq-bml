@@ -93,23 +93,55 @@ async function runDebugSingleExecution({
   const isCommerce = !!metadata.commerceDocument;
   const txnMetadata = JSON.parse(JSON.stringify(metadata));
 
+  let effectiveTxnId = txnId;
   if (isCommerce && txnId) {
     const loadPayload = metadataLib.buildFunctionPayload(
       txnMetadata,
       scriptText,
     );
-    loadPayload.transactionId = isNaN(Number(txnId))
-      ? txnId
-      : Number(txnId);
+    loadPayload.transactionId = isNaN(Number(effectiveTxnId))
+      ? effectiveTxnId
+      : Number(effectiveTxnId);
     loadPayload.libraryFunctions = [];
 
-    const loadResult = await api.loadTransactionData(
+    let loadResult = await api.loadTransactionData(
       context,
       vscode,
       loadPayload,
       { contextParams: "language=en,currency=USD" },
       transport,
     );
+
+    // If loadTransactionData failed, attempt resolving quote number to bs_id or bs_id to transactionID_t
+    if (!isSuccess(loadResult.statusCode)) {
+      try {
+        const queryRes = await api.getTransactions(
+          context,
+          vscode,
+          {
+            process: txnMetadata.commerceProcess,
+            document: txnMetadata.commerceDocument,
+            q: { transactionID_t: { $eq: String(txnId) } },
+            limit: 1,
+          },
+          transport,
+        );
+        const rawItems = queryRes && queryRes.body && (queryRes.body.items || queryRes.body.records || queryRes.body.results);
+        if (Array.isArray(rawItems) && rawItems.length > 0 && (rawItems[0]._id || rawItems[0].bs_id)) {
+          effectiveTxnId = rawItems[0]._id || rawItems[0].bs_id;
+          loadPayload.transactionId = isNaN(Number(effectiveTxnId))
+            ? effectiveTxnId
+            : Number(effectiveTxnId);
+          loadResult = await api.loadTransactionData(
+            context,
+            vscode,
+            loadPayload,
+            { contextParams: "language=en,currency=USD" },
+            transport,
+          );
+        }
+      } catch (err) {}
+    }
 
     if (!isSuccess(loadResult.statusCode)) {
       const message = describeError(loadResult.body);
@@ -153,10 +185,10 @@ async function runDebugSingleExecution({
     scriptText,
     parameterValues,
   );
-  if (isCommerce && txnId) {
-    payload.transactionId = isNaN(Number(txnId))
-      ? txnId
-      : Number(txnId);
+  if (isCommerce && effectiveTxnId) {
+    payload.transactionId = isNaN(Number(effectiveTxnId))
+      ? effectiveTxnId
+      : Number(effectiveTxnId);
   }
 
   const { statusCode, body } = await api.debugLibraryFunction(

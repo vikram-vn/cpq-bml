@@ -71,6 +71,7 @@ suite("settings state", () => {
       debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, concurrency: 2 },
       metadata: {
         isSynced: false,
+        isStale: false,
         updatedAt: null,
         commerceCount: 0,
         configCount: 0,

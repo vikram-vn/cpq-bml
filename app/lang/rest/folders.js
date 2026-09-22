@@ -62,10 +62,49 @@ function getDataTableFolder(workspaceRoot, vscodeOrSiteUrl, getBaseUrlFn) {
     return workspaceRoot ? pathLib.join(workspaceRoot, rel) : rel;
 }
 
+function getBackupFolder(vscodeOrSiteUrl, type = 'util', processName = '', getBaseUrlFn) {
+    const site = getCpqSiteName(vscodeOrSiteUrl, getBaseUrlFn);
+    if (type === 'util') {
+        return pathLib.join('cpq', site, 'backup', 'util');
+    }
+    const proc = processName || 'oraclecpqo';
+    if (type === 'commerce' || type === 'process') {
+        return pathLib.join('cpq', site, 'backup', proc);
+    }
+    return pathLib.join('cpq', site, 'backup', proc, type);
+}
+
+function getCommerceAttributesFolder(vscodeOrSiteUrl, processName = 'oraclecpqo', subType = 'modify', getBaseUrlFn) {
+    const site = getCpqSiteName(vscodeOrSiteUrl, getBaseUrlFn);
+    const validSubType = (subType === 'default' || subType === 'modify') ? subType : 'modify';
+    return pathLib.join('cpq', site, 'commerce', processName, 'attributes', validSubType);
+}
+
+function getCommerceActionsFolder(vscodeOrSiteUrl, processName = 'oraclecpqo', subType = 'modify', getBaseUrlFn) {
+    const site = getCpqSiteName(vscodeOrSiteUrl, getBaseUrlFn);
+    let validSubType = 'modify';
+    if (subType === 'before-formulas' || subType === 'before' || subType === 'beforeFormulas') {
+        validSubType = 'before-formulas';
+    } else if (subType === 'after-formulas' || subType === 'after' || subType === 'afterFormulas') {
+        validSubType = 'after-formulas';
+    }
+    return pathLib.join('cpq', site, 'commerce', processName, 'actions', validSubType);
+}
+
+function getConfigRulesFolder(vscodeOrSiteUrl, productFamily = 'general', subType = 'action', getBaseUrlFn) {
+    const site = getCpqSiteName(vscodeOrSiteUrl, getBaseUrlFn);
+    const validSubType = (subType === 'condition' || subType === 'action') ? subType : 'action';
+    return pathLib.join('cpq', site, 'config', productFamily, 'rules', validSubType);
+}
+
 module.exports = {
     getCpqSiteName,
     getCpqInstanceFolder,
     getUtilLibrariesFolder,
     getCommerceLibrariesFolder,
     getDataTableFolder,
+    getBackupFolder,
+    getCommerceAttributesFolder,
+    getCommerceActionsFolder,
+    getConfigRulesFolder,
 };

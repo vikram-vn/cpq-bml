@@ -29,7 +29,7 @@ async function getTransactions(
     query,
     offset = 0,
     limit = 25,
-    fields = "_id,transactionID_t",
+    fields,
     excludeFieldTypes = "yes",
     orderby,
     totalResults = true,
@@ -97,25 +97,27 @@ async function getTransactions(
   );
 
 
-  // Sanitize items so no href links are ever returned, keeping minimal _id and transactionID_t
+  // Sanitize items so no href links are ever returned, preserving all query fields
   if (result && result.body && typeof result.body === "object") {
     delete result.body.links;
-    if (Array.isArray(result.body.items)) {
-      result.body.items = result.body.items.map((item) => {
-        const clean = {
-          _id: item._id !== undefined ? String(item._id) : undefined,
-          transactionID_t:
-            item.transactionID_t !== undefined
-              ? String(item.transactionID_t)
-              : (item.transactionId !== undefined ? String(item.transactionId) : undefined),
-        };
+    const rawList = result.body.items || result.body.records || result.body.results;
+    if (Array.isArray(rawList)) {
+      const sanitized = rawList.map((item) => {
+        const clean = {};
         for (const [k, v] of Object.entries(item)) {
-          if (k !== "links" && k !== "href" && clean[k] === undefined) {
+          if (k !== "links" && k !== "href") {
             clean[k] = v;
           }
         }
+        if (clean._id !== undefined) clean._id = String(clean._id);
+        if (clean.bs_id !== undefined && clean._id === undefined) clean._id = String(clean.bs_id);
+        if (clean.transactionID_t !== undefined) clean.transactionID_t = String(clean.transactionID_t);
+        else if (clean.transactionId !== undefined) clean.transactionID_t = String(clean.transactionId);
         return clean;
       });
+      result.body.items = sanitized;
+      if (result.body.records) result.body.records = sanitized;
+      if (result.body.results) result.body.results = sanitized;
     }
   }
 

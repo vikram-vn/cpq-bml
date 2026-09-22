@@ -302,7 +302,7 @@ suite('Comprehensive Quick Fixes Test Suite', () => {
             diag.code = 'bml-float-equality';
 
             const fixes = getQualityFixes(doc, diag, diag.range, '');
-            assert.ok(fixes.some(f => f.title.includes('abs(rPrice_29) > 0.000001')), 'Should offer abs() tolerance quick fix');
+            assert.ok(fixes.some(f => f.title.includes('fabs(rPrice_29) > 0') || f.title.includes('abs(rPrice_29) > 0')), 'Should offer fabs() > 0 tolerance quick fix');
         });
     });
 

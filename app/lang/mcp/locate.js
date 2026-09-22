@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('@/lang/rest/config');
 const metadataLib = require('@/lang/rest/metadata');
+const foldersLib = require('@/lang/rest/folders');
 
 const AI_FILE_SUFFIX = '_ai';
 const LEGACY_AI_FOLDER_SUFFIX = '-AI';
@@ -81,6 +82,34 @@ function legacyAiCopyPathFor(canonicalBmlPath, variableName) {
     return path.join(legacyDir, `${variableName}.bml`);
 }
 
+// Creates a pristine backup in cpq/<site>/backup/util or cpq/<site>/backup/<process>
+// before the AI modifies the function for the first time.
+function createFirstTimeBackup(vscode, canonicalBmlPath, variableName) {
+    try {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders || workspaceFolders.length === 0) return null;
+        const wsRoot = workspaceFolders[0].uri.fsPath;
+        const inferred = metadataLib.inferCommerceFromPath(canonicalBmlPath);
+        const type = inferred ? 'process' : 'util';
+        const proc = inferred ? inferred.commerceProcess : '';
+        const relBackupDir = foldersLib.getBackupFolder(vscode, type, proc, config.getBaseUrl);
+        const backupDir = path.join(wsRoot, relBackupDir, variableName);
+        fs.mkdirSync(backupDir, { recursive: true });
+
+        const backupBmlPath = path.join(backupDir, `${variableName}.bml`);
+        if (!fs.existsSync(backupBmlPath)) {
+            fs.copyFileSync(canonicalBmlPath, backupBmlPath);
+            const canonicalMetaPath = metadataLib.bmlPathToMetaPath(canonicalBmlPath);
+            if (fs.existsSync(canonicalMetaPath)) {
+                fs.copyFileSync(canonicalMetaPath, metadataLib.bmlPathToMetaPath(backupBmlPath));
+            }
+        }
+        return backupBmlPath;
+    } catch (e) {
+        return null;
+    }
+}
+
 // MCP tools edit the AI working copy, never the canonical pulled file, so the original
 // stays a pristine diff baseline and re-pulling never clobbers AI edits.
 function findOrCreateAiCopy(vscode, variableName) {
@@ -92,6 +121,7 @@ function findOrCreateAiCopy(vscode, variableName) {
 
     const aiBmlPath = aiCopyPathFor(canonicalBmlPath, variableName);
     if (!fs.existsSync(aiBmlPath)) {
+        createFirstTimeBackup(vscode, canonicalBmlPath, variableName);
         fs.copyFileSync(canonicalBmlPath, aiBmlPath);
 
         const canonicalMetaPath = metadataLib.bmlPathToMetaPath(canonicalBmlPath);
@@ -121,4 +151,4 @@ function resetAiCopy(vscode, variableName) {
     return findOrCreateAiCopy(vscode, variableName);
 }
 
-module.exports = { findLocalBmlPath, findOrCreateAiCopy, resetAiCopy };
+module.exports = { findLocalBmlPath, findOrCreateAiCopy, resetAiCopy, createFirstTimeBackup };

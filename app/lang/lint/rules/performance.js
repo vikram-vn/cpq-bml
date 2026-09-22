@@ -70,6 +70,18 @@ function isCpqLineItemArgs(args) {
     return false;
 }
 
+function isTemplateOrHtmlArgs(args) {
+    if (!args || args.length === 0) return false;
+    const htmlXmlTagRegex = /<(?:\/?[a-zA-Z][a-zA-Z0-9]*\b|!--)/;
+    for (let i = 1; i < args.length; i++) {
+        const arg = args[i].trim();
+        if ((arg.startsWith('"') || arg.startsWith("'")) && htmlXmlTagRegex.test(arg)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function checkPerformance(cleanText, noStringsText, doc) {
     const diagnostics = [];
 
@@ -354,7 +366,8 @@ function checkPerformance(cleanText, noStringsText, doc) {
                 const args = splitArgumentsList(argsText);
                 if (args.length > 3) {
                     // Do not flag canonical CPQ line item format: sbappend(sb, docNum, "~var~", val, "|");
-                    if (isCpqLineItemArgs(args)) {
+                    // Nor HTML / XML template builders: sbappend(html, "<tr><td>...", val, "</td></tr>");
+                    if (isCpqLineItemArgs(args) || isTemplateOrHtmlArgs(args)) {
                         continue;
                     }
                     const startPos = doc.positionAt(match.index);

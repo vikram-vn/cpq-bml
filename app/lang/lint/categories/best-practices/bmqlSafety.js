@@ -31,25 +31,32 @@ function checkBmqlSafety(cleanText, noStringsText, doc) {
 
         if (endIdx !== -1) {
             const argsText = cleanText.slice(startIdx + match[0].length, endIdx);
+            const firstArg = (splitTopLevelArgs(argsText)[0] || '').trim();
             let inSingleQuote = false;
             let inDoubleQuote = false;
-            let hasDynamicConcat = false;
             let queryLiteralText = '';
 
-            for (let j = 0; j < argsText.length; j++) {
-                const char = argsText[j];
+            for (let j = 0; j < firstArg.length; j++) {
+                const char = firstArg[j];
                 if (char === "'" && !inDoubleQuote) {
                     inSingleQuote = !inSingleQuote;
                 } else if (char === '"' && !inSingleQuote) {
                     inDoubleQuote = !inDoubleQuote;
-                } else if (char === '+' && !inSingleQuote && !inDoubleQuote) {
-                    hasDynamicConcat = true;
                 }
 
                 if (inSingleQuote || inDoubleQuote) {
                     queryLiteralText += char;
                 }
             }
+
+            // If '+' exists, strip all string literals; if non-literal tokens remain (e.g. variables, function calls),
+            // then it's dynamic query concatenation. If only '+' and whitespace remain, it's safe static literal concatenation.
+            const nonLiteralRemainder = firstArg
+                .replace(/"(?:[^"\\]|\\.)*"/gs, '')
+                .replace(/'(?:[^'\\]|\\.)*'/gs, '')
+                .trim();
+            const hasConcatOperator = nonLiteralRemainder.includes('+');
+            const hasDynamicConcat = hasConcatOperator && nonLiteralRemainder.replace(/\+/g, '').trim().length > 0;
 
             const startPos = doc.positionAt(startIdx);
             const endPos = doc.positionAt(endIdx + 1);

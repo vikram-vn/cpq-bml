@@ -241,8 +241,20 @@ function inspectMetadataStatus(dirs, vscode, backendDir) {
     canSync = Boolean(enabled && siteUrl);
   }
 
+  const STALE_THRESHOLD_MS = 24 * 60 * 60 * 1000;
+  let isStale = false;
+  if (isSynced && updatedAt) {
+    try {
+      const age = Date.now() - new Date(updatedAt).getTime();
+      if (!isNaN(age) && age > STALE_THRESHOLD_MS) {
+        isStale = true;
+      }
+    } catch {}
+  }
+
   return {
     isSynced,
+    isStale,
     updatedAt,
     commerceCount,
     configCount,
