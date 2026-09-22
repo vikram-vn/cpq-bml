@@ -174,8 +174,12 @@ suite('CPQ Comprehensive Workflow Test Cases (End-to-End)', () => {
         };
       };
 
+      const config = require('@/lang/rest/config');
+      const fakeSecrets = {
+        [config.getPasswordSecretKey('https://mysite.bigmachines.com', 'admin')]: 'pass123'
+      };
       const res = await api.getTransactions(
-        createFakeContext(),
+        createFakeContext(fakeSecrets),
         vscode,
         { limit: 10 },
         transport
