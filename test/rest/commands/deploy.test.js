@@ -206,6 +206,70 @@ suite("BML REST commands - deploy", () => {
       assert.ok(timeoutWarning.includes("557"));
     }));
 
+  test("recovers from transient network errors while polling task status", () =>
+    withTempDir(async (tmpDir) => {
+      const { editor } = makeCommerceEditor(tmpDir);
+      const infos = [];
+      const vscode = makeDeployVscode(editor, {
+        showInformationMessage: (m) => infos.push(m),
+      });
+
+      const context = await makeAuthedContext();
+
+      let pollAttempt = 0;
+      const transport = async (opts) => {
+        if (opts.path.includes("/deploymentCenter/actions")) {
+          return {
+            statusCode: 200,
+            headers: { "content-type": "application/json" },
+            text: JSON.stringify({ taskId: 558 }),
+          };
+        }
+        pollAttempt++;
+        if (pollAttempt === 1) {
+          throw new Error("Temporary network glitch");
+        }
+        return {
+          statusCode: 200,
+          headers: { "content-type": "application/json" },
+          text: JSON.stringify({ id: 558, status: "Completed" }),
+        };
+      };
+
+      await commands.runDeployCommerceProcess(context, vscode, fakeResultsTerminal(), {
+        transport,
+        pollIntervalMs: 1,
+        pollTimeoutMs: 100,
+      });
+
+      assert.ok(infos[0].includes("deployed"), "succeeds despite 1 transient poll failure");
+    }));
+
+  test("handles deployment request timeout error gracefully", () =>
+    withTempDir(async (tmpDir) => {
+      const { editor } = makeCommerceEditor(tmpDir);
+      const errors = [];
+      const vscode = makeDeployVscode(editor, {
+        showErrorMessage: (m) => errors.push(m),
+      });
+
+      const context = await makeAuthedContext();
+
+      const transport = async () => {
+        const err = new Error("Request timeout after 120 seconds");
+        err.code = "ETIMEDOUT";
+        throw err;
+      };
+
+      const res = await commands.runDeployCommerceProcess(context, vscode, fakeResultsTerminal(), {
+        transport,
+      });
+
+      assert.strictEqual(res.success, false);
+      assert.strictEqual(res.isTimeout, true);
+      assert.ok(errors[0].includes("timed out"));
+    }));
+
   suite("runDeployUtilFunctions (mass deploy)", () => {
     function listTransport(extraHandlers = {}) {
       return async (opts) => {
@@ -411,6 +475,28 @@ suite("BML REST commands - deploy", () => {
         await commands.runDeployCurrentFile(context, vscode, fakeResultsTerminal(), { transport });
 
         assert.ok(errors[0].includes("missingFn"));
+      }));
+
+    test("handles util function deployment timeout gracefully", () =>
+      withTempDir(async (tmpDir) => {
+        const { editor } = makeUtilEditor(tmpDir);
+        const errors = [];
+        const vscode = makeDeployVscode(editor, {
+          showErrorMessage: (m) => errors.push(m),
+        });
+
+        const context = await makeAuthedContext();
+        const transport = async () => {
+          const err = new Error("Request timeout after 120 seconds");
+          err.code = "ETIMEDOUT";
+          throw err;
+        };
+
+        const res = await commands.runDeployCurrentFile(context, vscode, fakeResultsTerminal(), { transport });
+
+        assert.strictEqual(res.success, false);
+        assert.strictEqual(res.isTimeout, true);
+        assert.ok(errors[0].includes("timed out"));
       }));
   });
 });

@@ -1,6 +1,6 @@
 const api = require("@/lang/rest/api");
 const metadataLib = require("@/lang/rest/metadata");
-const { getCommerceProcess } = require("@/lang/rest/config");
+const { getCommerceProcess, getSettings } = require("@/lang/rest/config");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
 const {
   getTimestamp,
@@ -18,23 +18,78 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function handleDeployError(err, startedAt, resultsTerminal, vscode, prefix = "deploy") {
+  const isTimeout = /timeout/i.test(err && (err.message || String(err))) || (err && err.code === "ETIMEDOUT");
+  const elapsed = formatElapsed(startedAt);
+  const rawMsg = (err && (err.message || String(err))) || "unknown error";
+  const detailedMsg = isTimeout
+    ? `CPQ-BML: ${prefix} request timed out (${elapsed}). The CPQ server may still be deploying in the background. You can increase the deployment timeout in settings ('cpqBml.rest.deployTimeoutMs') or check the CPQ Deployment Center.`
+    : `CPQ-BML: ${prefix} failed: ${rawMsg} (${elapsed})`;
+
+  if (resultsTerminal) {
+    writeTerminalMessage(
+      resultsTerminal,
+      isTimeout ? "Deployment timed out: " : "Deployment error: ",
+      `${rawMsg} (${elapsed})`,
+      "\x1b[31m",
+    );
+    if (isTimeout) {
+      resultsTerminal.writeLine(
+        `\x1b[33m${getTimestamp()} Tip: Large scripts or instances with high load take longer to compile on CPQ. Increase cpqBml.rest.deployTimeoutMs in Settings.\x1b[0m`,
+      );
+    }
+    resultsTerminal.show();
+  }
+
+  if (vscode && vscode.window && typeof vscode.window.showErrorMessage === "function") {
+    const actions = isTimeout ? ["Open Deployment Center", "Open Settings"] : [];
+    const promise = vscode.window.showErrorMessage(detailedMsg, ...actions);
+    if (promise && typeof promise.then === "function") {
+      promise.then((choice) => {
+        if (choice === "Open Deployment Center" && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+          vscode.commands.executeCommand("cpqBml.cloud.refreshDeploymentCenter");
+        } else if (choice === "Open Settings" && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+          vscode.commands.executeCommand("workbench.action.openSettings", "cpqBml.rest");
+        }
+      });
+    }
+  }
+
+  return {
+    success: false,
+    errorMessage: detailedMsg,
+    isTimeout,
+    elapsedMs: Date.now() - startedAt,
+  };
+}
+
 // Polls until the task leaves the queued/running state, so we report the real outcome instead of "queued" as "deployed".
 async function pollTaskStatus(
   context,
   vscode,
   taskId,
   transport,
-  { intervalMs = 3000, timeoutMs = 120000 } = {},
+  { intervalMs = 3000, timeoutMs = 120000, resultsTerminal } = {},
 ) {
   const deadline = Date.now() + timeoutMs;
+  let lastBody = null;
   for (;;) {
-    const result = await api.getTask(context, vscode, taskId, transport);
-    const status = isSuccess(result.statusCode) && result.body && result.body.status;
-    if (status && /complete|error|fail/i.test(status)) {
-      return { status, body: result.body };
+    try {
+      const result = await api.getTask(context, vscode, taskId, transport);
+      if (result && result.body) lastBody = result.body;
+      const status = isSuccess(result.statusCode) && result.body && result.body.status;
+      if (status && /complete|error|fail/i.test(status)) {
+        return { status, body: result.body, timedOut: false };
+      }
+    } catch (err) {
+      if (resultsTerminal) {
+        resultsTerminal.writeLine(
+          `\x1b[90m${getTimestamp()} Transient issue polling task ${taskId}: ${err.message || err}. Retrying...\x1b[0m`,
+        );
+      }
     }
     if (Date.now() >= deadline) {
-      return { status: null, body: result.body };
+      return { status: null, body: lastBody, timedOut: true };
     }
     await delay(intervalMs);
   }
@@ -78,13 +133,22 @@ async function runDeployCommerceProcess(
   writeRunningLine(resultsTerminal, "Deploy Commerce Process", processVarName);
   resultsTerminal.show();
 
+  const settings = getSettings(vscode);
+  const effectivePollInterval = typeof pollIntervalMs === "number" ? pollIntervalMs : (settings.pollIntervalMs || 3000);
+  const effectivePollTimeout = typeof pollTimeoutMs === "number" ? pollTimeoutMs : (settings.pollTimeoutMs || 300000);
+
   const startedAt = Date.now();
-  const result = await api.deployCommerceProcess(
-    context,
-    vscode,
-    processVarName,
-    transport,
-  );
+  let result;
+  try {
+    result = await api.deployCommerceProcess(
+      context,
+      vscode,
+      processVarName,
+      transport,
+    );
+  } catch (err) {
+    return handleDeployError(err, startedAt, resultsTerminal, vscode, `Commerce process "${processVarName}" deployment`);
+  }
 
   if (!isSuccess(result.statusCode)) {
     const message = describeError(result.body);
@@ -118,8 +182,9 @@ async function runDeployCommerceProcess(
   resultsTerminal.show();
 
   const taskResult = await pollTaskStatus(context, vscode, taskId, transport, {
-    intervalMs: pollIntervalMs,
-    timeoutMs: pollTimeoutMs,
+    intervalMs: effectivePollInterval,
+    timeoutMs: effectivePollTimeout,
+    resultsTerminal,
   });
   const elapsed = formatElapsed(startedAt);
 
@@ -150,7 +215,16 @@ async function runDeployCommerceProcess(
   );
   resultsTerminal.show();
   const message = `CPQ-BML: commerce process deployment (task ${taskId}) is still running - check the CPQ Deployment Center.`;
-  vscode.window.showWarningMessage(message);
+  const warnPromise = vscode.window.showWarningMessage(message, "Open Deployment Center", "Check Task Status");
+  if (warnPromise && typeof warnPromise.then === "function") {
+    warnPromise.then((choice) => {
+      if (choice === "Open Deployment Center" && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+        vscode.commands.executeCommand("cpqBml.cloud.refreshDeploymentCenter");
+      } else if (choice === "Check Task Status" && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+        vscode.commands.executeCommand("cpqBml.cloud.viewTaskDetails", { id: taskId, taskId });
+      }
+    });
+  }
   return { success: true, processVarName, status: "running", message, taskId, elapsedMs: Date.now() - startedAt };
 }
 
@@ -228,12 +302,17 @@ async function runDeployCurrentFile(
   resultsTerminal.show();
 
   const startedAt = Date.now();
-  const deployResult = await api.deployLibraryFunctions(
-    context,
-    vscode,
-    [metadataLib.buildDeployItem(metadata)],
-    transport,
-  );
+  let deployResult;
+  try {
+    deployResult = await api.deployLibraryFunctions(
+      context,
+      vscode,
+      [metadataLib.buildDeployItem(metadata)],
+      transport,
+    );
+  } catch (err) {
+    return handleDeployError(err, startedAt, resultsTerminal, vscode, `Deploy "${metadata.variableName}"`);
+  }
 
   if (!isSuccess(deployResult.statusCode)) {
     const message = describeError(deployResult.body);
@@ -322,7 +401,12 @@ async function runDeployUtilFunctions(
   resultsTerminal.show();
 
   const startedAt = Date.now();
-  const deployResult = await api.deployLibraryFunctions(context, vscode, items, transport);
+  let deployResult;
+  try {
+    deployResult = await api.deployLibraryFunctions(context, vscode, items, transport);
+  } catch (err) {
+    return handleDeployError(err, startedAt, resultsTerminal, vscode, `Mass deploy (${items.length} functions)`);
+  }
 
   if (!isSuccess(deployResult.statusCode)) {
     const message = describeError(deployResult.body);

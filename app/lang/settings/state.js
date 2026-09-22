@@ -41,7 +41,11 @@ async function buildState(context, vscode) {
             restVersion: settings.restVersion,
             commerceProcess: settings.commerceProcess,
             commerceDocument: settings.commerceDocument,
-            productFamily: settings.productFamily || ''
+            productFamily: settings.productFamily || '',
+            deployTimeoutMs: settings.deployTimeoutMs,
+            requestTimeoutMs: settings.requestTimeoutMs,
+            pollTimeoutMs: settings.pollTimeoutMs,
+            pollIntervalMs: settings.pollIntervalMs,
         },
         features: {
             lint: cpqConfig.get('features.lint', true),

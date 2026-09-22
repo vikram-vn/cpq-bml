@@ -41,6 +41,10 @@ suite("settings state", () => {
         commerceProcess: "myProcess",
         commerceDocument: "myDoc",
         productFamily: "",
+        deployTimeoutMs: 120000,
+        requestTimeoutMs: 60000,
+        pollTimeoutMs: 300000,
+        pollIntervalMs: 3000,
       },
       features: {
         lint: false,

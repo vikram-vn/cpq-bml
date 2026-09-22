@@ -4,7 +4,7 @@ const {
   functionsPath,
   getEffectiveRestVersion,
 } = require("@/lang/rest/apiCore");
-const { getRestVersion } = require("@/lang/rest/config");
+const { getRestVersion, getSettings } = require("@/lang/rest/config");
 const apiCommerce = require("@/lang/rest/apiCommerce");
 const apiConfig = require("@/lang/rest/apiConfig");
 const apiParts = require("@/lang/rest/apiParts");
@@ -109,7 +109,8 @@ function validateLibraryFunction(context, vscode, payload, transport) {
 
 // POST /rest/<version>/bml/library/functions/actions/deploy, body: { items: [{ namespace, type, variableName }] }.
 // Accepts one or more items so multiple util functions can be deployed in a single call.
-function deployLibraryFunctions(context, vscode, items, transport, metadata) {
+function deployLibraryFunctions(context, vscode, items, transport, metadata, options = {}) {
+  const timeoutMs = (options && options.timeoutMs) || (getSettings && getSettings(vscode).deployTimeoutMs) || 120000;
   return call(
     context,
     vscode,
@@ -117,6 +118,7 @@ function deployLibraryFunctions(context, vscode, items, transport, metadata) {
       path: `${functionsPath(vscode, metadata)}/actions/deploy`,
       method: "POST",
       body: { items },
+      timeoutMs,
     },
     transport,
   );
@@ -208,8 +210,9 @@ function setOverride(
 
 // POST /rest/<version>/commerceProcessSetups/{processVarName}/deploymentCenter/actions
 // scheduledTime must be ISO 8601 — the "MM/DD/YYYY h:mm AM/PM" format from Oracle's own docs is rejected live.
-function deployCommerceProcess(context, vscode, processVarName, transport) {
+function deployCommerceProcess(context, vscode, processVarName, transport, options = {}) {
   const version = getRestVersion(vscode);
+  const timeoutMs = (options && options.timeoutMs) || (getSettings && getSettings(vscode).deployTimeoutMs) || 120000;
   return call(
     context,
     vscode,
@@ -221,6 +224,7 @@ function deployCommerceProcess(context, vscode, processVarName, transport) {
         scheduledTime: new Date().toISOString(),
         sendEmail: false,
       },
+      timeoutMs,
     },
     transport,
   );

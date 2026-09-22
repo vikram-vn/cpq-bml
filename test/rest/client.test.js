@@ -401,5 +401,26 @@ suite("BML REST client", () => {
     assert.strictEqual(res.statusCode, 200);
     assert.deepStrictEqual(res.body, { restored: true });
   });
+
+  test("request() forwards timeoutMs to transport", async () => {
+    let capturedTimeoutMs;
+    const fakeTransport = async (opts) => {
+      capturedTimeoutMs = opts.timeoutMs;
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        text: JSON.stringify({ ok: true }),
+      };
+    };
+
+    await request({
+      baseUrl: "https://sitename.bigmachines.com",
+      path: "/rest/v18/bml/library/functions",
+      timeoutMs: 120000,
+      transport: fakeTransport,
+    });
+
+    assert.strictEqual(capturedTimeoutMs, 120000);
+  });
 });
 

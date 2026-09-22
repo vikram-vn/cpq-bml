@@ -126,13 +126,37 @@ async function runSaveCurrentFile(
     return { success: true, deployed: false, message, elapsedMs: Date.now() - startedAt };
   }
 
-  const deployResult = await api.deployLibraryFunctions(
-    context,
-    vscode,
-    [metadataLib.buildDeployItem(metadata)],
-    transport,
-    metadata,
-  );
+  let deployResult;
+  try {
+    deployResult = await api.deployLibraryFunctions(
+      context,
+      vscode,
+      [metadataLib.buildDeployItem(metadata)],
+      transport,
+      metadata,
+    );
+  } catch (err) {
+    const isTimeout = /timeout/i.test(err && (err.message || String(err))) || (err && err.code === "ETIMEDOUT");
+    const elapsed = formatElapsed(startedAt);
+    const rawMsg = (err && (err.message || String(err))) || "unknown error";
+    const errorMessage = isTimeout
+      ? `CPQ-BML: ${metadata.variableName} saved to CPQ, but deploy step timed out (${elapsed}). The CPQ server may still be deploying in the background.`
+      : `CPQ-BML: ${metadata.variableName} saved to CPQ, but deploy failed: ${rawMsg}`;
+
+    writeTerminalMessage(
+      resultsTerminal,
+      isTimeout ? "Deploy step timed out: " : "Deploy step failed: ",
+      `${rawMsg} (${elapsed})`,
+      "\x1b[33m",
+    );
+    resultsTerminal.show();
+    vscode.window.showWarningMessage(errorMessage);
+    if (vscode.commands && typeof vscode.commands.executeCommand === "function") {
+      vscode.commands.executeCommand("cpqBml.internal.refreshStatus");
+    }
+    return { success: true, deployed: false, message: errorMessage, elapsedMs: Date.now() - startedAt };
+  }
+
   if (!isSuccess(deployResult.statusCode)) {
     const message = describeError(deployResult.body);
     writeTerminalMessage(

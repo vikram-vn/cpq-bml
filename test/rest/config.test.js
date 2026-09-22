@@ -26,6 +26,10 @@ suite("BML REST config", () => {
       commerceDocument: "transaction",
       productFamily: "",
       pullFolder: "my-library",
+      requestTimeoutMs: 60000,
+      deployTimeoutMs: 120000,
+      pollTimeoutMs: 300000,
+      pollIntervalMs: 3000,
       debugLog: false,
       logOutputToFile: false,
       showResultsAsTable: false,
@@ -44,12 +48,32 @@ suite("BML REST config", () => {
       commerceDocument: "transaction",
       productFamily: "",
       pullFolder: "library",
+      requestTimeoutMs: 60000,
+      deployTimeoutMs: 120000,
+      pollTimeoutMs: 300000,
+      pollIntervalMs: 3000,
       debugLog: false,
       logOutputToFile: false,
       showResultsAsTable: false,
       debugConcurrency: 2,
     });
     assert.strictEqual(config.DEFAULT_REST_VERSION, "v18");
+  });
+
+  test("getSettings reads custom timeout configurations", () => {
+    const vscode = createFakeVscode({
+      config: {
+        "rest.deployTimeoutMs": 180000,
+        "rest.requestTimeoutMs": 45000,
+        "rest.pollTimeoutMs": 600000,
+        "rest.pollIntervalMs": 5000,
+      },
+    });
+    const s = config.getSettings(vscode);
+    assert.strictEqual(s.deployTimeoutMs, 180000);
+    assert.strictEqual(s.requestTimeoutMs, 45000);
+    assert.strictEqual(s.pollTimeoutMs, 600000);
+    assert.strictEqual(s.pollIntervalMs, 5000);
   });
 
   test("getSettings reads debug.logRestDetails setting when configured", () => {

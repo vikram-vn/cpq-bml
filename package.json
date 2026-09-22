@@ -1393,6 +1393,34 @@
           "default": "",
           "description": "Product Family variable name used for configuration operations and attribute sync (e.g. 'servers', 'telecom'). Leave blank or set to '_allProductFamilies' to discover and sync all product families."
         },
+        "cpqBml.rest.deployTimeoutMs": {
+          "type": "integer",
+          "default": 120000,
+          "minimum": 10000,
+          "maximum": 600000,
+          "description": "Timeout in milliseconds for deploying util functions or commerce processes to Oracle CPQ (default: 120000 ms / 2 minutes). Increase this value if you experience deployment timeouts."
+        },
+        "cpqBml.rest.requestTimeoutMs": {
+          "type": "integer",
+          "default": 60000,
+          "minimum": 5000,
+          "maximum": 300000,
+          "description": "Default timeout in milliseconds for standard Oracle CPQ REST API requests (default: 60000 ms / 60 seconds)."
+        },
+        "cpqBml.rest.pollTimeoutMs": {
+          "type": "integer",
+          "default": 300000,
+          "minimum": 10000,
+          "maximum": 1800000,
+          "description": "Maximum time in milliseconds to poll asynchronous deployment tasks before returning (default: 300000 ms / 5 minutes)."
+        },
+        "cpqBml.rest.pollIntervalMs": {
+          "type": "integer",
+          "default": 3000,
+          "minimum": 1000,
+          "maximum": 30000,
+          "description": "Interval in milliseconds between task status checks during asynchronous deployment task polling (default: 3000 ms / 3 seconds)."
+        },
         "cpqBml.features.lint": {
           "type": "boolean",
           "default": true,

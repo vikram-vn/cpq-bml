@@ -133,6 +133,50 @@ export default function OperationsTab({ active, rest = {}, drafts, changeDraft, 
                     />
                     <p className="field-hint">Target product family for configuration sync (e.g. servers, telecom). Leave blank for all families.</p>
                 </div>
+
+                <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--vscode-widget-border, rgba(128,128,128,0.2))' }}>
+                    <h3 style={{ fontSize: '0.95em', fontWeight: 600, marginBottom: '8px' }}>Timeouts &amp; Polling</h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div className="field">
+                            <label htmlFor="deployTimeoutMs">Deploy Timeout (Seconds)</label>
+                            <input
+                                id="deployTimeoutMs"
+                                type="number"
+                                min="10"
+                                max="600"
+                                value={
+                                    drafts['rest.deployTimeoutMs'] !== undefined
+                                        ? Math.round(drafts['rest.deployTimeoutMs'] / 1000)
+                                        : Math.round((rest.deployTimeoutMs || 120000) / 1000)
+                                }
+                                onChange={(e) => {
+                                    const val = parseInt(e.target.value, 10);
+                                    if (!isNaN(val)) changeDraft('rest.deployTimeoutMs', Math.max(10, Math.min(600, val)) * 1000);
+                                }}
+                            />
+                            <p className="field-hint">Timeout for deploying functions &amp; commerce processes (default: 120s)</p>
+                        </div>
+                        <div className="field">
+                            <label htmlFor="pollTimeoutMs">Task Poll Timeout (Seconds)</label>
+                            <input
+                                id="pollTimeoutMs"
+                                type="number"
+                                min="10"
+                                max="1800"
+                                value={
+                                    drafts['rest.pollTimeoutMs'] !== undefined
+                                        ? Math.round(drafts['rest.pollTimeoutMs'] / 1000)
+                                        : Math.round((rest.pollTimeoutMs || 300000) / 1000)
+                                }
+                                onChange={(e) => {
+                                    const val = parseInt(e.target.value, 10);
+                                    if (!isNaN(val)) changeDraft('rest.pollTimeoutMs', Math.max(10, Math.min(1800, val)) * 1000);
+                                }}
+                            />
+                            <p className="field-hint">Max wait time for async deployment tasks on CPQ (default: 300s)</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section className="card" style={{ marginTop: '20px' }}>

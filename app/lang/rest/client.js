@@ -13,7 +13,7 @@ function buildPath(path, query) {
   return `${path}?${params.join("&")}`;
 }
 
-function defaultTransport({ hostname, port, path, method, headers, body, signal }) {
+function defaultTransport({ hostname, port, path, method, headers, body, signal, timeoutMs = 60000 }) {
   return new Promise((resolve, reject) => {
     if (signal && signal.aborted) {
       return reject(new Error("Request aborted"));
@@ -43,8 +43,12 @@ function defaultTransport({ hostname, port, path, method, headers, body, signal 
       signal.addEventListener("abort", onAbort, { once: true });
     }
 
-    req.setTimeout(30000, () => {
-      req.destroy(new Error("Request timeout after 30 seconds"));
+    const effectiveTimeoutMs = typeof timeoutMs === "number" && timeoutMs > 0 ? timeoutMs : 60000;
+    req.setTimeout(effectiveTimeoutMs, () => {
+      const sec = Math.round(effectiveTimeoutMs / 1000);
+      const err = new Error(`Request timeout after ${sec} seconds`);
+      err.code = "ETIMEDOUT";
+      req.destroy(err);
     });
     req.on("error", (err) => {
       if (signal && onAbort) signal.removeEventListener("abort", onAbort);
@@ -136,6 +140,7 @@ async function request({
   includeHeaders = false,
   logFilePath,
   signal,
+  timeoutMs,
   maxRetries = 2,
   transport = defaultTransport,
 }) {
@@ -189,6 +194,7 @@ async function request({
         headers,
         body: serializedBody,
         signal,
+        timeoutMs,
       });
 
       // Handle 429 Too Many Requests and 503 Service Unavailable with backoff retry

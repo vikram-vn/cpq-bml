@@ -69,6 +69,10 @@ function getSettings(vscode) {
     const envProcess = process.env.CPQ_COMMERCE_PROCESS || "";
     const envDocument = process.env.CPQ_COMMERCE_DOCUMENT || "";
     const envProductFamily = process.env.CPQ_PRODUCT_FAMILY || "";
+    const envRequestTimeout = process.env.CPQ_REQUEST_TIMEOUT_MS ? Number(process.env.CPQ_REQUEST_TIMEOUT_MS) : 60000;
+    const envDeployTimeout = process.env.CPQ_DEPLOY_TIMEOUT_MS ? Number(process.env.CPQ_DEPLOY_TIMEOUT_MS) : 120000;
+    const envPollTimeout = process.env.CPQ_POLL_TIMEOUT_MS ? Number(process.env.CPQ_POLL_TIMEOUT_MS) : 300000;
+    const envPollInterval = process.env.CPQ_POLL_INTERVAL_MS ? Number(process.env.CPQ_POLL_INTERVAL_MS) : 3000;
 
     return {
         siteUrl: normalizeSiteUrl(getVal("connection.siteUrl", envSite)),
@@ -79,6 +83,10 @@ function getSettings(vscode) {
         commerceDocument: getVal("rest.commerceDocument", envDocument || "transaction"),
         productFamily: getVal("rest.productFamily", envProductFamily || ""),
         pullFolder: getVal("rest.pullFolder", "library"),
+        requestTimeoutMs: Math.max(5000, Number(getVal("rest.requestTimeoutMs", envRequestTimeout)) || 60000),
+        deployTimeoutMs: Math.max(10000, Number(getVal("rest.deployTimeoutMs", envDeployTimeout)) || 120000),
+        pollTimeoutMs: Math.max(10000, Number(getVal("rest.pollTimeoutMs", envPollTimeout)) || 300000),
+        pollIntervalMs: Math.max(1000, Number(getVal("rest.pollIntervalMs", envPollInterval)) || 3000),
         debugLog: Boolean(getVal("debug.logRestDetails", false)),
         logOutputToFile: Boolean(getVal("debug.logOutputToFile", false)),
         showResultsAsTable: Boolean(getVal("debug.showResultsAsTable", false)),
