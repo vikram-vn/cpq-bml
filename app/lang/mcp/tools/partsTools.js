@@ -25,8 +25,6 @@ async function listParts(context, vscode, args, transport) {
 
     try {
         const result = await api.listParts(
-            context,
-            vscode,
             { offset, limit, q, fields },
             transport,
         );
@@ -96,8 +94,6 @@ async function getPart(context, vscode, args, transport) {
 
     try {
         const result = await api.getPart(
-            context,
-            vscode,
             partNumber,
             { fields: args && args.fields },
             transport,

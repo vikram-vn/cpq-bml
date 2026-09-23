@@ -1,6 +1,7 @@
 const {
   call,
   setApiContext,
+  getApiContext,
   sanitizeRestResponse,
   functionsPath,
   getEffectiveRestVersion,
@@ -325,6 +326,8 @@ function dispatch(method, subPath, query, body, transport) {
 module.exports = {
   call,
   dispatch,
+  setApiContext,
+  getApiContext,
   functionsPath,
   listLibraryFunctions,
   listLibraryFolders,

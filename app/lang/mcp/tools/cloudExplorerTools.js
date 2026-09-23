@@ -36,7 +36,7 @@ async function listCommerceProcesses(context, vscode, args, transport) {
     try {
         if (isConfigured(vscode)) {
             try {
-                const res = await api.listCommerceProcesses(context, vscode, args || {}, transport);
+                const res = await api.listCommerceProcesses(args || {}, transport);
                 if (res && (res.statusCode === 401 || res.statusCode === 403)) {
                     const errMsg = `Live CPQ Authentication Failed (HTTP ${res.statusCode}). Check your credentials.`;
                     writeTerminalMessage(terminal, 'Auth Error: ', errMsg, '\x1b[31m');
@@ -97,7 +97,7 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
         let families = [];
 
         if (isConfigured(vscode)) {
-            const famRes = await api.listProductFamilies(context, vscode, { limit: 100 }, transport);
+            const famRes = await api.listProductFamilies({ limit: 100 }, transport);
             if (famRes && (famRes.statusCode === 401 || famRes.statusCode === 403)) {
                 const errMsg = `Live CPQ Authentication Failed (HTTP ${famRes.statusCode}). Check your credentials.`;
                 return { success: false, error: errMsg, statusCode: famRes.statusCode, log: getLines() };
@@ -134,7 +134,7 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
         for (const fam of families) {
             if (fam.productLines && fam.productLines.length > 0) continue;
             try {
-                const lineRes = await api.listProductLines(context, vscode, { productFamily: fam.variableName }, transport);
+                const lineRes = await api.listProductLines({ productFamily: fam.variableName }, transport);
                 if (lineRes && isSuccess(lineRes.statusCode)) {
                     const lineBody = safeParse(lineRes.body);
                     const rawLines = Array.isArray(lineBody) ? lineBody : (lineBody.items || []);
@@ -146,7 +146,7 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
 
                     for (const pl of fam.productLines) {
                         try {
-                            const modRes = await api.listModels(context, vscode, { productFamily: fam.variableName, productLine: pl.variableName }, transport);
+                            const modRes = await api.listModels({ productFamily: fam.variableName, productLine: pl.variableName }, transport);
                             if (modRes && isSuccess(modRes.statusCode)) {
                                 const modBody = safeParse(modRes.body);
                                 const rawMods = Array.isArray(modBody) ? modBody : (modBody.items || []);
@@ -181,11 +181,11 @@ async function listConfigurationAttributes(context, vscode, args, transport) {
         const line = args && args.productLine;
 
         if (fam && line) {
-            res = await api.listProductLineAttributes(context, vscode, { productFamily: fam, productLine: line }, transport);
+            res = await api.listProductLineAttributes({ productFamily: fam, productLine: line }, transport);
         } else if (fam) {
-            res = await api.listProductFamilyAttributes(context, vscode, { productFamily: fam }, transport);
+            res = await api.listProductFamilyAttributes({ productFamily: fam }, transport);
         } else {
-            res = await api.listConfigurationAttributes(context, vscode, { limit: 1000 }, transport);
+            res = await api.listConfigurationAttributes({ limit: 1000 }, transport);
         }
 
         if (res && isSuccess(res.statusCode)) {
@@ -219,7 +219,7 @@ async function listDeploymentTasks(context, vscode, args, transport) {
     const q = args && (args.q || args.query);
 
     try {
-        const res = await api.listTasks(context, vscode, { limit, offset, orderby, q }, transport);
+        const res = await api.listTasks({ limit, offset, orderby, q }, transport);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -265,7 +265,7 @@ async function getTransactionData(context, vscode, args, transport) {
         const process = (args && args.commerceProcess) || settings.commerceProcess || 'oraclecpqo';
         const document = (args && args.commerceDocument) || settings.commerceDocument || 'transaction';
 
-        const res = await api.getTransaction(context, vscode, transactionId, { process, document }, transport);
+        const res = await api.getTransaction(transactionId, { process, document }, transport);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {

@@ -1,4 +1,4 @@
-const { call, getEffectiveRestVersion, normalizeArgs } = require("@/lang/rest/apiCore");
+const { call, getEffectiveRestVersion, normalizeArgs, getApiContext } = require("@/lang/rest/apiCore");
 const {
   formatConfigurationAttribute,
   syncConfigurationAttributes: syncConfigImpl,
@@ -368,9 +368,10 @@ async function listModelBomMappingRules(options = {}, transport) {
 // Pulls and caches remote configuration attributes into cpq/config/<productFamily>/attributes.min.json
 async function syncConfigurationAttributes(options = {}, transport) {
   const [opts = {}, tr] = normalizeArgs(arguments);
+  const { context, vscode } = getApiContext();
   return syncConfigImpl(
-    null,
-    null,
+    context,
+    vscode,
     opts,
     tr,
     {

@@ -96,14 +96,14 @@ async function pullFunction(context, vscode, args, transport) {
     if (!match) return fail(`Function "${variableName}" was not found on CPQ.`);
 
     const nsVarName = metadataLib.namespaceVariableNameFor(match);
-    let result = await api.getLibraryFunction(context, vscode, nsVarName, transport, target);
+    let result = await api.getLibraryFunction(nsVarName, transport, target);
     if (!isSuccess(result.statusCode) && match.folderName && !nsVarName.includes('.')) {
-        const altResult = await api.getLibraryFunction(context, vscode, `${match.folderName}.${match.variableName}`, transport, target);
+        const altResult = await api.getLibraryFunction(`${match.folderName}.${match.variableName}`, transport, target);
         if (isSuccess(altResult.statusCode)) {
             result = altResult;
         }
     } else if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
-        const altResult = await api.getLibraryFunction(context, vscode, match.variableName, transport, target);
+        const altResult = await api.getLibraryFunction(match.variableName, transport, target);
         if (isSuccess(altResult.statusCode)) {
             result = altResult;
         }
@@ -306,7 +306,7 @@ async function syncCommerceAttributes(context, vscode, args, transport) {
     const startedAt = Date.now();
     terminal.writeLine(`\x1b[36m${getTimestamp()} Syncing commerce attributes and menu options from CPQ...\x1b[0m`);
 
-    const result = await api.syncCommerceAttributes(context, vscode, args, transport);
+    const result = await api.syncCommerceAttributes(args, transport);
     const count = result.count || (result.attributes ? result.attributes.length : 0);
     terminal.writeLine(`\x1b[32m${getTimestamp()} Synced ${count} commerce attributes into local cache (${formatElapsed(startedAt)})\x1b[0m`);
 
@@ -325,7 +325,7 @@ async function syncConfigurationAttributes(context, vscode, args, transport) {
     const startedAt = Date.now();
     terminal.writeLine(`\x1b[36m${getTimestamp()} Syncing configuration attributes, product families, lines, and models from CPQ...\x1b[0m`);
 
-    const result = await api.syncConfigurationAttributes(context, vscode, args || {}, transport);
+    const result = await api.syncConfigurationAttributes(args || {}, transport);
     const count = result.count || (result.attributes ? result.attributes.length : 0);
     terminal.writeLine(`\x1b[32m${getTimestamp()} Synced ${count} configuration attributes into local workspace (${formatElapsed(startedAt)})\x1b[0m`);
 

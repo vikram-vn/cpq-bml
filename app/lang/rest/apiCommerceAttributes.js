@@ -2,6 +2,7 @@ const {
   call,
   getEffectiveRestVersion,
   normalizeArgs,
+  getApiContext,
 } = require("@/lang/rest/apiCore");
 const {
   getCommerceProcess,
@@ -318,7 +319,8 @@ async function listCommerceAttributeLookupValues(options = {}, transport) {
 
 async function syncCommerceAttributes(options = {}, transport) {
   const [opts = {}, tr] = normalizeArgs(arguments);
-  return syncCommerceAttributesImpl(null, null, opts, tr, {
+  const { context, vscode } = getApiContext();
+  return syncCommerceAttributesImpl(context, vscode, opts, tr, {
     listCommerceDocuments,
     listCommerceAttributes,
     listCommerceAttributeMenuItems,

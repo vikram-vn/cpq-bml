@@ -17,7 +17,7 @@ const {
 } = require("@/lang/rest/commerceAttributes");
 const attributesApi = require("@/lang/rest/apiCommerceAttributes");
 
-function commerceDocumentsPath(arg1 = "oraclecpqo", arg2 = "transaction", arg3) {
+function commerceDocumentsPath(arg1, arg2, arg3) {
   let vscode, process, document;
   if (isContextOrVscode(arg1)) {
     vscode = arg1;

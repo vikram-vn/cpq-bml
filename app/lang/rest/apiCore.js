@@ -8,6 +8,7 @@ const {
   getCommerceProcess,
   getAuthHeader,
   getSettings,
+  setConfigContext,
 } = require("@/lang/rest/config");
 
 // Never emit instance links, hypermedia links (hrefs), or user credentials in REST API responses
@@ -56,6 +57,7 @@ let _defaultVscode = null;
 function setApiContext(context, vscode) {
   if (context) _defaultContext = context;
   if (vscode) _defaultVscode = vscode;
+  setConfigContext(context, vscode);
 }
 
 function getApiContext() {
@@ -79,9 +81,14 @@ function isContextOrVscode(val) {
 }
 
 function normalizeArgs(args) {
-  if (args && args.length >= 2 && (isContextOrVscode(args[0]) || isContextOrVscode(args[1]))) {
-    setApiContext(args[0], args[1]);
-    return Array.prototype.slice.call(args, 2);
+  if (args && args.length >= 2) {
+    if (isContextOrVscode(args[0]) || isContextOrVscode(args[1])) {
+      setApiContext(args[0], args[1]);
+      return Array.prototype.slice.call(args, 2);
+    }
+    if (args[0] == null && args[1] == null && args.length >= 3) {
+      return Array.prototype.slice.call(args, 2);
+    }
   }
   return Array.prototype.slice.call(args || []);
 }

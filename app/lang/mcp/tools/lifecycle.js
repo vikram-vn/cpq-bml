@@ -306,7 +306,7 @@ async function createUtilFunction(context, vscode, args, transport) {
     const payload = metadataLib.buildFunctionPayload(metadata, finalScriptText);
 
     const startedAt = Date.now();
-    const result = await api.createLibraryFunction(context, vscode, payload, transport);
+    const result = await api.createLibraryFunction(payload, transport);
     if (!isSuccess(result.statusCode)) {
         const message = `Create failed (HTTP ${result.statusCode}). ${describeError(result.body)}`;
         writeTerminalMessage(terminal, 'Create failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');

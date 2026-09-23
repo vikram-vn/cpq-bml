@@ -21,7 +21,7 @@ function createDeploymentCenterProvider(vscodeInstance = vscode, context) {
     }
 
     try {
-      const res = await api.listTasks(context, vscodeInstance, {
+      const res = await api.listTasks({
         limit: 30,
         orderby: 'dateModified:desc'
       });

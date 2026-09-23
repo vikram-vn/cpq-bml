@@ -8,7 +8,7 @@ async function fetchUtilFunctions(vscodeInstance, context) {
   const limit = 1000;
 
   for (;;) {
-    const { statusCode, body } = await api.listLibraryFunctions(context, vscodeInstance, { offset, limit });
+    const { statusCode, body } = await api.listLibraryFunctions({ offset, limit });
     if (statusCode < 200 || statusCode >= 300) {
       break;
     }
@@ -46,8 +46,6 @@ async function fetchCommerceFunctions(vscodeInstance, context) {
 
     for (;;) {
       const { statusCode, body } = await api.listLibraryFunctions(
-        context,
-        vscodeInstance,
         { offset, limit },
         undefined,
         commerceMetadata
@@ -105,7 +103,7 @@ async function fetchCommerceActions(vscodeInstance, context) {
     const commerceDocument = target.document;
     const actions = [];
     try {
-      const res = await api.listCommerceActions(context, vscodeInstance, {
+      const res = await api.listCommerceActions({
         process: commerceProcess,
         document: commerceDocument,
         limit: 1000

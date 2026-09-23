@@ -38,7 +38,7 @@ async function getCommerceDocumentModifyTab(context, vscode, args, transport) {
 
     try {
         if (isConfigured(vscode)) {
-            const res = await api.getCommerceDocumentModifyTab(context, vscode, { process, document }, transport);
+            const res = await api.getCommerceDocumentModifyTab({ process, document }, transport);
             if (res && isSuccess(res.statusCode)) {
                 const body = safeParse(res.body);
                 const items = Array.isArray(body) ? body : (body.items || []);
@@ -106,7 +106,7 @@ async function updateCommerceDocumentModifyTab(context, vscode, args, transport)
     terminal.show();
 
     try {
-        const res = await api.updateCommerceDocumentModifyTab(context, vscode, items, { process, document }, transport);
+        const res = await api.updateCommerceDocumentModifyTab(items, { process, document }, transport);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -158,7 +158,7 @@ async function pullCommerceActionScripts(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const res = await api.getCommerceAction(context, vscode, actionVar, { process, document }, transport);
+        const res = await api.getCommerceAction(actionVar, { process, document }, transport);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -304,7 +304,7 @@ async function pullCommerceAttributeFormula(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const res = await api.getCommerceAttribute(context, vscode, { process, document, attributeVarName: attrVar, fields: null }, transport);
+        const res = await api.getCommerceAttribute({ process, document, attributeVarName: attrVar, fields: null }, transport);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
