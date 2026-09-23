@@ -68,7 +68,7 @@ suite("settings state", () => {
         logToTerminal: true,
         tools: state.mcp.tools,
       },
-      debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, concurrency: 2 },
+      debug: { logOutputToFile: true, logRestDetails: true, showResultsAsTable: false, showResultsOnly: false, concurrency: 2 },
       metadata: {
         isSynced: false,
         isStale: false,

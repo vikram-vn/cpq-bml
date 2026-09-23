@@ -76,12 +76,18 @@ async function promptDebugInputs({ context, vscode, metadata, options, resultsTe
           const txInfo = transactionIds.length > 0 ? ` (txn: ${transactionIds.join(', ')})` : '';
           vscode.window.setStatusBarMessage(`CPQ-BML: Smart Debug reused previous inputs${txInfo}`, 4000);
         }
-        writeTerminalMessage(
-          resultsTerminal,
-          '[Smart Debug] ',
-          `Reusing previous inputs: ${summary}. (Run "CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)" to change)`,
-          '\x1b[36m',
+        const isResultsOnly = Boolean(
+          (options && (options.resultsOnly || options.showResultsOnly)) ||
+          (typeof configLib.getShowDebugResultsOnly === 'function' && configLib.getShowDebugResultsOnly(vscode))
         );
+        if (!isResultsOnly) {
+          writeTerminalMessage(
+            resultsTerminal,
+            '[Smart Debug] ',
+            `Reusing previous inputs: ${summary}. (Run "CPQ-BML: Debug Current Function (Configure New Inputs / Transaction...)" to change)`,
+            '\x1b[36m',
+          );
+        }
       } else if (!smartReuse) {
         const picks = [
           {

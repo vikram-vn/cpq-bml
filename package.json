@@ -298,6 +298,12 @@
         "category": "BML"
       },
       {
+        "command": "cpqBml.rest.debugResultsOnly",
+        "title": "Debug Current Function (Results Only)",
+        "icon": "app/icons/editor/debug.svg",
+        "category": "BML"
+      },
+      {
         "command": "cpqBml.rest.saveCurrentFile",
         "title": "Save Current File to CPQ",
         "icon": "app/icons/editor/save.svg"
@@ -1518,6 +1524,11 @@
           "type": "boolean",
           "default": false,
           "description": "When enabled, formats JSON or dictionary return values in BML debug output as a key-value table. Disabled by default."
+        },
+        "cpqBml.debug.showResultsOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, formats debug output in a clean, results-only view (omitting headers, boilerplate timestamps, and timing info). Smart mode automatically displays full error diagnostics and status details if an execution error occurs. Disabled by default."
         },
         "cpqBml.debug.concurrency": {
           "type": "integer",

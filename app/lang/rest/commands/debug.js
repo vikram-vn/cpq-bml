@@ -135,7 +135,14 @@ async function runDebugCurrentFile(
     }
   }
 
-  writeRunHeader(resultsTerminal, "Debug", metadata.variableName);
+  const resultsOnly = Boolean(
+    (options && (options.resultsOnly || options.showResultsOnly)) ||
+    (typeof configLib.getShowDebugResultsOnly === "function" && configLib.getShowDebugResultsOnly(vscode))
+  );
+
+  if (!resultsOnly) {
+    writeRunHeader(resultsTerminal, "Debug", metadata.variableName);
+  }
   resultsTerminal.show();
 
   const inputResult = await promptDebugInputs({
@@ -153,7 +160,6 @@ async function runDebugCurrentFile(
 
   const { transactionIds, parameterValues, isCommerce } = inputResult;
 
-
   // Resolve log file paths once (both return null when setting is off).
   const outputLogPath = configLib.getDebugOutputLogPath(vscode);
   const printLogPath = configLib.getDebugPrintLogPath(vscode);
@@ -170,12 +176,14 @@ async function runDebugCurrentFile(
       2,
       Math.min(10, Math.min(configuredLimit, transactionIds.length)),
     );
-    writeRunningLine(
-      resultsTerminal,
-      "Debug",
-      `${metadata.variableName} on ${transactionIds.length} transactions (concurrency: ${concurrency}, max: 10)`,
-    );
-    resultsTerminal.show();
+    if (!resultsOnly) {
+      writeRunningLine(
+        resultsTerminal,
+        "Debug",
+        `${metadata.variableName} on ${transactionIds.length} transactions (concurrency: ${concurrency}, max: 10)`,
+      );
+      resultsTerminal.show();
+    }
 
     const results = await runConcurrentPool(
       transactionIds,
@@ -194,6 +202,7 @@ async function runDebugCurrentFile(
           doc,
           resultsTerminal: null,
           quiet: true,
+          resultsOnly,
         });
       },
       concurrency,
@@ -211,9 +220,11 @@ async function runDebugCurrentFile(
         );
       } else {
         if (res.dumpTables) {
-          resultsTerminal.writeLine(
-            `\x1b[32m${getTimestamp()} Debug output:\x1b[0m`,
-          );
+          if (!resultsOnly) {
+            resultsTerminal.writeLine(
+              `\x1b[32m${getTimestamp()} Debug output:\x1b[0m`,
+            );
+          }
           if (res.dumpTables.headerTable) {
             resultsTerminal.writeLine(
               `\x1b[1m\x1b[36mHeader Attributes:\x1b[0m`,
@@ -227,50 +238,68 @@ async function runDebugCurrentFile(
             writeTableLines(resultsTerminal, res.dumpTables.lineTable);
           }
         } else if (res.tableOutput) {
-          resultsTerminal.writeLine(
-            `\x1b[32m${getTimestamp()} Debug output:\x1b[0m`,
-          );
+          if (!resultsOnly) {
+            resultsTerminal.writeLine(
+              `\x1b[32m${getTimestamp()} Debug output:\x1b[0m`,
+            );
+          }
           writeTableLines(resultsTerminal, res.tableOutput);
         } else if (
           res.returnValue !== undefined &&
           res.returnValue !== null &&
           res.returnValue !== ""
         ) {
-          writeTerminalMessage(
-            resultsTerminal,
-            "Debug output: ",
-            res.returnValue,
-            "\x1b[32m",
-          );
+          if (resultsOnly) {
+            resultsTerminal.writeLine(`\x1b[32mDebug output: ${res.returnValue}\x1b[0m`);
+          } else {
+            writeTerminalMessage(
+              resultsTerminal,
+              "Debug output: ",
+              res.returnValue,
+              "\x1b[32m",
+            );
+          }
         } else {
-          writeTerminalMessage(
-            resultsTerminal,
-            "Debug output: ",
-            "no output found",
-            "\x1b[32m",
-          );
+          if (resultsOnly) {
+            resultsTerminal.writeLine(`\x1b[32mDebug output: (no output)\x1b[0m`);
+          } else {
+            writeTerminalMessage(
+              resultsTerminal,
+              "Debug output: ",
+              "no output found",
+              "\x1b[32m",
+            );
+          }
         }
 
         if (res.printOutput && res.printOutput.length > 0) {
           for (const line of res.printOutput) {
-            resultsTerminal.writeLine(
-              `\x1b[38;2;206;145;120m${getTimestamp()} Debug print: ${line}\x1b[0m`,
-            );
+            if (resultsOnly) {
+              resultsTerminal.writeLine(`\x1b[38;2;206;145;120mDebug print: ${line}\x1b[0m`);
+            } else {
+              resultsTerminal.writeLine(
+                `\x1b[38;2;206;145;120m${getTimestamp()} Debug print: ${line}\x1b[0m`,
+              );
+            }
           }
         }
-        const scriptSizePrefix = res.scriptSize ? `${res.scriptSize} ` : "";
-        resultsTerminal.writeLine(
-          `\x1b[90m${scriptSizePrefix}(${res.elapsedMs}ms)\x1b[0m`,
-        );
+        if (!resultsOnly) {
+          const scriptSizePrefix = res.scriptSize ? `${res.scriptSize} ` : "";
+          resultsTerminal.writeLine(
+            `\x1b[90m${scriptSizePrefix}(${res.elapsedMs}ms)\x1b[0m`,
+          );
+        }
       }
     }
 
     const successCount = results.filter((r) => r.success).length;
     const allSuccess = successCount === results.length;
-    const summaryColor = allSuccess ? "\x1b[1;32m" : "\x1b[1;33m";
-    resultsTerminal.writeLine(
-      `\n${summaryColor}Debug summary: ${successCount}/${results.length} transactions succeeded (${formatElapsed(startedAt)})\x1b[0m`,
-    );
+    if (!resultsOnly) {
+      const summaryColor = allSuccess ? "\x1b[1;32m" : "\x1b[1;33m";
+      resultsTerminal.writeLine(
+        `\n${summaryColor}Debug summary: ${successCount}/${results.length} transactions succeeded (${formatElapsed(startedAt)})\x1b[0m`,
+      );
+    }
     resultsTerminal.show();
 
     return {
@@ -286,8 +315,10 @@ async function runDebugCurrentFile(
   }
 
   // Single transaction or util function execution
-  writeRunningLine(resultsTerminal, "Debug", metadata.variableName);
-  resultsTerminal.show();
+  if (!resultsOnly) {
+    writeRunningLine(resultsTerminal, "Debug", metadata.variableName);
+    resultsTerminal.show();
+  }
 
   const singleResult = await runDebugSingleExecution({
     txnId: isCommerce ? transactionIds[0] : undefined,
@@ -303,6 +334,7 @@ async function runDebugCurrentFile(
     doc,
     resultsTerminal,
     quiet: false,
+    resultsOnly,
   });
 
   return singleResult;

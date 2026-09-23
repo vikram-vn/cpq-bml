@@ -90,6 +90,7 @@ function getSettings(vscode) {
         debugLog: Boolean(getVal("debug.logRestDetails", false)),
         logOutputToFile: Boolean(getVal("debug.logOutputToFile", false)),
         showResultsAsTable: Boolean(getVal("debug.showResultsAsTable", false)),
+        showResultsOnly: Boolean(getVal("debug.showResultsOnly", getVal("debug.resultsOnly", false))),
         debugConcurrency: getDebugConcurrency(vscode),
     };
 }
@@ -130,13 +131,11 @@ async function saveWorkspaceConfig(vscode, settings) {
     // Ensure connection settings are never left in cpq/config
     const root = getWorkspaceRoot(vscode);
     if (root) {
-        const obsoleteConfigMin = pathLib.join(root, "cpq", "config", "config.min.json");
-        if (fs.existsSync(obsoleteConfigMin)) {
-            try { fs.unlinkSync(obsoleteConfigMin); } catch (e) {}
-        }
-        const obsoleteConfigJson = pathLib.join(root, "cpq", "config", "config.json");
-        if (fs.existsSync(obsoleteConfigJson)) {
-            try { fs.unlinkSync(obsoleteConfigJson); } catch (e) {}
+        for (const file of ["config.min.json", "config.json"]) {
+            const obsolete = pathLib.join(root, "cpq", "config", file);
+            if (fs.existsSync(obsolete)) {
+                try { fs.unlinkSync(obsolete); } catch (e) {}
+            }
         }
     }
 }
@@ -171,6 +170,14 @@ function getBaseUrl(vscode) {
 
 function getShowDebugResultsAsTable(vscode) {
     return vscode.workspace.getConfiguration('cpqBml').get('debug.showResultsAsTable', false);
+}
+
+function getShowDebugResultsOnly(vscode) {
+    const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === 'function'
+        ? vscode.workspace.getConfiguration('cpqBml')
+        : null;
+    if (!config) return false;
+    return Boolean(config.get('debug.showResultsOnly', config.get('debug.resultsOnly', false)));
 }
 
 function getRestVersion(vscode) {
@@ -428,26 +435,11 @@ async function ensureCredentials(context, vscode) {
     return true;
 }
 
-function getCpqSiteName(vscodeOrSiteUrl) {
-    return folders.getCpqSiteName(vscodeOrSiteUrl, getBaseUrl);
-}
-
-function getCpqInstanceFolder(vscodeOrSiteUrl) {
-    return folders.getCpqInstanceFolder(vscodeOrSiteUrl, getBaseUrl);
-}
-
-function getUtilLibrariesFolder(vscodeOrSiteUrl) {
-    return folders.getUtilLibrariesFolder(vscodeOrSiteUrl, getBaseUrl);
-}
-
-function getCommerceLibrariesFolder(vscodeOrSiteUrl, processName) {
-    return folders.getCommerceLibrariesFolder(vscodeOrSiteUrl, processName, getBaseUrl, getCommerceProcess);
-}
-
-function getDataTableFolder(workspaceRoot, vscodeOrSiteUrl) {
-    return folders.getDataTableFolder(workspaceRoot, vscodeOrSiteUrl, getBaseUrl);
-}
-
+const getCpqSiteName = (v) => folders.getCpqSiteName(v, getBaseUrl);
+const getCpqInstanceFolder = (v) => folders.getCpqInstanceFolder(v, getBaseUrl);
+const getUtilLibrariesFolder = (v) => folders.getUtilLibrariesFolder(v, getBaseUrl);
+const getCommerceLibrariesFolder = (v, p) => folders.getCommerceLibrariesFolder(v, p, getBaseUrl, getCommerceProcess);
+const getDataTableFolder = (w, v) => folders.getDataTableFolder(w, v, getBaseUrl);
 
 function isConfigured(vscode) {
     const { siteUrl } = getSettings(vscode);
@@ -480,6 +472,7 @@ module.exports = {
     getDebugOutputLogPath,
     getDebugPrintLogPath,
     getShowDebugResultsAsTable,
+    getShowDebugResultsOnly,
     hasMissingCredentials,
     runTestConnection,
     ensureCredentials,

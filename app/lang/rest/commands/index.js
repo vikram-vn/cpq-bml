@@ -187,6 +187,9 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.debugConfigureInputs", (options) =>
       runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, { ...options, configureInputs: true }),
     ),
+    vscode.commands.registerCommand("cpqBml.rest.debugResultsOnly", (options) =>
+      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, { ...options, resultsOnly: true }),
+    ),
     vscode.commands.registerCommand("cpqBml.rest.debugExecution", (options) =>
       runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, options),
     ),

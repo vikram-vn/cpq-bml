@@ -19,8 +19,32 @@ function MockDiagnostic(range, message, severity, code) {
     this.code = code;
 }
 
+let vscodeModule = null;
+try {
+    vscodeModule = require('vscode');
+} catch (_) {}
+
+function getEditList(edit) {
+    if (!edit) return [];
+    if (Array.isArray(edit._edits)) return edit._edits;
+    if (typeof edit.entries === 'function') {
+        const list = [];
+        for (const [uri, edits] of edit.entries()) {
+            for (const e of edits) {
+                list.push({ uri, range: e.range, newText: e.newText });
+            }
+        }
+        return list;
+    }
+    return [];
+}
+
 function createMockDoc(content) {
     const lines = content.split('\n');
+    const uriObj = (vscodeModule && vscodeModule.Uri && typeof vscodeModule.Uri.file === 'function')
+        ? vscodeModule.Uri.file('/test/script.bml')
+        : { fsPath: '/test/script.bml', toString: function() { return 'file:///test/script.bml'; } };
+
     return {
         getText: function(range) {
             if (!range) return content;
@@ -46,7 +70,7 @@ function createMockDoc(content) {
             }
             return new MockPosition(lines.length - 1, lines[lines.length - 1].length);
         },
-        uri: { fsPath: '/test/script.bml', toString: function() { return 'file:///test/script.bml'; } }
+        uri: uriObj
     };
 }
 
@@ -54,5 +78,6 @@ module.exports = {
     MockPosition,
     MockRange,
     MockDiagnostic,
-    createMockDoc
+    createMockDoc,
+    getEditList
 };

@@ -55,6 +55,7 @@ function searchDir(dir, variableName, depthLeft) {
     }
     for (const entry of entries) {
         if (!entry.isDirectory()) continue;
+        if (entry.name === 'backup' || entry.name.endsWith(LEGACY_AI_FOLDER_SUFFIX)) continue;
         const full = path.join(dir, entry.name);
         if (entry.name === variableName || entry.name.toLowerCase() === variableName.toLowerCase()) {
             let candidate = path.join(full, `${variableName}.bml`);

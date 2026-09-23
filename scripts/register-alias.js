@@ -29,73 +29,56 @@ if (!global.__cpq_alias_registered) {
 }
 
 function patchVscode(vs) {
-  if (vs && vs.WorkspaceEdit && !vs.WorkspaceEdit.__cpq_patched) {
-    vs.WorkspaceEdit.__cpq_patched = true;
+  if (!vs || !vs.WorkspaceEdit || vs.WorkspaceEdit.__cpq_patched) return;
+  vs.WorkspaceEdit.__cpq_patched = true;
 
-    const editsMap = new WeakMap();
-    const origReplace = vs.WorkspaceEdit.prototype.replace;
-    const origInsert = vs.WorkspaceEdit.prototype.insert;
-    const origDelete = vs.WorkspaceEdit.prototype.delete;
+  const origReplace = vs.WorkspaceEdit.prototype.replace;
+  const origInsert = vs.WorkspaceEdit.prototype.insert;
+  const origDelete = vs.WorkspaceEdit.prototype.delete;
 
-    if (origReplace) {
-      vs.WorkspaceEdit.prototype.replace = function (uri, range, newText) {
-        let list = editsMap.get(this);
-        if (!list) {
-          list = [];
-          editsMap.set(this, list);
+  if (origReplace) {
+    vs.WorkspaceEdit.prototype.replace = function (uri, range, newText) {
+      origReplace.apply(this, arguments);
+      if (Array.isArray(this._edits) && this._edits.length > 0) {
+        const last = this._edits[this._edits.length - 1];
+        if (last && typeof last === 'object' && !('newText' in last)) {
+          last.newText = newText;
+          last.range = range;
+          last.uri = uri;
+          last.type = 'replace';
         }
-        const lenBefore = list.length;
-        origReplace.apply(this, arguments);
-        if (list.length === lenBefore) {
-          list.push({ type: 'replace', uri, range, newText });
-        }
-      };
-    }
+      }
+    };
+  }
 
-    if (origInsert) {
-      vs.WorkspaceEdit.prototype.insert = function (uri, position, newText) {
-        let list = editsMap.get(this);
-        if (!list) {
-          list = [];
-          editsMap.set(this, list);
+  if (origInsert) {
+    vs.WorkspaceEdit.prototype.insert = function (uri, position, newText) {
+      origInsert.apply(this, arguments);
+      if (Array.isArray(this._edits) && this._edits.length > 0) {
+        const last = this._edits[this._edits.length - 1];
+        if (last && typeof last === 'object' && !('newText' in last)) {
+          last.newText = newText;
+          last.position = position;
+          last.uri = uri;
+          last.type = 'insert';
         }
-        const lenBefore = list.length;
-        origInsert.apply(this, arguments);
-        if (list.length === lenBefore) {
-          const range = vs.Range ? new vs.Range(position, position) : { start: position, end: position };
-          list.push({ type: 'insert', uri, position, range, newText });
-        }
-      };
-    }
+      }
+    };
+  }
 
-    if (origDelete) {
-      vs.WorkspaceEdit.prototype.delete = function (uri, range) {
-        let list = editsMap.get(this);
-        if (!list) {
-          list = [];
-          editsMap.set(this, list);
+  if (origDelete) {
+    vs.WorkspaceEdit.prototype.delete = function (uri, range) {
+      origDelete.apply(this, arguments);
+      if (Array.isArray(this._edits) && this._edits.length > 0) {
+        const last = this._edits[this._edits.length - 1];
+        if (last && typeof last === 'object' && !('newText' in last)) {
+          last.newText = '';
+          last.range = range;
+          last.uri = uri;
+          last.type = 'delete';
         }
-        const lenBefore = list.length;
-        origDelete.apply(this, arguments);
-        if (list.length === lenBefore) {
-          list.push({ type: 'delete', uri, range, newText: '' });
-        }
-      };
-    }
-
-    Object.defineProperty(vs.WorkspaceEdit.prototype, '_edits', {
-      get() {
-        const custom = editsMap.get(this);
-        if (custom && custom.length > 0) return custom;
-        if (Array.isArray(this.__internal_edits)) return this.__internal_edits;
-        return [];
-      },
-      set(val) {
-        this.__internal_edits = val;
-      },
-      configurable: true,
-      enumerable: true,
-    });
+      }
+    };
   }
 }
 

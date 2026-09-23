@@ -88,8 +88,13 @@ async function runDebugSingleExecution({
   doc,
   resultsTerminal,
   quiet = false,
+  resultsOnly = false,
 }) {
   const startedAt = Date.now();
+  const isResultsOnly = Boolean(
+    resultsOnly ||
+    (typeof configLib.getShowDebugResultsOnly === "function" && configLib.getShowDebugResultsOnly(vscode))
+  );
   const isCommerce = !!metadata.commerceDocument;
   const txnMetadata = JSON.parse(JSON.stringify(metadata));
 
@@ -148,12 +153,18 @@ async function runDebugSingleExecution({
       const errorMessage = `CPQ-BML: failed to load transaction data (HTTP ${loadResult.statusCode}). ${message}`;
       if (!quiet) {
         if (resultsTerminal) {
-          writeTerminalMessage(
-            resultsTerminal,
-            "Debug error: ",
-            `Failed to load transaction data (HTTP ${loadResult.statusCode}). ${message} (${formatElapsed(startedAt)})`,
-            "\x1b[31m",
-          );
+          if (isResultsOnly) {
+            resultsTerminal.writeLine(
+              `\x1b[31mDebug error: Failed to load transaction data (HTTP ${loadResult.statusCode}). ${message}\x1b[0m`,
+            );
+          } else {
+            writeTerminalMessage(
+              resultsTerminal,
+              "Debug error: ",
+              `Failed to load transaction data (HTTP ${loadResult.statusCode}). ${message} (${formatElapsed(startedAt)})`,
+              "\x1b[31m",
+            );
+          }
           resultsTerminal.show();
         }
         vscode.window.showErrorMessage(errorMessage);
@@ -203,12 +214,16 @@ async function runDebugSingleExecution({
     const lineNum = parseErrorLine(message);
     if (!quiet) {
       if (resultsTerminal) {
-        writeTerminalMessage(
-          resultsTerminal,
-          "Debug error: ",
-          `${message} (${formatElapsed(startedAt)})`,
-          "\x1b[31m",
-        );
+        if (isResultsOnly) {
+          resultsTerminal.writeLine(`\x1b[31mDebug error: ${message}\x1b[0m`);
+        } else {
+          writeTerminalMessage(
+            resultsTerminal,
+            "Debug error: ",
+            `${message} (${formatElapsed(startedAt)})`,
+            "\x1b[31m",
+          );
+        }
         resultsTerminal.show();
       }
       vscode.window.showErrorMessage(
@@ -319,7 +334,9 @@ async function runDebugSingleExecution({
 
   if (!quiet && resultsTerminal) {
     if (dumpTables) {
-      resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
+      if (!isResultsOnly) {
+        resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
+      }
       if (dumpTables.headerTable) {
         resultsTerminal.writeLine(`\x1b[1m\x1b[36mHeader Attributes:\x1b[0m`);
         writeTableLines(resultsTerminal, dumpTables.headerTable);
@@ -329,41 +346,57 @@ async function runDebugSingleExecution({
         writeTableLines(resultsTerminal, dumpTables.lineTable);
       }
     } else if (tableOutput) {
-      resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
+      if (!isResultsOnly) {
+        resultsTerminal.writeLine(`\x1b[32m${getTimestamp()} Debug output:\x1b[0m`);
+      }
       writeTableLines(resultsTerminal, tableOutput);
     } else if (
       returnVal !== undefined &&
       returnVal !== null &&
       returnVal !== ""
     ) {
-      writeTerminalMessage(
-        resultsTerminal,
-        "Debug output: ",
-        returnVal,
-        "\x1b[32m",
-      );
+      if (isResultsOnly) {
+        resultsTerminal.writeLine(`\x1b[32mDebug output: ${returnVal}\x1b[0m`);
+      } else {
+        writeTerminalMessage(
+          resultsTerminal,
+          "Debug output: ",
+          returnVal,
+          "\x1b[32m",
+        );
+      }
     } else {
-      writeTerminalMessage(
-        resultsTerminal,
-        "Debug output: ",
-        "no output found",
-        "\x1b[32m",
-      );
-    }
-
-    if (printOutput.length > 0) {
-      for (const line of printOutput) {
-        resultsTerminal.writeLine(
-          `\x1b[38;2;206;145;120m${getTimestamp()} Debug print: ${line}\x1b[0m`,
+      if (isResultsOnly) {
+        resultsTerminal.writeLine(`\x1b[32mDebug output: (no output)\x1b[0m`);
+      } else {
+        writeTerminalMessage(
+          resultsTerminal,
+          "Debug output: ",
+          "no output found",
+          "\x1b[32m",
         );
       }
     }
 
-    const scriptSizePrefix =
-      body && body.scriptSize ? `${body.scriptSize} ` : "";
-    resultsTerminal.writeLine(
-      `\x1b[90m${scriptSizePrefix}(${formatElapsed(startedAt)})\x1b[0m`,
-    );
+    if (printOutput.length > 0) {
+      for (const line of printOutput) {
+        if (isResultsOnly) {
+          resultsTerminal.writeLine(`\x1b[38;2;206;145;120mDebug print: ${line}\x1b[0m`);
+        } else {
+          resultsTerminal.writeLine(
+            `\x1b[38;2;206;145;120m${getTimestamp()} Debug print: ${line}\x1b[0m`,
+          );
+        }
+      }
+    }
+
+    if (!isResultsOnly) {
+      const scriptSizePrefix =
+        body && body.scriptSize ? `${body.scriptSize} ` : "";
+      resultsTerminal.writeLine(
+        `\x1b[90m${scriptSizePrefix}(${formatElapsed(startedAt)})\x1b[0m`,
+      );
+    }
     resultsTerminal.show();
   }
 

@@ -80,6 +80,14 @@ export default function AdvancedTab({ active, debug = {}, updateField, vscodeApi
                     onChange={(v) => updateField('debug.showResultsAsTable', v)}
                 />
 
+                <Switch
+                    id="showResultsOnly"
+                    label="Show Debug Results Only (Smart)"
+                    description="Display only clean output and print statements in the results terminal without headers or verbose timing. Smart mode automatically retains full diagnostic details when an error occurs."
+                    checked={debug.showResultsOnly}
+                    onChange={(v) => updateField('debug.showResultsOnly', v)}
+                />
+
                 <div className="field field-spaced" style={{ marginTop: '16px' }}>
                     <label htmlFor="debugConcurrency">Debug Concurrency (Parallel Transactions)</label>
                     <select

@@ -384,80 +384,7 @@ async function listDataTables(context, vscode, args, transport) {
     }
 }
 
-async function getDataTableSchema(context, vscode, args, transport) {
-    const tableName = args && args.tableName ? args.tableName : '';
-    if (!tableName) {
-        return { success: false, error: 'tableName parameter is required' };
-    }
-
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    writeRunHeader(terminal, 'Get Data Table Schema', tableName);
-    terminal.show();
-
-    try {
-        const { statusCode, body } = await api.dispatch(
-            context,
-            vscode,
-            'GET',
-            `/dataTables/${encodeURIComponent(tableName)}/schema`,
-            {},
-            undefined,
-            transport,
-        );
-
-        if (!isSuccess(statusCode)) {
-            const defRes = await api.dispatch(
-                context,
-                vscode,
-                'GET',
-                `/dataTables/${encodeURIComponent(tableName)}`,
-                {},
-                undefined,
-                transport,
-            );
-            if (isSuccess(defRes.statusCode) && defRes.body) {
-                const columns = (defRes.body.columns || []).map(c => ({
-                    name: c.name || c.variableName,
-                    type: c.type || c.dataType || 'string',
-                    isKey: !!c.isKey,
-                    description: c.description || '',
-                }));
-                return {
-                    success: true,
-                    tableName,
-                    columns,
-                    log: getLines(),
-                };
-            }
-            return {
-                success: false,
-                error: `Failed to retrieve schema for data table "${tableName}" (HTTP ${statusCode}).`,
-                log: getLines(),
-            };
-        }
-
-        const columns = ((body && body.columns) || []).map(c => ({
-            name: c.name || c.variableName,
-            type: c.type || c.dataType || 'string',
-            isKey: !!c.isKey,
-            description: c.description || '',
-        }));
-
-        return {
-            success: true,
-            tableName,
-            columns,
-            log: getLines(),
-        };
-    } catch (err) {
-        return {
-            success: false,
-            error: err && err.message ? err.message : String(err),
-            log: getLines(),
-        };
-    }
-}
-
+const { getDataTableSchema, getDataTableRows } = require('@/lang/mcp/tools/dataTableTools');
 const { listParts, getPart } = require('@/lang/mcp/tools/partsTools');
 
 module.exports = {
@@ -475,7 +402,9 @@ module.exports = {
     syncConfigurationAttributes,
     listDataTables,
     getDataTableSchema,
+    getDataTableRows,
     listParts,
     getPart,
 };
+
 

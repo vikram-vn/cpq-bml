@@ -73,6 +73,7 @@ async function buildState(context, vscode) {
             logOutputToFile: settings.logOutputToFile,
             logRestDetails: settings.debugLog,
             showResultsAsTable: settings.showResultsAsTable,
+            showResultsOnly: settings.showResultsOnly || config.getShowDebugResultsOnly(vscode),
             concurrency: settings.debugConcurrency || config.getDebugConcurrency(vscode)
         },
         metadata: metaStatus,

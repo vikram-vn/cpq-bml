@@ -257,6 +257,38 @@ function register(server, context, vscode, tools) {
   );
 
   server.registerTool(
+    "get_datatable_rows",
+    {
+      description:
+        "Fetch rows/records from an Oracle CPQ Data Table (GET /rest/<version>/custom{tableName}). Supports pagination (limit, offset) and query filter (q parameter).",
+      inputSchema: {
+        tableName: z.string().describe("The name of the Data Table to query."),
+        limit: z
+          .number()
+          .int()
+          .positive()
+          .max(1000)
+          .optional()
+          .default(20)
+          .describe("Maximum number of rows to return (default 20, max 1000)."),
+        offset: z
+          .number()
+          .int()
+          .min(0)
+          .optional()
+          .default(0)
+          .describe("Pagination offset (0-based)."),
+        q: z
+          .string()
+          .optional()
+          .describe("Query filter expression for filtering rows."),
+        query: z.string().optional().describe("Alias for q query filter."),
+      },
+    },
+    async (args) => jsonResult(await tools.getDataTableRows(context, vscode, args)),
+  );
+
+  server.registerTool(
     "list_parts",
     {
       description:

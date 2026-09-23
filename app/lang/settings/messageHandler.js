@@ -49,6 +49,7 @@ const ALLOWED_FIELDS = new Set([
   "debug.logRestDetails",
   "debug.logOutputToFile",
   "debug.showResultsAsTable",
+  "debug.showResultsOnly",
   "debug.concurrency",
   "cloud.openMetadataAs",
 ]);
@@ -316,14 +317,10 @@ async function dispatch(message, context, vscode, panel) {
           }
         }
         if (settingsObj.debug) {
-          if (typeof settingsObj.debug.logOutputToFile === "boolean") {
-            await cfg.update("debug.logOutputToFile", settingsObj.debug.logOutputToFile, vscode.ConfigurationTarget.Global);
-          }
-          if (typeof settingsObj.debug.logRestDetails === "boolean") {
-            await cfg.update("debug.logRestDetails", settingsObj.debug.logRestDetails, vscode.ConfigurationTarget.Global);
-          }
-          if (typeof settingsObj.debug.showResultsAsTable === "boolean") {
-            await cfg.update("debug.showResultsAsTable", settingsObj.debug.showResultsAsTable, vscode.ConfigurationTarget.Global);
+          for (const key of ["logOutputToFile", "logRestDetails", "showResultsAsTable", "showResultsOnly"]) {
+            if (typeof settingsObj.debug[key] === "boolean") {
+              await cfg.update(`debug.${key}`, settingsObj.debug[key], vscode.ConfigurationTarget.Global);
+            }
           }
         }
 
@@ -383,6 +380,7 @@ async function dispatch(message, context, vscode, panel) {
               logOutputToFile: cpqConfig.get("debug.logOutputToFile", false),
               logRestDetails: cpqConfig.get("debug.logRestDetails", false),
               showResultsAsTable: cpqConfig.get("debug.showResultsAsTable", false),
+              showResultsOnly: cpqConfig.get("debug.showResultsOnly", false),
             },
             environments: cpqConfig.get("connection.environments", []),
           },
@@ -464,6 +462,7 @@ async function dispatch(message, context, vscode, panel) {
         "debug.logOutputToFile": false,
         "debug.logRestDetails": false,
         "debug.showResultsAsTable": false,
+        "debug.showResultsOnly": false,
       };
 
       for (const [k, v] of Object.entries(defaults)) {

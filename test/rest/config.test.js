@@ -33,6 +33,7 @@ suite("BML REST config", () => {
       debugLog: false,
       logOutputToFile: false,
       showResultsAsTable: false,
+      showResultsOnly: false,
       debugConcurrency: 2,
     });
   });
@@ -55,6 +56,7 @@ suite("BML REST config", () => {
       debugLog: false,
       logOutputToFile: false,
       showResultsAsTable: false,
+      showResultsOnly: false,
       debugConcurrency: 2,
     });
     assert.strictEqual(config.DEFAULT_REST_VERSION, "v18");

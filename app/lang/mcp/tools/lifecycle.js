@@ -171,7 +171,8 @@ async function debugFunction(context, vscode, args, transport) {
         configOverrides,
     });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport });
+    const isResultsOnly = !!(args && (args.resultsOnly || args.showResultsOnly));
+    const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport, resultsOnly: isResultsOnly });
 
     if (!result || !result.success) {
         return {
