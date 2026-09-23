@@ -11,6 +11,7 @@ const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
 const { createCapturingTerminal } = require('@/lang/mcp/proxy');
 
 async function listParts(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Parts Catalog', 'parts');
@@ -82,6 +83,7 @@ async function listParts(context, vscode, args, transport) {
 }
 
 async function getPart(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     const partNumber = args && (args.partNumber || args.id || args.itemNumber);

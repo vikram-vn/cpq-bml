@@ -28,6 +28,7 @@ function safeParse(val) {
 }
 
 async function listCommerceProcesses(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Commerce Processes', 'processes');
@@ -87,6 +88,7 @@ async function listCommerceProcesses(context, vscode, args, transport) {
 }
 
 async function listConfigurationHierarchy(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Configuration Hierarchy', 'catalog');
@@ -170,6 +172,7 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
 }
 
 async function listConfigurationAttributes(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Configuration Attributes', args && args.productFamily || 'global');
@@ -208,6 +211,7 @@ async function listConfigurationAttributes(context, vscode, args, transport) {
 }
 
 async function listDeploymentTasks(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Deployment Tasks', 'tasks');
@@ -250,6 +254,7 @@ async function listDeploymentTasks(context, vscode, args, transport) {
 }
 
 async function getTransactionData(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const transactionId = args && (args.transactionId || args.id);
     if (!transactionId) {
         return { success: false, error: 'transactionId parameter is required' };
@@ -284,6 +289,7 @@ async function getTransactionData(context, vscode, args, transport) {
 }
 
 async function getCloudExplorerOverview(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const section = (args && args.section) || 'all';
     const overview = {};
 

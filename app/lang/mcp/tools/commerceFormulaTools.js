@@ -27,6 +27,7 @@ function safeParse(val) {
 }
 
 async function getCommerceDocumentModifyTab(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     const settings = getSettings(vscode);
@@ -91,6 +92,7 @@ async function getCommerceDocumentModifyTab(context, vscode, args, transport) {
 }
 
 async function updateCommerceDocumentModifyTab(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     const settings = getSettings(vscode);
@@ -143,6 +145,7 @@ async function updateCommerceDocumentModifyTab(context, vscode, args, transport)
 }
 
 async function pullCommerceActionScripts(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const actionVar = args && (args.actionVariableName || args.variableName);
     if (!actionVar) {
         return { success: false, error: 'actionVariableName is required.' };
@@ -234,6 +237,7 @@ async function pullCommerceActionScripts(context, vscode, args, transport) {
 }
 
 async function debugCommerceActionScript(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const actionVar = args && (args.actionVariableName || args.variableName);
     const transactionId = args && (args.transactionId || args.id);
     const scriptType = (args && args.scriptType) || 'before-formulas';
@@ -290,6 +294,7 @@ async function debugCommerceActionScript(context, vscode, args, transport) {
 }
 
 async function pullCommerceAttributeFormula(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const attrVar = args && (args.attributeVariableName || args.variableName);
     if (!attrVar) return { success: false, error: 'attributeVariableName is required.' };
 
@@ -367,6 +372,7 @@ async function pullCommerceAttributeFormula(context, vscode, args, transport) {
 }
 
 async function debugCommerceAttributeFormula(context, vscode, args, transport) {
+    if (context || vscode) api.setApiContext(context, vscode);
     const attrVar = args && (args.attributeVariableName || args.variableName);
     const transactionId = args && (args.transactionId || args.id);
     const formulaType = (args && (args.formulaType || args.type)) || 'default';
