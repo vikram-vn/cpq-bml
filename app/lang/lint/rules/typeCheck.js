@@ -36,7 +36,7 @@ function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode
                 const rhs = getAssignmentRhsText(cleanText, eqIndex + 1);
                 if (!rhs) continue;
 
-                const inferredType = inferExpressionType(rhs.text, extensionPath, returnTypes);
+                const inferredType = inferExpressionType(rhs.text, extensionPath, returnTypes, firstTypeByVar);
                 if (!inferredType) continue;
 
                 let elementType = null;
@@ -94,7 +94,7 @@ function collectVariableTypesAndMismatches(cleanText, doc, declaredTypes, vscode
         const rhs = getAssignmentRhsText(cleanText, rhsStart);
         if (!rhs) continue;
 
-        const inferredType = inferExpressionType(rhs.text, extensionPath, returnTypes);
+        const inferredType = inferExpressionType(rhs.text, extensionPath, returnTypes, firstTypeByVar);
         if (!inferredType) continue;
 
         let elementType = null;

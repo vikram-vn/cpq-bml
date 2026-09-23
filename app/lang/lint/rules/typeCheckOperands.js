@@ -10,6 +10,7 @@ const TYPE_CONSTRUCTORS = {
 };
 
 const FUNCTION_RETURN_TYPES = {
+    // Date functions
     getdate: 'Date',
     adddays: 'Date',
     addmonths: 'Date',
@@ -18,22 +19,51 @@ const FUNCTION_RETURN_TYPES = {
     strtojavadate: 'Date',
     date: 'Date',
 
+    // Dictionary functions
+    dict: 'Dictionary',
     urldata: 'Dictionary',
     urlmultipartbypost: 'Dictionary',
     readxmlsingle: 'Dictionary',
     readxmlmultiple: 'Dictionary',
     getsystemmultipleattrvalues: 'Dictionary',
     getattachmentdata: 'Dictionary',
+    getcoveragesupportdict: 'Dictionary',
 
+    // JSON & BOM functions returning Json
+    json: 'Json',
     jsoncopy: 'Json',
-    jsonarraycopy: 'JsonArray',
-    jsonpathgetmultiple: 'JsonArray',
     applybom: 'Json',
+    getbom: 'Json',
+    getconfigbom: 'Json',
+    getconfigurationbom: 'Json',
     calculatedeltabom: 'Json',
+    convertbomtohier: 'Json',
     convertbomtoflat: 'Json',
     getsystemdata: 'Json',
+
+    // JSON functions returning JsonArray
+    jsonarray: 'JsonArray',
+    jsonarraycopy: 'JsonArray',
+    jsonpathgetmultiple: 'JsonArray',
+    addpartstotransaction: 'JsonArray',
     addtotransaction: 'JsonArray',
 
+    // StringBuilder
+    stringbuilder: 'StringBuilder',
+    sbappend: 'StringBuilder',
+
+    // RecordSet & Database
+    recordset: 'RecordSet',
+    bmql: 'RecordSet',
+
+    // ByteArray
+    bytearray: 'ByteArray',
+
+    // 2-D Tables
+    gettabledata: 'String[][]',
+    getpartsdata: 'String[][]',
+
+    // Strings
     trim: 'String',
     upper: 'String',
     lower: 'String',
@@ -50,6 +80,7 @@ const FUNCTION_RETURN_TYPES = {
     gettransaction: 'String',
     getoldvalue: 'String',
     globaldictget: 'String',
+    globaldictset: 'String',
     urldatabyget: 'String',
     urldatabypost: 'String',
     urldatabypostasync: 'String',
@@ -60,13 +91,39 @@ const FUNCTION_RETURN_TYPES = {
     jsonarraytostr: 'String',
     jsonarrayrefid: 'String',
     string: 'String',
+    format: 'String',
+    formatdate: 'String',
+    formatascurrency: 'String',
+    getarraystr: 'String',
+    getarrayattrstring: 'String',
+    getconfigattrvalue: 'String',
+    generateuuid: 'String',
+    getuuid: 'String',
+    generatehmacmessage: 'String',
+    calculateconfiguration: 'String',
 
+    // 1-D Arrays
+    split: 'String[]',
+    keys: 'String[]',
+    jsonkeys: 'String[]',
+    getsystemattrvalues: 'String[]',
+    validatequoteforagreement: 'String[]',
+    jsonpathset: 'String[]',
+    range: 'Integer[]',
+    append: 'Array',
+    remove: 'Array',
+    insert: 'Array',
+    reverse: 'Array',
+    sort: 'Array',
+    slice: 'Any[]',
+    values: 'Array',
+
+    // Integers
     len: 'Integer',
     find: 'Integer',
     atoi: 'Integer',
-    append: 'Integer',
     findinarray: 'Integer',
-    remove: 'Integer',
+    indexof: 'Integer',
     sizeofarray: 'Integer',
     comparedates: 'Integer',
     getcurrenttimeinmillis: 'Integer',
@@ -77,9 +134,12 @@ const FUNCTION_RETURN_TYPES = {
     jsonarraysize: 'Integer',
     getint: 'Integer',
     integer: 'Integer',
+    configureabo: 'Integer',
 
+    // Floats
     atof: 'Float',
     getfloat: 'Float',
+    getdiffindays: 'Float',
     acos: 'Float',
     asin: 'Float',
     atan: 'Float',
@@ -101,7 +161,9 @@ const FUNCTION_RETURN_TYPES = {
     round: 'Float',
     getcurrencyvalue: 'Float',
     float: 'Float',
+    abs: 'Float',
 
+    // Booleans
     endswith: 'Boolean',
     isnumber: 'Boolean',
     startswith: 'Boolean',
@@ -119,6 +181,7 @@ const FUNCTION_RETURN_TYPES = {
     usersessionremove: 'Boolean',
     globaldictremove: 'Boolean',
     boolean: 'Boolean',
+    invoke: 'Boolean',
 };
 
 // bml-functions-api-usage.json is generated from the real CPQ REST API
@@ -128,7 +191,7 @@ const FUNCTION_RETURN_TYPES = {
 // FUNCTION_RETURN_TYPES map above. Diffed all 81 hardcoded entries against
 // it: only 3 gaps (date/float/boolean cast functions aren't in common.json's
 // dump), kept here as a fallback for those.
-const { loadBuiltInFunctionsJson } = require('@/lang/intellisense/apiDataLoader');
+const { loadBuiltInFunctionsJson, loadJson } = require('@/lang/intellisense/apiDataLoader');
 
 let _cachedReturnTypes = null;
 
@@ -139,14 +202,29 @@ function getFunctionReturnTypes(extensionPath) {
         const data = loadBuiltInFunctionsJson(extensionPath);
         for (const [name, info] of Object.entries(data)) {
             if (info && info.returnType) {
-                map[name.toLowerCase()] = info.returnType;
+                let rt = info.returnType;
+                if (rt.toLowerCase() === 'number') rt = 'Float';
+                if (rt.toLowerCase() === 'dict') rt = 'Dictionary';
+                map[name.toLowerCase()] = rt;
+            }
+        }
+        const cpqData = loadJson('bml-cpq-js-api-usage', extensionPath);
+        if (cpqData) {
+            for (const [name, info] of Object.entries(cpqData)) {
+                if (info && info.returnType && info.returnType.toLowerCase() !== 'void') {
+                    map[name.toLowerCase()] = info.returnType;
+                    const parts = name.toLowerCase().split('.');
+                    if (parts.length > 1) {
+                        map[parts[parts.length - 1]] = info.returnType;
+                    }
+                }
             }
         }
     } catch (e) {
         // fall through to just the hardcoded fallback below
     }
     for (const [name, type] of Object.entries(FUNCTION_RETURN_TYPES)) {
-        if (!map[name]) map[name] = type;
+        map[name] = type;
     }
     _cachedReturnTypes = map;
     return _cachedReturnTypes;
@@ -171,12 +249,15 @@ function getFunctionCallReturnTypeEndingAt(text, parenCloseIndex, returnTypes) {
 
     const nameEnd = i + 1;
     let nameStart = nameEnd;
-    while (nameStart > 0 && /[a-zA-Z0-9_]/.test(text[nameStart - 1])) {
+    while (nameStart > 0 && /[a-zA-Z0-9_.]/.test(text[nameStart - 1])) {
         nameStart--;
     }
     const name = text.slice(nameStart, nameEnd);
     if (!name) return null;
-    return returnTypes[name.toLowerCase()] || null;
+    const lower = name.toLowerCase();
+    const parts = lower.split('.');
+    const baseName = parts[parts.length - 1];
+    return returnTypes[lower] || returnTypes[baseName] || null;
 }
 
 // Given `text` starting at `nameStart` reading like "funcName(...)", checks

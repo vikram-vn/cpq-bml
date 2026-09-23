@@ -457,46 +457,10 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
   };
 }
 
+const { registerCommerceExplorer: registerCommerceExplorerExternal } = require('@/lang/cloud/cloudCommerceRegistration');
+
 function registerCommerceExplorer(context, vscodeInstance = vscode) {
-  const treeDataProvider = createCommerceExplorer(vscodeInstance, context);
-  const treeView = vscodeInstance.window.registerTreeDataProvider('cpqBml.commerceExplorer', treeDataProvider);
-
-  const refreshCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.refresh', () => {
-    treeDataProvider.refresh();
-  });
-
-  const switchProcCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.switchProcess', async () => {
-    await switchCommerceProcessCommand(vscodeInstance, context);
-    treeDataProvider.refresh();
-  });
-
-  const filterCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.filterExplorer', async () => {
-    const current = treeDataProvider.getFilter();
-    const query = await vscodeInstance.window.showInputBox({
-      prompt: 'Filter Commerce Explorer (actions, rules, attributes, libraries)',
-      placeHolder: 'e.g. cleanSave, pricingRule, transactionID...',
-      value: current,
-      ignoreFocusOut: true
-    });
-    if (query !== undefined) {
-      treeDataProvider.setFilter(query);
-    }
-  });
-
-  const clearFilterCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.clearFilter', () => {
-    treeDataProvider.clearFilter();
-  });
-
-  const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.searchExplorer', () => {
-    return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
-  });
-
-  const inspectIntegrationCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.inspectIntegration', (item) => {
-    return inspectIntegrationCommand(item, vscodeInstance, context);
-  });
-
-  context.subscriptions.push(treeView, refreshCmd, switchProcCmd, filterCmd, clearFilterCmd, searchCmd, inspectIntegrationCmd);
-  return { treeDataProvider, treeView };
+  return registerCommerceExplorerExternal(context, vscodeInstance, createCommerceExplorer);
 }
 
 module.exports = {
@@ -504,4 +468,5 @@ module.exports = {
   registerCommerceExplorer,
   inspectIntegrationCommand
 };
+
 

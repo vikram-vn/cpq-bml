@@ -37,12 +37,17 @@ function buildFunctionEntry(meta, metaFilePath) {
         return { name: p.name, type: typeStr };
     });
 
+    const returnTypeStr = typeof meta.returnType === 'string'
+        ? meta.returnType
+        : (meta.returnType ? (meta.returnType.displayValue || meta.returnType.displayLabel || '') : '');
+
     return {
         key: `${fullNamespace}.${funcName.toLowerCase()}`,
         entry: {
             path: metaFilePath,
             parameterCount,
             params,
+            returnType: returnTypeStr || null,
             name: funcName,
             namespace: fullNamespace,
         },

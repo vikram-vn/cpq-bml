@@ -4,6 +4,12 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.4.1] - 2026-09-23
+
+### Changed
+
+- Performance optimizations, benchmark fixtures, and stability enhancements.
+
 ## [2.4.0] - 2026-09-22
 
 ### Added
@@ -92,19 +98,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Implement cloud explorers, data tables, and REST API integration modules with tests.
 - Implement REST configuration, custom AES encryption, and environment/secret commands with tests.
 - Add Commerce REST API and MCP proxy implementation with corresponding tests.
-
-## [1.95.0] - 2026-09-11
-
-### Added
-
-- Implement CPQ cloud explorer with BML file support and commerce integration.
-- Implement cloud explorer modules and command support for managing CPQ commerce processes and files.
-- Add BML and logo SVG assets with supporting generation scripts.
-- Add sidebar and solid sidebar SVG icons and generator script.
-- Implement cloud explorer tree data provider and headless testing infrastructure.
-- Implement BML member access quick fixes and add unit test suite runner.
-- Implement BML intellisense provider with context-aware completion and hover support.
-- Add lint rules and quick-fixes for translating invalid BML member access patterns into native functions.
-- Implement BML CodeAction provider and member access fix suggestions.
-- Implement BML style linting quick fixes and text-splitting utilities with associated unit tests.
-- Implement performance optimization rules and associated code actions for BML scripts.

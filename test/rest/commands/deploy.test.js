@@ -12,41 +12,25 @@ const COMMERCE_FUNCTION = {
   commerceDocument: "transaction",
 };
 
-function makeCommerceEditor(tmpDir) {
+function makeEditor(tmpDir, fn) {
   const bmlPath = path.join(tmpDir, "concatString.bml");
   metadataLib.writeMetadata(
     metadataLib.bmlPathToMetaPath(bmlPath),
-    metadataLib.splitFunctionResponse(COMMERCE_FUNCTION).metadata,
+    metadataLib.splitFunctionResponse(fn).metadata,
   );
   return {
     editor: {
       document: {
         languageId: "bml",
         uri: { fsPath: bmlPath },
-        getText: () => COMMERCE_FUNCTION.scriptText,
+        getText: () => fn.scriptText,
       },
     },
     bmlPath,
   };
 }
-
-function makeUtilEditor(tmpDir) {
-  const bmlPath = path.join(tmpDir, "concatString.bml");
-  metadataLib.writeMetadata(
-    metadataLib.bmlPathToMetaPath(bmlPath),
-    metadataLib.splitFunctionResponse(SAMPLE_FUNCTION).metadata,
-  );
-  return {
-    editor: {
-      document: {
-        languageId: "bml",
-        uri: { fsPath: bmlPath },
-        getText: () => SAMPLE_FUNCTION.scriptText,
-      },
-    },
-    bmlPath,
-  };
-}
+const makeCommerceEditor = (tmpDir) => makeEditor(tmpDir, COMMERCE_FUNCTION);
+const makeUtilEditor = (tmpDir) => makeEditor(tmpDir, SAMPLE_FUNCTION);
 
 function makeDeployVscode(editor, overrides = {}) {
   return createFakeVscode({

@@ -78,6 +78,13 @@ function buildMemberFixes(document, range, targetVar, memberName, argsText, hasP
     const memberLower = memberName.toLowerCase();
     const targetLower = targetVar.toLowerCase();
 
+    let isStatement = false;
+    try {
+        const lineText = document.lineAt(range.start.line).text;
+        const before = lineText.substring(0, range.start.character).trim();
+        isStatement = (before === '' || before.endsWith(';') || before.endsWith('{'));
+    } catch (_) {}
+
     function addFix(title, replacement, isPreferred = false) {
         const action = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
@@ -287,27 +294,44 @@ function buildMemberFixes(document, range, targetVar, memberName, argsText, hasP
 
     // 22. Array Append / Push: .push(elem), .append(elem), .add(elem)
     if (memberLower === 'push' || memberLower === 'append' || memberLower === 'add') {
-        addFix(`Convert to '${targetVar} = append(${targetVar}, ${argsText || ''})' (for arrays)`, `${targetVar} = append(${targetVar}, ${argsText || ''})`, true);
+        if (isStatement) {
+            addFix(`Convert to '${targetVar} = append(${targetVar}, ${argsText || ''})' (for arrays)`, `${targetVar} = append(${targetVar}, ${argsText || ''})`, true);
+        } else {
+            addFix(`Convert to 'append(${targetVar}, ${argsText || ''})' (for arrays)`, `append(${targetVar}, ${argsText || ''})`, true);
+        }
         addFix(`Convert to 'jsonarrayappend(${targetVar}, ${argsText || ''})' (for JSON arrays)`, `jsonarrayappend(${targetVar}, ${argsText || ''})`);
         return fixes;
     }
 
     // 23. Array Insert: .insert(idx, elem)
     if (memberLower === 'insert') {
-        addFix(`Convert to '${targetVar} = insert(${targetVar}, ${argsText || ''})'`, `${targetVar} = insert(${targetVar}, ${argsText || ''})`, true);
+        if (isStatement) {
+            addFix(`Convert to '${targetVar} = insert(${targetVar}, ${argsText || ''})'`, `${targetVar} = insert(${targetVar}, ${argsText || ''})`, true);
+        } else {
+            addFix(`Convert to 'insert(${targetVar}, ${argsText || ''})'`, `insert(${targetVar}, ${argsText || ''})`, true);
+        }
         return fixes;
     }
 
     // 24. Array Sort: .sort()
     if (memberLower === 'sort') {
-        addFix(`Convert to '${targetVar} = sort(${targetVar}, "asc")'`, `${targetVar} = sort(${targetVar}, "asc")`, true);
-        addFix(`Convert to '${targetVar} = sort(${targetVar}, "desc")'`, `${targetVar} = sort(${targetVar}, "desc")`);
+        if (isStatement) {
+            addFix(`Convert to '${targetVar} = sort(${targetVar}, "asc")'`, `${targetVar} = sort(${targetVar}, "asc")`, true);
+            addFix(`Convert to '${targetVar} = sort(${targetVar}, "desc")'`, `${targetVar} = sort(${targetVar}, "desc")`);
+        } else {
+            addFix(`Convert to 'sort(${targetVar}, "asc")'`, `sort(${targetVar}, "asc")`, true);
+            addFix(`Convert to 'sort(${targetVar}, "desc")'`, `sort(${targetVar}, "desc")`);
+        }
         return fixes;
     }
 
     // 25. Array Reverse: .reverse()
     if (memberLower === 'reverse') {
-        addFix(`Convert to '${targetVar} = reverse(${targetVar})'`, `${targetVar} = reverse(${targetVar})`, true);
+        if (isStatement) {
+            addFix(`Convert to '${targetVar} = reverse(${targetVar})'`, `${targetVar} = reverse(${targetVar})`, true);
+        } else {
+            addFix(`Convert to 'reverse(${targetVar})'`, `reverse(${targetVar})`, true);
+        }
         return fixes;
     }
 

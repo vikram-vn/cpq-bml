@@ -2,6 +2,18 @@ const { makeDiagnostic, findMatchingParenEnd, splitTopLevelArgs } = require('@/l
 const { inferExpressionType, collectVariableTypes } = require('@/lang/lint/rules/typeCheck');
 const vscode = require('vscode');
 
+function resolveExprType(expr, firstTypeByVar) {
+    if (!expr) return null;
+    const trimmed = expr.trim();
+    if (!trimmed) return null;
+    let actual = inferExpressionType(trimmed, null, null, firstTypeByVar);
+    if (!actual && firstTypeByVar && firstTypeByVar.has && firstTypeByVar.has(trimmed.toLowerCase())) {
+        const entry = firstTypeByVar.get(trimmed.toLowerCase());
+        actual = entry ? (entry.type || entry) : null;
+    }
+    return actual;
+}
+
 function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
     const diagnostics = [];
     let match;
@@ -134,10 +146,7 @@ function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
                         ));
                     } else if (typeVal === 'date') {
                         const arg1Trimmed = args[0].trim();
-                        let actual1 = inferExpressionType(arg1Trimmed);
-                        if (!actual1 && firstTypeByVar.has(arg1Trimmed.toLowerCase())) {
-                            actual1 = firstTypeByVar.get(arg1Trimmed.toLowerCase()).type;
-                        }
+                        let actual1 = resolveExprType(arg1Trimmed, firstTypeByVar);
                         if (actual1 && actual1.toLowerCase() !== 'date[]' && actual1.toLowerCase() !== 'date') {
                             const startPos = doc.positionAt(match.index);
                             const endPos = doc.positionAt(closeParenIndex + 1);
@@ -150,10 +159,7 @@ function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
                         }
                     } else if (typeVal === 'numeric') {
                         const arg1Trimmed = args[0].trim();
-                        let actual1 = inferExpressionType(arg1Trimmed);
-                        if (!actual1 && firstTypeByVar.has(arg1Trimmed.toLowerCase())) {
-                            actual1 = firstTypeByVar.get(arg1Trimmed.toLowerCase()).type;
-                        }
+                        let actual1 = resolveExprType(arg1Trimmed, firstTypeByVar);
                         if (actual1 && actual1.toLowerCase() === 'boolean[]') {
                             const startPos = doc.positionAt(match.index);
                             const endPos = doc.positionAt(closeParenIndex + 1);
@@ -170,13 +176,11 @@ function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
 
             // Arg 1 1-D array check
             const arg1Trimmed = args[0].trim();
-            let actual1 = inferExpressionType(arg1Trimmed);
-            if (!actual1 && firstTypeByVar.has(arg1Trimmed.toLowerCase())) {
-                actual1 = firstTypeByVar.get(arg1Trimmed.toLowerCase()).type;
-            }
+            let actual1 = resolveExprType(arg1Trimmed, firstTypeByVar);
 
+            const KNOWN_SCALARS = new Set(['string', 'integer', 'float', 'boolean', 'date', 'double', 'long', 'bytearray', 'jsonnull', 'dictionary', 'dict', 'recordset', 'stringbuilder', 'json', 'jsonarray']);
             if (actual1) {
-                const cleanType = actual1.toLowerCase();
+                const cleanType = actual1.toLowerCase().trim();
                 if (cleanType.endsWith('[][]')) {
                     const startPos = doc.positionAt(match.index);
                     const endPos = doc.positionAt(closeParenIndex + 1);
@@ -186,7 +190,7 @@ function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
                         vscode.DiagnosticSeverity.Error,
                         'bml-sort-array-dimension'
                     ));
-                } else if (!cleanType.endsWith('[]')) {
+                } else if (KNOWN_SCALARS.has(cleanType)) {
                     const startPos = doc.positionAt(match.index);
                     const endPos = doc.positionAt(closeParenIndex + 1);
                     diagnostics.push(makeDiagnostic(
@@ -211,10 +215,7 @@ function checkArray(cleanText, noStringsText, doc, precomputedFirstTypes) {
 
         if (args.length >= 1) {
             const arg1Trimmed = args[0].trim();
-            let actual1 = inferExpressionType(arg1Trimmed);
-            if (!actual1 && firstTypeByVar.has(arg1Trimmed.toLowerCase())) {
-                actual1 = firstTypeByVar.get(arg1Trimmed.toLowerCase()).type;
-            }
+            let actual1 = resolveExprType(arg1Trimmed, firstTypeByVar);
             if (actual1) {
                 const cleanType = actual1.toLowerCase();
                 if (cleanType.endsWith('[][]')) {

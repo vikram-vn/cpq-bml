@@ -44,8 +44,11 @@ function patchVscode(vs) {
           list = [];
           editsMap.set(this, list);
         }
-        list.push({ type: 'replace', uri, range, newText });
-        return origReplace.apply(this, arguments);
+        const lenBefore = list.length;
+        origReplace.apply(this, arguments);
+        if (list.length === lenBefore) {
+          list.push({ type: 'replace', uri, range, newText });
+        }
       };
     }
 
@@ -56,9 +59,12 @@ function patchVscode(vs) {
           list = [];
           editsMap.set(this, list);
         }
-        const range = vs.Range ? new vs.Range(position, position) : { start: position, end: position };
-        list.push({ type: 'insert', uri, position, range, newText });
-        return origInsert.apply(this, arguments);
+        const lenBefore = list.length;
+        origInsert.apply(this, arguments);
+        if (list.length === lenBefore) {
+          const range = vs.Range ? new vs.Range(position, position) : { start: position, end: position };
+          list.push({ type: 'insert', uri, position, range, newText });
+        }
       };
     }
 
@@ -69,8 +75,11 @@ function patchVscode(vs) {
           list = [];
           editsMap.set(this, list);
         }
-        list.push({ type: 'delete', uri, range, newText: '' });
-        return origDelete.apply(this, arguments);
+        const lenBefore = list.length;
+        origDelete.apply(this, arguments);
+        if (list.length === lenBefore) {
+          list.push({ type: 'delete', uri, range, newText: '' });
+        }
       };
     }
 

@@ -8,6 +8,7 @@ const { getPerformanceFixes, createSbappendSplitActions } = require('@/lang/lint
 const { getSbappendConvertCodeActions } = require('@/lang/lint/code-actions/sbappendConverter');
 const { getMemberAccessFixes } = require('@/lang/lint/code-actions/memberAccessFixes');
 const { getFunctionSignatureFixes } = require('@/lang/lint/code-actions/functionSignatureFixes');
+const { getSmartSignatureFixes, getBatchSignatureFixes } = require('@/lang/lint/code-actions/smartSignatureFixes');
 const { getTypeCastFixes } = require('@/lang/lint/code-actions/typeCastFixes');
 const { getBmqlFixes } = require('@/lang/lint/code-actions/bmqlFixes');
 const { getApiFixes } = require('@/lang/lint/code-actions/apiFixes');
@@ -41,6 +42,7 @@ function registerBmlCodeActions(context) {
                         ...getStyleFixes(document, diag, editRange),
                         ...getMemberAccessFixes(document, diag, editRange),
                         ...getFunctionSignatureFixes(document, diag, editRange),
+                        ...getSmartSignatureFixes(document, diag, editRange),
                         ...getTypeCastFixes(document, diag, editRange),
                         ...getPerformanceFixes(document, diag, editRange),
                         ...getBmqlFixes(document, diag, editRange),
@@ -75,6 +77,7 @@ function registerBmlCodeActions(context) {
                 }
 
                 const fixAllActions = getFixAllSafeAction(document, docDiags);
+                const batchSignatureActions = getBatchSignatureFixes(document, docDiags);
 
                 // Priority Order:
                 // 1. Constructive Quick Fixes (camelCase, type suffixes, code quality fixes)
@@ -83,6 +86,7 @@ function registerBmlCodeActions(context) {
                 const allActions = [
                     ...constructiveFixes,
                     ...refactorActions,
+                    ...(batchSignatureActions || []),
                     ...(fixAllActions || []),
                     ...suppressionFixes
                 ];

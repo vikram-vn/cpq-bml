@@ -24,7 +24,7 @@ function inferArgumentType(argText, firstTypeByVar, returnTypes) {
     if (/^null$/i.test(trimmed)) return "Null";
   }
 
-  return inferExpressionType(trimmed);
+  return inferExpressionType(trimmed, null, returnTypes, firstTypeByVar);
 }
 
 let builtInFunctions = null;
@@ -63,7 +63,7 @@ const keywords = new Set([
   "dictionary",
   "dict",
 ]);
-const storageTypeNames = new Set(["float", "boolean", "date", "record", "dictionary", "dict", "stringbuilder", "jsonnull"]);
+const storageTypeNames = new Set(["record", "dictionary", "dict", "stringbuilder", "jsonnull"]);
 const deprecated = new Set(["strtodate", "gettabledata", "getpartsdata"]);
 
 function parseSyntax(syntax) {
@@ -84,16 +84,18 @@ function loadBuiltInFunctions(extensionPath) {
         if (item && item.fullSignature && item.fullSignature.includes("(")) {
           const nameLower = name.toLowerCase();
           const overloads = item.fullSignature.split(
-            /\s+OR\s+|\r?\n\s*\(or\)\s*\r?\n/i,
+            /\r?\n\s*\(or\)\s*\r?\n|\r?\n\s*OR\s*\r?\n|\s+OR\s+(?=(?:[a-zA-Z_]\w*(?:\([^)]*\)|\[\])*\s+)?[a-zA-Z_]\w*\s*\()/
           );
           const parsedOverloads = overloads.map((sig) => {
             return parseParameterSignature(sig);
           });
           const first = parsedOverloads[0];
+          const overallMin = Math.min(...parsedOverloads.map((o) => o.min));
+          const overallMax = Math.max(...parsedOverloads.map((o) => o.max));
           builtInFunctions.set(nameLower, {
             overloads: parsedOverloads,
-            min: first.min,
-            max: first.max,
+            min: overallMin,
+            max: overallMax,
             params: first.params,
             syntax: item.fullSignature,
             name,
@@ -175,7 +177,7 @@ function loadBuiltInFunctions(extensionPath) {
       syntax: "sbappend(StringBuilder sb, String text)",
       overloads: [
         {
-          min: 0,
+          min: 1,
           max: Infinity,
           params: [{ type: "StringBuilder" }, { type: "String" }],
         },
