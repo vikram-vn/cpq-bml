@@ -63,7 +63,7 @@ const keywords = new Set([
   "dictionary",
   "dict",
 ]);
-const storageTypeNames = new Set(["record", "dictionary", "dict", "stringbuilder", "jsonnull"]);
+const storageTypeNames = new Set(["boolean", "record", "dictionary", "dict", "stringbuilder", "jsonnull"]);
 const deprecated = new Set(["strtodate", "gettabledata", "getpartsdata"]);
 
 function parseSyntax(syntax) {

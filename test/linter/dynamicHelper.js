@@ -54,7 +54,7 @@ function runDynamicTestsForCategory(category, suiteTitle) {
             return;
         }
 
-        const overloads = item.fullSignature.split(/\s+OR\s+|\r?\n\s*\(or\)\s*\r?\n/i).map(sig => parseParameterSignature(sig));
+        const overloads = item.fullSignature.split(/\r?\n\s*\(or\)\s*\r?\n|\r?\n\s*OR\s*\r?\n|\s+OR\s+(?=(?:[a-zA-Z_]\w*(?:\([^)]*\)|\[\])*\s+)?[a-zA-Z_]\w*\s*\()/).map(sig => parseParameterSignature(sig));
         if (nameLower === 'put') {
             overloads[0].params = [{type: 'dictionary'}, {type: 'string'}, {type: 'string'}];
         } else if (nameLower === 'sbappend') {
