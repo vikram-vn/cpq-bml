@@ -1,10 +1,9 @@
-const { call, getEffectiveRestVersion } = require('@/lang/rest/apiCore');
+const { call, getEffectiveRestVersion, normalizeArgs } = require('@/lang/rest/apiCore');
 
 // GET /rest/<version>/parts
-async function listParts(
-  context,
-  vscode,
-  {
+async function listParts(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     offset = 0,
     limit = 100,
     q,
@@ -12,10 +11,9 @@ async function listParts(
     orderBy,
     fields,
     signal
-  } = {},
-  transport
-) {
-  const version = getEffectiveRestVersion(vscode, 19);
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, 19);
   const queryParams = { limit, totalResults: true };
   if (offset > 0) queryParams.offset = offset;
   if (q) queryParams.q = q;
@@ -24,15 +22,13 @@ async function listParts(
   if (fields) queryParams.fields = fields;
 
   const res = await call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/parts`,
+      path: "/parts",
       method: 'GET',
       query: queryParams,
       signal
     },
-    transport
+    tr
   );
 
   // Auto-recovery: if CPQ rejects the sort parameter with 400 Bad Request, retry without orderby
@@ -42,15 +38,13 @@ async function listParts(
       const fallbackQuery = { ...queryParams };
       delete fallbackQuery.orderby;
       return call(
-        context,
-        vscode,
         {
-          path: `/rest/${version}/parts`,
+          path: "/parts",
           method: 'GET',
           query: fallbackQuery,
           signal
         },
-        transport
+        tr
       );
     }
   }
@@ -59,41 +53,38 @@ async function listParts(
 }
 
 // GET /rest/<version>/parts/<id>
-async function getPart(context, vscode, id, { fields, signal } = {}, transport) {
-  if (!id) {
+async function getPart(id, options = {}, transport) {
+  const [partId, opts = {}, tr] = normalizeArgs(arguments);
+  if (!partId) {
     throw new Error('Part id / partNumber is required.');
   }
 
-  const version = getEffectiveRestVersion(vscode, 19);
+  const { fields, signal } = opts;
   const queryParams = {};
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/parts/${encodeURIComponent(String(id).trim())}`,
+      path: `/parts/${encodeURIComponent(String(partId).trim())}`,
       method: 'GET',
       query: queryParams,
       signal
     },
-    transport
+    tr
   );
 }
 
 // POST /rest/<version>/parts/actions/search
-async function searchParts(context, vscode, searchCriteria = {}, transport) {
-  const version = getEffectiveRestVersion(vscode, 19);
+async function searchParts(searchCriteria = {}, transport) {
+  const [criteria = {}, tr] = normalizeArgs(arguments);
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/parts/actions/search`,
+      path: "/parts/actions/search",
       method: 'POST',
-      body: searchCriteria || {}
+      body: criteria || {}
     },
-    transport
+    tr
   );
 }
 

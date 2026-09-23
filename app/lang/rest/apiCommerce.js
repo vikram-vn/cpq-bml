@@ -1,4 +1,11 @@
-const { call, getEffectiveRestVersion } = require("@/lang/rest/apiCore");
+const {
+  call,
+  getEffectiveRestVersion,
+  setApiContext,
+  getApiContext,
+  normalizeArgs,
+  isContextOrVscode,
+} = require("@/lang/rest/apiCore");
 const {
   getCommerceProcess,
   getCommerceDocument,
@@ -10,8 +17,18 @@ const {
 } = require("@/lang/rest/commerceAttributes");
 const attributesApi = require("@/lang/rest/apiCommerceAttributes");
 
-function commerceDocumentsPath(vscode, process = "oraclecpqo", document = "transaction") {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+function commerceDocumentsPath(arg1 = "oraclecpqo", arg2 = "transaction", arg3) {
+  let vscode, process, document;
+  if (isContextOrVscode(arg1)) {
+    vscode = arg1;
+    process = arg2 || "oraclecpqo";
+    document = arg3 || "transaction";
+  } else {
+    process = arg1 || "oraclecpqo";
+    document = arg2 || "transaction";
+  }
+  const effectiveVscode = vscode || (typeof getApiContext === "function" ? getApiContext().vscode : null);
+  const effectiveVersion = getEffectiveRestVersion(effectiveVscode, 19);
   const proc = process ? process.charAt(0).toUpperCase() + process.slice(1) : "Oraclecpqo";
   const doc = document ? document.charAt(0).toUpperCase() + document.slice(1) : "Transaction";
   return `/rest/${effectiveVersion}/commerceDocuments${proc}${doc}`;
@@ -19,10 +36,9 @@ function commerceDocumentsPath(vscode, process = "oraclecpqo", document = "trans
 
 // GET /rest/<version>/commerceDocuments<Process><Document>
 // Minimal response for transaction filtering and debugging: _id, transactionID_t, no href links.
-async function getTransactions(
-  context,
-  vscode,
-  {
+async function getTransactions(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     process,
     document,
     q,
@@ -33,12 +49,11 @@ async function getTransactions(
     excludeFieldTypes = "yes",
     orderby,
     totalResults = true,
-  } = {},
-  transport,
-) {
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-  const wsRoot = getWorkspaceRoot(vscode);
+  } = opts;
+
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
+  const wsRoot = getWorkspaceRoot();
 
   let queryFilter = q || query;
   if (queryFilter) {
@@ -84,18 +99,15 @@ async function getTransactions(
   if (resolvedOrderby) queryParams.orderby = resolvedOrderby;
   if (totalResults !== undefined) queryParams.totalResults = totalResults;
 
-  const basePath = commerceDocumentsPath(vscode, effectiveProcess, effectiveDocument);
+  const basePath = commerceDocumentsPath(effectiveProcess, effectiveDocument);
   let result = await call(
-    context,
-    vscode,
     {
       path: basePath,
       method: "GET",
       query: queryParams,
     },
-    transport,
+    tr,
   );
-
 
   // Sanitize items so no href links are ever returned, preserving all query fields
   if (result && result.body && typeof result.body === "object") {
@@ -125,243 +137,216 @@ async function getTransactions(
 }
 
 // GET /rest/<version>/commerceDocuments<Process><Document>/<id>
-async function getTransaction(
-  context,
-  vscode,
-  transactionId,
-  { process, document, timeoutMs } = {},
-  transport,
-) {
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+async function getTransaction(transactionId, options = {}, transport) {
+  const [id, opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document, timeoutMs } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
   return call(
-    context,
-    vscode,
     {
-      path: `${commerceDocumentsPath(vscode, effectiveProcess, effectiveDocument)}/${transactionId}`,
+      path: `${commerceDocumentsPath(effectiveProcess, effectiveDocument)}/${id}`,
       method: "GET",
       timeoutMs: timeoutMs || 60000,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/actionDefs
-async function listCommerceActions(
-  context,
-  vscode,
-  { process, document, offset = 0, limit = 1000, q } = {},
-  transport,
-) {
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+async function listCommerceActions(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document, offset = 0, limit = 1000, q } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
 
   const query = { limit };
   if (offset > 0) query.offset = offset;
   if (q) query.q = q;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actionDefs`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actionDefs`,
       method: "GET",
       query,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/actionDefs/<actionVarName>
-async function getCommerceAction(
-  context,
-  vscode,
-  actionVarName,
-  { process, document } = {},
-  transport,
-) {
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+async function getCommerceAction(actionVarName, options = {}, transport) {
+  const [actionName, opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actionDefs/${actionVarName}`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/actionDefs/${actionName}`,
       method: "GET",
     },
-    transport,
+    tr,
   );
 }
 
 // POST /rest/<version>/commerceDocuments<Process><Document>/<id>/actions/_pipelineViewer
 // Executes the CPQ Commerce Pipeline Viewer for a transaction (rules sequence, attribute changes, timings).
-async function runPipelineViewer(
-  context,
-  vscode,
-  { id, process, document } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+async function runPipelineViewer(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { id, process, document } = opts;
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
   const proc = effectiveProcess ? effectiveProcess.charAt(0).toUpperCase() + effectiveProcess.slice(1) : "Oraclecpqo";
   const doc = effectiveDocument ? effectiveDocument.charAt(0).toUpperCase() + effectiveDocument.slice(1) : "Transaction";
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceDocuments${proc}${doc}/${id}/actions/_pipelineViewer`,
+      path: `/commerceDocuments${proc}${doc}/${id}/actions/_pipelineViewer`,
       method: "POST",
       body: {},
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses
-async function listCommerceProcesses(
-  context,
-  vscode,
-  { offset = 0, limit = 100, q, fields, signal } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+async function listCommerceProcesses(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { offset = 0, limit = 100, q, fields, signal } = opts;
   const queryParams = { limit, totalResults: true };
   if (offset > 0) queryParams.offset = offset;
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses`,
+      path: "/commerceProcesses",
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcessSetups/<process>/integrations
-async function listCommerceIntegrations(
-  context,
-  vscode,
-  { process, offset = 0, limit = 100, q, signal } = {},
-  transport,
-) {
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+async function listCommerceIntegrations(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { process, offset = 0, limit = 100, q, signal } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
   const queryParams = { limit, totalResults: true };
   if (offset > 0) queryParams.offset = offset;
   if (q) queryParams.q = q;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/integrations`,
+      path: `/commerceProcessSetups/${effectiveProcess}/integrations`,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcessSetups/<process>/integrations/<integrationVarName>
-async function getCommerceIntegration(
-  context,
-  vscode,
-  { process, integrationVarName, signal } = {},
-  transport,
-) {
+async function getCommerceIntegration(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { process, integrationVarName, signal } = opts;
   if (!integrationVarName) {
     throw new Error("integrationVarName is required.");
   }
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/integrations/${encodeURIComponent(integrationVarName)}`,
+      path: `/commerceProcessSetups/${effectiveProcess}/integrations/${encodeURIComponent(integrationVarName)}`,
       method: "GET",
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets
-async function listCommerceArraySets(
-  context,
-  vscode,
-  { process, document, offset = 0, limit = 1000 } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+async function listCommerceArraySets(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document, offset = 0, limit = 1000 } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets`,
       method: "GET",
       query: { offset, limit, totalResults: true },
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets/<arraySetVarName>
-async function getCommerceArraySet(
-  context,
-  vscode,
-  arraySetVarName,
-  { process, document } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+async function getCommerceArraySet(arraySetVarName, options = {}, transport) {
+  const [varName, opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets/${arraySetVarName}`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets/${varName}`,
       method: "GET",
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets/<arraySetVarName>/attributes
-async function listArraySetAttributes(
-  context,
-  vscode,
-  arraySetVarName,
-  { process, document, offset = 0, limit = 1000 } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+async function listArraySetAttributes(arraySetVarName, options = {}, transport) {
+  const [varName, opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document, offset = 0, limit = 1000 } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets/${arraySetVarName}/attributes`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets/${varName}/attributes`,
       method: "GET",
       query: { offset, limit, totalResults: true },
     },
-    transport,
+    tr,
+  );
+}
+
+// GET /rest/<version>/commerceProcessSetups/<process>/documents/<document>/modifyTab
+async function getCommerceDocumentModifyTab(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
+
+  return call(
+    {
+      path: `/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/modifyTab`,
+      method: "GET",
+    },
+    tr,
+  );
+}
+
+// PATCH /rest/<version>/commerceProcessSetups/<process>/documents/<document>/modifyTab
+async function updateCommerceDocumentModifyTab(items, options = {}, transport) {
+  const [bodyItems, opts = {}, tr] = normalizeArgs(arguments);
+  const { process, document } = opts;
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
+  const body = Array.isArray(bodyItems) ? { items: bodyItems } : bodyItems;
+
+  return call(
+    {
+      path: `/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/modifyTab`,
+      method: "PATCH",
+      body,
+    },
+    tr,
   );
 }
 
@@ -373,6 +358,8 @@ module.exports = {
   listCommerceProcesses,
   listCommerceActions,
   getCommerceAction,
+  getCommerceDocumentModifyTab,
+  updateCommerceDocumentModifyTab,
   listCommerceArraySets,
   getCommerceArraySet,
   listArraySetAttributes,
@@ -381,6 +368,3 @@ module.exports = {
   runPipelineViewer,
   ...attributesApi,
 };
-
-
-

@@ -11,6 +11,9 @@ const testTools = require('@/lang/mcp/tools/testTools');
 const schemaTools = require('@/lang/mcp/tools/schemaTools');
 const commerceActionTools = require('@/lang/mcp/tools/commerceActionTools');
 const partsTools = require('@/lang/mcp/tools/partsTools');
+const dataTableTools = require('@/lang/mcp/tools/dataTableTools');
+const cloudExplorerTools = require('@/lang/mcp/tools/cloudExplorerTools');
+const commerceFormulaTools = require('@/lang/mcp/tools/commerceFormulaTools');
 
 module.exports = {
     ...lookup,
@@ -26,4 +29,9 @@ module.exports = {
     ...schemaTools,
     ...commerceActionTools,
     ...partsTools,
+    ...dataTableTools,
+    ...cloudExplorerTools,
+    ...commerceFormulaTools,
 };
+
+

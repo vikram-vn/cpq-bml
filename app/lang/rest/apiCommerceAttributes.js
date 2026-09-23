@@ -1,4 +1,8 @@
-const { call, getEffectiveRestVersion } = require("@/lang/rest/apiCore");
+const {
+  call,
+  getEffectiveRestVersion,
+  normalizeArgs,
+} = require("@/lang/rest/apiCore");
 const {
   getCommerceProcess,
   getCommerceDocument,
@@ -9,66 +13,58 @@ const {
 } = require("@/lang/rest/apiCommerceSync");
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes
-async function listCommerceAttributes(
-  context,
-  vscode,
-  {
+async function listCommerceAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     process,
     document,
     offset = 0,
     limit = 1000,
     q,
     fields,
-  } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  } = opts;
+
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
 
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes`,
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents
-async function listCommerceDocuments(
-  context,
-  vscode,
-  { process, offset = 0, limit = 100, signal } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+async function listCommerceDocuments(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { process, offset = 0, limit = 100, signal } = opts;
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents`,
+      path: `/commerceProcesses/${effectiveProcess}/documents`,
       method: "GET",
       query: { offset, limit, totalResults: true },
       signal,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes/<attributeVarName>/menuItems
-async function listCommerceAttributeMenuItems(
-  context,
-  vscode,
-  {
+async function listCommerceAttributeMenuItems(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     process,
     document,
     attributeVarName,
@@ -76,58 +72,53 @@ async function listCommerceAttributeMenuItems(
     limit = 1000,
     q,
     fields = "value,displayValue,label,name,id",
-  } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  } = opts;
+
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
 
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes/${attributeVarName}/menuItems`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes/${attributeVarName}/menuItems`,
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/attributes/<attributeVarName>
-async function getCommerceAttribute(
-  context,
-  vscode,
-  {
+async function getCommerceAttribute(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     process,
     document,
     attributeVarName,
     fields = "label,variableName,type,required,userDefault,description,additional,defaultDataType,dependencies,ajaxSensitive,attributeSet,systemDefault",
     fetchMenuOptions = true,
-  } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  } = opts;
+
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
 
   const queryParams = {};
   if (fields) queryParams.fields = fields;
 
   const res = await call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes/${attributeVarName}`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/attributes/${attributeVarName}`,
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 
   if (!res || !res.body) {
@@ -153,8 +144,6 @@ async function getCommerceAttribute(
   if (fetchMenuOptions && isMenu) {
     try {
       const menuRes = await listCommerceAttributeMenuItems(
-        context,
-        vscode,
         {
           process: effectiveProcess,
           document: effectiveDocument,
@@ -162,7 +151,7 @@ async function getCommerceAttribute(
           limit: 500,
           fields: "value,displayValue,label,name,id",
         },
-        transport,
+        tr,
       );
       const rawMenuItems =
         menuRes && menuRes.body
@@ -186,143 +175,126 @@ async function getCommerceAttribute(
 }
 
 // GET /rest/<version>/commerceProcesses/<process>/documents/<document>/arraySets
-async function listCommerceArraySets(
-  context,
-  vscode,
-  {
+async function listCommerceArraySets(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     process,
     document,
     offset = 0,
     limit = 1000,
     q,
     fields = "variableName,name,label,description",
-  } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  } = opts;
+
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
 
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets`,
+      path: `/commerceProcesses/${effectiveProcess}/documents/${effectiveDocument}/arraySets`,
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcessSetups/<process>/documents/<document>/attributes/<attributeVarName>/references
-async function listCommerceAttributeReferences(
-  context,
-  vscode,
-  attributeVarName,
-  {
+async function listCommerceAttributeReferences(attributeVarName, options = {}, transport) {
+  const [attrName, opts = {}, tr] = normalizeArgs(arguments);
+  const {
     process,
     document,
     offset = 0,
     limit = 1000,
     q,
     fields,
-  } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
-  const effectiveDocument = document || getCommerceDocument(vscode) || "transaction";
+  } = opts;
+
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+  const effectiveDocument = document || getCommerceDocument() || "transaction";
 
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
-  const encodedAttr = encodeURIComponent(attributeVarName);
+  const encodedAttr = encodeURIComponent(attrName);
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/attributes/${encodedAttr}/references`,
+      path: `/commerceProcessSetups/${effectiveProcess}/documents/${effectiveDocument}/attributes/${encodedAttr}/references`,
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcessSetups/systemAttributes
-async function listCommerceSystemAttributes(
-  context,
-  vscode,
-  { offset = 0, limit = 1000, q, fields } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+async function listCommerceSystemAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { offset = 0, limit = 1000, q, fields } = opts;
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
 
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcessSetups/systemAttributes`,
+      path: "/commerceProcessSetups/systemAttributes",
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcessSetups/<process>/bml/attributeLookups
-async function listCommerceAttributeLookups(
-  context,
-  vscode,
-  { process, offset = 0, limit = 100, fields = "lookupType,name" } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+async function listCommerceAttributeLookups(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { process, offset = 0, limit = 100, fields = "lookupType,name" } = opts;
+  const effectiveVersion = getEffectiveRestVersion(null, 18);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
 
   const queryParams = { offset, limit, totalResults: true };
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/bml/attributeLookups`,
+      path: `/commerceProcessSetups/${effectiveProcess}/bml/attributeLookups`,
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/commerceProcessSetups/<process>/bml/attributeLookups/<lookupType>/lookupValues
-async function listCommerceAttributeLookupValues(
-  context,
-  vscode,
-  {
+async function listCommerceAttributeLookupValues(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     process,
     lookupType,
     offset = 0,
     limit = 1000,
     href,
     fields = "name,displayLabel,dataType,description,isMenuType,availableElements",
-  } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 18);
-  const effectiveProcess = process || getCommerceProcess(vscode) || "oraclecpqo";
+  } = opts;
 
-  let path = `/rest/${effectiveVersion}/commerceProcessSetups/${effectiveProcess}/bml/attributeLookups/${lookupType}/lookupValues`;
+  const effectiveVersion = getEffectiveRestVersion(null, 18);
+  const effectiveProcess = process || getCommerceProcess() || "oraclecpqo";
+
+  let path = `/commerceProcessSetups/${effectiveProcess}/bml/attributeLookups/${lookupType}/lookupValues`;
   if (href && typeof href === "string") {
     const match = href.match(/\/rest\/.*$/i);
     if (match) {
@@ -334,24 +306,19 @@ async function listCommerceAttributeLookupValues(
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
       path,
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
-async function syncCommerceAttributes(
-  context,
-  vscode,
-  options = {},
-  transport,
-) {
-  return syncCommerceAttributesImpl(context, vscode, options, transport, {
+async function syncCommerceAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  return syncCommerceAttributesImpl(null, null, opts, tr, {
     listCommerceDocuments,
     listCommerceAttributes,
     listCommerceAttributeMenuItems,

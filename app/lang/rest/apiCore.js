@@ -50,12 +50,54 @@ function sanitizeRestResponse(data, baseUrl) {
   return data;
 }
 
+let _defaultContext = null;
+let _defaultVscode = null;
+
+function setApiContext(context, vscode) {
+  if (context) _defaultContext = context;
+  if (vscode) _defaultVscode = vscode;
+}
+
+function getApiContext() {
+  return { context: _defaultContext, vscode: _defaultVscode };
+}
+
+function isContextOrVscode(val) {
+  if (!val || typeof val !== "object") return false;
+  return Boolean(
+    val.subscriptions ||
+    val.globalState ||
+    val.workspaceState ||
+    val.secrets ||
+    val.extensionPath ||
+    val.extensionUri ||
+    val.window ||
+    val.workspace ||
+    val.commands ||
+    val.languages
+  );
+}
+
+function normalizeArgs(args) {
+  if (args && args.length >= 2 && (isContextOrVscode(args[0]) || isContextOrVscode(args[1]))) {
+    setApiContext(args[0], args[1]);
+    return Array.prototype.slice.call(args, 2);
+  }
+  return Array.prototype.slice.call(args || []);
+}
+
 function functionsPath(vscode, metadata) {
-  const version = getRestVersion(vscode);
-  if (metadata && metadata.commerceDocument) {
+  let effectiveVscode = vscode || _defaultVscode;
+  let effectiveMeta = metadata;
+  if (!metadata && vscode && !isContextOrVscode(vscode)) {
+    effectiveMeta = vscode;
+    effectiveVscode = _defaultVscode;
+  }
+  const version = getRestVersion(effectiveVscode);
+  if (effectiveMeta && effectiveMeta.commerceDocument) {
     const process =
-      metadata.commerceProcess || getCommerceProcess(vscode) || "oraclecpqo";
-    return `/rest/${version}/commerceProcessSetups/${process}/documents/${metadata.commerceDocument}/bml/library/functions`;
+      effectiveMeta.commerceProcess || getCommerceProcess(effectiveVscode) || "oraclecpqo";
+    return `/rest/${version}/commerceProcessSetups/${process}/documents/${effectiveMeta.commerceDocument}/bml/library/functions`;
   }
   return `/rest/${version}/bml/library/functions`;
 }
@@ -84,15 +126,59 @@ function notifyUnauthorized(vscode) {
   }
 }
 
-async function call(context, vscode, { path, method, query, body, signal, timeoutMs }, transport) {
+async function call(arg1, arg2, arg3, arg4) {
+  let context;
+  let vscode;
+  let options;
+  let transport;
+
+  if (
+    arg1 &&
+    typeof arg1 === "object" &&
+    (arg1.path !== undefined ||
+      arg1.uri !== undefined ||
+      arg1.method !== undefined ||
+      arg1.query !== undefined ||
+      arg1.body !== undefined ||
+      (arg2 && typeof arg2 === "function") ||
+      arguments.length <= 2)
+  ) {
+    options = arg1;
+    transport = arg2;
+    context = (options && options.context) || _defaultContext;
+    vscode = (options && options.vscode) || _defaultVscode;
+  } else {
+    context = arg1 || _defaultContext;
+    vscode = arg2 || _defaultVscode;
+    options = arg3 || {};
+    transport = arg4;
+  }
+
+  if (!vscode) {
+    try {
+      vscode = require("vscode");
+    } catch (e) {}
+  }
+
+  const { path, uri, method, query, body, signal, timeoutMs, version } = options || {};
   let cleanedBody = body;
   if (body && typeof body === "object") {
     const { commerceProcess, commerceDocument, ...rest } = body;
     cleanedBody = rest;
   }
+
   const baseUrl = getBaseUrl(vscode);
   const authHeader = await getAuthHeader(context, vscode);
   const settings = getSettings(vscode);
+
+  // Keep /rest/version only in call; everywhere else passes URI after rest version
+  const effectiveVersion = version || getRestVersion(vscode) || "v18";
+  let resolvedPath = path || uri || "";
+  if (!resolvedPath.startsWith("/rest/")) {
+    const cleanSub = resolvedPath.startsWith("/") ? resolvedPath : `/${resolvedPath}`;
+    resolvedPath = `/rest/${effectiveVersion}${cleanSub}`;
+  }
+
   let logFilePath;
   if (
     settings.debugLog &&
@@ -121,8 +207,8 @@ async function call(context, vscode, { path, method, query, body, signal, timeou
       else if (query.transactionID) txnId = String(query.transactionID);
       else if (query.transactionID_t) txnId = String(query.transactionID_t);
     }
-    if (!txnId && path && typeof path === "string") {
-      const match = path.match(
+    if (!txnId && resolvedPath && typeof resolvedPath === "string") {
+      const match = resolvedPath.match(
         /\/(?:documents|transaction(?:Setup)?s?)\/(\d+)/i,
       );
       if (match) txnId = match[1];
@@ -136,7 +222,7 @@ async function call(context, vscode, { path, method, query, body, signal, timeou
 
   const response = await request({
     baseUrl,
-    path,
+    path: resolvedPath,
     method,
     query,
     body: cleanedBody,
@@ -161,6 +247,10 @@ async function call(context, vscode, { path, method, query, body, signal, timeou
 
 module.exports = {
   call,
+  setApiContext,
+  getApiContext,
+  normalizeArgs,
+  isContextOrVscode,
   sanitizeRestResponse,
   functionsPath,
   getEffectiveRestVersion,

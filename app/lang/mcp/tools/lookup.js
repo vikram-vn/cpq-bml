@@ -16,6 +16,8 @@ const {
 const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
 const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
 const { createCapturingTerminal } = require('@/lang/mcp/proxy');
+const { getDataTableSchema, getDataTableRows } = require('@/lang/mcp/tools/dataTableTools');
+const { listParts, getPart } = require('@/lang/mcp/tools/partsTools');
 
 async function listAll(context, vscode, transport, metadataTarget) {
     const label = metadataTarget ? 'List Commerce Functions' : 'List Util Functions';
@@ -344,13 +346,10 @@ async function listDataTables(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const { statusCode, body } = await api.dispatch(
+        const { statusCode, body } = await api.listDataTables(
             context,
             vscode,
-            'GET',
-            '/dataTables',
             { limit: 1000 },
-            undefined,
             transport,
         );
 
@@ -383,9 +382,6 @@ async function listDataTables(context, vscode, args, transport) {
         };
     }
 }
-
-const { getDataTableSchema, getDataTableRows } = require('@/lang/mcp/tools/dataTableTools');
-const { listParts, getPart } = require('@/lang/mcp/tools/partsTools');
 
 module.exports = {
     listUtilFunctions,

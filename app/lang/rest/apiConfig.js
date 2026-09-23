@@ -1,104 +1,105 @@
-const { call, getEffectiveRestVersion } = require("@/lang/rest/apiCore");
+const { call, getEffectiveRestVersion, normalizeArgs } = require("@/lang/rest/apiCore");
 const {
   formatConfigurationAttribute,
   syncConfigurationAttributes: syncConfigImpl,
 } = require("@/lang/rest/apiConfigSync");
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/attributes
-async function listConfigurationAttributes(
-  context,
-  vscode,
-  {
+async function listConfigurationAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     offset = 0,
     limit = 1000,
     q,
     fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
     signal,
-  } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, 18);
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/attributes`,
+      path: "/allProductFamilySetups/_allProductFamilies/attributes",
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups
-async function listAllProductFamilySetups(
-  context,
-  vscode,
-  { offset = 0, limit = 100, q, fields = "variableName,label", signal } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, 18);
+async function listAllProductFamilySetups(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { offset = 0, limit = 100, q, fields = "variableName,label", signal } = opts;
+
+  const version = getEffectiveRestVersion(null, 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/allProductFamilySetups`,
+      path: "/allProductFamilySetups",
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies or /rest/<version>/productFamilies
-async function listProductFamilies(
-  context,
-  vscode,
-  { allProductFamilies = "_allProductFamilies", direct = false, offset = 0, limit = 100, q, fields = "variableName,label,name", signal } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, direct ? 19 : 18);
+async function listProductFamilies(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
+    allProductFamilies = "_allProductFamilies",
+    direct = false,
+    offset = 0,
+    limit = 100,
+    q,
+    fields = "variableName,label,name",
+    signal
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, direct ? 19 : 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   const path = (direct || allProductFamilies === null)
-    ? `/rest/${version}/productFamilies`
-    : `/rest/${version}/allProductFamilySetups/${allProductFamilies}/productFamilies`;
+    ? "/productFamilies"
+    : `/allProductFamilySetups/${allProductFamilies}/productFamilies`;
 
-  return call(
-    context,
-    vscode,
+  const res = await call(
     {
       path,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
+
+  if (!direct && allProductFamilies !== null && res && res.statusCode === 404) {
+    return listProductFamilies({ allProductFamilies: null, direct: true, offset, limit, q, fields, signal }, tr);
+  }
+  return res;
 }
 
 // Direct root endpoint: GET /rest/<version>/productFamilies
-async function listDirectProductFamilies(context, vscode, options = {}, transport) {
-  return listProductFamilies(context, vscode, { ...options, direct: true }, transport);
+async function listDirectProductFamilies(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  return listProductFamilies({ ...opts, direct: true }, tr);
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/attributes or direct /productFamilies/{family}/attributes
-async function listProductFamilyAttributes(
-  context,
-  vscode,
-  {
+async function listProductFamilyAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     productFamily = "defaultFamily",
     direct = false,
     offset = 0,
@@ -106,65 +107,70 @@ async function listProductFamilyAttributes(
     q,
     fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
     signal,
-  } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, direct ? 19 : 18);
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, direct ? 19 : 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   const path = direct
-    ? `/rest/${version}/productFamilies/${productFamily}/attributes`
-    : `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/attributes`;
+    ? `/productFamilies/${productFamily}/attributes`
+    : `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/attributes`;
 
   return call(
-    context,
-    vscode,
     {
       path,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines or direct /productFamilies/{family}/productLines
-async function listProductLines(
-  context,
-  vscode,
-  { productFamily, direct = false, offset = 0, limit = 100, q, fields = "variableName,label", signal } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, direct ? 19 : 18);
+async function listProductLines(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
+    productFamily,
+    direct = false,
+    offset = 0,
+    limit = 100,
+    q,
+    fields = "variableName,label",
+    signal
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, direct ? 19 : 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   const path = direct
-    ? `/rest/${version}/productFamilies/${productFamily}/productLines`
-    : `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines`;
+    ? `/productFamilies/${productFamily}/productLines`
+    : `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines`;
 
-  return call(
-    context,
-    vscode,
+  const res = await call(
     {
       path,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
+
+  if (!direct && res && res.statusCode === 404) {
+    return listProductLines({ productFamily, direct: true, offset, limit, q, fields, signal }, tr);
+  }
+  return res;
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/attributes or direct
-async function listProductLineAttributes(
-  context,
-  vscode,
-  {
+async function listProductLineAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     productFamily,
     productLine,
     direct = false,
@@ -173,65 +179,71 @@ async function listProductLineAttributes(
     q,
     fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
     signal,
-  } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, direct ? 19 : 18);
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, direct ? 19 : 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   const path = direct
-    ? `/rest/${version}/productFamilies/${productFamily}/productLines/${productLine}/attributes`
-    : `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/attributes`;
+    ? `/productFamilies/${productFamily}/productLines/${productLine}/attributes`
+    : `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/attributes`;
 
   return call(
-    context,
-    vscode,
     {
       path,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/models or direct
-async function listModels(
-  context,
-  vscode,
-  { productFamily, productLine, direct = false, offset = 0, limit = 100, q, fields = "variableName,label", signal } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, direct ? 19 : 18);
+async function listModels(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
+    productFamily,
+    productLine,
+    direct = false,
+    offset = 0,
+    limit = 100,
+    q,
+    fields = "variableName,label",
+    signal
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, direct ? 19 : 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   const path = direct
-    ? `/rest/${version}/productFamilies/${productFamily}/productLines/${productLine}/models`
-    : `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models`;
+    ? `/productFamilies/${productFamily}/productLines/${productLine}/models`
+    : `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models`;
 
-  return call(
-    context,
-    vscode,
+  const res = await call(
     {
       path,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
+
+  if (!direct && res && res.statusCode === 404) {
+    return listModels({ productFamily, productLine, direct: true, offset, limit, q, fields, signal }, tr);
+  }
+  return res;
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/models/{model}/attributes or direct
-async function listModelAttributes(
-  context,
-  vscode,
-  {
+async function listModelAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     productFamily,
     productLine,
     model,
@@ -241,108 +253,92 @@ async function listModelAttributes(
     q,
     fields = "variableName,label,dataType,required,defaultValue,description,category,inputTypeCode",
     signal,
-  } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, direct ? 19 : 18);
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, direct ? 19 : 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   const path = direct
-    ? `/rest/${version}/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/attributes`
-    : `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/attributes`;
+    ? `/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/attributes`
+    : `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/attributes`;
 
   return call(
-    context,
-    vscode,
     {
       path,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/rules
-async function listProductFamilyRules(
-  context,
-  vscode,
-  { productFamily, offset = 0, limit = 1000, q, signal } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, 18);
+async function listProductFamilyRules(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { productFamily, offset = 0, limit = 1000, q, signal } = opts;
+
+  const version = getEffectiveRestVersion(null, 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/rules`,
+      path: `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/rules`,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/rules
-async function listProductLineRules(
-  context,
-  vscode,
-  { productFamily, productLine, offset = 0, limit = 1000, q, signal } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, 18);
+async function listProductLineRules(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { productFamily, productLine, offset = 0, limit = 1000, q, signal } = opts;
+
+  const version = getEffectiveRestVersion(null, 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/rules`,
+      path: `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/rules`,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/models/{model}/rules
-async function listModelRules(
-  context,
-  vscode,
-  { productFamily, productLine, model, offset = 0, limit = 1000, q, signal } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, 18);
+async function listModelRules(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { productFamily, productLine, model, offset = 0, limit = 1000, q, signal } = opts;
+
+  const version = getEffectiveRestVersion(null, 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/rules`,
+      path: `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/rules`,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/allProductFamilySetups/_allProductFamilies/productFamilies/{family}/productLines/{line}/models/{model}/bomMappingRules
-async function listModelBomMappingRules(
-  context,
-  vscode,
-  {
+async function listModelBomMappingRules(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     productFamily,
     productLine,
     model,
@@ -351,39 +347,32 @@ async function listModelBomMappingRules(
     q,
     fields,
     signal,
-  } = {},
-  transport,
-) {
-  const version = getEffectiveRestVersion(vscode, 18);
+  } = opts;
+
+  const version = getEffectiveRestVersion(null, 18);
   const queryParams = { offset, limit, totalResults: true };
   if (q) queryParams.q = q;
   if (fields) queryParams.fields = fields;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/bomMappingRules`,
+      path: `/allProductFamilySetups/_allProductFamilies/productFamilies/${productFamily}/productLines/${productLine}/models/${model}/bomMappingRules`,
       method: "GET",
       query: queryParams,
       signal,
     },
-    transport,
+    tr,
   );
 }
 
 // Pulls and caches remote configuration attributes into cpq/config/<productFamily>/attributes.min.json
-async function syncConfigurationAttributes(
-  context,
-  vscode,
-  options = {},
-  transport,
-) {
+async function syncConfigurationAttributes(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
   return syncConfigImpl(
-    context,
-    vscode,
-    options,
-    transport,
+    null,
+    null,
+    opts,
+    tr,
     {
       listConfigurationAttributes,
       listProductFamilies,
@@ -413,4 +402,3 @@ module.exports = {
   listModelBomMappingRules,
   syncConfigurationAttributes,
 };
-

@@ -29,13 +29,9 @@ function normalizeSiteUrl(rawSiteUrl) {
 }
 
 function getWorkspaceRoot(vscode) {
-    if (
-        vscode &&
-        vscode.workspace &&
-        vscode.workspace.workspaceFolders &&
-        vscode.workspace.workspaceFolders.length > 0
-    ) {
-        const folder = vscode.workspace.workspaceFolders[0];
+    const v = vscode || (() => { try { return require("vscode"); } catch (e) { return null; } })();
+    if (v && v.workspace && v.workspace.workspaceFolders && v.workspace.workspaceFolders.length > 0) {
+        const folder = v.workspace.workspaceFolders[0];
         return folder.uri ? folder.uri.fsPath : (typeof folder === "string" ? folder : null);
     }
     return null;
@@ -49,8 +45,9 @@ function resolveCommerceScope(vscode, { process, document } = {}) {
 }
 
 function getSettings(vscode) {
-    const config = vscode && vscode.workspace && typeof vscode.workspace.getConfiguration === "function"
-        ? vscode.workspace.getConfiguration("cpqBml")
+    const v = vscode || (() => { try { return require("vscode"); } catch (e) { return null; } })();
+    const config = v && v.workspace && typeof v.workspace.getConfiguration === "function"
+        ? v.workspace.getConfiguration("cpqBml")
         : null;
 
     const getVal = (configKey, defaultVal) => {
@@ -326,13 +323,24 @@ async function runTestConnection(context, vscode, transport) {
 
     try {
         const version = getRestVersion(vscode);
-        const { statusCode, body } = await request({
+        let res = await request({
             baseUrl: normalizeSiteUrl(siteUrl),
             path: `/rest/${version}/currentUser`,
             method: 'GET',
             authHeader,
             transport
         });
+        if (res && res.statusCode === 404) {
+            res = await request({
+                baseUrl: normalizeSiteUrl(siteUrl),
+                path: `/rest/${version}/datatables`,
+                method: 'GET',
+                query: { limit: 1 },
+                authHeader,
+                transport
+            });
+        }
+        const { statusCode, body } = res || {};
         if (statusCode === 401 || statusCode === 403) {
             return { ok: false, reason: 'auth', message: 'CPQ-BML: Authentication failed. Please check your CPQ username and password/token.' };
         }

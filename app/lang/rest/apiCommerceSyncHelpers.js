@@ -28,6 +28,7 @@ function formatCommerceAttribute(item, menuOptions = null) {
   }
 
   const attr = {
+    ...item,
     variableName: varName,
     label,
     name: label,

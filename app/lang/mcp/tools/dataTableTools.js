@@ -10,17 +10,17 @@ const {
 } = require('@/lang/rest/commands/shared');
 const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
 const { createCapturingTerminal } = require('@/lang/mcp/proxy');
+const { SchemaIntrospector } = require('@/lang/intellisense/schemaIntrospector');
+const { getWorkspaceRoot, isConfigured } = require('@/lang/rest/config');
 
 function findFallbackSchema(context, vscodeInstance, tableName) {
     try {
-        const { SchemaIntrospector } = require('@/lang/intellisense/schemaIntrospector');
-        const { getWorkspaceRoot } = require('@/lang/rest/config');
         const wsRoot = getWorkspaceRoot(vscodeInstance);
 
         const dtSchema = SchemaIntrospector.getDataTablesSchema(context, wsRoot);
         if (dtSchema) {
             const list = Array.isArray(dtSchema) ? dtSchema : (dtSchema.dataTables || dtSchema.items || []);
-            const match = list.find(t => (t.name || t.tableName) === tableName);
+            const match = list.find(t => (t.name || t.tableName || '').toLowerCase() === tableName.toLowerCase());
             if (match && Array.isArray(match.columns)) {
                 return match.columns.map(c => typeof c === 'string'
                     ? { name: c, type: 'String', label: c, isPrimaryKey: false, description: '' }
@@ -28,7 +28,7 @@ function findFallbackSchema(context, vscodeInstance, tableName) {
                         name: c.name || c.variableName || '',
                         type: c.type || c.dataType || 'String',
                         label: c.label || c.name || '',
-                        isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey || c.isKey),
+                        isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey || c.isKey || c.key),
                         description: c.description || '',
                     }
                 );
@@ -37,7 +37,7 @@ function findFallbackSchema(context, vscodeInstance, tableName) {
 
         const cached = SchemaIntrospector.getCachedAttributes(wsRoot, context);
         if (cached && Array.isArray(cached.dataTables)) {
-            const match = cached.dataTables.find(t => t.name === tableName);
+            const match = cached.dataTables.find(t => (t.name || '').toLowerCase() === tableName.toLowerCase());
             if (match && Array.isArray(match.columns)) {
                 return match.columns.map(c => typeof c === 'string'
                     ? { name: c, type: 'String', label: c, isPrimaryKey: false, description: '' }
@@ -45,7 +45,7 @@ function findFallbackSchema(context, vscodeInstance, tableName) {
                         name: c.name || c.variableName || '',
                         type: c.type || c.dataType || 'String',
                         label: c.label || c.name || '',
-                        isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey || c.isKey),
+                        isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey || c.isKey || c.key),
                         description: c.description || '',
                     }
                 );
@@ -69,7 +69,23 @@ async function getDataTableSchema(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const res = await api.getDataTableSchema(context, vscode, tableName, transport);
+        let res = await api.getDataTableSchema(context, vscode, tableName, transport);
+
+        // If 404 and configured, try finding exact table name from listDataTables (case-insensitive resolution)
+        if (res && res.statusCode === 404 && isConfigured(vscode)) {
+            try {
+                const listRes = await api.listDataTables(context, vscode, {}, transport);
+                if (listRes && isSuccess(listRes.statusCode)) {
+                    const listBody = typeof listRes.body === 'string' ? JSON.parse(listRes.body) : (listRes.body || {});
+                    const allTables = Array.isArray(listBody) ? listBody : (listBody.items || []);
+                    const matched = allTables.find(t => (t.name || '').toLowerCase() === tableName.toLowerCase());
+                    if (matched && matched.name && matched.name !== tableName) {
+                        res = await api.getDataTableSchema(context, vscode, matched.name, transport);
+                    }
+                }
+            } catch {}
+        }
+
         if (res && isSuccess(res.statusCode)) {
             const body = typeof res.body === 'string' ? JSON.parse(res.body) : (res.body || {});
             const rawCols = body.columns || body.fields || body.items || [];
@@ -77,7 +93,7 @@ async function getDataTableSchema(context, vscode, args, transport) {
                 name: c.name || c.variableName || c.columnName || '',
                 type: c.type || c.dataType || 'String',
                 label: c.label || c.name || '',
-                isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey || c.isKey),
+                isPrimaryKey: Boolean(c.isPrimaryKey || c.primaryKey || c.isKey || c.key),
                 description: c.description || '',
             }));
 

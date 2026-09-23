@@ -1,8 +1,10 @@
 const {
   call,
+  setApiContext,
   sanitizeRestResponse,
   functionsPath,
   getEffectiveRestVersion,
+  normalizeArgs,
 } = require("@/lang/rest/apiCore");
 const { getRestVersion, getSettings } = require("@/lang/rest/config");
 const apiCommerce = require("@/lang/rest/apiCommerce");
@@ -10,214 +12,179 @@ const apiConfig = require("@/lang/rest/apiConfig");
 const apiParts = require("@/lang/rest/apiParts");
 
 // GET /rest/<version>/bml/library/functions?offset=&limit= -> { items, offset, limit, count, hasMore }
-function listLibraryFunctions(
-  context,
-  vscode,
-  { offset = 0, limit = 1000 } = {},
-  transport,
-  metadata,
-) {
+function listLibraryFunctions(options = {}, transport, metadata) {
+  const [opts = {}, tr, meta] = normalizeArgs(arguments);
+  const { offset = 0, limit = 1000 } = opts;
   return call(
-    context,
-    vscode,
     {
-      path: functionsPath(vscode, metadata),
+      path: functionsPath(null, meta),
       method: "GET",
       query: { offset, limit },
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/bml/library/folders
-function listLibraryFolders(context, vscode, transport) {
-  const version = getRestVersion(vscode);
+function listLibraryFolders(transport) {
+  const [tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
-    { path: `/rest/${version}/bml/library/folders`, method: "GET" },
-    transport,
+    { path: "/bml/library/folders", method: "GET" },
+    tr,
   );
 }
 
 // GET /rest/<version>/bml/library/functions/{namespace.variableName} -> full function object (scriptText, parameters, ...)
-function getLibraryFunction(
-  context,
-  vscode,
-  namespaceVariableName,
-  transport,
-  metadata,
-) {
+function getLibraryFunction(namespaceVariableName, transport, metadata) {
+  const [name, tr, meta] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
     {
-      path: `${functionsPath(vscode, metadata)}/${namespaceVariableName}`,
+      path: `${functionsPath(null, meta)}/${name}`,
       method: "GET",
     },
-    transport,
+    tr,
   );
 }
 
 // PATCH /rest/<version>/bml/library/functions/{namespace.variableName}
-function updateLibraryFunction(
-  context,
-  vscode,
-  namespaceVariableName,
-  payload,
-  transport,
-) {
+function updateLibraryFunction(namespaceVariableName, payload, transport) {
+  const [name, body, tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
     {
-      path: `${functionsPath(vscode, payload)}/${namespaceVariableName}`,
+      path: `${functionsPath(null, body)}/${name}`,
       method: "PATCH",
-      body: payload,
+      body,
     },
-    transport,
+    tr,
   );
 }
 
 // POST /rest/<version>/bml/library/functions
-function createLibraryFunction(context, vscode, payload, transport) {
+function createLibraryFunction(payload, transport) {
+  const [body, tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
     {
-      path: functionsPath(vscode, payload),
+      path: functionsPath(null, body),
       method: "POST",
-      body: payload,
+      body,
     },
-    transport,
+    tr,
   );
 }
 
 // POST /rest/<version>/bml/library/functions/actions/validate -> 204 on success
-function validateLibraryFunction(context, vscode, payload, transport) {
+function validateLibraryFunction(payload, transport) {
+  const [body, tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
     {
-      path: `${functionsPath(vscode, payload)}/actions/validate`,
+      path: `${functionsPath(null, body)}/actions/validate`,
       method: "POST",
-      body: payload,
+      body,
     },
-    transport,
+    tr,
   );
 }
 
 // POST /rest/<version>/bml/library/functions/actions/deploy, body: { items: [{ namespace, type, variableName }] }.
 // Accepts one or more items so multiple util functions can be deployed in a single call.
-function deployLibraryFunctions(context, vscode, items, transport, metadata, options = {}) {
-  const timeoutMs = (options && options.timeoutMs) || (getSettings && getSettings(vscode).deployTimeoutMs) || 120000;
+function deployLibraryFunctions(items, transport, metadata, options = {}) {
+  const [deployItems, tr, meta, opts = {}] = normalizeArgs(arguments);
+  const timeoutMs = (opts && opts.timeoutMs) || (getSettings && getSettings().deployTimeoutMs) || 120000;
   return call(
-    context,
-    vscode,
     {
-      path: `${functionsPath(vscode, metadata)}/actions/deploy`,
+      path: `${functionsPath(null, meta)}/actions/deploy`,
       method: "POST",
-      body: { items },
+      body: { items: deployItems },
       timeoutMs,
     },
-    transport,
+    tr,
   );
 }
 
 // POST /rest/<version>/bml/library/functions/actions/debug -> { returnData, scriptSize }
-function debugLibraryFunction(context, vscode, payload, transport) {
+function debugLibraryFunction(payload, transport) {
+  const [body, tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
     {
-      path: `${functionsPath(vscode, payload)}/actions/debug`,
+      path: `${functionsPath(null, body)}/actions/debug`,
       method: "POST",
-      body: payload,
+      body,
     },
-    transport,
+    tr,
   );
 }
 
 // POST /rest/<version>/.../bml/library/functions/actions/loadTransactionData
-function loadTransactionData(context, vscode, payload, queryParams, transport) {
+function loadTransactionData(payload, queryParams, transport) {
+  const [body, query, tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
     {
-      path: `${functionsPath(vscode, payload)}/actions/loadTransactionData`,
+      path: `${functionsPath(null, body)}/actions/loadTransactionData`,
       method: "POST",
-      body: payload,
-      query: queryParams,
+      body,
+      query,
     },
-    transport,
+    tr,
   );
 }
 
 // POST /rest/<version>/.../bml/library/functions/actions/dependentAttributes
-function getDependentAttributes(context, vscode, payload, transport) {
+function getDependentAttributes(payload, transport) {
+  const [body, tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
     {
-      path: `${functionsPath(vscode, payload)}/actions/dependentAttributes`,
+      path: `${functionsPath(null, body)}/actions/dependentAttributes`,
       method: "POST",
-      body: payload,
+      body,
     },
-    transport,
+    tr,
   );
 }
 
 // Commerce: PATCH { isOverridden }. Util: POST to .../actions/override or removeOverride instead.
 function setOverride(
-  context,
-  vscode,
   namespaceVariableName,
   isOverridden,
   metadata,
   transport,
 ) {
-  const isCommerce = metadata && metadata.commerceDocument;
+  const [name, overrideFlag, meta, tr] = normalizeArgs(arguments);
+  const isCommerce = meta && meta.commerceDocument;
   if (isCommerce) {
     return call(
-      context,
-      vscode,
       {
-        path: `${functionsPath(vscode, metadata)}/${namespaceVariableName}`,
+        path: `${functionsPath(null, meta)}/${name}`,
         method: "PATCH",
         // call() strips commerceProcess/commerceDocument from the body, they're only used for routing.
         body: {
-          isOverridden,
-          commerceProcess: metadata.commerceProcess,
-          commerceDocument: metadata.commerceDocument,
+          isOverridden: overrideFlag,
+          commerceProcess: meta.commerceProcess,
+          commerceDocument: meta.commerceDocument,
         },
       },
-      transport,
+      tr,
     );
   } else {
-    const action = isOverridden ? "override" : "removeOverride";
+    const action = overrideFlag ? "override" : "removeOverride";
     return call(
-      context,
-      vscode,
       {
-        path: `${functionsPath(vscode, metadata)}/${namespaceVariableName}/actions/${action}`,
+        path: `${functionsPath(null, meta)}/${name}/actions/${action}`,
         method: "POST",
         body: {},
       },
-      transport,
+      tr,
     );
   }
 }
 
 // POST /rest/<version>/commerceProcessSetups/{processVarName}/deploymentCenter/actions
 // scheduledTime must be ISO 8601 — the "MM/DD/YYYY h:mm AM/PM" format from Oracle's own docs is rejected live.
-function deployCommerceProcess(context, vscode, processVarName, transport, options = {}) {
-  const version = getRestVersion(vscode);
-  const timeoutMs = (options && options.timeoutMs) || (getSettings && getSettings(vscode).deployTimeoutMs) || 120000;
+function deployCommerceProcess(processVarName, transport, options = {}) {
+  const [processName, tr, opts = {}] = normalizeArgs(arguments);
+  const timeoutMs = (opts && opts.timeoutMs) || (getSettings && getSettings().deployTimeoutMs) || 120000;
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/commerceProcessSetups/${processVarName}/deploymentCenter/actions`,
+      path: `/commerceProcessSetups/${processName}/deploymentCenter/actions`,
       method: "POST",
       body: {
         category: "DEPLOY_PROCESS",
@@ -226,49 +193,40 @@ function deployCommerceProcess(context, vscode, processVarName, transport, optio
       },
       timeoutMs,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/tasks/{taskId} -> { id, name, status, detailStatus, ... }
 // Used to poll the async task a Deployment Center action (e.g. deployCommerceProcess) queues.
-function getTask(context, vscode, taskId, transport) {
-  const version = getRestVersion(vscode);
+function getTask(taskId, transport) {
+  const [id, tr] = normalizeArgs(arguments);
   return call(
-    context,
-    vscode,
-    { path: `/rest/${version}/tasks/${taskId}`, method: "GET" },
-    transport,
+    { path: `/tasks/${id}`, method: "GET" },
+    tr,
   );
 }
 
 // GET /rest/<version>/tasks
 // Per Oracle CPQ Swagger spec: '?q={category:{$in:[ ]}}' is required.
 // Supported categories: 13 (DT Import), 17 (DT Deploy), 26 (DT Export), 51 (Package Import), 52 (Package Export)
-function listTasks(
-  context,
-  vscode,
-  { offset = 0, limit = 50, orderby = "dateModified:desc", q } = {},
-  transport,
-) {
-  const version = getRestVersion(vscode);
+function listTasks(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { offset = 0, limit = 50, orderby = "dateModified:desc", q } = opts;
   const defaultQ = "{category:{$in:[13,17,26,51,52]}}";
   const queryParams = { offset, limit, totalResults: true, q: q || defaultQ };
   if (orderby) queryParams.orderby = orderby;
   return call(
-    context,
-    vscode,
-    { path: `/rest/${version}/tasks`, method: "GET", query: queryParams },
-    transport,
+    { path: "/tasks", method: "GET", query: queryParams },
+    tr,
   );
 }
 
 // GET /rest/<version>/bml/scripts?q={'scriptText':{$contains:'<query>', $options:'I'}}
 // BML Global Search introduced in Oracle CPQ 26A (/rest/v19/bml/scripts).
-function searchBmlScripts(
-  context,
-  vscode,
-  {
+function searchBmlScripts(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const {
     query,
     caseSensitive = false,
     offset = 0,
@@ -277,10 +235,9 @@ function searchBmlScripts(
     orderby,
     totalResults = true,
     q: rawQ,
-  } = {},
-  transport,
-) {
-  const effectiveVersion = getEffectiveRestVersion(vscode, 19);
+  } = opts;
+
+  const effectiveVersion = getEffectiveRestVersion(null, 19);
 
   let q = rawQ;
   if (!q && query) {
@@ -296,77 +253,72 @@ function searchBmlScripts(
   if (orderby) queryParams.orderby = orderby;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${effectiveVersion}/bml/scripts`,
+      path: "/bml/scripts",
       method: "GET",
       query: queryParams,
+      version: effectiveVersion,
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/datatables
-async function listDataTables(context, vscode, { offset = 0, limit = 1000 } = {}, transport) {
-  const version = getRestVersion(vscode);
+async function listDataTables(options = {}, transport) {
+  const [opts = {}, tr] = normalizeArgs(arguments);
+  const { offset = 0, limit = 1000 } = opts;
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/datatables`,
+      path: "/datatables",
       method: "GET",
       query: { offset, limit, totalResults: true },
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/datatables/{tableName}/fields
-async function getDataTableSchema(context, vscode, tableName, transport) {
-  const version = getRestVersion(vscode);
+async function getDataTableSchema(tableName, transport) {
+  const [name, tr] = normalizeArgs(arguments);
+  const encTable = encodeURIComponent(name);
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/datatables/${tableName}/fields`,
+      path: `/datatables/${encTable}/fields`,
       method: "GET",
     },
-    transport,
+    tr,
   );
 }
 
 // GET /rest/<version>/custom{tableName}
-async function getDataTableRows(context, vscode, tableName, { limit = 200, offset = 0, q } = {}, transport) {
-  const version = getRestVersion(vscode);
+async function getDataTableRows(tableName, options = {}, transport) {
+  const [name, opts = {}, tr] = normalizeArgs(arguments);
+  const { limit = 200, offset = 0, q } = opts;
+  const encTable = encodeURIComponent(name);
   const queryParams = { limit, offset };
   if (q) queryParams.q = q;
 
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}/custom${tableName}`,
+      path: `/custom${encTable}`,
       method: "GET",
       query: queryParams,
     },
-    transport,
+    tr,
   );
 }
 
-function dispatch(context, vscode, method, subPath, query, body, transport) {
-  const version = getRestVersion(vscode);
-  const cleanSubPath = (subPath || '').startsWith('/') ? subPath : `/${subPath}`;
+function dispatch(method, subPath, query, body, transport) {
+  const [m, sPath, q, b, tr] = normalizeArgs(arguments);
+  const cleanSubPath = (sPath || '').startsWith('/') ? sPath : `/${sPath}`;
   return call(
-    context,
-    vscode,
     {
-      path: `/rest/${version}${cleanSubPath}`,
-      method: method || 'GET',
-      query,
-      body,
+      path: cleanSubPath,
+      method: m || 'GET',
+      query: q,
+      body: b,
     },
-    transport,
+    tr,
   );
 }
 
@@ -402,4 +354,3 @@ module.exports = {
   apiConfig,
   apiParts,
 };
-

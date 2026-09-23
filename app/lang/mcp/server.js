@@ -14,8 +14,11 @@ const referenceTools = require("@/lang/mcp/tool-defs/referenceTools");
 const testingTools = require("@/lang/mcp/tool-defs/testingTools");
 const formattingTools = require("@/lang/mcp/tool-defs/formattingTools");
 const commerceActionDefs = require("@/lang/mcp/tool-defs/commerceActionDefs");
+const cloudExplorerDefs = require("@/lang/mcp/tool-defs/cloudExplorerDefs");
+const commerceFormulaDefs = require("@/lang/mcp/tool-defs/commerceFormulaDefs");
 const { registerResources } = require("@/lang/mcp/resources");
 const { recordMcpRequest } = require("@/lang/mcp/traffic");
+const { setApiContext } = require("@/lang/rest/apiCore");
 
 // Reads all SKILL.md files from app/ai/skills/ and concatenates them into a
 // single string for the MCP server instructions, stripping YAML frontmatter.
@@ -77,6 +80,8 @@ function registerTools(server, context, vscode) {
   testingTools.register(server, context, vscode, tools);
   formattingTools.register(server, context, vscode, tools);
   commerceActionDefs.register(server, context, vscode, tools);
+  cloudExplorerDefs.register(server, context, vscode, tools);
+  commerceFormulaDefs.register(server, context, vscode, tools);
 }
 
 function registerSkillsResourcesAndPrompts(server, extensionPath) {
@@ -152,6 +157,7 @@ let boundPort = null;
 
 // Starts local stateless HTTP MCP Server bound to 127.0.0.1.
 async function startMcpServer(context, vscode, port) {
+  setApiContext(context, vscode);
   if (httpServer) return { port: boundPort };
 
   const extensionPath = context && context.extensionPath ? context.extensionPath : "";
