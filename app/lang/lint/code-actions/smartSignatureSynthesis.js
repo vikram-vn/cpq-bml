@@ -212,7 +212,7 @@ function synthesizeSmartParameterValues(paramDef, paramIndex, actualArgs, lhsTyp
         ranked.slice(0, 4).forEach((t, idx) => {
             results.push({
                 text: `"${t}"`,
-                title: `Retrieve value as "${t}"`,
+                title: `Add "${t}" valueType parameter to ${funcName}()`,
                 preferred: idx === 0
             });
         });
