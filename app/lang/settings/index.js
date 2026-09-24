@@ -115,9 +115,17 @@ function registerSettingsPanel(context) {
       }
 
       if (hasMeta) {
-        const missing = await hasMissingCredentials(context, vscode);
-        if (missing) {
-          openPanel(context, vscode);
+        const hasAutoOpenedForBml = (context && context.workspaceState)
+          ? context.workspaceState.get(BML_OPEN_AUTO_OPENED_KEY, false)
+          : false;
+        if (!hasAutoOpenedForBml) {
+          const missing = await hasMissingCredentials(context, vscode);
+          if (missing) {
+            if (context && context.workspaceState) {
+              context.workspaceState.update(BML_OPEN_AUTO_OPENED_KEY, true);
+            }
+            openPanel(context, vscode);
+          }
         }
       }
     }

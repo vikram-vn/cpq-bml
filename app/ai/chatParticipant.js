@@ -95,7 +95,7 @@ function registerChatParticipant(context) {
 
         const participant = vscode.chat.createChatParticipant('cpqBml.bmlAssistant', handler);
         if (context && context.extensionUri) {
-            participant.iconPath = vscode.Uri.joinPath(context.extensionUri, 'app', 'icons', 'logo.png');
+            participant.iconPath = vscode.Uri.joinPath(context.extensionUri, 'app', 'icons', 'brand', 'logo.png');
         }
         if (context && context.subscriptions) {
             context.subscriptions.push(participant);

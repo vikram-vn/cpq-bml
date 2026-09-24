@@ -210,9 +210,16 @@ function registerMcp(context) {
         }),
     );
 
-    if (vscode.lm && typeof vscode.lm.registerMcpServerProvider === 'function') {
+    const registerProviderFn = vscode.lm && (
+        typeof vscode.lm.registerMcpServerDefinitionProvider === 'function'
+            ? vscode.lm.registerMcpServerDefinitionProvider
+            : typeof vscode.lm.registerMcpServerProvider === 'function'
+                ? vscode.lm.registerMcpServerProvider
+                : null
+    );
+    if (registerProviderFn) {
         context.subscriptions.push(
-            vscode.lm.registerMcpServerProvider('cpqBml.mcpServers', {
+            registerProviderFn.call(vscode.lm, 'cpqBml.mcpServers', {
                 provideMcpServerDefinitions: async () => {
                     const { enable, port } = getSettings();
                     if (!enable) return [];

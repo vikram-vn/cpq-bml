@@ -105,11 +105,13 @@ function registerBmlRestCommands(context) {
     }),
   );
   // Secret writes don't fire a configuration-change event, so re-check explicitly.
-  context.subscriptions.push(
-    context.secrets.onDidChange(() => {
-      refreshConnectionConfiguredContext();
-    }),
-  );
+  if (context.secrets && typeof context.secrets.onDidChange === "function") {
+    context.subscriptions.push(
+      context.secrets.onDidChange(() => {
+        refreshConnectionConfiguredContext();
+      }),
+    );
+  }
 
   refreshBmlStatus(
     statusBarItem,

@@ -268,7 +268,7 @@ function openWebPanel(context, options = {}) {
 
   if (vscodeInstance?.Uri?.joinPath && context?.extensionUri) {
     try {
-      panel.iconPath = vscodeInstance.Uri.joinPath(context.extensionUri, 'app', 'icons', 'logo.svg');
+      panel.iconPath = vscodeInstance.Uri.joinPath(context.extensionUri, 'app', 'icons', 'brand', 'logo.svg');
     } catch (_) {}
   }
 

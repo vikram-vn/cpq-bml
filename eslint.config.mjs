@@ -54,6 +54,7 @@ export default [
       "**/node_modules/**",
       "**/dist/**",
       "**/.vscode-test/**",
+      "**/.vscode-test-web/**",
       "**/out/**",
       "**/*.min.json",
       "**/*.tmLanguage.min.json",

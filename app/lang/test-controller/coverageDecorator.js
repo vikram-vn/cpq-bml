@@ -20,14 +20,14 @@ function createCoverageDecorator() {
     isWholeLine: true,
     backgroundColor: 'rgba(78, 201, 176, 0.12)',
     overviewRulerColor: 'rgba(78, 201, 176, 0.6)',
-    overviewRulerLane: vscode.OverviewRulerLane.Left
+    overviewRulerLane: vscode.OverviewRulerLane?.Left ?? 1
   });
 
   const uncoveredType = vscode.window.createTextEditorDecorationType({
     isWholeLine: true,
     backgroundColor: 'rgba(241, 76, 76, 0.12)',
     overviewRulerColor: 'rgba(241, 76, 76, 0.6)',
-    overviewRulerLane: vscode.OverviewRulerLane.Left
+    overviewRulerLane: vscode.OverviewRulerLane?.Left ?? 1
   });
 
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 95);

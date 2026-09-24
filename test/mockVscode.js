@@ -152,6 +152,8 @@ WorkspaceEdit.prototype.delete = function(uri, range) {
 
 EventEmitter.prototype.dispose = function() {};
 
+const _commands = new Map();
+
 const mockVscode = {
     Position,
     Range,
@@ -173,6 +175,12 @@ const mockVscode = {
     StatusBarAlignment: {
         Left: 1,
         Right: 2,
+    },
+    OverviewRulerLane: {
+        Left: 1,
+        Center: 2,
+        Right: 4,
+        Full: 7,
     },
     Uri: {
         file: (fsPath) => ({
@@ -300,6 +308,10 @@ const mockVscode = {
         onDidChangeTextDocument: () => ({ dispose: () => {} }),
         onDidSaveTextDocument: () => ({ dispose: () => {} }),
         onDidCloseTextDocument: () => ({ dispose: () => {} }),
+        registerTextDocumentContentProvider: () => ({ dispose: () => {} }),
+        onDidChangeWorkspaceFolders: () => ({ dispose: () => {} }),
+        onDidCreateFiles: () => ({ dispose: () => {} }),
+        onDidRenameFiles: () => ({ dispose: () => {} }),
         createFileSystemWatcher: () => ({
             onDidChange: () => ({ dispose: () => {} }),
             onDidCreate: () => ({ dispose: () => {} }),
@@ -318,8 +330,18 @@ const mockVscode = {
         },
     },
     commands: {
-        registerCommand: () => ({ dispose: () => {} }),
-        executeCommand: async () => undefined,
+        registerCommand: (id, handler) => {
+            _commands.set(id, handler);
+            return { dispose: () => _commands.delete(id) };
+        },
+        executeCommand: async (id, ...args) => {
+            const h = _commands.get(id);
+            if (typeof h === 'function') {
+                return await h(...args);
+            }
+            return undefined;
+        },
+        getCommands: async () => Array.from(_commands.keys()),
     },
     languages: {
         createDiagnosticCollection: () => ({
@@ -343,6 +365,29 @@ const mockVscode = {
         registerWorkspaceSymbolProvider: () => ({ dispose: () => {} }),
         registerCodeLensProvider: () => ({ dispose: () => {} }),
         registerCallHierarchyProvider: () => ({ dispose: () => {} }),
+    },
+    extensions: {
+        getExtension: (id) => ({
+            id: id || 'vikram-n.cpq-bml',
+            isActive: true,
+            activate: async () => {
+                const ext = require('../extension');
+                const fakeContext = {
+                    subscriptions: [],
+                    globalState: { get: () => undefined, update: async () => {} },
+                    workspaceState: { get: () => undefined, update: async () => {} },
+                    secrets: { get: async () => undefined, store: async () => {}, delete: async () => {} },
+                    extensionPath: path.join(__dirname, '..'),
+                    extensionUri: mockVscode.Uri.file(path.join(__dirname, '..')),
+                };
+                if (typeof ext.activate === 'function') {
+                    await ext.activate(fakeContext);
+                }
+            },
+            exports: {},
+            packageJSON: require('../package.json')
+        }),
+        all: []
     },
     EventEmitter,
 };

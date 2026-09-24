@@ -114,6 +114,9 @@ async function openVirtualJsonDocument(category, title, payload, vscodeInstance 
  * @param {typeof vscode} [vscodeInstance] 
  */
 function registerCloudDocumentProvider(context, vscodeInstance = vscodeModule) {
+  if (!vscodeInstance?.workspace?.registerTextDocumentContentProvider) {
+    return { dispose: () => {} };
+  }
   const provider = getCloudDocumentProvider(vscodeInstance);
   const disposable = vscodeInstance.workspace.registerTextDocumentContentProvider(
     CLOUD_SCHEME,

@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { getSettings, getWorkspaceRoot, isConfigured } = require('@/lang/rest/config');
+const { setExtensionContext } = require('@/extensionContext');
 const { safeParseJson } = require('@/lang/cloud/cloudVscodeShim');
 
 function extractItems(response) {
@@ -54,6 +55,9 @@ function normalizeAttr(raw, scope = 'Commerce', docOrFamily = '') {
  * and iteratively digs through child documents, actions, attributes, product lines, and models.
  */
 async function crawlCpqSchema(context, vscode, options = {}, transport) {
+  if (context || vscode) {
+    setExtensionContext(context, vscode);
+  }
   const wsRoot = getWorkspaceRoot(vscode) || process.cwd();
   const settings = getSettings(vscode);
   const onProgress = typeof options.onProgress === 'function' ? options.onProgress : () => {};
