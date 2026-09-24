@@ -4,6 +4,23 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.5.0] - 2026-09-24
+
+### Added
+
+- Add MCP diff and knowledge tools along with path location helper and lint settings tests.
+- Implement core extension components including web panels, settings, cloud integration, and AI chat.
+- Add core feature modules for BML REST commands, environment switching, and AI chat participant.
+- Add commerce attributes manager and API core utilities.
+- Add Model Context Protocol server, REST commands, and cloud integration modules.
+- Add Model Context Protocol server, tools, and tool definitions for CPQ integration.
+- Add MCP tools for cloud explorer, commerce formulas, and parts.
+- Implement MCP tools and REST API integration modules for CPQ.
+- Add MCP server, tool definitions, REST API handlers, and tests for CPQ integration.
+- Add settings web panel, MCP integration, and REST debugging commands with tests.
+- Implement built-in function linting rules and argument type checking.
+- Add linting rules and validation logic for built-in functions.
+
 ## [2.4.1] - 2026-09-23
 
 ### Changed
@@ -84,17 +101,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Changed
 
 - Removed prefix word of CPQ-BML.
-
-## [1.96.0] - 2026-09-12
-
-### Added
-
-- Add cloud explorer SVG icons and generation scripts.
-- Add cloud and editor SVG icons along with build and generation scripts.
-- Add new UI icons and asset generation scripts.
-- Add editor and cloud SVG icons and generation scripts.
-- Add command icons and generation script.
-- Add REST commands, debugging utilities, icons, and configuration for CPQ BML extension.
-- Implement cloud explorers, data tables, and REST API integration modules with tests.
-- Implement REST configuration, custom AES encryption, and environment/secret commands with tests.
-- Add Commerce REST API and MCP proxy implementation with corresponding tests.
