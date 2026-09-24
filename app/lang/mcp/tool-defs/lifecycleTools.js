@@ -9,7 +9,7 @@ function register(server, context, vscode, tools) {
         "Save the local .bml file for a function to CPQ (PATCH; for util functions this also deploys it). The function must already have been pulled locally.",
       inputSchema: { variableName: z.string() },
     },
-    async (args) => jsonResult(await tools.saveFunction(context, vscode, args)),
+    async (args) => jsonResult(await tools.saveFunction(args)),
   );
 
   server.registerTool(
@@ -22,7 +22,7 @@ function register(server, context, vscode, tools) {
       inputSchema: { variableName: z.string() },
     },
     async (args) =>
-      jsonResult(await tools.validateFunction(context, vscode, args)),
+      jsonResult(await tools.validateFunction(args)),
   );
 
   server.registerTool(
@@ -79,7 +79,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.debugFunction(context, vscode, args)),
+      jsonResult(await tools.debugFunction(args)),
   );
 
   server.registerTool(
@@ -96,7 +96,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.deployFunction(context, vscode, args)),
+      jsonResult(await tools.deployFunction(args)),
   );
 
   server.registerTool(
@@ -113,7 +113,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.massDeployUtilFunctions(context, vscode, args)),
+      jsonResult(await tools.massDeployUtilFunctions(args)),
   );
 
   server.registerTool(
@@ -133,7 +133,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.deployCommerceProcess(context, vscode, args)),
+      jsonResult(await tools.deployCommerceProcess(args)),
   );
 
   server.registerTool(
@@ -157,7 +157,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.createUtilFunction(context, vscode, args)),
+      jsonResult(await tools.createUtilFunction(args)),
   );
 
   server.registerTool(
@@ -168,7 +168,7 @@ function register(server, context, vscode, tools) {
       inputSchema: { variableName: z.string() },
     },
     async (args) =>
-      jsonResult(await tools.createOverride(context, vscode, args)),
+      jsonResult(await tools.createOverride(args)),
   );
 
   server.registerTool(
@@ -187,7 +187,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.resetAiCopy(context, vscode, args)),
+      jsonResult(await tools.resetAiCopy(args)),
   );
 
   server.registerTool(

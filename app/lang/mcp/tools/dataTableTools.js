@@ -12,6 +12,7 @@ const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
 const { createCapturingTerminal } = require('@/lang/mcp/proxy');
 const { SchemaIntrospector } = require('@/lang/intellisense/schemaIntrospector');
 const { getWorkspaceRoot, isConfigured } = require('@/lang/rest/config');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 function findFallbackSchema(context, vscodeInstance, tableName) {
     try {
@@ -57,8 +58,8 @@ function findFallbackSchema(context, vscodeInstance, tableName) {
     return null;
 }
 
-async function getDataTableSchema(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function getDataTableSchema(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const tableName = args && args.tableName ? args.tableName : '';
     if (!tableName) {
         return { success: false, error: 'tableName parameter is required' };
@@ -70,18 +71,18 @@ async function getDataTableSchema(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        let res = await api.getDataTableSchema(tableName, transport);
+        let res = await api.getDataTableSchema(tableName, tr);
 
         // If 404 and configured, try finding exact table name from listDataTables (case-insensitive resolution)
         if (res && res.statusCode === 404 && isConfigured(vscode)) {
             try {
-                const listRes = await api.listDataTables({}, transport);
+                const listRes = await api.listDataTables({}, tr);
                 if (listRes && isSuccess(listRes.statusCode)) {
                     const listBody = typeof listRes.body === 'string' ? JSON.parse(listRes.body) : (listRes.body || {});
                     const allTables = Array.isArray(listBody) ? listBody : (listBody.items || []);
                     const matched = allTables.find(t => (t.name || '').toLowerCase() === tableName.toLowerCase());
                     if (matched && matched.name && matched.name !== tableName) {
-                        res = await api.getDataTableSchema(matched.name, transport);
+                        res = await api.getDataTableSchema(matched.name, tr);
                     }
                 }
             } catch {}
@@ -151,8 +152,8 @@ async function getDataTableSchema(context, vscode, args, transport) {
     }
 }
 
-async function getDataTableRows(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function getDataTableRows(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const tableName = args && args.tableName ? args.tableName : '';
     if (!tableName) {
         return { success: false, error: 'tableName parameter is required' };
@@ -167,7 +168,7 @@ async function getDataTableRows(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const res = await api.getDataTableRows(tableName, { limit, offset, q }, transport);
+        const res = await api.getDataTableRows(tableName, { limit, offset, q }, tr);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             const desc = res ? describeError(res.body) : 'No response from server';

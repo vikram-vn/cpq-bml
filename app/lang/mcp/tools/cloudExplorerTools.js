@@ -14,6 +14,7 @@ const { createCapturingTerminal } = require('@/lang/mcp/proxy');
 const { SchemaIntrospector } = require('@/lang/intellisense/schemaIntrospector');
 const { listUtilFunctions, listDataTables, getTransactions } = require('@/lang/mcp/tools/lookup');
 const { listParts } = require('@/lang/mcp/tools/partsTools');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 const fs = require('fs');
 const path = require('path');
 
@@ -27,8 +28,8 @@ function safeParse(val) {
     }
 }
 
-async function listCommerceProcesses(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function listCommerceProcesses(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Commerce Processes', 'processes');
@@ -37,7 +38,7 @@ async function listCommerceProcesses(context, vscode, args, transport) {
     try {
         if (isConfigured(vscode)) {
             try {
-                const res = await api.listCommerceProcesses(args || {}, transport);
+                const res = await api.listCommerceProcesses(args || {}, tr);
                 if (res && (res.statusCode === 401 || res.statusCode === 403)) {
                     const errMsg = `Live CPQ Authentication Failed (HTTP ${res.statusCode}). Check your credentials.`;
                     writeTerminalMessage(terminal, 'Auth Error: ', errMsg, '\x1b[31m');
@@ -87,8 +88,8 @@ async function listCommerceProcesses(context, vscode, args, transport) {
     }
 }
 
-async function listConfigurationHierarchy(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function listConfigurationHierarchy(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Configuration Hierarchy', 'catalog');
@@ -99,7 +100,7 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
         let families = [];
 
         if (isConfigured(vscode)) {
-            const famRes = await api.listProductFamilies({ limit: 100 }, transport);
+            const famRes = await api.listProductFamilies({ limit: 100 }, tr);
             if (famRes && (famRes.statusCode === 401 || famRes.statusCode === 403)) {
                 const errMsg = `Live CPQ Authentication Failed (HTTP ${famRes.statusCode}). Check your credentials.`;
                 return { success: false, error: errMsg, statusCode: famRes.statusCode, log: getLines() };
@@ -136,7 +137,7 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
         for (const fam of families) {
             if (fam.productLines && fam.productLines.length > 0) continue;
             try {
-                const lineRes = await api.listProductLines({ productFamily: fam.variableName }, transport);
+                const lineRes = await api.listProductLines({ productFamily: fam.variableName }, tr);
                 if (lineRes && isSuccess(lineRes.statusCode)) {
                     const lineBody = safeParse(lineRes.body);
                     const rawLines = Array.isArray(lineBody) ? lineBody : (lineBody.items || []);
@@ -148,7 +149,7 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
 
                     for (const pl of fam.productLines) {
                         try {
-                            const modRes = await api.listModels({ productFamily: fam.variableName, productLine: pl.variableName }, transport);
+                            const modRes = await api.listModels({ productFamily: fam.variableName, productLine: pl.variableName }, tr);
                             if (modRes && isSuccess(modRes.statusCode)) {
                                 const modBody = safeParse(modRes.body);
                                 const rawMods = Array.isArray(modBody) ? modBody : (modBody.items || []);
@@ -171,8 +172,8 @@ async function listConfigurationHierarchy(context, vscode, args, transport) {
     }
 }
 
-async function listConfigurationAttributes(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function listConfigurationAttributes(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Configuration Attributes', args && args.productFamily || 'global');
@@ -184,11 +185,11 @@ async function listConfigurationAttributes(context, vscode, args, transport) {
         const line = args && args.productLine;
 
         if (fam && line) {
-            res = await api.listProductLineAttributes({ productFamily: fam, productLine: line }, transport);
+            res = await api.listProductLineAttributes({ productFamily: fam, productLine: line }, tr);
         } else if (fam) {
-            res = await api.listProductFamilyAttributes({ productFamily: fam }, transport);
+            res = await api.listProductFamilyAttributes({ productFamily: fam }, tr);
         } else {
-            res = await api.listConfigurationAttributes({ limit: 1000 }, transport);
+            res = await api.listConfigurationAttributes({ limit: 1000 }, tr);
         }
 
         if (res && isSuccess(res.statusCode)) {
@@ -210,8 +211,8 @@ async function listConfigurationAttributes(context, vscode, args, transport) {
     }
 }
 
-async function listDeploymentTasks(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function listDeploymentTasks(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Deployment Tasks', 'tasks');
@@ -223,7 +224,7 @@ async function listDeploymentTasks(context, vscode, args, transport) {
     const q = args && (args.q || args.query);
 
     try {
-        const res = await api.listTasks({ limit, offset, orderby, q }, transport);
+        const res = await api.listTasks({ limit, offset, orderby, q }, tr);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -253,8 +254,8 @@ async function listDeploymentTasks(context, vscode, args, transport) {
     }
 }
 
-async function getTransactionData(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function getTransactionData(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const transactionId = args && (args.transactionId || args.id);
     if (!transactionId) {
         return { success: false, error: 'transactionId parameter is required' };
@@ -270,7 +271,7 @@ async function getTransactionData(context, vscode, args, transport) {
         const process = (args && args.commerceProcess) || settings.commerceProcess || 'oraclecpqo';
         const document = (args && args.commerceDocument) || settings.commerceDocument || 'transaction';
 
-        const res = await api.getTransaction(transactionId, { process, document }, transport);
+        const res = await api.getTransaction(transactionId, { process, document }, tr);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -288,15 +289,14 @@ async function getTransactionData(context, vscode, args, transport) {
     }
 }
 
-async function getCloudExplorerOverview(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function getCloudExplorerOverview(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const section = (args && args.section) || 'all';
     const overview = {};
 
     if (section === 'all' || section === 'util') {
         try {
-            const { listUtilFunctions } = require('@/lang/mcp/tools/lookup');
-            const res = await listUtilFunctions(context, vscode, {}, transport);
+            const res = await listUtilFunctions({}, tr);
             overview.utilLibraries = {
                 count: res.functions ? res.functions.length : 0,
                 functions: (res.functions || []).slice(0, 30).map(f => ({
@@ -313,7 +313,7 @@ async function getCloudExplorerOverview(context, vscode, args, transport) {
 
     if (section === 'all' || section === 'commerce') {
         try {
-            const procRes = await listCommerceProcesses(context, vscode, {}, transport);
+            const procRes = await listCommerceProcesses({}, tr);
             overview.commerce = {
                 processesCount: procRes.count || 0,
                 processes: procRes.processes || [],
@@ -325,7 +325,7 @@ async function getCloudExplorerOverview(context, vscode, args, transport) {
 
     if (section === 'all' || section === 'config') {
         try {
-            const hierRes = await listConfigurationHierarchy(context, vscode, {}, transport);
+            const hierRes = await listConfigurationHierarchy({}, tr);
             overview.configuration = {
                 familyCount: hierRes.count || 0,
                 families: hierRes.families || [],
@@ -337,7 +337,7 @@ async function getCloudExplorerOverview(context, vscode, args, transport) {
 
     if (section === 'all' || section === 'datatables') {
         try {
-            const dtRes = await listDataTables(context, vscode, {}, transport);
+            const dtRes = await listDataTables({}, tr);
             overview.dataTables = {
                 count: dtRes.dataTables ? dtRes.dataTables.length : 0,
                 tables: dtRes.dataTables || [],
@@ -349,7 +349,7 @@ async function getCloudExplorerOverview(context, vscode, args, transport) {
 
     if (section === 'all' || section === 'transactions') {
         try {
-            const txRes = await getTransactions(context, vscode, { limit: 10 }, transport);
+            const txRes = await getTransactions({ limit: 10 }, tr);
             overview.recentTransactions = {
                 count: txRes.transactions ? txRes.transactions.length : 0,
                 transactions: txRes.transactions || [],
@@ -361,7 +361,7 @@ async function getCloudExplorerOverview(context, vscode, args, transport) {
 
     if (section === 'all' || section === 'parts') {
         try {
-            const partsRes = await listParts(context, vscode, { limit: 15 }, transport);
+            const partsRes = await listParts({ limit: 15 }, tr);
             overview.partsCatalog = {
                 count: partsRes.count || 0,
                 totalResults: partsRes.totalResults,
@@ -374,7 +374,7 @@ async function getCloudExplorerOverview(context, vscode, args, transport) {
 
     if (section === 'all' || section === 'deployment') {
         try {
-            const depRes = await listDeploymentTasks(context, vscode, { limit: 10 }, transport);
+            const depRes = await listDeploymentTasks({ limit: 10 }, tr);
             overview.deploymentCenter = {
                 count: depRes.count || 0,
                 tasks: depRes.tasks || [],

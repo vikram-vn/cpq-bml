@@ -18,11 +18,20 @@ const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
 const { createCapturingTerminal } = require('@/lang/mcp/proxy');
 const { getDataTableSchema, getDataTableRows } = require('@/lang/mcp/tools/dataTableTools');
 const { listParts, getPart } = require('@/lang/mcp/tools/partsTools');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 async function listAll(context, vscode, transport, metadataTarget) {
-    const label = metadataTarget ? 'List Commerce Functions' : 'List Util Functions';
-    const target = metadataTarget ? `${metadataTarget.commerceProcess}/${metadataTarget.commerceDocument}` : 'util library';
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    let effectiveTransport = transport;
+    let effectiveTarget = metadataTarget;
+    let effectiveVscode = vscode;
+    if (arguments.length <= 2) {
+        effectiveTransport = arguments[0];
+        effectiveTarget = arguments[1];
+        effectiveVscode = undefined;
+    }
+    const label = effectiveTarget ? 'List Commerce Functions' : 'List Util Functions';
+    const target = effectiveTarget ? `${effectiveTarget.commerceProcess}/${effectiveTarget.commerceDocument}` : 'util library';
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(effectiveVscode));
     writeRunHeader(terminal, label, target);
     writeRunningLine(terminal, label, target);
     terminal.show();
@@ -33,7 +42,7 @@ async function listAll(context, vscode, transport, metadataTarget) {
     const limit = 1000;
     for (;;) {
         const { statusCode, body } = await api.listLibraryFunctions(
-            context, vscode, { offset, limit }, transport, metadataTarget,
+            { offset, limit }, effectiveTransport, effectiveTarget,
         );
         if (!isSuccess(statusCode)) {
             const message = `Failed to list functions (HTTP ${statusCode}). ${describeError(body)}`;
@@ -57,17 +66,20 @@ async function listAll(context, vscode, transport, metadataTarget) {
     };
 }
 
-async function listUtilFunctions(context, vscode, args, transport) {
-    return listAll(context, vscode, transport, undefined);
+async function listUtilFunctions(options = {}, transport) {
+    const { transport: tr } = normalizeToolArgs(arguments);
+    return listAll(tr, undefined);
 }
 
-async function listCommerceFunctions(context, vscode, args, transport) {
+async function listCommerceFunctions(options = {}, transport) {
+    const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const commerceProcess = (args && args.commerceProcess) || config.getCommerceProcess(vscode) || 'oraclecpqo';
     const commerceDocument = (args && args.commerceDocument) || config.getCommerceDocument(vscode) || 'transaction';
-    return listAll(context, vscode, transport, { commerceProcess, commerceDocument });
+    return listAll(tr, { commerceProcess, commerceDocument });
 }
 
-async function pullFunction(context, vscode, args, transport) {
+async function pullFunction(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -92,18 +104,18 @@ async function pullFunction(context, vscode, args, transport) {
         target = { commerceProcess, commerceDocument };
     }
 
-    const match = await findLibraryFunctionByVariableName(context, vscode, variableName, transport, target);
+    const match = await findLibraryFunctionByVariableName(variableName, tr, target);
     if (!match) return fail(`Function "${variableName}" was not found on CPQ.`);
 
     const nsVarName = metadataLib.namespaceVariableNameFor(match);
-    let result = await api.getLibraryFunction(nsVarName, transport, target);
+    let result = await api.getLibraryFunction(nsVarName, tr, target);
     if (!isSuccess(result.statusCode) && match.folderName && !nsVarName.includes('.')) {
-        const altResult = await api.getLibraryFunction(`${match.folderName}.${match.variableName}`, transport, target);
+        const altResult = await api.getLibraryFunction(`${match.folderName}.${match.variableName}`, tr, target);
         if (isSuccess(altResult.statusCode)) {
             result = altResult;
         }
     } else if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
-        const altResult = await api.getLibraryFunction(match.variableName, transport, target);
+        const altResult = await api.getLibraryFunction(match.variableName, tr, target);
         if (isSuccess(altResult.statusCode)) {
             result = altResult;
         }
@@ -145,7 +157,8 @@ async function pullFunction(context, vscode, args, transport) {
 // Batch form of pullFunction - each item can independently be a util or commerce function,
 // since a single call may need to pull a mix of both. Runs sequentially (not in parallel) so
 // a shared, sequential terminal log stays readable and rate limits on the CPQ side aren't hit.
-async function pullFunctions(context, vscode, args, transport) {
+async function pullFunctions(options = {}, transport) {
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const items = args && args.items;
     if (!Array.isArray(items) || items.length === 0) {
         return { success: false, error: 'items (a non-empty array of { variableName, type?, commerceProcess?, commerceDocument? }) is required.' };
@@ -157,7 +170,7 @@ async function pullFunctions(context, vscode, args, transport) {
             results.push({ success: false, variableName: item && item.variableName, error: 'variableName is required.' });
             continue;
         }
-        results.push(await pullFunction(context, vscode, item, transport));
+        results.push(await pullFunction(item, tr));
     }
 
     const successCount = results.filter((r) => r.success).length;
@@ -170,7 +183,8 @@ async function pullFunctions(context, vscode, args, transport) {
 }
 
 // BML Global Search across all remote BML scripts in Oracle CPQ via GET /rest/v19/bml/scripts
-async function globalSearchBml(context, vscode, args, transport) {
+async function globalSearchBml(options = {}, transport) {
+    const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const query = args && (args.query || args.q);
     if (!query) return { success: false, error: 'query is required.' };
 
@@ -181,8 +195,6 @@ async function globalSearchBml(context, vscode, args, transport) {
 
     const startedAt = Date.now();
     const result = await api.searchBmlScripts(
-        context,
-        vscode,
         {
             query,
             caseSensitive: args.caseSensitive,
@@ -193,7 +205,7 @@ async function globalSearchBml(context, vscode, args, transport) {
             totalResults: args.totalResults !== false,
             q: args.q,
         },
-        transport,
+        tr,
     );
 
     if (!isSuccess(result.statusCode)) {
@@ -221,7 +233,8 @@ async function globalSearchBml(context, vscode, args, transport) {
     };
 }
 
-async function getTransactions(context, vscode, args, transport) {
+async function getTransactions(options = {}, transport) {
+    const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
 
@@ -238,8 +251,6 @@ async function getTransactions(context, vscode, args, transport) {
     terminal.writeLine(`\x1b[36m${getTimestamp()} Pulling commerce transactions...\x1b[0m`);
 
     const result = await api.getTransactions(
-        context,
-        vscode,
         {
             process,
             document,
@@ -251,7 +262,7 @@ async function getTransactions(context, vscode, args, transport) {
             orderby,
             totalResults,
         },
-        transport,
+        tr,
     );
 
     if (!isSuccess(result.statusCode)) {
@@ -289,7 +300,8 @@ async function getTransactions(context, vscode, args, transport) {
     };
 }
 
-async function lookupCommerceAttribute(context, vscode, args) {
+async function lookupCommerceAttribute(options = {}) {
+    const { vscode, args } = normalizeToolArgs(arguments);
     const wsRoot = commerceAttributes.getWorkspaceRoot(vscode);
     const query = (args && (args.query || args.name || args.label)) || '';
     const results = commerceAttributes.searchAttributes(query, wsRoot);
@@ -301,12 +313,13 @@ async function lookupCommerceAttribute(context, vscode, args) {
     };
 }
 
-async function syncCommerceAttributes(context, vscode, args, transport) {
+async function syncCommerceAttributes(options = {}, transport) {
+    const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     terminal.writeLine(`\x1b[36m${getTimestamp()} Syncing commerce attributes and menu options from CPQ...\x1b[0m`);
 
-    const result = await api.syncCommerceAttributes(args, transport);
+    const result = await api.syncCommerceAttributes(args, tr);
     const count = result.count || (result.attributes ? result.attributes.length : 0);
     terminal.writeLine(`\x1b[32m${getTimestamp()} Synced ${count} commerce attributes into local cache (${formatElapsed(startedAt)})\x1b[0m`);
 
@@ -320,12 +333,13 @@ async function syncCommerceAttributes(context, vscode, args, transport) {
     };
 }
 
-async function syncConfigurationAttributes(context, vscode, args, transport) {
+async function syncConfigurationAttributes(options = {}, transport) {
+    const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     terminal.writeLine(`\x1b[36m${getTimestamp()} Syncing configuration attributes, product families, lines, and models from CPQ...\x1b[0m`);
 
-    const result = await api.syncConfigurationAttributes(args || {}, transport);
+    const result = await api.syncConfigurationAttributes(args || {}, tr);
     const count = result.count || (result.attributes ? result.attributes.length : 0);
     terminal.writeLine(`\x1b[32m${getTimestamp()} Synced ${count} configuration attributes into local workspace (${formatElapsed(startedAt)})\x1b[0m`);
 
@@ -340,17 +354,16 @@ async function syncConfigurationAttributes(context, vscode, args, transport) {
     };
 }
 
-async function listDataTables(context, vscode, args, transport) {
+async function listDataTables(options = {}, transport) {
+    const { vscode, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     writeRunHeader(terminal, 'List Data Tables', 'allDataTables');
     terminal.show();
 
     try {
         const { statusCode, body } = await api.listDataTables(
-            context,
-            vscode,
             { limit: 1000 },
-            transport,
+            tr,
         );
 
         if (!isSuccess(statusCode)) {

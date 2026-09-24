@@ -13,7 +13,7 @@ function register(server, context, vscode, tools) {
         ".bmltest.json file alongside the .bml file if it doesn't exist yet.",
       inputSchema: { variableName: z.string() },
     },
-    async (args) => jsonResult(await tools.runBmlTests(context, vscode, args)),
+    async (args) => jsonResult(await tools.runBmlTests(args)),
   );
 
   server.registerTool(
@@ -35,7 +35,7 @@ function register(server, context, vscode, tools) {
           .describe("Required to snapshot a commerce function."),
       },
     },
-    async (args) => jsonResult(await tools.updateSnapshot(context, vscode, args)),
+    async (args) => jsonResult(await tools.updateSnapshot(args)),
   );
 
   server.registerTool(
@@ -47,7 +47,7 @@ function register(server, context, vscode, tools) {
         "{ matches, expected, actual }.",
       inputSchema: { variableName: z.string() },
     },
-    async (args) => jsonResult(await tools.compareSnapshot(context, vscode, args)),
+    async (args) => jsonResult(await tools.compareSnapshot(args)),
   );
 }
 

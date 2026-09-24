@@ -1,3 +1,4 @@
+const path = require('path');
 const {
     loadBuiltInFunctionsJson,
     loadCpqJsApiJson,
@@ -6,6 +7,8 @@ const {
     loadVariablesJson,
     loadCustomSnippetsJson,
 } = require('@/lang/intellisense/apiDataLoader');
+const commerceAttributes = require('@/lang/rest/commerceAttributes');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 // Every category this tool can search, in the order results get merged in.
 // Matches the same JSON files apiDataLoader.js already serves to the
@@ -33,9 +36,8 @@ const DEFAULT_LIMIT = 20;
  * AI agent can check real syntax/return types/valid attributes instead of
  * guessing.
  */
-const commerceAttributes = require('@/lang/rest/commerceAttributes');
-
-async function lookupBmlReference(context, vscode, args) {
+async function lookupBmlReference(options = {}) {
+    const { context, vscode, args } = normalizeToolArgs(arguments);
     const { name, category, scope, limit } = args || {};
 
     if (!name && !category && !scope) {
@@ -86,7 +88,8 @@ async function lookupBmlReference(context, vscode, args) {
 
         let data;
         try {
-            data = load(context.extensionPath);
+            const extPath = (context && context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
+            data = load(extPath);
         } catch (e) {
             continue; // that JSON failed to load - skip, don't fail the whole lookup
         }

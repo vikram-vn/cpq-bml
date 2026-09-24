@@ -27,7 +27,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.lookupBmlReference(context, vscode, args)),
+      jsonResult(await tools.lookupBmlReference(args)),
   );
 }
 

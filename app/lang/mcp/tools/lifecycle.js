@@ -23,6 +23,7 @@ const { createToolVscodeContext, createCapturingTerminal } = require('@/lang/mcp
 const { findOrCreateAiCopy, findLocalBmlPath, resetAiCopy } = require('@/lang/mcp/locate');
 const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
 const { pullFunction } = require('@/lang/mcp/tools/lookup');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 // Operates on the "<variableName>_ai" working copy, never the pulled canonical file.
 function requireLocalFile(vscode, variableName) {
@@ -48,7 +49,8 @@ function structuredOutcome(extra, result, lines) {
     return { success: true, ...extra, ...rest, log: lines };
 }
 
-async function saveFunction(context, vscode, args, transport) {
+async function saveFunction(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
@@ -56,11 +58,12 @@ async function saveFunction(context, vscode, args, transport) {
 
     const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    const result = await runSaveCurrentFile(context, vscodeProxy, terminal, { transport });
+    const result = await runSaveCurrentFile(context, vscodeProxy, terminal, { transport: tr });
     return structuredOutcome({ variableName }, result, getLines());
 }
 
-async function validateFunction(context, vscode, args, transport) {
+async function validateFunction(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
@@ -69,7 +72,7 @@ async function validateFunction(context, vscode, args, transport) {
     const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const diagnosticCollection = { delete: () => {}, set: () => {} };
-    const result = await runValidateCurrentFile(context, vscodeProxy, diagnosticCollection, terminal, { transport });
+    const result = await runValidateCurrentFile(context, vscodeProxy, diagnosticCollection, terminal, { transport: tr });
 
     if (!result || !result.success) {
         return {
@@ -83,7 +86,8 @@ async function validateFunction(context, vscode, args, transport) {
     return { success: true, variableName, elapsedMs: result.elapsedMs, log: getLines() };
 }
 
-async function deployFunction(context, vscode, args, transport) {
+async function deployFunction(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     if (args.confirm !== true) {
@@ -108,13 +112,14 @@ async function deployFunction(context, vscode, args, transport) {
 
     const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath, warningConfirm: 'Deploy' });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    const result = await runDeployCurrentFile(context, vscodeProxy, terminal, { transport });
+    const result = await runDeployCurrentFile(context, vscodeProxy, terminal, { transport: tr });
     return structuredOutcome({ variableName }, result, getLines());
 }
 
 // Pre-seeds debug.js's workspaceState cache with the AI-supplied inputs, then auto-answers
 // its QuickPick with "run with last inputs" to reuse the same payload-building logic.
-async function debugFunction(context, vscode, args, transport) {
+async function debugFunction(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
@@ -152,7 +157,7 @@ async function debugFunction(context, vscode, args, transport) {
     }
 
     const hasInputs = (metadata.parameters && metadata.parameters.length > 0) || isCommerce;
-    if (hasInputs && context.workspaceState) {
+    if (hasInputs && context && context.workspaceState) {
         await context.workspaceState.update(`debugCache:${variableName}`, {
             transactionId: transactionIds.join(', '),
             parameterValues,
@@ -172,7 +177,7 @@ async function debugFunction(context, vscode, args, transport) {
     });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const isResultsOnly = !!(args && (args.resultsOnly || args.showResultsOnly));
-    const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport, resultsOnly: isResultsOnly });
+    const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport: tr, resultsOnly: isResultsOnly });
 
     if (!result || !result.success) {
         return {
@@ -241,7 +246,8 @@ async function debugFunction(context, vscode, args, transport) {
     };
 }
 
-async function massDeployUtilFunctions(context, vscode, args, transport) {
+async function massDeployUtilFunctions(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableNames = args && args.variableNames;
     if (!Array.isArray(variableNames) || variableNames.length === 0) {
         return { success: false, error: 'variableNames (a non-empty array) is required.' };
@@ -257,11 +263,12 @@ async function massDeployUtilFunctions(context, vscode, args, transport) {
     const quickPickSelector = (items) => items.filter((i) => variableNames.includes(i.item.variableName));
     const { vscodeProxy } = createToolVscodeContext(vscode, { quickPickSelector, warningConfirm: 'Deploy' });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    const result = await runDeployUtilFunctions(context, vscodeProxy, terminal, { transport });
+    const result = await runDeployUtilFunctions(context, vscodeProxy, terminal, { transport: tr });
     return structuredOutcome({ variableNames }, result, getLines());
 }
 
-async function deployCommerceProcess(context, vscode, args, transport) {
+async function deployCommerceProcess(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     if (args && args.confirm !== true) {
         return {
             success: false,
@@ -273,14 +280,15 @@ async function deployCommerceProcess(context, vscode, args, transport) {
 
     const { vscodeProxy } = createToolVscodeContext(vscode, { configOverrides, warningConfirm: 'Deploy' });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    const result = await runDeployCommerceProcess(context, vscodeProxy, terminal, { transport });
+    const result = await runDeployCommerceProcess(context, vscodeProxy, terminal, { transport: tr });
     // No extra fields passed in: result.processVarName reflects what was actually resolved
     // (config default when args.processVarName was omitted), which is more accurate than
     // echoing back a possibly-undefined arg.
     return structuredOutcome({}, result, getLines());
 }
 
-async function createUtilFunction(context, vscode, args, transport) {
+async function createUtilFunction(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { variableName, name, description, returnType, parameters, scriptText } = args || {};
     if (!variableName || !name || !returnType) {
         return { success: false, error: 'variableName, name, and returnType are required.' };
@@ -306,7 +314,7 @@ async function createUtilFunction(context, vscode, args, transport) {
     const payload = metadataLib.buildFunctionPayload(metadata, finalScriptText);
 
     const startedAt = Date.now();
-    const result = await api.createLibraryFunction(payload, transport);
+    const result = await api.createLibraryFunction(payload, tr);
     if (!isSuccess(result.statusCode)) {
         const message = `Create failed (HTTP ${result.statusCode}). ${describeError(result.body)}`;
         writeTerminalMessage(terminal, 'Create failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');
@@ -314,7 +322,7 @@ async function createUtilFunction(context, vscode, args, transport) {
     }
 
     // Pulled back instead of written locally: CPQ assigns canonical fields (folderName, namespace) we didn't set.
-    const pulled = await pullFunction(context, vscode, { variableName, type: 'util' }, transport);
+    const pulled = await pullFunction({ variableName, type: 'util' }, tr);
     const log = getLines().concat(pulled.log || []);
     if (!pulled.success) {
         const message = `Created "${variableName}" on CPQ, but failed to pull it back locally: ${pulled.error}`;
@@ -327,7 +335,8 @@ async function createUtilFunction(context, vscode, args, transport) {
 
 // Standard (system) functions cannot be validated/saved/deployed until overridden -
 // this is the step that unblocks that entire pipeline for an AI working on one.
-async function createOverride(context, vscode, args, transport) {
+async function createOverride(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     const located = requireLocalFile(vscode, variableName);
@@ -335,13 +344,14 @@ async function createOverride(context, vscode, args, transport) {
 
     const { vscodeProxy } = createToolVscodeContext(vscode, { bmlPath: located.bmlPath });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    const result = await runCreateOverride(context, vscodeProxy, terminal, { transport });
+    const result = await runCreateOverride(context, vscodeProxy, terminal, { transport: tr });
     return structuredOutcome({ variableName }, result, getLines());
 }
 
 // Destructive: reverts to the system version and discards local override customizations.
 // confirm:true is the safety gate here since there is no human at a modal to click through.
-async function removeOverride(context, vscode, args, transport) {
+async function removeOverride(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     if (args.confirm !== true) {
@@ -359,13 +369,14 @@ async function removeOverride(context, vscode, args, transport) {
         warningConfirm: 'Remove Override',
     });
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
-    const result = await runRemoveOverride(context, vscodeProxy, terminal, { transport });
+    const result = await runRemoveOverride(context, vscodeProxy, terminal, { transport: tr });
     return structuredOutcome({ variableName }, result, getLines());
 }
 
 // Destructive: discards whatever the AI has changed in its working copy so far.
 // confirm:true is the safety gate here since there is no human at a modal to click through.
-async function resetAiCopyTool(context, vscode, args) {
+async function resetAiCopyTool(options = {}) {
+    const { vscode, args } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
     if (args.confirm !== true) {

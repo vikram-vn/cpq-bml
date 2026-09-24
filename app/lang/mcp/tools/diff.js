@@ -1,6 +1,7 @@
 const fs = require('fs');
 const api = require('@/lang/rest/api');
 const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 /**
  * Naive line-by-line diff (LCS-based).
@@ -114,7 +115,8 @@ function computeLineDiff(oldLines, newLines) {
  * Pulls the remote content into memory (does NOT overwrite local files),
  * then returns a line-by-line unified diff.
  */
-async function diffFunction(context, vscode, args) {
+async function diffFunction(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { variableName, type = 'util' } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -136,7 +138,7 @@ async function diffFunction(context, vscode, args) {
 
         if (type === 'util') {
             const fetchFn = typeof api.getLibraryFunction === 'function' ? api.getLibraryFunction : api.getUtilFunction;
-            const resp = await fetchFn(context, vscode, variableName);
+            const resp = await fetchFn(variableName, tr);
             const body = resp && resp.body ? resp.body : resp;
             remoteText = body && body.scriptText ? body.scriptText : '';
         } else {

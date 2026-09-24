@@ -2,11 +2,13 @@ const api = require('@/lang/rest/api');
 const config = require('@/lang/rest/config');
 const { isSuccess, describeError } = require('@/lang/rest/commands/shared');
 const { extractStringValue } = require('@/lang/cloud/cloudVscodeShim');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
-async function listCommerceDocumentsTool(context, vscode, args = {}, transport) {
+async function listCommerceDocumentsTool(options = {}, transport) {
+  const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
   const proc = args.commerceProcess || config.getCommerceProcess(vscode) || 'oraclecpqo';
   try {
-    const res = await api.listCommerceDocuments({ process: proc, limit: 100 }, transport);
+    const res = await api.listCommerceDocuments({ process: proc, limit: 100 }, tr);
     if (!isSuccess(res.statusCode)) {
       return {
         success: false,
@@ -28,7 +30,8 @@ async function listCommerceDocumentsTool(context, vscode, args = {}, transport) 
   }
 }
 
-async function listCommerceActionsTool(context, vscode, args = {}, transport) {
+async function listCommerceActionsTool(options = {}, transport) {
+  const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
   const proc = args.commerceProcess || config.getCommerceProcess(vscode) || 'oraclecpqo';
   const docsToQuery = args.commerceDocument
     ? [args.commerceDocument]
@@ -75,7 +78,8 @@ async function listCommerceActionsTool(context, vscode, args = {}, transport) {
   };
 }
 
-async function getCommerceActionTool(context, vscode, args = {}, transport) {
+async function getCommerceActionTool(options = {}, transport) {
+  const { vscode, args, transport: tr } = normalizeToolArgs(arguments);
   if (!args.actionVariableName) {
     return { success: false, error: 'actionVariableName is required' };
   }
@@ -86,7 +90,7 @@ async function getCommerceActionTool(context, vscode, args = {}, transport) {
     const res = await api.getCommerceAction(
       args.actionVariableName,
       { process: proc, document: doc },
-      transport
+      tr
     );
     if (!isSuccess(res.statusCode)) {
       return {

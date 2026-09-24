@@ -10,7 +10,7 @@ function register(server, context, vscode, tools) {
         commerceProcess: z.string().optional().describe("Commerce process variable name. Defaults to configured process (oraclecpqo)."),
       },
     },
-    async (args) => jsonResult(await tools.listCommerceDocumentsTool(context, vscode, args)),
+    async (args) => jsonResult(await tools.listCommerceDocumentsTool(args)),
   );
 
   server.registerTool(
@@ -24,7 +24,7 @@ function register(server, context, vscode, tools) {
         offset: z.number().optional().describe("Pagination offset (default 0)."),
       },
     },
-    async (args) => jsonResult(await tools.listCommerceActionsTool(context, vscode, args)),
+    async (args) => jsonResult(await tools.listCommerceActionsTool(args)),
   );
 
   server.registerTool(
@@ -37,7 +37,7 @@ function register(server, context, vscode, tools) {
         commerceDocument: z.string().optional().describe("Commerce document variable name ('transaction' or 'transactionLine'). Defaults to 'transaction'."),
       },
     },
-    async (args) => jsonResult(await tools.getCommerceActionTool(context, vscode, args)),
+    async (args) => jsonResult(await tools.getCommerceActionTool(args)),
   );
 }
 

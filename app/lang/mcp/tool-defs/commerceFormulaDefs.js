@@ -15,7 +15,7 @@ function register(server, context, vscode, tools) {
                 commerceDocument: z.string().optional().describe('Commerce document variable name (defaults to configured document, e.g. transaction).'),
             },
         },
-        async (args) => jsonResult(await tools.getCommerceDocumentModifyTab(context, vscode, args)),
+        async (args) => jsonResult(await tools.getCommerceDocumentModifyTab(args)),
     );
 
     server.registerTool(
@@ -35,7 +35,7 @@ function register(server, context, vscode, tools) {
                 commerceDocument: z.string().optional().describe('Commerce document variable name.'),
             },
         },
-        async (args) => jsonResult(await tools.updateCommerceDocumentModifyTab(context, vscode, args)),
+        async (args) => jsonResult(await tools.updateCommerceDocumentModifyTab(args)),
     );
 
     server.registerTool(
@@ -50,7 +50,7 @@ function register(server, context, vscode, tools) {
                 commerceDocument: z.string().optional().describe('Commerce document variable name.'),
             },
         },
-        async (args) => jsonResult(await tools.pullCommerceActionScripts(context, vscode, args)),
+        async (args) => jsonResult(await tools.pullCommerceActionScripts(args)),
     );
 
     server.registerTool(
@@ -67,7 +67,7 @@ function register(server, context, vscode, tools) {
                 commerceDocument: z.string().optional().describe('Commerce document variable name.'),
             },
         },
-        async (args) => jsonResult(await tools.debugCommerceActionScript(context, vscode, args)),
+        async (args) => jsonResult(await tools.debugCommerceActionScript(args)),
     );
 
     server.registerTool(
@@ -82,7 +82,7 @@ function register(server, context, vscode, tools) {
                 commerceDocument: z.string().optional().describe('Commerce document variable name.'),
             },
         },
-        async (args) => jsonResult(await tools.pullCommerceAttributeFormula(context, vscode, args)),
+        async (args) => jsonResult(await tools.pullCommerceAttributeFormula(args)),
     );
 
     server.registerTool(
@@ -99,7 +99,7 @@ function register(server, context, vscode, tools) {
                 commerceDocument: z.string().optional().describe('Commerce document variable name.'),
             },
         },
-        async (args) => jsonResult(await tools.debugCommerceAttributeFormula(context, vscode, args)),
+        async (args) => jsonResult(await tools.debugCommerceAttributeFormula(args)),
     );
 }
 

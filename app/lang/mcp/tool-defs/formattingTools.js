@@ -12,7 +12,7 @@ function register(server, context, vscode, tools) {
         "the .bml file directly. Returns { changed, formattedText }.",
       inputSchema: { variableName: z.string() },
     },
-    async (args) => jsonResult(await tools.formatBmlFunction(context, vscode, args)),
+    async (args) => jsonResult(await tools.formatBmlFunction(args)),
   );
 }
 

@@ -106,16 +106,24 @@ function mergeAttributes(existing, dependent) {
 
 // Paginates the full library looking for a variableName match (util and commerce share the same collection).
 async function findLibraryFunctionByVariableName(context, vscode, variableName, transport, metadata) {
-    if (!variableName) return null;
-    const cleanVarName = variableName.includes('.') ? variableName.split('.').pop() : variableName;
-    const targetFolder = variableName.includes('.') ? variableName.split('.')[0] : null;
-    const lowerVar = variableName.toLowerCase();
+    let effectiveVarName = variableName;
+    let effectiveTransport = transport;
+    let effectiveMetadata = metadata;
+    if (typeof context === 'string') {
+        effectiveVarName = context;
+        effectiveTransport = vscode;
+        effectiveMetadata = variableName;
+    }
+    if (!effectiveVarName) return null;
+    const cleanVarName = effectiveVarName.includes('.') ? effectiveVarName.split('.').pop() : effectiveVarName;
+    const targetFolder = effectiveVarName.includes('.') ? effectiveVarName.split('.')[0] : null;
+    const lowerVar = effectiveVarName.toLowerCase();
     const lowerClean = cleanVarName.toLowerCase();
 
     let offset = 0;
     const limit = 1000;
     for (;;) {
-        const { statusCode, body } = await api.listLibraryFunctions(context, vscode, { offset, limit }, transport, metadata);
+        const { statusCode, body } = await api.listLibraryFunctions({ offset, limit }, effectiveTransport, effectiveMetadata);
         if (!isSuccess(statusCode)) return null;
 
         let parsedBody = body;

@@ -15,6 +15,7 @@ const { getAiTerminal } = require('@/lang/mcp/aiTerminal');
 const { createCapturingTerminal, createToolVscodeContext } = require('@/lang/mcp/proxy');
 const { runDebugCurrentFile } = require('@/lang/rest/commands/debug');
 const { getCommerceAttributesFolder } = require('@/lang/rest/folders');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 function safeParse(val) {
     if (!val) return {};
@@ -26,8 +27,8 @@ function safeParse(val) {
     }
 }
 
-async function getCommerceDocumentModifyTab(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function getCommerceDocumentModifyTab(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     const settings = getSettings(vscode);
@@ -39,7 +40,7 @@ async function getCommerceDocumentModifyTab(context, vscode, args, transport) {
 
     try {
         if (isConfigured(vscode)) {
-            const res = await api.getCommerceDocumentModifyTab({ process, document }, transport);
+            const res = await api.getCommerceDocumentModifyTab({ process, document }, tr);
             if (res && isSuccess(res.statusCode)) {
                 const body = safeParse(res.body);
                 const items = Array.isArray(body) ? body : (body.items || []);
@@ -91,8 +92,8 @@ async function getCommerceDocumentModifyTab(context, vscode, args, transport) {
     }
 }
 
-async function updateCommerceDocumentModifyTab(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function updateCommerceDocumentModifyTab(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
     const startedAt = Date.now();
     const settings = getSettings(vscode);
@@ -108,7 +109,7 @@ async function updateCommerceDocumentModifyTab(context, vscode, args, transport)
     terminal.show();
 
     try {
-        const res = await api.updateCommerceDocumentModifyTab(items, { process, document }, transport);
+        const res = await api.updateCommerceDocumentModifyTab(items, { process, document }, tr);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -144,8 +145,8 @@ async function updateCommerceDocumentModifyTab(context, vscode, args, transport)
     }
 }
 
-async function pullCommerceActionScripts(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function pullCommerceActionScripts(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const actionVar = args && (args.actionVariableName || args.variableName);
     if (!actionVar) {
         return { success: false, error: 'actionVariableName is required.' };
@@ -161,7 +162,7 @@ async function pullCommerceActionScripts(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const res = await api.getCommerceAction(actionVar, { process, document }, transport);
+        const res = await api.getCommerceAction(actionVar, { process, document }, tr);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -236,8 +237,8 @@ async function pullCommerceActionScripts(context, vscode, args, transport) {
     }
 }
 
-async function debugCommerceActionScript(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function debugCommerceActionScript(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const actionVar = args && (args.actionVariableName || args.variableName);
     const transactionId = args && (args.transactionId || args.id);
     const scriptType = (args && args.scriptType) || 'before-formulas';
@@ -251,7 +252,7 @@ async function debugCommerceActionScript(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const pullRes = await pullCommerceActionScripts(context, vscode, args, transport);
+        const pullRes = await pullCommerceActionScripts(args, tr);
         if (!pullRes.success) return pullRes;
 
         const targetScript = (pullRes.savedFiles || []).find(f => f.type === scriptType)
@@ -277,7 +278,7 @@ async function debugCommerceActionScript(context, vscode, args, transport) {
             });
         }
 
-        const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport, resultsOnly: false });
+        const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport: tr, resultsOnly: false });
         writeTerminalMessage(terminal, 'Debug Action: ', `Executed ${scriptType} debug on "${actionVar}" (${formatElapsed(startedAt)})`, '\x1b[32m');
 
         return {
@@ -293,8 +294,8 @@ async function debugCommerceActionScript(context, vscode, args, transport) {
     }
 }
 
-async function pullCommerceAttributeFormula(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function pullCommerceAttributeFormula(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const attrVar = args && (args.attributeVariableName || args.variableName);
     if (!attrVar) return { success: false, error: 'attributeVariableName is required.' };
 
@@ -309,7 +310,7 @@ async function pullCommerceAttributeFormula(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const res = await api.getCommerceAttribute({ process, document, attributeVarName: attrVar, fields: null }, transport);
+        const res = await api.getCommerceAttribute({ process, document, attributeVarName: attrVar, fields: null }, tr);
         if (!res || !isSuccess(res.statusCode)) {
             const code = res ? res.statusCode : 500;
             return {
@@ -371,8 +372,8 @@ async function pullCommerceAttributeFormula(context, vscode, args, transport) {
     }
 }
 
-async function debugCommerceAttributeFormula(context, vscode, args, transport) {
-    if (context || vscode) api.setApiContext(context, vscode);
+async function debugCommerceAttributeFormula(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const attrVar = args && (args.attributeVariableName || args.variableName);
     const transactionId = args && (args.transactionId || args.id);
     const formulaType = (args && (args.formulaType || args.type)) || 'default';
@@ -386,7 +387,7 @@ async function debugCommerceAttributeFormula(context, vscode, args, transport) {
     terminal.show();
 
     try {
-        const pullRes = await pullCommerceAttributeFormula(context, vscode, args, transport);
+        const pullRes = await pullCommerceAttributeFormula(args, tr);
         if (!pullRes.success) return pullRes;
         if (!pullRes.savedPath) {
             return {
@@ -408,7 +409,7 @@ async function debugCommerceAttributeFormula(context, vscode, args, transport) {
             });
         }
 
-        const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport, resultsOnly: false });
+        const result = await runDebugCurrentFile(context, vscodeProxy, terminal, { transport: tr, resultsOnly: false });
         writeTerminalMessage(terminal, 'Debug Formula: ', `Finished ${formulaType} formula debug on "${attrVar}" (${formatElapsed(startedAt)})`, '\x1b[32m');
 
         return {

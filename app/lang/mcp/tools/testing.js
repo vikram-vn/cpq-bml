@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
 const { debugFunction } = require('@/lang/mcp/tools/lifecycle');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 // Headless counterparts to app/lang/test-controller/runner.js and snapshot.js: those are built for an
 // active editor + interactive prompts + an Output Channel, and scrape the return value out of
@@ -27,7 +28,8 @@ function stringifyReturnValue(value) {
  * { description?, params?, expected?, transactionId? }) against the local AI working copy via
  * debugFunction, comparing each actual return value to its expected one.
  */
-async function runBmlTests(context, vscode, args, transport) {
+async function runBmlTests(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -60,7 +62,7 @@ async function runBmlTests(context, vscode, args, transport) {
         const debugArgs = { variableName, parameters: tc.params || {} };
         if (tc.transactionId) debugArgs.transactionId = tc.transactionId;
 
-        const debugResult = await debugFunction(context, vscode, debugArgs, transport);
+        const debugResult = await debugFunction(debugArgs, tr);
         if (!debugResult.success) {
             results.push({ description, passed: false, error: debugResult.error });
             continue;
@@ -89,7 +91,8 @@ async function runBmlTests(context, vscode, args, transport) {
  * Runs the local AI working copy with the given parameters and saves the return value to
  * <variableName>.snap.json alongside the .bml file, for compare_snapshot to check against later.
  */
-async function updateSnapshot(context, vscode, args, transport) {
+async function updateSnapshot(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -100,7 +103,7 @@ async function updateSnapshot(context, vscode, args, transport) {
     const debugArgs = { variableName, parameters: params };
     if (args && args.transactionId) debugArgs.transactionId = args.transactionId;
 
-    const debugResult = await debugFunction(context, vscode, debugArgs, transport);
+    const debugResult = await debugFunction(debugArgs, tr);
     if (!debugResult.success) {
         return { success: false, variableName, error: debugResult.error || 'Debug failed while capturing the snapshot.' };
     }
@@ -119,7 +122,8 @@ async function updateSnapshot(context, vscode, args, transport) {
  * Reruns the local AI working copy with the saved snapshot's parameters and reports whether the
  * return value still matches - a regression check for changes made since update_snapshot.
  */
-async function compareSnapshot(context, vscode, args, transport) {
+async function compareSnapshot(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -138,7 +142,7 @@ async function compareSnapshot(context, vscode, args, transport) {
         return { success: false, variableName, error: `Failed to read snapshot: ${e.message}` };
     }
 
-    const debugResult = await debugFunction(context, vscode, { variableName, parameters: snapshot.params || {} }, transport);
+    const debugResult = await debugFunction({ variableName, parameters: snapshot.params || {} }, tr);
     if (!debugResult.success) {
         return { success: false, variableName, error: debugResult.error || 'Debug failed while comparing the snapshot.' };
     }

@@ -9,7 +9,7 @@ function register(server, context, vscode, tools) {
         "List all util library functions on the configured CPQ instance.",
       inputSchema: {},
     },
-    async () => jsonResult(await tools.listUtilFunctions(context, vscode, {})),
+    async () => jsonResult(await tools.listUtilFunctions({})),
   );
 
   server.registerTool(
@@ -29,7 +29,7 @@ function register(server, context, vscode, tools) {
       },
     },
     async (args) =>
-      jsonResult(await tools.listCommerceFunctions(context, vscode, args)),
+      jsonResult(await tools.listCommerceFunctions(args)),
   );
 
   server.registerTool(
@@ -44,7 +44,7 @@ function register(server, context, vscode, tools) {
         commerceDocument: z.string().optional(),
       },
     },
-    async (args) => jsonResult(await tools.pullFunction(context, vscode, args)),
+    async (args) => jsonResult(await tools.pullFunction(args)),
   );
 
   server.registerTool(
@@ -67,7 +67,7 @@ function register(server, context, vscode, tools) {
           .min(1),
       },
     },
-    async (args) => jsonResult(await tools.pullFunctions(context, vscode, args)),
+    async (args) => jsonResult(await tools.pullFunctions(args)),
   );
 
   server.registerTool(
@@ -89,7 +89,7 @@ function register(server, context, vscode, tools) {
         orderby: z.string().optional().describe("Optional comma-separated list of pairs for ordering results."),
       },
     },
-    async (args) => jsonResult(await tools.globalSearchBml(context, vscode, args)),
+    async (args) => jsonResult(await tools.globalSearchBml(args)),
   );
 
   server.registerTool(
@@ -110,7 +110,7 @@ function register(server, context, vscode, tools) {
         orderby: z.string().optional(),
       },
     },
-    async (args) => jsonResult(await tools.globalSearchBml(context, vscode, args)),
+    async (args) => jsonResult(await tools.globalSearchBml(args)),
   );
 
   const transactionInputSchema = {
@@ -154,7 +154,7 @@ function register(server, context, vscode, tools) {
         "Supports user filters via q/query, offset (default 25), limit (default 25), and excludeFieldTypes (default yes).",
       inputSchema: transactionInputSchema,
     },
-    async (args) => jsonResult(await tools.getTransactions(context, vscode, args)),
+    async (args) => jsonResult(await tools.getTransactions(args)),
   );
 
   server.registerTool(
@@ -164,7 +164,7 @@ function register(server, context, vscode, tools) {
         "Alias for get_transactions: Retrieve commerce transactions from Oracle CPQ for debugging.",
       inputSchema: transactionInputSchema,
     },
-    async (args) => jsonResult(await tools.getTransactions(context, vscode, args)),
+    async (args) => jsonResult(await tools.getTransactions(args)),
   );
 
   server.registerTool(
@@ -180,7 +180,7 @@ function register(server, context, vscode, tools) {
           .describe("Attribute label or variable name to look up (case-insensitive)."),
       },
     },
-    async (args) => jsonResult(await tools.lookupCommerceAttribute(context, vscode, args)),
+    async (args) => jsonResult(await tools.lookupCommerceAttribute(args)),
   );
 
   server.registerTool(
@@ -195,7 +195,7 @@ function register(server, context, vscode, tools) {
           .describe("Attribute label or variable name to look up (case-insensitive)."),
       },
     },
-    async (args) => jsonResult(await tools.lookupCommerceAttribute(context, vscode, args)),
+    async (args) => jsonResult(await tools.lookupCommerceAttribute(args)),
   );
 
   server.registerTool(
@@ -215,7 +215,7 @@ function register(server, context, vscode, tools) {
           .describe("Commerce document name (defaults to configured document, e.g. 'transaction')."),
       },
     },
-    async (args) => jsonResult(await tools.syncCommerceAttributes(context, vscode, args)),
+    async (args) => jsonResult(await tools.syncCommerceAttributes(args)),
   );
 
   server.registerTool(
@@ -231,7 +231,7 @@ function register(server, context, vscode, tools) {
           .describe("Optional Product Family variable name to sync (e.g. 'servers', 'telecom'). Leave blank or omit to sync all product families."),
       },
     },
-    async (args) => jsonResult(await tools.syncConfigurationAttributes(context, vscode, args)),
+    async (args) => jsonResult(await tools.syncConfigurationAttributes(args)),
   );
 
   server.registerTool(
@@ -241,7 +241,7 @@ function register(server, context, vscode, tools) {
         "List all available Oracle CPQ Data Tables on the active environment. Useful for discovering tables before writing BMQL queries.",
       inputSchema: {},
     },
-    async (args) => jsonResult(await tools.listDataTables(context, vscode, args)),
+    async (args) => jsonResult(await tools.listDataTables(args)),
   );
 
   server.registerTool(
@@ -253,7 +253,7 @@ function register(server, context, vscode, tools) {
         tableName: z.string().describe("The name of the Data Table to inspect."),
       },
     },
-    async (args) => jsonResult(await tools.getDataTableSchema(context, vscode, args)),
+    async (args) => jsonResult(await tools.getDataTableSchema(args)),
   );
 
   server.registerTool(
@@ -285,7 +285,7 @@ function register(server, context, vscode, tools) {
         query: z.string().optional().describe("Alias for q query filter."),
       },
     },
-    async (args) => jsonResult(await tools.getDataTableRows(context, vscode, args)),
+    async (args) => jsonResult(await tools.getDataTableRows(args)),
   );
 
   server.registerTool(
@@ -317,7 +317,7 @@ function register(server, context, vscode, tools) {
           .describe("Comma-separated list of fields to retrieve (e.g. 'partNumber,description,price,currency')."),
       },
     },
-    async (args) => jsonResult(await tools.listParts(context, vscode, args)),
+    async (args) => jsonResult(await tools.listParts(args)),
   );
 
   server.registerTool(
@@ -335,7 +335,7 @@ function register(server, context, vscode, tools) {
           .describe("Optional comma-separated fields to return."),
       },
     },
-    async (args) => jsonResult(await tools.getPart(context, vscode, args)),
+    async (args) => jsonResult(await tools.getPart(args)),
   );
 }
 

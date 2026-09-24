@@ -12,7 +12,7 @@ function register(server, context, vscode, tools) {
         "[{variableName, name, type, commerceProcess?, commerceDocument?, canonicalPath}] }.",
       inputSchema: {},
     },
-    async () => jsonResult(await tools.listLocalFunctions(context, vscode)),
+    async () => jsonResult(await tools.listLocalFunctions()),
   );
 
   server.registerTool(
@@ -22,8 +22,7 @@ function register(server, context, vscode, tools) {
         "Return offline documentation for a locally pulled BML function: docHeader, parameter list, return type, and a code preview. No CPQ connection required.",
       inputSchema: { variableName: z.string() },
     },
-    async (args) =>
-      jsonResult(await tools.explainFunction(context, vscode, args)),
+    async (args) => jsonResult(await tools.explainFunction(args)),
   );
 
   server.registerTool(
@@ -36,8 +35,7 @@ function register(server, context, vscode, tools) {
         type: z.enum(["util", "commerce"]).default("util"),
       },
     },
-    async (args) =>
-      jsonResult(await tools.diffFunction(context, vscode, args)),
+    async (args) => jsonResult(await tools.diffFunction(args)),
   );
 
   server.registerTool(
@@ -53,8 +51,7 @@ function register(server, context, vscode, tools) {
           .describe("Restrict search to util, commerce, or both."),
       },
     },
-    async (args) =>
-      jsonResult(await tools.searchFunctions(context, vscode, args)),
+    async (args) => jsonResult(await tools.searchFunctions(args)),
   );
 
   server.registerTool(
@@ -64,8 +61,7 @@ function register(server, context, vscode, tools) {
         "Run the extension's own local BML linter against a locally pulled function's code and return its diagnostics (errors/warnings/hints with line numbers). No CPQ connection needed - much faster than validate_function for iterating on a fix, though validate_function against Oracle's live compiler is still the authoritative check before saving/deploying.",
       inputSchema: { variableName: z.string() },
     },
-    async (args) =>
-      jsonResult(await tools.lintFunction(context, vscode, args)),
+    async (args) => jsonResult(await tools.lintFunction(args)),
   );
 
   server.registerTool(
@@ -75,8 +71,7 @@ function register(server, context, vscode, tools) {
         "Code-quality metrics for a locally pulled function: cyclomatic complexity, max nesting depth, line counts, plus a diagnostic-count summary from the same linter lint_function uses. No CPQ connection needed.",
       inputSchema: { variableName: z.string() },
     },
-    async (args) =>
-      jsonResult(await tools.getFunctionMetrics(context, vscode, args)),
+    async (args) => jsonResult(await tools.getFunctionMetrics(args)),
   );
 
   server.registerTool(
@@ -89,7 +84,7 @@ function register(server, context, vscode, tools) {
         "function at a time. No CPQ connection needed.",
       inputSchema: {},
     },
-    async () => jsonResult(await tools.lintAllFunctions(context, vscode)),
+    async () => jsonResult(await tools.lintAllFunctions()),
   );
 
   server.registerTool(
@@ -99,7 +94,7 @@ function register(server, context, vscode, tools) {
         "List all built-in Oracle CPQ and BML AI skills (e.g. bml-language, bml-pitfalls, bml-db-access, bml-json-dict, bml-web-services, cpq-domain, cpq-rest-api).",
       inputSchema: {},
     },
-    async () => jsonResult(await tools.listSkills(context)),
+    async () => jsonResult(await tools.listSkills()),
   );
 
   server.registerTool(
@@ -109,7 +104,7 @@ function register(server, context, vscode, tools) {
         "List all available Oracle CPQ and BML AI skills, returning names, summaries, descriptions, and whether references are available.",
       inputSchema: {},
     },
-    async () => jsonResult(await tools.listSkills(context)),
+    async () => jsonResult(await tools.listSkills()),
   );
 
   server.registerTool(
@@ -125,7 +120,7 @@ function register(server, context, vscode, tools) {
           ),
       },
     },
-    async (args) => jsonResult(await tools.getSkill(context, args)),
+    async (args) => jsonResult(await tools.getSkill(args)),
   );
 
   server.registerTool(
@@ -141,7 +136,7 @@ function register(server, context, vscode, tools) {
           ),
       },
     },
-    async (args) => jsonResult(await tools.getSkill(context, args)),
+    async (args) => jsonResult(await tools.getSkill(args)),
   );
 }
 

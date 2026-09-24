@@ -44,6 +44,7 @@ function loadSkillsInstructions(extensionPath) {
 }
 
 function registerTools(server, context, vscode) {
+  if (context || vscode) setApiContext(context, vscode);
   // Instrument tool registration to track real-time traffic
   const originalRegisterTool = server.registerTool.bind(server);
   server.registerTool = function(name, schema, handler) {

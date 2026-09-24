@@ -21,7 +21,7 @@ function register(server, context, vscode, tools) {
                     .describe('Optional section filter (default "all" for full overview).'),
             },
         },
-        async (args) => jsonResult(await tools.getCloudExplorerOverview(context, vscode, args)),
+        async (args) => jsonResult(await tools.getCloudExplorerOverview(args)),
     );
 
     server.registerTool(
@@ -35,7 +35,7 @@ function register(server, context, vscode, tools) {
                 offset: z.number().int().min(0).optional().default(0).describe('Pagination offset.'),
             },
         },
-        async (args) => jsonResult(await tools.listCommerceProcesses(context, vscode, args)),
+        async (args) => jsonResult(await tools.listCommerceProcesses(args)),
     );
 
     server.registerTool(
@@ -51,7 +51,7 @@ function register(server, context, vscode, tools) {
                     .describe('Optional product family variable name to restrict inspection to a single family.'),
             },
         },
-        async (args) => jsonResult(await tools.listConfigurationHierarchy(context, vscode, args)),
+        async (args) => jsonResult(await tools.listConfigurationHierarchy(args)),
     );
 
     server.registerTool(
@@ -65,7 +65,7 @@ function register(server, context, vscode, tools) {
                 productLine: z.string().optional().describe('Product Line variable name (requires productFamily).'),
             },
         },
-        async (args) => jsonResult(await tools.listConfigurationAttributes(context, vscode, args)),
+        async (args) => jsonResult(await tools.listConfigurationAttributes(args)),
     );
 
     server.registerTool(
@@ -81,7 +81,7 @@ function register(server, context, vscode, tools) {
                 q: z.string().optional().describe('Optional query filter for task category or status.'),
             },
         },
-        async (args) => jsonResult(await tools.listDeploymentTasks(context, vscode, args)),
+        async (args) => jsonResult(await tools.listDeploymentTasks(args)),
     );
 
     server.registerTool(
@@ -96,7 +96,7 @@ function register(server, context, vscode, tools) {
                 commerceDocument: z.string().optional().describe('Commerce document name (defaults to configured document, e.g. transaction).'),
             },
         },
-        async (args) => jsonResult(await tools.getTransactionData(context, vscode, args)),
+        async (args) => jsonResult(await tools.getTransactionData(args)),
     );
 
     server.registerTool(

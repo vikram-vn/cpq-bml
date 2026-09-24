@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
+const { getApiContext } = require('@/lang/rest/apiCore');
+const { diffFunction, computeLineDiff } = require('@/lang/mcp/tools/diff');
 let _lintBMLCustom = null;
 function getLintBMLCustom() {
     if (!_lintBMLCustom) {
@@ -54,7 +57,8 @@ function severityLabel(vscode, severity) {
 }
 
 // explain_function: Returns structured documentation for a locally pulled BML function.
-async function explainFunction(context, vscode, args) {
+async function explainFunction(options = {}) {
+    const { vscode, args } = normalizeToolArgs(arguments);
     const { variableName } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -104,15 +108,14 @@ async function explainFunction(context, vscode, args) {
     };
 }
 
-const { diffFunction, computeLineDiff } = require('@/lang/mcp/tools/diff');
-
 /**
  * search_functions
  *
  * Full-text search across all locally pulled *.bml files.
  * Returns matches sorted by match count descending.
  */
-async function searchFunctions(context, vscode, args) {
+async function searchFunctions(options = {}) {
+    const { vscode, args } = normalizeToolArgs(arguments);
     const { query, type = 'both' } = args || {};
     if (!query) return { success: false, error: 'query is required.' };
 
@@ -171,7 +174,8 @@ async function searchFunctions(context, vscode, args) {
  * validate_function for iterating on a fix, though validate_function is
  * still the authoritative check before saving/deploying.
  */
-async function lintFunction(context, vscode, args) {
+async function lintFunction(options = {}) {
+    const { context, vscode, args } = normalizeToolArgs(arguments);
     const { variableName } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -185,7 +189,8 @@ async function lintFunction(context, vscode, args) {
         return { success: false, error: `Cannot read file: ${e.message}` };
     }
 
-    const diagnostics = lintFileText(vscode, context.extensionPath, bmlPath, text);
+    const extPath = (context && context.extensionPath) || (getApiContext().context && getApiContext().context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
+    const diagnostics = lintFileText(vscode, extPath, bmlPath, text);
     return {
         success: true,
         variableName,
@@ -208,7 +213,8 @@ async function lintFunction(context, vscode, args) {
  * summary from the same linter lint_function uses. Mirrors what the
  * "CPQ-BML: Open Code Metrics Report" webview shows, scoped to one function.
  */
-async function getFunctionMetrics(context, vscode, args) {
+async function getFunctionMetrics(options = {}) {
+    const { context, vscode, args } = normalizeToolArgs(arguments);
     const { variableName } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
@@ -223,7 +229,8 @@ async function getFunctionMetrics(context, vscode, args) {
     }
 
     const metrics = computeComplexity(text);
-    const diagnostics = lintFileText(vscode, context.extensionPath, bmlPath, text);
+    const extPath = (context && context.extensionPath) || (getApiContext().context && getApiContext().context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
+    const diagnostics = lintFileText(vscode, extPath, bmlPath, text);
 
     const byCode = {};
     let errorCount = 0;
@@ -281,7 +288,8 @@ function collectCanonicalBmlFiles(dir, results, depthLeft) {
  * needing to already know a variableName - useful for getting oriented in a workspace an AI
  * hasn't seen before, instead of guessing names for explain_function/lint_function.
  */
-async function listLocalFunctions(context, vscode) {
+async function listLocalFunctions(options = {}) {
+    const { vscode } = normalizeToolArgs(arguments);
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
         return { success: false, error: 'No workspace folder is open.' };
@@ -340,8 +348,9 @@ async function listLocalFunctions(context, vscode) {
  * (total error/warning counts, worst offenders) alongside each function's full diagnostics -
  * a workspace-wide health check instead of one function at a time.
  */
-async function lintAllFunctions(context, vscode) {
-    const listing = await listLocalFunctions(context, vscode);
+async function lintAllFunctions(options = {}) {
+    const { context, vscode } = normalizeToolArgs(arguments);
+    const listing = await listLocalFunctions(vscode);
     if (!listing.success) return listing;
 
     const results = [];
@@ -383,8 +392,9 @@ async function lintAllFunctions(context, vscode) {
 /**
  * Lists all built-in Oracle CPQ and BML AI skills with their metadata.
  */
-function listSkills(context) {
-    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '..', '..', '..', '..');
+function listSkills(options = {}) {
+    const { context } = normalizeToolArgs(arguments);
+    const extensionPath = (context && context.extensionPath) || (getApiContext().context && getApiContext().context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
     const skillsDir = path.join(extensionPath, 'app', 'ai', 'skills');
     if (!fs.existsSync(skillsDir)) {
         return { success: true, skills: [] };
@@ -416,12 +426,14 @@ function listSkills(context) {
 /**
  * Fetches the full instructions and reference documents for a specific CPQ/BML skill.
  */
-function getSkill(context, { name } = {}) {
+function getSkill(options = {}) {
+    const { context, args } = normalizeToolArgs(arguments);
+    const name = (args && args.name) || (typeof arguments[0] === 'string' ? arguments[0] : (arguments[1] && arguments[1].name));
     if (!name || typeof name !== 'string') {
         return { success: false, error: 'Skill name is required (e.g. "bml-language", "bml-pitfalls", "cpq-domain", "cpq-rest-api")' };
     }
     const safeName = name.trim().toLowerCase();
-    const extensionPath = context && context.extensionPath ? context.extensionPath : path.resolve(__dirname, '..', '..', '..', '..');
+    const extensionPath = (context && context.extensionPath) || (getApiContext().context && getApiContext().context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
     const skillDir = path.join(extensionPath, 'app', 'ai', 'skills', safeName);
     const skillMd = path.join(skillDir, 'SKILL.md');
     if (!fs.existsSync(skillMd)) {

@@ -1,6 +1,7 @@
 const configLib = require('@/lang/rest/config');
 const { getEnvironments } = require('@/lang/rest/commands/env');
 const { getActiveEnvironmentName } = require('@/lang/rest/terminal');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 /**
  * get_connection_status
@@ -10,7 +11,8 @@ const { getActiveEnvironmentName } = require('@/lang/rest/terminal');
  * calling a REST-backed tool instead of discovering a missing credential mid-call.
  * Optionally pings CPQ live (testConnection:true) to confirm the credentials actually work.
  */
-async function getConnectionStatus(context, vscode, args, transport) {
+async function getConnectionStatus(options = {}, transport) {
+    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
     const settings = configLib.getSettings(vscode);
     const environments = getEnvironments(vscode);
     const missingCredentials = await configLib.hasMissingCredentials(context, vscode);
@@ -37,7 +39,7 @@ async function getConnectionStatus(context, vscode, args, transport) {
     };
 
     if (args && args.testConnection) {
-        status.testResult = await configLib.runTestConnection(context, vscode, transport);
+        status.testResult = await configLib.runTestConnection(context, vscode, tr);
     }
 
     return status;

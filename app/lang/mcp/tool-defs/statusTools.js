@@ -17,7 +17,7 @@ function register(server, context, vscode, tools) {
           .describe("If true, also makes a live request to CPQ to verify the credentials work."),
       },
     },
-    async (args) => jsonResult(await tools.getConnectionStatus(context, vscode, args)),
+    async (args) => jsonResult(await tools.getConnectionStatus(args)),
   );
 }
 

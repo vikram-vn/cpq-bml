@@ -2,6 +2,7 @@ const fs = require('fs');
 const bml_beautify = require('@/lang/beautify/bml');
 const optionsProvider = require('@/lang/beautify/options');
 const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
+const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 /**
  * format_bml
@@ -11,7 +12,8 @@ const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
  * result back to that file - useful right before save_function/validate_function, after the AI
  * has edited the .bml file directly.
  */
-async function formatBmlFunction(context, vscode, args) {
+async function formatBmlFunction(options = {}) {
+    const { vscode, args } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
