@@ -97,7 +97,7 @@ async function executeRemoteBmltTest(testFilePath, vscodeInstance = vscode, cont
           scriptText: code
         };
 
-        const res = await api.validateLibraryFunction(context, vscodeInstance, payload, customTransport);
+        const res = await api.validateLibraryFunction(payload, customTransport);
         durationMs = Date.now() - caseStart;
 
         if (res.statusCode >= 200 && res.statusCode < 300) {

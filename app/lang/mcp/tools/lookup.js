@@ -19,19 +19,19 @@ const { createCapturingTerminal } = require('@/lang/mcp/proxy');
 const { getDataTableSchema, getDataTableRows } = require('@/lang/mcp/tools/dataTableTools');
 const { listParts, getPart } = require('@/lang/mcp/tools/partsTools');
 const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
+const { getApiContext } = require('@/lang/rest/apiCore');
 
-async function listAll(context, vscode, transport, metadataTarget) {
+async function listAll(transport, metadataTarget) {
     let effectiveTransport = transport;
     let effectiveTarget = metadataTarget;
-    let effectiveVscode = vscode;
-    if (arguments.length <= 2) {
-        effectiveTransport = arguments[0];
-        effectiveTarget = arguments[1];
-        effectiveVscode = undefined;
+    if (arguments.length >= 3) {
+        // Legacy (context, vscode, transport, metadataTarget)
+        effectiveTransport = arguments[2];
+        effectiveTarget = arguments[3];
     }
     const label = effectiveTarget ? 'List Commerce Functions' : 'List Util Functions';
     const target = effectiveTarget ? `${effectiveTarget.commerceProcess}/${effectiveTarget.commerceDocument}` : 'util library';
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(effectiveVscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     writeRunHeader(terminal, label, target);
     writeRunningLine(terminal, label, target);
     terminal.show();
@@ -79,11 +79,11 @@ async function listCommerceFunctions(options = {}, transport) {
 }
 
 async function pullFunction(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     writeRunHeader(terminal, 'Pull', variableName);
     writeRunningLine(terminal, 'Pull', variableName);
     terminal.show();
@@ -133,13 +133,13 @@ async function pullFunction(options = {}, transport) {
     metadata.folderName = metadata.folderName || match.folderName || metadataLib.namespaceOf(metadata) || '';
     metadata.name = metadata.name || match.name || metadata.variableName;
 
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (!workspaceFolders || workspaceFolders.length === 0) {
+    const wsRoot = config.getWorkspaceRoot();
+    if (!wsRoot) {
         return fail('No workspace folder is open.');
     }
-    const workspaceRoot = workspaceFolders[0].uri.fsPath;
-    const settings = config.getSettings(vscode);
+    const workspaceRoot = wsRoot;
 
+    const { vscode } = getApiContext();
     const bmlPath = isCommerce
         ? path.join(workspaceRoot, config.getCommerceLibrariesFolder(vscode, commerceProcess), metadata.variableName, `${metadata.variableName}.bml`)
         : path.join(workspaceRoot, config.getUtilLibrariesFolder(vscode), metadata.folderName || '', metadata.variableName, `${metadata.variableName}.bml`);
@@ -148,7 +148,7 @@ async function pullFunction(options = {}, transport) {
     metadataLib.writeBmlFile(bmlPath, scriptText);
     metadataLib.writeMetadata(metaPath, metadata);
 
-    const aiPath = findOrCreateAiCopy(vscode, metadata.variableName);
+    const aiPath = findOrCreateAiCopy(metadata.variableName);
 
     terminal.writeLine(`\x1b[32m${getTimestamp()} Pulled (${formatElapsed(startedAt)})\x1b[0m`);
     return { success: true, variableName, localPath: aiPath || bmlPath, canonicalPath: bmlPath, scriptText, metadata, log: getLines() };

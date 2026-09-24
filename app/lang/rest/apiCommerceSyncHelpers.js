@@ -65,8 +65,6 @@ function formatCommerceAttribute(item, menuOptions = null) {
 
 async function fetchSystemAttributes({
   listCommerceSystemAttributes,
-  context,
-  vscode,
   transport,
   signal,
   onProgress,
@@ -80,8 +78,6 @@ async function fetchSystemAttributes({
     while (true) {
       if (signal && signal.aborted) throw new Error("Request aborted");
       const sysRes = await listCommerceSystemAttributes(
-        context,
-        vscode,
         {
           offset: sysOffset,
           limit: 1000,
@@ -148,8 +144,6 @@ async function fetchSystemAttributes({
 
 async function fetchArraySets({
   listCommerceArraySets,
-  context,
-  vscode,
   effectiveProcess,
   effectiveDocument,
   transport,
@@ -159,8 +153,6 @@ async function fetchArraySets({
 
   try {
     const arrayRes = await listCommerceArraySets(
-      context,
-      vscode,
       {
         process: effectiveProcess,
         document: effectiveDocument,
@@ -198,8 +190,6 @@ async function fetchArraySets({
 async function fetchAttributeLookups({
   listCommerceAttributeLookups,
   listCommerceAttributeLookupValues,
-  context,
-  vscode,
   effectiveProcess,
   transport,
   signal,
@@ -211,8 +201,6 @@ async function fetchAttributeLookups({
 
   try {
     const lookupsRes = await listCommerceAttributeLookups(
-      context,
-      vscode,
       { process: effectiveProcess, fields: "lookupType,name" },
       transport,
     );
@@ -241,8 +229,6 @@ async function fetchAttributeLookups({
         while (true) {
           if (signal && signal.aborted) throw new Error("Request aborted");
           const valRes = await listCommerceAttributeLookupValues(
-            context,
-            vscode,
             {
               process: effectiveProcess,
               lookupType: type,

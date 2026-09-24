@@ -125,7 +125,7 @@ async function resolveCommerceTargets(vscodeInstance, context, forceRemote = fal
   }
 
   try {
-    const res = await api.listCommerceProcesses(context, vscodeInstance);
+    const res = await api.listCommerceProcesses();
     if (res && res.statusCode >= 200 && res.statusCode < 300) {
       const body = safeParseJson(res.body);
       const items = Array.isArray(body) ? body : ((body && (body.items || body.processes || body.data)) || []);
@@ -135,7 +135,7 @@ async function resolveCommerceTargets(vscodeInstance, context, forceRemote = fal
           const procVar = it.variableName || it.name || it.id;
           if (!procVar) continue;
           try {
-            const docRes = await api.listCommerceDocuments(context, vscodeInstance, { process: procVar, limit: 10 });
+            const docRes = await api.listCommerceDocuments({ process: procVar, limit: 10 });
             if (docRes && docRes.statusCode >= 200 && docRes.statusCode < 300) {
               const docBody = safeParseJson(docRes.body);
               const docItems = Array.isArray(docBody) ? docBody : ((docBody && (docBody.items || docBody.documents)) || []);

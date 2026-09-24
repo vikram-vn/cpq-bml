@@ -11,15 +11,20 @@ const LEGACY_AI_FOLDER_SUFFIX = '-AI';
 // (or legacy <pullFolder>/.../<variableName>/<variableName>.bml),
 // so finding one by name means walking the standardized folders and fallbacks.
 function findLocalBmlPath(vscode, variableName) {
-    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (typeof vscode === 'string' && !variableName) {
+        variableName = vscode;
+        vscode = undefined;
+    }
+    const v = (vscode && vscode.workspace) ? vscode : (config.getConfigContext()?.vscode || (() => { try { return require('vscode'); } catch (_) { return null; } })());
+    const workspaceFolders = v?.workspace?.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) return null;
     const wsRoot = workspaceFolders[0].uri.fsPath;
-    const settings = config.getSettings(vscode);
+    const settings = config.getSettings(v);
 
     const searchRoots = [
         path.join(wsRoot, 'cpq'),
-        path.join(wsRoot, config.getCommerceLibrariesFolder(vscode)),
-        path.join(wsRoot, config.getUtilLibrariesFolder(vscode))
+        path.join(wsRoot, config.getCommerceLibrariesFolder(v)),
+        path.join(wsRoot, config.getUtilLibrariesFolder(v))
     ];
 
     try {
@@ -87,13 +92,14 @@ function legacyAiCopyPathFor(canonicalBmlPath, variableName) {
 // before the AI modifies the function for the first time.
 function createFirstTimeBackup(vscode, canonicalBmlPath, variableName) {
     try {
-        const workspaceFolders = vscode.workspace.workspaceFolders;
+        const v = (vscode && vscode.workspace) ? vscode : (config.getConfigContext()?.vscode || (() => { try { return require('vscode'); } catch (_) { return null; } })());
+        const workspaceFolders = v?.workspace?.workspaceFolders;
         if (!workspaceFolders || workspaceFolders.length === 0) return null;
         const wsRoot = workspaceFolders[0].uri.fsPath;
         const inferred = metadataLib.inferCommerceFromPath(canonicalBmlPath);
         const type = inferred ? 'process' : 'util';
         const proc = inferred ? inferred.commerceProcess : '';
-        const relBackupDir = foldersLib.getBackupFolder(vscode, type, proc, config.getBaseUrl);
+        const relBackupDir = foldersLib.getBackupFolder(v, type, proc, config.getBaseUrl);
         const backupDir = path.join(wsRoot, relBackupDir, variableName);
         fs.mkdirSync(backupDir, { recursive: true });
 
@@ -114,6 +120,10 @@ function createFirstTimeBackup(vscode, canonicalBmlPath, variableName) {
 // MCP tools edit the AI working copy, never the canonical pulled file, so the original
 // stays a pristine diff baseline and re-pulling never clobbers AI edits.
 function findOrCreateAiCopy(vscode, variableName) {
+    if (typeof vscode === 'string' && !variableName) {
+        variableName = vscode;
+        vscode = undefined;
+    }
     const canonicalBmlPath = findLocalBmlPath(vscode, variableName);
     if (!canonicalBmlPath) return null;
 
@@ -138,6 +148,10 @@ function findOrCreateAiCopy(vscode, variableName) {
 // from canonical. Used when in-progress AI edits need a clean restart. Recreation always lands
 // on the new same-folder scheme, even if the discarded copy was a legacy one.
 function resetAiCopy(vscode, variableName) {
+    if (typeof vscode === 'string' && !variableName) {
+        variableName = vscode;
+        vscode = undefined;
+    }
     const canonicalBmlPath = findLocalBmlPath(vscode, variableName);
     if (!canonicalBmlPath) return null;
 

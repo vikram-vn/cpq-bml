@@ -239,7 +239,9 @@ async function viewTaskDetailsCommand(item, vscodeInstance = vscode, context) {
     try {
       let data = task;
       if (taskId) {
-        const res = await api.getTask(context, vscodeInstance, taskId);
+        const res = (typeof api.getTask === "function" && api.getTask.length >= 3)
+          ? await api.getTask(context, vscodeInstance, taskId)
+          : await api.getTask(taskId);
         if (res && res.statusCode >= 200 && res.statusCode < 300) {
           data = safeParseJson(res.body, task);
         }

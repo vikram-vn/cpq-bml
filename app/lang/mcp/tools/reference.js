@@ -9,6 +9,7 @@ const {
 } = require('@/lang/intellisense/apiDataLoader');
 const commerceAttributes = require('@/lang/rest/commerceAttributes');
 const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
+const { getApiContext } = require('@/lang/rest/apiCore');
 
 // Every category this tool can search, in the order results get merged in.
 // Matches the same JSON files apiDataLoader.js already serves to the
@@ -37,7 +38,7 @@ const DEFAULT_LIMIT = 20;
  * guessing.
  */
 async function lookupBmlReference(options = {}) {
-    const { context, vscode, args } = normalizeToolArgs(arguments);
+    const { args } = normalizeToolArgs(arguments);
     const { name, category, scope, limit } = args || {};
 
     if (!name && !category && !scope) {
@@ -57,7 +58,7 @@ async function lookupBmlReference(options = {}) {
     let truncated = false;
 
     // 1. Workspace-cached live attributes (highest priority)
-    const wsRoot = commerceAttributes.getWorkspaceRoot(vscode);
+    const wsRoot = commerceAttributes.getWorkspaceRoot();
     if ((!category || category === 'attribute') && wsRoot) {
         const wsAttrs = commerceAttributes.searchAttributes(name || '', wsRoot);
         for (const attr of wsAttrs) {
@@ -88,6 +89,7 @@ async function lookupBmlReference(options = {}) {
 
         let data;
         try {
+            const { context } = getApiContext();
             const extPath = (context && context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
             data = load(extPath);
         } catch (e) {

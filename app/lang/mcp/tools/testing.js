@@ -9,8 +9,9 @@ const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 // rendered terminal text. These reuse debugFunction's already-structured {success, returnValue}
 // result directly instead, so no fragile "return value:" line-scraping is needed here.
 
-function locateBmlFile(vscode, variableName) {
-    const bmlPath = findOrCreateAiCopy(vscode, variableName);
+function locateBmlFile(vscodeOrVarName, maybeVarName) {
+    const bmlPath = findOrCreateAiCopy(vscodeOrVarName, maybeVarName);
+    const variableName = maybeVarName || vscodeOrVarName;
     if (!bmlPath) {
         return { error: `No local file found for "${variableName}". Run pull_function first.` };
     }
@@ -29,11 +30,11 @@ function stringifyReturnValue(value) {
  * debugFunction, comparing each actual return value to its expected one.
  */
 async function runBmlTests(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const located = locateBmlFile(vscode, variableName);
+    const located = locateBmlFile(variableName);
     if (located.error) return { success: false, variableName, error: located.error };
 
     const testFilePath = path.join(path.dirname(located.bmlPath), `${variableName}.bmltest.json`);
@@ -92,11 +93,11 @@ async function runBmlTests(options = {}, transport) {
  * <variableName>.snap.json alongside the .bml file, for compare_snapshot to check against later.
  */
 async function updateSnapshot(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const located = locateBmlFile(vscode, variableName);
+    const located = locateBmlFile(variableName);
     if (located.error) return { success: false, variableName, error: located.error };
 
     const params = (args && args.parameters) || {};
@@ -123,11 +124,11 @@ async function updateSnapshot(options = {}, transport) {
  * return value still matches - a regression check for changes made since update_snapshot.
  */
 async function compareSnapshot(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const variableName = args && args.variableName;
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const located = locateBmlFile(vscode, variableName);
+    const located = locateBmlFile(variableName);
     if (located.error) return { success: false, variableName, error: located.error };
 
     const snapshotPath = path.join(path.dirname(located.bmlPath), `${variableName}.snap.json`);

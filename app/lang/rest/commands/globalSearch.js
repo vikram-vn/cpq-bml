@@ -10,11 +10,16 @@ const {
   ensureCredentials,
 } = require("@/lang/rest/commands/shared");
 
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+
 async function runGlobalSearchBml(
-  context,
-  vscode,
   resultsTerminal,
-  {
+  options = {},
+) {
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const {
     query,
     caseSensitive = false,
     offset = 0,
@@ -23,9 +28,10 @@ async function runGlobalSearchBml(
     orderby,
     totalResults = true,
     transport,
-  } = {},
-) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  } = effectiveOpts;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return {
       success: false,
@@ -89,8 +95,6 @@ async function runGlobalSearchBml(
 
   const startedAt = Date.now();
   const result = await api.searchBmlScripts(
-    context,
-    vscode,
     {
       query: searchQuery,
       caseSensitive,

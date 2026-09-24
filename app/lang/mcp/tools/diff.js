@@ -2,6 +2,7 @@ const fs = require('fs');
 const api = require('@/lang/rest/api');
 const { findOrCreateAiCopy } = require('@/lang/mcp/locate');
 const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
+const { getSettings } = require('@/lang/rest/config');
 
 /**
  * Naive line-by-line diff (LCS-based).
@@ -116,11 +117,11 @@ function computeLineDiff(oldLines, newLines) {
  * then returns a line-by-line unified diff.
  */
 async function diffFunction(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const { variableName, type = 'util' } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const bmlPath = findOrCreateAiCopy(vscode, variableName, { createIfMissing: false });
+    const bmlPath = findOrCreateAiCopy(variableName, { createIfMissing: false });
     if (!bmlPath) {
         return { success: false, error: `No local file found for "${variableName}". Run pull_function first.` };
     }
@@ -132,8 +133,8 @@ async function diffFunction(options = {}, transport) {
 
     let remoteText;
     try {
-        const cfg = vscode.workspace.getConfiguration('cpqBml');
-        const baseUrl = cfg.get('connection.siteUrl', '');
+        const settings = getSettings();
+        const baseUrl = settings.siteUrl;
         if (!baseUrl) return { success: false, error: 'No CPQ site URL configured.' };
 
         if (type === 'util') {

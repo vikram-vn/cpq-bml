@@ -9,7 +9,7 @@ const api = require('@/lang/rest/api');
 async function getConfigChildren(element, context, vscodeInstance) {
   if (element.type === 'globalAttributesFolder') {
     try {
-      const res = await api.listConfigurationAttributes(context, vscodeInstance, { limit: 1000 });
+      const res = await api.listConfigurationAttributes({ limit: 1000 });
       const body = safeParseJson(res.body);
       const items = Array.isArray(body) ? body : ((body && body.items) || []);
       if (items.length === 0) {
@@ -31,7 +31,7 @@ async function getConfigChildren(element, context, vscodeInstance) {
 
   if (element.type === 'familyAttributesFolder') {
     try {
-      const res = await api.listProductFamilyAttributes(context, vscodeInstance, { productFamily: element.productFamily });
+      const res = await api.listProductFamilyAttributes({ productFamily: element.productFamily });
       const body = safeParseJson(res.body);
       const items = Array.isArray(body) ? body : ((body && body.items) || []);
       if (items.length === 0) {
@@ -45,7 +45,7 @@ async function getConfigChildren(element, context, vscodeInstance) {
 
   if (element.type === 'productLinesFolder') {
     try {
-      const res = await api.listProductLines(context, vscodeInstance, { productFamily: element.productFamily });
+      const res = await api.listProductLines({ productFamily: element.productFamily });
       const body = safeParseJson(res.body);
       const items = Array.isArray(body) ? body : ((body && body.items) || []);
       if (items.length === 0) {
@@ -71,7 +71,7 @@ async function getConfigChildren(element, context, vscodeInstance) {
 
   if (element.type === 'lineAttributesFolder') {
     try {
-      const res = await api.listProductLineAttributes(context, vscodeInstance, {
+      const res = await api.listProductLineAttributes({
         productFamily: element.productFamily,
         productLine: element.productLine
       });
@@ -88,7 +88,7 @@ async function getConfigChildren(element, context, vscodeInstance) {
 
   if (element.type === 'modelsFolder') {
     try {
-      const res = await api.listModels(context, vscodeInstance, {
+      const res = await api.listModels({
         productFamily: element.productFamily,
         productLine: element.productLine
       });
@@ -118,7 +118,7 @@ async function getConfigChildren(element, context, vscodeInstance) {
 
   if (element.type === 'modelAttributesFolder') {
     try {
-      const res = await api.listModelAttributes(context, vscodeInstance, {
+      const res = await api.listModelAttributes({
         productFamily: element.productFamily,
         productLine: element.productLine,
         model: element.model
@@ -136,7 +136,7 @@ async function getConfigChildren(element, context, vscodeInstance) {
 
   if (element.type === 'modelBomRulesFolder') {
     try {
-      const res = await api.listModelBomMappingRules(context, vscodeInstance, {
+      const res = await api.listModelBomMappingRules({
         productFamily: element.productFamily,
         productLine: element.productLine,
         model: element.model

@@ -32,18 +32,29 @@ const {
   isSuccess,
 } = require("@/lang/rest/commands/shared");
 const { hasMissingCredentials } = require("@/lang/rest/config");
+const { setExtensionContext, getExtensionContext } = require("@/extensionContext");
 
 // Gates the editor/title toolbar icons on a fully usable connection (siteUrl + username/token + matching secret), not just the enabled toggle.
-async function refreshConnectionConfiguredContext(context, vscode) {
-  const missing = await hasMissingCredentials(context, vscode);
-  vscode.commands.executeCommand(
-    "setContext",
-    "cpqBml.connection.configured",
-    !missing,
-  );
+async function refreshConnectionConfiguredContext(maybeContext, maybeVscode) {
+  if (maybeContext || maybeVscode) {
+    setExtensionContext(maybeContext, maybeVscode);
+  }
+  const missing = await hasMissingCredentials();
+  const { vscode } = getExtensionContext();
+  if (vscode && vscode.commands && typeof vscode.commands.executeCommand === "function") {
+    vscode.commands.executeCommand(
+      "setContext",
+      "cpqBml.connection.configured",
+      !missing,
+    );
+  }
 }
 
-function refreshCommerceSyncContext(vscode) {
+function refreshCommerceSyncContext(maybeVscode) {
+  if (maybeVscode) {
+    setExtensionContext(null, maybeVscode);
+  }
+  const { vscode } = getExtensionContext();
   let wsRoot = null;
   if (
     vscode &&
@@ -65,6 +76,8 @@ function refreshCommerceSyncContext(vscode) {
 }
 
 function registerBmlRestCommands(context) {
+  setExtensionContext(context, vscode);
+
   const diagnosticCollection =
     vscode.languages.createDiagnosticCollection("rest-validate");
   context.subscriptions.push(diagnosticCollection);
@@ -78,7 +91,7 @@ function registerBmlRestCommands(context) {
   );
   context.subscriptions.push(statusBarItem);
 
-  refreshConnectionConfiguredContext(context, vscode);
+  refreshConnectionConfiguredContext();
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
       if (
@@ -86,31 +99,27 @@ function registerBmlRestCommands(context) {
         e.affectsConfiguration("cpqBml.connection.username") ||
         e.affectsConfiguration("cpqBml.connection.authMethod")
       ) {
-        refreshConnectionConfiguredContext(context, vscode);
+        refreshConnectionConfiguredContext();
       }
     }),
   );
   // Secret writes don't fire a configuration-change event, so re-check explicitly.
   context.subscriptions.push(
     context.secrets.onDidChange(() => {
-      refreshConnectionConfiguredContext(context, vscode);
+      refreshConnectionConfiguredContext();
     }),
   );
 
   refreshBmlStatus(
-    vscode,
     statusBarItem,
     vscode.window.activeTextEditor &&
       vscode.window.activeTextEditor.document.uri.fsPath,
-    context,
   );
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor((editor) => {
       refreshBmlStatus(
-        vscode,
         statusBarItem,
         editor && editor.document.uri.fsPath,
-        context,
       );
     }),
   );
@@ -122,7 +131,7 @@ function registerBmlRestCommands(context) {
         const activePath =
           vscode.window.activeTextEditor &&
           vscode.window.activeTextEditor.document.uri.fsPath;
-        refreshBmlStatus(vscode, statusBarItem, activePath, context);
+        refreshBmlStatus(statusBarItem, activePath);
       }
     }),
   );
@@ -137,7 +146,7 @@ function registerBmlRestCommands(context) {
       const activePath =
         vscode.window.activeTextEditor &&
         vscode.window.activeTextEditor.document.uri.fsPath;
-      refreshBmlStatus(vscode, statusBarItem, activePath, context);
+      refreshBmlStatus(statusBarItem, activePath);
     };
     metaWatcher.onDidCreate(onMetaChange);
     metaWatcher.onDidChange(onMetaChange);
@@ -147,7 +156,7 @@ function registerBmlRestCommands(context) {
     const syncWatcher =
       vscode.workspace.createFileSystemWatcher("**/cpq/*attributes*.json");
     const onSyncChange = () => {
-      refreshCommerceSyncContext(vscode);
+      refreshCommerceSyncContext();
     };
     syncWatcher.onDidCreate(onSyncChange);
     syncWatcher.onDidChange(onSyncChange);
@@ -155,93 +164,86 @@ function registerBmlRestCommands(context) {
     context.subscriptions.push(syncWatcher);
   }
 
-  refreshCommerceSyncContext(vscode);
+  refreshCommerceSyncContext();
 
   context.subscriptions.push(
     vscode.commands.registerCommand("cpqBml.rest.setPassword", () =>
-      runSetPassword(context, vscode),
+      runSetPassword(),
     ),
     vscode.commands.registerCommand("cpqBml.rest.setAuthToken", () =>
-      runSetAuthToken(context, vscode),
+      runSetAuthToken(),
     ),
     vscode.commands.registerCommand("cpqBml.rest.pullLibraryFunctions", () =>
-      runPullLibraryFunctions(context, vscode, resultsTerminal),
+      runPullLibraryFunctions(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.pullCommerceFunctions", () =>
-      runPullCommerceFunctions(context, vscode, resultsTerminal),
+      runPullCommerceFunctions(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.validateCurrentFile", () =>
-      runValidateCurrentFile(
-        context,
-        vscode,
-        diagnosticCollection,
-        resultsTerminal,
-      ),
+      runValidateCurrentFile(diagnosticCollection, resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.saveCurrentFile", () =>
-      runSaveCurrentFile(context, vscode, resultsTerminal),
+      runSaveCurrentFile(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.debugCurrentFile", (options) =>
-      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, options),
+      runDebugCurrentFile(diagnosticCollection, resultsTerminal, options),
     ),
     vscode.commands.registerCommand("cpqBml.rest.debugConfigureInputs", (options) =>
-      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, { ...options, configureInputs: true }),
+      runDebugCurrentFile(diagnosticCollection, resultsTerminal, { ...options, configureInputs: true }),
     ),
     vscode.commands.registerCommand("cpqBml.rest.debugResultsOnly", (options) =>
-      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, { ...options, resultsOnly: true }),
+      runDebugCurrentFile(diagnosticCollection, resultsTerminal, { ...options, resultsOnly: true }),
     ),
     vscode.commands.registerCommand("cpqBml.rest.debugExecution", (options) =>
-      runDebugCurrentFile(context, vscode, diagnosticCollection, resultsTerminal, options),
+      runDebugCurrentFile(diagnosticCollection, resultsTerminal, options),
     ),
     vscode.commands.registerCommand("cpqBml.rest.createOverride", () =>
-      runCreateOverride(context, vscode, resultsTerminal),
+      runCreateOverride(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.removeOverride", () =>
-      runRemoveOverride(context, vscode, resultsTerminal),
+      runRemoveOverride(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.deployCommerceProcess", () =>
-      runDeployCommerceProcess(context, vscode, resultsTerminal),
+      runDeployCommerceProcess(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.deployCurrentFile", () =>
-      runDeployCurrentFile(context, vscode, resultsTerminal),
+      runDeployCurrentFile(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.deployUtilFunctions", () =>
-      runDeployUtilFunctions(context, vscode, resultsTerminal),
+      runDeployUtilFunctions(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.massDeployUtils", () =>
-      runDeployUtilFunctions(context, vscode, resultsTerminal),
+      runDeployUtilFunctions(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.createBmlFunction", () =>
-      runCreateBmlFunction(context, vscode),
+      runCreateBmlFunction(),
     ),
     vscode.commands.registerCommand("cpqBml.rest.changeEnvironment", () =>
-      runChangeEnvironment(context, vscode),
+      runChangeEnvironment(),
     ),
     vscode.commands.registerCommand("cpqBml.rest.globalSearchBml", () =>
-      runGlobalSearchBml(context, vscode, resultsTerminal),
+      runGlobalSearchBml(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.getTransactions", () =>
-      runGetTransactions(context, vscode, resultsTerminal),
+      runGetTransactions(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.syncCommerceMetadata", () =>
-      runSyncCommerceMetadata(context, vscode, resultsTerminal),
+      runSyncCommerceMetadata(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.removeCommerceMetadata", () =>
-      runRemoveCommerceMetadata(context, vscode, resultsTerminal),
+      runRemoveCommerceMetadata(resultsTerminal),
     ),
     vscode.commands.registerCommand("cpqBml.rest.pipelineViewer", (options) =>
-      runPipelineViewerCommand(context, vscode, resultsTerminal, options),
+      runPipelineViewerCommand(resultsTerminal, options),
     ),
     vscode.commands.registerCommand("cpqBml.rest.clearResults", () =>
       resultsTerminal.clear(),
     ),
     vscode.commands.registerCommand("cpqBml.internal.refreshStatus", () => {
       refreshBmlStatus(
-        vscode,
         statusBarItem,
         vscode.window.activeTextEditor &&
           vscode.window.activeTextEditor.document.uri.fsPath,
-        context,
       );
     }),
   );

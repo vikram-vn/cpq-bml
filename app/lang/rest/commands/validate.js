@@ -13,13 +13,20 @@ const {
   ensureCredentials,
 } = require("@/lang/rest/commands/shared");
 
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+
 async function runValidateCurrentFile(
-  context,
-  vscode,
   diagnosticCollection,
   resultsTerminal,
-  { transport } = {},
+  options = {},
 ) {
+  const normArgs = normalizeCommandArgs(arguments);
+  diagnosticCollection = normArgs[0] || diagnosticCollection;
+  resultsTerminal = normArgs[1] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 2 ? normArgs[2] : options) || {};
+  const transport = effectiveOpts.transport;
+  const { vscode } = getExtensionContext();
+
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== "bml") {
     const errorMessage = "CPQ-BML: open a .bml file to validate.";
@@ -27,15 +34,13 @@ async function runValidateCurrentFile(
     return { success: false, errorMessage };
   }
 
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
   }
 
   const doc = editor.document;
   const metadata = await resolveMetadataForFile(
-    context,
-    vscode,
     doc.uri.fsPath,
     transport,
   );
@@ -62,8 +67,6 @@ async function runValidateCurrentFile(
   const startedAt = Date.now();
   const payload = metadataLib.buildFunctionPayload(metadata, doc.getText());
   const { statusCode, body } = await api.validateLibraryFunction(
-    context,
-    vscode,
     payload,
     transport,
   );

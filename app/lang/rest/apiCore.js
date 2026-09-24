@@ -8,7 +8,6 @@ const {
   getCommerceProcess,
   getAuthHeader,
   getSettings,
-  setConfigContext,
 } = require("@/lang/rest/config");
 
 // Never emit instance links, hypermedia links (hrefs), or user credentials in REST API responses
@@ -51,34 +50,9 @@ function sanitizeRestResponse(data, baseUrl) {
   return data;
 }
 
-let _defaultContext = null;
-let _defaultVscode = null;
-
-function setApiContext(context, vscode) {
-  if (context) _defaultContext = context;
-  if (vscode) _defaultVscode = vscode;
-  setConfigContext(context, vscode);
-}
-
-function getApiContext() {
-  return { context: _defaultContext, vscode: _defaultVscode };
-}
-
-function isContextOrVscode(val) {
-  if (!val || typeof val !== "object") return false;
-  return Boolean(
-    val.subscriptions ||
-    val.globalState ||
-    val.workspaceState ||
-    val.secrets ||
-    val.extensionPath ||
-    val.extensionUri ||
-    val.window ||
-    val.workspace ||
-    val.commands ||
-    val.languages
-  );
-}
+const { setExtensionContext, getExtensionContext, isContextOrVscode } = require("@/extensionContext");
+const setApiContext = setExtensionContext;
+const getApiContext = getExtensionContext;
 
 function normalizeArgs(args) {
   if (args && args.length >= 2) {
@@ -94,11 +68,12 @@ function normalizeArgs(args) {
 }
 
 function functionsPath(vscode, metadata) {
-  let effectiveVscode = vscode || _defaultVscode;
+  const globalVsc = getGlobalContext().vscode;
+  let effectiveVscode = vscode || globalVsc;
   let effectiveMeta = metadata;
   if (!metadata && vscode && !isContextOrVscode(vscode)) {
     effectiveMeta = vscode;
-    effectiveVscode = _defaultVscode;
+    effectiveVscode = globalVsc;
   }
   const version = getRestVersion(effectiveVscode);
   if (effectiveMeta && effectiveMeta.commerceDocument) {
@@ -150,13 +125,15 @@ async function call(arg1, arg2, arg3, arg4) {
       (arg2 && typeof arg2 === "function") ||
       arguments.length <= 2)
   ) {
+    const g = getGlobalContext();
     options = arg1;
     transport = arg2;
-    context = (options && options.context) || _defaultContext;
-    vscode = (options && options.vscode) || _defaultVscode;
+    context = (options && options.context) || g.context;
+    vscode = (options && options.vscode) || g.vscode;
   } else {
-    context = arg1 || _defaultContext;
-    vscode = arg2 || _defaultVscode;
+    const g = getGlobalContext();
+    context = arg1 || g.context;
+    vscode = arg2 || g.vscode;
     options = arg3 || {};
     transport = arg4;
   }

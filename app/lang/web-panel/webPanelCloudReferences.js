@@ -18,7 +18,7 @@ async function handleFetchCloudReferences(message, context, vscodeInstance, pane
     let statusCode = 200;
 
     if (isAction && varName && typeof apiCommerce.getCommerceAction === 'function') {
-      const res = await apiCommerce.getCommerceAction(context, vscodeInstance, varName, {
+      const res = await apiCommerce.getCommerceAction(varName, {
         process: effectiveProc,
         document: effectiveDoc,
       });
@@ -79,7 +79,7 @@ async function handleFetchCloudReferences(message, context, vscodeInstance, pane
       try {
         const apiRest = require('@/lang/rest/api');
         if (typeof apiRest.searchBmlScripts === 'function') {
-          const res = await apiRest.searchBmlScripts(context, vscodeInstance, { query: varName, limit: 50 });
+          const res = await apiRest.searchBmlScripts({ query: varName, limit: 50 });
           statusCode = res?.statusCode || 200;
           const body = typeof res?.body === 'string' ? JSON.parse(res.body) : res?.body;
           const bmlItems = Array.isArray(body?.items) ? body.items : [];
@@ -117,7 +117,7 @@ async function handleFetchCloudReferences(message, context, vscodeInstance, pane
         }
       } catch (_) {}
     } else if (varName && typeof apiAttributes.listCommerceAttributeReferences === 'function') {
-      const res = await apiAttributes.listCommerceAttributeReferences(context, vscodeInstance, varName, {
+      const res = await apiAttributes.listCommerceAttributeReferences(varName, {
         process: effectiveProc,
         document: effectiveDoc,
       });

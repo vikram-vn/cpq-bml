@@ -12,10 +12,10 @@ const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
  * Optionally pings CPQ live (testConnection:true) to confirm the credentials actually work.
  */
 async function getConnectionStatus(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const settings = configLib.getSettings(vscode);
-    const environments = getEnvironments(vscode);
-    const missingCredentials = await configLib.hasMissingCredentials(context, vscode);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const settings = configLib.getSettings();
+    const environments = getEnvironments();
+    const missingCredentials = await configLib.hasMissingCredentials();
 
     let missingReason = null;
     if (missingCredentials) {
@@ -31,7 +31,7 @@ async function getConnectionStatus(options = {}, transport) {
         isSiteConfigured: Boolean(settings.siteUrl),
         isUsernameConfigured: settings.authMethod === 'bearer' ? true : Boolean(settings.username),
         authMethod: settings.authMethod,
-        activeEnvironmentName: getActiveEnvironmentName(vscode) || null,
+        activeEnvironmentName: getActiveEnvironmentName() || null,
         environmentCount: environments.length,
         pullFolder: settings.pullFolder,
         commerceProcess: settings.commerceProcess,
@@ -39,7 +39,7 @@ async function getConnectionStatus(options = {}, transport) {
     };
 
     if (args && args.testConnection) {
-        status.testResult = await configLib.runTestConnection(context, vscode, tr);
+        status.testResult = await configLib.runTestConnection(tr);
     }
 
     return status;

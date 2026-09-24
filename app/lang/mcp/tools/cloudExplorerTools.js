@@ -29,14 +29,14 @@ function safeParse(val) {
 }
 
 async function listCommerceProcesses(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Commerce Processes', 'processes');
     terminal.show();
 
     try {
-        if (isConfigured(vscode)) {
+        if (isConfigured()) {
             try {
                 const res = await api.listCommerceProcesses(args || {}, tr);
                 if (res && (res.statusCode === 401 || res.statusCode === 403)) {
@@ -62,7 +62,7 @@ async function listCommerceProcesses(options = {}, transport) {
         }
 
         // Workspace fallback
-        const wsRoot = getWorkspaceRoot(vscode);
+        const wsRoot = getWorkspaceRoot();
         const processes = [];
         if (wsRoot) {
             for (const sub of ['cpq/commerce', '.cpq/commerce']) {
@@ -78,7 +78,7 @@ async function listCommerceProcesses(options = {}, transport) {
             }
         }
         if (processes.length === 0) {
-            const settings = getSettings(vscode);
+            const settings = getSettings();
             const defProc = settings.commerceProcess || 'oraclecpqo';
             processes.push({ variableName: defProc, label: defProc, source: 'settings' });
         }
@@ -89,8 +89,8 @@ async function listCommerceProcesses(options = {}, transport) {
 }
 
 async function listConfigurationHierarchy(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Configuration Hierarchy', 'catalog');
     terminal.show();
@@ -99,7 +99,7 @@ async function listConfigurationHierarchy(options = {}, transport) {
         const familyFilter = args && args.productFamily;
         let families = [];
 
-        if (isConfigured(vscode)) {
+        if (isConfigured()) {
             const famRes = await api.listProductFamilies({ limit: 100 }, tr);
             if (famRes && (famRes.statusCode === 401 || famRes.statusCode === 403)) {
                 const errMsg = `Live CPQ Authentication Failed (HTTP ${famRes.statusCode}). Check your credentials.`;
@@ -118,8 +118,8 @@ async function listConfigurationHierarchy(options = {}, transport) {
         }
 
         if (families.length === 0) {
-            const wsRoot = getWorkspaceRoot(vscode);
-            const confSchema = wsRoot ? SchemaIntrospector.getConfigSchema(context, wsRoot) : null;
+            const wsRoot = getWorkspaceRoot();
+            const confSchema = wsRoot ? SchemaIntrospector.getConfigSchema(null, wsRoot) : null;
             if (confSchema && Array.isArray(confSchema.families)) {
                 families = confSchema.families.map(f => ({
                     variableName: f.variableName || f.name,
@@ -173,8 +173,8 @@ async function listConfigurationHierarchy(options = {}, transport) {
 }
 
 async function listConfigurationAttributes(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Configuration Attributes', args && args.productFamily || 'global');
     terminal.show();
@@ -212,8 +212,8 @@ async function listConfigurationAttributes(options = {}, transport) {
 }
 
 async function listDeploymentTasks(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Deployment Tasks', 'tasks');
     terminal.show();
@@ -255,19 +255,19 @@ async function listDeploymentTasks(options = {}, transport) {
 }
 
 async function getTransactionData(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const transactionId = args && (args.transactionId || args.id);
     if (!transactionId) {
         return { success: false, error: 'transactionId parameter is required' };
     }
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'Get Transaction Data', String(transactionId));
     terminal.show();
 
     try {
-        const settings = getSettings(vscode);
+        const settings = getSettings();
         const process = (args && args.commerceProcess) || settings.commerceProcess || 'oraclecpqo';
         const document = (args && args.commerceDocument) || settings.commerceDocument || 'transaction';
 
@@ -290,7 +290,7 @@ async function getTransactionData(options = {}, transport) {
 }
 
 async function getCloudExplorerOverview(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const section = (args && args.section) || 'all';
     const overview = {};
 

@@ -288,8 +288,6 @@ async function syncCommerceAttributes(
   // 4. Fetch systemAttributes
   const systemAttributes = await fetchSystemAttributes({
     listCommerceSystemAttributes,
-    context,
-    vscode,
     transport,
     signal,
     onProgress,
@@ -298,8 +296,6 @@ async function syncCommerceAttributes(
   // 5. Fetch arraySets
   const arraySets = await fetchArraySets({
     listCommerceArraySets,
-    context,
-    vscode,
     effectiveProcess,
     effectiveDocument,
     transport,
@@ -310,8 +306,6 @@ async function syncCommerceAttributes(
     ? await fetchAttributeLookups({
         listCommerceAttributeLookups,
         listCommerceAttributeLookupValues,
-        context,
-        vscode,
         effectiveProcess,
         transport,
         signal,

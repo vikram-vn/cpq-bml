@@ -12,13 +12,19 @@ const {
   ensureCredentials,
 } = require('@/lang/rest/commands/shared');
 
+const { getExtensionContext, normalizeCommandArgs } = require('@/extensionContext');
+
 async function runCreateOverride(
-  context,
-  vscode,
   resultsTerminal,
-  { transport } = {},
+  options = {},
 ) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const transport = effectiveOpts.transport;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: 'CPQ-BML: credentials are not configured.' };
   }
@@ -30,7 +36,7 @@ async function runCreateOverride(
     return { success: false, errorMessage };
   }
   const doc = editor.document;
-  const metadata = await resolveMetadataForFile(context, vscode, doc.uri.fsPath, transport);
+  const metadata = await resolveMetadataForFile(doc.uri.fsPath, transport);
   if (!metadata) {
     const errorMessage = 'CPQ-BML: could not find CPQ metadata for this function. Pull it first.';
     vscode.window.showErrorMessage(errorMessage);
@@ -53,7 +59,7 @@ async function runCreateOverride(
   const startedAt = Date.now();
 
   const nsVarName = metadataLib.namespaceVariableNameFor(metadata);
-  const result = await api.setOverride(context, vscode, nsVarName, true, metadata, transport);
+  const result = await api.setOverride(nsVarName, true, metadata, transport);
 
   if (!isSuccess(result.statusCode)) {
     const message = describeError(result.body);
@@ -87,12 +93,16 @@ async function runCreateOverride(
 }
 
 async function runRemoveOverride(
-  context,
-  vscode,
   resultsTerminal,
-  { transport } = {},
+  options = {},
 ) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const transport = effectiveOpts.transport;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: 'CPQ-BML: credentials are not configured.' };
   }
@@ -104,7 +114,7 @@ async function runRemoveOverride(
     return { success: false, errorMessage };
   }
   const doc = editor.document;
-  const metadata = await resolveMetadataForFile(context, vscode, doc.uri.fsPath, transport);
+  const metadata = await resolveMetadataForFile(doc.uri.fsPath, transport);
   if (!metadata) {
     const errorMessage = 'CPQ-BML: could not find CPQ metadata for this function.';
     vscode.window.showErrorMessage(errorMessage);
@@ -136,7 +146,7 @@ async function runRemoveOverride(
   const startedAt = Date.now();
 
   const nsVarName = metadataLib.namespaceVariableNameFor(metadata);
-  const result = await api.setOverride(context, vscode, nsVarName, false, metadata, transport);
+  const result = await api.setOverride(nsVarName, false, metadata, transport);
 
   if (!isSuccess(result.statusCode)) {
     const message = describeError(result.body);

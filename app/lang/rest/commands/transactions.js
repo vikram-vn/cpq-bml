@@ -10,11 +10,16 @@ const {
   ensureCredentials,
 } = require("@/lang/rest/commands/shared");
 
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+
 async function runGetTransactions(
-  context,
-  vscode,
   resultsTerminal,
-  {
+  options = {},
+) {
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const {
     process,
     document,
     q,
@@ -26,9 +31,10 @@ async function runGetTransactions(
     orderby,
     totalResults = true,
     transport,
-  } = {},
-) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  } = effectiveOpts;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
   }
@@ -52,8 +58,6 @@ async function runGetTransactions(
 
   const startedAt = Date.now();
   const result = await api.getTransactions(
-    context,
-    vscode,
     {
       process,
       document,

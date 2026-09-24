@@ -177,8 +177,20 @@ async function findLibraryFunctionByVariableName(context, vscode, variableName, 
     }
 }
 
+const { getExtensionContext, setExtensionContext } = require('@/extensionContext');
+
 // Local <name>-meta.json sidecar first (fast path); otherwise looks up the variableName live and caches the result as a new sidecar. Returns null if neither finds it.
-async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
+async function resolveMetadataForFile(contextOrPath, vscodeOrTransport, maybePath, maybeTransport) {
+    let bmlFilePath = contextOrPath;
+    let transport = vscodeOrTransport;
+    if (typeof contextOrPath !== 'string') {
+        bmlFilePath = maybePath;
+        transport = maybeTransport;
+        if (contextOrPath || vscodeOrTransport) {
+            setExtensionContext(contextOrPath, vscodeOrTransport);
+        }
+    }
+    const { vscode } = getExtensionContext();
     const metaPath = metadataLib.bmlPathToMetaPath(bmlFilePath);
     const localMetadata = metadataLib.readMetadata(metaPath);
     let metadata = localMetadata;
@@ -190,7 +202,7 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
         let selection = null;
 
         if (inferred) {
-            match = await findLibraryFunctionByVariableName(context, vscode, variableName, transport, inferred);
+            match = await findLibraryFunctionByVariableName(variableName, transport, inferred);
             if (match) {
                 matchedTarget = inferred;
             }
@@ -211,11 +223,11 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
 
             if (selection.id === 'fetch_util') {
                 matchedTarget = null;
-                match = await findLibraryFunctionByVariableName(context, vscode, variableName, transport, undefined);
+                match = await findLibraryFunctionByVariableName(variableName, transport, undefined);
             } else if (selection.id === 'fetch_commerce') {
                 const process = config.getCommerceProcess(vscode) || 'oraclecpqo';
                 matchedTarget = { commerceProcess: process, commerceDocument: commerceDocument };
-                match = await findLibraryFunctionByVariableName(context, vscode, variableName, transport, matchedTarget);
+                match = await findLibraryFunctionByVariableName(variableName, transport, matchedTarget);
             } else if (selection.id === 'create') {
                 const typePick = await vscode.window.showQuickPick([
                     { label: 'Utility Library Function', id: 'util' },
@@ -339,14 +351,14 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
 
         if (match && (!selection || selection.id !== 'create')) {
             const nsVarName = metadataLib.namespaceVariableNameFor(match);
-            let result = await api.getLibraryFunction(context, vscode, nsVarName, transport, matchedTarget || undefined);
+            let result = await api.getLibraryFunction(nsVarName, transport, matchedTarget || undefined);
             if (!isSuccess(result.statusCode) && match.folderName && !nsVarName.includes('.')) {
-                const altResult = await api.getLibraryFunction(context, vscode, `${match.folderName}.${match.variableName}`, transport, matchedTarget || undefined);
+                const altResult = await api.getLibraryFunction(`${match.folderName}.${match.variableName}`, transport, matchedTarget || undefined);
                 if (isSuccess(altResult.statusCode)) {
                     result = altResult;
                 }
             } else if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
-                const altResult = await api.getLibraryFunction(context, vscode, match.variableName, transport, matchedTarget || undefined);
+                const altResult = await api.getLibraryFunction(match.variableName, transport, matchedTarget || undefined);
                 if (isSuccess(altResult.statusCode)) {
                     result = altResult;
                 }
@@ -380,8 +392,6 @@ async function resolveMetadataForFile(context, vscode, bmlFilePath, transport) {
     if (metadata && metadata.commerceDocument && metadata.libraryFunctions && metadata.libraryFunctions.length > 0) {
         const normalizedDeps = metadataLib.normalizeLibraryFunctions(metadata.libraryFunctions);
         const depResult = await api.getDependentAttributes(
-            context,
-            vscode,
             {
                 libraryFunctions: normalizedDeps,
                 commerceProcess: metadata.commerceProcess,

@@ -14,9 +14,15 @@ const {
     ensureCredentials,
 } = require('@/lang/rest/commands/shared');
 const { runConcurrentPool } = require('@/lang/rest/commands/debugExecution');
+const { getExtensionContext, normalizeCommandArgs } = require('@/extensionContext');
 
-async function runPullLibraryFunctions(context, vscode, resultsTerminal, { transport } = {}) {
-    const hasCredentials = await ensureCredentials(context, vscode);
+async function runPullLibraryFunctions(resultsTerminal, options = {}) {
+    const normArgs = normalizeCommandArgs(arguments);
+    resultsTerminal = normArgs[0] || resultsTerminal;
+    const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+    const transport = effectiveOpts.transport;
+    const { vscode } = getExtensionContext();
+    const hasCredentials = await ensureCredentials();
     if (!hasCredentials) return;
 
     const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -36,7 +42,7 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
     let offset = 0;
     const limit = 1000;
     for (;;) {
-        const { statusCode, body } = await api.listLibraryFunctions(context, vscode, { offset, limit }, transport);
+        const { statusCode, body } = await api.listLibraryFunctions({ offset, limit }, transport);
         if (!isSuccess(statusCode)) {
             const message = `failed to list library functions (HTTP ${statusCode}). ${describeError(body)}`;
             writeTerminalMessage(resultsTerminal, 'Pull failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');
@@ -87,14 +93,14 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
     const worker = async (pick) => {
         try {
             const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
-            let result = await api.getLibraryFunction(context, vscode, nsVarName, transport);
+            let result = await api.getLibraryFunction(nsVarName, transport);
             if (!isSuccess(result.statusCode) && pick.item.folderName && !nsVarName.includes('.')) {
-                const altResult = await api.getLibraryFunction(context, vscode, `${pick.item.folderName}.${pick.item.variableName}`, transport);
+                const altResult = await api.getLibraryFunction(`${pick.item.folderName}.${pick.item.variableName}`, transport);
                 if (isSuccess(altResult.statusCode)) {
                     result = altResult;
                 }
             } else if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
-                const altResult = await api.getLibraryFunction(context, vscode, pick.item.variableName, transport);
+                const altResult = await api.getLibraryFunction(pick.item.variableName, transport);
                 if (isSuccess(altResult.statusCode)) {
                     result = altResult;
                 }
@@ -152,8 +158,13 @@ async function runPullLibraryFunctions(context, vscode, resultsTerminal, { trans
     vscode.window.showInformationMessage(`CPQ-BML: pulled ${pulledCount} library function(s) into ${pulledFolderLabel}/`);
 }
 
-async function runPullCommerceFunctions(context, vscode, resultsTerminal, { transport } = {}) {
-    const hasCredentials = await ensureCredentials(context, vscode);
+async function runPullCommerceFunctions(resultsTerminal, options = {}) {
+    const normArgs = normalizeCommandArgs(arguments);
+    resultsTerminal = normArgs[0] || resultsTerminal;
+    const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+    const transport = effectiveOpts.transport;
+    const { vscode } = getExtensionContext();
+    const hasCredentials = await ensureCredentials();
     if (!hasCredentials) return;
 
     const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -181,7 +192,7 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
     let offset = 0;
     const limit = 1000;
     for (;;) {
-        const { statusCode, body } = await api.listLibraryFunctions(context, vscode, { offset, limit }, transport, commerceMetadata);
+        const { statusCode, body } = await api.listLibraryFunctions({ offset, limit }, transport, commerceMetadata);
         if (!isSuccess(statusCode)) {
             const message = `failed to list commerce functions (HTTP ${statusCode}). ${describeError(body)}`;
             writeTerminalMessage(resultsTerminal, 'Pull failed: ', `${message} (${formatElapsed(startedAt)})`, '\x1b[31m');
@@ -232,9 +243,9 @@ async function runPullCommerceFunctions(context, vscode, resultsTerminal, { tran
     const commerceWorker = async (pick) => {
         try {
             const nsVarName = metadataLib.namespaceVariableNameFor(pick.item);
-            let result = await api.getLibraryFunction(context, vscode, nsVarName, transport, commerceMetadata);
+            let result = await api.getLibraryFunction(nsVarName, transport, commerceMetadata);
             if (!isSuccess(result.statusCode) && nsVarName.includes('.')) {
-                const altResult = await api.getLibraryFunction(context, vscode, pick.item.variableName, transport, commerceMetadata);
+                const altResult = await api.getLibraryFunction(pick.item.variableName, transport, commerceMetadata);
                 if (isSuccess(altResult.statusCode)) {
                     result = altResult;
                 }

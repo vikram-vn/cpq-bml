@@ -73,16 +73,16 @@ function registerTools(server, context, vscode) {
     return originalRegisterTool(name, schema, instrumentedHandler);
   };
 
-  statusTools.register(server, context, vscode, tools);
-  lookupTools.register(server, context, vscode, tools);
-  lifecycleTools.register(server, context, vscode, tools);
-  knowledgeTools.register(server, context, vscode, tools);
-  referenceTools.register(server, context, vscode, tools);
-  testingTools.register(server, context, vscode, tools);
-  formattingTools.register(server, context, vscode, tools);
-  commerceActionDefs.register(server, context, vscode, tools);
-  cloudExplorerDefs.register(server, context, vscode, tools);
-  commerceFormulaDefs.register(server, context, vscode, tools);
+  statusTools.register(server, tools);
+  lookupTools.register(server, tools);
+  lifecycleTools.register(server, tools);
+  knowledgeTools.register(server, tools);
+  referenceTools.register(server, tools);
+  testingTools.register(server, tools);
+  formattingTools.register(server, tools);
+  commerceActionDefs.register(server, tools);
+  cloudExplorerDefs.register(server, tools);
+  commerceFormulaDefs.register(server, tools);
 }
 
 function registerSkillsResourcesAndPrompts(server, extensionPath) {

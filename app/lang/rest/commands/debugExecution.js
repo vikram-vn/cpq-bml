@@ -17,6 +17,7 @@ const {
   formatDocAttributeDumpTables,
   parseDocAttributeDump,
 } = require("@/lang/rest/commands/debugTableFormat");
+const { getExtensionContext } = require("@/extensionContext");
 
 const TABLE_BORDER_COLOR = "\x1b[90m";
 const TABLE_HEADER_STYLE = "\x1b[1m";
@@ -90,6 +91,8 @@ async function runDebugSingleExecution({
   quiet = false,
   resultsOnly = false,
 }) {
+  const extCtx = getExtensionContext();
+  vscode = vscode || extCtx.vscode;
   const startedAt = Date.now();
   const isResultsOnly = Boolean(
     resultsOnly ||
@@ -110,8 +113,6 @@ async function runDebugSingleExecution({
     loadPayload.libraryFunctions = [];
 
     let loadResult = await api.loadTransactionData(
-      context,
-      vscode,
       loadPayload,
       { contextParams: "language=en,currency=USD" },
       transport,
@@ -121,8 +122,6 @@ async function runDebugSingleExecution({
     if (!isSuccess(loadResult.statusCode)) {
       try {
         const queryRes = await api.getTransactions(
-          context,
-          vscode,
           {
             process: txnMetadata.commerceProcess,
             document: txnMetadata.commerceDocument,
@@ -138,8 +137,6 @@ async function runDebugSingleExecution({
             ? effectiveTxnId
             : Number(effectiveTxnId);
           loadResult = await api.loadTransactionData(
-            context,
-            vscode,
             loadPayload,
             { contextParams: "language=en,currency=USD" },
             transport,
@@ -203,8 +200,6 @@ async function runDebugSingleExecution({
   }
 
   const { statusCode, body } = await api.debugLibraryFunction(
-    context,
-    vscode,
     payload,
     transport,
   );

@@ -175,11 +175,11 @@ async function searchFunctions(options = {}) {
  * still the authoritative check before saving/deploying.
  */
 async function lintFunction(options = {}) {
-    const { context, vscode, args } = normalizeToolArgs(arguments);
+    const { args } = normalizeToolArgs(arguments);
     const { variableName } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const bmlPath = findOrCreateAiCopy(vscode, variableName);
+    const bmlPath = findOrCreateAiCopy(variableName);
     if (!bmlPath) {
         return { success: false, error: `No local file found for "${variableName}". Run pull_function first.` };
     }
@@ -189,7 +189,8 @@ async function lintFunction(options = {}) {
         return { success: false, error: `Cannot read file: ${e.message}` };
     }
 
-    const extPath = (context && context.extensionPath) || (getApiContext().context && getApiContext().context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
+    const { context, vscode } = getApiContext();
+    const extPath = (context && context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
     const diagnostics = lintFileText(vscode, extPath, bmlPath, text);
     return {
         success: true,
@@ -214,11 +215,11 @@ async function lintFunction(options = {}) {
  * "CPQ-BML: Open Code Metrics Report" webview shows, scoped to one function.
  */
 async function getFunctionMetrics(options = {}) {
-    const { context, vscode, args } = normalizeToolArgs(arguments);
+    const { args } = normalizeToolArgs(arguments);
     const { variableName } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const bmlPath = findOrCreateAiCopy(vscode, variableName);
+    const bmlPath = findOrCreateAiCopy(variableName);
     if (!bmlPath) {
         return { success: false, error: `No local file found for "${variableName}". Run pull_function first.` };
     }
@@ -229,7 +230,8 @@ async function getFunctionMetrics(options = {}) {
     }
 
     const metrics = computeComplexity(text);
-    const extPath = (context && context.extensionPath) || (getApiContext().context && getApiContext().context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
+    const { context, vscode } = getApiContext();
+    const extPath = (context && context.extensionPath) || path.resolve(__dirname, '..', '..', '..', '..');
     const diagnostics = lintFileText(vscode, extPath, bmlPath, text);
 
     const byCode = {};
@@ -290,17 +292,18 @@ function collectCanonicalBmlFiles(dir, results, depthLeft) {
  */
 async function listLocalFunctions(options = {}) {
     const { vscode } = normalizeToolArgs(arguments);
-    const workspaceFolders = vscode.workspace.workspaceFolders;
+    const v = (vscode && vscode.workspace) ? vscode : (getApiContext().vscode || (() => { try { return require('vscode'); } catch (_) { return null; } })());
+    const workspaceFolders = v?.workspace?.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
         return { success: false, error: 'No workspace folder is open.' };
     }
     const wsRoot = workspaceFolders[0].uri.fsPath;
-    const settings = configLib.getSettings(vscode);
+    const settings = configLib.getSettings(v);
 
     const searchRoots = [
         path.join(wsRoot, 'cpq'),
-        path.join(wsRoot, configLib.getCommerceLibrariesFolder(vscode)),
-        path.join(wsRoot, configLib.getUtilLibrariesFolder(vscode))
+        path.join(wsRoot, configLib.getCommerceLibrariesFolder(v)),
+        path.join(wsRoot, configLib.getUtilLibrariesFolder(v))
     ];
 
     try {
@@ -349,13 +352,13 @@ async function listLocalFunctions(options = {}) {
  * a workspace-wide health check instead of one function at a time.
  */
 async function lintAllFunctions(options = {}) {
-    const { context, vscode } = normalizeToolArgs(arguments);
-    const listing = await listLocalFunctions(vscode);
+    normalizeToolArgs(arguments);
+    const listing = await listLocalFunctions();
     if (!listing.success) return listing;
 
     const results = [];
     for (const fn of listing.functions) {
-        const lintResult = await lintFunction(context, vscode, { variableName: fn.variableName });
+        const lintResult = await lintFunction({ variableName: fn.variableName });
         if (!lintResult.success) {
             results.push({ variableName: fn.variableName, success: false, error: lintResult.error });
             continue;

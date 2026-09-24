@@ -10,13 +10,19 @@ const {
   ensureCredentials,
 } = require("@/lang/rest/commands/shared");
 
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+
 async function runPipelineViewerCommand(
-  context,
-  vscode,
   resultsTerminal,
-  { id, transactionId, process, document, transport } = {},
+  options = {},
 ) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const { id, transactionId, process, document, transport } = effectiveOpts;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return {
       success: false,
@@ -47,8 +53,6 @@ async function runPipelineViewerCommand(
 
   try {
     const result = await api.runPipelineViewer(
-      context,
-      vscode,
       { id: txnId, process, document },
       transport,
     );

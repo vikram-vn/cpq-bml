@@ -91,7 +91,7 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
   onProgress({ stage: 'commerce', message: 'Discovering Commerce Processes...' });
   let procItems = [];
   try {
-    const procRes = await api.listCommerceProcesses(context, vscode, { limit: 100 }, transport);
+    const procRes = await api.listCommerceProcesses({ limit: 100 }, transport);
     procItems = extractItems(procRes);
   } catch (err) {
     console.warn('Could not fetch commerce processes root:', err?.message || err);
@@ -116,7 +116,7 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
     onProgress({ stage: 'commerce', message: `Discovering documents for process '${procVar}'...` });
     let docItems = [];
     try {
-      const docRes = await api.listCommerceDocuments(context, vscode, { process: procVar, limit: 50 }, transport);
+      const docRes = await api.listCommerceDocuments({ process: procVar, limit: 50 }, transport);
       docItems = extractItems(docRes);
     } catch {}
 
@@ -133,10 +133,10 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
       onProgress({ stage: 'commerce', message: `Crawling actions & attributes for '${procVar}/${docVar}'...` });
 
       const [actionsRes, attrsRes, libsRes] = await Promise.allSettled([
-        api.listCommerceActions(context, vscode, { process: procVar, document: docVar, limit: 1000 }, transport),
-        api.listCommerceAttributes(context, vscode, { process: procVar, document: docVar, limit: 1000 }, transport),
+        api.listCommerceActions({ process: procVar, document: docVar, limit: 1000 }, transport),
+        api.listCommerceAttributes({ process: procVar, document: docVar, limit: 1000 }, transport),
         docVar === 'transaction'
-          ? api.listLibraryFunctions(context, vscode, { limit: 1000 }, transport, { commerceProcess: procVar, commerceDocument: docVar })
+          ? api.listLibraryFunctions({ limit: 1000 }, transport, { commerceProcess: procVar, commerceDocument: docVar })
           : Promise.resolve({ items: [] })
       ]);
 
@@ -195,10 +195,10 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
   onProgress({ stage: 'configuration', message: 'Discovering Product Families...' });
   let famItems = [];
   try {
-    let famRes = await api.listDirectProductFamilies(context, vscode, { limit: 100 }, transport);
+    let famRes = await api.listDirectProductFamilies({ limit: 100 }, transport);
     famItems = extractItems(famRes);
     if (famItems.length === 0) {
-      famRes = await api.listProductFamilies(context, vscode, { limit: 100 }, transport);
+      famRes = await api.listProductFamilies({ limit: 100 }, transport);
       famItems = extractItems(famRes);
     }
   } catch (err) {
@@ -213,10 +213,10 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
 
     onProgress({ stage: 'configuration', message: `Crawling Product Family '${pfVar}'...` });
     const [famAttrsRes, linesRes] = await Promise.allSettled([
-      api.listProductFamilyAttributes(context, vscode, { productFamily: pfVar, direct: true, limit: 1000 }, transport)
-        .catch(() => api.listProductFamilyAttributes(context, vscode, { productFamily: pfVar, limit: 1000 }, transport)),
-      api.listProductLines(context, vscode, { productFamily: pfVar, direct: true, limit: 100 }, transport)
-        .catch(() => api.listProductLines(context, vscode, { productFamily: pfVar, limit: 100 }, transport))
+      api.listProductFamilyAttributes({ productFamily: pfVar, direct: true, limit: 1000 }, transport)
+        .catch(() => api.listProductFamilyAttributes({ productFamily: pfVar, limit: 1000 }, transport)),
+      api.listProductLines({ productFamily: pfVar, direct: true, limit: 100 }, transport)
+        .catch(() => api.listProductLines({ productFamily: pfVar, limit: 100 }, transport))
     ]);
 
     const famAttrs = extractItems(famAttrsRes.status === 'fulfilled' ? famAttrsRes.value : null).map(a => normalizeAttr(a, 'Configuration', pfVar));
@@ -239,10 +239,10 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
 
       onProgress({ stage: 'configuration', message: `Crawling Product Line '${pfVar}/${plVar}'...` });
       const [lineAttrsRes, modelsRes] = await Promise.allSettled([
-        api.listProductLineAttributes(context, vscode, { productFamily: pfVar, productLine: plVar, direct: true, limit: 1000 }, transport)
-          .catch(() => api.listProductLineAttributes(context, vscode, { productFamily: pfVar, productLine: plVar, limit: 1000 }, transport)),
-        api.listModels(context, vscode, { productFamily: pfVar, productLine: plVar, direct: true, limit: 100 }, transport)
-          .catch(() => api.listModels(context, vscode, { productFamily: pfVar, productLine: plVar, limit: 100 }, transport))
+        api.listProductLineAttributes({ productFamily: pfVar, productLine: plVar, direct: true, limit: 1000 }, transport)
+          .catch(() => api.listProductLineAttributes({ productFamily: pfVar, productLine: plVar, limit: 1000 }, transport)),
+        api.listModels({ productFamily: pfVar, productLine: plVar, direct: true, limit: 100 }, transport)
+          .catch(() => api.listModels({ productFamily: pfVar, productLine: plVar, limit: 100 }, transport))
       ]);
 
       const lineAttrs = extractItems(lineAttrsRes.status === 'fulfilled' ? lineAttrsRes.value : null).map(a => normalizeAttr(a, 'Configuration', `${pfVar}.${plVar}`));
@@ -264,9 +264,9 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
 
         onProgress({ stage: 'configuration', message: `Crawling Model '${pfVar}/${plVar}/${mVar}'...` });
         const [modelAttrsRes, bomRes] = await Promise.allSettled([
-          api.listModelAttributes(context, vscode, { productFamily: pfVar, productLine: plVar, model: mVar, direct: true, limit: 1000 }, transport)
-            .catch(() => api.listModelAttributes(context, vscode, { productFamily: pfVar, productLine: plVar, model: mVar, limit: 100 }, transport)),
-          api.listModelBomMappingRules(context, vscode, { productFamily: pfVar, productLine: plVar, model: mVar, limit: 100 }, transport)
+          api.listModelAttributes({ productFamily: pfVar, productLine: plVar, model: mVar, direct: true, limit: 1000 }, transport)
+            .catch(() => api.listModelAttributes({ productFamily: pfVar, productLine: plVar, model: mVar, limit: 100 }, transport)),
+          api.listModelBomMappingRules({ productFamily: pfVar, productLine: plVar, model: mVar, limit: 100 }, transport)
         ]);
 
         const modelAttrs = extractItems(modelAttrsRes.status === 'fulfilled' ? modelAttrsRes.value : null).map(a => normalizeAttr(a, 'Configuration', `${pfVar}.${plVar}.${mVar}`));
@@ -297,7 +297,7 @@ async function crawlCpqSchema(context, vscode, options = {}, transport) {
   // 3. DATA TABLES (if available)
   // -------------------------------------------------------------
   try {
-    const dtRes = await api.listDataTables(context, vscode, { limit: 200 }, transport);
+    const dtRes = await api.listDataTables({ limit: 200 }, transport);
     const tables = extractItems(dtRes);
     stats.dataTables = tables.length;
     schema.dataTables = tables.map(t => ({

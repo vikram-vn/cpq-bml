@@ -13,12 +13,14 @@ const {
   resolveMetadataForFile,
   ensureCredentials,
 } = require("@/lang/rest/commands/shared");
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function handleDeployError(err, startedAt, resultsTerminal, vscode, prefix = "deploy") {
+function handleDeployError(err, startedAt, resultsTerminal, vscodeArg, prefix = "deploy") {
+  const vscode = vscodeArg || getExtensionContext().vscode;
   const isTimeout = /timeout/i.test(err && (err.message || String(err))) || (err && err.code === "ETIMEDOUT");
   const elapsed = formatElapsed(startedAt);
   const rawMsg = (err && (err.message || String(err))) || "unknown error";
@@ -65,17 +67,22 @@ function handleDeployError(err, startedAt, resultsTerminal, vscode, prefix = "de
 
 // Polls until the task leaves the queued/running state, so we report the real outcome instead of "queued" as "deployed".
 async function pollTaskStatus(
-  context,
-  vscode,
   taskId,
   transport,
-  { intervalMs = 3000, timeoutMs = 120000, resultsTerminal } = {},
+  options = {},
 ) {
+  if (typeof taskId !== 'string' && typeof transport === 'string') {
+    // Legacy (context, vscode, taskId, transport, options)
+    taskId = arguments[2];
+    transport = arguments[3];
+    options = arguments[4] || {};
+  }
+  const { intervalMs = 3000, timeoutMs = 120000, resultsTerminal } = options || {};
   const deadline = Date.now() + timeoutMs;
   let lastBody = null;
   for (;;) {
     try {
-      const result = await api.getTask(context, vscode, taskId, transport);
+      const result = await api.getTask(taskId, transport);
       if (result && result.body) lastBody = result.body;
       const status = isSuccess(result.statusCode) && result.body && result.body.status;
       if (status && /complete|error|fail/i.test(status)) {
@@ -96,12 +103,16 @@ async function pollTaskStatus(
 }
 
 async function runDeployCommerceProcess(
-  context,
-  vscode,
   resultsTerminal,
-  { transport, pollIntervalMs, pollTimeoutMs } = {},
+  options = {},
 ) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const { transport, pollIntervalMs, pollTimeoutMs } = effectiveOpts;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
   }
@@ -110,7 +121,7 @@ async function runDeployCommerceProcess(
   let processVarName = '';
 
   if (editor && editor.document.languageId === 'bml') {
-    const metadata = await resolveMetadataForFile(context, vscode, editor.document.uri.fsPath, transport);
+    const metadata = await resolveMetadataForFile(editor.document.uri.fsPath, transport);
     if (metadata && metadata.commerceProcess) {
       processVarName = metadata.commerceProcess;
     }
@@ -141,8 +152,6 @@ async function runDeployCommerceProcess(
   let result;
   try {
     result = await api.deployCommerceProcess(
-      context,
-      vscode,
       processVarName,
       transport,
     );
@@ -181,7 +190,7 @@ async function runDeployCommerceProcess(
   );
   resultsTerminal.show();
 
-  const taskResult = await pollTaskStatus(context, vscode, taskId, transport, {
+  const taskResult = await pollTaskStatus(taskId, transport, {
     intervalMs: effectivePollInterval,
     timeoutMs: effectivePollTimeout,
     resultsTerminal,
@@ -230,11 +239,15 @@ async function runDeployCommerceProcess(
 
 // Deploys the util function open in the active editor; it must already exist in CPQ (Save first if new).
 async function runDeployCurrentFile(
-  context,
-  vscode,
   resultsTerminal,
-  { transport } = {},
+  options = {},
 ) {
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const transport = effectiveOpts.transport;
+  const { context, vscode } = getExtensionContext();
+
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== "bml") {
     const errorMessage = "CPQ-BML: open a .bml file to deploy.";
@@ -242,12 +255,12 @@ async function runDeployCurrentFile(
     return { success: false, errorMessage };
   }
 
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
   }
 
-  const metadata = await resolveMetadataForFile(context, vscode, editor.document.uri.fsPath, transport);
+  const metadata = await resolveMetadataForFile(editor.document.uri.fsPath, transport);
   if (!metadata) {
     const variableName = metadataLib.variableNameFromBmlPath(editor.document.uri.fsPath);
     const errorMessage = `CPQ-BML: could not find CPQ metadata for "${variableName}" locally or on the server. Run "CPQ-BML: Pull Util Library Functions from CPQ" first, or save it once to create it.`;
@@ -259,7 +272,7 @@ async function runDeployCurrentFile(
     if (vscode.commands && typeof vscode.commands.executeCommand === "function") {
       vscode.commands.executeCommand("cpqBml.internal.refreshStatus");
     }
-    return runDeployCommerceProcess(context, vscode, resultsTerminal, { transport });
+    return runDeployCommerceProcess(resultsTerminal, { transport });
   }
 
   // Pre-Flight Safety & Impact Analysis
@@ -305,8 +318,6 @@ async function runDeployCurrentFile(
   let deployResult;
   try {
     deployResult = await api.deployLibraryFunctions(
-      context,
-      vscode,
       [metadataLib.buildDeployItem(metadata)],
       transport,
     );
@@ -339,12 +350,16 @@ async function runDeployCurrentFile(
 
 // Synchronous (204 directly), unlike deployCommerceProcess's task polling above.
 async function runDeployUtilFunctions(
-  context,
-  vscode,
   resultsTerminal,
-  { transport } = {},
+  options = {},
 ) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const transport = effectiveOpts.transport;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
   }
@@ -353,7 +368,7 @@ async function runDeployUtilFunctions(
   let offset = 0;
   const limit = 1000;
   for (;;) {
-    const { statusCode, body } = await api.listLibraryFunctions(context, vscode, { offset, limit }, transport);
+    const { statusCode, body } = await api.listLibraryFunctions({ offset, limit }, transport);
     if (!isSuccess(statusCode)) {
       const errorMessage = `CPQ-BML: failed to list util library functions (HTTP ${statusCode}). ${describeError(body)}`;
       vscode.window.showErrorMessage(errorMessage);
@@ -403,7 +418,7 @@ async function runDeployUtilFunctions(
   const startedAt = Date.now();
   let deployResult;
   try {
-    deployResult = await api.deployLibraryFunctions(context, vscode, items, transport);
+    deployResult = await api.deployLibraryFunctions(items, transport);
   } catch (err) {
     return handleDeployError(err, startedAt, resultsTerminal, vscode, `Mass deploy (${items.length} functions)`);
   }

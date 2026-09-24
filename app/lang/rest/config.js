@@ -28,16 +28,12 @@ function normalizeSiteUrl(rawSiteUrl) {
     return value;
 }
 
-let _defaultVscode = null;
-let _defaultContext = null;
-
-function setConfigContext(context, vscode) {
-    if (context) _defaultContext = context;
-    if (vscode) _defaultVscode = vscode;
-}
+const { setExtensionContext, getExtensionContext } = require('@/extensionContext');
+const setConfigContext = setExtensionContext;
+const getConfigContext = getExtensionContext;
 
 function getWorkspaceRoot(vscode) {
-    const v = vscode || _defaultVscode || (() => { try { return require("vscode"); } catch (e) { return null; } })();
+    const v = vscode || getExtensionContext().vscode;
     if (v && v.workspace && v.workspace.workspaceFolders && v.workspace.workspaceFolders.length > 0) {
         const folder = v.workspace.workspaceFolders[0];
         return folder.uri ? folder.uri.fsPath : (typeof folder === "string" ? folder : null);
@@ -53,7 +49,7 @@ function resolveCommerceScope(vscode, { process, document } = {}) {
 }
 
 function getSettings(vscode) {
-    const v = vscode || _defaultVscode || (() => { try { return require("vscode"); } catch (e) { return null; } })();
+    const v = vscode || getExtensionContext().vscode;
     const config = v && v.workspace && typeof v.workspace.getConfiguration === "function"
         ? v.workspace.getConfiguration("cpqBml")
         : null;
@@ -196,7 +192,7 @@ function getEffectiveRestVersion(vscodeOrVersion, minVersion = 19) {
     } else if (vscodeOrVersion && typeof vscodeOrVersion === 'object') {
         version = getRestVersion(vscodeOrVersion);
     } else {
-        version = getRestVersion(_defaultVscode);
+        version = getRestVersion();
     }
     const verNum = parseInt((version || '').replace(/^v/i, ''), 10);
     return !isNaN(verNum) && verNum >= minVersion ? version : `v${minVersion}`;
@@ -230,8 +226,9 @@ async function getAuthHeader(context, vscode) {
         vscode = context;
         context = null;
     }
-    const ctx = context || _defaultContext;
-    const vsc = vscode || _defaultVscode;
+    const g = getExtensionContext();
+    const ctx = context || g.context;
+    const vsc = vscode || g.vscode;
     const { siteUrl, authMethod, username } = getSettings(vsc);
     const config = vsc && vsc.workspace && typeof vsc.workspace.getConfiguration === 'function'
         ? vsc.workspace.getConfiguration('cpqBml')
@@ -273,8 +270,9 @@ async function hasMissingCredentials(context, vscode) {
         vscode = context;
         context = null;
     }
-    const ctx = context || _defaultContext;
-    const vsc = vscode || _defaultVscode;
+    const g = getExtensionContext();
+    const ctx = context || g.context;
+    const vsc = vscode || g.vscode;
     const { siteUrl, authMethod, username } = getSettings(vsc);
     if (!siteUrl) return true;
     const config = vsc && vsc.workspace && typeof vsc.workspace.getConfiguration === 'function'
@@ -308,26 +306,30 @@ async function hasMissingCredentials(context, vscode) {
 
 // No prompts/toasts — just a structured result. `reason` lets callers (ensureCredentials below) distinguish blocking failures (auth/permission) from non-blocking ones (network/config).
 async function runTestConnection(context, vscode, transport) {
-    const siteUrl = getBaseUrl(vscode);
-    if (!siteUrl) {
-        return { ok: false, reason: 'config', message: 'CPQ-BML: cpqBml.connection.siteUrl is not configured.' };
+    let effectiveContext = context, effectiveVscode = vscode, effectiveTransport = transport;
+    if (arguments.length === 1 && typeof arguments[0] === 'function') {
+        effectiveTransport = arguments[0];
+        effectiveContext = null;
+        effectiveVscode = null;
     }
+    const siteUrl = getBaseUrl(effectiveVscode);
+    if (!siteUrl) return { ok: false, reason: 'config', message: 'CPQ-BML: cpqBml.connection.siteUrl is not configured.' };
 
     let authHeader;
     try {
-        authHeader = await getAuthHeader(context, vscode);
+        authHeader = await getAuthHeader(effectiveContext, effectiveVscode);
     } catch (err) {
         return { ok: false, reason: 'config', message: err.message };
     }
 
     try {
-        const version = getRestVersion(vscode);
+        const version = getRestVersion(effectiveVscode);
         let res = await request({
             baseUrl: normalizeSiteUrl(siteUrl),
             path: `/rest/${version}/currentUser`,
             method: 'GET',
             authHeader,
-            transport
+            transport: effectiveTransport,
         });
         if (res && res.statusCode === 404) {
             res = await request({
@@ -356,13 +358,20 @@ async function runTestConnection(context, vscode, transport) {
 }
 
 async function ensureCredentials(context, vscode) {
-    const config = vscode.workspace.getConfiguration('cpqBml');
+    if (!vscode && context && (context.workspace || context.window || context.commands)) {
+        vscode = context;
+        context = null;
+    }
+    const g = getExtensionContext();
+    const ctx = context || g.context;
+    const vsc = vscode || g.vscode;
+    const config = vsc.workspace.getConfiguration('cpqBml');
     let siteUrl = config.get('connection.siteUrl', '').trim();
     let username = config.get('connection.username', '').trim();
     const authMethod = config.get('connection.authMethod', 'basic');
 
     if (!siteUrl) {
-        const value = await vscode.window.showInputBox({
+        const value = await vsc.window.showInputBox({
             prompt: 'Enter CPQ Site URL (e.g. sitename or sitename.bigmachines.com)',
             placeHolder: 'sitename.bigmachines.com',
             ignoreFocusOut: true,
@@ -370,7 +379,7 @@ async function ensureCredentials(context, vscode) {
         });
         if (value === undefined) return false;
         siteUrl = value.trim();
-        await config.update('connection.siteUrl', siteUrl, vscode.ConfigurationTarget.Global);
+        await config.update('connection.siteUrl', siteUrl, vsc.ConfigurationTarget.Global);
     }
 
     const normalizedSite = normalizeSiteUrl(siteUrl);
@@ -380,25 +389,27 @@ async function ensureCredentials(context, vscode) {
 
     if (authMethod === 'bearer') {
         const siteSpecificKey = getTokenSecretKey(normalizedSite);
-        let token = await context.secrets.get(siteSpecificKey);
-        if (!token && !hasMultipleEnvs) {
-            token = await context.secrets.get(SECRET_TOKEN);
+        let token = ctx && ctx.secrets && await ctx.secrets.get(siteSpecificKey);
+        if (!token && !hasMultipleEnvs && ctx && ctx.secrets) {
+            token = await ctx.secrets.get(SECRET_TOKEN);
         }
         if (!token) {
-            const value = await vscode.window.showInputBox({
+            const value = await vsc.window.showInputBox({
                 prompt: 'Enter CPQ Bearer Token',
                 password: true,
                 ignoreFocusOut: true,
                 validateInput: (val) => val && val.trim() ? null : 'Token is required'
             });
             if (value === undefined) return false;
-            const encryptedToken = cryptoManager.encryptSecret(value.trim(), context, vscode);
-            await context.secrets.store(siteSpecificKey, encryptedToken);
-            await context.secrets.store(SECRET_TOKEN, encryptedToken);
+            const encryptedToken = cryptoManager.encryptSecret(value.trim(), ctx, vsc);
+            if (ctx && ctx.secrets) {
+                await ctx.secrets.store(siteSpecificKey, encryptedToken);
+                await ctx.secrets.store(SECRET_TOKEN, encryptedToken);
+            }
         }
     } else {
         if (!username) {
-            const value = await vscode.window.showInputBox({
+            const value = await vsc.window.showInputBox({
                 prompt: 'Enter CPQ Username',
                 placeHolder: 'username',
                 ignoreFocusOut: true,
@@ -406,25 +417,27 @@ async function ensureCredentials(context, vscode) {
             });
             if (value === undefined) return false;
             username = value.trim();
-            await config.update('connection.username', username, vscode.ConfigurationTarget.Global);
+            await config.update('connection.username', username, vsc.ConfigurationTarget.Global);
         }
 
         const siteSpecificKey = getPasswordSecretKey(normalizedSite, username);
-        let password = await context.secrets.get(siteSpecificKey);
-        if (!password && !hasMultipleEnvs) {
-            password = await context.secrets.get(SECRET_PASSWORD);
+        let password = ctx && ctx.secrets && await ctx.secrets.get(siteSpecificKey);
+        if (!password && !hasMultipleEnvs && ctx && ctx.secrets) {
+            password = await ctx.secrets.get(SECRET_PASSWORD);
         }
         if (!password) {
-            const value = await vscode.window.showInputBox({
+            const value = await vsc.window.showInputBox({
                 prompt: 'Enter CPQ Password',
                 password: true,
                 ignoreFocusOut: true,
                 validateInput: (val) => val && val.length > 0 ? null : 'Password is required'
             });
             if (value === undefined) return false;
-            const encryptedPassword = cryptoManager.encryptSecret(value, context, vscode);
-            await context.secrets.store(siteSpecificKey, encryptedPassword);
-            await context.secrets.store(SECRET_PASSWORD, encryptedPassword);
+            const encryptedPassword = cryptoManager.encryptSecret(value, ctx, vsc);
+            if (ctx && ctx.secrets) {
+                await ctx.secrets.store(siteSpecificKey, encryptedPassword);
+                await ctx.secrets.store(SECRET_PASSWORD, encryptedPassword);
+            }
         }
     }
 
@@ -433,64 +446,33 @@ async function ensureCredentials(context, vscode) {
     }
 
     // Only auth/permission failures block; network/config issues let the user proceed.
-    const result = await runTestConnection(context, vscode);
+    const result = await runTestConnection(ctx, vsc);
     if (!result.ok && (result.reason === 'auth' || result.reason === 'permission')) {
-        vscode.window.showErrorMessage(result.message);
+        if (vsc && vsc.window) vsc.window.showErrorMessage(result.message);
         return false;
     }
 
     return true;
 }
 
-const getCpqSiteName = (v) => folders.getCpqSiteName(v, getBaseUrl);
-const getCpqInstanceFolder = (v) => folders.getCpqInstanceFolder(v, getBaseUrl);
-const getUtilLibrariesFolder = (v) => folders.getUtilLibrariesFolder(v, getBaseUrl);
-const getCommerceLibrariesFolder = (v, p) => folders.getCommerceLibrariesFolder(v, p, getBaseUrl, getCommerceProcess);
-const getDataTableFolder = (w, v) => folders.getDataTableFolder(w, v, getBaseUrl);
+const getCpqSiteName = (vscodeOrSiteUrl) => folders.getCpqSiteName(vscodeOrSiteUrl, getBaseUrl);
+const getCpqInstanceFolder = (vscodeOrSiteUrl) => folders.getCpqInstanceFolder(vscodeOrSiteUrl, getBaseUrl);
+const getUtilLibrariesFolder = (vscodeOrSiteUrl) => folders.getUtilLibrariesFolder(vscodeOrSiteUrl, getBaseUrl);
+const getCommerceLibrariesFolder = (vscodeOrSiteUrl, processName) => folders.getCommerceLibrariesFolder(vscodeOrSiteUrl, processName, getBaseUrl, getCommerceProcess);
+const getDataTableFolder = (workspaceRoot, vscodeOrSiteUrl) => folders.getDataTableFolder(workspaceRoot, vscodeOrSiteUrl, getBaseUrl);
 
 function isConfigured(vscode) {
-    const { siteUrl } = getSettings(vscode);
-    return Boolean(siteUrl);
-}
-
-function getConfigContext() {
-    return { context: _defaultContext, vscode: _defaultVscode };
+    return Boolean(getSettings(vscode).siteUrl);
 }
 
 module.exports = {
-    setConfigContext,
-    getConfigContext,
-    isConfigured,
-    DEFAULT_REST_VERSION,
-    DEFAULT_DOMAIN_SUFFIX,
-    SECRET_PASSWORD,
-    SECRET_TOKEN,
-    getPasswordSecretKey,
-    getTokenSecretKey,
-    normalizeSiteUrl,
-    getCpqSiteName,
-    getCpqInstanceFolder,
-    getUtilLibrariesFolder,
-    getCommerceLibrariesFolder,
-    getDataTableFolder,
-    getSettings,
-    getSmartDebugReuseInputs,
-    getBaseUrl,
-    getRestVersion,
-    getEffectiveRestVersion,
-    getCommerceProcess,
-    getCommerceDocument,
-    getProductFamily,
-    getAuthHeader,
-    getDebugOutputLogPath,
-    getDebugPrintLogPath,
-    getShowDebugResultsAsTable,
-    getShowDebugResultsOnly,
-    hasMissingCredentials,
-    runTestConnection,
-    ensureCredentials,
-    saveWorkspaceConfig,
-    getDebugConcurrency,
-    getWorkspaceRoot,
-    resolveCommerceScope,
+    setConfigContext, getConfigContext, isConfigured,
+    DEFAULT_REST_VERSION, DEFAULT_DOMAIN_SUFFIX, SECRET_PASSWORD, SECRET_TOKEN,
+    getPasswordSecretKey, getTokenSecretKey, normalizeSiteUrl, getCpqSiteName,
+    getCpqInstanceFolder, getUtilLibrariesFolder, getCommerceLibrariesFolder, getDataTableFolder,
+    getSettings, getSmartDebugReuseInputs, getBaseUrl, getRestVersion, getEffectiveRestVersion,
+    getCommerceProcess, getCommerceDocument, getProductFamily, getAuthHeader,
+    getDebugOutputLogPath, getDebugPrintLogPath, getShowDebugResultsAsTable, getShowDebugResultsOnly,
+    hasMissingCredentials, runTestConnection, ensureCredentials, saveWorkspaceConfig,
+    getDebugConcurrency, getWorkspaceRoot, resolveCommerceScope,
 };

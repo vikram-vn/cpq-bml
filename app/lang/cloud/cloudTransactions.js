@@ -59,7 +59,7 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
       const process = settings.commerceProcess || 'oraclecpqo';
       const document = settings.commerceDocument || 'transaction';
 
-      let res = await api.getTransactions(context, vscodeInstance, {
+      let res = await api.getTransactions({
         process,
         document,
         limit: 30,
@@ -70,7 +70,7 @@ function createTransactionsProvider(vscodeInstance = vscode, context) {
 
       // If orderby parameter fails with HTTP 400, retry defensively without orderby
       if (res.statusCode === 400) {
-        const fallback = await api.getTransactions(context, vscodeInstance, {
+        const fallback = await api.getTransactions({
           process,
           document,
           limit: 30,
@@ -306,7 +306,7 @@ async function inspectTransactionCommand(item, vscodeInstance = vscode, context)
     cancellable: false
   }, async () => {
     try {
-      const res = await api.getTransaction(context, vscodeInstance, txId, { process, document, timeoutMs: 60000 });
+      const res = await api.getTransaction(txId, { process, document, timeoutMs: 60000 });
       let payload = null;
 
       if (res && res.statusCode >= 200 && res.statusCode < 300) {

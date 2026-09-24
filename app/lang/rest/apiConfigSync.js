@@ -85,8 +85,6 @@ async function syncConfigurationAttributes(
   while (true) {
     if (signal && signal.aborted) throw new Error("Request aborted");
     const res = await listConfigurationAttributes(
-      context,
-      vscode,
       { offset, limit: pageSize, signal },
       transport,
     );
@@ -148,8 +146,6 @@ async function syncConfigurationAttributes(
       while (true) {
         if (signal && signal.aborted) throw new Error("Request aborted");
         const famRes = await listProductFamilies(
-          context,
-          vscode,
           { offset: famOffset, limit: famPageSize, signal },
           transport,
         );
@@ -202,8 +198,6 @@ async function syncConfigurationAttributes(
               while (true) {
                 if (signal && signal.aborted) throw new Error("Request aborted");
                 const famAttrRes = await listProductFamilyAttributes(
-                  context,
-                  vscode,
                   { productFamily: fam.variableName, offset: attrOffset, limit: attrPageSize, signal },
                   transport,
                 );
@@ -251,8 +245,6 @@ async function syncConfigurationAttributes(
               while (true) {
                 if (signal && signal.aborted) throw new Error("Request aborted");
                 const lineRes = await listProductLines(
-                  context,
-                  vscode,
                   { productFamily: fam.variableName, offset: lineOffset, limit: linePageSize, signal },
                   transport,
                 );
@@ -285,8 +277,6 @@ async function syncConfigurationAttributes(
                   if (typeof listProductLineAttributes === "function") {
                     try {
                       const lineAttrRes = await listProductLineAttributes(
-                        context,
-                        vscode,
                         { productFamily: fam.variableName, productLine: lineVar, signal },
                         transport,
                       );
@@ -312,8 +302,6 @@ async function syncConfigurationAttributes(
                     while (true) {
                       if (signal && signal.aborted) throw new Error("Request aborted");
                       const modRes = await listModels(
-                        context,
-                        vscode,
                         { productFamily: fam.variableName, productLine: lineVar, offset: modOffset, limit: modPageSize, signal },
                         transport,
                       );

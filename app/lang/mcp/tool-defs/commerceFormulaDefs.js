@@ -3,7 +3,8 @@
 const z = require('zod');
 const { jsonResult } = require('@/lang/mcp/jsonResult');
 
-function register(server, context, vscode, tools) {
+function register(server, toolsOrContext, maybeVscode, maybeTools) {
+    const tools = maybeTools || toolsOrContext;
     server.registerTool(
         'get_commerce_document_modify_tab',
         {

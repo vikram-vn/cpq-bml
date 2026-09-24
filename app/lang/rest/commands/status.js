@@ -10,15 +10,35 @@ const {
   isSuccess,
 } = require("@/lang/rest/commands/shared");
 
+const { getExtensionContext, setExtensionContext, isContextOrVscode } = require("@/extensionContext");
+
 const pendingFetches = new Set();
 
 async function triggerSmartMetadataFetch(
-  context,
-  vscode,
-  statusBarItem,
-  filePath,
-  options = {},
+  statusBarItemOrContext,
+  filePathOrVscode,
+  optionsOrStatusBar,
+  maybeFilePath,
+  maybeOptions,
 ) {
+  let statusBarItem = statusBarItemOrContext;
+  let filePath = filePathOrVscode;
+  let options = optionsOrStatusBar || {};
+  if (
+    statusBarItemOrContext === null ||
+    statusBarItemOrContext === undefined ||
+    isContextOrVscode(statusBarItemOrContext) ||
+    (filePathOrVscode && (filePathOrVscode.commands || filePathOrVscode.window))
+  ) {
+    if (statusBarItemOrContext || filePathOrVscode) {
+      setExtensionContext(statusBarItemOrContext, filePathOrVscode);
+    }
+    statusBarItem = optionsOrStatusBar;
+    filePath = maybeFilePath;
+    options = maybeOptions || {};
+  }
+  const { vscode } = getExtensionContext();
+
   if (!filePath || !filePath.endsWith(".bml")) return;
   if (pendingFetches.has(filePath)) return;
   pendingFetches.add(filePath);
@@ -46,17 +66,12 @@ async function triggerSmartMetadataFetch(
               metadataLib.writeMetadata(metaPath, foundMeta);
             } catch (e) {}
             const activePath =
+              vscode &&
               vscode.window &&
               vscode.window.activeTextEditor &&
               vscode.window.activeTextEditor.document.uri.fsPath;
             if (activePath === filePath) {
-              refreshBmlStatus(
-                vscode,
-                statusBarItem,
-                filePath,
-                context,
-                options,
-              );
+              refreshBmlStatus(statusBarItem, filePath, options);
             }
             return;
           }
@@ -64,27 +79,21 @@ async function triggerSmartMetadataFetch(
       } catch (e) {}
     }
 
-    // 2. If context provided, check CPQ in the background
-    if (context) {
-      const missing = await hasMissingCredentials(context, vscode);
-      if (missing) return;
-
-      const commerceProcess = getCommerceProcess(vscode) || "oraclecpqo";
-      const commerceDocument = getCommerceDocument(vscode) || "transaction";
+    // 2. Check CPQ in the background if credentials exist
+    const missing = await hasMissingCredentials();
+    if (!missing) {
+      const commerceProcess = getCommerceProcess() || "oraclecpqo";
+      const commerceDocument = getCommerceDocument() || "transaction";
       const transport = options.transport;
 
       // Check commerce library functions first
       const commerceMatch = await findLibraryFunctionByVariableName(
-        context,
-        vscode,
         variableName,
         transport,
         { commerceProcess, commerceDocument },
       );
       if (commerceMatch) {
         const result = await api.getLibraryFunction(
-          context,
-          vscode,
           commerceMatch.variableName,
           transport,
           { commerceProcess, commerceDocument },
@@ -105,17 +114,12 @@ async function triggerSmartMetadataFetch(
             metadataLib.writeMetadata(metaPath, metadata);
           } catch (e) {}
           const activePath =
+            vscode &&
             vscode.window &&
             vscode.window.activeTextEditor &&
             vscode.window.activeTextEditor.document.uri.fsPath;
           if (activePath === filePath) {
-            refreshBmlStatus(
-              vscode,
-              statusBarItem,
-              filePath,
-              context,
-              options,
-            );
+            refreshBmlStatus(statusBarItem, filePath, options);
           }
           return;
         }
@@ -123,16 +127,12 @@ async function triggerSmartMetadataFetch(
 
       // Check utility library functions next
       const utilMatch = await findLibraryFunctionByVariableName(
-        context,
-        vscode,
         variableName,
         transport,
         undefined,
       );
       if (utilMatch) {
         const result = await api.getLibraryFunction(
-          context,
-          vscode,
           utilMatch.variableName,
           transport,
           undefined,
@@ -149,17 +149,12 @@ async function triggerSmartMetadataFetch(
             metadataLib.writeMetadata(metaPath, metadata);
           } catch (e) {}
           const activePath =
+            vscode &&
             vscode.window &&
             vscode.window.activeTextEditor &&
             vscode.window.activeTextEditor.document.uri.fsPath;
           if (activePath === filePath) {
-            refreshBmlStatus(
-              vscode,
-              statusBarItem,
-              filePath,
-              context,
-              options,
-            );
+            refreshBmlStatus(statusBarItem, filePath, options);
           }
           return;
         }
@@ -172,29 +167,59 @@ async function triggerSmartMetadataFetch(
   }
 }
 
-function refreshBmlStatus(vscode, statusBarItem, filePath, context, options) {
+function refreshBmlStatus(
+  statusBarItemOrVscode,
+  filePathOrStatusBar,
+  optionsOrFilePath,
+  maybeContext,
+  maybeOptions,
+) {
+  let statusBarItem = statusBarItemOrVscode;
+  let filePath = filePathOrStatusBar;
+  let options = optionsOrFilePath || {};
+
+  if (
+    statusBarItemOrVscode &&
+    (statusBarItemOrVscode.commands || statusBarItemOrVscode.window)
+  ) {
+    if (maybeContext) {
+      setExtensionContext(maybeContext, statusBarItemOrVscode);
+    } else {
+      setExtensionContext(null, statusBarItemOrVscode);
+    }
+    statusBarItem = filePathOrStatusBar;
+    filePath = optionsOrFilePath;
+    options = maybeOptions || {};
+  }
+
+  const { vscode } = getExtensionContext();
+
   const hide = () => {
-    statusBarItem.hide();
-    vscode.commands.executeCommand(
-      "setContext",
-      "cpqBml.activeFileIsStandard",
-      false,
-    );
-    vscode.commands.executeCommand(
-      "setContext",
-      "cpqBml.activeFileIsOverridden",
-      false,
-    );
-    vscode.commands.executeCommand(
-      "setContext",
-      "cpqBml.activeFileIsUtil",
-      false,
-    );
-    vscode.commands.executeCommand(
-      "setContext",
-      "cpqBml.activeFileIsCommerce",
-      false,
-    );
+    if (statusBarItem && statusBarItem.hide) {
+      statusBarItem.hide();
+    }
+    if (vscode && vscode.commands) {
+      vscode.commands.executeCommand(
+        "setContext",
+        "cpqBml.activeFileIsStandard",
+        false,
+      );
+      vscode.commands.executeCommand(
+        "setContext",
+        "cpqBml.activeFileIsOverridden",
+        false,
+      );
+      vscode.commands.executeCommand(
+        "setContext",
+        "cpqBml.activeFileIsUtil",
+        false,
+      );
+      vscode.commands.executeCommand(
+        "setContext",
+        "cpqBml.activeFileIsCommerce",
+        false,
+      );
+    }
   };
 
   if (!filePath || !filePath.endsWith(".bml")) {
@@ -216,21 +241,23 @@ function refreshBmlStatus(vscode, statusBarItem, filePath, context, options) {
 
   // Track whether the active file is commerce vs util so the Deploy button
   // in the editor title bar can show the right icon and invoke the right command.
-  vscode.commands.executeCommand(
-    "setContext",
-    "cpqBml.activeFileIsCommerce",
-    isCommerce,
-  );
-  vscode.commands.executeCommand(
-    "setContext",
-    "cpqBml.activeFileIsUtil",
-    !isCommerce,
-  );
+  if (vscode && vscode.commands) {
+    vscode.commands.executeCommand(
+      "setContext",
+      "cpqBml.activeFileIsCommerce",
+      isCommerce,
+    );
+    vscode.commands.executeCommand(
+      "setContext",
+      "cpqBml.activeFileIsUtil",
+      !isCommerce,
+    );
+  }
 
   // If local metadata is not yet present and cannot be inferred from path,
   // trigger non-blocking smart fetch to discover whether it's commerce vs util.
   if (!meta && !inferred) {
-    triggerSmartMetadataFetch(context, vscode, statusBarItem, filePath, options);
+    triggerSmartMetadataFetch(statusBarItem, filePath, options);
   }
 
   if (isCommerce) {

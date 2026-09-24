@@ -1,17 +1,24 @@
+const { getExtensionContext, normalizeCommandArgs } = require('@/extensionContext');
+
 function getEnvironments(vscode) {
-    return vscode.workspace.getConfiguration('cpqBml').get('connection.environments', []) || [];
+    const v = (vscode && vscode.workspace) ? vscode : getExtensionContext().vscode;
+    return v?.workspace?.getConfiguration('cpqBml')?.get('connection.environments', []) || [];
 }
 
-async function setEnvironments(vscode, environments) {
-    await vscode.workspace.getConfiguration('cpqBml').update('connection.environments', environments, vscode.ConfigurationTarget.Global);
+async function setEnvironments(vscodeOrEnvs, maybeEnvs) {
+    const v = (maybeEnvs !== undefined && vscodeOrEnvs && vscodeOrEnvs.workspace) ? vscodeOrEnvs : getExtensionContext().vscode;
+    const environments = maybeEnvs !== undefined ? maybeEnvs : vscodeOrEnvs;
+    await v.workspace.getConfiguration('cpqBml').update('connection.environments', environments, v.ConfigurationTarget?.Global || 1);
 }
 
 // Excludes password/token deliberately — secrets are looked up separately by site+username in config.js's getAuthHeader.
-async function applyEnvironment(vscode, env) {
-    const config = vscode.workspace.getConfiguration('cpqBml');
-    await config.update('connection.siteUrl', env.siteUrl || '', vscode.ConfigurationTarget.Global);
-    await config.update('connection.username', env.username || '', vscode.ConfigurationTarget.Global);
-    await config.update('connection.authMethod', env.authMethod || 'basic', vscode.ConfigurationTarget.Global);
+async function applyEnvironment(vscodeOrEnv, maybeEnv) {
+    const v = (maybeEnv !== undefined && vscodeOrEnv && vscodeOrEnv.workspace) ? vscodeOrEnv : getExtensionContext().vscode;
+    const env = maybeEnv !== undefined ? maybeEnv : vscodeOrEnv;
+    const config = v.workspace.getConfiguration('cpqBml');
+    await config.update('connection.siteUrl', env.siteUrl || '', v.ConfigurationTarget?.Global || 1);
+    await config.update('connection.username', env.username || '', v.ConfigurationTarget?.Global || 1);
+    await config.update('connection.authMethod', env.authMethod || 'basic', v.ConfigurationTarget?.Global || 1);
 }
 
 function validateEnvironment(env) {
@@ -58,7 +65,9 @@ async function deleteEnvironment(vscode, index) {
     return environments;
 }
 
-async function runChangeEnvironment(context, vscode) {
+async function runChangeEnvironment() {
+    normalizeCommandArgs(arguments);
+    const { vscode } = getExtensionContext();
     const environments = getEnvironments(vscode);
 
     if (!Array.isArray(environments) || environments.length === 0) {

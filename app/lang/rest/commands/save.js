@@ -12,12 +12,15 @@ const {
   ensureCredentials,
 } = require("@/lang/rest/commands/shared");
 
-async function runSaveCurrentFile(
-  context,
-  vscode,
-  resultsTerminal,
-  { transport } = {},
-) {
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+
+async function runSaveCurrentFile(resultsTerminal, options = {}) {
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const transport = effectiveOpts.transport;
+  const { vscode } = getExtensionContext();
+
   const editor = vscode.window.activeTextEditor;
   if (!editor || editor.document.languageId !== "bml") {
     const errorMessage = "CPQ-BML: open a .bml file to save.";
@@ -25,15 +28,13 @@ async function runSaveCurrentFile(
     return { success: false, errorMessage };
   }
 
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return { success: false, errorMessage: "CPQ-BML: credentials are not configured." };
   }
 
   const doc = editor.document;
   const metadata = await resolveMetadataForFile(
-    context,
-    vscode,
     doc.uri.fsPath,
     transport,
   );
@@ -68,8 +69,6 @@ async function runSaveCurrentFile(
 
   const startedAt = Date.now();
   let updateResult = await api.updateLibraryFunction(
-    context,
-    vscode,
     nsVarName,
     payload,
     transport,
@@ -80,8 +79,6 @@ async function runSaveCurrentFile(
     if (doesNotExist) {
       resultsTerminal.writeLine(`\x1b[90m${getTimestamp()} Function "${metadata.variableName}" does not exist. Attempting to create...\x1b[0m`);
       const createResult = await api.createLibraryFunction(
-        context,
-        vscode,
         payload,
         transport,
       );
@@ -129,8 +126,6 @@ async function runSaveCurrentFile(
   let deployResult;
   try {
     deployResult = await api.deployLibraryFunctions(
-      context,
-      vscode,
       [metadataLib.buildDeployItem(metadata)],
       transport,
       metadata,

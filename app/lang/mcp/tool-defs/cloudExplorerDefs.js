@@ -4,7 +4,8 @@ const z = require('zod');
 const { jsonResult } = require('@/lang/mcp/jsonResult');
 const { introspectCpqSchemaTool } = require('@/lang/mcp/tools/schemaTools');
 
-function register(server, context, vscode, tools) {
+function register(server, toolsOrContext, maybeVscode, maybeTools) {
+    const tools = maybeTools || toolsOrContext;
     server.registerTool(
         'get_cloud_explorer_overview',
         {

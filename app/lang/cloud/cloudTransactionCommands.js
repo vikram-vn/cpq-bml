@@ -69,7 +69,7 @@ async function debugWithQuoteCommand(provider, vscodeInstance = vscode, context)
         const settings = getSettings(vscodeInstance);
         const process = settings.commerceProcess || 'oraclecpqo';
         const document = settings.commerceDocument || 'transaction';
-        const res = await api.getTransactions(context, vscodeInstance, {
+        const res = await api.getTransactions({
           process,
           document,
           limit: 20,

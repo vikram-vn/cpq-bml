@@ -24,7 +24,7 @@ async function checkServerValidation(filePath, code, metadata, vscodeInstance = 
       variableName: metadata?.variableName || metadataLib.variableNameFromBmlPath(filePath)
     };
 
-    const res = await api.validateLibraryFunction(context, vscodeInstance, payload, transport);
+    const res = await api.validateLibraryFunction(payload, transport);
     const elapsedMs = Date.now() - startedAt;
 
     if (res.statusCode >= 200 && res.statusCode < 300) {

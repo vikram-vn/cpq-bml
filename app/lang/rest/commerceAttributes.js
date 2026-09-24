@@ -34,18 +34,10 @@ function resolveActiveSiteKey(vscodeInstance) {
   }
 }
 
-// In-memory cache singleton
-let extensionContext = null;
+const { setExtensionContext, getContext } = require('@/extensionContext');
+const getExtensionContext = getContext;
 let bundledAttributesIndex = null;
 let workspaceAttributesCache = {};
-
-function setExtensionContext(ctx) {
-  extensionContext = ctx;
-}
-
-function getExtensionContext() {
-  return extensionContext;
-}
 
 function clearAttributesCache(workspaceRoot, siteKey) {
   if (workspaceRoot && siteKey) {
@@ -64,7 +56,7 @@ function clearAttributesCache(workspaceRoot, siteKey) {
 }
 
 function getMetadataStorageDir(context, workspaceRoot) {
-  const ctx = context || extensionContext;
+  const ctx = context || getExtensionContext();
   if (ctx && ctx.storageUri && ctx.storageUri.fsPath) {
     return ctx.storageUri.fsPath;
   }
@@ -338,7 +330,9 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, context) {
 }
 
 function removeMetadata(context, workspaceRoot, vscode) {
-  const ctx = context || extensionContext;
+  const globalCtx = getGlobalContext();
+  const ctx = context || getExtensionContext();
+  const vsc = vscode || globalCtx.vscode;
   const backendDir = getMetadataStorageDir(ctx, workspaceRoot);
   const dirs = [];
   if (backendDir && !dirs.includes(backendDir)) dirs.push(backendDir);
@@ -353,8 +347,8 @@ function removeMetadata(context, workspaceRoot, vscode) {
   if (ctx && ctx.storageUri && ctx.storageUri.fsPath) {
     if (!dirs.includes(ctx.storageUri.fsPath)) dirs.push(ctx.storageUri.fsPath);
   }
-  if (vscode && vscode.workspace && Array.isArray(vscode.workspace.workspaceFolders)) {
-    for (const folder of vscode.workspace.workspaceFolders) {
+  if (vsc && vsc.workspace && Array.isArray(vsc.workspace.workspaceFolders)) {
+    for (const folder of vsc.workspace.workspaceFolders) {
       if (folder.uri && folder.uri.fsPath) {
         const p = path.join(folder.uri.fsPath, CPQ_DIR);
         if (!dirs.includes(p)) dirs.push(p);
@@ -372,8 +366,8 @@ function removeMetadata(context, workspaceRoot, vscode) {
     }
   } catch (e) {}
 
-  if (vscode && vscode.commands && typeof vscode.commands.executeCommand === "function") {
-    vscode.commands.executeCommand(
+  if (vsc && vsc.commands && typeof vsc.commands.executeCommand === "function") {
+    vsc.commands.executeCommand(
       "setContext",
       "cpqBml.commerceMetadataSynced",
       false,

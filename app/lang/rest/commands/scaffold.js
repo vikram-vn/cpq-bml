@@ -19,7 +19,14 @@ const returnTypeMap = {
     'Date[]': 26
 };
 
-async function runCreateBmlFunction(context, vscode, { transport } = {}) {
+const { getExtensionContext, normalizeCommandArgs } = require('@/extensionContext');
+
+async function runCreateBmlFunction(options = {}) {
+    const normArgs = normalizeCommandArgs(arguments);
+    const effectiveOpts = (normArgs.length > 0 ? normArgs[0] : options) || {};
+    const transport = effectiveOpts.transport;
+    const { vscode } = getExtensionContext();
+
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
         vscode.window.showErrorMessage('CPQ-BML: open a workspace folder before creating a BML function.');

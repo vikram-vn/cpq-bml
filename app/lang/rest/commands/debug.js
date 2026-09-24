@@ -29,13 +29,21 @@ const {
 const { promptDebugInputs } = require("@/lang/rest/commands/debugInputs");
 
 
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+
 async function runDebugCurrentFile(
-  context,
-  vscode,
   diagnosticCollectionOrTerminal,
   resultsTerminalOrOptions,
   optionsOrUndefined,
 ) {
+  const normArgs = normalizeCommandArgs(arguments);
+  if (normArgs.length > 0) {
+    diagnosticCollectionOrTerminal = normArgs[0];
+    resultsTerminalOrOptions = normArgs[1];
+    optionsOrUndefined = normArgs[2];
+  }
+  const { vscode } = getExtensionContext();
+
   let diagnosticCollection = null;
   let resultsTerminal = null;
   let options = {};
@@ -88,7 +96,7 @@ async function runDebugCurrentFile(
     diagnosticCollection.delete(doc.uri);
   }
 
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return {
       success: false,
@@ -97,8 +105,6 @@ async function runDebugCurrentFile(
   }
 
   let metadata = await resolveMetadataForFile(
-    context,
-    vscode,
     doc.uri.fsPath,
     transport,
   );
@@ -110,7 +116,7 @@ async function runDebugCurrentFile(
 
     // Attempt on-the-fly fetch from CPQ without saving a -meta.json sidecar to disk
     try {
-      const serverFn = await api.getLibraryFunction(context, vscode, variableName, transport, inferred ? { commerceProcess: process, commerceDocument: document } : undefined);
+      const serverFn = await api.getLibraryFunction(variableName, transport, inferred ? { commerceProcess: process, commerceDocument: document } : undefined);
       if (serverFn && serverFn.statusCode >= 200 && serverFn.statusCode < 300 && serverFn.body) {
         const split = metadataLib.splitFunctionResponse(serverFn.body);
         metadata = split.metadata || {};
@@ -146,8 +152,6 @@ async function runDebugCurrentFile(
   resultsTerminal.show();
 
   const inputResult = await promptDebugInputs({
-    context,
-    vscode,
     metadata,
     options,
     resultsTerminal,
@@ -190,8 +194,6 @@ async function runDebugCurrentFile(
       async (txnId) => {
         return runDebugSingleExecution({
           txnId,
-          context,
-          vscode,
           metadata,
           scriptText: doc.getText(),
           parameterValues,
@@ -322,8 +324,6 @@ async function runDebugCurrentFile(
 
   const singleResult = await runDebugSingleExecution({
     txnId: isCommerce ? transactionIds[0] : undefined,
-    context,
-    vscode,
     metadata,
     scriptText: doc.getText(),
     parameterValues,

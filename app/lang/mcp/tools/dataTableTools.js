@@ -14,11 +14,11 @@ const { SchemaIntrospector } = require('@/lang/intellisense/schemaIntrospector')
 const { getWorkspaceRoot, isConfigured } = require('@/lang/rest/config');
 const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
-function findFallbackSchema(context, vscodeInstance, tableName) {
+function findFallbackSchema(tableName) {
     try {
-        const wsRoot = getWorkspaceRoot(vscodeInstance);
+        const wsRoot = getWorkspaceRoot();
 
-        const dtSchema = SchemaIntrospector.getDataTablesSchema(context, wsRoot);
+        const dtSchema = SchemaIntrospector.getDataTablesSchema(null, wsRoot);
         if (dtSchema) {
             const list = Array.isArray(dtSchema) ? dtSchema : (dtSchema.dataTables || dtSchema.items || []);
             const match = list.find(t => (t.name || t.tableName || '').toLowerCase() === tableName.toLowerCase());
@@ -36,7 +36,7 @@ function findFallbackSchema(context, vscodeInstance, tableName) {
             }
         }
 
-        const cached = SchemaIntrospector.getCachedAttributes(wsRoot, context);
+        const cached = SchemaIntrospector.getCachedAttributes(wsRoot);
         if (cached && Array.isArray(cached.dataTables)) {
             const match = cached.dataTables.find(t => (t.name || '').toLowerCase() === tableName.toLowerCase());
             if (match && Array.isArray(match.columns)) {
@@ -59,13 +59,13 @@ function findFallbackSchema(context, vscodeInstance, tableName) {
 }
 
 async function getDataTableSchema(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const tableName = args && args.tableName ? args.tableName : '';
     if (!tableName) {
         return { success: false, error: 'tableName parameter is required' };
     }
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'Get Data Table Schema', tableName);
     terminal.show();
@@ -114,7 +114,7 @@ async function getDataTableSchema(options = {}, transport) {
             };
         }
 
-        const fallback = findFallbackSchema(context, vscode, tableName);
+        const fallback = findFallbackSchema(tableName);
         if (fallback) {
             writeTerminalMessage(
                 terminal,
@@ -134,7 +134,7 @@ async function getDataTableSchema(options = {}, transport) {
         const errMsg = res ? `Failed to retrieve schema for data table "${tableName}" (HTTP ${res.statusCode}).` : `Unable to query schema for "${tableName}".`;
         return { success: false, error: errMsg, log: getLines() };
     } catch (err) {
-        const fallback = findFallbackSchema(context, vscode, tableName);
+        const fallback = findFallbackSchema(tableName);
         if (fallback) {
             return {
                 success: true,
@@ -153,7 +153,7 @@ async function getDataTableSchema(options = {}, transport) {
 }
 
 async function getDataTableRows(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const tableName = args && args.tableName ? args.tableName : '';
     if (!tableName) {
         return { success: false, error: 'tableName parameter is required' };
@@ -162,7 +162,7 @@ async function getDataTableRows(options = {}, transport) {
     const offset = (args && args.offset !== undefined) ? args.offset : 0;
     const q = (args && (args.q || args.query)) || undefined;
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'Get Data Table Rows', tableName);
     terminal.show();

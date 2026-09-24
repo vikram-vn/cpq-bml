@@ -12,8 +12,8 @@ const { createCapturingTerminal } = require('@/lang/mcp/proxy');
 const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
 
 async function listParts(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'List Parts Catalog', 'parts');
     terminal.show();
@@ -28,7 +28,7 @@ async function listParts(options = {}, transport) {
     try {
         const result = await api.listParts(
             { offset, limit, q, fields },
-            transport,
+            tr,
         );
 
         if (!isSuccess(result.statusCode)) {
@@ -84,8 +84,8 @@ async function listParts(options = {}, transport) {
 }
 
 async function getPart(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     const partNumber = args && (args.partNumber || args.id || args.itemNumber);
     if (!partNumber) {
@@ -99,7 +99,7 @@ async function getPart(options = {}, transport) {
         const result = await api.getPart(
             partNumber,
             { fields: args && args.fields },
-            transport,
+            tr,
         );
 
         if (!isSuccess(result.statusCode)) {

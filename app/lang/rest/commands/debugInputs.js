@@ -4,11 +4,15 @@ const api = require('@/lang/rest/api');
 const configLib = require('@/lang/rest/config');
 const metadataLib = require('@/lang/rest/metadata');
 const { writeTerminalMessage } = require('@/lang/rest/commands/shared');
+const { getExtensionContext } = require('@/extensionContext');
 
 /**
  * Prompts user for debug inputs or reuses cached parameters and transaction IDs.
  */
-async function promptDebugInputs({ context, vscode, metadata, options, resultsTerminal, transport }) {
+async function promptDebugInputs({ context, vscode, metadata, options, resultsTerminal, transport } = {}) {
+  const extCtx = getExtensionContext();
+  context = context || extCtx.context;
+  vscode = vscode || extCtx.vscode;
   const isCommerce = !!metadata.commerceDocument;
   const hasInputs =
     (metadata.parameters && metadata.parameters.length > 0) || isCommerce;
@@ -206,8 +210,6 @@ async function promptDebugInputs({ context, vscode, metadata, options, resultsTe
       if (transactionIds.length === 0) {
         try {
           const res = await api.getTransactions(
-            context,
-            vscode,
             {
               process: metadata.commerceProcess,
               document: metadata.commerceDocument,

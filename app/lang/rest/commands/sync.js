@@ -9,13 +9,19 @@ const {
   ensureCredentials,
 } = require("@/lang/rest/commands/shared");
 
+const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+
 async function runSyncCommerceMetadata(
-  context,
-  vscode,
   resultsTerminal,
-  { process, document, fetchMenuItems = true, transport, onProgress: externalOnProgress } = {},
+  options = {},
 ) {
-  const hasCredentials = await ensureCredentials(context, vscode);
+  const normArgs = normalizeCommandArgs(arguments);
+  resultsTerminal = normArgs[0] || resultsTerminal;
+  const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
+  const { process, document, fetchMenuItems = true, transport, onProgress: externalOnProgress } = effectiveOpts;
+  const { vscode } = getExtensionContext();
+
+  const hasCredentials = await ensureCredentials();
   if (!hasCredentials) {
     return {
       success: false,
@@ -97,8 +103,6 @@ async function runSyncCommerceMetadata(
       onProgress({ message: "Syncing commerce attributes...", percent: 0, stage: "commerce" });
 
       const data = await api.syncCommerceAttributes(
-        context,
-        vscode,
         { process, document, includeSubDocuments: true, fetchMenuItems, signal, onProgress },
         transport,
       );
@@ -108,8 +112,6 @@ async function runSyncCommerceMetadata(
         if (typeof api.syncConfigurationAttributes === "function") {
           onProgress({ message: "Syncing configuration attributes & models...", stage: "config" });
           configData = await api.syncConfigurationAttributes(
-            context,
-            vscode,
             { signal, onProgress },
             transport,
           );
@@ -200,9 +202,12 @@ async function runSyncCommerceMetadata(
   }
 }
 
-async function runSyncAllMetadata(context, vscode, terminal, onProgress) {
+async function runSyncAllMetadata(terminal, onProgress) {
+  const normArgs = normalizeCommandArgs(arguments);
+  terminal = normArgs[0] || terminal;
+  onProgress = normArgs[1] || onProgress;
   const { syncConfigurationAttributes } = require("@/lang/rest/apiConfig");
-  const commRes = await runSyncCommerceMetadata(context, vscode, terminal, {
+  const commRes = await runSyncCommerceMetadata(terminal, {
     fetchMenuItems: false,
     onProgress,
   });
@@ -211,7 +216,7 @@ async function runSyncAllMetadata(context, vscode, terminal, onProgress) {
     if (onProgress && typeof onProgress === "function") {
       onProgress({ message: "Syncing configuration attributes...", stage: "config" });
     }
-    const cfgRes = await syncConfigurationAttributes(context, vscode, { limit: 1000, onProgress }, null);
+    const cfgRes = await syncConfigurationAttributes({ limit: 1000, onProgress });
     configCount = cfgRes ? cfgRes.count : 0;
   } catch (e) {}
   return {
@@ -221,10 +226,13 @@ async function runSyncAllMetadata(context, vscode, terminal, onProgress) {
   };
 }
 
-async function runRemoveCommerceMetadata(context, vscode, terminal) {
+async function runRemoveCommerceMetadata(terminal) {
+  const normArgs = normalizeCommandArgs(arguments);
+  terminal = normArgs[0] || terminal;
+  const { vscode } = getExtensionContext();
   const { removeMetadata, getWorkspaceRoot } = require("@/lang/rest/commerceAttributes");
-  const wsRoot = getWorkspaceRoot(vscode);
-  removeMetadata(context, wsRoot, vscode);
+  const wsRoot = getWorkspaceRoot();
+  removeMetadata(wsRoot);
   if (terminal) {
     writeRunHeader(terminal, "Remove", "Offline Metadata");
     writeTerminalMessage(terminal, "Offline cached metadata removed successfully.");

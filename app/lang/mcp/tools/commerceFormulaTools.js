@@ -16,6 +16,7 @@ const { createCapturingTerminal, createToolVscodeContext } = require('@/lang/mcp
 const { runDebugCurrentFile } = require('@/lang/rest/commands/debug');
 const { getCommerceAttributesFolder } = require('@/lang/rest/folders');
 const { normalizeToolArgs } = require('@/lang/mcp/toolArgs');
+const { getApiContext } = require('@/lang/rest/apiCore');
 
 function safeParse(val) {
     if (!val) return {};
@@ -28,10 +29,10 @@ function safeParse(val) {
 }
 
 async function getCommerceDocumentModifyTab(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
-    const settings = getSettings(vscode);
+    const settings = getSettings();
     const process = (args && args.commerceProcess) || settings.commerceProcess || 'oraclecpqo';
     const document = (args && args.commerceDocument) || settings.commerceDocument || 'transaction';
 
@@ -39,7 +40,7 @@ async function getCommerceDocumentModifyTab(options = {}, transport) {
     terminal.show();
 
     try {
-        if (isConfigured(vscode)) {
+        if (isConfigured()) {
             const res = await api.getCommerceDocumentModifyTab({ process, document }, tr);
             if (res && isSuccess(res.statusCode)) {
                 const body = safeParse(res.body);
@@ -57,7 +58,7 @@ async function getCommerceDocumentModifyTab(options = {}, transport) {
         }
 
         // Workspace fallback
-        const wsRoot = getWorkspaceRoot(vscode);
+        const wsRoot = getWorkspaceRoot();
         if (wsRoot) {
             const candidates = [
                 path.join(wsRoot, 'cpq', 'commerce', process, document, 'modifyTab.json'),
@@ -93,10 +94,10 @@ async function getCommerceDocumentModifyTab(options = {}, transport) {
 }
 
 async function updateCommerceDocumentModifyTab(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
-    const settings = getSettings(vscode);
+    const settings = getSettings();
     const process = (args && args.commerceProcess) || settings.commerceProcess || 'oraclecpqo';
     const document = (args && args.commerceDocument) || settings.commerceDocument || 'transaction';
     const items = args && args.items;
@@ -123,7 +124,7 @@ async function updateCommerceDocumentModifyTab(options = {}, transport) {
         writeTerminalMessage(terminal, 'Modify Tab Updated: ', `Successfully updated ${items.length} options (${formatElapsed(startedAt)})`, '\x1b[32m');
 
         // Cache locally in workspace if available
-        const wsRoot = getWorkspaceRoot(vscode);
+        const wsRoot = getWorkspaceRoot();
         if (wsRoot) {
             try {
                 const targetDir = path.join(wsRoot, 'cpq', 'commerce', process, document);
@@ -146,15 +147,15 @@ async function updateCommerceDocumentModifyTab(options = {}, transport) {
 }
 
 async function pullCommerceActionScripts(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const actionVar = args && (args.actionVariableName || args.variableName);
     if (!actionVar) {
         return { success: false, error: 'actionVariableName is required.' };
     }
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
-    const settings = getSettings(vscode);
+    const settings = getSettings();
     const process = (args && args.commerceProcess) || settings.commerceProcess || 'oraclecpqo';
     const document = (args && args.commerceDocument) || settings.commerceDocument || 'transaction';
 
@@ -195,7 +196,7 @@ async function pullCommerceActionScripts(options = {}, transport) {
             };
         }
 
-        const wsRoot = getWorkspaceRoot(vscode);
+        const wsRoot = getWorkspaceRoot();
         const savedFiles = [];
 
         if (wsRoot) {
@@ -238,7 +239,7 @@ async function pullCommerceActionScripts(options = {}, transport) {
 }
 
 async function debugCommerceActionScript(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const actionVar = args && (args.actionVariableName || args.variableName);
     const transactionId = args && (args.transactionId || args.id);
     const scriptType = (args && args.scriptType) || 'before-formulas';
@@ -246,7 +247,7 @@ async function debugCommerceActionScript(options = {}, transport) {
     if (!actionVar) return { success: false, error: 'actionVariableName is required.' };
     if (!transactionId) return { success: false, error: 'transactionId is required to debug commerce action formulas.' };
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, `Debug Action ${scriptType}`, `${actionVar} on Txn ${transactionId}`);
     terminal.show();
@@ -266,12 +267,13 @@ async function debugCommerceActionScript(options = {}, transport) {
             };
         }
 
+        const { context, vscode } = getApiContext();
         const { vscodeProxy } = createToolVscodeContext(vscode, {
             bmlPath: targetScript.path,
             quickPickSelector: (items) => items.find((i) => i.id === 'last'),
         });
 
-        if (context.workspaceState) {
+        if (context?.workspaceState) {
             await context.workspaceState.update(`debugCache:${path.basename(targetScript.path, '.bml')}`, {
                 transactionId: String(transactionId),
                 parameterValues: {},
@@ -295,16 +297,16 @@ async function debugCommerceActionScript(options = {}, transport) {
 }
 
 async function pullCommerceAttributeFormula(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const attrVar = args && (args.attributeVariableName || args.variableName);
     if (!attrVar) return { success: false, error: 'attributeVariableName is required.' };
 
     const formulaType = (args && (args.formulaType || args.type)) || 'default';
-    const settings = getSettings(vscode);
+    const settings = getSettings();
     const process = (args && args.commerceProcess) || settings.commerceProcess || 'oraclecpqo';
     const document = (args && args.commerceDocument) || settings.commerceDocument || 'transaction';
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, 'Pull Attribute Formula', `${attrVar} (${formulaType})`);
     terminal.show();
@@ -336,11 +338,11 @@ async function pullCommerceAttributeFormula(options = {}, transport) {
             };
         }
 
-        const wsRoot = getWorkspaceRoot(vscode);
+        const wsRoot = getWorkspaceRoot();
         let savedPath = '';
 
         if (wsRoot) {
-            const relDir = getCommerceAttributesFolder(vscode, process, formulaType);
+            const relDir = getCommerceAttributesFolder(null, process, formulaType);
             const attrDir = path.join(wsRoot, relDir);
             fs.mkdirSync(attrDir, { recursive: true });
             savedPath = path.join(attrDir, `${attrVar}.bml`);
@@ -373,7 +375,7 @@ async function pullCommerceAttributeFormula(options = {}, transport) {
 }
 
 async function debugCommerceAttributeFormula(options = {}, transport) {
-    const { context, vscode, args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr } = normalizeToolArgs(arguments);
     const attrVar = args && (args.attributeVariableName || args.variableName);
     const transactionId = args && (args.transactionId || args.id);
     const formulaType = (args && (args.formulaType || args.type)) || 'default';
@@ -381,7 +383,7 @@ async function debugCommerceAttributeFormula(options = {}, transport) {
     if (!attrVar) return { success: false, error: 'attributeVariableName is required.' };
     if (!transactionId) return { success: false, error: 'transactionId is required to debug attribute formulas.' };
 
-    const { terminal, getLines } = createCapturingTerminal(getAiTerminal(vscode));
+    const { terminal, getLines } = createCapturingTerminal(getAiTerminal());
     const startedAt = Date.now();
     writeRunHeader(terminal, `Debug Attribute ${formulaType}`, `${attrVar} on Txn ${transactionId}`);
     terminal.show();
@@ -397,12 +399,13 @@ async function debugCommerceAttributeFormula(options = {}, transport) {
             };
         }
 
+        const { context, vscode } = getApiContext();
         const { vscodeProxy } = createToolVscodeContext(vscode, {
             bmlPath: pullRes.savedPath,
             quickPickSelector: (items) => items.find((i) => i.id === 'last'),
         });
 
-        if (context.workspaceState) {
+        if (context?.workspaceState) {
             await context.workspaceState.update(`debugCache:${attrVar}`, {
                 transactionId: String(transactionId),
                 parameterValues: {},

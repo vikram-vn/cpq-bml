@@ -49,7 +49,7 @@ function createPartsProvider(vscodeInstance = vscode, context) {
     lastError = null;
 
     try {
-      const res = await api.listParts(context, vscodeInstance, {
+      const res = await api.listParts({
         limit: 200
       });
       if (res && res.statusCode >= 200 && res.statusCode < 300) {
@@ -262,7 +262,7 @@ async function inspectPartCommand(item, vscodeInstance = vscode, context) {
     let payload = null;
     try {
       if (typeof api.getPart === 'function') {
-        const res = await api.getPart(context, vscodeInstance, pNum);
+        const res = await api.getPart(pNum);
         if (res && res.statusCode >= 200 && res.statusCode < 300) {
           payload = safeParseJson(res.body);
         }

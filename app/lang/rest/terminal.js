@@ -29,7 +29,10 @@ function createResultsTerminal(vscode, name) {
 
 function getActiveEnvironmentName(vscode) {
     try {
-        const config = vscode.workspace.getConfiguration('cpqBml');
+        const { getConfigContext } = require('@/lang/rest/config');
+        const v = (vscode && vscode.workspace) ? vscode : (getConfigContext()?.vscode || (() => { try { return require('vscode'); } catch (_) { return null; } })());
+        const config = v?.workspace?.getConfiguration('cpqBml');
+        if (!config) return '';
         const siteUrl = (config.get('connection.siteUrl', '') || '').trim();
         if (!siteUrl) return '';
         const username = (config.get('connection.username', '') || '').trim().toLowerCase();
