@@ -11,14 +11,13 @@ const LEGACY_AI_FOLDER_SUFFIX = '-AI';
 // (or legacy <pullFolder>/.../<variableName>/<variableName>.bml),
 // so finding one by name means walking the standardized folders and fallbacks.
 function findLocalBmlPath(vscode, variableName) {
-    if (typeof vscode === 'string' && !variableName) {
+    if (typeof vscode === 'string') {
         variableName = vscode;
         vscode = undefined;
     }
     const v = (vscode && vscode.workspace) ? vscode : (config.getConfigContext()?.vscode || (() => { try { return require('vscode'); } catch (_) { return null; } })());
     const workspaceFolders = v?.workspace?.workspaceFolders;
-    if (!workspaceFolders || workspaceFolders.length === 0) return null;
-    const wsRoot = workspaceFolders[0].uri.fsPath;
+    const wsRoot = (workspaceFolders && workspaceFolders.length > 0) ? workspaceFolders[0].uri.fsPath : process.cwd();
     const settings = config.getSettings(v);
 
     const searchRoots = [
@@ -32,6 +31,7 @@ function findLocalBmlPath(vscode, variableName) {
         for (const entry of entries) {
             if (entry.isDirectory() && /^cpq-/i.test(entry.name)) {
                 searchRoots.push(path.join(wsRoot, entry.name, 'util-libraries'));
+                searchRoots.push(path.join(wsRoot, entry.name));
             }
         }
     } catch {}
@@ -51,7 +51,7 @@ function findLocalBmlPath(vscode, variableName) {
 }
 
 function searchDir(dir, variableName, depthLeft) {
-    if (depthLeft <= 0) return null;
+    if (depthLeft <= 0 || typeof variableName !== 'string') return null;
     let entries;
     try {
         entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -94,8 +94,7 @@ function createFirstTimeBackup(vscode, canonicalBmlPath, variableName) {
     try {
         const v = (vscode && vscode.workspace) ? vscode : (config.getConfigContext()?.vscode || (() => { try { return require('vscode'); } catch (_) { return null; } })());
         const workspaceFolders = v?.workspace?.workspaceFolders;
-        if (!workspaceFolders || workspaceFolders.length === 0) return null;
-        const wsRoot = workspaceFolders[0].uri.fsPath;
+        const wsRoot = (workspaceFolders && workspaceFolders.length > 0) ? workspaceFolders[0].uri.fsPath : process.cwd();
         const inferred = metadataLib.inferCommerceFromPath(canonicalBmlPath);
         const type = inferred ? 'process' : 'util';
         const proc = inferred ? inferred.commerceProcess : '';
@@ -119,8 +118,11 @@ function createFirstTimeBackup(vscode, canonicalBmlPath, variableName) {
 
 // MCP tools edit the AI working copy, never the canonical pulled file, so the original
 // stays a pristine diff baseline and re-pulling never clobbers AI edits.
-function findOrCreateAiCopy(vscode, variableName) {
-    if (typeof vscode === 'string' && !variableName) {
+function findOrCreateAiCopy(vscode, variableName, options) {
+    if (typeof vscode === 'string') {
+        if (typeof variableName === 'object' && variableName !== null) {
+            options = variableName;
+        }
         variableName = vscode;
         vscode = undefined;
     }
@@ -131,14 +133,18 @@ function findOrCreateAiCopy(vscode, variableName) {
     if (fs.existsSync(legacyAiPath)) return legacyAiPath;
 
     const aiBmlPath = aiCopyPathFor(canonicalBmlPath, variableName);
-    if (!fs.existsSync(aiBmlPath)) {
-        createFirstTimeBackup(vscode, canonicalBmlPath, variableName);
-        fs.copyFileSync(canonicalBmlPath, aiBmlPath);
+    if (fs.existsSync(aiBmlPath)) return aiBmlPath;
 
-        const canonicalMetaPath = metadataLib.bmlPathToMetaPath(canonicalBmlPath);
-        if (fs.existsSync(canonicalMetaPath)) {
-            fs.copyFileSync(canonicalMetaPath, metadataLib.bmlPathToMetaPath(aiBmlPath));
-        }
+    if (options && options.createIfMissing === false) {
+        return fs.existsSync(canonicalBmlPath) ? canonicalBmlPath : null;
+    }
+
+    createFirstTimeBackup(vscode, canonicalBmlPath, variableName);
+    fs.copyFileSync(canonicalBmlPath, aiBmlPath);
+
+    const canonicalMetaPath = metadataLib.bmlPathToMetaPath(canonicalBmlPath);
+    if (fs.existsSync(canonicalMetaPath)) {
+        fs.copyFileSync(canonicalMetaPath, metadataLib.bmlPathToMetaPath(aiBmlPath));
     }
     return aiBmlPath;
 }

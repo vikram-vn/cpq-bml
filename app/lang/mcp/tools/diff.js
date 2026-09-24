@@ -117,11 +117,11 @@ function computeLineDiff(oldLines, newLines) {
  * then returns a line-by-line unified diff.
  */
 async function diffFunction(options = {}, transport) {
-    const { args, transport: tr } = normalizeToolArgs(arguments);
+    const { args, transport: tr, vscode } = normalizeToolArgs(arguments);
     const { variableName, type = 'util' } = args || {};
     if (!variableName) return { success: false, error: 'variableName is required.' };
 
-    const bmlPath = findOrCreateAiCopy(variableName, { createIfMissing: false });
+    const bmlPath = findOrCreateAiCopy(vscode, variableName, { createIfMissing: false });
     if (!bmlPath) {
         return { success: false, error: `No local file found for "${variableName}". Run pull_function first.` };
     }

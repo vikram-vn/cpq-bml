@@ -4,7 +4,7 @@ const { activateExtension } = require('@/test/extensionHelper');
 
 suite('BML Linter cpqBml.features.lint setting', () => {
     suiteSetup(async function () {
-        if (!vscode.extensions || !vscode.extensions.getExtension) {
+        if (!vscode.languages || typeof vscode.languages.getDiagnostics !== 'function' || !vscode.extensions || !vscode.extensions.getExtension) {
             this.skip();
             return;
         }
