@@ -34,8 +34,7 @@ function resolveActiveSiteKey(vscodeInstance) {
   }
 }
 
-const { setExtensionContext, getContext } = require('@/extensionContext');
-const getExtensionContext = getContext;
+const { setExtensionContext, getExtensionContext, getContext } = require('@/extensionContext');
 let bundledAttributesIndex = null;
 let workspaceAttributesCache = {};
 
@@ -56,7 +55,7 @@ function clearAttributesCache(workspaceRoot, siteKey) {
 }
 
 function getMetadataStorageDir(context, workspaceRoot) {
-  const ctx = context || getExtensionContext();
+  const ctx = (context && (context.storageUri || context.globalStorageUri)) ? context : (context && context.context) ? context.context : getContext();
   if (ctx && ctx.storageUri && ctx.storageUri.fsPath) {
     return ctx.storageUri.fsPath;
   }
@@ -330,9 +329,9 @@ function saveWorkspaceAttributes(workspaceRoot, data, configSettings, context) {
 }
 
 function removeMetadata(context, workspaceRoot, vscode) {
-  const globalCtx = getGlobalContext();
-  const ctx = context || getExtensionContext();
-  const vsc = vscode || globalCtx.vscode;
+  const extCtx = getExtensionContext();
+  const ctx = (context && (context.storageUri || context.globalStorageUri)) ? context : (context && context.context) ? context.context : (context || extCtx.context);
+  const vsc = vscode || extCtx.vscode;
   const backendDir = getMetadataStorageDir(ctx, workspaceRoot);
   const dirs = [];
   if (backendDir && !dirs.includes(backendDir)) dirs.push(backendDir);

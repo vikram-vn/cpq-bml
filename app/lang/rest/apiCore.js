@@ -68,12 +68,12 @@ function normalizeArgs(args) {
 }
 
 function functionsPath(vscode, metadata) {
-  const globalVsc = getGlobalContext().vscode;
-  let effectiveVscode = vscode || globalVsc;
+  const extVsc = getExtensionContext().vscode;
+  let effectiveVscode = vscode || extVsc;
   let effectiveMeta = metadata;
   if (!metadata && vscode && !isContextOrVscode(vscode)) {
     effectiveMeta = vscode;
-    effectiveVscode = globalVsc;
+    effectiveVscode = extVsc;
   }
   const version = getRestVersion(effectiveVscode);
   if (effectiveMeta && effectiveMeta.commerceDocument) {
@@ -125,15 +125,15 @@ async function call(arg1, arg2, arg3, arg4) {
       (arg2 && typeof arg2 === "function") ||
       arguments.length <= 2)
   ) {
-    const g = getGlobalContext();
+    const extCtx = getExtensionContext();
     options = arg1;
     transport = arg2;
-    context = (options && options.context) || g.context;
-    vscode = (options && options.vscode) || g.vscode;
+    context = (options && options.context) || extCtx.context;
+    vscode = (options && options.vscode) || extCtx.vscode;
   } else {
-    const g = getGlobalContext();
-    context = arg1 || g.context;
-    vscode = arg2 || g.vscode;
+    const extCtx = getExtensionContext();
+    context = arg1 || extCtx.context;
+    vscode = arg2 || extCtx.vscode;
     options = arg3 || {};
     transport = arg4;
   }
