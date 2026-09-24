@@ -4,12 +4,14 @@ const { lintXslt } = require("@/lang/xslt/xsltLinter");
 const { registerXsltCodeActions } = require("@/lang/xslt/xsltCodeActions");
 const { registerXsltCompletions } = require("@/lang/xslt/xsltCompletions");
 const { formatXml } = require("@/lang/xslt/formatter");
+const { getContext } = require("@/extensionContext");
 
 function registerXslt(context) {
+  context = context || getContext();
 
   // Register XSLT Diagnostic Linter
   const xsltDiagnostics = vscode.languages.createDiagnosticCollection("xsltLint");
-  context.subscriptions.push(xsltDiagnostics);
+  if (context && context.subscriptions) context.subscriptions.push(xsltDiagnostics);
 
   const debounceTimers = new Map();
   const DEBOUNCE_DELAY_MS = 300;

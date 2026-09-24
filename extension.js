@@ -75,14 +75,14 @@ function activate(context) {
   );
   context.subscriptions.push(workspaceCmd);
 
-  registerBmlRest(context);
-  registerSettingsPanel(context);
-  registerMcp(context);
-  registerXslt(context);
-  registerChatParticipant(context);
-  registerEnvironmentSwitcher(context);
-  registerTestController(context);
-  registerSchemaIntrospector(context);
+  registerBmlRest();
+  registerSettingsPanel();
+  registerMcp();
+  registerXslt();
+  registerChatParticipant();
+  registerEnvironmentSwitcher();
+  registerTestController();
+  registerSchemaIntrospector();
 
   const coverageDecorator = getCoverageDecorator();
   context.subscriptions.push(

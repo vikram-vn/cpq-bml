@@ -1,12 +1,14 @@
 const vscode = require('vscode');
 const { auditBmlCode } = require('@/lang/mcp/tools/audit');
 const { lookupCommerceAttribute } = require('@/lang/mcp/tools/lookup');
+const { getContext } = require('@/extensionContext');
 
 /**
  * Registers the native VS Code Copilot Chat participant '@bml' (id: cpqBml.bmlAssistant).
  * Supports slash commands: /bmql, /audit, /attr
  */
 function registerChatParticipant(context) {
+    context = context || getContext();
     if (!vscode.chat || typeof vscode.chat.createChatParticipant !== 'function') {
         return;
     }
@@ -92,8 +94,12 @@ function registerChatParticipant(context) {
         };
 
         const participant = vscode.chat.createChatParticipant('cpqBml.bmlAssistant', handler);
-        participant.iconPath = vscode.Uri.joinPath(context.extensionUri, 'app', 'icons', 'logo.png');
-        context.subscriptions.push(participant);
+        if (context && context.extensionUri) {
+            participant.iconPath = vscode.Uri.joinPath(context.extensionUri, 'app', 'icons', 'logo.png');
+        }
+        if (context && context.subscriptions) {
+            context.subscriptions.push(participant);
+        }
     } catch (e) {
         console.warn('CPQ-BML: Failed to register chat participant:', e);
     }

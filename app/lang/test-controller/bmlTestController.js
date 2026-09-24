@@ -8,6 +8,7 @@ try {
 
 const fs = require("fs");
 const { BmlTestRunner } = require("@/lang/test-controller/bmlTestRunner");
+const { getContext } = require("@/extensionContext");
 
 const TEST_GLOB_PATTERNS = ["**/*.bmlt", "**/*.test.bml"];
 
@@ -115,12 +116,13 @@ async function handleTestRun(controller, request, token, vscodeInstance = vscode
 }
 
 function createBmlTestController(context, vscodeInstance = vscode) {
+  context = context || getContext();
   if (!vscodeInstance.tests || !vscodeInstance.tests.createTestController) {
     return null;
   }
 
   const controller = vscodeInstance.tests.createTestController("cpqBmlTests", "CPQ BML Tests");
-  context.subscriptions.push(controller);
+  if (context && context.subscriptions) context.subscriptions.push(controller);
 
   const runProfile = controller.createRunProfile(
     "Run BML Tests",
@@ -137,7 +139,7 @@ function createBmlTestController(context, vscodeInstance = vscode) {
     watcher.onDidCreate((uri) => indexTestFile(controller, uri, vscodeInstance));
     watcher.onDidChange((uri) => indexTestFile(controller, uri, vscodeInstance));
     watcher.onDidDelete((uri) => controller.items.delete(uri.fsPath));
-    context.subscriptions.push(watcher);
+    if (context && context.subscriptions) context.subscriptions.push(watcher);
   }
 
   return {

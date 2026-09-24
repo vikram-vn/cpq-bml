@@ -9,6 +9,7 @@ const path = require("path");
 
 const { isConfigured } = require("@/lang/rest/config");
 const { crawlCpqSchema } = require("@/lang/cloud/cpqCrawler");
+const { getContext } = require("@/extensionContext");
 
 let _inMemorySchemaCache = null;
 let _inMemoryCommerceCache = null;
@@ -24,6 +25,9 @@ function getCacheDir(contextOrRoot, maybeRoot) {
   } else if (typeof contextOrRoot === "string") {
     workspaceRoot = contextOrRoot;
     if (maybeRoot && typeof maybeRoot === "object") context = maybeRoot;
+  }
+  if (!context) {
+    context = getContext();
   }
 
   // 1. VS Code Extension backend globalStorageUri (clean user workspace)
@@ -192,46 +196,52 @@ async function crawlLive(context, vscodeInstance, options = {}) {
 }
 
 function registerSchemaIntrospector(context, vscodeInstance = vscode) {
+  context = context || getContext();
   if (!vscodeInstance || !vscodeInstance.commands) return;
 
-  vscodeInstance.subscriptions?.push?.(
-    vscodeInstance.commands.registerCommand("cpqBml.introspectSchema", async () => {
-      if (isConfigured(vscodeInstance) && vscodeInstance.window && vscodeInstance.window.withProgress) {
-        try {
-          const res = await vscodeInstance.window.withProgress(
-            {
-              location: 15, // Notification
-              title: "Crawling Oracle CPQ Metadata (Commerce & Configuration)...",
-              cancellable: false,
-            },
-            async (progress) => {
-              return crawlLive(context, vscodeInstance, {
-                onProgress: (p) => {
-                  progress.report({ message: p.message });
-                },
-              });
-            }
-          );
-
-          if (res && res.ok) {
-            clearCache();
-            vscodeInstance.window.showInformationMessage(
-              `CPQ Schema Crawled: ${res.stats.processes} processes, ${res.stats.documents} documents, ${res.stats.actions} actions, ${res.stats.productFamilies} product families, ${res.stats.attributes} attributes saved in backend storage.`
-            );
-            return res.schema;
+  const cmd = vscodeInstance.commands.registerCommand("cpqBml.introspectSchema", async () => {
+    if (isConfigured(vscodeInstance) && vscodeInstance.window && vscodeInstance.window.withProgress) {
+      try {
+        const res = await vscodeInstance.window.withProgress(
+          {
+            location: 15, // Notification
+            title: "Crawling Oracle CPQ Metadata (Commerce & Configuration)...",
+            cancellable: false,
+          },
+          async (progress) => {
+            return crawlLive(context, vscodeInstance, {
+              onProgress: (p) => {
+                progress.report({ message: p.message });
+              },
+            });
           }
-        } catch (err) {
-          console.warn("Live crawl error, falling back to local workspace introspection:", err);
-        }
-      }
+        );
 
-      const schema = introspectWorkspace(undefined, context);
-      vscodeInstance.window?.showInformationMessage?.(
-        `CPQ Schema Introspected: ${schema.transactionAttributes.length} transaction attributes, ${schema.lineItemAttributes.length} line item attributes, ${schema.dataTables.length} Data Tables cached in backend storage.`
-      );
-      return schema;
-    })
-  );
+        if (res && res.ok) {
+          clearCache();
+          vscodeInstance.window.showInformationMessage(
+            `CPQ Schema Crawled: ${res.stats.processes} processes, ${res.stats.documents} documents, ${res.stats.actions} actions, ${res.stats.productFamilies} product families, ${res.stats.attributes} attributes saved in backend storage.`
+          );
+          return res.schema;
+        }
+      } catch (err) {
+        console.warn("Live crawl error, falling back to local workspace introspection:", err);
+      }
+    }
+
+    const schema = introspectWorkspace(undefined, context);
+    vscodeInstance.window?.showInformationMessage?.(
+      `CPQ Schema Introspected: ${schema.transactionAttributes.length} transaction attributes, ${schema.lineItemAttributes.length} line item attributes, ${schema.dataTables.length} Data Tables cached in backend storage.`
+    );
+    return schema;
+  });
+
+  if (context && context.subscriptions) {
+    context.subscriptions.push(cmd);
+  }
+  if (vscodeInstance.subscriptions && typeof vscodeInstance.subscriptions.push === "function") {
+    vscodeInstance.subscriptions.push(cmd);
+  }
 }
 
 const SchemaIntrospector = {

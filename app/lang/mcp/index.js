@@ -5,6 +5,7 @@ const { startMcpServer, stopMcpServer, getMcpServerStatus } = require('@/lang/mc
 const { registerMcpWithAllTools, deregisterMcpFromAllTools } = require('@/ai/setup/mcpAutoRegister');
 
 const { safeAppendLog } = require('@/lang/rest/logger');
+const { getContext } = require('@/extensionContext');
 
 function logMcpServerEvent(message) {
     try {
@@ -19,6 +20,7 @@ function logMcpServerEvent(message) {
 }
 
 function registerMcp(context) {
+    context = context || getContext();
 
     const getSettings = () => {
         const cfg = vscode.workspace.getConfiguration('cpqBml');

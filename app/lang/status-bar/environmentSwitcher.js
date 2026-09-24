@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const { getActiveEnvironmentName } = require('@/lang/rest/terminal');
 const { exportTeamProfiles, importTeamProfiles } = require('@/lang/status-bar/profileSharing');
+const { getContext } = require('@/extensionContext');
 
 let statusBarItem = null;
 
@@ -108,13 +109,15 @@ async function switchEnvironment() {
 }
 
 function registerEnvironmentSwitcher(context) {
+    context = context || getContext();
     if (vscode.window && typeof vscode.window.createStatusBarItem === 'function') {
         statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 99);
         statusBarItem.command = 'cpqBml.switchEnvironment';
-        context.subscriptions.push(statusBarItem);
+        if (context && context.subscriptions) context.subscriptions.push(statusBarItem);
         updateStatusBar();
 
-        context.subscriptions.push(
+        if (context && context.subscriptions) {
+            context.subscriptions.push(
             vscode.commands.registerCommand('cpqBml.switchEnvironment', switchEnvironment),
             vscode.commands.registerCommand('cpqBml.exportTeamProfiles', exportTeamProfiles),
             vscode.commands.registerCommand('cpqBml.importTeamProfiles', importTeamProfiles),
@@ -127,6 +130,7 @@ function registerEnvironmentSwitcher(context) {
                 updateStatusBar();
             })
         );
+        }
     }
 }
 

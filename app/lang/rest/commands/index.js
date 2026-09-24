@@ -32,7 +32,7 @@ const {
   isSuccess,
 } = require("@/lang/rest/commands/shared");
 const { hasMissingCredentials } = require("@/lang/rest/config");
-const { setExtensionContext, getExtensionContext } = require("@/extensionContext");
+const { setExtensionContext, getExtensionContext, getContext } = require("@/extensionContext");
 
 // Gates the editor/title toolbar icons on a fully usable connection (siteUrl + username/token + matching secret), not just the enabled toggle.
 async function refreshConnectionConfiguredContext(maybeContext, maybeVscode) {
@@ -76,11 +76,12 @@ function refreshCommerceSyncContext(maybeVscode) {
 }
 
 function registerBmlRestCommands(context) {
-  setExtensionContext(context, vscode);
+  context = context || getContext();
+  if (context) setExtensionContext(context, vscode);
 
   const diagnosticCollection =
     vscode.languages.createDiagnosticCollection("rest-validate");
-  context.subscriptions.push(diagnosticCollection);
+  if (context && context.subscriptions) context.subscriptions.push(diagnosticCollection);
 
   const resultsTerminal = getResultsTerminal(vscode);
   context.subscriptions.push(resultsTerminal);

@@ -7,6 +7,7 @@ try {
 const { handleMessage } = require("@/lang/settings/messageHandler");
 const { titleForTab } = require("@/lang/settings/tabTitles");
 const { hasMissingCredentials } = require("@/lang/rest/config");
+const { getContext } = require("@/extensionContext");
 
 let currentPanel = null;
 
@@ -16,25 +17,28 @@ const AUTO_OPENED_SESSION_KEY = "cpqBml.settingsPanel.sessionAutoOpened";
 const BML_OPEN_AUTO_OPENED_KEY = "cpqBml.settingsPanel.bmlOpenAutoOpened";
 
 function shouldAutoOpenOnInstall(context) {
-  return !context.globalState.get(FIRST_INSTALL_KEY, false);
+  const ctx = context || getContext();
+  return ctx && ctx.globalState ? !ctx.globalState.get(FIRST_INSTALL_KEY, false) : false;
 }
 
 function registerSettingsPanel(context) {
-  context.subscriptions.push(
-    vscode.commands.registerCommand("cpqBml.settings.open", (args) =>
-      openPanel(context, vscode, args),
-    ),
-  );
+  context = context || getContext();
+  if (context && context.subscriptions) {
+    context.subscriptions.push(
+      vscode.commands.registerCommand("cpqBml.settings.open", (args) =>
+        openPanel(context, vscode, args),
+      ),
+    );
+  }
 
   const config = vscode.workspace.getConfiguration("cpqBml");
   const siteUrl = (config.get("connection.siteUrl", "") || "").trim();
   const environments = config.get("connection.environments", []) || [];
   const isConfigEmpty =
     !siteUrl && (!Array.isArray(environments) || environments.length === 0);
-  const hasAutoOpenedThisSession = context.workspaceState.get(
-    AUTO_OPENED_SESSION_KEY,
-    false,
-  );
+  const hasAutoOpenedThisSession = (context && context.workspaceState)
+    ? context.workspaceState.get(AUTO_OPENED_SESSION_KEY, false)
+    : false;
 
   const isTestEnv = () => {
     return !!(
@@ -68,8 +72,8 @@ function registerSettingsPanel(context) {
       shouldAutoOpenOnInstall(context) ||
       (isConfigEmpty && !hasAutoOpenedThisSession)
     ) {
-      context.globalState.update(FIRST_INSTALL_KEY, true);
-      context.workspaceState.update(AUTO_OPENED_SESSION_KEY, true);
+      if (context && context.globalState) context.globalState.update(FIRST_INSTALL_KEY, true);
+      if (context && context.workspaceState) context.workspaceState.update(AUTO_OPENED_SESSION_KEY, true);
       if (!siteUrl) {
         openPanel(context, vscode);
       }
@@ -123,11 +127,13 @@ function registerSettingsPanel(context) {
     checkAndAutoOpenForBml(vscode.window.activeTextEditor.document);
   }
 
-  context.subscriptions.push(
-    vscode.workspace.onDidOpenTextDocument((document) => {
-      checkAndAutoOpenForBml(document);
-    }),
-  );
+  if (context && context.subscriptions) {
+    context.subscriptions.push(
+      vscode.workspace.onDidOpenTextDocument((document) => {
+        checkAndAutoOpenForBml(document);
+      }),
+    );
+  }
 }
 
 function openPanel(context, vscode, args) {
