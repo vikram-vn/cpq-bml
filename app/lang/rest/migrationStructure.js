@@ -57,6 +57,7 @@ const CONFIG_CHILD_FOLDER = {
   rule_initialization:       'rules/initialization',
   product_line:              'models',
   model:                     'models',
+  stylesheet:                'stylesheets',
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -236,6 +237,11 @@ function mkdirp(dir) {
 // Deep structure builders per category
 // ─────────────────────────────────────────────────────────────────────────────
 
+function sanitizeFolderName(name) {
+  if (!name) return 'unnamed';
+  return String(name).replace(/[<>:"/\\|?*]/g, '_').trim();
+}
+
 function buildCommerceProcessDepth(procDir, processItem) {
   const { name, variableName, children = [] } = processItem;
 
@@ -245,7 +251,7 @@ function buildCommerceProcessDepth(procDir, processItem) {
   function ensureFolder(rel, content) {
     const dir = pathLib.join(procDir, rel);
     mkdirp(dir);
-    writeReadme(dir, content);
+    if (content) writeReadme(dir, content);
     return dir;
   }
 
@@ -283,6 +289,47 @@ function buildCommerceProcessDepth(procDir, processItem) {
     'xsl-views':             'xsl-views',
   };
 
+  // Canonical plural mapping for Document child resource types
+  const DOC_CHILD_TYPE_MAP = {
+    action:                  'actions',
+    actions:                 'actions',
+    action_set:              'action-sets',
+    action_sets:             'action-sets',
+    'action-set':            'action-sets',
+    'action-sets':           'action-sets',
+    attribute:               'attributes',
+    attributes:              'attributes',
+    attribute_set:           'attribute-sets',
+    attribute_sets:          'attribute-sets',
+    'attribute-set':         'attribute-sets',
+    'attribute-sets':        'attribute-sets',
+    array_attr_set:          'array-attribute-sets',
+    array_attr_sets:         'array-attribute-sets',
+    'array-attr-set':        'array-attribute-sets',
+    'array-attribute-sets':  'array-attribute-sets',
+    rule:                    'rules',
+    rules:                   'rules',
+    library:                 'library-functions',
+    libraries:               'library-functions',
+    'library-functions':     'library-functions',
+    jet_layout:              'layouts',
+    redwoodLayoutRule:       'layouts',
+    redwood_layout:          'layouts',
+    layout:                  'layouts',
+    layouts:                 'layouts',
+  };
+
+  const STANDARD_DOC_FOLDERS = [
+    { key: 'actions',                folder: 'actions',                label: 'Action(s)' },
+    { key: 'action-sets',            folder: 'action-sets',            label: 'Action Set(s)' },
+    { key: 'attributes',             folder: 'attributes',             label: 'Attribute(s)' },
+    { key: 'attribute-sets',         folder: 'attribute-sets',         label: 'Attribute Set(s)' },
+    { key: 'array-attribute-sets',   folder: 'array-attribute-sets',   label: 'Array Attribute Set(s)' },
+    { key: 'rules',                  folder: 'rules',                  label: 'Rule(s)' },
+    { key: 'library-functions',      folder: 'library-functions',      label: 'Library Function(s)' },
+    { key: 'layouts',                folder: 'layouts',                label: 'Layout(s)' },
+  ];
+
   // Group children by normalized plural resourceType
   const byType = {};
   for (const c of children) {
@@ -296,7 +343,7 @@ function buildCommerceProcessDepth(procDir, processItem) {
   // 1. Action(s)                 → actions/
   // 2. Asset Management          → asset-management/
   // 3. Data Column(s)            → data-columns/
-  // 4. Document(s)               → documents/ (with per-document subfolders)
+  // 4. Document(s)               → documents/ (with per-document deep subfolders)
   // 5. Formula(s)                → formulas/
   // 6. Integration(s)            → integrations/
   // 7. Process Manager Column(s) → process-manager-columns/
@@ -320,24 +367,193 @@ function buildCommerceProcessDepth(procDir, processItem) {
     const items = byType[def.key] || [];
     const label = (items[0] && items[0].resourceTypeLabel) || def.label;
 
-    ensureFolder(def.folder, buildSubfolderReadme(
+    const catDir = ensureFolder(def.folder, buildSubfolderReadme(
       name + ' — ' + label, 'COMMERCE', variableName, def.key, items
     ));
 
-    // Per-document subdirectories under documents/ (e.g. transaction/, transactionLine/)
+    // Special handling for documents: build deep hierarchy
     if (def.key === 'documents') {
       for (const doc of items) {
         if (!doc.variableName) continue;
-        ensureFolder(def.folder + '/' + doc.variableName, [
-          '# Document: ' + (doc.name || doc.variableName),
+        const docDir = pathLib.join(catDir, sanitizeFolderName(doc.variableName));
+        mkdirp(docDir);
+
+        const docChildren = doc.children || [];
+        const docByType = {};
+        for (const dc of docChildren) {
+          const rawType = dc.resourceType || 'other';
+          const t = DOC_CHILD_TYPE_MAP[rawType] || rawType;
+          if (!docByType[t]) docByType[t] = [];
+          docByType[t].push(dc);
+        }
+
+        // Build Document README
+        const docLines = [
+          `# Document: ${doc.name || doc.variableName}`,
           '',
-          '**Variable Name:** `' + doc.variableName + '`  ',
-          '**Process:** `' + variableName + '`  ',
-          '**Resource Type:** `document`  ',
+          `**Variable Name:** \`${doc.variableName}\`  `,
+          `**Process:** \`${name} (${variableName})\`  `,
+          `**Resource Type:** \`document\`  `,
+        ];
+        if (doc.lastModified) docLines.push(`**Last Modified:** ${doc.lastModified}  `);
+        docLines.push('');
+        docLines.push('> Commerce Process Document (e.g. Transaction header, Line Item)');
+        docLines.push('');
+        docLines.push(`## Child Resources (${docChildren.length})`);
+        docLines.push('');
+
+        for (const dFolder of STANDARD_DOC_FOLDERS) {
+          const dItems = docByType[dFolder.key] || [];
+          if (dItems.length > 0) {
+            docLines.push(`- **[${dFolder.label}](./${dFolder.folder}/)** (${dItems.length} items)`);
+          }
+        }
+        const knownDocKeys = new Set(STANDARD_DOC_FOLDERS.map(f => f.key));
+        for (const [dt, dItems] of Object.entries(docByType)) {
+          if (!knownDocKeys.has(dt)) {
+            docLines.push(`- **[${dt}](./${dt}/)** (${dItems.length} items)`);
+          }
+        }
+        docLines.push('');
+        writeReadme(docDir, docLines.join('\n'));
+
+        // Build each document child category folder + subfolder per entry
+        for (const dFolder of STANDARD_DOC_FOLDERS) {
+          const dItems = docByType[dFolder.key] || [];
+          if (!dItems.length) continue;
+
+          const dCatDir = pathLib.join(docDir, dFolder.folder);
+          mkdirp(dCatDir);
+          writeReadme(dCatDir, buildSubfolderReadme(
+            `${doc.name || doc.variableName} — ${dFolder.label}`,
+            `COMMERCE/${variableName}/documents`,
+            doc.variableName,
+            dFolder.key,
+            dItems
+          ));
+
+          for (const item of dItems) {
+            const itemFolder = pathLib.join(dCatDir, sanitizeFolderName(item.variableName || item.name));
+            mkdirp(itemFolder);
+
+            const itemLines = [
+              `# ${item.name || item.variableName}`,
+              '',
+              `**Variable Name:** \`${item.variableName || item.name}\`  `,
+              `**Document:** \`${doc.name || doc.variableName} (${doc.variableName})\`  `,
+              `**Process:** \`${name} (${variableName})\`  `,
+              `**Resource Type:** \`${item.resourceTypeLabel || item.resourceType || dFolder.key}\`  `,
+            ];
+            if (item.lastModified) itemLines.push(`**Last Modified:** ${item.lastModified}  `);
+            itemLines.push('');
+            itemLines.push('> Source: Oracle CPQ Migration REST API');
+            itemLines.push(`> \`GET /migrationResources/COMMERCE/${variableName}\` → Document \`${doc.variableName}\``);
+            itemLines.push('');
+
+            if (item.children && item.children.length > 0) {
+              itemLines.push(`## Child Items (${item.children.length})`);
+              itemLines.push('');
+              itemLines.push(formatItems(item.children, 100));
+              itemLines.push('');
+
+              for (const subAttr of item.children) {
+                const subDir = pathLib.join(itemFolder, sanitizeFolderName(subAttr.variableName || subAttr.name));
+                mkdirp(subDir);
+                writeReadme(subDir, [
+                  `# ${subAttr.name || subAttr.variableName}`,
+                  '',
+                  `**Variable Name:** \`${subAttr.variableName || subAttr.name}\`  `,
+                  `**Parent:** \`${item.name || item.variableName}\`  `,
+                  `**Document:** \`${doc.name || doc.variableName}\`  `,
+                  `**Process:** \`${name} (${variableName})\`  `,
+                  `**Resource Type:** \`${subAttr.resourceTypeLabel || subAttr.resourceType || 'attribute'}\`  `,
+                  '',
+                ].join('\n'));
+              }
+            }
+
+            writeReadme(itemFolder, itemLines.join('\n'));
+
+            // Document actions: before-formulas / after-formulas
+            if (dFolder.key === 'actions') {
+              const beforeDir = pathLib.join(itemFolder, 'before-formulas');
+              mkdirp(beforeDir);
+              writeReadme(beforeDir, `# Before Formulas\n\n> BML executed before formulas evaluate for action \`${item.variableName || item.name}\`.`);
+              const afterDir = pathLib.join(itemFolder, 'after-formulas');
+              mkdirp(afterDir);
+              writeReadme(afterDir, `# After Formulas\n\n> BML executed after formulas evaluate for action \`${item.variableName || item.name}\`.`);
+            }
+
+            // Document attributes: default / modify
+            if (dFolder.key === 'attributes') {
+              const defaultDir = pathLib.join(itemFolder, 'default');
+              mkdirp(defaultDir);
+              writeReadme(defaultDir, `# Default Logic\n\n> BML default value calculation for attribute \`${item.variableName || item.name}\`.`);
+              const modifyDir = pathLib.join(itemFolder, 'modify');
+              mkdirp(modifyDir);
+              writeReadme(modifyDir, `# Modify Logic\n\n> BML modify/recalculation logic for attribute \`${item.variableName || item.name}\`.`);
+            }
+
+            // Document rules: rule-condition / rule-component
+            if (dFolder.key === 'rules') {
+              const condDir = pathLib.join(itemFolder, 'rule-condition');
+              mkdirp(condDir);
+              writeReadme(condDir, `# Rule Condition\n\n> BML condition or criteria for rule \`${item.variableName || item.name}\`.`);
+              const compDir = pathLib.join(itemFolder, 'rule-component');
+              mkdirp(compDir);
+              writeReadme(compDir, `# Rule Component\n\n> BML component or action logic for rule \`${item.variableName || item.name}\`.`);
+            }
+          }
+        }
+      }
+    } else {
+      // Build individual entry folder for each item in category
+      for (const item of items) {
+        const itemFolder = pathLib.join(catDir, sanitizeFolderName(item.variableName || item.name));
+        mkdirp(itemFolder);
+
+        const itemLines = [
+          `# ${item.name || item.variableName}`,
           '',
-          '> Commerce Process Document (e.g. Transaction header, Line Item)',
-          '',
-        ].join('\n'));
+          `**Variable Name:** \`${item.variableName || item.name}\`  `,
+          `**Process:** \`${name} (${variableName})\`  `,
+          `**Resource Type:** \`${item.resourceTypeLabel || item.resourceType || def.key}\`  `,
+          `**Category:** \`COMMERCE\`  `,
+        ];
+        if (item.lastModified) itemLines.push(`**Last Modified:** ${item.lastModified}  `);
+        itemLines.push('');
+        itemLines.push('> Source: Oracle CPQ Migration REST API');
+        itemLines.push(`> \`GET /migrationResources/COMMERCE/${variableName}\``);
+        itemLines.push('');
+
+        if (item.children && item.children.length > 0) {
+          itemLines.push(`## Children (${item.children.length})`);
+          itemLines.push('');
+          itemLines.push(formatItems(item.children, 100));
+          itemLines.push('');
+        }
+
+        writeReadme(itemFolder, itemLines.join('\n'));
+
+        // Process-level actions: before-formulas / after-formulas
+        if (def.key === 'actions') {
+          const beforeDir = pathLib.join(itemFolder, 'before-formulas');
+          mkdirp(beforeDir);
+          writeReadme(beforeDir, `# Before Formulas\n\n> BML executed before formulas evaluate for action \`${item.variableName || item.name}\`.`);
+          const afterDir = pathLib.join(itemFolder, 'after-formulas');
+          mkdirp(afterDir);
+          writeReadme(afterDir, `# After Formulas\n\n> BML executed after formulas evaluate for action \`${item.variableName || item.name}\`.`);
+        }
+
+        // Process-level data-columns: default / modify
+        if (def.key === 'data-columns') {
+          const defaultDir = pathLib.join(itemFolder, 'default');
+          mkdirp(defaultDir);
+          writeReadme(defaultDir, `# Default Logic\n\n> BML default value calculation for data column \`${item.variableName || item.name}\`.`);
+          const modifyDir = pathLib.join(itemFolder, 'modify');
+          mkdirp(modifyDir);
+          writeReadme(modifyDir, `# Modify Logic\n\n> BML modify/recalculation logic for data column \`${item.variableName || item.name}\`.`);
+        }
       }
     }
   }
@@ -347,14 +563,27 @@ function buildCommerceProcessDepth(procDir, processItem) {
   for (const [type, items] of Object.entries(byType)) {
     if (knownKeys.has(type)) continue;
     const folder = type.replace(/_/g, '-');
-    ensureFolder(folder, buildSubfolderReadme(
+    const uCatDir = ensureFolder(folder, buildSubfolderReadme(
       name + ' — ' + ((items[0] && items[0].resourceTypeLabel) || folder),
       'COMMERCE', variableName, type, items
     ));
+    for (const item of items) {
+      const itemFolder = pathLib.join(uCatDir, sanitizeFolderName(item.variableName || item.name));
+      mkdirp(itemFolder);
+      writeReadme(itemFolder, [
+        `# ${item.name || item.variableName}`,
+        '',
+        `**Variable Name:** \`${item.variableName || item.name}\`  `,
+        `**Process:** \`${name} (${variableName})\`  `,
+        `**Resource Type:** \`${item.resourceTypeLabel || item.resourceType || type}\`  `,
+        '',
+      ].join('\n'));
+    }
   }
 }
+
 function buildConfigFamilyDepth(familyDir, familyItem) {
-  const { variableName, children = [] } = familyItem;
+  const { variableName, name, children = [], productLines = [] } = familyItem;
 
   // Root README
   writeReadme(familyDir, buildItemReadme('CONFIGURATION', familyItem));
@@ -364,6 +593,22 @@ function buildConfigFamilyDepth(familyDir, familyItem) {
     const t = c.resourceType || 'other';
     if (!byType[t]) byType[t] = [];
     byType[t].push(c);
+  }
+
+  // Ensure rules/ overview README
+  const hasRules = Object.keys(byType).some(t => t.startsWith('rule_'));
+  if (hasRules) {
+    const rulesDir = pathLib.join(familyDir, 'rules');
+    mkdirp(rulesDir);
+    writeReadme(rulesDir, [
+      `# ${name || variableName} — Configuration Rules`,
+      '',
+      `**Product Family:** \`${variableName}\`  `,
+      `**Category:** \`CONFIGURATION\`  `,
+      '',
+      '> Configuration rules define recommendations, constraints, hiding, recommended items, and flows.',
+      '',
+    ].join('\n'));
   }
 
   for (const [type, items] of Object.entries(byType)) {
@@ -381,6 +626,134 @@ function buildConfigFamilyDepth(familyDir, familyItem) {
       type,
       items
     ));
+
+    // For EACH item in this category:
+    for (const item of items) {
+      const itemFolder = pathLib.join(subDir, sanitizeFolderName(item.variableName || item.name));
+      mkdirp(itemFolder);
+
+      const itemLines = [
+        `# ${item.name || item.variableName}`,
+        '',
+        `**Variable Name:** \`${item.variableName || item.name}\`  `,
+        `**Product Family:** \`${name || variableName} (${variableName})\`  `,
+        `**Resource Type:** \`${item.resourceTypeLabel || item.resourceType || type}\`  `,
+        `**Category:** \`CONFIGURATION\`  `,
+      ];
+      if (item.lastModified) itemLines.push(`**Last Modified:** ${item.lastModified}  `);
+      itemLines.push('');
+      itemLines.push('> Source: Oracle CPQ Migration REST API');
+      itemLines.push(`> \`GET /migrationResources/CONFIGURATION/${variableName}\``);
+      itemLines.push('');
+
+      writeReadme(itemFolder, itemLines.join('\n'));
+
+      // If this is an attribute: add default/ and modify/ subfolders
+      if (type === 'attribute') {
+        const defaultDir = pathLib.join(itemFolder, 'default');
+        mkdirp(defaultDir);
+        writeReadme(defaultDir, `# Default Logic\n\n> Default logic for attribute \`${item.variableName || item.name}\`.`);
+
+        const modifyDir = pathLib.join(itemFolder, 'modify');
+        mkdirp(modifyDir);
+        writeReadme(modifyDir, `# Modify Logic\n\n> Modify/recalculation logic for attribute \`${item.variableName || item.name}\`.`);
+      }
+
+      // If this is a rule: add rule-condition/ and rule-component/ subfolders
+      if (type.startsWith('rule_')) {
+        const condDir = pathLib.join(itemFolder, 'rule-condition');
+        mkdirp(condDir);
+        writeReadme(condDir, `# Rule Condition\n\n> Condition and criteria for rule \`${item.variableName || item.name}\`.`);
+
+        const compDir = pathLib.join(itemFolder, 'rule-component');
+        mkdirp(compDir);
+        writeReadme(compDir, `# Rule Component\n\n> Action and component logic for rule \`${item.variableName || item.name}\`.`);
+      }
+    }
+  }
+
+  // Build models depth with product lines and models
+  const modelsDir = pathLib.join(familyDir, 'models');
+  mkdirp(modelsDir);
+
+  const linesToRender = productLines.length > 0 ? productLines : (familyItem.lines || []);
+  const modelsReadmeLines = [
+    `# ${name || variableName} — Product Lines & Models`,
+    '',
+    `**Product Family:** \`${variableName}\`  `,
+    `**Category:** \`CONFIGURATION\` / \`CATALOG\`  `,
+    '',
+    '> Product Lines and Models belonging to this Product Family.',
+    '',
+  ];
+
+  if (linesToRender.length > 0) {
+    modelsReadmeLines.push('## Product Lines');
+    modelsReadmeLines.push('');
+    for (const pl of linesToRender) {
+      const modelCount = (pl.models || []).length;
+      modelsReadmeLines.push(`- **[${pl.name || pl.variableName}](./${sanitizeFolderName(pl.variableName)}/)** (${modelCount} models)`);
+    }
+    modelsReadmeLines.push('');
+    writeReadme(modelsDir, modelsReadmeLines.join('\n'));
+
+    for (const pl of linesToRender) {
+      const plDir = pathLib.join(modelsDir, sanitizeFolderName(pl.variableName || pl.name));
+      mkdirp(plDir);
+
+      const plLines = [
+        `# Product Line: ${pl.name || pl.variableName}`,
+        '',
+        `**Variable Name:** \`${pl.variableName}\`  `,
+        `**Product Family:** \`${variableName}\`  `,
+        `**Models Count:** ${(pl.models || []).length}`,
+        '',
+        '## Models',
+        '',
+      ];
+      for (const m of (pl.models || [])) {
+        plLines.push(`- **[${m.name || m.variableName}](./${sanitizeFolderName(m.variableName)}/)**`);
+      }
+      plLines.push('');
+      writeReadme(plDir, plLines.join('\n'));
+
+      for (const m of (pl.models || [])) {
+        const mDir = pathLib.join(plDir, sanitizeFolderName(m.variableName || m.name));
+        mkdirp(mDir);
+
+        writeReadme(mDir, [
+          `# Model: ${m.name || m.variableName}`,
+          '',
+          `**Variable Name:** \`${m.variableName}\`  `,
+          `**Product Line:** \`${pl.variableName}\`  `,
+          `**Product Family:** \`${variableName}\`  `,
+          '',
+          '## Sub-resources',
+          '- [Attributes](./attributes/)',
+          '- [Rules](./rules/)',
+          '- [Layouts](./layouts/)',
+          '',
+        ].join('\n'));
+
+        const mAttrDir = pathLib.join(mDir, 'attributes');
+        mkdirp(mAttrDir);
+        writeReadme(mAttrDir, `# Model Attributes: ${m.name || m.variableName}\n\n> Model-level configuration attributes.`);
+
+        const mRuleDir = pathLib.join(mDir, 'rules');
+        mkdirp(mRuleDir);
+        writeReadme(mRuleDir, `# Model Rules: ${m.name || m.variableName}\n\n> Model-level configuration rules.`);
+
+        const mLayoutDir = pathLib.join(mDir, 'layouts');
+        mkdirp(mLayoutDir);
+        writeReadme(mLayoutDir, `# Model Layouts: ${m.name || m.variableName}\n\n> Model configuration layout templates.`);
+      }
+    }
+  } else {
+    modelsReadmeLines.push('## Product Lines');
+    modelsReadmeLines.push('');
+    modelsReadmeLines.push('_None or not discovered._');
+    modelsReadmeLines.push('');
+    writeReadme(modelsDir, modelsReadmeLines.join('\n'));
   }
 }
 
@@ -668,15 +1041,18 @@ function getBaseCategoryDir(siteRoot) {
   return siteRoot;
 }
 
-/**
- * Enriches a commerce process folder with deep children fetched from granular API.
- * Called after the top-level structure is built, when granular data is available.
- */
 function enrichCommerceProcess(siteRoot, processVarName, processItem) {
   const base = getBaseCategoryDir(siteRoot);
   const procDir = pathLib.join(base, 'commerce', processVarName);
   mkdirp(procDir);
   buildCommerceProcessDepth(procDir, processItem);
+
+  const backupDir = pathLib.join(siteRoot, 'backup');
+  if (fs.existsSync(backupDir)) {
+    const backupProcDir = pathLib.join(backupDir, 'commerce', processVarName);
+    mkdirp(backupProcDir);
+    replicateStructure(procDir, backupProcDir, 'Backup', 'Local pristine snapshots and rollback restore points prior to edit.', procDir);
+  }
 }
 
 /**
@@ -687,6 +1063,13 @@ function enrichConfigFamily(siteRoot, familyVarName, familyItem) {
   const famDir = pathLib.join(base, 'configuration', familyVarName);
   mkdirp(famDir);
   buildConfigFamilyDepth(famDir, familyItem);
+
+  const backupDir = pathLib.join(siteRoot, 'backup');
+  if (fs.existsSync(backupDir)) {
+    const backupFamDir = pathLib.join(backupDir, 'configuration', familyVarName);
+    mkdirp(backupFamDir);
+    replicateStructure(famDir, backupFamDir, 'Backup', 'Local pristine snapshots and rollback restore points prior to edit.', famDir);
+  }
 }
 
 /**
@@ -697,6 +1080,13 @@ function enrichDataTableFolder(siteRoot, folderVarName, folderItem) {
   const folderDir = pathLib.join(base, 'data-tables', folderVarName);
   mkdirp(folderDir);
   buildDataTableFolderDepth(folderDir, folderItem);
+
+  const backupDir = pathLib.join(siteRoot, 'backup');
+  if (fs.existsSync(backupDir)) {
+    const backupFolderDir = pathLib.join(backupDir, 'data-tables', folderVarName);
+    mkdirp(backupFolderDir);
+    replicateStructure(folderDir, backupFolderDir, 'Backup', 'Local pristine snapshots and rollback restore points prior to edit.', folderDir);
+  }
 }
 
 module.exports = {

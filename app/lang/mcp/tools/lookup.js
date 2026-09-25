@@ -1,6 +1,8 @@
+const fs = require('fs');
 const path = require('path');
 const api = require('@/lang/rest/api');
 const config = require('@/lang/rest/config');
+const foldersLib = require('@/lang/rest/folders');
 const metadataLib = require('@/lang/rest/metadata');
 const commerceAttributes = require('@/lang/rest/commerceAttributes');
 const {
@@ -140,13 +142,42 @@ async function pullFunction(options = {}, transport) {
     const workspaceRoot = wsRoot;
 
     const { vscode } = getApiContext();
-    const bmlPath = isCommerce
-        ? path.join(workspaceRoot, config.getCommerceLibrariesFolder(vscode, commerceProcess), metadata.variableName, `${metadata.variableName}.bml`)
-        : path.join(workspaceRoot, config.getUtilLibrariesFolder(vscode), metadata.folderName || '', metadata.variableName, `${metadata.variableName}.bml`);
+    const siteName = config.getCpqSiteName(vscode);
+    const hasModifyDir = fs.existsSync(path.join(workspaceRoot, 'cpq', siteName, 'modify'));
 
-    const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
-    metadataLib.writeBmlFile(bmlPath, scriptText);
-    metadataLib.writeMetadata(metaPath, metadata);
+    let bmlPath;
+    if (hasModifyDir) {
+        const modifyFolder = isCommerce
+            ? foldersLib.getModifyFolder(vscode, 'commerce', commerceProcess)
+            : foldersLib.getModifyFolder(vscode, 'util-libraries');
+        const backupFolder = isCommerce
+            ? foldersLib.getBackupFolder(vscode, 'commerce', commerceProcess)
+            : foldersLib.getBackupFolder(vscode, 'util-libraries');
+
+        const relSubPath = isCommerce
+            ? path.join('libraries', metadata.variableName, `${metadata.variableName}.bml`)
+            : path.join(metadata.folderName || '', metadata.variableName, `${metadata.variableName}.bml`);
+
+        const backupBmlPath = path.join(workspaceRoot, backupFolder, relSubPath);
+        const modifyBmlPath = path.join(workspaceRoot, modifyFolder, relSubPath);
+
+        // Always store pristine original in backup and never overwrite it during local edits
+        metadataLib.writeBmlFile(backupBmlPath, scriptText);
+        metadataLib.writeMetadata(metadataLib.bmlPathToMetaPath(backupBmlPath), metadata);
+
+        // Keep working copy in modify
+        bmlPath = modifyBmlPath;
+        metadataLib.writeBmlFile(bmlPath, scriptText);
+        metadataLib.writeMetadata(metadataLib.bmlPathToMetaPath(bmlPath), metadata);
+    } else {
+        bmlPath = isCommerce
+            ? path.join(workspaceRoot, config.getCommerceLibrariesFolder(vscode, commerceProcess), metadata.variableName, `${metadata.variableName}.bml`)
+            : path.join(workspaceRoot, config.getUtilLibrariesFolder(vscode), metadata.folderName || '', metadata.variableName, `${metadata.variableName}.bml`);
+
+        const metaPath = metadataLib.bmlPathToMetaPath(bmlPath);
+        metadataLib.writeBmlFile(bmlPath, scriptText);
+        metadataLib.writeMetadata(metaPath, metadata);
+    }
 
     const aiPath = findOrCreateAiCopy(metadata.variableName);
 

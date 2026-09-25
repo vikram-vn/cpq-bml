@@ -123,8 +123,28 @@ async function main() {
         process.stdout.write(`    • ${fam.variableName} ... `);
         const detail = await fetchGranular('CONFIGURATION', fam.variableName);
         if (detail) {
+          // Discover product lines and models for this configuration family
+          try {
+            const apiConfig = require('@/lang/rest/apiConfig');
+            const plRes = await apiConfig.listProductLines({ productFamily: fam.variableName });
+            if (plRes && plRes.body && plRes.body.items) {
+              detail.productLines = [];
+              for (const pl of plRes.body.items) {
+                const lineItem = { variableName: pl.variableName, name: pl.label || pl.variableName, models: [] };
+                try {
+                  const mRes = await apiConfig.listModels({ productFamily: fam.variableName, productLine: pl.variableName });
+                  if (mRes && mRes.body && mRes.body.items) {
+                    lineItem.models = mRes.body.items.map(m => ({ variableName: m.variableName, name: m.label || m.variableName }));
+                  }
+                } catch {}
+                detail.productLines.push(lineItem);
+              }
+            }
+          } catch {}
+
           enrichConfigFamily(result.siteRoot, fam.variableName, detail);
-          process.stdout.write(`✓ (${(detail.children || []).length} children)\n`);
+          const lineCount = (detail.productLines || []).length;
+          process.stdout.write(`✓ (${(detail.children || []).length} children, ${lineCount} product lines)\n`);
         } else {
           process.stdout.write('skipped\n');
         }
@@ -135,6 +155,14 @@ async function main() {
     // Their full depth (folder→tables, family listing) comes from the category-level response
     // already consumed in step 3 by generateMigrationFolderStructure.
   }
+
+  // ── Step 5: Ensure backup folder has full mirrored depth ─────────────────
+  console.log('\n[5/5] Synchronizing backup directory with full depth...');
+  const { replicateStructure } = require('@/lang/rest/migrationStructure');
+  const modifyDir = path.join(result.siteRoot, 'modify');
+  const backupDir = path.join(result.siteRoot, 'backup');
+  replicateStructure(modifyDir, backupDir, 'Backup', 'Local pristine snapshots and rollback restore points prior to edit.', modifyDir);
+  console.log('✓ Backup directory fully synchronized.');
 
   console.log('\n=== Done ===');
   console.log(`✓ Full structure at:  ${result.siteRoot}`);
