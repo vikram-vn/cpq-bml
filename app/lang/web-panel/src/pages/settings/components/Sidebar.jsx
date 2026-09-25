@@ -81,7 +81,7 @@ export default function Sidebar({
             </div>
 
             {setSearchQuery && (
-                <div className="sidebar-search" style={{ padding: '0 16px 12px' }}>
+                <div className="sidebar-search" style={{ padding: '0 2px 10px' }}>
                     <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                         <span style={{ position: 'absolute', left: '8px', display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--vscode-input-placeholderForeground)' }}>
                             <IconSearch />
@@ -103,6 +103,7 @@ export default function Sidebar({
                                 backgroundColor: 'var(--vscode-input-background)',
                                 color: 'var(--vscode-input-foreground)',
                                 outline: 'none',
+                                boxSizing: 'border-box',
                             }}
                         />
                         {searchQuery && (
@@ -152,13 +153,13 @@ export default function Sidebar({
 
             <div className="sidebar-footer">
                 <div className="sidebar-target-card">
-                    <div style={{ color: 'var(--vscode-descriptionForeground)', fontSize: '0.9em', marginBottom: '2px' }}>Active Target</div>
-                    <div style={{ fontWeight: '600', color: connection.siteUrl ? 'var(--vscode-foreground)' : 'var(--vscode-descriptionForeground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ color: 'var(--vscode-descriptionForeground)', fontSize: '0.85em', marginBottom: '2px' }}>Active Target</div>
+                    <div style={{ fontWeight: '600', fontSize: '0.9em', color: connection.siteUrl ? 'var(--vscode-foreground)' : 'var(--vscode-descriptionForeground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {activeEnvLabel}
                     </div>
                 </div>
 
-                <div className="row between" style={{ fontSize: '0.78em', color: 'var(--vscode-descriptionForeground)', paddingBottom: '10px' }}>
+                <div className="row between" style={{ fontSize: '0.78em', color: 'var(--vscode-descriptionForeground)', paddingBottom: '8px' }}>
                     <span>Status</span>
                     <div className="row" style={{ gap: '6px' }}>
                         <span style={{
@@ -174,7 +175,7 @@ export default function Sidebar({
                 </div>
                 <button 
                     className="link" 
-                    style={{ fontSize: '0.8em', width: '100%', textAlign: 'left', display: 'block', paddingTop: '8px', borderTop: '1px solid var(--vscode-widget-border, var(--vscode-panel-border))' }} 
+                    style={{ fontSize: '0.8em', width: '100%', textAlign: 'left', display: 'block', paddingTop: '6px', paddingBottom: '2px', borderTop: '1px solid var(--vscode-widget-border, var(--vscode-panel-border))' }} 
                     onClick={() => vscodeApi.postMessage({ type: 'openNativeSettings' })}
                 >
                     Open settings.json

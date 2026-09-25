@@ -174,7 +174,9 @@ async function handleMcpMessage(type, _message, context, vscode, CPQ_SECTION, po
 
     case "syncBmlSkills": {
       const { syncGlobalAgySkills } = require("@/ai/setup/globalSkillSync");
-      const { synced, errors } = syncGlobalAgySkills(context.extensionPath);
+      const extPath = (context && context.extensionPath)
+        || (() => { try { return require("@/extensionContext").getContext()?.extensionPath; } catch (_) { return null; } })();
+      const { synced, errors } = syncGlobalAgySkills(extPath);
       const msg = errors.length === 0
         ? `Successfully synced ${synced} BML skills to IDE.`
         : `Synced ${synced} BML skills with ${errors.length} warnings.`;

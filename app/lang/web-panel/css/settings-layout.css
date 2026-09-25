@@ -1,8 +1,11 @@
 /* Redesigned Sidebar Layout Container */
 .layout-container {
     display: flex;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 /* Sidebar Menu */
@@ -12,19 +15,43 @@
     border-right: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
     display: flex;
     flex-direction: column;
-    padding: 24px 16px;
+    padding: 16px 12px 14px;
     flex-shrink: 0;
+    height: 100%;
+    max-height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Custom sleek scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--vscode-scrollbarSlider-background, rgba(121, 121, 121, 0.4));
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--vscode-scrollbarSlider-hoverBackground, rgba(100, 100, 100, 0.7));
 }
 
 .sidebar-header {
-    margin-bottom: 24px;
-    padding-left: 8px;
+    margin-bottom: 14px;
+    padding-left: 6px;
+    flex-shrink: 0;
 }
 
 .sidebar-header h1 {
     font-size: 1.15em;
     font-weight: 700;
-    margin: 0 0 6px;
+    margin: 0 0 3px;
     letter-spacing: -0.01em;
     color: var(--vscode-foreground);
 }
@@ -32,15 +59,19 @@
 .sidebar-header p {
     margin: 0;
     font-size: 0.76em;
-    line-height: 1.4;
+    line-height: 1.35;
     color: var(--vscode-descriptionForeground);
+}
+
+.sidebar-search {
+    flex-shrink: 0;
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    flex: 1;
+    gap: 3px;
+    flex-shrink: 0;
 }
 
 .sidebar-item {
@@ -48,7 +79,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: var(--cpq-radius-md);
     color: var(--vscode-sideBar-foreground, var(--vscode-foreground));
     opacity: 0.75;
@@ -62,6 +93,7 @@
     transition: all var(--transition-fast);
     width: 100%;
     position: relative;
+    box-sizing: border-box;
 }
 
 .sidebar-item svg {
@@ -94,13 +126,15 @@
 }
 
 .sidebar-footer {
-    padding: 16px 8px 0;
+    margin-top: auto;
+    padding: 12px 4px 0;
     border-top: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+    flex-shrink: 0;
 }
 
 .sidebar-target-card {
     font-size: 0.78em;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     padding: 6px 8px;
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.03);
@@ -118,6 +152,9 @@ body.vscode-light .sidebar-target-card,
     overflow-y: auto;
     padding: 24px 32px 64px;
     background-color: var(--vscode-editor-background);
+    height: 100%;
+    max-height: 100%;
+    box-sizing: border-box;
 }
 
 .tab-content {

@@ -20,26 +20,45 @@ const { registerResources } = require("@/lang/mcp/resources");
 const { recordMcpRequest } = require("@/lang/mcp/traffic");
 const { setApiContext } = require("@/lang/rest/apiCore");
 
-// Reads all SKILL.md files from app/ai/skills/ and concatenates them into a
-// single string for the MCP server instructions, stripping YAML frontmatter.
+// Reads all SKILL.md files from app/ai/skills/ (or dist/ai.br bundle) and
+// concatenates them into a single string for the MCP server instructions,
+// stripping YAML frontmatter.
 function loadSkillsInstructions(extensionPath) {
   if (!extensionPath) return "";
   const skillsDir = nodePath.join(extensionPath, "app", "ai", "skills");
   let combined = "";
+  if (fs.existsSync(skillsDir)) {
+    try {
+      for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue;
+        const skillFile = nodePath.join(skillsDir, entry.name, "SKILL.md");
+        try {
+          let content = fs.readFileSync(skillFile, "utf8");
+          // Strip YAML frontmatter
+          content = content.replace(/^---[\s\S]*?---\s*\n/, "");
+          combined += content + "\n\n";
+        } catch { // skill file missing or unreadable - skip
+        }
+      }
+    } catch { // skills dir missing - continue to bundle fallback
+    }
+    if (combined.trim()) return combined.trim();
+  }
+
+  // Fallback to dist/ai.br bundle
   try {
-    for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
-      if (!entry.isDirectory()) continue;
-      const skillFile = nodePath.join(skillsDir, entry.name, "SKILL.md");
-      try {
-        let content = fs.readFileSync(skillFile, "utf8");
-        // Strip YAML frontmatter
-        content = content.replace(/^---[\s\S]*?---\s*\n/, "");
-        combined += content + "\n\n";
-      } catch { // skill file missing or unreadable - skip
+    const { listSkills, getSkill } = require("@/lang/mcp/tools/knowledge");
+    const listing = listSkills({ context: { extensionPath } });
+    if (listing && Array.isArray(listing.skills)) {
+      for (const s of listing.skills) {
+        const full = getSkill({ name: s.name, context: { extensionPath } });
+        if (full && full.content) {
+          const content = full.content.replace(/^---[\s\S]*?---\s*\n/, "");
+          combined += content + "\n\n";
+        }
       }
     }
-  } catch { // skills dir missing - return empty
-  }
+  } catch {}
   return combined.trim();
 }
 
@@ -85,70 +104,90 @@ function registerTools(server, context, vscode) {
   commerceFormulaDefs.register(server, tools);
 }
 
+function registerSkillItem(server, skillName, rawContent, description) {
+  try {
+    server.registerResource(
+      skillName,
+      `skill://${skillName}`,
+      {
+        title: `CPQ Skill: ${skillName}`,
+        description: description || `Oracle CPQ guidance for ${skillName}`,
+        mimeType: "text/markdown",
+      },
+      async (uri) => ({
+        contents: [
+          {
+            uri: uri.href,
+            mimeType: "text/markdown",
+            text: rawContent,
+          },
+        ],
+      }),
+    );
+  } catch (e) {}
+
+  try {
+    server.registerPrompt(
+      `cpq-${skillName}`,
+      {
+        title: `CPQ Guide: ${skillName}`,
+        description: description || `Guidance on ${skillName}`,
+      },
+      async () => ({
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text: `Please review and apply Oracle CPQ best practices for ${skillName}:\n\n${rawContent}`,
+            },
+          },
+        ],
+      }),
+    );
+  } catch (e) {}
+}
+
 function registerSkillsResourcesAndPrompts(server, extensionPath) {
   if (!extensionPath) return;
   const skillsDir = nodePath.join(extensionPath, "app", "ai", "skills");
-  if (!fs.existsSync(skillsDir)) return;
 
-  try {
-    for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
-      if (!entry.isDirectory()) continue;
-      const skillName = entry.name;
-      const skillFile = nodePath.join(skillsDir, skillName, "SKILL.md");
-      if (!fs.existsSync(skillFile)) continue;
+  if (fs.existsSync(skillsDir)) {
+    try {
+      for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue;
+        const skillName = entry.name;
+        const skillFile = nodePath.join(skillsDir, skillName, "SKILL.md");
+        if (!fs.existsSync(skillFile)) continue;
 
-      let rawContent = "";
-      try {
-        rawContent = fs.readFileSync(skillFile, "utf8");
-      } catch {
-        continue;
+        let rawContent = "";
+        try {
+          rawContent = fs.readFileSync(skillFile, "utf8");
+        } catch {
+          continue;
+        }
+
+        let description = "";
+        const descMatch = rawContent.match(/description:\s*(?:>-\s*|\s*)([^\r\n]+)/i);
+        if (descMatch) description = descMatch[1].trim();
+
+        registerSkillItem(server, skillName, rawContent, description);
       }
+      return;
+    } catch (e) {}
+  }
 
-      let description = "";
-      const descMatch = rawContent.match(/description:\s*(?:>-\s*|\s*)([^\r\n]+)/i);
-      if (descMatch) description = descMatch[1].trim();
-
-      try {
-        server.registerResource(
-          skillName,
-          `skill://${skillName}`,
-          {
-            title: `CPQ Skill: ${skillName}`,
-            description: description || `Oracle CPQ guidance for ${skillName}`,
-            mimeType: "text/markdown",
-          },
-          async (uri) => ({
-            contents: [
-              {
-                uri: uri.href,
-                mimeType: "text/markdown",
-                text: rawContent,
-              },
-            ],
-          }),
-        );
-      } catch (e) {}
-
-      try {
-        server.registerPrompt(
-          `cpq-${skillName}`,
-          {
-            title: `CPQ Guide: ${skillName}`,
-            description: description || `Guidance on ${skillName}`,
-          },
-          async () => ({
-            messages: [
-              {
-                role: "user",
-                content: {
-                  type: "text",
-                  text: `Please review and apply Oracle CPQ best practices for ${skillName}:\n\n${rawContent}`,
-                },
-              },
-            ],
-          }),
-        );
-      } catch (e) {}
+  // Fallback to bundle via knowledge tools
+  try {
+    const { listSkills, getSkill } = require("@/lang/mcp/tools/knowledge");
+    const listing = listSkills({ context: { extensionPath } });
+    if (listing && Array.isArray(listing.skills)) {
+      for (const s of listing.skills) {
+        const full = getSkill({ name: s.name, context: { extensionPath } });
+        if (full && full.content) {
+          registerSkillItem(server, s.name, full.content, full.description);
+        }
+      }
     }
   } catch (e) {}
 }

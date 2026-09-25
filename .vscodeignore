@@ -69,6 +69,8 @@ app/lang/xslt/**
 app/lang/metrics/**
 app/lang/test-controller/**
 app/ai/**
+!app/ai/skills/**
+!app/ai/skills/**/*.md
 
 # Intellisense JSON: ship only the compressed .min.json.br variants
 app/lang/intellisense/**

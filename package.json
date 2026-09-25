@@ -20,6 +20,10 @@
     "workspaceContains:**/*.bml",
     "onStartupFinished"
   ],
+  "extensionDependencies": [
+    "streetsidesoftware.code-spell-checker",
+    "PKief.material-icon-theme"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "cSpell": {
