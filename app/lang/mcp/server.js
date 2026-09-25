@@ -16,6 +16,7 @@ const formattingTools = require("@/lang/mcp/tool-defs/formattingTools");
 const commerceActionDefs = require("@/lang/mcp/tool-defs/commerceActionDefs");
 const cloudExplorerDefs = require("@/lang/mcp/tool-defs/cloudExplorerDefs");
 const commerceFormulaDefs = require("@/lang/mcp/tool-defs/commerceFormulaDefs");
+const migrationDefs = require("@/lang/mcp/tool-defs/migrationDefs");
 const { registerResources } = require("@/lang/mcp/resources");
 const { recordMcpRequest } = require("@/lang/mcp/traffic");
 const { setApiContext } = require("@/lang/rest/apiCore");
@@ -102,6 +103,7 @@ function registerTools(server, context, vscode) {
   commerceActionDefs.register(server, tools);
   cloudExplorerDefs.register(server, tools);
   commerceFormulaDefs.register(server, tools);
+  migrationDefs.register(server, tools);
 }
 
 function registerSkillItem(server, skillName, rawContent, description) {

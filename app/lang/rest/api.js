@@ -11,6 +11,7 @@ const { getRestVersion, getSettings } = require("@/lang/rest/config");
 const apiCommerce = require("@/lang/rest/apiCommerce");
 const apiConfig = require("@/lang/rest/apiConfig");
 const apiParts = require("@/lang/rest/apiParts");
+const apiMigration = require("@/lang/rest/apiMigration");
 
 // GET /rest/<version>/bml/library/functions?offset=&limit= -> { items, offset, limit, count, hasMore }
 function listLibraryFunctions(options = {}, transport, metadata) {
@@ -353,7 +354,9 @@ module.exports = {
   ...apiCommerce,
   ...apiConfig,
   ...apiParts,
+  ...apiMigration,
   apiCommerce,
   apiConfig,
   apiParts,
+  apiMigration,
 };
