@@ -13,7 +13,7 @@ const { createCloudMockVscode } = require('@/test/cloud/cloudTestMocks');
 suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
   test('deployFunctionCommand opens local file and invokes deployCurrentFile when local file exists', async () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-deploy-test-'));
-    const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcTax');
+    const fnDir = path.join(tempDir, 'cpq', 'cpq-demo', 'util-libraries', 'finance', 'calcTax');
     fs.mkdirSync(fnDir, { recursive: true });
     const localFile = path.join(fnDir, 'calcTax.bml');
     fs.writeFileSync(localFile, 'return 0.05;\n', 'utf8');
@@ -25,7 +25,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
-          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-demo.bigmachines.com' : ''
         }),
         openTextDocument: async (uri) => {
           openedFile = uri.fsPath;
@@ -61,7 +61,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
 
   test('debugFunctionCommand opens local file and invokes debugCurrentFile with configureInputs: false (Smart Debug)', async () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-debug-test-'));
-    const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcDiscount');
+    const fnDir = path.join(tempDir, 'cpq', 'cpq-demo', 'util-libraries', 'finance', 'calcDiscount');
     fs.mkdirSync(fnDir, { recursive: true });
     const localFile = path.join(fnDir, 'calcDiscount.bml');
     fs.writeFileSync(localFile, 'return 10.0;\n', 'utf8');
@@ -74,7 +74,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
-          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-demo.bigmachines.com' : ''
         }),
         openTextDocument: async (uri) => {
           openedFile = uri.fsPath;
@@ -113,7 +113,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
 
   test('debugConfigureFunctionCommand opens local file and invokes debugConfigureInputs with configureInputs: true', async () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-debug-cfg-test-'));
-    const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcDiscount');
+    const fnDir = path.join(tempDir, 'cpq', 'cpq-demo', 'util-libraries', 'finance', 'calcDiscount');
     fs.mkdirSync(fnDir, { recursive: true });
     const localFile = path.join(fnDir, 'calcDiscount.bml');
     fs.writeFileSync(localFile, 'return 10.0;\n', 'utf8');
@@ -126,7 +126,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
-          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-demo.bigmachines.com' : ''
         }),
         openTextDocument: async (uri) => {
           openedFile = uri.fsPath;
@@ -172,7 +172,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
       workspace: {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
-          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-10234.bigmachines.com' : ''
+          get: (k) => k === 'connection.siteUrl' ? 'https://cpq-demo.bigmachines.com' : ''
         })
       },
       window: {
@@ -208,7 +208,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
   test('viewFunctionMetadataCommand opens local -meta.json if present or fetches remote metadata', async () => {
     const api = require('@/lang/rest/api');
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cpq-meta-test-'));
-    const fnDir = path.join(tempDir, 'cpq', 'cpq-10234', 'util-libraries', 'finance', 'calcFee');
+    const fnDir = path.join(tempDir, 'cpq', 'cpq-demo', 'util-libraries', 'finance', 'calcFee');
     fs.mkdirSync(fnDir, { recursive: true });
     const metaFile = path.join(fnDir, 'calcFee-meta.json');
     fs.writeFileSync(metaFile, JSON.stringify({ variableName: 'calcFee', returnType: 'Float' }), 'utf8');
@@ -223,7 +223,7 @@ suite('Cloud Explorer - Deploy, Debug, and Metadata Commands', () => {
         workspaceFolders: [{ uri: { fsPath: tempDir } }],
         getConfiguration: () => ({
           get: (k) => {
-            if (k === 'connection.siteUrl') return 'https://cpq-10234.bigmachines.com';
+            if (k === 'connection.siteUrl') return 'https://cpq-demo.bigmachines.com';
             if (k === 'openMetadataAs') return 'virtualDocument';
             return '';
           }

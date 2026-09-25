@@ -4,6 +4,25 @@ All notable changes to the "CPQ-BML" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.6.0] - 2026-09-25
+
+### Added
+
+- Add migration structure utilities and MCP tools.
+- Add MCP lookup tools, migration structure, and fetch script.
+- Add pre-deploy diff reviewer, MCP file localization, and migration utilities with comprehensive tests.
+- Implement Oracle CPQ migration tools, REST endpoints, and folder structure syncing.
+- Add Code Spell Checker integration tests and update extensionPack configuration.
+- Add MCP server integration, settings UI components, global skill sync, and tests.
+- **dataTableEditor:** Convert Data Table grid editor to React component with inline editing and sorting.
+- Improve BML development workflow with rollback snapshots, diff reviewer, data table editor, and schema validator.
+- Implement Oracle CPQ instance health monitoring and status bar integration.
+- Add commerce metadata and configuration synchronization features with unit tests.
+
+### Fixed
+
+- **instanceMonitor:** Prevent double 'v' prefix in REST version display (vv18 -> v18).
+
 ## [2.5.0] - 2026-09-24
 
 ### Added
@@ -91,13 +110,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Add visual dependency and blast radius architecture graph webview.
 - Add cloud commerce explorer and intellisense document formatting features with tests.
 - Add cloud commerce explorer, global search, and intellisense document formatting modules with tests.
-
-## [1.97.0] - 2026-09-13
-
-### Added
-
-- Add REST modules for instance monitoring, session keep-alive, and remote test execution.
-
-### Changed
-
-- Removed prefix word of CPQ-BML.

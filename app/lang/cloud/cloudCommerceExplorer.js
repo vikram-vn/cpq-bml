@@ -453,7 +453,39 @@ function createCommerceExplorer(vscodeInstance = vscode, context) {
     getFilter,
     clearFilter,
     fetchCommerceData,
-    getCachedData: () => cachedData
+    getCachedData: () => cachedData,
+    // Expose actions for searchExplorerCommand's standard action path
+    getCachedActions: () => {
+      if (!cachedData) return [];
+      const actions = [];
+      for (const doc of ['transaction', 'line']) {
+        const docData = cachedData[doc];
+        if (!docData) continue;
+        for (const act of (docData.actions || [])) {
+          actions.push({ ...act, commerceProcess: cachedProcess, commerceDocument: doc });
+        }
+      }
+      return actions;
+    },
+    // Flattened items for section-aware search (rules, attributes, libraries)
+    getCachedItems: () => {
+      if (!cachedData) return [];
+      const items = [];
+      for (const doc of ['transaction', 'line']) {
+        const docData = cachedData[doc];
+        if (!docData) continue;
+        for (const rule of (docData.rules || [])) {
+          items.push({ ...rule, _searchType: 'rule', commerceProcess: cachedProcess, commerceDocument: doc });
+        }
+        for (const attr of (docData.attributes || [])) {
+          items.push({ ...attr, _searchType: 'attribute', commerceProcess: cachedProcess, commerceDocument: doc });
+        }
+        for (const lib of (docData.libraries || [])) {
+          items.push({ ...lib, _searchType: 'function', isCommerce: true, commerceProcess: cachedProcess, commerceDocument: doc });
+        }
+      }
+      return items;
+    }
   };
 }
 

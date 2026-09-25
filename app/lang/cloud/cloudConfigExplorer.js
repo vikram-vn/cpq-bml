@@ -352,7 +352,13 @@ function createConfigExplorer(vscodeInstance = vscode, context) {
     getFilter,
     clearFilter,
     fetchProductFamilies,
-    getCachedFamilies: () => cachedFamilies
+    getCachedFamilies: () => cachedFamilies,
+    // Used by searchExplorerCommand for section-aware QuickPick search
+    getCachedItems: () => (cachedFamilies || []).map(f => ({
+      ...f,
+      _searchLabel: f.label || f.variableName || f.name,
+      _searchType: 'configFamily'
+    }))
   };
 }
 
@@ -381,8 +387,10 @@ function registerConfigExplorer(context, vscodeInstance = vscode) {
     treeDataProvider.clearFilter();
   });
 
+  const { searchExplorerCommand } = require('@/lang/cloud/cloudExplorerSearch');
   const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.config.searchExplorer', () => {
-    return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
+    // Use this section's own provider so Config families appear in the QuickPick
+    return searchExplorerCommand(treeDataProvider, vscodeInstance, context);
   });
 
   context.subscriptions.push(treeView, refreshCmd, filterCmd, clearFilterCmd, searchCmd);

@@ -33,7 +33,7 @@ const {
  * containing the REST response details.
  *
  * @param {string} workspaceRoot Absolute path to workspace root
- * @param {string} siteName CPQ site name string (e.g. "cpq-10124")
+ * @param {string} siteName CPQ site name string (e.g. "cpq-mysite")
  * @param {Array} migrationCategories Array of category objects from /migrationResources
  * @param {number} [packageCount=0] Number of migration packages for site README
  * @returns {{ success, siteRoot, manifestPath, manifest }}

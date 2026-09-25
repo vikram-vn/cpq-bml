@@ -36,11 +36,11 @@ suite("MCP locate", () => {
 
     test("finds a util function under cpq-instance/util-libraries", () =>
       withTempDir((tmpDir) => {
-        const dir = path.join(tmpDir, "cpq-10234", "util-libraries", "math", "addNumbers");
+        const dir = path.join(tmpDir, "cpq-demo", "util-libraries", "math", "addNumbers");
         fs.mkdirSync(dir, { recursive: true });
         fs.writeFileSync(path.join(dir, "addNumbers.bml"), 'return a + b;');
 
-        const found = findLocalBmlPath(vscodeRootedAt(tmpDir, { "connection.siteUrl": "https://cpq-10234.bigmachines.com" }), "addNumbers");
+        const found = findLocalBmlPath(vscodeRootedAt(tmpDir, { "connection.siteUrl": "https://cpq-demo.bigmachines.com" }), "addNumbers");
         assert.strictEqual(found, path.join(dir, "addNumbers.bml"));
       }));
 

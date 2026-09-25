@@ -153,6 +153,9 @@ WorkspaceEdit.prototype.delete = function(uri, range) {
 EventEmitter.prototype.dispose = function() {};
 
 const _commands = new Map();
+const _configListeners = [];
+const _docOpenListeners = [];
+const _diagnostics = new Map();
 
 const mockVscode = {
     Position,
@@ -183,25 +186,38 @@ const mockVscode = {
         Full: 7,
     },
     Uri: {
-        file: (fsPath) => ({
-            fsPath,
-            scheme: 'file',
-            path: fsPath,
-            toString: () => 'file://' + String(fsPath).replace(/\\/g, '/'),
-        }),
-        parse: (uriStr) => ({
-            toString: () => uriStr,
-            fsPath: uriStr.replace(/^file:\/\//, ''),
-            scheme: (uriStr.match(/^([a-z]+):/) || [])[1] || 'file',
-        }),
+        file: (fsPath) => {
+            const p = fsPath || '';
+            const u = {
+                fsPath: p,
+                scheme: 'file',
+                path: p.replace(/\\/g, '/'),
+                toString: () => 'file://' + p.replace(/\\/g, '/'),
+                with: (change) => {
+                    const newPath = (change && change.path !== undefined) ? change.path : p;
+                    return mockVscode.Uri.file(newPath);
+                },
+            };
+            return u;
+        },
+        parse: (uriStr) => {
+            const str = uriStr || '';
+            const p = str.replace(/^file:\/\//, '');
+            const u = {
+                toString: () => str,
+                fsPath: p,
+                path: p.replace(/\\/g, '/'),
+                scheme: (str.match(/^([a-z]+):/) || [])[1] || 'file',
+                with: (change) => {
+                    const newPath = (change && change.path !== undefined) ? change.path : p;
+                    return mockVscode.Uri.parse('file://' + newPath.replace(/\\/g, '/'));
+                },
+            };
+            return u;
+        },
         joinPath: (baseUri, ...pathSegments) => {
             const joined = path.join(baseUri.fsPath || baseUri.path || '', ...pathSegments);
-            return {
-                fsPath: joined,
-                scheme: 'file',
-                path: joined,
-                toString: () => 'file://' + String(joined).replace(/\\/g, '/'),
-            };
+            return mockVscode.Uri.file(joined);
         },
     },
     ConfigurationTarget: {
@@ -296,6 +312,13 @@ const mockVscode = {
                 const fullKey = section ? `${section}.${key}` : key;
                 if (val === undefined) configStore.delete(fullKey);
                 else configStore.set(fullKey, val);
+                for (const listener of _configListeners) {
+                    try {
+                        listener({
+                            affectsConfiguration: (s) => fullKey.startsWith(s) || s.startsWith(fullKey),
+                        });
+                    } catch (_) {}
+                }
             },
             has: (key) => {
                 const fullKey = section ? `${section}.${key}` : key;
@@ -303,8 +326,24 @@ const mockVscode = {
             },
             inspect: () => undefined,
         }),
-        onDidChangeConfiguration: () => ({ dispose: () => {} }),
-        onDidOpenTextDocument: () => ({ dispose: () => {} }),
+        onDidChangeConfiguration: (cb) => {
+            _configListeners.push(cb);
+            return {
+                dispose: () => {
+                    const idx = _configListeners.indexOf(cb);
+                    if (idx !== -1) _configListeners.splice(idx, 1);
+                },
+            };
+        },
+        onDidOpenTextDocument: (cb) => {
+            _docOpenListeners.push(cb);
+            return {
+                dispose: () => {
+                    const idx = _docOpenListeners.indexOf(cb);
+                    if (idx !== -1) _docOpenListeners.splice(idx, 1);
+                },
+            };
+        },
         onDidChangeTextDocument: () => ({ dispose: () => {} }),
         onDidSaveTextDocument: () => ({ dispose: () => {} }),
         onDidCloseTextDocument: () => ({ dispose: () => {} }),
@@ -318,15 +357,51 @@ const mockVscode = {
             onDidDelete: () => ({ dispose: () => {} }),
             dispose: () => {},
         }),
-        openTextDocument: async () => ({
-            getText: () => '',
-            lineAt: () => ({ text: '' }),
-            lineCount: 0,
-            uri: { fsPath: '' },
-        }),
+        openTextDocument: async (arg) => {
+            let content = '';
+            let uri;
+            let languageId = 'bml';
+            if (typeof arg === 'string') {
+                const fs = require('fs');
+                if (fs.existsSync(arg)) content = fs.readFileSync(arg, 'utf8');
+                uri = mockVscode.Uri.file(arg);
+                if (arg.endsWith('.bml')) languageId = 'bml';
+                else if (arg.endsWith('.bmlt')) languageId = 'bmlt';
+            } else if (arg && typeof arg === 'object') {
+                content = arg.content !== undefined ? arg.content : '';
+                languageId = arg.language || 'bml';
+                uri = arg.uri || mockVscode.Uri.file(path.join(process.cwd(), 'temp_' + Math.random().toString(36).slice(2) + '.' + languageId));
+            } else {
+                uri = mockVscode.Uri.file('');
+            }
+            const lines = content.split('\n');
+            const doc = {
+                getText: () => content,
+                lineAt: (idx) => ({ text: lines[idx] !== undefined ? lines[idx] : '' }),
+                lineCount: lines.length,
+                uri,
+                fileName: uri.fsPath || '',
+                languageId,
+                positionAt: (offset) => {
+                    let cur = 0;
+                    for (let l = 0; l < lines.length; l++) {
+                        if (cur + lines[l].length + 1 > offset || l === lines.length - 1) {
+                            return new Position(l, Math.max(0, offset - cur));
+                        }
+                        cur += lines[l].length + 1;
+                    }
+                    return new Position(0, 0);
+                },
+            };
+            for (const listener of _docOpenListeners) {
+                try { listener(doc); } catch (_) {}
+            }
+            return doc;
+        },
         fs: {
             readFile: async () => Buffer.from(''),
             writeFile: async () => {},
+            stat: async () => { throw new Error('Not found'); },
         },
     },
     commands: {
@@ -345,11 +420,26 @@ const mockVscode = {
     },
     languages: {
         createDiagnosticCollection: () => ({
-            set: () => {},
-            delete: () => {},
-            clear: () => {},
-            dispose: () => {},
+            set: (uri, diags) => {
+                const key = uri && uri.fsPath ? uri.fsPath : (uri?.toString ? uri.toString() : String(uri));
+                _diagnostics.set(key, diags || []);
+            },
+            delete: (uri) => {
+                const key = uri && uri.fsPath ? uri.fsPath : (uri?.toString ? uri.toString() : String(uri));
+                _diagnostics.delete(key);
+            },
+            clear: () => _diagnostics.clear(),
+            dispose: () => _diagnostics.clear(),
         }),
+        getDiagnostics: (uri) => {
+            if (!uri) {
+                const all = [];
+                for (const arr of _diagnostics.values()) all.push(...arr);
+                return all;
+            }
+            const key = uri && uri.fsPath ? uri.fsPath : (uri?.toString ? uri.toString() : String(uri));
+            return _diagnostics.get(key) || [];
+        },
         registerCompletionItemProvider: () => ({ dispose: () => {} }),
         registerHoverProvider: () => ({ dispose: () => {} }),
         registerDefinitionProvider: () => ({ dispose: () => {} }),

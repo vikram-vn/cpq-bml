@@ -56,7 +56,7 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance, context) 
   const wsRoot = getWorkspaceRoot(vscodeInstance);
   const items = [];
 
-  // 1. Functions (Util & Commerce)
+  // 1. Functions (Util & Commerce) — from providers exposing getCachedFunctions()
   for (const fn of functions) {
     const varName = extractStringValue(fn.variableName || fn.name, 'function');
     const name = extractStringValue(fn.name || varName, varName);
@@ -85,7 +85,7 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance, context) 
     });
   }
 
-  // 2. Actions (Commerce)
+  // 2. Actions (Commerce) — from providers exposing getCachedActions()
   for (const act of actions) {
     const varName = extractStringValue(act.variableName || act.name, 'action');
     const name = extractStringValue(act.label || act.name || varName, varName);
@@ -103,7 +103,72 @@ async function searchExplorerCommand(treeDataProvider, vscodeInstance, context) 
     });
   }
 
-  // 3. Auxiliary items
+  // 3. Section-specific items — from providers exposing getCachedItems() (Commerce rules/attrs/libs, Config families)
+  const sectionItems = treeDataProvider.getCachedItems ? (treeDataProvider.getCachedItems() || []) : [];
+  for (const item of sectionItems) {
+    const varName = extractStringValue(item.variableName || item.ruleName || item.name, '');
+    const name = extractStringValue(item.label || item._searchLabel || item.name || varName, varName);
+    const searchType = item._searchType || 'item';
+
+    if (searchType === 'rule') {
+      const ruleType = extractStringValue(item.ruleType || item.type, 'Rule');
+      const doc = item.commerceDocument || '';
+      items.push({
+        label: `$(law) ${formatNameAndVarName(name, varName)}`,
+        description: `[Rule: ${ruleType}]${doc ? ` ${item.commerceProcess || 'oraclecpqo'}/${doc}` : ''}`,
+        detail: item.description || `Commerce Rule (${ruleType})`,
+        data: item,
+        itemType: 'rule'
+      });
+    } else if (searchType === 'attribute') {
+      const dataType = extractStringValue(item.dataType || item.type, 'String');
+      const doc = item.commerceDocument || '';
+      items.push({
+        label: `$(symbol-property) ${formatNameAndVarName(name, varName)}`,
+        description: `[Attribute: ${dataType}]${doc ? ` ${item.commerceProcess || 'oraclecpqo'}/${doc}` : ''}`,
+        detail: item.description || `Commerce Attribute (${dataType})`,
+        data: item,
+        itemType: 'attribute'
+      });
+    } else if (searchType === 'configFamily') {
+      items.push({
+        label: `$(package) ${name}${varName && varName !== name ? ` (${varName})` : ''}`,
+        description: '[Configuration Family]',
+        detail: item.description || `Product Family: ${varName}`,
+        data: item,
+        itemType: 'configFamily'
+      });
+    } else if (searchType === 'function') {
+      // Commerce library functions surfaced via getCachedItems (not getCachedFunctions)
+      const isCommerce = Boolean(item.isCommerce || item.commerceDocument);
+      const commerceMetadata = isCommerce ? { commerceProcess: item.commerceProcess, commerceDocument: item.commerceDocument } : null;
+      const localPath = findLocalFunctionFile(wsRoot, varName, item.folderName, commerceMetadata, vscodeInstance);
+      const returnType = extractStringValue(item.returnType, '');
+      const descParts = [`[Commerce: ${item.commerceProcess || 'oraclecpqo'}/${item.commerceDocument || 'transaction'}]`];
+      if (returnType) descParts.push(`-> ${returnType}`);
+      descParts.push(localPath ? '✓ Local' : '☁ Cloud');
+      items.push({
+        label: `${localPath ? '$(check)' : '$(cloud)'} ${formatNameAndVarName(name, varName)}`,
+        description: descParts.join(' '),
+        detail: item.description || (localPath ? `Local: ${path.basename(localPath)}` : 'Commerce library (click to pull and open)'),
+        data: item,
+        itemType: 'function',
+        localPath
+      });
+    } else if (searchType === 'dataTable') {
+      const tableName = item.name || item.variableName || varName;
+      const displayLabel = formatNameAndVarName(item.description || tableName, tableName);
+      items.push({
+        label: `$(database) ${displayLabel}`,
+        description: '[CPQ Data Table]',
+        detail: item.description || `Data Table: ${tableName} (click to query in BMQL)`,
+        data: item,
+        itemType: 'dataTable'
+      });
+    }
+  }
+
+  // 4. Auxiliary items — Data Tables from workspace state cache
   if (context) {
     try {
       const dtItems = context.workspaceState?.get('cpqCloudDataTablesCache');

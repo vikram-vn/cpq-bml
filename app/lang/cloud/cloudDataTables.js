@@ -280,7 +280,12 @@ function createCloudDataTablesProvider(vscodeInstance = vscode, context) {
     getFilter,
     clearFilter,
     getTables,
-    getCachedTables: () => cachedTables
+    getCachedTables: () => cachedTables,
+    // Used by searchExplorerCommand for section-aware QuickPick search
+    getCachedItems: () => (cachedTables || []).map(t => ({
+      ...t,
+      _searchType: 'dataTable'
+    }))
   };
 }
 
@@ -389,8 +394,10 @@ function registerCloudDataTables(context, vscodeInstance = vscode) {
     provider.clearFilter();
   });
 
+  const { searchExplorerCommand } = require('@/lang/cloud/cloudExplorerSearch');
   const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.dataTables.searchExplorer', () => {
-    return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
+    // Use this section's own provider so Data Tables appear in the QuickPick
+    return searchExplorerCommand(provider, vscodeInstance, context);
   });
 
   const openEditorCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.openDataTableEditor', (item) => {

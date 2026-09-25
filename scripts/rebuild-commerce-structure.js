@@ -3,9 +3,36 @@
 require('./register-alias');
 const fs = require('fs');
 const path = require('path');
+const config = require('@/lang/rest/config');
 const { buildCommerceProcessDepth } = require('@/lang/rest/migrationStructure');
 
-const COMMERCE_DIR = path.join(__dirname, '../cpq/cpq-10124/commerce');
+const ROOT = path.join(__dirname, '..');
+
+// ─── Load .env from workspace root if present ────────────────────────────────
+const envFile = path.join(ROOT, '.env');
+if (fs.existsSync(envFile)) {
+  const lines = fs.readFileSync(envFile, 'utf8').split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eqIdx = trimmed.indexOf('=');
+    if (eqIdx > 0) {
+      const key = trimmed.slice(0, eqIdx).trim();
+      const val = trimmed.slice(eqIdx + 1).trim();
+      if (!process.env[key]) process.env[key] = val;
+    }
+  }
+}
+
+const baseUrl = config.getBaseUrl();
+const siteName = config.getCpqSiteName(baseUrl);
+
+if (!siteName) {
+  console.error('Error: CPQ site URL is not configured. Set cpqBml.connection.siteUrl in VS Code Settings or CPQ_SITE_URL in .env / environment variables.');
+  process.exit(1);
+}
+
+const COMMERCE_DIR = path.join(ROOT, 'cpq', siteName, 'commerce');
 
 const sectionTypeMap = {
   'action':                    'actions',

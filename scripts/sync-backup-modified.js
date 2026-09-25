@@ -3,10 +3,36 @@
 require('./register-alias');
 const fs = require('fs');
 const path = require('path');
+const config = require('@/lang/rest/config');
 const { replicateStructure } = require('@/lang/rest/migrationStructure');
 
 const ROOT = path.join(__dirname, '..');
-const SITE_ROOT = path.join(ROOT, 'cpq', 'cpq-10124');
+
+// ─── Load .env from workspace root if present ────────────────────────────────
+const envFile = path.join(ROOT, '.env');
+if (fs.existsSync(envFile)) {
+  const lines = fs.readFileSync(envFile, 'utf8').split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eqIdx = trimmed.indexOf('=');
+    if (eqIdx > 0) {
+      const key = trimmed.slice(0, eqIdx).trim();
+      const val = trimmed.slice(eqIdx + 1).trim();
+      if (!process.env[key]) process.env[key] = val;
+    }
+  }
+}
+
+const baseUrl = config.getBaseUrl();
+const siteName = config.getCpqSiteName(baseUrl);
+
+if (!siteName) {
+  console.error('Error: CPQ site URL is not configured. Set cpqBml.connection.siteUrl in VS Code Settings or CPQ_SITE_URL in .env / environment variables.');
+  process.exit(1);
+}
+
+const SITE_ROOT = path.join(ROOT, 'cpq', siteName);
 const BACKUP_DIR = path.join(SITE_ROOT, 'backup');
 const MODIFY_DIR = path.join(SITE_ROOT, 'modify');
 const MODIFIED_DIR = path.join(SITE_ROOT, 'modified');
@@ -46,6 +72,7 @@ function copyDirRecursive(src, dest) {
 
 function runMigration() {
   console.log('=== Moving all category folders into modify/ and backup/ ===');
+  console.log(`Site Folder:  cpq/${siteName}/`);
   ensureDir(MODIFY_DIR);
   ensureDir(BACKUP_DIR);
 

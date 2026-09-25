@@ -35,8 +35,10 @@ function registerCommerceExplorer(context, vscodeInstance = vscode, createCommer
     treeDataProvider.clearFilter();
   });
 
+  const { searchExplorerCommand } = require('@/lang/cloud/cloudExplorerSearch');
   const searchCmd = vscodeInstance.commands.registerCommand('cpqBml.commerce.searchExplorer', () => {
-    return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
+    // Use this section's own provider so Commerce items appear in the QuickPick
+    return searchExplorerCommand(treeDataProvider, vscodeInstance, context);
   });
 
   const inspectIntegrationCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.inspectIntegration', (item) => {
