@@ -94,34 +94,6 @@ async function main() {
   // ── Step 3: Build top-level structure ─────────────────────────────────────
   console.log('\n[3/4] Generating top-level cpq/ folder structure...');
   const result = generateMigrationFolderStructure(ROOT, siteName, categories, packages.length);
-
-  // Write package info files
-  const pkgDir = path.join(result.siteRoot, 'migration-packages');
-  for (const pkg of packages) {
-    const pkgFolder = path.join(pkgDir, pkg.identifier);
-    if (!fs.existsSync(pkgFolder)) fs.mkdirSync(pkgFolder, { recursive: true });
-    fs.writeFileSync(path.join(pkgFolder, 'package-info.json'), JSON.stringify(pkg, null, 2), 'utf8');
-
-    // Per-package README.md
-    const readmePath = path.join(pkgFolder, 'README.md');
-    const pkgReadme = [
-      `# Migration Package: ${pkg.name}`,
-      '',
-      `**Identifier:** \`${pkg.identifier}\`  `,
-      `**Version:** ${pkg.version}  `,
-      `**Description:** ${pkg.description || '_None_'}  `,
-      `**Date Modified:** ${pkg.dateModified || 'N/A'}  `,
-      `**Source Site:** \`${pkg.sourceSiteUrl || 'N/A'}\`  `,
-      '',
-      '> Source: `GET /rest/v19/migrationPackages`',
-      '',
-      '## Files',
-      '- `package-info.json` — Full package metadata',
-      '- `contents/` — Package contents per category (if exported)',
-      '',
-    ].join('\n');
-    fs.writeFileSync(readmePath, pkgReadme, 'utf8');
-  }
   console.log(`✓ Top-level structure built at: ${result.siteRoot}`);
 
   // ── Step 4: Fetch granular depth for Commerce, Configuration, Data Tables ──
@@ -145,11 +117,11 @@ async function main() {
       }
     }
 
-    else if (catCode === 'CONFIGURATION' || catCode === 'PRODUCT_DEFINITION') {
+    else if (catCode === 'CONFIGURATION') {
       console.log(`  → Enriching ${children.length} Configuration families...`);
       for (const fam of children) {
         process.stdout.write(`    • ${fam.variableName} ... `);
-        const detail = await fetchGranular(catCode, fam.variableName);
+        const detail = await fetchGranular('CONFIGURATION', fam.variableName);
         if (detail) {
           enrichConfigFamily(result.siteRoot, fam.variableName, detail);
           process.stdout.write(`✓ (${(detail.children || []).length} children)\n`);
@@ -159,24 +131,13 @@ async function main() {
       }
     }
 
-    else if (catCode === 'DATA_TABLE') {
-      console.log(`  → Enriching ${children.length} Data Table folders...`);
-      for (const folder of children) {
-        process.stdout.write(`    • ${folder.variableName} ... `);
-        const detail = await fetchGranular('DATA_TABLE', folder.variableName);
-        if (detail) {
-          enrichDataTableFolder(result.siteRoot, folder.variableName, detail);
-          process.stdout.write(`✓ (${(detail.children || []).length} children)\n`);
-        } else {
-          process.stdout.write('skipped\n');
-        }
-      }
-    }
+    // Note: DATA_TABLE and PRODUCT_DEFINITION don't have granular per-item endpoints.
+    // Their full depth (folder→tables, family listing) comes from the category-level response
+    // already consumed in step 3 by generateMigrationFolderStructure.
   }
 
   console.log('\n=== Done ===');
   console.log(`✓ Full structure at:  ${result.siteRoot}`);
-  console.log(`✓ Manifest:           ${result.manifestPath}`);
   console.log(`✓ Categories:         ${categories.length}`);
   console.log(`✓ Packages:           ${packages.length}`);
 }

@@ -1,27 +1,13 @@
-'use strict';
+"use strict";
 
-const {
-  call,
-  normalizeArgs,
-} = require('@/lang/rest/apiCore');
-
-const MIGRATION_REST_VERSION = 'v19';
-
-/**
- * Helper to build migration path with v19 version prefix.
- */
-function migrationPath(subPath) {
-  const clean = (subPath || '').startsWith('/') ? subPath : `/${subPath}`;
-  return `/rest/${MIGRATION_REST_VERSION}${clean}`;
-}
+const { call, normalizeArgs } = require("@/lang/rest/apiCore");
 
 // ==========================================
 // MIGRATION PACKAGES
 // ==========================================
 
 /**
- * GET /rest/v19/migrationPackages
- * Retrieves a list of migration packages with optional query filters and ordering.
+ * GET /migrationPackages
  */
 async function listMigrationPackages(options = {}, transport) {
   const [opts = {}, tr] = normalizeArgs(arguments);
@@ -31,167 +17,167 @@ async function listMigrationPackages(options = {}, transport) {
   if (fields) query.fields = fields;
   if (orderby) query.orderby = orderby;
   if (expand) query.expand = expand;
-
   return call(
     {
-      path: migrationPath('/migrationPackages'),
-      method: 'GET',
+      path: "/migrationPackages",
+      method: "GET",
       query,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * GET /rest/v19/migrationPackages/{identifier}
- * Retrieves single migration package metadata.
+ * GET /migrationPackages/{identifier}
  */
 async function getMigrationPackage(identifier, transport) {
   const [id, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: migration package identifier is required.');
+  if (!id)
+    throw new Error("CPQ-BML: migration package identifier is required.");
   return call(
     {
-      path: migrationPath(`/migrationPackages/${encodeURIComponent(id)}`),
-      method: 'GET',
-      version: MIGRATION_REST_VERSION,
+      path: `/migrationPackages/${encodeURIComponent(id)}`,
+      method: "GET",
     },
-    tr
+    tr,
   );
 }
 
 /**
- * POST /rest/v19/migrationPackages
- * Creates a new migration package.
+ * POST /migrationPackages
  */
 async function createMigrationPackage(payload = {}, transport) {
   const [body = {}, tr] = normalizeArgs(arguments);
   return call(
     {
-      path: migrationPath('/migrationPackages'),
-      method: 'POST',
+      path: "/migrationPackages",
+      method: "POST",
       body,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * DELETE /rest/v19/migrationPackages/{identifier}
- * Deletes a migration package.
+ * DELETE /migrationPackages/{identifier}
  */
 async function deleteMigrationPackage(identifier, transport) {
   const [id, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: migration package identifier is required.');
+  if (!id)
+    throw new Error("CPQ-BML: migration package identifier is required.");
   return call(
     {
-      path: migrationPath(`/migrationPackages/${encodeURIComponent(id)}`),
-      method: 'DELETE',
-      version: MIGRATION_REST_VERSION,
+      path: `/migrationPackages/${encodeURIComponent(id)}`,
+      method: "DELETE",
     },
-    tr
+    tr,
   );
 }
 
 /**
- * PATCH /rest/v19/migrationPackages/{identifier}
- * Updates migration package metadata.
+ * PATCH /migrationPackages/{identifier}
  */
 async function updateMigrationPackage(identifier, payload = {}, transport) {
   const [id, body = {}, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: migration package identifier is required.');
+  if (!id)
+    throw new Error("CPQ-BML: migration package identifier is required.");
   return call(
     {
-      path: migrationPath(`/migrationPackages/${encodeURIComponent(id)}`),
-      method: 'PATCH',
+      path: `/migrationPackages/${encodeURIComponent(id)}`,
+      method: "PATCH",
       body,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * GET /rest/v19/migrationPackages/{identifier}/contents
- * Retrieves contents of a migration package.
+ * GET /migrationPackages/{identifier}/contents
  */
-async function getMigrationPackageContents(identifier, options = {}, transport) {
+async function getMigrationPackageContents(
+  identifier,
+  options = {},
+  transport,
+) {
   const [id, opts = {}, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: migration package identifier is required.');
+  if (!id)
+    throw new Error("CPQ-BML: migration package identifier is required.");
   const query = {};
   if (opts.category) query.category = opts.category;
   return call(
     {
-      path: migrationPath(`/migrationPackages/${encodeURIComponent(id)}/contents`),
-      method: 'GET',
+      path: `/migrationPackages/${encodeURIComponent(id)}/contents`,
+      method: "GET",
       query,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * GET /rest/v19/migrationPackages/{identifier}/contents/{category}
- * Retrieves category-specific items inside a package.
+ * GET /migrationPackages/{identifier}/contents/{category}
  */
-async function getMigrationPackageCategoryContents(identifier, category, transport) {
+async function getMigrationPackageCategoryContents(
+  identifier,
+  category,
+  transport,
+) {
   const [id, cat, tr] = normalizeArgs(arguments);
-  if (!id || !cat) throw new Error('CPQ-BML: identifier and category are required.');
+  if (!id || !cat)
+    throw new Error("CPQ-BML: identifier and category are required.");
   return call(
     {
-      path: migrationPath(`/migrationPackages/${encodeURIComponent(id)}/contents/${encodeURIComponent(cat)}`),
-      method: 'GET',
-      version: MIGRATION_REST_VERSION,
+      path: `/migrationPackages/${encodeURIComponent(id)}/contents/${encodeURIComponent(cat)}`,
+      method: "GET",
     },
-    tr
+    tr,
   );
 }
 
 /**
- * PUT /rest/v19/migrationPackages/{identifier}/contents
- * Adds or updates contents within a package.
+ * PUT /migrationPackages/{identifier}/contents
  */
-async function updateMigrationPackageContents(identifier, payload = {}, transport) {
+async function updateMigrationPackageContents(
+  identifier,
+  payload = {},
+  transport,
+) {
   const [id, body = {}, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: migration package identifier is required.');
+  if (!id)
+    throw new Error("CPQ-BML: migration package identifier is required.");
   return call(
     {
-      path: migrationPath(`/migrationPackages/${encodeURIComponent(id)}/contents`),
-      method: 'PUT',
+      path: `/migrationPackages/${encodeURIComponent(id)}/contents`,
+      method: "PUT",
       body,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * POST /rest/v19/migrationPackages/{identifier}/actions/export
- * Triggers package export task on CPQ.
+ * POST /migrationPackages/{identifier}/actions/export
  */
 async function exportMigrationPackage(identifier, payload = {}, transport) {
   const [id, body = {}, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: migration package identifier is required.');
+  if (!id)
+    throw new Error("CPQ-BML: migration package identifier is required.");
   return call(
     {
-      path: migrationPath(`/migrationPackages/${encodeURIComponent(id)}/actions/export`),
-      method: 'POST',
+      path: `/migrationPackages/${encodeURIComponent(id)}/actions/export`,
+      method: "POST",
       body,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 // ==========================================
-// MIGRATION RESOURCES (Full Site Hierarchy)
+// MIGRATION RESOURCES
 // ==========================================
 
 /**
- * GET /rest/v19/migrationResources
- * Retrieves all migration resources grouped by categories across the instance.
+ * GET /migrationResources
  */
 async function listMigrationResources(options = {}, transport) {
   const [opts = {}, tr] = normalizeArgs(arguments);
@@ -199,63 +185,57 @@ async function listMigrationResources(options = {}, transport) {
   if (opts.q) query.q = opts.q;
   return call(
     {
-      path: migrationPath('/migrationResources'),
-      method: 'GET',
+      path: "/migrationResources",
+      method: "GET",
       query,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * GET /rest/v19/migrationResources/{category}
- * Retrieves resources belonging to a specific category (e.g. UTIL_LIBRARY, COMMERCE, DATA_TABLE).
+ * GET /migrationResources/{category}
  */
 async function getMigrationResourceCategory(category, transport) {
   const [cat, tr] = normalizeArgs(arguments);
-  if (!cat) throw new Error('CPQ-BML: migration category is required.');
+  if (!cat) throw new Error("CPQ-BML: migration category is required.");
   return call(
     {
-      path: migrationPath(`/migrationResources/${encodeURIComponent(cat)}`),
-      method: 'GET',
-      version: MIGRATION_REST_VERSION,
+      path: `/migrationResources/${encodeURIComponent(cat)}`,
+      method: "GET",
     },
-    tr
+    tr,
   );
 }
 
 /**
- * GET /rest/v19/migrationResources/{category}/{variableName}
- * Retrieves granular migration resource metadata and children.
+ * GET /migrationResources/{category}/{variableName}
  */
 async function getMigrationResourceItem(category, variableName, transport) {
   const [cat, varName, tr] = normalizeArgs(arguments);
-  if (!cat || !varName) throw new Error('CPQ-BML: category and variableName are required.');
+  if (!cat || !varName)
+    throw new Error("CPQ-BML: category and variableName are required.");
   return call(
     {
-      path: migrationPath(`/migrationResources/${encodeURIComponent(cat)}/${encodeURIComponent(varName)}`),
-      method: 'GET',
-      version: MIGRATION_REST_VERSION,
+      path: `/migrationResources/${encodeURIComponent(cat)}/${encodeURIComponent(varName)}`,
+      method: "GET",
     },
-    tr
+    tr,
   );
 }
 
 /**
- * POST /rest/v19/migrationResources/dependencies
- * Calculates dependencies for the specified resources before migration.
+ * POST /migrationResources/dependencies
  */
 async function getMigrationResourceDependencies(payload = {}, transport) {
   const [body = {}, tr] = normalizeArgs(arguments);
   return call(
     {
-      path: migrationPath('/migrationResources/dependencies'),
-      method: 'POST',
+      path: "/migrationResources/dependencies",
+      method: "POST",
       body,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
@@ -264,8 +244,7 @@ async function getMigrationResourceDependencies(payload = {}, transport) {
 // ==========================================
 
 /**
- * GET /rest/v19/migrationTasks
- * Lists migration tasks (exports, imports, migrations).
+ * GET /migrationTasks
  */
 async function listMigrationTasks(options = {}, transport) {
   const [opts = {}, tr] = normalizeArgs(arguments);
@@ -274,86 +253,76 @@ async function listMigrationTasks(options = {}, transport) {
   if (q) query.q = q;
   return call(
     {
-      path: migrationPath('/migrationTasks'),
-      method: 'GET',
+      path: "/migrationTasks",
+      method: "GET",
       query,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * GET /rest/v19/migrationTasks/{taskId}
- * Retrieves status and details of a specific migration task.
+ * GET /migrationTasks/{taskId}
  */
 async function getMigrationTask(taskId, transport) {
   const [id, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: taskId is required.');
+  if (!id) throw new Error("CPQ-BML: taskId is required.");
   return call(
     {
-      path: migrationPath(`/migrationTasks/${encodeURIComponent(id)}`),
-      method: 'GET',
-      version: MIGRATION_REST_VERSION,
+      path: `/migrationTasks/${encodeURIComponent(id)}`,
+      method: "GET",
     },
-    tr
+    tr,
   );
 }
 
 /**
- * GET /rest/v19/migrationTasks/{taskId}/categories
- * Retrieves categories involved in a migration task.
+ * GET /migrationTasks/{taskId}/categories
  */
 async function getMigrationTaskCategories(taskId, transport) {
   const [id, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: taskId is required.');
+  if (!id) throw new Error("CPQ-BML: taskId is required.");
   return call(
     {
-      path: migrationPath(`/migrationTasks/${encodeURIComponent(id)}/categories`),
-      method: 'GET',
-      version: MIGRATION_REST_VERSION,
+      path: `/migrationTasks/${encodeURIComponent(id)}/categories`,
+      method: "GET",
     },
-    tr
+    tr,
   );
 }
 
 /**
- * POST /rest/v19/migrationTasks/actions/createSnapshot
- * Creates a system snapshot task.
+ * POST /migrationTasks/actions/createSnapshot
  */
 async function createMigrationSnapshot(payload = {}, transport) {
   const [body = {}, tr] = normalizeArgs(arguments);
   return call(
     {
-      path: migrationPath('/migrationTasks/actions/createSnapshot'),
-      method: 'POST',
+      path: "/migrationTasks/actions/createSnapshot",
+      method: "POST",
       body,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 /**
- * POST /rest/v19/migrationTasks/{taskId}/actions/rollback
- * Rolls back a completed or failed migration task.
+ * POST /migrationTasks/{taskId}/actions/rollback
  */
 async function rollbackMigrationTask(taskId, payload = {}, transport) {
   const [id, body = {}, tr] = normalizeArgs(arguments);
-  if (!id) throw new Error('CPQ-BML: taskId is required.');
+  if (!id) throw new Error("CPQ-BML: taskId is required.");
   return call(
     {
-      path: migrationPath(`/migrationTasks/${encodeURIComponent(id)}/actions/rollback`),
-      method: 'POST',
+      path: `/migrationTasks/${encodeURIComponent(id)}/actions/rollback`,
+      method: "POST",
       body,
-      version: MIGRATION_REST_VERSION,
     },
-    tr
+    tr,
   );
 }
 
 module.exports = {
-  MIGRATION_REST_VERSION,
   listMigrationPackages,
   getMigrationPackage,
   createMigrationPackage,

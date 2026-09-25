@@ -62,17 +62,30 @@ function getDataTableFolder(workspaceRoot, vscodeOrSiteUrl, getBaseUrlFn) {
     return workspaceRoot ? pathLib.join(workspaceRoot, rel) : rel;
 }
 
-function getBackupFolder(vscodeOrSiteUrl, type = 'util', processName = '', getBaseUrlFn) {
+function getBackupFolder(vscodeOrSiteUrl, type = 'util-libraries', processName = '', getBaseUrlFn) {
     const site = getCpqSiteName(vscodeOrSiteUrl, getBaseUrlFn);
-    if (type === 'util') {
-        return pathLib.join('cpq', site, 'backup', 'util');
+    if (type === 'util' || type === 'util-libraries') {
+        return pathLib.join('cpq', site, 'backup', 'util-libraries');
     }
     const proc = processName || 'oraclecpqo';
     if (type === 'commerce' || type === 'process') {
-        return pathLib.join('cpq', site, 'backup', proc);
+        return pathLib.join('cpq', site, 'backup', 'commerce', proc);
     }
-    return pathLib.join('cpq', site, 'backup', proc, type);
+    return pathLib.join('cpq', site, 'backup', 'commerce', proc, type);
 }
+
+function getModifyFolder(vscodeOrSiteUrl, type = 'util-libraries', processName = '', getBaseUrlFn) {
+    const site = getCpqSiteName(vscodeOrSiteUrl, getBaseUrlFn);
+    if (type === 'util' || type === 'util-libraries') {
+        return pathLib.join('cpq', site, 'modify', 'util-libraries');
+    }
+    const proc = processName || 'oraclecpqo';
+    if (type === 'commerce' || type === 'process') {
+        return pathLib.join('cpq', site, 'modify', 'commerce', proc);
+    }
+    return pathLib.join('cpq', site, 'modify', 'commerce', proc, type);
+}
+const getModifiedFolder = getModifyFolder;
 
 function getCommerceAttributesFolder(vscodeOrSiteUrl, processName = 'oraclecpqo', subType = 'modify', getBaseUrlFn) {
     const site = getCpqSiteName(vscodeOrSiteUrl, getBaseUrlFn);
@@ -104,6 +117,8 @@ module.exports = {
     getCommerceLibrariesFolder,
     getDataTableFolder,
     getBackupFolder,
+    getModifyFolder,
+    getModifiedFolder,
     getCommerceAttributesFolder,
     getCommerceActionsFolder,
     getConfigRulesFolder,

@@ -27,11 +27,12 @@ const CATEGORY_FOLDER_MAP = {
 
 /**
  * Commerce child resource types → subfolders under commerce/<process>/
+ * Some types produce sub-subfolders (e.g. actions/before-formulas, attributes/default).
  */
 const COMMERCE_CHILD_FOLDER = {
   action:           'actions',
   asset_management: 'asset-management',
-  data_col:         'attributes',
+  data_col:         'data-columns',
   document:         'documents',
   formula:          'formulas',
   integration:      'integrations',
@@ -96,7 +97,7 @@ function buildCategoryReadme(category, item, children = []) {
     `**Total Resources:** ${count}`,
     '',
     '> This folder was generated from the Oracle CPQ Migration REST API.',
-    `> Source: \`GET /rest/v19/migrationResources/${category}\``,
+    `> Source: \`GET /migrationResources/${category}\``,
     '',
   ];
 
@@ -132,7 +133,7 @@ function buildItemReadme(category, item) {
 
   lines.push('');
   lines.push('> Source: Oracle CPQ Migration REST API');
-  lines.push(`> \`GET /rest/v19/migrationResources/${category}/${item.variableName}\``);
+  lines.push(`> \`GET /migrationResources/${category}/${item.variableName}\``);
   lines.push('');
 
   if (item.children && item.children.length > 0) {
@@ -205,7 +206,7 @@ function buildSiteReadme(siteName, categories, packageCount) {
   lines.push('| Folder | Purpose |');
   lines.push('|:---|:---|');
   lines.push('| `util-libraries/` | Global BML Util Library functions |');
-  lines.push('| `commerce/` | Commerce process BML: actions, formulas, rules, attributes, steps, integrations |');
+  lines.push('| `commerce/` | Commerce process BML: actions, formulas, data columns, documents, steps, integrations |');
   lines.push('| `configuration/` | Product family configuration: attributes, attribute sets, rules |');
   lines.push('| `catalog/` | Product Lines and Models catalog |');
   lines.push('| `data-tables/` | Data Tables (schema + CSV rows) |');
@@ -215,7 +216,8 @@ function buildSiteReadme(siteName, categories, packageCount) {
   lines.push('| `pricing/` | Pricing engine configurations |');
   lines.push('| `eligibility-rules/` | Product eligibility rules |');
   lines.push('| `migration-packages/` | Migration package manifests |');
-  lines.push('| `backup/` | Local rollback snapshots |');
+  lines.push('| `backup/` | Local rollback snapshots and pristine copies prior to edit |');
+  lines.push('| `modified/` | Local modified working copies and staged edits prior to deploy |');
   lines.push('');
 
   return lines.join('\n');
@@ -234,60 +236,104 @@ function mkdirp(dir) {
 // Deep structure builders per category
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Builds full depth for a COMMERCE process.
- * commerce/<processName>/
- *   actions/           → type: action
- *   asset-management/  → type: asset_management
- *   attributes/        → type: data_col
- *   documents/         → type: document
- *   formulas/          → type: formula
- *   integrations/      → type: integration
- *   process-manager-columns/ → type: process_mgr_col
- *   steps/             → type: step
- *   templates/         → type: template
- *   xsl-views/         → type: xsl_view
- */
 function buildCommerceProcessDepth(procDir, processItem) {
   const { name, variableName, children = [] } = processItem;
 
-  // Root README for this process
   writeReadme(procDir, buildItemReadme('COMMERCE', processItem));
 
-  // Group children by type
+  // Helper: ensure folder + write README
+  function ensureFolder(rel, content) {
+    const dir = pathLib.join(procDir, rel);
+    mkdirp(dir);
+    writeReadme(dir, content);
+    return dir;
+  }
+
+  // Canonical plural mapping for Commerce resource types
+  const COMMERCE_TYPE_MAP = {
+    action:                  'actions',
+    actions:                 'actions',
+    asset_management:        'asset-management',
+    'asset-management':      'asset-management',
+    data_col:                'data-columns',
+    data_cols:               'data-columns',
+    data_column:             'data-columns',
+    data_columns:            'data-columns',
+    'data-column':           'data-columns',
+    'data-columns':          'data-columns',
+    document:                'documents',
+    documents:               'documents',
+    formula:                 'formulas',
+    formulas:                'formulas',
+    integration:             'integrations',
+    integrations:            'integrations',
+    process_mgr_col:         'process-manager-columns',
+    process_mgr_cols:        'process-manager-columns',
+    process_manager_column:  'process-manager-columns',
+    process_manager_columns: 'process-manager-columns',
+    'process-manager-column': 'process-manager-columns',
+    'process-manager-columns': 'process-manager-columns',
+    step:                    'steps',
+    steps:                   'steps',
+    template:                'templates',
+    templates:               'templates',
+    xsl_view:                'xsl-views',
+    xsl_views:               'xsl-views',
+    'xsl-view':              'xsl-views',
+    'xsl-views':             'xsl-views',
+  };
+
+  // Group children by normalized plural resourceType
   const byType = {};
   for (const c of children) {
-    const t = c.resourceType || 'other';
+    const rawType = c.resourceType || 'other';
+    const t = COMMERCE_TYPE_MAP[rawType] || rawType;
     if (!byType[t]) byType[t] = [];
     byType[t].push(c);
   }
 
-  // Create typed subfolders with their own READMEs
-  for (const [type, items] of Object.entries(byType)) {
-    const subFolderName = COMMERCE_CHILD_FOLDER[type] || type.replace(/_/g, '-');
-    const subDir = pathLib.join(procDir, subFolderName);
-    mkdirp(subDir);
+  // Exact 10 standard plural folders matching CPQ Migration Center:
+  // 1. Action(s)                 → actions/
+  // 2. Asset Management          → asset-management/
+  // 3. Data Column(s)            → data-columns/
+  // 4. Document(s)               → documents/ (with per-document subfolders)
+  // 5. Formula(s)                → formulas/
+  // 6. Integration(s)            → integrations/
+  // 7. Process Manager Column(s) → process-manager-columns/
+  // 8. Step(s)                   → steps/
+  // 9. Templates                 → templates/
+  // 10. XSL View(s)              → xsl-views/
+  const standardFolders = [
+    { key: 'actions',                 folder: 'actions',                 label: 'Action(s)' },
+    { key: 'asset-management',        folder: 'asset-management',        label: 'Asset Management' },
+    { key: 'data-columns',            folder: 'data-columns',            label: 'Data Column(s)' },
+    { key: 'documents',               folder: 'documents',               label: 'Document(s)' },
+    { key: 'formulas',                folder: 'formulas',                label: 'Formula(s)' },
+    { key: 'integrations',            folder: 'integrations',            label: 'Integration(s)' },
+    { key: 'process-manager-columns', folder: 'process-manager-columns', label: 'Process Manager Column(s)' },
+    { key: 'steps',                   folder: 'steps',                   label: 'Step(s)' },
+    { key: 'templates',               folder: 'templates',               label: 'Templates' },
+    { key: 'xsl-views',               folder: 'xsl-views',               label: 'XSL View(s)' },
+  ];
 
-    const label = items[0].resourceTypeLabel || subFolderName;
-    writeReadme(subDir, buildSubfolderReadme(
-      `${name} — ${label}`,
-      'COMMERCE',
-      variableName,
-      type,
-      items
+  for (const def of standardFolders) {
+    const items = byType[def.key] || [];
+    const label = (items[0] && items[0].resourceTypeLabel) || def.label;
+
+    ensureFolder(def.folder, buildSubfolderReadme(
+      name + ' — ' + label, 'COMMERCE', variableName, def.key, items
     ));
 
-    // For document type: create per-document subdirs (e.g. transaction/, transactionLine/)
-    if (type === 'document') {
+    // Per-document subdirectories under documents/ (e.g. transaction/, transactionLine/)
+    if (def.key === 'documents') {
       for (const doc of items) {
-        const docDir = pathLib.join(subDir, doc.variableName);
-        mkdirp(docDir);
-        writeReadme(docDir, [
-          `# Document: ${doc.name}`,
+        if (!doc.variableName) continue;
+        ensureFolder(def.folder + '/' + doc.variableName, [
+          '# Document: ' + (doc.name || doc.variableName),
           '',
-          `**Variable Name:** \`${doc.variableName}\`  `,
-          `**Process:** \`${variableName}\`  `,
-          `**Resource Type:** \`document\`  `,
+          '**Variable Name:** `' + doc.variableName + '`  ',
+          '**Process:** `' + variableName + '`  ',
+          '**Resource Type:** `document`  ',
           '',
           '> Commerce Process Document (e.g. Transaction header, Line Item)',
           '',
@@ -295,22 +341,18 @@ function buildCommerceProcessDepth(procDir, processItem) {
       }
     }
   }
-}
 
-/**
- * Builds full depth for a CONFIGURATION product family.
- * configuration/<familyName>/
- *   attributes/            → type: attribute
- *   attribute-sets/        → type: attribute_set
- *   models/                → type: product_line, model
- *   rules/
- *     recommendations/     → type: rule_recommendation
- *     recommended-items/   → type: rule_recommended_item
- *     hiding/              → type: rule_hiding
- *     constraints/         → type: rule_constraint
- *     configuration-flow/  → type: rule_configuration_flow
- *     initialization/      → type: rule_initialization
- */
+  // Any unexpected types from the API
+  const knownKeys = new Set(standardFolders.map(s => s.key));
+  for (const [type, items] of Object.entries(byType)) {
+    if (knownKeys.has(type)) continue;
+    const folder = type.replace(/_/g, '-');
+    ensureFolder(folder, buildSubfolderReadme(
+      name + ' — ' + ((items[0] && items[0].resourceTypeLabel) || folder),
+      'COMMERCE', variableName, type, items
+    ));
+  }
+}
 function buildConfigFamilyDepth(familyDir, familyItem) {
   const { variableName, children = [] } = familyItem;
 
@@ -365,12 +407,58 @@ function buildDataTableFolderDepth(folderDir, folderItem) {
       `**Resource Type:** \`${table.resourceType || 'data_table'}\`  `,
       '',
       '## Files',
-      '- `<tableName>.csv` — Table row data',
-      '- `<tableName>-schema.json` — Column schema (types, primary keys)',
+      `- \`${table.variableName}.csv\` — Table row data`,
+      `- \`${table.variableName}-schema.json\` — Column schema (types, primary keys)`,
       '',
-      '> Source: `GET /rest/v19/migrationResources/DATA_TABLE/' + table.variableName + '`',
+      '> Source: Oracle CPQ Migration REST API',
+      '> `GET /migrationResources/DATA_TABLE`',
+      `> _(nested under folder \`${variableName}\`)_`,
       '',
     ].join('\n'));
+  }
+}
+
+/**
+ * Recursively replicates the directory structure and READMEs from sourceDir to targetDir.
+ * Skips 'backup', 'modified', and 'migration-packages'.
+ */
+function replicateStructure(sourceDir, targetDir, scopeTitle, scopeDesc, rootDir) {
+  mkdirp(targetDir);
+  const baseRoot = rootDir || sourceDir;
+  let items;
+  try {
+    items = fs.readdirSync(sourceDir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+  for (const item of items) {
+    if (!item.isDirectory()) continue;
+    if (item.name === 'backup' || item.name === 'modify' || item.name === 'modified' || item.name === 'migration-packages') continue;
+    const subSource = pathLib.join(sourceDir, item.name);
+    const subTarget = pathLib.join(targetDir, item.name);
+    mkdirp(subTarget);
+    const sourceReadme = pathLib.join(subSource, 'README.md');
+    if (fs.existsSync(sourceReadme)) {
+      let title = item.name;
+      try {
+        const firstLine = fs.readFileSync(sourceReadme, 'utf8').split('\n')[0];
+        if (firstLine.startsWith('# ')) {
+          title = firstLine.replace(/^#\s*/, '').trim();
+        }
+      } catch {}
+      const relPath = pathLib.relative(baseRoot, subSource).replace(/\\/g, '/');
+      const targetRel = `${scopeTitle.toLowerCase()}/${relPath}`;
+      const readmeContent = [
+        `# ${title} (${scopeTitle})`,
+        '',
+        `**Scope:** \`${targetRel}\`  `,
+        '',
+        `> ${scopeDesc}`,
+        '',
+      ].join('\n');
+      writeReadme(subTarget, readmeContent);
+    }
+    replicateStructure(subSource, subTarget, scopeTitle, scopeDesc, baseRoot);
   }
 }
 
@@ -385,7 +473,7 @@ function buildDataTableFolderDepth(folderDir, folderItem) {
  *
  * @param {string} workspaceRoot Absolute path to workspace root
  * @param {string} siteName CPQ site name string (e.g. "cpq-10124")
- * @param {Array} migrationCategories Array of category objects from /rest/v19/migrationResources
+ * @param {Array} migrationCategories Array of category objects from /migrationResources
  * @param {number} [packageCount=0] Number of migration packages for site README
  * @returns {{ success, siteRoot, manifestPath, manifest }}
  */
@@ -406,16 +494,28 @@ function generateMigrationFolderStructure(workspaceRoot, siteName, migrationCate
     categories: {},
   };
 
+  const modifyDir = pathLib.join(siteRoot, 'modify');
+  mkdirp(modifyDir);
+  writeReadme(modifyDir, [
+    '# Modify',
+    '',
+    'Local working copies and staged edits created by the CPQ-BML extension.',
+    'Follows the identical hierarchy as the Oracle CPQ Migration API taxonomy.',
+    '',
+    '> These reflect local edits before deployment to the CPQ server.',
+    '',
+  ].join('\n'));
+
   for (const cat of migrationCategories) {
     const catCode = cat.category || cat.name;
     const folderSub = CATEGORY_FOLDER_MAP[catCode] || catCode.toLowerCase().replace(/_/g, '-');
-    const catDir = pathLib.join(siteRoot, folderSub);
+    const catDir = pathLib.join(modifyDir, folderSub);
     mkdirp(catDir);
 
     const children = cat.children || [];
     manifest.categories[catCode] = {
       name: cat.name,
-      folder: pathLib.join('cpq', site, folderSub).replace(/\\/g, '/'),
+      folder: pathLib.join('cpq', site, 'modify', folderSub).replace(/\\/g, '/'),
       count: children.length,
       items: children.map(c => ({
         name: c.name,
@@ -451,11 +551,26 @@ function generateMigrationFolderStructure(workspaceRoot, siteName, migrationCate
       }
     }
 
-    else if (catCode === 'CONFIGURATION' || catCode === 'PRODUCT_DEFINITION') {
-      // configuration/<familyName>/ with full subfolder depth
+    else if (catCode === 'PRODUCT_DEFINITION') {
+      // Product families: top-level family listing only (no granular per-family endpoint)
+      // Deep enrichment comes from CONFIGURATION category which has the same families
       for (const fam of children) {
         if (!fam.variableName) continue;
-        const famDir = pathLib.join(siteRoot, 'configuration', fam.variableName);
+        const famDir = pathLib.join(modifyDir, 'configuration', fam.variableName);
+        mkdirp(famDir);
+        // Only write README if not already written by CONFIGURATION pass
+        const readmePath = pathLib.join(famDir, 'README.md');
+        if (!fs.existsSync(readmePath)) {
+          writeReadme(famDir, buildItemReadme('PRODUCT_DEFINITION', fam));
+        }
+      }
+    }
+
+    else if (catCode === 'CONFIGURATION') {
+      // Configuration families with full rule/attribute depth
+      for (const fam of children) {
+        if (!fam.variableName) continue;
+        const famDir = pathLib.join(modifyDir, 'configuration', fam.variableName);
         mkdirp(famDir);
         buildConfigFamilyDepth(famDir, fam);
       }
@@ -471,11 +586,14 @@ function generateMigrationFolderStructure(workspaceRoot, siteName, migrationCate
     }
 
     else if (catCode === 'DATA_TABLE') {
-      // data-tables/<folderName>/<tableName>/
+      // DATA_TABLE: category response already contains nested children (folder → tables)
+      // The variableName for folders like "_default" returns 404 on granular endpoint;
+      // all data is already present in the category-level response.
       for (const folder of children) {
         if (!folder.variableName) continue;
         const folderDir = pathLib.join(catDir, folder.variableName);
         mkdirp(folderDir);
+        // folder.children contains the actual data tables inside this folder
         buildDataTableFolderDepth(folderDir, folder);
       }
     }
@@ -526,37 +644,28 @@ function generateMigrationFolderStructure(workspaceRoot, siteName, migrationCate
     }
   }
 
-  // Always ensure backup and migration-packages folders exist
+  // Always ensure backup, modify, and migration-packages folders exist with mirrored structure
   const backupDir = pathLib.join(siteRoot, 'backup');
   mkdirp(backupDir);
   writeReadme(backupDir, [
     '# Backup',
     '',
-    'Local snapshots and rollback restore points created by the CPQ-BML extension.',
+    'Local snapshots and pristine rollback restore points created by the CPQ-BML extension.',
+    'Follows the identical hierarchy as the live CPQ environment.',
     '',
-    '> These are generated locally and are not synced to the CPQ server.',
-    '',
-  ].join('\n'));
-
-  const pkgDir = pathLib.join(siteRoot, 'migration-packages');
-  mkdirp(pkgDir);
-  writeReadme(pkgDir, [
-    '# Migration Packages',
-    '',
-    'Migration package manifests and metadata retrieved from Oracle CPQ.',
-    '',
-    '> Source: `GET /rest/v19/migrationPackages`',
-    '',
-    'Each subfolder corresponds to a migration package identifier and contains',
-    'a `package-info.json` with the full package metadata from the REST API.',
+    '> These are generated locally prior to modifications and are not synced to the CPQ server.',
     '',
   ].join('\n'));
+  replicateStructure(modifyDir, backupDir, 'Backup', 'Local pristine snapshots and rollback restore points prior to edit.', modifyDir);
 
-  // Write manifest
-  const manifestPath = pathLib.join(siteRoot, 'cpq-migration-manifest.json');
-  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf8');
+  return { success: true, siteRoot, manifest };
+}
 
-  return { success: true, siteRoot, manifestPath, manifest };
+function getBaseCategoryDir(siteRoot) {
+  if (fs.existsSync(pathLib.join(siteRoot, 'modify'))) {
+    return pathLib.join(siteRoot, 'modify');
+  }
+  return siteRoot;
 }
 
 /**
@@ -564,7 +673,8 @@ function generateMigrationFolderStructure(workspaceRoot, siteName, migrationCate
  * Called after the top-level structure is built, when granular data is available.
  */
 function enrichCommerceProcess(siteRoot, processVarName, processItem) {
-  const procDir = pathLib.join(siteRoot, 'commerce', processVarName);
+  const base = getBaseCategoryDir(siteRoot);
+  const procDir = pathLib.join(base, 'commerce', processVarName);
   mkdirp(procDir);
   buildCommerceProcessDepth(procDir, processItem);
 }
@@ -573,7 +683,8 @@ function enrichCommerceProcess(siteRoot, processVarName, processItem) {
  * Enriches a configuration family folder with deep children from granular API.
  */
 function enrichConfigFamily(siteRoot, familyVarName, familyItem) {
-  const famDir = pathLib.join(siteRoot, 'configuration', familyVarName);
+  const base = getBaseCategoryDir(siteRoot);
+  const famDir = pathLib.join(base, 'configuration', familyVarName);
   mkdirp(famDir);
   buildConfigFamilyDepth(famDir, familyItem);
 }
@@ -582,7 +693,8 @@ function enrichConfigFamily(siteRoot, familyVarName, familyItem) {
  * Enriches a data-table folder with deep children from granular API.
  */
 function enrichDataTableFolder(siteRoot, folderVarName, folderItem) {
-  const folderDir = pathLib.join(siteRoot, 'data-tables', folderVarName);
+  const base = getBaseCategoryDir(siteRoot);
+  const folderDir = pathLib.join(base, 'data-tables', folderVarName);
   mkdirp(folderDir);
   buildDataTableFolderDepth(folderDir, folderItem);
 }
@@ -592,9 +704,11 @@ module.exports = {
   COMMERCE_CHILD_FOLDER,
   CONFIG_CHILD_FOLDER,
   generateMigrationFolderStructure,
+  buildCommerceProcessDepth,
   enrichCommerceProcess,
   enrichConfigFamily,
   enrichDataTableFolder,
+  replicateStructure,
   writeReadme,
   buildItemReadme,
   buildCategoryReadme,

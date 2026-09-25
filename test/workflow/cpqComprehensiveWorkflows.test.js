@@ -25,6 +25,7 @@ const { inspectMetadataStatus } = require('@/lang/rest/commerceMetadataLoader');
 const {
   getCpqSiteName,
   getBackupFolder,
+  getModifiedFolder,
   getCommerceAttributesFolder,
   getCommerceActionsFolder,
   getConfigRulesFolder,
@@ -374,10 +375,16 @@ suite('CPQ Comprehensive Workflow Test Cases (End-to-End)', () => {
   suite('9. MCP First-Time Backup & Standardized Migration Folders', () => {
     test('Migration folder helpers construct standardized paths', () => {
       const utilBackup = getBackupFolder('https://mysite.bigmachines.com', 'util');
-      assert.strictEqual(utilBackup, path.join('cpq', 'mysite', 'backup', 'util'));
+      assert.strictEqual(utilBackup, path.join('cpq', 'mysite', 'backup', 'util-libraries'));
 
       const processBackup = getBackupFolder('https://mysite.bigmachines.com', 'process', 'oraclecpqo');
-      assert.strictEqual(processBackup, path.join('cpq', 'mysite', 'backup', 'oraclecpqo'));
+      assert.strictEqual(processBackup, path.join('cpq', 'mysite', 'backup', 'commerce', 'oraclecpqo'));
+
+      const utilModified = getModifiedFolder('https://mysite.bigmachines.com', 'util');
+      assert.strictEqual(utilModified, path.join('cpq', 'mysite', 'modify', 'util-libraries'));
+
+      const processModified = getModifiedFolder('https://mysite.bigmachines.com', 'process', 'oraclecpqo');
+      assert.strictEqual(processModified, path.join('cpq', 'mysite', 'modify', 'commerce', 'oraclecpqo'));
 
       const attrModify = getCommerceAttributesFolder('https://mysite.bigmachines.com', 'oraclecpqo', 'modify');
       assert.strictEqual(attrModify, path.join('cpq', 'mysite', 'commerce', 'oraclecpqo', 'attributes', 'modify'));

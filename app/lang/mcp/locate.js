@@ -88,21 +88,39 @@ function legacyAiCopyPathFor(canonicalBmlPath, variableName) {
     return path.join(legacyDir, `${variableName}.bml`);
 }
 
-// Creates a pristine backup in cpq/<site>/backup/util or cpq/<site>/backup/<process>
+function getMirrorPath(wsRoot, filePath, targetScope) {
+    const rel = path.relative(wsRoot, filePath);
+    const matchModify = rel.match(/^(cpq[/\\][^/\\]+)[/\\](?:modify|modified)[/\\](.*)$/i);
+    if (matchModify) {
+        return path.join(wsRoot, matchModify[1], targetScope, matchModify[2]);
+    }
+    const matchRoot = rel.match(/^(cpq[/\\][^/\\]+)[/\\](?!backup|modify|modified)(.*)$/i);
+    if (matchRoot) {
+        return path.join(wsRoot, matchRoot[1], targetScope, matchRoot[2]);
+    }
+    return null;
+}
+
+// Creates a pristine backup in cpq/<site>/backup/...
 // before the AI modifies the function for the first time.
 function createFirstTimeBackup(vscode, canonicalBmlPath, variableName) {
     try {
         const v = (vscode && vscode.workspace) ? vscode : (config.getConfigContext()?.vscode || (() => { try { return require('vscode'); } catch (_) { return null; } })());
         const workspaceFolders = v?.workspace?.workspaceFolders;
         const wsRoot = (workspaceFolders && workspaceFolders.length > 0) ? workspaceFolders[0].uri.fsPath : process.cwd();
-        const inferred = metadataLib.inferCommerceFromPath(canonicalBmlPath);
-        const type = inferred ? 'process' : 'util';
-        const proc = inferred ? inferred.commerceProcess : '';
-        const relBackupDir = foldersLib.getBackupFolder(v, type, proc, config.getBaseUrl);
-        const backupDir = path.join(wsRoot, relBackupDir, variableName);
+
+        let backupBmlPath = getMirrorPath(wsRoot, canonicalBmlPath, 'backup');
+        if (!backupBmlPath) {
+            const inferred = metadataLib.inferCommerceFromPath(canonicalBmlPath);
+            const type = inferred ? 'process' : 'util';
+            const proc = inferred ? inferred.commerceProcess : '';
+            const relBackupDir = foldersLib.getBackupFolder(v, type, proc, config.getBaseUrl);
+            backupBmlPath = path.join(wsRoot, relBackupDir, variableName, `${variableName}.bml`);
+        }
+
+        const backupDir = path.dirname(backupBmlPath);
         fs.mkdirSync(backupDir, { recursive: true });
 
-        const backupBmlPath = path.join(backupDir, `${variableName}.bml`);
         if (!fs.existsSync(backupBmlPath)) {
             fs.copyFileSync(canonicalBmlPath, backupBmlPath);
             const canonicalMetaPath = metadataLib.bmlPathToMetaPath(canonicalBmlPath);
@@ -172,4 +190,4 @@ function resetAiCopy(vscode, variableName) {
     return findOrCreateAiCopy(vscode, variableName);
 }
 
-module.exports = { findLocalBmlPath, findOrCreateAiCopy, resetAiCopy, createFirstTimeBackup };
+module.exports = { findLocalBmlPath, findOrCreateAiCopy, resetAiCopy, createFirstTimeBackup, getMirrorPath };

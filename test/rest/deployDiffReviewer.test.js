@@ -2,12 +2,23 @@ const assert = require('assert');
 const { compareAndPromptPreDeploy } = require('@/lang/rest/deployDiffReviewer');
 
 suite('Pre-Deploy Diff Reviewer - Unit Tests', () => {
+  const createMockVscode = (windowOverrides = {}) => ({
+    workspace: {
+      getConfiguration: () => ({
+        get: (k) => (k === 'connection.siteUrl' || k === 'siteUrl' ? 'https://test.bigmachines.com' : undefined),
+      }),
+    },
+    window: {
+      showInformationMessage: async () => 'Deploy Anyway',
+      showWarningMessage: async () => 'Deploy to CPQ',
+      ...windowOverrides,
+    },
+  });
+
   test('detects identical local and remote code and reports isIdentical', async () => {
-    const mockVscode = {
-      window: {
-        showInformationMessage: async () => 'Deploy Anyway'
-      }
-    };
+    const mockVscode = createMockVscode({
+      showInformationMessage: async () => 'Deploy Anyway'
+    });
 
     const mockTransport = async () => ({
       statusCode: 200,
@@ -28,11 +39,9 @@ suite('Pre-Deploy Diff Reviewer - Unit Tests', () => {
   });
 
   test('prompts user when remote differs and allows deployment', async () => {
-    const mockVscode = {
-      window: {
-        showWarningMessage: async () => 'Deploy to CPQ'
-      }
-    };
+    const mockVscode = createMockVscode({
+      showWarningMessage: async () => 'Deploy to CPQ'
+    });
 
     const mockTransport = async () => ({
       statusCode: 200,
@@ -54,11 +63,9 @@ suite('Pre-Deploy Diff Reviewer - Unit Tests', () => {
   });
 
   test('handles cancelled deployment gracefully', async () => {
-    const mockVscode = {
-      window: {
-        showWarningMessage: async () => 'Cancel'
-      }
-    };
+    const mockVscode = createMockVscode({
+      showWarningMessage: async () => 'Cancel'
+    });
 
     const mockTransport = async () => ({
       statusCode: 200,
