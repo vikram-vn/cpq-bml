@@ -16,12 +16,12 @@ async function runSyncCommerceMetadata(
   options = {},
 ) {
   const normArgs = normalizeCommandArgs(arguments);
-  resultsTerminal = normArgs[0] || resultsTerminal;
+  resultsTerminal = normArgs.length > 0 ? normArgs[0] : resultsTerminal;
   const effectiveOpts = (normArgs.length > 1 ? normArgs[1] : options) || {};
   const { process, document, fetchMenuItems = true, transport, onProgress: externalOnProgress } = effectiveOpts;
-  const { vscode } = getExtensionContext();
+  const { vscode, context } = getExtensionContext();
 
-  const hasCredentials = await ensureCredentials();
+  const hasCredentials = await ensureCredentials(context, vscode);
   if (!hasCredentials) {
     return {
       success: false,
@@ -31,7 +31,8 @@ async function runSyncCommerceMetadata(
 
   const workspaceFolders =
     vscode && vscode.workspace && vscode.workspace.workspaceFolders;
-  if (!workspaceFolders || workspaceFolders.length === 0) {
+  const hasStorage = Boolean(context && (context.storageUri || context.globalStorageUri));
+  if ((!workspaceFolders || workspaceFolders.length === 0) && !hasStorage) {
     if (vscode && vscode.window) {
       vscode.window.showErrorMessage(
         "CPQ-BML: open a workspace folder before syncing commerce metadata.",
@@ -43,7 +44,13 @@ async function runSyncCommerceMetadata(
     };
   }
 
-  if (resultsTerminal) {
+  const isValidTerminal = Boolean(
+    resultsTerminal &&
+    typeof resultsTerminal.show === "function" &&
+    typeof resultsTerminal.writeLine === "function"
+  );
+
+  if (isValidTerminal) {
     writeRunHeader(resultsTerminal, "Sync", "Commerce Metadata");
     writeRunningLine(resultsTerminal, "Sync", "Commerce Metadata");
     resultsTerminal.show();
@@ -148,7 +155,7 @@ async function runSyncCommerceMetadata(
         msg += `, ${cfgCount} configAttributes`;
       }
       msg += ` (${formatElapsed(startedAt)})`;
-      if (resultsTerminal) {
+      if (isValidTerminal) {
         writeTerminalMessage(
           resultsTerminal,
           "Sync complete: ",
@@ -177,7 +184,7 @@ async function runSyncCommerceMetadata(
     const message = isCancelled
       ? "Sync cancelled by user."
       : `failed to sync commerce metadata. ${err.message || describeError(err)}`;
-    if (resultsTerminal) {
+    if (isValidTerminal) {
       writeTerminalMessage(
         resultsTerminal,
         isCancelled ? "Sync cancelled: " : "Sync failed: ",
@@ -204,36 +211,56 @@ async function runSyncCommerceMetadata(
 
 async function runSyncAllMetadata(terminal, onProgress) {
   const normArgs = normalizeCommandArgs(arguments);
-  terminal = normArgs[0] || terminal;
-  onProgress = normArgs[1] || onProgress;
+  terminal = normArgs.length > 0 ? normArgs[0] : terminal;
+  onProgress = normArgs.length > 1 ? normArgs[1] : onProgress;
   const { syncConfigurationAttributes } = require("@/lang/rest/apiConfig");
   const commRes = await runSyncCommerceMetadata(terminal, {
     fetchMenuItems: false,
     onProgress,
   });
-  let configCount = 0;
-  try {
-    if (onProgress && typeof onProgress === "function") {
-      onProgress({ message: "Syncing configuration attributes...", stage: "config" });
-    }
-    const cfgRes = await syncConfigurationAttributes({ limit: 1000, onProgress });
-    configCount = cfgRes ? cfgRes.count : 0;
-  } catch (e) {}
+
+  if (!commRes || !commRes.success) {
+    return {
+      success: false,
+      errorMessage: commRes ? commRes.errorMessage : "Failed to sync metadata.",
+      commerceCount: 0,
+      configCount: 0,
+    };
+  }
+
+  let configCount = (commRes.configData && Array.isArray(commRes.configData.attributes))
+    ? commRes.configData.attributes.length
+    : 0;
+
+  if (configCount === 0) {
+    try {
+      if (onProgress && typeof onProgress === "function") {
+        onProgress({ message: "Syncing configuration attributes...", stage: "config" });
+      }
+      const cfgRes = await syncConfigurationAttributes({ limit: 1000, onProgress });
+      configCount = cfgRes ? (cfgRes.count || (Array.isArray(cfgRes.attributes) ? cfgRes.attributes.length : 0)) : 0;
+    } catch (e) {}
+  }
   return {
-    success: commRes ? commRes.success : true,
-    commerceCount: commRes && commRes.data && commRes.data.attributes ? commRes.data.attributes.length : 0,
+    success: true,
+    commerceCount: commRes.data && commRes.data.attributes ? commRes.data.attributes.length : 0,
     configCount,
   };
 }
 
 async function runRemoveCommerceMetadata(terminal) {
   const normArgs = normalizeCommandArgs(arguments);
-  terminal = normArgs[0] || terminal;
-  const { vscode } = getExtensionContext();
+  terminal = normArgs.length > 0 ? normArgs[0] : terminal;
+  const { vscode, context } = getExtensionContext();
   const { removeMetadata, getWorkspaceRoot } = require("@/lang/rest/commerceAttributes");
-  const wsRoot = getWorkspaceRoot();
-  removeMetadata(wsRoot);
-  if (terminal) {
+  const wsRoot = getWorkspaceRoot(vscode);
+  removeMetadata(context, wsRoot, vscode);
+  const isValidTerminal = Boolean(
+    terminal &&
+    typeof terminal.show === "function" &&
+    typeof terminal.writeLine === "function"
+  );
+  if (isValidTerminal) {
     writeRunHeader(terminal, "Remove", "Offline Metadata");
     writeTerminalMessage(terminal, "Offline cached metadata removed successfully.");
   }

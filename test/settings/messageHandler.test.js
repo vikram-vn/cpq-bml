@@ -349,6 +349,7 @@ suite("settings messageHandler", () => {
     const cpqDir = path.join(tempDir, "cpq");
     fs.mkdirSync(cpqDir, { recursive: true });
     fs.writeFileSync(path.join(cpqDir, "commerce.attributes.min.json"), JSON.stringify({ attributes: [] }));
+    fs.writeFileSync(path.join(cpqDir, "user_script.bml"), "// user script");
 
     const panel = fakePanel();
     const vscode = createFakeVscode({
@@ -366,7 +367,9 @@ suite("settings messageHandler", () => {
       assert.strictEqual(stateMsg.metadata.isSynced, false);
       assert.ok(toastMsg, "Expected toast message to be posted");
       assert.ok(toastMsg.message.includes("removed"));
-      assert.strictEqual(fs.existsSync(cpqDir), false);
+      assert.strictEqual(fs.existsSync(path.join(cpqDir, "commerce.attributes.min.json")), false);
+      assert.strictEqual(fs.existsSync(cpqDir), true);
+      assert.strictEqual(fs.existsSync(path.join(cpqDir, "user_script.bml")), true);
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }

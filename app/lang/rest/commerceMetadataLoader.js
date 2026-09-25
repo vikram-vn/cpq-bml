@@ -272,20 +272,20 @@ function removeMetadataFromDirs(dirs, cpqDirName) {
     if (!fs.existsSync(dir)) continue;
 
     const baseName = path.basename(dir).toLowerCase();
-    const isDedicatedDir =
-      baseName === (cpqDirName || "cpq").toLowerCase() ||
-      baseName === "cpq" ||
+    const isExtensionInternal =
+      (dir.includes("globalStorage") || dir.includes("workspaceStorage")) &&
       baseName === "metadata";
 
-    if (isDedicatedDir) {
+    // Dedicated extension internal storage can be fully removed
+    if (isExtensionInternal) {
       try {
         fs.rmSync(dir, { recursive: true, force: true });
         continue;
-      } catch (e) {
-        // If directory locking prevents deleting the folder itself, delete contents below
-      }
+      } catch (e) {}
     }
 
+    // For any other directory (especially /cpq or workspace folders):
+    // NEVER remove the cpq directory itself and NEVER remove user data.
     const knownFiles = [
       COMMERCE_ATTRS_FILE,
       CONFIG_ATTRS_FILE,
@@ -293,7 +293,6 @@ function removeMetadataFromDirs(dirs, cpqDirName) {
       "commerce.attributes.json",
       "config.attributes.json",
       "system.attributes.json",
-      "README.md",
     ];
     for (const f of knownFiles) {
       const p = path.join(dir, f);
@@ -301,18 +300,93 @@ function removeMetadataFromDirs(dirs, cpqDirName) {
         try { fs.unlinkSync(p); } catch (e) {}
       }
     }
-    for (const sub of ["commerce", "config", "system", "cache"]) {
-      const p = path.join(dir, sub);
-      if (fs.existsSync(p)) {
-        try { fs.rmSync(p, { recursive: true, force: true }); } catch (e) {}
-      }
+
+    // Only remove README.md if it is the generated CPQ metadata readme
+    const readmePath = path.join(dir, "README.md");
+    if (fs.existsSync(readmePath)) {
+      try {
+        const content = fs.readFileSync(readmePath, "utf8");
+        if (content.includes("Oracle CPQ Backend Metadata Directory") || content.includes("MCP and IntelliSense (preferred)")) {
+          fs.unlinkSync(readmePath);
+        }
+      } catch (e) {}
     }
-    try {
-      const remaining = fs.readdirSync(dir);
-      if (remaining.length === 0) {
-        fs.rmSync(dir, { recursive: true, force: true });
-      }
-    } catch (e) {}
+
+    // Clean modular commerce metadata (only delete attributes.min.json)
+    const commDir = path.join(dir, COMMERCE_DIR);
+    if (fs.existsSync(commDir)) {
+      try {
+        for (const entry of fs.readdirSync(commDir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            const procDir = path.join(commDir, entry.name);
+            const attrFile = path.join(procDir, "attributes.min.json");
+            if (fs.existsSync(attrFile)) {
+              try { fs.unlinkSync(attrFile); } catch (e) {}
+            }
+            try {
+              if (fs.readdirSync(procDir).length === 0) {
+                fs.rmdirSync(procDir);
+              }
+            } catch (e) {}
+          } else if (entry.isFile() && (entry.name.endsWith(".min.json") || entry.name.endsWith(".attributes.json"))) {
+            try { fs.unlinkSync(path.join(commDir, entry.name)); } catch (e) {}
+          }
+        }
+        if (fs.readdirSync(commDir).length === 0) {
+          fs.rmdirSync(commDir);
+        }
+      } catch (e) {}
+    }
+
+    // Clean modular config metadata
+    const cfgDir = path.join(dir, CONFIG_DIR);
+    if (fs.existsSync(cfgDir)) {
+      try {
+        for (const entry of fs.readdirSync(cfgDir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            const famDir = path.join(cfgDir, entry.name);
+            const attrFile = path.join(famDir, "attributes.min.json");
+            if (fs.existsSync(attrFile)) {
+              try { fs.unlinkSync(attrFile); } catch (e) {}
+            }
+            try {
+              if (fs.readdirSync(famDir).length === 0) {
+                fs.rmdirSync(famDir);
+              }
+            } catch (e) {}
+          } else if (entry.isFile() && (entry.name.endsWith(".min.json") || entry.name.endsWith(".attributes.json"))) {
+            try { fs.unlinkSync(path.join(cfgDir, entry.name)); } catch (e) {}
+          }
+        }
+        if (fs.readdirSync(cfgDir).length === 0) {
+          fs.rmdirSync(cfgDir);
+        }
+      } catch (e) {}
+    }
+
+    // Clean modular system metadata
+    const sysDir = path.join(dir, SYSTEM_DIR);
+    if (fs.existsSync(sysDir)) {
+      try {
+        const vf = path.join(sysDir, "variables.min.json");
+        if (fs.existsSync(vf)) {
+          try { fs.unlinkSync(vf); } catch (e) {}
+        }
+        if (fs.readdirSync(sysDir).length === 0) {
+          fs.rmdirSync(sysDir);
+        }
+      } catch (e) {}
+    }
+
+    // Cache folder (if any)
+    const cacheDir = path.join(dir, "cache");
+    if (fs.existsSync(cacheDir)) {
+      try {
+        if (fs.readdirSync(cacheDir).length === 0) {
+          fs.rmdirSync(cacheDir);
+        }
+      } catch (e) {}
+    }
   }
 }
 

@@ -56,13 +56,17 @@ const getApiContext = getExtensionContext;
 
 function normalizeArgs(args) {
   if (args && args.length >= 2) {
-    if (isContextOrVscode(args[0]) || isContextOrVscode(args[1])) {
+    if (isContextOrVscode(args[0]) && isContextOrVscode(args[1])) {
       setApiContext(args[0], args[1]);
       return Array.prototype.slice.call(args, 2);
     }
     if (args[0] == null && args[1] == null && args.length >= 3) {
       return Array.prototype.slice.call(args, 2);
     }
+  }
+  if (args && args.length >= 1 && isContextOrVscode(args[0])) {
+    setApiContext(args[0], null);
+    return Array.prototype.slice.call(args, 1);
   }
   return Array.prototype.slice.call(args || []);
 }

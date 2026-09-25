@@ -153,20 +153,28 @@ async function dispatch(message, context, vscode, panel) {
           });
         });
         await sendState();
-        post({
-          type: "syncProgress",
-          isSyncing: false,
-          message: "Metadata sync completed.",
-          percent: 100,
-          done: true,
-        });
         if (res && res.success) {
+          post({
+            type: "syncProgress",
+            isSyncing: false,
+            message: "Metadata sync completed.",
+            percent: 100,
+            done: true,
+          });
           post({
             type: "toast",
             message: `Metadata synced: ${res.commerceCount || 0} Commerce, ${res.configCount || 0} Config attributes.`,
           });
         } else {
-          post({ type: "toast", message: "Metadata sync completed." });
+          const errMsg = (res && res.errorMessage) || "Sync failed. Check connection settings and credentials.";
+          post({
+            type: "syncProgress",
+            isSyncing: false,
+            message: errMsg,
+            error: true,
+            done: true,
+          });
+          post({ type: "error", message: errMsg });
         }
       } catch (err) {
         post({

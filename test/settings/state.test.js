@@ -119,4 +119,36 @@ suite("settings state", () => {
 
     assert.deepStrictEqual(state.environments, []);
   });
+
+  test("active environment sorting puts active environment on top", () => {
+    const connection = { siteUrl: "prod.bigmachines.com", username: "admin", authMethod: "basic" };
+    const environments = [
+      { name: "Dev", siteUrl: "dev.bigmachines.com", username: "admin", authMethod: "basic" },
+      { name: "Prod", siteUrl: "prod.bigmachines.com", username: "admin", authMethod: "basic" },
+      { name: "Stage", siteUrl: "stage.bigmachines.com", username: "admin", authMethod: "basic" },
+    ];
+
+    const isEnvActive = (env) => {
+      if (!connection.siteUrl) return false;
+      const urlMatches = env.siteUrl.trim().toLowerCase() === connection.siteUrl.trim().toLowerCase();
+      const userMatches = (env.username || '').trim().toLowerCase() === (connection.username || '').trim().toLowerCase();
+      const authMatches = (env.authMethod || 'basic') === (connection.authMethod || 'basic');
+      return urlMatches && userMatches && authMatches;
+    };
+
+    const envsWithIndex = environments.map((env, originalIndex) => ({ env, originalIndex }));
+    const sorted = [...envsWithIndex].sort((a, b) => {
+      const aActive = isEnvActive(a.env);
+      const bActive = isEnvActive(b.env);
+      if (aActive && !bActive) return -1;
+      if (!aActive && bActive) return 1;
+      return a.originalIndex - b.originalIndex;
+    });
+
+    assert.strictEqual(sorted[0].env.name, "Prod");
+    assert.strictEqual(sorted[0].originalIndex, 1);
+    assert.strictEqual(sorted[1].env.name, "Dev");
+    assert.strictEqual(sorted[2].env.name, "Stage");
+  });
 });
+

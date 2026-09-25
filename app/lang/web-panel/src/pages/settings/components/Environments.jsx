@@ -78,7 +78,9 @@ export default function Environments({ environments = [], connection, vscodeApi,
         return urlMatches && userMatches && authMatches;
     };
 
-    const filteredEnvs = environments.filter((env) => {
+    const envsWithIndex = environments.map((env, originalIndex) => ({ env, originalIndex }));
+
+    const filteredEnvs = envsWithIndex.filter(({ env }) => {
         if (!filterQuery.trim()) return true;
         const q = filterQuery.trim().toLowerCase();
         return (
@@ -86,6 +88,14 @@ export default function Environments({ environments = [], connection, vscodeApi,
             (env.siteUrl || '').toLowerCase().includes(q) ||
             (env.username || '').toLowerCase().includes(q)
         );
+    });
+
+    const displayEnvs = [...filteredEnvs].sort((a, b) => {
+        const aActive = isEnvActive(a.env);
+        const bActive = isEnvActive(b.env);
+        if (aActive && !bActive) return -1;
+        if (!aActive && bActive) return 1;
+        return a.originalIndex - b.originalIndex;
     });
 
     return (
@@ -112,15 +122,14 @@ export default function Environments({ environments = [], connection, vscodeApi,
 
             {environments.length === 0 ? (
                 <p className="empty-state">No saved environments found.</p>
-            ) : filteredEnvs.length === 0 ? (
+            ) : displayEnvs.length === 0 ? (
                 <p className="empty-state">No environments matching &ldquo;{filterQuery}&rdquo;.</p>
             ) : (
                 <ul className="environments-list">
-                    {filteredEnvs.map((env, index) => {
-                        const originalIndex = environments.indexOf(env);
+                    {displayEnvs.map(({ env, originalIndex }) => {
                         const active = isEnvActive(env);
                         return (
-                            <li key={`${env.name}-${index}`} className={`environment-card ${active ? 'active' : ''}`}>
+                            <li key={`${env.name}-${originalIndex}`} className={`environment-card ${active ? 'active' : ''}`}>
                                 <div className="env-info">
                                     <span className="env-name">{env.name}</span>
                                     <span className="env-detail">

@@ -3,7 +3,12 @@
 let _context = null;
 let _vscode = null;
 
-function isContextOrVscode(val) {
+function isVscodeObject(val) {
+    if (!val || typeof val !== 'object') return false;
+    return Boolean(val.workspace || val.window || val.commands || val.languages || val.env);
+}
+
+function isContextObject(val) {
     if (!val || typeof val !== 'object') return false;
     return Boolean(
         val.subscriptions ||
@@ -12,16 +17,21 @@ function isContextOrVscode(val) {
         val.secrets ||
         val.extensionPath ||
         val.extensionUri ||
-        val.window ||
-        val.workspace ||
-        val.commands ||
-        val.languages
+        val.storageUri ||
+        val.globalStorageUri
     );
 }
 
+function isContextOrVscode(val) {
+    return isContextObject(val) || isVscodeObject(val);
+}
+
 function setExtensionContext(context, vscode) {
-    if (context) _context = context;
-    if (vscode) _vscode = vscode;
+    if (isContextObject(context)) _context = context;
+    else if (isVscodeObject(context)) _vscode = context;
+
+    if (isVscodeObject(vscode)) _vscode = vscode;
+    else if (isContextObject(vscode)) _context = vscode;
 }
 
 function getExtensionContext() {
@@ -48,19 +58,20 @@ function getVscode() {
 }
 
 function normalizeCommandArgs(args) {
-    if (args && args.length >= 2 && (isContextOrVscode(args[0]) || isContextOrVscode(args[1]))) {
+    if (!args || args.length === 0) return [];
+    if (args.length >= 2 && isContextOrVscode(args[0]) && isContextOrVscode(args[1])) {
         setExtensionContext(args[0], args[1]);
         return Array.prototype.slice.call(args, 2);
     }
-    if (args && args.length >= 1 && isContextOrVscode(args[0])) {
-        if (args[0].subscriptions || args[0].globalState || args[0].secrets) {
+    if (args.length >= 1 && isContextOrVscode(args[0])) {
+        if (isContextObject(args[0])) {
             setExtensionContext(args[0], null);
         } else {
             setExtensionContext(null, args[0]);
         }
         return Array.prototype.slice.call(args, 1);
     }
-    return Array.prototype.slice.call(args || []);
+    return Array.prototype.slice.call(args);
 }
 
 module.exports = {
@@ -69,6 +80,8 @@ module.exports = {
     getContext,
     getVscode,
     isContextOrVscode,
+    isContextObject,
+    isVscodeObject,
     normalizeCommandArgs,
     setGlobalContext: setExtensionContext,
     getGlobalContext: getExtensionContext,

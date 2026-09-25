@@ -326,10 +326,8 @@ async function syncCommerceAttributes(
     lookups,
   };
 
-  if (wsRoot) {
-    const configSettings = typeof getSettings === "function" ? getSettings(vscode) : null;
-    saveWorkspaceAttributes(wsRoot, cacheData, configSettings, context);
-  }
+  const configSettings = typeof getSettings === "function" ? getSettings(vscode) : null;
+  saveWorkspaceAttributes(wsRoot, cacheData, configSettings, context);
 
   return cacheData;
 }

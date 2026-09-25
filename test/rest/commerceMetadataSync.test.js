@@ -58,7 +58,7 @@ suite("Commerce Metadata & Config Sync Unit Tests", () => {
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
-  test("removeMetadata removes cpq folder, clears caches, and updates context", () => {
+  test("removeMetadata removes cached attributes, preserves user /cpq data, clears caches, and updates context", () => {
     const tempDir = fs.mkdtempSync(
       path.join(os.tmpdir(), "cpq-remove-meta-test-"),
     );
@@ -73,10 +73,13 @@ suite("Commerce Metadata & Config Sync Unit Tests", () => {
           },
         ],
       });
-      assert.ok(
-        fs.existsSync(path.join(cpqDir, "commerce", "oraclecpqo", "attributes.min.json")),
-      );
+      const metaAttrPath = path.join(cpqDir, "commerce", "oraclecpqo", "attributes.min.json");
+      assert.ok(fs.existsSync(metaAttrPath));
       assert.strictEqual(isCommerceSynced(tempDir), true);
+
+      // Add custom user file inside /cpq
+      const userScriptPath = path.join(cpqDir, "customScript.bml");
+      fs.writeFileSync(userScriptPath, "// important user CPQ code");
 
       let contextSet = false;
       const fakeVscode = {
@@ -96,13 +99,14 @@ suite("Commerce Metadata & Config Sync Unit Tests", () => {
 
       removeMetadata(null, tempDir, fakeVscode);
 
-      assert.strictEqual(
-        fs.existsSync(cpqDir),
-        false,
-        "cpq directory should be completely deleted",
-      );
+      // Metadata attribute cache is removed:
+      assert.strictEqual(fs.existsSync(metaAttrPath), false, "attributes.min.json should be removed");
       assert.strictEqual(isCommerceSynced(tempDir), false);
       assert.strictEqual(contextSet, true);
+
+      // /cpq directory and user data must NOT be removed:
+      assert.strictEqual(fs.existsSync(cpqDir), true, "cpq directory must not be removed");
+      assert.strictEqual(fs.existsSync(userScriptPath), true, "user file in cpq must not be removed");
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
