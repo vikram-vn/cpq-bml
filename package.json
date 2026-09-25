@@ -20,7 +20,7 @@
     "workspaceContains:**/*.bml",
     "onStartupFinished"
   ],
-  "extensionDependencies": [
+  "extensionPack": [
     "streetsidesoftware.code-spell-checker",
     "PKief.material-icon-theme"
   ],

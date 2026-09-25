@@ -121,12 +121,12 @@ suite('Code Spell Checker Integration - Unit Tests', () => {
     }
   });
 
-  test('package.json declares extensionDependencies for Code Spell Checker and Material Icon Theme', () => {
+  test('package.json declares extensionPack for Code Spell Checker and Material Icon Theme', () => {
     const pkgPath = path.join(ROOT, 'package.json');
     const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
-    assert.ok(Array.isArray(pkg.extensionDependencies), 'package.json must contain extensionDependencies array');
-    assert.ok(pkg.extensionDependencies.includes('streetsidesoftware.code-spell-checker'), 'Must include streetsidesoftware.code-spell-checker');
-    assert.ok(pkg.extensionDependencies.includes('PKief.material-icon-theme'), 'Must include PKief.material-icon-theme');
+    assert.ok(Array.isArray(pkg.extensionPack), 'package.json must contain extensionPack array');
+    assert.ok(pkg.extensionPack.includes('streetsidesoftware.code-spell-checker'), 'Must include streetsidesoftware.code-spell-checker');
+    assert.ok(pkg.extensionPack.includes('PKief.material-icon-theme'), 'Must include PKief.material-icon-theme');
   });
 });
