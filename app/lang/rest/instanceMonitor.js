@@ -91,13 +91,15 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
       siteName = baseUrl.replace(/^https?:\/\//, '').split('/')[0].split('.')[0];
     }
 
-    const release = ok ? `v${version}` : `HTTP ${res ? res.statusCode : 'Error'}`;
+    const normalizedVer = (version || '').replace(/^v+/i, '');
+    const cleanVersion = normalizedVer ? `v${normalizedVer}` : (version || 'v18');
+    const release = ok ? cleanVersion : `HTTP ${res ? res.statusCode : 'Error'}`;
     const tooltip = new vscode.MarkdownString();
     tooltip.appendMarkdown(`**Oracle CPQ Instance Health**\n\n`);
     tooltip.appendMarkdown(`- **Site**: \`${baseUrl}\`\n`);
     tooltip.appendMarkdown(`- **Status**: \`${res ? res.statusCode : 'N/A'} ${ok ? 'OK' : 'Error'}\`\n`);
     tooltip.appendMarkdown(`- **Latency**: \`${latencyMs}ms\`\n`);
-    tooltip.appendMarkdown(`- **REST Version**: \`${version}\`\n`);
+    tooltip.appendMarkdown(`- **REST Version**: \`${cleanVersion}\`\n`);
     tooltip.appendMarkdown(`- **Last Checked**: \`${new Date().toLocaleTimeString()}\`\n\n`);
     tooltip.appendMarkdown(`*Click to re-check health and network round-trip latency.*`);
 
@@ -108,7 +110,7 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
       latencyMs,
       statusCode: res ? res.statusCode : undefined,
       siteName,
-      version,
+      version: cleanVersion,
       reason: ok ? undefined : (res ? (res.statusCode === 401 ? 'Authentication failed (401)' : res.statusCode === 403 ? 'Access forbidden (403)' : `HTTP ${res.statusCode}`) : 'No response')
     };
   } catch (err) {

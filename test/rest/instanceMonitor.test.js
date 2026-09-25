@@ -35,5 +35,6 @@ suite('CPQ Instance Monitor & Health Check - Unit Tests', () => {
     assert.ok(res.latencyMs >= 0);
     assert.strictEqual(res.siteName, 'sitename');
     assert.ok(monitor.statusBarItem.text.includes('sitename'));
+    assert.ok(!monitor.statusBarItem.text.includes('vv'));
   });
 });
