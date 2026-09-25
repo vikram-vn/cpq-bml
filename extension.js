@@ -91,7 +91,10 @@ function activate(context) {
       coverageDecorator.toggle();
     }),
     vscode.window.onDidChangeActiveTextEditor((editor) => {
-      if (editor) coverageDecorator.updateActiveEditor();
+      if (coverageDecorator) {
+        coverageDecorator.updateStatusBar();
+        if (editor) coverageDecorator.updateActiveEditor();
+      }
     })
   );
 
@@ -173,6 +176,17 @@ function activate(context) {
           vscode.window.showErrorMessage(`Pre-Flight check error: ${err.message}`);
         }
       });
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("cpqBml.runBmlLocally", () => {
+      const { runBmlLocallyCommand } = require("@/lang/test-controller/localSandbox");
+      return runBmlLocallyCommand(vscode);
+    }),
+    vscode.commands.registerCommand("cpqBml.generateUnitTests", () => {
+      const { generateUnitTestsCommand } = require("@/lang/test-controller/testGenerator");
+      return generateUnitTestsCommand(vscode);
     })
   );
 

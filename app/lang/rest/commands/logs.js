@@ -9,23 +9,21 @@ try {
 }
 
 const { getLogStreamer, formatLogEntry } = require('@/lang/rest/apiLogs');
+const { isBmlActive } = require('@/extensionContext');
 
 function registerLogCommands(context) {
   const streamer = getLogStreamer();
 
   let statusBarItem = null;
-  if (vscode.window && typeof vscode.window.createStatusBarItem === 'function') {
-    statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 92);
-    statusBarItem.command = 'cpqBml.rest.toggleLogStream';
-    statusBarItem.text = '$(output) BML Logs: Off';
-    statusBarItem.tooltip = 'Click to start streaming live CPQ server error & print logs';
-    statusBarItem.show();
-    context.subscriptions.push(statusBarItem);
-  }
 
-  function updateStatus(active) {
+  function updateStatusBar() {
     if (!statusBarItem) return;
-    if (active) {
+    if (!isBmlActive(vscode)) {
+      statusBarItem.hide();
+      return;
+    }
+    statusBarItem.show();
+    if (streamer.isStreaming) {
       statusBarItem.text = '$(broadcast) BML Logs: Streaming';
       statusBarItem.tooltip = 'CPQ live log stream is ACTIVE. Click to stop.';
     } else {
@@ -34,16 +32,28 @@ function registerLogCommands(context) {
     }
   }
 
+  if (vscode.window && typeof vscode.window.createStatusBarItem === 'function') {
+    statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 92);
+    statusBarItem.command = 'cpqBml.rest.toggleLogStream';
+    updateStatusBar();
+    context.subscriptions.push(statusBarItem);
+    context.subscriptions.push(
+      vscode.window.onDidChangeActiveTextEditor(() => {
+        updateStatusBar();
+      })
+    );
+  }
+
   function doToggleStream(vscodeInst = vscode) {
     if (streamer.isStreaming) {
       streamer.stopStream();
-      updateStatus(false);
+      updateStatusBar();
       vscodeInst.window?.showInformationMessage?.('Stopped CPQ server log stream.');
       return { streaming: false };
     } else {
       try {
         streamer.startStream(vscodeInst);
-        updateStatus(true);
+        updateStatusBar();
         vscodeInst.window?.showInformationMessage?.('Started streaming CPQ server error & print logs.');
         return { streaming: true };
       } catch (err) {

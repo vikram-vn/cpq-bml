@@ -5,7 +5,7 @@ const { startMcpServer, stopMcpServer, getMcpServerStatus } = require('@/lang/mc
 const { registerMcpWithAllTools, deregisterMcpFromAllTools } = require('@/ai/setup/mcpAutoRegister');
 
 const { safeAppendLog } = require('@/lang/rest/logger');
-const { getContext } = require('@/extensionContext');
+const { getContext, isBmlActive } = require('@/extensionContext');
 
 function logMcpServerEvent(message) {
     try {
@@ -31,10 +31,23 @@ function registerMcp(context) {
     };
 
     let statusBarItem = null;
+    const updateStatusBarVisibility = () => {
+        if (!statusBarItem) return;
+        const { enable } = getSettings();
+        if (!enable || !isBmlActive(vscode)) {
+            statusBarItem.hide();
+        } else {
+            statusBarItem.show();
+        }
+    };
+
     if (vscode.window && typeof vscode.window.createStatusBarItem === 'function') {
         statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
         statusBarItem.command = 'cpqBml.mcp.showInfo';
         context.subscriptions.push(statusBarItem);
+        if (typeof vscode.window.onDidChangeActiveTextEditor === 'function') {
+            context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBarVisibility));
+        }
     }
 
     const ensureStarted = async () => {
@@ -50,7 +63,7 @@ function registerMcp(context) {
             if (statusBarItem) {
                 statusBarItem.text = `$(server) MCP:${result.port}`;
                 statusBarItem.tooltip = `CPQ-BML MCP Server active on port ${result.port}. Click to show details.`;
-                statusBarItem.show();
+                updateStatusBarVisibility();
             }
 
             // Auto-register with all AI tools (idempotent — safe to call on every start)
@@ -94,7 +107,7 @@ function registerMcp(context) {
                     if (statusBarItem) {
                         statusBarItem.text = `$(server) MCP:${recovered.port}`;
                         statusBarItem.tooltip = `CPQ-BML MCP Server auto-recovered on port ${recovered.port}.`;
-                        statusBarItem.show();
+                        updateStatusBarVisibility();
                     }
                     if (vscode.window && typeof vscode.window.showInformationMessage === 'function') {
                         vscode.window.showInformationMessage(`CPQ-BML: MCP port ${port} was busy. Automatically bound to port ${recovered.port}.`);
@@ -111,7 +124,7 @@ function registerMcp(context) {
                 if (statusBarItem) {
                     statusBarItem.text = `$(warning) MCP: Port ${port} Busy`;
                     statusBarItem.tooltip = `Port ${port} is currently in use. Click to troubleshoot.`;
-                    statusBarItem.show();
+                    updateStatusBarVisibility();
                 }
                 if (vscode.window && typeof vscode.window.showWarningMessage === 'function') {
                     vscode.window.showWarningMessage(

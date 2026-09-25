@@ -74,6 +74,17 @@ function normalizeCommandArgs(args) {
     return Array.prototype.slice.call(args);
 }
 
+function isBmlActive(vsc) {
+    const effectiveVscode = vsc || getVscode();
+    if (!effectiveVscode || !effectiveVscode.window) return false;
+    const editor = effectiveVscode.window.activeTextEditor;
+    if (!editor || !editor.document) return false;
+    const doc = editor.document;
+    if (doc.languageId === 'bml' || doc.languageId === 'bmlt') return true;
+    const path = (doc.fileName || (doc.uri && doc.uri.fsPath) || '').toLowerCase();
+    return path.endsWith('.bml') || path.endsWith('.bmlt') || path.endsWith('.bmltest.json');
+}
+
 module.exports = {
     setExtensionContext,
     getExtensionContext,
@@ -82,6 +93,7 @@ module.exports = {
     isContextOrVscode,
     isContextObject,
     isVscodeObject,
+    isBmlActive,
     normalizeCommandArgs,
     setGlobalContext: setExtensionContext,
     getGlobalContext: getExtensionContext,

@@ -20,6 +20,7 @@ const { runGlobalSearchBml } = require("@/lang/rest/commands/globalSearch");
 const { runGetTransactions } = require("@/lang/rest/commands/transactions");
 const { runSyncCommerceMetadata, runRemoveCommerceMetadata } = require("@/lang/rest/commands/sync");
 const { runPipelineViewerCommand } = require("@/lang/rest/commands/pipelineViewer");
+const { runRollbackSnapshot, runDiffWithRemote } = require("@/lang/rest/commands/rollback");
 const { isCommerceSynced } = require("@/lang/rest/commerceAttributes");
 const {
   triggerSmartMetadataFetch,
@@ -239,6 +240,12 @@ function registerBmlRestCommands(context) {
     vscode.commands.registerCommand("cpqBml.rest.pipelineViewer", (options) =>
       runPipelineViewerCommand(resultsTerminal, options),
     ),
+    vscode.commands.registerCommand("cpqBml.rest.rollbackSnapshot", () =>
+      runRollbackSnapshot(resultsTerminal),
+    ),
+    vscode.commands.registerCommand("cpqBml.rest.diffWithRemote", () =>
+      runDiffWithRemote(resultsTerminal),
+    ),
     vscode.commands.registerCommand("cpqBml.rest.clearResults", () =>
       resultsTerminal.clear(),
     ),
@@ -276,6 +283,8 @@ module.exports = {
   runSyncCommerceMetadata,
   runRemoveCommerceMetadata,
   runPipelineViewerCommand,
+  runRollbackSnapshot,
+  runDiffWithRemote,
   refreshCommerceSyncContext,
   describeError,
   findLibraryFunctionByVariableName,

@@ -1,18 +1,9 @@
 const vscode = require('vscode');
 const { getActiveEnvironmentName } = require('@/lang/rest/terminal');
 const { exportTeamProfiles, importTeamProfiles } = require('@/lang/status-bar/profileSharing');
-const { getContext } = require('@/extensionContext');
+const { getContext, isBmlActive } = require('@/extensionContext');
 
 let statusBarItem = null;
-
-function isBmlActive() {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor || !editor.document) return false;
-    const doc = editor.document;
-    if (doc.languageId === 'bml' || doc.languageId === 'bmlt') return true;
-    const path = (doc.fileName || (doc.uri && doc.uri.fsPath) || '').toLowerCase();
-    return path.endsWith('.bml') || path.endsWith('.bmlt');
-}
 
 function updateStatusBar() {
     if (!statusBarItem) return;

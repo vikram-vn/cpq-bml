@@ -4,7 +4,7 @@ try {
 } catch {
   vscode = {
     window: {
-      createStatusBarItem: () => ({ show: () => {}, dispose: () => {} }),
+      createStatusBarItem: () => ({ show: () => {}, hide: () => {}, dispose: () => {} }),
       showInformationMessage: () => {},
       showErrorMessage: () => {}
     },
@@ -19,6 +19,7 @@ try {
 
 const { request } = require('@/lang/rest/client');
 const { getBaseUrl, getAuthHeader, getRestVersion, getSettings, isConfigured } = require('@/lang/rest/config');
+const { isBmlActive } = require('@/extensionContext');
 
 async function checkInstanceHealth(vscodeInstance = vscode, customTransport, statusBarItem, context) {
   const updateStatus = (text, tooltip, isError = false) => {
@@ -120,7 +121,22 @@ function createInstanceMonitor(vscodeInstance = vscode, context) {
   const statusBarItem = vscodeInstance.window.createStatusBarItem(vscodeInstance.StatusBarAlignment.Right, 90);
   statusBarItem.command = 'cpqBml.rest.checkHealth';
   statusBarItem.text = '$(server) Offline / Standby';
-  statusBarItem.show();
+
+  const updateVisibility = () => {
+    if (!statusBarItem) return;
+    if (isBmlActive(vscodeInstance)) {
+      if (typeof statusBarItem.show === 'function') statusBarItem.show();
+    } else {
+      if (typeof statusBarItem.hide === 'function') statusBarItem.hide();
+    }
+  };
+
+  updateVisibility();
+
+  let editorSub = null;
+  if (vscodeInstance && vscodeInstance.window && typeof vscodeInstance.window.onDidChangeActiveTextEditor === 'function') {
+    editorSub = vscodeInstance.window.onDidChangeActiveTextEditor(updateVisibility);
+  }
 
   let lastHealth = null;
   let timer = null;
@@ -147,6 +163,10 @@ function createInstanceMonitor(vscodeInstance = vscode, context) {
   }
 
   function dispose() {
+    if (editorSub) {
+      editorSub.dispose();
+      editorSub = null;
+    }
     if (startupTimer) {
       clearTimeout(startupTimer);
       startupTimer = null;
@@ -163,6 +183,7 @@ function createInstanceMonitor(vscodeInstance = vscode, context) {
     get lastHealth() { return lastHealth; },
     checkHealth,
     startPeriodicChecks,
+    updateVisibility,
     dispose
   };
 }

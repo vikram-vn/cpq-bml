@@ -12,6 +12,8 @@ try {
   };
 }
 
+const { isBmlActive } = require('@/extensionContext');
+
 function createCoverageDecorator() {
   let enabled = true;
   const coverageMap = new Map();
@@ -34,6 +36,11 @@ function createCoverageDecorator() {
   statusBarItem.command = 'cpqBml.toggleCoverage';
 
   function updateStatusBar() {
+    if (!isBmlActive(vscode)) {
+      statusBarItem.hide();
+      return;
+    }
+    statusBarItem.show();
     if (!enabled) {
       statusBarItem.text = '$(circle-slash) BML Coverage: Off';
       statusBarItem.tooltip = 'Click to enable test coverage heatmap';
@@ -115,7 +122,6 @@ function createCoverageDecorator() {
   }
 
   updateStatusBar();
-  statusBarItem.show();
 
   return {
     get enabled() { return enabled; },

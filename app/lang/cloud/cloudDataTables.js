@@ -393,7 +393,12 @@ function registerCloudDataTables(context, vscodeInstance = vscode) {
     return vscodeInstance.commands.executeCommand('cpqBml.cloud.searchExplorer');
   });
 
-  context.subscriptions.push(treeView, refreshCmd, queryCmd, exportCmd, filterCmd, clearFilterCmd, searchCmd);
+  const openEditorCmd = vscodeInstance.commands.registerCommand('cpqBml.cloud.openDataTableEditor', (item) => {
+    const { openDataTableEditor } = require('@/lang/cloud/dataTableEditor');
+    return openDataTableEditor(item, vscodeInstance, context);
+  });
+
+  context.subscriptions.push(treeView, refreshCmd, queryCmd, exportCmd, openEditorCmd, filterCmd, clearFilterCmd, searchCmd);
 
   return { provider, treeView };
 }

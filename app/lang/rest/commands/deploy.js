@@ -1,7 +1,9 @@
 const api = require("@/lang/rest/api");
 const metadataLib = require("@/lang/rest/metadata");
-const { getCommerceProcess, getSettings } = require("@/lang/rest/config");
+const { getCommerceProcess, getSettings, getBaseUrl } = require("@/lang/rest/config");
 const { runPreflightSafetyCheck, formatPreflightSummary } = require("@/lang/rest/preflightChecker");
+const { saveSnapshot } = require("@/lang/rest/snapshotManager");
+const { compareAndPromptPreDeploy } = require("@/lang/rest/deployDiffReviewer");
 const {
   getTimestamp,
   writeTerminalMessage,
@@ -301,14 +303,56 @@ async function runDeployCurrentFile(
     // Pre-flight check error should not prevent deployment if user insists
   }
 
-  const confirm = await vscode.window.showWarningMessage(
-    `Are you sure you want to deploy util function "${metadata.variableName}" to live CPQ?`,
-    { modal: true },
-    "Deploy"
-  );
-  if (confirm !== "Deploy") {
-    return { success: false, errorMessage: "CPQ-BML: deployment cancelled by user." };
+  let remoteContent = '';
+  if (!effectiveOpts.skipDiffReview && !transport) {
+    try {
+      const diffCheck = await compareAndPromptPreDeploy({
+        vscode,
+        localPath: editor.document.uri.fsPath,
+        localContent: editor.document.getText(),
+        metadata,
+        transport
+      });
+      if (!diffCheck.canProceed) {
+        return { success: false, errorMessage: "CPQ-BML: deployment cancelled by user." };
+      }
+      remoteContent = diffCheck.remoteContent;
+    } catch (_) {
+      const confirm = await vscode.window.showWarningMessage(
+        `Are you sure you want to deploy util function "${metadata.variableName}" to live CPQ?`,
+        { modal: true },
+        "Deploy"
+      );
+      if (confirm !== "Deploy") {
+        return { success: false, errorMessage: "CPQ-BML: deployment cancelled by user." };
+      }
+    }
+  } else if (!effectiveOpts.skipConfirmation) {
+    const confirm = await vscode.window.showWarningMessage(
+      `Are you sure you want to deploy util function "${metadata.variableName}" to live CPQ?`,
+      { modal: true },
+      "Deploy"
+    );
+    if (confirm !== "Deploy") {
+      return { success: false, errorMessage: "CPQ-BML: deployment cancelled by user." };
+    }
   }
+
+  // Save pre-deploy rollback snapshot
+  try {
+    const wsFolder = vscode.workspace && typeof vscode.workspace.getWorkspaceFolder === 'function'
+      ? vscode.workspace.getWorkspaceFolder(editor.document.uri)
+      : null;
+    saveSnapshot({
+      workspaceRoot: wsFolder ? wsFolder.uri.fsPath : null,
+      variableName: metadata.variableName,
+      functionType: metadata.commerceDocument ? 'commerce' : 'util',
+      environment: getBaseUrl(vscode),
+      remoteContent,
+      localContent: editor.document.getText(),
+      metadata
+    });
+  } catch (_) {}
 
   writeRunHeader(resultsTerminal, "Deploy", metadata.variableName);
   writeRunningLine(resultsTerminal, "Deploy", metadata.variableName);

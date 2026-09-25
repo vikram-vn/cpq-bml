@@ -13,6 +13,9 @@ const {
 } = require("@/lang/rest/commands/shared");
 
 const { getExtensionContext, normalizeCommandArgs } = require("@/extensionContext");
+const { getBaseUrl } = require("@/lang/rest/config");
+const { saveSnapshot } = require("@/lang/rest/snapshotManager");
+const { fetchRemoteContent } = require("@/lang/rest/deployDiffReviewer");
 
 async function runSaveCurrentFile(resultsTerminal, options = {}) {
   const normArgs = normalizeCommandArgs(arguments);
@@ -64,6 +67,26 @@ async function runSaveCurrentFile(resultsTerminal, options = {}) {
   const payload = metadataLib.buildFunctionPayload(metadata, doc.getText());
 
   writeRunHeader(resultsTerminal, "Save", metadata.variableName);
+  // Automatically capture rollback snapshot of previous remote state before overwriting
+  try {
+    let remoteContent = '';
+    if (!transport) {
+      remoteContent = await fetchRemoteContent(metadata, transport);
+    }
+    const wsFolder = vscode.workspace && typeof vscode.workspace.getWorkspaceFolder === 'function'
+      ? vscode.workspace.getWorkspaceFolder(doc.uri)
+      : null;
+    saveSnapshot({
+      workspaceRoot: wsFolder ? wsFolder.uri.fsPath : null,
+      variableName: metadata.variableName,
+      functionType: metadata.commerceDocument ? 'commerce' : 'util',
+      environment: getBaseUrl(vscode),
+      remoteContent: remoteContent || '',
+      localContent: doc.getText(),
+      metadata
+    });
+  } catch (_) {}
+
   writeRunningLine(resultsTerminal, "Save", metadata.variableName);
   resultsTerminal.show();
 

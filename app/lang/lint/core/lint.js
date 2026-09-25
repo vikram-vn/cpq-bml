@@ -26,6 +26,7 @@ const { checkNullSafety } = require('@/lang/lint/rules/nullSafety');
 const { checkInfiniteLoop } = require('@/lang/lint/rules/infiniteLoop');
 const { checkShadowedVariables } = require('@/lang/lint/rules/shadowedVariables');
 const { checkCommerceAttributes } = require('@/lang/lint/rules/commerceAttributes');
+const { checkBmqlSchema } = require('@/lang/lint/rules/bmqlSchema');
 
 function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
     const isBml = doc.languageId === 'bml' || (doc.uri && doc.uri.fsPath && doc.uri.fsPath.endsWith('.bml'));
@@ -110,6 +111,10 @@ function lintBMLCustom(doc, diagnosticCollection, vscode, extensionPath) {
         
         if (hasCommerce) {
             diagnostics.push(...checkCommerceAttributes(cleanText, noStringsText, doc, vscode, extensionPath));
+        }
+
+        if (cleanText.includes('bmql')) {
+            diagnostics.push(...checkBmqlSchema(cleanText, doc, vscode));
         }
     }
 

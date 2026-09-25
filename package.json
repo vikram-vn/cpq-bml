@@ -519,6 +519,18 @@
         "category": "BML"
       },
       {
+        "command": "cpqBml.cloud.openDataTableEditor",
+        "title": "Open Visual Data Table Grid Editor",
+        "icon": "$(table)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.generateUnitTests",
+        "title": "Generate Automated BML Unit Tests (.bmltest.json)",
+        "icon": "$(beaker)",
+        "category": "BML"
+      },
+      {
         "command": "cpqBml.rest.preflightCheck",
         "title": "Run Pre-Flight Safety & Impact Check on Active File",
         "icon": "$(shield)",
@@ -806,6 +818,18 @@
         "title": "Create Test Fixture from Quote",
         "icon": "$(beaker)",
         "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.rollbackSnapshot",
+        "title": "Rollback Function from Snapshot...",
+        "icon": "$(history)",
+        "category": "BML"
+      },
+      {
+        "command": "cpqBml.rest.diffWithRemote",
+        "title": "Compare Active File with Live Remote on CPQ",
+        "icon": "$(diff)",
+        "category": "BML"
       }
     ],
     "menus": {
@@ -879,6 +903,16 @@
           "group": "navigation@11"
         },
         {
+          "command": "cpqBml.rest.diffWithRemote",
+          "when": "resourceLangId == bml && config.cpqBml.connection.enabled && cpqBml.connection.configured",
+          "group": "navigation@11"
+        },
+        {
+          "command": "cpqBml.rest.rollbackSnapshot",
+          "when": "resourceLangId == bml",
+          "group": "navigation@14"
+        },
+        {
           "command": "cpqBml.rest.preflightCheck",
           "when": "resourceLangId == bml || resourceLangId == bmlt",
           "group": "navigation@12"
@@ -897,6 +931,16 @@
           "command": "cpqBml.bmql.runAtCursor",
           "when": "resourceLangId == bml || resourceLangId == bmlt",
           "group": "1_modification@1"
+        },
+        {
+          "command": "cpqBml.runBmlLocally",
+          "when": "resourceLangId == bml",
+          "group": "1_modification@1.5"
+        },
+        {
+          "command": "cpqBml.generateUnitTests",
+          "when": "resourceLangId == bml",
+          "group": "1_modification@1.6"
         },
         {
           "command": "cpqBml.rest.lookupAttributeAtCursor",
@@ -1206,6 +1250,11 @@
           "command": "cpqBml.cloud.generateBmqlQuery",
           "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTable",
           "group": "inline@0.5"
+        },
+        {
+          "command": "cpqBml.cloud.openDataTableEditor",
+          "when": "view == cpqBml.cloudDataTables && viewItem == cpqCloudDataTable",
+          "group": "inline@0.6"
         },
         {
           "command": "cpqBml.cloud.copyTableName",
@@ -1571,7 +1620,7 @@
     "release": "python scripts/release/release.py",
     "pretest": "npm run compile",
     "test": "vscode-test",
-    "test:unit": "mocha --timeout 10000 \"test/rest/*.test.js\" \"test/rest/commands/*.test.js\" \"test/cloud/*.test.js\" \"test/settings/*.test.js\" \"test/graph/*.test.js\" \"test/code-actions/unit.test.js\" \"test/intellisense/workspaceIndexOptimization.test.js\"",
+    "test:unit": "mocha --timeout 10000 \"test/rest/*.test.js\" \"test/rest/commands/*.test.js\" \"test/cloud/*.test.js\" \"test/settings/*.test.js\" \"test/graph/*.test.js\" \"test/code-actions/unit.test.js\" \"test/intellisense/workspaceIndexOptimization.test.js\" \"test/bmql/*.test.js\" \"test/test-controller/*.test.js\"",
     "test:benchmark": "vscode-test test/linter/scripts/benchmark.test.js",
     "benchmark": "python scripts/benchmarks/run_all.py",
     "benchmark:run": "python scripts/benchmarks/run_all.py",

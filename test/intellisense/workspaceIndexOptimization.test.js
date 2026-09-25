@@ -96,6 +96,7 @@ suite("Architectural & Performance Fixes Verification", () => {
         command: "",
         text: "",
         show: () => {},
+        hide: () => {},
         dispose: () => {},
       };
       const mockVscode = {
