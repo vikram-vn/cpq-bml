@@ -1,0 +1,364 @@
+/* Data Table Editor Webview Styling */
+.dt-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 16px 20px;
+  background-color: var(--vscode-editor-background, #141619);
+  color: var(--vscode-editor-foreground, #e0e0e0);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+.dt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 16px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.dt-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dt-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--vscode-editor-foreground, #fff);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dt-title-prefix {
+  color: var(--vscode-descriptionForeground, #8e949e);
+  font-weight: 400;
+}
+
+.dt-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dt-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dt-search-input {
+  background: var(--vscode-input-background, #1e2227);
+  color: var(--vscode-input-foreground, #e0e0e0);
+  border: 1px solid var(--vscode-input-border, #3a414b);
+  border-radius: 4px;
+  padding: 6px 28px 6px 12px;
+  font-size: 13px;
+  width: 240px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.dt-search-input:focus {
+  border-color: var(--vscode-focusBorder, #007acc);
+  box-shadow: 0 0 0 1px var(--vscode-focusBorder, #007acc);
+}
+
+.dt-search-clear {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--vscode-descriptionForeground, #888);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.dt-search-clear:hover {
+  color: var(--vscode-editor-foreground, #fff);
+}
+
+.dt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, background-color 0.15s;
+}
+
+.dt-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dt-btn-primary {
+  background-color: var(--vscode-button-background, #0e639c);
+  color: var(--vscode-button-foreground, #ffffff);
+}
+
+.dt-btn-primary:hover:not(:disabled) {
+  background-color: var(--vscode-button-hoverBackground, #1177bb);
+}
+
+.dt-btn-success {
+  background-color: #2ea043;
+  color: #ffffff;
+}
+
+.dt-btn-success:hover:not(:disabled) {
+  background-color: #3fb950;
+}
+
+.dt-btn-secondary {
+  background-color: var(--vscode-button-secondaryBackground, #3a3d41);
+  color: var(--vscode-button-secondaryForeground, #ffffff);
+}
+
+.dt-btn-secondary:hover:not(:disabled) {
+  background-color: var(--vscode-button-secondaryHoverBackground, #45494e);
+}
+
+.dt-btn-danger {
+  background-color: #d73a49;
+  color: #ffffff;
+}
+
+.dt-btn-danger:hover:not(:disabled) {
+  background-color: #cb2431;
+}
+
+.dt-records-badge {
+  font-size: 12px;
+  color: var(--vscode-descriptionForeground, #8b949e);
+  margin-left: 4px;
+}
+
+.dt-table-wrapper {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--vscode-panel-border, #30363d);
+  border-radius: 6px;
+  background-color: var(--vscode-editor-background, #161b22);
+}
+
+.dt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.dt-table th {
+  position: sticky;
+  top: 0;
+  background-color: var(--vscode-editorGroupHeader-tabsBackground, #1f242c);
+  color: var(--vscode-editor-foreground, #f0f6fc);
+  font-weight: 600;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--vscode-panel-border, #30363d);
+  border-right: 1px solid var(--vscode-panel-border, #21262d);
+  user-select: none;
+  cursor: pointer;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.dt-table th:hover {
+  background-color: var(--vscode-list-hoverBackground, #262c36);
+}
+
+.dt-th-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dt-col-type {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--vscode-descriptionForeground, #8b949e);
+}
+
+.dt-sort-indicator {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.dt-sort-indicator.active {
+  opacity: 1;
+  color: var(--vscode-focusBorder, #58a6ff);
+}
+
+.dt-table td {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--vscode-panel-border, #21262d);
+  border-right: 1px solid var(--vscode-panel-border, #21262d);
+  color: var(--vscode-editor-foreground, #c9d1d9);
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
+.dt-table tbody tr:hover td {
+  background-color: var(--vscode-list-hoverBackground, rgba(255, 255, 255, 0.04));
+}
+
+.dt-row-num {
+  text-align: center;
+  width: 44px;
+  color: var(--vscode-descriptionForeground, #6e7681);
+  font-variant-numeric: tabular-nums;
+  cursor: default;
+}
+
+.dt-cell-editable {
+  cursor: text;
+}
+
+.dt-cell-editable:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.dt-cell-editing {
+  padding: 0 !important;
+  background-color: var(--vscode-input-background, #1e2227) !important;
+}
+
+.dt-cell-input {
+  width: 100%;
+  height: 100%;
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--vscode-input-foreground, #fff);
+  border: 1px solid var(--vscode-focusBorder, #007acc);
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.dt-cell-dirty {
+  background-color: rgba(210, 153, 34, 0.12) !important;
+}
+
+.dt-cell-dirty::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 6px 6px 0;
+  border-color: transparent #d29922 transparent transparent;
+}
+
+.dt-row-actions {
+  width: 40px;
+  text-align: center;
+}
+
+.dt-btn-delete-row {
+  background: none;
+  border: none;
+  color: var(--vscode-descriptionForeground, #6e7681);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  font-size: 12px;
+  opacity: 0.4;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.dt-table tbody tr:hover .dt-btn-delete-row {
+  opacity: 1;
+}
+
+.dt-btn-delete-row:hover {
+  color: #f85149;
+  background-color: rgba(248, 81, 73, 0.1);
+}
+
+.dt-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  color: var(--vscode-descriptionForeground, #8b949e);
+  gap: 12px;
+}
+
+.dt-empty-icon {
+  font-size: 32px;
+  opacity: 0.6;
+}
+
+.dt-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--vscode-descriptionForeground, #8b949e);
+  flex-shrink: 0;
+}
+
+.dt-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dt-page-btn {
+  background: var(--vscode-button-secondaryBackground, #2d333b);
+  color: var(--vscode-button-secondaryForeground, #c9d1d9);
+  border: 1px solid var(--vscode-panel-border, #444c56);
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.dt-page-btn:hover:not(:disabled) {
+  background: var(--vscode-button-secondaryHoverBackground, #373e47);
+}
+
+.dt-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dt-dirty-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #d29922;
+  font-weight: 500;
+}
+
+.dt-dirty-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #d29922;
+  display: inline-block;
+}

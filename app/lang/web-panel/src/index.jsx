@@ -9,6 +9,7 @@ import '../css/settings-components.css';
 import '../css/settings-main.css';
 import '../css/graph.css';
 import '../css/inspector.css';
+import '../css/datatable.css';
 
 function showFatalError(error) {
   const root = document.getElementById('root');

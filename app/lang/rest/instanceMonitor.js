@@ -19,6 +19,7 @@ try {
 
 const { request } = require('@/lang/rest/client');
 const { getBaseUrl, getAuthHeader, getRestVersion, getSettings, isConfigured } = require('@/lang/rest/config');
+const { getActiveEnvironmentName } = require('@/lang/rest/terminal');
 const { isBmlActive } = require('@/extensionContext');
 
 async function checkInstanceHealth(vscodeInstance = vscode, customTransport, statusBarItem, context) {
@@ -94,8 +95,14 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
     const normalizedVer = (version || '').replace(/^v+/i, '');
     const cleanVersion = normalizedVer ? `v${normalizedVer}` : (version || 'v18');
     const release = ok ? cleanVersion : `HTTP ${res ? res.statusCode : 'Error'}`;
+
+    const activeEnv = getActiveEnvironmentName ? getActiveEnvironmentName(vscodeInstance) : '';
+    const displayLabel = activeEnv ? `${activeEnv} (${release} - ${latencyMs}ms)` : `${siteName} (${release} - ${latencyMs}ms)`;
     const tooltip = new vscode.MarkdownString();
     tooltip.appendMarkdown(`**Oracle CPQ Instance Health**\n\n`);
+    if (activeEnv) {
+      tooltip.appendMarkdown(`- **Environment**: \`${activeEnv}\`\n`);
+    }
     tooltip.appendMarkdown(`- **Site**: \`${baseUrl}\`\n`);
     tooltip.appendMarkdown(`- **Status**: \`${res ? res.statusCode : 'N/A'} ${ok ? 'OK' : 'Error'}\`\n`);
     tooltip.appendMarkdown(`- **Latency**: \`${latencyMs}ms\`\n`);
@@ -103,13 +110,14 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
     tooltip.appendMarkdown(`- **Last Checked**: \`${new Date().toLocaleTimeString()}\`\n\n`);
     tooltip.appendMarkdown(`*Click to re-check health and network round-trip latency.*`);
 
-    updateStatus(`${siteName} (${release} - ${latencyMs}ms)`, tooltip, !ok);
+    updateStatus(displayLabel, tooltip, !ok);
 
     return {
       connected: ok,
       latencyMs,
       statusCode: res ? res.statusCode : undefined,
       siteName,
+      environmentName: activeEnv || undefined,
       version: cleanVersion,
       reason: ok ? undefined : (res ? (res.statusCode === 401 ? 'Authentication failed (401)' : res.statusCode === 403 ? 'Access forbidden (403)' : `HTTP ${res.statusCode}`) : 'No response')
     };
@@ -126,7 +134,7 @@ function createInstanceMonitor(vscodeInstance = vscode, context) {
 
   const updateVisibility = () => {
     if (!statusBarItem) return;
-    if (isBmlActive(vscodeInstance)) {
+    if (isBmlActive(vscodeInstance) || isConfigured(vscodeInstance)) {
       if (typeof statusBarItem.show === 'function') statusBarItem.show();
     } else {
       if (typeof statusBarItem.hide === 'function') statusBarItem.hide();
@@ -136,8 +144,14 @@ function createInstanceMonitor(vscodeInstance = vscode, context) {
   updateVisibility();
 
   let editorSub = null;
-  if (vscodeInstance && vscodeInstance.window && typeof vscodeInstance.window.onDidChangeActiveTextEditor === 'function') {
-    editorSub = vscodeInstance.window.onDidChangeActiveTextEditor(updateVisibility);
+  let visibleSub = null;
+  if (vscodeInstance && vscodeInstance.window) {
+    if (typeof vscodeInstance.window.onDidChangeActiveTextEditor === 'function') {
+      editorSub = vscodeInstance.window.onDidChangeActiveTextEditor(updateVisibility);
+    }
+    if (typeof vscodeInstance.window.onDidChangeVisibleTextEditors === 'function') {
+      visibleSub = vscodeInstance.window.onDidChangeVisibleTextEditors(updateVisibility);
+    }
   }
 
   let lastHealth = null;

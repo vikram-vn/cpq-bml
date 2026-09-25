@@ -38,9 +38,9 @@ async function fetchLogs(vscodeInstance = vscode, customTransport, context) {
   }
 
   const version = getRestVersion(vscodeInstance);
-  const path = `/rest/${version}/developerLogs?limit=50&orderBy=timestamp:desc`;
+  let path = `/rest/${version}/developerLogs?limit=50`;
 
-  const res = await request({
+  let res = await request({
     baseUrl,
     path,
     method: 'GET',
@@ -52,9 +52,29 @@ async function fetchLogs(vscodeInstance = vscode, customTransport, context) {
     transport: customTransport
   });
 
+  if (res && res.statusCode === 400) {
+    path = `/rest/${version}/developerLogs`;
+    res = await request({
+      baseUrl,
+      path,
+      method: 'GET',
+      headers: {
+        Authorization: authHeader,
+        Accept: 'application/json'
+      },
+      timeoutMs: settings.timeoutMs || 15000,
+      transport: customTransport
+    });
+  }
+
   if (res.statusCode >= 200 && res.statusCode < 300) {
     const body = res.body;
     const items = Array.isArray(body?.items) ? body.items : (Array.isArray(body) ? body : []);
+    items.sort((a, b) => {
+      const ta = a.timestamp || a.date || '';
+      const tb = b.timestamp || b.date || '';
+      return tb.localeCompare(ta);
+    });
     return items;
   } else {
     const errText = typeof res.body === 'string' ? res.body : JSON.stringify(res.body || {});

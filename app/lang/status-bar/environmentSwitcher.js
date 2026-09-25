@@ -7,14 +7,18 @@ let statusBarItem = null;
 
 function updateStatusBar() {
     if (!statusBarItem) return;
-    if (!isBmlActive()) {
-        statusBarItem.hide();
-        return;
-    }
     try {
         const config = vscode.workspace.getConfiguration('cpqBml');
-        const activeName = getActiveEnvironmentName(vscode);
         const siteUrl = (config.get('connection.siteUrl', '') || '').trim();
+        const environments = config.get('connection.environments', []) || [];
+        const isConfigured = Boolean(siteUrl || environments.length > 0);
+
+        if (!isBmlActive(vscode) && !isConfigured) {
+            statusBarItem.hide();
+            return;
+        }
+
+        const activeName = getActiveEnvironmentName(vscode);
 
         if (activeName) {
             statusBarItem.text = `$(server) CPQ: ${activeName}`;
@@ -99,8 +103,8 @@ async function switchEnvironment() {
     }
 }
 
-function registerEnvironmentSwitcher(context) {
-    context = context || getContext();
+function registerEnvironmentSwitcher() {
+    const context = getContext();
     if (vscode.window && typeof vscode.window.createStatusBarItem === 'function') {
         statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 99);
         statusBarItem.command = 'cpqBml.switchEnvironment';
@@ -109,19 +113,27 @@ function registerEnvironmentSwitcher(context) {
 
         if (context && context.subscriptions) {
             context.subscriptions.push(
-            vscode.commands.registerCommand('cpqBml.switchEnvironment', switchEnvironment),
-            vscode.commands.registerCommand('cpqBml.exportTeamProfiles', exportTeamProfiles),
-            vscode.commands.registerCommand('cpqBml.importTeamProfiles', importTeamProfiles),
-            vscode.workspace.onDidChangeConfiguration((e) => {
-                if (e.affectsConfiguration('cpqBml.connection')) {
+                vscode.commands.registerCommand('cpqBml.switchEnvironment', switchEnvironment),
+                vscode.commands.registerCommand('cpqBml.exportTeamProfiles', exportTeamProfiles),
+                vscode.commands.registerCommand('cpqBml.importTeamProfiles', importTeamProfiles),
+                vscode.workspace.onDidChangeConfiguration((e) => {
+                    if (e.affectsConfiguration('cpqBml.connection')) {
+                        updateStatusBar();
+                    }
+                }),
+                vscode.window.onDidChangeActiveTextEditor(() => {
                     updateStatusBar();
-                }
-            }),
-            vscode.window.onDidChangeActiveTextEditor(() => {
-                updateStatusBar();
-            })
-        );
+                })
+            );
+            if (vscode.window.onDidChangeVisibleTextEditors) {
+                context.subscriptions.push(
+                    vscode.window.onDidChangeVisibleTextEditors(() => {
+                        updateStatusBar();
+                    })
+                );
+            }
         }
+        setTimeout(updateStatusBar, 1000);
     }
 }
 

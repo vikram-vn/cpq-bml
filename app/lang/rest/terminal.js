@@ -41,13 +41,31 @@ function getActiveEnvironmentName(vscode) {
         const normalizedActiveSite = normalizeSiteUrl(siteUrl).toLowerCase();
 
         const environments = config.get('connection.environments', []) || [];
-        const matchedEnv = environments.find(env => {
+        // 1. Strict match: siteUrl + username + authMethod
+        let matchedEnv = environments.find(env => {
             if (!env.siteUrl) return false;
             const urlMatches = normalizeSiteUrl(env.siteUrl).toLowerCase() === normalizedActiveSite;
             const userMatches = (env.username || '').trim().toLowerCase() === username;
             const authMatches = (env.authMethod || 'basic') === authMethod;
             return urlMatches && userMatches && authMatches;
         });
+
+        // 2. Fallback match: siteUrl + username
+        if (!matchedEnv && username) {
+            matchedEnv = environments.find(env => {
+                if (!env.siteUrl) return false;
+                return normalizeSiteUrl(env.siteUrl).toLowerCase() === normalizedActiveSite &&
+                       (env.username || '').trim().toLowerCase() === username;
+            });
+        }
+
+        // 3. Fallback match: siteUrl only
+        if (!matchedEnv) {
+            matchedEnv = environments.find(env => {
+                if (!env.siteUrl) return false;
+                return normalizeSiteUrl(env.siteUrl).toLowerCase() === normalizedActiveSite;
+            });
+        }
 
         return matchedEnv ? matchedEnv.name : '';
     } catch (e) {

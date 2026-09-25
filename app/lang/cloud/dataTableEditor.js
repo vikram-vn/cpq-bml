@@ -177,6 +177,10 @@ function getWebviewContent(tableName, columns, rows) {
 </html>`;
 }
 
+const { getWebPanelHtml } = require('@/lang/web-panel/webPanelHtml');
+
+let currentColumns = [];
+
 async function openDataTableEditor(item, vscodeInstance, context) {
   const tableName = item?.data?.name || item?.name;
   if (!tableName) return;
@@ -201,12 +205,21 @@ async function openDataTableEditor(item, vscodeInstance, context) {
 
   async function loadData() {
     try {
-      const rows = await fetchTableRows(tableName, { limit: 500 }, vscodeInstance, undefined, context);
+      const rows = await fetchTableRows(tableName, { limit: 1000 }, vscodeInstance, undefined, context);
       const columns = rows && rows.length > 0
         ? Object.keys(rows[0]).filter(k => k !== 'links').map(name => ({ name, type: 'string' }))
         : (item?.data?.columns || [{ name: 'id', type: 'string' }]);
+      currentColumns = columns;
 
-      panel.webview.html = getWebviewContent(tableName, columns, rows || []);
+      panel.webview.html = getWebPanelHtml(
+        context,
+        panel.webview,
+        {
+          page: 'datatable',
+          dataTableData: { tableName, columns, rows: rows || [] }
+        },
+        vscodeInstance
+      );
     } catch (err) {
       vscodeInstance.window.showErrorMessage(`Failed to load data table '${tableName}': ${err.message}`);
     }
@@ -214,10 +227,40 @@ async function openDataTableEditor(item, vscodeInstance, context) {
 
   panel.webview.onDidReceiveMessage(async (msg) => {
     if (msg.command === 'refresh') {
-      await loadData();
+      try {
+        const rows = await fetchTableRows(tableName, { limit: 1000 }, vscodeInstance, undefined, context);
+        const columns = rows && rows.length > 0
+          ? Object.keys(rows[0]).filter(k => k !== 'links').map(name => ({ name, type: 'string' }))
+          : (item?.data?.columns || [{ name: 'id', type: 'string' }]);
+        currentColumns = columns;
+        panel.webview.postMessage({ type: 'updateDataTable', tableName, columns, rows: rows || [] });
+      } catch (err) {
+        vscodeInstance.window.showErrorMessage(`Failed to refresh '${tableName}': ${err.message}`);
+      }
     } else if (msg.command === 'exportCsv') {
       const { exportTableCsvCommand } = require('@/lang/cloud/cloudDataTables');
       await exportTableCsvCommand(item, vscodeInstance, undefined, context);
+    } else if (msg.command === 'saveRows') {
+      try {
+        const wsFolders = vscodeInstance?.workspace?.workspaceFolders;
+        if (wsFolders && wsFolders.length > 0) {
+          const root = wsFolders[0].uri.fsPath;
+          const dtDir = path.join(root, 'cpq', 'datatables');
+          if (!fs.existsSync(dtDir)) {
+            fs.mkdirSync(dtDir, { recursive: true });
+          }
+          const dtFile = path.join(dtDir, `${tableName}.dt.json`);
+          fs.writeFileSync(dtFile, JSON.stringify({
+            name: tableName,
+            columns: currentColumns,
+            rows: msg.rows || []
+          }, null, 2), 'utf8');
+        }
+        panel.webview.postMessage({ type: 'saveSuccess' });
+        vscodeInstance.window.showInformationMessage(`Saved ${msg.rows?.length || 0} records for '${tableName}'`);
+      } catch (err) {
+        vscodeInstance.window.showErrorMessage(`Failed to save data table rows: ${err.message}`);
+      }
     }
   });
 
@@ -225,5 +268,6 @@ async function openDataTableEditor(item, vscodeInstance, context) {
 }
 
 module.exports = {
-  openDataTableEditor
+  openDataTableEditor,
+  getWebviewContent
 };

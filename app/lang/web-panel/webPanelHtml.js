@@ -40,11 +40,14 @@ function getTitleForPage(page, payload) {
   if (page === 'interactive') {
     return payload?.title ? `Inspect: ${payload.title}` : 'CPQ Cloud Inspector';
   }
+  if (page === 'datatable') {
+    return payload?.tableName ? `Data Table: ${payload.tableName}` : 'CPQ Data Table Editor';
+  }
   return 'CPQ-BML Settings';
 }
 
 function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscodeModule) {
-  const { page = 'settings', graphModel = null, inspectorData = null } = options;
+  const { page = 'settings', graphModel = null, inspectorData = null, dataTableData = null } = options;
   const rootPath = context?.extensionPath || path.join(__dirname, '..', '..', '..');
   const webviewRoot = path.join(rootPath, 'app', 'lang', 'web-panel');
 
@@ -89,6 +92,15 @@ function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscode
     }
   }
 
+  let initialDataTableJson = 'null';
+  if (dataTableData) {
+    try {
+      initialDataTableJson = JSON.stringify(dataTableData).replace(/</g, '\\u003c');
+    } catch (_) {
+      initialDataTableJson = 'null';
+    }
+  }
+
   return template
     .replace(/\{\{csp\}\}/g, csp)
     .replace(/\{\{nonce\}\}/g, nonce)
@@ -96,7 +108,8 @@ function getWebPanelHtml(context, webview, options = {}, vscodeInstance = vscode
     .replace(/\{\{scriptUri\}\}/g, scriptUri)
     .replace(/\{\{initialPage\}\}/g, page)
     .replace(/\{\{initialGraphModel\}\}/g, initialGraphJson)
-    .replace(/\{\{initialInspectorData\}\}/g, initialInspectorJson);
+    .replace(/\{\{initialInspectorData\}\}/g, initialInspectorJson)
+    .replace(/\{\{initialDataTable\}\}/g, initialDataTableJson);
 }
 
 function getInspectorHtml(payload = {}, webview = null, extensionPath = null, vscodeInstance = vscodeModule) {

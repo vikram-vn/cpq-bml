@@ -78,11 +78,22 @@ function isBmlActive(vsc) {
     const effectiveVscode = vsc || getVscode();
     if (!effectiveVscode || !effectiveVscode.window) return false;
     const editor = effectiveVscode.window.activeTextEditor;
-    if (!editor || !editor.document) return false;
-    const doc = editor.document;
-    if (doc.languageId === 'bml' || doc.languageId === 'bmlt') return true;
-    const path = (doc.fileName || (doc.uri && doc.uri.fsPath) || '').toLowerCase();
-    return path.endsWith('.bml') || path.endsWith('.bmlt') || path.endsWith('.bmltest.json');
+    if (editor && editor.document) {
+        const doc = editor.document;
+        if (doc.languageId === 'bml' || doc.languageId === 'bmlt') return true;
+        const path = (doc.fileName || (doc.uri && doc.uri.fsPath) || '').toLowerCase();
+        if (path.endsWith('.bml') || path.endsWith('.bmlt') || path.endsWith('.bmltest.json')) return true;
+    }
+    if (Array.isArray(effectiveVscode.window.visibleTextEditors)) {
+        for (const ed of effectiveVscode.window.visibleTextEditors) {
+            if (!ed || !ed.document) continue;
+            const d = ed.document;
+            if (d.languageId === 'bml' || d.languageId === 'bmlt') return true;
+            const p = (d.fileName || (d.uri && d.uri.fsPath) || '').toLowerCase();
+            if (p.endsWith('.bml') || p.endsWith('.bmlt') || p.endsWith('.bmltest.json')) return true;
+        }
+    }
+    return false;
 }
 
 module.exports = {

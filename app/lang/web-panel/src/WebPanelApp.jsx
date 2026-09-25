@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SettingsPage from './pages/settings/App';
 import GraphPage from './pages/graph/App';
 import InteractivePage from './pages/interactive/App';
+import DataTablePage from './pages/datatable/App';
 import { getVsCodeApi } from './vscodeApi';
 
 export default function WebPanelApp({ vscodeApi: propVscodeApi }) {
@@ -22,6 +23,10 @@ export default function WebPanelApp({ vscodeApi: propVscodeApi }) {
     return (typeof window !== 'undefined' && window.__INITIAL_INSPECTOR_DATA__) || null;
   });
 
+  const [dataTableData, setDataTableData] = useState(() => {
+    return (typeof window !== 'undefined' && window.__INITIAL_DATA_TABLE__) || null;
+  });
+
   useEffect(() => {
     const handleMessage = (event) => {
       const message = event.data;
@@ -36,6 +41,8 @@ export default function WebPanelApp({ vscodeApi: propVscodeApi }) {
             setGraphModel(message.payload);
           } else if (message.page === 'interactive') {
             setInspectorData(message.payload);
+          } else if (message.page === 'datatable') {
+            setDataTableData(message.payload);
           }
         }
       } else if (message.type === 'updateGraph' && message.model) {
@@ -47,6 +54,16 @@ export default function WebPanelApp({ vscodeApi: propVscodeApi }) {
         setInspectorData(message.payload);
         if (message.autoFocus !== false) {
           setActivePage('interactive');
+        }
+      } else if (message.type === 'updateDataTable' || message.command === 'setDataTable') {
+        const payload = message.payload || message.data || message;
+        setDataTableData({
+          tableName: payload.tableName || '',
+          columns: payload.columns || [],
+          rows: payload.rows || []
+        });
+        if (message.autoFocus !== false) {
+          setActivePage('datatable');
         }
       } else if (message.type === 'switchTab') {
         setActivePage('settings');
@@ -69,6 +86,9 @@ export default function WebPanelApp({ vscodeApi: propVscodeApi }) {
       )}
       {activePage === 'interactive' && (
         <InteractivePage vscodeApi={vscodeApi} initialData={inspectorData} />
+      )}
+      {activePage === 'datatable' && (
+        <DataTablePage vscodeApi={vscodeApi} initialData={dataTableData} />
       )}
     </div>
   );
