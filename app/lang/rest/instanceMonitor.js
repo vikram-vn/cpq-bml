@@ -21,10 +21,15 @@ const { request } = require('@/lang/rest/client');
 const { getBaseUrl, getAuthHeader, getRestVersion, getSettings, isConfigured } = require('@/lang/rest/config');
 
 async function checkInstanceHealth(vscodeInstance = vscode, customTransport, statusBarItem, context) {
-  const updateStatus = (text, tooltip) => {
+  const updateStatus = (text, tooltip, isError = false) => {
     if (statusBarItem) {
       statusBarItem.text = `$(server) ${text}`;
       if (tooltip !== undefined) statusBarItem.tooltip = tooltip;
+      if (isError && vscodeInstance.ThemeColor) {
+        statusBarItem.backgroundColor = new vscodeInstance.ThemeColor('statusBarItem.warningBackground');
+      } else {
+        statusBarItem.backgroundColor = undefined;
+      }
     }
   };
 
@@ -39,7 +44,7 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
     authHeader = await getAuthHeader(context, vscodeInstance);
   } catch (err) {
     if (!customTransport) {
-      updateStatus('Offline / Standby', err.message || 'Credentials not configured');
+      updateStatus('Offline / Standby', err.message || 'Credentials not configured', true);
       return { connected: false, reason: err.message };
     }
   }
@@ -50,21 +55,32 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
   }
 
   const version = getRestVersion(vscodeInstance);
-  const path = `/rest/${version}`;
   const t0 = Date.now();
 
   try {
-    const res = await request({
+    let res = await request({
       baseUrl,
-      path,
+      path: `/rest/${version}/currentUser`,
       method: 'GET',
       headers: { Authorization: authHeader, Accept: 'application/json' },
       timeoutMs: getSettings(vscodeInstance).timeoutMs || 10000,
       transport: customTransport
     });
 
+    if (res && res.statusCode === 404) {
+      res = await request({
+        baseUrl,
+        path: `/rest/${version}/datatables`,
+        query: { limit: 1 },
+        method: 'GET',
+        headers: { Authorization: authHeader, Accept: 'application/json' },
+        timeoutMs: getSettings(vscodeInstance).timeoutMs || 10000,
+        transport: customTransport
+      });
+    }
+
     const latencyMs = Date.now() - t0;
-    const ok = res.statusCode >= 200 && res.statusCode < 300;
+    const ok = Boolean(res && res.statusCode >= 200 && res.statusCode < 300);
 
     let siteName = 'CPQ';
     try {
@@ -74,21 +90,28 @@ async function checkInstanceHealth(vscodeInstance = vscode, customTransport, sta
       siteName = baseUrl.replace(/^https?:\/\//, '').split('/')[0].split('.')[0];
     }
 
-    const release = ok ? `v${version}` : `HTTP ${res.statusCode}`;
+    const release = ok ? `v${version}` : `HTTP ${res ? res.statusCode : 'Error'}`;
     const tooltip = new vscode.MarkdownString();
     tooltip.appendMarkdown(`**Oracle CPQ Instance Health**\n\n`);
     tooltip.appendMarkdown(`- **Site**: \`${baseUrl}\`\n`);
-    tooltip.appendMarkdown(`- **Status**: \`${res.statusCode} ${ok ? 'OK' : 'Error'}\`\n`);
+    tooltip.appendMarkdown(`- **Status**: \`${res ? res.statusCode : 'N/A'} ${ok ? 'OK' : 'Error'}\`\n`);
     tooltip.appendMarkdown(`- **Latency**: \`${latencyMs}ms\`\n`);
     tooltip.appendMarkdown(`- **REST Version**: \`${version}\`\n`);
     tooltip.appendMarkdown(`- **Last Checked**: \`${new Date().toLocaleTimeString()}\`\n\n`);
     tooltip.appendMarkdown(`*Click to re-check health and network round-trip latency.*`);
 
-    updateStatus(`${siteName} (${release} - ${latencyMs}ms)`, tooltip);
+    updateStatus(`${siteName} (${release} - ${latencyMs}ms)`, tooltip, !ok);
 
-    return { connected: ok, latencyMs, statusCode: res.statusCode, siteName, version };
+    return {
+      connected: ok,
+      latencyMs,
+      statusCode: res ? res.statusCode : undefined,
+      siteName,
+      version,
+      reason: ok ? undefined : (res ? (res.statusCode === 401 ? 'Authentication failed (401)' : res.statusCode === 403 ? 'Access forbidden (403)' : `HTTP ${res.statusCode}`) : 'No response')
+    };
   } catch (err) {
-    updateStatus('CPQ: Unreachable', `Connection failed: ${err.message}`);
+    updateStatus('CPQ: Unreachable', `Connection failed: ${err.message}`, true);
     return { connected: false, reason: err.message };
   }
 }
@@ -168,7 +191,7 @@ function registerInstanceMonitorCommands(context) {
           `Connected to ${h.siteName} (${h.version}): Latency ${h.latencyMs}ms.`
         );
       } else {
-        vscode.window.showWarningMessage(`CPQ health check: ${h.reason || 'Unreachable'}`);
+        vscode.window.showWarningMessage(`CPQ health check: ${h.reason || (h.statusCode ? `HTTP ${h.statusCode}` : 'Unreachable')}`);
       }
     })
   );
